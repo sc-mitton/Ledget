@@ -100,6 +100,7 @@ services:
       - postgres_user
       - postgres_password
       - plaid_api_key
+      - plaid_sand_api_key
       - plaid_client_id
       - bird_api_key
       - bird_api_key_id
@@ -171,6 +172,8 @@ secrets:
     file: ./secrets/plaid_dev_api_key
   plaid_client_id:
     file: ./secrets/plaid_dev_client_id
+  plaid_sand_api_key:
+    file: ./secrets/plaid_sand_api_key
   django_secret_key:
     file: ./secrets/django_dev_secret_key
   ory_hook_api_key:

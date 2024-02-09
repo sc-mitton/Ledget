@@ -452,7 +452,6 @@ export const NeedsConfirmationStack = () => {
     }, [confirmAll])
 
     const flushConfirmedQue = () => {
-        console.log('confirmedTransactions', confirmedTransactions)
         if (confirmedTransactions.length > 0) {
             confirmTransactions(confirmedTransactions.map((item) => ({
                 transaction_id: item.transaction.transaction_id,

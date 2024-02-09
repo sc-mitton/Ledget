@@ -1,5 +1,5 @@
 import { useGetPlaidItemsQuery } from '@features/plaidSlice'
-import { Base64Logo } from '@ledget/ui'
+import { Base64Logo, Tooltip } from '@ledget/ui'
 
 
 export const InsitutionLogo = ({ accountId, size }: { accountId: string, size?: string }) => {
@@ -15,7 +15,9 @@ export const InsitutionLogo = ({ accountId, size }: { accountId: string, size?: 
     }
 
     return (
-        <Base64Logo {...args} />
+        <Tooltip msg={item?.institution.name} type='right'>
+            <Base64Logo {...args} />
+        </Tooltip>
     )
 }
 

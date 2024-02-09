@@ -10,7 +10,6 @@ import AddCategories from './AddCategories'
 import WelcomeConnect from './WelcomeConnect'
 
 const Main = withModal((props) => {
-    const [step, setStep] = useState<'welcome-connect' | 'add-bills' | 'add-categories'>('welcome-connect')
     const location = useLocation()
 
     return (

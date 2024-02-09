@@ -8,7 +8,7 @@ import { Recommendations as RecommendationsIcon } from '@ledget/media'
 import { useAddnewBillMutation, NewBill } from '@features/billSlice'
 import { useAddNewCategoryMutation, NewCategory } from '@features/categorySlice'
 import { useUpdateUserMutation, useGetMeQuery } from '@features/userSlice'
-import { BlackSubmitWithArrow, BlueSlimButton2, TabNavList } from '@ledget/ui'
+import { BlueSubmitWithArrow, BlueSlimButton2, TabNavList } from '@ledget/ui'
 
 export const TabView = ({ children, item }: { children: React.ReactNode, item: ItemS }) => {
     const { periodTabIndex, setPeriodTabIndex } = useItemsContext(item)
@@ -46,7 +46,7 @@ export const BottomButtons = ({ item }: { item: ItemS }) => {
         e.preventDefault()
 
         if (monthItems.length === 0 && yearItems.length === 0)
-            navigate('/budget/welcome/add-categories')
+            navigate('/welcome/add-categories')
 
         if (location.pathname.includes('add-bills')) {
             addNewBill([...monthItems, ...yearItems] as NewBill[])
@@ -58,7 +58,7 @@ export const BottomButtons = ({ item }: { item: ItemS }) => {
     useEffect(() => {
         if (isBillSuccess) {
             navigate({
-                pathname: '/budget/welcome/add-categories',
+                pathname: '/welcome/add-categories',
                 search: location.search,
             })
         }
@@ -91,14 +91,14 @@ export const BottomButtons = ({ item }: { item: ItemS }) => {
 
     return (
         <div className="btn-container">
-            <BlackSubmitWithArrow
+            <BlueSubmitWithArrow
                 aria-label="Continue"
                 onClick={handleClick}
                 submitting={isBillLoading || isCategoryLoading}
                 type="button"
             >
                 Continue
-            </BlackSubmitWithArrow>
+            </BlueSubmitWithArrow>
         </div>
     )
 }
@@ -113,7 +113,7 @@ export const RecommendationsButton = ({ item }: { item: ItemS }) => {
                 onClick={() => setRecommendationsMode(true)}
                 aria-label="Recommendations"
             >
-                Recommendations <RecommendationsIcon fill={'currentColor'} />
+                Recommendations <RecommendationsIcon />
             </BlueSlimButton2>
         </div>
     )

@@ -1,6 +1,6 @@
 import { useEffect, useRef, lazy, Suspense } from 'react'
 
-import { Routes, Outlet, Route, useLocation, useNavigate } from 'react-router-dom'
+import { Routes, Outlet, Route, useLocation, useNavigate, Navigate } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
 import '@styles/base.scss'
@@ -54,15 +54,10 @@ const PrivateRoute = () => {
 
 const OnboardedRoute = () => {
   const { data: user } = useGetMeQuery()
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    if (!user?.is_onboarded) {
-      navigate('/budget/welcome/connect')
-    }
-  }, [user?.is_onboarded])
-
-  return user?.is_onboarded && <Outlet />
+  const location = useLocation()
+  return user?.is_onboarded
+    ? <Outlet />
+    : location.pathname.includes('welcome') ? <Outlet /> : <Navigate to='/welcome/connect' />
 }
 
 const App = () => {
@@ -97,7 +92,6 @@ const App = () => {
       <AnimatePresence mode="wait">
         <ZoomMotionDiv
           key={location.pathname.split('/')[1]}
-          style={{ flexGrow: '1' }}
           className={`dashboard ${screenSize ? screenSize : ''}`}
           ref={ref}
         >
@@ -107,12 +101,12 @@ const App = () => {
                 <Route path="new-category" element={<CreateCategory />} />
                 <Route path="new-bill" element={<CreateBill />} />
                 <Route path="verify-email" element={<ForceVerification />} />
-                <Route path="welcome/*" element={<OnboardingModal />} />
               </Route>
               <Route path="accounts/*" element={<Accounts />} />
               <Route path="profile/*" element={<Profile />} />
               <Route path="*" element={<NotFound />} />
             </Route>
+            <Route path="welcome/*" element={<OnboardingModal />} />
           </Routes>
         </ZoomMotionDiv>
       </AnimatePresence>

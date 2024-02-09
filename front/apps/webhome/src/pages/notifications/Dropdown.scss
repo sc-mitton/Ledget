@@ -14,33 +14,13 @@
     .header {
         display: flex;
         position: relative;
-        padding: .5em;
-        border-bottom: 1.5px solid var(--border-color-ultra-dim);
         position: relative;
 
-        ul {
-            display: flex;
-            gap: 1.25em;
+        &>div:first-child {
+            padding: .45em .5em .75em .5em;
+            position: relative;
 
-            li {
-                cursor: pointer;
-                display: flex;
-                gap: .625em;
-                position: relative;
-
-                &[aria-selected='true']::after {
-                    content: '';
-                    position: absolute;
-                    bottom: -.625em;
-                    left: 0;
-                    right: -.25em;
-                    height: 2px;
-                    border-radius: 2px;
-                    background-color: var(--blue-medium);
-                }
-            }
-
-            li:first-child {
+            button:first-child {
                 margin-left: .5em;
                 gap: .875em;
 
@@ -66,7 +46,7 @@
             }
         }
 
-        &>div {
+        .actions {
             position: absolute;
             right: .5em;
             top: 50%;

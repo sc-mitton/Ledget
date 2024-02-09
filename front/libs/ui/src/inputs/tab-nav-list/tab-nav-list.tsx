@@ -1,7 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Tab } from '@headlessui/react';
-import { animated } from '@react-spring/web'
+import { animated, useSpringRef } from '@react-spring/web'
+import { useSpring } from '@react-spring/web'
 
 import './tab-nav-list.scss';
 import { usePillAnimation } from '../../animations/use-pill-animation/use-pill-animation'
@@ -87,6 +88,42 @@ export function TabNavList(props: TabNavListProps & React.HTMLAttributes<HTMLDiv
       </Tab.List>
     </>
   )
+}
+
+export function TabNavListUnderlined(props: Omit<TabNavListProps, 'theme' | 'labels'> & React.HTMLAttributes<HTMLDivElement>) {
+  const [indicatorWidth, setIndicatorWidth] = useState<number>()
+  const [indicatorLeft, setIndicatorLeft] = useState<number>()
+  const backgroundColor = useSchemeVar('--blue-sat')
+  const { children, selectedIndex, ...rest } = props
+
+  const ref = useRef<HTMLDivElement>(null)
+
+  const api = useSpringRef()
+  const styles = useSpring({
+    from: { width: 0, left: 0, bottom: 0, backgroundColor },
+    to: { width: indicatorWidth, left: indicatorLeft, height: '.125em', borderRadius: '8px' },
+    ref: api
+  })
+
+  useEffect(() => {
+    api.start()
+  }, [indicatorWidth, indicatorLeft])
+
+  useEffect(() => {
+    const activeTab = ref.current?.querySelector('[aria-selected=true]')
+    if (activeTab) {
+      setIndicatorWidth(activeTab.clientWidth)
+      setIndicatorLeft((activeTab as any).offsetLeft)
+    }
+  }, [selectedIndex])
+
+  return (
+    <Tab.List as='div' className='tab-nav-list-underlined' ref={ref} {...rest}>
+      {children}
+      <animated.span style={styles} />
+    </Tab.List>
+  )
+
 }
 
 export default TabNavList;

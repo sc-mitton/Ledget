@@ -8,7 +8,7 @@ export const formatName = (name: string) => (
 
 export const formatCurrency = (val: number | string | undefined, withCents = true) => {
 
-    if (val === undefined || val === null) return withCents ? '$0.00' : '$0'
+    if (!val) return withCents ? '$0.00' : '$0'
 
     const currencyAmount = typeof val === 'string'
         ? makeIntCurrencyFromStr(val)
@@ -34,7 +34,7 @@ export const formatCurrency = (val: number | string | undefined, withCents = tru
 // by removing all non-numeric characters and leading zeros
 // ex: $1,000.00 -> 100000, $250 -> 25000
 export const makeIntCurrencyFromStr = (s: string) => {
-    if (s === '$0' || s === '$0.00') { return 0 }
+    if (s.replace(/[^0-9]/g, '').replace(/^[0]/g, '') === '0') return 0
     let newVal
     newVal = parseInt(s.replace(/[^0-9]/g, '').replace(/^0+/, ''))
     return s.includes('.') ? newVal : newVal * 100

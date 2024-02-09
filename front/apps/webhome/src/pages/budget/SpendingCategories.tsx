@@ -92,7 +92,7 @@ const Categories = ({ period, includeHeader = true }: { period: 'month' | 'year'
                         </div>
                         <div>spent of</div>
                         <div>
-                            <DollarCents value={totalLimit ? totalLimit : '0.00'} withCents={false} />
+                            <DollarCents value={totalLimit ? totalLimit : 0} withCents={false} />
                         </div>
                         <div>
                             <StaticProgressCircle

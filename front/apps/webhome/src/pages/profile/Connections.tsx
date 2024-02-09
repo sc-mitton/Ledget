@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, Fragment } from 'react'
+import React, { useEffect, useState, useContext, createContext, Fragment } from 'react'
 
 import { useSpring, animated } from '@react-spring/web'
 import { useSearchParams } from 'react-router-dom'
@@ -7,6 +7,7 @@ import './styles/Connections.scss'
 import {
     useGetPlaidItemsQuery,
     useDeletePlaidItemMutation,
+    PlaidItem as TPlaidItem
 } from '@features/plaidSlice'
 import { useBakedPlaidLink, useBakedUpdatePlaidLink } from '@utils/hooks'
 import { withSmallModal } from '@ledget/ui'
@@ -23,14 +24,32 @@ import {
     Tooltip,
     Base64Logo
 } from '@ledget/ui'
-import { withReAuth } from '@utils'
+import { withReAuth } from '@utils/index'
 import { Edit2, Plus } from '@geist-ui/icons'
 
+interface DeleteQueItem { itemId: string, accountId?: string }
 
-const DeleteContext = React.createContext()
+interface DeleteContextProps {
+    deleteQue: DeleteQueItem[]
+    setDeleteQue: React.Dispatch<React.SetStateAction<DeleteQueItem[]>>
+    plaidItems?: TPlaidItem[]
+    fetchingPlaidItems: boolean
+    editing: boolean
+    setEditing: React.Dispatch<React.SetStateAction<boolean>>
+}
 
-const ConnectionsContext = ({ children }) => {
-    const [deleteQue, setDeleteQue] = useState([])
+const DeleteContext = createContext<DeleteContextProps | undefined>(undefined)
+
+const useDeleteContext = () => {
+    const context = useContext(DeleteContext)
+    if (!context) {
+        throw new Error('useDeleteContext must be used within a DeleteContext')
+    }
+    return context
+}
+
+const ConnectionsContext = ({ children }: { children: React.ReactNode }) => {
+    const [deleteQue, setDeleteQue] = useState<DeleteQueItem[]>([])
     const { data: plaidItems, isLoading: fetchingPlaidItems } = useGetPlaidItemsQuery()
     const [editing, setEditing] = useState(false)
 
@@ -55,10 +74,10 @@ const ConnectionsContext = ({ children }) => {
     )
 }
 
-const DeleteAllButton = ({ onClick }) => {
+const DeleteAllButton = ({ onClick }: { onClick: () => void }) => {
     const [loaded, setLoaded] = useState(false)
     const [deleteClass, setDeleteClass] = useState('')
-    const { editing } = useContext(DeleteContext)
+    const { editing } = useDeleteContext()
 
     useEffect(() => {
         if (!loaded) {
@@ -73,7 +92,6 @@ const DeleteAllButton = ({ onClick }) => {
     return (
         <div>
             <Tooltip
-                id='delete-all-tooltip'
                 msg={'Remove account'}
                 ariaLabel={'Remove Account'}
                 type={'left'}
@@ -89,7 +107,7 @@ const DeleteAllButton = ({ onClick }) => {
     )
 }
 
-const ReconnectButton = ({ itemId }) => {
+const ReconnectButton = ({ itemId = '' }) => {
     const { open, fetchingToken } = useBakedUpdatePlaidLink()
 
     return (
@@ -105,8 +123,8 @@ const ReconnectButton = ({ itemId }) => {
     )
 }
 
-const PlaidItem = ({ item }) => {
-    const { deleteQue, setDeleteQue } = useContext(DeleteContext)
+const PlaidItem = ({ item }: { item: TPlaidItem }) => {
+    const { deleteQue, setDeleteQue } = useDeleteContext()
     const [removed, setRemoved] = useState(false)
 
     const handleRemoveAll = () => {
@@ -153,7 +171,7 @@ const PlaidItem = ({ item }) => {
                 <div>
                     <Base64Logo
                         data={item.institution.logo}
-                        alt={item.institution.name}
+                        alt={item.institution.name.charAt(0)}
                         style={{ marginRight: '.75em' }}
                         size={'1.4em'}
                     />
@@ -189,7 +207,7 @@ const PlaidItem = ({ item }) => {
 }
 
 const ConfirmModal = withReAuth(withSmallModal((props) => {
-    const { deleteQue } = useContext(DeleteContext)
+    const { deleteQue } = useDeleteContext()
     const [deletePlaidItem, { isLoading, isSuccess }] = useDeletePlaidItemMutation()
     const [, setSearchParams] = useSearchParams()
 
@@ -205,13 +223,12 @@ const ConfirmModal = withReAuth(withSmallModal((props) => {
     }
 
     useEffect(() => {
-        let timeout
         if (isSuccess) {
-            timeout = setTimeout(() => {
+            const timeout = setTimeout(() => {
                 props.closeModal()
             }, 1000)
+            return () => clearTimeout(timeout)
         }
-        return () => clearTimeout(timeout)
     }, [isSuccess])
 
     return (
@@ -251,14 +268,14 @@ const EmptyState = () => (
     </div>
 )
 
-const MainHeader = ({ onPlus }) => {
-    const { editing, setEditing, plaidItems } = useContext(DeleteContext)
+const MainHeader = ({ onPlus }: { onPlus: () => void }) => {
+    const { editing, setEditing, plaidItems } = useDeleteContext()
 
     return (
         <div className="header">
             <h2>Connections</h2>
             <div className='header-btns'>
-                {!editing && plaidItems?.length > 0 &&
+                {!editing && plaidItems?.length && plaidItems?.length > 0 &&
                     <IconButton
                         onClick={() => setEditing(!editing)}
                         aria-label="Edit institution connections"
@@ -283,7 +300,7 @@ const Connections = () => {
         setEditing,
         deleteQue,
         setDeleteQue,
-    } = useContext(DeleteContext)
+    } = useDeleteContext()
     const [showConfirmModal, setShowConfirmModal] = useState(false)
     const { open, exit, ready } = useBakedPlaidLink()
 
@@ -291,7 +308,7 @@ const Connections = () => {
     //     config.receivedRedirectUri = import.meta.env.VITE_PLAID_REDIRECT_URI
     // }
 
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (deleteQue.length > 0) {
             setShowConfirmModal(true)
@@ -347,6 +364,7 @@ const Connections = () => {
                                     <form onSubmit={handleFormSubmit}>
                                         <Inputs />
                                         <SubmitForm
+                                            submitting={false}
                                             onCancel={() => {
                                                 setDeleteQue([])
                                                 setEditing(false)

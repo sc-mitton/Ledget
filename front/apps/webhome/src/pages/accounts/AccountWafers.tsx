@@ -62,12 +62,13 @@ const AccountWafer = ({ account, institution, onClick }: { account: Account, ins
                     data={institution?.logo}
                     alt={institution?.name.charAt(0).toUpperCase() || 'A'}
                 />
-                <div className={`wafer-name--container ${nameIsLong ? 'masked' : ''}`}>
-                    <div className={`${nameIsLong ? 'scrolling-text' : ''}`}>
+                <div className={`wafer-name--container ${nameIsLong ? 'marquee' : ''}`}>
+                    {nameIsLong && <div className='marquee--placeholder'>{account.official_name.slice(0, 18)}...</div>}
+                    <div className={`${nameIsLong ? 'marquee--leader' : ''}`} style={{ animationDuration: `${account.official_name.length / 2}s` }}>
                         {account.official_name}
                     </div>
-                    {nameIsLong && <div className='scrolling-text'>{account.official_name}</div>}
-                    {nameIsLong && <div className='spacer'>spacer</div>}
+                    {nameIsLong && <div className="marquee--caboose" style={{ animationDuration: `${account.official_name.length / 2}s` }}>{account.official_name}</div>}
+                    {nameIsLong && <div className="marquee--spacer">{account.official_name}</div>}
                 </div>
                 <div className='wafer-meta--container'>
                     {`${account.subtype} ${account.type === 'loan' ? 'loan' : ''}`}

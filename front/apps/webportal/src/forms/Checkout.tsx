@@ -175,24 +175,21 @@ const Form = (props: { id: string }) => {
     }
 
     const confirmSetup = async (data: z.infer<typeof schema>) => {
-        const result = await stripe?.confirmCardSetup(
-            clientSecretRef.current,
-            {
-                payment_method: {
-                    card: elements?.getElement(CardElement)!,
-                    billing_details: {
-                        name: data.name,
-                        email: identifierRef.current,
-                        address: {
-                            city: data.city,
-                            state: data.state,
-                            postal_code: data.zip,
-                            country: 'US'
-                        }
+        const result = await stripe?.confirmCardSetup(clientSecretRef.current, {
+            payment_method: {
+                card: elements?.getElement(CardElement)!,
+                billing_details: {
+                    name: data.name,
+                    email: identifierRef.current,
+                    address: {
+                        city: data.city,
+                        state: data.state,
+                        postal_code: data.zip,
+                        country: 'US'
                     }
                 }
             }
-        )
+        })
 
         if (result?.error) {
             setCardErrMsg(result.error?.message)
@@ -241,7 +238,6 @@ const Form = (props: { id: string }) => {
                         />
                         <h4>Card</h4>
                         <CardInput
-                            loading={processing}
                             requiredError={cardNotEnteredError}
                             onComplete={() => setCardEntered(true)}
                             clearError={() => setCardNotEnteredError(false)}
@@ -273,9 +269,10 @@ export const cardOptions = {
     }]
 }
 
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK_TEST)
+
 const CheckoutWindow = () => {
     const { isLoading } = useGetPricesQuery()
-    const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK_TEST)
 
     return (
         <>

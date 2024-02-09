@@ -4,7 +4,7 @@ import { Bell, Filter } from '@geist-ui/icons'
 import { Tab } from '@headlessui/react'
 
 import './Dropdown.scss'
-import { DropDownDiv, useAccessEsc, RefreshButton, IconButton, Tooltip } from '@ledget/ui'
+import { DropDownDiv, useAccessEsc, RefreshButton, IconButton, Tooltip, TabNavListUnderlined } from '@ledget/ui'
 import { CheckAll } from '@ledget/media'
 import { selectNotificationsTabIndex, setNotificationsTabIndex } from '@features/uiSlice'
 import { useGetTransactionsCountQuery, useTransactionsSyncMutation } from '@features/transactionsSlice'
@@ -63,10 +63,6 @@ const NotificationsDropdownMenu = (props: HTMLProps<HTMLDivElement>) => {
         tabIndex && dispatch(setNotificationsTabIndex(tabIndex))
     }, [tabIndex])
 
-    useEffect(() => {
-        console.log('showFilterForm', showFilterForm)
-    }, [showFilterForm])
-
     return (
         <div style={{ position: 'relative' }} {...props} className='notifications-dropdown'>
             <button
@@ -88,43 +84,41 @@ const NotificationsDropdownMenu = (props: HTMLProps<HTMLDivElement>) => {
                     {({ selectedIndex }) => (
                         <>
                             <div className='header'>
-                                <Tab.List as='ul'>
-                                    <Tab as='li'>
+                                <TabNavListUnderlined selectedIndex={selectedIndex}>
+                                    <Tab>
                                         {tCountData?.count! > 0 &&
                                             <span className='count'>{tCountData?.count}</span>}
                                         New Items
                                     </Tab>
-                                    <Tab as='li'>
-                                        History
-                                    </Tab>
-                                </Tab.List>
-                                <div>
-                                    {selectedIndex === 0 && (
-                                        <>
-                                            <Tooltip msg="Confirm all" ariaLabel="Confirm all">
-                                                <IconButton
-                                                    onClick={() => setConfirmAll(true)}
-                                                    disabled={tCountData?.count === 0}
-                                                >
-                                                    <CheckAll />
-                                                </IconButton>
-                                            </Tooltip>
-                                            <RefreshButton
-                                                stroke={'currentColor'}
-                                                hasBackground={false}
-                                                loading={isSyncing}
-                                                onClick={() => syncTransactions({})}
-                                            /></>)}
-                                    {selectedIndex === 1 && (
-                                        <>
-                                            <Tooltip msg="Filter" ariaLabel="Filter">
-                                                <IconButton onClick={() => setShowFilterForm(!showFilterForm)}>
-                                                    <Filter size={'1.125em'} />
-                                                </IconButton>
-                                            </Tooltip>
-                                        </>
-                                    )}
-                                </div>
+                                    <Tab>History</Tab>
+                                    <div className='actions'>
+                                        {selectedIndex === 0 && (
+                                            <>
+                                                <Tooltip msg="Confirm all" ariaLabel="Confirm all">
+                                                    <IconButton
+                                                        onClick={() => setConfirmAll(true)}
+                                                        disabled={tCountData?.count === 0}
+                                                    >
+                                                        <CheckAll />
+                                                    </IconButton>
+                                                </Tooltip>
+                                                <RefreshButton
+                                                    stroke={'currentColor'}
+                                                    hasBackground={false}
+                                                    loading={isSyncing}
+                                                    onClick={() => syncTransactions({})}
+                                                /></>)}
+                                        {selectedIndex === 1 && (
+                                            <>
+                                                <Tooltip msg="Filter" ariaLabel="Filter">
+                                                    <IconButton onClick={() => setShowFilterForm(!showFilterForm)}>
+                                                        <Filter size={'1.125em'} />
+                                                    </IconButton>
+                                                </Tooltip>
+                                            </>
+                                        )}
+                                    </div>
+                                </TabNavListUnderlined>
                             </div>
                             <Tab.Panel>
                                 <NeedsConfirmationStack />

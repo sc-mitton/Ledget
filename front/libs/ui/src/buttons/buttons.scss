@@ -763,8 +763,8 @@ button.disabled-hover:hover svg {
     &::after {
         content: '';
         position: absolute;
-        width: calc(100% + .375em);
-        height: calc(100% + .375em);
+        width: 1.5em;
+        height: 1.5em;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);

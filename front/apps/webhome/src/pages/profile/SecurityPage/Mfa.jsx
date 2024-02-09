@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom'
 
+import { Plus } from '@geist-ui/icons'
+
 import './styles/Mfa.scss'
 import { useGetMeQuery } from '@features/userSlice'
-import { useLazyGetSettingsFlowQuery } from '@features/orySlice'
 import { CircleIconButton, BlueSlimButton, Tooltip, BlueTextButton } from '@ledget/ui'
 import { QrIcon } from '@ledget/media'
-import { useEffect } from 'react'
 
 const AuthenticatorApp = ({ user }) => {
     const navigate = useNavigate()

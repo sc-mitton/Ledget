@@ -99,7 +99,7 @@ interface CardProps {
   requiredError: boolean,
   onComplete: () => void,
   clearError: () => void,
-  loading: boolean
+  loading?: boolean
 }
 
 export const CardInput = ({ requiredError, onComplete, clearError, loading }: CardProps) => {
@@ -113,6 +113,7 @@ export const CardInput = ({ requiredError, onComplete, clearError, loading }: Ca
         ? <InputShimmerDiv />
         : <div className={`card-container${cardFocus ? ' focused' : ''}`}>
           <CardElement
+            id='card-element'
             onBlur={() => setCardFocus(false)}
             onFocus={() => setCardFocus(true)}
             onChange={(e) => {

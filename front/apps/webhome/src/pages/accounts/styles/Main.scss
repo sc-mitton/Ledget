@@ -183,6 +183,7 @@ $wafer-container-padding: .75rem;
             &>div {
                 display: flex;
                 flex-direction: column;
+                min-width: 1em;
             }
         }
 
@@ -349,7 +350,7 @@ $wafer-container-padding: .75rem;
 
         .wafer-institution-logo {
             margin-left: -.125em;
-            margin-top: .375em;
+            margin-top: .25em;
         }
 
         .wafer-name--container {
@@ -362,22 +363,93 @@ $wafer-container-padding: .75rem;
             margin-top: .25em;
 
             * {
-                font-weight: var(--fw-regular);
+                font-weight: var(--fw-bold);
+            }
+        }
+
+        $marquee-spacing: 1.5em;
+
+
+        // Turn off marquee animation when not hovered
+        &:not(:hover) .marquee {
+            mask-image: none;
+
+            div:not(.marquee--placeholder) {
+                animation: none;
+                visibility: collapse;
             }
 
-            &.masked {
-                mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            &--placeholder {
+                visibility: visible;
+            }
+        }
+
+        .marquee {
+            mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+
+            &--placeholder {
+                visibility: collapse;
             }
 
-            .spacer {
+            &--leader,
+            &--caboose {
+                left: 0;
+                position: absolute;
+            }
+
+            &--leader {
+                animation-name: marquee-leader;
+                animation-timing-function: linear;
+                animation-iteration-count: infinite;
+            }
+
+            &--caboose {
+                animation-name: marquee-caboose;
+                animation-timing-function: linear;
+                animation-iteration-count: infinite;
+            }
+
+            &--spacer {
                 visibility: hidden;
+            }
+
+
+            @keyframes marquee-caboose {
+
+                0%,
+                2% {
+                    transform: translateX(calc(100% + #{$marquee-spacing}));
+                }
+
+                100% {
+                    transform: translateX(calc(-100% - #{$marquee-spacing}));
+                }
+            }
+
+            @keyframes marquee-leader {
+
+                0%,
+                2% {
+                    transform: translateX(0);
+                }
+
+                51.5% {
+                    transform: translateX(calc(-100% - #{$marquee-spacing}));
+                }
+
+                51.501% {
+                    transform: translateX(calc(100% + #{$marquee-spacing}));
+                }
+
+                100% {
+                    transform: translateX(0);
+                }
             }
         }
 
         .wafer-meta--container {
             opacity: .8;
             font-size: .8rem;
-            font-weight: var(--fw-feather-light);
             display: flex;
             gap: .25em;
             align-items: center;
@@ -395,61 +467,5 @@ $wafer-container-padding: .75rem;
                 font-weight: var(--fw-feather-light);
             }
         }
-    }
-}
-
-
-.scrolling-text:first-child {
-    position: absolute;
-    animation: infinite-scrolling1 14s linear infinite;
-    animation-delay: 2s;
-    display: flex;
-}
-
-@keyframes infinite-scrolling1 {
-    0% {
-        transform: translateX(0%);
-    }
-
-    50% {
-        transform: translateX(-115%);
-    }
-
-    50.01% {
-        transform: translateX(115%);
-    }
-
-    90% {
-        transform: translateX(0%);
-    }
-
-    100% {
-        transform: translateX(0%);
-    }
-}
-
-.scrolling-text:not(:first-child) {
-    z-index: 10;
-    position: absolute;
-    animation: infinite-scrolling2 14s linear infinite;
-    animation-delay: 2s;
-    display: flex;
-    opacity: 0;
-}
-
-@keyframes infinite-scrolling2 {
-    0% {
-        opacity: 1;
-        transform: translateX(115%);
-    }
-
-    90% {
-        opacity: 1;
-        transform: translateX(-115%);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateX(-115%);
     }
 }

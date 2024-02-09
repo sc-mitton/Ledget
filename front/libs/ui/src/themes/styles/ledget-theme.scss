@@ -212,6 +212,9 @@
         --monthly-h: 225;
         --yearly-h: 150;
 
+        --window-h: 240;
+        --window-s: 10%;
+
         // Budget Item Pallet
         --monthly-background-color: hsl(var(--monthly-h), 100%, 70%);
         --monthly-background-color-darker: hsl(var(--monthly-h), 100%, 60%);
@@ -259,7 +262,7 @@
         --window-background-color: hsl(240, 10%, 97%);
         --window-background-color-portal: hsl(0, 0%, 95%);
 
-        --window: hsl(240, 10%, 100%);
+        --window: hsl(var(--window-h), var(--window-s), 100%);
         --window2: hsl(var(--steel-blue-h), 10%, 92%);
         --window-no-background: var(--window-background-color);
         --window-drop-shadow-color: hsl(0, 0%, 93%);
@@ -289,7 +292,7 @@
         --new-item-drop-shadow-color: hsl(var(--steel-blue-h), var(--steel-blue-s), 90%);
 
         // Inputs
-        --input-background: hsl(0, 0%, 92%);
+        --input-background: hsl(var(--window-h), var(--window-s), 92%);
         --input-border-hover-color: hsl(0, 0%, 78%);
         --input-focus-dropshadow-color: var(--blue-light);
         --input-placeholder-focus: var(--blue-light-medium);
@@ -335,7 +338,7 @@
         --transaction-hover-background-dim: hsl(0, 0%, 92%);
 
         --default-pill-background: hsl(0, 0%, 95%);
-        --default-tab-background: hsl(0, 0%, 80%);
+        --default-tab-background: hsl(var(--window-h), var(--window-s), 85%);
 
         --negative-pulse-outer: rgba(0, 0, 0, .3);
         --negative-pulse-inner: rgba(0, 0, 0, .75);

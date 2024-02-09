@@ -15,7 +15,8 @@ import {
     BlackPrimaryButtonWithArrow,
     Base64Logo,
     useLoaded,
-    BluePrimaryButton
+    BluePrimaryButton,
+    Tooltip
 } from '@ledget/ui'
 
 const InstitutionLogos = ({ plaidItems }: { plaidItems: PlaidItem[] }) => {
@@ -36,12 +37,14 @@ const InstitutionLogos = ({ plaidItems }: { plaidItems: PlaidItem[] }) => {
                                     zIndex: index
                                 }}
                             >
-                                <Base64Logo
-                                    size="1.5em"
-                                    data={item.institution.logo}
-                                    alt={item.institution.name.charAt(0).toUpperCase()}
-                                    backgroundColor={item.institution.primary_color}
-                                />
+                                <Tooltip msg={item.institution.name}>
+                                    <Base64Logo
+                                        size="1.5em"
+                                        data={item.institution.logo}
+                                        alt={item.institution.name.charAt(0).toUpperCase()}
+                                        backgroundColor={item.institution.primary_color}
+                                    />
+                                </Tooltip>
                             </div>
                         ))}
                         <div style={{ marginLeft: '1em' }}>
@@ -71,7 +74,7 @@ const BottomButtons = ({ continueDisabled }: { continueDisabled: boolean }) => {
             <ExpandableContainer expanded={!continueDisabled}>
                 <BlackPrimaryButtonWithArrow
                     aria-label="Next"
-                    onClick={() => navigate('/budget/welcome/add-bills')}
+                    onClick={() => navigate('/welcome/add-bills')}
                     disabled={continueDisabled}
                 >
                     Continue

@@ -20,7 +20,8 @@ import {
     FormErrorTip,
     IconButton,
     formatCurrency,
-    makeIntCurrencyFromStr
+    makeIntCurrencyFromStr,
+    TabNavListUnderlined,
 } from '@ledget/ui'
 import { Recommendations } from '@ledget/media'
 import { useItemsContext, ItemsProvider, Period } from "./ItemsContext"
@@ -141,19 +142,21 @@ const CategoriesColumn = ({ period }: { period: Period }) => {
                                             autoFocus={true}
                                         />
                                         : <><DollarCents value={item?.limit_amount || 0} withCents={false} />
-                                            <Edit2 className="icon" /></>}
+                                            <Edit2 size={'1em'} /></>}
                                 </button>
                             </div >
-                            <DeleteButton
-                                show={true}
-                                onClick={() => {
-                                    if (period === 'month') {
-                                        setMonthItems((prev) => prev.filter((i) => i !== item))
-                                    } else {
-                                        setYearItems((prev) => prev.filter((i) => i !== item))
-                                    }
-                                }}
-                            />
+                            <div>
+                                <DeleteButton
+                                    show={true}
+                                    onClick={() => {
+                                        if (period === 'month') {
+                                            setMonthItems((prev) => prev.filter((i) => i !== item))
+                                        } else {
+                                            setYearItems((prev) => prev.filter((i) => i !== item))
+                                        }
+                                    }}
+                                />
+                            </div>
                         </animated.div>
                     )
                 })}
@@ -233,32 +236,30 @@ const CustomTabPanel = () => {
     }
 
     return (
-        <Tab.Panel
-            as={'form'}
-            onSubmit={submitForm}
-            key={`create-category-form-${monthItems.length}-${yearItems.length}}`}
-        >
-            <div>
+        <Tab.Panel key={`create-category-form-${monthItems.length}-${yearItems.length}}`}>
+            <form onSubmit={submitForm}>
                 <div>
-                    <EmojiComboText
-                        hasLabel={false}
-                        name="name"
-                        placeholder="Name"
-                        register={register}
-                        emoji={emoji}
-                        setEmoji={setEmoji}
-                        error={errors.name}
-                    />
+                    <div>
+                        <EmojiComboText
+                            hasLabel={false}
+                            name="name"
+                            placeholder="Name"
+                            register={register}
+                            emoji={emoji}
+                            setEmoji={setEmoji}
+                            error={errors.name}
+                        />
+                    </div>
+                    <div>
+                        <LimitAmountInput control={control} hasLabel={false} withCents={false} >
+                            <FormErrorTip error={errors.limit_amount} />
+                        </LimitAmountInput>
+                    </div>
+                    <div>
+                        <IconButton><Check className="icon" /></IconButton>
+                    </div>
                 </div>
-                <div>
-                    <LimitAmountInput control={control} hasLabel={false} withCents={false} >
-                        <FormErrorTip error={errors.limit_amount} />
-                    </LimitAmountInput>
-                </div>
-                <div>
-                    <IconButton><Check className="icon" /></IconButton>
-                </div>
-            </div>
+            </form>
         </Tab.Panel>
     )
 }
@@ -320,20 +321,18 @@ const SuggestedTabPanel = () => {
 
 const AddSuggestedCustomCategories = () => (
     <Tab.Group as='div'>
-        <Tab.Panels as={Fragment}>
-            <SuggestedTabPanel />
-            <CustomTabPanel />
-        </Tab.Panels>
-        <Tab.List className="custom-suggested-tabs">
-            <Tab>
-                Suggested
-                <Recommendations fill={'currentColor'} />
-            </Tab>
-            <Tab>
-                Custom
-                <Plus size={'.8em'} />
-            </Tab>
-        </Tab.List>
+        {({ selectedIndex }) => (
+            <>
+                <TabNavListUnderlined selectedIndex={selectedIndex}>
+                    <Tab>Suggested</Tab>
+                    <Tab>Custom</Tab>
+                </TabNavListUnderlined>
+                <Tab.Panels as={Fragment}>
+                    <SuggestedTabPanel />
+                    <CustomTabPanel />
+                </Tab.Panels>
+            </>
+        )}
     </Tab.Group>
 )
 

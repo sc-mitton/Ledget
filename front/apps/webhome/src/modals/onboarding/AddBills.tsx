@@ -5,7 +5,7 @@ import { animated } from '@react-spring/web'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Check, Plus } from '@geist-ui/icons'
+import { Check } from '@geist-ui/icons'
 
 import './styles/Items.scss'
 import { TabView, BottomButtons } from './Reusables'
@@ -19,8 +19,8 @@ import {
     DollarCents,
     FormErrorTip,
     IconButton,
+    TabNavListUnderlined
 } from '@ledget/ui'
-import { Recommendations } from '@ledget/media'
 import { extractReminders } from '@modals/CreateBill'
 
 const formSchema = z.object({
@@ -87,16 +87,18 @@ const BillsColumn = ({ period }: { period: 'month' | 'year' }) => {
                                 <DollarCents value={item?.upper_amount || 0} />
                             </div>
                         </div >
-                        <DeleteButton
-                            show={true}
-                            onClick={() => {
-                                if (period === 'month') {
-                                    setMonthItems((prev) => prev.filter((i) => i !== item))
-                                } else {
-                                    setYearItems((prev) => prev.filter((i) => i !== item))
-                                }
-                            }}
-                        />
+                        <div>
+                            <DeleteButton
+                                show={true}
+                                onClick={() => {
+                                    if (period === 'month') {
+                                        setMonthItems((prev) => prev.filter((i) => i !== item))
+                                    } else {
+                                        setYearItems((prev) => prev.filter((i) => i !== item))
+                                    }
+                                }}
+                            />
+                        </div>
                     </animated.div>
                 )}
             </animated.div>
@@ -154,6 +156,7 @@ const CutomTabPanel = () => {
 
     const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
 
+        setEmoji(undefined)
         handleSubmit((data) => {
             const reminders = extractReminders(e)
             const item = { ...data, reminders, emoji: typeof emoji === 'string' ? emoji : emoji?.native }
@@ -167,64 +170,60 @@ const CutomTabPanel = () => {
     }
 
     return (
-        <Tab.Panel
-            as={'form'}
-            onSubmit={submitForm}
-            key={`create-bill-form-${monthItems.length}-${yearItems.length}}`}
-        >
-            <div>
+        <Tab.Panel key={`create-bill-form-${monthItems.length}-${yearItems.length}}`}>
+            <form onSubmit={submitForm}>
                 <div>
-                    <EmojiComboText
-                        emoji={emoji}
-                        setEmoji={setEmoji}
-                        hasLabel={false}
-                        name="name"
-                        placeholder="Name"
-                        register={register}
-                        error={errors.name}
-                    />
+                    <div>
+                        <EmojiComboText
+                            emoji={emoji}
+                            setEmoji={setEmoji}
+                            hasLabel={false}
+                            name="name"
+                            placeholder="Name"
+                            register={register}
+                            error={errors.name}
+                        />
+                    </div>
+                    <div >
+                        <LimitAmountInput name="upper_amount" control={control} hasLabel={false}>
+                            <FormErrorTip error={errors.upper_amount && errors.upper_amount as any} />
+                        </LimitAmountInput>
+                    </div>
+                    <div>
+                        <BillScheduler
+                            billPeriod="month"
+                            iconPlaceholder={true}
+                            error={errors.day}
+                            register={register}
+                        />
+                    </div>
+                    <div>
+                        <IconButton>
+                            <Check className='icon' />
+                        </IconButton>
+                    </div>
                 </div>
-                <div >
-                    <LimitAmountInput name="upper_amount" control={control} hasLabel={false}>
-                        <FormErrorTip error={errors.upper_amount && errors.upper_amount as any} />
-                    </LimitAmountInput>
-                </div>
-                <div>
-                    <BillScheduler
-                        billPeriod="month"
-                        iconPlaceholder={true}
-                        error={errors.day}
-                        register={register}
-                    />
-                </div>
-                <div>
-                    <IconButton>
-                        <Check className='icon' />
-                    </IconButton>
-                </div>
-            </div>
+            </form>
         </Tab.Panel>
     )
 }
 
 const AddSuggestedCustomBills = () => (
     <Tab.Group as='div'>
-        <Tab.Panels as={Fragment}>
-            <CutomTabPanel />
-            <Tab.Panel className="suggested-bills--container">
-                <span>Coming soon</span>
-            </Tab.Panel>
-        </Tab.Panels>
-        <Tab.List className="custom-suggested-tabs">
-            <Tab>
-                Custom
-                <Plus className='icon' />
-            </Tab>
-            <Tab>
-                Suggested
-                <Recommendations fill={'currentColor'} />
-            </Tab>
-        </Tab.List>
+        {({ selectedIndex }) => (
+            <>
+                <TabNavListUnderlined selectedIndex={selectedIndex} >
+                    <Tab>Custom</Tab>
+                    <Tab>Suggested</Tab>
+                </TabNavListUnderlined>
+                <Tab.Panels as={Fragment}>
+                    <CutomTabPanel />
+                    <Tab.Panel className="suggested-bills--container">
+                        <span>Coming soon</span>
+                    </Tab.Panel>
+                </Tab.Panels>
+            </>
+        )}
     </Tab.Group>
 )
 

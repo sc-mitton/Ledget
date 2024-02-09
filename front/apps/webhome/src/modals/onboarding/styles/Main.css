@@ -5,7 +5,7 @@
         inset: 0;
         content: '';
         z-index: -1;
-        background-color: var(--window-background-color);
+        background-color: var(--modal-background-color);
         position: absolute;
         border-radius: inherit;
     }

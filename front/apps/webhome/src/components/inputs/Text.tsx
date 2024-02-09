@@ -274,7 +274,8 @@ export const LimitAmountInput: FC<HTMLProps<HTMLInputElement> & {
                             }
                         }}
                         onChange={(e) => {
-                            setVal(formatCurrency(e.target.value, withCents))
+                            const newVal = formatCurrency(e.target.value, withCents)
+                            setVal(newVal)
                         }}
                         onFocus={(e) => {
                             if (e.target.value.length <= 1 || val === '$0') {

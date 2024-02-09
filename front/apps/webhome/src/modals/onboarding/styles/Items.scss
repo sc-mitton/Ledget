@@ -17,6 +17,7 @@ $scrollbar-padding: 1em;
     }
 
     form {
+        width: 100%;
 
         &>div {
             display: flex;
@@ -45,7 +46,6 @@ $scrollbar-padding: 1em;
     &>div:first-of-type {
         display: flex;
         flex-direction: column;
-        gap: .5em;
         align-items: center;
         justify-content: flex-start;
     }
@@ -62,25 +62,39 @@ $scrollbar-padding: 1em;
         }
     }
 
-    &>div:nth-of-type(2),
-    &>div:nth-of-type(3),
-    .suggested-bills--container {
-        background-color: var(--window);
-        border-radius: var(--border-radius3);
+    &>div:nth-of-type(2) {
+        background-color: var(--inner-window);
         padding: 1em 1.5em;
+        border-radius: var(--border-radius2);
     }
 
     &>div:nth-of-type(3) {
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        gap: 2.25em;
+        gap: .25em;
 
         &>div {
             width: 100%;
             box-sizing: border-box;
             display: flex;
+        }
+
+        div[role='tabpanel'] {
+            padding: 1em 0;
             justify-content: center;
+        }
+    }
+
+    .suggested-bills--container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        span {
+            color: var(--blue-sat);
+            padding: 0 .5em;
+            border-radius: var(--border-radius1);
         }
     }
 
@@ -90,19 +104,20 @@ $scrollbar-padding: 1em;
         width: 100%;
 
         button {
-            position: absolute;
-            left: 50%;
-            bottom: 0em;
-            transform: translateX(-50%);
-            display: flex;
-            gap: .25em;
-            opacity: 0;
             padding: 0 .5em;
             border-radius: var(--border-radius2);
             z-index: 0;
 
+            &[role='tab'] {
+                display: flex;
+
+                svg {
+                    margin-bottom: .25em;
+                }
+            }
+
             &:not([aria-selected='true']) {
-                opacity: 1;
+                opacity: .5;
                 z-index: 1;
 
                 &:hover {
@@ -189,26 +204,24 @@ label:first-of-type {
     .budget-dollar--container {
         display: flex;
         align-items: center;
-        gap: 0;
+        gap: .25em;
         transition: gap .2s ease-out;
 
         input {
             text-align: right;
-        }
-
-        &:hover {
-            gap: .5em;
-            transition: gap .2s ease-out;
-
-            svg {
-                scale: 1;
-                transition: scale .2s ease-out;
-            }
+            padding-right: 1.25em;
         }
 
         svg {
             scale: 0;
             transition: scale .2s ease-out;
+        }
+
+        &:hover {
+            svg {
+                scale: 1;
+                transition: scale .2s ease-out;
+            }
         }
     }
 
@@ -225,11 +238,11 @@ label:first-of-type {
             margin-right: 1.25em;
         }
 
-        &:last-of-type {
-            flex: 1 0 0%;
+        &:last-child {
             display: flex;
             align-items: center;
             justify-content: flex-end;
+            padding: .25em .5em .25em 0;
         }
     }
 

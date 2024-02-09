@@ -6,6 +6,7 @@ import Color from 'color';
 import './misc.scss'
 import { formatCurrency } from '../../utils/funcs'
 import { useLoaded } from '../../utils/hooks';
+import { Tooltip } from '../../pieces/tooltip/tooltip';
 
 function getContrastColor(bgColor: string | undefined) {
   const color = Color(bgColor);
@@ -43,7 +44,7 @@ export const Base64Logo = (props: Base64LogoProps) => {
           src={`data:image/png;base64,${data}`}
           alt={alt}
         />
-        : <span className="logo-placeholder" />
+        : <span>{alt}</span>
       }
     </div>
   )
