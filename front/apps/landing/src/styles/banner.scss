@@ -1,11 +1,24 @@
 @import './mixins.scss';
 
+$mobile-max-width: clamp(13em, 16vw, 18em);
+$mobile-small-screen-max-width: clamp(17em, 20vw, 22em);
+$mobile-unfocused-max-width: clamp(12em, 15vw, 16em);
+$web-width: 60%;
+$web-focused-width: 90%;
+
+
 .banner {
     @include width-standard;
     min-height: 85vh;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    box-sizing: border-box;
+    gap: 4em;
+
+    &>div:first-child {
+        padding-left: 2em;
+    }
 
     h1 {
         font-size: clamp(2.5rem, 5vw, 4.5rem);
@@ -19,9 +32,9 @@
         flex-grow: 1;
         height: 100%;
 
-        &>div {
+        .web,
+        .mobile {
             background-color: var(--window-background-color);
-            padding: 1em;
         }
 
         &.dark {
@@ -57,31 +70,29 @@
 
         .web {
             position: absolute;
-            left: 75%;
+            left: 65%;
             top: 50%;
             transform: translate(-50%, -50%);
             z-index: 0;
-            border-radius: 1.25em;
+            border-radius: 1em;
             transition: all .5s;
+            padding: .75em .75em 0 .75em;
+            width: $web-width;
 
             &:hover {
                 z-index: 2;
-                left: 60%;
+                left: 50%;
                 transition: all .5s;
+                width: $web-focused-width;
 
-                img {
-                    max-width: 42em;
+                &+div img {
                     transition: all .5s;
-                }
-
-                &+div {
-                    transform: scale(.8) translate(-50%, -62%);
-                    transition: all .5s;
+                    max-width: $mobile-unfocused-max-width;
                 }
             }
 
             img {
-                max-width: 30em;
+                max-width: 100%;
                 height: auto;
                 transition: all .5s;
             }
@@ -89,11 +100,10 @@
 
         .mobile {
             position: absolute;
-            left: 45%;
+            left: 35%;
             top: 50%;
             z-index: 1;
-            padding-top: 2em;
-            padding-bottom: 2em;
+            padding: 2em 1em;
             border-radius: 1.75em;
             transform: scale(1) translate(-50%, -50%);
             transition: all .5s;
@@ -111,7 +121,8 @@
             }
 
             img {
-                max-width: 18em;
+                max-width: $mobile-max-width;
+                transition: all .5s;
                 height: auto;
             }
         }
@@ -145,27 +156,6 @@
     }
 }
 
-@media (max-width: 768px) {
-    .banner {
-        align-items: center;
-
-        &>div {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-
-        h1 {
-            text-align: center;
-        }
-
-
-    }
-}
-
-
 .cta {
     width: 100%;
     box-sizing: border-box;
@@ -187,5 +177,51 @@
     &:hover {
         background-color: var(--blue-medium-hover);
         transition: background-color .3s;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .banner {
+        align-items: center;
+        flex-direction: column;
+        gap: 0em;
+
+        &>div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+
+            &:first-child {
+                padding-left: 0;
+                margin-top: 6em;
+            }
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .mobile {
+            top: 110%;
+        }
+
+    }
+}
+
+@media (max-width: 1024px) {
+    .banner--products {
+        .web {
+            visibility: collapse;
+        }
+
+        .mobile {
+            left: 50%;
+
+            img {
+                max-width: $mobile-small-screen-max-width;
+            }
+        }
     }
 }
