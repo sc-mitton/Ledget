@@ -1,6 +1,7 @@
 @import './mixins.scss';
 
 .header {
+    @include width-standard;
     display: flex;
     justify-content: space-between;
     height: 3em;
@@ -9,7 +10,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    @include width-standard();
 
     &>div:first-child {
         display: flex;

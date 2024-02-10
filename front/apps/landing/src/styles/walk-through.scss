@@ -1,0 +1,42 @@
+#walk-through {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    &>div:last-child {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@mixin dot {
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    transform: translateY(50%);
+}
+
+.progress {
+    position: relative;
+    margin: 0 auto;
+    width: 50%;
+
+    &--shadow-line,
+    &--line {
+        position: absolute;
+        left: 0;
+        height: .125em;
+    }
+
+    &--line {
+        z-index: 1;
+        background-color: var(--blue-sat);
+    }
+
+    &--shadow-line {
+        z-index: 0;
+        right: 0;
+        background-color: var(--blue-light);
+    }
+
+}

@@ -4,8 +4,4 @@
     min-height: 15em;
     width: 100%;
     background-color: var(--blue-medium);
-
-    &>div {
-        @include width-standard;
-    }
 }

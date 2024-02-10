@@ -12,13 +12,12 @@ import '../styles/globals.scss';
     <title>Ledget</title>
   </head>
   <body>
-    <div class="color-scheme">
-      <div>
-        <Header />
-        <main>
-          <slot />
-        </main>
-      </div>
+    <div class="main-background"></div>
+    <div class="body">
+      <Header />
+      <main>
+        <slot />
+      </main>
     </div>
   </body>
   <script>
@@ -26,6 +25,7 @@ import '../styles/globals.scss';
       '(prefers-color-scheme: dark)'
     ).matches;
     const colorScheme = isDarkModeMediaQuery ? 'dark' : 'light';
-    document.querySelector('.color-scheme')?.classList.add(`${colorScheme}`);
+    document.querySelector('.body')?.classList.add(`${colorScheme}`);
+    document.querySelector('.main-background')?.classList.add(`${colorScheme}`);
   </script>
 </html>
