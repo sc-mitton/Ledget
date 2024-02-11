@@ -1,42 +1,73 @@
-#walk-through {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-
-    &>div:last-child {
-        display: flex;
-        flex-direction: column;
-    }
+.steps-progress {
+    position: relative;
+    gap: 4em;
 }
 
-@mixin dot {
-    width: 1em;
-    height: 1em;
-    border-radius: 50%;
-    transform: translateY(50%);
+.steps,
+.progress {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 5em;
+}
+
+.steps {
+    margin-left: 3em;
+}
+
+.step h1 {
+    margin: 0;
 }
 
 .progress {
-    position: relative;
-    margin: 0 auto;
-    width: 50%;
+    position: absolute;
+    left: 0;
+    top: 1em;
+    bottom: 1em;
 
-    &--shadow-line,
-    &--line {
+    &--top-bar-shadow,
+    &--top-bar,
+    &--bottom-bar,
+    &--bottom-bar-shadow {
         position: absolute;
-        left: 0;
-        height: .125em;
+        transform: translateX(-50%);
+        width: .125em;
+        left: 50%;
     }
 
-    &--line {
-        z-index: 1;
-        background-color: var(--blue-sat);
+    &--top-bar,
+    &--top-bar-shadow {
+        top: 0em;
     }
 
-    &--shadow-line {
-        z-index: 0;
-        right: 0;
+    &--top-bar-shadow {
+        bottom: 50%;
         background-color: var(--blue-light);
     }
 
+    &--bottom-bar,
+    &--bottom-bar-shadow {
+        bottom: 50%;
+        top: 50%;
+    }
+
+    &--bottom-bar-shadow {
+        background-color: var(--blue-light);
+        bottom: 0%;
+    }
+
+
+    &--bottom-bar,
+    &--top-bar {
+        background-color: var(--blue-sat);
+        z-index: 1;
+    }
+
+    &--circle {
+        width: .75em;
+        height: .75em;
+        background-color: var(--blue-light);
+        border-radius: 50%;
+        z-index: 2;
+    }
 }
