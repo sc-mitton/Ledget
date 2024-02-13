@@ -4,6 +4,9 @@ import Banner from '../components/banner.astro';
 import StreetCred from '../components/street-cred.astro';
 import Walkthrough from '../components/walkthrough.astro';
 import Features from '../components/features.astro';
+import LastCta from '../components/last-cta.astro';
+import Footer from '../components/footer.astro';
+import FAQs from '../components/faqs';
 ---
 
 <BaseLayout>
@@ -11,4 +14,7 @@ import Features from '../components/features.astro';
   <StreetCred />
   <Walkthrough />
   <Features />
+  <LastCta />
+  <FAQs client:load />
+  <Footer />
 </BaseLayout>

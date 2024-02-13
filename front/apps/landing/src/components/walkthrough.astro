@@ -1,25 +1,72 @@
 ---
+import { Image } from 'astro:assets';
 import '../styles/walk-through.scss';
+import Phone from '../../public/phone18v.svg';
+
+const emojiPool = [
+  '🍔',
+  '🍾',
+  '🍟',
+  '🏡',
+  '💐',
+  '💅🏽',
+  '💇🏽‍♀️',
+  '💇🏻‍♂️',
+  '🐕',
+  '☕️',
+  '💄',
+  '👔',
+  '🎿',
+  '🏀',
+  '💼',
+  '📚',
+  '🧑🏼‍💻',
+  '🥐',
+];
 ---
 
 <div id="product-walk-through" class="section">
   <script>
     import '/src/scripts/walk-through.js';
   </script>
-  <div class="steps-progress">
-    <div class="progress">
-      <div class="progress--top-bar"></div>
-      <div class="progress--top-bar-shadow"></div>
-      <div class="progress--bottom-bar"></div>
-      <div class="progress--bottom-bar-shadow"></div>
-      <div class="progress--circle"></div>
-      <div class="progress--circle"></div>
-      <div class="progress--circle"></div>
+  <div class="steps">
+    <div class="steps--container">
+      <div class="progress">
+        <div class="progress--top-bar"></div>
+        <div class="progress--top-bar-shadow"></div>
+        <div class="progress--bottom-bar"></div>
+        <div class="progress--bottom-bar-shadow"></div>
+        <div class="progress--circle"></div>
+        <div class="progress--circle"></div>
+        <div class="progress--circle"></div>
+      </div>
+      <div class="step">
+        <h2>Set Your Categories</h2>
+        <span> Add custom monthly and yearly spending categories</span>
+      </div>
+      <div class="step">
+        <h2>Set Your Bills</h2>
+        <span> Add monthly and yearly bills to never miss a payment.</span>
+      </div>
+      <div class="step">
+        <h2>Then Save!</h2>
+        <span> Save money you didn't spend, or invest it!</span>
+      </div>
     </div>
-    <div class="steps">
-      <div class="step"><h1>Set Your Categories</h1></div>
-      <div class="step"><h1>Set Your Bills</h1></div>
-      <div class="step"><h1>Then Save!</h1></div>
+  </div>
+  <div>
+    <div>
+      {
+        emojiPool.map((em) => (
+          <span
+            class={`emoji ${Math.random() > 0.5 ? 'green' : 'blue'}`}
+            style={{ left: `${25 + Math.floor(Math.random() * 50) + 1}%` }}
+          >
+            {em}
+          </span>
+        ))
+      }
+      <Image src={Phone} alt="Phone" />
     </div>
   </div>
 </div>

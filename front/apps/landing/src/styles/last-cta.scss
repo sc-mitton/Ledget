@@ -1,0 +1,86 @@
+#last-cta {
+    background-color: var(--inner-window);
+    border-radius: 1em;
+    display: flex;
+    gap: 4rem;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 2em;
+
+        img {
+            margin: 0 auto;
+            order: 0;
+        }
+
+        &>div:first-child {
+            order: 1;
+        }
+    }
+
+    &>div:last-child {
+        display: flex;
+        flex-grow: 1;
+
+        img {
+            width: 100%;
+            height: auto;
+            max-width: 10em;
+            animation: hover 2s infinite;
+        }
+    }
+
+    .email-input {
+        width: 100%;
+        position: relative;
+
+        input {
+            box-sizing: border-box;
+            width: 100%;
+            background-color: var(--window);
+
+            &:focus+button {
+                background-color: var(--blue-light);
+
+                &:hover {
+                    background-color: var(--blue-light-hover);
+                }
+            }
+        }
+
+        button {
+            border-radius: .5em;
+            width: 1.75em;
+            height: 1.75em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 50%;
+            right: .5em;
+            transform: translateY(-50%);
+        }
+
+        * {
+            color: var(--m-text);
+        }
+    }
+
+    &>div:first-child {
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        gap: 1em;
+    }
+
+    h1 {
+        font-size: clamp(1.375em, 3vw, 2em);
+        max-width: 18em;
+    }
+}
+
+@keyframes hover {
+    50% {
+        transform: translateY(-.25em);
+    }
+}

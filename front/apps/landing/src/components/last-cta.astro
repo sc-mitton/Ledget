@@ -1,0 +1,21 @@
+---
+import '../styles/last-cta.scss';
+import { Image } from 'astro:assets';
+import Email from '../../public/email5.svg';
+import { Check } from '@geist-ui/icons';
+---
+
+<div id="last-cta" class="section">
+  <div>
+    <h1>Enter your email to get the latest updates on new features.</h1>
+    <div class="email-input">
+      <input type="email" id="email" placeholder="Email" />
+      <button id="submit">
+        <Check size="1.25em" />
+      </button>
+    </div>
+  </div>
+  <div>
+    <Image src={Email} alt="Email" />
+  </div>
+</div>

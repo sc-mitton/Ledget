@@ -38,11 +38,20 @@ main {
 
 .section {
     @include width-standard;
-    padding: 1.5rem 2rem;
+    padding: 1.5rem;
     box-sizing: border-box;
 
+    h1,
     h1 {
-        font-weight: var(--fw-bold);
+        margin: .25em 0;
+    }
+
+    h1 {
+        font-weight: 600;
+    }
+
+    h2 {
+        font-weight: 500;
     }
 }
 
@@ -87,10 +96,21 @@ h6 {
     color: var(--m-text-header);
 }
 
+h3,
+h4,
+h5 {
+    margin: 0;
+    font-weight: var(--fw-regular);
+}
+
 a {
     text-decoration: none;
     cursor: pointer;
     font-weight: var(--fw-light);
+}
+
+* {
+    scroll-behavior: smooth;
 }
 
 button {
@@ -99,4 +119,71 @@ button {
     border: none;
     outline: none;
     font-weight: var(--fw-light);
+}
+
+input {
+    border: none;
+    outline: none;
+    box-shadow: none;
+    padding: .75em 1.5em;
+    border-radius: .5em;
+    background-color: var(--input-background);
+    border: var(--input-border);
+    transition: all .25s ease;
+
+    &:focus {
+        border: var(--input-border-focus);
+        box-shadow: var(--input-focus-drop-shadow);
+        color: var(--input-placeholder-focus);
+        transition: all .25s ease;
+    }
+
+    &:hover:not(:focus) {
+        border: var(--input-border-hover);
+        transition: all .25s ease;
+    }
+}
+
+footer {
+    width: 100%;
+    border-top: 1.5px solid var(--border-color);
+    display: flex;
+    justify-content: center;
+    padding: 2em 0;
+
+    &>div {
+        @include width-standard;
+        padding: 1.5rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 2em;
+    }
+
+    &>div>div:last-child {
+        display: flex;
+        gap: .25rem;
+        flex-direction: column;
+
+        &>div {
+            display: flex;
+            gap: 1em;
+        }
+
+        a {
+            display: inline-block;
+            color: var(--m-text);
+            color: var(--blue-sat);
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    a {
+        display: flex;
+        align-items: center;
+        gap: .25em;
+    }
 }
