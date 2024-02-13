@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import '../styles/walk-through.scss';
 import Phone from '../../public/phone18v.svg';
+import PhoneMask from '../../public/phoneMask1v.svg';
 
 const emojiPool = [
   '🍔',
@@ -55,17 +56,26 @@ const emojiPool = [
     </div>
   </div>
   <div>
-    <div>
+    <div id="emojis">
+      <div id="emojis--mask">
+        <div></div>
+        <div><Image src={Phone} alt="Phone" /></div>
+      </div>
       {
-        emojiPool.map((em) => (
+        emojiPool.map((em, i) => (
           <span
             class={`emoji ${Math.random() > 0.5 ? 'green' : 'blue'}`}
-            style={{ left: `${25 + Math.floor(Math.random() * 50) + 1}%` }}
+            style={{
+              left: `${10 + Math.floor(Math.random() * 80) + 1}%`,
+              zIndex: i,
+            }}
           >
             {em}
           </span>
         ))
       }
+    </div>
+    <div>
       <Image src={Phone} alt="Phone" />
     </div>
   </div>
