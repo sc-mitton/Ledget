@@ -5,21 +5,19 @@ import { MotionPathPlugin } from 'gsap/all';
 gsap.registerPlugin(MotionPathPlugin);
 gsap.registerPlugin(ScrollTrigger);
 
-const randomInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1) + min);
-
 const motionPath1 = [
     { x: 0, y: 0 },
-    { x: 10, y: -60 },
+    { x: 5, y: -60 },
     { x: 0, y: -120 },
-    { x: -10, y: -180 },
+    { x: -5, y: -180 },
     { x: 0, y: -240 }
 ]
 
 const motionPath2 = [
     { x: 0, y: 0 },
-    { x: -10, y: -60 },
+    { x: -5, y: -60 },
     { x: 0, y: -120 },
-    { x: 10, y: -180 },
+    { x: 5, y: -180 },
     { x: 0, y: -240 }
 ]
 
@@ -27,7 +25,8 @@ export function animate() {
 
     var circles = gsap.utils.toArray('.progress--circle') as HTMLDivElement[];
     var text = gsap.utils.toArray('.step') as HTMLHeadingElement[];
-    var emojis = gsap.utils.toArray('.emoji') as HTMLSpanElement[];
+    // Query all emoji (#emoji-number) and convert to array
+    var numberOfEmojis = gsap.utils.toArray('.emoji').length;
 
     var tl = gsap.timeline({
         scrollTrigger: {
@@ -38,26 +37,25 @@ export function animate() {
     })
 
     tl.to(circles[0], { backgroundColor: 'var(--blue-sat)' })
-        .to('.progress--top-bar', { bottom: '50%', delay: 2 }, 'start')
+        .to('.progress--top-bar', { bottom: '50%', delay: .5 }, 'start')
         .to(circles[1], { backgroundColor: 'var(--blue-sat)' })
-        .to('.progress--bottom-bar', { bottom: '.5em', delay: 2 }, 'middle')
+        .to('.progress--bottom-bar', { bottom: '.5em', delay: .5 }, 'middle')
         .to(circles[2], { backgroundColor: 'var(--blue-sat)' })
 
-    tl.fromTo(text[0], { opacity: .1 }, { opacity: 1, duration: .2 }, 'start')
-        .fromTo(text[1], { opacity: .1 }, { opacity: 1, duration: .2 }, 'middle')
-        .fromTo(text[2], { opacity: .1 }, { opacity: 1, duration: .2 })
+    tl.fromTo(text[0], { opacity: .2 }, { opacity: 1, duration: .2 }, 'start')
+        .fromTo(text[1], { opacity: .2 }, { opacity: 1, duration: .2 }, 'middle')
+        .fromTo(text[2], { opacity: .2 }, { opacity: 1, duration: .2 }, 'end')
 
-    emojis.forEach((emoji, i) => {
-        tl.to(emoji, {
+    for (let i = 0; i < numberOfEmojis; i++) {
+        gsap.to(`#emoji-${i}`, {
             opacity: 0,
             scale: 1,
             motionPath: { path: Math.random() > .5 ? motionPath1 : motionPath2, align: 'self' },
-            duration: 3,
-            ease: 'power1.inOut',
-            delay: Math.random() * 2,
-        }, 'start')
-    })
-
+            duration: 10,
+            delay: i,
+            repeat: -1,
+        })
+    }
 }
 
 animate();

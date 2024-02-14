@@ -61,19 +61,18 @@ const emojiPool = [
       {
         emojiPool.map((em, i) => (
           <span
-            class={`emoji ${Math.random() > 0.5 ? 'green' : 'blue'}`}
+            id={`emoji-${i}`}
+            class={`emoji ${Math.random() > 0.5 ? 'green' : 'blue'} ${Math.random() > 0.5 ? 'float1' : 'float2'}`}
             style={{
               left: `${10 + Math.floor(Math.random() * 80) + 1}%`,
               zIndex: i,
             }}
           >
             {em}
+            <DollarSign />
           </span>
         ))
       }
-      <div class="coin"></div>
-      <div class="coin"></div>
-      <div class="coin"></div>
     </div>
     <div>
       <Image src={Phone} alt="Phone" />

@@ -1,4 +1,5 @@
 $coin-face-color: var(--blue);
+$coin-face-color2: var(--blue-medium-dark);
 $coin-side: var(--blue-dark);
 $coin-size: clamp(2em, 4vw, 5em);
 $side-dark: var(--blue-dark);
@@ -12,12 +13,9 @@ $font-size: clamp(1rem, 3vw, 1.5em);
     justify-content: center;
     align-items: center;
     position: absolute;
-    animation-name: flip;
-    width: $coin-size;
-    height: $coin-size;
     position: absolute;
-    bottom: 20%;
-    transform: translate(-50%, -50%);
+    bottom: -20%;
+    opacity: .5;
     border-radius: 50%;
     color: var(--white);
     font-size: $font-size;
@@ -30,15 +28,20 @@ $font-size: clamp(1rem, 3vw, 1.5em);
     }
 
     &:nth-last-of-type(3) {
-        left: 30%;
+        left: 65%;
+
     }
 
     &:nth-last-of-type(2) {
-        left: 50%;
+        left: 45%;
     }
 
-    &:last-child {
-        left: 70%;
+    &:last-of-type {
+        left: 25%;
+    }
+
+    &.spin::before {
+        animation: spin 2s;
     }
 }
 
@@ -50,56 +53,54 @@ $font-size: clamp(1rem, 3vw, 1.5em);
     width: $coin-size;
     border-radius: 50%;
     color: inherit;
+    transform: rotateY(180deg);
+    border: 1px solid var(--blue-sat);
+    mask-image: linear-gradient(-45deg, white 0%, white 70%, hsl(0, 0%, 100%) 71%, hsl(0, 0%, 70%) 100%);
+    mask-mode: luminance;
 
-    background-image: url('../../public/dollar.png');
+    background-image: url('../../public/dollarv1.png');
     background-size: 20% 35%;
     background-repeat: no-repeat;
-    background-position: center;
-    background-blend-mode: hard-light;
     background-color: $coin-face-color;
     background-position: center;
     background-blend-mode: hard-light;
-
-    // animation: spin .2s linear infinite;
 }
 
+@mixin coin-shadow-left {
+    width: 0.1rem;
+    box-shadow:
+        0.05rem 0 0 $side,
+        0.1rem 0 0 $side,
+        0.15rem 0 0 $side,
+        0.2rem 0 0 $side,
+        0.25rem 0 0 $side;
+    background-color: $lowlight;
+}
 
+@mixin coin-shadow-right {
+    width: 0.1rem;
+    box-shadow:
+        -0.05rem 0 0 $side,
+        -0.1rem 0 0 $side,
+        -0.15rem 0 0 $side,
+        -0.2rem 0 0 $side,
+        -0.25rem 0 0 $side;
+    background-color: $lowlight;
+}
 
+@mixin coin-rest {
+    width: $coin-size;
+    box-shadow:
+        0 0 0 $side-dark;
+}
+
+// 4 spins
 @keyframes spin {
     0% {
-        width: $coin-size;
-        box-shadow:
-            0 0 0 $side-dark;
-        animation-timing-function: ease-in;
-    }
-
-    49.999% {
-        width: 0.1rem;
-        box-shadow:
-            0.05rem 0 0 $side,
-            0.1rem 0 0 $side,
-            0.15rem 0 0 $side,
-            0.2rem 0 0 $side,
-            0.25rem 0 0 $side;
-        background-color: $lowlight;
-        animation-timing-function: linear;
-    }
-
-    50.001% {
-        width: 0.1rem;
-        box-shadow:
-            -0.05rem 0 0 $side,
-            -0.1rem 0 0 $side,
-            -0.15rem 0 0 $side,
-            -0.2rem 0 0 $side,
-            -0.25rem 0 0 $side;
-        background-color: $lowlight;
-        animation-timing-function: ease-out;
+        transform: rotateY(180deg);
     }
 
     100% {
-        width: $coin-size;
-        box-shadow:
-            0 0 0 $side-dark;
+        transform: rotateY(1620deg);
     }
 }
