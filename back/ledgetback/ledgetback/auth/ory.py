@@ -32,9 +32,19 @@ class OryBackend(SessionAuthentication):
 
         return (user, None)
 
+    def _get_device(self, user, request):
+        """Check if the device token is valid for a given user"""
+
+        device_token_cookies = {k: v for k, v in request.COOKIES.items()
+                                if 'ledget_device' in k}
+
+        for device in user.device_set.all():
+            if device.token in device_token_cookies.values():
+                return device
+
     def get_user(self, request, decoded_token: dict):
         """Return the user from the decoded token."""
-        device_token = request.COOKIES.get('ledget_device')
+
         identity = decoded_token['session']['identity']
 
         User = get_user_model()
@@ -43,9 +53,7 @@ class OryBackend(SessionAuthentication):
                    .select_related('customer') \
                    .get(pk=identity['id']) \
 
-        for device in user.device_set.all():
-            if device.token == device_token:
-                user.device = device
+        user.device = self._get_device(user, request)
 
         user.session_id = decoded_token['session']['id']
         user.session_aal = \

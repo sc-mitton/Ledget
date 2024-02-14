@@ -11,6 +11,8 @@ from rest_framework.generics import (
 from django.conf import settings
 from django.utils.decorators import method_decorator
 import messagebird
+import secrets
+import string
 
 from core.serializers import DeviceSerializer
 from core.permissions import (
@@ -25,6 +27,11 @@ from ledgetback.decorators import csrf_ignore, ensure_csrf_cookie
 BIRD_API_KEY = settings.BIRD_API_KEY
 BIRD_SIGNING_KEY = settings.BIRD_SIGNING_KEY
 mbird_client = messagebird.Client(BIRD_API_KEY)
+
+
+def generate_random_string(length=6):
+    alphabet = string.ascii_letters
+    return ''.join(secrets.choice(alphabet) for _ in range(length))
 
 
 @method_decorator(ensure_csrf_cookie, name='dispatch')
@@ -51,7 +58,7 @@ class DeviceView(ListCreateAPIView):
 
         response = Response(status=HTTP_200_OK)
         response.set_cookie(
-            key="ledget_device",
+            key=f"ledget_device${generate_random_string()}",
             value=f"{instance.token}",
             secure=True,
             samesite='None',
