@@ -1,8 +1,9 @@
 ---
 import { Image } from 'astro:assets';
 import '../styles/walk-through.scss';
-import Phone from '../../public/phone18v.svg';
-import PhoneMask from '../../public/phoneMask1v.svg';
+import '../styles/coins.scss';
+import Phone from '../../public/phone22v.svg';
+import { DollarSign } from '@geist-ui/icons';
 
 const emojiPool = [
   '🍔',
@@ -56,11 +57,7 @@ const emojiPool = [
     </div>
   </div>
   <div>
-    <div id="emojis">
-      <div id="emojis--mask">
-        <div></div>
-        <div><Image src={Phone} alt="Phone" /></div>
-      </div>
+    <div id="emojis-coins">
       {
         emojiPool.map((em, i) => (
           <span
@@ -74,6 +71,9 @@ const emojiPool = [
           </span>
         ))
       }
+      <div class="coin"></div>
+      <div class="coin"></div>
+      <div class="coin"></div>
     </div>
     <div>
       <Image src={Phone} alt="Phone" />

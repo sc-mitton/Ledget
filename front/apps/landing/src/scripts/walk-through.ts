@@ -9,25 +9,25 @@ const randomInt = (min: number, max: number) => Math.floor(Math.random() * (max 
 
 const motionPath1 = [
     { x: 0, y: 0 },
-    { x: 20, y: -80 },
-    { x: 0, y: -160 },
-    { x: -20, y: -240 },
-    { x: 0, y: -320 }
+    { x: 10, y: -60 },
+    { x: 0, y: -120 },
+    { x: -10, y: -180 },
+    { x: 0, y: -240 }
 ]
 
 const motionPath2 = [
     { x: 0, y: 0 },
-    { x: -20, y: -80 },
-    { x: 0, y: -160 },
-    { x: 20, y: -240 },
-    { x: 0, y: -320 }
+    { x: -10, y: -60 },
+    { x: 0, y: -120 },
+    { x: 10, y: -180 },
+    { x: 0, y: -240 }
 ]
 
 export function animate() {
 
     var circles = gsap.utils.toArray('.progress--circle') as HTMLDivElement[];
     var text = gsap.utils.toArray('.step') as HTMLHeadingElement[];
-    // var emojis = gsap.utils.toArray('.emoji') as HTMLSpanElement[];
+    var emojis = gsap.utils.toArray('.emoji') as HTMLSpanElement[];
 
     var tl = gsap.timeline({
         scrollTrigger: {
@@ -52,7 +52,7 @@ export function animate() {
             opacity: 0,
             scale: 1,
             motionPath: { path: Math.random() > .5 ? motionPath1 : motionPath2, align: 'self' },
-            duration: 4,
+            duration: 3,
             ease: 'power1.inOut',
             delay: Math.random() * 2,
         }, 'start')

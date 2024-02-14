@@ -41,42 +41,16 @@
     @return $randomNum;
 }
 
-#emojis {
+#emojis-coins {
     position: absolute;
     inset: 0;
     z-index: 1;
-
-    &--mask {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-
-        &>div:first-child {
-            flex-grow: 1;
-            background-color: red;
-            mask-image: linear-gradient(to bottom, black);
-            margin-bottom: -1em;
-        }
-
-        &>div:last-child {
-            mask-image: url('../../public/phoneMask21v.svg');
-            mask-mode: alpha;
-            mask-repeat: no-repeat;
-            mask-position: bottom;
-            background-color: red;
-            background-size: cover;
-            z-index: 1;
-            display: flex;
-            align-items: flex-end;
-
-            img {
-                visibility: hidden;
-            }
-        }
-    }
-
+    background-size: cover;
+    mask-image: url('../../public/phoneMask23v.svg');
+    mask-size: 100% auto;
+    mask-mode: alpha;
+    mask-repeat: no-repeat;
+    mask-position: bottom;
 }
 
 .emoji {

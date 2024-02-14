@@ -1,0 +1,105 @@
+$coin-face-color: var(--blue);
+$coin-side: var(--blue-dark);
+$coin-size: clamp(2em, 4vw, 5em);
+$side-dark: var(--blue-dark);
+$side: var(--blue-medium-dark);
+$lowlight: #111;
+$font-size: clamp(1rem, 3vw, 1.5em);
+
+.coin {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    animation-name: flip;
+    width: $coin-size;
+    height: $coin-size;
+    position: absolute;
+    bottom: 20%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    color: var(--white);
+    font-size: $font-size;
+
+    svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    &:nth-last-of-type(3) {
+        left: 30%;
+    }
+
+    &:nth-last-of-type(2) {
+        left: 50%;
+    }
+
+    &:last-child {
+        left: 70%;
+    }
+}
+
+.coin::before {
+    content: '';
+    display: block;
+    position: relative;
+    height: $coin-size;
+    width: $coin-size;
+    border-radius: 50%;
+    color: inherit;
+
+    background-image: url('../../public/dollar.png');
+    background-size: 20% 35%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-blend-mode: hard-light;
+    background-color: $coin-face-color;
+    background-position: center;
+    background-blend-mode: hard-light;
+
+    // animation: spin .2s linear infinite;
+}
+
+
+
+@keyframes spin {
+    0% {
+        width: $coin-size;
+        box-shadow:
+            0 0 0 $side-dark;
+        animation-timing-function: ease-in;
+    }
+
+    49.999% {
+        width: 0.1rem;
+        box-shadow:
+            0.05rem 0 0 $side,
+            0.1rem 0 0 $side,
+            0.15rem 0 0 $side,
+            0.2rem 0 0 $side,
+            0.25rem 0 0 $side;
+        background-color: $lowlight;
+        animation-timing-function: linear;
+    }
+
+    50.001% {
+        width: 0.1rem;
+        box-shadow:
+            -0.05rem 0 0 $side,
+            -0.1rem 0 0 $side,
+            -0.15rem 0 0 $side,
+            -0.2rem 0 0 $side,
+            -0.25rem 0 0 $side;
+        background-color: $lowlight;
+        animation-timing-function: ease-out;
+    }
+
+    100% {
+        width: $coin-size;
+        box-shadow:
+            0 0 0 $side-dark;
+    }
+}
