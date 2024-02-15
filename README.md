@@ -191,6 +191,10 @@ will eventually be overrun and service will be lost and access will not be retur
 without a new payment method.
 
 
+## Demo Mode
+
+password: LedgetDemoPassword
+
 ## Notes on App functionality
 
 - The yearly budget will reset on the oldest yearly category created month. E.g. the oldest yearly

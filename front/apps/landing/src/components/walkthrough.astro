@@ -44,7 +44,7 @@ const emojiPool = [
       </div>
       <div class="step">
         <h2>Set Your Categories</h2>
-        <span> Add custom monthly and yearly spending categories</span>
+        <span> Add custom monthly and yearly spending categories.</span>
       </div>
       <div class="step">
         <h2>Set Your Bills</h2>
@@ -64,11 +64,11 @@ const emojiPool = [
             id={`emoji-${i}`}
             class={`emoji ${Math.random() > 0.5 ? 'green' : 'blue'} ${Math.random() > 0.5 ? 'float1' : 'float2'}`}
             style={{
-              left: `${10 + Math.floor(Math.random() * 80) + 1}%`,
+              left: `${15 + Math.floor(Math.random() * 70) + 1}%`,
               zIndex: i,
             }}
           >
-            {em}
+            <span>{em}</span>
             <DollarSign />
           </span>
         ))

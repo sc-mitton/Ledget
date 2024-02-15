@@ -33,107 +33,6 @@ $web-focused-width: 90%;
         align-items: center;
         justify-content: center;
         flex-grow: 1;
-        height: 100%;
-
-        &.dark {
-            &>div {
-                border: 6px solid var(--border-color);
-            }
-
-            .web.light {
-                visibility: collapse;
-                width: 0;
-                height: 0;
-                padding: 0;
-            }
-
-            .mobile.light {
-                visibility: collapse;
-                width: 0;
-                height: 0;
-                padding: 0;
-            }
-        }
-
-        &.light {
-
-            &>div {
-                // border: 2px solid hsl(0, 0%, 88%);
-                box-shadow: 0 0 40px 0px hsl(0, 0%, 80%);
-            }
-
-            .web.dark {
-                visibility: collapse;
-            }
-
-            .mobile.dark {
-                visibility: collapse;
-            }
-        }
-    }
-}
-
-
-.web,
-.mobile {
-    position: relative;
-    background-color: var(--window-background-color);
-    box-shadow: 0 0 30px hsl(0, 0%, 8%);
-}
-
-
-.web {
-    position: absolute;
-    left: 60%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 0;
-    border-radius: 1em;
-    transition: all .5s;
-    padding: .75em .75em 0 .75em;
-    width: $web-width;
-
-    &:hover {
-        z-index: 2;
-        left: 50%;
-        transition: all .5s;
-        width: $web-focused-width;
-
-        &+div img {
-            transition: all .5s;
-            max-width: $mobile-unfocused-max-width;
-        }
-    }
-
-    img {
-        max-width: 100%;
-        height: auto;
-        transition: all .5s;
-    }
-}
-
-.mobile {
-    z-index: 1;
-    padding: 2em 1em;
-    border-radius: 1.75em;
-    transition: all .5s;
-
-    &::after {
-        content: '';
-        position: absolute;
-        bottom: .5em;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 33%;
-        height: .125em;
-        background-color: var(--border-color);
-        border-radius: 1.5em;
-    }
-
-    img {
-        max-width: $mobile-max-width;
-        transition: all .5s;
-        height: auto;
     }
 }
 
@@ -201,7 +100,6 @@ $web-focused-width: 90%;
             flex-direction: column;
             align-items: center;
             text-align: center;
-            margin-bottom: -7em;
 
             &:first-child {
                 padding-left: 0;
@@ -210,6 +108,10 @@ $web-focused-width: 90%;
 
         h1 {
             text-align: center;
+        }
+
+        &--products {
+            margin: 14em 0;
         }
 
     }

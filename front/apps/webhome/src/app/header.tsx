@@ -30,13 +30,12 @@ const Navigation = () => {
                         className={`${location.pathname.split('/')[1] === tab.name ? "current-" : ""}nav-item`}
                         role="link"
                         tabIndex={0}
-                        onClick={() => location.pathname !== tab.path && navigate(tab.path)}
                         onKeyDown={(e) => { if (e.key === "Enter") { navigate(tab.path) } }}
                     >
                         <a
                             onClick={(e) => {
                                 e.preventDefault()
-                                location.pathname !== tab.path && navigate(tab.path)
+                                !location.pathname.includes(tab.name) && navigate(tab.path)
                             }}
                             aria-current={location.pathname.split('/')[1] === tab.name ? "page" : undefined}
                         >

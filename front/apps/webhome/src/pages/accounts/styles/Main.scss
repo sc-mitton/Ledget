@@ -23,17 +23,21 @@ $wafer-container-padding: .75rem;
         height: 100%;
 
         &>div {
-            font-weight: var(--fw-regular);
+            font-weight: var(--fw-light);
 
             // total balance div
             &:nth-child(2) {
+                * {
+                    font-weight: 400;
+                }
+
                 font-size: 1.5em;
             }
         }
 
         button {
             font-size: .95rem;
-            font-weight: var(--fw-light);
+            font-weight: 500;
             display: flex;
             align-items: center;
             gap: .25em;

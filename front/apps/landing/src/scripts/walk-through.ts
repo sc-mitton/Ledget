@@ -46,15 +46,16 @@ export function animate() {
         .fromTo(text[1], { opacity: .2 }, { opacity: 1, duration: .2 }, 'middle')
         .fromTo(text[2], { opacity: .2 }, { opacity: 1, duration: .2 }, 'end')
 
+
     for (let i = 0; i < numberOfEmojis; i++) {
-        gsap.to(`#emoji-${i}`, {
-            opacity: 0,
+        tl.to(`#emoji-${i}`, {
             scale: 1,
+            opacity: 0,
             motionPath: { path: Math.random() > .5 ? motionPath1 : motionPath2, align: 'self' },
             duration: 10,
             delay: i,
             repeat: -1,
-        })
+        }, 'start')
     }
 }
 

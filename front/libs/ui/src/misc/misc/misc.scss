@@ -46,11 +46,11 @@
     opacity: .9;
 
     &.green {
-        color: var(--secondary-dark);
+        color: var(--yearly-background-color-darker);
     }
 
     &.blue {
-        color: var(--main-dark);
+        color: var(--monthly-background-color-darker);
     }
 
     circle:first-child {

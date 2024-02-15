@@ -1,0 +1,107 @@
+---
+import '../styles/phone.scss';
+import { Image } from 'astro:assets';
+
+// Light Mode
+import AccountsLight from '../../public/phone/accounts-lightv7.svg';
+import BudgetLight from '../../public/phone/budget-lightv7.png';
+import StatusBarLight from '../../public/phone/statusbar-light.svg';
+import NavLightAccountsSelected from '../../public/phone/nav-light-accounts-selected.svg';
+import NavLightBudgetSelected from '../../public/phone/nav-light-budget-selected.svg';
+
+// Dark Mode
+import AccountsDark from '../../public/phone/accounts-darkv7.svg';
+import BudgetDark from '../../public/phone/budget-darkv7.png';
+import StatusBarDark from '../../public/phone/statusbar-dark.svg';
+import NavDarkAccountsSelected from '../../public/phone/nav-dark-accounts-selectedv1.svg';
+import NavDarkBudgetSelected from '../../public/phone/nav-dark-budget-selectedv1.svg';
+
+import IphoneFrame from '../../public/phone/iphone-frame.svg';
+
+let isDarkMode: boolean = true;
+---
+
+<div class="phone-wrapper">
+  <script>
+    import '../scripts/phone.js';
+
+    let isDarkMode = document
+      .querySelector('.body')
+      ?.classList.contains('dark');
+
+    if (isDarkMode) {
+      document.querySelectorAll('img.dark').forEach((el) => {
+        el.classList.add('visible');
+      });
+      document.querySelector('.phone__frame').classList.add('dark');
+    } else {
+      document.querySelectorAll('img.light').forEach((el) => {
+        el.classList.add('visible');
+      });
+    }
+  </script>
+  <div class="phone">
+    <Image
+      src={StatusBarDark}
+      alt="Status Bar Dark"
+      class="phone__status-bar dark"
+    />
+    <Image
+      src={NavDarkBudgetSelected}
+      alt="Nav Dark Budget Selected"
+      class="phone__nav dark"
+      id="phone_nav1"
+    />
+    <Image
+      src={NavDarkAccountsSelected}
+      alt="Nav Dark Accounts Selected"
+      class="phone__nav dark"
+      id="phone_nav2"
+    />
+    <Image
+      src={BudgetDark}
+      alt="Budget Dark"
+      class="phone__screen dark"
+      id="phone_screen1"
+    />
+    <Image
+      src={AccountsDark}
+      alt="Accounts Dark"
+      class="phone__screen dark"
+      id="phone_screen2"
+    />
+
+    <Image
+      src={StatusBarLight}
+      alt="Status Bar Light"
+      class="phone__status-bar light"
+    />
+    <Image
+      src={NavLightBudgetSelected}
+      alt="Nav Light Budget Selected"
+      class="phone__nav light"
+      id="phone_nav1"
+    />
+    <Image
+      src={NavLightAccountsSelected}
+      alt="Nav Light Accounts Selected"
+      class="phone__nav light"
+      id="phone_nav2"
+    />
+    <Image
+      src={BudgetLight}
+      alt="Budget Light"
+      class="phone__screen light"
+      id="phone_screen1"
+    />
+    <Image
+      src={AccountsLight}
+      alt="Accounts Light"
+      class="phone__screen light"
+      id="phone_screen2"
+    />
+
+    <Image src={IphoneFrame} alt="Iphone Frame" class="phone__frame" />
+    <span class="phone__touch"></span>
+  </div>
+</div>
