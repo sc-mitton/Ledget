@@ -13,11 +13,11 @@
 
 em-emoji-picker {
     height: 30vh;
-    box-shadow: var(--mid-elevation-drop-shadow);
+    box-shadow: var(--dropdown-box-shadow);
     --font-family: font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
     --rgb-accent: 56, 95, 168;
-    --rgb-background: 18, 18, 18;
-    --rgb-input: 23, 23, 23;
+    --rgb-background: var(--dropdown-background-rgb);
+    --rgb-input: var(--input-background-color-rgb);
     --border-radius: var(--border-radius3);
 }
 

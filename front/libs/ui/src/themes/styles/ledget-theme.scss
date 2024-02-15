@@ -102,6 +102,7 @@
 
 
         --wafer-background: hsl(0, 0%, 1%);
+        --dropdown-background-rgb: 18, 18, 18;
         --dropdown-background: var(--window);
         --dropdown-item-background: hsl(0, 0%, 12%);
 
@@ -115,6 +116,7 @@
         --header-pill-hover: rgb(255, 255, 255, 15%);
 
         // Inputs
+        --input-background-rgb: 31, 31, 31;
         --input-background: hsl(0, 0%, 12%);
         --input-border-hover-color: hsl(0, 0%, 20%);
         --input-focus-dropshadow-color: color-mix(in srgb, var(--blue), var(--window) 50%);
@@ -259,7 +261,7 @@
         --green-dark: hsl(var(--green-h), 30%, 22%);
 
         // Windows
-        --window-background-color: hsl(240, 10%, 97%);
+        --window-background-color: hsl(240, 7%, 97%);
         --window-background-color-portal: hsl(0, 0%, 95%);
 
         --window: hsl(var(--window-h), var(--window-s), 100%);
@@ -277,6 +279,7 @@
         --overlay: hsl(0, 0%, 20%);
 
         --wafer-background: hsl(0, 0%, 20%);
+        --dropdown-background-rgb: 250, 250, 250;
         --dropdown-background: hsl(0, 0%, 98%);
         --dropdown-item-background: hsl(0, 0%, 93%);
 
@@ -292,6 +295,7 @@
         --new-item-drop-shadow-color: hsl(var(--steel-blue-h), var(--steel-blue-s), 90%);
 
         // Inputs
+        --input-background-rgb: 233, 233, 237;
         --input-background: hsl(var(--window-h), var(--window-s), 92%);
         --input-border-hover-color: hsl(0, 0%, 78%);
         --input-focus-dropshadow-color: var(--blue-light);

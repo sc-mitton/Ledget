@@ -331,6 +331,14 @@ $scroll-bar-padding: .5em;
 
             &.is_paid {
                 opacity: 1;
+
+                &.month {
+                    color: var(--blue-sat);
+                }
+
+                &.year {
+                    color: var(--green-sat);
+                }
             }
 
             &.not_paid {
