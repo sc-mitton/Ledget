@@ -177,7 +177,7 @@ export default function () {
 
     return (
         <CancelationModal
-            onClose={() => navigate('/profile/details')}
+            onClose={() => navigate('/settings/profile')}
             maxWidth={'22em'}
             blur={2}
         />

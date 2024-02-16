@@ -71,6 +71,7 @@
 #connections-page .accounts {
     display: grid;
     grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
+    row-gap: .25em;
 }
 
 #connections-page .account-headers {

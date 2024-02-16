@@ -102,7 +102,7 @@ export default function () {
 
     return (
         <EnrichedModal
-            onClose={() => navigate('/profile/security')}
+            onClose={() => navigate('/settings/security')}
             blur={1}
         />
     )

@@ -81,7 +81,7 @@ PLAID_ENVIRONMENT = 'Sandbox'
 PLAID_API_KEY = get_secret('plaid_sand_api_key') if PLAID_ENVIRONMENT == 'Sandbox' else get_secret('plaid_api_key')
 PLAID_CLIENT_ID = get_secret('plaid_client_id')
 PLAID_REDIRECT_URI_ONBOARDING = 'https://localhost:3000/welcome/connect'
-PLAID_REDIRECT_URI = 'https://localhost:3000/profile/connections'
+PLAID_REDIRECT_URI = 'https://localhost:3000/settings/connections'
 PLAID_PRODUCTS = ['transactions', 'balance']
 PLAID_COUNTRY_CODES = ['US']
 

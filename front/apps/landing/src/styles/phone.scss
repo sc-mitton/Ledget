@@ -81,9 +81,9 @@ $mobile-unfocused-max-width: clamp(12em, 15vw, 16em);
         border-radius: 50%;
         bottom: 4.5%;
         left: 54.5%;
-        background-color: var(--m-text);
+        background-color: var(--blue-sat);
         z-index: 10;
         opacity: 0;
-        border: 8px solid var(--m-text-quaternary);
+        border: 8px solid var(--m-text-senary);
     }
 }

@@ -203,7 +203,7 @@ const RecoveryCodesModal = () => {
 
     return (
         <RecoveryCodesFlow
-            onClose={() => navigate('/profile/security')}
+            onClose={() => navigate('/settings/security')}
             hasExit={searchParams.get('lookup_secret_regenerate') ? false : true}
             overLayExit={searchParams.get('lookup_secret_regenerate') ? false : true}
         />

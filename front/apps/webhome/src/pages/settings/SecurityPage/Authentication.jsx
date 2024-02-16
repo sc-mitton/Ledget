@@ -35,7 +35,7 @@ const PasswordReset = () => {
                     </div>
                     <div>
                         <BlueSlimButton
-                            onClick={() => navigate('/profile/security/change-password')}
+                            onClick={() => navigate('/settings/security/change-password')}
                             aria-label="Change password"
                         >
                             change

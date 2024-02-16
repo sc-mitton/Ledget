@@ -1,58 +1,19 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 
-import { useNavigate, useLocation } from "react-router-dom"
 import { Menu } from '@headlessui/react'
-import { HelpCircle, LogOut, User, Sun, Moon } from '@geist-ui/icons'
 
-import '@styles/header.scss'
-import { Logout, Help } from '@modals/index'
+import './styles/header.scss'
 import { LedgetLogoIcon } from '@ledget/media'
-import { DropDownDiv, DropdownItem } from '@ledget/ui'
-import { useColorScheme, useScreenContext } from '@ledget/ui'
+import { useNavigate } from 'react-router-dom'
+import { User, HelpCircle, LogOut, Sun, Moon } from '@geist-ui/icons'
+import { DropdownItem, DropDownDiv, useScreenContext, useColorScheme } from '@ledget/ui'
+import { Logout, Help } from '@modals/index'
 import { NotificationsDropdownMenu } from '@pages/notifications'
-
-const Navigation = () => {
-    const tabs = [
-        { name: "budget", path: "budget" },
-        { name: "accounts", path: "accounts/deposits" }
-    ]
-
-    const location = useLocation()
-    const navigate = useNavigate()
-    const navListRef = useRef<HTMLUListElement>(null)
-
-    return (
-        <nav className="header-nav">
-            <ul ref={navListRef} role="navigation">
-                {tabs.map((tab) => (
-                    <li
-                        key={tab.name}
-                        className={`${location.pathname.split('/')[1] === tab.name ? "current-" : ""}nav-item`}
-                        role="link"
-                        tabIndex={0}
-                        onKeyDown={(e) => { if (e.key === "Enter") { navigate(tab.path) } }}
-                    >
-                        <a
-                            onClick={(e) => {
-                                e.preventDefault()
-                                !location.pathname.includes(tab.name) && navigate(tab.path)
-                            }}
-                            aria-current={location.pathname.split('/')[1] === tab.name ? "page" : undefined}
-                        >
-                            {tab.name.charAt(0).toUpperCase() + tab.name.slice(1)}
-                        </a>
-                    </li>
-                ))}
-            </ul>
-        </nav>
-    )
-}
 
 type Modal = "help" | "logout"
 
 const ProfileDropdownMenu = ({ setModal }:
     { setModal: React.Dispatch<React.SetStateAction<Modal | undefined>> }) => {
-    const navigate = useNavigate()
 
     const Wrapper = ({ onClick, children }:
         { onClick: React.MouseEventHandler<HTMLButtonElement>, children: React.ReactNode }) => {
@@ -86,10 +47,6 @@ const ProfileDropdownMenu = ({ setModal }:
                         visible={open}
                     >
                         <Menu.Items static>
-                            <Wrapper onClick={() => navigate("/profile/details")}>
-                                <User className='icon' />
-                                Profile
-                            </Wrapper>
                             <Wrapper onClick={() => setModal("help")}>
                                 <HelpCircle className='icon' />
                                 Help
@@ -130,8 +87,9 @@ function Header() {
         <>
             <header className={`${screenSize} ${isDark ? 'dark-mode' : ''}`}>
                 <div>
-                    <div><LedgetLogoIcon /></div>
-                    <div><Navigation /></div>
+                    <div>
+                        <LedgetLogoIcon />
+                    </div>
                     <div>
                         {isDark
                             ? <button onClick={() => setDarkMode(false)}>

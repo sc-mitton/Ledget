@@ -82,13 +82,13 @@ const UnenrichedTable: FC<HTMLProps<HTMLDivElement>> = ({ children }) => {
                         {Array(containerRef.current ? Math.round(containerRef.current?.offsetHeight / 70) : 0)
                             .fill(0)
                             .map((_, index) =>
-                                <>
+                                <Fragment key={`transaction-${index}`}>
                                     <div />
                                     <TransactionShimmer
                                         key={index}
                                         shimmering={true}
                                     />
-                                </>
+                                </Fragment>
                             )
                         }
                     </div>

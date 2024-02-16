@@ -34,7 +34,7 @@ const AuthenticatorApp = ({ user }) => {
                             ariaLabel={"Remove authenticator"}
                         >
                             <BlueSlimButton
-                                onClick={() => navigate('/profile/security/delete-authenticator')}
+                                onClick={() => navigate('/settings/security/delete-authenticator')}
                                 aria-label={"Remove Authenticator"}>
                                 Remove
                             </BlueSlimButton>
@@ -47,7 +47,7 @@ const AuthenticatorApp = ({ user }) => {
                         <QrIcon width={'1.25em'} height={'1.25em'} />
                         <span>Authenticator App</span>
                     </div>
-                    <CircleIconButton onClick={() => navigate('/profile/security/authenticator-setup')} darker={true} >
+                    <CircleIconButton onClick={() => navigate('/settings/security/authenticator-setup')} darker={true} >
                         <Plus size={'1em'} />
                     </CircleIconButton>
                 </>

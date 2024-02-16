@@ -5,44 +5,10 @@ $wafer-container-padding: .75rem;
 
 .account-wafers--container,
 .skeleton-account-wafers--container {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 1.5em;
     width: auto;
-    margin-top: 1em;
-    padding: 1em 1.5em;
+    padding: 0 1.5em;
     background-color: var(--window2);
     border-radius: var(--border-radius3);
-
-    .account-wafers--header {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        font-size: 1.125rem;
-        flex-grow: 1;
-        height: 100%;
-
-        &>div {
-            font-weight: var(--fw-light);
-
-            // total balance div
-            &:nth-child(2) {
-                * {
-                    font-weight: 400;
-                }
-
-                font-size: 1.5em;
-            }
-        }
-
-        button {
-            font-size: .95rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: .25em;
-        }
-    }
 
     &.extra-small {
         display: flex;
@@ -57,7 +23,6 @@ $wafer-container-padding: .75rem;
         }
     }
 
-
     * {
         scrollbar-width: none;
     }
@@ -70,6 +35,7 @@ $wafer-container-padding: .75rem;
     margin-bottom: -1em;
     margin: .25em 0 1em 0;
     padding: 0 .5em 0 .25em;
+    cursor: pointer;
 
     &>div {
         display: flex;
@@ -79,6 +45,14 @@ $wafer-container-padding: .75rem;
         div {
             font-size: 1.25rem;
         }
+    }
+
+    svg {
+        opacity: .4;
+    }
+
+    &:hover svg {
+        opacity: 1;
     }
 }
 
@@ -92,17 +66,7 @@ $wafer-container-padding: .75rem;
     gap: .75em;
 }
 
-.small-screen-account-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    &>div {
-        display: flex;
-    }
-}
-
-#mosaic-wafers--container {
+#verticle-wafers--container {
     background-color: var(--window-background-color);
     position: absolute;
     z-index: 200;
@@ -125,7 +89,7 @@ $wafer-container-padding: .75rem;
         right: 0em;
     }
 
-    .mosaic-account-wafer--container {
+    .verticle-account-wafer--container {
         width: 100%;
         padding: 1em;
         border: 1.5px solid var(--border-color-ultra-dim);
@@ -146,7 +110,7 @@ $wafer-container-padding: .75rem;
         }
     }
 
-    .mosaic-account-wafer {
+    .verticle-account-wafer {
         margin-left: -.5em;
         display: flex;
         justify-content: space-evenly;
@@ -201,6 +165,7 @@ $wafer-container-padding: .75rem;
 /* --------------------------------- Wafers --------------------------------- */
 .account-wafers,
 .skeleton-wafers {
+    width: 100%;
     display: inline-flex;
     height: calc($wafer-height + 2 * $wafer-container-padding + .25em);
     gap: .75em;
@@ -208,6 +173,7 @@ $wafer-container-padding: .75rem;
     overflow-y: hidden;
     animation: make-scroll 1s ease-in-out forwards;
     animation-delay: 1s;
+    padding: 1.5em 0 .75em 0;
 }
 
 @keyframes make-scroll {
@@ -223,7 +189,6 @@ $wafer-container-padding: .75rem;
 .account-wafers {
     z-index: 0;
     position: relative;
-    padding: .125em 0;
 
     &::after {
         content: '';

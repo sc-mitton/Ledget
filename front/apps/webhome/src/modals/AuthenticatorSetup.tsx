@@ -225,7 +225,7 @@ export default function () {
 
     return (
         <Authenticator
-            onClose={() => navigate('/profile/security')}
+            onClose={() => navigate('/settings/security')}
             blur={1}
             maxWidth={'350px'}
         />

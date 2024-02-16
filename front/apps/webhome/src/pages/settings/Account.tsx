@@ -82,7 +82,7 @@ const ChangePlanMenu = () => {
     const options = [
         {
             label: subscription ? nickNameMap[subscription.plan.nickname] : '',
-            onClick: () => navigate('/profile/details/change-bill-cycle'),
+            onClick: () => navigate('/settings/profile/change-bill-cycle'),
             cancel_at_period_end: false,
         },
         {
@@ -99,7 +99,7 @@ const ChangePlanMenu = () => {
         },
         {
             label: 'Cancel Subscription',
-            onClick: () => navigate('/profile/details/cancel-subscription'),
+            onClick: () => navigate('/settings/profile/cancel-subscription'),
             cancel_at_period_end: false
         }
     ]
@@ -242,7 +242,7 @@ const PaymentMethod = () => {
                 </div>
                 <BlueSlimButton
                     aria-label="Change plan"
-                    onClick={() => navigate("/profile/details/update-payment")}
+                    onClick={() => navigate("/settings/profile/update-payment")}
                 >
                     update
                 </BlueSlimButton>

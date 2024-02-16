@@ -1,8 +1,8 @@
 
 const Hamburger = ({
     className = '',
-    size = "1em",
-    stroke = "var(--icon-full)",
+    size = "1.5em",
+    stroke = "currentColor",
     strokeWidth = "10"
 }) => {
 

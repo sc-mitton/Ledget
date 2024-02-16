@@ -51,7 +51,6 @@ main {
     overflow: hidden;
     margin: 0;
     background-color: var(--window-background-color);
-    overflow-y: auto;
     display: flex;
     flex-direction: column;
 }
@@ -271,19 +270,15 @@ svg.icon {
 
 /* --------------------------------- Windows & Dashboard -------------------------------- */
 
-.sidenav {
-    flex: 1 0 0;
-}
-
 .dashboard {
-    flex: 6 1 0;
+    flex: 5 1 0;
     height: 100%;
     box-sizing: border-box;
     margin: 0em auto;
     gap: 1em;
     display: flex;
     justify-content: center;
-    overflow: hidden;
+    overflow-y: auto;
     scrollbar-width: none;
 }
 

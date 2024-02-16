@@ -4,7 +4,7 @@ const Close = ({
     className = '',
     size = ".7em",
     stroke = "var(--icon-full)",
-    strokeWidth = "24"
+    strokeWidth = "11"
 }) => {
 
     return (

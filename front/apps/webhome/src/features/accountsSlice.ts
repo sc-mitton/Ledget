@@ -11,7 +11,7 @@ export interface Account {
     unofficial_currency_code: string
     mask: string
     name: string
-    official_name: string
+    official_name?: string
     type: string
     subtype: string
     institution_id: string

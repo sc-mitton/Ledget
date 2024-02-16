@@ -1,0 +1,76 @@
+header {
+    background-color: var(--header-background);
+    box-shadow: var(--header-box-shadow);
+    z-index: 100;
+    position: sticky;
+    top: 0;
+    position: relative;
+
+    // Same as dashboard
+    width: 100%;
+    padding: .75em 0;
+
+    &.small>div>div:first-child img,
+    &.extra-small>div>div:first-child img {
+        opacity: 0;
+    }
+
+
+    &>div>div:first-child img {
+        filter: grayscale(100%) brightness(0) invert(1);
+    }
+
+    &>div {
+        max-width: calc(100% - 2.5rem);
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+
+        // Logo
+        &>div:first-child {
+            cursor: pointer;
+            margin-left: 0em;
+            display: flex;
+            align-items: center;
+        }
+
+        // Icons in menu (dark mode, notifications, profile)
+        &>div:last-child {
+            display: flex;
+            align-items: center;
+            gap: 1em;
+        }
+    }
+
+    .profile-button {
+        margin-left: 1em;
+
+        &::before {
+            content: '';
+            width: 1.5px;
+            background-color: var(--white);
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0em;
+            opacity: .2;
+        }
+    }
+}
+
+/* ------------------------------ Profile Dropdown Menu ----------------------------- */
+
+.profile-dropdown {
+    position: absolute;
+    flex-direction: column;
+    display: flex;
+    text-align: left;
+    top: 2.125em;
+    margin-left: 1em;
+
+    &>button {
+        width: 100%;
+    }
+}

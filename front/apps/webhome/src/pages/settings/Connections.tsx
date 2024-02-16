@@ -276,17 +276,19 @@ const MainHeader = ({ onPlus }: { onPlus: () => void }) => {
             <h2>Connections</h2>
             <div className='header-btns'>
                 {!editing && plaidItems?.length && plaidItems?.length > 0 &&
-                    <IconButton
-                        onClick={() => setEditing(!editing)}
-                        aria-label="Edit institution connections"
-                    >
-                        <Edit2 className='icon' />
-                    </IconButton>}
-                {plaidItems?.length === 0
-                    ? <button onClick={onPlus}><Plus className='icon' /></button>
-                    : <IconButton onClick={onPlus} aria-label="Add institution connection">
+                    <Tooltip msg={'Edit connections'} ariaLabel={'Edit Connections'} type={'left'}>
+                        <IconButton
+                            onClick={() => setEditing(!editing)}
+                            aria-label="Edit institution connections"
+                        >
+                            <Edit2 className='icon' />
+                        </IconButton>
+                    </Tooltip>}
+                <Tooltip msg={'Add account'} ariaLabel={'Add Account'} type={'left'}>
+                    <IconButton onClick={onPlus} aria-label="Add institution connection">
                         <Plus className='icon' />
-                    </IconButton>}
+                    </IconButton>
+                </Tooltip>
             </div>
         </div>
     )

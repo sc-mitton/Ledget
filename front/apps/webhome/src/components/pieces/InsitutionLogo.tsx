@@ -2,7 +2,7 @@ import { useGetPlaidItemsQuery } from '@features/plaidSlice'
 import { Base64Logo, Tooltip } from '@ledget/ui'
 
 
-export const InsitutionLogo = ({ accountId, size }: { accountId: string, size?: string }) => {
+export const InsitutionLogo = ({ accountId, size }: { accountId?: string, size?: string }) => {
     const { data } = useGetPlaidItemsQuery()
 
     const item = data?.find(item => item.accounts.find(account => account.id === accountId))

@@ -38,7 +38,7 @@ export const IconScaleButton = ButtonWithClassName('btn-scale2 btn-transparent b
 export const InputButton = ButtonWithClassName('btn-input btn-input-full')
 export const SlimInputButton = ButtonWithClassName('btn-input btn-less-full')
 export const SlimmestInputButton = ButtonWithClassName('btn-input btn-ultra-slim')
-export const BorderedButton = ButtonWithClassName('btn-bordered btn-slim')
+export const BorderedButton = ButtonWithClassName('btn-bordered btn-pill')
 
 // Specialised Buttons
 export const BlackPillButtonWithArrow = withArrow(BlackPillButton)

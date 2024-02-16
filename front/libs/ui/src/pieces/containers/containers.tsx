@@ -4,7 +4,7 @@ import './styles/containers.scss'
 
 export const ExpandableContainer: FC<HTMLProps<HTMLDivElement> & { expanded?: boolean }>
   = ({ expanded = true, className = '', children, ...rest }) => (
-    <div className={`animated-container ${expanded ? 'expanded' : 'collapsed'} ${className}`} {...rest}>
+    <div className={`animated-container ${expanded ? 'expanded' : 'collapsed'} ${className}`} {...rest} aria-expanded={expanded}>
       {children}
     </div>
   )

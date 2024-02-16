@@ -39,7 +39,7 @@ const NavList = () => {
         tabs.slice(1, 3).map((route) => (
             <li
                 role="menuitem"
-                data-current={location.pathname === "/profile/details" ? "page" : ''}
+                data-current={location.pathname.includes(route) ? "page" : ''}
                 key={route}
                 id={route}
                 onClick={() => navigate(route)}
@@ -63,10 +63,10 @@ const Profile = () => {
     return (
         <li
             role="menuitem"
-            data-current={location.pathname === "/profile/details" ? "page" : ''}
-            onClick={() => navigate("/profile/details")}
-            onKeyDown={(e) => e.key === "Enter" && navigate("/profile/details")}
-            className={`side-nav-item ${location.pathname === "/profile/details" ? "current" : ''}`}
+            data-current={location.pathname === "/settings/profile" ? "page" : ''}
+            onClick={() => navigate("/settings/profile")}
+            onKeyDown={(e) => e.key === "Enter" && navigate("/settings/profile")}
+            className={`side-nav-item ${location.pathname === "/settings/profile" ? "current" : ''}`}
             id="profile"
         >
             <div><User size="1.6em" stroke={'currentColor'} /></div>
@@ -81,108 +81,49 @@ const Profile = () => {
 
 const Gutter = () => {
     const ulRef = useRef<HTMLUListElement>(null)
-    const buttonRef = useRef<HTMLButtonElement>(null)
 
     const location = useLocation()
     const backgroundColor = useSchemeVar('--blue-light')
-    const [open, setOpen] = useGutterContext()
     const { screenSize } = useScreenContext()
     const { isDark } = useColorScheme()
 
-    const [updatePill, setUpdatePill] = useState(false)
-    const [smallScreenMode, setSmallScreenMode] = useState(false)
+    const [updatePill, setUpdatePill] = useState(0)
 
     const [props] = usePillAnimation({
         ref: ulRef,
-        update: [location.pathname, open, updatePill, isDark],
+        update: [location.pathname, updatePill, isDark],
         refresh: [],
         querySelectall: '[role=menuitem]',
-        find: (el, index) => index === tabs.indexOf(location.pathname.split("/")[2]),
+        find: (el, index) => el.getAttribute('data-current') === 'page',
         styles: {
             backgroundColor: backgroundColor,
             borderRadius: '8px',
         }
     })
 
-    const gutterProps = useSpring({
-        flex: open ? 1 : 0,
-        ...(smallScreenMode
-            ? {
-                left: 0,
-                right: open ? '20%' : '0%',
-                bottom: 0,
-                top: 0
-            }
-            : {}
-        ),
-
-        maxWidth: open ? '15.75rem' : '0em',
-        paddingLeft: open ? '0.5em' : '0em',
-        paddingRight: open ? '0.5em' : '0em',
-        paddingTop: open ? '0.75em' : '0em',
-        paddingBottom: open ? '0.75em' : '0em',
-        marginTop: open
-            ? !smallScreenMode ? '.5em' : '0em'
-            : '0em',
-        marginBottom: open
-            ? !smallScreenMode ? '1em' : '0em'
-            : '0em',
-        config: { duration: 200 },
-        delay: open ? 0 : 200,
-        onRest: () => setUpdatePill(!updatePill),
-        immediate: !smallScreenMode
-    })
-
-    useAccessEsc({
-        refs: [buttonRef, ulRef],
-        visible: open,
-        setVisible: () => {
-            if (smallScreenMode) {
-                setOpen(false)
-            }
-        }
-    })
-
-    // Close gutter on screen resize to small
+    // Observer to update pill size when screen size changes
     useEffect(() => {
-        if (screenSize !== 'small' && screenSize !== 'extra-small') {
-            setSmallScreenMode(false)
-            setOpen(true)
-        } else {
-            setSmallScreenMode(true)
-            setOpen(false)
+        if (!ulRef.current) return
+
+        const resizeObserver = new ResizeObserver(() => {
+            setUpdatePill(prev => prev + 1)
+        })
+
+        resizeObserver.observe(ulRef.current)
+
+        return () => {
+            resizeObserver.disconnect()
         }
     }, [screenSize])
 
-    useEffect(() => {
-        if (smallScreenMode) {
-            setOpen(false)
-        }
-    }, [location.pathname, smallScreenMode])
-
     return (
-        <>
-            {smallScreenMode &&
-                <div id='hamburger'>
-                    <IconButton
-                        onClick={() => { setOpen(!open) }}
-                        ref={buttonRef}
-                    >
-                        <Hamburger size={'1.2em'} />
-                    </IconButton>
-                </div>}
-            <animated.nav
-                style={gutterProps}
-                id='gutter'
-                className={`${open ? 'open' : ''} ${smallScreenMode ? 'small-screen' : ''}`}
-            >
-                <ul ref={ulRef}>
-                    <Profile />
-                    <NavList />
-                    <animated.span style={props} />
-                </ul>
-            </animated.nav>
-        </>
+        <nav id='gutter'>
+            <ul ref={ulRef}>
+                <Profile />
+                <NavList />
+                <animated.span style={props} />
+            </ul>
+        </nav>
     )
 }
 

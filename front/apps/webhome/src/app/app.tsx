@@ -7,8 +7,9 @@ import '@styles/base.scss'
 import Header from './header'
 import NotFound from '@pages/notFound/NotFound'
 import Budget from '@pages/budget/Window'
-import Profile from '@pages/profile/Window'
+import Profile from '@pages/settings/Window'
 import Accounts from '@pages/accounts/Window'
+import Sidenav from './sidenav'
 import {
   ZoomMotionDiv,
   Toast,
@@ -81,7 +82,7 @@ const App = () => {
       } else if (!user.is_customer || user.service_provisioned_until == 0) {
         window.location.href = import.meta.env.VITE_CHECKOUT_REDIRECT
       } else if (user.service_provisioned_until < Math.floor(Date.now() / 1000)) {
-        navigate('/profile/details/update-payment')
+        navigate('/settings/profile/update-payment')
       }
     }, 1000)
     return () => { clearTimeout(timeout) }
@@ -103,7 +104,7 @@ const App = () => {
                 <Route path="verify-email" element={<ForceVerification />} />
               </Route>
               <Route path="accounts/*" element={<Accounts />} />
-              <Route path="profile/*" element={<Profile />} />
+              <Route path="settings/*" element={<Profile />} />
               <Route path="*" element={<NotFound />} />
             </Route>
             <Route path="welcome/*" element={<OnboardingModal />} />
@@ -140,6 +141,7 @@ const EnrichedApp = () => {
         <ColorSchemedDiv className='full-screen-div'>
           <Header />
           <main>
+            <Sidenav />
             <Routes>
               <Route path="/" element={<PrivateRoute />} >
                 <Route path="/*" element={<App />} />

@@ -52,7 +52,7 @@ function Settings() {
 
     return (
         <div id="profile-window--container" className={`${screenSize === 'extra-small' ? 'window-no-background' : 'window'}`}>
-            <Gutter />
+            {['large', 'extra-large'].includes(screenSize) && <Gutter />}
             <ShimmerDiv
                 className={`${open ? 'with-open-gutter' : ''} ${screenSize}`}
                 id="profile-window"
