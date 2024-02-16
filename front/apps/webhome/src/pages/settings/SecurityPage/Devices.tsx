@@ -61,7 +61,7 @@ const Device = (props: { device: string, info: DeviceType[] }) => {
                             className={`device ${open ? 'open' : 'closed'}`}
                         >
                             <div className="device-icon">
-                                {iconKey === 'is_pc' && <ComputerIcon />}
+                                {iconKey === 'is_pc' && <ComputerIcon size='3em' />}
                                 {iconKey === 'is_mobile' && <Smartphone className="smart-phone-icon" />}
                                 {!iconKey && <ComputerIcon />}
                             </div>

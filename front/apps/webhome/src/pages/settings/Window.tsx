@@ -44,7 +44,7 @@ const GutterProvider = ({ children }: { children: ReactNode }) => {
     )
 }
 
-function Profile() {
+function Settings() {
     const { isLoading: userLoading } = useGetMeQuery()
     const location = useLocation()
     const [open] = useGutterContext()
@@ -67,7 +67,7 @@ function Profile() {
                         className="content"
                     >
                         <Routes location={location} key={location.pathname.split('/')[2]}>
-                            <Route path="details" element={<AccountPage />} >
+                            <Route path="profile" element={<AccountPage />} >
                                 <Route path="update-payment" element={<UpdatePayment />} />
                                 <Route path="cancel-subscription" element={<CancelSubscription />} />
                                 <Route path="change-bill-cycle" element={<ChangeBillCycle />} />
@@ -90,7 +90,7 @@ function Profile() {
 export default function () {
     return (
         <GutterProvider>
-            <Profile />
+            <Settings />
         </GutterProvider>
     )
 }

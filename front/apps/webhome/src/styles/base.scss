@@ -42,10 +42,13 @@ body {
 
 main {
     height: 100%;
+    display: flex;
 }
 
 .full-screen-div {
     height: 100%;
+    width: 100%;
+    overflow: hidden;
     margin: 0;
     background-color: var(--window-background-color);
     overflow-y: auto;
@@ -268,8 +271,12 @@ svg.icon {
 
 /* --------------------------------- Windows & Dashboard -------------------------------- */
 
+.sidenav {
+    flex: 1 0 0;
+}
+
 .dashboard {
-    width: 100%;
+    flex: 6 1 0;
     height: 100%;
     box-sizing: border-box;
     margin: 0em auto;
