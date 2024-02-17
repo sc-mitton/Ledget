@@ -337,6 +337,7 @@ const SelectedAccount = ({ onClick }: { onClick: () => void }) => {
     )
 }
 
+
 export function AccountWafers() {
     const [searchParams] = useSearchParams()
 

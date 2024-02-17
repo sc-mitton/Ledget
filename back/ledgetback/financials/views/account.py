@@ -1,14 +1,22 @@
+from dateutil.relativedelta import relativedelta
+from collections import defaultdict
+from decimal import Decimal
+
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
 from rest_framework.serializers import ListSerializer
+from rest_framework.exceptions import ValidationError
+from django.db.models import Sum
+from django.utils import timezone
+from django.db.models.functions import TruncMonth
 from plaid.model.accounts_get_request import AccountsGetRequest
 import plaid
 
 from core.permissions import IsAuthedVerifiedSubscriber, IsObjectOwner
 from core.clients import create_plaid_client
 from core.models import User
-from financials.models import Account, UserAccount
+from financials.models import Account, UserAccount, Transaction
 from financials.serializers.account import (
     InstitutionSerializer,
     AccountSerializer,
@@ -60,13 +68,34 @@ class AccountsView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         '''Get all the account data belonging to a specific user'''
-        already_fetched_tokens = []
+
         accounts = Account.objects.filter(useraccount__user_id=self.request.user.id) \
                                   .order_by('useraccount__order') \
                                   .prefetch_related('plaid_item') \
                                   .prefetch_related('institution')
 
-        account_balances = {account.id: None for account in accounts}
+        account_balances = self._fetch_plaid_account_data(accounts)
+
+        balance_history = self._get_balance_history({
+            k: account_balances[k]['balances']['current'] for k in account_balances})
+
+        for account_id in balance_history:
+            account_balances[account_id]['balance_history'] = \
+                balance_history[account_id]
+
+        institution_data = {
+            account.institution.id: InstitutionSerializer(account.institution).data
+            for account in accounts}
+
+        return Response({
+            'accounts': account_balances.values(),
+            'institutions': institution_data.values(),
+        }, HTTP_200_OK)
+
+    def _fetch_plaid_account_data(self, accounts: list) -> dict:
+        already_fetched_tokens = []
+
+        account_balances = {}
         try:
             for account in accounts:
                 if account.plaid_item.access_token in already_fetched_tokens:
@@ -77,19 +106,38 @@ class AccountsView(GenericAPIView):
 
                 response = plaid_client.accounts_get(request).to_dict()
                 for a in response['accounts']:
-                    account_balances[a['account_id']] = {
+                    account_balances.update({a['account_id']: {
                         **a, 'institution_id': account.institution.id,
-                    }
+                    }})
                 already_fetched_tokens.append(account.plaid_item.access_token)
 
         except plaid.ApiException as e:
-            return Response({'error': {'message': str(e)}}, e.status)
+            raise ValidationError({'error': {'message': str(e)}})
 
-        institution_data = {
-            account.institution.id: InstitutionSerializer(account.institution).data
-            for account in accounts}
+        return account_balances
 
-        return Response({
-            'accounts': account_balances.values(),
-            'institutions': institution_data.values(),
-        }, HTTP_200_OK)
+    def _get_balance_history(self, accounts_balance: dict) -> dict:
+
+        qset = Transaction.objects.filter(
+                account__in=accounts_balance.keys(),
+                date__gte=timezone.now().replace(day=1) - relativedelta(months=5),
+                date__lte=timezone.now().replace(day=1)
+            ).annotate(month=TruncMonth('date')) \
+             .values('month', 'account') \
+             .annotate(total=Sum('amount')) \
+             .order_by('account', '-month')
+
+        data = defaultdict(lambda: [])
+        balance = Decimal(0)
+        for item in qset:
+            if item['account'] not in data:
+                balance = Decimal(accounts_balance[item['account']])
+            else:
+                balance += item['total']
+
+            data[item['account']].append({
+                'month': item['month'],
+                'balance': balance
+            })
+
+        return data
