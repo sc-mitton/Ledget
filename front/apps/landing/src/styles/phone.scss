@@ -14,6 +14,7 @@ $mobile-unfocused-max-width: clamp(12em, 15vw, 16em);
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 2;
 }
 
 .phone {

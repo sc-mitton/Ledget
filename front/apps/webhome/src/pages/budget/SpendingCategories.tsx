@@ -89,8 +89,7 @@ const Categories = ({ period, includeHeader = true }: { period: 'month' | 'year'
                         </div>
                         <div>
                             <AnimatedDollarCents
-                                // value={totalSpent ? totalSpent : 0} withCents={false}
-                                value={78000}
+                                value={totalSpent ? totalSpent : 0} withCents={false}
                             />
                         </div>
                         <div>spent of</div>
@@ -139,8 +138,7 @@ const Categories = ({ period, includeHeader = true }: { period: 'month' | 'year'
                                     </div>
                                     <div>
                                         <StaticProgressCircle
-                                            // value={Math.round(((category.amount_spent * 100) / category.limit_amount) * 100) / 100}
-                                            value={.5}
+                                            value={Math.round(((category.amount_spent * 100) / category.limit_amount) * 100) / 100}
                                             color={category.period === 'year' ? 'green' : 'blue'}
                                         />
                                     </div>
