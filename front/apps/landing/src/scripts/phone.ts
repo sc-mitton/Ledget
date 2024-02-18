@@ -12,7 +12,7 @@ function animateScreen() {
     tl.to('.phone__touch', {
         opacity: .3,
         duration: .5,
-        delay: 5,
+        delay: 2,
     }).to('.phone__touch', {
         scale: .5,
         duration: .2,
@@ -49,7 +49,7 @@ function animateScreen() {
     // Second tap on the phone
     tl.set('.phone__touch', {
         left: '31.5%',
-        delay: 5,
+        delay: 2,
     }).to('.phone__touch', {
         opacity: .3,
         duration: .5,

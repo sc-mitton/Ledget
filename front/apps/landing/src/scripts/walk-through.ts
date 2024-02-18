@@ -30,13 +30,13 @@ function animate() {
     var tl = gsap.timeline({
         scrollTrigger: {
             trigger: '#product-walk-through',
-            start: 'top 50%',
+            start: 'top 90%',
             toggleActions: 'play none none none',
         }
     })
 
     tl.to(circles[0], { backgroundColor: 'var(--blue-sat)' })
-        .to('.progress--top-bar', { bottom: '50%', delay: .5 }, 'start')
+        .to('.progress--top-bar', { bottom: '50%', delay: 0 }, 'start')
         .to(circles[1], { backgroundColor: 'var(--blue-sat)' })
         .to('.progress--bottom-bar', { bottom: '.5em', delay: .5 }, 'middle')
         .to(circles[2], { backgroundColor: 'var(--blue-sat)' })

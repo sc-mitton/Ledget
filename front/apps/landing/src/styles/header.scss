@@ -1,7 +1,7 @@
 @import './mixins.scss';
 
 .header {
-    @include width-standard;
+    width: calc(100% - 1rem);
     display: flex;
     justify-content: space-between;
     height: 3em;
