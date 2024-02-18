@@ -23,7 +23,7 @@ export const SummaryBox = () => {
                         acc.plus(account.balances.current), Big(0)).times(100).toNumber() || 0} />
                 </h1>
             </div>
-            {!showBalanceHistory &&
+            {!showBalanceHistory && location.pathname.includes('deposits') &&
                 <button
                     id='show-balance-history-button'
                     onClick={() => setShowBalanceHistory(true)}

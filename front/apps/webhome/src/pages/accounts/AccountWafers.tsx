@@ -361,7 +361,7 @@ export function AccountWafers() {
                     <div>
                         <div>
                             <h4>{pathMappings.getWaferTitle(location)}</h4>
-                            {!showBalanceHistory &&
+                            {!showBalanceHistory && location.pathname.includes('deposits') &&
                                 <IconButton3
                                     onClick={() => setShowBalanceHistory(true)}
                                     aria-label='Show balance history'
