@@ -4,32 +4,11 @@ import '../styles/walk-through.scss';
 import '../styles/coins.scss';
 import Phone from '../../public/phone22v.svg';
 import { DollarSign } from '@geist-ui/icons';
-
-const emojiPool = [
-  '🍔',
-  '🍾',
-  '🍟',
-  '🏡',
-  '💐',
-  '💅🏽',
-  '💇🏽‍♀️',
-  '💇🏻‍♂️',
-  '🐕',
-  '☕️',
-  '💄',
-  '👔',
-  '🎿',
-  '🏀',
-  '💼',
-  '📚',
-  '🧑🏼‍💻',
-  '🥐',
-];
 ---
 
 <div id="product-walk-through" class="section">
   <script>
-    import '/src/scripts/walk-through.js';
+    import '../scripts/walk-through';
   </script>
   <div class="steps">
     <div class="steps--container">
@@ -59,7 +38,26 @@ const emojiPool = [
   <div>
     <div id="emojis-coins">
       {
-        emojiPool.map((em, i) => (
+        [
+          '🍔',
+          '🍾',
+          '🍟',
+          '🏡',
+          '💐',
+          '💅🏽',
+          '💇🏽‍♀️',
+          '💇🏻‍♂️',
+          '🐕',
+          '☕️',
+          '💄',
+          '👔',
+          '🎿',
+          '🏀',
+          '💼',
+          '📚',
+          '🧑🏼‍💻',
+          '🥐',
+        ].map((em, i) => (
           <span
             id={`emoji-${i}`}
             class={`emoji ${Math.random() > 0.5 ? 'green' : 'blue'} ${Math.random() > 0.5 ? 'float1' : 'float2'}`}

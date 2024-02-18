@@ -21,8 +21,7 @@ const motionPath2 = [
     { x: 0, y: -240 }
 ]
 
-export function animate() {
-
+function animate() {
     var circles = gsap.utils.toArray('.progress--circle') as HTMLDivElement[];
     var text = gsap.utils.toArray('.step') as HTMLHeadingElement[];
     // Query all emoji (#emoji-number) and convert to array
@@ -60,3 +59,5 @@ export function animate() {
 }
 
 animate();
+
+export { animate };
