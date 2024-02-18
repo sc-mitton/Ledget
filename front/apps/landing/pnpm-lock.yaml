@@ -14,9 +14,9 @@ importers:
       '@astrojs/react':
         specifier: ^3.0.10
         version: 3.0.10(@types/react-dom@18.2.19)(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0)(vite@5.0.12)
-      '@geist-ui/react-icons':
-        specifier: ^1.0.1
-        version: 1.0.1(@geist-ui/react@2.2.5)(react@18.2.0)
+      '@geist-ui/icons':
+        specifier: ^1.0.2
+        version: 1.0.2(@geist-ui/core@2.3.8)(react@18.2.0)
       '@headlessui/react':
         specifier: ^1.7.14
         version: 1.7.18(react-dom@18.2.0)(react@18.2.0)
@@ -666,18 +666,8 @@ packages:
     dev: false
     optional: true
 
-  /@geist-ui/react-icons@1.0.1(@geist-ui/react@2.2.5)(react@18.2.0):
-    resolution: {integrity: sha512-/phre1NwXT0Mrxcq3yb+KksJ16/ykptgxI7+jh5pmDZfxnIMPlBWFBGDK0yw96oi752Wuo24X6+tkWjVe/g5Bg==}
-    peerDependencies:
-      '@geist-ui/react': '>=1.0.0'
-      react: '>=16.13.0'
-    dependencies:
-      '@geist-ui/react': 2.2.5(react-dom@18.2.0)(react@18.2.0)
-      react: 18.2.0
-    dev: false
-
-  /@geist-ui/react@2.2.5(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-yPBAweYVh5HXXJ6W5ont/z6UObbfsjesg0/KTfcJzc64/zjGgp+wv2zLIdReGOTAj2R4XWoNSirNGGbQnwFe6w==}
+  /@geist-ui/core@2.3.8(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-OKwGgTA4+fBM41eQbqDoUj4XBycZbYH7Ynrn6LPO5yKX7zeWPu/R7HN3vB4/oHt34VTDQI5sDNb1SirHvNyB5w==}
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
@@ -685,6 +675,16 @@ packages:
       '@babel/runtime': 7.23.9
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@geist-ui/icons@1.0.2(@geist-ui/core@2.3.8)(react@18.2.0):
+    resolution: {integrity: sha512-Npfa0NW6fQ31qw/+iMPWbs1hAcJ/3FqBjSLYgEfITDqy/3TJFpFKeVyK04AC/hTmYTsdNruVYczqPNcham5FOQ==}
+    peerDependencies:
+      '@geist-ui/core': '>=1.0.0'
+      react: '>=16.13.0'
+    dependencies:
+      '@geist-ui/core': 2.3.8(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
     dev: false
 
   /@headlessui/react@1.7.18(react-dom@18.2.0)(react@18.2.0):

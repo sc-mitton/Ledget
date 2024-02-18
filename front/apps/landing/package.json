@@ -12,7 +12,7 @@
   "dependencies": {
     "@astrojs/check": "^0.4.1",
     "@astrojs/react": "^3.0.10",
-    "@geist-ui/react-icons": "^1.0.1",
+    "@geist-ui/icons": "^1.0.2",
     "@headlessui/react": "^1.7.14",
     "@ledget/media": "workspace:^",
     "@ledget/ui": "workspace:^",
