@@ -8,10 +8,10 @@
 // Phone image
 #product-walk-through>div:last-child {
     // flip horizontally
+    flex: 1 1 0;
     display: flex;
     justify-content: flex-start;
     align-items: flex-end;
-    min-width: 50%;
     margin-bottom: 1em;
     overflow: hidden;
     position: relative;
@@ -19,7 +19,6 @@
     &>div {
         transform: scaleX(-1);
         display: flex;
-        min-width: 10em;
         max-width: 30em;
         width: 100%;
 
@@ -145,7 +144,7 @@
 }
 
 .steps {
-    flex-grow: 1;
+    flex: 1 1 0;
     height: 100%;
     position: relative;
     display: flex;
