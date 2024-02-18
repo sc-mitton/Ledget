@@ -9,22 +9,45 @@ $wafer-container-padding: .75rem;
     padding: 0 1.5em;
     background-color: var(--window2);
     border-radius: var(--border-radius3);
+    display: flex;
+    gap: 1.5em;
+    position: relative;
 
-    &.extra-small {
-        display: flex;
-        flex-direction: column;
-        gap: 1em;
-        background-color: var(--blue-medium);
-
-        button,
-        button svg,
-        .account-wafers--header>div:last-child * {
-            color: var(--white);
+    #balance-history {
+        &>div {
+            max-width: 60%;
         }
+
+        padding: 1em;
     }
 
     * {
         scrollbar-width: none;
+    }
+
+    &>div:first-child {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+
+        &>div {
+            display: flex;
+            gap: .75em;
+        }
+
+        h4 {
+            white-space: nowrap;
+        }
+    }
+
+    #balance-history {
+        display: flex;
+        flex-direction: column;
+
+        h3 {
+            font-size: 1.25rem;
+        }
     }
 }
 
@@ -34,7 +57,7 @@ $wafer-container-padding: .75rem;
     justify-content: space-between;
     margin-bottom: -1em;
     margin: .25em 0 1em 0;
-    padding: 0 .5em 0 .25em;
+    padding-left: .25em;
     cursor: pointer;
 
     &>div {
@@ -430,10 +453,9 @@ $wafer-container-padding: .75rem;
             display: flex;
             align-items: flex-end;
 
-            div * {
+            div {
                 font-size: 1rem;
                 letter-spacing: .0625em;
-                font-weight: var(--fw-feather-light);
             }
         }
     }

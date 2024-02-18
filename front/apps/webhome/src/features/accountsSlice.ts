@@ -8,6 +8,7 @@ export interface Account {
         limit: number
         iso_currency_code: string
     }
+    balance_history?: { month: string, balance: number }[]
     unofficial_currency_code: string
     mask: string
     name: string

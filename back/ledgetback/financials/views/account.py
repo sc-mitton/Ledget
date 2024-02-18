@@ -125,7 +125,7 @@ class AccountsView(GenericAPIView):
             ).annotate(month=TruncMonth('date')) \
              .values('month', 'account') \
              .annotate(total=Sum('amount')) \
-             .order_by('account', '-month')
+             .order_by('account', 'month')
 
         data = defaultdict(lambda: [])
         balance = Decimal(0)

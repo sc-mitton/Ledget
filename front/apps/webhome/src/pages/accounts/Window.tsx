@@ -16,7 +16,6 @@ import {
     usePillAnimation,
     useSchemeVar,
     useScreenContext,
-    DollarCents,
     ExpandableContainer,
     CircleIconButton,
 } from '@ledget/ui'
@@ -29,6 +28,7 @@ import { NotImplimentedMessage } from '@components/pieces'
 import { DepositsIcon, FilterLines, CloseIcon } from '@ledget/media'
 import { AccountsProvider, useAccountsContext } from './context'
 import pathMappings from './path-mappings'
+import { SummaryBox } from './SmallScreenAccounSummary'
 
 
 const _getNavIcon = (key = '', isCurrent: boolean) => {
@@ -222,23 +222,6 @@ const Filters = ({ visible = false, close }: { visible: boolean, close: () => vo
     )
 }
 
-const Summary = () => {
-    const { accounts } = useAccountsContext()
-    const location = useLocation()
-    const { screenSize } = useScreenContext()
-
-    return (
-        <div id='accounts--summary' className={`${screenSize}`}>
-            <>
-                <span>{pathMappings.getWaferTitle(location)}</span>
-                <h1>
-                    <DollarCents value={accounts?.reduce((acc, account) => acc.plus(account.balances.current), Big(0)).times(100).toNumber() || 0} />
-                </h1>
-            </>
-        </div>
-    )
-}
-
 function Window() {
     const location = useLocation()
     const { isSuccess } = useAccountsContext()
@@ -275,9 +258,7 @@ function Window() {
 
     return (
         <div id="accounts" className={`main-window  ${screenSize === 'small' ? 'small' : ''}`}>
-            {!['small', 'extra-small'].includes(screenSize)
-                ? <Summary />
-                : <h2>{_getNavHeaderPhrase(currentPath)}</h2>}
+            <h2>{_getNavHeaderPhrase(currentPath)}</h2>
             <div id='accounts--nav'>
                 <div>
                     <Nav />
@@ -302,7 +283,7 @@ function Window() {
                 </div>
                 <Filters visible={showFilters} close={() => setShowFilters(false)} />
             </div>
-            {['small', 'extra-small'].includes(screenSize) && <Summary />}
+            {['small', 'extra-small'].includes(screenSize) && <SummaryBox />}
             <div>
                 <AccountWafers />
                 <AnimatePresence mode="wait">

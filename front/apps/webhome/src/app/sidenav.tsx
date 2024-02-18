@@ -144,7 +144,7 @@ const Sidebar = () => {
     }, [location.pathname])
 
     return (
-        ['small', 'extra-small'].includes(screenSize)
+        ['small', 'extra-small', 'medium'].includes(screenSize)
             ?
             <>
                 <div id='sidebar-hamburger'>

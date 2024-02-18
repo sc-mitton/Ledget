@@ -1,0 +1,27 @@
+#balance-history {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: inherit;
+    border-radius: inherit;
+    padding-top: .5em;
+
+    &>div:nth-last-child(2) {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-right: 1em;
+
+        &>span {
+            white-space: nowrap;
+        }
+    }
+
+    &>div:last-child {
+        flex-grow: 1;
+        width: 100%;
+    }
+}

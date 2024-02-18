@@ -19,7 +19,7 @@ export { default as SuccessIcon } from './icons/SuccessIcon';
 export { default as Alert2 } from './icons/Alert2';
 export { default as QrIcon } from './icons/QrIcon';
 export { default as LocationIcon } from './icons/LocationIcon';
-export { default as VerifyEmail } from './icons/VerifyEmail';
+export { default as LineGraph } from './icons/LineGraph';
 export { default as FaceIcon } from './icons/FaceIcon';
 export { default as RelinkIcon } from './icons/Relink';
 export { default as ComputerIcon } from './icons/Computer';

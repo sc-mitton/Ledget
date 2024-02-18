@@ -100,9 +100,7 @@ const AmountSpentChart = ({ data, disabled = false }: { data: Datum[], disabled?
             }}
             areaBaselineValue={minY}
             tooltip={({ point }) => (
-                <ChartTip
-                    position={point.index >= data.length / 2 ? 'left' : 'right'}
-                >
+                <ChartTip position={point.index >= data.length / 2 ? 'left' : 'right'}>
                     <span>{new Date(point.data.x).toLocaleString('default', { month: 'short' })}</span>
                     &nbsp;&nbsp;
                     <DollarCents value={point.data.y as number} />
@@ -111,7 +109,6 @@ const AmountSpentChart = ({ data, disabled = false }: { data: Datum[], disabled?
             }
             yScale={{ type: 'linear', min: yScaleMin, max: data.length > 0 ? 'auto' : maxY / 100 }}
             gridYValues={4}
-            crosshairType="bottom"
             theme={nivoResponsiveLineTheme}
             {...nivoResponsiveLineBaseProps}
         />

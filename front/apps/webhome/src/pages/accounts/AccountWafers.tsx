@@ -12,7 +12,8 @@ import {
     useSpringDrag,
     ShimmerTextDiv,
     CloseButton,
-    useScreenContext
+    useScreenContext,
+    IconButton3,
 } from '@ledget/ui'
 import { InsitutionLogo } from '@components/pieces'
 import {
@@ -21,6 +22,8 @@ import {
 } from "@features/accountsSlice"
 import pathMappings from './path-mappings'
 import { useAccountsContext } from './context'
+import { LineGraph } from '@ledget/media'
+import { BalanceHistory } from './BalanceHistory'
 
 const waferWidth = 165
 const waferPadding = 6
@@ -199,7 +202,7 @@ const VerticalAccountList = ({ visible, onClose }: { visible: boolean, onClose: 
     const waferGap = 16
     const containerApi = useSpringRef()
     const containerProps = useSpring({
-        top: '1em',
+        top: '0em',
         right: 0,
         width: visible ? '100%' : '0%',
         height: visible ? '100%' : '0%',
@@ -332,18 +335,19 @@ const SelectedAccount = ({ onClick }: { onClick: () => void }) => {
                     </div>
                 </div>
             </div>
-            <ChevronRight size={'1.375em'} />
+            <ChevronRight size={'1.75em'} />
         </ShimmerTextDiv>
     )
 }
 
-
 export function AccountWafers() {
     const [searchParams] = useSearchParams()
-
+    const location = useLocation()
+    const { accounts } = useAccountsContext()
     const { screenSize } = useScreenContext()
     const [showAllAccounts, setShowAllAccounts] = useState(false)
     const { isLoading: isLoadingAccounts } = useAccountsContext()
+    const [showBalanceHistory, setShowBalanceHistory] = useState(false)
 
     useEffect(() => {
         setShowAllAccounts(false)
@@ -351,12 +355,35 @@ export function AccountWafers() {
 
     return (
         <>
-            <div className={`account-wafers--container ${screenSize}`}>
-                {!['small', 'extra-small'].includes(screenSize) && (isLoadingAccounts
-                    ? <SkeletonLargeScreenWafers />
-                    : <HorizontalWafers />)}
-            </div>
-            {['small', 'extra-small'].includes(screenSize) &&
+            {!['small', 'extra-small'].includes(screenSize)
+                ?
+                <div className={`account-wafers--container ${screenSize}`}>
+                    <div>
+                        <div>
+                            <h4>{pathMappings.getWaferTitle(location)}</h4>
+                            {!showBalanceHistory &&
+                                <IconButton3
+                                    onClick={() => setShowBalanceHistory(true)}
+                                    aria-label='Show balance history'
+                                    aria-haspopup='true'
+                                    aria-expanded={showBalanceHistory}
+                                    aria-controls='balance-history'
+                                >
+                                    <LineGraph />
+                                </IconButton3>}
+                        </div>
+                        <h1>
+                            <DollarCents value={accounts?.reduce((acc, account) =>
+                                acc.plus(account.balances.current), Big(0)).times(100).toNumber() || 0} />
+                        </h1>
+                    </div>
+                    {isLoadingAccounts
+                        ? <SkeletonLargeScreenWafers />
+                        : <HorizontalWafers />}
+                    {showBalanceHistory && <CloseButton onClick={() => setShowBalanceHistory(false)} />}
+                    {showBalanceHistory && <BalanceHistory color={'--m-text'} />}
+                </div>
+                :
                 <>
                     <SelectedAccount onClick={() => setShowAllAccounts(true)} />
                     <VerticalAccountList

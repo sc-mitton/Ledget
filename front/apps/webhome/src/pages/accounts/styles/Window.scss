@@ -16,42 +16,12 @@
 
     h2 {
         padding-bottom: .25em;
+        font-size: 1.5rem;
     }
 
     .window,
     .window-no-background {
         position: relative;
-    }
-
-
-    &--summary {
-        display: flex;
-        flex-direction: column;
-
-        &.small,
-        &.extra-small {
-            margin-top: 1em;
-            margin-bottom: -1em;
-            background-color: var(--blue-medium);
-            border-radius: var(--border-radius25);
-            padding: 1em;
-
-            * {
-                color: var(--white);
-            }
-        }
-
-        span {
-            font-weight: 400;
-        }
-
-        h1 {
-            font-size: 2rem;
-        }
-
-        h1 * {
-            font-weight: 500;
-        }
     }
 
     #accounts-filter {
