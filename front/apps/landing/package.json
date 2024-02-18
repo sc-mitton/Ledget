@@ -16,6 +16,7 @@
     "@headlessui/react": "^1.7.14",
     "@ledget/media": "workspace:^",
     "@ledget/ui": "workspace:^",
+    "@types/gsap": "^3.0.0",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "astro": "^4.3.5",
