@@ -21,7 +21,7 @@ const Faqs = () => {
 
     return (
         <div id='faqs' className='section'>
-            <h1>FAQs</h1>
+            <h1>FAQ</h1>
             <div>
                 {faqs.map((faq, index) => (
                     <Disclosure className='faq' key={index} as="div">

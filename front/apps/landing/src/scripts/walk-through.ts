@@ -48,7 +48,7 @@ function animate() {
 
     for (let i = 0; i < numberOfEmojis; i++) {
         tl.to(`#emoji-${i}`, {
-            scale: 1,
+            scale: window.innerWidth < 768 ? .75 : 1,
             opacity: 0,
             motionPath: { path: Math.random() > .5 ? motionPath1 : motionPath2, align: 'self' },
             duration: 10,
