@@ -192,6 +192,7 @@
     background-color: var(--blue-medium);
     color: var(--white);
     transition: all .3s ease;
+    border: 1px solid var(--blue-light);
 
     &:hover {
         background-color: var(--blue-medium-hover);

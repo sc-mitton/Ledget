@@ -78,7 +78,6 @@ const BillsColumn = ({ period }: { period: 'month' | 'year' }) => {
                                 emoji={item?.emoji}
                                 color={item?.period === 'month' ? 'blue' : 'green'}
                                 slim={true}
-                                tint={true}
                                 hoverable={false}
                             />
                         </div>

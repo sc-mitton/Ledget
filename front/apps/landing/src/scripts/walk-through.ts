@@ -6,7 +6,6 @@ gsap.registerPlugin(MotionPathPlugin);
 gsap.registerPlugin(ScrollTrigger);
 
 const motionPath1 = [
-    { x: 0, y: 0 },
     { x: 5, y: -60 },
     { x: 0, y: -120 },
     { x: -5, y: -180 },
@@ -14,7 +13,6 @@ const motionPath1 = [
 ]
 
 const motionPath2 = [
-    { x: 0, y: 0 },
     { x: -5, y: -60 },
     { x: 0, y: -120 },
     { x: 5, y: -180 },

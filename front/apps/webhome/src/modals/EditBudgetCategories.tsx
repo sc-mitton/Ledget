@@ -154,7 +154,6 @@ const Categories = ({ period, setDeletedItems }: {
                                 color={item?.period === 'month' ? 'blue' : 'green'}
                                 slim={true}
                                 hoverable={false}
-                                tint={true}
                             />
                         </div>
                         <div>

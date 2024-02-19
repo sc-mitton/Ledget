@@ -335,7 +335,7 @@ const SelectedAccount = ({ onClick }: { onClick: () => void }) => {
                     </div>
                 </div>
             </div>
-            <ChevronRight size={'1.75em'} />
+            <ChevronRight size={'1.5em'} />
         </ShimmerTextDiv>
     )
 }

@@ -16,8 +16,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: var(--window-background-color);
-
 }
 
 header {
@@ -61,14 +59,7 @@ main {
     z-index: -1;
     overflow-y: auto;
     scrollbar-width: none;
-
-    &.dark {
-        background-color: var(--window-background-color);
-    }
-
-    &.light {
-        background-color: var(--inner-window);
-    }
+    background-color: var(--window-background-color);
 }
 
 div,

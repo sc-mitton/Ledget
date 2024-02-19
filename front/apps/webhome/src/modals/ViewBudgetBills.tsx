@@ -6,7 +6,7 @@ import { AnimatePresence } from 'framer-motion'
 import { ArrowUp, ArrowDown } from '@geist-ui/icons'
 
 import './styles/EditBudgetItems.scss'
-import { useGetBillsQuery } from '@features/billSlice'
+import { TransformedBill, useGetBillsQuery } from '@features/billSlice'
 import { BillModalContent } from '@modals/index'
 import {
   withModal,
@@ -36,7 +36,7 @@ const getScheduleDescription = (day?: number, week?: number, weekDay?: number, m
 
 const Bills = ({ period, onBillClick, billOrder }: {
   period: 'month' | 'year',
-  onBillClick: (id: string) => void,
+  onBillClick: (bill: TransformedBill) => void,
   billOrder?: 'amount-desc' | 'amount-asc' | 'alpha-desc' | 'alpha-asc'
 }) => {
   const { month, year } = useAppSelector(selectBudgetMonthYear)
@@ -69,8 +69,7 @@ const Bills = ({ period, onBillClick, billOrder }: {
                     labelName={bill.name}
                     emoji={bill.emoji}
                     color={bill.period === 'month' ? 'blue' : 'green'}
-                    onClick={() => onBillClick(bill.id)}
-                    tint={true}
+                    onClick={() => onBillClick(bill)}
                   />
                 </div>
                 <div>
@@ -88,7 +87,7 @@ const Bills = ({ period, onBillClick, billOrder }: {
 }
 
 const EditBills = withModal((props) => {
-  const [inspectedBill, setInspectedBill] = useState<string | null>(null)
+  const [inspectedBill, setInspectedBill] = useState<TransformedBill>()
   const [order, setOrder] = useState<'amount-desc' | 'amount-asc' | 'alpha-desc' | 'alpha-asc'>()
 
   return (
@@ -130,9 +129,9 @@ const EditBills = withModal((props) => {
           </div>
         </SlideMotionDiv>
         :
-        <SlideMotionDiv className="inspected-bill--container" key={inspectedBill} position='last'>
-          <BackButton onClick={() => setInspectedBill(null)} />
-          <BillModalContent billId={inspectedBill} onClose={() => setInspectedBill(null)} />
+        <SlideMotionDiv className="inspected-bill--container" key={inspectedBill.id} position='last'>
+          <BackButton onClick={() => setInspectedBill(undefined)} />
+          <BillModalContent bill={inspectedBill} onClose={() => setInspectedBill(undefined)} />
         </SlideMotionDiv>}
     </AnimatePresence>
   )

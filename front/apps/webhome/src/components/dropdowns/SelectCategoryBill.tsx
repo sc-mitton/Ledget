@@ -142,7 +142,6 @@ function SelectCategoryBillBody(props: I) {
                                         emoji={billcat.emoji}
                                         checked={selected}
                                         active={active}
-                                        tint={true}
                                     />
                                 )}
                             </Combobox.Option>
@@ -233,7 +232,6 @@ export const FullSelectCategoryBill =
                                                 slim={true}
                                                 color={v.period === 'month' ? 'blue' : 'green'}
                                                 labelName={v.name}
-                                                tint={true}
                                                 hoverable={false}
                                             />
                                         ))}
@@ -243,7 +241,6 @@ export const FullSelectCategoryBill =
                                         color={value.period === 'month' ? 'blue' : 'green'}
                                         labelName={value.name}
                                         emoji={value.emoji}
-                                        tint={true}
                                         hoverable={false}
                                     />
                                 }

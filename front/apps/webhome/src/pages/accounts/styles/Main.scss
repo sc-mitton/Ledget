@@ -56,22 +56,27 @@ $wafer-container-padding: .75rem;
     align-items: center;
     justify-content: space-between;
     margin-bottom: -1em;
-    margin: .25em 0 1em 0;
-    padding-left: .25em;
+    margin-bottom: .5em;
+    padding: .75em .25em .75em .25em;
     cursor: pointer;
+    border-radius: var(--border-radius25);
 
     &>div {
         display: flex;
         align-items: center;
         gap: 1.25em;
 
+        &>div>span {
+            font-weight: var(--fw-bold);
+        }
+
         div {
-            font-size: 1.25rem;
+            font-size: 1.125rem;
         }
     }
 
     svg {
-        opacity: .4;
+        opacity: .5;
     }
 
     &:hover svg {
@@ -93,7 +98,7 @@ $wafer-container-padding: .75rem;
     background-color: var(--window-background-color);
     position: absolute;
     z-index: 200;
-    border-radius: var(--border-radius3);
+    border-radius: var(--border-radius25);
 
     &>div {
         position: absolute;
@@ -282,7 +287,8 @@ $wafer-container-padding: .75rem;
 }
 
 .account-wafer {
-    background-color: var(--wafer-background);
+    // background-color: var(--wafer-background);
+    background: linear-gradient(-45deg, color-mix(in srgb, var(--wafer-background), white 6%) 0%, var(--wafer-background) 50%, var(--wafer-background)100%);
     box-shadow: var(--wafer-drop-shadow);
     display: flex;
     flex-direction: column;

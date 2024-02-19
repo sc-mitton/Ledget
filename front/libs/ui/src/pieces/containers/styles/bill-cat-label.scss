@@ -99,16 +99,6 @@
             color: var(--monthly-color);
         }
 
-        &.tint {
-            background-color: var(--monthly-background-color);
-
-            &.hoverable:hover,
-            &.hoverable.active {
-                background-color: var(--monthly-hover-background-color);
-                transition: background-color 0.2s ease-in-out;
-            }
-        }
-
         &.hoverable:hover {
             background-color: var(--monthly-hover-background-color);
             transition: background-color 0.2s ease-in-out;
@@ -122,16 +112,6 @@
 
         * {
             color: var(--yearly-color);
-        }
-
-        &.tint {
-            background-color: var(--yearly-background-color-darker);
-
-            &.hoverable:hover,
-            &.hoverable.active {
-                background-color: var(--yearly-hover-background-color);
-                transition: background-color 0.2s ease-in-out;
-            }
         }
 
         &.hoverable:hover {

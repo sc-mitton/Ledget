@@ -1,19 +1,25 @@
 #small-screen-accounts-summary {
-    margin: 1em 0 .5em;
+    margin: 1em 0 .5em 0;
     background-color: var(--blue-medium);
     border-radius: var(--border-radius3);
-    padding: 1em;
+    padding: .625em 1.25em;
     position: relative;
     display: flex;
     gap: 2em;
 
     #show-balance-history-button {
         position: absolute;
-        top: 1em;
-        right: 1em;
+        top: .75em;
+        right: .75em;
         background-color: var(--blue-sat);
         border-radius: var(--border-radius4);
-        padding: .375em;
+        padding: .25em;
+        transition: all .25s ease;
+
+        &:hover {
+            background-color: var(--blue-sat-hover);
+            transition: all .25s ease;
+        }
     }
 
     &>button {
@@ -21,6 +27,7 @@
         top: 1em;
         right: 1em;
         z-index: 10;
+        color: var(--white)
     }
 
     &>div:first-child {
@@ -39,6 +46,7 @@
 
     span {
         font-weight: 400;
+        color: var(--white);
     }
 
     h1 {
@@ -49,4 +57,10 @@
         font-weight: 500;
     }
 
+    h1,
+    h2,
+    h3,
+    h4 {
+        color: var(--white)
+    }
 }

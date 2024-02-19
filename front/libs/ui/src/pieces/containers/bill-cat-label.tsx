@@ -16,7 +16,6 @@ type BillCatProps<C extends ElementType> = {
   color?: 'blue' | 'green' | 'green-split' | 'blue-split' | 'green-blue-split'
   hoverable?: boolean
   slim?: boolean
-  tint?: boolean
   checked?: boolean
   active?: boolean
 } & ComponentPropsWithoutRef<C>
@@ -26,7 +25,6 @@ type BillCateEmojiProps<C extends ElementType> = {
   color?: 'blue' | 'green' | 'green-split' | 'blue-split' | 'green-blue-split'
   hoverable?: boolean
   slim?: boolean
-  tint?: boolean
   checked?: boolean
   active?: boolean
 } & ComponentPropsWithoutRef<C>
@@ -38,7 +36,6 @@ export const BillCatLabel = <C extends ElementType = 'div'>(props: PolymorphicCo
     as,
     labelName,
     emoji,
-    tint = false,
     active = false,
     checked = false,
     color = 'blue',
@@ -55,7 +52,6 @@ export const BillCatLabel = <C extends ElementType = 'div'>(props: PolymorphicCo
       className={`bill-cat-label
       ${color}
       ${hoverable ? 'hoverable' : ''}
-      ${tint ? 'tint' : ''}
       ${active ? 'active' : ''}
       ${slim ? 'slim' : ''}`
       }
@@ -77,7 +73,6 @@ export const BillCatEmojiLabel = <C extends ElementType = 'div'>(props: Polymorp
   const {
     as,
     emoji,
-    tint = false,
     active = false,
     checked = false,
     color = 'blue',
@@ -93,7 +88,7 @@ export const BillCatEmojiLabel = <C extends ElementType = 'div'>(props: Polymorp
   return (
     <Component
       {...rest}
-      className={`bill-cat-label-emoji ${color} ${hoverable ? 'hoverable' : ''} ${tint ? 'tint' : ''} ${active ? 'active' : ''} ${!emoji ? 'empty' : ''}`}
+      className={`bill-cat-label-emoji ${color} ${hoverable ? 'hoverable' : ''} ${active ? 'active' : ''} ${!emoji ? 'empty' : ''}`}
     >
       <div>
         {emoji && <span>{emoji || ''}</span>}

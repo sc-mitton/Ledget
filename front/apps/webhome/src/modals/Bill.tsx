@@ -412,8 +412,6 @@ export const BillModalContent = (props: ModalContentProps) => {
     const loaded = useLoaded(100)
     const [action, setAction] = useState<Action>('none')
     const { month, year } = useAppSelector(selectBudgetMonthYear)
-    const { data: bills } = useGetBillsQuery({ month, year }, { skip: !month || !year })
-    const location = useLocation()
 
     return (
         <div id="bill-modal--content">

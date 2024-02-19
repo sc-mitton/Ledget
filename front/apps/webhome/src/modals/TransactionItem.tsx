@@ -460,7 +460,6 @@ function CategoriesBillInnerWindow({ item, }: { item: Transaction }) {
                             emoji={cat.emoji}
                             slim={true}
                             hoverable={itemIsSplit}
-                            tint={true}
                         />
                     </div>
                 ))

@@ -96,7 +96,7 @@
         --window-background-color-portal: hsl(0, 0%, 2%);
         --window: hsl(0, 0%, 7%);
         --window2: var(--inner-window);
-        --window-no-background: var(--window-background-color);
+        --window-no-background: transparent;
         --window-rgb: 28, 28, 28;
         --side-window: hsl(0, 0%, 6%);
 
@@ -127,7 +127,7 @@
 
         // Text
         --m-header-text: hsl(0, 0%, 100%);
-        --m-text: hsl(0, 0%, 90%);
+        --m-text: hsl(0, 0%, 100%);
         --m-invert-text: hsl(0, 0%, 10%);
         --m-text-secondary: color-mix(in srgb, var(--m-text), black 20%);
         --m-text-tirtiary: color-mix(in srgb, var(--m-text), black 40%);
@@ -143,6 +143,7 @@
         --fw-light: 300;
         --fw-regular: 300;
         --fw-bold: 400;
+        --fw-extra-bold: 500;
         --letter-spacing: .45px;
 
         // Icons & Buttons
@@ -261,12 +262,12 @@
         --green-dark: hsl(var(--green-h), 30%, 22%);
 
         // Windows
-        --window-background-color: hsl(240, 7%, 97%);
+        --window-background-color: hsl(240, 7%, 98%);
         --window-background-color-portal: hsl(0, 0%, 95%);
 
         --window: hsl(var(--window-h), var(--window-s), 100%);
         --window2: hsl(var(--steel-blue-h), 10%, 92%);
-        --window-no-background: var(--window-background-color);
+        --window-no-background: transparent;
         --window-drop-shadow-color: hsl(0, 0%, 93%);
         --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 4px 0px;
         --window-drop-shadow2-color: hsl(0, 0%, 85%);
@@ -274,11 +275,11 @@
         --window-rgb: 244, 244, 246;
         --side-window: var(--window);
         --inner-window: hsl(var(--steel-blue-h), 9%, 94%);
-        --inner-window-small-screen: hsl(var(--steel-blue-h), 9%, 90%);
+        --inner-window-small-screen: hsl(var(--steel-blue-h), 9%, 94%);
         --modal-inner-window: hsl(0, 0%, 94%);
         --overlay: hsl(0, 0%, 20%);
 
-        --wafer-background: hsl(0, 0%, 20%);
+        --wafer-background: hsl(0, 0%, 10%);
         --dropdown-background-rgb: 250, 250, 250;
         --dropdown-background: hsl(0, 0%, 98%);
         --dropdown-item-background: hsl(0, 0%, 93%);
@@ -322,6 +323,7 @@
         --fw-light: 400;
         --fw-regular: 400;
         --fw-bold: 500;
+        --fw-extra-bold: 600;
         --letter-spacing: .2px;
 
         // Icons & Buttons
