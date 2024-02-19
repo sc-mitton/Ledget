@@ -39,7 +39,9 @@
         }
 
         &[aria-expanded='true'] {
-            color: var(--blue-sat);
+            span {
+                color: var(--blue-sat);
+            }
 
             svg {
                 transform: rotate(180deg);
