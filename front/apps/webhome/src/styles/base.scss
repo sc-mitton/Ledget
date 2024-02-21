@@ -52,7 +52,7 @@ main {
     margin: 0;
     background: linear-gradient(to top left,
             color-mix(in srgb, var(--window-background-color),
-                var(--m-text) 3%) 0%, var(--window-background-color) 100%);
+                var(--m-text) 4%) 0%, var(--window-background-color) 100%);
     // background-color: var(--window-background-color);
     display: flex;
     flex-direction: column;

@@ -86,5 +86,6 @@ $mobile-unfocused-max-width: clamp(12em, 15vw, 16em);
         z-index: 10;
         opacity: 0;
         border: 8px solid var(--m-text-senary);
+        box-shadow: 0 0 0 0.25em var(--blue-sat);
     }
 }
