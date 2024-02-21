@@ -1,6 +1,7 @@
 #small-screen-accounts-summary {
     margin: 1em 0 .5em 0;
-    background-color: var(--blue-medium);
+    // background-color: var(--blue-medium);
+    background: linear-gradient(to bottom right, var(--blue-medium), color-mix(in srgb, var(--blue-medium), var(--window-background-color) 30%));
     border-radius: var(--border-radius3);
     padding: .625em 1.25em;
     position: relative;
@@ -11,13 +12,14 @@
         position: absolute;
         top: .75em;
         right: .75em;
-        background-color: var(--blue-sat);
+        background-color: var(--blue-light);
         border-radius: var(--border-radius4);
         padding: .25em;
         transition: all .25s ease;
+        color: var(--m-text);
 
         &:hover {
-            background-color: var(--blue-sat-hover);
+            background-color: var(--blue-light-hover);
             transition: all .25s ease;
         }
     }
@@ -46,7 +48,6 @@
 
     span {
         font-weight: 400;
-        color: var(--white);
     }
 
     h1 {
