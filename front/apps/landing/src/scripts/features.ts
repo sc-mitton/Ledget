@@ -7,7 +7,7 @@ gsap.registerPlugin(ScrollTrigger);
 function animate() {
     const features = document.querySelectorAll('.feature');
 
-    gsap.fromTo(features, { scale: .85, opacity: 0, y: -20 }, {
+    gsap.fromTo(features, { scale: .95, opacity: 0, y: 50 }, {
         scrollTrigger: {
             trigger: '#features',
             start: "top 70%",
@@ -15,9 +15,9 @@ function animate() {
         },
         opacity: 1,
         scale: 1,
-        ease: CustomEase.create("custom", "M0,0 C0.126,0.382 0.253,0.931 0.44,1.043 0.648,1.168 0.745,1 1,1 "),
-        duration: .4,
-        stagger: .3,
+        ease: 'power1.inOut',
+        duration: .6,
+        stagger: .2,
         y: 0,
     })
 

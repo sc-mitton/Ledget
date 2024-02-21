@@ -11,6 +11,15 @@ import ArrowLink from './links/arrow-link.astro';
 <div class="banner">
   <script>
     import '/src/scripts/banner.js';
+    // Check for the color scheme div element whether it has dark-mode class
+    const darkMode = document
+      .querySelector('.body')
+      ?.classList.contains('dark');
+    if (darkMode) {
+      document.querySelector('.banner--products')?.classList.add('dark');
+    } else {
+      document.querySelector('.banner--products')?.classList.add('light');
+    }
   </script>
   <div>
     <h1>Simplify Your <br /> Finances</h1>
@@ -31,15 +40,4 @@ import ArrowLink from './links/arrow-link.astro';
     <Phone />
     <Web />
   </div>
-  <script>
-    // Check for the color scheme div element whether it has dark-mode class
-    const darkMode = document
-      .querySelector('.body')
-      ?.classList.contains('dark');
-    if (darkMode) {
-      document.querySelector('.banner--products')?.classList.add('dark');
-    } else {
-      document.querySelector('.banner--products')?.classList.add('light');
-    }
-  </script>
 </div>
