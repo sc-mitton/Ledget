@@ -2,6 +2,7 @@
 import '../styles/last-cta.scss';
 import { Image } from 'astro:assets';
 import Email from '../../public/email5.svg';
+import { Check } from '@geist-ui/icons';
 ---
 
 <div id="last-cta" class="section">
@@ -10,20 +11,7 @@ import Email from '../../public/email5.svg';
     <div class="email-input">
       <input type="email" id="email" placeholder="Email" />
       <button id="submit">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="icon"
-        >
-          <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>
+        <Check size="1.25em" stroke="currentColor" />
       </button>
     </div>
   </div>
