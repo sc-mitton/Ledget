@@ -42,26 +42,28 @@
             background-color: var(--inner-window);
 
             &:focus+button {
-                background-color: var(--blue-light);
+                background-color: var(--blue-medium);
+                color: var(--m-text);
 
                 &:hover {
-                    background-color: var(--blue-light-hover);
+                    background-color: var(--blue-medium-hover);
                 }
             }
         }
 
         button {
-            border-radius: .5em;
-            width: 1.75em;
-            height: 1.75em;
+            border-top-right-radius: .5em;
+            border-bottom-right-radius: .5em;
+            height: 100%;
+            padding: 0 1em;
             display: flex;
             align-items: center;
             justify-content: center;
             position: absolute;
             top: 50%;
-            right: .5em;
+            right: 0em;
             transform: translateY(-50%);
-            color: white;
+            color: transparent;
             z-index: 10;
         }
     }
