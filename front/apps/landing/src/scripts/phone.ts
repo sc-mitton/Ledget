@@ -102,6 +102,16 @@ function animatePhone() {
         yoyo: true,
         repeat: 1
     });
+    gsap.to('.phone__glare>span', {
+        opacity: 1,
+        transform: 'translate(50%, 50%)',
+        scrollTrigger: {
+            trigger: '.phone',
+            start: 'top 30%',
+            toggleActions: 'restart none none none',
+        },
+        duration: 1.5,
+    })
 }
 
 function main() {

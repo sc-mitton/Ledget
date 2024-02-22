@@ -4,10 +4,28 @@ import CustomEase from 'gsap/CustomEase';
 
 gsap.registerPlugin(ScrollTrigger);
 
-function animate() {
+function animateSmall() {
     const features = document.querySelectorAll('.feature');
+    gsap.killTweensOf(features);
+    gsap.set(features, { opacity: 0, y: 50 });
+    for (let feature of features) {
+        gsap.to(feature, {
+            scrollTrigger: {
+                trigger: feature,
+                start: "top 80%",
+                end: "top 80%",
+            },
+            scale: 1,
+            opacity: 1,
+            y: 0,
+        })
+    }
+}
 
-    gsap.fromTo(features, { scale: .95, opacity: 0, y: 50 }, {
+function animateLarge() {
+    const features = document.querySelectorAll('.feature');
+    gsap.killTweensOf(features);
+    gsap.to(features, {
         scrollTrigger: {
             trigger: '#features',
             start: "top 70%",
@@ -20,7 +38,20 @@ function animate() {
         stagger: .2,
         y: 0,
     })
+}
 
+function animate() {
+    // If large screen
+    const resizeObserver = new ResizeObserver(entries => {
+        for (let entry of entries) {
+            if (entry.contentRect.width < 768) {
+                animateSmall();
+            } else {
+                animateLarge();
+            }
+        }
+    });
+    resizeObserver.observe(document.body);
 }
 
 animate();

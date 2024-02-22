@@ -1,7 +1,8 @@
 #product-walk-through {
     display: flex;
     gap: 4em;
-    background-color: var(--inner-window);
+    background-color: var(--window);
+    box-shadow: var(--window-drop-shadow);
     border-radius: 1em;
 }
 

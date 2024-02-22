@@ -1,6 +1,8 @@
 #last-cta {
-    background-color: var(--inner-window);
+    background-color: var(--window);
+    box-shadow: var(--window-drop-shadow);
     border-radius: 1em;
+    margin-bottom: -1em;
     display: flex;
     gap: 4rem;
 
@@ -37,7 +39,7 @@
         input {
             box-sizing: border-box;
             width: 100%;
-            background-color: var(--window);
+            background-color: var(--inner-window);
 
             &:focus+button {
                 background-color: var(--blue-light);

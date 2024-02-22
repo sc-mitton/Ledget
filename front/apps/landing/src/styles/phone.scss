@@ -67,11 +67,45 @@ $mobile-unfocused-max-width: clamp(12em, 15vw, 16em);
     }
 
     &__frame {
-        z-index: 0;
+        z-index: 4;
         position: relative;
 
         &.dark {
             filter: brightness(0.5);
+        }
+    }
+
+    &__glare {
+        position: absolute;
+        inset: 0 + 1em;
+        z-index: 3;
+        border-radius: 4.5em;
+        overflow: hidden;
+
+        span {
+            content: '';
+            position: absolute;
+            inset: -100%;
+            opacity: 0;
+            transform: translate(-50%, -50%);
+        }
+
+        &.dark span {
+            background: linear-gradient(-68deg,
+                    rgba(50, 50, 50, 0) 40%,
+                    rgb(50, 50, 50, .3) 45%,
+                    rgb(50, 50, 50, .2) 50%,
+                    rgb(50, 50, 50, .5) 55%,
+                    rgb(50, 50, 50, 0) 65%);
+        }
+
+        &.light span {
+            background: linear-gradient(-68deg,
+                    rgba(255, 255, 255, 0) 40%,
+                    rgb(255, 255, 255, 1) 45%,
+                    rgb(255, 255, 255, .5) 50%,
+                    rgb(255, 255, 255, 1) 55%,
+                    rgb(255, 255, 255, 0) 65%);
         }
     }
 

@@ -260,8 +260,8 @@ const Bills = ({ collapsed }: { collapsed: boolean }) => {
                                 </span>
                             </BillCatLabel>
                             <div><DollarCents value={bill.upper_amount} /></div>
-                            <div className={`${bill.is_paid || i < 4 ? 'is_paid' : 'not_paid'} ${bill.period}`}>
-                                {bill.is_paid || i < 4
+                            <div className={`${bill.is_paid ? 'is_paid' : 'not_paid'} ${bill.period}`}>
+                                {bill.is_paid
                                     ? <CheckCircle size={'1em'} />
                                     : <Circle size={'1em'} />}
                             </div>

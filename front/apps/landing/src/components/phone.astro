@@ -32,10 +32,13 @@ import IphoneFrame from '../../public/phone/iphone-frame.svg';
         el.classList.add('visible');
       });
       document.querySelector('.phone__frame')?.classList.add('dark');
+      document.querySelector('.phone__glare')?.classList.add('dark');
     } else {
       document.querySelectorAll('img.light').forEach((el) => {
         el.classList.add('visible');
       });
+      document.querySelector('.phone__frame')?.classList.add('light');
+      document.querySelector('.phone__glare')?.classList.add('light');
     }
   </script>
   <div class="phone">
@@ -98,8 +101,8 @@ import IphoneFrame from '../../public/phone/iphone-frame.svg';
       class="phone__screen light"
       id="phone_screen2"
     />
-
     <Image src={IphoneFrame} alt="Iphone Frame" class="phone__frame" />
+    <span class="phone__glare"><span></span></span>
     <span class="phone__touch"></span>
   </div>
 </div>

@@ -92,6 +92,7 @@
         --overlay: hsl(0, 0%, 10%);
 
         --window-background-color: hsl(0, 0%, 2%);
+        --window-background-color-hsl: 0, 0%, 2%;
         --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
         --window-background-color-portal: hsl(0, 0%, 2%);
         --window: hsl(0, 0%, 7%);
@@ -171,7 +172,7 @@
         --transaction-hover-background-dim: hsl(0, 0%, 7%);
 
         // Drop Shadows & Borders
-        --window-drop-shadow-color: hsl(0, 0%, 4%);
+        --window-drop-shadow-color: hsl(0, 0%, 20%);
         --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
 
         --header-box-shadow-color: hsl(0, 0%, 11%);
@@ -263,6 +264,7 @@
 
         // Windows
         --window-background-color: hsl(240, 7%, 98%);
+        --window-background-color-hsl: 240, 7%, 98%;
         --window-background-color-portal: hsl(0, 0%, 95%);
 
         --window: hsl(var(--window-h), var(--window-s), 100%);
@@ -300,7 +302,7 @@
         --input-background: hsl(var(--window-h), var(--window-s), 92%);
         --input-border-hover-color: hsl(0, 0%, 78%);
         --input-focus-dropshadow-color: var(--blue-light);
-        --input-placeholder-focus: var(--blue-light-medium);
+        --input-placeholder-focus: var(--blue-medium);
 
         // Shimmer
         --shimmer-text-background: hsl(0, 0%, 90%);

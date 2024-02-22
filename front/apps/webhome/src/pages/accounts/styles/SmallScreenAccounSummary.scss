@@ -36,6 +36,14 @@
         display: flex;
         flex-direction: column;
         margin: .75em 0 .25em 0;
+
+        span,
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: var(--white);
+        }
     }
 
     &>div:last-child {
@@ -56,12 +64,5 @@
 
     h1 * {
         font-weight: 500;
-    }
-
-    h1,
-    h2,
-    h3,
-    h4 {
-        color: var(--white)
     }
 }

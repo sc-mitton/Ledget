@@ -1,25 +1,38 @@
 @import './mixins.scss';
 
 .header {
-    width: calc(100% - 1rem);
+    @include width-standard;
     display: flex;
     justify-content: space-between;
     height: 3em;
-    margin: 0 auto;
+    margin: 0 1em;
     padding: .5em 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
+    &--blur {
+        backdrop-filter: blur(10px);
+        background-color: hsl(var(--window-background-color-hsl), .7);
+        --webkit-backdrop-filter: blur(100px);
+        inset: 0;
+        position: absolute;
+        z-index: 4;
+    }
+
     &>div:first-child {
         display: flex;
         justify-content: left;
+        position: relative;
+        z-index: 5;
     }
 
     &>div:last-child {
         display: flex;
         justify-content: right;
         align-items: center;
+        position: relative;
+        z-index: 5;
     }
 
     nav {
