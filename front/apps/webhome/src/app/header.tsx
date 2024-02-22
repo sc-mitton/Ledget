@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import { User, HelpCircle, LogOut, Sun, Moon } from '@geist-ui/icons'
 import { DropdownItem, DropDownDiv, useScreenContext, useColorScheme } from '@ledget/ui'
 import { Logout, Help } from '@modals/index'
-import { NotificationsDropdownMenu } from '@pages/notifications'
+import { NotificationsDropdownMenu } from '@pages/activity'
 
 type Modal = "help" | "logout"
 
