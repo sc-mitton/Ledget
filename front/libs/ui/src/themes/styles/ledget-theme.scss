@@ -97,7 +97,7 @@
         --window-background-color-portal: hsl(0, 0%, 2%);
         --window: hsl(0, 0%, 7%);
         --window2: var(--inner-window);
-        --window-no-background: transparent;
+        --window-no-background: var(--window-background-color);
         --window-rgb: 28, 28, 28;
         --side-window: hsl(0, 0%, 6%);
 
@@ -269,7 +269,7 @@
 
         --window: hsl(var(--window-h), var(--window-s), 100%);
         --window2: hsl(var(--steel-blue-h), 10%, 92%);
-        --window-no-background: transparent;
+        --window-no-background: var(--window-background-color);
         --window-drop-shadow-color: hsl(0, 0%, 93%);
         --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 4px 0px;
         --window-drop-shadow2-color: hsl(0, 0%, 85%);

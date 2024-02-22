@@ -3,8 +3,7 @@ import React, { useState } from 'react'
 import { Menu } from '@headlessui/react'
 
 import './styles/header.scss'
-import { LedgetLogoIcon } from '@ledget/media'
-import { useNavigate } from 'react-router-dom'
+import { LedgetLogoIcon2 } from '@ledget/media'
 import { User, HelpCircle, LogOut, Sun, Moon } from '@geist-ui/icons'
 import { DropdownItem, DropDownDiv, useScreenContext, useColorScheme } from '@ledget/ui'
 import { Logout, Help } from '@modals/index'
@@ -88,7 +87,7 @@ function Header() {
             <header className={`${screenSize} ${isDark ? 'dark-mode' : ''}`}>
                 <div>
                     <div>
-                        <LedgetLogoIcon />
+                        <LedgetLogoIcon2 />
                     </div>
                     <div>
                         {isDark

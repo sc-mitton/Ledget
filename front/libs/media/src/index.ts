@@ -26,7 +26,7 @@ export { default as ComputerIcon } from './icons/Computer';
 export { default as CornerGrip } from './icons/CornerGrip';
 export { default as LedgetLogo } from './brand/Logo'
 export { default as LedgetLogoIcon } from './brand/LogoIcon'
-export { default as LogoIcon2 } from './brand/LogoIcon2'
+export { default as LedgetLogoIcon2 } from './brand/LogoIcon2'
 export { default as Hamburger } from './icons/Hamburger';
 export { default as HalfArrow } from './icons/HalfArrow';
 export { default as Hourglass } from './icons/Hourglass';

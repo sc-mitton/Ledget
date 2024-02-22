@@ -23,7 +23,7 @@ import {
     baseBillingSchema,
     DollarCents
 } from '@ledget/ui'
-import { LogoIcon2, StripeLogo } from '@ledget/media'
+import { LedgetLogoIcon, StripeLogo } from '@ledget/media'
 
 
 const schema = baseBillingSchema.extend({
@@ -41,7 +41,7 @@ const PriceRadios = ({ register }: { register: UseFormRegister<z.infer<typeof sc
             {prices &&
                 <div id="prices-container">
                     <div id="prices-container-header">
-                        <LogoIcon2 />
+                        <LedgetLogoIcon />
                     </div>
                     <div id="subscription-radios--container">
                         {prices.map((p, i) =>

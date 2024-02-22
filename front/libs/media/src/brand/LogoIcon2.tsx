@@ -1,17 +1,23 @@
-const LogoIcon2 = () => {
+const LogoIcon2 = ({ size = '1.5em' }) => {
     return (
-        <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 600 600">
+        <svg
+            id="Layer_1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+            viewBox="0 0 600 600"
+            width={size}
+            height={size}
+        >
             <defs>
-                <linearGradient id="linear-gradient" x1="180.21" y1="442.81" x2="464.84" y2="442.81" gradientUnits="userSpaceOnUse">
-                    <stop offset="0" stopColor="#bdc2db" />
-                    <stop offset="1" stopColor="#fff" />
+                <linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="133.5052" y1="509.5738" x2="539.8115" y2="509.5738">
+                    <stop offset="0" stopColor="#BDC2DB" />
+                    <stop offset="1" stopColor="#FFFFFF" />
                 </linearGradient>
             </defs>
-            <path fill="#b0b5de" d="m514.85,581.84H85.79c-36.66,0-66.53-29.87-66.53-66.53V86.24c0-36.66,29.87-66.53,66.53-66.53h429.06c36.66,0,66.53,29.87,66.53,66.53v429.06c0,36.66-29.87,66.53-66.53,66.53Z" />
-            <g>
-                <path fill="url(#linear-gradient)" d="m464.84,411.62v39.93c0,24.9-20.18,45.08-45.08,45.08h-239.55c24.9,0,45.08-20.19,45.08-45.08v-39.93c0-12.51,10.14-22.65,22.65-22.65h194.26c12.51,0,22.65,10.14,22.65,22.65Z" />
-                <path fill="#fff" d="m270.61,105.02c12.51,0,22.65,10.14,22.65,22.65v323.9c0,24.9,20.19,45.08,45.08,45.08h-158.13c-24.9,0-45.08-20.18-45.08-45.08V127.66c0-12.51,10.14-22.65,22.65-22.65h112.84Z" />
-            </g>
+            <path fill="url(#SVGID_1_)" d="M539.8,463.7v58.7c0,36.6-29.7,66.3-66.3,66.3H352.8H133.5c36.6,0,66.3-29.7,66.3-66.3v-58.7
+                c0-18.4,14.9-33.3,33.3-33.3h273.4C524.9,430.4,539.8,445.3,539.8,463.7z"/>
+            <path fill='#FFFFFF' d="M254.2,12.9c18.4,0,33.3,14.9,33.3,33.3v476.2c0,36.6,29.7,66.3,66.3,66.3H133.5c-36.6,0-66.3-29.7-66.3-66.3
+                V46.2c0-18.4,14.9-33.3,33.3-33.3H254.2z"/>
         </svg>
     )
 }
