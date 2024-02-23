@@ -1,10 +1,11 @@
+@import './mixins.scss';
+
 #last-cta {
-    background-color: var(--window);
-    box-shadow: var(--window-drop-shadow);
     border-radius: 1em;
     margin-bottom: -1em;
     display: flex;
     gap: 4rem;
+    @include window;
 
     @media (max-width: 768px) {
         flex-direction: column;
@@ -43,7 +44,7 @@
 
             &:focus+button {
                 background-color: var(--blue-medium);
-                color: var(--m-text);
+                color: var(--white);
 
                 &:hover {
                     background-color: var(--blue-medium-hover);

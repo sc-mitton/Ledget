@@ -1,11 +1,20 @@
 .arrow-link {
-    padding: .25em .5em .25em .75em;
+    padding: .375em .5em .375em 1em;
     border-radius: 1.5em;
-    border: 1px solid var(--m-text);
     display: flex;
     align-items: center;
     cursor: pointer;
-    background-color: transparent;
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+        inset: 0;
+        content: '';
+        background-color: var(--btn-light-gray);
+        opacity: .7;
+        z-index: -1;
+        position: absolute;
+    }
 
     svg {
         path:first-child {

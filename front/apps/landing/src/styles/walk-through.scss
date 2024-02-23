@@ -1,9 +1,17 @@
+@import 'mixins.scss';
+
 #product-walk-through {
     display: flex;
-    gap: 4em;
-    background-color: var(--window);
-    box-shadow: var(--window-drop-shadow);
     border-radius: 1em;
+    @include window;
+}
+
+.body.dark {
+    #product-walk-through>div:last-child {
+        img {
+            opacity: .3;
+        }
+    }
 }
 
 // Phone image
@@ -20,7 +28,7 @@
     &>div {
         transform: scaleX(-1);
         display: flex;
-        max-width: 30em;
+        max-width: 28em;
         width: 100%;
 
         &:last-child {
@@ -46,12 +54,11 @@
     inset: 0;
     z-index: 1;
     background-size: cover;
-    mask-image: url('../../public/phoneMask24v.svg');
+    mask-image: url('../../public/phoneMask30v.svg');
     mask-size: 100% auto;
-    mask-mode: alpha;
+    mask-mode: luminance;
     mask-repeat: no-repeat;
     mask-position: bottom;
-    color: var(--white);
 }
 
 .emoji {
@@ -223,7 +230,7 @@
 
     &--bottom-bar,
     &--top-bar {
-        background-color: var(--blue-sat);
+        background-color: var(--blue);
         z-index: 1;
     }
 

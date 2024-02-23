@@ -33,11 +33,11 @@ function animate() {
         }
     })
 
-    tl.to(circles[0], { backgroundColor: 'var(--blue-sat)' })
+    tl.to(circles[0], { backgroundColor: 'var(--blue)' })
         .to('.progress--top-bar', { bottom: '50%', delay: 0 }, 'start')
-        .to(circles[1], { backgroundColor: 'var(--blue-sat)' })
+        .to(circles[1], { backgroundColor: 'var(--blue)' })
         .to('.progress--bottom-bar', { bottom: '.5em', delay: .5 }, 'middle')
-        .to(circles[2], { backgroundColor: 'var(--blue-sat)' })
+        .to(circles[2], { backgroundColor: 'var(--blue)' })
 
     tl.fromTo(text[0], { opacity: .2 }, { opacity: 1, duration: .2 }, 'start')
         .fromTo(text[1], { opacity: .2 }, { opacity: 1, duration: .2 }, 'middle')
@@ -49,7 +49,7 @@ function animate() {
             scale: window.innerWidth < 768 ? .75 : 1,
             opacity: 0,
             motionPath: { path: Math.random() > .5 ? motionPath1 : motionPath2, align: 'self' },
-            duration: 10,
+            duration: 7,
             delay: i,
             repeat: -1,
         }, 'start')

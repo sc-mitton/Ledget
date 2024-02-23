@@ -54,7 +54,7 @@ $mobile-unfocused-max-width: clamp(12em, 15vw, 16em);
         @include center;
 
         &.dark {
-            transform: translate(-50%, -50%) scale(1.01);
+            transform: translate(-50%, -50%);
         }
 
         &#phone_screen1 {
