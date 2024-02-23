@@ -8,6 +8,14 @@
     display: flex;
     gap: 2em;
 
+    span,
+    h1,
+    h2,
+    h3,
+    h4 {
+        color: var(--white);
+    }
+
     #show-balance-history-button {
         position: absolute;
         top: .75em;
@@ -36,14 +44,6 @@
         display: flex;
         flex-direction: column;
         margin: .75em 0 .25em 0;
-
-        span,
-        h1,
-        h2,
-        h3,
-        h4 {
-            color: var(--white);
-        }
     }
 
     &>div:last-child {

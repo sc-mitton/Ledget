@@ -83,7 +83,7 @@ const Gutter = () => {
     const ulRef = useRef<HTMLUListElement>(null)
 
     const location = useLocation()
-    const backgroundColor = useSchemeVar('--blue-light')
+    const backgroundColor = useSchemeVar('--btn-feather-light-gray')
     const { screenSize } = useScreenContext()
     const { isDark } = useColorScheme()
 

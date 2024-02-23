@@ -99,6 +99,9 @@
         --window2: var(--inner-window);
         --window-no-background: var(--window-background-color);
         --window-rgb: 28, 28, 28;
+
+        // Side Nav
+        --sidenav-drop-shadow: 0 0px 4px hsl(0, 0%, 20%);
         --side-window: hsl(0, 0%, 6%);
 
 
@@ -174,6 +177,7 @@
         // Drop Shadows & Borders
         --window-drop-shadow-color: hsl(0, 0%, 20%);
         --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
+        --sidenav-drop-shadow-color: hsl(0, 0%, 13%);
 
         --header-box-shadow-color: hsl(0, 0%, 11%);
         --wafer-drop-shadow-color: hsl(0, 0%, 14%);
@@ -275,8 +279,12 @@
         --window-drop-shadow2-color: hsl(0, 0%, 85%);
 
         --window-rgb: 244, 244, 246;
+
+        // Side Nav
         --side-window: var(--window);
-        --inner-window: hsl(var(--steel-blue-h), 9%, 94%);
+        --sidenav-drop-shadow: 0 10px 20px 0 hsl(0, 0%, 93%);
+
+        --inner-window: hsl(var(--steel-blue-h), 9%, 96%);
         --inner-window-small-screen: hsl(var(--steel-blue-h), 9%, 94%);
         --modal-inner-window: hsl(0, 0%, 94%);
         --overlay: hsl(0, 0%, 20%);

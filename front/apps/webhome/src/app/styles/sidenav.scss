@@ -63,8 +63,12 @@
     height: 100%;
     background-color: var(--side-window);
     padding: .75em 1em;
-    border-right: 1px solid var(--window2);
     flex: 1 0 0;
+
+    &.large,
+    &.extra-large {
+        box-shadow: var(--sidenav-drop-shadow);
+    }
 
     ul {
         position: relative;

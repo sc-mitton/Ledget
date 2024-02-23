@@ -52,7 +52,7 @@ const Nav = () => {
 
     const { screenSize } = useScreenContext()
     const { isDark } = useColorScheme()
-    const backgroundColor = useSchemeVar('--blue-light')
+    const backgroundColor = useSchemeVar('--btn-feather-light-gray')
     const navigate = useNavigate()
     const location = useLocation()
 
@@ -83,7 +83,7 @@ const Nav = () => {
     }, [ulRef.current])
 
     return (
-        <nav className='sidenav'>
+        <nav className={`sidenav ${screenSize}`}>
             <ul ref={ulRef} role='menu'>
                 <li data-current={location.pathname === '/' ? "page" : ''}>
                     <a onClick={() => { }} aria-disabled>
