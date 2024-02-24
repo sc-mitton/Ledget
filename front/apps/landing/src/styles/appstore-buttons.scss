@@ -1,17 +1,17 @@
 .app-download-button {
-    border: 1px solid var(--m-text);
-    border-radius: 1em;
+    background-color: var(--btn-feather-light-gray);
+    border-radius: .75em;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     padding: .375em .75em;
     gap: .5em;
     min-width: 11rem;
-    transition: border-color .3s;
+    transition: all .3s;
 
     &:hover {
-        border-color: var(--blue-light-medium);
-        transition: border-color .3s;
+        background-color: var(--btn-feather-light-gray-hover);
+        transition: all .3s;
     }
 
     img {

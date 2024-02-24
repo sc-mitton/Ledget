@@ -1,5 +1,12 @@
 @import './mixins.scss';
 
+.body.dark {
+    #last-cta img {
+        // filter: invert(1) hue-rotate(180deg) brightness(2);
+        filter: brightness(.5) contrast(2) saturate(1.5);
+    }
+}
+
 #last-cta {
     border-radius: 1em;
     margin-bottom: -1em;
@@ -19,6 +26,10 @@
         &>div:first-child {
             order: 1;
         }
+
+        h1 {
+            text-align: center;
+        }
     }
 
     &>div:last-child {
@@ -28,7 +39,7 @@
         img {
             width: 100%;
             height: auto;
-            max-width: 10em;
+            max-width: 7em;
             animation: hover 2s infinite;
         }
     }
@@ -40,7 +51,7 @@
         input {
             box-sizing: border-box;
             width: 100%;
-            background-color: var(--inner-window);
+            background-color: var(--input-background);
 
             &:focus+button {
                 background-color: var(--blue-medium);

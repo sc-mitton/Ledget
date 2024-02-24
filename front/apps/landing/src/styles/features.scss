@@ -1,11 +1,11 @@
 #features {
     display: grid;
-    gap: 2em;
+    gap: 2.5em;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 
     #mobile-computer-icons {
         position: absolute;
-        top: 1em;
+        top: .875em;
         display: flex;
         align-items: flex-start;
         gap: .125em;
@@ -27,7 +27,7 @@
 
 .feature {
     box-sizing: border-box;
-    border: 1.5px solid var(--border-color-ultra-dim);
+    // border: 1.5px solid var(--border-color-ultra-dim);
     padding: 1em 1em;
     border-radius: 1em;
     display: flex;
@@ -42,9 +42,9 @@
 
 
     h3 {
-        margin: 2.25em 0 .25em 0;
+        margin: 2em 0 .25em 0;
         white-space: nowrap;
-        color: var(--blue);
+        font-weight: var(--fw-bold);
     }
 
     svg {

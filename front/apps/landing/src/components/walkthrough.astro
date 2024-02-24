@@ -2,8 +2,8 @@
 import { Image } from 'astro:assets';
 import '../styles/walk-through.scss';
 import '../styles/coins.scss';
-import Phone from '../../public/phone34v.svg';
-import { DollarSign } from '@geist-ui/icons';
+import Phone from '../../public/phone-v41.svg';
+import PhoneShadow from '../../public/phone-shadow-v1.svg';
 ---
 
 <div id="product-walk-through" class="section">
@@ -21,22 +21,22 @@ import { DollarSign } from '@geist-ui/icons';
         <div class="progress--circle"></div>
         <div class="progress--circle"></div>
       </div>
-      <div class="step">
+      <div class="steps--step">
         <h2>Set Your Categories</h2>
         <span> Add custom monthly and yearly spending categories.</span>
       </div>
-      <div class="step">
+      <div class="steps--step">
         <h2>Set Your Bills</h2>
         <span> Add monthly and yearly bills to never miss a payment.</span>
       </div>
-      <div class="step">
+      <div class="steps--step">
         <h2>Then Save!</h2>
         <span> Save money you didn't spend, or invest it!</span>
       </div>
     </div>
   </div>
-  <div>
-    <div id="emojis-coins">
+  <div id="phone-container">
+    <div id="emojis">
       {
         [
           '🍔',
@@ -63,13 +63,13 @@ import { DollarSign } from '@geist-ui/icons';
             }}
           >
             <span>{em}</span>
-            <DollarSign />
           </span>
         ))
       }
     </div>
-    <div>
+    <div id="phone">
       <Image src={Phone} alt="Phone" />
+      <Image src={PhoneShadow} alt="Phone Shadow" />
     </div>
   </div>
 </div>
