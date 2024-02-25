@@ -2,8 +2,10 @@
 import { Image } from 'astro:assets';
 import '../styles/walk-through.scss';
 import '../styles/coins.scss';
-import Phone from '../../public/phone-v41.svg';
-import PhoneShadow from '../../public/phone-shadow-v1.svg';
+import Phone from '../../public/phonebubble/phone-v45.svg';
+import PhoneShadow from '../../public/phonebubble/phone-shadow-v2.svg';
+import Dollar from '../../public/phonebubble/dollar-v2.png';
+import DollarShadow from '../../public/phonebubble/dollar-shadow-v2.png';
 ---
 
 <div id="product-walk-through" class="section">
@@ -38,38 +40,37 @@ import PhoneShadow from '../../public/phone-shadow-v1.svg';
   <div id="phone-container">
     <div id="emojis">
       {
-        [
-          '🍔',
-          '🍾',
-          '🍟',
-          '🏡',
-          '💐',
-          '💅🏽',
-          '💇🏽‍♀️',
-          '💇🏻‍♂️',
-          '🐕',
-          '☕️',
-          '💄',
-          '👔',
-          '🎿',
-          '🏀',
-        ].map((em, i) => (
-          <span
-            id={`emoji-${i}`}
-            class={`emoji ${Math.random() > 0.5 ? 'green' : 'blue'} ${Math.random() > 0.5 ? 'float1' : 'float2'}`}
-            style={{
-              left: `${15 + Math.floor(Math.random() * 70) + 1}%`,
-              zIndex: i,
-            }}
-          >
-            <span>{em}</span>
-          </span>
-        ))
+        ['🍔', '🍾', '🍟', '🏡', '💐', '💅🏽', '💇🏽‍♀️', '💇🏻‍♂️', '🐕', '☕️', '💄'].map(
+          (em, i) => (
+            <span
+              id={`emoji-${i}`}
+              class={`emoji ${Math.random() > 0.5 ? 'green' : 'blue'} ${Math.random() > 0.5 ? 'float1' : 'float2'}`}
+              style={{
+                left: `${15 + Math.floor(Math.random() * 70) + 1}%`,
+                zIndex: i,
+              }}
+            >
+              <span>{em}</span>
+            </span>
+          ),
+        )
       }
     </div>
     <div id="phone">
-      <Image src={Phone} alt="Phone" />
-      <Image src={PhoneShadow} alt="Phone Shadow" />
+      <Image src={Phone} alt="Phone" id="phone--body" />
+      <Image src={PhoneShadow} alt="Phone Shadow" id="phone--shadow" />
+      <div class="dollar">
+        <Image src={Dollar} alt="Dollar" />
+        <Image src={DollarShadow} alt="Dollar Shadow" />
+      </div>
+      <div class="dollar">
+        <Image src={Dollar} alt="Dollar" />
+        <Image src={DollarShadow} alt="Dollar Shadow" />
+      </div>
+      <div class="dollar">
+        <Image src={Dollar} alt="Dollar" />
+        <Image src={DollarShadow} alt="Dollar Shadow" />
+      </div>
     </div>
   </div>
 </div>
