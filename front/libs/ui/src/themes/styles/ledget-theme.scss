@@ -92,7 +92,7 @@
         --overlay: hsl(0, 0%, 10%);
 
         --window-background-color: hsl(0, 0%, 2%);
-        --window-background-color-hsl: 0, 0%, 2%;
+        --window-background-color-rgb: 5, 5, 5;
         --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
         --window-background-color-portal: hsl(0, 0%, 2%);
         --window: hsl(0, 0%, 7%);
@@ -268,7 +268,7 @@
 
         // Windows
         --window-background-color: hsl(240, 7%, 98%);
-        --window-background-color-hsl: 240, 7%, 98%;
+        --window-background-color-rgb: 250, 250, 250;
         --window-background-color-portal: hsl(0, 0%, 95%);
 
         --window: hsl(var(--window-h), var(--window-s), 100%);

@@ -178,7 +178,6 @@
 
     &>div:not(:first-child) {
         position: absolute;
-        z-index: 1;
     }
 
     @mixin shadow-position($pos) {
@@ -206,6 +205,7 @@
         bottom: 22%;
         left: 13%;
         width: 22%;
+        z-index: 1;
 
         @include shadow-position(.5em);
     }
@@ -214,6 +214,7 @@
         bottom: 20%;
         left: 38%;
         width: 27%;
+        z-index: 2;
 
         @include shadow-position(.6em);
     }
@@ -222,6 +223,7 @@
         bottom: 54%;
         left: 55%;
         width: 20%;
+        z-index: 3;
 
         @include shadow-position(.5em);
     }
