@@ -14,34 +14,50 @@ import DollarShadow from '../../public/phonebubble/dollar-shadow-v2.png';
   </script>
   <div class="steps">
     <div class="steps--container">
-      <div class="progress">
-        <div class="progress--top-bar"></div>
-        <div class="progress--top-bar-shadow"></div>
-        <div class="progress--bottom-bar"></div>
-        <div class="progress--bottom-bar-shadow"></div>
-        <div class="progress--circle"></div>
-        <div class="progress--circle"></div>
-        <div class="progress--circle"></div>
+      <div class="steps--step">
+        <div class="steps--circle"></div>
+        <div class="steps--top-bar"></div>
+        <div class="steps--top-bar-shadow"></div>
+        <div class="steps--text">
+          <h2>Set Your Categories</h2>
+          <span> Add custom monthly and yearly spending categories.</span>
+        </div>
       </div>
       <div class="steps--step">
-        <h2>Set Your Categories</h2>
-        <span> Add custom monthly and yearly spending categories.</span>
+        <div class="steps--circle"></div>
+        <div class="steps--bottom-bar"></div>
+        <div class="steps--bottom-bar-shadow"></div>
+        <div class="steps--text">
+          <h2>Set Your Bills</h2>
+          <span> Add monthly and yearly bills to never miss a payment.</span>
+        </div>
       </div>
       <div class="steps--step">
-        <h2>Set Your Bills</h2>
-        <span> Add monthly and yearly bills to never miss a payment.</span>
-      </div>
-      <div class="steps--step">
-        <h2>Then Save!</h2>
-        <span> Save money you didn't spend, or invest it!</span>
+        <div class="steps--circle"></div>
+        <div class="steps--text">
+          <h2>Then Save!</h2>
+          <span> Save money you didn't spend, or invest it!</span>
+        </div>
       </div>
     </div>
   </div>
   <div id="phone-container">
-    <div id="emojis">
-      {
-        ['🍔', '🍾', '🍟', '🏡', '💐', '💅🏽', '💇🏽‍♀️', '💇🏻‍♂️', '🐕', '☕️', '💄'].map(
-          (em, i) => (
+    <div id="phone">
+      <div id="emojis">
+        {
+          [
+            '🍔',
+            '🍾',
+            '🍟',
+            '🏡',
+            '💐',
+            '💅🏽',
+            '💇🏽‍♀️',
+            '💇🏻‍♂️',
+            '🐕',
+            '☕️',
+            '💄',
+          ].map((em, i) => (
             <span
               id={`emoji-${i}`}
               class={`emoji ${Math.random() > 0.5 ? 'green' : 'blue'} ${Math.random() > 0.5 ? 'float1' : 'float2'}`}
@@ -52,11 +68,9 @@ import DollarShadow from '../../public/phonebubble/dollar-shadow-v2.png';
             >
               <span>{em}</span>
             </span>
-          ),
-        )
-      }
-    </div>
-    <div id="phone">
+          ))
+        }
+      </div>
       <Image src={Phone} alt="Phone" id="phone--body" />
       <Image src={PhoneShadow} alt="Phone Shadow" id="phone--shadow" />
       <div class="dollar">

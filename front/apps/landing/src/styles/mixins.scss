@@ -5,12 +5,10 @@
 
 @mixin window {
     position: relative;
-    box-shadow: var(--window-drop-shadow);
 
     &::after {
         background-color: var(--window);
         border-radius: 1em;
-        opacity: .5;
         inset: 0;
         content: '';
         position: absolute;

@@ -8,8 +8,8 @@ gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(CustomEase);
 
 function animate() {
-    var circles = gsap.utils.toArray('.progress--circle') as HTMLDivElement[];
-    var text = gsap.utils.toArray('.steps--step') as HTMLHeadingElement[];
+    var circles = gsap.utils.toArray('.steps--circle') as HTMLDivElement[];
+    var text = gsap.utils.toArray('.steps--text') as HTMLHeadingElement[];
     // Query all emoji (#emoji-number) and convert to array
     var numberOfEmojis = gsap.utils.toArray('.emoji').length;
 
@@ -23,9 +23,9 @@ function animate() {
     })
 
     tl.to(circles[0], { backgroundColor: 'var(--blue-sat)' })
-        .to('.progress--top-bar', { bottom: '50%', delay: 0 }, 'start')
+        .to('.steps--top-bar', { bottom: '-1em', delay: 0 }, 'start')
         .to(circles[1], { backgroundColor: 'var(--blue-sat)' })
-        .fromTo('.progress--bottom-bar', { bottom: '50%' }, { bottom: '.5em', delay: 0 }, 'middle')
+        .to('.steps--bottom-bar', { bottom: '-1em', delay: 0 }, 'middle')
         .to(circles[2], { backgroundColor: 'var(--blue-sat)' })
 
     tl.fromTo(text[0], { opacity: .2 }, { opacity: 1, duration: .2 }, 'start')

@@ -29,13 +29,13 @@ function animateLarge() {
         scrollTrigger: {
             trigger: '#features',
             start: "top 70%",
-            end: "top 70%",
+            end: "bottom 70%",
         },
         opacity: 1,
         scale: 1,
         ease: 'power1.inOut',
-        duration: .6,
         stagger: .2,
+        scrub: true,
         y: 0,
     })
 }
@@ -51,6 +51,18 @@ function animate() {
             }
         }
     });
+
+    gsap.to('#features', {
+        opacity: .3,
+        scrollTrigger: {
+            trigger: '#features',
+            start: "top 10%",
+            end: "center 10%",
+            toggleActions: 'restart none none none',
+            scrub: true,
+        }
+    })
+
     resizeObserver.observe(document.body);
 }
 

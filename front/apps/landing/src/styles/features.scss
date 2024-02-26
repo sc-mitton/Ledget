@@ -1,6 +1,7 @@
 #features {
     display: grid;
     gap: 2.5em;
+    margin: 3em 0;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 
     #mobile-computer-icons {
@@ -52,7 +53,7 @@
         top: 1em;
         width: 1.25em;
         height: 1.25em;
-        background: linear-gradient(45deg, var(--blue-light), var(--blue-light-hover));
+        background: linear-gradient(45deg, var(--blue-sat), var(--blue-sat-hover));
         padding: .375em;
         border-radius: .5em;
     }
