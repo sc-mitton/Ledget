@@ -36,7 +36,7 @@ function animate() {
     const stagger = .1
     for (let i = 0; i < numberOfEmojis; i++) {
         tl.to(`#emoji-${i}`, {
-            scale: window.innerWidth < 768 ? .5 : 1,
+            scale: 1,
             y: -200 + Math.random() * -40,
             duration: duration,
             delay: i * stagger,

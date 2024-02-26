@@ -14,7 +14,7 @@
         }
 
         &--shadow {
-            filter: invert(1) hue-rotate(178deg) brightness(1.5) blur(3px);
+            filter: invert(1) hue-rotate(178deg) brightness(1.5) blur(1px);
         }
     }
 
@@ -51,14 +51,20 @@
 @media (max-width: 768px) {
     #product-walk-through {
         gap: 1em;
-    }
+        align-items: center;
 
-    .emoji {
-        font-size: .875rem;
+        .steps {
+            &--container {
+                width: 70%;
+            }
+        }
 
-        &::after {
-            width: 2.25em;
-            height: 2.25em;
+        #phone {
+            width: 80%;
+        }
+
+        #phone-container {
+            justify-content: center;
         }
     }
 }

@@ -56,8 +56,8 @@ function animate() {
         opacity: .3,
         scrollTrigger: {
             trigger: '#features',
-            start: "top 10%",
-            end: "center 10%",
+            start: "bottom center",
+            end: "bottom center-=10%",
             toggleActions: 'restart none none none',
             scrub: true,
         }
