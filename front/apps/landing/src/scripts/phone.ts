@@ -7,6 +7,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 function animateScreen() {
     var tl = gsap.timeline({});
+    const screen1Elements = gsap.utils.toArray('.screen1');
+    const screen2Elements = gsap.utils.toArray('.screen2');
 
     // First tap on the phone
     tl.to('.phone__touch', {
@@ -26,24 +28,14 @@ function animateScreen() {
     }, 'touch1-end')
 
     // Transition from screen 1 to screen 2
-    tl.to('#phone_screen1', {
+    tl.to(screen1Elements, {
         opacity: 0,
-        duration: .4,
+        duration: .3,
     }, 'touch1-end')
 
-    tl.to('#phone_nav1', {
-        opacity: 0,
-        duration: .4,
-    }, 'touch1-end')
-
-    tl.to('#phone_nav2', {
+    tl.to(screen2Elements, {
         opacity: 1,
-        duration: .4,
-    }, 'touch1-end')
-
-    tl.to('#phone_screen2', {
-        opacity: 1,
-        duration: .4,
+        duration: .3,
     }, 'touch1-end')
 
     // Second tap on the phone
@@ -66,24 +58,14 @@ function animateScreen() {
     }, 'touch2-end')
 
     // Transition back to screen 1
-    tl.to('#phone_screen2', {
+    tl.to(screen2Elements, {
         opacity: 0,
-        duration: .2,
+        duration: .3,
     }, 'touch2-end')
 
-    tl.to('#phone_nav1', {
+    tl.to(screen1Elements, {
         opacity: 1,
-        duration: .2,
-    }, 'touch2-end')
-
-    tl.to('#phone_nav2', {
-        opacity: 0,
-        duration: .2,
-    }, 'touch2-end')
-
-    tl.to('#phone_screen1', {
-        opacity: 1,
-        duration: .2,
+        duration: .3,
     }, 'touch2-end')
 
     tl.repeat(-1);

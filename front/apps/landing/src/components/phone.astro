@@ -3,19 +3,23 @@ import '../styles/phone.scss';
 import { Image } from 'astro:assets';
 
 // Light Mode
-import AccountsLight from '../../public/phone/accounts-lightv11.svg';
-import BudgetLight from '../../public/phone/budget-lightv8.png';
+import AccountsLight from '../../public/phone/accounts-lightv13.svg';
+import BudgetLight from '../../public/phone/budget-lightv10.svg';
 import StatusBarLight from '../../public/phone/statusbar-light.svg';
 import NavLightAccountsSelected from '../../public/phone/nav-light-accounts-selected.svg';
 import NavLightBudgetSelected from '../../public/phone/nav-light-budget-selected.svg';
+import NavBackLight from '../../public/phone/nav-back-lightv1.svg';
 
 // Dark Mode
-import AccountsDark from '../../public/phone/accounts-darkv11.svg';
-import BudgetDark from '../../public/phone/budget-darkv9.png';
+import AccountsDark from '../../public/phone/accounts-darkv14.svg';
+import BudgetDark from '../../public/phone/budget-darkv10.svg';
 import StatusBarDark from '../../public/phone/statusbar-dark.svg';
 import NavDarkAccountsSelected from '../../public/phone/nav-dark-accounts-selectedv1.svg';
 import NavDarkBudgetSelected from '../../public/phone/nav-dark-budget-selectedv1.svg';
+import NavBackDark from '../../public/phone/nav-back-darkv1.svg';
 
+// Light & Dark Mode
+import Emojis from '../../public/phone/emojis.png';
 import IphoneFrame from '../../public/phone/iphone-framev1.svg';
 ---
 
@@ -48,59 +52,61 @@ import IphoneFrame from '../../public/phone/iphone-framev1.svg';
       class="phone__status-bar dark"
     />
     <Image
-      src={NavDarkBudgetSelected}
-      alt="Nav Dark Budget Selected"
-      class="phone__nav dark"
-      id="phone_nav1"
-    />
-    <Image
-      src={NavDarkAccountsSelected}
-      alt="Nav Dark Accounts Selected"
-      class="phone__nav dark"
-      id="phone_nav2"
-    />
-    <Image
-      src={BudgetDark}
-      alt="Budget Dark"
-      class="phone__screen dark"
-      id="phone_screen1"
-    />
-    <Image
-      src={AccountsDark}
-      alt="Accounts Dark"
-      class="phone__screen dark"
-      id="phone_screen2"
-    />
-
-    <Image
       src={StatusBarLight}
       alt="Status Bar Light"
       class="phone__status-bar light"
     />
+
+    <Image src={Emojis} alt="Emojis" class="phone__emojis screen1 visible" />
+
+    <Image
+      src={NavDarkBudgetSelected}
+      alt="Nav Dark Budget Selected"
+      class="phone__nav dark screen1"
+    />
+    <Image
+      src={BudgetDark}
+      alt="Budget Dark"
+      class="phone__screen dark screen1"
+    />
     <Image
       src={NavLightBudgetSelected}
       alt="Nav Light Budget Selected"
-      class="phone__nav light"
-      id="phone_nav1"
-    />
-    <Image
-      src={NavLightAccountsSelected}
-      alt="Nav Light Accounts Selected"
-      class="phone__nav light"
-      id="phone_nav2"
+      class="phone__nav light screen1"
     />
     <Image
       src={BudgetLight}
       alt="Budget Light"
-      class="phone__screen light"
-      id="phone_screen1"
+      class="phone__screen light screen1"
+    />
+    <Image src={NavBackDark} alt="Nav Back Dark" class="phone__nav_back dark" />
+
+    <Image
+      src={NavLightAccountsSelected}
+      alt="Nav Light Accounts Selected"
+      class="phone__nav light screen2"
+    />
+    <Image
+      src={NavDarkAccountsSelected}
+      alt="Nav Dark Accounts Selected"
+      class="phone__nav dark screen2"
+    />
+    <Image
+      src={AccountsDark}
+      alt="Accounts Dark"
+      class="phone__screen dark screen2"
     />
     <Image
       src={AccountsLight}
       alt="Accounts Light"
-      class="phone__screen light"
-      id="phone_screen2"
+      class="phone__screen light screen2"
     />
+    <Image
+      src={NavBackLight}
+      alt="Nav Back Light"
+      class="phone__nav_back light"
+    />
+
     <Image src={IphoneFrame} alt="Iphone Frame" class="phone__frame" />
     <span class="phone__glare"><span></span></span>
     <span class="phone__touch"></span>

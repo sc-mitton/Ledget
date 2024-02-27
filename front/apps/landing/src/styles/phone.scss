@@ -20,13 +20,23 @@ $mobile-unfocused-max-width: clamp(12em, 15vw, 16em);
 .phone {
     position: relative;
     transform: scale(.625);
+    z-index: 2;
 
     img:not(.visible):not(:last-of-type) {
         visibility: collapse;
     }
 
-    &__status-bar {
+    .screen2 {
+        opacity: 0;
+    }
+
+    &__emojis {
+        @include center;
         z-index: 2;
+    }
+
+    &__status-bar {
+        z-index: 5;
         position: absolute;
         top: 0;
         left: 50%;
@@ -34,7 +44,7 @@ $mobile-unfocused-max-width: clamp(12em, 15vw, 16em);
     }
 
     &__nav {
-        z-index: 2;
+        z-index: 4;
         position: absolute;
         bottom: 0;
         left: 50%;
@@ -47,6 +57,14 @@ $mobile-unfocused-max-width: clamp(12em, 15vw, 16em);
         &#phone_nav2 {
             opacity: 0;
         }
+    }
+
+    &__nav_back {
+        position: absolute;
+        bottom: 0;
+        z-index: 3;
+        width: 100%;
+        mask-image: linear-gradient(to bottom, transparent 0, black 20%, black 100%);
     }
 
     &__screen {
@@ -67,18 +85,18 @@ $mobile-unfocused-max-width: clamp(12em, 15vw, 16em);
     }
 
     &__frame {
-        z-index: 4;
+        z-index: 3;
         position: relative;
 
         &.dark {
-            filter: brightness(0.5);
+            filter: brightness(0.75);
         }
     }
 
     &__glare {
         position: absolute;
         inset: 0 + 1em;
-        z-index: 3;
+        z-index: 6;
         border-radius: 4.5em;
         overflow: hidden;
 
@@ -117,9 +135,20 @@ $mobile-unfocused-max-width: clamp(12em, 15vw, 16em);
         bottom: 4.5%;
         left: 54.5%;
         background-color: var(--blue-sat);
-        z-index: 10;
+        z-index: 8;
         opacity: 0;
         border: 8px solid var(--m-text-senary);
         box-shadow: 0 0 0 0.25em var(--blue-sat);
     }
 }
+
+
+// # z-index order
+// frame
+// glare
+// touch
+// status-bar
+// nav
+// nav-back
+// emojis
+// screen
