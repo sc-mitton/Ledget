@@ -4,7 +4,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    padding: .375em .75em;
+    padding: .5em 1em;
     gap: .5em;
     min-width: 11rem;
     transition: all .3s;
@@ -31,5 +31,11 @@
 
     path {
         fill: var(--m-text);
+    }
+}
+
+@media (max-width: 768px) {
+    .app-download-button {
+        padding: .375em 1em;
     }
 }

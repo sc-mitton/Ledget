@@ -40,7 +40,7 @@ $web-focused-width: 90%;
 
 .sub-header {
     font-size: clamp(1rem, 1.5vw, 1.5rem);
-    font-weight: var(--fw-light);
+    font-weight: var(--fw-regular);
     color: var(--m-text-secondary);
 }
 
@@ -52,11 +52,18 @@ $web-focused-width: 90%;
     width: min-content;
     position: relative;
     z-index: 100;
+    width: 100%;
 
     &>div {
-        margin: 1.5em 0 .75em 0;
+        margin: 1.75em 0 .75em 0;
         display: flex;
+        justify-content: center;
         gap: 1em;
+        width: 100%;
+
+        &>button {
+            width: 100%;
+        }
     }
 
     &>span {
