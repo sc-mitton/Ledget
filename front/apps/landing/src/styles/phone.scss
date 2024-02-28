@@ -61,10 +61,10 @@ $mobile-unfocused-max-width: clamp(12em, 15vw, 16em);
 
     &__nav_back {
         position: absolute;
-        bottom: 0;
+        bottom: .375em;
         z-index: 3;
         width: 100%;
-        mask-image: linear-gradient(to bottom, transparent 0, black 20%, black 100%);
+        mask-image: linear-gradient(to bottom, transparent 10%, black 30%, black 100%);
     }
 
     &__screen {

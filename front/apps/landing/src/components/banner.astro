@@ -11,6 +11,8 @@ import ArrowLink from './links/arrow-link.astro';
 <div class="banner">
   <script>
     // Check for the color scheme div element whether it has dark-mode class
+    import '../scripts/products.ts';
+
     const darkMode = document
       .querySelector('.body')
       ?.classList.contains('dark');
