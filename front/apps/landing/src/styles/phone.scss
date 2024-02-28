@@ -61,19 +61,15 @@ $mobile-unfocused-max-width: clamp(12em, 15vw, 16em);
 
     &__nav_back {
         position: absolute;
-        bottom: .375em;
+        bottom: 2.5em;
         z-index: 3;
         width: 100%;
-        mask-image: linear-gradient(to bottom, transparent 10%, black 30%, black 100%);
+        mask-image: linear-gradient(to bottom, transparent, transparent 20%, black 40%, black 100%)
     }
 
     &__screen {
         z-index: 1;
         @include center;
-
-        &.dark {
-            transform: translate(-50%, -50%);
-        }
 
         &#phone_screen1 {
             opacity: 1;
@@ -85,7 +81,7 @@ $mobile-unfocused-max-width: clamp(12em, 15vw, 16em);
     }
 
     &__frame {
-        z-index: 8;
+        z-index: 0;
         position: relative;
 
         &.dark {
@@ -148,7 +144,6 @@ $mobile-unfocused-max-width: clamp(12em, 15vw, 16em);
 
 
 // # z-index order
-// frame
 // glare
 // touch
 // status-bar
@@ -156,3 +151,4 @@ $mobile-unfocused-max-width: clamp(12em, 15vw, 16em);
 // nav-back
 // emojis
 // screen
+// frame
