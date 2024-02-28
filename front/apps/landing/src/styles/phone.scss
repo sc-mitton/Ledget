@@ -85,7 +85,7 @@ $mobile-unfocused-max-width: clamp(12em, 15vw, 16em);
     }
 
     &__frame {
-        z-index: 3;
+        z-index: 8;
         position: relative;
 
         &.dark {
