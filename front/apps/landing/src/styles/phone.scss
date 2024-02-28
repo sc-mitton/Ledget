@@ -140,6 +140,10 @@ $mobile-unfocused-max-width: clamp(12em, 15vw, 16em);
         border: 8px solid var(--m-text-senary);
         box-shadow: 0 0 0 0.25em var(--blue-sat);
     }
+
+    &__black_back {
+        @include center;
+    }
 }
 
 
