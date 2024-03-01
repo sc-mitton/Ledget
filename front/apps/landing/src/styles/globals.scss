@@ -44,6 +44,13 @@ body {
             background: #0f0f0f;
         }
     }
+
+    @media (max-width: 768px) {
+        &.dark {
+            background:
+                linear-gradient(to bottom, rgb(28, 28, 28) -20%, rgba(0, 0, 0, 1) 100%);
+        }
+    }
 }
 
 header {

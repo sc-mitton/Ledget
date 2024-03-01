@@ -74,7 +74,7 @@ function animateScreen() {
 function animatePhone() {
     // Scale Phone on Scroll
     gsap.to('.phone', {
-        scale: .75,
+        scale: .7,
         scrollTrigger: {
             trigger: '.phone',
             start: 'top 50%',

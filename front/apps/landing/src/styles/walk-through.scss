@@ -240,9 +240,8 @@
 
     &--container {
         position: relative;
-
         width: min-content;
-        padding-left: 3em;
+        padding-left: 2em;
         display: flex;
         flex-direction: column;
     }
@@ -252,7 +251,7 @@
     &--top-bar,
     &--bottom-bar {
         top: 1em;
-        left: -2.75em;
+        left: -1.75em;
         transform: translateX(-50%);
         bottom: -1em;
         width: 2px;
@@ -276,7 +275,7 @@
         height: .5em;
         background-color: var(--btn-light-gray);
         position: absolute;
-        left: -3em;
+        left: -2em;
         top: 1em;
         border-radius: 50%;
         z-index: 1;
@@ -293,8 +292,9 @@
     }
 
     &--text {
+        max-width: 30ch;
+
         span {
-            max-width: 50ch;
             color: var(--m-text-secondary);
         }
 
@@ -304,6 +304,7 @@
             width: min-content;
             margin: 0;
             font-size: clamp(1rem, 3vw, 1.5em);
+            font-weight: var(--fw-extra-bold);
         }
     }
 }

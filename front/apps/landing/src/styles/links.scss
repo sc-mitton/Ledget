@@ -6,6 +6,7 @@
     cursor: pointer;
     position: relative;
     overflow: hidden;
+    font-weight: var(--fw-bold);
 
     &::after {
         inset: 0;

@@ -27,8 +27,8 @@ function animateLarge() {
     gsap.to(features, {
         scrollTrigger: {
             trigger: '#features',
-            start: "top 70%",
-            end: "bottom 70%",
+            start: "top 60%",
+            end: "bottom 60%",
         },
         opacity: 1,
         scale: 1,
