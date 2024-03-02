@@ -78,7 +78,7 @@ $web-focused-width: 90%;
 .cta {
     width: 100%;
     box-sizing: border-box;
-    background-color: var(--blue-medium);
+    background-color: var(--blue);
     padding: .75em 1em;
     color: var(--white);
     transition: background-color .3s;
@@ -94,7 +94,7 @@ $web-focused-width: 90%;
     }
 
     &:hover {
-        background-color: var(--blue-medium-hover);
+        background-color: var(--blue-medium);
         transition: background-color .3s;
     }
 }

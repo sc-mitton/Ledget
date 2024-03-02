@@ -48,24 +48,6 @@
             background-color: var(--border-color-dim);
         }
 
-        button:not(:last-child) {
-            padding: .125em 1em;
-            color: var(--m-text-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 1em;
-            transition: all 0.2s ease-in-out;
-
-            &:hover {
-                border-color: var(--m-text-tirtiary);
-                transition: all 0.2s ease-in-out;
-            }
-
-            &.selected {
-                border-color: var(--blue-sat);
-                transition: all 0.2s ease-in-out;
-            }
-        }
-
         button:last-child {
             margin-left: .5em;
         }

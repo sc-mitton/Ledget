@@ -145,7 +145,12 @@ $scroll-bar-padding: .5em;
     grid-template-columns: repeat(7, auto);
     justify-self: center;
     row-gap: .75em;
-    column-gap: 1.25em;
+    column-gap: 1.375em;
+
+    .bookend-days {
+        color: var(--m-text-senary);
+        font-weight: var(--fw-regular);
+    }
 
     // Days of week markers
     &>div:nth-child(-n+7) {

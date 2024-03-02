@@ -1,7 +1,7 @@
 #small-screen-accounts-summary {
     margin: 1em 0 .5em 0;
     // background-color: var(--blue-medium);
-    background: linear-gradient(to bottom right, var(--blue-medium), color-mix(in srgb, var(--blue-medium), var(--window-background-color) 30%));
+    background: linear-gradient(to bottom right, var(--blue), color-mix(in srgb, var(--blue), var(--window-background-color) 30%));
     border-radius: var(--border-radius3);
     padding: .625em 1.25em;
     position: relative;

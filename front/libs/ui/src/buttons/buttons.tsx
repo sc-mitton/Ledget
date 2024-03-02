@@ -1,4 +1,4 @@
-import { FC, useState, forwardRef, ButtonHTMLAttributes, useEffect } from 'react';
+import { FC, useState, forwardRef, ButtonHTMLAttributes, HTMLProps, useEffect } from 'react';
 
 import './buttons.scss';
 import {
@@ -67,6 +67,14 @@ export const SmallArrowButton = ({ type = '', ...rest }) => (
     </div>
   </button>
 )
+
+export const FilterPillButton = ({ selected, children, ...rest }: { selected?: boolean, children: React.ReactNode } & ButtonHTMLAttributes<HTMLButtonElement>) => {
+  return (
+    <button className={`filter-btn ${selected ? 'selected' : ''}`} {...rest}>
+      {children}
+    </button>
+  )
+}
 
 export const ExpandButton = ({
   flipped = false,

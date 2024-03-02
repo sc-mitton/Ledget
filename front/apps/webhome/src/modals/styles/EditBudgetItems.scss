@@ -19,17 +19,8 @@
     align-items: center;
     gap: .5em;
     margin-top: 1em;
-    margin-left: .75em;
+    margin-left: .25em;
 
-    button {
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        min-width: 7ch;
-
-        &.active {
-            border-color: var(--blue-sat);
-        }
-    }
 }
 
 #view-all-bills--container {

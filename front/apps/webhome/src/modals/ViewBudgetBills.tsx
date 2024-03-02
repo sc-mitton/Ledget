@@ -16,7 +16,8 @@ import {
   DollarCents,
   SlideMotionDiv,
   BackButton,
-  FadedTextButton
+  FadedTextButton,
+  FilterPillButton
 } from '@ledget/ui'
 import { useAppSelector } from '@hooks/store'
 import { selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
@@ -114,18 +115,18 @@ const EditBills = withModal((props) => {
             )}
           </Tab.Group>
           <div id='order-buttons'>
-            <FadedTextButton
+            <FilterPillButton
               onClick={() => { order === 'amount-desc' ? setOrder('amount-asc') : order === 'amount-asc' ? setOrder(undefined) : setOrder('amount-desc') }}
-              className={`${order === 'amount-desc' || order === 'amount-asc' ? 'active' : ''}`}
+              selected={order === 'amount-desc' || order === 'amount-asc'}
             >
               <span>$</span>{order === 'amount-desc' ? <ArrowUp size={'1em'} /> : <ArrowDown size={'1em'} />}
-            </FadedTextButton>
-            <FadedTextButton
+            </FilterPillButton>
+            <FilterPillButton
+              selected={order === 'alpha-desc' || order === 'alpha-asc'}
               onClick={() => { order === 'alpha-desc' ? setOrder(undefined) : order === 'alpha-asc' ? setOrder('alpha-desc') : setOrder('alpha-asc') }}
-              className={`${order === 'alpha-asc' || order === 'alpha-desc' ? 'active' : ''}`}
             >
               {order === 'alpha-desc' ? 'z-a' : 'a-z'}
-            </FadedTextButton>
+            </FilterPillButton>
           </div>
         </SlideMotionDiv>
         :

@@ -66,7 +66,10 @@ const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>((pr
             <div>Th</div>
             <div>Fr</div>
             <div>Sa</div>
-            {Array.from({ length: selectedDate.date(1).day() }).map((_, i) => <div key={i}></div>)}
+            {Array.from({ length: selectedDate.date(1).day() }).map((_, i) =>
+                <div key={i} className='bookend-days'>
+                    {selectedDate.subtract(1, 'month').endOf('month').date() - selectedDate.date(1).day() + i + 1}
+                </div>)}
             {Array.from({ length: selectedDate.daysInMonth() }).map((day, i) => {
                 const djs = dayjs(selectedDate).date(i + 1)
                 return (
@@ -111,6 +114,10 @@ const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>((pr
                     </div>
                 )
             })}
+            {Array.from({ length: 6 - selectedDate.date(selectedDate.daysInMonth()).day() }).map((_, i) =>
+                <div key={i} className='bookend-days'>
+                    {i + 1}
+                </div>)}
         </div >
     )
 })

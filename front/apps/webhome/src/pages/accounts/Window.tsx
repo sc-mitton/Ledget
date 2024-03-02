@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 
-import { Outlet, Routes, Route, useNavigate, useLocation } from 'react-router-dom'
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import { animated } from '@react-spring/web'
 import { AnimatePresence, motion } from 'framer-motion'
-import Big from 'big.js'
 
 import './styles/Window.scss'
 import './styles/Main.scss'
@@ -18,6 +17,7 @@ import {
     useScreenContext,
     ExpandableContainer,
     CircleIconButton,
+    FilterPillButton
 } from '@ledget/ui'
 import { popToast } from '@features/toastSlice'
 import { useAppDispatch } from '@hooks/store'
@@ -86,7 +86,7 @@ const Nav = () => {
     const currentPath = location.pathname.split('/')[2]
     const { screenSize } = useScreenContext()
 
-    const [backgroundColor] = useSchemeVar(['--blue-medium'])
+    const [backgroundColor] = useSchemeVar(['--blue'])
 
     const [props] = usePillAnimation({
         ref: ref,
@@ -204,13 +204,13 @@ const Filters = ({ visible = false, close }: { visible: boolean, close: () => vo
         <ExpandableContainer id='accounts-filter' expanded={visible}>
             {accountsFilterOptions?.map((option, i) => (
                 <>
-                    <button
-                        className={`${option.value === accountsFilter ? 'selected' : ''}`}
+                    <FilterPillButton
                         key={`fiter-button-${i}`}
+                        selected={option.value === accountsFilter}
                         onClick={() => { setAccountsFilter(option.value) }}
                     >
                         {option.label}
-                    </button>
+                    </FilterPillButton>
                     {option.filterType !== accountsFilterOptions[i + 1]?.filterType
                         && i !== accountsFilterOptions.length - 1 && <span className='divider' />}
                 </>

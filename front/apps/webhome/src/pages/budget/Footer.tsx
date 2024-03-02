@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState } from 'react'
 
 import { ArrowDown, ArrowUp } from '@geist-ui/icons'
 
@@ -6,14 +6,13 @@ import './styles/Footer.scss'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
 import { setBudgetItemsSort, selectBudgetItemsSort } from '@features/uiSlice'
 import { EditBudgetCategories, EditBudgetBills } from '@modals/index'
-import { PillOptionButton, FadedTextButton, IconButton3, Tooltip } from '@ledget/ui'
+import { PillOptionButton, FadedTextButton, FilterPillButton, Tooltip } from '@ledget/ui'
 import { FilterLines } from '@ledget/media'
 
 const Footer = () => {
     const dispatch = useAppDispatch()
     const budgetItemSorting = useAppSelector(selectBudgetItemsSort)
     const [modal, setModal] = useState<'categories' | 'bills' | ''>('')
-    const filterButtonsContainer = useRef<HTMLDivElement>(null)
 
     return (
         <>
@@ -33,8 +32,8 @@ const Footer = () => {
                 </div>
                 <div id='filter-buttons'>
                     <div>
-                        <PillOptionButton
-                            isSelected={budgetItemSorting && ['amount-desc', 'amount-asc'].includes(budgetItemSorting)}
+                        <FilterPillButton
+                            selected={budgetItemSorting && ['amount-desc', 'amount-asc'].includes(budgetItemSorting)}
                             onClick={() => {
                                 if (!budgetItemSorting) {
                                     dispatch(setBudgetItemsSort('amount-des'))
@@ -49,10 +48,10 @@ const Footer = () => {
                             {budgetItemSorting === 'amount-des'
                                 ? <ArrowDown size={'1em'} strokeWidth={1.5} />
                                 : <ArrowUp size={'1em'} strokeWidth={1.5} />}
-                        </PillOptionButton>
-                        <PillOptionButton
+                        </FilterPillButton>
+                        <FilterPillButton
                             aria-label="Sort bills by amount"
-                            isSelected={budgetItemSorting && ['alpha-desc', 'alpha-asc'].includes(budgetItemSorting)}
+                            selected={budgetItemSorting && ['alpha-desc', 'alpha-asc'].includes(budgetItemSorting)}
                             onClick={() => {
                                 if (!budgetItemSorting) {
                                     dispatch(setBudgetItemsSort('alpha-des'))
@@ -64,7 +63,7 @@ const Footer = () => {
                             }}
                         >
                             {budgetItemSorting === 'alpha-des' ? 'z-a' : 'a-z'}
-                        </PillOptionButton>
+                        </FilterPillButton>
                     </div>
                     <div>
                         <Tooltip msg="Filter" ariaLabel="Filter">
