@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Big from 'big.js'
 import { AlertCircle } from '@geist-ui/icons'
+
+import { HashLink } from 'react-router-hash-link'
 
 import './styles/BudgetSummary.scss'
 import { MonthPicker } from './MonthPicker'
@@ -99,7 +101,13 @@ const BudgetSummary = () => {
                     </div>
                     <div className='jump-links'>
                         {Array.from({ length: 4 }, (_, i) => i).map((i) => (
-                            <a href={`#slide-${i + 1}`} key={`carousel-${i}`} className={carouselIndex === i ? 'active' : ''} />
+                            <HashLink
+                                smooth
+                                scroll={(el) => el.scrollIntoView({ behavior: 'smooth', block: 'center' })}
+                                to={`#slide-${i + 1}`}
+                                key={`carousel-${i}`}
+                                className={carouselIndex === i ? 'active' : ''}
+                            />
                         ))}
                     </div>
                 </div>

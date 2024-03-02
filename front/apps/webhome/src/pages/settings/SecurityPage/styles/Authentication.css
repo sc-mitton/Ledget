@@ -33,10 +33,6 @@
     flex-direction: column;
 }
 
-.authentication-method>div:nth-child(2)>span:first-child {
-    font-weight: var(--fw-bold);
-}
-
 .authentication-method>div:last-child {
     display: flex;
     align-items: center;

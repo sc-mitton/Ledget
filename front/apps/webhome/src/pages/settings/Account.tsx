@@ -256,7 +256,7 @@ const Settings = () => {
 
     return (
         <section className="section">
-            <h4 className='header2'>Settings</h4>
+            <h4 className='header2'>Preferences</h4>
             <div className="settings-list">
                 <section className='inner-window'>
                     <ul>

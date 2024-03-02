@@ -567,9 +567,9 @@ button {
 
 .scale-icon-btn {
     &:hover svg {
-        max-width: 1.5rem;
-        margin-left: 0.3rem;
-        transform: scale(1);
+        max-width: 1rem;
+        margin-left: 0rem;
+        transform: scale(1) translateX(.25em);
         transition: all 0.2s ease-in-out;
     }
 

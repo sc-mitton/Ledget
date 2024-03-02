@@ -26,6 +26,7 @@
     width: .75rem;
     height: .75rem;
     border-radius: 50%;
+    box-shadow: 0 2px 1px var(--btn-dark-gray);
 
     &.enabled {
         transform: translateX(.82rem);

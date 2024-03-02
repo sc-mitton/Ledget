@@ -271,14 +271,20 @@
     }
 
     &--circle {
-        width: .5em;
-        height: .5em;
+        padding: .125em;
+        width: 1em;
+        height: 1em;
+        border-radius: 10em;
         background-color: var(--btn-light-gray);
         position: absolute;
-        left: -2em;
-        top: 1em;
-        border-radius: 50%;
+        left: -2.375em;
+        top: .625em;
         z-index: 1;
+        color: var(--white);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
     }
 
     &--step {

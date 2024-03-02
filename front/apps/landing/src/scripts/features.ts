@@ -51,17 +51,6 @@ function animate() {
         }
     });
 
-    gsap.to('#features', {
-        opacity: .3,
-        scrollTrigger: {
-            trigger: '#features',
-            start: "bottom center",
-            end: "bottom center-=10%",
-            toggleActions: 'restart none none none',
-            scrub: true,
-        }
-    })
-
     resizeObserver.observe(document.body);
 }
 

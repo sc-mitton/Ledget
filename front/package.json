@@ -23,6 +23,7 @@
     "@types/lodash.groupby": "^4.6.9",
     "@types/lodash.startcase": "^4.4.9",
     "@types/lodash.tolower": "^4.1.9",
+    "@types/react-router-hash-link": "^2.4.9",
     "@types/react-textarea-autosize": "^8.0.0",
     "@use-gesture/react": "^10.2.27",
     "axios": "^1.4.0",
@@ -45,6 +46,7 @@
     "react-plaid-link": "^3.4.0",
     "react-redux": "^8.1.1",
     "react-router-dom": "^6.10.0",
+    "react-router-hash-link": "^2.4.3",
     "redux": "^4.2.1",
     "tslib": "^2.3.0",
     "zod": "^3.22.4"

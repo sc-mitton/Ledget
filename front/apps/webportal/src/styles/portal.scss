@@ -21,6 +21,10 @@ main {
     box-shadow: rgba(149, 157, 165, 0.7) 1px 0px 2px;
     z-index: 100;
 
+    button {
+        padding: .25em 1em;
+    }
+
     &>div:first-child {
         a {
             border-bottom: none;

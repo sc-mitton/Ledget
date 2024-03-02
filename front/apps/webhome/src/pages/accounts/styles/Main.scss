@@ -10,7 +10,6 @@ $wafer-container-padding: .75rem;
     background-color: var(--window2);
     border-radius: var(--border-radius3);
     display: flex;
-    gap: 1.5em;
     position: relative;
 
     #balance-history {
@@ -30,6 +29,7 @@ $wafer-container-padding: .75rem;
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
+        margin: 0 .75em;
 
         &>div {
             display: flex;
@@ -201,7 +201,7 @@ $wafer-container-padding: .75rem;
     overflow-y: hidden;
     animation: make-scroll 1s ease-in-out forwards;
     animation-delay: 1s;
-    padding: 1.5em 0 .75em 0;
+    padding: 1.5em 1em .75em 1em;
 }
 
 @keyframes make-scroll {
@@ -323,7 +323,6 @@ $wafer-container-padding: .75rem;
     }
 
     &.inactive {
-        border: 1px solid var(--window-border);
         transform: scale(1);
         transition: all .2s ease-out;
     }
