@@ -38,30 +38,48 @@
     }
 
     &.blue::after {
-        background-color: var(--monthly-background-color);
+        // background-color: var(--monthly-background-color);
+        background: linear-gradient(to bottom right,
+                var(--monthly-background-color) 0%,
+                var(--monthly-hover-background-color) 100%)
     }
 
     &.green::after {
-        background-color: var(--yearly-background-color);
+        // background-color: var(--yearly-background-color);
+        background: linear-gradient(to bottom right,
+                var(--yearly-background-color) 0%,
+                var(--yearly-hover-background-color) 100%)
     }
 
     &.green-blue::after {
-        background-color: var(--yearly-background-color);
+        // background-color: var(--yearly-background-color);
+        background: linear-gradient(to bottom right,
+                var(--yearly-background-color) 0%,
+                var(--yearly-hover-background-color) 100%)
     }
 
     &.hoverable {
         cursor: pointer;
 
         &.blue:hover::after {
-            background-color: var(--monthly-hover-background-color);
+            // background-color: var(--monthly-hover-background-color);
+            background: linear-gradient(to bottom right,
+                    var(--monthly-hover-background-color) 0%,
+                    var(--monthly-hover-background-color) 100%)
         }
 
         &.green:hover::after {
-            background-color: var(--yearly-hover-background-color);
+            // background-color: var(--yearly-hover-background-color);
+            background: linear-gradient(to bottom right,
+                    var(--yearly-hover-background-color) 0%,
+                    var(--yearly-hover-background-color) 100%)
         }
 
         &.green-blue:hover::after {
-            background-color: var(--yearly-hover-background-color);
+            // background-color: var(--yearly-hover-background-color);
+            background: linear-gradient(to bottom right,
+                    var(--yearly-hover-background-color) 0%,
+                    var(--yearly-hover-background-color) 100%)
         }
     }
 }
@@ -92,7 +110,10 @@
 
     &.blue,
     &.blue-split {
-        background-color: var(--monthly-background-color);
+        // background-color: var(--monthly-background-color);
+        background: linear-gradient(to bottom right,
+                var(--monthly-background-color) 0%,
+                var(--monthly-hover-background-color) 100%);
         transition: background-color 0.2s ease-in-out;
 
         * {
@@ -100,14 +121,20 @@
         }
 
         &.hoverable:hover {
-            background-color: var(--monthly-hover-background-color);
+            // background-color: var(--monthly-hover-background-color);
+            background: linear-gradient(to bottom right,
+                    var(--monthly-hover-background-color) 0%,
+                    var(--monthly-hover-background-color) 100%);
             transition: background-color 0.2s ease-in-out;
         }
     }
 
     &.green,
     &.green-split {
-        background-color: var(--yearly-background-color);
+        // background-color: var(--yearly-background-color);
+        background: linear-gradient(to bottom right,
+                var(--yearly-background-color) 0%,
+                var(--yearly-hover-background-color) 100%);
         transition: background-color 0.2s ease-in-out;
 
         * {
@@ -115,14 +142,20 @@
         }
 
         &.hoverable:hover {
-            background-color: var(--yearly-hover-background-color);
+            // background-color: var(--yearly-hover-background-color);
+            background: linear-gradient(to bottom right,
+                    var(--yearly-hover-background-color) 0%,
+                    var(--yearly-hover-background-color) 100%);
             transition: background-color 0.2s ease-in-out;
         }
     }
 
     &.green-blue,
     &.green-blue-split {
-        background-color: var(--yearly-background-color);
+        // background-color: var(--yearly-background-color);
+        background: linear-gradient(to bottom right,
+                var(--yearly-background-color) 0%,
+                var(--yearly-hover-background-color) 100%);
         transition: background-color 0.2s ease-in-out;
 
         * {
@@ -140,7 +173,10 @@
         }
 
         &.hoverable:hover {
-            background-color: var(--yearly-hover-background-color);
+            // background-color: var(--yearly-hover-background-color);
+            background: linear-gradient(to bottom right,
+                    var(--yearly-hover-background-color) 0%,
+                    var(--yearly-hover-background-color) 100%);
             transition: background-color 0.2s ease-in-out;
         }
 
@@ -155,7 +191,10 @@
             bottom: 0;
             right: 0;
             width: 50%;
-            background-color: var(--monthly-background-color);
+            // background-color: var(--monthly-background-color);
+            background: linear-gradient(to bottom right,
+                    var(--monthly-background-color) 0%,
+                    var(--monthly-hover-background-color) 100%);
         }
     }
 }
