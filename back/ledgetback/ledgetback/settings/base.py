@@ -7,9 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 APPEND_SLASH = False
 SITE_ID = 1
 
-# -------------------------------------------------------------- #
-#                  Application Defenition                        #
-# -------------------------------------------------------------- #
+# -------------------------- Application Definition -------------------------- #
 
 DEFAULT_APPS = [
     'django.contrib.auth',
@@ -42,9 +40,32 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'ledgetback.urls'
 WSGI_APPLICATION = 'ledgetback.wsgi.application'
 
-# ---------------------------------------------------------------- #
-#                 Authentication Settings                          #
-# ---------------------------------------------------------------- #
+# ----------------------------------- Csrf ----------------------------------- #
+
+CSRF_COOKIE_NAME = 'csrftoken'
+CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'
+CSRF_COOKIE_AGE = 60 * 60 * 24 * 30  # 1 month
+CSRF_SAMESITE = 'lax'
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = False
+
+# ---------------------------- 3rd Party Services ---------------------------- #
+
+# Ory
+ORY_HOST = 'https://reverent-lewin-bqqp1o2zws.projects.oryapis.com'
+ORY_AUTH_HEADER = 'HTTP_AUTHORIZATION'
+ORY_AUTH_SCHEME = 'Api-Key'
+
+# Oathkeeper
+OATHKEEPER_AUTH_HEADER = 'HTTP_AUTHORIZATION'
+OATHKEEPER_AUTH_SCHEME = 'Bearer'
+OATHKEEPER_ENDPOINT = os.environ.get('OATHKEEPER_ENDPOINT')
+
+# Plaid
+PLAID_PRODUCTS = ['transactions', 'balance']
+PLAID_COUNTRY_CODES = ['US']
+
+# ------------------------------- Auth Settings ------------------------------ #
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -71,9 +92,8 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# ---------------------------------------------------------------- #
-#                        Logging Settings                          #
-# ---------------------------------------------------------------- #
+# ---------------------------------- Logging --------------------------------- #
+
 LOG_LEVEL = 'DEBUG'
 
 LOGGING = {

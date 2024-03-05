@@ -1,7 +1,6 @@
 
 from rest_framework.generics import RetrieveUpdateAPIView, GenericAPIView
 from django.conf import settings
-import messagebird
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -10,7 +9,6 @@ from core.permissions import IsAuthenticated
 
 BIRD_API_KEY = settings.BIRD_API_KEY
 BIRD_SIGNING_KEY = settings.BIRD_SIGNING_KEY
-mbird_client = messagebird.Client(BIRD_API_KEY)
 
 
 class UserView(RetrieveUpdateAPIView):

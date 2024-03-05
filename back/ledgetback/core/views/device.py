@@ -10,7 +10,6 @@ from rest_framework.generics import (
 )
 from django.conf import settings
 from django.utils.decorators import method_decorator
-import messagebird
 import secrets
 import string
 
@@ -26,7 +25,6 @@ from ledgetback.decorators import csrf_ignore, ensure_csrf_cookie
 
 BIRD_API_KEY = settings.BIRD_API_KEY
 BIRD_SIGNING_KEY = settings.BIRD_SIGNING_KEY
-mbird_client = messagebird.Client(BIRD_API_KEY)
 
 
 def generate_random_string(length=6):

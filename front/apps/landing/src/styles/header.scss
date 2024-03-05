@@ -1,5 +1,11 @@
 @import './mixins.scss';
 
+.body.dark .header {
+    &--blur {
+        background-color: rgb(var(--window-background-color-rgb), .3);
+    }
+}
+
 .header {
     @include width-standard;
     display: flex;

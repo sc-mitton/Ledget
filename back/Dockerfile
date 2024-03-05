@@ -14,6 +14,8 @@ RUN pip install -r requirements.txt
 
 ARG DEV
 RUN if [ $DEV = "true" ]; then pip install -r requirements.dev.txt; fi
+RUN if [ $DEV = "true" ]; then export DEV=true; fi
+
 
 ###
 FROM python:3.11-slim-bullseye

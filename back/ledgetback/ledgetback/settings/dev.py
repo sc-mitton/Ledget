@@ -25,22 +25,12 @@ else:
 
 MEDIA_ROOT = '/ledgetback/media'
 
-# ---------------------------------------------------------------------------- #
-#                                 Csrf Settings                                #
-# ---------------------------------------------------------------------------- #
+# ----------------------------------- Csrf ----------------------------------- #
 
-CSRF_COOKIE_NAME = 'csrftoken'
-CSRF_COOKIE_AGE = 60 * 60 * 24 * 30  # 1 month
-CSRF_SAMESITE = 'lax'
-CSRF_COOKIE_SECURE = True
 CSRF_TRUSTED_ORIGINS = ['https://localhost:3000', 'https://localhost:3001']
-CSRF_COOKIE_HTTPONLY = False
-CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'
 CSRF_COOKIE_DOMAIN = 'localhost'
 
-# ---------------------------------------------------------------------------- #
-#                                    Secrets                                   #
-# ---------------------------------------------------------------------------- #
+# ---------------------------------- 3rd Party Services --------------------------------- #
 
 def get_secret(secret):
     try:
@@ -48,7 +38,6 @@ def get_secret(secret):
             return f.read().strip()
     except FileNotFoundError:
         return ' '
-
 
 # Django
 SECRET_KEY = get_secret('django_secret_key')
@@ -59,22 +48,18 @@ STRIPE_WEBHOOK_SECRET = get_secret('stripe_webhook_secret')
 
 # Ory
 ORY_HOOK_API_KEY = get_secret('ory_hook_api_key')
-ORY_HOST = 'https://reverent-lewin-bqqp1o2zws.projects.oryapis.com'
 ORY_API_KEY = get_secret('ory_api_key')
-ORY_AUTH_HEADER = 'HTTP_AUTHORIZATION'
-ORY_AUTH_SCHEME = 'Api-Key'
 
 # Oathkeeper
-oathkeeper_endpoint = 'http://oathkeeper:4456/.well-known/jwks.json'
 if any(a in sys.argv for a in ['test', 'test_coverage', 'migrate', 'makemigrations']):
     OATHKEEPER_PUBLIC_KEY=None
 else:
-    jwks = requests.get(oathkeeper_endpoint).json()['keys']
+    jwks = requests.get(OATHKEEPER_ENDPOINT).json()['keys']
     OATHKEEPER_PUBLIC_KEY = jwt.algorithms.RSAAlgorithm.from_jwk(
         json.dumps(jwks[0]))
 
-OATHKEEPER_AUTH_HEADER = 'HTTP_AUTHORIZATION'
-OATHKEEPER_AUTH_SCHEME = 'Bearer'
+# Sparkpost
+SPARKPOST_API_KEY = get_secret('sparkpost_api_key')
 
 # Plaid
 PLAID_ENVIRONMENT = 'Sandbox'
@@ -82,10 +67,9 @@ PLAID_API_KEY = get_secret('plaid_sand_api_key') if PLAID_ENVIRONMENT == 'Sandbo
 PLAID_CLIENT_ID = get_secret('plaid_client_id')
 PLAID_REDIRECT_URI_ONBOARDING = 'https://localhost:3000/welcome/connect'
 PLAID_REDIRECT_URI = 'https://localhost:3000/settings/connections'
-PLAID_PRODUCTS = ['transactions', 'balance']
-PLAID_COUNTRY_CODES = ['US']
 
-# Postgres
+# --------------------------------- Postgres --------------------------------- #
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -97,24 +81,12 @@ DATABASES = {
     }
 }
 
-# Message Bird
-BIRD_API_KEY = get_secret('bird_api_key')
-BIRD_SIGNING_KEY = get_secret('bird_signing_key')
-BIRD_API_KEY_ID = get_secret('bird_api_key_id')
-
-# Sparkpost
-SPARKPOST_API_KEY = get_secret('sparkpost_api_key')
-
-# ---------------------------------------------------------------------------- #
-#                                    Celery                                    #
-# ---------------------------------------------------------------------------- #
+# ---------------------------------- Celery ---------------------------------- #
 
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
 CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
 
-# ---------------------------------------------------------------------------- #
-#                                    Caching                                   #
-# ---------------------------------------------------------------------------- #
+# ---------------------------------- Caching --------------------------------- #
 
 CACHES = {
     "default": {

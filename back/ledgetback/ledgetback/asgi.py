@@ -11,6 +11,11 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ledgetback.settings')
+DEV = os.environ.get('DEV')
+if not DEV:
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ledgetback.settings.prod')
+else:
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ledgetback.settings.dev')
+
 
 application = get_asgi_application()
