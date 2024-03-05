@@ -11,9 +11,9 @@ import botocore.session
 from aws_secretsmanager_caching import SecretCache, SecretCacheConfig
 
 
-ALLOWED_HOSTS = ['ledgetapp.com']
-DOMAIN_URL = "https://ledgetapp.com:8000/"
-DOMAIN = 'ledgetapp.com'
+ALLOWED_HOSTS = ['ledget.app']
+DOMAIN_URL = "https://ledget.app:8000/"
+DOMAIN = 'ledget.app'
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_BROWSER_XSS_FILTER = True
@@ -21,8 +21,8 @@ SECURE_BROWSER_XSS_FILTER = True
 
 # ----------------------------------- Csrf ----------------------------------- #
 
-CSRF_TRUSTED_ORIGINS = ['https://ledgetapp.com', 'https://accounts.ledgetapp.com']
-CSRF_COOKIE_DOMAIN = 'ledgetapp.com'
+CSRF_TRUSTED_ORIGINS = ['https://ledget.app', 'https://accounts.ledget.app']
+CSRF_COOKIE_DOMAIN = 'ledget.app'
 
 # ---------------------------------- 3rd Party Services --------------------------------- #
 
@@ -62,8 +62,8 @@ SPARKPOST_API_KEY = get_secret('sparkpost_api_key')
 PLAID_ENVIRONMENT = 'Production'
 PLAID_API_KEY = get_secret('plaid_api_key')
 PLAID_CLIENT_ID = get_secret('plaid_client_id')
-PLAID_REDIRECT_URI_ONBOARDING = 'https://ledgetapp.com/welcome/connect'
-PLAID_REDIRECT_URI = 'https://ledgetapp.com/settings/connections'
+PLAID_REDIRECT_URI_ONBOARDING = 'https://ledget.app/welcome/connect'
+PLAID_REDIRECT_URI = 'https://leddget.app/settings/connections'
 
 # --------------------------------- Postgres --------------------------------- #
 
