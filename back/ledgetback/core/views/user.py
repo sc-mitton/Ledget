@@ -7,7 +7,6 @@ from rest_framework import status
 from core.serializers import UserSerializer, EmailSerializer
 from core.permissions import IsAuthenticated
 
-BIRD_API_KEY = settings.BIRD_API_KEY
 BIRD_SIGNING_KEY = settings.BIRD_SIGNING_KEY
 
 

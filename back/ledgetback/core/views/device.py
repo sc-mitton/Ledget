@@ -8,7 +8,6 @@ from rest_framework.generics import (
     ListCreateAPIView,
     DestroyAPIView,
 )
-from django.conf import settings
 from django.utils.decorators import method_decorator
 import secrets
 import string
@@ -21,10 +20,6 @@ from core.permissions import (
 )
 from core.models import Device
 from ledgetback.decorators import csrf_ignore, ensure_csrf_cookie
-
-
-BIRD_API_KEY = settings.BIRD_API_KEY
-BIRD_SIGNING_KEY = settings.BIRD_SIGNING_KEY
 
 
 def generate_random_string(length=6):
