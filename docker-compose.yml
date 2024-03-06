@@ -104,7 +104,6 @@ services:
       - plaid_api_key
       - plaid_sand_api_key
       - plaid_client_id
-      - bird_signing_key
       - sparkpost_api_key
     depends_on:
       - db
@@ -156,8 +155,6 @@ secrets:
     file: ./secrets/postgres_user
   postgres_password:
     file: ./secrets/postgres_password
-  bird_signing_key:
-    file: ./secrets/bird_signing_key
   sparkpost_api_key:
     file: ./secrets/sparkpost_api_key
   stripe_webhook_secret:

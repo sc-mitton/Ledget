@@ -1,13 +1,10 @@
 
 from rest_framework.generics import RetrieveUpdateAPIView, GenericAPIView
-from django.conf import settings
 from rest_framework.response import Response
 from rest_framework import status
 
 from core.serializers import UserSerializer, EmailSerializer
 from core.permissions import IsAuthenticated
-
-BIRD_SIGNING_KEY = settings.BIRD_SIGNING_KEY
 
 
 class UserView(RetrieveUpdateAPIView):
