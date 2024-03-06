@@ -1,4 +1,4 @@
-name: Rest API
+name: Rest API Unit Tests
 
 on:
   push:
