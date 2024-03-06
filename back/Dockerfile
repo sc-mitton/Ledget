@@ -6,16 +6,16 @@ RUN apt-get update && \
     build-essential \
     libpq-dev
 
-COPY requirements.txt .
+COPY requirements.prod.txt .
 COPY requirements.dev.txt .
 
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
-
+RUN pip install --upgrade pi
 ARG DEV
-RUN if [ $DEV = "true" ]; then pip install -r requirements.dev.txt; fi
-RUN if [ $DEV = "true" ]; then export DEV=true; fi
-
+RUN if [ $DEV = "true" ]; then \
+    pip install -r requirements.dev.txt; \
+    else \
+    pip install -r requirements.prod.txt; \
+    fi
 
 ###
 FROM python:3.11-slim-bullseye

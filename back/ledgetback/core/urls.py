@@ -5,6 +5,7 @@ from core.views.device import (
      DeviceView,
      DestroyDeviceView,
 )
+from core.views.health import health
 
 
 urlpatterns = [
@@ -33,4 +34,5 @@ urlpatterns = [
 
      path('', include('budget.urls')),
      path('', include('financials.urls')),
+     path('health', health, name='health'),
 ]

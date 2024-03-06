@@ -82,8 +82,8 @@ DATABASES = {
 
 # ---------------------------------- Celery ---------------------------------- #
 
-CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
-CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
+CELERY_BROKER_URL = os.getenv('celery_broker_url')
+CELERY_RESULT_BACKEND = os.getenv('celery_result_backend')
 
 # ---------------------------------- Caching --------------------------------- #
 

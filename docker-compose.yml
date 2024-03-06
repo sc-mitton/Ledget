@@ -89,6 +89,7 @@ services:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
       - SILK_DEBUG=true
+      - DEV=true
       - OATHKEEPER_ENDPOINT=http://oathkeeper:4456/.well-known/jwks.json
     volumes:
       - ./back/ledgetback:/ledgetback

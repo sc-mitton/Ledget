@@ -5,7 +5,7 @@ import sys
 
 os.environ.setdefault(
     'DJANGO_SETTINGS_MODULE',
-    "ledgetback.settings.development"
+    "ledgetback.settings.dev"
 )
 
 def main():
