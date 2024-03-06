@@ -67,14 +67,16 @@ PLAID_REDIRECT_URI = 'https://leddget.app/settings/connections'
 
 # --------------------------------- Postgres --------------------------------- #
 
+db_credentials = json.loads(get_secret(os.getenv('db_secret')))
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT'),
-        'USER': get_secret('postgres_user'),
-        'PASSWORD': get_secret('postgres_password'),
+        'NAME': os.getenv('db_name'),
+        'HOST': os.getenv('db_host'),
+        'PORT': os.getenv('db_port'),
+        'USER': db_credentials.get('user'),
+        'PASSWORD': db_credentials.get('password'),
     }
 }
 
