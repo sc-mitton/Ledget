@@ -20,25 +20,21 @@ jobs:
             - ledget-rest-api:v1
             - oathkeeper:v1
       steps:
+        - name: Checkout Repository
+          uses: actions/checkout@v2
         - name: Configure AWS credentials
           uses: aws-actions/configure-aws-credentials@v2
           with:
             role-to-assume: arn:aws:iam::905418323334:role/ghactions-ecr
             aws-region: us-west-2
-        - name: Checkout Repository
-          uses: actions/checkout@v2
         - name: Login to Amazon ECR
           id: login-ecr
           uses: aws-actions/amazon-ecr-login@v1
-
-        - name: Build, tag, and push image to Amazon ECR 🏷
+        - name: Build, tag, and push image to Amazon ECR
           id: build-image
           env:
             ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-            ECR_REPOSITORY: "905418323334.dkr.ecr.us-west-2.amazonaws.com/${{ matrix.image_name }}"
-            IMAGE_TAG: v1
+            IMAGE_TAG: ${{ matrix.image_name }}
           run: |
-            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-            docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-            echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-
+            docker build -t $ECR_REGISTRY/$IMAGE_TAG .
+            docker push $ECR_REGISTRY/$IMAGE_TAG
