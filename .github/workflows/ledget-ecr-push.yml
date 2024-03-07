@@ -17,9 +17,9 @@ jobs:
           image_name: [ "ledget-rest-api:v1", "oathkeeper:v1" ]
           include:
             - image_name: "ledget-rest-api:v1"
-              context: "back"
+              context: "./back"
             - image_name: "oathkeeper:v1"
-              context: "oathkeeper"
+              context: "./oathkeeper"
       steps:
         - name: Checkout Repository
           uses: actions/checkout@v2
@@ -38,5 +38,5 @@ jobs:
             IMAGE_TAG: ${{ matrix.image_name }}
             CONTEXT: ${{ matrix.context }}
           run: |
-            docker build -t $ECR_REGISTRY/$IMAGE_TAG ./back
+            docker build -t $ECR_REGISTRY/$IMAGE_TAG $CONTEXT
             docker push $ECR_REGISTRY/$IMAGE_TAG
