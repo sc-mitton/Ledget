@@ -46,8 +46,7 @@ jobs:
               context: "./oathkeeper"
       # Build and push to correct ECR based on the branch
       steps:
-        - name: My first step - check out repository
-          uses: actions/checkout@v4
+        - uses: actions/checkout@v4
         - name: Build and push
           uses: ./.github/actions/build-and-push
           with:
