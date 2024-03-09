@@ -24,8 +24,6 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Checkout
       uses: actions/checkout@v4
-      with:
-        ref: ${{ github.ref }}
     - name: Test
       run: >
         docker-compose -f docker-compose.test.yml run --rm ledgetback sh -c "
@@ -50,8 +48,6 @@ jobs:
       steps:
         - name: Check out repository
           uses: actions/checkout@v4
-          with:
-            ref: ${{ github.ref }}
         - name: Build and push
           uses: ./.github/actions/build-and-push
           with:
