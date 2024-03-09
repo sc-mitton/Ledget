@@ -1,0 +1,36 @@
+name: Deploy to ECR
+description: Build Docker Image and Push to ECR
+inputs:
+  tag:
+    description: "Docker Image Tag"
+    required: true
+  context:
+    description: "Working Directory"
+    required: false
+    default: "."
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        role-to-assume: arn:aws:iam::905418323334:role/ghactions-ecr
+        aws-region: us-west-2
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+    - name: build
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ inputs.tag }}
+        CONTEXT: ${{ inputs.context }}
+      run: docker build -t $ECR_REGISTRY/$IMAGE_TAG $CONTEXT
+    - name: push
+      id: push-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ inputs.tag }}
+      run: docker push $ECR_REGISTRY/$IMAGE_TAG
