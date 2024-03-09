@@ -24,6 +24,8 @@ runs:
         aws-region: us-west-2
     - name: Login to Amazon ECR
       uses: aws-actions/amazon-ecr-login@v1
+      with:
+        mask-password: true
     - name: build
       shell: bash
       working-directory: ${{ inputs.context }}
@@ -31,7 +33,8 @@ runs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ inputs.tag }}
         VERSION: ${{ inputs.version }}
-      run: docker build -t $ECR_REGISTRY/$IMAGE_TAG:$VERSION
+        CONTEXT: ${{ inputs.context }}
+      run: docker build $CONTEXT -t $ECR_REGISTRY/$IMAGE_TAG:$VERSION
     - name: push
       shell: bash
       working-directory: ${{ inputs.context }}
