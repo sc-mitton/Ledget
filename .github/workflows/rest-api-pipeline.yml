@@ -42,10 +42,10 @@ jobs:
         include:
           - image_name: "ledget-rest-api"
             context: "./back"
-            version: 1
+            version: v1
           - image_name: "oathkeeper"
             context: "./oathkeeper"
-            version: 1
+            version: v1
     # Build and push to correct ECR based on the branch
     steps:
       - name: Check out repository
@@ -54,6 +54,6 @@ jobs:
         uses: ./.github/actions/build-and-push
         with:
           tag: ${{ matrix.image_name }}
-          context: ${{ matrix.context }}
           version: 'v1'
+          context: ${{ matrix.context }}
           role: ${{ github.ref == 'refs/heads/main' && 'arn:aws:iam::905418323334:role/ghactions-ecr' || github.ref == 'refs/heads/dev' && 'arn:aws:iam::471112601860:role/ghactions-ecr' }}
