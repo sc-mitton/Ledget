@@ -1,13 +1,20 @@
-# name: Web App Pipeline
+name: Web App Pipeline
 
-# on:
-#   push:
-#     branches: [ "main", "dev" ]
-#   pull_request:
-#     branches: [ "main", "dev" ]
-# permissions:
-#   id-token: write
-#   contents: read
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: [ "main", "dev" ]
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  dummy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dummy Step
+        run: echo "Dummy Step"
 
 # jobs:
 #   install:
@@ -20,19 +27,19 @@
 #           node-version: 16.15.1
 #       - run: npm ci
 #   build:
-#       needs: install
-#       runs-on: ubuntu-latest
-#       strategy:
-#         matrix:
-#           node-version: [ 16.x ]
-#       steps:
-#         - uses: actions/checkout@v3
-#         - name: Use node ${{ matrix.node-version }}
-#           uses: actions/setup-node@v3
-#           with:
-#             node-version: ${{ matrix.node-version }}
-#         - run: npm install
-#         - run: npm run build
+#     needs: install
+#     runs-on: ubuntu-latest
+#     strategy:
+#       matrix:
+#         node-version: [ 16.x ]
+#     steps:
+#       - uses: actions/checkout@v3
+#       - name: Use node ${{ matrix.node-version }}
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: ${{ matrix.node-version }}
+#       - run: npm install
+#       - run: npm run build
 #   test:
 #     needs: install
 #     runs-on: ubuntu-latest

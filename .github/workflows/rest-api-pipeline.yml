@@ -33,25 +33,25 @@ jobs:
     - name: Lint
       run: docker-compose -f docker-compose.test.yml run --rm ledgetback sh -c "flake8 --config=.flake8"
   build:
-      name: "Build and Push to ECR"
-      needs: test
-      runs-on: ubuntu-latest
-      strategy:
-        matrix:
-          image_name: [ "ledget-rest-api:v1", "oathkeeper:v1" ]
-          include:
-            - image_name: "ledget-rest-api:v1"
-              context: "./back"
-            - image_name: "oathkeeper:v1"
-              context: "./oathkeeper"
-      # Build and push to correct ECR based on the branch
-      steps:
-        - name: Check out repository
-          uses: actions/checkout@v4
-        - name: Build and push
-          uses: ./.github/actions/build-and-push
-          with:
-            tag: ${{ matrix.image_name }}
-            context: ${{ matrix.context }}
-            version: 'v1'
-            role: ${{ github.ref == 'refs/heads/main' && 'arn:aws:iam::905418323334:role/ghactions-ecr' || github.ref == 'refs/heads/dev' && 'arn:aws:iam::471112601860:role/ghactions-ecr' }}
+    name: "Build and Push to ECR"
+    needs: test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image_name: [ "ledget-rest-api:v1", "oathkeeper:v1" ]
+        include:
+          - image_name: "ledget-rest-api:v1"
+            context: "./back"
+          - image_name: "oathkeeper:v1"
+            context: "./oathkeeper"
+    # Build and push to correct ECR based on the branch
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Build and push
+        uses: ./.github/actions/build-and-push
+        with:
+          tag: ${{ matrix.image_name }}
+          context: ${{ matrix.context }}
+          version: 'v1'
+          role: ${{ github.ref == 'refs/heads/main' && 'arn:aws:iam::905418323334:role/ghactions-ecr' || github.ref == 'refs/heads/dev' && 'arn:aws:iam::471112601860:role/ghactions-ecr' }}
