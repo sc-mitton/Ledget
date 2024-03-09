@@ -23,7 +23,9 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USER }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.ref }}
     - name: Test
       run: >
         docker-compose -f docker-compose.test.yml run --rm ledgetback sh -c "
@@ -47,7 +49,7 @@ jobs:
       # Build and push to correct ECR based on the branch
       steps:
         - name: Check out repository
-          uses: actions/checkout@v2
+          uses: actions/checkout@v4
           with:
             ref: ${{ github.ref }}
         - name: Build and push
