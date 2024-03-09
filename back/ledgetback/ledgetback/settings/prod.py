@@ -12,8 +12,8 @@ from aws_secretsmanager_caching import SecretCache, SecretCacheConfig
 
 
 ALLOWED_HOSTS = ['ledget.app']
-DOMAIN_URL = "https://ledget.app:8000/"
-DOMAIN = 'ledget.app'
+DOMAIN_URL = "https://api.ledget.app:8000/"
+DOMAIN = 'api.ledget.app'
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_BROWSER_XSS_FILTER = True
@@ -22,7 +22,7 @@ SECURE_BROWSER_XSS_FILTER = True
 # ----------------------------------- Csrf ----------------------------------- #
 
 CSRF_TRUSTED_ORIGINS = ['https://ledget.app', 'https://accounts.ledget.app']
-CSRF_COOKIE_DOMAIN = 'ledget.app'
+CSRF_COOKIE_DOMAIN = '.ledget.app'
 
 # ---------------------------------- 3rd Party Services --------------------------------- #
 
