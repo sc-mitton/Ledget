@@ -4,6 +4,9 @@ inputs:
   tag:
     description: "Docker Image Tag"
     required: true
+  version:
+    description: "Docker Image Version"
+    required: true
   context:
     description: "Working Directory"
     required: false
@@ -26,8 +29,9 @@ runs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ inputs.tag }}
+        VERSION: ${{ inputs.version }}
         CONTEXT: ${{ inputs.context }}
-      run: docker build -t $ECR_REGISTRY/$IMAGE_TAG $CONTEXT
+      run: docker build -t $ECR_REGISTRY/$IMAGE_TAG:$VERSION $CONTEXT
     - name: push
       id: push-image
       env:

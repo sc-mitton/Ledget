@@ -52,3 +52,4 @@ jobs:
           with:
             tag: ${{ matrix.image_name }}
             context: ${{ matrix.context }}
+            version: 'v1'
