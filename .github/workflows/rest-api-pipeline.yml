@@ -38,12 +38,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        image_name: [ "ledget-rest-api:v1", "oathkeeper:v1" ]
+        image_name: [ "ledget-rest-api", "oathkeeper" ]
         include:
-          - image_name: "ledget-rest-api:v1"
+          - image_name: "ledget-rest-api"
             context: "./back"
-          - image_name: "oathkeeper:v1"
+            version: 1
+          - image_name: "oathkeeper"
             context: "./oathkeeper"
+            version: 1
     # Build and push to correct ECR based on the branch
     steps:
       - name: Check out repository

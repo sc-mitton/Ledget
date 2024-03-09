@@ -6,6 +6,7 @@ inputs:
     required: true
   version:
     description: "Docker Image Version"
+    default: "1"
     required: true
   context:
     description: "Working Directory"
@@ -34,7 +35,7 @@ runs:
         IMAGE_TAG: ${{ inputs.tag }}
         VERSION: ${{ inputs.version }}
         CONTEXT: ${{ inputs.context }}
-      run: docker build $CONTEXT -t $ECR_REGISTRY/$IMAGE_TAG:$VERSION
+      run: docker build $CONTEXT -t $ECR_REGISTRY/$IMAGE_TAG:v$VERSION
     - name: push
       shell: bash
       working-directory: ${{ inputs.context }}
