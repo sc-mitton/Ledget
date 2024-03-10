@@ -10,8 +10,8 @@ COPY requirements.prod.txt .
 COPY requirements.dev.txt .
 
 RUN pip install --upgrade pi
-ARG DEV
-RUN if [ $DEV = "true" ]; then \
+ARG ENVIRONMENT
+RUN if [ $ENVIRONMENT = "dev" ]; then \
     pip install -r requirements.dev.txt; \
     else \
     pip install -r requirements.prod.txt; \
@@ -28,10 +28,13 @@ RUN groupadd -g 999 python && \
 COPY --from=base /usr/local/lib/python3.11/site-packages/ /usr/local/lib/python3.11/site-packages/
 COPY --from=base /usr/local/bin/ /usr/local/bin/
 
+# Set API_VERSION env variable
+ARG VERSION
+ENV API_VERSION=$VERSION
+
 WORKDIR /ledgetback
 COPY ./ledgetback .
 RUN mkdir -p ./logs && touch ./logs/stripe_logs && touch ./logs/ledget_logs
-
 
 RUN chown -R python:python /ledgetback
 USER python

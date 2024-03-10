@@ -36,3 +36,4 @@ urlpatterns = [
      path('', include('financials.urls')),
      path('health', health, name='health'),
 ]
+

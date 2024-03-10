@@ -13,7 +13,7 @@
          "methods": [
             "GET"
          ],
-         "url": "https://localhost/api/v1/prices"
+         "url": "https://api.ledget.app/v1/prices"
       },
       "mutators": [
          {
@@ -36,7 +36,7 @@
          "methods": [
             "OPTIONS"
          ],
-         "url": "https://localhost/api/v1/<.*>"
+         "url": "https://api.ledget.app/v1/<.*>"
       },
       "mutators": [
          {
@@ -64,7 +64,7 @@
             "GET",
             "POST"
          ],
-         "url": "https://localhost/api/v1/devices"
+         "url": "https://api.ledget.app/v1/devices"
       },
       "mutators": [
          {
@@ -91,7 +91,7 @@
          "methods": [
             "DELETE"
          ],
-         "url": "https://localhost/api/v1/device/<[a-zA-Z0-9-]+>"
+         "url": "https://api.ledget.app/v1/device/<[a-zA-Z0-9-]+>"
       },
       "mutators": [
          {
@@ -119,7 +119,7 @@
             "GET",
             "PATCH"
          ],
-         "url": "https://localhost/api/v1/user/me"
+         "url": "https://api.ledget.app/v1/user/me"
       },
       "mutators": [
          {
@@ -146,7 +146,7 @@
          "methods": [
             "POST"
          ],
-         "url": "https://localhost/api/v1/user/email"
+         "url": "https://api.ledget.app/v1/user/email"
       },
       "mutators": [
          {
@@ -173,7 +173,7 @@
          "methods": [
             "GET"
          ],
-         "url": "https://localhost/api/v1/plaid_link_token"
+         "url": "https://api.ledget.app/v1/plaid_link_token"
       },
       "mutators": [
          {
@@ -200,7 +200,7 @@
          "methods": [
             "GET"
          ],
-         "url": "https://localhost/api/v1/plaid_link_token/<[a-zA-Z0-9]+>"
+         "url": "https://api.ledget.app/v1/plaid_link_token/<[a-zA-Z0-9]+>"
       },
       "mutators": [
          {
@@ -227,7 +227,7 @@
          "methods": [
             "POST"
          ],
-         "url": "https://localhost/api/v1/plaid_token_exchange"
+         "url": "https://api.ledget.app/v1/plaid_token_exchange"
       },
       "mutators": [
          {
@@ -254,7 +254,7 @@
          "methods": [
             "GET"
          ],
-         "url": "https://localhost/api/v1/plaid_items"
+         "url": "https://api.ledget.app/v1/plaid_items"
       },
       "mutators": [
          {
@@ -282,7 +282,7 @@
             "DELETE",
             "PATCH"
          ],
-         "url": "https://localhost/api/v1/plaid_item/<[a-zA-Z0-9]+>"
+         "url": "https://api.ledget.app/v1/plaid_item/<[a-zA-Z0-9]+>"
       },
       "mutators": [
          {
@@ -310,7 +310,7 @@
             "GET",
             "POST"
          ],
-         "url": "https://localhost/api/v1/default_payment_method"
+         "url": "https://api.ledget.app/v1/default_payment_method"
       },
       "mutators": [
          {
@@ -337,7 +337,7 @@
          "methods": [
             "POST"
          ],
-         "url": "https://localhost/api/v1/customer"
+         "url": "https://api.ledget.app/v1/customer"
       },
       "mutators": [
          {
@@ -365,7 +365,7 @@
             "POST",
             "GET"
          ],
-         "url": "https://localhost/api/v1/subscription"
+         "url": "https://api.ledget.app/v1/subscription"
       },
       "mutators": [
          {
@@ -393,7 +393,7 @@
             "POST",
             "DELETE"
          ],
-         "url": "https://localhost/api/v1/subscription/<[a-zA-Z0-9_]+>"
+         "url": "https://api.ledget.app/v1/subscription/<[a-zA-Z0-9_]+>"
       },
       "mutators": [
          {
@@ -420,7 +420,7 @@
          "methods": [
             "PUT"
          ],
-         "url": "https://localhost/api/v1/subscription_item"
+         "url": "https://api.ledget.app/v1/subscription_item"
       },
       "mutators": [
          {
@@ -449,7 +449,7 @@
             "GET",
             "PATCH"
          ],
-         "url": "https://localhost/api/v1/<(categories|category)>"
+         "url": "https://api.ledget.app/v1/<(categories|category)>"
       },
       "mutators": [
          {
@@ -476,7 +476,7 @@
          "methods": [
             "DELETE"
          ],
-         "url": "https://localhost/api/v1/categories/items"
+         "url": "https://api.ledget.app/v1/categories/items"
       },
       "mutators": [
          {
@@ -504,7 +504,7 @@
             "PUT",
             "PATCH"
          ],
-         "url": "https://localhost/api/v1/categories/<[a-zA-Z0-9-]+>"
+         "url": "https://api.ledget.app/v1/categories/<[a-zA-Z0-9-]+>"
       },
       "mutators": [
          {
@@ -531,7 +531,7 @@
          "methods": [
             "GET"
          ],
-         "url": "https://localhost/api/v1/categories/<[a-zA-Z0-9-]+>/spending-history"
+         "url": "https://api.ledget.app/v1/categories/<[a-zA-Z0-9-]+>/spending-history"
       },
       "mutators": [
          {
@@ -558,7 +558,7 @@
          "methods": [
             "POST"
          ],
-         "url": "https://localhost/api/v1/categories/order"
+         "url": "https://api.ledget.app/v1/categories/order"
       },
       "mutators": [
          {
@@ -586,7 +586,7 @@
             "GET",
             "POST"
          ],
-         "url": "https://localhost/api/v1/<(bills|bill)>"
+         "url": "https://api.ledget.app/v1/<(bills|bill)>"
       },
       "mutators": [
          {
@@ -614,7 +614,7 @@
             "PUT",
             "PATCH"
          ],
-         "url": "https://localhost/api/v1/bills/<[a-zA-Z0-9-]+>"
+         "url": "https://api.ledget.app/v1/bills/<[a-zA-Z0-9-]+>"
       },
       "mutators": [
          {
@@ -641,7 +641,7 @@
          "methods": [
             "DELETE"
          ],
-         "url": "https://localhost/api/v1/bills/<[a-zA-Z0-9-]+>"
+         "url": "https://api.ledget.app/v1/bills/<[a-zA-Z0-9-]+>"
       },
       "mutators": [
          {
@@ -668,7 +668,7 @@
          "methods": [
             "POST"
          ],
-         "url": "https://localhost/api/v1/transactions/sync"
+         "url": "https://api.ledget.app/v1/transactions/sync"
       },
       "mutators": [
          {
@@ -695,7 +695,7 @@
          "methods": [
             "GET"
          ],
-         "url": "https://localhost/api/v1/transactions"
+         "url": "https://api.ledget.app/v1/transactions"
       },
       "mutators": [
          {
@@ -722,7 +722,7 @@
          "methods": [
             "GET"
          ],
-         "url": "https://localhost/api/v1/transactions/count"
+         "url": "https://api.ledget.app/v1/transactions/count"
       },
       "mutators": [
          {
@@ -749,7 +749,7 @@
          "methods": [
             "GET"
          ],
-         "url": "https://localhost/api/v1/transactions/recurring/get"
+         "url": "https://api.ledget.app/v1/transactions/recurring/get"
       },
       "mutators": [
          {
@@ -776,7 +776,7 @@
          "methods": [
             "PATCH"
          ],
-         "url": "https://localhost/api/v1/transactions/<[a-zA-Z0-9-]+>"
+         "url": "https://api.ledget.app/v1/transactions/<[a-zA-Z0-9-]+>"
       },
       "mutators": [
          {
@@ -803,7 +803,7 @@
          "methods": [
             "POST"
          ],
-         "url": "https://localhost/api/v1/transactions/confirmation"
+         "url": "https://api.ledget.app/v1/transactions/confirmation"
       },
       "mutators": [
          {
@@ -830,7 +830,7 @@
          "methods": [
             "GET"
          ],
-         "url": "https://localhost/api/v1/transactions/merchants"
+         "url": "https://api.ledget.app/v1/transactions/merchants"
       },
       "mutators": [
          {
@@ -857,7 +857,7 @@
          "methods": [
             "POST"
          ],
-         "url": "https://localhost/api/v1/transactions/<[a-zA-Z0-9-]+>/note"
+         "url": "https://api.ledget.app/v1/transactions/<[a-zA-Z0-9-]+>/note"
       },
       "mutators": [
          {
@@ -885,7 +885,7 @@
             "PUT",
             "DELETE"
          ],
-         "url": "https://localhost/api/v1/transactions/<[a-zA-Z0-9-]+>/note/<[a-zA-Z0-9-]+>"
+         "url": "https://api.ledget.app/v1/transactions/<[a-zA-Z0-9-]+>/note/<[a-zA-Z0-9-]+>"
       },
       "mutators": [
          {
@@ -912,7 +912,7 @@
          "methods": [
             "GET"
          ],
-         "url": "https://localhost/api/v1/setup_intent"
+         "url": "https://api.ledget.app/v1/setup_intent"
       },
       "mutators": [
          {
@@ -939,7 +939,7 @@
          "methods": [
             "GET"
          ],
-         "url": "https://localhost/api/v1/next_invoice"
+         "url": "https://api.ledget.app/v1/next_invoice"
       },
       "mutators": [
          {
@@ -967,7 +967,7 @@
             "GET",
             "PATCH"
          ],
-         "url": "https://localhost/api/v1/accounts"
+         "url": "https://api.ledget.app/v1/accounts"
       },
       "mutators": [
          {
@@ -994,7 +994,7 @@
          "methods": [
             "GET"
          ],
-         "url": "https://localhost/api/v1/reminders"
+         "url": "https://api.ledget.app/v1/reminders"
       },
       "mutators": [
          {

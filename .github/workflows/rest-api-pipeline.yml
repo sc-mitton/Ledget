@@ -2,9 +2,9 @@ name: Rest Api Pipeline
 
 on:
     push:
-      branches: [ "main", "dev" ]
+      branches: [ "main", "uat", "dev" ]
     pull_request:
-      branches: [ "main", "dev" ]
+      branches: [ "main", "uat", "dev" ]
 permissions:
   id-token: write
   contents: read
@@ -33,6 +33,8 @@ jobs:
     - name: Lint
       run: docker-compose -f docker-compose.test.yml run --rm ledgetback sh -c "flake8 --config=.flake8"
   build:
+    # Don't build if pushing to dev branch
+    if: ${{ github.ref != 'refs/heads/main' }}
     name: "Build and Push to ECR"
     needs: test
     runs-on: ubuntu-latest
@@ -54,6 +56,7 @@ jobs:
         uses: ./.github/actions/build-and-push
         with:
           tag: ${{ matrix.image_name }}
-          version: 'v1'
+          version: ${{ matrix.version }}
           context: ${{ matrix.context }}
-          role: ${{ github.ref == 'refs/heads/main' && 'arn:aws:iam::905418323334:role/ghactions-ecr' || github.ref == 'refs/heads/dev' && 'arn:aws:iam::471112601860:role/ghactions-ecr' }}
+          role: ${{ github.ref == 'refs/heads/main' && 'arn:aws:iam::905418323334:role/ghactions-ecr' || github.ref == 'refs/heads/uat' && 'replace me' }}
+          environment: ${{ github.base_ref || github.ref_name }}

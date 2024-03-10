@@ -7,15 +7,8 @@ For more information on this file, see
 https://docs.djangoproject.com/en/4.2/howto/deployment/asgi/
 """
 
-import os
-
 from django.core.asgi import get_asgi_application
+from .set_django_settings import set_django_settings
 
-DEV = os.environ.get('DEV', False)
-if not DEV:
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ledgetback.settings.prod')
-else:
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ledgetback.settings.dev')
-
-
+set_django_settings()
 application = get_asgi_application()

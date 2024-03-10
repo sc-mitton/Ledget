@@ -132,7 +132,7 @@ export const cardOptions = {
 
 const UpdatePayment = (props) => {
     const navigate = useNavigate()
-    const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK_TEST)
+    const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK)
 
     return (
         <Elements stripe={stripePromise} options={cardOptions}>

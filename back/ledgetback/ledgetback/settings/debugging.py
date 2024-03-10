@@ -3,8 +3,8 @@ from .base import *  # noqa
 
 from .base import MIDDLEWARE, INSTALLED_APPS
 
-DEBUG = True
-SILK_DEBUG = os.environ.get('SILK_DEBUG', 'true').lower() == 'true'
+DEBUG = os.environ.get('DEBUG', '').lower() == 'true'
+SILK_DEBUG = os.environ.get('SILK_DEBUG', '').lower() == 'true'
 
 if SILK_DEBUG:
     MIDDLEWARE += [

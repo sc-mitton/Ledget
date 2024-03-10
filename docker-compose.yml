@@ -16,6 +16,9 @@ services:
     image: redis:7.2.1-alpine
   oathkeeper:
     build:
+      args:
+        - ENVIRONMENT=dev
+        - API_VERSION=1
       context: ./oathkeeper
     command: serve --config /etc/config/oathkeeper/config.yml
     labels:
@@ -52,7 +55,8 @@ services:
   ledgetback:
     build:
       args:
-        - DEV=true
+        - VERSION=1
+        - ENVIRONMENT=dev
       context: ./back
     command: >
       sh -c "
@@ -66,7 +70,7 @@ services:
       - "traefik.http.routers.silk.entrypoints=web"
       - "traefik.http.routers.hooks.tls=false"
 
-      - "traefik.http.routers.api.rule=(Host(`localhost`) && PathPrefix(`/api/v1/`))"
+      - "traefik.http.routers.api.rule=(Host(`localhost`) && PathPrefix(`/api/v*/`))"
       - "traefik.http.routers.api.entrypoints=websecure"
       - "traefik.http.routers.api.tls=true"
       - "traefik.http.routers.api.middlewares=oathkeeper,cors"
@@ -88,8 +92,9 @@ services:
       - DB_PORT=5432
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - DEBUG=true
       - SILK_DEBUG=true
-      - DEV=true
+      - ENVIRONMENT=dev
       - OATHKEEPER_ENDPOINT=http://oathkeeper:4456/.well-known/jwks.json
     volumes:
       - ./back/ledgetback:/ledgetback
@@ -117,11 +122,14 @@ services:
     volumes:
       - ./back/ledgetback:/ledgetback
     environment:
+      - OATHKEEPER_ENDPOINT=http://oathkeeper:4456/.well-known/jwks.json
+      - DJANGO_SETTINGS_MODULE=ledgetback.settings.dev
+      - DEV=true
       - DEBUG=true
-      - DJANGO_ALLOWED_HOSTS=localhost
+      - SILK_DEBUG=false
+      - ENVIRONMENT=dev
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
-      - SILK_DEBUG=false
       - DB_HOST=db
       - DB_NAME=devdb
       - DB_PORT=5432

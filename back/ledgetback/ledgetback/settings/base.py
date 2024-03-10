@@ -9,6 +9,8 @@ SITE_ID = 1
 
 # -------------------------- Application Definition -------------------------- #
 
+API_VERSION = 1
+
 DEFAULT_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -35,7 +37,6 @@ MIDDLEWARE = [
     'ledgetback.middleware.OryAuthenticationMiddleware',
     'ledgetback.middleware.CustomCsrfMiddleware',
 ]
-
 
 ROOT_URLCONF = 'ledgetback.urls'
 WSGI_APPLICATION = 'ledgetback.wsgi.application'

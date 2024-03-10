@@ -6,7 +6,6 @@ inputs:
     required: true
   version:
     description: "Docker Image Version"
-    default: "v1"
     required: true
   context:
     description: "Working Directory"
@@ -14,6 +13,9 @@ inputs:
     default: "."
   role:
     description: "Role to Assume"
+    required: true
+  environment:
+    description: "Environment"
     required: true
 runs:
   using: "composite"
@@ -37,8 +39,9 @@ runs:
         TAG: ${{ inputs.tag }}
         VERSION: ${{ inputs.version }}
         REGISTERY: ${{ steps.login-ecr.outputs.registry }}
+        ENVIRONMENT: ${{ inputs.environment }}
       run: |
-        docker build $CONTEXT -t $TAG:$VERSION
+        docker build $CONTEXT -t $TAG:$VERSION --build-arg ENVIRONMENT=$ENVIRONMENT --build-arg VERSION=$VERSION
         IMAGE_ID=$(docker images -q $TAG:$VERSION)
         docker tag $IMAGE_ID $REGISTERY/$TAG:$VERSION
         docker push $REGISTERY/$TAG:$VERSION

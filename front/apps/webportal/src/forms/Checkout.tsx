@@ -269,7 +269,7 @@ export const cardOptions = {
     }]
 }
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK_TEST)
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK)
 
 const CheckoutWindow = () => {
     const { isLoading } = useGetPricesQuery()
