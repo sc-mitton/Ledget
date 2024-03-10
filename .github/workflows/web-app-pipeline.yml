@@ -46,6 +46,7 @@ jobs:
     strategy:
       matrix:
         node-version: [ 16.x ]
+        apps: [ 'webhome', 'webportal' ]
     steps:
       - uses: actions/checkout@v3
       - name: Use node ${{ matrix.node-version }}
@@ -53,7 +54,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
-      - run: npm run build
+      - run: nx run ${{ matrix.apps }}:build
   test:
     needs: build
     runs-on: ubuntu-latest
