@@ -2,9 +2,9 @@ name: Web App Pipeline
 
 on:
   push:
-    branches: [ "main", "uat" ]
+    branches: [ "main", "uat", "dev" ]
   pull_request:
-    branches: [ "main", "uat" ]
+    branches: [ "main", "uat", "dev" ]
 permissions:
   id-token: write
   contents: read
