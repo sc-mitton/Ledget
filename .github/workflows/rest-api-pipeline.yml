@@ -34,7 +34,7 @@ jobs:
       run: docker-compose -f docker-compose.test.yml run --rm ledgetback sh -c "flake8 --config=.flake8"
   build:
     # Don't build if pushing to dev branch
-    if: ${{ github.ref != 'refs/heads/main' }}
+    if: ${{ github.ref != 'refs/heads/dev' }}
     name: "Build and Push to ECR"
     needs: test
     runs-on: ubuntu-latest
