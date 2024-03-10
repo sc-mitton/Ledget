@@ -55,7 +55,7 @@ jobs:
       - run: npm install
       - run: npm run build
   test:
-    needs: install
+    needs: build
     runs-on: ubuntu-latest
     defaults:
       run:
