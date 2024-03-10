@@ -22,6 +22,7 @@ services:
   ledgetback:
     build:
       args:
+        - ENVIRONMENT=dev
         - DEV=true
       context: ./back
     command: >
