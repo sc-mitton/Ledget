@@ -27,6 +27,9 @@ jobs:
     needs: changes
     if: ${{ needs.changes.outputs.src == 'true' }}
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./front
     steps:
       - uses: actions/checkout@v3
       - name: Use node 16.x
@@ -37,6 +40,9 @@ jobs:
   build:
     needs: install
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./front
     strategy:
       matrix:
         node-version: [ 16.x ]
@@ -51,12 +57,18 @@ jobs:
   test:
     needs: install
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./front
     steps:
       - name: Dummy Test
         run: echo "Dummy Test"
   deploy:
     needs: test
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./front
     steps:
       - name: Dummy Build
         run: echo "Dummy Build"
