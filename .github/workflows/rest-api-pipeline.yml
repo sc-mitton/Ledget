@@ -10,7 +10,21 @@ permissions:
   contents: read
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ steps.filter.outputs.output1 }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: dorny/paths-filter@v3
+      id: filter
+      with:
+        filters: |
+          output1:
+            - './back/**'
   test:
+    needs: changes
+    if: ${{ needs.changes.outputs.output1 == 'true' }}
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 2
