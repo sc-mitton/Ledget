@@ -1,0 +1,47 @@
+name: Web App Pipeline
+
+on:
+  push:
+    branches: [ "main", "uat", "dev" ]
+  pull_request:
+    branches: [ "main", "uat", "dev" ]
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    # Set job outputs to values from filter step
+    outputs:
+      src: ${{ steps.changes.outputs.output1 }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            src:
+              - './back/**'
+  deploy-accounts-app:
+    needs: changes
+    if: ${{ needs.changes.outputs.src == 'src' }}
+    strategy:
+      matrix:
+        app: [ 'webhome', 'webportal' ]
+        include:
+          - app: 'webhome'
+            version: 1
+            s3-bucket: ${{ github.ref == 'refs/heads/uat' && 'uat.ledget.app' || 'ledget.app' }}
+          - app: 'webportal'
+            version: 1
+            s3-bucket: ${{ github.ref == 'refs/heads/uat' && 'uataccounts.ledget.app' || 'accounts.ledget.app' }}
+    uses: ./.github/workflows/reusable/deploy-web-app.yml
+    with:
+      app: ${{ matrix.app }}
+      version: ${{ matrix.version }}
+      s3-bucket: ${{ matrix.s3-bucket }}
+      role: |
+        github.ref == 'refs/head/main' && 'arn:aws:iam::905418323334:role/ghactions-s3' ||
+        github.ref == 'refs/heads/uat' && 'replace me'
+      test-only: ${{ github.ref == 'refs/heads/dev' }}

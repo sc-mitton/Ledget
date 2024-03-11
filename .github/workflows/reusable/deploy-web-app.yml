@@ -1,31 +1,23 @@
-name: Web App Pipeline
-
 on:
-  push:
-    branches: [ "main", "uat", "dev" ]
-  pull_request:
-    branches: [ "main", "uat", "dev" ]
-permissions:
-  id-token: write
-  contents: read
-
+  workflow_call:
+    inputs:
+      app:
+        required: true
+        type: string
+      version:
+        required: true
+        type: string
+      s3-bucket:
+        required: true
+        type: string
+      test-only:
+        required: false
+        type: boolean
+      role:
+        required: true
+        type: string
 jobs:
-  changes:
-    runs-on: ubuntu-latest
-    # Set job outputs to values from filter step
-    outputs:
-      src: ${{ steps.changes.outputs.output1 }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: dorny/paths-filter@v3
-        id: changes
-        with:
-          filters: |
-            src:
-              - './back/**'
   install:
-    needs: changes
-    if: ${{ needs.changes.outputs.src == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -46,15 +38,16 @@ jobs:
     strategy:
       matrix:
         node-version: [ 16.x ]
-        apps: [ 'webhome', 'webportal' ]
     steps:
       - uses: actions/checkout@v3
       - name: Use node ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm install
-      - run: nx run ${{ matrix.apps }}:build
+      - name: Install Dependencies
+        run: npm install
+      - name: Build ${{ inputs.app }}
+        run: nx run ${{ inputs.app }}:build
   test:
     needs: build
     runs-on: ubuntu-latest
@@ -67,9 +60,20 @@ jobs:
   deploy:
     needs: test
     runs-on: ubuntu-latest
+    if: ${{ !inputs.test-only }}
+    permissions:
+      id-token: write
+      contents: read
     defaults:
       run:
         working-directory: ./front
     steps:
-      - name: Dummy Build
-        run: echo "Dummy Build"
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ inputs.role }}
+          aws-region: us-west-2
+      - name: Copy app to s3
+        run: |
+          aws s3 sync ./front/apps/${{ inputs.app }}/dist
+          s3://${{ inputs.s3-bucket }}.${{ inputs.version }}
