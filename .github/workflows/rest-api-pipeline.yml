@@ -5,6 +5,13 @@ on:
       branches: [ "main", "uat", "dev" ]
     pull_request:
       branches: [ "main", "uat", "dev" ]
+    workflow_dispatch:
+      inputs:
+        run_all:
+          description: 'Run all jobs'
+          required: false
+          default: false
+          type: 'boolean'
 permissions:
   id-token: write
   contents: read
@@ -25,7 +32,7 @@ jobs:
             - './back/**'
   test:
     needs: changes
-    if: ${{ needs.changes.outputs.src == 'true' }}
+    if: ${{ needs.changes.outputs.src == 'true' || github.event_name == 'workflow_dispatch' && github.event.inputs.run_all == true }}
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 2
