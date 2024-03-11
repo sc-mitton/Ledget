@@ -1,10 +1,6 @@
 name: Web App Pipeline
 
 on:
-  push:
-    branches: [ "main", "uat", "dev" ]
-  pull_request:
-    branches: [ "main", "uat", "dev" ]
   workflow_dispatch:
     inputs:
       run_all:
@@ -12,6 +8,7 @@ on:
         required: false
         default: false
         type: 'boolean'
+
 permissions:
   id-token: write
   contents: read
