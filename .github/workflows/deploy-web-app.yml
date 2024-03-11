@@ -77,3 +77,4 @@ jobs:
         run: |
           aws s3 sync ./front/apps/${{ inputs.app }}/dist
           s3://${{ inputs.s3-bucket }}.${{ inputs.version }}
+

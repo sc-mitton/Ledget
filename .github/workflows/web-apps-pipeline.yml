@@ -36,7 +36,7 @@ jobs:
           - app: 'webportal'
             version: 1
             s3-bucket: ${{ github.ref == 'refs/heads/uat' && 'uataccounts.ledget.app' || 'accounts.ledget.app' }}
-    uses: ./.github/workflows/reusable/deploy-web-app.yml
+    uses: ./.github/workflows/deploy-web-app.yml
     with:
       app: ${{ matrix.app }}
       version: ${{ matrix.version }}
