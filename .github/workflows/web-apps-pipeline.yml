@@ -1,6 +1,10 @@
-name: Web App Pipeline
+name: Web Apps Pipeline
 
 on:
+  push:
+    branches: [ "main", "uat", "dev" ]
+  pull_request:
+    branches: [ "main", "uat", "dev" ]
   workflow_dispatch:
     inputs:
       run_all:
