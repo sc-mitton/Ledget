@@ -33,7 +33,7 @@ jobs:
               - './back/**'
   deploy-accounts-app:
     needs: changes
-    if: ${{ needs.changes.outputs.src == 'src' || github.event_name == 'workflow_dispatch' && github.event.inputs.run_all == true }}
+    if: ${{ needs.changes.outputs.src == 'src' && !github.event_name == 'workflow_dispatch' && !github.event.inputs.run_all == true }}
     strategy:
       matrix:
         app: [ 'webhome', 'webportal' ]

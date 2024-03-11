@@ -32,7 +32,7 @@ jobs:
             - './back/**'
   test:
     needs: changes
-    if: ${{ needs.changes.outputs.src == 'true' || github.event_name == 'workflow_dispatch' && github.event.inputs.run_all == true }}
+    if: ${{ needs.changes.outputs.src == 'src' && !github.event_name == 'workflow_dispatch' && !github.event.inputs.run_all == true }}
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 2
