@@ -40,9 +40,11 @@ jobs:
         include:
           - app: 'webhome'
             version: 1
+          - app: 'webportal'
             s3-bucket: ${{ github.ref == 'refs/heads/uat' && 'uat.ledget.app' || 'ledget.app' }}
           - app: 'webportal'
             version: 1
+          - app: 'webportal'
             s3-bucket: ${{ github.ref == 'refs/heads/uat' && 'uataccounts.ledget.app' || 'accounts.ledget.app' }}
     uses: ./.github/workflows/deploy-web-app.yml
     with:
