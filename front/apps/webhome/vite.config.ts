@@ -9,37 +9,34 @@ import { visualizer } from "rollup-plugin-visualizer";
 // root dir of nx monorepo
 const certsDir = __dirname + '/../../certs/';
 
-const devServerConfig = {
-  watch: {
-    usePolling: true,
-    interval: 100,
-  },
-  port: 3000,
-  host: 'localhost',
-  strictPort: true,
-  https: {
-    key: fs.readFileSync(certsDir + 'localhost.key'),
-    cert: fs.readFileSync(certsDir + 'localhost.crt'),
-    ca: fs.readFileSync(certsDir + 'ledgetCA.pem'),
-  }
-}
-
-const previewConfig = {
-  port: 3300,
-  host: 'localhost',
-  strictPort: true,
-  https: {
-    key: fs.readFileSync(certsDir + 'localhost.key'),
-    cert: fs.readFileSync(certsDir + 'localhost.crt'),
-    ca: fs.readFileSync(certsDir + 'ledgetCA.pem'),
-  }
-}
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/webhome',
 
-  server: process.env.NODE_ENV === 'dev' ? devServerConfig : {},
-  preview: process.env.NODE_ENV === 'dev' ? previewConfig : {},
+  server: {
+    watch: {
+      usePolling: true,
+      interval: 100,
+    },
+    port: 3000,
+    host: 'localhost',
+    strictPort: true,
+    https: {
+      key: fs.existsSync(certsDir + 'localhost.key') ? fs.readFileSync(certsDir + 'localhost.key') : '',
+      cert: fs.existsSync(certsDir + 'localhost.crt') ? fs.readFileSync(certsDir + 'localhost.crt') : '',
+      ca: fs.existsSync(certsDir + 'ledgetCA.pem') ? fs.readFileSync(certsDir + 'ledgetCA.pem') : '',
+    }
+  },
+  preview: {
+    port: 3300,
+    host: 'localhost',
+    strictPort: true,
+    https: {
+      key: fs.existsSync(certsDir + 'localhost.key') ? fs.readFileSync(certsDir + 'localhost.key') : '',
+      cert: fs.existsSync(certsDir + 'localhost.crt') ? fs.readFileSync(certsDir + 'localhost.crt') : '',
+      ca: fs.existsSync(certsDir + 'ledgetCA.pem') ? fs.readFileSync(certsDir + 'ledgetCA.pem') : '',
+    }
+  },
 
   plugins: [react(), nxViteTsPaths(), visualizer()],
 
