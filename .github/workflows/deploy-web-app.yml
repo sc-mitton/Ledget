@@ -36,7 +36,7 @@ jobs:
         with:
           version: 8
       - name: Install Dependencies
-        run: pnpm ci
+        run: pnpm install --frozen-lockfile
       - name: Build ${{ inputs.app }}
         run: nx run ${{ inputs.app }}:build
   test:
