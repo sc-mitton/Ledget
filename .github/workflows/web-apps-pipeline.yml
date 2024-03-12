@@ -40,7 +40,7 @@ jobs:
         include:
           - app: 'webhome'
             version: 1
-          - app: 'webportal'
+          - app: 'webhome'
             s3-bucket: ${{ github.ref == 'refs/heads/uat' && 'uat.ledget.app' || 'ledget.app' }}
           - app: 'webportal'
             version: 1
