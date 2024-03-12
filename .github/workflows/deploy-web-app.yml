@@ -31,8 +31,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      - name: pnpm setup
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Install Dependencies
+        run: pnpm install
       - name: Build ${{ inputs.app }}
-        run: npx nx run ${{ inputs.app }}:build
+        run: nx run ${{ inputs.app }}:build
   test:
     needs: build
     runs-on: ubuntu-latest
