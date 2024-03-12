@@ -69,5 +69,6 @@ export default defineConfig({
     rollupOptions: {
       external: ['lodash.clamp', 'lodash.startcase', 'lodash.tolower'],
     },
+    chunkSizeWarningLimit: 1024 * 1024,
   }
 });
