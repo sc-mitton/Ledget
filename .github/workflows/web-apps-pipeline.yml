@@ -51,7 +51,7 @@ jobs:
       role: |
         github.ref == 'refs/head/main' && 'arn:aws:iam::905418323334:role/ghactions-s3' ||
         github.ref == 'refs/heads/uat' && 'replace me'
-      test-only: ${{ github.ref == 'refs/heads/dev' || github.event.inputs.test_only }}
+      test-only: ${{ github.ref == 'refs/heads/dev' || github.event.inputs.test_only == true }}
   deploy-webhome-app:
     needs: changes
     if: ${{ github.event_name != 'workflow_dispatch' || (github.event.inputs.apps_to_run == 'all' || github.event.inputs.apps_to_run == 'webhome') }}
@@ -63,4 +63,4 @@ jobs:
       role: |
         github.ref == 'refs/head/main' && 'arn:aws:iam::905418323334:role/ghactions-s3' ||
         github.ref == 'refs/heads/uat' && 'replace me'
-      test-only: ${{ github.ref == 'refs/heads/dev' || github.event.inputs.test_only }}
+      test-only: ${{ github.ref == 'refs/heads/dev' || github.event.inputs.test_only == true }}
