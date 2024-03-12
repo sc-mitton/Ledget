@@ -41,8 +41,8 @@ jobs:
             src:
                 - './back/**'
   depoly-webportal-app:
+    if: ${{ github.event_name == 'workflow_dispatch'}}
     needs: changes
-    if: ${{ github.event_name != 'workflow_dispatch'}}
     uses: ./.github/workflows/deploy-web-app.yml
     with:
       app: 'webportal'
@@ -53,8 +53,8 @@ jobs:
         github.ref == 'refs/heads/uat' && 'replace me'
       test-only: ${{ github.ref == 'refs/heads/dev' || github.event.inputs.test_only == true }}
   deploy-webhome-app:
+    if: ${{ github.event_name == 'workflow_dispatch'  }}
     needs: changes
-    if: ${{ github.event_name != 'workflow_dispatch'  }}
     uses: ./.github/workflows/deploy-web-app.yml
     with:
       app: 'webhome'
