@@ -31,8 +31,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Install Dev Dependencies
+        run: npm install -D
       - name: Install Dependencies
-        run: npm install --include=dev
+        run: npm install
       - name: Build ${{ inputs.app }}
         run: nx run ${{ inputs.app }}:build
   test:
