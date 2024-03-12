@@ -27,7 +27,7 @@ jobs:
       - name: Use node 16.x
         uses: actions/setup-node@v2
         with:
-          node-version: 16.15.1
+          node-version: 21.4.0
       - run: npm ci
   build:
     needs: install
