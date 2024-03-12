@@ -18,7 +18,7 @@ on:
         type: string
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./front
@@ -35,15 +35,13 @@ jobs:
         uses: pnpm/action-setup@v2
         with:
           version: 8.11
-      - name: Install Dev Dependencies
-        run: pnpm install -D
       - name: Install Dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
       - name: Build ${{ inputs.app }}
         run: nx run ${{ inputs.app }}:build
   test:
     needs: build
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./front
@@ -52,7 +50,7 @@ jobs:
         run: echo "Dummy Test"
   deploy:
     needs: test
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     if: ${{ !inputs.test-only }}
     permissions:
       id-token: write
