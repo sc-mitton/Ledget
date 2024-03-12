@@ -24,7 +24,6 @@
     "@types/lodash.startcase": "^4.4.9",
     "@types/lodash.tolower": "^4.1.9",
     "@types/react-router-hash-link": "^2.4.9",
-    "@types/react-textarea-autosize": "^8.0.0",
     "@use-gesture/react": "^10.2.27",
     "axios": "^1.4.0",
     "big.js": "^6.2.1",
