@@ -1,20 +1,10 @@
 import { useEffect, useState, useRef } from 'react'
 
 import { useTransition, animated, useSpringRef } from '@react-spring/web';
-import Color from 'color';
 
 import './misc.scss'
 import { formatCurrency } from '../../utils/funcs'
 import { useLoaded } from '../../utils/hooks';
-import { Tooltip } from '../../pieces/tooltip/tooltip';
-
-function getContrastColor(bgColor: string | undefined) {
-  const color = Color(bgColor);
-  const whiteContrast = color.contrast(Color('white'));
-  const blackContrast = color.contrast(Color('black'));
-
-  return whiteContrast > blackContrast ? 'white' : 'black';
-}
 
 interface Base64LogoProps {
   data?: string;
