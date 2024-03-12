@@ -24,7 +24,7 @@ jobs:
         working-directory: ./front
     steps:
       - uses: actions/checkout@v3
-      - name: Use node 16.x
+      - name: Use node 21.x
         uses: actions/setup-node@v2
         with:
           node-version: 21.4.0
@@ -37,7 +37,7 @@ jobs:
         working-directory: ./front
     strategy:
       matrix:
-        node-version: [ 16.x ]
+        node-version: [ 21.x ]
     steps:
       - uses: actions/checkout@v3
       - name: Use node ${{ matrix.node-version }}
