@@ -17,20 +17,7 @@ on:
         required: true
         type: string
 jobs:
-  install:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./front
-    steps:
-      - uses: actions/checkout@v3
-      - name: Use node 21.x
-        uses: actions/setup-node@v2
-        with:
-          node-version: 21.4.0
-      - run: npm ci
   build:
-    needs: install
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -44,8 +31,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      - name: pnpm setup
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
       - name: Install Dependencies
-        run: npm install
+        run: pnpm ci
       - name: Build ${{ inputs.app }}
         run: nx run ${{ inputs.app }}:build
   test:
