@@ -8,34 +8,37 @@ import { visualizer } from "rollup-plugin-visualizer";
 
 const certsDir = __dirname + '/../../certs/';
 
+const devServerConfig = {
+  watch: {
+    usePolling: true,
+    interval: 100,
+  },
+  port: 3001,
+  host: 'localhost',
+  strictPort: true,
+  https: {
+    key: fs.readFileSync(certsDir + 'localhost.key'),
+    cert: fs.readFileSync(certsDir + 'localhost.crt'),
+    ca: fs.readFileSync(certsDir + 'ledgetCA.pem'),
+  }
+}
+
+const previewConfig = {
+  port: 3301,
+  host: 'localhost',
+  strictPort: true,
+  https: {
+    key: fs.readFileSync(certsDir + 'localhost.key'),
+    cert: fs.readFileSync(certsDir + 'localhost.crt'),
+    ca: fs.readFileSync(certsDir + 'ledgetCA.pem'),
+  }
+}
+
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/webportal',
 
-  server: {
-    watch: {
-      usePolling: true,
-      interval: 100,
-    },
-    port: 3001,
-    host: 'localhost',
-    strictPort: true,
-    https: {
-      key: fs.readFileSync(certsDir + 'localhost.key'),
-      cert: fs.readFileSync(certsDir + 'localhost.crt'),
-      ca: fs.readFileSync(certsDir + 'ledgetCA.pem'),
-    }
-  },
-
-  preview: {
-    port: 3301,
-    host: 'localhost',
-    strictPort: true,
-    https: {
-      key: fs.readFileSync(certsDir + 'localhost.key'),
-      cert: fs.readFileSync(certsDir + 'localhost.crt'),
-      ca: fs.readFileSync(certsDir + 'ledgetCA.pem'),
-    }
-  },
+  server: process.env.NODE_ENV === 'dev' ? devServerConfig : {},
+  preview: process.env.NODE_ENV === 'dev' ? previewConfig : {},
 
   plugins: [react(), nxViteTsPaths(), visualizer()],
 
