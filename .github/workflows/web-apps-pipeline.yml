@@ -7,11 +7,20 @@ on:
     branches: [ "main", "uat", "dev" ]
   workflow_dispatch:
     inputs:
-      run_all:
-        description: 'Run all jobs'
+      apps_to_run:
+        description: 'Select apps to run'
         required: false
-        default: false
+        type: 'choice'
+        default: 'all'
+        options:
+          - 'all'
+          - 'webhome'
+          - 'webportal'
+      test_only:
+        description: 'Run only tests'
+        required: false
         type: 'boolean'
+        default: false
 
 permissions:
   id-token: write
@@ -31,27 +40,27 @@ jobs:
           filters: |
             src:
                 - './back/**'
-  deploy-accounts-app:
+  depoly-webportal-app:
     needs: changes
-    if: ${{ needs.changes.outputs.src == 'true' || (github.event_name == 'workflow_dispatch' && github.event.inputs.run_all == true) }}
-    strategy:
-      matrix:
-        app: [ 'webhome', 'webportal' ]
-        include:
-          - app: 'webhome'
-            version: 1
-          - app: 'webhome'
-            s3-bucket: ${{ github.ref == 'refs/heads/uat' && 'uat.ledget.app' || 'ledget.app' }}
-          - app: 'webportal'
-            version: 1
-          - app: 'webportal'
-            s3-bucket: ${{ github.ref == 'refs/heads/uat' && 'uataccounts.ledget.app' || 'accounts.ledget.app' }}
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.apps_to_run != 'all' && github.event.inputs.apps_to_run != 'webhome' }}
     uses: ./.github/workflows/deploy-web-app.yml
     with:
-      app: ${{ matrix.app }}
-      version: ${{ matrix.version }}
-      s3-bucket: ${{ matrix.s3-bucket }}
+      app: 'webportal'
+      version: 1
+      s3-bucket: ${{ github.ref == 'refs/heads/uat' && 'uataccounts.ledget.app' || 'accounts.ledget.app' }}
       role: |
         github.ref == 'refs/head/main' && 'arn:aws:iam::905418323334:role/ghactions-s3' ||
         github.ref == 'refs/heads/uat' && 'replace me'
-      test-only: ${{ github.ref == 'refs/heads/dev' }}
+      test-only: ${{ github.ref == 'refs/heads/dev' || github.event.inputs.test_only }}
+  deploy-webhome-app:
+    needs: changes
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.apps_to_run != 'all' && github.event.inputs.apps_to_run != 'webportal' }}
+    uses: ./.github/workflows/deploy-web-app.yml
+    with:
+      app: 'webhome'
+      version: 1
+      s3-bucket: ${{ github.ref == 'refs/heads/uat' && 'uatwebhome.ledget.app' || 'webhome.ledget.app' }}
+      role: |
+        github.ref == 'refs/head/main' && 'arn:aws:iam::905418323334:role/ghactions-s3' ||
+        github.ref == 'refs/heads/uat' && 'replace me'
+      test-only: ${{ github.ref == 'refs/heads/dev' || github.event.inputs.test_only }}

@@ -60,7 +60,7 @@ jobs:
         working-directory: ./front
     steps:
       - name: Dummy Test
-        run: echo "Dummy Test"
+        run: echo Dummy Test
   deploy:
     needs: test
     runs-on: ubuntu-latest
