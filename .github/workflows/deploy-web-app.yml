@@ -61,4 +61,4 @@ jobs:
           aws-region: us-west-2
       - name: Copy app to s3
         run: |
-          aws s3 sync ./apps/${{ inputs.app }}/dist s3://${{ inputs.s3-bucket }}.${{ inputs.version }}
+          aws s3 sync ./apps/${{ inputs.app }}/dist s3://${{ inputs.s3-bucket }}.v${{ inputs.version }}
