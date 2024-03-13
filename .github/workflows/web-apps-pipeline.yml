@@ -41,7 +41,10 @@ jobs:
             src:
                 - './back/**'
   depoly-webportal-app:
-    if: ${{ (github.event_name == 'workflow_dispatch' && (github.event.inputs.apps_to_run == 'all' || github.event.inputs.apps_to_run == 'webportal'))}}
+    if: |
+      ${{ (github.event_name != 'workflow_dispatch' && needs.changes.outputs.src == true)
+        || (github.event_name == 'workflow_dispatch' && (github.event.inputs.apps_to_run == 'all'
+          || github.event.inputs.apps_to_run == 'webportal'))}}
     needs: changes
     uses: ./.github/workflows/deploy-web-app.yml
     with:
@@ -53,7 +56,10 @@ jobs:
         github.ref == 'refs/heads/uat' && 'replace me'
       test-only: ${{ github.ref == 'refs/heads/dev' || github.event.inputs.test_only == true }}
   deploy-webhome-app:
-    if: ${{ (github.event_name == 'workflow_dispatch' && (github.event.inputs.apps_to_run == 'all' || github.event.inputs.apps_to_run == 'webhome'))}}
+    if: |
+      ${{ (github.event_name != 'workflow_dispatch' && needs.changes.outputs.src == true)
+      || (github.event_name == 'workflow_dispatch' && (github.event.inputs.apps_to_run == 'all'
+        || github.event.inputs.apps_to_run == 'webhome'))}}
     needs: changes
     uses: ./.github/workflows/deploy-web-app.yml
     with:
