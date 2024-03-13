@@ -48,7 +48,7 @@ jobs:
       app: 'webportal'
       version: 1
       s3-bucket: ${{ github.ref == 'refs/heads/uat' && 'uataccounts.ledget.app' || 'accounts.ledget.app' }}
-      role: ${{ github.ref == 'refs/head/main' && 'arn:aws:iam::905418323334:role/gh-actions' || github.ref == 'refs/heads/uat' && 'replace me' }}
+      role: ${{ github.ref == 'refs/heads/main' && 'arn:aws:iam::905418323334:role/gh-actions' || github.ref == 'refs/heads/uat' && 'replace me' }}
       test-only: ${{ github.ref == 'refs/heads/dev' || github.event.inputs.test_only == true }}
   deploy-webhome-app:
     if: ${{ (github.event_name != 'workflow_dispatch' && needs.changes.outputs.src == true) || (github.event_name == 'workflow_dispatch' && (github.event.inputs.apps_to_run == 'all' || github.event.inputs.apps_to_run == 'webhome'))}}
