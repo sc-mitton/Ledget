@@ -55,6 +55,9 @@ jobs:
   test:
     needs: build
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./front
     steps:
       - name: Dummy Test
         run: echo Dummy Test
@@ -62,6 +65,9 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     if: ${{ !inputs.test-only }}
+    defaults:
+      run:
+        working-directory: ./front
     permissions:
       id-token: write
       contents: read
@@ -71,10 +77,6 @@ jobs:
         with:
           role-to-assume: ${{ inputs.role }}
           aws-region: us-west-2
-      - name: Install tree
-        run: sudo apt-get install tree
-      - name: List files 4 levels deep
-        run: tree -L 5
       - name: Copy app to s3
         run: |
           aws s3 sync ./apps/${{ inputs.app }}/dist s3://${{ inputs.s3-bucket }}.${{ inputs.version }}
