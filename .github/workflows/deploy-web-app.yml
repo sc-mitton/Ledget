@@ -55,9 +55,6 @@ jobs:
   test:
     needs: build
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./front
     steps:
       - name: Dummy Test
         run: echo Dummy Test
