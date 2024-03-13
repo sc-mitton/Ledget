@@ -62,9 +62,6 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     if: ${{ !inputs.test-only }}
-    defaults:
-      run:
-        working-directory: ./front
     permissions:
       id-token: write
       contents: read
