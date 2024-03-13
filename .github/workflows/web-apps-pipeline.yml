@@ -58,5 +58,5 @@ jobs:
       app: 'webhome'
       version: 1
       s3-bucket: ${{ github.ref == 'refs/heads/uat' && 'uatwebhome.ledget.app' || 'webhome.ledget.app' }}
-      role: ${{ github.ref == 'refs/head/main' && 'arn:aws:iam::905418323334:role/gh-actions' || github.ref == 'refs/heads/uat' && 'replace me' }}
+      role: ${{ github.ref == 'refs/heads/main' && 'arn:aws:iam::905418323334:role/gh-actions' || github.ref == 'refs/heads/uat' && 'replace me' }}
       test-only: ${{ github.ref == 'refs/heads/dev' || github.event.inputs.test_only == true }}
