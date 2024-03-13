@@ -49,7 +49,7 @@ jobs:
       version: 1
       s3-bucket: ${{ github.ref == 'refs/heads/uat' && 'uataccounts.ledget.app' || 'accounts.ledget.app' }}
       role: |
-        github.ref == 'refs/head/main' && 'arn:aws:iam::905418323334:role/ghactions-s3' ||
+        github.ref == 'refs/head/main' && 'arn:aws:iam::905418323334:role/gh-actions' ||
         github.ref == 'refs/heads/uat' && 'replace me'
       test-only: ${{ github.ref == 'refs/heads/dev' || github.event.inputs.test_only == true }}
   deploy-webhome-app:
@@ -61,6 +61,6 @@ jobs:
       version: 1
       s3-bucket: ${{ github.ref == 'refs/heads/uat' && 'uatwebhome.ledget.app' || 'webhome.ledget.app' }}
       role: |
-        github.ref == 'refs/head/main' && 'arn:aws:iam::905418323334:role/ghactions-s3' ||
+        github.ref == 'refs/head/main' && 'arn:aws:iam::905418323334:role/gh-actions' ||
         github.ref == 'refs/heads/uat' && 'replace me'
       test-only: ${{ github.ref == 'refs/heads/dev' || github.event.inputs.test_only == true }}

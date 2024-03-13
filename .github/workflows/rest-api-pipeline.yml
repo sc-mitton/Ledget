@@ -80,5 +80,5 @@ jobs:
           tag: ${{ matrix.image_name }}
           version: ${{ matrix.version }}
           context: ${{ matrix.context }}
-          role: ${{ github.ref == 'refs/heads/main' && 'arn:aws:iam::905418323334:role/ghactions-ecr' || github.ref == 'refs/heads/uat' && 'replace me' }}
+          role: ${{ github.ref == 'refs/heads/main' && 'arn:aws:iam::905418323334:role/gh-actions' || github.ref == 'refs/heads/uat' && 'replace me' }}
           environment: ${{ github.base_ref || github.ref_name }}
