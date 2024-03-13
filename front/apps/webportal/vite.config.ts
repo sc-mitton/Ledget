@@ -63,6 +63,7 @@ export default defineConfig({
   },
 
   build: {
+    outDir: './dist',
     rollupOptions: {
       external: ['lodash.clamp', 'lodash.startcase', 'lodash.tolower'],
     },

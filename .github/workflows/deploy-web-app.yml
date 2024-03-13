@@ -51,7 +51,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Build ${{ inputs.app }}
-        run: pnpm nx run ${{ inputs.app }}:build --output-path=apps/${{ inputs.app }}/dist
+        run: pnpm nx run ${{ inputs.app }}:build
   test:
     needs: build
     runs-on: ubuntu-latest
