@@ -74,4 +74,4 @@ jobs:
       - uses: actions/checkout@v3
       - name: Copy app to s3
         run: |
-          aws s3 sync ./front/apps/${{ inputs.app }}/dist s3://${{ inputs.s3-bucket }}.${{ inputs.version }}
+          aws s3 sync ./dist s3://${{ inputs.s3-bucket }}.${{ inputs.version }}
