@@ -16,7 +16,6 @@ export const apiSlice = createApi({
             return headers
         },
     }),
-
     tagTypes: [
         'Transaction',
         'Bill',
