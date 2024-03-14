@@ -19,7 +19,7 @@ jobs:
         with:
           filters: |
             src:
-                - './lambad-dynamic-router/*'
+                - './lamba-dynamic-router/*'
   deploy:
     if: ${{ needs.changes.outputs.src }}
     needs: changes
