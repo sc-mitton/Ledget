@@ -41,7 +41,7 @@ jobs:
             src:
                 - './back/**'
   depoly-webportal-app:
-    if: ${{ (github.event_name != 'workflow_dispatch' && needs.changes.outputs.src == true) || (github.event_name == 'workflow_dispatch' && (github.event.inputs.apps_to_run == 'all' || github.event.inputs.apps_to_run == 'webportal'))}}
+    if: ${{ needs.changes.outputs.src == true || (github.event_name == 'workflow_dispatch' && (github.event.inputs.apps_to_run == 'all' || github.event.inputs.apps_to_run == 'webportal'))}}
     needs: changes
     uses: ./.github/workflows/deploy-web-app.yml
     with:
@@ -52,7 +52,7 @@ jobs:
       test-only: ${{ github.ref == 'refs/heads/dev' || github.event.inputs.test_only == true }}
       environment: ${{ github.ref == 'refs/heads/main' && 'prod' || github.head_ref || github.ref_name }}
   deploy-webhome-app:
-    if: ${{ (github.event_name != 'workflow_dispatch' && needs.changes.outputs.src == true) || (github.event_name == 'workflow_dispatch' && (github.event.inputs.apps_to_run == 'all' || github.event.inputs.apps_to_run == 'webhome'))}}
+    if: ${{ needs.changes.outputs.src == true || (github.event_name == 'workflow_dispatch' && (github.event.inputs.apps_to_run == 'all' || github.event.inputs.apps_to_run == 'webhome'))}}
     needs: changes
     uses: ./.github/workflows/deploy-web-app.yml
     with:
