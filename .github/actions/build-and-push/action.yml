@@ -24,7 +24,7 @@ runs:
       uses: aws-actions/configure-aws-credentials@v2
       with:
         role-to-assume: ${{ inputs.role }}
-        aws-region: us-west-2
+        aws-region: ${{ secrets.AWS_REGION }}
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
@@ -34,7 +34,7 @@ runs:
       shell: bash
       env:
         AWS_ACCOUNT_ID: ${{ steps.login-ecr.outputs.account_id }}
-        AWS_REGION: us-west-2
+        AWS_REGION: ${{ secrets.AWS_REGION }}
         CONTEXT: ${{ inputs.context }}
         TAG: ${{ inputs.tag }}
         VERSION: ${{ inputs.version }}

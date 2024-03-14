@@ -61,8 +61,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: ${{ inputs.role }}
-          aws-region: us-west-2
+          aws-region: ${{ secrets.AWS_REGION }}
       - name: Replace s3 bucket contents
         run: |
-          aws s3 rm s3://${{ inputs.s3-bucket }}.v${{ inputs.version }} --recursive
-          aws s3 sync ./apps/${{ inputs.app }}/dist s3://${{ inputs.s3-bucket }}.v${{ inputs.version }}
+          aws s3 sync --delete ./apps/${{ inputs.app }}/dist s3://${{ inputs.s3-bucket }}.v${{ inputs.version }}

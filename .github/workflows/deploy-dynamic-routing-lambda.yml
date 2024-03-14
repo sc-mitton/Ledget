@@ -1,0 +1,45 @@
+name: Deploy Dynamic Routing Lambda
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    # Set job outputs to values from filter step
+    outputs:
+      src: ${{ steps.changes.outputs.src }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            src:
+                - './lambad-dynamic-router/*'
+  deploy:
+    if: ${{ needs.changes.outputs.src }}
+    needs: changes
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./lambad-dynamic-router
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_PROD }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Zip Lambda
+        shell: bash
+        run: |
+          zip -r lambda.zip .
+      - name: Deploy Lambda
+        run: |
+          aws s3 sync --delete . s3://ledget-dynamic-route-lambda
