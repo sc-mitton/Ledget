@@ -1,6 +1,6 @@
 local version = 'v0.36.0-beta.4';
 local ory_project = 'reverent-lewin-bqqp1o2zws';
-local base_url = 'https://' + std.extVar('domain') + '/' + std.extVar('version');
+local base_url = 'https://' + std.extVar('domain') + '/v' + std.extVar('version');
 
 /* Authenticators */
 local anonymous_authenticator = {

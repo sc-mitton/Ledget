@@ -70,7 +70,7 @@ services:
       - "traefik.http.routers.silk.entrypoints=web"
       - "traefik.http.routers.hooks.tls=false"
 
-      - "traefik.http.routers.api.rule=(Host(`localhost`) && PathPrefix(`/api/v*/`))"
+      - "traefik.http.routers.api.rule=(Host(`localhost`) && PathPrefix(`/v{version:[0-9]+}/`))"
       - "traefik.http.routers.api.entrypoints=websecure"
       - "traefik.http.routers.api.tls=true"
       - "traefik.http.routers.api.middlewares=oathkeeper,cors"

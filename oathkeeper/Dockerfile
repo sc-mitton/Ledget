@@ -1,20 +1,20 @@
+
 FROM alpine:3.12 as builder
 
 # Install jsonnet from node
 ARG ENVIRONMENT
-ARG VERSION
+ARG API_VERSION
 
+RUN apk add --no-cache jsonnet
 COPY ./rules.jsonnet ./rules.jsonnet
 
-RUN if [ "$ENVIRONMENT" = "dev" ]; then export API_DOMAIN=localhost; \
-    elif [ "$ENVIRONMENT" = "uat" ]; then export API_DOMAIN=uatapi.ledget.app; \
-    else export API_DOMAIN=api.ledget.app; \
+RUN if [ "$ENVIRONMENT" = "dev" ]; then \
+    jsonnet rules.jsonnet --ext-str domain=localhost --ext-str version=$API_VERSION -o rules.json; \
+    elif [ "$ENVIRONMENT" = "uat" ]; then \
+    jsonnet rules.jsonnet --ext-str domain=uatapi.localhost --ext-str version=$API_VERSION -o rules.json; \
+    else \
+    jsonnet rules.jsonnet --ext-str domain=api.localhost --ext-str version=$API_VERSION -o rules.json; \
     fi
-
-# Compiles the rules to json from jsonnet
-# using the proper domain and version
-RUN apk add --no-cache jsonnet
-RUN jsonnet rules.jsonnet --ext-str domain=$API_DOMAIN --ext-str version=$VERSION -o rules.json
 
 FROM oryd/oathkeeper:v0.40.3
 

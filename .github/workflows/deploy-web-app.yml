@@ -16,6 +16,9 @@ on:
       role:
         required: true
         type: string
+      environment:
+        required: true
+        type: string
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -51,7 +54,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Build ${{ inputs.app }}
-        run: pnpm nx run ${{ inputs.app }}:build
+        run: pnpm nx run ${{ inputs.app }}:build --mode ${{ inputs.environment }}
       - name: Dummy Test
         run: echo Dummy Test
       - name: Configure AWS credentials

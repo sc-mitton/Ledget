@@ -1,7 +1,6 @@
 from django.urls import path, include
 from django.conf import settings
 
-URL_PREFIX = 'api/' if settings.DEVELOPMENT else ''
 API_VERSION = settings.API_VERSION
 
 urlpatterns = [
@@ -9,7 +8,7 @@ urlpatterns = [
 ]
 
 for i in range(1, API_VERSION + 1):
-    urlpatterns.append(path(URL_PREFIX + f'{i}/', include(f'core.urls{i}')))
+    urlpatterns.append(path(f'v{i}/', include(f'core.urlsv{i}')))
 
 
 if settings.SILK_DEBUG:
