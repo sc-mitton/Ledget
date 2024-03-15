@@ -22,7 +22,7 @@ jobs:
             src:
                 - './front/apps/landing/**'
   build:
-    if: ${{ needs.changes.outputs.src == 'true' }}
+    if: ${{ needs.changes.outputs.src == 'true' || github.event_name == 'workflow_dispatch' }}
     needs: changes
     runs-on: ubuntu-latest
     strategy:
