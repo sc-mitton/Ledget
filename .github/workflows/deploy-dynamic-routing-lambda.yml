@@ -41,7 +41,7 @@ jobs:
       - name: Zip Lambda
         shell: bash
         run: |
-          zip -r lambda.zip .
+          zip -r lambda_function.zip .
       - name: Deploy Lambda
         run: |
           aws s3 sync --delete . s3://ledget-dynamic-route-lambda
