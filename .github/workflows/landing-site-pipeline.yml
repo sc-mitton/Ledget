@@ -66,4 +66,4 @@ jobs:
       - name: Create CloudFront invalidation
         env:
           AWS_CF_DIST_ID: ${{ secrets.AWS_CF_DIST_ID }}
-        run: aws cloudfront create-invalidation --distribution-id $AWS_CF_DIST_ID --paths "*"
+        run: aws cloudfront create-invalidation --distribution-id $AWS_CF_DIST_ID --paths "/*"
