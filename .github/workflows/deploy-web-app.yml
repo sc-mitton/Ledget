@@ -64,4 +64,4 @@ jobs:
           aws-region: us-west-2
       - name: Replace s3 bucket contents
         run: |
-          aws s3 sync --delete ./apps/${{ inputs.app }}/dist s3://${{ inputs.s3-bucket }}.v${{ inputs.version }}
+          aws s3 sync --delete ./apps/${{ inputs.app }}/dist s3://${{ inputs.s3-bucket }}/v${{ inputs.version }}
