@@ -1,3 +1,6 @@
+import logging
+
+
 def lambda_handler(event, context):
     request = event['Records'][0]['cf']['request']
     uri = request['uri']
@@ -19,4 +22,6 @@ def lambda_handler(event, context):
         origin['s3']['domainName'] = f'{app_domain}.s3.amazonaws.com'
 
     request['origin'] = origin
+    logging.info(f'Origin: {origin}')
+    logging.info(f'Request: {request}')
     return request
