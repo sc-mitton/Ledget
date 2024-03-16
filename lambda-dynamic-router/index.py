@@ -1,3 +1,6 @@
+import logging
+
+
 def lambda_handler(event, context):
     request = event['Records'][0]['cf']['request']
     uri = request['uri']
@@ -7,6 +10,9 @@ def lambda_handler(event, context):
     accounts_app_domain = f'accounts.ledget.app.{VERSION}'
     app_domain = f'app.ledget.{VERSION}'
     landing_domain = f'landing.{VERSION}'
+
+    logging.info(f'original URI: {uri}')
+    logging.info(f'original origin: {origin}')
 
     if uri.endswith('accounts.ledget.app'):
         # Route to the accounts bucket

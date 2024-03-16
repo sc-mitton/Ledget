@@ -64,6 +64,4 @@ jobs:
       - name: Deploy to S3
         run: aws s3 sync --delete ./dist/ s3://landing.v${{ matrix.version }}
       - name: Create CloudFront invalidation
-        env:
-          AWS_CF_DIST_ID: ${{ secrets.AWS_CF_DIST_ID }}
-        run: aws cloudfront create-invalidation --distribution-id $AWS_CF_DIST_ID --paths "/*"
+        run: aws cloudfront create-invalidation --distribution-id E1MPM09DDO5S0U --paths "/*"
