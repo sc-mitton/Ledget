@@ -7,9 +7,9 @@ def lambda_handler(event, context):
     accounts_host = 'accounts.ledget.app'
     main_host = 'ledget.app'
 
-    default_origin = 'ledget-landing.s3.amazonaws.com'
-    accounts_app_origin = 'accounts.ledget.app.s3.amazonaws.com'
-    main_app_origin = 'app.ledget.s3.amazonaws.com'
+    default_origin = 'ledget-landing'
+    accounts_app_origin = 'accounts.ledget.app'
+    main_app_origin = 'app.ledget'
 
     if host == accounts_host:
         # Route to the accounts bucket
