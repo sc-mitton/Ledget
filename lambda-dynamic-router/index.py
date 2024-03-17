@@ -12,6 +12,7 @@ def lambda_handler(event, context):
     main_app_origin = 'app.ledget.s3.amazonaws.com'
 
     print(f'Host: {host}, URI: {uri}')
+    print(f'event: {event}')
 
     if host == accounts_host:
         # Route to the accounts bucket
