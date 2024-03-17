@@ -1,3 +1,6 @@
+import logging
+
+
 def lambda_handler(event, context):
     request = event['Records'][0]['cf']['request']
     uri = request['uri']
@@ -11,13 +14,13 @@ def lambda_handler(event, context):
     accounts_app_origin = 'accounts.ledget.app.s3.amazonaws.com'
     main_app_origin = 'app.ledget.s3.amazonaws.com'
 
+    logging.info(f'Host: {host}, URI: {uri}')
+
     if host == accounts_host:
         # Route to the accounts bucket
         origin['s3']['domainName'] = \
             origin['s3']['domainName'].replace(default_origin, accounts_app_origin)
     elif host == main_host and uri:
-        pass
-    else:
         # Route to the app bucket
         origin['s3']['domainName'] = \
             origin['s3']['domainName'].replace(default_origin, main_app_origin)
