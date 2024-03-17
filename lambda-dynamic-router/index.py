@@ -1,5 +1,7 @@
 import logging
 
+logging.basicConfig(level=logging.INFO)
+
 
 def lambda_handler(event, context):
     request = event['Records'][0]['cf']['request']
