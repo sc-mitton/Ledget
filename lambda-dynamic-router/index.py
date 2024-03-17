@@ -1,8 +1,3 @@
-import logging
-
-logging.basicConfig(level=logging.INFO)
-
-
 def lambda_handler(event, context):
     request = event['Records'][0]['cf']['request']
     uri = request['uri']
@@ -16,7 +11,7 @@ def lambda_handler(event, context):
     accounts_app_origin = 'accounts.ledget.app.s3.amazonaws.com'
     main_app_origin = 'app.ledget.s3.amazonaws.com'
 
-    logging.info(f'Host: {host}, URI: {uri}')
+    print(f'Host: {host}, URI: {uri}')
 
     if host == accounts_host:
         # Route to the accounts bucket
