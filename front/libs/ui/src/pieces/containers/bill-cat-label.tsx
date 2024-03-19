@@ -1,8 +1,7 @@
 
 import { Check } from '@geist-ui/icons'
 
-import tolower from 'lodash.tolower'
-import startcase from 'lodash.startcase'
+import { toLower as tolower, startCase as startcase } from 'lodash-es'
 
 import { ElementType, ComponentPropsWithoutRef } from 'react'
 import { PolymorphicComponentProps } from '../../types/helpers'
