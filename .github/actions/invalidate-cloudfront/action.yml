@@ -1,0 +1,14 @@
+name: Invalidate CloudFront
+description: Invalidate CloudFront Distribution
+inputs:
+  distribution:
+    description: "CloudFront Distribution Name"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Create CloudFront invalidation
+      shell: bash
+      env:
+        DISTRIBUTION: ${{ distribution == 'ledget.app' && 'E1HY9GDX55DBQ9' || distribution == 'accounts.ledget.app' && 'E195JVJQWSUYL7' }}
+      run: aws cloudfront create-invalidation --distribution-id $DISTRIBUTION --paths "/*"

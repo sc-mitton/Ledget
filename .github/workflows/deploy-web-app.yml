@@ -65,3 +65,7 @@ jobs:
       - name: Replace s3 bucket contents
         run: |
           aws s3 sync --delete ./apps/${{ inputs.app }}/dist s3://${{ inputs.s3-bucket }}/v${{ inputs.version }}
+      - name: Create CloudFront invalidation
+        uses: ./.github/actions/invalidate-cloudfront
+        with:
+          distriution: ${{ inputs.app == 'webhome' && 'ledget.app' || inputs.app == 'webportal' && 'accounts.ledget.app' }}

@@ -64,4 +64,6 @@ jobs:
       - name: Deploy to S3
         run: aws s3 sync --delete ./dist/ s3://ledget-landing/v${{ matrix.version }}
       - name: Create CloudFront invalidation
-        run: aws cloudfront create-invalidation --distribution-id E1MPM09DDO5S0U --paths "/*"
+        uses: ./.github/actions/invalidate-cloudfront
+        with:
+          distriution: 'ledget.app'
