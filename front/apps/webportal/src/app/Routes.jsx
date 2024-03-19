@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 
@@ -11,6 +12,12 @@ import { SendRegisteredToCheckout } from '@utils'
 
 function AnimatedRoutes() {
     const location = useLocation()
+
+    // Set title to the current page
+    useEffect(() => {
+        const title = location.pathname.split('/')[1]
+        document.title = title.charAt(0).toUpperCase() + title.slice(1)
+    }, [location])
 
     return (
         <>
