@@ -10,6 +10,7 @@ import { FormError, MainButton, SlideMotionDiv, PlainTextInput, BackButton, Stat
 import { ForgotPassword } from '@ledget/media'
 import { useLazyGetRecoveryFlowQuery, useCompleteRecoveryFlowMutation } from '@features/orySlice'
 import { useFlow } from '@ledget/ory'
+import { useColorScheme } from '@ledget/ui'
 
 const Error = ({ msg }) => (
     <div className="recovery-error--container">
@@ -22,15 +23,22 @@ const Error = ({ msg }) => (
     </div>
 )
 
-const MainGraphic = ({ unLocked }) => (
-    <div
-        className={`${(unLocked) ? 'unlocked' : 'locked'}`}
-        id="image-container"
-    >
-        <ForgotPassword />
-        <StatusPulse positive={unLocked} size="medium" />
-    </div>
-)
+const MainGraphic = ({ unLocked }) => {
+    const { isDark } = useColorScheme()
+
+    return (
+        <div
+            className={`${(unLocked) ? 'unlocked' : 'locked'}`}
+            id="image-container"
+        >
+            <ForgotPassword
+                fill={isDark ? 'none' : 'var(--m-text-secondary)'}
+                stroke={isDark ? 'var(--m-text)' : 'none'}
+            />
+            <StatusPulse positive={unLocked} size="medium" />
+        </div>
+    )
+}
 
 const RecoveryForm = ({ flow, submit, isCompleteError, errMsg }) => {
     const emailRef = useRef(null)
