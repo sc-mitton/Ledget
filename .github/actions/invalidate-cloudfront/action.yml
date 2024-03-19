@@ -10,5 +10,5 @@ runs:
     - name: Create CloudFront invalidation
       shell: bash
       env:
-        DISTRIBUTION: ${{ distribution == 'ledget.app' && 'E1HY9GDX55DBQ9' || distribution == 'accounts.ledget.app' && 'E195JVJQWSUYL7' }}
+        DISTRIBUTION: ${{ inputs.distribution == 'ledget.app' && 'E1HY9GDX55DBQ9' || inputs.distribution == 'accounts.ledget.app' && 'E195JVJQWSUYL7' }}
       run: aws cloudfront create-invalidation --distribution-id $DISTRIBUTION --paths "/*"
