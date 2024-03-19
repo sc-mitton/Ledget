@@ -1,0 +1,64 @@
+request: {
+    "clientIp": "76.27.80.128",
+    "headers": {
+        "x-forwarded-for": [
+            {
+                "key": "X-Forwarded-For",
+                "value": "76.27.80.128"
+            }
+        ],
+        "user-agent": [
+            {
+                "key": "User-Agent",
+                "value": "Amazon CloudFront"
+            }
+        ],
+        "via": [
+            {
+                "key": "Via",
+                "value": "2.0 cd45074c82e0c3648a0bf88ae4c454de.cloudfront.net (CloudFront)"
+            }
+        ],
+        "accept-encoding": [
+            {
+                "key": "Accept-Encoding",
+                "value": "br,gzip"
+            }
+        ],
+        "if-modified-since": [
+            {
+                "key": "If-Modified-Since",
+                "value": "Sat, 16 Mar 2024 23:49:53 GMT"
+            }
+        ],
+        "if-none-match": [
+            {
+                "key": "If-None-Match",
+                "value": "W/"c4efd0381c97e80b138ae24899e04d7f""
+            }
+        ],
+        "host": [
+            {
+                "key": "Host",
+                "value": "ledget-landing.s3.us-west-2.amazonaws.com"
+            }
+        ],
+        "cache-control": [
+            {
+                "key": "Cache-Control",
+                "value": "max-age=0"
+            }
+        ]
+    },
+    "method": "GET",
+    "origin": {
+        "s3": {
+            "authMethod": "none",
+            "customHeaders": {},
+            "domainName": "ledget-landing.s3.us-west-2.amazonaws.com",
+            "path": "/v1"
+        }
+    },
+    "querystring": "",
+    "uri": "/index.html"
+}
