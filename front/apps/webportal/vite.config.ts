@@ -11,31 +11,41 @@ const certsDir = __dirname + '/../../certs/';
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/webportal',
 
-  server: {
-    watch: {
-      usePolling: true,
-      interval: 100,
-    },
-    port: 3001,
-    host: 'localhost',
-    strictPort: true,
-    https: {
-      key: fs.existsSync(certsDir + 'localhost.key') ? fs.readFileSync(certsDir + 'localhost.key') : '',
-      cert: fs.existsSync(certsDir + 'localhost.crt') ? fs.readFileSync(certsDir + 'localhost.crt') : '',
-      ca: fs.existsSync(certsDir + 'ledgetCA.pem') ? fs.readFileSync(certsDir + 'ledgetCA.pem') : '',
+  ...(process.env.NODE_ENV === 'development'
+    ? {
+      server: {
+        watch: {
+          usePolling: true,
+          interval: 100,
+        },
+        port: 3001,
+        host: 'localhost',
+        strictPort: true,
+        https: {
+          key: fs.existsSync(certsDir + 'localhost.key') ? fs.readFileSync(certsDir + 'localhost.key') : '',
+          cert: fs.existsSync(certsDir + 'localhost.crt') ? fs.readFileSync(certsDir + 'localhost.crt') : '',
+          ca: fs.existsSync(certsDir + 'ledgetCA.pem') ? fs.readFileSync(certsDir + 'ledgetCA.pem') : '',
+        }
+      }
     }
-  },
+    : {}
+  ),
 
-  preview: {
-    port: 3301,
-    host: 'localhost',
-    strictPort: true,
-    https: {
-      key: fs.existsSync(certsDir + 'localhost.key') ? fs.readFileSync(certsDir + 'localhost.key') : '',
-      cert: fs.existsSync(certsDir + 'localhost.crt') ? fs.readFileSync(certsDir + 'localhost.crt') : '',
-      ca: fs.existsSync(certsDir + 'ledgetCA.pem') ? fs.readFileSync(certsDir + 'ledgetCA.pem') : '',
+  ...(process.env.NODE_ENV === 'development'
+    ? {
+      preview: {
+        port: 3301,
+        host: 'localhost',
+        strictPort: true,
+        https: {
+          key: fs.existsSync(certsDir + 'localhost.key') ? fs.readFileSync(certsDir + 'localhost.key') : '',
+          cert: fs.existsSync(certsDir + 'localhost.crt') ? fs.readFileSync(certsDir + 'localhost.crt') : '',
+          ca: fs.existsSync(certsDir + 'ledgetCA.pem') ? fs.readFileSync(certsDir + 'ledgetCA.pem') : '',
+        }
+      }
     }
-  },
+    : {}
+  ),
 
   plugins: [react(), nxViteTsPaths(), visualizer()],
 
