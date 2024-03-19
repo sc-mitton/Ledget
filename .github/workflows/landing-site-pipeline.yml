@@ -66,4 +66,4 @@ jobs:
       - name: Create CloudFront invalidation
         uses: ./.github/actions/invalidate-cloudfront
         with:
-          distriution: 'ledget.app'
+          distribution: 'ledget.app'
