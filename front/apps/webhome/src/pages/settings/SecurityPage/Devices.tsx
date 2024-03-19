@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 
-import _ from 'lodash.groupby'
+import { groupBy as groupby } from 'lodash-es'
 
 import './styles/Devices.scss'
 import { Disclosure } from '@headlessui/react'
@@ -128,7 +128,7 @@ const Device = (props: { device: string, info: DeviceType[] }) => {
 const Devices = ({ devices }: { devices: DeviceType[] }) => {
 
     // Group by deviceFamily and location
-    const groupedDevices = Object.entries(_(devices, (device) => [device.device_family, device.location]))
+    const groupedDevices = Object.entries(groupby(devices, (device) => [device.device_family, device.location]))
 
     return (
         <section>
