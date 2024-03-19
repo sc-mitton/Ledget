@@ -1,8 +1,8 @@
 
 import { Check } from '@geist-ui/icons'
 
-const tolower = require('lodash.tolower')
-const startcase = require('lodash.startcase')
+import tolower from 'lodash.tolower'
+import startcase from 'lodash.startcase'
 
 import { ElementType, ComponentPropsWithoutRef } from 'react'
 import { PolymorphicComponentProps } from '../../types/helpers'

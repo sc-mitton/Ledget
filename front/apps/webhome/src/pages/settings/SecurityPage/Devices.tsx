@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 
-const _ = require('lodash.groupby')
+import _ from 'lodash.groupby'
 
 import './styles/Devices.scss'
 import { Disclosure } from '@headlessui/react'

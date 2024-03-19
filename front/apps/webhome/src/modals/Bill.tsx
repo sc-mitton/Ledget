@@ -8,8 +8,8 @@ import { useForm, Controller } from 'react-hook-form'
 import { z } from 'zod'
 import dayjs from 'dayjs'
 import { Trash2, Edit2, CheckInCircle, Circle, BellOff } from '@geist-ui/icons'
-const startCase = require('lodash.startcase')
-const toLower = require('lodash.tolower')
+import startCase from 'lodash.startcase'
+import toLower from 'lodash.tolower'
 
 import './styles/Bill.scss'
 import { billSchema } from './CreateBill'
