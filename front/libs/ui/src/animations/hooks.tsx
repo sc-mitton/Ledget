@@ -1,5 +1,5 @@
 import { useDrag } from '@use-gesture/react'
-import clamp from 'lodash.clamp'
+const clamp = require('lodash.clamp')
 
 interface UseItemsDrag {
     (args: {
