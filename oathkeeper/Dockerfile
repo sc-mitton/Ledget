@@ -20,3 +20,5 @@ FROM oryd/oathkeeper:v0.40.3
 
 COPY --from=builder ./rules.json /etc/config/oathkeeper/rules.json
 COPY ./config.yml /etc/config/oathkeeper/config.yml
+
+EXPOSE 4456
