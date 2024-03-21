@@ -1,0 +1,15 @@
+
+FROM alpine:3.12 as builder
+
+# Install jsonnet from node
+ARG API_VERSION
+
+RUN apk add --no-cache jsonnet
+COPY ./rules.jsonnet ./rules.jsonnet
+
+RUN jsonnet rules.jsonnet --ext-str domain=localhost --ext-str version=$API_VERSION -o rules.json
+
+FROM oryd/oathkeeper:v0.40.3
+
+COPY --from=builder ./rules.json /etc/config/oathkeeper/rules.json
+COPY ./config.dev.yml /etc/config/oathkeeper/config.yml

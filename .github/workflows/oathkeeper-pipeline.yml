@@ -2,9 +2,9 @@ name: Rest Api Pipeline
 
 on:
     push:
-      branches: [ "main", "uat", "dev" ]
+      branches: [ "main", "uat" ]
     pull_request:
-      branches: [ "main", "uat", "dev" ]
+      branches: [ "main", "uat" ]
     workflow_dispatch:
       inputs:
         run_all:
@@ -29,43 +29,19 @@ jobs:
       with:
         filters: |
           src:
-              - './back/**'
-  test:
+              - './oathkeeper/**'
+  build:
+    # Don't build if pushing to dev branch
+    name: "Build and Push to ECR"
     needs: changes
     if: ${{ needs.changes.outputs.src == 'true' || (github.event_name == 'workflow_dispatch' && github.event.inputs.run_all == true) }}
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 2
       matrix:
-        python-version: [3.11]
-    steps:
-    - name: Login to Docker Hub
-      uses: docker/login-action@v1
-      with:
-        username: ${{ secrets.DOCKERHUB_USER }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Test
-      run: >
-        docker-compose -f docker-compose.test.yml run --rm ledgetback sh -c "
-          python manage.py makemigrations &&
-          python manage.py migrate &&
-          python manage.py test"
-    - name: Lint
-      run: docker-compose -f docker-compose.test.yml run --rm ledgetback sh -c "flake8 --config=.flake8"
-  build:
-    # Don't build if pushing to dev branch
-    if: ${{ github.ref != 'refs/heads/dev' }}
-    name: "Build and Push to ECR"
-    needs: test
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        image_name: [ "ledget-rest-api" ]
+        image_name: [ "oathkeeper" ]
         include:
-          - image_name: "ledget-rest-api"
-            context: "./back"
+          - image_name: "oathkeeper"
+            context: "./oathkeeper"
             version: v1
     # Build and push to correct ECR based on the branch
     steps:

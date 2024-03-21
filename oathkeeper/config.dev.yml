@@ -23,6 +23,7 @@ authorizers:
 
 # If development mode
 
+
 authenticators:
   anonymous:
     enabled: true

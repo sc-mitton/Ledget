@@ -17,8 +17,8 @@ services:
   oathkeeper:
     build:
       args:
-        - ENVIRONMENT=dev
         - API_VERSION=1
+      dockerfile: Dockerfile.dev
       context: ./oathkeeper
     command: serve --config /etc/config/oathkeeper/config.yml
     labels:

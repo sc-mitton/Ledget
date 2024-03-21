@@ -5,7 +5,6 @@ inspiration
 .DS_STORE
 **/node_modules
 **/logs
-out
 secrets
 scratch.py
 **/jwks.json

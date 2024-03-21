@@ -1,24 +1,24 @@
-
+# Stage 1: Build the rules.json file
 FROM alpine:3.12 as builder
 
-# Install jsonnet from node
-ARG ENVIRONMENT
-ARG API_VERSION
-
+# Install jsonnet
 RUN apk add --no-cache jsonnet
 COPY ./rules.jsonnet ./rules.jsonnet
 
-RUN if [ "$ENVIRONMENT" = "dev" ]; then \
-    jsonnet rules.jsonnet --ext-str domain=localhost --ext-str version=$API_VERSION -o rules.json; \
-    elif [ "$ENVIRONMENT" = "uat" ]; then \
-    jsonnet rules.jsonnet --ext-str domain=uatapi.localhost --ext-str version=$API_VERSION -o rules.json; \
-    else \
-    jsonnet rules.jsonnet --ext-str domain=api.localhost --ext-str version=$API_VERSION -o rules.json; \
-    fi
+# Build rules.json from rules.jsonnet
+ARG API_VERSION
+RUN jsonnet rules.jsonnet --ext-str domain=localhost --ext-str version=$API_VERSION -o rules.json
 
+WORKDIR /authorizer
+COPY go.mod go.sum ./
+
+# Build
+COPY handler.go .
+RUN go build -o handler handler.go
+
+# Copy artifacts to a clean image
+# Stage 2: Oathkeeper setup
 FROM oryd/oathkeeper:v0.40.3
 
-COPY --from=builder ./rules.json /etc/config/oathkeeper/rules.json
-COPY ./config.yml /etc/config/oathkeeper/config.yml
-
-EXPOSE 4456
+COPY --from=builder /authorizer/handler /handler
+ENTRYPOINT [ "/handler" ]

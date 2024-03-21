@@ -49,7 +49,7 @@ ORY_API_KEY = get_secret('ory_api_key')
 if any(a in sys.argv for a in ['test', 'test_coverage', 'migrate', 'makemigrations']):
     OATHKEEPER_PUBLIC_KEY=None
 else:
-    jwks = requests.get(OATHKEEPER_ENDPOINT).json()['keys']
+    jwks = get_secret('oathkeeper_jwks')
     OATHKEEPER_PUBLIC_KEY = jwt.algorithms.RSAAlgorithm.from_jwk(
         json.dumps(jwks[0]))
 
