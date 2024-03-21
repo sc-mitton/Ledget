@@ -1,9 +1,9 @@
 # Ledget
 
 
-<!-- <div style="text-align:center">
+<div style="text-align:center">
   <img src="media/logoIcon.png" alt="Logo" width="100" height="100">
-</div> -->
+</div>
 
 
 ## Tech Stack
@@ -20,6 +20,26 @@ Back
 - Stripe (payments processing)
 - Plaid (financial data agregator)
 - Ory (authentication)
+- Oathkeeper (access decision manager)
+
+## Components
+
+### Backend
+1. Rest API
+
+2. Oathkeeper
+Oathkeeper is an open source access decision manager from Ory. Requests that pass through
+either traefik (dev environment) or aws api gateway, are forwarded to ory, matched with a rule
+specified in the rules.json, and then if it matches the level of authentication specified in the
+configuration, it passes the request on to the protected service.
+
+Oathkeeper for a lot of the requests adds a header to the request with a jwt containing the authentication
+information for the user. In the Django middleware, the jwt is decoded, checked for authenticity and
+the user information is set on the request object.
+
+### Front End
+The front end has two react apps, the portal app (webportal) and the main app (webhome).
+Additionally, there is an astro landing page.
 
 ## Dev Environment
 
@@ -55,17 +75,27 @@ stripe listen --forward-to https://localhost/hooks/stripe --skip-verify --header
 echo ORY_API_KEY=<api key> > ./secrets/.env.ory
 ```
 
-6. Run the Environment
+6. Install the front end dependencies
+
+```
+brew install pnpm
+brew install nx
+cd front
+pnpm i
+```
+
+7. Run the Environment
 It's worth saving these commands somewhere, aliasing them, or saving as a workflow in warp terminal
 
 ```
 docker-compose up -d --build
-cd front &&
+cd front
+export NODE_ENV='development'
 pm2 start nx --name webhome -- run webhome:serve &&
 pm2 start nx --name webportal -- run webportal:serve
 ```
 
-7. Stop the Environment
+8. Stop the Environment
 
 ```
 docker-compose down
@@ -77,24 +107,24 @@ pm2 delete all
 
 ## Webhook Testing
 
-To test ory webhooks, you can use this command.
-Dependencies: ngrok & ory (you may need to create an ngrok account)
+To test ory webhooks in the dev environment, you can use this command.
+Dependencies: ngrok & ory (you will need to create an ngrok account)
 
 ```
 ngrok http 127.0.0.1:443 --host-header='localhost' --log=stdout > ngrok.log &
 sleep 1
 export NGROK_TUNNEL=$(grep "url=" ngrok.log | awk -F 'url=' '{print $2}')
-export NGROK_PID=$(ps aux | grep -m 1 'ngrok http' | awk '{print $2}')
 ory get identity-config reverent-lewin-bqqp1o2zws --format yaml > project-configuration.yaml
 sed -i '' -e 's|https.*ngrok.*hooks|'$NGROK_TUNNEL'\/hooks|g' project-configuration.yaml
-ory update identity-config "$(ory list projects | grep "ledget" | cut -f1)" -f project-configuration.yaml
+ory update identity-config "$(ory list projects | grep "ledget-dev" | cut -f1)" -f project-configuration.yaml
 ```
 
 Close the tunnel:
 
 ```
-kill -9 $NGROK_PID
+kill -9 $(ps aux | grep -m 1 'ngrok http' | awk '{print $2}')
 rm ngrok.log
+rm project-configuration.yaml
 ```
 
 For working with the stripe webhook, you'll also need to use the stripe cli:
@@ -193,9 +223,34 @@ without a new payment method.
 
 ## Demo Mode
 
+There is a demo account with dummy data from plaid's sandbox environment.
+Be sure to have PLAID_ENVIRONMENT = 'sandbox' set in django settings
+
+email: smitton.byu@gmail.com
 password: LedgetDemoPassword
+
+## Environments
+
+There are three main environments, dev, uat, and prod. Prod is hosted on aws while dev is
+run localy. Uat has yet to be developed.
 
 ## Notes on App functionality
 
 - The yearly budget will reset on the oldest yearly category created month. E.g. the oldest yearly
 category was created on Oct. 6, 2023 then the yearly budget will reset every Oct. 1, 2023
+
+## CI/CD
+
+The CI process for the app is implimented with github actions. There are workflows for testing and building
+the following components:
+
+1. Rest API
+  - There are tests which run on every push and pull to the dev, uat, and main branches
+  - On pulls and pushes to the uat and main branches, deployments are automatically run
+    after successful test runs
+2. Front End
+  - Build the js bundles and sync them to the s3 buckets
+3.
+
+Notes:
+- Builds usually have a step to check for changes in that component before a build is done.
