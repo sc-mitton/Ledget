@@ -30,11 +30,44 @@ jobs:
         filters: |
           src:
               - './oathkeeper/**'
-  build:
-    # Don't build if pushing to dev branch
-    name: "Build and Push to ECR"
+  test:
     needs: changes
     if: ${{ needs.changes.outputs.src == 'true' || (github.event_name == 'workflow_dispatch' && github.event.inputs.run_all == true) }}
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 2
+      matrix:
+        python-version: [3.11]
+    steps:
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USER }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Build image
+      shell: bash
+      env:
+        TEST: true
+        API_VERSION: 1
+      run: docker build -t oathkeeper . --build-arg TEST=$TEST --build-arg API_VERSION=$API_VERSION
+    - name: Run image
+      shell: bash
+      env:
+        AWS_SECRET_ACCESS_KEY_OATHKEEPER_TEST: ${{ secrets.AWS_SECRET_ACCESS_KEY_OATHKEEPER_TEST }}
+        AWS_ACCESS_KEY_ID_OATHKEEPER_TEST: ${{ secrets.AWS_ACCESS_KEY_ID_OATHKEEPER_TEST }}
+      run: |
+        docker run --platform linux/amd64 -d -v aws-lambda-rie -p 9000:8000
+        --entrypoint aws-lambda-rie oathkeeper:latest /authorizer
+        -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY_OATHKEEPER_TEST
+        -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID_OATHKEEPER_TEST
+    - name: Test image
+      run: |
+        curl -X POST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{}'
+  build:
+    name: "Build and Push to ECR"
+    needs: test
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -42,7 +75,7 @@ jobs:
         include:
           - image_name: "oathkeeper"
             context: "./oathkeeper"
-            version: v1
+            version: 1
     # Build and push to correct ECR based on the branch
     steps:
       - name: Check out repository

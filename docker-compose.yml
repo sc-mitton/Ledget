@@ -18,8 +18,9 @@ services:
     build:
       args:
         - API_VERSION=1
-      dockerfile: Dockerfile.dev
+        - ENVIRONMENT=dev
       context: ./oathkeeper
+    entrypoint: oathkeeper
     command: serve --config /etc/config/oathkeeper/config.yml
     labels:
       - "traefik.enable=true"

@@ -53,7 +53,6 @@ CSRF_COOKIE_HTTPONLY = False
 # ---------------------------- 3rd Party Services ---------------------------- #
 
 # Ory
-ORY_HOST = 'https://reverent-lewin-bqqp1o2zws.projects.oryapis.com'
 ORY_AUTH_HEADER = 'HTTP_AUTHORIZATION'
 ORY_AUTH_SCHEME = 'Api-Key'
 

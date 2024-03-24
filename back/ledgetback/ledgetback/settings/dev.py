@@ -47,6 +47,7 @@ STRIPE_API_KEY = get_secret('stripe_api_key')
 STRIPE_WEBHOOK_SECRET = get_secret('stripe_webhook_secret')
 
 # Ory
+ORY_HOST = 'https://reverent-lewin-bqqp1o2zws.projects.oryapis.com'
 ORY_HOOK_API_KEY = get_secret('ory_hook_api_key')
 ORY_API_KEY = get_secret('ory_api_key')
 

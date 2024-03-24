@@ -29,8 +29,8 @@ COPY --from=base /usr/local/lib/python3.11/site-packages/ /usr/local/lib/python3
 COPY --from=base /usr/local/bin/ /usr/local/bin/
 
 # Set API_VERSION env variable
-ARG VERSION
-ENV API_VERSION=$VERSION
+ARG API_VERSION
+ENV API_VERSION=$API_VERSION
 
 WORKDIR /ledgetback
 COPY ./ledgetback .

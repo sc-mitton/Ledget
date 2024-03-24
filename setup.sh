@@ -33,23 +33,16 @@ if [ ! -d "./secrets" ]; then
 fi
 get_random_secret_key > ./secrets/django_dev_secret_key
 echo dev_user > ./secrets/postgres_user && echo dev_user_password > ./secrets/postgres_password
-brew install stripe
-
-# Create jwks for oathkeeper
-brew install oathkeeper
-oathkeeper credentials generate --alg RS256 > ./secrets/dev_jwks.json
 
 # Make the log files
 mkdir back/ledgetback/logs
 touch back/ledgetback/logs/stripe_logs
 touch back/ledgetback/logs/ledget_logs
 
-# Download ory
-brew install ory/tap/cli
-
 # Install pm2
 npm install pm2@latest -g
 npm install nx@latest -g
+
 
 # Create the api key for the ory web hook
 if [ -f "./secrets/ory_hook_api_key" ]; then
@@ -65,4 +58,3 @@ sed -i '' -e 's|Api-Key.*|Api-Key '$api_key'|g' project-configuration.yaml
 
 # Update identity config
 ory update identity-config "$(ory list projects | grep "ledget" | cut -f1)" -f project-configuration.yaml
-

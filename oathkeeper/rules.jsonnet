@@ -30,7 +30,7 @@ local Base = {
   version: version,
 };
 
-local GenericAuthedBase = {
+local BaseWithAuth = {
   version: version,
   authenticators: [cookie_session_authenticator],
   mutators: [id_token],
@@ -60,7 +60,7 @@ local GenericAuthedBase = {
     mutators: [noop_mutator],
     authorizer: allow_authorizer,
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'devices',
     match: {
@@ -68,7 +68,7 @@ local GenericAuthedBase = {
       url: base_url + '/devices',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'delete_device',
     match: {
@@ -76,7 +76,7 @@ local GenericAuthedBase = {
       url: base_url + '/device/<[a-zA-Z0-9-]+>',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'user',
     match: {
@@ -84,7 +84,7 @@ local GenericAuthedBase = {
       url: base_url + '/user/me',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'email_user',
     match: {
@@ -92,7 +92,7 @@ local GenericAuthedBase = {
       url: base_url + '/user/email',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'plaid_link_token',
     match: {
@@ -100,7 +100,7 @@ local GenericAuthedBase = {
       url: base_url + '/plaid_link_token',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'plaid_link_token',
     match: {
@@ -108,7 +108,7 @@ local GenericAuthedBase = {
       url: base_url + '/plaid_link_token/<[a-zA-Z0-9]+>',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'plaid_token_exchange',
     match: {
@@ -116,7 +116,7 @@ local GenericAuthedBase = {
       url: base_url + '/plaid_token_exchange',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'plaid_items',
     match: {
@@ -124,7 +124,7 @@ local GenericAuthedBase = {
       url: base_url + '/plaid_items',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'plaid_item',
     match: {
@@ -132,7 +132,7 @@ local GenericAuthedBase = {
       url: base_url + '/plaid_item/<[a-zA-Z0-9]+>',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'default_payment_method',
     match: {
@@ -140,7 +140,7 @@ local GenericAuthedBase = {
       url: base_url + '/default_payment_method',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'customer',
     match: {
@@ -148,7 +148,7 @@ local GenericAuthedBase = {
       url: base_url + '/customer',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'subscription',
     match: {
@@ -156,7 +156,7 @@ local GenericAuthedBase = {
       url: base_url + '/subscription',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'update_subscription',
     match: {
@@ -164,7 +164,7 @@ local GenericAuthedBase = {
       url: base_url + '/subscription/<[a-zA-Z0-9_]+>',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'subscription_item',
     match: {
@@ -172,7 +172,7 @@ local GenericAuthedBase = {
       url: base_url + '/subscription_item',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'categories',
     match: {
@@ -180,7 +180,7 @@ local GenericAuthedBase = {
       url: base_url + '/<(categories|category)>',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'delete_categories',
     match: {
@@ -188,7 +188,7 @@ local GenericAuthedBase = {
       url: base_url + '/categories/items',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'update_category',
     match: {
@@ -196,7 +196,7 @@ local GenericAuthedBase = {
       url: base_url + '/categories/<[a-zA-Z0-9-]+>',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'spending_history',
     match: {
@@ -204,7 +204,7 @@ local GenericAuthedBase = {
       url: base_url + '/categories/<[a-zA-Z0-9-]+>/spending-history',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'order',
     match: {
@@ -212,7 +212,7 @@ local GenericAuthedBase = {
       url: base_url + '/categories/order',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'bills',
     match: {
@@ -220,7 +220,7 @@ local GenericAuthedBase = {
       url: base_url + '/<(bills|bill)>',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'update_bill',
     match: {
@@ -228,7 +228,7 @@ local GenericAuthedBase = {
       url: base_url + '/bills/<[a-zA-Z0-9-]+>',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'delete_bills',
     match: {
@@ -236,7 +236,7 @@ local GenericAuthedBase = {
       url: base_url + '/bills/<[a-zA-Z0-9-]+>',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'sync_transactions',
     match: {
@@ -244,7 +244,7 @@ local GenericAuthedBase = {
       url: base_url + '/transactions/sync',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'transactions',
     match: {
@@ -252,7 +252,7 @@ local GenericAuthedBase = {
       url: base_url + '/transactions',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'transactions_count',
     match: {
@@ -260,7 +260,7 @@ local GenericAuthedBase = {
       url: base_url + '/transactions/count',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'recurring_transactions',
     match: {
@@ -268,7 +268,7 @@ local GenericAuthedBase = {
       url: base_url + '/transactions/recurring/get',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'update_transaction',
     match: {
@@ -276,7 +276,7 @@ local GenericAuthedBase = {
       url: base_url + '/transactions/<[a-zA-Z0-9-]+>',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'confirm_transactions',
     match: {
@@ -284,7 +284,7 @@ local GenericAuthedBase = {
       url: base_url + '/transactions/confirmation',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'merchants',
     match: {
@@ -292,7 +292,7 @@ local GenericAuthedBase = {
       url: base_url + '/transactions/merchants',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'add_note',
     match: {
@@ -300,7 +300,7 @@ local GenericAuthedBase = {
       url: base_url + '/transactions/<[a-zA-Z0-9-]+>/note',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'update_delete_note',
     match: {
@@ -308,7 +308,7 @@ local GenericAuthedBase = {
       url: base_url + '/transactions/<[a-zA-Z0-9-]+>/note/<[a-zA-Z0-9-]+>',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'setup_intent',
     match: {
@@ -316,7 +316,7 @@ local GenericAuthedBase = {
       url: base_url + '/setup_intent',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'next_invoice',
     match: {
@@ -324,7 +324,7 @@ local GenericAuthedBase = {
       url: base_url + '/next_invoice',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'accounts',
     match: {
@@ -332,7 +332,7 @@ local GenericAuthedBase = {
       url: base_url + '/accounts',
     },
   },
-  GenericAuthedBase
+  BaseWithAuth
   {
     id: 'reminders',
     match: {
