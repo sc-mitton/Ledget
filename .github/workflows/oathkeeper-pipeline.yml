@@ -53,4 +53,4 @@ jobs:
           version: ${{ matrix.version }}
           context: ${{ matrix.context }}
           role: ${{ github.ref == 'refs/heads/main' && 'arn:aws:iam::905418323334:role/gh-actions' || github.ref == 'refs/heads/uat' && 'replace me' }}
-          environment: ${{ github.base_ref || github.ref_name }}
+          environment: ${{ github.ref == 'refs/heads/main' && 'prod' || github.ref == 'refs/heads/uat' && 'uat'}}
