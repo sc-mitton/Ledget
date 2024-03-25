@@ -4,7 +4,6 @@ FROM golang:1.21-alpine as builder
 # Install jsonnet
 RUN apk add --no-cache jsonnet
 COPY ./rules.jsonnet ./rules.jsonnet
-COPY ./rules.test.jsonnet ./rules.test.jsonnet
 
 # Build rules.json from rules.jsonnet
 ARG API_VERSION

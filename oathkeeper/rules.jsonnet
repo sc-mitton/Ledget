@@ -38,6 +38,37 @@ local BaseWithAuth = {
 };
 
 [
+  // Oathekeeper test rules
+  Base
+  {
+    id: 'allow-anonymous',
+    match: {
+      methods: ['Get'],
+      url: base_url + '/allow-anonymous',
+    },
+    authenticators: [anonymous_authenticator],
+    mutators: [noop_mutator],
+    authorizer: allow_authorizer,
+  },
+  Base
+  {
+    id: 'deny-anonymous',
+    match: {
+      methods: ['Get'],
+      url: base_url + '/deny-anonymous',
+    },
+    authenticators: [anonymous_authenticator],
+    authorizer: deny_authorizer,
+    mutators: [noop_mutator],
+  },
+  BaseWithAuth
+  {
+    id: 'allow-with-auth',
+    match: {
+      methods: ['Get'],
+      url: base_url + '/allow-with-auth',
+    },
+  },
   Base
   {
     id: 'get_prices',

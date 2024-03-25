@@ -35,4 +35,6 @@ urlpatterns = [
      path('', include('budget.urls')),
      path('', include('financials.urls')),
      path('health', health, name='health'),
+     path('allow-anonymous', health, name='allow_anonymous'),
+     path('allow-with-auth', health, name='allow_with_auth')
 ]
