@@ -27,11 +27,11 @@ permissions:
   contents: read
 
 jobs:
-  changes:
+  webportal-changes:
     runs-on: ubuntu-latest
     # Set job outputs to values from filter step
     outputs:
-      src: ${{ steps.changes.outputs.src }}
+      src: ${{ steps.webportal-changes.outputs.src }}
     steps:
       - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v3
@@ -39,10 +39,10 @@ jobs:
         with:
           filters: |
             src:
-                - './front/**'
+                - './front/apps/webportal/**'
   depoly-webportal-app:
-    if: ${{ needs.changes.outputs.src == 'true' || (github.event_name == 'workflow_dispatch' && (github.event.inputs.apps_to_run == 'all' || github.event.inputs.apps_to_run == 'webportal'))}}
-    needs: changes
+    if: ${{ needs.webportal-changes.outputs.src == 'true' || (github.event_name == 'workflow_dispatch' && (github.event.inputs.apps_to_run == 'all' || github.event.inputs.apps_to_run == 'webportal'))}}
+    needs: webportal-changes
     uses: ./.github/workflows/deploy-web-app.yml
     with:
       app: 'webportal'
@@ -51,9 +51,22 @@ jobs:
       role: ${{ github.ref == 'refs/heads/main' && 'arn:aws:iam::905418323334:role/gh-actions' || github.ref == 'refs/heads/uat' && 'replace me' }}
       test-only: ${{ github.ref == 'refs/heads/dev' || github.event.inputs.test_only == true }}
       environment: ${{ github.ref == 'refs/heads/main' && 'prod' || github.head_ref || github.ref_name }}
+  webhome-changes:
+    runs-on: ubuntu-latest
+    # Set job outputs to values from filter step
+    outputs:
+      src: ${{ steps.webhome-changes.outputs.src }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            src:
+                - './front/apps/webhome/**'
   deploy-webhome-app:
-    if: ${{ needs.changes.outputs.src == 'true' || (github.event_name == 'workflow_dispatch' && (github.event.inputs.apps_to_run == 'all' || github.event.inputs.apps_to_run == 'webhome'))}}
-    needs: changes
+    if: ${{ needs.webhome-changes.outputs.src == 'true' || (github.event_name == 'workflow_dispatch' && (github.event.inputs.apps_to_run == 'all' || github.event.inputs.apps_to_run == 'webhome'))}}
+    needs: webhome-changes
     uses: ./.github/workflows/deploy-web-app.yml
     with:
       app: 'webhome'
