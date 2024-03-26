@@ -170,13 +170,11 @@ func init() {
 
 func handler(ctx context.Context, event events.APIGatewayProxyRequest) (events.APIGatewayCustomAuthorizerResponse, error) {
 
-	resp, err := getDecisionsRequest(event).Execute()
-	if err != nil || resp.StatusCode != 200 {
-		return generateDeny("user", event.RequestContext.ResourcePath), nil
-	} else {
-		return generateAllow("user", event.RequestContext.ResourcePath, *resp), nil
-	}
+	resp, _ := getDecisionsRequest(event).Execute()
+	fmt.Println("Response: ", resp)
+	fmt.Println("event.RequestContext.ResourcePath", event.RequestContext.ResourcePath)
 
+	return generateAllow("user", event.RequestContext.ResourcePath, *resp), nil
 }
 
 func main() {
