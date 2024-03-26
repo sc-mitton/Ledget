@@ -2,6 +2,7 @@ amqp==5.1.1
 asgiref==3.7.2
 aws-secretsmanager-caching==1.1.1.5
 billiard==4.1.0
+boto3==1.34.70
 celery==5.3.4
 certifi==2023.5.7
 cffi==1.15.1

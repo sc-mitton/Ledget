@@ -6,6 +6,7 @@ import json
 import sys
 import botocore
 import botocore.session
+import boto3
 from aws_secretsmanager_caching import SecretCache, SecretCacheConfig
 
 
@@ -24,14 +25,16 @@ CSRF_COOKIE_DOMAIN = '.ledget.app'
 
 # ---------------------------------- 3rd Party Services --------------------------------- #
 
-client = botocore.session.get_session().create_client('secretsmanager')
-cache_config = SecretCacheConfig()
-cache = SecretCache(config=cache_config, client=client)
+session = boto3.session.Session()
+client = session.client(
+    service_name='secretsmanager',
+    region_name=session.region_name
+)
 
-def get_secret(secret):
+def get_secret(secret_name):
     try:
-        return cache.get_secret_string(secret)
-    except botocore.exceptions.NoCredentialsError:
+        return client.get_secret_value(SecretId=secret_name)['SecretString']
+    except client.exceptions.ResourceNotFoundException:
         return ' '
 
 # Django
