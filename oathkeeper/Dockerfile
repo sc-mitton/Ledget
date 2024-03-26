@@ -10,7 +10,7 @@ ARG API_VERSION
 ARG TEST
 ARG ENVIRONMENT
 
-RUN if [ "$ENVIRONMENT" = "production" ]; then \
+RUN if [ "$ENVIRONMENT" = "prod" ]; then \
     jsonnet rules.jsonnet --ext-str domain=api.ledget.app --ext-str version=$API_VERSION -o /rules.json; \
     elif [ "$ENVIRONMENT" = "uat" ]; then \
     jsonnet rules.jsonnet --ext-str domain=uatapi.ledget.uat --ext-str version=$API_VERSION -o /rules.json; \
@@ -23,10 +23,10 @@ RUN if [ "$ENVIRONMENT" = "production" ]; then \
 COPY ./config.yml /config.yml
 COPY ./config.dev.yml /config.dev.yml
 
-RUN if [ "$ENVIRONMENT" = "test" || "$ENVIRONMENT" = "dev" ]; then \
-    rm /config.yml && mv /config.dev.yml /config.yml; \
-    else \
+RUN if [ "$ENVIRONMENT" = "prod" ] || [ "$ENVIRONMENT" = "uat" ]; then \
     rm /config.dev.yml; \
+    else \
+    rm /config.yml && mv /config.dev.yml /config.yml; \
     fi;
 
 # Build authorizer

@@ -96,7 +96,6 @@ services:
       - DEBUG=true
       - SILK_DEBUG=true
       - ENVIRONMENT=dev
-      - OATHKEEPER_ENDPOINT=http://oathkeeper:4456/.well-known/jwks.json
     volumes:
       - ./back/ledgetback:/ledgetback
     secrets:
@@ -123,7 +122,6 @@ services:
     volumes:
       - ./back/ledgetback:/ledgetback
     environment:
-      - OATHKEEPER_ENDPOINT=http://oathkeeper:4456/.well-known/jwks.json
       - DJANGO_SETTINGS_MODULE=ledgetback.settings.dev
       - DEV=true
       - DEBUG=true
@@ -167,17 +165,17 @@ secrets:
   sparkpost_api_key:
     file: ./secrets/sparkpost_api_key
   stripe_webhook_secret:
-    file: ./secrets/stripe_dev_webhook_secret
+    file: ./secrets/stripe_webhook_secret
   stripe_api_key:
-    file: ./secrets/stripe_dev_api_key
+    file: ./secrets/stripe_api_key
   plaid_api_key:
     file: ./secrets/plaid_dev_api_key
   plaid_client_id:
-    file: ./secrets/plaid_dev_client_id
+    file: ./secrets/plaid_client_id
   plaid_sand_api_key:
     file: ./secrets/plaid_sand_api_key
   django_secret_key:
-    file: ./secrets/django_dev_secret_key
+    file: ./secrets/django_secret_key
   ory_hook_api_key:
     file: ./secrets/ory_hook_api_key
   ory_api_key:
@@ -185,4 +183,4 @@ secrets:
   ory_tunnel_key:
     file: ./secrets/ory_tunnel_key
   jwks.json:
-    file: ./secrets/dev_jwks.json
+    file: ./secrets/oathkeeper_jwks.json

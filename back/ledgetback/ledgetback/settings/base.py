@@ -59,7 +59,6 @@ ORY_AUTH_SCHEME = 'Api-Key'
 # Oathkeeper
 OATHKEEPER_AUTH_HEADER = 'HTTP_AUTHORIZATION'
 OATHKEEPER_AUTH_SCHEME = 'Bearer'
-OATHKEEPER_ENDPOINT = os.environ.get('OATHKEEPER_ENDPOINT')
 
 # Plaid
 PLAID_PRODUCTS = ['transactions', 'balance']

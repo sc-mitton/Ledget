@@ -52,6 +52,7 @@ ORY_HOOK_API_KEY = get_secret('ory_hook_api_key')
 ORY_API_KEY = get_secret('ory_api_key')
 
 # Oathkeeper
+OATHKEEPER_ENDPOINT = 'http://oathkeeper:4456/.well-known/jwks.json'
 if any(a in sys.argv for a in ['test', 'test_coverage', 'migrate', 'makemigrations']):
     OATHKEEPER_PUBLIC_KEY=None
 else:
