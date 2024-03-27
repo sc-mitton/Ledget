@@ -41,6 +41,11 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'ledgetback.urls'
 WSGI_APPLICATION = 'ledgetback.wsgi.application'
 
+# --------------------------------- Debugging -------------------------------- #
+
+SILK_DEBUG = False
+DEBUG = False
+
 # ----------------------------------- Csrf ----------------------------------- #
 
 CSRF_COOKIE_NAME = 'csrftoken'
