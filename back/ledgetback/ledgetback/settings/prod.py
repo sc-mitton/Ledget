@@ -50,12 +50,9 @@ ORY_HOOK_API_KEY = get_secret('ory_hook_api_key')
 ORY_API_KEY = get_secret('ory_api_key')
 
 # Oathkeeper
-if any(a in sys.argv for a in ['test', 'test_coverage', 'migrate', 'makemigrations']):
-    OATHKEEPER_PUBLIC_KEY=None
-else:
-    jwks = get_secret('oathkeeper_jwks')
-    OATHKEEPER_PUBLIC_KEY = jwt.algorithms.RSAAlgorithm.from_jwk(
-        json.dumps(jwks[0]))
+jwks = get_secret('oathkeeper_jwks')
+OATHKEEPER_PUBLIC_KEY = jwt.algorithms.RSAAlgorithm.from_jwk(
+    json.dumps(jwks[0]))
 
 # Sparkpost
 SPARKPOST_API_KEY = get_secret('sparkpost_api_key')
