@@ -51,7 +51,12 @@ ORY_API_KEY = get_secret('ory_api_key')
 
 # Oathkeeper
 jwks = get_secret('oathkeeper_jwks')
-OATHKEEPER_PUBLIC_KEY = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwks))
+try:
+    OATHKEEPER_PUBLIC_KEY = jwt.algorithms.RSAAlgorithm.from_jwk(
+        json.dumps(json.loads(jwks)['keys'][0]))
+except Exception as e:
+    print(e)
+    OATHKEEPER_PUBLIC_KEY = None
 
 # Sparkpost
 SPARKPOST_API_KEY = get_secret('sparkpost_api_key')
