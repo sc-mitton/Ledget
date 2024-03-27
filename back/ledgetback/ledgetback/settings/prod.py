@@ -10,7 +10,11 @@ import boto3
 from aws_secretsmanager_caching import SecretCache, SecretCacheConfig
 
 
-ALLOWED_HOSTS = ['ledget.app']
+ALLOWED_HOSTS = [
+    'ledget.app',
+    '*.ledget.app',
+    "https://rykjtepcmu.us-west-2.awsapprunner.com",
+]
 DOMAIN_URL = "https://api.ledget.app:8000/"
 DOMAIN = 'api.ledget.app'
 
