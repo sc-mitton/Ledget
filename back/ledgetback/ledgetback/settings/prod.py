@@ -13,7 +13,7 @@ from aws_secretsmanager_caching import SecretCache, SecretCacheConfig
 ALLOWED_HOSTS = [
     'ledget.app',
     '*.ledget.app',
-    "rykjtepcmu.us-west-2.awsapprunner.com",
+    "tmui7thmid.us-west-2.awsapprunner.com",
 ]
 DOMAIN_URL = "https://api.ledget.app:8000/"
 DOMAIN = 'api.ledget.app'
