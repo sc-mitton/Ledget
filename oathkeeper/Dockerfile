@@ -7,7 +7,6 @@ COPY ./rules.jsonnet ./rules.jsonnet
 
 # Build rules.json from rules.jsonnet
 ARG API_VERSION
-ARG TEST
 ARG ENVIRONMENT
 
 RUN if [ "$ENVIRONMENT" = "prod" ]; then \
@@ -18,15 +17,14 @@ RUN if [ "$ENVIRONMENT" = "prod" ]; then \
     jsonnet rules.jsonnet --ext-str domain=localhost --ext-str version=$API_VERSION -o /rules.json; \
     fi;
 
-# Copy oathkeeper config and select the one to use based on the environment and test flag
 
 COPY ./config.yml /config.yml
 COPY ./config.dev.yml /config.dev.yml
 
-RUN if [ "$ENVIRONMENT" = "prod" ] || [ "$ENVIRONMENT" = "uat" ]; then \
-    rm /config.dev.yml; \
-    else \
+RUN if [ "$ENVIRONMENT" = "dev" ]; then \
     rm /config.yml && mv /config.dev.yml /config.yml; \
+    else \
+    rm /config.dev.yml; \
     fi;
 
 # Build authorizer

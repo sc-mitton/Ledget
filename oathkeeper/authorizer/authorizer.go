@@ -178,6 +178,10 @@ func handler(ctx context.Context, event events.APIGatewayProxyRequest) (events.A
 	fmt.Println("Response: ", resp)
 	fmt.Println("event.RequestContext.ResourcePath", event.RequestContext.ResourcePath)
 
+	if resp.StatusCode != 200 {
+		return generateDeny("user", event.RequestContext.ResourcePath), nil
+	}
+
 	return generateAllow("user", event.RequestContext.ResourcePath, *resp), nil
 }
 
