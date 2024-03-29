@@ -13,15 +13,13 @@ access_rules:
 
 log:
   level: debug
-  leak_sensitive_values: true
+  leak_sensitive_values: false
 
 authorizers:
   allow:
     enabled: true
   deny:
     enabled: true
-
-# If development mode
 
 authenticators:
   anonymous:

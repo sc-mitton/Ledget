@@ -92,26 +92,6 @@ func getJwksData() ([]byte, error) {
 	return jwksData, nil
 }
 
-func setJwks() {
-	// Get JWKS from AWS Secrets Manager
-	jwksData, err := getJwksData()
-	if err != nil {
-		fmt.Printf("Failed to get JWKS data: %v\n", err)
-		return
-	}
-
-	// Write JWKS to file
-	jwksFilePath := "tmp/jwks.json"
-	os.MkdirAll(filepath.Dir(jwksFilePath), 0755)
-	jwksFile, err := os.Create(jwksFilePath)
-	if err != nil {
-		fmt.Printf("Failed to create JWKS file: %v\n", err)
-		return
-	}
-	jwksFile.Write(jwksData)
-	jwksFile.Close()
-}
-
 func getDecisionsRequest(event events.APIGatewayProxyRequest) sdk.ApiApiDecisionsRequest {
 	configuration := sdk.NewConfiguration()
 
@@ -124,7 +104,7 @@ func getDecisionsRequest(event events.APIGatewayProxyRequest) sdk.ApiApiDecision
 	configuration.AddDefaultHeader("Authorization", event.Headers["Authorization"])
 
 	configuration.Scheme = "http"
-	configuration.Host = "0.0.0.0:4456"
+	configuration.Host = "localhost:4456"
 
 	apiClient := sdk.NewAPIClient(configuration)
 	request := apiClient.ApiApi.Decisions(context.Background())
@@ -164,17 +144,31 @@ func generateDeny(principalID string, resource string) events.APIGatewayCustomAu
 }
 
 func init() {
-	setJwks()
+	// Get JWKS from AWS Secrets Manager
+	jwksData, err := getJwksData()
+	if err != nil {
+		fmt.Printf("Failed to get JWKS data: %v\n", err)
+		return
+	}
 
+	// Write JWKS to file
+	jwksFilePath := "tmp/jwks.json"
+	os.MkdirAll(filepath.Dir(jwksFilePath), 0755)
+	jwksFile, err := os.Create(jwksFilePath)
+	if err != nil {
+		fmt.Printf("Failed to create JWKS file: %v\n", err)
+		return
+	}
+	jwksFile.Write(jwksData)
+	jwksFile.Close()
+}
+
+func handler(ctx context.Context, event events.APIGatewayProxyRequest) (events.APIGatewayCustomAuthorizerResponse, error) {
 	// Spawn Oathkeeper Server
 	cmd := exec.Command("oathkeeper", "--serve", "--config", "/etc/config/oathkeeper/config.yml")
 	if err := cmd.Start(); err != nil {
 		fmt.Printf("Error starting Oathkeeper server: %v\n", err)
-		return
 	}
-}
-
-func handler(ctx context.Context, event events.APIGatewayProxyRequest) (events.APIGatewayCustomAuthorizerResponse, error) {
 
 	fmt.Printf("Event: %v\n", event)
 	fmt.Printf("Context: %v\n", ctx)
