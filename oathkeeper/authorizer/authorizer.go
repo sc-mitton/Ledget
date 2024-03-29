@@ -120,6 +120,7 @@ func getDecisionsRequest(event events.APIGatewayProxyRequest) sdk.ApiApiDecision
 	configuration.AddDefaultHeader("X-Forwarded-Uri", event.Path)
 	configuration.AddDefaultHeader("X-Forwarded-Host", event.Headers["Host"])
 	configuration.AddDefaultHeader("X-Forwarded-Proto", "https")
+	configuration.AddDefaultHeader("X-Forwarded-For", event.RequestContext.Identity.SourceIP)
 	configuration.AddDefaultHeader("Authorization", event.Headers["Authorization"])
 
 	apiClient := sdk.NewAPIClient(configuration)
@@ -171,21 +172,13 @@ func init() {
 
 func handler(ctx context.Context, event events.APIGatewayProxyRequest) (events.APIGatewayCustomAuthorizerResponse, error) {
 
+	fmt.Printf("Event: %v\n", event)
+	fmt.Printf("Context: %v\n", ctx)
+
 	resp, err := getDecisionsRequest(event).Execute()
-	if err != nil {
+	if resp == nil || err != nil {
 		fmt.Printf("Error executing request: %v\n", err)
-		return events.APIGatewayCustomAuthorizerResponse{}, err
-	}
-
-	fmt.Println("event", event)
-	fmt.Println("event.RequestContext.ResourcePath", event.RequestContext.Path)
-
-	if resp != nil && resp.StatusCode != 200 {
 		return generateDeny("user", event.RequestContext.Path), nil
-	}
-
-	if resp == nil {
-		fmt.Println("Response is nil")
 	}
 
 	return generateAllow("user", event.RequestContext.Path, resp), nil
