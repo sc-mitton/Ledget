@@ -113,7 +113,6 @@ func setJwks() {
 }
 
 func getDecisionsRequest(event events.APIGatewayProxyRequest) sdk.ApiApiDecisionsRequest {
-
 	configuration := sdk.NewConfiguration()
 
 	// Set the headers needed by oathkeeper
@@ -127,7 +126,6 @@ func getDecisionsRequest(event events.APIGatewayProxyRequest) sdk.ApiApiDecision
 	request := apiClient.ApiApi.Decisions(context.Background())
 
 	return request
-
 }
 
 func generatePolicy(principalID string, effect string, resource string) events.APIGatewayCustomAuthorizerResponse {
@@ -148,7 +146,7 @@ func generatePolicy(principalID string, effect string, resource string) events.A
 	return authResponse
 }
 
-func generateAllow(principalID string, resource string, oathkeeperResponse http.Response) events.APIGatewayCustomAuthorizerResponse {
+func generateAllow(principalID string, resource string, oathkeeperResponse *http.Response) events.APIGatewayCustomAuthorizerResponse {
 	policy := generatePolicy(principalID, "Allow", resource)
 	policy.Context = map[string]interface{}{
 		"authorizer": oathkeeperResponse.Header.Get("Authorization"),
@@ -175,14 +173,14 @@ func handler(ctx context.Context, event events.APIGatewayProxyRequest) (events.A
 
 	resp, _ := getDecisionsRequest(event).Execute()
 	fmt.Println("event", event)
-	fmt.Println("Response: ", resp)
-	fmt.Println("event.RequestContext.ResourcePath", event.RequestContext.ResourcePath)
+	fmt.Println("Response code", resp.StatusCode)
+	fmt.Println("event.RequestContext.ResourcePath", event.RequestContext.Path)
 
 	if resp.StatusCode != 200 {
-		return generateDeny("user", event.RequestContext.ResourcePath), nil
+		return generateDeny("user", event.RequestContext.Path), nil
 	}
 
-	return generateAllow("user", event.RequestContext.ResourcePath, *resp), nil
+	return generateAllow("user", event.RequestContext.Path, resp), nil
 }
 
 func main() {

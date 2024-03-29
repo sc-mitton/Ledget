@@ -57,7 +57,7 @@ mutators:
   id_token:
     enabled: true
     config:
-      issuer_url: http://localhost:4455/
+      issuer_url: http://oathkeeper.ledget.api/
       jwks_url: file:///tmp/jwks.json
       ttl: 60s
       claims: |
