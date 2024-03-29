@@ -123,7 +123,7 @@ func getDecisionsRequest(event events.APIGatewayProxyRequest) sdk.ApiApiDecision
 	configuration.AddDefaultHeader("X-Forwarded-For", event.RequestContext.Identity.SourceIP)
 	configuration.AddDefaultHeader("Authorization", event.Headers["Authorization"])
 
-	configuration.Host = "http://localhost:4456"
+	configuration.Host = "localhost:4456"
 
 	apiClient := sdk.NewAPIClient(configuration)
 	request := apiClient.ApiApi.Decisions(context.Background())
