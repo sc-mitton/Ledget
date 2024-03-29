@@ -153,6 +153,7 @@ func generateAllow(principalID string, resource string, oathkeeperResponse *http
 	policy := generatePolicy(principalID, "Allow", resource)
 	policy.Context = map[string]interface{}{
 		"authorizer": oathkeeperResponse.Header.Get("Authorization"),
+		"x-user":     oathkeeperResponse.Header.Get("X-User"),
 	}
 	return policy
 }
