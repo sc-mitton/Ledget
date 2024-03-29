@@ -119,7 +119,7 @@ func getDecisionsRequest(event events.APIGatewayProxyRequest) sdk.ApiApiDecision
 	configuration.AddDefaultHeader("X-Forwarded-Method", event.HTTPMethod)
 	configuration.AddDefaultHeader("X-Forwarded-Uri", event.Path)
 	configuration.AddDefaultHeader("X-Forwarded-Host", event.Headers["Host"])
-	configuration.AddDefaultHeader("X-Forwarded-Proto", "https")
+	configuration.AddDefaultHeader("X-Forwarded-Proto", "http")
 	configuration.AddDefaultHeader("X-Forwarded-For", event.RequestContext.Identity.SourceIP)
 	configuration.AddDefaultHeader("Authorization", event.Headers["Authorization"])
 
