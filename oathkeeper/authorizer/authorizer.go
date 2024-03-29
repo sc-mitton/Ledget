@@ -124,7 +124,7 @@ func getDecisionsRequest(event events.APIGatewayProxyRequest) sdk.ApiApiDecision
 	configuration.AddDefaultHeader("Authorization", event.Headers["Authorization"])
 
 	configuration.Scheme = "http"
-	configuration.Host = "localhost:4456"
+	configuration.Host = "host.docker.internal:4456"
 
 	apiClient := sdk.NewAPIClient(configuration)
 	request := apiClient.ApiApi.Decisions(context.Background())
