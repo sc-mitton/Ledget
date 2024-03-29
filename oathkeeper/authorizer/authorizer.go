@@ -126,6 +126,8 @@ func getDecisionsRequest(event events.APIGatewayProxyRequest) sdk.ApiApiDecision
 	apiClient := sdk.NewAPIClient(configuration)
 	request := apiClient.ApiApi.Decisions(context.Background())
 
+	fmt.Printf("Request: %v\n", request)
+
 	return request
 }
 
