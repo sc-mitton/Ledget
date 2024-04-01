@@ -7,40 +7,12 @@ COPY ./rules.jsonnet ./rules.jsonnet
 
 # Build rules.json from rules.jsonnet
 ARG API_VERSION
-ARG ENVIRONMENT
 
-RUN if [ "$ENVIRONMENT" = "prod" ]; then \
-    jsonnet rules.jsonnet --ext-str domain=api.ledget.app --ext-str version=$API_VERSION -o /rules.json; \
-    elif [ "$ENVIRONMENT" = "uat" ]; then \
-    jsonnet rules.jsonnet --ext-str domain=uatapi.ledget.uat --ext-str version=$API_VERSION -o /rules.json; \
-    else \
-    jsonnet rules.jsonnet --ext-str domain=localhost --ext-str version=$API_VERSION -o /rules.json; \
-    fi;
-
-
-COPY ./config.yml /config.yml
-COPY ./config.dev.yml /config.dev.yml
-
-RUN if [ "$ENVIRONMENT" = "dev" ]; then \
-    rm /config.yml && mv /config.dev.yml /config.yml; \
-    else \
-    rm /config.dev.yml; \
-    fi;
-
-# Build authorizer
-WORKDIR /authorizer
-COPY authorizer .
-RUN go build -o authorizer authorizer.go
+RUN jsonnet rules.jsonnet --ext-str domain=localhost --ext-str version=$API_VERSION -o /rules.json;
 
 # Copy artifacts to a clean image
 # Stage 2: Oathkeeper setup
 FROM oryd/oathkeeper:v0.40.3
 
-ARG ENVIRONMENT
-ENV ENVIRONMENT=$ENVIRONMENT
-
-COPY --from=builder ./authorizer/authorizer /authorizer
+COPY ./config.dev.yml /config.dev.yml
 COPY --from=builder /rules.json /etc/config/oathkeeper/rules.json
-COPY --from=builder /config.yml /etc/config/oathkeeper/config.yml
-
-ENTRYPOINT [ "/authorizer" ]

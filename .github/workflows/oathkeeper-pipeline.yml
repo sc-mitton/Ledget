@@ -35,22 +35,27 @@ jobs:
     if: ${{ needs.changes.outputs.src == 'true' || (github.event_name == 'workflow_dispatch' && github.event.inputs.run_all == true) }}
     needs: changes
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        image_name: [ "oathkeeper" ]
-        include:
-          - image_name: "oathkeeper"
-            context: "./oathkeeper"
-            version: 1
-    # Build and push to correct ECR based on the branch
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-      - name: Build and push
-        uses: ./.github/actions/build-and-push
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Build go executable
+        run: |
+          cd oathkeeper
+          GOOS=linux GOARCH=amd64 go build -o oathkeeper main.go
+      - name: Render jsonnet
+        uses: alexdglover/jsonnet-render@v2
         with:
-          tag: ${{ matrix.image_name }}
-          version: ${{ matrix.version }}
-          context: ${{ matrix.context }}
-          role: ${{ github.ref == 'refs/heads/main' && 'arn:aws:iam::905418323334:role/gh-actions' || github.ref == 'refs/heads/uat' && 'replace me' }}
-          environment: ${{ github.ref == 'refs/heads/main' && 'prod' || github.ref == 'refs/heads/uat' && 'uat'}}
+          file: ./oathkeeper/rules.jsonnet
+          output_file: ./oathkeeper/rules.json
+          params: ${{ github.ref == 'refs/heads/main' && 'domain=ledget.app' || 'domain=uat.ledget.app' }}  version=1
+      - name: Zip the files
+        run: |
+          zip -r oathkeeper.zip oathkeeper/rules.json oathkeeper/oathkeeper oathkeeper/config.yaml
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ github.ref == 'refs/heads/main' && 'arn:aws:iam::905418323334:role/gh-actions' || github.ref == 'refs/heads/uat' && 'replace me' }}
+          aws-region: "us-west-2"
+      - name: Copy zip to s3
+        run: |
+          aws s3 sync --delete ./oathkeeper.zip s3://oathkeeper-authorizer/oathkeeper.zip

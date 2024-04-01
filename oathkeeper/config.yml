@@ -8,11 +8,11 @@ serve:
 
 access_rules:
   repositories:
-    - file:///etc/config/oathkeeper/rules.json
+    - file://rules.json
   matching_strategy: regexp
 
 log:
-  level: debug
+  level: info
   leak_sensitive_values: false
 
 authorizers:
