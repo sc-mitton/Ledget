@@ -49,13 +49,15 @@ jobs:
           output_file: ./oathkeeper/rules.json
           params: ${{ github.ref == 'refs/heads/main' && 'domain=ledget.app' || 'domain=uat.ledget.app' }}  version=1
       - name: Zip the files
+        working-directory: ./oathkeeper
         run: |
-          zip -r oathkeeper.zip oathkeeper/rules.json oathkeeper/oathkeeper oathkeeper/config.yaml
+          zip -r oathkeeper.zip rules.json oathkeeper config.yaml
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: ${{ github.ref == 'refs/heads/main' && 'arn:aws:iam::905418323334:role/gh-actions' || github.ref == 'refs/heads/uat' && 'replace me' }}
           aws-region: "us-west-2"
       - name: Copy zip to s3
+        working-directory: ./oathkeeper
         run: |
           aws s3 sync --delete ./oathkeeper.zip s3://oathkeeper-authorizer/oathkeeper.zip
