@@ -16,6 +16,7 @@ var (
 	version = "0.4.0"
 	build   = "unknown"
 	date    = "unknown"
+	d       *driver.DefaultDriver
 )
 
 func generatePolicy(principalID string, effect string, resource string) events.APIGatewayCustomAuthorizerResponse {
@@ -49,14 +50,16 @@ func generateDeny(principalID string, resource string) events.APIGatewayCustomAu
 	return generatePolicy(principalID, "Deny", resource)
 }
 
-func getDecision(event events.APIGatewayProxyRequest) (*http.Response, error) {
-
+func init() {
 	okFlags := pflag.NewFlagSet("ok", pflag.ContinueOnError)
 	okFlags.String("config", "./config.yml", "Path to the config file")
 	logger := logrusx.New("ORY Oathkeeper", version)
 
 	d := driver.NewDefaultDriver(logger, version, build, date, okFlags)
 	d.Registry().Init()
+}
+
+func getDecision(event events.APIGatewayProxyRequest) (*http.Response, error) {
 
 	req, err := http.NewRequest(event.HTTPMethod, event.Path, nil)
 	req.Header.Add("X-Forwarded-For", event.RequestContext.Identity.SourceIP)
