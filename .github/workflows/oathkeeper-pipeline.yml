@@ -41,7 +41,7 @@ jobs:
       - name: Build go executable
         run: |
           cd oathkeeper/authorizer
-          GOOS=linux GOARCH=amd64 go build -o ../oathkeeper authorizer.go
+          GOOS=linux GOARCH=amd64 go build -o ../bootstrap main.go
       - name: Render jsonnet
         uses: alexdglover/jsonnet-render@v2
         with:
@@ -52,7 +52,7 @@ jobs:
         working-directory: ./oathkeeper
         run: |
           mkdir -p out
-          zip -r out/oathkeeper.zip rules.json oathkeeper config.yaml
+          zip -r out/oathkeeper.zip rules.json bootstrap config.yaml
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
