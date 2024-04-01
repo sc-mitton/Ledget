@@ -26,6 +26,7 @@ Thumbs.db
 dist
 tmp
 /out-tsc
+**/out
 
 # IDEs and editors
 /.idea

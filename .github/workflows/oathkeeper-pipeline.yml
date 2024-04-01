@@ -51,13 +51,14 @@ jobs:
       - name: Zip the files
         working-directory: ./oathkeeper
         run: |
-          zip -r oathkeeper.zip rules.json oathkeeper config.yaml
+          mkdir -p out
+          zip -r out/oathkeeper.zip rules.json oathkeeper config.yaml
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: ${{ github.ref == 'refs/heads/main' && 'arn:aws:iam::905418323334:role/gh-actions' || github.ref == 'refs/heads/uat' && 'replace me' }}
           aws-region: "us-west-2"
       - name: Copy zip to s3
-        working-directory: ./oathkeeper
+        working-directory: ./oathkeeper/out
         run: |
-          aws s3 sync --delete ./oathkeeper.zip s3://oathkeeper-authorizer/oathkeeper.zip
+          aws s3 sync --delete . s3://oathkeeper-authorizer
