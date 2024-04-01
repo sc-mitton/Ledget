@@ -31,7 +31,7 @@ jobs:
           src:
               - './oathkeeper/**'
   build:
-    name: "Build and Push to ECR"
+    name: "Build and deploy Oathkeeper"
     if: ${{ needs.changes.outputs.src == 'true' || (github.event_name == 'workflow_dispatch' && github.event.inputs.run_all == true) }}
     needs: changes
     runs-on: ubuntu-latest
@@ -40,8 +40,8 @@ jobs:
         uses: actions/checkout@v3
       - name: Build go executable
         run: |
-          cd oathkeeper
-          GOOS=linux GOARCH=amd64 go build -o oathkeeper main.go
+          cd oathkeeper/authorizer
+          GOOS=linux GOARCH=amd64 go build -o ../oathkeeper main.go
       - name: Render jsonnet
         uses: alexdglover/jsonnet-render@v2
         with:
