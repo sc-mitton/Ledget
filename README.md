@@ -57,6 +57,7 @@ chmod 755 setup.sh && ./setup.sh
 ```
 
 3. Install dev tools
+Go is optional, you only need it for developing the oathkeeper lambda authorizer
 
 ```
 brew install stripe
@@ -66,6 +67,9 @@ brew install openssl
 brew install ory/tap/cli
 brew install --cask ngrok
 brew install awscli
+brew install go
+brew install node
+brew install python
 ```
 
 4. Generate oathkeeper jwks

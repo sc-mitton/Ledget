@@ -1,0 +1,27 @@
+{
+    "version": "0.2.0",
+    "inputs": [
+        {
+            "type": "pickString",
+            "id": "path",
+            "description": "Choose the test case",
+            "options": [
+                "allow-anonymous",
+                "deny-anonymous",
+                "allow-with-auth"
+            ]
+        }
+    ],
+    "configurations": [
+        {
+            "name": "Launch",
+            "type": "go",
+            "request": "launch",
+            "mode": "exec",
+            "program": "${workspaceFolder}/oathkeeper/authorizer/tests/test",
+            "args": [
+                "${input:path}"
+            ],
+        }
+    ],
+}

@@ -40,8 +40,8 @@ jobs:
         uses: actions/checkout@v3
       - name: Build go executable
         run: |
-          cd oathkeeper/authorizer
-          GOOS=linux GOARCH=amd64 go build -o ../bootstrap main.go
+          cd oathkeeper
+          GOOS=linux GOARCH=amd64 go build -o bootstrap main.go
       - name: Render jsonnet
         uses: alexdglover/jsonnet-render@v2
         with:
