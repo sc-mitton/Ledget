@@ -192,7 +192,7 @@ func getDecision(event events.APIGatewayProxyRequest) (*http.Response, error) {
 }
 
 func HandleRequest(ctx context.Context, event events.APIGatewayProxyRequest) (events.APIGatewayCustomAuthorizerResponse, error) {
-	decision, err := getDecision(event)
+	decision, _ := getDecision(event)
 
 	fmt.Println("event: ", event)
 	return generateAllow("user", event.Path, decision), nil
