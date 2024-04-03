@@ -28,7 +28,7 @@ var (
 	d       *driver.DefaultDriver
 )
 
-func generatePolicy(principalID string, effect string, resource string) events.APIGatewayCustomAuthorizerResponse {
+func generateAuthResponse(principalID string, effect string, resource string) events.APIGatewayCustomAuthorizerResponse {
 	authResponse := events.APIGatewayCustomAuthorizerResponse{
 		PrincipalID: principalID,
 		PolicyDocument: events.APIGatewayCustomAuthorizerPolicy{
@@ -47,16 +47,16 @@ func generatePolicy(principalID string, effect string, resource string) events.A
 }
 
 func generateAllow(principalID string, resource string, decision *http.Response) events.APIGatewayCustomAuthorizerResponse {
-	policy := generatePolicy(principalID, "Allow", resource)
-	policy.Context = map[string]interface{}{
+	authResponse := generateAuthResponse(principalID, "Allow", resource)
+	authResponse.Context = map[string]interface{}{
 		"authorizer": decision.Header.Get("Authorization"),
 		"x-user":     decision.Header.Get("X-User"),
 	}
-	return policy
+	return authResponse
 }
 
 func generateDeny(principalID string, resource string) events.APIGatewayCustomAuthorizerResponse {
-	return generatePolicy(principalID, "Deny", resource)
+	return generateAuthResponse(principalID, "Deny", resource)
 }
 
 func getCachedJwks() (map[string]interface{}, error) {
