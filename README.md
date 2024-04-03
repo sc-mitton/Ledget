@@ -279,11 +279,31 @@ the following components:
     after successful test runs
 2. Front End
   - Build the js bundles and sync them to the s3 buckets
-3.
 
 Notes:
 - Builds usually have a step to check for changes in that component before a build is done.
 
+### Testing
+
+#### Front End
+
+There currently aren't any tests setup for the front end
+
+#### Back End
+
+The suite of unit tests for django rest framework is run on every commit to the dev, uat, and main branches
+
+You can run the tests manually with
+
+```
+docker-compose run --rm ledgetback sh -c "python manage.py test"
+```
+
+#### Oathkeeper
+
+Oathkeeper is in the local dev environment as a access control decision point. It has it's own docker container it runs in. In the uat and prod environments, Oathkeeper works as a lambda custom authorizer. In order to test the golang code which constitutes the lambda custom authorizer, run the test script. The tests are also run during the CI process as well.
+
+For debugging Oathkeeper, there is a debugging launch.json file already setup for vscode users. If the prelauch and postDebug tasks aren't working, you can run them manually before and after debugging (cmd+P > Tasks:Run Task).
 
 ## Misc
 
