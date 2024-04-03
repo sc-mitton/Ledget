@@ -1,0 +1,75 @@
+[
+   {
+      "authenticators": [
+         {
+            "handler": "anonymous"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
+      "id": "allow-anonymous",
+      "match": {
+         "methods": [
+            "Get"
+         ],
+         "url": "https://localhost/allow-anonymous"
+      },
+      "mutators": [
+         {
+            "handler": "noop"
+         }
+      ],
+      "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "handler": "anonymous"
+         }
+      ],
+      "authorizer": {
+         "handler": "deny"
+      },
+      "id": "deny-anonymous",
+      "match": {
+         "methods": [
+            "Get"
+         ],
+         "url": "https://localhost/deny-anonymous"
+      },
+      "mutators": [
+         {
+            "handler": "noop"
+         }
+      ],
+      "version": "v0.36.0-beta.4"
+   },
+   {
+      "authenticators": [
+         {
+            "forward_http_headers": [
+               "X-Forwarded-For",
+               "Authorization"
+            ],
+            "handler": "cookie_session"
+         }
+      ],
+      "authorizer": {
+         "handler": "allow"
+      },
+      "id": "allow-with-auth",
+      "match": {
+         "methods": [
+            "Get"
+         ],
+         "url": "https://localhost/allow-with-auth"
+      },
+      "mutators": [
+         {
+            "handler": "id_token"
+         }
+      ],
+      "version": "v0.36.0-beta.4"
+   }
+]

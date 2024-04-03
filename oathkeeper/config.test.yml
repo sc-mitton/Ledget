@@ -1,0 +1,66 @@
+# Global config for oathkeeper
+
+serve:
+  proxy:
+    port: 4455 # run the proxy at port 4455
+  api:
+    port: 4456 # run the api at port 4456
+
+access_rules:
+  repositories:
+    - file://rules.json
+  matching_strategy: regexp
+
+log:
+  level: debug
+  leak_sensitive_values: true
+
+authorizers:
+  allow:
+    enabled: true
+  deny:
+    enabled: true
+
+# If development mode
+
+authenticators:
+  anonymous:
+    enabled: true
+    config:
+      subject: guest
+  cookie_session:
+    enabled: true
+    config:
+      check_session_url: https://reverent-lewin-bqqp1o2zws.projects.oryapis.com/sessions/whoami
+      preserve_path: true
+      only:
+        - ory_session_reverentlewinbqqp1o2zws
+      extra_from: "@this"
+      subject_from: "identity.id"
+
+errors:
+  fallback:
+    - json
+  handlers:
+    json:
+      enabled: true
+      config:
+        verbose: true
+    redirect:
+      enabled: true
+      config:
+        to: https://www.ory.sh/docs
+
+mutators:
+  noop:
+    enabled: true
+  id_token:
+    enabled: true
+    config:
+      issuer_url: http://localhost:4455/
+      jwks_url: file://jwks.json
+      ttl: 60s
+      claims: |
+        {
+          "session": {{ .Extra | toJson }}
+        }

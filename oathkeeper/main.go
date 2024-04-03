@@ -142,7 +142,7 @@ func setJwks() {
 	// Write JWKS to file
 	var jwksFilePath string
 	if os.Getenv("ENVIRONMENT") == "test" {
-		jwksFilePath = "jwks_test.json"
+		jwksFilePath = "./jwks_test.json"
 	} else {
 		jwksFilePath = "/tmp/jwks.json"
 	}
@@ -158,12 +158,18 @@ func setJwks() {
 }
 
 func init() {
-	// Set JWKS
 	setJwks()
+
+	var configFile string
+	if os.Getenv("ENVIRONMENT") == "test" {
+		configFile = "./config.test.yml"
+	} else {
+		configFile = "./config.yml"
+	}
 
 	// Initialize Oathkeeper
 	okFlags := pflag.NewFlagSet("ok", pflag.ContinueOnError)
-	okFlags.String("config", "./config.yml", "Path to the config file")
+	okFlags.String("config", configFile, "Path to the config file")
 	logger := logrusx.New("ORY Oathkeeper", version)
 
 	d := driver.NewDefaultDriver(logger, version, build, date, okFlags)
