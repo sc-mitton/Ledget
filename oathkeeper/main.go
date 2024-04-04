@@ -6,6 +6,10 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
+func init() {
+	fmt.Println("init")
+}
+
 func Handle() {
 	fmt.Println("Hello, World!")
 }
