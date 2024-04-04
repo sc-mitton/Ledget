@@ -88,9 +88,6 @@ func getCachedJwks() (map[string]interface{}, error) {
 func getStoredJwks() (map[string]interface{}, error) {
 	secretName := "oathkeeper_jwks"
 	secretRegion := os.Getenv("AWS_REGION")
-	if os.Getenv("ENVIRONMENT") == "test" {
-		secretName = "oathkeeper_jwks_test"
-	}
 	if secretRegion == "" {
 		secretRegion = "us-west-2"
 	}
@@ -147,19 +144,15 @@ func setJwks() {
 	}
 
 	// Write JWKS to file
-	var jwksFilePath string
-	if os.Getenv("ENVIRONMENT") == "test" {
-		jwksFilePath = "./jwks_test.json"
-	} else {
-		jwksFilePath = "/tmp/jwks.json"
-	}
-
+	jwksFilePath := "/tmp/jwks.json"
 	os.MkdirAll(filepath.Dir(jwksFilePath), 0755)
+
 	jwksFile, err := os.Create(jwksFilePath)
 	if err != nil {
 		fmt.Printf("Failed to create JWKS file: %v\n", err)
 		return
 	}
+
 	jwksFile.Write(jwksData)
 	jwksFile.Close()
 }
@@ -167,12 +160,7 @@ func setJwks() {
 func init() {
 	setJwks()
 
-	var configFile string
-	if os.Getenv("ENVIRONMENT") == "test" {
-		configFile = "./config.test.yml"
-	} else {
-		configFile = "./config.yml"
-	}
+	configFile := "./config.yml"
 
 	// Initialize Oathkeeper
 	okFlags := pflag.NewFlagSet("ok", pflag.ContinueOnError)

@@ -52,7 +52,7 @@ jobs:
         working-directory: ./oathkeeper
         run: |
           mkdir -p out
-          zip -r out/oathkeeper.zip rules.json bootstrap config.yaml
+          zip -r out/oathkeeper.zip rules.json bootstrap config.yml
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
