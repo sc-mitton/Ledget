@@ -8,7 +8,7 @@ serve:
 
 access_rules:
   repositories:
-    - file://rules.json
+    - file:///opt/rules.json
   matching_strategy: regexp
 
 log:

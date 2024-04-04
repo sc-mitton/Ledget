@@ -52,7 +52,9 @@ jobs:
         working-directory: ./oathkeeper
         run: |
           mkdir -p out
-          zip -r out/oathkeeper.zip rules.json bootstrap config.yml
+          zip -r out/authorizer.zip bootstrap &&
+          zip -r out/config.zip config.yml &&
+          zip -r out/rules.zip rules.json
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -61,4 +63,4 @@ jobs:
       - name: Copy zip to s3
         working-directory: ./oathkeeper/out
         run: |
-          aws s3 sync --delete . s3://oathkeeper-authorizer
+          aws s3 sync --delete . s3://oathkeeper-authorization

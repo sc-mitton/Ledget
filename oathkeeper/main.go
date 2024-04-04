@@ -160,7 +160,7 @@ func setJwks() {
 func init() {
 	setJwks()
 
-	configFile := "./config.yml"
+	configFile := "./opt/config.yml"
 
 	// Initialize Oathkeeper
 	okFlags := pflag.NewFlagSet("ok", pflag.ContinueOnError)
