@@ -51,12 +51,11 @@ jobs:
       - name: Zip the files and layers
         working-directory: ./oathkeeper
         run: |
-          mkdir -p out &&
           mkdir -p out/lib &&
           mv config.yml out/lib/config.yml &&
           mv rules.json out/lib/rules.json &&
           zip -r out/authorizer.zip bootstrap &&
-          zip -r out/oathkeeper-layers.zip lib &&
+          zip -r out/oathkeeper-layers.zip out/lib &&
           rm -rf out/lib
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
