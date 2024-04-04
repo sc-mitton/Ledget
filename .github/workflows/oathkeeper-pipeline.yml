@@ -48,14 +48,15 @@ jobs:
           file: ./oathkeeper/rules.jsonnet
           output_file: ./oathkeeper/rules.json
           params: ${{ github.ref == 'refs/heads/main' && 'domain=ledget.app' || 'domain=uat.ledget.app' }}  version=1
-      - name: Zip the files
+      - name: Zip the files and layers
         working-directory: ./oathkeeper
         run: |
           mkdir -p out
           zip -r out/authorizer.zip bootstrap &&
+          mkdir -p out/lib &&
           mv config.yml lib/config.yml &&
           mv rules.json lib/rules.json &&
-          zip -r out/oathkeeper-layers.zip lib &&
+          zip -r out/oathkeeper-layers.zip lib
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
