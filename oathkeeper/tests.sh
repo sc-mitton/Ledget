@@ -4,7 +4,7 @@
 # renaming it to event.json and running the test, then marking it complete
 # and moving on to the next one
 
-setup_tests
+tests_setup
 bootstrap
 
 for event in $(ls -1 *event.json); do
@@ -13,4 +13,4 @@ for event in $(ls -1 *event.json); do
     mv event.json $event
 done
 
-cleanup_tests
+tests_cleanup

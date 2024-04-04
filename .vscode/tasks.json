@@ -31,7 +31,10 @@
             "label": "lambda-rpc-event",
             "type": "shell",
             "options": {
-                "cwd": "${workspaceFolder}/oathkeeper"
+                "cwd": "${workspaceFolder}/oathkeeper",
+                "env": {
+                    "_LAMBDA_SERVER_PORT": "8080"
+                }
             },
             "command": "awslambdarpc -e event.json",
             "problemMatcher": []

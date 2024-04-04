@@ -10,14 +10,21 @@ export ENVIRONMENT=test
 jsonnet rules.test.jsonnet > rules.json
 
 events="allow-anonymous deny-anonymous allow-with-auth"
-
 if [ -z $1 ]; then
-    jsonnet event.jsonnet --ext-str $1 > event.json
-else
     for event in $events; do
         jsonnet test_event.jsonnet --ext-str path=$event > ${event}-event.json
     done
+else
+    jsonnet test_event.jsonnet --ext-str $1 > event.json
 fi
 
 # Compile the Go code
 go build -v -gcflags='all=-N -l' -o ./bootstrap
+
+# Login to the AWS SSO
+aws sso login
+
+# Install awslmabdarpc if it's not already installed in the ~/go/bin directory
+if [ ! -f ~/go/bin/awslambdarpc ]; then
+    go install github.com/blmayer/awslambdarpc
+fi

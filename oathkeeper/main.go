@@ -48,10 +48,16 @@ func generateAuthResponse(principalID string, effect string, resource string) ev
 
 func generateAllow(principalID string, resource string, decision *http.Response) events.APIGatewayCustomAuthorizerResponse {
 	authResponse := generateAuthResponse(principalID, "Allow", resource)
-	authResponse.Context = map[string]interface{}{
-		"authorizer": decision.Header.Get("Authorization"),
-		"x-user":     decision.Header.Get("X-User"),
+	context := map[string]interface{}{}
+
+	if decision.Header.Get("Authorization") != "" {
+		context["authorization"] = decision.Header.Get("Authorization")
 	}
+	if decision.Header.Get("X-User") != "" {
+		context["x-user"] = decision.Header.Get("X-User")
+	}
+	authResponse.Context = context
+
 	return authResponse
 }
 
@@ -60,12 +66,10 @@ func generateDeny(principalID string, resource string) events.APIGatewayCustomAu
 }
 
 func getCachedJwks() (map[string]interface{}, error) {
-	secretName := "oathkeeper_jwks"
 
-	var (
-		secretCache, _ = secretcache.New()
-	)
-	result, err := secretCache.GetSecretString(secretName)
+	var secretCache, _ = secretcache.New()
+
+	result, err := secretCache.GetSecretString("oathkeeper_jwks")
 	if err != nil {
 		return nil, err
 	}
