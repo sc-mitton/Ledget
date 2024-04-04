@@ -51,7 +51,7 @@ jobs:
       - name: Zip the files and layers
         working-directory: ./oathkeeper
         run: |
-          mkdir -p out
+          mkdir -p out &&
           zip -r out/authorizer.zip bootstrap &&
           mkdir -p out/lib &&
           mv config.yml lib/config.yml &&
