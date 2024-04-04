@@ -192,7 +192,7 @@ func getDecision(event events.APIGatewayProxyRequest) (*http.Response, error) {
 	return rw.Result(), nil
 }
 
-func handle(ctx context.Context, event events.APIGatewayProxyRequest) (events.APIGatewayCustomAuthorizerResponse, error) {
+func HandleRequest(ctx context.Context, event events.APIGatewayProxyRequest) (events.APIGatewayCustomAuthorizerResponse, error) {
 	decision, err := getDecision(event)
 
 	fmt.Println("event: ", event)
@@ -206,5 +206,5 @@ func handle(ctx context.Context, event events.APIGatewayProxyRequest) (events.AP
 
 func main() {
 	// Start Lambda handler
-	lambda.Start(handle)
+	lambda.Start(HandleRequest)
 }
