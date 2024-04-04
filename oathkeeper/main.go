@@ -28,16 +28,19 @@ var (
 	d       *driver.DefaultDriver
 )
 
-func generateAuthResponse(principalID string, effect string, resource string) events.APIGatewayCustomAuthorizerResponse {
+func generateAuthResponse(effect string, resource string) events.APIGatewayCustomAuthorizerResponse {
 	authResponse := events.APIGatewayCustomAuthorizerResponse{
-		PrincipalID: principalID,
+		PrincipalID: "user",
 		PolicyDocument: events.APIGatewayCustomAuthorizerPolicy{
 			Version: "2012-10-17",
 			Statement: []events.IAMPolicyStatement{
 				{
-					Action:   []string{"execute-api:Invoke"},
-					Effect:   effect,
-					Resource: []string{resource},
+					Action: []string{"execute-api:Invoke"},
+					Effect: effect,
+					Resource: []string{
+						"arn:aws:execute-api:*:*:*/*/*",
+						resource,
+					},
 				},
 			},
 		},
@@ -46,8 +49,8 @@ func generateAuthResponse(principalID string, effect string, resource string) ev
 	return authResponse
 }
 
-func generateAllow(principalID string, resource string, decision *http.Response) events.APIGatewayCustomAuthorizerResponse {
-	authResponse := generateAuthResponse(principalID, "Allow", resource)
+func generateAllow(resource string, decision *http.Response) events.APIGatewayCustomAuthorizerResponse {
+	authResponse := generateAuthResponse("Allow", resource)
 	context := map[string]interface{}{}
 
 	if decision.Header.Get("Authorization") != "" {
@@ -61,8 +64,8 @@ func generateAllow(principalID string, resource string, decision *http.Response)
 	return authResponse
 }
 
-func generateDeny(principalID string, resource string) events.APIGatewayCustomAuthorizerResponse {
-	return generateAuthResponse(principalID, "Deny", resource)
+func generateDeny(resource string) events.APIGatewayCustomAuthorizerResponse {
+	return generateAuthResponse("Deny", resource)
 }
 
 func getCachedJwks() (map[string]interface{}, error) {
@@ -202,16 +205,15 @@ func getDecision(event events.APIGatewayProxyRequest) (*http.Response, error) {
 }
 
 func HandleRequest(ctx context.Context, event events.APIGatewayProxyRequest) (events.APIGatewayCustomAuthorizerResponse, error) {
-	decision, _ := getDecision(event)
+	decision, err := getDecision(event)
 
 	fmt.Println("event: ", event)
-	return generateAllow("user", event.Path, decision), nil
 
-	// if err != nil {
-	// 	return generateDeny("user", event.Path), err
-	// } else {
-	// 	return generateAllow("user", event.Path, decision), nil
-	// }
+	if err != nil {
+		return generateDeny(event.Path), err
+	} else {
+		return generateAllow(event.Path, decision), nil
+	}
 }
 
 func main() {
