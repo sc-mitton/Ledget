@@ -41,7 +41,7 @@ jobs:
       - name: Build go executable
         run: |
           cd oathkeeper
-          GOOS=linux GOARCH=amd64 go build -tags lambda.norpc -o bootstrap main.go
+          GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -tags lambda.norpc -o bootstrap main.go
       - name: Render jsonnet
         uses: alexdglover/jsonnet-render@v2
         with:
