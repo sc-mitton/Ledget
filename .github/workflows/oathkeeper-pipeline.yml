@@ -56,7 +56,8 @@ jobs:
           mkdir -p out/lib &&
           mv config.yml lib/config.yml &&
           mv rules.json lib/rules.json &&
-          zip -r out/oathkeeper-layers.zip lib
+          zip -r out/oathkeeper-layers.zip lib &&
+          rm -rf out/lib
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
