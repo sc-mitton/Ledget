@@ -16,16 +16,20 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-secretsmanager-caching-go/secretcache"
+	"github.com/ory/oathkeeper/api"
 	"github.com/ory/oathkeeper/driver"
 	"github.com/ory/x/logrusx"
 	"github.com/spf13/pflag"
 )
 
 var (
-	version = "0.4.0"
-	build   = "unknown"
-	date    = "unknown"
-	d       *driver.DefaultDriver
+	version        = "0.4.0"
+	build          = "unknown"
+	date           = "unknown"
+	h              *api.DecisionHandler
+	d              driver.Driver
+	DecisionPath   = "/decisions"
+	oathkeeperHost = "oathkeeper:4456"
 )
 
 func generateAuthResponse(effect string, resource string) events.APIGatewayCustomAuthorizerResponse {
@@ -163,23 +167,35 @@ func init() {
 	configFile := "./config.yml"
 
 	// Initialize Oathkeeper
-	okFlags := pflag.NewFlagSet("ok", pflag.ContinueOnError)
-	okFlags.String("config", configFile, "Path to the config file")
+	okFlags := pflag.NewFlagSet("serve", pflag.ContinueOnError)
+	okFlags.StringSlice("config", []string{configFile}, "Path to a configuration file")
+
 	logger := logrusx.New("ORY Oathkeeper", version)
 
-	d := driver.NewDefaultDriver(logger, version, build, date, okFlags)
+	fmt.Printf("okFlags: %v\n", okFlags)
+
+	d = driver.NewDefaultDriver(logger, version, build, date, okFlags)
 	d.Registry().Init()
+	h = d.Registry().DecisionHandler()
 }
 
 func getDecision(event events.APIGatewayProxyRequest) (*http.Response, error) {
 
-	req, err := http.NewRequest(event.HTTPMethod, event.Path, nil)
-	req.Header.Add("X-Forwarded-For", event.RequestContext.Identity.SourceIP)
-	req.Header.Add("X-Forwarded-Proto", event.RequestContext.Protocol)
+	req, err := http.NewRequest(event.RequestContext.HTTPMethod, event.Path, nil)
+
+	req.URL.Path = DecisionPath
+	req.Host = oathkeeperHost
+	req.Proto = "HTTP/1.1"
+	req.Header.Add("X-Forwarded-Method", event.RequestContext.HTTPMethod)
+	req.Header.Add("X-Forwarded-Proto", "https")
 	req.Header.Add("X-Forwarded-Host", event.RequestContext.DomainName)
 	req.Header.Add("X-Forwarded-Uri", event.Path)
 	req.Header.Add("X-Forwarded-For", event.RequestContext.Identity.SourceIP)
 	req.Header.Add("Cookie", event.Headers["Cookie"])
+
+	if event.Headers["User-Agent"] != "" {
+		req.Header.Add("User-Agent", event.Headers["User-Agent"])
+	}
 
 	if err != nil {
 		return nil, err
@@ -187,7 +203,28 @@ func getDecision(event events.APIGatewayProxyRequest) (*http.Response, error) {
 
 	next := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {})
 	rw := httptest.NewRecorder()
-	d.Registry().DecisionHandler().ServeHTTP(rw, req, next)
+	h.ServeHTTP(rw, req, next)
+
+	// DELETE
+	// rulesFile, err := os.Open("/var/task/rules.json")
+
+	// if err != nil {
+	// 	fmt.Println("Error opening rules file")
+	// }
+	// defer rulesFile.Close()
+
+	// var rules []map[string]interface{}
+	// jsonParser := json.NewDecoder(rulesFile)
+	// if err = jsonParser.Decode(&rules); err != nil {
+	// 	fmt.Println("Error parsing rules file")
+	// }
+	// fmt.Printf("number of rules: %d\n", len(rules))
+
+	// ctx := context.Background()
+	// count, _ := d.Registry().RuleRepository().Count(ctx)
+	// fmt.Printf("number of rules: %d\n", count)
+
+	fmt.Printf("number of access rule repositories: %d\n", len(d.Configuration().AccessRuleRepositories()))
 
 	return rw.Result(), nil
 }
@@ -195,9 +232,7 @@ func getDecision(event events.APIGatewayProxyRequest) (*http.Response, error) {
 func HandleRequest(ctx context.Context, event events.APIGatewayProxyRequest) (events.APIGatewayCustomAuthorizerResponse, error) {
 	decision, err := getDecision(event)
 
-	fmt.Println("event: ", event)
-
-	if err != nil {
+	if err != nil || decision.StatusCode != 200 {
 		return generateDeny(event.Path), err
 	} else {
 		return generateAllow(event.Path, decision), nil

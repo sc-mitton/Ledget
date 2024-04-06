@@ -5,7 +5,7 @@ from core.views.device import (
      DeviceView,
      DestroyDeviceView,
 )
-from core.views.health import health
+from core.views.health import health, ProtectedHealth
 
 
 urlpatterns = [
@@ -36,5 +36,5 @@ urlpatterns = [
      path('', include('financials.urls')),
      path('health', health, name='health'),
      path('allow-anonymous', health, name='allow_anonymous'),
-     path('allow-with-auth', health, name='allow_with_auth')
+     path('allow-with-auth', ProtectedHealth.as_view(), name='allow_with_auth')
 ]

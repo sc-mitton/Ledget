@@ -8,11 +8,11 @@ serve:
 
 access_rules:
   repositories:
-    - file://rules.json
+    - file:///var/task/rules.json
   matching_strategy: regexp
 
 log:
-  level: info
+  level: debug
   leak_sensitive_values: false
 
 authorizers:
@@ -55,7 +55,7 @@ mutators:
   id_token:
     enabled: true
     config:
-      issuer_url: http://oathkeeper.ledget.api/
+      issuer_url: http://oathkeeper:4455/
       jwks_url: file:///tmp/jwks.json
       ttl: 60s
       claims: |

@@ -14,5 +14,5 @@ RUN jsonnet rules.jsonnet --ext-str domain=localhost --ext-str version=$API_VERS
 # Stage 2: Oathkeeper setup
 FROM oryd/oathkeeper:v0.40.3
 
-COPY ./config.dev.yml /config.dev.yml
+COPY ./config.dev.yml /etc/config/oathkeeper/config.yml
 COPY --from=builder /rules.json /etc/config/oathkeeper/rules.json

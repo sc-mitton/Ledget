@@ -41,7 +41,7 @@ local BaseWithAuth = {
   {
     id: 'allow-anonymous',
     match: {
-      methods: ['Get'],
+      methods: ['GET'],
       url: base_url + '/allow-anonymous',
     },
     authenticators: [anonymous_authenticator],
@@ -52,7 +52,7 @@ local BaseWithAuth = {
   {
     id: 'deny-anonymous',
     match: {
-      methods: ['Get'],
+      methods: ['GET'],
       url: base_url + '/deny-anonymous',
     },
     authenticators: [anonymous_authenticator],
