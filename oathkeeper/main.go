@@ -172,8 +172,6 @@ func init() {
 
 	logger := logrusx.New("ORY Oathkeeper", version)
 
-	fmt.Printf("okFlags: %v\n", okFlags)
-
 	d = driver.NewDefaultDriver(logger, version, build, date, okFlags)
 	d.Registry().Init()
 	h = d.Registry().DecisionHandler()
@@ -204,27 +202,6 @@ func getDecision(event events.APIGatewayProxyRequest) (*http.Response, error) {
 	next := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {})
 	rw := httptest.NewRecorder()
 	h.ServeHTTP(rw, req, next)
-
-	// DELETE
-	// rulesFile, err := os.Open("/var/task/rules.json")
-
-	// if err != nil {
-	// 	fmt.Println("Error opening rules file")
-	// }
-	// defer rulesFile.Close()
-
-	// var rules []map[string]interface{}
-	// jsonParser := json.NewDecoder(rulesFile)
-	// if err = jsonParser.Decode(&rules); err != nil {
-	// 	fmt.Println("Error parsing rules file")
-	// }
-	// fmt.Printf("number of rules: %d\n", len(rules))
-
-	// ctx := context.Background()
-	// count, _ := d.Registry().RuleRepository().Count(ctx)
-	// fmt.Printf("number of rules: %d\n", count)
-
-	fmt.Printf("number of access rule repositories: %d\n", len(d.Configuration().AccessRuleRepositories()))
 
 	return rw.Result(), nil
 }
