@@ -61,10 +61,10 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
-    id: 'allow-with-auth',
+    id: 'allow-auth',
     match: {
       methods: ['Get'],
-      url: base_url + '/allow-with-auth',
+      url: base_url + '/allow-auth',
     },
   },
   Base

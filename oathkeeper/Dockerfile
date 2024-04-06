@@ -1,5 +1,5 @@
 # Stage 1: Build the rules.json file
-FROM golang:1.21-alpine as builder
+FROM alpine:3.14 as builder
 
 # Install jsonnet
 RUN apk add --no-cache jsonnet
