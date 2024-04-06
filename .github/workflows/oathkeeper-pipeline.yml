@@ -47,7 +47,7 @@ jobs:
         with:
           file: ./oathkeeper/rules.jsonnet
           output_file: ./oathkeeper/rules.json
-          params: ${{ github.ref == 'refs/heads/main' && 'domain=ledget.app' || 'domain=uat.ledget.app' }}  version=1
+          params: ${{ github.ref == 'refs/heads/main' && 'domain=api.ledget.app' || 'domain=uat.ledget.app' }}  version=1
       - name: Zip the files and layers
         working-directory: ./oathkeeper
         run: |
