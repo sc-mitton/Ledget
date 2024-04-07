@@ -189,7 +189,7 @@ func getDecision(event events.APIGatewayProxyRequest) (*http.Response, error) {
 	req.Header.Add("X-Forwarded-Host", event.RequestContext.DomainName)
 	req.Header.Add("X-Forwarded-Uri", event.Path)
 	req.Header.Add("X-Forwarded-For", event.RequestContext.Identity.SourceIP)
-	req.Header.Add("Cookie", event.Headers["Cookie"])
+	req.Header.Add("cookie", event.Headers["cookie"])
 
 	if event.Headers["User-Agent"] != "" {
 		req.Header.Add("User-Agent", event.Headers["User-Agent"])
