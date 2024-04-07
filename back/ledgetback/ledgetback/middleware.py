@@ -142,6 +142,9 @@ class OryAuthenticationMiddleware(MiddlewareMixin):
         or expired, return None.
         '''
 
+        logger.info(f"headers: {request.META}")
+        logger.info(f"OATHKEEPER_PUBLIC_KEY: {OATHKEEPER_PUBLIC_KEY}")
+
         header = request.META.get(OATHKEEPER_HEADER, '').split(' ')
         auth_header_schemes = [header[i].lower() for i in range(0, len(header), 2)]
 

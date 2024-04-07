@@ -6,7 +6,7 @@ from django.conf import settings
 
 logger = logging.getLogger('ledget')
 
-OATHKEEPER_HEADER = settings.OATHKEEPER_AUTH_HEADER
+OATHKEEPER_AUTH_HEADER = settings.OATHKEEPER_AUTH_HEADER
 
 
 class OryBackend(SessionAuthentication):
@@ -20,9 +20,7 @@ class OryBackend(SessionAuthentication):
 
         # header should already be decoded by middleware
 
-        logger.info(f"headers: {request.META}")
-
-        decoded_jwt = request.META.get(OATHKEEPER_HEADER)
+        decoded_jwt = request.META.get(OATHKEEPER_AUTH_HEADER)
         if not decoded_jwt:
             return
 
