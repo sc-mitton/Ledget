@@ -162,9 +162,6 @@ class OryAuthenticationMiddleware(MiddlewareMixin):
         """Validate the token against the JWK from Oathkeeper and
         return it if valid. Otherwise, return None."""
 
-        logger.info(
-            f"OATHKEEPER_PUBLIC_KEY is not null: {OATHKEEPER_PUBLIC_KEY is not None}")
-
         decoded_token = decode(
             token,
             key=OATHKEEPER_PUBLIC_KEY,
