@@ -32,7 +32,7 @@ authenticators:
       check_session_url: https://relaxed-bassi-eqk8kfge8r.projects.oryapis.com/sessions/whoami
       preserve_path: true
       only:
-        - ory_session_reverentlewinbqqp1o2zws
+        - ory_session_relaxedbassieqk8kfge8r
       extra_from: "@this"
       subject_from: "identity.id"
 
