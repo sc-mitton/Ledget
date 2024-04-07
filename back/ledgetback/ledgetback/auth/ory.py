@@ -20,6 +20,8 @@ class OryBackend(SessionAuthentication):
 
         # header should already be decoded by middleware
 
+        logger.info(f"headers: {request.META}")
+
         decoded_jwt = request.META.get(OATHKEEPER_HEADER)
         if not decoded_jwt:
             return
