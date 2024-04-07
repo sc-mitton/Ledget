@@ -166,7 +166,6 @@ class OryAuthenticationMiddleware(MiddlewareMixin):
             token,
             key=OATHKEEPER_PUBLIC_KEY,
             algorithms=['RS256'],
-            options={'verify_exp': True}
         )
 
         return decoded_token
