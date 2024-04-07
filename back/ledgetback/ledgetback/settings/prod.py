@@ -57,7 +57,7 @@ ORY_API_KEY = get_secret('ory_api_key')
 jwks = get_secret('oathkeeper_jwks')
 try:
     jwks = json.loads(jwks)['keys'][0]
-    for k in [ 'kty', 'use', 'kid', 'x5t', 'x5c' ]:
+    for k in [ 'd', 'p', 'q', 'dp', 'dq', 'qi' ]:
         del jwks[k]
     OATHKEEPER_PUBLIC_KEY = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwks))
 except Exception as e:
