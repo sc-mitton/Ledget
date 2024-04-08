@@ -1,13 +1,8 @@
 from .base import *
 import os
-import requests
 import jwt
 import json
-import sys
-import botocore
-import botocore.session
 import boto3
-from aws_secretsmanager_caching import SecretCache, SecretCacheConfig
 
 
 ALLOWED_HOSTS = [
