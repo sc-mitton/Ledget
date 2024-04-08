@@ -39,10 +39,10 @@ local BaseWithAuth = {
 [
   Base
   {
-    id: 'allow-anonymous',
+    id: 'health',
     match: {
       methods: ['GET'],
-      url: base_url + '/allow-anonymous',
+      url: base_url + '/health',
     },
     authenticators: [anonymous_authenticator],
     mutators: [noop_mutator],
@@ -50,10 +50,10 @@ local BaseWithAuth = {
   },
   Base
   {
-    id: 'deny-anonymous',
+    id: 'deny',
     match: {
       methods: ['GET'],
-      url: base_url + '/deny-anonymous',
+      url: base_url + '/deny',
     },
     authenticators: [anonymous_authenticator],
     authorizer: deny_authorizer,
@@ -64,7 +64,7 @@ local BaseWithAuth = {
     id: 'allow-auth',
     match: {
       methods: ['Get'],
-      url: base_url + '/allow-auth',
+      url: base_url + '/auth-health',
     },
   },
   Base
