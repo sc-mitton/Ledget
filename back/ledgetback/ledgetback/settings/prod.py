@@ -76,7 +76,7 @@ PLAID_REDIRECT_URI = 'https://leddget.app/settings/connections'
 
 # --------------------------------- Postgres --------------------------------- #
 
-db_credentials = json.loads(get_secret(os.getenv('db_secret')))
+db_credentials = json.loads(get_secret(os.getenv('db_credentials')))
 
 DATABASES = {
     'default': {
