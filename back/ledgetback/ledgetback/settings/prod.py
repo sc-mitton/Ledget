@@ -8,7 +8,7 @@ import boto3
 ALLOWED_HOSTS = [
     'ledget.app',
     '*.ledget.app',
-    "tmui7thmid.us-west-2.awsapprunner.com",
+    'upxpy3ubip.us-west-2.awsapprunner.com',
 ]
 DOMAIN_URL = "https://api.ledget.app:8000/"
 DOMAIN = 'api.ledget.app'
@@ -34,7 +34,7 @@ def get_secret(secret_name):
     try:
         return client.get_secret_value(SecretId=secret_name)['SecretString']
     except client.exceptions.ResourceNotFoundException:
-        return ''
+        return ' '
 
 # Django
 SECRET_KEY = get_secret('django_secret_key')
@@ -71,7 +71,8 @@ PLAID_REDIRECT_URI = 'https://leddget.app/settings/connections'
 
 # --------------------------------- Postgres --------------------------------- #
 
-db_credentials = json.loads(get_secret(os.getenv('db_credentials'))) or {}
+db_credentials = get_secret(os.getenv('db_credentials', 'secret'))
+db_credentials = json.loads(db_credentials) if db_credentials else {}
 
 DATABASES = {
     'default': {
