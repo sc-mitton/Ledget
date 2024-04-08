@@ -81,10 +81,10 @@ db_credentials = json.loads(get_secret(os.getenv('db_credentials')))
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('db_name'),
+        'NAME': db_credentials.get('dbname'),
         'HOST': db_credentials.get('host'),
         'PORT': db_credentials.get('port'),
-        'USER': db_credentials.get('user'),
+        'USER': db_credentials.get('username'),
         'PASSWORD': db_credentials.get('password'),
     }
 }
