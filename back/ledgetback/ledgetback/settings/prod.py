@@ -71,7 +71,7 @@ PLAID_REDIRECT_URI = 'https://leddget.app/settings/connections'
 
 # --------------------------------- Postgres --------------------------------- #
 
-db_credentials = get_secret(os.getenv('db_credentials', 'secret'))
+db_credentials = get_secret('ledget-restapi-rds-credentials')
 db_credentials = json.loads(db_credentials) if db_credentials else {}
 
 DATABASES = {
