@@ -34,7 +34,7 @@ def get_secret(secret_name):
     try:
         return client.get_secret_value(SecretId=secret_name)['SecretString']
     except client.exceptions.ResourceNotFoundException:
-        return ' '
+        return ''
 
 # Django
 SECRET_KEY = get_secret('django_secret_key')
