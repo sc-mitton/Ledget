@@ -72,16 +72,16 @@ PLAID_REDIRECT_URI = 'https://localhost:3000/settings/connections'
 
 # --------------------------------- Postgres --------------------------------- #
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT'),
-        'USER': get_secret('postgres_user'),
-        'PASSWORD': get_secret('postgres_password'),
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv('DB_NAME'),
+#         'HOST': os.getenv('DB_HOST'),
+#         'PORT': os.getenv('DB_PORT'),
+#         'USER': get_secret('postgres_user'),
+#         'PASSWORD': get_secret('postgres_password'),
+#     }
+# }
 
 # ---------------------------------- Celery ---------------------------------- #
 
