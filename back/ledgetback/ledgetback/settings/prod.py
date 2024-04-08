@@ -60,7 +60,7 @@ except Exception as e:
     OATHKEEPER_PUBLIC_KEY = None
 
 # Sparkpost
-SPARKPOST_API_KEY = get_secret('sparkpost_api_key')
+SPARKPOST_API_KEY = get_secret('sparkpost_key')
 
 # Plaid
 PLAID_ENVIRONMENT = 'Production'
