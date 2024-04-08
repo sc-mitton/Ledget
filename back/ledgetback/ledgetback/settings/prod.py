@@ -73,16 +73,16 @@ PLAID_REDIRECT_URI = 'https://leddget.app/settings/connections'
 
 db_credentials = json.loads(get_secret(os.getenv('db_credentials')))
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': db_credentials.get('dbname'),
-#         'HOST': db_credentials.get('host'),
-#         'PORT': db_credentials.get('port'),
-#         'USER': db_credentials.get('username'),
-#         'PASSWORD': db_credentials.get('password'),
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': db_credentials.get('dbname'),
+        'HOST': db_credentials.get('host'),
+        'PORT': db_credentials.get('port'),
+        'USER': db_credentials.get('username'),
+        'PASSWORD': db_credentials.get('password'),
+    }
+}
 
 # ---------------------------------- Celery ---------------------------------- #
 
