@@ -29,10 +29,10 @@ authenticators:
   cookie_session:
     enabled: true
     config:
-      check_session_url: https://relaxed-bassi-eqk8kfge8r.projects.oryapis.com/sessions/whoami
+      check_session_url: https://auth.ledget.app/sessions/whoami
       preserve_path: true
       only:
-        - ory_session_relaxedbassieqk8kfge8r
+        - ory_session_authledgetapp
       extra_from: "@this"
       subject_from: "identity.id"
 
@@ -55,7 +55,7 @@ mutators:
   id_token:
     enabled: true
     config:
-      issuer_url: http://oathkeeper:4455/
+      issuer_url: http://oath.ledget.app
       jwks_url: file:///tmp/jwks.json
       ttl: 60s
       claims: |
