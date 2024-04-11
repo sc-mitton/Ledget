@@ -9,21 +9,21 @@ $mobile-unfocused-max-width: clamp(12em, 15vw, 16em);
     transform: translate(-50%, -50%);
 }
 
-.phone-wrapper {
-    @include center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2;
-}
-
 .phone {
     position: relative;
-    transform: scale(.625);
     z-index: 2;
+    height: clamp(18em, 85vh, 45em);
+    width: min-content;
 
     img:not(.visible):not(:last-of-type) {
         visibility: collapse;
+    }
+
+    img:not(.phone__frame) {
+        max-height: 100%;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     .screen2 {
@@ -31,24 +31,32 @@ $mobile-unfocused-max-width: clamp(12em, 15vw, 16em);
     }
 
     &__emojis {
-        @include center;
+        z-index: 3;
+        left: 0;
+        width: auto;
+    }
+
+    &__screen {
         z-index: 2;
+        height: auto;
+
+        &#phone_screen1 {
+            opacity: 1;
+        }
+
+        &#phone_screen2 {
+            opacity: 0;
+        }
     }
 
     &__status-bar {
-        z-index: 5;
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translate(-50%, 150%);
+        z-index: 6;
+        top: 0em;
     }
 
     &__nav {
-        z-index: 4;
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translate(-50%, -100%);
+        z-index: 5;
+        bottom: 0em;
 
         &#phone_nav1 {
             opacity: 1;
@@ -60,28 +68,16 @@ $mobile-unfocused-max-width: clamp(12em, 15vw, 16em);
     }
 
     &__nav_back {
-        position: absolute;
-        bottom: 2.5em;
-        z-index: 3;
         width: 100%;
+        bottom: 0em;
+        z-index: 4;
         mask-image: linear-gradient(to bottom, transparent, transparent 20%, black 40%, black 100%)
     }
 
-    &__screen {
-        z-index: 1;
-        @include center;
-
-        &#phone_screen1 {
-            opacity: 1;
-        }
-
-        &#phone_screen2 {
-            opacity: 0;
-        }
-    }
-
     &__frame {
-        z-index: 0;
+        z-index: 1;
+        max-height: 100%;
+        width: auto;
         position: relative;
 
         &.dark {
@@ -92,7 +88,7 @@ $mobile-unfocused-max-width: clamp(12em, 15vw, 16em);
     &__glare {
         position: absolute;
         inset: 0 + 1em;
-        z-index: 6;
+        z-index: 8;
         border-radius: 4.5em;
         overflow: hidden;
 
@@ -124,21 +120,17 @@ $mobile-unfocused-max-width: clamp(12em, 15vw, 16em);
     }
 
     &__touch {
+        z-index: 7;
         position: absolute;
         width: 2.5em;
         height: 2.5em;
         border-radius: 50%;
-        bottom: 4.5%;
-        left: 54.5%;
+        bottom: 3.5%;
+        left: 52%;
         background-color: var(--blue-sat);
-        z-index: 8;
         opacity: 0;
         border: 8px solid var(--m-text-senary);
         box-shadow: 0 0 0 0.25em var(--blue-sat);
-    }
-
-    &__black_back {
-        @include center;
     }
 }
 

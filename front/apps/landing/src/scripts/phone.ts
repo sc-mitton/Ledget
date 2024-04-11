@@ -40,7 +40,7 @@ function animateScreen() {
 
     // Second tap on the phone
     tl.set('.phone__touch', {
-        left: '31.5%',
+        left: '28.5%',
         delay: 2,
     }).to('.phone__touch', {
         opacity: .3,
@@ -74,7 +74,6 @@ function animateScreen() {
 function animatePhone() {
     // Scale Phone on Scroll
     gsap.to('.phone', {
-        scale: .7,
         scrollTrigger: {
             trigger: '.phone',
             start: 'top 50%',
@@ -108,8 +107,6 @@ function main() {
             } else {
                 // Remove the animation
                 gsap.killTweensOf('.phone');
-                // Reset the scale
-                gsap.set('.phone', { scale: .625 });
             }
         }
     });
