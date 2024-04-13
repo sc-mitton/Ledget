@@ -24,6 +24,6 @@ class OrySessionMiddleware(MiddlewareMixin):
         )
 
         if request.path.endswith('devices'):
-            request.devices = decoded_token['session']['devices']
+            ory_session.devices = decoded_token['session']['devices']
 
         return ory_session
