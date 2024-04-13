@@ -76,9 +76,9 @@ class User(models.Model):
         self._is_verified = False
         self._device = None
         self._session_aal = None
+        self._session_auth_method = None
         self._session_id = None
         self._session_devices = None
-        self._device = None
 
     def __setattr__(self, name, value):
         if name == 'mfa_method':

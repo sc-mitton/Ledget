@@ -58,6 +58,10 @@ class OryBackend(SessionAuthentication):
         user.session_id = decoded_token['session']['id']
         user.session_aal = \
             decoded_token['session']['authenticator_assurance_level']
+        user.session_auth_methods = [
+            method['method'] for method in
+            decoded_token['session']['authentication_methods']
+        ]
         user.traits = identity.get('traits', {})
 
         if request.path.endswith('devices'):

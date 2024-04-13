@@ -7,6 +7,8 @@ const apiWithTags = apiSlice.enhanceEndpoints({
 
 type SubscriptionStatus = 'active' | 'canceled' | 'incomplete' | 'incomplete_expired' | 'past_due' | 'trialing' | 'deleted'
 
+type AuthMethod = 'password' | 'oidc' | 'totp' | 'webauthn' | 'lookup_secret' | 'link_recovery' | 'code_recovery' | 'code'
+
 export interface User {
     password_last_changed: string,
     last_login: string,
@@ -22,6 +24,7 @@ export interface User {
     service_provisioned_until: number,
     session_aal: 'aal1' | 'aal15' | 'aal2',
     highest_aal: 'aal1' | 'aal15' | 'aal2',
+    session_auth_methods: AuthMethod[],
     subscription_status: SubscriptionStatus,
     email: string,
     name: {

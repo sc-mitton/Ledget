@@ -13,6 +13,7 @@ class UserView(RetrieveUpdateAPIView):
     serializer_class = UserSerializer
 
     def get_object(self):
+        print('request.session', self.request.session)
         return self.request.user
 
 
