@@ -130,8 +130,8 @@ class DeviceSerializer(serializers.ModelSerializer):
         # location, and secret key
         user = self.context['request'].user
         unhashed = ''.join([
-            user.session_devices[0]['id'],
-            user.session_aal,
+            self.context['request'].ory_session.devices[0]['id'],
+            self.context['request'].ory_session.aal,
             str(user.id),
             settings.SECRET_KEY
         ])
@@ -140,7 +140,7 @@ class DeviceSerializer(serializers.ModelSerializer):
         return hash_value
 
     def _parse_user_agent_kwargs(self):
-        ua_string = self.context['request'].user.session_devices[0]['user_agent']
+        ua_string = self.context['request'].ory_session.devices[0]['user_agent']
         user_agent = ua_parse(ua_string)
 
         kwargs = {}
@@ -167,9 +167,9 @@ class DeviceSerializer(serializers.ModelSerializer):
         try:
             kwargs = {
                 'user_id': str(user.id),
-                'id': user.session_devices[0]['id'],
-                'aal': user.session_aal,
-                'location': user.session_devices[0]['location'],
+                'id': self.context['request'].ory_session.devices[0]['id'],
+                'aal': self.context['request'].ory_session.aal,
+                'location': self.context['request'].ory_session.devices[0]['location'],
                 **self._parse_user_agent_kwargs()
             }
         except Exception as e:
@@ -179,11 +179,10 @@ class DeviceSerializer(serializers.ModelSerializer):
         return instance
 
     def update(self, instance):
-        user = self.context['request'].user
 
         try:
             new_values = {
-                'location': user.session_devices[0]['location'],
+                'location': self.context['request'].ory_session.devices[0]['location'],
                 'token': self._get_hash_token(),
                 **self._parse_user_agent_kwargs()
             }
@@ -192,7 +191,7 @@ class DeviceSerializer(serializers.ModelSerializer):
 
         for key, value in new_values.items():
             setattr(instance, key, value)
-        if self.context['request'].user.session_aal == 'aal2':
+        if self.context['request'].ory_session.aal == 'aal2':
             instance.aal = 'aal2'
 
         instance.save()
