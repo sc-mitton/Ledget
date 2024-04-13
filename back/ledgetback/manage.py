@@ -3,10 +3,10 @@
 import os
 import sys
 
-os.environ.setdefault(
-    'DJANGO_SETTINGS_MODULE',
-    "ledgetback.settings.dev"
-)
+from ledgetback import set_django_settings
+
+set_django_settings()
+
 
 def main():
     """Run administrative tasks."""
