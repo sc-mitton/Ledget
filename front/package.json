@@ -53,6 +53,7 @@
     "@babel/runtime": "7.22.6",
     "@nx/eslint": "18.0.2",
     "@nx/eslint-plugin": "18.0.2",
+    "@nx/expo": "18.0.2",
     "@nx/jest": "18.0.2",
     "@nx/js": "18.0.2",
     "@nx/next": "18.0.2",
