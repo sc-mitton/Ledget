@@ -32,8 +32,8 @@ const MainGraphic = ({ unLocked }) => {
             id="image-container"
         >
             <ForgotPassword
-                fill={isDark ? 'none' : 'var(--m-text-secondary)'}
-                stroke={isDark ? 'var(--m-text)' : 'none'}
+                fill={'var(--m-text-secondary)'}
+                stroke={isDark ? 'none' : 'none'}
             />
             <StatusPulse positive={unLocked} size="medium" />
         </div>
