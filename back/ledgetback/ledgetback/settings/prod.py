@@ -8,7 +8,7 @@ import boto3
 ALLOWED_HOSTS = [
     'ledget.app',
     '*.ledget.app',
-    'endkfgnuwc.us-west-2.awsapprunner.com'
+    '7supx3ppcz.us-west-2.awsapprunner.com'
 ]
 DOMAIN_URL = "https://api.ledget.app:8000/"
 DOMAIN = 'api.ledget.app'

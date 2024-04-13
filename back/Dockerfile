@@ -41,4 +41,4 @@ USER python
 
 EXPOSE 8000
 
-CMD ["sh", "/ledgetback/startup.sh"]
+CMD ["sh", "startup.sh"]
