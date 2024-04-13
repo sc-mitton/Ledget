@@ -42,6 +42,19 @@ class IsAuthenticated(BasePermission):
             return device_aal == 'aal1' or device_aal == 'aal2'
 
 
+class HasOidcSignin(BasePermission):
+    '''
+    Checks if the request has an OIDC signin session
+    '''
+
+    def has_permission(self, request, view):
+        try:
+            return 'oidc' in request.ory_session.auth_methods
+        except Exception as e:
+            logger.error(f'Error checking OIDC signin: {e}')
+            return False
+
+
 class IsAuthedVerifiedSubscriber(IsAuthenticated):
     """Class for bundling permissions for User views"""
 

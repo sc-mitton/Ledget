@@ -170,6 +170,13 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
             }),
             invalidatesTags: ['user'],
         }),
+        extendSession: builder.mutation<any, void>({
+            query: () => ({
+                url: 'user/session/extend',
+                method: 'PATCH',
+            }),
+            invalidatesTags: ['user'],
+        }),
         updateSubscriptionItems: builder.mutation<any, { priceId: string }>({
             query: ({ priceId }) => ({
                 url: 'subscription_item',
@@ -194,4 +201,5 @@ export const {
     useGetPricesQuery,
     useUpdateSubscriptionItemsMutation,
     useEmailUserMutation,
+    useExtendSessionMutation,
 } = extendedApiSlice

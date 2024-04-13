@@ -5,7 +5,7 @@ import { useSearchParams, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
 import { BlueSubmitButton, withSmallModal } from '@ledget/ui'
-import { useGetMeQuery, User } from '@features/userSlice'
+import { useGetMeQuery, User, useExtendSessionMutation } from '@features/userSlice'
 import { useAppSelector, useAppDispatch } from '@hooks/store'
 import {
     selectSessionIsFreshAal1,
@@ -223,6 +223,7 @@ const useReauthCheck = ({ requiredAal, onClose }: Pick<WithReAuthI, 'requiredAal
     const { data: user } = useGetMeQuery()
     const [searchParams, setSearchParams] = useSearchParams()
     const reAuthed = useAppSelector(state => state.auth.reAuthed)
+    const [extendSession] = useExtendSessionMutation()
     const [continueToComponent, setContinueToComponent] = useState(
         (Date.now() - (reAuthed.at || 0) < 1000 * 60 * 9) && reAuthed.level === (requiredAal ?? user?.highest_aal)
     )
@@ -237,8 +238,8 @@ const useReauthCheck = ({ requiredAal, onClose }: Pick<WithReAuthI, 'requiredAal
 
         // If requirements are met, start the poller to check freshness
         // We use a poller since the modal might be opened and closed multiple times
-        if (sessionIsFresh && aalGood) {
 
+        if (sessionIsFresh && aalGood) {
             searchParams.delete('flow')
             searchParams.delete('aal')
             setSearchParams(searchParams)
@@ -249,6 +250,8 @@ const useReauthCheck = ({ requiredAal, onClose }: Pick<WithReAuthI, 'requiredAal
                 !isFreshCheck && onClose && onClose()
             }, 1000 * 60 * 9)
 
+        } else if (user?.session.auth_methods.includes('oidc') && !sessionIsFresh) {
+            extendSession()
         } else if (sessionIsFresh && !aalGood) {
             // Needs to increase aal
             const neededAal = (requiredAal ?? user?.highest_aal) || ''
