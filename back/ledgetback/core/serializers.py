@@ -43,10 +43,11 @@ class UserSerializer(serializers.ModelSerializer):
     service_provisioned_until = serializers.SerializerMethodField(
         read_only=True)
     subscription_status = serializers.SerializerMethodField(read_only=True)
-    session_aal = serializers.SerializerMethodField(read_only=True)
     highest_aal = serializers.SerializerMethodField(read_only=True)
     password_last_changed = serializers.CharField(required=False)
     last_login = serializers.SerializerMethodField(read_only=True)
+    session = serializers.SerializerMethodField(read_only=True)
+    session_aal = serializers.SerializerMethodField(read_only=True)  # DELETE
 
     class Meta:
         model = User
@@ -77,8 +78,15 @@ class UserSerializer(serializers.ModelSerializer):
     def get_service_provisioned_until(self, obj):
         return obj.service_provisioned_until
 
+    # DELETE
     def get_session_aal(self, obj):
         return obj.session_aal
+
+    def get_session(self, obj):
+        return {
+            'aal': self.context['request'].ory_session.aal,
+            'auth_methods': self.context['request'].ory_session.devices
+        }
 
     def get_highest_aal(self, obj):
         return obj.highest_aal

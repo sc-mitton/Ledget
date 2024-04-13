@@ -1,7 +1,7 @@
 
 from functools import wraps
 from django.utils.decorators import decorator_from_middleware
-from ledgetback.middleware import CustomCsrfMiddleware, add_new_csrf_hmac_cookie
+from ledgetback.middleware.csrf import CustomCsrfMiddleware, add_new_csrf_hmac_cookie
 
 
 def csrf_ignore(view_func):

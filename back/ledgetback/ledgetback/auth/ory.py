@@ -26,6 +26,7 @@ class OryBackend(SessionAuthentication):
 
         try:
             user = self.get_user(request, decoded_jwt)
+            request.device = self._get_device(user, request)
         except Exception as e:
             logger.error(f"{e.__class__.__name__} {e}")
             return None
@@ -51,20 +52,7 @@ class OryBackend(SessionAuthentication):
         user = User.objects \
                    .prefetch_related('device__set') \
                    .select_related('customer') \
-                   .get(pk=identity['id']) \
-
-        user.device = self._get_device(user, request)
-
-        user.session_id = decoded_token['session']['id']
-        user.session_aal = \
-            decoded_token['session']['authenticator_assurance_level']
-        user.session_auth_methods = [
-            method['method'] for method in
-            decoded_token['session']['authentication_methods']
-        ]
+                   .get(pk=identity['id'])
         user.traits = identity.get('traits', {})
-
-        if request.path.endswith('devices'):
-            user.session_devices = decoded_token['session']['devices']
 
         return user

@@ -9,6 +9,11 @@ type SubscriptionStatus = 'active' | 'canceled' | 'incomplete' | 'incomplete_exp
 
 type AuthMethod = 'password' | 'oidc' | 'totp' | 'webauthn' | 'lookup_secret' | 'link_recovery' | 'code_recovery' | 'code'
 
+interface Session {
+    aal: 'aal1' | 'aal15' | 'aal2',
+    auth_methods: AuthMethod[],
+}
+
 export interface User {
     password_last_changed: string,
     last_login: string,
@@ -22,9 +27,8 @@ export interface User {
     is_verified: boolean,
     is_onboarded: boolean,
     service_provisioned_until: number,
-    session_aal: 'aal1' | 'aal15' | 'aal2',
     highest_aal: 'aal1' | 'aal15' | 'aal2',
-    session_auth_methods: AuthMethod[],
+    session: Session,
     subscription_status: SubscriptionStatus,
     email: string,
     name: {

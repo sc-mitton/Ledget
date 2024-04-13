@@ -34,7 +34,7 @@ class DeviceView(ListCreateAPIView):
     serializer_class = DeviceSerializer
 
     def create(self, request, *args, **kwargs):
-        device_is_aal1 = not request.user.device or request.user.device.aal == 'aal1'
+        device_is_aal1 = not request.device or request.device.aal == 'aal1'
         session_is_aal1 = request.user.session_aal == 'aal1'
         use_has_mfa = bool(request.user.mfa_method)
 
@@ -44,7 +44,7 @@ class DeviceView(ListCreateAPIView):
                 {'error': f'{request.user.mfa_method}'},
                 HTTP_422_UNPROCESSABLE_ENTITY
             )
-        elif not request.user.device:
+        elif not request.device:
             instance = self._add_device(request, *args, **kwargs)
         else:
             instance = self.update(request, *args, **kwargs)
@@ -70,7 +70,7 @@ class DeviceView(ListCreateAPIView):
         return Device.objects.filter(user=self.request.user)
 
     def get_object(self, ):
-        return self.request.user.device
+        return self.request.device
 
     def _add_device(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

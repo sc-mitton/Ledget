@@ -27,7 +27,7 @@ class IsAuthenticated(BasePermission):
                 or not request.user.is_authenticated:
             return False
 
-        device_aal = getattr(request.user.device, 'aal', None)
+        device_aal = getattr(request.device, 'aal', None)
 
         # in reality the device_aal should be at least as high as the sessio    n aal
         session_aal = getattr(request.user, 'session_aal', None)

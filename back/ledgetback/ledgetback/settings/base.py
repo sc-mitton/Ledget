@@ -34,8 +34,9 @@ INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'ledgetback.middleware.OryAuthenticationMiddleware',
-    'ledgetback.middleware.CustomCsrfMiddleware',
+    'ledgetback.middleware.authentication.OryAuthenticationMiddleware',
+    'ledgetback.middleware.session.OrySessionMiddleware',
+    'ledgetback.middleware.csrf.CustomCsrfMiddleware',
 ]
 
 ROOT_URLCONF = 'ledgetback.urls'

@@ -1,16 +1,11 @@
 
-class InMemorySession:
+class OrySession:
 
-    def __init__(self):
-        self._devices = []
-        self._aal = None
-        self._auth_methods = []
-        self._id = None
-        self._device = None
-
-    @property
-    def device(self):
-        return self._device
+    def __init__(self, id, aal, devices=[], auth_methods=[]):
+        self._id = id
+        self._aal = aal
+        self._devices = devices
+        self._auth_methods = auth_methods
 
     @property
     def devices(self):
