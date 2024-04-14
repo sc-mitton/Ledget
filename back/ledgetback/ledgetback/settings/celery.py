@@ -1,26 +1,7 @@
-from .base import *
-import os
-import jwt
 import json
+
+from .base import *
 from .get_aws_secret import get_secret
-
-
-ALLOWED_HOSTS = [
-    'ledget.app',
-    '*.ledget.app',
-    '7supx3ppcz.us-west-2.awsapprunner.com'
-]
-DOMAIN_URL = "https://api.ledget.app:8000/"
-DOMAIN = 'api.ledget.app'
-
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_BROWSER_XSS_FILTER = True
-
-
-# ----------------------------------- Csrf ----------------------------------- #
-
-CSRF_TRUSTED_ORIGINS = ['https://ledget.app', 'https://accounts.ledget.app']
-CSRF_COOKIE_DOMAIN = '.ledget.app'
 
 # ---------------------------------- 3rd Party Services --------------------------------- #
 
@@ -35,20 +16,6 @@ STRIPE_WEBHOOK_SECRET = get_secret('stripe_webhook_secret')
 ORY_HOST = 'https://auth.ledget.app'
 ORY_HOOK_API_KEY = get_secret('ory_hook_api_key')
 ORY_API_KEY = get_secret('ory_api_key')
-
-# Oathkeeper
-jwks = get_secret('oathkeeper_jwks')
-try:
-    jwks = json.loads(jwks)['keys'][0]
-    for k in [ 'd', 'p', 'q', 'dp', 'dq', 'qi' ]:
-        del jwks[k]
-    OATHKEEPER_PUBLIC_KEY = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwks))
-except Exception as e:
-    print(e)
-    OATHKEEPER_PUBLIC_KEY = None
-
-# Sparkpost
-SPARKPOST_API_KEY = get_secret('sparkpost_key')
 
 # Plaid
 PLAID_ENVIRONMENT = 'Production'
@@ -77,12 +44,3 @@ DATABASES = {
 
 CELERY_BROKER_URL = os.getenv('celery_broker_url')
 CELERY_RESULT_BACKEND = os.getenv('celery_result_backend')
-
-# ---------------------------------- Caching --------------------------------- #
-
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-        "LOCATION": "unique-snowflake",
-    }
-}

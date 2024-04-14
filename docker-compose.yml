@@ -107,6 +107,29 @@ services:
       - redis
     ports:
       - 8000:8000
+  celery:
+    build:
+      context: ./back
+      args:
+        - ENVIRONMENT=dev
+    command: sh -c "/ledgetback/celery_startup.sh"
+    volumes:
+      - ./back/ledgetback:/ledgetback
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - DB_HOST=db
+      - DB_NAME=devdb
+      - DB_PORT=5432
+    depends_on:
+      - redis
+      - ledgetback
+    secrets:
+      - ory_api_key
+      - plaid_api_key
+      - postgres_user
+      - postgres_password
+      - plaid_client_id
   ory:
     image: oryd/ory
     ports:

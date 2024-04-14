@@ -46,4 +46,4 @@ USER python
 
 EXPOSE 8000
 
-CMD /ledgetback/startup.sh
+CMD /ledgetback/restapi_startup.sh
