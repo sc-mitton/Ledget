@@ -30,6 +30,7 @@ COPY --from=base /usr/local/bin/ /usr/local/bin/
 
 # Set API_VERSION env variable
 ARG API_VERSION
+ARG ENVIRONMENT
 ENV API_VERSION=$API_VERSION
 
 WORKDIR /ledgetback
@@ -41,4 +42,4 @@ USER python
 
 EXPOSE 8000
 
-CMD ["sh", "startup.sh"]
+CMD /ledgetback/startup.sh $ENVIRONMENT
