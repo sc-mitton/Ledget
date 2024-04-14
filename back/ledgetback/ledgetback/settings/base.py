@@ -10,6 +10,7 @@ SITE_ID = 1
 # -------------------------- Application Definition -------------------------- #
 
 API_VERSION = int(os.getenv('API_VERSION', 1))
+SUPPORTED_API_VERSION_CUTOFF = 1
 
 DEFAULT_APPS = [
     'django.contrib.auth',
