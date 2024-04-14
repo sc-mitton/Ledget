@@ -23,7 +23,7 @@ services:
     build:
       args:
         - ENVIRONMENT=dev
-        - DEV=true
+        - API_VERSION=1
       context: ./back
     environment:
       - DB_HOST=db
@@ -32,7 +32,6 @@ services:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
       - DEBUG=true
-      - ENVIRONMENT=dev
     secrets:
       - django_secret_key
       - postgres_user

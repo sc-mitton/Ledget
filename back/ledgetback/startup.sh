@@ -1,24 +1,31 @@
 #!/bin/bash
 
-if [ -z "$1" ]; then
-    echo "Please provide the environment to run the server"
+usage() {
+    echo "Usage: $0 -e <environment> -v <api_version>"
     exit 1
-fi
+}
 
-if [ "$1" == "dev" ]; then
-    export DJANGO_SETTINGS_MODULE="ledgetback.settings.dev"
-    export CELERY_BROKER_URL="redis://localhost:6379/0"
-    export CELERY_RESULT_BACKEND="redis://localhost:6379/0"
-elif [ "$1" == "prod" ]; then
-    export DJANGO_SETTINGS_MODULE="ledgetback.settings.prod"
+# Parsing options
+env=$ENVIRONMENT
+api_version=$API_VERSION
+
+echo "Environment: $env"
+echo "API Version: $api_version"
+
+export API_VERSION=$api_version
+
+if [ "$env" == "dev" ]; then
+    export DJANGO_SETTINGS_MODULE=ledgetback.settings.dev
+elif [ "$env" == "uat" ]; then
+    export DJANGO_SETTINGS_MODULE=ledgetback.settings.uat
     export CELERY_BROKER_URL=" "
     export CELERY_RESULT_BACKEND=" "
-elif [ "$1" == "uat" ]; then
-    export DJANGO_SETTINGS_MODULE="ledgetback.settings.uat"
+elif [ "$env" == "prod" ]; then
+    export DJANGO_SETTINGS_MODULE=ledgetback.settings.prod
     export CELERY_BROKER_URL=" "
     export CELERY_RESULT_BACKEND=" "
 else
-    echo "Invalid environment"
+    echo "Environment not set"
     exit 1
 fi
 
@@ -28,7 +35,7 @@ python manage.py makemigrations &&
 python manage.py migrate
 
 # Run the server
-if [ "$1" == "dev" ]; then
+if [ "$env" == "dev" ]; then
     python manage.py runserver
 else
     gunicorn -c gunicorn.conf.py ledgetback.wsgi

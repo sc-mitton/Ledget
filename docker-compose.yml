@@ -55,7 +55,7 @@ services:
   ledgetback:
     build:
       args:
-        - VERSION=1
+        - API_VERSION=1
         - ENVIRONMENT=dev
       context: ./back
     labels:
@@ -88,7 +88,6 @@ services:
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
       - DEBUG=true
       - SILK_DEBUG=true
-      - ENVIRONMENT=dev
     volumes:
       - ./back/ledgetback:/ledgetback
     secrets:
@@ -108,32 +107,6 @@ services:
       - redis
     ports:
       - 8000:8000
-  celery:
-    build:
-      context: ./back
-    command: celery -A ledgetback worker -l info
-    volumes:
-      - ./back/ledgetback:/ledgetback
-    environment:
-      - DJANGO_SETTINGS_MODULE=ledgetback.settings.dev
-      - DEV=true
-      - DEBUG=true
-      - SILK_DEBUG=false
-      - ENVIRONMENT=dev
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
-      - DB_HOST=db
-      - DB_NAME=devdb
-      - DB_PORT=5432
-    depends_on:
-      - redis
-      - ledgetback
-    secrets:
-      - ory_api_key
-      - plaid_api_key
-      - postgres_user
-      - postgres_password
-      - plaid_client_id
   ory:
     image: oryd/ory
     ports:

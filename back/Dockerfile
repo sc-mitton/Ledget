@@ -11,6 +11,8 @@ COPY requirements.dev.txt .
 
 RUN pip install --upgrade pi
 ARG ENVIRONMENT
+ARG API_VERSION
+
 RUN if [ $ENVIRONMENT = "dev" ]; then \
     pip install -r requirements.dev.txt; \
     else \
@@ -29,8 +31,10 @@ COPY --from=base /usr/local/lib/python3.11/site-packages/ /usr/local/lib/python3
 COPY --from=base /usr/local/bin/ /usr/local/bin/
 
 # Set API_VERSION env variable
-ARG API_VERSION
 ARG ENVIRONMENT
+ARG API_VERSION
+
+ENV ENVIRONMENT=$ENVIRONMENT
 ENV API_VERSION=$API_VERSION
 
 WORKDIR /ledgetback
@@ -42,4 +46,4 @@ USER python
 
 EXPOSE 8000
 
-CMD /ledgetback/startup.sh $ENVIRONMENT
+CMD /ledgetback/startup.sh
