@@ -8,9 +8,3 @@ if [ $ENVIRONMENT == "dev" ]; then
 else
     gunicorn -c gunicorn.conf.py ledgetback.wsgi &
 fi
-
-# Wait 20s for the server to start
-sleep 20
-python manage.py wait_for_db &&
-python manage.py makemigrations &&
-python manage.py migrate
