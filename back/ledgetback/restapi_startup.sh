@@ -5,9 +5,6 @@ source set_env.sh
 env=$ENVIRONMENT
 api_version=$API_VERSION
 
-echo "Environment: $env"
-echo "API Version: $api_version"
-
 python manage.py wait_for_db &&
 python manage.py makemigrations &&
 python manage.py migrate
