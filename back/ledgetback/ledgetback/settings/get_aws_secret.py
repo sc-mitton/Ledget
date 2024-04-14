@@ -1,9 +1,10 @@
 import boto3
 
 session = boto3.session.Session()
+region = session.region_name or 'us-west-2'
 client = session.client(
     service_name='secretsmanager',
-    region_name=session.region_name
+    region_name=region
 )
 
 def get_secret(secret_name):

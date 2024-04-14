@@ -31,3 +31,5 @@ else
     echo "Environment not set"
     exit 1
 fi
+
+echo "Environment set to $env"

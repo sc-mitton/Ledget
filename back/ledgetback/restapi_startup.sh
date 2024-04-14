@@ -2,15 +2,12 @@
 
 source set_env.sh
 
-env=$ENVIRONMENT
-api_version=$API_VERSION
-
 python manage.py wait_for_db &&
 python manage.py makemigrations &&
 python manage.py migrate
 
 # Run the server
-if [ "$env" == "dev" ]; then
+if [ $ENVIRONMENT == "dev" ]; then
     python manage.py runserver
 else
     gunicorn -c gunicorn.conf.py ledgetback.wsgi
