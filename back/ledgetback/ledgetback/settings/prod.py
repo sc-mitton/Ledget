@@ -8,7 +8,7 @@ from .get_aws_secret import get_secret
 ALLOWED_HOSTS = [
     'ledget.app',
     '*.ledget.app',
-    '2c6dxfvbyn.us-west-2.awsapprunner.com'
+    '6svg8dyfd9.us-west-2.awsapprunner.com'
 ]
 DOMAIN_URL = "https://api.ledget.app:8000/"
 DOMAIN = 'api.ledget.app'
