@@ -3,9 +3,6 @@
 env=$ENVIRONMENT
 api_version=$API_VERSION
 
-echo "Environment: $env"
-echo "API Version: $api_version"
-
 if [ -n "$api_version" ]; then
     export API_VERSION=$api_version
 else
@@ -33,3 +30,4 @@ else
 fi
 
 echo "Environment set to $env"
+echo "API Version: $api_version"
