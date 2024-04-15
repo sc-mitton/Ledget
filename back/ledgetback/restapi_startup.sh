@@ -9,6 +9,6 @@ if [ $ENVIRONMENT == "dev" ]; then
     python manage.py migrate &&
     python manage.py runserver
 else
-    python manage.py migrate &&
+    # python manage.py migrate &&
     gunicorn -c gunicorn.conf.py ledgetback.wsgi
 fi
