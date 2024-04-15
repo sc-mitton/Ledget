@@ -1,5 +1,6 @@
 local version = 'v0.36.0-beta.4';
 local base_url = 'https://' + std.extVar('domain') + '/v' + std.extVar('version');
+local unversioned_base_url = 'https://' + std.extVar('domain');
 
 /* Authenticators */
 local anonymous_authenticator = {
@@ -42,7 +43,7 @@ local BaseWithAuth = {
     id: 'health',
     match: {
       methods: ['GET'],
-      url: base_url + '/health',
+      url: unversioned_base_url + '/health',
     },
     authenticators: [anonymous_authenticator],
     mutators: [noop_mutator],
@@ -53,7 +54,7 @@ local BaseWithAuth = {
     id: 'deny',
     match: {
       methods: ['GET'],
-      url: base_url + '/deny',
+      url: unversioned_base_url + '/deny',
     },
     authenticators: [anonymous_authenticator],
     authorizer: deny_authorizer,
@@ -64,7 +65,7 @@ local BaseWithAuth = {
     id: 'allow-auth',
     match: {
       methods: ['Get'],
-      url: base_url + '/auth-health',
+      url: unversioned_base_url + '/auth-health',
     },
   },
   Base
