@@ -52,7 +52,7 @@ services:
       - ./front/certs:/etc/ssl/certs
       - ./traefik:/traefik
       - /var/run/docker.sock:/var/run/docker.sock
-  ledgetback:
+  restapi:
     build:
       args:
         - API_VERSION=1
@@ -89,7 +89,7 @@ services:
       - DEBUG=true
       - SILK_DEBUG=true
     volumes:
-      - ./back/ledgetback:/ledgetback
+      - ./back/restapi:/restapi
     secrets:
       - stripe_webhook_secret
       - stripe_api_key
@@ -112,9 +112,9 @@ services:
       context: ./back
       args:
         - ENVIRONMENT=dev
-    entrypoint: sh -c "/ledgetback/celery_startup.sh"
+    entrypoint: sh -c "/restapi/celery_startup.sh"
     volumes:
-      - ./back/ledgetback:/ledgetback
+      - ./back/restapi:/restapi
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
@@ -123,7 +123,7 @@ services:
       - DB_PORT=5432
     depends_on:
       - redis
-      - ledgetback
+      - restapi
     secrets:
       - ory_api_key
       - plaid_api_key

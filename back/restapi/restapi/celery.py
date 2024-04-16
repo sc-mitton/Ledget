@@ -1,0 +1,9 @@
+# Meant for a production environment
+
+from celery import Celery
+
+from django.apps import apps
+
+app = Celery("restapi")
+app.config_from_object("django.conf:settings", namespace="CELERY")
+app.autodiscover_tasks(lambda: [n.name for n in apps.get_app_configs()])

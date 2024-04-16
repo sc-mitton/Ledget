@@ -296,7 +296,7 @@ The suite of unit tests for django rest framework is run on every commit to the 
 You can run the tests manually with
 
 ```
-docker-compose run --rm ledgetback sh -c "python manage.py test"
+docker-compose run --rm restapi sh -c "python manage.py test"
 ```
 
 #### Oathkeeper

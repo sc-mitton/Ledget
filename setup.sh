@@ -35,9 +35,9 @@ get_random_secret_key > ./secrets/django_dev_secret_key
 echo dev_user > ./secrets/postgres_user && echo dev_user_password > ./secrets/postgres_password
 
 # Make the log files
-mkdir back/ledgetback/logs
-touch back/ledgetback/logs/stripe_logs
-touch back/ledgetback/logs/ledget_logs
+mkdir back/restapi/logs
+touch back/restapi/logs/stripe_logs
+touch back/restapi/logs/ledget_logs
 
 # Install pm2
 npm install pm2@latest -g

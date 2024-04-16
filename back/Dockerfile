@@ -37,13 +37,13 @@ ARG API_VERSION
 ENV ENVIRONMENT=$ENVIRONMENT
 ENV API_VERSION=$API_VERSION
 
-WORKDIR /ledgetback
-COPY ./ledgetback .
+WORKDIR /restapi
+COPY ./restapi .
 RUN mkdir -p ./logs && touch ./logs/stripe_logs && touch ./logs/ledget_logs
 
-RUN chown -R python:python /ledgetback
+RUN chown -R python:python /restapi
 USER python
 
 EXPOSE 8000
 
-CMD /ledgetback/restapi_startup.sh
+CMD /restapi/restapi_startup.sh
