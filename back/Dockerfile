@@ -45,3 +45,5 @@ RUN chown -R python:python /ledgetback
 USER python
 
 EXPOSE 8000
+
+CMD /ledgetback/restapi_startup.sh

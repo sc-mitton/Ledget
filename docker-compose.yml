@@ -58,7 +58,6 @@ services:
         - API_VERSION=1
         - ENVIRONMENT=dev
       context: ./back
-    entrypoint: sh -c "/ledgetback/restapi_startup.sh"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.silk.rule=(Host(`localhost`))"
