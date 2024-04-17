@@ -32,7 +32,6 @@ urlpatterns = [
      path('next_invoice', service_views.NextInvoice.as_view(),
           name='next_invoice'),
 
-     path('', include('health.urls')),
      path('', include('budget.urls')),
      path('', include('financials.urls')),
 ]
