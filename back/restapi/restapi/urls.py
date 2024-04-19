@@ -6,7 +6,6 @@ SUPPORTED_API_VERSION_CUTOFF = settings.SUPPORTED_API_VERSION_CUTOFF
 
 urlpatterns = [
     path('hooks/', include('hooks.urls')),
-    path('', include('health.urls')),
 ]
 
 for i in range(SUPPORTED_API_VERSION_CUTOFF, API_VERSION + 1):
