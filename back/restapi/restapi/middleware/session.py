@@ -13,6 +13,8 @@ class OrySessionMiddleware(MiddlewareMixin):
 
     def get_ory_session(self, request):
         decoded_token = request.META.get(OATHKEEPER_AUTH_HEADER, None)
+        if not decoded_token:
+            return None
 
         ory_session = OrySession(
             id=decoded_token['session']['id'],

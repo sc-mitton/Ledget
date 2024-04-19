@@ -60,17 +60,26 @@ services:
       context: ./back
     labels:
       - "traefik.enable=true"
+
+      # Silk router
       - "traefik.http.routers.silk.rule=(Host(`localhost`))"
       - "traefik.http.routers.silk.entrypoints=web"
-      - "traefik.http.routers.hooks.tls=false"
 
+      # Health router
+      - "traefik.http.routers.health.rule=(Host(`localhost`) && PathPrefix(`/health`))"
+      - "traefik.http.routers.health.entrypoints=websecure"
+      - "traefik.http.routers.health.tls=true"
+      - "traefik.http.routers.health.middlewares=oathkeeper, cors"
+      # API router
       - "traefik.http.routers.api.rule=(Host(`localhost`) && PathPrefix(`/v{version:[0-9]+}/`))"
       - "traefik.http.routers.api.entrypoints=websecure"
       - "traefik.http.routers.api.tls=true"
       - "traefik.http.routers.api.middlewares=oathkeeper,cors"
+      # Hooks router
       - "traefik.http.routers.hooks.rule=(Host(`localhost`) && PathPrefix(`/hooks`))"
       - "traefik.http.routers.hooks.entrypoints=websecure"
       - "traefik.http.routers.hooks.tls=true"
+      # Middleware
       - "traefik.http.middlewares.hooksIpWhitelist.ipwhitelist.sourcerange=3.18.12.63, 3.130.192.231, 13.235.14.237, 13.235.122.149, 18.211.135.69, 35.154.171.200, 52.15.183.38, 54.88.130.119, 54.88.130.237, 54.187.174.169, 54.187.205.235, 54.187.216.72, 34.22.170.75, 35.242.228.133, 52.21.26.131, 52.21.47.157, 52.41.247.19, 52.88.82.239"
       - "traefik.http.middlewares.hooksIpWhitelist.ipwhitelist.ipstrategy.depth=1"
       - "traefik.http.routers.hooks.middlewares=hooksIpWhitelist@docker"
