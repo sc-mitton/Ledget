@@ -37,7 +37,7 @@ runs:
         AWS_REGION: "us-west-2"
         CONTEXT: ${{ inputs.context }}
         TAG: ${{ inputs.tag }}
-        API_VERSION: ${{ inputs.api_version }}
+        VERSION: ${{ inputs.version }}
         REGISTERY: ${{ steps.login-ecr.outputs.registry }}
         ENVIRONMENT: ${{ inputs.environment }}
       run: |
