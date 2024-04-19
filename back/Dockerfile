@@ -11,7 +11,7 @@ COPY requirements.dev.txt .
 
 RUN pip install --upgrade pi
 ARG ENVIRONMENT
-ARG API_VERSION
+ARG VERSION
 
 RUN if [ $ENVIRONMENT = "dev" ]; then \
     pip install -r requirements.dev.txt; \
@@ -30,12 +30,12 @@ RUN groupadd -g 999 python && \
 COPY --from=base /usr/local/lib/python3.11/site-packages/ /usr/local/lib/python3.11/site-packages/
 COPY --from=base /usr/local/bin/ /usr/local/bin/
 
-# Set API_VERSION env variable
+# Set VERSION env variable
 ARG ENVIRONMENT
-ARG API_VERSION
+ARG VERSION
 
 ENV ENVIRONMENT=$ENVIRONMENT
-ENV API_VERSION=$API_VERSION
+ENV API_VERSION=$VERSION
 
 WORKDIR /restapi
 COPY ./restapi .

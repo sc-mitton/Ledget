@@ -37,11 +37,11 @@ runs:
         AWS_REGION: "us-west-2"
         CONTEXT: ${{ inputs.context }}
         TAG: ${{ inputs.tag }}
-        VERSION: ${{ inputs.version }}
+        API_VERSION: ${{ inputs.api_version }}
         REGISTERY: ${{ steps.login-ecr.outputs.registry }}
         ENVIRONMENT: ${{ inputs.environment }}
       run: |
-        docker build $CONTEXT -t $TAG:v$VERSION --build-arg ENVIRONMENT=$ENVIRONMENT --build-arg API_VERSION=$VERSION
+        docker build $CONTEXT -t $TAG:v$VERSION --build-arg ENVIRONMENT=$ENVIRONMENT --build-arg VERSION=$VERSION
         IMAGE_ID=$(docker images -q $TAG:v$VERSION)
         docker tag $IMAGE_ID $REGISTERY/$TAG:v$VERSION
         docker push $REGISTERY/$TAG:v$VERSION
