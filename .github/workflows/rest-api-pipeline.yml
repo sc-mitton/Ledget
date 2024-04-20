@@ -105,7 +105,7 @@ jobs:
       - name: Initialize EB CLI
         env:
           REGION: ${{ matrix.region }}
-        run: echo N | eb init ledget-restapi --region $REGION'
+        run: echo N | eb init ledget-restapi --region $REGION
       - name: Deploy to Elastic Beanstalk
         env:
           REGION: "us-west-2"
