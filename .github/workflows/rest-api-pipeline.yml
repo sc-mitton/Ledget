@@ -95,5 +95,7 @@ jobs:
         run: |
           sudo apt-get install python3-pip
           pip3 install awsebcli --upgrade
+      - name: Initialize EB CLI
+        run: ${{ github.ref == 'refs/heads/main' && 'eb init restapi-prod' || github.ref == 'refs/heads/uat' && 'eb init restapi-uat' }}
       - name: Deploy to Elastic Beanstalk
         run: ${{ github.ref == 'refs/heads/main' && 'eb deploy restapi-prod' || github.ref == 'refs/heads/uat' && 'eb deploy restapi-uat' }}
