@@ -102,8 +102,8 @@ jobs:
       - name: Initialize EB CLI
         env:
           REGION: ${{ matrix.region }}
-        run: ${{ github.ref == 'refs/heads/main' && 'eb init restapi-prod --region $REGION' || github.ref == 'refs/heads/uat' && 'eb init -p python-3.8 restapi-uat --region $REGION' }}
+        run: echo N | ${{ github.ref == 'refs/heads/main' && 'eb init restapi-prod --region $REGION' || github.ref == 'refs/heads/uat' && 'eb init -p python-3.8 restapi-uat --region $REGION' }}
       - name: Deploy to Elastic Beanstalk
         env:
           REGION: "us-west-2"
-        run: ${{ github.ref == 'refs/heads/main' && 'echo "N" | eb deploy restapi-prod' || github.ref == 'refs/heads/uat' && 'echo "N" | eb deploy restapi-uat' }}
+        run: ${{ github.ref == 'refs/heads/main' && 'eb deploy restapi-prod' || github.ref == 'refs/heads/uat' && 'eb deploy restapi-uat' }}
