@@ -8,7 +8,7 @@ log_file = "-"
 workers = multiprocessing.cpu_count() * 2 + 1
 
 certfile = "/etc/pki/tls/certs/server.crt"
-keyfile = "/etc/pki/tls/private/server.key"
+keyfile = "/etc/pki/tls/certs/server.key"
 
 bind = "0.0.0.0:8000"
 module = "restapi.wsgi:application"
