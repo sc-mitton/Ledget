@@ -106,4 +106,4 @@ jobs:
       - name: Deploy to Elastic Beanstalk
         env:
           REGION: "us-west-2"
-        run: ${{ github.ref == 'refs/heads/main' && 'eb deploy restapi-prod' || github.ref == 'refs/heads/uat' && 'eb deploy restapi-uat' }}
+        run: echo "N" | ${{ github.ref == 'refs/heads/main' && 'eb deploy restapi-prod' || github.ref == 'refs/heads/uat' && 'eb deploy restapi-uat' }}
