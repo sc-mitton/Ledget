@@ -11,12 +11,8 @@
     ],
     "Volumes": [
         {
-            "HostDirectory": "/etc/pki/tls/certs/server.key",
-            "ContainerDirectory": "/etc/pki/tls/certs/server.key"
-        },
-        {
-            "HostDirectory": "/etc/pki/tls/certs/server.crt",
-            "ContainerDirectory": "/etc/pki/tls/certs/server.crt"
+            "HostDirectory": "/etc/pki/tls/certs",
+            "ContainerDirectory": "/etc/pki/tls/certs"
         }
     ]
 }
