@@ -79,3 +79,26 @@ jobs:
           context: ${{ matrix.context }}
           role: ${{ github.ref == 'refs/heads/main' && 'arn:aws:iam::905418323334:role/gh-actions' || github.ref == 'refs/heads/uat' && 'replace me' }}
           environment: ${{ github.ref == 'refs/heads/main' && 'prod' || github.ref == 'refs/heads/uat' && 'uat'}}
+  deploy:
+    # Don't deploy if pushing to dev branch
+    if: ${{ github.ref != 'refs/heads/dev' }}
+    name: "Deploy Elastic Beanstalk Environment"
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: 'arn:aws:iam::905418323334:role/gh-actions'
+          aws-region: "us-west-2"
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          mask-password: true
+      - name: Deploy to Elastic Beanstalk
+        uses: hmanzur/actions-aws-eb@v1.0.0
+        with:
+          command: ${{ github.ref == 'refs/heads/main' && 'deploy restapi-prod' || github.ref == 'refs/heads/uat' && 'deploy restapi-uat' }}
