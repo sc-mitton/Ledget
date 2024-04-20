@@ -60,13 +60,6 @@ jobs:
     name: "Build and Push to ECR"
     needs: test
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        image_name: [ "ledget-rest-api" ]
-        include:
-          - image_name: "ledget-rest-api"
-            context: "./back"
-            version: 1
     # Build and push to correct ECR based on the branch
     steps:
       - name: Check out repository
@@ -74,9 +67,9 @@ jobs:
       - name: Build and push
         uses: ./.github/actions/build-and-push
         with:
-          tag: ${{ matrix.image_name }}
-          version: ${{ matrix.version }}
-          context: ${{ matrix.context }}
+          tag: ledget-rest-api
+          version: 1
+          context: ./back
           role: ${{ github.ref == 'refs/heads/main' && 'arn:aws:iam::905418323334:role/gh-actions' || github.ref == 'refs/heads/uat' && 'replace me' }}
           environment: ${{ github.ref == 'refs/heads/main' && 'prod' || github.ref == 'refs/heads/uat' && 'uat'}}
   deploy:
@@ -98,7 +91,9 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
         with:
           mask-password: true
+      - name: Install EB CLI
+        run: |
+          sudo apt-get install python3-pip
+          pip3 install awsebcli --upgrade
       - name: Deploy to Elastic Beanstalk
-        uses: hmanzur/actions-aws-eb@v1.0.0
-        with:
-          command: ${{ github.ref == 'refs/heads/main' && 'deploy restapi-prod' || github.ref == 'refs/heads/uat' && 'deploy restapi-uat' }}
+        run: ${{ github.ref == 'refs/heads/main' && 'deploy restapi-prod' || github.ref == 'refs/heads/uat' && 'deploy restapi-uat' }}
