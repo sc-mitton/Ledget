@@ -76,6 +76,9 @@ jobs:
     # Don't deploy if pushing to dev branch
     if: ${{ github.ref != 'refs/heads/dev' }}
     name: "Deploy Elastic Beanstalk Environment"
+    defaults:
+      run:
+        working-directory: ./back/restapi
     needs: build
     runs-on: ubuntu-latest
     strategy:
