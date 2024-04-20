@@ -74,7 +74,7 @@ jobs:
           environment: ${{ github.ref == 'refs/heads/main' && 'prod' || github.ref == 'refs/heads/uat' && 'uat'}}
   deploy:
     # Don't deploy if pushing to dev branch
-    if: false
+    if: ${{ github.ref != 'refs/heads/dev' }}
     name: "Deploy Elastic Beanstalk Environment"
     defaults:
       run:
