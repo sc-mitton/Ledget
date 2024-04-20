@@ -10,7 +10,7 @@ ALLOWED_HOSTS = [
     '*.ledget.app',
     'restapi-prod-8b2lfj8.us-west-2.elasticbeanstalk.com',
 ]
-DOMAIN_URL = "https://api.ledget.app:8000/"
+DOMAIN_URL = "https://api.ledget.app/"
 DOMAIN = 'api.ledget.app'
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
