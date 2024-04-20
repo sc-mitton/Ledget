@@ -217,6 +217,5 @@ func HandleRequest(ctx context.Context, event events.APIGatewayProxyRequest) (ev
 }
 
 func main() {
-	// Start Lambda handler
 	lambda.Start(HandleRequest)
 }

@@ -1,5 +1,6 @@
 from django.urls import path, include
 from core.views import service as service_views
+from core.views.health import HealthView
 from core.views.user import UserView, EmailView, UserSessionExtendView
 from core.views.device import (
      DeviceView,
@@ -11,6 +12,7 @@ urlpatterns = [
      path('user/email', EmailView.as_view(), name='user_email'),
      path('user/session/extend', UserSessionExtendView.as_view(),
           name='user_session_extend'),
+     path('health', HealthView.as_view(), name='health'),
 
      path('device/<str:id>', DestroyDeviceView.as_view(), name='device'),
      path('devices', DeviceView.as_view(), name='devices'),

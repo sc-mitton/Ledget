@@ -17,6 +17,7 @@ permissions:
   contents: read
 
 jobs:
+  # Check if oathkeeper authorizer has changed
   changes:
     runs-on: ubuntu-latest
     # Set job outputs to values from filter step
