@@ -180,6 +180,12 @@ func init() {
 func getDecision(event events.APIGatewayProxyRequest) (*http.Response, error) {
 
 	req, err := http.NewRequest(event.RequestContext.HTTPMethod, event.Path, nil)
+	var cookie string
+	if _, ok := event.Headers["Cookie"]; ok {
+		cookie = event.Headers["Cookie"]
+	} else if _, ok := event.MultiValueHeaders["cookie"]; ok {
+		cookie = event.MultiValueHeaders["cookie"][0]
+	}
 
 	req.URL.Path = DecisionPath
 	req.Host = oathkeeperHost
@@ -189,7 +195,7 @@ func getDecision(event events.APIGatewayProxyRequest) (*http.Response, error) {
 	req.Header.Add("X-Forwarded-Host", event.RequestContext.DomainName)
 	req.Header.Add("X-Forwarded-Uri", event.Path)
 	req.Header.Add("X-Forwarded-For", event.RequestContext.Identity.SourceIP)
-	req.Header.Add("cookie", event.Headers["cookie"])
+	req.Header.Add("Cookie", cookie)
 
 	if event.Headers["User-Agent"] != "" {
 		req.Header.Add("User-Agent", event.Headers["User-Agent"])
