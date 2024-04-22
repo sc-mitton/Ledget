@@ -29,8 +29,8 @@ class IsAuthenticated(BasePermission):
 
         device_aal = getattr(request.device, 'aal', None)
 
-        # in reality the device_aal should be at least as high as the sessio    n aal
-        session_aal = getattr(request.user, 'session_aal', None)
+        # in reality the device_aal should be at least as high as the session aal
+        session_aal = request.ory_session.aal if request.ory_session else None
 
         if request.user.mfa_method == 'totp':
             if device_aal == 'aal2' or session_aal == 'aal2':
@@ -39,7 +39,7 @@ class IsAuthenticated(BasePermission):
                 raise ValidationError({'message': "Device must have aal2 level session",
                                       'code': "AAL2_REQUIRED"})
         else:
-            return device_aal == 'aal1' or device_aal == 'aal2'
+            return session_aal == 'aal1' or session_aal == 'aal2'
 
 
 class HasOidcSignin(BasePermission):
