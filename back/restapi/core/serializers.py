@@ -92,7 +92,8 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.highest_aal
 
     def get_subscription_status(self, obj):
-        return obj.customer.subscription_status
+        return obj.customer.subscription_status \
+            if obj.is_customer else None
 
     def get_last_login(self, obj):
         if obj.device:
