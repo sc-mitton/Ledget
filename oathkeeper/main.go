@@ -183,8 +183,8 @@ func getDecision(event events.APIGatewayProxyRequest) (*http.Response, error) {
 	var cookie string
 	if _, ok := event.Headers["Cookie"]; ok {
 		cookie = event.Headers["Cookie"]
-	} else if _, ok := event.MultiValueHeaders["cookie"]; ok {
-		cookie = event.MultiValueHeaders["cookie"][0]
+	} else if _, ok := event.Headers["cookie"]; ok {
+		cookie = event.Headers["cookie"]
 	}
 
 	req.URL.Path = DecisionPath
