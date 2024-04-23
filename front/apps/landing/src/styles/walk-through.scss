@@ -19,7 +19,7 @@
     }
 
     #phone>div img:last-child {
-        filter: invert(1) hue-rotate(180deg) brightness(1.1) blur(2px);
+        filter: invert(1) hue-rotate(180deg) brightness(1.1) blur(1px);
     }
 }
 
@@ -191,7 +191,7 @@
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, calc(-50% + $pos));
-                filter: blur(2px);
+                // filter: blur(2px);
                 z-index: 0;
             }
 
