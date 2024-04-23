@@ -12,7 +12,7 @@ $mobile-unfocused-max-width: clamp(12em, 15vw, 16em);
 .phone {
     position: relative;
     z-index: 2;
-    height: clamp(18em, 85vh, 45em);
+    height: clamp(18em, 75vh, 45em);
     width: min-content;
 
     img:not(.visible):not(:last-of-type) {
