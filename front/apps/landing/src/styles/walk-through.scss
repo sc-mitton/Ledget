@@ -47,28 +47,6 @@
     }
 }
 
-
-@media (max-width: 768px) {
-    #product-walk-through {
-        gap: 1em;
-        align-items: center;
-
-        .steps {
-            &--container {
-                width: 70%;
-            }
-        }
-
-        #phone {
-            width: 80%;
-        }
-
-        #phone-container {
-            justify-content: center;
-        }
-    }
-}
-
 #emojis {
     height: auto;
     position: absolute;
@@ -81,7 +59,6 @@
     mask-mode: luminance;
     mask-repeat: no-repeat;
     mask-position: bottom;
-
 
     .emoji {
         transform: scale(.5);
@@ -152,6 +129,28 @@
     position: relative;
 }
 
+@mixin shadow-position($pos) {
+    img {
+        filter: hue-rotate(-10deg);
+        max-width: 100%;
+        height: auto;
+
+        &:last-child {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, calc(-50% + $pos));
+            z-index: 0;
+            filter: blur(1px);
+        }
+
+        &:first-child {
+            position: relative;
+            z-index: 1;
+        }
+    }
+}
+
 #phone {
     height: min-content;
     position: relative;
@@ -180,35 +179,13 @@
         position: absolute;
     }
 
-    @mixin shadow-position($pos) {
-        img {
-            filter: hue-rotate(-10deg);
-            max-width: 100%;
-            height: auto;
-
-            &:last-child {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, calc(-50% + $pos));
-                // filter: blur(2px);
-                z-index: 0;
-            }
-
-            &:first-child {
-                position: relative;
-                z-index: 1;
-            }
-        }
-    }
-
     &>div:nth-last-of-type(2) {
         bottom: 22%;
         left: 13%;
         width: 22%;
         z-index: 1;
 
-        @include shadow-position(.5em);
+        @include shadow-position(.4em);
     }
 
     &>div:nth-last-of-type(3) {
@@ -217,7 +194,7 @@
         width: 27%;
         z-index: 2;
 
-        @include shadow-position(.6em);
+        @include shadow-position(.5em);
     }
 
     &>div:last-of-type {
@@ -226,7 +203,7 @@
         width: 20%;
         z-index: 3;
 
-        @include shadow-position(.5em);
+        @include shadow-position(.375em);
     }
 
 }
@@ -311,6 +288,43 @@
             margin: 0;
             font-size: clamp(1rem, 3vw, 1.5em);
             font-weight: var(--fw-extra-bold);
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    #product-walk-through {
+        gap: 1em;
+        align-items: center;
+
+        .steps {
+            &--container {
+                width: 70%;
+            }
+        }
+
+        #phone {
+            width: 80%;
+
+            &>div img:last-child {
+                opacity: .2;
+            }
+
+            &>div:nth-last-of-type(2) {
+                @include shadow-position(.25em);
+            }
+
+            &>div:nth-last-of-type(3) {
+                @include shadow-position(.3em);
+            }
+
+            &>div:last-of-type {
+                @include shadow-position(.25em);
+            }
+        }
+
+        #phone-container {
+            justify-content: center;
         }
     }
 }
