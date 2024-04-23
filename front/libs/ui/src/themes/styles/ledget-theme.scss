@@ -18,7 +18,7 @@
     --black: hsl(0, 0%, 0%);
 
     /* Drop Shadows & Borders */
-    --window-drop-shadow2: var(--window-drop-shadow2-color) 0px 0px 20px;
+    --window-portal-drop-shadow: var(--window-portal-drop-shadow-color) 0px 0px 20px;
     --new-item-drop-shadow: var(--new-item-drop-shadow-color) 0px 0px 6px;
     --wafer-drop-shadow: var(--wafer-drop-shadow-color) -1px 1px 2px;
 
@@ -91,19 +91,23 @@
         --modal-inner-window: var(--inner-window);
         --overlay: hsl(0, 0%, 10%);
 
+        --window: hsl(0, 0%, 7%);
+        --window--portal: hsl(0, 0%, 9%);
+        --window2: var(--inner-window);
         --window-background-color: hsl(0, 0%, 2%);
         --window-background-color-rgb: 5, 5, 5;
-        --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
         --window-background-color-portal: hsl(0, 0%, 2%);
-        --window: hsl(0, 0%, 7%);
-        --window2: var(--inner-window);
         --window-no-background: var(--window-background-color);
         --window-rgb: 28, 28, 28;
+        --gradient-window-background: linear-gradient(to bottom, hsl(0, 0%, 8%) 0%, hsl(0, 0%, 5%) 100%);
+        --gradient-window-background-small-screen: linear-gradient(to bottom, rgb(28, 28, 28) -20%, rgba(0, 0, 0, 1) 100%);
+
+        --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
+        --window-portal-drop-shadow-color: hsl(0, 0%, 6%);
 
         // Side Nav
         --sidenav-drop-shadow: 0 0px 4px hsl(0, 0%, 20%);
         --side-window: hsl(0, 0%, 6%);
-
 
         --wafer-background: hsl(0, 0%, 1%);
         --dropdown-background-rgb: 18, 18, 18;
@@ -270,13 +274,22 @@
         --window-background-color: hsl(240, 7%, 96%);
         --window-background-color-rgb: 250, 250, 250;
         --window-background-color-portal: hsl(0, 0%, 95%);
+        --gradient-window-background: radial-gradient(at 40% 20%, rgba(255, 255, 255, 1) 0px, transparent 50%),
+            radial-gradient(at 80% 0%, rgba(235, 236, 249, 1) 0px, transparent 50%),
+            radial-gradient(at 0% 50%, rgba(240, 247, 255, 1) 0px, transparent 50%),
+            radial-gradient(at 84% 31%, rgba(255, 255, 255, 1) 0px, transparent 50%),
+            radial-gradient(at 0% 100%, rgba(239, 244, 251, 1) 0px, transparent 50%),
+            radial-gradient(at 80% 100%, rgba(244, 244, 251, 1) 0px, transparent 50%),
+            radial-gradient(at 0% 0%, rgba(255, 255, 255, 1) 0px, transparent 50%);
+        --gradient-window-background-small-screen: var(--gradient-window-background);
 
         --window: hsl(var(--window-h), var(--window-s), 100%);
+        --window--portal: hsl(var(--window-h), var(--window-s), 100%);
         --window2: hsl(var(--steel-blue-h), 10%, 92%);
         --window-no-background: var(--window-background-color);
         --window-drop-shadow-color: hsl(0, 0%, 93%);
         --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 4px 0px;
-        --window-drop-shadow2-color: hsl(0, 0%, 85%);
+        --window-portal-drop-shadow-color: hsl(0, 0%, 85%);
 
         --window-rgb: 244, 244, 246;
 
