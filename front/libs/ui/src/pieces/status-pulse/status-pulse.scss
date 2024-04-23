@@ -41,8 +41,8 @@ $inner-circle-positive: var(--blue-light-hover);
     @if $outerOrInner ==inner {
 
         &.negative {
-            background-color: $inner-circle-negative;
-            opacity: 0;
+            background: radial-gradient(circle at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 50%, $inner-circle-negative 80%);
+            opacity: .04;
             animation: status-pulse 4s ease-in-out infinite;
         }
 
@@ -61,14 +61,14 @@ $inner-circle-positive: var(--blue-light-hover);
     @else if $outerOrInner ==outer {
 
         &.negative {
-            background-color: $outer-circle-negative;
+            background: radial-gradient(circle at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 50%, $inner-circle-negative 80%);
             opacity: .07;
             animation: status-pulse 4s ease-in-out infinite;
         }
 
         &.color-default-positive,
         &.positive {
-            background-color: $outer-circle-positive;
+            background: radial-gradient(circle at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 50%, $outer-circle-positive 80%);
             opacity: .07;
             transition: all .5s ease-out;
         }
