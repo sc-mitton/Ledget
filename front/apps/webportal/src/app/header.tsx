@@ -18,7 +18,7 @@ const Header = () => {
     return (
         <header id="top-header">
             <div>
-                <a href="/login" tabIndex={0} aria-label="login page">
+                <a href={import.meta.env.VITE_LANDING} tabIndex={0} aria-label="login page">
                     <LedgetLogo darkMode={isDark} />
                 </a>
             </div>
