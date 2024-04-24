@@ -127,6 +127,12 @@ $mobile-unfocused-max-width: clamp(12em, 15vw, 16em);
         }
     }
 
+    @media (min-width: 768px) {
+        &__glare {
+            opacity: 0
+        }
+    }
+
     &__touch {
         z-index: 7;
         position: absolute;
