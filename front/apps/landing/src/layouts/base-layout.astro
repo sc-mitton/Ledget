@@ -10,10 +10,10 @@ import '../styles/globals.scss';
       content="
         default-src 'self';
         script-src 'self';
-        style-src 'self' ledget.app;
-        img-src 'self' ledget.app;
-        child-src none;
-        font-src 'self' fonts.gstatic.com;
+        style-src 'unsafe-inline';
+        img-src 'self' 'ledget.app' 'localhost';
+        child-src 'none';
+        font-src 'self' 'fonts.gstatic.com' 'fonts.googleapis.com';
       "
     />
     <meta charset="utf-8" />
