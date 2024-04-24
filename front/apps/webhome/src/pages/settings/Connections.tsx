@@ -20,7 +20,7 @@ import {
     IconButton,
     ShimmerDiv,
     DeleteButton,
-    BlackSubmitButton,
+    BlueSlimSubmitButton,
     Tooltip,
     Base64Logo
 } from '@ledget/ui'
@@ -108,17 +108,17 @@ const DeleteAllButton = ({ onClick }: { onClick: () => void }) => {
 }
 
 const ReconnectButton = ({ itemId = '' }) => {
-    const { open, fetchingToken } = useBakedUpdatePlaidLink()
+    const { open, fetchingToken } = useBakedUpdatePlaidLink({ itemId })
 
     return (
         <div className={`reconnect--container ${fetchingToken ? '' : 'wiggle'}`}>
-            <BlackSubmitButton
+            <BlueSlimSubmitButton
                 onClick={() => !fetchingToken && open()}
                 aria-label="Reconnect"
             >
-                <RelinkIcon fill={'var(--window)'} />
+                <RelinkIcon />
                 Reconnect
-            </BlackSubmitButton>
+            </BlueSlimSubmitButton>
         </div>
     )
 }

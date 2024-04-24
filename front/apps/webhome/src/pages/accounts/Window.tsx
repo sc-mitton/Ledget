@@ -29,6 +29,7 @@ import { DepositsIcon, FilterLines, CloseIcon } from '@ledget/media'
 import { AccountsProvider, useAccountsContext } from './context'
 import pathMappings from './path-mappings'
 import { SummaryBox } from './SmallScreenAccounSummary'
+import { isErrorWithCode } from '@api/helpers'
 
 
 const _getNavIcon = (key = '', isCurrent: boolean) => {
@@ -144,10 +145,31 @@ type SelectOption = { value: string, filterType: 'institution' | 'deposit-type' 
 
 const Filters = ({ visible = false, close }: { visible: boolean, close: () => void }) => {
     const { setAccounts } = useAccountsContext()
-    const { data } = useGetAccountsQuery();
+    const { data, error: getAccountsError } = useGetAccountsQuery();
     const [accountsFilter, setAccountsFilter] = useState<SelectOption['value']>()
     const [accountsFilterOptions, setAccountsFilterOptions] = useState<SelectOption[]>()
     const location = useLocation()
+    const dispatch = useAppDispatch()
+
+    // Handle get accounts error
+    useEffect(() => {
+        if (
+            getAccountsError &&
+            'status' in getAccountsError &&
+            isErrorWithCode(getAccountsError.data) &&
+            getAccountsError.data.error.code === 'ITEM_LOGIN_REQUIRED'
+        ) {
+            console.log('dispatchingn toast...')
+            dispatch(popToast({
+                type: 'error',
+                message: 'Account connection broken',
+                actionLink: '/settings/connections',
+                actionMessage: 'reconnect',
+                timer: 10000
+            }))
+        }
+
+    }, [getAccountsError])
 
     // Set filter options
     useEffect(() => {

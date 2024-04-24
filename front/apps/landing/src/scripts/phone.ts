@@ -88,8 +88,9 @@ function animatePhone() {
         transform: 'translate(50%, 50%)',
         scrollTrigger: {
             trigger: '.phone',
-            start: 'top 30%',
-            toggleActions: 'restart none none none',
+            start: 'top 50%',
+            end: 'bottom 30%',
+            scrub: true,
         },
         duration: 1.5,
     })

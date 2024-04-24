@@ -4,7 +4,8 @@ const Relink = ({
     className = '',
     width = "1.3em",
     height = "1.3em",
-    fill = "var(--icon-full)",
+    stroke = "currentColor",
+    strokeWidth = 10,
 }) => {
     return (
         <svg
@@ -17,10 +18,23 @@ const Relink = ({
             y="0px"
             aria-label="relink"
         >
-            <path fill={fill} d="M105.3,38.9h-6.5l6.4-6.4c2.6-2.6,2.6-6.7,0-9.3c-2.6-2.6-6.7-2.6-9.3,0L77.7,41.4c-2.6,2.6-2.6,6.7,0,9.3l18.2,18.2
-                c1.3,1.3,3,1.9,4.6,1.9s3.4-0.6,4.6-1.9c2.6-2.6,2.6-6.7,0-9.3l-6.4-6.4h6.5c9.7,0,17.6,7.9,17.6,17.6v5.3c0,9.7-7.9,17.6-17.6,17.6
-                H38.7c-9.7,0-17.6-7.9-17.6-17.6v-5.3c0-9.7,7.9-17.6,17.6-17.6h17.1c4,0,7.2-3.2,7.2-7.2s-3.2-7.2-7.2-7.2H38.7
-                c-17.6,0-32,14.3-32,32v5.3c0,17.6,14.3,32,32,32h66.7c17.6,0,32-14.3,32-32v-5.3C137.3,53.2,123,38.9,105.3,38.9z"/>
+            <path
+                fill='none'
+                stroke={stroke}
+                d="M82.3,42.8h24.5c15.4,0,27.8,12.5,27.8,27.8v6.7c0,15.4-12.5,27.8-27.8,27.8H37.2c-15.4,0-27.8-12.5-27.8-27.8
+	            v-6.7c0-15.4,12.5-27.8,27.8-27.8h11.3"
+                strokeWidth={strokeWidth}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <polyline
+                fill='none'
+                stroke={stroke}
+                points="98.8,63.6 78,42.8 98.8,21.9 "
+                strokeWidth={strokeWidth}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
         </svg>
 
     )

@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, Fragment } from 'react'
 
 import { Menu } from '@headlessui/react'
+import { Switch } from '@headlessui/react'
 
 import './styles/header.scss'
 import { LedgetLogoIcon2 } from '@ledget/media'
@@ -10,6 +11,28 @@ import { Logout, Help } from '@modals/index'
 import { NotificationsDropdownMenu } from '@pages/activity'
 
 type Modal = "help" | "logout"
+
+const LightDarkSwitch = () => {
+    const { isDark, setDarkMode } = useColorScheme()
+
+    return (
+        <Switch.Group id="light-dark-switch" as={'div'}>
+            <Switch
+                checked={isDark}
+                onChange={setDarkMode}
+                className={`switch-crib ${isDark ? 'enabled' : 'disabled'}`}
+            >
+                {({ checked: isChecked }) => (
+                    <>
+                        <div><Sun className='icon' /></div>
+                        <div><Moon className='icon' /></div>
+                        <span className={`switch-pill ${isChecked ? 'enabled' : 'disabled'}`} />
+                    </>
+                )}
+            </Switch>
+        </Switch.Group>
+    )
+}
 
 const ProfileDropdownMenu = ({ setModal }:
     { setModal: React.Dispatch<React.SetStateAction<Modal | undefined>> }) => {
@@ -90,13 +113,7 @@ function Header() {
                         <LedgetLogoIcon2 />
                     </div>
                     <div>
-                        {isDark
-                            ? <button onClick={() => setDarkMode(false)}>
-                                <Moon className='icon' stroke={'var(--white)'} />
-                            </button>
-                            : <button onClick={() => setDarkMode(true)}>
-                                <Sun className='icon' stroke={'var(--white)'} />
-                            </button>}
+                        <LightDarkSwitch />
                         <NotificationsDropdownMenu id='notifications' />
                         <ProfileDropdownMenu setModal={setModal} />
                     </div>
