@@ -185,20 +185,40 @@ class PlaidItemHook:
             item.login_required = True
             item.save()
 
+    # Plaid Item hooks
     def handle_login_repared(self, item, data):
         item.login_required = False
+        item.pending_expiration = False
         item.save()
 
     def handle_new_account_available(self, item, data):
         item.new_account_available = True
         item.save()
 
-    def handle_permission_revoked(self, item, data):
+    def handle_user_permission_revoked(self, item, data):
         item.permission_revoked = True
         item.save()
 
-    def handle_update_acknolwedged(self, item, data):
+    def handle_pending_expiration(self, item, data):
+        item.pending_expiration = True
+        item.save()
+
+    def handle_webook_update_acknolwedged(self, item, data):
         pass
+
+    def handle_session_finished(self, item, data):
+        pass
+
+    # Transaction hooks
+    def handle_transactions_removed(self, item, data):
+        '''
+        This is an old hook for transactions/get,
+        handle_sync_updates_available is the new version
+        '''
+        pass
+
+    def handle_initial_update_complete(self, item, data):
+        self.handle_sync_updates_available(item, data)
 
     def handle_sync_updates_available(self, item, data):
         '''
@@ -220,6 +240,9 @@ class PlaidItemHookView(APIView, PlaidItemHook):
         handler = self.get_handler(request.data['webhook_code'])
 
         if not handler or not item:
+            plaid_logger.error(
+                f"Missing handler or item for webhook {request.data['webhook_code']}"
+            )
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         try:

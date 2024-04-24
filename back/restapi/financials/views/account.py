@@ -1,7 +1,9 @@
 from dateutil.relativedelta import relativedelta
 from collections import defaultdict
 from decimal import Decimal
+import json
 
+import plaid.exceptions
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
@@ -111,8 +113,12 @@ class AccountsView(GenericAPIView):
                     }})
                 already_fetched_tokens.append(account.plaid_item.access_token)
 
-        except plaid.ApiException as e:
-            raise ValidationError({'error': {'message': str(e)}})
+        except plaid.exceptions.ApiException as e:
+            error = json.loads(e.body)
+            raise ValidationError({'error': {
+                'code': error['error_code'],
+                'message': error['error_message'],
+            }})
 
         return account_balances
 

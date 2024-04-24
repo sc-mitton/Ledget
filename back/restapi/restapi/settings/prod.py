@@ -44,7 +44,6 @@ try:
         del jwks[k]
     OATHKEEPER_PUBLIC_KEY = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwks))
 except Exception as e:
-    print(e)
     OATHKEEPER_PUBLIC_KEY = None
 
 # Sparkpost

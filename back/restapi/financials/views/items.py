@@ -36,6 +36,7 @@ PLAID_PRODUCTS = os.getenv('PLAID_PRODUCTS', 'transactions').split(',')
 PLAID_REDIRECT_URI_ONBOARDING = settings.PLAID_REDIRECT_URI_ONBOARDING
 PLAID_REDIRECT_URI = settings.PLAID_REDIRECT_URI
 PLAID_COUNTRY_CODES = settings.PLAID_COUNTRY_CODES
+DEVELOPMENT = settings.DEVELOPMENT
 
 plaid_products = []
 for product in PLAID_PRODUCTS:
@@ -57,11 +58,13 @@ class PlaidLinkTokenView(APIView):
                 map(lambda x: CountryCode(x), PLAID_COUNTRY_CODES)
             ),
             'language': 'en',
-            'redirect_uri': redirect_uri,
             'user': LinkTokenCreateRequestUser(
                 client_user_id=str(request.user.id)
             )
         }
+
+        if not DEVELOPMENT:
+            request_kwargs['redirect_uri'] = redirect_uri
 
         if kwargs.get('item_id', False):
             request_kwargs['access_token'] = \

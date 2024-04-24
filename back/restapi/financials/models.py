@@ -38,6 +38,7 @@ class PlaidItem(models.Model):
     login_required = models.BooleanField(default=False)
     new_accounts_available = models.BooleanField(default=False)
     permission_revoked = models.BooleanField(default=False)
+    pending_expired = models.BooleanField(default=False)
 
 
 class Account(models.Model):
