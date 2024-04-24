@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { usePlaidLink as useLink } from 'react-plaid-link'
 
-import { useGetPlaidTokenQuery, useAddNewPlaidItemMutation } from '@features/plaidSlice'
+import { useGetPlaidTokenQuery, useAddNewPlaidItemMutation, useUpdatePlaidItemMutation } from '@features/plaidSlice'
 import { useTransactionsSyncMutation } from '@features/transactionsSlice'
 
 export function useBakedPlaidLink(onBoarding) {
@@ -56,7 +56,7 @@ export function useBakedPlaidLink(onBoarding) {
     return { open, exit, ready }
 }
 
-export const useBakedUpdatePlaidLink = () => {
+export const useBakedUpdatePlaidLink = ({ itemId }) => {
     const { data: plaidToken, isLoading: fetchingToken, refech: refetchToken } = useGetPlaidTokenQuery({ itemId: itemId })
     const [updatePlaidItem] = useUpdatePlaidItemMutation()
     const [isOauthRedirect, setIsOauthRedirect] = useState(false)
@@ -83,7 +83,7 @@ export const useBakedUpdatePlaidLink = () => {
         token: plaidToken?.link_token,
         ...(isOauthRedirect ? { receivedRedirectUri: window.location.href } : {})
     }
-    const { open, ready, exit } = usePlaidLink(config)
+    const { open, ready, exit } = useLink(config)
 
     useEffect(() => {
         if (window.location.href.includes('oauth_state_id')) {
