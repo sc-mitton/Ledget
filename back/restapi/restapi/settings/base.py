@@ -4,6 +4,7 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
+DEVELOPMENT = False
 APPEND_SLASH = False
 SITE_ID = 1
 
