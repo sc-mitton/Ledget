@@ -161,10 +161,14 @@
     padding-bottom: .25em;
     position: absolute;
     animation: wiggle 4.5s infinite ease-out;
+
+    * {
+        font-weight: var(--fw-bold);
+    }
 }
 
 .reconnect--container button svg {
-    margin-right: .25em;
+    margin-right: .5em;
 }
 
 @keyframes wiggle {

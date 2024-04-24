@@ -35,7 +35,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v3
-        id: changes
+        id: webportal-changes
         with:
           filters: |
             src:
@@ -59,7 +59,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v3
-        id: changes
+        id: webhome-changes
         with:
           filters: |
             src:
