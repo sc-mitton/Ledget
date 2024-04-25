@@ -228,7 +228,7 @@
     &--top-bar,
     &--bottom-bar {
         top: 1em;
-        left: -1.75em;
+        left: -2em;
         transform: translateX(-50%);
         bottom: -1em;
         width: 2px;
@@ -257,7 +257,9 @@
         left: -2.375em;
         top: .625em;
         z-index: 1;
-        color: var(--white);
+        color: var(--m-invert-text);
+        font-weight: var(--fw-bold);
+        font-size: 1rem;
         display: flex;
         align-items: center;
         justify-content: center;
