@@ -49,10 +49,12 @@ class OryBackend(SessionAuthentication):
         identity = decoded_token['session']['identity']
 
         User = get_user_model()
-        user = User.objects \
-                   .prefetch_related('device__set') \
-                   .select_related('customer') \
-                   .get(pk=identity['id'])
+        user = (
+            User.objects.prefetch_related('device__set')
+            .select_related('account__customer')
+            .select_related('co_owner')
+            .get(pk=identity['id'])
+        )
         user.traits = identity.get('traits', {})
 
         return user

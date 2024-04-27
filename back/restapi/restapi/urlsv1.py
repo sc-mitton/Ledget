@@ -1,10 +1,10 @@
 from django.urls import path, include
 from core.views import service as service_views
 from core.views.health import HealthView
-from core.views.user import UserView, EmailView, UserSessionExtendView
+from core.views.user import UserView, EmailView, UserSessionExtendView, FeedbackView
 from core.views.device import (
-     DeviceView,
-     DestroyDeviceView,
+    DeviceView,
+    DestroyDeviceView,
 )
 
 urlpatterns = [
@@ -12,6 +12,7 @@ urlpatterns = [
      path('user/email', EmailView.as_view(), name='user_email'),
      path('user/session/extend', UserSessionExtendView.as_view(),
           name='user_session_extend'),
+    path("feedback", FeedbackView.as_view(), name="feedback"),
      path('health', HealthView.as_view(), name='health'),
 
      path('device/<str:id>', DestroyDeviceView.as_view(), name='device'),
@@ -25,8 +26,8 @@ urlpatterns = [
      path('subscription', service_views.SubscriptionView.as_view(),
           name='subscription'),
      path('subscription/<str:id>',
-          service_views.UpateSubscriptionView.as_view()),
-     path('subscription_item', service_views.SubscriptionItemsView.as_view(),
+          service_views.SubscriptionView.as_view()),
+     path('subscription_item', service_views.SubscriptionItemView.as_view(),
           name='subscription_item'),
      path('setup_intent', service_views.GetSetupIntent.as_view(),
           name='setup_intent'),
@@ -36,4 +37,5 @@ urlpatterns = [
 
      path('', include('budget.urls')),
      path('', include('financials.urls')),
+
 ]

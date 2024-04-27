@@ -3,31 +3,29 @@ import logging
 from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
     HTTP_422_UNPROCESSABLE_ENTITY,
-    HTTP_200_OK
+    HTTP_200_OK,
 )
 from rest_framework.views import APIView
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, CreateAPIView
 from rest_framework.response import Response
 from django.conf import settings
 import stripe
 
-from core.serializers import (
+from core.serializers.user import (
     NewSubscriptionSerializer,
     PaymentMethodSerializer,
-    SubscriptionUpdateSerializer,
-    SubscriptionItemsSerializer
+    SubscriptionItemsSerializer,
+    FeedbackSerializer,
 )
+from core.serializers.account import AccountUpdateSerializer
 from core.utils.stripe import stripe_error_handler, StripeError
 from core.models import Customer
-from core.permissions import (
-    OwnsStripeSubscription,
-    can_create_stripe_subscription,
-    IsAuthenticated
-)
+from restapi.permissions.auth import can_create_stripe_subscription, IsAuthenticated
+from restapi.permissions.objects import OwnsStripeSubscription
 
 
 stripe.api_key = settings.STRIPE_API_KEY
-stripe_logger = logging.getLogger('stripe')
+stripe_logger = logging.getLogger("stripe")
 
 
 class PriceView(APIView):
@@ -49,9 +47,14 @@ class PriceView(APIView):
         return Response(data=filtered_data, status=HTTP_200_OK)
 
 
-class UpateSubscriptionView(GenericAPIView):
+class FeedbackView(CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = FeedbackSerializer
+
+
+class UpdateAccountView(GenericAPIView):
     permission_classes = [IsAuthenticated, OwnsStripeSubscription]
-    serializer_class = SubscriptionUpdateSerializer
+    serializer_class = AccountUpdateSerializer
 
     def post(self, request, *args, **kwargs):
         '''
@@ -76,17 +79,16 @@ class UpateSubscriptionView(GenericAPIView):
         '''
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        request.user.customer.feedback = \
-            serializer.validated_data.pop('feedback', '')
-        request.user.customer.cancelation_reason = \
-            serializer.validated_data.pop('cancelation_reason', '')
+        request.user.account.customer.cancelation_reason = serializer.validated_data.pop(
+            'cancelation_reason', ''
+        )
 
         try:
             stripe.Subscription.modify(
                 kwargs.get('sub_id', ''),
                 **serializer.validated_data
             )
-            request.user.customer.save()
+            request.user.account.save()
 
             return Response(status=HTTP_200_OK)
         except Exception as e:
@@ -94,7 +96,7 @@ class UpateSubscriptionView(GenericAPIView):
             return Response(status=HTTP_400_BAD_REQUEST)
 
 
-class SubscriptionItemsView(GenericAPIView):
+class SubscriptionItemView(GenericAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = SubscriptionItemsSerializer
 
@@ -107,7 +109,7 @@ class SubscriptionItemsView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
 
         try:
-            sub = self.get_current_sub(self.request.user.customer.id)
+            sub = self.get_current_sub(self.request.user.account.customer.id)
             stripe.SubscriptionItem.modify(
                 sub['items'].data[0].id,
                 **serializer.validated_data
@@ -128,6 +130,7 @@ class SubscriptionItemsView(GenericAPIView):
 
 class SubscriptionView(GenericAPIView):
     """Class for handling creating a subscription"""
+
     permission_classes = [IsAuthenticated]
     serializer_class = NewSubscriptionSerializer
 
@@ -136,7 +139,7 @@ class SubscriptionView(GenericAPIView):
         Get the current subscription for the user
         '''
         try:
-            sub = self._get_stripe_subscription(request.user.customer.id)
+            sub = self._get_stripe_subscription(request.user.account.customer.id)
         except StripeError as e:
             stripe_logger.error(e.message)
             return Response(status=e.response_code)
@@ -164,7 +167,7 @@ class SubscriptionView(GenericAPIView):
 
         try:
             stripe_subscription = self._create_subscription(
-              customer=request.user.customer.id,
+              customer=request.user.account.customer.id,
               **serializer.validated_data
             )
             pending_setup_intent = stripe_subscription.pending_setup_intent
@@ -240,7 +243,7 @@ class GetSetupIntent(APIView):
 
     def get(self, request, *args, **kwargs):
         setup_intent = stripe.SetupIntent.create(
-            customer=request.user.customer.id
+            customer=request.user.account.customer.id
         )
         return Response(
             data={'client_secret': setup_intent.client_secret},
@@ -261,7 +264,7 @@ class PaymentMethodView(APIView):
 
         try:
             stripe.Customer.modify(
-                self.request.user.customer.id,
+                self.request.user.account.customer.id,
                 invoice_settings={
                     'default_payment_method':
                     data['payment_method_id']
@@ -281,7 +284,7 @@ class PaymentMethodView(APIView):
 
         try:
             payment_methods = self.get_default_stripe_payment_methods(
-                request.user.customer.id)
+                request.user.account.customer.id)
             payment_method = {
                 'id': payment_methods.data[0].id,
                 'brand': payment_methods.data[0].card.brand,
@@ -312,9 +315,9 @@ class NextInvoice(APIView):
     def get(self, request, *args, **kwargs):
         try:
             invoice = stripe.Invoice.upcoming(
-                customer=request.user.customer.id
+                customer=request.user.account.customer.id
             )
-            customer = stripe.Customer.retrieve(request.user.customer.id)
+            customer = stripe.Customer.retrieve(request.user.account.customer.id)
             data = {
                 'next_payment': invoice.lines.data[0].amount,
                 'next_payment_date': invoice.next_payment_attempt,

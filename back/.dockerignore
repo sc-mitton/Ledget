@@ -6,3 +6,5 @@
 **/.elasticbeanstalk
 Dockerrun.aws.json
 env.yml
+.flake8
+black.config.toml

@@ -24,7 +24,11 @@ import plaid
 from plaid.model.transactions_sync_request import TransactionsSyncRequest
 from plaid.model.transactions_sync_request_options import TransactionsSyncRequestOptions
 
-from core.permissions import IsAuthedVerifiedSubscriber, IsObjectOwner
+from restapi.permissions.auth import IsAuthedVerifiedSubscriber
+from restapi.permissions.objects import (
+    IsObjectOwner,
+    HasObjectAccessLooseWrite
+)
 from core.clients import create_plaid_client
 from financials.models import Transaction
 from financials.serializers.transactions import (
@@ -300,7 +304,7 @@ class TransactionViewSet(ModelViewSet):
         return Response(results, HTTP_200_OK)
 
     @action(detail=False, methods=['post'], url_path='sync', url_name='sync',
-            permission_classes=[IsAuthedVerifiedSubscriber, IsObjectOwner])
+            permission_classes=[IsAuthedVerifiedSubscriber, HasObjectAccessLooseWrite])
     def sync(self, request, *args, **kwargs):
         default_category = Category.objects.filter(
             usercategory__user=self.request.user, is_default=True).first()
@@ -344,7 +348,11 @@ class TransactionViewSet(ModelViewSet):
                 raise ValidationError('Invalid account id')
         else:
             plaid_items = PlaidItem.objects.filter(
-                user_id=str(self.request.user.id))
+                user_id__in=[
+                    str(self.request.user.id),
+                    str(self.request.user.co_owner.id),
+                ]
+            )
 
         for item in plaid_items:
             self.check_object_permissions(request, item)
@@ -378,8 +386,10 @@ class TransactionViewSet(ModelViewSet):
     def _exract_filter_args(self):
         query_params = self.request.query_params
 
-        result = {'account__plaid_item__user_id':
-                  str(self.request.user.id)}
+        result = {'account__plaid_item__user_id__in': [
+                    str(self.request.user.co_owner.id),
+                    str(self.request.user.id)
+                ]}
         result.update(self._extract_date_boundaries())
 
         # If querying for unconfirmed transactions

@@ -1,0 +1,7 @@
+{
+    "python.defaultInterpreterPath": "./back/env/bin/python",
+    "python.linting.enabled": true,
+    "flake8.args": [
+        "--config=./back/ledgetback/.flake8",
+    ]
+}

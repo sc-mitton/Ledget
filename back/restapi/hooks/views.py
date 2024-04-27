@@ -15,7 +15,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 import stripe
 
-from core.models import Customer
+from core.models import Customer, Account
 from financials.models import PlaidItem
 from hooks.permissions import CameFromOry, CameFromPlaid
 from financials.views.transactions import sync_transactions
@@ -139,15 +139,21 @@ class OryRegistrationHook(APIView):
         if request.data.get('is_verified', False):
             new_user['is_verified'] = True
         user = get_user_model().objects.create_user(**new_user)
+
+        # Create category
         default_category = Category.objects.create(
             name='miscellaneous',
             emoji='🪣',
             is_default=True)
         default_category.users.add(user)
 
+        # Create account
+        Account.objects.create(user=user)
+
 
 class OrySettingsPasswordHook(APIView):
     """Ory webhook for updating password_last_changed"""
+
     permission_classes = [CameFromOry]
 
     def post(self, request, *args, **kwargs):
@@ -233,11 +239,12 @@ class PlaidItemHook:
 
 class PlaidItemHookView(APIView, PlaidItemHook):
     """Plaid webhook"""
+
     permission_classes = [CameFromPlaid]
 
     def post(self, request, *args, **kwargs):
-        item = self.get_item(request.data['item_id'])
-        handler = self.get_handler(request.data['webhook_code'])
+        item = self.get_item(request.data["item_id"])
+        handler = self.get_handler(request.data["webhook_code"])
 
         if not handler or not item:
             plaid_logger.error(

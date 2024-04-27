@@ -14,12 +14,13 @@ from django.db.models import Sum, Q, Exists, OuterRef, F
 from django.db.transaction import atomic
 from django.utils import timezone as dbtz
 
-from core.permissions import IsAuthenticated
+from restapi.permissions.auth import IsAuthenticated
+from restapi.permissions.objects import HasObjectAccess
 from budget.serializers import (
     CategorySerializer,
     BillSerializer,
     ReminderSerializer,
-    SpendingHistorySerializer
+    SpendingHistorySerializer,
 )
 from budget.models import (
     Category,
@@ -29,7 +30,6 @@ from budget.models import (
 )
 from financials.models import Transaction, TransactionCategory
 from restapi.view_mixins import BulkSerializerMixin
-from core.permissions import IsObjectOwner
 
 logger = logging.getLogger('ledget')
 
@@ -42,7 +42,7 @@ class ReminderView(ListAPIView):
 
 
 class BillViewSet(BulkSerializerMixin, ModelViewSet):
-    permission_classes = [IsAuthenticated, IsObjectOwner]
+    permission_classes = [IsAuthenticated, HasObjectAccess]
     serializer_class = BillSerializer
 
     def get_queryset(self):
@@ -62,7 +62,10 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
             return Bill.objects.filter(
                 Q(expires__gte=dbtz.now()) | Q(expires__isnull=True),
                 removed_on__isnull=True,
-                userbill__user=self.request.user,
+                userbill__user_id__in=[
+                    str(self.request.user.id),
+                    str(self.request.user.co_owner.id)
+                ]
             )
 
     def get_object(self):
@@ -183,7 +186,7 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
 
 
 class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
-    permission_classes = [IsAuthenticated, IsObjectOwner]
+    permission_classes = [IsAuthenticated, HasObjectAccess]
     serializer_class = CategorySerializer
 
     def get_queryset(self):
@@ -205,8 +208,13 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
         self.check_object_permissions(self.request, category)
         return category
 
-    @action(methods=['delete'], detail=False, url_name='items',
-            url_path='items', permission_classes=[IsAuthenticated])
+    @action(
+        methods=['delete'],
+        detail=False,
+        url_name='items',
+        url_path='items',
+        permission_classes=[IsAuthenticated]
+    )
     def remove(self, request):
         category_ids = request.data.get('categories', None)
 
@@ -217,17 +225,24 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
             self._update_db(category_ids)
         except Exception as e:
             logger.warning(e)
-            return Response(data={'error': str(e)},
-                            status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    @action(methods=['get'], detail=True, url_name='spending-history',
-            url_path='spending-history', permission_classes=[IsAuthenticated])
+    @action(
+        methods=['get'],
+        detail=True,
+        url_name='spending-history',
+        url_path='spending-history',
+        permission_classes=[IsAuthenticated],
+    )
     def spending_history(self, request, pk=None):
         monthly_amounts_spent = Transaction.objects.filter(
                 transactioncategory__category__id=pk,
-                transactioncategory__category__usercategory__user=self.request.user.id,
+                transactioncategory__category__usercategory__user_id__in=[
+                    str(self.request.user.id),
+                    str(self.request.user.co_owner.id)
+                ]
             ).annotate(
                 month=ExtractMonth('datetime'),
                 year=ExtractYear('datetime')
@@ -240,8 +255,13 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
         serializer = SpendingHistorySerializer(monthly_amounts_spent, many=True)
         return Response(serializer.data)
 
-    @action(methods=['post'], detail=False, url_name='order', url_path='order',
-            permission_classes=[IsAuthenticated])
+    @action(
+        methods=['post'],
+        detail=False,
+        url_name='order',
+        url_path='order',
+        permission_classes=[IsAuthenticated],
+    )
     def reorder(self, request):
         try:
             self._reorder(request.data)
@@ -315,7 +335,7 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
         return default_category
 
     def _get_categories_qset(self, ids=None):
-        ''''
+        '''
         When querying the generic list of categories, the list of
         removed, ie deactivated, categories is excluded. When categories are removed,
         all their transactions for that month are set to the default category, so it's

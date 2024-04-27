@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.generics import (
     CreateAPIView,
     ListAPIView,
-    RetrieveUpdateDestroyAPIView
+    RetrieveUpdateDestroyAPIView,
 )
 from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_200_OK
 from rest_framework.response import Response
@@ -18,21 +18,18 @@ from plaid.model.country_code import CountryCode
 from plaid.model.products import Products
 import plaid
 
-from core.permissions import (
-    IsObjectOwner,
-    highest_aal_freshness,
-    IsAuthedVerifiedSubscriber
-)
+from restapi.permissions.auth import highest_aal_freshness, IsAuthedVerifiedSubscriber
+from restapi.permissions.objects import HasObjectAccess
 from core.clients import create_plaid_client
 from financials.serializers.items import (
     ExchangePlaidTokenSerializer,
-    PlaidItemsSerializer
+    PlaidItemsSerializer,
 )
 from financials.models import PlaidItem
 
 plaid_client = create_plaid_client()
 
-PLAID_PRODUCTS = os.getenv('PLAID_PRODUCTS', 'transactions').split(',')
+PLAID_PRODUCTS = os.getenv("PLAID_PRODUCTS", "transactions").split(",")
 PLAID_REDIRECT_URI_ONBOARDING = settings.PLAID_REDIRECT_URI_ONBOARDING
 PLAID_REDIRECT_URI = settings.PLAID_REDIRECT_URI
 PLAID_COUNTRY_CODES = settings.PLAID_COUNTRY_CODES
@@ -99,7 +96,7 @@ class PlaidItemsListView(ListAPIView):
 
 
 class PlaidItemView(RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthedVerifiedSubscriber, IsObjectOwner]
+    permission_classes = [IsAuthedVerifiedSubscriber, HasObjectAccess]
     serializer_class = PlaidItemsSerializer
 
     def get_object(self):

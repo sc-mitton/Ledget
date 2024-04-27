@@ -7,6 +7,7 @@ from budget.models import (
     Bill,
     TransactionCategory
 )
+from restapi.models.base import BasePrivateModel, BaseSharedModel
 
 
 class Institution(models.Model):
@@ -22,7 +23,7 @@ class Institution(models.Model):
     oath = models.CharField(max_length=100, null=True, default=False)
 
 
-class PlaidItem(models.Model):
+class PlaidItem(BasePrivateModel):
     class Meta:
         db_table = 'financials_plaid_item'
 
@@ -41,7 +42,7 @@ class PlaidItem(models.Model):
     pending_expired = models.BooleanField(default=False)
 
 
-class Account(models.Model):
+class Account(BasePrivateModel):
 
     users = models.ManyToManyField(User, through='UserAccount',
                                    related_name='accounts')
@@ -68,7 +69,6 @@ class Account(models.Model):
 class UserAccount(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    primary_owner = models.BooleanField(default=True)
     order = models.PositiveIntegerField(default=0)
 
     class Meta:
@@ -77,7 +77,7 @@ class UserAccount(models.Model):
         unique_together = ('account', 'user')
 
 
-class Transaction(models.Model):
+class Transaction(BaseSharedModel):
     '''
     Having a blank category or bill field is considered misc. category
     '''

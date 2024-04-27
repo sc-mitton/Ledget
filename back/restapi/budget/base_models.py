@@ -1,9 +1,10 @@
 import uuid
 
 from django.db import models
+from restapi.models.base import BaseSharedModel
 
 
-class BudgetItem(models.Model):
+class BudgetItem(BaseSharedModel):
 
     class Meta:
         abstract = True

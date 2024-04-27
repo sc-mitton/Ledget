@@ -39,32 +39,20 @@ class User(models.Model):
         TOTP = 'totp', _('TOTP')
 
     id = models.UUIDField(primary_key=True, editable=False)
-    is_active = models.BooleanField(default=True)  # tombstone
-    account_flag = models.CharField(
-        max_length=20,
-        choices=[('service_abuse', 'Service abuse')],
-        default=None,
-        null=True,
-        validators=[
-            RegexValidator(
-                regex=r'^[a-zA-Z0-9-]{15,}+$',
-                message='Field must contain only letters and numbers.',
-            ),
-        ],
+    co_owner = models.ForeignKey(
+        'self', on_delete=models.SET_NULL, null=True, default=None
     )
+    account = models.OneToOneField('Account', on_delete=models.CASCADE)
+    is_active = models.BooleanField(default=True)  # tombstone
     is_onboarded = models.BooleanField(default=False)
-    is_co_owner = models.BooleanField(default=False)
     is_verified = models.BooleanField(default=False)
     password_last_changed = models.DateTimeField(null=True, default=None)
     created_on = models.DateTimeField(auto_now_add=True)
-    canceled_on = models.DateTimeField(null=True, default=None)
 
-    mfa_method = models.CharField(choices=MfaMethod.choices,
-                                  null=True, default=None, max_length=4)
+    mfa_method = models.CharField(
+        choices=MfaMethod.choices, null=True, default=None, max_length=4
+    )
     mfa_enabled_on = models.DateTimeField(null=True, default=None)
-    phone_number = models.CharField(max_length=20, null=True, default=None)
-    phone_country_code = models.CharField(max_length=5, null=True, default=None)
-    yearly_anchor = models.DateTimeField(null=True, default=None)
 
     objects = UserManager()
     USERNAME_FIELD = 'id'
@@ -74,27 +62,12 @@ class User(models.Model):
         super().__init__(*args, **kwargs)
         self._traits = None
         self._is_verified = False
-        self._device = None
-        self._session_aal = None
-        self._session_auth_method = None
-        self._session_id = None
-        self._session_devices = None
 
     def __setattr__(self, name, value):
-        if name == 'mfa_method':
+        if name == "mfa_method":
             self.mfa_enabled_on = timezone.now() if value else None
 
         super().__setattr__(name, value)
-
-    @property
-    def is_customer(self):
-        return hasattr(self, 'customer')
-
-    @property
-    def subscription_status(self):
-        if self.is_customer:
-            return self.customer.subscription_status
-        return None
 
     @property
     def traits(self):
@@ -113,38 +86,6 @@ class User(models.Model):
         return True
 
     @property
-    def device(self):
-        return self._device
-
-    @device.setter
-    def device(self, value):
-        self._device = value
-
-    @property
-    def session_devices(self):
-        return self._session_devices
-
-    @session_devices.setter
-    def session_devices(self, value: list):
-        self._session_devices = value
-
-    @property
-    def session_aal(self):
-        return self._session_aal
-
-    @session_aal.setter
-    def session_aal(self, value):
-        self._session_aal = value
-
-    @property
-    def session_id(self):
-        return self._session_id
-
-    @session_id.setter
-    def session_id(self, value):
-        self._session_id = value
-
-    @property
     def is_anonymous(self):
         """
         Always return False. This is a way of comparing User objects to
@@ -160,21 +101,65 @@ class User(models.Model):
             return 'aal1'
 
     @property
-    def plaid_items(self):
-        return self.plaiditem_set.all()
+    def is_primary_owner(self):
+        if hasattr(self.account, 'customer'):
+            situation1 = self.account.customer.user.id == self.id
+            situation2 = not situation1 and self.co_owner is None
+            return situation1 or situation2
+        return False
+
+
+class Feedback(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    feedback = models.CharField(max_length=1000, null=True, default=None)
+    cancelation_reason = models.CharField(max_length=1000, null=True, default=None)
+
+
+class Account(models.Model):
+    id = models.UUIDField(primary_key=True, editable=False)
+    yearly_anchor = models.DateTimeField(null=True, default=None)
+    flag = models.CharField(
+        max_length=20,
+        choices=[('service_abuse', 'Service abuse')],
+        default=None,
+        null=True,
+        validators=[
+            RegexValidator(
+                regex=r"^[a-zA-Z0-9-]{15,}+$",
+                message='Field must contain only letters and numbers.',
+            ),
+        ],
+    )
+
+    customer = models.OneToOneField(
+        'Customer', on_delete=models.CASCADE, null=True, default=None
+    )
+    created_on = models.DateTimeField(auto_now_add=True)
+    canceled_on = models.DateTimeField(null=True, default=None)
 
     @property
     def service_provisioned_until(self):
-        '''Return the timestamp of when the service is provisioned until, i.e.
-        the end of the current billing period plus 3 days for leniency.'''
+        """Return the timestamp of when the service is provisioned until, i.e.
+        the end of the current billing period plus 3 days for leniency."""
         if not hasattr(self, 'customer') or int(self.customer.period_end) == 0:
             return 0
         else:
             return int(self.customer.period_end) + (3 * 24 * 60 * 60)
 
+    @property
+    def hass_customer(self):
+        return hasattr(self, 'customer')
+
+    @property
+    def subscription_status(self):
+        if self.has_customer:
+            return self.customer.subscription_status
+        return None
+
 
 class Customer(models.Model):
-    """ See README for more information on the subscription statuses."""
+    """See README for more information on the subscription statuses."""
+
     class SubscriptionStatus(models.TextChoices):
         INCOMPLETE = 'incomplete', _('Incomplete')
         INCOMPLETE_EXPIRED = 'incomplete_expired', _('Incomplete Expired')
@@ -185,7 +170,6 @@ class Customer(models.Model):
         PAUSED = 'paused', _('Paused')
         DELETED = 'deleted', _('Deleted')
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
     id = models.CharField(max_length=40, primary_key=True, editable=False)
     subscription_status = models.CharField(
         choices=SubscriptionStatus.choices,
@@ -194,17 +178,14 @@ class Customer(models.Model):
         default=None
     )
     period_end = models.IntegerField(default=0)
-    feedback = models.CharField(max_length=1000, null=True, default=None)
-    cancelation_reason = models.CharField(max_length=1000,
-                                          null=True, default=None)
 
     def delete(self, *args, **kwargs):
-        '''
+        """
         Customers are deleted after the end of the billing cycle and
         the stripe webhook is hit. When this happens, the third party
         data needs to be deleted. As much as possible is kept for analytics.
         Cleanup happens by kicking off a celery task.
-        '''
+        """
         tasks.cancelation_cleanup.delay(str(self.user_id))
         return super().delete(*args, **kwargs)
 

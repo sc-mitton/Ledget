@@ -71,7 +71,7 @@ def cancelation_cleanup(user_id: str) -> None:
     def _update_db():
         try:
             user.is_active = False
-            user.canceled_on = timezone.now()
+            user.account.canceled_on = timezone.now()
             user.save()
             plaid_items.delete()
         except Exception as e:

@@ -1,8 +1,5 @@
 from rest_framework.response import Response
-from rest_framework.status import (
-    HTTP_200_OK,
-    HTTP_422_UNPROCESSABLE_ENTITY
-)
+from rest_framework.status import HTTP_200_OK, HTTP_422_UNPROCESSABLE_ENTITY
 from rest_framework.permissions import IsAuthenticated as CoreIsAuthenticated
 from rest_framework.generics import (
     ListCreateAPIView,
@@ -12,12 +9,9 @@ from django.utils.decorators import method_decorator
 import secrets
 import string
 
-from core.serializers import DeviceSerializer
-from core.permissions import (
-    IsObjectOwner,
-    IsAuthenticated,
-    Aal1FreshSession
-)
+from core.serializers.device import DeviceSerializer
+from restapi.permissions.auth import IsAuthenticated, Aal1FreshSession
+from restapi.permissions.objects import IsObjectOwner
 from core.models import Device
 from restapi.decorators import csrf_ignore, ensure_csrf_cookie
 

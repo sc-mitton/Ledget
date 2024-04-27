@@ -15,14 +15,15 @@ from django.db.models.functions import TruncMonth
 from plaid.model.accounts_get_request import AccountsGetRequest
 import plaid
 
-from core.permissions import IsAuthedVerifiedSubscriber, IsObjectOwner
+from restapi.permissions.auth import IsAuthedVerifiedSubscriber
+from restapi.permissions.objects import HasObjectAccess
 from core.clients import create_plaid_client
 from core.models import User
 from financials.models import Account, UserAccount, Transaction
 from financials.serializers.account import (
     InstitutionSerializer,
     AccountSerializer,
-    UserAccountSerializer
+    UserAccountSerializer,
 )
 
 plaid_client = create_plaid_client()
@@ -30,7 +31,7 @@ plaid_client = create_plaid_client()
 
 class AccountsView(GenericAPIView):
     serializer_classes = [AccountSerializer, UserAccountSerializer]
-    permission_classes = [IsAuthedVerifiedSubscriber, IsObjectOwner]
+    permission_classes = [IsAuthedVerifiedSubscriber, HasObjectAccess]
 
     def get_serializer_class(self):
         # If data is a list and 'order' is in the list items, use UserAccountSerializer
@@ -47,9 +48,19 @@ class AccountsView(GenericAPIView):
 
     def get_queryset(self, serializer):
         if isinstance(serializer.child, UserAccountSerializer):
-            return UserAccount.objects.filter(user_id=self.request.user.id)
+            return UserAccount.objects.filter(
+                user_id__in=[
+                    str(self.request.user.id),
+                    str(self.request.user.co_owner.id)
+                ]
+            )
         else:
-            return User.objects.get(id=self.request.user.id).accounts.all()
+            return Account.objects.filter(
+                useraccount__user_id__in=[
+                    str(self.request.user.id),
+                    str(self.request.user.co_owner.id)
+                ]
+            )
 
     def get_object(self, request):
         account = Account.objects.get(id=self.request.query_params.get('id'))
@@ -71,7 +82,10 @@ class AccountsView(GenericAPIView):
     def get(self, request, *args, **kwargs):
         '''Get all the account data belonging to a specific user'''
 
-        accounts = Account.objects.filter(useraccount__user_id=self.request.user.id) \
+        accounts = Account.objects.filter(useraccount__user_id__in=[
+                                      self.request.user.id,
+                                      self.request.user.co_owner.id
+                                  ]) \
                                   .order_by('useraccount__order') \
                                   .prefetch_related('plaid_item') \
                                   .prefetch_related('institution')

@@ -140,13 +140,12 @@ class UserCategory(models.Model):
 
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE)
-    primary_owner = models.BooleanField(default=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     order = models.IntegerField(null=False, default=0)
 
     def save(self, **kwargs):
-        if not self.user.yearly_anchor and self.category.period == 'year':
-            self.user.yearly_anchor = timezone.now()
+        if not self.user.account.yearly_anchor and self.category.period == 'year':
+            self.user.account.yearly_anchor = timezone.now()
             self.user.save()
         return super().save()
 
@@ -174,10 +173,9 @@ class UserBill(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     bill = models.ForeignKey(Bill, on_delete=models.CASCADE)
-    primary_owner = models.BooleanField(default=True)
 
     def create(self):
-        if not self.user.yearly_anchor and self.bill.period == 'year':
-            self.user.yearly_anchor = timezone.now()
+        if not self.user.account.yearly_anchor and self.bill.period == 'year':
+            self.user.account.yearly_anchor = timezone.now()
             self.user.save()
         return super().create()
