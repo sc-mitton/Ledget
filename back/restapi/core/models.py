@@ -248,6 +248,7 @@ class DeviceManager(models.Manager):
 
         return False
 
+
 class Device(models.Model):
     class Aal(models.TextChoices):
         AAL1 = 'aal1', _('AAL1')

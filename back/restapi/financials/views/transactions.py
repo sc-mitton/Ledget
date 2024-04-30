@@ -384,7 +384,7 @@ class TransactionViewSet(ModelViewSet):
         query_params = self.request.query_params
 
         result = {'account__plaid_item__user_id__in':
-                    self.request.user.account_user_ids}
+                  self.request.user.account_user_ids}
         result.update(self._extract_date_boundaries())
 
         # If querying for unconfirmed transactions

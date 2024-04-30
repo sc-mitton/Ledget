@@ -18,7 +18,6 @@ import plaid
 from restapi.permissions.auth import IsAuthedVerifiedSubscriber
 from restapi.permissions.objects import HasObjectAccess
 from core.clients import create_plaid_client
-from core.models import User
 from financials.models import Account, UserAccount, Transaction
 from financials.serializers.account import (
     InstitutionSerializer,
@@ -76,11 +75,11 @@ class AccountsView(GenericAPIView):
     def get(self, request, *args, **kwargs):
         '''Get all the account data belonging to a specific user'''
 
-        accounts = Account.objects.filter(useraccount__user_id__in= \
-                                        self.request.user.account_user_ids) \
-                                  .order_by('useraccount__order') \
-                                  .prefetch_related('plaid_item') \
-                                  .prefetch_related('institution')
+        accounts = Account.objects.filter(
+            useraccount__user_id__in=self.request.user.account_user_ids) \
+            .order_by('useraccount__order') \
+            .prefetch_related('plaid_item') \
+            .prefetch_related('institution')
 
         account_balances = self._fetch_plaid_account_data(accounts)
 

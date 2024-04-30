@@ -39,6 +39,7 @@ ENV API_VERSION=$VERSION
 
 WORKDIR /restapi
 COPY ./restapi .
+COPY ../.flake8 .
 RUN mkdir -p ./logs && touch ./logs/stripe_logs && touch ./logs/ledget_logs
 
 RUN chown -R python:python /restapi

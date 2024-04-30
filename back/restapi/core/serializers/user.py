@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from django.utils import timezone
-from rest_framework import serializers
 
 from core.models import User, Feedback
 from .account import AccountSerializer

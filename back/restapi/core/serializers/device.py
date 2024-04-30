@@ -3,10 +3,10 @@ import hashlib
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from django.conf import settings
-from user_agents import parse as ua_parse
 
 
 from core.models import Device
+
 
 # Instead of storing the hashed token in the database, we could store
 # a shared secret and use a HMAC to verify the token. This would allow

@@ -307,7 +307,8 @@ class BudgetViewTestRetrevalUpdate(ViewTestsMixin):
         backend and the transactions for the month associated with the old category
         will need to be associated with the new category.
         '''
-        category = Category.objects.filter(removed_on__isnull=True, is_default=False).first()
+        category = Category.objects.filter(removed_on__isnull=True,
+                                           is_default=False).first()
         payload = {
             'limit_amount': category.limit_amount + 100,
             'emoji': category.emoji,

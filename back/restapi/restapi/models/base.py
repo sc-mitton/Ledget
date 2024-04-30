@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class BaseSharedModel(models.Model):
 
     class PrivacyChoices(models.TextChoices):

@@ -26,8 +26,6 @@ from restapi.permissions.auth import can_create_stripe_subscription, IsAuthentic
 from restapi.permissions.checks import HasCustomer
 from restapi.permissions.objects import OwnsStripeSubscription
 
-
-
 stripe.api_key = settings.STRIPE_API_KEY
 stripe_logger = logging.getLogger("stripe")
 
@@ -83,9 +81,10 @@ class UpdateAccountView(GenericAPIView):
         '''
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        request.user.account.customer.cancelation_reason = serializer.validated_data.pop(
-            'cancelation_reason', ''
-        )
+        request.user.account.customer.cancelation_reason = \
+            serializer.validated_data.pop(
+                'cancelation_reason', ''
+            )
 
         try:
             stripe.Subscription.modify(

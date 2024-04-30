@@ -236,8 +236,8 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
     def spending_history(self, request, pk=None):
         monthly_amounts_spent = Transaction.objects.filter(
                 transactioncategory__category__id=pk,
-                transactioncategory__category__usercategory__user_id__in= \
-                    self.request.user.account_user_ids
+                transactioncategory__category__usercategory__user_id__in # noqa
+                =self.request.user.account_user_ids
             ).annotate(
                 month=ExtractMonth('datetime'),
                 year=ExtractYear('datetime')

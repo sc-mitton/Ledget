@@ -26,6 +26,7 @@ class UserView(RetrieveUpdateAPIView):
     def get_object(self):
         return self.request.user
 
+
 class AddUserToAccountView(GenericAPIView):
 
     def post(self, request):

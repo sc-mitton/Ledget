@@ -56,6 +56,7 @@ class HasObjectAccess(BasePermission):
                 else self.has_write_access(request, obj)
             )
         except AttributeError as e:
+            logger.error(f"Error checking object access: {e}")
             return False
 
     def has_read_access(self, request, obj):
