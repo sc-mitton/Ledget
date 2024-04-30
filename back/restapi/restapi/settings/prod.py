@@ -8,14 +8,13 @@ from .get_aws_secret import get_secret
 ALLOWED_HOSTS = [
     'ledget.app',
     '*.ledget.app',
-    'ledget-restapi-prod-dnk367h.us-west-2.elasticbeanstalk.com',
+    'ledget-restapi-prod-rly58e3.us-west-2.elasticbeanstalk.com',
 ]
 DOMAIN_URL = "https://api.ledget.app/"
 DOMAIN = 'api.ledget.app'
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_BROWSER_XSS_FILTER = True
-
 
 # ----------------------------------- Csrf ----------------------------------- #
 
