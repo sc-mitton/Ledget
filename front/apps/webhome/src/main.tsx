@@ -29,10 +29,10 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 const csp = `
   default-src 'self';
   script-src 'self' js.stripe.com cdn.plaid.com m.stripe.network;
-  style-src 'self';
-  img-src 'self' ${import.meta.env.VITE_LEDGET_API_HOST} data:;
+  style-src 'self' 'unsafe-inline';
+  img-src 'self' ${import.meta.env.VITE_LEDGET_API_HOST} cdn.jsdelivr.net data:;
   child-src 'self' cdn.plaid.com js.stripe.com;
-  connect-src 'self' cdn.plaid.com api.stripe.com ${import.meta.env.VITE_LEDGET_API_HOST} ${import.meta.env.VITE_ORY_API_HOST};
+  connect-src 'self' cdn.plaid.com api.stripe.com fonts.googleapis.com cdn.jsdelivr.net ${import.meta.env.VITE_LEDGET_API_HOST} ${import.meta.env.VITE_ORY_API_HOST};
   font-src 'self' fonts.gstatic.com;
 `
 

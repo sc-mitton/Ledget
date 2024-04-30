@@ -12,10 +12,10 @@ const root = ReactDOMClient.createRoot(document?.getElementById('root') as HTMLE
 const csp = `
   default-src 'self';
   script-src 'self' js.stripe.com m.stripe.network;
-  style-src 'self';
+  style-src 'self' fonts.googleapis.com;
   img-src 'self' ${import.meta.env.VITE_LEDGET_API_HOST} data:;
   child-src 'self' js.stripe.com;
-  connect-src 'self' api.stripe.com ${import.meta.env.VITE_LEDGET_API_HOST} ${import.meta.env.VITE_ORY_API_HOST};
+  connect-src 'self' api.stripe.com fonts.googleapis.com ${import.meta.env.VITE_LEDGET_API_HOST} ${import.meta.env.VITE_ORY_API_HOST};
   font-src 'self' fonts.gstatic.com;
 `
 
