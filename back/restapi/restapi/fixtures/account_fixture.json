@@ -1,41 +1,128 @@
 [
-    {
-        "model": "financials.account",
-        "pk": "QA7dkp9vLLCk36A4P4mdCwq1y37k4nfOArgqD",
-        "fields": {
-            "plaid_item": "RvKwAXV0DDiJjLvaeayKHOBvwzYjB9sygBzLY",
-            "institution": "ins_25",
-            "name": "Savings Account",
-            "mask": "4735",
-            "subtype": "savings",
-            "type": "depository",
-            "verification_status": null
-        }
-    },
-    {
-        "model": "financials.account",
-        "pk": "RvKwAXV0DDiJjLvaeayKHOB7Ygo0qmfeX3b7n",
-        "fields": {
-            "plaid_item": "RvKwAXV0DDiJjLvaeayKHOBvwzYjB9sygBzLY",
-            "institution": "ins_25",
-            "name": "Spending Account",
-            "mask": "3638",
-            "subtype": "checking",
-            "type": "depository",
-            "verification_status": null
-        }
-    },
-    {
-        "model": "financials.account",
-        "pk": "nBrKANoPMMTZ6OPazayATRPpnw3YAbtB195vX",
-        "fields": {
-            "plaid_item": "RvKwAXV0DDiJjLvaeayKHOBvwzYjB9sygBzLY",
-            "institution": "ins_25",
-            "name": "Money Market Savings",
-            "mask": "4948",
-            "subtype": "money market",
-            "type": "depository",
-            "verification_status": null
-        }
+{
+    "model": "financials.account",
+    "pk": "6PyPjWzm9aUnqQLP9grGs4M75vkQnzfzVy77l",
+    "fields": {
+        "privacy": "private",
+        "plaid_item": "rQNQkV3RmrU4LdroPgm1UvoXkyNEpmClKzXNk",
+        "institution": "ins_25",
+        "name": "Plaid Money Market",
+        "mask": "4444",
+        "subtype": "money market",
+        "type": "depository",
+        "verification_status": null
     }
+},
+{
+    "model": "financials.account",
+    "pk": "9eyeQnxV9PI9QoVn5KwWSK1y85qXxPiKX5NNW",
+    "fields": {
+        "privacy": "private",
+        "plaid_item": "rQNQkV3RmrU4LdroPgm1UvoXkyNEpmClKzXNk",
+        "institution": "ins_25",
+        "name": "Plaid Saving",
+        "mask": "1111",
+        "subtype": "savings",
+        "type": "depository",
+        "verification_status": null
+    }
+},
+{
+    "model": "financials.account",
+    "pk": "DWyWAaMRdgC3wKZxvGBnH7xewQXdV1cZKkqqe",
+    "fields": {
+        "privacy": "private",
+        "plaid_item": "rQNQkV3RmrU4LdroPgm1UvoXkyNEpmClKzXNk",
+        "institution": "ins_25",
+        "name": "Plaid 401k",
+        "mask": "6666",
+        "subtype": "401k",
+        "type": "investment",
+        "verification_status": null
+    }
+},
+{
+    "model": "financials.account",
+    "pk": "RPjPvgrVxzUwlA364XaLhrajlnbGdkuZmBVV9",
+    "fields": {
+        "privacy": "private",
+        "plaid_item": "rQNQkV3RmrU4LdroPgm1UvoXkyNEpmClKzXNk",
+        "institution": "ins_25",
+        "name": "Plaid Credit Card",
+        "mask": "3333",
+        "subtype": "credit card",
+        "type": "credit",
+        "verification_status": null
+    }
+},
+{
+    "model": "financials.account",
+    "pk": "VQkQvAx1NdU7mDGjprxvSadkmjWNLzuD3wMM1",
+    "fields": {
+        "privacy": "private",
+        "plaid_item": "rQNQkV3RmrU4LdroPgm1UvoXkyNEpmClKzXNk",
+        "institution": "ins_25",
+        "name": "Plaid Student Loan",
+        "mask": "7777",
+        "subtype": "student",
+        "type": "loan",
+        "verification_status": null
+    }
+},
+{
+    "model": "financials.account",
+    "pk": "XMKMvna1j4fRWMNdJonksojgWkLKQAuDw3AA6",
+    "fields": {
+        "privacy": "private",
+        "plaid_item": "rQNQkV3RmrU4LdroPgm1UvoXkyNEpmClKzXNk",
+        "institution": "ins_25",
+        "name": "Plaid IRA",
+        "mask": "5555",
+        "subtype": "ira",
+        "type": "investment",
+        "verification_status": null
+    }
+},
+{
+    "model": "financials.account",
+    "pk": "vLeLZV458xhnBPNXJWkwsLAMQnd8E4iw9EQQj",
+    "fields": {
+        "privacy": "private",
+        "plaid_item": "rQNQkV3RmrU4LdroPgm1UvoXkyNEpmClKzXNk",
+        "institution": "ins_25",
+        "name": "Plaid CD",
+        "mask": "2222",
+        "subtype": "cd",
+        "type": "depository",
+        "verification_status": null
+    }
+},
+{
+    "model": "financials.account",
+    "pk": "wpQpMVNA8dHwX5LgMqmBhNlb5qvoZyCQB5XX8",
+    "fields": {
+        "privacy": "private",
+        "plaid_item": "rQNQkV3RmrU4LdroPgm1UvoXkyNEpmClKzXNk",
+        "institution": "ins_25",
+        "name": "Plaid Mortgage",
+        "mask": "8888",
+        "subtype": "mortgage",
+        "type": "loan",
+        "verification_status": null
+    }
+},
+{
+    "model": "financials.account",
+    "pk": "ygJgLlj384u1k3PXRKqgsLnzwbojGpig7lRRQ",
+    "fields": {
+        "privacy": "private",
+        "plaid_item": "rQNQkV3RmrU4LdroPgm1UvoXkyNEpmClKzXNk",
+        "institution": "ins_25",
+        "name": "Plaid Checking",
+        "mask": "0000",
+        "subtype": "checking",
+        "type": "depository",
+        "verification_status": null
+    }
+}
 ]

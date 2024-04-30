@@ -14,6 +14,8 @@ class FinancialViewTestObjectCreations(ViewTestsMixin):
         'category_fixture.json',
         'bill_fixture.json',
         'institution_fixture.json',
+        'core_account_fixture.json',
+        'customer_fixture.json',
         'user_fixture.json',
     ]
 

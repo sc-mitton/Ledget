@@ -9,7 +9,7 @@ from django.test import modify_settings
 
 import uuid
 import jwt
-from core.models import Customer
+from core.models import Customer, Account
 
 
 public_key = settings.OATHKEEPER_PUBLIC_KEY
@@ -78,26 +78,35 @@ class ViewTestsMixin(TestCase):
         self.aal2_payload = session_payloads[0]
         self.aal1_payload = session_payloads[1]
 
+        # Main test user
+        account = Account.objects.create()
         self.user = get_user_model().objects.create_user(
-            id=self.aal1_payload['session']['identity']['id']
+            id=self.aal1_payload['session']['identity']['id'],
+            account=account
         )
-
-        Customer.objects.create(
+        customer = Customer.objects.create(
             user=self.user,
             id=uuid.uuid4(),
             subscription_status='active',
             period_end=1794475549,
         )
+        account.customer = customer
+        account.save()
 
+        # AAL2 user
+        account_for_aal2_user = Account.objects.create()
         self.aal2_user = get_user_model().objects.create_user(
-            id=self.aal2_payload['session']['identity']['id']
+            id=self.aal2_payload['session']['identity']['id'],
+            account=account_for_aal2_user
         )
-        Customer.objects.create(
+        customer_for_aal2_user = Customer.objects.create(
             user=self.aal2_user,
             id=uuid.uuid4(),
             subscription_status='active',
             period_end=1794475549
         )
+        account_for_aal2_user.customer = customer_for_aal2_user
+        account_for_aal2_user.save()
 
         self.createClients()
 

@@ -1,0 +1,10 @@
+python ../../manage.py dumpdata financials.Account --indent 4 > ./account_fixture.json
+python ../../manage.py dumpdata budget.Bill --indent 4 > ./bill_fixture.json
+python ../../manage.py dumpdata budget.Category --indent 4 > ./category_fixture.json
+python ../../manage.py dumpdata financials.Institution --indent 4 > ./institution_fixture.json
+python ../../manage.py dumpdata financials.PlaidItem --indent 4 > ./plaid_item_fixture.json
+python ../../manage.py dumpdata budget.Reminder --indent 4 > ./reminder_fixture.json
+python ../../manage.py dumpdata financials.Transaction --indent 4 > ./transaction_fixture.json
+python ../../manage.py dumpdata core.User --indent 4 > ./user_fixture.json
+python ../../manage.py dumpdata core.Account --indent 4 > ./core_account_fixture.json
+python ../../manage.py dumpdata core.Customer --indent 4 > ./customer_fixture.json

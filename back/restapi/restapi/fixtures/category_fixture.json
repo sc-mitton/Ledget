@@ -1,210 +1,254 @@
 [
-    {
-        "model": "budget.category",
-        "pk": "051252b5-e034-4747-b6b4-865ac55bb414",
-        "fields": {
-            "name": "allice",
-            "emoji": "💅",
-            "created": "2023-10-04T18:06:54.825Z",
-            "removed_on": null,
-            "period": "month",
-            "limit_amount": 25000,
-            "is_default": false
-        }
-    },
-    {
-        "model": "budget.category",
-        "pk": "46791eb2-6b3f-407f-a823-92d80a9330d9",
-        "fields": {
-            "name": "bob",
-            "emoji": "🧢",
-            "created": "2023-10-04T18:06:54.825Z",
-            "removed_on": null,
-            "period": "month",
-            "limit_amount": 25000,
-            "is_default": false
-        }
-    },
-    {
-        "model": "budget.category",
-        "pk": "4a3c36e2-2bac-49f4-9419-0016f79ecec2",
-        "fields": {
-            "name": "swimming",
-            "emoji": "🏊",
-            "created": "2023-09-30T21:12:51.944Z",
-            "removed_on": null,
-            "period": "month",
-            "limit_amount": 5000,
-            "is_default": false
-        }
-    },
-    {
-        "model": "budget.category",
-        "pk": "5466207a-b073-45b1-a9fd-c600f7fac815",
-        "fields": {
-            "name": "allice",
-            "emoji": "💘",
-            "created": "2023-09-25T22:22:51.046Z",
-            "removed_on": null,
-            "period": "month",
-            "limit_amount": 25000,
-            "is_default": false
-        }
-    },
-    {
-        "model": "budget.category",
-        "pk": "649bbf1e-eaad-4a89-bdae-6cca10242d81",
-        "fields": {
-            "name": "dates",
-            "emoji": "💘",
-            "created": "2023-10-04T18:06:54.825Z",
-            "removed_on": null,
-            "period": "month",
-            "limit_amount": 30000,
-            "is_default": false
-        }
-    },
-    {
-        "model": "budget.category",
-        "pk": "6c43a90c-85c0-46bc-a090-0c7b40e07003",
-        "fields": {
-            "name": "groceries",
-            "emoji": "🥕",
-            "created": "2023-09-25T22:22:51.046Z",
-            "removed_on": null,
-            "period": "month",
-            "limit_amount": 52000,
-            "is_default": false
-        }
-    },
-    {
-        "model": "budget.category",
-        "pk": "8a45c5a0-3e6b-4bdc-85bb-138d9b734d24",
-        "fields": {
-            "name": "miscellaneous",
-            "emoji": null,
-            "created": "2023-11-12T15:37:40.675Z",
-            "removed_on": null,
-            "period": "month",
-            "limit_amount": null,
-            "is_default": true
-        }
-    },
-    {
-        "model": "budget.category",
-        "pk": "923466da-422a-4568-8c2f-2c47e1f33f14",
-        "fields": {
-            "name": "groceries",
-            "emoji": "🥕",
-            "created": "2023-10-04T18:06:54.825Z",
-            "removed_on": null,
-            "period": "month",
-            "limit_amount": 55000,
-            "is_default": false
-        }
-    },
-    {
-        "model": "budget.category",
-        "pk": "acf5d204-0c32-4522-9774-74bb7e1cc3af",
-        "fields": {
-            "name": "miscellaneous",
-            "emoji": "🪣",
-            "created": "2023-10-20T03:18:16.300Z",
-            "removed_on": null,
-            "period": "month",
-            "limit_amount": null,
-            "is_default": true
-        }
-    },
-    {
-        "model": "budget.category",
-        "pk": "bc8483e6-b87b-4c7b-a87e-400c02e41b7b",
-        "fields": {
-            "name": "christmas",
-            "emoji": "🎄",
-            "created": "2023-09-30T21:15:01.782Z",
-            "removed_on": null,
-            "period": "month",
-            "limit_amount": 400000,
-            "is_default": false
-        }
-    },
-    {
-        "model": "budget.category",
-        "pk": "c2f69329-34dc-44c3-aa97-2a96c6b5a2ea",
-        "fields": {
-            "name": "travel",
-            "emoji": "✈️",
-            "created": "2023-11-11T01:17:18.962Z",
-            "removed_on": null,
-            "period": "year",
-            "limit_amount": 500000,
-            "is_default": false
-        }
-    },
-    {
-        "model": "budget.category",
-        "pk": "cdb37b98-0d94-4379-bbb0-a10c90a0d2b3",
-        "fields": {
-            "name": "partying",
-            "emoji": "🥂",
-            "created": "2023-09-30T21:09:30.402Z",
-            "removed_on": null,
-            "period": "month",
-            "limit_amount": 25900,
-            "is_default": false
-        }
-    },
-    {
-        "model": "budget.category",
-        "pk": "de5cccab-c8b9-44ed-b1cb-cb0e9c6427f0",
-        "fields": {
-            "name": "skiing",
-            "emoji": "🎿",
-            "created": "2023-10-04T18:06:54.825Z",
-            "removed_on": "2023-11-10T01:21:33.893Z",
-            "period": "month",
-            "limit_amount": 100000,
-            "is_default": false
-        }
-    },
-    {
-        "model": "budget.category",
-        "pk": "de642a57-4bf4-4207-b524-ea7be806208e",
-        "fields": {
-            "name": "christmas",
-            "emoji": "🎄",
-            "created": "2023-11-11T18:22:41.124Z",
-            "removed_on": null,
-            "period": "year",
-            "limit_amount": 200000,
-            "is_default": false
-        }
-    },
-    {
-        "model": "budget.category",
-        "pk": "f28199d6-e74a-4485-8fb6-f4abd256b96e",
-        "fields": {
-            "name": "dates",
-            "emoji": "💘",
-            "created": "2023-09-30T20:27:06.749Z",
-            "removed_on": null,
-            "period": "month",
-            "limit_amount": 25000,
-            "is_default": false
-        }
-    },
-    {
-        "model": "budget.category",
-        "pk": "f6319bdf-8e99-466b-90e8-7c733108f458",
-        "fields": {
-            "name": "bob",
-            "emoji": "🧢",
-            "created": "2023-09-25T22:22:51.046Z",
-            "removed_on": null,
-            "period": "month",
-            "limit_amount": 25000,
-            "is_default": false
-        }
+{
+    "model": "budget.category",
+    "pk": "055babec-9b75-4bfa-8874-595a69d812c8",
+    "fields": {
+        "privacy": "shared",
+        "name": "miscellaneous",
+        "emoji": "🪣",
+        "created": "2024-04-27T18:54:11.372Z",
+        "removed_on": null,
+        "period": "month",
+        "limit_amount": null,
+        "is_default": true
     }
+},
+{
+    "model": "budget.category",
+    "pk": "111756dc-1380-44f0-aee1-41f679142225",
+    "fields": {
+        "privacy": "shared",
+        "name": "Hobbies",
+        "emoji": "🎨",
+        "created": "2024-04-28T03:08:02.957Z",
+        "removed_on": null,
+        "period": "month",
+        "limit_amount": 10000,
+        "is_default": false
+    }
+},
+{
+    "model": "budget.category",
+    "pk": "1486fb8c-645f-4c72-aee7-4b1aa7e3ae9f",
+    "fields": {
+        "privacy": "shared",
+        "name": "Travel",
+        "emoji": "🛫",
+        "created": "2024-04-28T03:08:02.957Z",
+        "removed_on": null,
+        "period": "year",
+        "limit_amount": 1000000,
+        "is_default": false
+    }
+},
+{
+    "model": "budget.category",
+    "pk": "27500c36-64ca-4d8c-8e6a-6f33c1cee216",
+    "fields": {
+        "privacy": "shared",
+        "name": "miscellaneous",
+        "emoji": "🪣",
+        "created": "2024-04-27T18:52:40.061Z",
+        "removed_on": null,
+        "period": "month",
+        "limit_amount": null,
+        "is_default": true
+    }
+},
+{
+    "model": "budget.category",
+    "pk": "5724827f-dc11-483f-9ac6-f3a0bfa0f72e",
+    "fields": {
+        "privacy": "shared",
+        "name": "Eating Out",
+        "emoji": "🍔",
+        "created": "2024-04-28T03:08:02.957Z",
+        "removed_on": null,
+        "period": "month",
+        "limit_amount": 20000,
+        "is_default": false
+    }
+},
+{
+    "model": "budget.category",
+    "pk": "6d6ce66f-30fe-408d-9e7d-5a5587b28c8c",
+    "fields": {
+        "privacy": "shared",
+        "name": "Entertainment",
+        "emoji": "🎉",
+        "created": "2024-04-28T03:08:02.957Z",
+        "removed_on": null,
+        "period": "year",
+        "limit_amount": 500000,
+        "is_default": false
+    }
+},
+{
+    "model": "budget.category",
+    "pk": "7dd5e57e-3830-4410-bec9-fae47951a682",
+    "fields": {
+        "privacy": "shared",
+        "name": "Taxi",
+        "emoji": "🚕",
+        "created": "2024-04-28T03:08:02.957Z",
+        "removed_on": null,
+        "period": "month",
+        "limit_amount": 15000,
+        "is_default": false
+    }
+},
+{
+    "model": "budget.category",
+    "pk": "87513de2-1819-401f-9871-11cac8990bde",
+    "fields": {
+        "privacy": "shared",
+        "name": "Gifts",
+        "emoji": "🎁",
+        "created": "2024-04-28T03:08:02.957Z",
+        "removed_on": null,
+        "period": "month",
+        "limit_amount": 5000,
+        "is_default": false
+    }
+},
+{
+    "model": "budget.category",
+    "pk": "9cea4810-257c-42f3-b4c9-74d9c70bc028",
+    "fields": {
+        "privacy": "shared",
+        "name": "Groceries",
+        "emoji": "🥕",
+        "created": "2024-04-28T03:08:02.957Z",
+        "removed_on": null,
+        "period": "month",
+        "limit_amount": 50000,
+        "is_default": false
+    }
+},
+{
+    "model": "budget.category",
+    "pk": "a2c92fb9-af33-431b-926a-5f8f5df77ae0",
+    "fields": {
+        "privacy": "shared",
+        "name": "miscellaneous",
+        "emoji": "🪣",
+        "created": "2024-04-27T19:04:26.231Z",
+        "removed_on": null,
+        "period": "month",
+        "limit_amount": null,
+        "is_default": true
+    }
+},
+{
+    "model": "budget.category",
+    "pk": "c4b80eff-640e-44df-897b-bc28ed13e8fe",
+    "fields": {
+        "privacy": "shared",
+        "name": "miscellaneous",
+        "emoji": "🪣",
+        "created": "2024-04-27T18:29:18.069Z",
+        "removed_on": null,
+        "period": "month",
+        "limit_amount": null,
+        "is_default": true
+    }
+},
+{
+    "model": "budget.category",
+    "pk": "c85ff3f2-3d0c-4f92-a57a-84325764cc96",
+    "fields": {
+        "privacy": "shared",
+        "name": "Coffee",
+        "emoji": "☕️",
+        "created": "2024-04-28T03:08:02.957Z",
+        "removed_on": null,
+        "period": "month",
+        "limit_amount": 20000,
+        "is_default": false
+    }
+},
+{
+    "model": "budget.category",
+    "pk": "da6345e6-fcd5-4fbf-bdfc-70a51c631f12",
+    "fields": {
+        "privacy": "shared",
+        "name": "miscellaneous",
+        "emoji": "🪣",
+        "created": "2024-04-27T18:57:16.362Z",
+        "removed_on": null,
+        "period": "month",
+        "limit_amount": null,
+        "is_default": true
+    }
+},
+{
+    "model": "budget.category",
+    "pk": "e45fea79-51bf-4357-88f5-c48175e72c91",
+    "fields": {
+        "privacy": "shared",
+        "name": "miscellaneous",
+        "emoji": "🪣",
+        "created": "2024-04-27T18:10:28.625Z",
+        "removed_on": null,
+        "period": "month",
+        "limit_amount": null,
+        "is_default": true
+    }
+},
+{
+    "model": "budget.category",
+    "pk": "e96d8fa1-1864-4d0a-8394-b3a711500dc8",
+    "fields": {
+        "privacy": "shared",
+        "name": "Books",
+        "emoji": "📚",
+        "created": "2024-04-28T03:08:02.957Z",
+        "removed_on": null,
+        "period": "month",
+        "limit_amount": 1500,
+        "is_default": false
+    }
+},
+{
+    "model": "budget.category",
+    "pk": "f1057486-a87a-4347-9071-d07b0c366ee6",
+    "fields": {
+        "privacy": "shared",
+        "name": "miscellaneous",
+        "emoji": "🪣",
+        "created": "2024-04-27T18:32:33.832Z",
+        "removed_on": null,
+        "period": "month",
+        "limit_amount": null,
+        "is_default": true
+    }
+},
+{
+    "model": "budget.category",
+    "pk": "f408d73e-d2a9-4665-afe8-a7a64ccc3022",
+    "fields": {
+        "privacy": "shared",
+        "name": "miscellaneous",
+        "emoji": "🪣",
+        "created": "2024-04-27T19:48:25.718Z",
+        "removed_on": null,
+        "period": "month",
+        "limit_amount": null,
+        "is_default": true
+    }
+},
+{
+    "model": "budget.category",
+    "pk": "f79e0c67-d442-4ec0-a6d2-ab071bd37a74",
+    "fields": {
+        "privacy": "shared",
+        "name": "Hair",
+        "emoji": "💇🏽‍♀️",
+        "created": "2024-04-28T03:08:02.957Z",
+        "removed_on": null,
+        "period": "year",
+        "limit_amount": 100000,
+        "is_default": false
+    }
+}
 ]

@@ -1,0 +1,11 @@
+[
+{
+    "model": "core.customer",
+    "pk": "cus_Q0ID0jXiPiNF7v",
+    "fields": {
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "subscription_status": "trialing",
+        "period_end": 1716840803
+    }
+}
+]

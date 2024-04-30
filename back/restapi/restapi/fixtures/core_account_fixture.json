@@ -1,0 +1,13 @@
+[
+{
+    "model": "core.account",
+    "pk": "9f50abce-93da-4166-b261-0067dabdf9dc",
+    "fields": {
+        "yearly_anchor": null,
+        "flag": null,
+        "customer": "cus_Q0ID0jXiPiNF7v",
+        "created_on": "2024-04-27T19:48:25.706Z",
+        "canceled_on": null
+    }
+}
+]
