@@ -12,6 +12,7 @@ import {
     aal1ReAuthed,
     aal2ReAuthed
 } from '@features/authSlice'
+import { setReAuthModal } from '@features/modalSlice'
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'
 import { useFlow } from '@ledget/ory'
 import {
@@ -277,7 +278,6 @@ export const ReAuthProtected = ({ children, requiredAal, onReAuth }: {
     requiredAal?: User['highest_aal']
 }) => {
 
-    const [showReAuthModal, setShowReAuthModal] = useState(false)
     const [isReAuthing, setIsReAuthing] = useState(false)
     const [current, setCurrent] = useState(false)
     const [, setSearchParams] = useSearchParams()
@@ -285,6 +285,7 @@ export const ReAuthProtected = ({ children, requiredAal, onReAuth }: {
     const { data: user } = useGetMeQuery()
     // onClose callback not necessary since the protected action is executed immediately
     const isReAuthed = useReauthCheck({ requiredAal: requiredAal || user?.highest_aal || 'aal1' })
+    const dispatch = useAppDispatch()
 
     // When the user initiates whatever action requires a re-auth,
     // first check to see if they are already authed recently. If not,
@@ -292,10 +293,14 @@ export const ReAuthProtected = ({ children, requiredAal, onReAuth }: {
     useEffect(() => {
         if (isReAuthing) {
             if (!isReAuthed) {
-                setShowReAuthModal(true)
+                dispatch(setReAuthModal({ open: true }))
             } else {
                 onReAuth()
             }
+        }
+        return () => {
+            setSearchParams({})
+            dispatch(setReAuthModal({ open: false }))
         }
     }, [isReAuthing])
 
@@ -304,18 +309,16 @@ export const ReAuthProtected = ({ children, requiredAal, onReAuth }: {
         if (isReAuthed) {
             onReAuth()
             setIsReAuthing(false)
-            setShowReAuthModal(false)
+            dispatch(setReAuthModal({ open: false }))
+        }
+        return () => {
+            setSearchParams({})
+            dispatch(setReAuthModal({ open: false }))
         }
     }, [isReAuthed])
 
     return (
         <>
-            {showReAuthModal &&
-                <ReAuthModal onClose={() => {
-                    setSearchParams({})
-                    setIsReAuthing(false)
-                    setShowReAuthModal(false)
-                }} />}
             {children({
                 reAuth: () => {
                     setIsReAuthing(true)

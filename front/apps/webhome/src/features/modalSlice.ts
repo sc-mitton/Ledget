@@ -17,12 +17,16 @@ interface InitialState {
     billModal: {
         bill?: TransformedBill
     }
+    reAuthModal: {
+        open: boolean
+    }
 }
 
 const initialState: InitialState = {
     transactionModal: {},
     categoryModal: {},
-    billModal: {}
+    billModal: {},
+    reAuthModal: { open: false }
 }
 
 export const modalSlice = createSlice({
@@ -49,6 +53,9 @@ export const modalSlice = createSlice({
         clearBillModal: (state) => {
             state.billModal.bill = undefined;
         },
+        setReAuthModal: (state, action: PayloadAction<{ open: boolean }>) => {
+            state.reAuthModal.open = action.payload.open;
+        }
     },
 })
 
@@ -58,6 +65,7 @@ export const selectTransactionModal = (state: RootState) => state.modal.transact
 export const selectTransactionModalItem = (state: RootState) => state.modal.transactionModal.item;
 export const selectCategoryModal = (state: RootState) => state.modal.categoryModal;
 export const selectBillModal = (state: RootState) => state.modal.billModal;
+export const selectReAuthModal = (state: RootState) => state.modal.reAuthModal.open;
 
 export const {
     setTransactionModal,
@@ -65,7 +73,8 @@ export const {
     setCategoryModal,
     clearCategoryModal,
     setBillModal,
-    clearBillModal
+    clearBillModal,
+    setReAuthModal
 } = modalSlice.actions;
 
 export default modalSlice.reducer;
