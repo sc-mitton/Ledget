@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 
 import "@styles/base.scss"
 import "@styles/portal.scss"
-import Routes from './routes'
+import Routes from './Routes'
 import store from '@features/store'
 import { ColorSchemedDiv, ScreenProvider } from '@ledget/ui'
 
