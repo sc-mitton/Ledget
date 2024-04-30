@@ -3,7 +3,9 @@
 
     &>div {
         position: absolute;
-        bottom: 0;
+        inset: 0;
+        z-index: 9;
+        margin: -.5em 0;
     }
 }
 
@@ -12,6 +14,7 @@
     position: relative;
     overflow: auto;
     gap: .5em;
+    z-index: 10;
 
     &>div:first-child {
         display: flex;
@@ -23,7 +26,6 @@
 #schedule-dropdown {
     z-index: 1000;
     padding: .75em .75em .5em .75em;
-    margin-top: .5em;
 
     label {
         margin: 0;
@@ -36,7 +38,7 @@
 }
 
 #schedule-dropdown.dropdown {
-    border-radius: var(--border-radius3);
+    border-radius: var(--border-radius25);
 }
 
 .day-picker {

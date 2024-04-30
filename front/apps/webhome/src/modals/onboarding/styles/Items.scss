@@ -80,7 +80,12 @@ $scrollbar-padding: 1em;
             display: flex;
         }
 
-        div[role='tabpanel'] {
+        &>div[role='tablist'] {
+            display: flex;
+            justify-content: center;
+        }
+
+        &>div[role='tabpanel'] {
             padding: 1em 0;
             justify-content: center;
         }

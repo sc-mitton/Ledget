@@ -106,7 +106,7 @@ input[type="radio"]:not(:checked)+.subscription-radio--container {
 }
 
 input[type="radio"]:not(:checked)+.subscription-radio--container:hover {
-    opacity: .7;
+    opacity: .4;
     transition: opacity .2s ease-in-out;
 }
 

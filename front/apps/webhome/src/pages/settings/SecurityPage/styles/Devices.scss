@@ -15,12 +15,10 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    z-index: 10;
 }
 
 .device {
     width: 100%;
-    z-index: 1;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -31,7 +29,6 @@
     transition: background-color 0.2s ease-in-out;
     border-radius: var(--border-radius2);
     position: relative;
-    z-index: 0;
 
     &:hover,
     &.open {
@@ -116,7 +113,6 @@
     border-bottom-left-radius: var(--border-radius2);
     border-bottom-right-radius: var(--border-radius2);
     padding: .5em .75em 0 .75em;
-    z-index: 1;
     display: flex;
     flex-direction: column;
 
@@ -164,4 +160,5 @@
     bottom: 0;
     display: flex;
     align-items: center;
+    z-index: 100;
 }
