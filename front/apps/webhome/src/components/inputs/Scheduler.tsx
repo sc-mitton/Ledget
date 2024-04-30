@@ -42,6 +42,22 @@ const usePickerContext = () => {
     return context
 }
 
+const useResponsiveDropdownPlacement = ({ ref }: { ref: React.RefObject<HTMLDivElement> },) => {
+    const [placement, setPlacement] = useState<'left' | 'right' | 'middle'>('left')
+    const [verticlePlacement, setVerticlePlacement] = useState<'top' | 'bottom'>('bottom')
+
+    useEffect(() => {
+
+        if (ref.current) {
+            const rect = ref.current.getBoundingClientRect()
+            rect.left > window.innerWidth / 2 ? setPlacement('right') : setPlacement('left')
+            rect.top > window.innerHeight / 2 ? setVerticlePlacement('top') : setVerticlePlacement('bottom')
+        }
+    }, [ref])
+
+    return { placement, verticlePlacement }
+}
+
 const Scheduler = (props: Omit<Context, 'open' | 'setOpen' | 'buttonRef'> & { children: React.ReactNode }) => {
     const {
         day, setDay, month, setMonth, week, setWeek, weekDay, setWeekDay, children
@@ -499,9 +515,16 @@ const DayWeekPicker = () => {
             setOpen(false)
     }, [weekDay, week])
 
+    const { placement, verticlePlacement } = useResponsiveDropdownPlacement({ ref })
+
     return (
-        <>
-            <DropDownDiv placement='left' visible={open} id="schedule-dropdown">
+        <div ref={ref} >
+            <DropDownDiv
+                placement={placement}
+                verticlePlacement={verticlePlacement}
+                visible={open}
+                id="schedule-dropdown"
+            >
                 <Tab.Group as='div' ref={ref} defaultIndex={(week && weekDay) ? 1 : 0}>
                     {({ selectedIndex }) => (
                         <>
@@ -527,7 +550,7 @@ const DayWeekPicker = () => {
                     )}
                 </Tab.Group>
             </DropDownDiv>
-        </>
+        </div >
     )
 }
 
@@ -653,10 +676,13 @@ const MonthDayPicker = () => {
         }
     }, [month, day])
 
+    const { placement, verticlePlacement } = useResponsiveDropdownPlacement({ ref })
+
     return (
-        <>
+        <div ref={ref} >
             <DropDownDiv
-                placement='left'
+                placement={placement}
+                verticlePlacement={verticlePlacement}
                 visible={open}
                 id="schedule-dropdown"
                 style={{ marginTop: '.5em' }}
@@ -676,7 +702,7 @@ const MonthDayPicker = () => {
                     <DayPicker />
                 </div>
             </DropDownDiv>
-        </>
+        </div>
     )
 }
 
@@ -730,12 +756,12 @@ export const BillScheduler = (props: BSP) => {
                     <Scheduler.Button iconPlaceholder={props.iconPlaceholder}>
                         {error && <FormErrorTip error={{ type: 'required' }} />}
                     </Scheduler.Button>
-                    <div>
+                    <>
                         {billPeriod === 'month'
                             ? <Scheduler.DayWeekPicker />
                             : <Scheduler.MonthDayPicker />
                         }
-                    </div>
+                    </>
                 </div>
             </Scheduler>
         </>
