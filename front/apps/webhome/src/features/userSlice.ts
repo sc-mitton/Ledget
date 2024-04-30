@@ -14,28 +14,29 @@ interface Session {
     auth_methods: AuthMethod[],
 }
 
+interface Account {
+    has_customer: boolean,
+    service_provisioned_until: number,
+    subscription_status: SubscriptionStatus,
+}
+
 export interface User {
     password_last_changed: string,
     last_login: string,
     created_on: string,
     mfa_method: null | 'totp'
     mfa_enabled_on: string | null,
-    phone_number: string | null,
-    phone_country_code: string | null,
-    account_flag: string | null,
-    is_customer: boolean,
     is_verified: boolean,
     is_onboarded: boolean,
-    service_provisioned_until: number,
     highest_aal: 'aal1' | 'aal15' | 'aal2',
     session: Session,
-    subscription_status: SubscriptionStatus,
     email: string,
     name: {
         first: string,
         last: string,
     }
-    [key: string]: any,
+    co_owner: string | null,
+    account: Account,
 }
 
 export interface Device {
@@ -55,7 +56,7 @@ export interface Device {
     is_tablet: boolean,
     is_touch_capable: boolean,
     is_bot: boolean,
-    [key: string]: any,
+    current_device: boolean,
 }
 
 export interface Subscription {
@@ -107,7 +108,7 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
         }),
         getMe: builder.query<User, void>({
             query: () => 'user/me',
-            providesTags: ['User']
+            providesTags: ['User'],
         }),
         getSubscription: builder.query<Subscription, void>({
             query: () => 'subscription',

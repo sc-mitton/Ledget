@@ -3,7 +3,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 
 import LoginWindow from '@forms/Login'
-import SignUpWindow from '@forms/SignUp'
+import RegisterWindow from '@forms/Register'
 import CheckoutWindow from '@forms/Checkout'
 import VerificationWindow from '@forms/Verification'
 import RecoverWindow from '@forms/Recovery'
@@ -30,9 +30,7 @@ function AnimatedRoutes() {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         key={location.pathname}
-                        transition={{
-                            opacity: { duration: .15, ease: "easeIn" }
-                        }}
+                        transition={{ opacity: { duration: .15, ease: "easeIn" } }}
                     >
                         <Routes location={location} key={location.pathname.split('/')[1]} >
                             <Route path="/" element={<SendRegisteredToCheckout />}>
@@ -40,7 +38,7 @@ function AnimatedRoutes() {
                                 <Route exact path="/login" element={<LoginWindow />} />
                                 <Route exact path="/recovery" element={<RecoverWindow />} />
                             </Route>
-                            <Route path="/register" element={<SignUpWindow />} />
+                            <Route path="/register" element={<RegisterWindow />} />
                             <Route path="/verification" element={<VerificationWindow />} />
                             <Route path="/checkout" element={<CheckoutWindow />} />
                         </Routes>

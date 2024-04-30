@@ -292,7 +292,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordProps>((props,
         ?
         <InputShimmerDiv />
         :
-        <TextInputWrapper>
+        <TextInputWrapper className="password-input-container">
           <input
             name={name}
             type={visible ? 'text' : 'password'}
@@ -305,8 +305,12 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordProps>((props,
             {...rest}
           />
           {pwdInput && inputType != 'confirm-password' &&
-            visible ? <EyeOff size={'1.25em'} onClick={() => { setVisible(false) }} tabIndex={0} />
-            : <Eye size={'1.25em'} onClick={() => { setVisible(true) }} tabIndex={0} />}
+            <button
+              onClick={(e) => { e.preventDefault(); setVisible(!visible) }}
+              role='button'
+            >
+              {visible ? <EyeOff size={'1.25em'} /> : <Eye size={'1.25em'} />}
+            </button>}
           {error && (error.type === 'required' || error.msg?.includes('required'))
             && <FormErrorTip error={{ type: 'required' }} />}
         </TextInputWrapper>

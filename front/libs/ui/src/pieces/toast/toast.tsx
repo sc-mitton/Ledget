@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
-import { Info as InfoIcon, AlertCircle, CheckInCircle } from '@geist-ui/icons'
+import { InfoFill, AlertCircle, CheckInCircle } from '@geist-ui/icons'
 
 
 import './toast.scss'
@@ -109,7 +109,7 @@ export const Toast = ({ toastStack, cleanUp }: { toastStack: ToastItem[] | [], c
                 stroke={'var(--blue)'}
               />
             }
-            {item.type === 'info' && <InfoIcon className='icon' />}
+            {item.type === 'info' && <InfoFill className='icon' />}
             {item.type === 'error' && <AlertCircle className='icon' />}
           </div>
           <div>

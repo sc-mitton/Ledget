@@ -28,11 +28,10 @@ import {
 
 
 const schema = z.object({
-    firstName: z.string().min(1, { message: 'required' }),
-    lastName: z.string().min(1, { message: 'required' }),
-    email: z.string().min(1, { message: 'required' }).email({ message: 'Invalid email' })
+    firstName: z.string().min(1, { message: 'required' }).transform(v => v.trim()),
+    lastName: z.string().min(1, { message: 'required' }).transform(v => v.trim()),
+    email: z.string().min(1, { message: 'required' }).email({ message: 'Invalid email' }).transform(v => v.trim())
 }).required()
-
 
 const UserInfoWindow = ({ setUserInfo, flow, submit, flowStatus }) => {
     // Form window for entering user info (name, email), or signing in with social auth

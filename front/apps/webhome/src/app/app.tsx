@@ -33,24 +33,25 @@ import {
   selectCategoryModal,
   clearCategoryModal,
   selectBillModal,
-  clearBillModal
+  clearBillModal,
+  selectReAuthModal,
 } from '@features/modalSlice';
 import { toastStackSelector, tossToast } from '@features/toastSlice'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
+import { ReAuthModal } from '@utils/withReAuth'
 
 const PrivateRoute = () => {
-  const { isSuccess, isLoading, error } = useGetMeQuery()
+  const { isSuccess, isError } = useGetMeQuery()
 
   useEffect(() => {
+
     // Check the condition for redirection here
-    if (!isSuccess && !isLoading) {
+    if (isError) {
       window.location.href = import.meta.env.VITE_LOGOUT_REDIRECT_URL
     }
-  }, [isSuccess, isLoading])
+  }, [isError])
 
-  return (
-    (isSuccess || isLoading) && <Outlet />
-  )
+  return isSuccess && <Outlet />
 }
 
 const OnboardedRoute = () => {
@@ -64,14 +65,18 @@ const OnboardedRoute = () => {
 const App = () => {
   const location = useLocation()
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+
   const ref = useRef<HTMLDivElement>(null)
   const { data: user } = useGetMeQuery()
+  const { screenSize } = useScreenContext()
+
   const toastStack = useAppSelector(toastStackSelector)
   const transactionModal = useAppSelector(selectTransactionModal)
   const categoryModal = useAppSelector(selectCategoryModal)
   const billModal = useAppSelector(selectBillModal)
-  const dispatch = useAppDispatch()
-  const { screenSize } = useScreenContext()
+  const reAuthModal = useAppSelector(selectReAuthModal)
+
 
   // Handling the situations where the user missed the initial email verification
   // or had errors in the checkout process
@@ -79,9 +84,9 @@ const App = () => {
     let timeout = setTimeout(() => {
       if (!user?.is_verified) {
         navigate('/budget/verify-email')
-      } else if (!user.is_customer || user.service_provisioned_until == 0) {
+      } else if (!user.account.has_customer || user.account.service_provisioned_until == 0) {
         window.location.href = import.meta.env.VITE_CHECKOUT_REDIRECT
-      } else if (user.service_provisioned_until < Math.floor(Date.now() / 1000)) {
+      } else if (user.account.service_provisioned_until < Math.floor(Date.now() / 1000)) {
         navigate('/settings/profile/update-payment')
       }
     }, 1000)
@@ -127,30 +132,29 @@ const App = () => {
           bill={billModal.bill}
           onClose={() => dispatch(clearBillModal())}
         />}
+      {reAuthModal &&
+        <ReAuthModal />}
       <Toast toastStack={toastStack} cleanUp={(toastId) => dispatch(tossToast(toastId))} />
     </>
   )
 }
 
 const EnrichedApp = () => {
-  const { isLoading } = useGetMeQuery()
 
   return (
     <ScreenProvider>
-      {!isLoading &&
-        <ColorSchemedDiv className='full-screen-div'>
-          <Header />
-          <main>
-            <Sidenav />
-            <Routes>
-              <Route path="/" element={<PrivateRoute />} >
-                <Route path="/*" element={<App />} />
-                <Route path="*" element={<NotFound />} />
-              </Route>
-            </Routes>
-          </main>
-        </ColorSchemedDiv >
-      }
+      <ColorSchemedDiv className='full-screen-div'>
+        <Header />
+        <main>
+          <Sidenav />
+          <Routes>
+            <Route path="/" element={<PrivateRoute />} >
+              <Route path="/*" element={<App />} />
+              <Route path="*" element={<NotFound />} />
+            </Route>
+          </Routes>
+        </main>
+      </ColorSchemedDiv >
     </ScreenProvider>
   )
 }

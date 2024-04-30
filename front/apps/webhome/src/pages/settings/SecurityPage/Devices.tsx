@@ -32,7 +32,7 @@ const Device = (props: { device: string, info: DeviceType[] }) => {
     const buttonRef = useRef<HTMLButtonElement>(null)
     const panelRef = useRef<HTMLDivElement>(null)
     const iconKey = Object.keys(info[0]).find(
-        (key) => key.includes('is_') && info[0][key]
+        (key) => key.includes('is_') && (info as any)[0][key]
     )
 
     useEffect(() => {
@@ -51,7 +51,7 @@ const Device = (props: { device: string, info: DeviceType[] }) => {
     }, [])
 
     return (
-        <div className="device--container">
+        <section className="device--container">
             <Disclosure as={React.Fragment}>
                 {({ open }) => (
                     <>
@@ -121,7 +121,7 @@ const Device = (props: { device: string, info: DeviceType[] }) => {
                     </>
                 )}
             </Disclosure>
-        </div>
+        </section>
     )
 }
 
