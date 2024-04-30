@@ -78,7 +78,7 @@ export const VerificationStatusGraphic = ({ finished = false }) => (
       <StatusPulse
         positive={finished}
         colorDefaultPositive={false}
-        size={'small'}
+        size={'medium-large'}
       />
     </div>
   </div>
