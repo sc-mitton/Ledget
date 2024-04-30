@@ -53,7 +53,7 @@ jobs:
           python manage.py migrate &&
           python manage.py test"
     - name: Lint
-      run: docker-compose -f docker-compose.test.yml run --rm restapi sh -c "flake8 --config=/restapi/flake8"
+      run: docker-compose -f docker-compose.test.yml run --rm restapi sh -c "flake8 --config=.flake8"
   build:
     # Don't build if pushing to dev branch
     if: ${{ github.ref != 'refs/heads/dev' }}
