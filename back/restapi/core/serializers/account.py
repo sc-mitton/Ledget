@@ -4,10 +4,14 @@ from core.models import Account
 
 
 class AccountSerializer(serializers.ModelSerializer):
+    has_customer = serializers.SerializerMethodField()
 
     class Meta:
         model = Account
         fields = '__all__'
+
+    def get_has_customer(self, obj):
+        return obj.has_customer
 
 
 class AccountUpdateSerializer(serializers.Serializer):

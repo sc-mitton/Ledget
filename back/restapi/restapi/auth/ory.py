@@ -50,7 +50,7 @@ class OryBackend(SessionAuthentication):
 
         User = get_user_model()
         user = (
-            User.objects.prefetch_related('device__set')
+            User.objects.prefetch_related('device_set')
             .select_related('account__customer')
             .select_related('co_owner')
             .get(pk=identity['id'])

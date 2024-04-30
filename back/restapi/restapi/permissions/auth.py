@@ -64,7 +64,7 @@ class IsAuthedVerifiedSubscriber(IsAuthenticated):
     def has_permission(self, request, view):
 
         checks = [
-            request.user.service_provisioned_until > int(time.time()),
+            request.user.account.service_provisioned_until > int(time.time()),
             request.user.account.customer.subscription_not_canceled,
             request.user.is_active,
         ]
@@ -153,9 +153,8 @@ def can_create_stripe_subscription(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         request = args[1]
-        user = request.user
-        if user.account.has_customer and not _has_no_active_subscription(
-            user.account.customer.id
+        if request.user.account.has_customer and not _has_no_active_subscription(
+            request.user.account.customer.id
         ):
             return Response(
                 {"error": "You already have an active subscription"},

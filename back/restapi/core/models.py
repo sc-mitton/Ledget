@@ -1,4 +1,6 @@
 import uuid
+from user_agents import parse
+from user_agents.parsers import UserAgent
 
 from django.db import models
 from django.utils import timezone
@@ -70,6 +72,12 @@ class User(models.Model):
         super().__setattr__(name, value)
 
     @property
+    def account_user_ids(self):
+        return [str(self.id)] \
+            if self.co_owner is None \
+            else [str(self.id), str(self.co_owner.id)]
+
+    @property
     def traits(self):
         return self._traits
 
@@ -116,7 +124,7 @@ class Feedback(models.Model):
 
 
 class Account(models.Model):
-    id = models.UUIDField(primary_key=True, editable=False)
+    id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     yearly_anchor = models.DateTimeField(null=True, default=None)
     flag = models.CharField(
         max_length=20,
@@ -147,8 +155,8 @@ class Account(models.Model):
             return int(self.customer.period_end) + (3 * 24 * 60 * 60)
 
     @property
-    def hass_customer(self):
-        return hasattr(self, 'customer')
+    def has_customer(self):
+        return self.customer is not None
 
     @property
     def subscription_status(self):
@@ -171,6 +179,7 @@ class Customer(models.Model):
         DELETED = 'deleted', _('Deleted')
 
     id = models.CharField(max_length=40, primary_key=True, editable=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     subscription_status = models.CharField(
         choices=SubscriptionStatus.choices,
         max_length=20,
@@ -201,13 +210,51 @@ class Customer(models.Model):
         return self.subscription_status != self.SubscriptionStatus.CANCELED
 
 
+class DeviceManager(models.Manager):
+
+    def parse_ua_dict(self, ua: str):
+        user_agent = parse(ua)
+
+        kwargs = {}
+        for field in Device._meta.get_fields():
+            property = self.get_user_agent_property(field.name, user_agent)
+            if property:
+                kwargs[field.name] = property
+
+        return kwargs
+
+    def get_user_agent_property(self, field_name: str, parsed_ua: UserAgent):
+
+        if field_name.startswith('is_'):
+            return getattr(parsed_ua, field_name)
+
+        if self._is_user_agent_field(field_name, parsed_ua):
+            split_field_name = field_name.split('_')
+            return getattr(
+                getattr(parsed_ua, split_field_name[0]),
+                split_field_name[1]
+            )
+
+        return None
+
+    def _is_user_agent_field(self, field_name: str, parsed_ua: UserAgent):
+
+        split_field_name = field_name.split('_')
+        if hasattr(parsed_ua, split_field_name[0]):
+            return hasattr(
+                getattr(parsed_ua, split_field_name[0]),
+                split_field_name[1]
+            )
+
+        return False
+
 class Device(models.Model):
     class Aal(models.TextChoices):
         AAL1 = 'aal1', _('AAL1')
         AAL15 = 'aal15', _('AAL15')
         AAL2 = 'aal2', _('AAL2')
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='device_set')
     token = models.CharField(max_length=100)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
@@ -228,6 +275,8 @@ class Device(models.Model):
     is_tablet = models.BooleanField(default=False)
     is_touch_capable = models.BooleanField(default=False)
     is_bot = models.BooleanField(default=False)
+
+    objects = DeviceManager()
 
     def __setattr__(self, name: str, *args, **kwargs) -> None:
         if name == 'token':

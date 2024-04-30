@@ -3,13 +3,14 @@ import logging
 from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
     HTTP_422_UNPROCESSABLE_ENTITY,
-    HTTP_200_OK,
+    HTTP_200_OK
 )
 from rest_framework.views import APIView
 from rest_framework.generics import GenericAPIView, CreateAPIView
 from rest_framework.response import Response
 from django.conf import settings
 import stripe
+from django.db import transaction
 
 from core.serializers.user import (
     NewSubscriptionSerializer,
@@ -18,10 +19,13 @@ from core.serializers.user import (
     FeedbackSerializer,
 )
 from core.serializers.account import AccountUpdateSerializer
+from core.serializers.subscription import StripeSubscriptionSerializer
 from core.utils.stripe import stripe_error_handler, StripeError
 from core.models import Customer
 from restapi.permissions.auth import can_create_stripe_subscription, IsAuthenticated
+from restapi.permissions.checks import HasCustomer
 from restapi.permissions.objects import OwnsStripeSubscription
+
 
 
 stripe.api_key = settings.STRIPE_API_KEY
@@ -97,7 +101,7 @@ class UpdateAccountView(GenericAPIView):
 
 
 class SubscriptionItemView(GenericAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, HasCustomer]
     serializer_class = SubscriptionItemsSerializer
 
     def put(self, request, *args, **kwargs):
@@ -138,27 +142,18 @@ class SubscriptionView(GenericAPIView):
         '''
         Get the current subscription for the user
         '''
+        if not request.user.account.has_customer:
+            return Response(status=HTTP_200_OK)
+
         try:
             sub = self._get_stripe_subscription(request.user.account.customer.id)
         except StripeError as e:
             stripe_logger.error(e.message)
             return Response(status=e.response_code)
 
-        return Response(
-            data={
-                'id': sub.id,
-                'status': sub.status,
-                'current_period_end': sub.current_period_end,
-                'cancel_at_period_end': sub.cancel_at_period_end,
-                'plan': {
-                    'id': sub.plan.id,
-                    'amount': sub.plan.amount,
-                    'nickname': sub.plan.nickname,
-                    'interval': sub.plan.interval,
-                }
-            },
-            status=HTTP_200_OK
-        )
+        serializer = StripeSubscriptionSerializer(sub)
+
+        return Response(serializer.data, HTTP_200_OK)
 
     @can_create_stripe_subscription
     def post(self, request, *args, **kwargs):
@@ -212,30 +207,41 @@ class CreateCustomerView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
-        if request.user.is_customer:
+        if request.user.account.has_customer:
             return Response(
                 {'error': 'user is already customer'},
                 status=HTTP_422_UNPROCESSABLE_ENTITY
             )
 
-        email = request.user.traits.get('email', '')
-        first_name = request.user.traits.get('name', {}).get('first', '')
-        last_name = request.user.traits.get('name', {}).get('last', '')
-
         try:
-            stripe_customer = stripe.Customer.create(
-                email=email,
-                name=f'{first_name} {last_name}'
-            )
-            Customer.objects.create(
-                user=request.user,
-                id=stripe_customer.id
-            ).save()
+            self._create_customer()
         except Exception as e:
             stripe_logger.error(f'Error creating customer: {e}')
             return Response(status=HTTP_400_BAD_REQUEST)
 
         return Response(status=HTTP_200_OK)
+
+    @transaction.atomic
+    def _create_customer(self):
+        stripe_customer = self._get_stripe_customer()
+
+        customer = Customer.objects.create(
+            user=self.request.user,
+            id=stripe_customer.id
+        )
+        self.request.user.account.customer = customer
+        self.request.user.account.save()
+
+    def _get_stripe_customer(self):
+        email = self.request.user.traits.get('email', '')
+        first_name = self.request.user.traits.get('name', {}).get('first', '')
+        last_name = self.request.user.traits.get('name', {}).get('last', '')
+
+        stripe_customer = stripe.Customer.create(
+            email=email,
+            name=f'{first_name} {last_name}'
+        )
+        return stripe_customer
 
 
 class GetSetupIntent(APIView):

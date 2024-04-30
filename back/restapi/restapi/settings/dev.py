@@ -10,11 +10,10 @@ import sys
 # IMPORTANT FLAGS
 DEVELOPMENT = True
 
-ALLOWED_HOSTS = ['localhost']
 DOMAIN_URL = "https://localhost:8000/"
 DOMAIN = 'localhost'
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'localhost:3000', 'localhost:3001']
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_BROWSER_XSS_FILTER = True
 

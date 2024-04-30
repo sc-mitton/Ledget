@@ -31,30 +31,16 @@ class DeviceSerializer(serializers.ModelSerializer):
         hash_value = hashlib.sha256((unhashed).encode('utf-8')).hexdigest()
         return hash_value
 
-    def _parse_user_agent_kwargs(self):
-        ua_string = self.context['request'].ory_session.devices[0]['user_agent']
-        user_agent = ua_parse(ua_string)
-
-        kwargs = {}
-        for attr in Device._meta.get_fields():
-            if attr.name.startswith('is_'):
-                kwarg_keys = [attr.name]
-            else:
-                kwarg_keys = attr.name.split('_')
-
-            kwarg_value_temp = user_agent
-            for key in kwarg_keys:
-                kwarg_value_temp = getattr(kwarg_value_temp, key, None)
-
-        if kwarg_value_temp:
-                kwargs[attr.name] = kwarg_value_temp
-
-        return kwargs
+    def _get_user_agent_kwargs(self):
+        return Device.objects.parse_ua_dict(
+            self.context['request'].ory_session.devices[0]['user_agent']
+        )
 
     def create(self, validated_data):
 
         user = self.context['request'].user
         hash_token = self._get_hash_token()
+        user_agent_kwargs = self._get_user_agent_kwargs()
 
         try:
             kwargs = {
@@ -62,7 +48,7 @@ class DeviceSerializer(serializers.ModelSerializer):
                 'id': self.context['request'].ory_session.devices[0]['id'],
                 'aal': self.context['request'].ory_session.aal,
                 'location': self.context['request'].ory_session.devices[0]['location'],
-                **self._parse_user_agent_kwargs()
+                **user_agent_kwargs
             }
         except Exception as e:
             raise ValidationError(f'Error parsing new values: {e}')
@@ -73,10 +59,11 @@ class DeviceSerializer(serializers.ModelSerializer):
     def update(self, instance):
 
         try:
+            user_agent_kwargs = self._get_user_agent_kwargs()
             new_values = {
                 'location': self.context['request'].ory_session.devices[0]['location'],
                 'token': self._get_hash_token(),
-                **self._parse_user_agent_kwargs()
+                **user_agent_kwargs
             }
         except Exception as e:
             raise ValidationError(f'Error parsing new values: {e}')
@@ -95,5 +82,5 @@ class DeviceSerializer(serializers.ModelSerializer):
         '''
         representation = super().to_representation(instance)
         representation['current_device'] = \
-            self.context['request'].user.device == instance
+            self.context['request'].device == instance
         return representation

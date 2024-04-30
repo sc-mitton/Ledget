@@ -62,10 +62,7 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
             return Bill.objects.filter(
                 Q(expires__gte=dbtz.now()) | Q(expires__isnull=True),
                 removed_on__isnull=True,
-                userbill__user_id__in=[
-                    str(self.request.user.id),
-                    str(self.request.user.co_owner.id)
-                ]
+                userbill__user_id__in=self.request.user.account_user_ids
             )
 
     def get_object(self):
@@ -159,7 +156,7 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
             month=month,
             day=calendar.monthrange(year, month)[1]
         )
-        yearly_category_anchor = self.request.user.yearly_anchor
+        yearly_category_anchor = self.request.user.account.yearly_anchor
         if not yearly_category_anchor:
             yearly_category_anchor = datetime.now()
 
@@ -239,10 +236,8 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
     def spending_history(self, request, pk=None):
         monthly_amounts_spent = Transaction.objects.filter(
                 transactioncategory__category__id=pk,
-                transactioncategory__category__usercategory__user_id__in=[
-                    str(self.request.user.id),
-                    str(self.request.user.co_owner.id)
-                ]
+                transactioncategory__category__usercategory__user_id__in= \
+                    self.request.user.account_user_ids
             ).annotate(
                 month=ExtractMonth('datetime'),
                 year=ExtractYear('datetime')
@@ -388,15 +383,15 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
         if include_spending == 'false':
             return monthly_qset.union(yearly_qset).order_by('order', 'name')
 
-        if self.request.user.yearly_anchor:
-            if end.month >= self.request.user.yearly_anchor.month:
+        if self.request.user.account.yearly_anchor:
+            if end.month >= self.request.user.account.yearly_anchor.month:
                 yearly_category_anchor = end.replace(
                     day=1,
-                    year=self.request.user.yearly_anchor.year)
+                    year=self.request.user.account.yearly_anchor.year)
             else:
                 yearly_category_anchor = end.replace(
                     day=1,
-                    year=self.request.user.yearly_anchor.year - 1)
+                    year=self.request.user.account.yearly_anchor.year - 1)
 
         monthly_qset = monthly_qset \
             .annotate(amount_spent=Sum(

@@ -55,30 +55,34 @@ class HasObjectAccess(BasePermission):
                 if request.method == "GET"
                 else self.has_write_access(request, obj)
             )
-        except AttributeError:
+        except AttributeError as e:
             return False
 
     def has_read_access(self, request, obj):
 
-        return self.user_has_obj_access(
-            obj, request.user.id
-        ) or self.user_has_obj_access(obj, request.user.co_owner.id)
+        if request.user.co_owner:
+            return self.user_has_obj_access(obj, request.user.id) or \
+                     self.user_has_obj_access(obj, request.user.co_owner.id)
+        else:
+            return self.user_has_obj_access(obj, request.user.id)
 
     def has_write_access(self, request, obj):
         obj_is_shared = hasattr(obj, "privacy") and obj.privacy == "shared"
 
         if not hasattr(obj, "privacy") or obj_is_shared:
-            has_obj_access = self.user_has_obj_access(obj, request.user.id)
-            user_is_co_owner = self.user_has_obj_access(obj, request.user.co_owner.id)
-            return has_obj_access or user_is_co_owner
+            if request.user.co_owner:
+                return self.user_has_obj_access(obj, request.user.id) or \
+                         self.user_has_obj_access(obj, request.user.co_owner.id)
+            else:
+                return self.user_has_obj_access(obj, request.user.id)
         else:
             return self.user_has_obj_access(obj, request.user.id)
 
     def user_has_obj_access(self, obj, user_id):
         if hasattr(obj, "users"):
-            return user_id in obj.users.all().values_list("id", flat=True)
+            return (user_id in obj.users.all().values_list("id", flat=True))
         else:
-            return user_id == obj.id or id == obj.user_id
+            return (user_id == obj.id or user_id == obj.user_id)
 
 
 class HasObjectAccessLooseWrite(HasObjectAccess):
@@ -87,19 +91,27 @@ class HasObjectAccessLooseWrite(HasObjectAccess):
         '''
         Override write access method to allow users with shared access to edit
         '''
-        obj_is_not_hidden = hasattr(obj, "privacy") and obj.privacy != "hidden"
+        permission = False
 
-        if not hasattr(obj, "privacy") or obj_is_not_hidden:
-            has_obj_access = self.user_has_obj_access(obj, request.user.id)
-            user_is_co_owner = self.user_has_obj_access(obj, request.user.co_owner.id)
-            return has_obj_access or user_is_co_owner
+        obj_is_not_hidden = hasattr(obj, "privacy") and obj.privacy != "hidden"
+        if hasattr(obj, "privacy") and obj_is_not_hidden:
+            if request.user.co_owner:
+                permission = self.user_has_obj_access(obj, request.user.id) or \
+                             self.user_has_obj_access(obj, request.user.co_owner.id)
+            else:
+                permission = self.user_has_obj_access(obj, request.user.id)
         else:
-            return self.user_has_obj_access(obj, request.user.id)
+            permission = self.user_has_obj_access(obj, request.user.id)
+
+        return permission
 
 
 class OwnsStripeSubscription(BasePermission):
 
     def has_permission(self, request, view):
+        if request.user.account.customer is None:
+            return False
+
         kwargs = view.kwargs
         try:
             sub_id = self.get_subscription_id(request.user.account.customer.id)

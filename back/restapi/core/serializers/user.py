@@ -21,7 +21,6 @@ class UserSerializer(serializers.ModelSerializer):
     password_last_changed = serializers.CharField(required=False)
     last_login = serializers.SerializerMethodField(read_only=True)
     session = serializers.SerializerMethodField(read_only=True)
-    session_aal = serializers.SerializerMethodField(read_only=True)  # DELETE
     account = AccountSerializer(read_only=True)
     co_owner = CoOwnerSerializer(read_only=True, required=False)
 
@@ -70,10 +69,9 @@ class UserSerializer(serializers.ModelSerializer):
         )
 
     def get_last_login(self, obj):
-        if obj.device:
-            return obj.device.last_login
-        else:
-            return None
+        if self.context["request"].device:
+            return self.context["request"].device.last_login
+        return None
 
 
 class PaymentMethodSerializer(serializers.Serializer):
