@@ -2,7 +2,8 @@
     "AWSEBDockerrunVersion": "1",
     "Image": {
         "Name": "905418323334.dkr.ecr.us-west-2.amazonaws.com/ledget-rest-api:v1",
-        "Update": "true"
+        "Update": "true",
+        "Essential": "true"
     },
     "Ports": [
         {
