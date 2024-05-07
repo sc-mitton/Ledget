@@ -109,6 +109,9 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
         getMe: builder.query<User, void>({
             query: () => 'user/me',
             providesTags: ['User'],
+            extraOptions: {
+                maxRetries: 1,
+            },
         }),
         getSubscription: builder.query<Subscription, void>({
             query: () => 'subscription',

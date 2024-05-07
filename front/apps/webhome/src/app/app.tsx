@@ -148,10 +148,8 @@ const EnrichedApp = () => {
         <main>
           <Sidenav />
           <Routes>
-            <Route path="/" element={<PrivateRoute />} >
-              <Route path="/*" element={<App />} />
-              <Route path="*" element={<NotFound />} />
-            </Route>
+            <Route path="/*" element={<App />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
       </ColorSchemedDiv >
@@ -159,4 +157,12 @@ const EnrichedApp = () => {
   )
 }
 
-export default EnrichedApp
+const PrivatizedApp = () => (
+  <Routes>
+    <Route path="/" element={<PrivateRoute />} >
+      <Route path="*" element={<EnrichedApp />} />
+    </Route>
+  </Routes>
+)
+
+export default PrivatizedApp
