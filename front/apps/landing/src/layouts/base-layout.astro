@@ -9,8 +9,8 @@ import '../styles/globals.scss';
       http-equiv="Content-Security-Policy"
       content="
         default-src 'self';
-        script-src 'self' ledget.app;
-        style-src 'unsafe-inline' fonts.googleapis.com self ledget.app;
+        script-src 'self' ledget.app localhost:4321 'sha256-OuwM78SJYm/zsc4rWhl8ZTRGO/1T/SE5TtELSFU0mEE=' 'sha256-C+MFT9uMJPIBROzgRJWxmbJwinQwPQcN4v02Ao5gdvA=';
+        style-src 'unsafe-inline' fonts.googleapis.com self ledget.app localhost:4321;
         img-src 'self' ledget.app localhost data:;
         child-src 'none';
         font-src 'self' fonts.gstatic.com fonts.googleapis.com;

@@ -1,8 +1,9 @@
 ---
 import '../styles/banner.scss';
+import { Image } from 'astro:assets';
 
-import Phone from './phone.astro';
-import Web from './web.astro';
+import PhoneWebDark from '../../public/phonewebdark3dv8.png';
+import PhoneWebLight from '../../public/phoneweblight3dv2.png';
 import PlayStoreButton from './buttons/play-store.astro';
 import AppStoreButton from './buttons/app-store.astro';
 import ArrowLink from './links/arrow-link.astro';
@@ -42,7 +43,7 @@ import ArrowLink from './links/arrow-link.astro';
     </div>
   </div>
   <div class="banner--products">
-    <Phone />
-    <Web />
+    <Image src={PhoneWebDark} alt="Phone with Ledger App" class="dark" />
+    <Image src={PhoneWebLight} alt="Phone with Ledger App" class="light" />
   </div>
 </div>

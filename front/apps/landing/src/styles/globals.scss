@@ -41,7 +41,7 @@ body {
 
         // Firefox noise background
         @-moz-document url-prefix() {
-            background: #0f0f0f;
+            background: rgb(20, 20, 20);
         }
     }
 
