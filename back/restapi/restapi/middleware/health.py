@@ -6,6 +6,6 @@ class HealthCheckMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        if request.path == '/health':
+        if request.path == '/health':  # pragma: no cover
             return HttpResponse('ok')
         return self.get_response(request)

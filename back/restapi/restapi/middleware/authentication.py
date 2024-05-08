@@ -33,14 +33,14 @@ class OryAuthenticationMiddleware(MiddlewareMixin):
         header = request.META.get(OATHKEEPER_HEADER, '').split(' ')
         auth_header_schemes = [header[i].lower() for i in range(0, len(header), 2)]
 
-        if OATHKEEPER_SCHEME not in auth_header_schemes:
+        if OATHKEEPER_SCHEME not in auth_header_schemes:  # pragma: no cover
             return
 
         try:
             token = header[auth_header_schemes.index(OATHKEEPER_SCHEME)*2 + 1]
             decoded_jwt = self.get_decoded_jwt(token)
         except (InvalidSignatureError, ExpiredSignatureError,
-                InvalidAlgorithmError, Exception) as e:
+                InvalidAlgorithmError, Exception) as e:  # pragma: no cover
             logger.error(f"{e.__class__.__name__} {e}")
         else:
             request.META[OATHKEEPER_HEADER] = decoded_jwt

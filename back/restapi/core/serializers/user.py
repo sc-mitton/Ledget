@@ -88,6 +88,11 @@ class FeedbackSerializer(serializers.ModelSerializer):
         model = Feedback
         exclude = ("user",)
 
+    def create(self, validated_data):
+        user = self.context["request"].user
+        validated_data["user"] = user
+        return super().create(validated_data)
+
 
 class EmailSerializer(serializers.Serializer):
     text = serializers.CharField(required=False)

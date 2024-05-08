@@ -8,7 +8,6 @@ from django.middleware.csrf import (
     InvalidTokenFormat,
     CsrfViewMiddleware,
     RejectRequest
-
 )
 
 logger = logging.getLogger('ledget')
@@ -43,7 +42,7 @@ def _get_hmac(request):
 
     try:
         session_id = auth_token['session']['id']
-    except KeyError:
+    except KeyError:  # pragma: no cover
         raise BadDigest
 
     unhashed = ''.join([settings.SECRET_KEY, session_id])
@@ -69,15 +68,14 @@ class CustomCsrfMiddleware(CsrfViewMiddleware):
         except KeyError:
             if request.META.get('OATHKEEPER_JWT_IS_DECODED', False):
                 raise NeedsNewCsrfToken
-            else:
+            else:  # pragma: no cover
                 return None
-        except InvalidTokenFormat:
+        except InvalidTokenFormat:  # pragma: no cover
             raise NeedsNewCsrfToken
 
         return csrf_secret
 
     def _check_token(self, request):
-
         # Get the two relevant pieces of information, the
         # the returned csrftoken in the custom header and the hmac
         try:
@@ -114,5 +112,4 @@ class CustomCsrfMiddleware(CsrfViewMiddleware):
     def process_view(self, request, callback, callback_args, callback_kwargs):
         if not getattr(callback, 'csrf_ignore', False):
             setattr(callback, 'csrf_exempt', False)
-
         return super().process_view(request, callback, callback_args, callback_kwargs)

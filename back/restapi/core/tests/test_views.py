@@ -51,3 +51,8 @@ class CoreViewTests(ViewTestsMixin):
         self.assertEqual(response.status_code, 200)
         self.user.refresh_from_db()
         self.assertIsInstance(self.user.password_last_changed, datetime)
+
+    def test_get_prices(self):
+        response = self.client.get(reverse('prices'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNotNone(response.data)
