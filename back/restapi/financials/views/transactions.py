@@ -215,7 +215,7 @@ class TransactionViewSet(ModelViewSet):
     pagination_class = TransactionsPagination
 
     @action(detail=False, methods=['post'], url_path='confirmation',
-            permission_classes=[IsAuthedVerifiedSubscriber])
+            url_name='confirmation', permission_classes=[IsAuthedVerifiedSubscriber])
     def confirm_transactions(self, request, *args, **kwargs):
         if not isinstance(request.data, list):
             raise ValidationError('Invalid request data')

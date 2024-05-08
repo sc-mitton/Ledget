@@ -10,6 +10,12 @@ from django.test import modify_settings
 import uuid
 import jwt
 from core.models import Customer, Account
+from financials.models import (
+    UserAccount,
+    Account as FinancialAccount,
+    PlaidItem
+)
+from budget.models import UserCategory, UserBill, Category, Bill
 
 
 public_key = settings.OATHKEEPER_PUBLIC_KEY
@@ -82,6 +88,9 @@ class ViewTestsMixin(TestCase):
         'core_account_fixture.json',
         'customer_fixture.json',
         'user_fixture.json',
+        'user_account_fixture.json',
+        'user_category_fixture.json',
+        'user_bill_fixture.json',
     ]
 
     def setUp(self):
@@ -102,6 +111,7 @@ class ViewTestsMixin(TestCase):
             subscription_status='active',
             period_end=1794475549,
         )
+        self.add_user_to_financial_accounts(self.user)
         account.customer = customer
         account.save()
 
@@ -121,6 +131,44 @@ class ViewTestsMixin(TestCase):
         account_for_aal2_user.save()
 
         self.createClients()
+
+    def add_user_to_financial_accounts(self, user):
+        accounts = FinancialAccount.objects.all()
+        useraccounts = []
+        for account in accounts:
+            useraccounts.append(UserAccount(
+                user=user,
+                account=account
+            ))
+        UserAccount.objects.bulk_create(useraccounts)
+
+    def set_user_on_all_plaid_items(self, user):
+        items = PlaidItem.objects.all()
+        for item in items:
+            item.user = user
+            item.save()
+
+    def add_user_to_budget_categories(self, user):
+        categories = Category.objects.all()
+        usercategories = []
+        for category in categories:
+            usercategories.append(UserCategory(
+                user=user,
+                category=category
+            ))
+        UserCategory.objects.all().delete()
+        UserCategory.objects.bulk_create(usercategories)
+
+    def add_user_to_budget_bills(self, user):
+        bills = Bill.objects.all()
+        userbills = []
+        for bill in bills:
+            userbills.append(UserBill(
+                user=user,
+                bill=bill
+            ))
+        UserBill.objects.all().delete()
+        UserBill.objects.bulk_create(userbills)
 
     def createClients(self):
         self.client = APIClient()

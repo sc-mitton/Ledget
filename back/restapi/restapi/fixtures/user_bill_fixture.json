@@ -1,0 +1,10 @@
+[
+{
+    "model": "budget.userbill",
+    "pk": 1,
+    "fields": {
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "bill": "7a2fd746-de49-4433-a4b3-7d8b6d5ee332"
+    }
+}
+]

@@ -8,3 +8,6 @@ python ../../manage.py dumpdata financials.Transaction --indent 4 > ./transactio
 python ../../manage.py dumpdata core.User --indent 4 > ./user_fixture.json
 python ../../manage.py dumpdata core.Account --indent 4 > ./core_account_fixture.json
 python ../../manage.py dumpdata core.Customer --indent 4 > ./customer_fixture.json
+python ../../manage.py dumpdata financials.UserAccount --indent 4 > ./user_account_fixture.json
+python ../../manage.py dumpdata budget.UserCategory --indent 4 > ./user_category_fixture.json
+python ../../manage.py dumpdata budget.userBill --indent 4 > ./user_bill_fixture.json

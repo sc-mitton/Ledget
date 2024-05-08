@@ -98,7 +98,7 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
         bill = self.get_object()
         self._unlink_transactions(bill, which_instances)
 
-        if bill.created_on.month == now.month and bill.created_on.year == now.year:
+        if bill.created.month == now.month and bill.created.year == now.year:
             bill.delete()
             return
 

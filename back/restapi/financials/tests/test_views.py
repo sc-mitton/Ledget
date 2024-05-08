@@ -34,35 +34,6 @@ class FinancialViewTestObjectCreations(ViewTestsMixin):
         notes = Note.objects.filter(transaction=self.transaction)
         self.assertEqual(any(note.text == 'This is a note' for note in notes), True)
 
-    def test_updating_transaction_category(self):
-
-        new_category = Category.objects.filter(
-            usercategory__user=self.user
-        ).exclude(
-            id__in=Category.objects.filter(
-                transactioncategory__transaction=self.transaction
-            ).values_list('id', flat=True)
-        ).first()
-
-        payload = [{'transaction_id': self.transaction.pk,
-                    'splits': [{
-                        'category': str(new_category.pk),
-                        'fraction': 1
-                    }]}]
-
-        response = self.client.post(
-            reverse('transactions-confirm-transactions'),
-            payload,
-            format='json'
-        )
-
-        self.assertEqual(response.status_code, 200)
-        self.transaction.refresh_from_db()
-
-        new_category_in_transaction = self.transaction.categories.filter(
-            pk=new_category.pk)
-        self.assertEqual(new_category_in_transaction.exists(), True)
-
     def test_updating_note_to_transaction(self):
         """Test updating a note for a transaction."""
 

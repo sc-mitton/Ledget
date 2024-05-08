@@ -1,0 +1,101 @@
+[
+{
+    "model": "budget.usercategory",
+    "pk": 8,
+    "fields": {
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "category": "f408d73e-d2a9-4665-afe8-a7a64ccc3022",
+        "order": 0
+    }
+},
+{
+    "model": "budget.usercategory",
+    "pk": 9,
+    "fields": {
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "category": "5724827f-dc11-483f-9ac6-f3a0bfa0f72e",
+        "order": 0
+    }
+},
+{
+    "model": "budget.usercategory",
+    "pk": 10,
+    "fields": {
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "category": "7dd5e57e-3830-4410-bec9-fae47951a682",
+        "order": 0
+    }
+},
+{
+    "model": "budget.usercategory",
+    "pk": 11,
+    "fields": {
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "category": "9cea4810-257c-42f3-b4c9-74d9c70bc028",
+        "order": 0
+    }
+},
+{
+    "model": "budget.usercategory",
+    "pk": 12,
+    "fields": {
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "category": "111756dc-1380-44f0-aee1-41f679142225",
+        "order": 0
+    }
+},
+{
+    "model": "budget.usercategory",
+    "pk": 13,
+    "fields": {
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "category": "6d6ce66f-30fe-408d-9e7d-5a5587b28c8c",
+        "order": 0
+    }
+},
+{
+    "model": "budget.usercategory",
+    "pk": 14,
+    "fields": {
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "category": "e96d8fa1-1864-4d0a-8394-b3a711500dc8",
+        "order": 0
+    }
+},
+{
+    "model": "budget.usercategory",
+    "pk": 15,
+    "fields": {
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "category": "f79e0c67-d442-4ec0-a6d2-ab071bd37a74",
+        "order": 0
+    }
+},
+{
+    "model": "budget.usercategory",
+    "pk": 16,
+    "fields": {
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "category": "1486fb8c-645f-4c72-aee7-4b1aa7e3ae9f",
+        "order": 0
+    }
+},
+{
+    "model": "budget.usercategory",
+    "pk": 17,
+    "fields": {
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "category": "87513de2-1819-401f-9871-11cac8990bde",
+        "order": 0
+    }
+},
+{
+    "model": "budget.usercategory",
+    "pk": 18,
+    "fields": {
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "category": "c85ff3f2-3d0c-4f92-a57a-84325764cc96",
+        "order": 0
+    }
+}
+]

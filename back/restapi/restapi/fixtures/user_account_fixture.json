@@ -1,0 +1,83 @@
+[
+{
+    "model": "financials.useraccount",
+    "pk": 1,
+    "fields": {
+        "account": "ygJgLlj384u1k3PXRKqgsLnzwbojGpig7lRRQ",
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "order": 0
+    }
+},
+{
+    "model": "financials.useraccount",
+    "pk": 2,
+    "fields": {
+        "account": "9eyeQnxV9PI9QoVn5KwWSK1y85qXxPiKX5NNW",
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "order": 0
+    }
+},
+{
+    "model": "financials.useraccount",
+    "pk": 3,
+    "fields": {
+        "account": "vLeLZV458xhnBPNXJWkwsLAMQnd8E4iw9EQQj",
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "order": 0
+    }
+},
+{
+    "model": "financials.useraccount",
+    "pk": 4,
+    "fields": {
+        "account": "RPjPvgrVxzUwlA364XaLhrajlnbGdkuZmBVV9",
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "order": 0
+    }
+},
+{
+    "model": "financials.useraccount",
+    "pk": 5,
+    "fields": {
+        "account": "6PyPjWzm9aUnqQLP9grGs4M75vkQnzfzVy77l",
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "order": 0
+    }
+},
+{
+    "model": "financials.useraccount",
+    "pk": 6,
+    "fields": {
+        "account": "XMKMvna1j4fRWMNdJonksojgWkLKQAuDw3AA6",
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "order": 0
+    }
+},
+{
+    "model": "financials.useraccount",
+    "pk": 7,
+    "fields": {
+        "account": "DWyWAaMRdgC3wKZxvGBnH7xewQXdV1cZKkqqe",
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "order": 0
+    }
+},
+{
+    "model": "financials.useraccount",
+    "pk": 8,
+    "fields": {
+        "account": "VQkQvAx1NdU7mDGjprxvSadkmjWNLzuD3wMM1",
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "order": 0
+    }
+},
+{
+    "model": "financials.useraccount",
+    "pk": 9,
+    "fields": {
+        "account": "wpQpMVNA8dHwX5LgMqmBhNlb5qvoZyCQB5XX8",
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "order": 0
+    }
+}
+]

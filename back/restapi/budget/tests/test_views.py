@@ -411,3 +411,28 @@ class BudgetViewTestRetrevalUpdate(ViewTestsMixin):
         response = self.client.get(reverse('reminders'))
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(response.data.__len__(), 0)
+
+
+class BudgetViewTestDestroy(ViewTestsMixin):
+
+    def test_destroy_bill(self):
+        bills = Bill.objects.all()[:3]
+        args = ['all', 'single', 'composite']
+        for i, bill in enumerate(bills):
+            bill.users.add(self.user)
+            self._destroy_bill(bill, args[i])
+
+    def _destroy_bill(self, bill, instances):
+        '''
+        Test deleting a bill and making sure the bill is no longer active
+        '''
+
+        response = self.client.delete(
+            reverse('bills-detail',
+                    kwargs={'pk': bill.id},
+                    query_kwargs={'instances': instances})
+        )
+
+        self.assertEqual(response.status_code, 204)
+        bill.refresh_from_db()
+        self.assertEqual(bill.removed_on is not None, True)
