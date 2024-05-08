@@ -16,10 +16,11 @@ function animate() {
     var tl = gsap.timeline({
         scrollTrigger: {
             trigger: '#product-walk-through',
-            start: 'top 90%',
+            start: 'top 80%',
             toggleActions: 'restart none none none',
         },
         repeatDelay: 4,
+        repeat: Infinity,
     })
 
     tl.to(circles[0], { backgroundColor: 'var(--blue-sat)' })

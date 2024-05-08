@@ -9,7 +9,7 @@ $web-focused-width: 90%;
 
 .banner {
     @include width-standard;
-    min-height: 85vh;
+    min-height: 80vh;
     display: grid;
     grid-template-columns: auto 1fr;
     align-items: center;

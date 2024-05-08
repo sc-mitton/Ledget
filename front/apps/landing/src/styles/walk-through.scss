@@ -14,7 +14,7 @@
         }
 
         &--shadow {
-            filter: invert(1) hue-rotate(178deg) brightness(1.5) blur(2px);
+            filter: invert(1) hue-rotate(178deg) brightness(0) blur(3px);
         }
     }
 
@@ -170,7 +170,7 @@
     &--shadow {
         filter: blur(3px);
         position: absolute;
-        bottom: 0;
+        bottom: 1px;
         z-index: 0;
     }
 
@@ -180,7 +180,7 @@
     }
 
     &>div:nth-last-of-type(2) {
-        bottom: 22%;
+        bottom: 23%;
         left: 13%;
         width: 22%;
         z-index: 1;
