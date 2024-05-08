@@ -5,27 +5,29 @@ import time
 
 from restapi.tests.mixins import ViewTestsMixin
 from restapi.tests.utils import timeit # noqa
-from django.urls import reverse
 from ..models import (
     Category,
     Bill,
     Reminder
 )
+from restapi.utils import reverse
 from financials.models import Account, Transaction, TransactionCategory
-from .data import (
-    single_category_creation_payload,
-    multiple_category_creation_payload,
-    single_bill_creation_payload,
-    multiple_bill_creation_payload
-)
 
 
 class BudgetViewTestObjectCreations(ViewTestsMixin):
-    fixtures = ['reminder_fixture.json', 'category_fixture.json']
 
     @timeit
     def test_category_creation(self):
-        payload = single_category_creation_payload
+        payload = {
+            'name': 'Test Category',
+            'emoji': '🤑',
+            'period': 'month',
+            'limit_amount': 10000,
+            'alerts': [
+                {'percent_amount': 50},
+                {'percent_amount': 75}
+            ]
+        }
 
         response = self.client.post(
             reverse('categories-list'),
@@ -48,7 +50,19 @@ class BudgetViewTestObjectCreations(ViewTestsMixin):
 
     @timeit
     def test_bulk_category_creation(self):
-        payload = multiple_category_creation_payload
+        payload = [
+            {
+                'name': f'Test Category {i}',
+                'emoji': '🤑',
+                'period': 'month',
+                'limit_amount': 10000,
+                'alerts': [
+                    {'percent_amount': 50},
+                    {'percent_amount': 75}
+                ]
+            }
+            for i in range(1, 20)
+        ]
 
         response = self.client.post(
             reverse('categories-list'),
@@ -70,7 +84,21 @@ class BudgetViewTestObjectCreations(ViewTestsMixin):
 
     @timeit
     def test_bill_creation(self):
-        payload = single_bill_creation_payload
+        reminders = Reminder.objects.all()
+        number_of_reminders = reminders.count()
+        payload = {
+            'name': 'Test Bill',
+            'emoji': '🤑',
+            'period': 'month',
+            'day': 1,
+            'lower_amount': 1000,
+            'upper_amount': 10000,
+            'reminders': [
+                {'id': str(reminder.id)
+                    for reminder in reminders[:number_of_reminders // 2]}
+            ]
+        }
+
         response = self.client.post(
             reverse('bills-list'),
             data=json.dumps(payload),
@@ -93,7 +121,23 @@ class BudgetViewTestObjectCreations(ViewTestsMixin):
 
     @timeit
     def test_bulk_bill_creation(self):
-        payload = multiple_bill_creation_payload
+        reminders = Reminder.objects.all()
+        number_of_reminders = reminders.count()
+        payload = [
+            {
+                'name': f'Test Bill {i}',
+                'emoji': '🤑',
+                'period': 'month',
+                'day': 1,
+                'lower_amount': 1000,
+                'upper_amount': 10000,
+                'reminders': [
+                    {'id': str(reminder.id)
+                        for reminder in reminders[:number_of_reminders // 2]}
+                ]
+            }
+            for i in range(1, 20)
+        ]
 
         response = self.client.post(
             reverse('bills-list'),
@@ -135,18 +179,6 @@ class BudgetViewTestObjectCreations(ViewTestsMixin):
 
 
 class BudgetViewTestRetrevalUpdate(ViewTestsMixin):
-    fixtures = [
-        'transaction_fixture.json',
-        'category_fixture.json',
-        'bill_fixture.json',
-        'reminder_fixture.json',
-        'plaid_item_fixture.json',
-        'account_fixture.json',
-        'institution_fixture.json',
-        'core_account_fixture.json',
-        'customer_fixture.json',
-        'user_fixture.json'
-    ]
 
     def setUp(self):
         '''
@@ -166,6 +198,13 @@ class BudgetViewTestRetrevalUpdate(ViewTestsMixin):
         response = self.client.get(reverse('bills-list'))
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(response.data.__len__(), 0)
+
+    def test_get_specific_month_year_bills(self):
+        month = 10
+        year = 2023
+        response = self.client.get(
+            reverse('bills-list', query_kwargs={'month': month, 'year': year}))
+        self.assertEqual(response.status_code, 200)
 
     @timeit
     def test_get_categories(self):
@@ -367,3 +406,8 @@ class BudgetViewTestRetrevalUpdate(ViewTestsMixin):
             bill=bill.id,
             date__month=datetime.now().month)
         self.assertEqual(transactions.count(), 0)
+
+    def test_get_reminders(self):
+        response = self.client.get(reverse('reminders'))
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(response.data.__len__(), 0)
