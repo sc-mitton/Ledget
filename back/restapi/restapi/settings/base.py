@@ -45,6 +45,12 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'restapi.urls'
 WSGI_APPLICATION = 'restapi.wsgi.application'
 
+# ----------------------------------- Misc ----------------------------------- #
+
+FIXTURE_DIRS = [
+    Path(BASE_DIR, 'restapi', 'fixtures').as_posix(),
+]
+
 # --------------------------------- Debugging -------------------------------- #
 
 SILK_DEBUG = False

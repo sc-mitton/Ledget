@@ -29,7 +29,7 @@ session_payloads = [
                 }
             ],
             'id': str(uuid.uuid4()),
-            'authenticator_assurance_level': f'aal{i%2 + 1}',
+            'authenticator_assurance_level': f'aal{i % 2 + 1}',
             'authentication_methods': [
                 {
                     "aal": "aal1",
@@ -71,6 +71,18 @@ class ViewTestsMixin(TestCase):
     Additionally, the OATHKEEPER_PUBLIC_KEY is overrriden and
     a key pair is provided for encoding a JWT header during testing
     that will pass the auth middleware.'''
+    fixtures = [
+        'transaction_fixture.json',
+        'category_fixture.json',
+        'bill_fixture.json',
+        'reminder_fixture.json',
+        'plaid_item_fixture.json',
+        'account_fixture.json',
+        'institution_fixture.json',
+        'core_account_fixture.json',
+        'customer_fixture.json',
+        'user_fixture.json',
+    ]
 
     def setUp(self):
         '''Create user and client'''

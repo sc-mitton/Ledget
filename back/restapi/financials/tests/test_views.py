@@ -7,17 +7,6 @@ from budget.models import Category
 
 
 class FinancialViewTestObjectCreations(ViewTestsMixin):
-    fixtures = [
-        'transaction_fixture.json',
-        'account_fixture.json',
-        'plaid_item_fixture.json',
-        'category_fixture.json',
-        'bill_fixture.json',
-        'institution_fixture.json',
-        'core_account_fixture.json',
-        'customer_fixture.json',
-        'user_fixture.json',
-    ]
 
     def setUp(self):
         super().setUp()

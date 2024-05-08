@@ -98,10 +98,6 @@ CACHES = {
 
 # ---------------------------------- Testing --------------------------------- #
 
-FIXTURE_DIRS = [
-    Path(BASE_DIR, 'restapi', 'fixtures').as_posix(),
-]
-
 # When running tests, we don't want tons of logs being printed out
 TEST = {
     'LOGGING_OVERRIDE': {
