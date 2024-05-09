@@ -1,13 +1,12 @@
 #connections-page {
     display: flex;
     flex-direction: column;
-    width: 105%;
     height: 100%;
+    flex-grow: 1;
 }
 
 #connections-page .header {
     margin-bottom: .75em;
-    margin-right: 1.75em;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -44,19 +43,11 @@
 
 #connections-page #accounts-list {
     display: flex;
-    overflow: hidden;
-    top: 0;
-    left: 0;
-    margin-bottom: 1.5em;
-}
-
-#connections-page #accounts-list>div {
-    width: 100%;
+    flex-direction: column;
     height: 100%;
-    padding-right: 1.375em;
     overflow-y: scroll;
     overflow-x: hidden;
-    position: relative;
+    padding-right: 1em;
 }
 
 #confirm-modal-bottom-btns {

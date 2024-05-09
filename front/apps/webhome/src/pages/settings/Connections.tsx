@@ -346,43 +346,39 @@ const Connections = () => {
                     }}
                 />
             }
-            <ShimmerDiv shimmering={fetchingPlaidItems}>
-                <div id="connections-page" className="padded-content">
-                    <MainHeader onPlus={() => open()} />
-                    {plaidItems?.length === 0
-                        ?
-                        <EmptyState />
-                        :
-                        <>
-                            <ShadowedContainer id="accounts-list">
-                                <div>
-                                    {plaidItems?.map((item) => (
-                                        <PlaidItem key={item.id} item={item} />
-                                    ))}
-                                    {plaidItems?.map((item) => (
-                                        <PlaidItem key={item.id} item={item} />
-                                    ))}
-                                    {plaidItems?.map((item) => (
-                                        <PlaidItem key={item.id} item={item} />
-                                    ))}
-                                </div>
-                            </ShadowedContainer>
-                            <div className="footer-container">
-                                {editing &&
-                                    <form onSubmit={handleFormSubmit}>
-                                        <Inputs />
-                                        <SubmitForm
-                                            submitting={false}
-                                            onCancel={() => {
-                                                setDeleteQue([])
-                                                setEditing(false)
-                                            }}
-                                        />
-                                    </form>}
-                            </div>
-                        </>
-                    }
-                </div>
+            <ShimmerDiv shimmering={fetchingPlaidItems} id="connections-page" className="padded-content">
+                <MainHeader onPlus={() => open()} />
+                {plaidItems?.length === 0
+                    ?
+                    <EmptyState />
+                    :
+                    <>
+                        <ShadowedContainer id="accounts-list">
+                            {plaidItems?.map((item) => (
+                                <PlaidItem key={item.id} item={item} />
+                            ))}
+                            {plaidItems?.map((item) => (
+                                <PlaidItem key={item.id} item={item} />
+                            ))}
+                            {plaidItems?.map((item) => (
+                                <PlaidItem key={item.id} item={item} />
+                            ))}
+                        </ShadowedContainer>
+                        <div className="footer-container">
+                            {editing &&
+                                <form onSubmit={handleFormSubmit}>
+                                    <Inputs />
+                                    <SubmitForm
+                                        submitting={false}
+                                        onCancel={() => {
+                                            setDeleteQue([])
+                                            setEditing(false)
+                                        }}
+                                    />
+                                </form>}
+                        </div>
+                    </>
+                }
             </ShimmerDiv>
         </>
     )

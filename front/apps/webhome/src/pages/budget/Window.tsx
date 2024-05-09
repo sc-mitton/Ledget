@@ -49,13 +49,11 @@ function Window() {
     return (
         <>
             <div id="budget-window" className={`main-window ${screenSize === 'small' ? 'small-screen' : ''}`}>
+                <BudgetSummary />
                 <div>
-                    <BudgetSummary />
-                    <div>
-                        <SpendingCategories />
-                        <Bills />
-                        <Footer />
-                    </div>
+                    <SpendingCategories />
+                    <Bills />
+                    <Footer />
                 </div>
             </div>
             <Outlet />
