@@ -49,11 +49,11 @@ note_router = SimpleRouter(trailing_slash=False)
 note_router.register('note', NoteViewSet, basename='note')
 
 urlpatterns = [
-    path('plaid_items', PlaidItemsListView.as_view(), name='plaid_item'),
-    path('plaid_item/<str:id>', PlaidItemView.as_view(), name='destroy_plaid_item'), # noqa
-    path('plaid_link_token', PlaidLinkTokenView.as_view(), name='plaid_link_token'),
-    path('plaid_link_token/<str:id>', PlaidLinkTokenView.as_view(), name='plaid_update_link_token'), # noqa
-    path('plaid_token_exchange', PlaidTokenExchangeView.as_view(), name='plaid_token_exchange'), # noqa
+    path('plaid_items', PlaidItemsListView.as_view(), name='plaid-item'),
+    path('plaid_item/<str:id>', PlaidItemView.as_view(), name='plaid-item-destroy'), # noqa
+    path('plaid_link_token', PlaidLinkTokenView.as_view(), name='plaid-link-token'),
+    path('plaid_link_token/<str:id>', PlaidLinkTokenView.as_view(), name='plaid-update-link-token'), # noqa
+    path('plaid_token_exchange', PlaidTokenExchangeView.as_view(), name='plaid-token-exchange'), # noqa
     path('accounts', AccountsView.as_view(), name='account'),
     path('', include(transactions_router.urls)),
     path('transactions/<str:id>/', include(note_router.urls)),

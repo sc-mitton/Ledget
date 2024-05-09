@@ -1,0 +1,72 @@
+
+import copy
+from unittest.mock import patch, MagicMock
+
+from django.urls import reverse
+from django.conf import settings
+from plaid.model.item_remove_request import ItemRemoveRequest
+
+from restapi.tests.mixins import ViewTestsMixin, encode_jwt
+from financials.models import PlaidItem
+from financials.views.items import plaid_client
+
+
+class FakeLinkCreateResponse(MagicMock):
+    def to_dict(self):
+        return {
+            'link_token': 'link-sandbox-123'
+        }
+
+
+class TestPlaidItemView(ViewTestsMixin):
+
+    def setUp(self):
+        super().setUp()
+        self.set_user_on_all_plaid_items(self.aal2_user)
+        self.aal2_user.mfa_method = 'totp'
+        self.aal2_user.save()
+        self.item = PlaidItem.objects.all().first()
+
+    def test_delete_plaid_item_permission_error(self):
+        '''
+        Test that trying to delete a plaid item without proper aal freshness, or
+        high enough aal, returns a 401.
+        '''
+
+        # Test with stale session
+        session = copy.deepcopy(self.aal2_payload)
+        session['session']['authentication_methods'][0]['completed_at'] = 0
+        self.aal2_client.defaults[settings.OATHKEEPER_AUTH_HEADER] = '{} {}'.format(
+            settings.OATHKEEPER_AUTH_SCHEME, encode_jwt(session))
+        response = self.aal2_client.delete(
+            reverse('plaid-item-destroy', kwargs={'id': self.item.id}))
+        self.assertEqual(response.status_code, 401)
+
+        # Test with aal1 when it should be highest aal
+        response = self.aal2_client.delete(
+            reverse('plaid-item-destroy', kwargs={'id': self.item.id}),
+            headers={
+                settings.OATHKEEPER_AUTH_SCHEME:
+                f'{settings.OATHKEEPER_AUTH_HEADER} {encode_jwt(self.aal1_payload)}'
+            }
+        )
+        self.assertEqual(response.status_code, 401)
+
+    @patch.object(plaid_client, 'item_remove')
+    def test_delete_plaid_item(self, mock_item_remove):
+        response = self.aal2_client.delete(
+            reverse('plaid-item-destroy', kwargs={'id': self.item.id}))
+        self.assertEqual(response.status_code, 204)
+
+        request = ItemRemoveRequest(access_token=self.item.access_token)
+        mock_item_remove.assert_called_once_with(request)
+
+    @patch.object(plaid_client, 'link_token_create')
+    def test_plaid_update_link_token(self, mock_link_token_create):
+        mock_link_token_create.return_value = FakeLinkCreateResponse()
+
+        response = self.client.get(
+            reverse('plaid-update-link-token',
+                    kwargs={'id': self.item.id})
+        )
+        self.assertEqual(response.status_code, 200)

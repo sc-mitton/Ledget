@@ -275,7 +275,7 @@ const MainHeader = ({ onPlus }: { onPlus: () => void }) => {
         <div className="header">
             <h2>Connections</h2>
             <div className='header-btns'>
-                {!editing && plaidItems?.length && plaidItems?.length > 0 &&
+                {(!editing && plaidItems!.length > 0) &&
                     <Tooltip msg={'Edit connections'} ariaLabel={'Edit Connections'} type={'left'}>
                         <IconButton
                             onClick={() => setEditing(!editing)}
@@ -356,6 +356,12 @@ const Connections = () => {
                         <>
                             <ShadowedContainer id="accounts-list">
                                 <div>
+                                    {plaidItems?.map((item) => (
+                                        <PlaidItem key={item.id} item={item} />
+                                    ))}
+                                    {plaidItems?.map((item) => (
+                                        <PlaidItem key={item.id} item={item} />
+                                    ))}
                                     {plaidItems?.map((item) => (
                                         <PlaidItem key={item.id} item={item} />
                                     ))}

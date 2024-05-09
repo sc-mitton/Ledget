@@ -38,7 +38,7 @@ session_payloads = [
             'authenticator_assurance_level': f'aal{i % 2 + 1}',
             'authentication_methods': [
                 {
-                    "aal": "aal1",
+                    "aal": f"aal{i % 2 + 1}",
                     "completed_at": current_time,
                     "method": "password"
                 }
@@ -59,12 +59,17 @@ session_payloads = [
 ]
 # First payload is AAL2, second is AAL1, third is AAL2, etc.
 
+
+def encode_jwt(payload):
+    return jwt.encode(
+            {**payload, 'exp': 9999999999},
+            key=private_key,
+            algorithm='RS256',
+        )
+
+
 tokens = [
-    jwt.encode(
-        {**payload, 'exp': 9999999999},
-        key=private_key,
-        algorithm='RS256',
-    )
+    encode_jwt(payload)
     for payload in session_payloads
 ]
 
@@ -172,10 +177,12 @@ class ViewTestsMixin(TestCase):
 
     def createClients(self):
         self.client = APIClient()
-        self.client.defaults['HTTP_AUTHORIZATION'] = 'bearer {}'.format(tokens[1])
+        self.client.defaults[settings.OATHKEEPER_AUTH_HEADER] = '{} {}'.format(
+            settings.OATHKEEPER_AUTH_SCHEME, tokens[1])
 
         self.aal2_client = APIClient()
-        self.aal2_client.defaults['HTTP_AUTHORIZATION'] = 'bearer {}'.format(tokens[0])
+        self.aal2_client.defaults[settings.OATHKEEPER_AUTH_HEADER] = '{} {}'.format(
+            settings.OATHKEEPER_AUTH_SCHEME, tokens[0])
 
         self.unauthed_client = APIClient()
 

@@ -63,7 +63,7 @@ class PlaidLinkTokenView(APIView):
         if not DEVELOPMENT:
             request_kwargs['redirect_uri'] = redirect_uri
 
-        if kwargs.get('item_id', False):
+        if kwargs.get('id', False):
             request_kwargs['access_token'] = \
                 PlaidItem.objects.get(id=kwargs['id']).access_token
             request_kwargs['update'] = {"account_selection_enabled": True}
@@ -73,6 +73,7 @@ class PlaidLinkTokenView(APIView):
         try:
             request = LinkTokenCreateRequest(**request_kwargs)
             response = plaid_client.link_token_create(request)
+            print('response', response)
             return Response(data=response.to_dict(),
                             status=HTTP_200_OK)
         except plaid.ApiException as e:
@@ -111,8 +112,7 @@ class PlaidItemView(RetrieveUpdateDestroyAPIView):
         try:
             request = ItemRemoveRequest(access_token=obj.access_token)
             plaid_client.item_remove(request)
-        except plaid.ApiException as e:
+        except plaid.ApiException as e:  # pragma: no cover
             return Response({'error': json.loads(e.body)}, status=e.status)
         else:
-            self.perform_destroy(obj)
             return Response(status=HTTP_204_NO_CONTENT)
