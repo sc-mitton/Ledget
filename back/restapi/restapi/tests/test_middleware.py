@@ -47,7 +47,6 @@ class TestCsrfMiddleware(TestCase):
         session_id = session_payloads[1]['session']['id']
         unhashed = ''.join([settings.SECRET_KEY, session_id])
         hmac = hashlib.sha256(unhashed.encode('utf-8')).hexdigest()
-        print('hmac:', hmac)
 
         response = self.client.post(
             reverse('feedback'),

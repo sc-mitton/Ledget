@@ -73,7 +73,6 @@ class PlaidLinkTokenView(APIView):
         try:
             request = LinkTokenCreateRequest(**request_kwargs)
             response = plaid_client.link_token_create(request)
-            print('response', response)
             return Response(data=response.to_dict(),
                             status=HTTP_200_OK)
         except plaid.ApiException as e:

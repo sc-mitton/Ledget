@@ -96,9 +96,7 @@ class BaseFreshSessionClass(BasePermission):
                 break
 
         if last_login:
-            print('last_login', last_login)
             completed_at = datetime.fromisoformat(last_login["completed_at"])
-            print('completed_at', completed_at.timestamp())
             return int(time.time()) - int(completed_at.timestamp())
         else:
             return None
