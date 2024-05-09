@@ -7,8 +7,10 @@ from django.conf import settings
 from plaid.model.item_remove_request import ItemRemoveRequest
 
 from restapi.tests.mixins import ViewTestsMixin, encode_jwt
-from financials.models import PlaidItem
+from financials.models import PlaidItem, Institution, Account
 from financials.views.items import plaid_client
+from financials.serializers.items import plaid_client as serializer_plaid_client
+from financials.serializers.account import InstitutionSerializer, AccountSerializer
 
 
 class FakeLinkCreateResponse(MagicMock):
@@ -70,3 +72,30 @@ class TestPlaidItemView(ViewTestsMixin):
                     kwargs={'id': self.item.id})
         )
         self.assertEqual(response.status_code, 200)
+
+    @patch.object(serializer_plaid_client, 'item_public_token_exchange')
+    def test_plaid_token_exchange(self, mock_item_public_token_exchange):
+        mock_item_public_token_exchange.return_value = {
+            'item_id': 'item-sandbox-123',
+            'access_token': 'access-sandbox-123'
+        }
+
+        account_objs = Account.objects.all()
+        instution_obj = Institution.objects.all().first()
+        institution_data = InstitutionSerializer(instution_obj).data
+        account_data = AccountSerializer(account_objs, many=True).data
+
+        # Clear accounts, and instutitions in table so we can test creation
+        account_objs.delete()
+        instution_obj.delete()
+
+        response = self.client.post(
+            reverse('plaid-token-exchange'),
+            data={
+                'public_token': 'public-sandbox-123',
+                'institution': institution_data,
+                'accounts': account_data
+            },
+            format='json'
+        )
+        self.assertEqual(response.status_code, 201)

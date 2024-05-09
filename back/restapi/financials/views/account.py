@@ -118,7 +118,7 @@ class AccountsView(GenericAPIView):
                     }})
                 already_fetched_tokens.append(account.plaid_item.access_token)
 
-        except plaid.exceptions.ApiException as e:
+        except plaid.exceptions.ApiException as e:  # pragma: no cover
             error = json.loads(e.body)
             raise ValidationError({'error': {
                 'code': error['error_code'],

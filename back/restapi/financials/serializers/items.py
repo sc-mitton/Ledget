@@ -35,12 +35,12 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
         try:
             self._update_or_create_institution(validated_data['institution'])
             plaid_item = self._add_objects(validated_data)
-        except plaid.ApiException as e:
+        except plaid.ApiException as e:  # pragma: no cover
             logger.error(f"Plaid error: {e}")
             raise serializers.ValidationError(
                 {"plaid": "Plaid error: {e}"}
             )
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             logger.error(f"Error: {e}")
             raise serializers.ValidationError()
 
