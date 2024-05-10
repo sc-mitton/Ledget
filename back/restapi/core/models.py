@@ -40,7 +40,7 @@ class User(models.Model):
     class MfaMethod(models.TextChoices):
         TOTP = 'totp', _('TOTP')
 
-    id = models.UUIDField(primary_key=True, editable=False)
+    id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     co_owner = models.ForeignKey(
         'self', on_delete=models.SET_NULL, null=True, default=None
     )

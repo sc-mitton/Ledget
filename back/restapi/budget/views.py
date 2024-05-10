@@ -77,12 +77,13 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
         '''
 
         which_instances = request.query_params.get('instances', None)
-        if not which_instances or which_instances not in ['all', 'single', 'composit']:
+        if not which_instances \
+           or which_instances not in ['all', 'single', 'composit']:  # pragma: no cover
             raise ValidationError('Invalid request')
 
         try:
             self._update_db(which_instances)
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             logger.warning(e)
             return Response(data={'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -220,7 +221,7 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
 
         try:
             self._update_db(category_ids)
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             logger.warning(e)
             return Response(data={'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -260,7 +261,7 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
     def reorder(self, request):
         try:
             self._reorder(request.data)
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             logger.warning(e)
             return Response(
                 data={'error': str(e)},

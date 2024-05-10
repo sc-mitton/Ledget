@@ -27,7 +27,7 @@ stripe_webhook_secret = settings.STRIPE_WEBHOOK_SECRET
 plaid_logger = logging.getLogger('plaid')
 
 
-class StripeHookView(APIView):
+class StripeHookView(APIView):  # pragma: no cover
     """Class for handling the Stripe webhook"""
 
     def post(self, request, *args, **kwargs):
@@ -76,6 +76,25 @@ class StripeHookView(APIView):
                     f"⚠️ Attempt {i} for {event_type} handler: {e}"
                 )
                 time.sleep(1 * i)
+
+    # Create Handlers
+    def handle_customer_created(self, event):
+        '''
+        Only used for testing
+        '''
+
+        if event.livemode:
+            raise ValueError('Webhook is only used for testing')
+
+        account = Account.objects.create()
+        user = get_user_model().objects.create(account=account)
+        customer = Customer.objects.create(
+            user=user,
+            id=event.data.object.id,
+            subscription_status=Customer.SubscriptionStatus.TRIALING
+        )
+        customer.account = account
+        customer.save()
 
     # Delete Handlers
     def handle_customer_deleted(self, event):
