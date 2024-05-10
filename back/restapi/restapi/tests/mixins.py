@@ -1,4 +1,5 @@
 from datetime import datetime
+import os
 
 from django.test import TestCase
 from rest_framework.test import APIClient
@@ -6,6 +7,7 @@ from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.urls import reverse
 from django.test import modify_settings
+from django.utils import timezone
 
 import uuid
 import jwt
@@ -13,7 +15,8 @@ from core.models import Customer, Account
 from financials.models import (
     UserAccount,
     Account as FinancialAccount,
-    PlaidItem
+    PlaidItem,
+    Institution
 )
 from budget.models import UserCategory, UserBill, Category, Bill
 
@@ -136,6 +139,16 @@ class ViewTestsMixin(TestCase):
         account_for_aal2_user.save()
 
         self.createClients()
+
+    def tearDown(self) -> None:
+        '''
+        Delete all logos created during testing (use last 30 minutes as proxy)
+        '''
+
+        institutions = Institution.objects.filter(
+            created__gte=timezone.now() - timezone.timedelta(minutes=30))
+        for i in institutions:
+            os.remove(i.logo.path)
 
     def add_user_to_financial_accounts(self, user):
         accounts = FinancialAccount.objects.all()

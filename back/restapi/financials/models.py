@@ -16,6 +16,7 @@ class Institution(models.Model):
                           null=False,
                           blank=False,
                           primary_key=True)
+    created = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=100, null=False, blank=False)
     logo = models.ImageField(upload_to='logos', null=True, blank=True)
     primary_color = models.CharField(max_length=100, null=True, blank=True)
