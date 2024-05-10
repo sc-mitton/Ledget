@@ -29,11 +29,13 @@ urlpatterns = [
     path('subscription', service_views.SubscriptionView.as_view(),
          name='subscription'),
     path('subscription/<str:id>',
-         service_views.SubscriptionView.as_view()),
+         service_views.DeleteRestartSubscriptionView.as_view(),
+         name='delete-restart-subscription'
+         ),
     path('subscription_item', service_views.SubscriptionItemView.as_view(),
-         name='subscription_item'),
+         name='subscription-item'),
     path('setup_intent', service_views.GetSetupIntent.as_view(),
-         name='setup_intent'),
+         name='setup-intent'),
     path('next_invoice', service_views.NextInvoice.as_view(),
-         name='next_invoice'),
+         name='next-invoice'),
 ]

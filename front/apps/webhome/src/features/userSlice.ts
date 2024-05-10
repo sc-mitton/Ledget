@@ -162,7 +162,7 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
                 body: data,
             }),
         }),
-        updateSubscription: builder.mutation<any, UpdateSubscription>({
+        updateRestartSubscription: builder.mutation<any, UpdateSubscription>({
             query: ({ subId, cancelAtPeriodEnd, cancelationReason, feedback }) => ({
                 url: `subscription/${subId}`,
                 method: cancelAtPeriodEnd ? 'DELETE' : 'PATCH',
@@ -174,13 +174,6 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
             }),
             invalidatesTags: ['user'],
         }),
-        extendSession: builder.mutation<any, void>({
-            query: () => ({
-                url: 'user/session/extend',
-                method: 'PATCH',
-            }),
-            invalidatesTags: ['user'],
-        }),
         updateSubscriptionItems: builder.mutation<any, { priceId: string }>({
             query: ({ priceId }) => ({
                 url: 'subscription_item',
@@ -188,6 +181,13 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
                 body: { price: priceId },
             }),
             invalidatesTags: ['invoice'],
+        }),
+        extendSession: builder.mutation<any, void>({
+            query: () => ({
+                url: 'user/session/extend',
+                method: 'PATCH',
+            }),
+            invalidatesTags: ['user'],
         })
     })
 })
@@ -201,7 +201,7 @@ export const {
     useUpdateUserMutation,
     useLazyGetSetupIntentQuery,
     useUpdateDefaultPaymentMethodMutation,
-    useUpdateSubscriptionMutation,
+    useUpdateRestartSubscriptionMutation,
     useGetPricesQuery,
     useUpdateSubscriptionItemsMutation,
     useEmailUserMutation,

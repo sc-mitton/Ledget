@@ -115,11 +115,16 @@ class OwnsStripeSubscription(BasePermission):
 
         kwargs = view.kwargs
         try:
-            sub_id = self.get_subscription_id(request.user.account.customer.id)
-            return sub_id == kwargs.get("sub_id")
+            sub_ids = self.get_customers_subscription_id(
+                request.user.account.customer.id)
+            return any(sub_id == kwargs.get("id") for sub_id in sub_ids)
         except Exception as e:
             stripe_logger.error(f"Error checking subscription: {e}")
             return False
 
-    def get_subscription_id(self, customer_id):
-        return stripe.Subscription.list(customer=customer_id).data[0].id
+    def get_customers_subscription_id(self, customer_id):
+        return [
+            sub.id for sub in stripe.Subscription.list(
+                customer=customer_id, status="all"
+            ).data
+        ]

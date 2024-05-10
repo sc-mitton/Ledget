@@ -8,11 +8,11 @@ import './styles/CancelSubscription.css'
 import { withModal } from '@ledget/ui'
 import { withReAuth } from '@utils'
 import { RedButton, BluePrimaryButton, SlideMotionDiv, useLoaded, BakedListBox } from '@ledget/ui'
-import { useUpdateSubscriptionMutation, useGetSubscriptionQuery } from '@features/userSlice'
+import { useUpdateRestartSubscriptionMutation, useGetSubscriptionQuery } from '@features/userSlice'
 
 export const CancelationWindow = (props) => {
     const [feedback, setFeedback] = useState('')
-    const [updateSubscription, { isSuccess, isLoading }] = useUpdateSubscriptionMutation()
+    const [updateSubscription, { isSuccess, isLoading }] = useUpdateRestartSubscriptionMutation()
     const { data: subscription } = useGetSubscriptionQuery()
     const [cancelationReason, setCancelationReason] = React.useState('')
 
@@ -153,7 +153,7 @@ const SuccessWindow = (props) => {
 }
 
 const CancelationModal = withReAuth(withModal((props) => {
-    const [{ isSuccess }] = useUpdateSubscriptionMutation()
+    const [{ isSuccess }] = useUpdateRestartSubscriptionMutation()
     const loaded = useLoaded()
 
     return (

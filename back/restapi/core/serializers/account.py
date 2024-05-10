@@ -14,6 +14,7 @@ class AccountSerializer(serializers.ModelSerializer):
         return obj.has_customer
 
 
-class AccountUpdateSerializer(serializers.Serializer):
+class DeleteRestartSubscriptionSerializer(serializers.Serializer):
     cancelation_reason = serializers.CharField(required=False)
     cancel_at_period_end = serializers.BooleanField(required=False)
+    feedback = serializers.CharField(required=False)

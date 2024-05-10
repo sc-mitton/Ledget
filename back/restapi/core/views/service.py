@@ -18,16 +18,29 @@ from core.serializers.user import (
     SubscriptionItemsSerializer,
     FeedbackSerializer,
 )
-from core.serializers.account import AccountUpdateSerializer
+from core.serializers.account import DeleteRestartSubscriptionSerializer
 from core.serializers.subscription import StripeSubscriptionSerializer
 from core.utils.stripe import stripe_error_handler, StripeError
-from core.models import Customer
+from core.models import Customer, Feedback
 from restapi.permissions.auth import can_create_stripe_subscription, IsAuthenticated
 from restapi.permissions.checks import HasCustomer
 from restapi.permissions.objects import OwnsStripeSubscription
 
 stripe.api_key = settings.STRIPE_API_KEY
 stripe_logger = logging.getLogger("stripe")
+
+
+@stripe_error_handler
+def _get_stripe_subscription(customer_id):
+    subs = stripe.Subscription.list(customer=customer_id)
+    sub = next((s for s in subs if s.status in ['active', 'trialing']), None) or \
+        subs.data[0]
+    return sub
+
+
+def get_current_subscription_id(customer_id):
+    sub = _get_stripe_subscription(customer_id)
+    return sub['items'].data[0].id
 
 
 class PriceView(APIView):
@@ -54,11 +67,11 @@ class FeedbackView(CreateAPIView):
     serializer_class = FeedbackSerializer
 
 
-class UpdateAccountView(GenericAPIView):
+class DeleteRestartSubscriptionView(GenericAPIView):
     permission_classes = [IsAuthenticated, OwnsStripeSubscription]
-    serializer_class = AccountUpdateSerializer
+    serializer_class = DeleteRestartSubscriptionSerializer
 
-    def post(self, request, *args, **kwargs):
+    def patch(self, request, *args, **kwargs):
         '''
         Stop cancelation of the subscription at the end of the period
         '''
@@ -68,10 +81,10 @@ class UpdateAccountView(GenericAPIView):
         try:
             stripe.Subscription.modify(
                 kwargs.get('id', ''),
-                **serializer.validated_data
+                cancel_at_period_end=serializer.validated_data['cancel_at_period_end']
             )
             return Response(status=HTTP_200_OK)
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             stripe_logger.error(f'Error updating subscription: {e}')
             return Response(status=HTTP_400_BAD_REQUEST)
 
@@ -79,24 +92,28 @@ class UpdateAccountView(GenericAPIView):
         '''
         Cancel the subscription at the end of the period
         '''
+
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        request.user.account.customer.cancelation_reason = \
-            serializer.validated_data.pop(
-                'cancelation_reason', ''
-            )
+        self.create_feedback(serializer)
 
         try:
             stripe.Subscription.modify(
-                kwargs.get('sub_id', ''),
-                **serializer.validated_data
+                kwargs.get('id', ''),
+                cancel_at_period_end=serializer.validated_data['cancel_at_period_end']
             )
-            request.user.account.save()
 
             return Response(status=HTTP_200_OK)
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             stripe_logger.error(f'Error canceling subscription: {e}')
             return Response(status=HTTP_400_BAD_REQUEST)
+
+    def create_feedback(self, serializer):
+        Feedback.objects.create(
+            user=self.request.user,
+            feedback=serializer.validated_data.pop('feedback'),
+            cancelation_reason=serializer.validated_data.pop('cancelation_reason')
+        )
 
 
 class SubscriptionItemView(GenericAPIView):
@@ -112,27 +129,20 @@ class SubscriptionItemView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
 
         try:
-            sub = self.get_current_sub(self.request.user.account.customer.id)
-            stripe.SubscriptionItem.modify(
-                sub['items'].data[0].id,
-                **serializer.validated_data
-            )
-        except Exception as e:
+            sub_id = get_current_subscription_id(request.user.account.customer.id)
+            stripe.SubscriptionItem.modify(sub_id, **serializer.validated_data)
+        except Exception as e:  # pragma: no cover
             stripe_logger.error(f'Error updating subscription items: {e}')
             return Response(status=HTTP_400_BAD_REQUEST)
 
         return Response(status=HTTP_200_OK)
 
-    def get_current_sub(self, customer_id):
-        active_sub = stripe.Subscription.list(
-            customer=customer_id,
-            status='active'
-        ).data[0]
-        return active_sub
-
 
 class SubscriptionView(GenericAPIView):
-    """Class for handling creating a subscription"""
+    """
+    Class for handling creating, and retrieving
+    a stripe subscription
+    """
 
     permission_classes = [IsAuthenticated]
     serializer_class = NewSubscriptionSerializer
@@ -141,12 +151,12 @@ class SubscriptionView(GenericAPIView):
         '''
         Get the current subscription for the user
         '''
-        if not request.user.account.has_customer:
+        if not request.user.account.has_customer:  # pragma: no cover
             return Response(status=HTTP_200_OK)
 
         try:
-            sub = self._get_stripe_subscription(request.user.account.customer.id)
-        except StripeError as e:
+            sub = _get_stripe_subscription(request.user.account.customer.id)
+        except StripeError as e:  # pragma: no cover
             stripe_logger.error(e.message)
             return Response(status=e.response_code)
 
@@ -171,12 +181,6 @@ class SubscriptionView(GenericAPIView):
                 HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, HTTP_400_BAD_REQUEST)
-
-    @stripe_error_handler
-    def _get_stripe_subscription(self, customer_id):
-        subs = stripe.Subscription.list(customer=customer_id)
-        sub = next((s for s in subs if s.status == 'active'), None) or subs.data[0]
-        return sub
 
     def _create_subscription(self, **kwargs):
         default_args = {
@@ -276,7 +280,7 @@ class PaymentMethodView(APIView):
                 }
             )
             stripe.PaymentMethod.detach(data['old_payment_method_id'])
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             stripe_logger.error(f'Error setting default payment method: {e}')
             return Response(status=HTTP_400_BAD_REQUEST)
 
@@ -328,7 +332,7 @@ class NextInvoice(APIView):
                 'next_payment_date': invoice.next_payment_attempt,
                 'balance': customer.balance,
             }
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             stripe_logger.error(f'Error getting upcoming invoice: {e}')
             return Response(status=HTTP_400_BAD_REQUEST)
 

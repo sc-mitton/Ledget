@@ -15,7 +15,7 @@ class StripeSubscriptionSerializer:
     @property
     def data(self):
         try:
-            return {
+            result = {
                 'id': self.sub.id,
                 'status': self.sub.status,
                 'current_period_end': self.sub.current_period_end,
@@ -27,6 +27,7 @@ class StripeSubscriptionSerializer:
                     'interval': self.sub.plan.interval,
                 }
             }
+            return result
         except AttributeError as e:
             ledget_logger.error(f'Error while serializing subscription: {e}')
             raise ValidationError500('Error while serializing subscription')

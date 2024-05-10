@@ -8,7 +8,7 @@ import './styles/Account.scss'
 import {
     useGetMeQuery,
     useGetPaymentMethodQuery,
-    useUpdateSubscriptionMutation,
+    useUpdateRestartSubscriptionMutation,
     useGetNextInvoiceQuery,
     useGetSubscriptionQuery,
     Subscription
@@ -70,7 +70,7 @@ const Info = ({ children }: { children: React.ReactNode }) => {
 }
 
 const ChangePlanMenu = () => {
-    const [updateSubscription, { isLoading }] = useUpdateSubscriptionMutation()
+    const [updateSubscription, { isLoading }] = useUpdateRestartSubscriptionMutation()
     const { data: subscription } = useGetSubscriptionQuery()
     const navigate = useNavigate()
 
