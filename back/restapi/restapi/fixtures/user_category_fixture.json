@@ -97,5 +97,14 @@
         "category": "c85ff3f2-3d0c-4f92-a57a-84325764cc96",
         "order": 0
     }
+},
+{
+    "model": "budget.usercategory",
+    "pk": 19,
+    "fields": {
+        "user": "7e894309-2473-45e9-943f-4eacdfd709aa",
+        "category": "fa09e053-91e3-4755-ae2e-fd800a1f9f28",
+        "order": 0
+    }
 }
 ]

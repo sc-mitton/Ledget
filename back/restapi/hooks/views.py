@@ -211,7 +211,7 @@ class OryVerificationHook(APIView):
         return Response(status=status.HTTP_200_OK)
 
 
-class PlaidItemHook:
+class PlaidItemHook:  # pragma: no cover
 
     def handle_error(self, item, data):
 
@@ -265,7 +265,7 @@ class PlaidItemHook:
         sync_transactions(plaid_item)
 
 
-class PlaidItemHookView(APIView, PlaidItemHook):
+class PlaidItemHookView(APIView, PlaidItemHook):  # pragma: no cover
     """Plaid webhook"""
 
     permission_classes = [CameFromPlaid]

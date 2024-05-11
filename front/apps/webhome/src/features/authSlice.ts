@@ -7,7 +7,7 @@ export const authSlice = createSlice({
     name: 'auth',
     initialState: {
         reAuthed: {
-            level: 'none' as User['session_aal'],
+            level: 'none' as User['session']['aal'],
             at: null as number | null
         }
     },
@@ -36,7 +36,7 @@ export const authSlice = createSlice({
             userExtendedApiSlice.endpoints.getMe.matchFulfilled,
             (state, action) => {
                 if (Date.now() - Date.parse(action.payload?.last_login) < 1000 * 60 * 9) {
-                    state.reAuthed.level = action.payload?.session_aal
+                    state.reAuthed.level = action.payload?.session?.aal || 'none'
                     state.reAuthed.at = Date.now()
                 }
             }

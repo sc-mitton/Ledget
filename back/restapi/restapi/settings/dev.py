@@ -71,6 +71,9 @@ PLAID_CLIENT_ID = get_secret('plaid_client_id')
 PLAID_REDIRECT_URI_ONBOARDING = 'https://localhost:3000/welcome/connect'
 PLAID_REDIRECT_URI = 'https://localhost:3000/settings/connections'
 
+# This webhook endpoint wont work since we have to use ngrok, but it has to be something for the code to work
+PLAID_WEBHOOK_ENDPOINT = os.getenv('PLAID_WEBHOOK_ENDPOINT') or 'https://localhost:8000/hooks/plaid/item'
+
 # --------------------------------- Postgres --------------------------------- #
 
 DATABASES = {

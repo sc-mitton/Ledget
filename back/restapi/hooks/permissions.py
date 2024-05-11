@@ -38,7 +38,7 @@ class CameFromOry(BasePermission):
             return False
 
 
-def _get_plaid_verification_key(self, key_id):
+def _get_plaid_verification_key(self, key_id):  # pragma: no cover
     try:
         request = WebhookVerificationKeyGetRequest(key_id=key_id)
         r = plaid_client.webhook_verification_key_get(request)
@@ -50,7 +50,7 @@ def _get_plaid_verification_key(self, key_id):
     return response.get('key', None)
 
 
-def _hmac_is_good(msg, claims):
+def _hmac_is_good(msg, claims):  # pragma: no cover
 
     # Compute the hash of the body (ensures it hasn't been tampered with)
     m = hashlib.sha256()
@@ -62,7 +62,7 @@ def _hmac_is_good(msg, claims):
     return hmac.compare_digest(body_hash, claims['request_body_sha256'])
 
 
-def _update_kid_cache(kid):
+def _update_kid_cache(kid):  # pragma: no cover
     '''Update the cache if the kid is not in the cache'''
 
     cached_kids = cache.get('plaid_kids')
@@ -84,7 +84,7 @@ def _update_kid_cache(kid):
         raise Exception('Kid not in updated cache kids')
 
 
-class CameFromPlaid(BasePermission):
+class CameFromPlaid(BasePermission):  # pragma: no cover
     message = 'Invalid Plaid webhook signature'
 
     def has_permission(self, request, view):

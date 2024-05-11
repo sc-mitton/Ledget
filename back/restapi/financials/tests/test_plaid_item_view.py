@@ -60,8 +60,12 @@ class TestPlaidItemView(ViewTestsMixin):
             reverse('plaid-item-destroy', kwargs={'id': self.item.id}))
         self.assertEqual(response.status_code, 204)
 
+        # Checks
         request = ItemRemoveRequest(access_token=self.item.access_token)
         mock_item_remove.assert_called_once_with(request)
+
+        item = PlaidItem.objects.filter(id=self.item.id).first()
+        self.assertIsNone(item)
 
     @patch.object(plaid_client, 'link_token_create')
     def test_plaid_update_link_token(self, mock_link_token_create):

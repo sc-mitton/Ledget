@@ -250,5 +250,19 @@
         "limit_amount": 100000,
         "is_default": false
     }
+},
+{
+    "model": "budget.category",
+    "pk": "fa09e053-91e3-4755-ae2e-fd800a1f9f28",
+    "fields": {
+        "privacy": "shared",
+        "name": "miscellaneous",
+        "emoji": "🪣",
+        "created": "2024-05-11T04:25:36.849Z",
+        "removed_on": null,
+        "period": "month",
+        "limit_amount": null,
+        "is_default": true
+    }
 }
 ]

@@ -1,14 +1,14 @@
 [
-    {
-        "model": "financials.institution",
-        "pk": "ins_25",
-        "fields": {
-            "name": "Ally Bank",
-            "logo": "logos/logo_ins_25_aPoX1ck.png",
-            "primary_color": "#631f5f",
-            "url": "https://www.ally.com",
-            "oath": null,
-            "created": "2024-05-9 03:27:33.730581+00"
-        }
+{
+    "model": "financials.institution",
+    "pk": "ins_25",
+    "fields": {
+        "created": "2024-05-09T03:27:33.730Z",
+        "name": "Ally Bank",
+        "logo": "logos/logo_ins_25_aPoX1ck.png",
+        "primary_color": "#631f5f",
+        "url": "https://www.ally.com",
+        "oath": null
     }
+}
 ]

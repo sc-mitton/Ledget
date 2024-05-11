@@ -54,6 +54,7 @@ PLAID_API_KEY = get_secret('plaid_api_key')
 PLAID_CLIENT_ID = get_secret('plaid_client_id')
 PLAID_REDIRECT_URI_ONBOARDING = 'https://ledget.app/welcome/connect'
 PLAID_REDIRECT_URI = 'https://leddget.app/settings/connections'
+PLAID_WEBHOOK_ENDPOINT = 'https://api.ledget.app/hooks/plaid/item'
 
 # --------------------------------- Postgres --------------------------------- #
 

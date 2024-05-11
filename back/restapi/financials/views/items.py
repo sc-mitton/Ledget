@@ -33,6 +33,7 @@ PLAID_PRODUCTS = os.getenv("PLAID_PRODUCTS", "transactions").split(",")
 PLAID_REDIRECT_URI_ONBOARDING = settings.PLAID_REDIRECT_URI_ONBOARDING
 PLAID_REDIRECT_URI = settings.PLAID_REDIRECT_URI
 PLAID_COUNTRY_CODES = settings.PLAID_COUNTRY_CODES
+PLAID_WEBHOOK_ENDPOINT = settings.PLAID_WEBHOOK_ENDPOINT
 DEVELOPMENT = settings.DEVELOPMENT
 
 plaid_products = []
@@ -57,7 +58,8 @@ class PlaidLinkTokenView(APIView):
             'language': 'en',
             'user': LinkTokenCreateRequestUser(
                 client_user_id=str(request.user.id)
-            )
+            ),
+            'webhook': PLAID_WEBHOOK_ENDPOINT,
         }
 
         if not DEVELOPMENT:
@@ -113,5 +115,10 @@ class PlaidItemView(RetrieveUpdateDestroyAPIView):
             plaid_client.item_remove(request)
         except plaid.ApiException as e:  # pragma: no cover
             return Response({'error': json.loads(e.body)}, status=e.status)
+
+        try:
+            obj.delete()
+        except Exception as e:
+            return Response({'error': str(e)}, status=500)
         else:
             return Response(status=HTTP_204_NO_CONTENT)
