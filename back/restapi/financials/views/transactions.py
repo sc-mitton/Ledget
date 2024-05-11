@@ -5,6 +5,7 @@ import pytz
 
 from django.db import transaction, models
 from django.db.models import Q, Prefetch, F
+from django.utils import timezone
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.exceptions import ValidationError
@@ -66,6 +67,7 @@ NOT_SPEND_DETAIL = [
 ]
 
 
+@transaction.atomic
 def sync_transactions(plaid_item: PlaidItem, default_category: Category) -> dict:
     added, modified, removed = [], [], []
     plaid_options = TransactionsSyncRequestOptions(
@@ -117,7 +119,6 @@ def sync_transactions(plaid_item: PlaidItem, default_category: Category) -> dict
                 elif _ == 'removed':
                     removed.append(trans['transaction_id'])
 
-    @transaction.atomic
     def _bulk_add_transactions():
         Transaction.objects.bulk_create([
             Transaction(predicted_category=default_category, **t)
@@ -126,18 +127,15 @@ def sync_transactions(plaid_item: PlaidItem, default_category: Category) -> dict
             for t in added
         ])
 
-    @transaction.atomic
     def _bulk_modify_transactions():
         for t in modified:
             transaction_id = t.pop('transaction_id')
             Transaction.objects.filter(
                 transaction_id=transaction_id).update(**t)
 
-    @transaction.atomic
     def _bulk_remove_transactions():
         Transaction.objects.filter(transaction_id__in=removed).delete()
 
-    @transaction.atomic
     def _flush_to_db():
         _bulk_add_transactions()
         _bulk_modify_transactions()
@@ -168,6 +166,8 @@ def sync_transactions(plaid_item: PlaidItem, default_category: Category) -> dict
 
             # reset buffers
             added, modified, removed = [], [], []
+        plaid_item.last_synced = timezone.now()
+        plaid_item.save()
 
     except plaid.ApiException as e:
         logger.error(e)

@@ -41,6 +41,7 @@ class PlaidItem(BasePrivateModel):
     new_accounts_available = models.BooleanField(default=False)
     permission_revoked = models.BooleanField(default=False)
     pending_expired = models.BooleanField(default=False)
+    last_synced = models.DateTimeField(null=True, blank=True)
 
 
 class Account(BasePrivateModel):
