@@ -357,12 +357,6 @@ const Connections = () => {
                             {plaidItems?.map((item) => (
                                 <PlaidItem key={item.id} item={item} />
                             ))}
-                            {plaidItems?.map((item) => (
-                                <PlaidItem key={item.id} item={item} />
-                            ))}
-                            {plaidItems?.map((item) => (
-                                <PlaidItem key={item.id} item={item} />
-                            ))}
                         </ShadowedContainer>
                         <div className="footer-container">
                             {editing &&
