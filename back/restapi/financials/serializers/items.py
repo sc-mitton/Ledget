@@ -76,7 +76,6 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
 
         return plaid_item
 
-    @transaction.atomic
     def _create_plaid_item(self, validated_data):
 
         exchange_request = ItemPublicTokenExchangeRequest(
@@ -94,7 +93,6 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
 
         return plaid_item
 
-    @transaction.atomic
     def _create_accounts(self, plaid_item, validated_data):
         accounts_data = validated_data['accounts']
         institution_id = validated_data['institution']['id']
