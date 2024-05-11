@@ -20,6 +20,7 @@ from financials.models import PlaidItem
 from hooks.permissions import CameFromOry, CameFromPlaid
 from financials.views.transactions import sync_transactions
 from budget.models import Category
+from hooks.tasks import cleanup_stripe_webhook_tests
 
 stripe_logger = logging.getLogger('stripe')
 stripe.api_key = settings.STRIPE_API_KEY
@@ -28,7 +29,10 @@ plaid_logger = logging.getLogger('plaid')
 
 
 class StripeHookView(APIView):  # pragma: no cover
-    """Class for handling the Stripe webhook"""
+    """
+    Class for handling the Stripe webhook. All webhooks
+    are idempotent as they are coded.
+    """
 
     def post(self, request, *args, **kwargs):
 
@@ -87,7 +91,10 @@ class StripeHookView(APIView):  # pragma: no cover
             raise ValueError('Webhook is only used for testing')
 
         account = Account.objects.create()
+
         user = get_user_model().objects.create(account=account)
+        cleanup_stripe_webhook_tests.apply_async(args=[str(user.id)], countdown=12)
+
         customer = Customer.objects.create(
             user=user,
             id=event.data.object.id,

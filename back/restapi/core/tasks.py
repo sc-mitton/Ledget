@@ -2,6 +2,7 @@ import logging
 import json
 
 from celery import shared_task, group
+import ory_client.exceptions
 from plaid.model.item_remove_request import ItemRemoveRequest
 from django.conf import settings
 from django.utils import timezone
@@ -41,7 +42,13 @@ def delete_ory_identity(user_id: str):
 
     with ory_client.ApiClient(ory_configuration) as api_client:
         api_instance = identity_api.IdentityApi(api_client)
-        api_instance.delete_identity(user_id)
+        try:
+            api_instance.delete_identity(user_id)
+        except ory_client.exceptions.NotFoundException as e:
+            logger.error(f"Ory user doesn't exist {user_id}: {e}")
+        except ory_client.exceptions.ApiException as e:
+            logger.error(f"Failed to delete ory user {user_id}: {e}")
+            raise e
 
 
 @shared_task
