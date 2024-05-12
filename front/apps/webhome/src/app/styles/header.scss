@@ -17,7 +17,7 @@ header {
     }
 
     &>div {
-        max-width: calc(100% - 2.5rem);
+        max-width: calc(100% - 2.75rem);
         margin: 0 auto;
         display: flex;
         justify-content: space-between;
@@ -57,7 +57,8 @@ header {
 }
 
 #light-dark-switch {
-    font-size: 1rem;
+    font-size: .875rem;
+    margin-right: .25em;
     position: relative;
 
     svg {
@@ -66,11 +67,11 @@ header {
 
     .switch-crib {
         margin-top: .0625em;
-        padding: .45em .45em;
+        padding: .5em .55em;
         border-radius: 1.25em;
         display: flex;
         align-items: center;
-        gap: .75rem;
+        gap: .875rem;
         width: auto;
         justify-content: space-evenly;
 
@@ -102,7 +103,7 @@ header {
         z-index: 0;
 
         &.enabled {
-            transform: translateX(.9rem);
+            transform: translateX(.95rem);
             transition: all 0.2s ease-in-out;
             // background-color: var(--btn-gray);
             background: linear-gradient(to bottom right, var(--blue-medium), var(--blue-light));

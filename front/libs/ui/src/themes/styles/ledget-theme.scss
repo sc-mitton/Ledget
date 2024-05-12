@@ -171,6 +171,13 @@
         --default-pill-background: hsl(0, 0%, 21%);
         --default-tab-background: hsl(0, 0%, 13%);
 
+        --switch-crib-enabled: var(--blue-light);
+        --switch-crib-disabled: var(--btn-medium-gray);
+        --switch-pill-enabled: var(--blue-sat-hover);
+        --switch-pill-disabled: var(--btn-gray-hover);
+        --switch-pill-shadow-enabled: hsl(var(--blue-h), 55%, 17%);
+        --switch-pill-shadow-disabled: var(--btn-light-gray);
+
         --gray-hlight: hsl(0, 0%, 18%);
         --negative-pulse-outer: rgba(255, 255, 255, .5);
         --negative-pulse-inner: rgba(255, 255, 255, .7);
@@ -371,6 +378,13 @@
 
         --negative-pulse-outer: rgba(0, 0, 0, .4);
         --negative-pulse-inner: rgba(0, 0, 0, .75);
+
+        --switch-crib-enabled: var(--blue-light);
+        --switch-crib-disabled: var(--btn-medium-gray);
+        --switch-pill-enabled: var(--blue-medium);
+        --switch-pill-disabled: var(--btn-feather-light-gray);
+        --switch-pill-shadow-enabled: color-mix(in srgb, var(--blue-light-hover), var(--blue-medium) 10%);
+        --switch-pill-shadow-disabled: var(--btn-medium-gray-hover);
 
         // Misc Drop Shadows & Borders
         --wafer-drop-shadow-color: hsl(0, 0%, 70%);

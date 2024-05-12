@@ -11,14 +11,13 @@
     border-radius: 1.25em;
 
     &.enabled {
-        background-color: var(--blue-dark);
+        background-color: var(--switch-crib-enabled);
         transition: background-color 0.2s ease-in-out;
     }
 
     &.disabled {
-        background-color: var(--btn-gray);
+        background-color: var(--switch-crib-disabled);
         transition: background-color 0.2s ease-in-out;
-        opacity: .4;
     }
 }
 
@@ -26,18 +25,18 @@
     width: .75rem;
     height: .75rem;
     border-radius: 50%;
-    box-shadow: 0 2px 1px var(--btn-dark-gray);
 
     &.enabled {
         transform: translateX(.82rem);
-        background-color: var(--blue-light);
+        background-color: var(--switch-pill-enabled);
         transition: all 0.2s ease-in-out;
+        box-shadow: 0 2px 1px var(--switch-pill-shadow-enabled);
     }
 
     &.disabled {
         transform: translateX(0);
-        background-color: var(--btn-feather-light-gray);
+        background-color: var(--switch-pill-disabled);
         transition: all 0.2s ease-in-out;
+        box-shadow: 0 2px 1px var(--switch-pill-shadow-disabled);
     }
-
 }

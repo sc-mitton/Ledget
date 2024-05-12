@@ -1,6 +1,6 @@
 import { HTMLProps, useState, useRef, useEffect, Fragment } from 'react'
 
-import { Bell, Filter } from '@geist-ui/icons'
+import { Activity, Filter } from '@geist-ui/icons'
 import { Tab } from '@headlessui/react'
 
 import './Dropdown.scss'
@@ -70,7 +70,7 @@ const NotificationsDropdownMenu = (props: HTMLProps<HTMLDivElement>) => {
                 className={`${tCountData?.count ? 'active' : ''}`}
                 onClick={() => setShowDropdown(!showDropdown)}
             >
-                <Bell className='icon' stroke={'var(--white)'} />
+                <Activity className='icon' stroke={'var(--white)'} />
             </button>
             <DropDownDiv
                 ref={dropdownRef}

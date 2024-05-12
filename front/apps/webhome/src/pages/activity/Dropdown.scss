@@ -67,13 +67,13 @@
         &::after {
             content: '';
             position: absolute;
-            top: -.2em;
-            right: .0625em;
+            top: -.375em;
+            right: -.125em;
             width: .375em;
             height: .375em;
             border-radius: 50%;
-            border: var(--header-background) 1.5px solid;
-            background-color: var(--blue-sat);
+            border: var(--header-background) 1.75px solid;
+            background-color: var(--blue-sat-hover);
         }
     }
 }
