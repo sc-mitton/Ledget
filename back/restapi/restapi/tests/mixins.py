@@ -107,22 +107,12 @@ class ViewTestsMixin(TestCase):
         self.aal2_payload = session_payloads[0]
         self.aal1_payload = session_payloads[1]
 
-        # Main test user
-        account = Account.objects.create()
-        self.user = get_user_model().objects.create_user(
-            id=self.aal1_payload['session']['identity']['id'],
-            account=account
-        )
-        customer = Customer.objects.create(
-            user=self.user,
-            id=uuid.uuid4(),
-            subscription_status='active',
-            period_end=1794475549,
-        )
-        self.add_user_to_financial_accounts(self.user)
-        account.customer = customer
-        account.save()
+        self.setup_main_test_user()
+        self.setup_secondary_aal2_user()
 
+        self.createClients()
+
+    def setup_secondary_aal2_user(self):
         # AAL2 user
         account_for_aal2_user = Account.objects.create()
         self.aal2_user = get_user_model().objects.create_user(
@@ -138,7 +128,28 @@ class ViewTestsMixin(TestCase):
         account_for_aal2_user.customer = customer_for_aal2_user
         account_for_aal2_user.save()
 
-        self.createClients()
+    def setup_main_test_user(self):
+        new_account = Account.objects.create()
+        self.user = get_user_model().objects.create_user(
+            id=self.aal1_payload['session']['identity']['id'],
+            account=new_account
+        )
+
+        # Add the existing stripe customer to the user, since it
+        # has a real stripe customer id
+        customer = Customer.objects.first()
+        customer.user = self.user
+
+        # Remove the customer from the account it was previously on
+        account = Account.objects.filter(customer=customer).first()
+        account.customer = None
+        new_account.customer = customer
+
+        account.save()
+        customer.save()
+        new_account.save()
+
+        self.add_user_to_financial_accounts(self.user)
 
     def tearDown(self) -> None:
         '''

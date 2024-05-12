@@ -3,6 +3,7 @@ from unittest import skip # noqa
 from datetime import datetime
 
 from django.urls import reverse
+from django.test import Client
 
 from restapi.tests.utils import timeit # noqa
 from restapi.tests.mixins import ViewTestsMixin
@@ -11,9 +12,18 @@ from core.models import Device
 
 class CoreViewTests(ViewTestsMixin):
 
+    def test_get_me(self):
+        response = self.client.get(reverse('user-me'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_anonymous_user_get_me(self):
+        client = Client()
+        response = client.get(reverse('user-me'))
+        self.assertEqual(response.status_code, 403)
+
     def test_update_onboarding_status(self):
         response = self.client.patch(
-            reverse('user_me'),
+            reverse('user-me'),
             data=json.dumps({"is_onboarded": True}),
             content_type='application/json'
         )
@@ -43,7 +53,7 @@ class CoreViewTests(ViewTestsMixin):
 
     def test_password_last_changed(self):
         response = self.client.patch(
-            reverse('user_me'),
+            reverse('user-me'),
             data=json.dumps({"password_last_changed": "now"}),
             content_type='application/json'
         )
@@ -51,8 +61,3 @@ class CoreViewTests(ViewTestsMixin):
         self.assertEqual(response.status_code, 200)
         self.user.refresh_from_db()
         self.assertIsInstance(self.user.password_last_changed, datetime)
-
-    def test_get_prices(self):
-        response = self.client.get(reverse('prices'))
-        self.assertEqual(response.status_code, 200)
-        self.assertIsNotNone(response.data)

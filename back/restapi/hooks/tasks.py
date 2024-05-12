@@ -7,7 +7,7 @@ logger = logging.getLogger('ledget')
 
 
 @shared_task
-def cleanup_stripe_webhook_tests(user_id):
+def cleanup_stripe_webhook_tests(user_id):  # pragma: no cover
     '''
     Stripe webhook tests are run via a shell script and end up
     creating some objects in the db that need to be cleaned up

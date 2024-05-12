@@ -10,7 +10,7 @@ from core.views import service as service_views
 
 
 urlpatterns = [
-    path('user/me', UserView.as_view(), name='user_me'),
+    path('user/me', UserView.as_view(), name='user-me'),
     path('user/email', EmailView.as_view(), name='user_email'),
     path('user/session/extend', UserSessionExtendView.as_view(),
          name='user_session_extend'),
@@ -23,7 +23,7 @@ urlpatterns = [
 
     path('prices', service_views.PriceView.as_view(), name='prices'),
     path('default_payment_method', service_views.PaymentMethodView.as_view(),
-         name='default_payment_method'),
+         name='default-payment-method'),
     path('customer', service_views.CreateCustomerView.as_view(),
          name='customer'),
     path('subscription', service_views.SubscriptionView.as_view(),

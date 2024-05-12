@@ -1,6 +1,7 @@
+import time
+
 from restapi.utils import reverse
 from restapi.tests.mixins import ViewTestsMixin
-
 from django.utils import timezone
 
 from financials.models import Transaction, PlaidItem
@@ -101,6 +102,46 @@ class TestTransactionViewSet(ViewTestsMixin):
         response = self.client.get(reverse(
             'transactions-count',
             query_kwargs={'account': self.user.accounts.all().first().id}
+        ))
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNotNone(response.data)
+
+    def test_confirmation_non_list_returns_error(self):
+        response = self.client.post(
+            reverse('transactions-confirmation'),
+            data={},
+            format='json'
+        )
+        print(response.data)
+        self.assertEqual(response.status_code, 400)
+
+    def test_get_transactions_recurring(self):
+        response = self.client.get(reverse('transactions-recurring'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNotNone(response.data)
+
+    def test_get_transactions_for_specific_month_and_year(self):
+        date = timezone.now() - timezone.timedelta(days=30)
+
+        response = self.client.get(reverse(
+            'transactions-list',
+            query_kwargs={
+                'month': date.month,
+                'year': date.year,
+                'account': self.user.accounts.all().first().id
+            }
+        ))
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNotNone(response.data)
+
+    def test_get_transactions_with_start_and_end(self):
+        response = self.client.get(reverse(
+            'transactions-list',
+            query_kwargs={
+                'start': round(time.time()) - 60 * 60 * 24 * 30,
+                'end': round(time.time()),
+                'account': self.user.accounts.all().first().id
+            }
         ))
         self.assertEqual(response.status_code, 200)
         self.assertIsNotNone(response.data)

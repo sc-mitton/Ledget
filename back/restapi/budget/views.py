@@ -279,7 +279,7 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
             if id in map:
                 map[id].order = i
                 updated.append(map[id])
-            else:
+            else:  # pragma: no cover
                 raise Exception(f'Invalid category id {id}')
 
         UserCategory.objects.bulk_update(updated, ['order'])

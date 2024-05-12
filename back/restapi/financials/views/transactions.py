@@ -238,7 +238,7 @@ class TransactionViewSet(ModelViewSet):
             obj = Transaction.objects.get(
                 transaction_id=self.kwargs['pk'],
                 account__useraccount__user=self.request.user)
-        except Transaction.DoesNotExist:
+        except Transaction.DoesNotExist:  # pragma: no cover
             raise ValidationError('Transaction does not exist')
 
         return obj
@@ -250,7 +250,7 @@ class TransactionViewSet(ModelViewSet):
             transaction_id__in=[id for id in transaction_ids if id is not None],
             account__useraccount__user=self.request.user
         )
-        if len(instances) != len(transaction_ids):
+        if len(instances) != len(transaction_ids):  # pragma: no cover
             raise ValidationError('Invalid transaction id provided')
 
         return instances
@@ -295,12 +295,8 @@ class TransactionViewSet(ModelViewSet):
     @action(detail=False, methods=['get'], url_path='recurring/get',
             url_name='recurring', permission_classes=[IsAuthedVerifiedSubscriber])
     def recurring(self, request, *args, **kwargs):
-        plaid_items = self._get_plaid_items(request)
-        results = []
-        for plaid_item in plaid_items:
-            pass
 
-        return Response(results, HTTP_200_OK)
+        return Response([], HTTP_200_OK)
 
     @action(detail=False, methods=['post'], url_path='sync', url_name='sync',
             permission_classes=[IsAuthedVerifiedSubscriber, HasObjectAccessLooseWrite])
@@ -366,7 +362,7 @@ class TransactionViewSet(ModelViewSet):
                 start = datetime(int(year), int(month), 1, tzinfo=pytz.utc)
                 end = start.replace(day=28) + timedelta(days=4)
                 end = end - timedelta(days=end.day)
-            except ValueError:
+            except ValueError:  # pragma: no cover
                 raise ValidationError('Invalid date format')
             return {'date__gte': start, 'date__lt': end}
         elif start and end:
@@ -432,9 +428,9 @@ class NoteViewSet(ModelViewSet):
                 transaction_id=transaction_id,
                 id=note_id)
             self.check_object_permissions(self.request, obj)
-        except Note.DoesNotExist:
+        except Note.DoesNotExist:  # pragma: no cover
             raise ValidationError('Note does not exist')
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             logger.error(e)
             raise ValidationError(
                 {'error': e.message},

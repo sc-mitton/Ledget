@@ -82,9 +82,6 @@ class BaseFreshSessionClass(BasePermission):
             logger.error(f"Error checking session freshness: {e}")
             return False
 
-        if seconds_since_last_login is None:
-            return False
-
         return seconds_since_last_login < settings.SESSION_MAX_AGE_SECONDS
 
     def get_last_ory_login_delta(self, request, aal):
@@ -99,10 +96,7 @@ class BaseFreshSessionClass(BasePermission):
             completed_at = datetime.fromisoformat(last_login["completed_at"])
             return int(time.time()) - int(completed_at.timestamp())
         else:
-            return None
-
-    def get_last_aal15_login_delta(self, request):
-        pass
+            return time.time()
 
 
 class HighestAalFreshSession(BaseFreshSessionClass):

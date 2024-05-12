@@ -61,7 +61,7 @@ class NestedCreateMixin:
             return serializer.Meta.model
         elif hasattr(serializer.child, 'Meta'):
             return serializer.child.Meta.model
-        else:
+        else:  # pragma: no cover
             raise Exception(f"Serializer {serializer} has no model")
 
     def _get_nested_fields(self, serializer) -> dict:

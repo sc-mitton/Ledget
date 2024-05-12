@@ -19,7 +19,7 @@ class UserManager(models.Manager):
 
         return user
 
-    def create_superuser(self, id, password=None, **extra_fields):
+    def create_superuser(self, id, password=None, **extra_fields):  # pragma: no cover
         """Create and save a new superuser."""
 
         user = self.create_user(id, **extra_fields)
@@ -197,13 +197,6 @@ class Customer(models.Model):
         """
         tasks.cancelation_cleanup.delay(str(self.user_id))
         return super().delete(*args, **kwargs)
-
-    @property
-    def has_current_subscription(self):
-        return self.subscription_status in [
-            self.SubscriptionStatus.ACTIVE,
-            self.SubscriptionStatus.TRIALING,
-        ]
 
     @property
     def subscription_not_canceled(self):

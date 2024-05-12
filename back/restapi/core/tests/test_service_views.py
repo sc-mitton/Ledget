@@ -6,8 +6,9 @@ from django.urls import reverse
 
 from restapi.tests.mixins import ViewTestsMixin
 from core.models import Feedback
-from core.views.service import stripe as core_stripe
-from restapi.permissions.objects import stripe as restapi_stripe
+from core.views.service import stripe as service_stripe
+from restapi.permissions.objects import stripe as objects_stripe
+from restapi.permissions.auth import stripe as auth_stripe
 
 TEST_SUBSCRIPTION_ID = 'test_subscription_id'
 TEST_SUBSCRIPTION_ITEM_ID = 'test_subscription_item_id'
@@ -24,7 +25,7 @@ class MockStripeSubscription(MagicMock):
 
 class TestServiceViews(ViewTestsMixin):
 
-    @patch.object(core_stripe.Subscription, 'list')
+    @patch.object(service_stripe.Subscription, 'list')
     def test_get_subscription(self, mock_subscription_list):
         mock_subscription_list.return_value = \
             self._get_mock_subscription_list_active_response()
@@ -34,8 +35,8 @@ class TestServiceViews(ViewTestsMixin):
         subscription = response.data
         self.assertIsNotNone(subscription)
 
-    @patch.object(restapi_stripe.Subscription, 'list')
-    @patch.object(core_stripe.Subscription, 'modify')
+    @patch.object(objects_stripe.Subscription, 'list')
+    @patch.object(service_stripe.Subscription, 'modify')
     def test_cancel_subscription(self, mock_subscription_modify,
                                  mock_subscription_list):
 
@@ -59,8 +60,8 @@ class TestServiceViews(ViewTestsMixin):
         mock_subscription_modify.assert_called_once()
         self.assertGreater(Feedback.objects.filter(user=self.user).count(), 0)
 
-    @patch.object(restapi_stripe.Subscription, 'list')
-    @patch.object(core_stripe.Subscription, 'modify')
+    @patch.object(objects_stripe.Subscription, 'list')
+    @patch.object(service_stripe.Subscription, 'modify')
     def test_uncancel_subscription(self, mock_subscription_modify,
                                    mock_subscription_list):
 
@@ -80,7 +81,7 @@ class TestServiceViews(ViewTestsMixin):
         mock_subscription_modify.assert_called_once()
 
     @patch('core.views.service.get_current_subscription_id')
-    @patch.object(core_stripe.SubscriptionItem, 'modify')
+    @patch.object(service_stripe.SubscriptionItem, 'modify')
     def test_changing_subscription(self, mock_subscription_modify,
                                    mock_get_current_subscription_id):
         mock_get_current_subscription_id.return_value = TEST_SUBSCRIPTION_ITEM_ID
@@ -123,3 +124,53 @@ class TestServiceViews(ViewTestsMixin):
                 for s in data['data']
             ]
         )
+
+    def test_get_prices(self):
+        response = self.client.get(reverse('prices'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNotNone(response.data)
+
+    @patch.object(auth_stripe.Subscription, 'list')
+    @patch.object(service_stripe.Subscription, 'create')
+    def test_create_stripe_subscription(self, mock_subscription_create,
+                                        mock_subscription_list):
+
+        mock_subscription_list.return_value = Mock(data=[])
+        mock_subscription_create.return_value = \
+            Mock(pending_setup_intent=Mock(client_secret='test_client_secret'))
+
+        response = self.client.post(
+            reverse('subscription'),
+            json.dumps({'price_id': 'test_price_id'}),
+            content_type='application/json',
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_default_payment_method(self):
+        response = self.client.get(reverse('default-payment-method'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNotNone(response.data)
+
+    def test_get_next_invoice(self):
+        response = self.client.get(reverse('next-invoice'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNotNone(response.data)
+
+    def test_create_customer_error(self):
+        '''
+        If user is already a customer, the view should return 422
+        '''
+        response = self.client.post(reverse('customer'))
+        self.assertEqual(response.status_code, 422)
+
+    @patch.object(service_stripe.Customer, 'create')
+    def test_create_customer(self, mock_customer_create):
+        mock_customer_create.return_value = Mock(id='test_customer_id')
+
+        self.user.account.customer = None
+        self.user.account.save()
+        self.user.customer.delete()
+
+        response = self.client.post(reverse('customer'))
+        self.assertEqual(response.status_code, 200)
+        mock_customer_create.assert_called_once()
