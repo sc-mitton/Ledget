@@ -1,6 +1,8 @@
 from restapi.utils import reverse
 from restapi.tests.mixins import ViewTestsMixin
 
+from django.utils import timezone
+
 from financials.models import Transaction, PlaidItem
 from budget.models import Category, Bill
 
@@ -85,8 +87,15 @@ class TestTransactionViewSet(ViewTestsMixin):
             item.save()
 
         response = self.client.post(reverse('transactions-sync'))
+
         self.assertEqual(response.status_code, 200)
         self.assertIsNotNone(response.data['added'])
+
+        for item in plaid_items:
+            item.refresh_from_db()
+            self.assertGreater(
+                item.last_synced,
+                timezone.now() - timezone.timedelta(seconds=30))
 
     def test_count_transactions(self):
         response = self.client.get(reverse(

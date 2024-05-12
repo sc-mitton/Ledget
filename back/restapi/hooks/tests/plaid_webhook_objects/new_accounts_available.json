@@ -1,0 +1,7 @@
+{
+    "webhook_type": "ITEM",
+    "webhook_code": "NEW_ACCOUNTS_AVAILABLE",
+    "item_id": "NzAp6Lg5Las4LnAZzBR9Sggnpy4aPWIWa6mon",
+    "error": null,
+    "environment": "production"
+}

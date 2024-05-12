@@ -92,15 +92,6 @@ DATABASES = {
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
 CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
 
-# ---------------------------------- Caching --------------------------------- #
-
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-        "LOCATION": "unique-snowflake",
-    }
-}
-
 # ---------------------------------- Testing --------------------------------- #
 
 # When running tests, we don't want tons of logs being printed out

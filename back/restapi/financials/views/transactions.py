@@ -246,13 +246,12 @@ class TransactionViewSet(ModelViewSet):
     def get_instances(self, validated_data):
         transaction_ids = [item['transaction_id'] for item in validated_data]
 
-        try:
-            instances = Transaction.objects.filter(
-                transaction_id__in=[id for id in transaction_ids if id is not None],
-                account__useraccount__user=self.request.user
-            )
-        except Transaction.DoesNotExist:
-            raise ValidationError('One or more of the transactions does not exist.')
+        instances = Transaction.objects.filter(
+            transaction_id__in=[id for id in transaction_ids if id is not None],
+            account__useraccount__user=self.request.user
+        )
+        if len(instances) != len(transaction_ids):
+            raise ValidationError('Invalid transaction id provided')
 
         return instances
 

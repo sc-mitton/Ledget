@@ -76,12 +76,3 @@ DATABASES = {
 
 CELERY_BROKER_URL = os.getenv('celery_broker_url')
 CELERY_RESULT_BACKEND = os.getenv('celery_result_backend')
-
-# ---------------------------------- Caching --------------------------------- #
-
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-        "LOCATION": "unique-snowflake",
-    }
-}

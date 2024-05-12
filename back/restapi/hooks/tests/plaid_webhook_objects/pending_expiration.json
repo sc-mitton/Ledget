@@ -1,0 +1,7 @@
+{
+    "webhook_type": "ITEM",
+    "webhook_code": "PENDING_EXPIRATION",
+    "item_id": "NzAp6Lg5Las4LnAZzBR9Sggnpy4aPWIWa6mon",
+    "consent_expiration_time": "2020-01-15T13:25:17.766Z",
+    "environment": "production"
+}

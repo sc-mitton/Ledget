@@ -219,25 +219,25 @@ class PlaidItemHook:  # pragma: no cover
             item.login_required = True
             item.save()
 
+    def handle_pending_expiration(self, item, data):
+        item.pending_expiration = True
+        item.save()
+
     # Plaid Item hooks
-    def handle_login_repared(self, item, data):
+    def handle_login_repaired(self, item, data):
         item.login_required = False
         item.pending_expiration = False
         item.save()
 
-    def handle_new_account_available(self, item, data):
-        item.new_account_available = True
+    def handle_new_accounts_available(self, item, data):
+        item.new_accounts_available = True
         item.save()
 
     def handle_user_permission_revoked(self, item, data):
         item.permission_revoked = True
         item.save()
 
-    def handle_pending_expiration(self, item, data):
-        item.pending_expiration = True
-        item.save()
-
-    def handle_webook_update_acknowledged(self, item, data):
+    def handle_webhook_update_acknowledged(self, item, data):
         pass
 
     def handle_session_finished(self, item, data):
@@ -278,7 +278,10 @@ class PlaidItemHookView(APIView, PlaidItemHook):  # pragma: no cover
             plaid_logger.error(
                 f"Missing handler or item for webhook {request.data['webhook_code']}"
             )
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST,
+                data={'error': 'Invalid webhook'}
+            )
 
         try:
             handler(item, request.data)

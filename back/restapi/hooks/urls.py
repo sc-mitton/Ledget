@@ -20,5 +20,5 @@ urlpatterns = [
     path('ory/verification', csrf_ignore(OryVerificationHook.as_view()),
          name='ory-verification-hook'),
     path('plaid/item', csrf_ignore(PlaidItemHookView.as_view()),
-         name='plaid-item-hook')
+         name='plaid-webhook')
 ]

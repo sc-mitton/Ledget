@@ -2,11 +2,14 @@ import logging
 from secrets import compare_digest
 import hashlib
 import hmac
+import time
+import json
 
 import jwt
+import jwt.algorithms
 from rest_framework.permissions import BasePermission
 from django.conf import settings
-from django.core import cache
+from django.core.cache import cache
 from plaid.model.webhook_verification_key_get_request import (
     WebhookVerificationKeyGetRequest
 )
@@ -14,7 +17,7 @@ import plaid
 
 from core.clients import create_plaid_client
 
-plaid_client = create_plaid_client
+plaid_client = create_plaid_client()
 
 
 ORY_HOOK_API_KEY = settings.ORY_HOOK_API_KEY
@@ -38,75 +41,64 @@ class CameFromOry(BasePermission):
             return False
 
 
-def _get_plaid_verification_key(self, key_id):  # pragma: no cover
-    try:
-        request = WebhookVerificationKeyGetRequest(key_id=key_id)
-        r = plaid_client.webhook_verification_key_get(request)
-        response = r.json()
-    except plaid.ApiException as e:
-        logger.error(e)
-        return None
-
-    return response.get('key', None)
+def _fetch_plaid_verification_key(key_id):
+    request = WebhookVerificationKeyGetRequest(key_id=key_id)
+    r = plaid_client.webhook_verification_key_get(request)
+    return r['key']
 
 
-def _hmac_is_good(msg, claims):  # pragma: no cover
-
-    # Compute the hash of the body (ensures it hasn't been tampered with)
-    m = hashlib.sha256()
-    m.update(msg.encode('utf-8'))
-    body_hash = m.hexdigest()
-
-    # Ensure that the hash of the body matches the claim.
-    # Use constant time comparison to prevent timing attacks.
-    return hmac.compare_digest(body_hash, claims['request_body_sha256'])
-
-
-def _update_kid_cache(kid):  # pragma: no cover
-    '''Update the cache if the kid is not in the cache'''
+def _get_plaid_verification_key(kid):
 
     cached_kids = cache.get('plaid_kids')
 
-    if kid not in cached_kids:
-        kids_to_update = [key_id for key_id, key in cached_kids.items()
-                          if key['expired_at'] is None]
-        kids_to_update.append(kid)
-    else:
-        return
+    if not cached_kids:
+        verification_key = _fetch_plaid_verification_key(kid)
+        cached_kids = {kid: verification_key}
+    elif kid not in cached_kids:
+        keys_ids_to_update = [key_id for key_id, key in cached_kids.items()
+                              if key['expired_at'] is None]
+        keys_ids_to_update.append(kid)
 
-    for kid in kids_to_update:
-        verification_key = _get_plaid_verification_key(kid)
-        if verification_key:
-            cached_kids[kid] = verification_key
+        for key_id in keys_ids_to_update:
+            key = _fetch_plaid_verification_key(key_id)
+            if key is not None:
+                cached_kids[key_id] = key
 
-    cache.set('plaid_kids', cached_kids)
-    if kid not in cached_kids:
-        raise Exception('Kid not in updated cache kids')
+    cache.set('plaid_kids', cached_kids, timeout=60 * 60 * 24)  # 24 hours
+    return cached_kids[kid]
 
 
-class CameFromPlaid(BasePermission):  # pragma: no cover
+def _verify_request(request, verification_key):
+
+    header = request.META['HTTP_PLAID_VERIFICATION']
+    public_key = jwt.algorithms.ECAlgorithm.from_jwk(verification_key)
+    claims = jwt.decode(header, public_key, algorithms=['ES256'])
+
+    if claims['iat'] < time.time() - 5 * 60:  # 5 minutes
+        return False
+
+    json_body = json.dumps(request.data, indent=2).encode('utf-8')
+    hash = hashlib.sha256()
+    hash.update(json_body)
+    hash = hash.hexdigest()
+    return hmac.compare_digest(hash, claims['request_body_sha256'])
+
+
+class CameFromPlaid(BasePermission):
     message = 'Invalid Plaid webhook signature'
 
     def has_permission(self, request, view):
         signed_jwt = request.META['HTTP_PLAID_VERIFICATION']
-        current_kid = jwt.get_unverified_header(signed_jwt)['kid']
+        kid = jwt.get_unverified_header(signed_jwt)['kid']
 
-        # Step 1: Either get the kid from the cahce, or
         try:
-            _update_kid_cache(current_kid)
-        except Exception as e:
+            verification_key = _get_plaid_verification_key(kid)
+        except plaid.ApiException as e:
             logger.error(e)
             return False
 
-        cached_kids = cache.get('plaid_kids')
         try:
-            claims = jwt.decode(
-                signed_jwt,
-                cached_kids[current_kid],
-                algorithms=['ES256'],
-                options={'verify_exp': True}
-            )
-        except jwt.JWTError:
+            return _verify_request(request, verification_key)
+        except Exception as e:  # pragma: no cover
+            logger.error(e)
             return False
-        else:
-            return _hmac_is_good(request.data, claims)

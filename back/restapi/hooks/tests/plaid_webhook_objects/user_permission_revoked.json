@@ -1,0 +1,12 @@
+{
+    "webhook_type": "ITEM",
+    "webhook_code": "USER_PERMISSION_REVOKED",
+    "error": {
+        "error_code": "USER_PERMISSION_REVOKED",
+        "error_message": "the holder of this account has revoked their permission for your application to access it",
+        "error_type": "ITEM_ERROR",
+        "status": 400
+    },
+    "item_id": "NzAp6Lg5Las4LnAZzBR9Sggnpy4aPWIWa6mon",
+    "environment": "production"
+}

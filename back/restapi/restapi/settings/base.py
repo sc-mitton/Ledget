@@ -79,6 +79,15 @@ OATHKEEPER_AUTH_SCHEME = 'Bearer'
 PLAID_PRODUCTS = ['transactions', 'balance']
 PLAID_COUNTRY_CODES = ['US']
 
+# ---------------------------------- Caching --------------------------------- #
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "unique-snowflake",
+    }
+}
+
 # ------------------------------- Auth Settings ------------------------------ #
 
 REST_FRAMEWORK = {

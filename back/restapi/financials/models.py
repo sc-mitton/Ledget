@@ -40,7 +40,7 @@ class PlaidItem(BasePrivateModel):
     login_required = models.BooleanField(default=False)
     new_accounts_available = models.BooleanField(default=False)
     permission_revoked = models.BooleanField(default=False)
-    pending_expired = models.BooleanField(default=False)
+    pending_expiration = models.BooleanField(default=False)
     last_synced = models.DateTimeField(null=True, blank=True)
 
 
