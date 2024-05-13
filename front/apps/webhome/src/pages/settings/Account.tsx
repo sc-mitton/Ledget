@@ -253,7 +253,6 @@ const PaymentMethod = () => {
 
 const Settings = () => {
     const { isDark, setDarkMode } = useColorScheme()
-    const [check2, setCheck2] = useState(false)
 
     return (
         <section className="section">
