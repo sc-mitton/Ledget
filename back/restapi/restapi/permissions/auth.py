@@ -52,7 +52,8 @@ class HasOidcSignin(BasePermission):
 
     def has_permission(self, request, view):
         try:
-            return "oidc" in request.ory_session.auth_methods
+            return any([a['method'] == 'oidc'
+                        for a in request.ory_session.auth_methods])
         except Exception as e:
             logger.error(f"Error checking OIDC signin: {e}")
             return False

@@ -55,7 +55,7 @@ class HasObjectAccess(BasePermission):
                 if request.method == "GET"
                 else self.has_write_access(request, obj)
             )
-        except AttributeError as e:
+        except AttributeError as e:  # pragma: no cover
             logger.error(f"Error checking object access: {e}")
             return False
 
@@ -118,7 +118,7 @@ class OwnsStripeSubscription(BasePermission):
             sub_ids = self.get_customers_subscription_id(
                 request.user.account.customer.id)
             return any(sub_id == kwargs.get("id") for sub_id in sub_ids)
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             stripe_logger.error(f"Error checking subscription: {e}")
             return False
 

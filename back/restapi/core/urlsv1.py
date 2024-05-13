@@ -13,7 +13,7 @@ urlpatterns = [
     path('user/me', UserView.as_view(), name='user-me'),
     path('user/email', EmailView.as_view(), name='user_email'),
     path('user/session/extend', UserSessionExtendView.as_view(),
-         name='user_session_extend'),
+         name='session-extend'),
     path("feedback", FeedbackView.as_view(), name="feedback"),
 
     path('device/<str:id>', DestroyDeviceView.as_view(), name='device'),

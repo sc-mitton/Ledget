@@ -52,9 +52,13 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.account.service_provisioned_until
 
     def get_session(self, obj):
+        auth_methods = self.context["request"].ory_session.auth_methods
+        completed_at = auth_methods[0]['completed_at'] if auth_methods else None
+
         return {
             "aal": self.context["request"].ory_session.aal,
             "auth_methods": self.context["request"].ory_session.devices,
+            "auth_completed_at": completed_at,
         }
 
     def get_highest_aal(self, obj):

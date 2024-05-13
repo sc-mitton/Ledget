@@ -19,10 +19,7 @@ class OrySessionMiddleware(MiddlewareMixin):
         ory_session = OrySession(
             id=decoded_token['session']['id'],
             aal=decoded_token['session']['authenticator_assurance_level'],
-            auth_methods=[
-                method['method'] for method in
-                decoded_token['session']['authentication_methods']
-            ]
+            auth_methods=decoded_token['session']['authentication_methods'],
         )
 
         if request.path.endswith('devices'):

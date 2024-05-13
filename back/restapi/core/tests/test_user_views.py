@@ -1,16 +1,18 @@
 import json
 from unittest import skip # noqa
+from unittest.mock import patch, Mock
 from datetime import datetime
 
 from django.urls import reverse
 from django.test import Client
+from django.conf import settings
 
 from restapi.tests.utils import timeit # noqa
-from restapi.tests.mixins import ViewTestsMixin
+from restapi.tests.mixins import ViewTestsMixin, session_payloads, encode_jwt
 from core.models import Device
 
 
-class CoreViewTests(ViewTestsMixin):
+class TestUserViews(ViewTestsMixin):
 
     def test_get_me(self):
         response = self.client.get(reverse('user-me'))
@@ -61,3 +63,16 @@ class CoreViewTests(ViewTestsMixin):
         self.assertEqual(response.status_code, 200)
         self.user.refresh_from_db()
         self.assertIsInstance(self.user.password_last_changed, datetime)
+
+    @patch('core.views.user.IdentityApi')
+    def test_extend_user_session(self, identity_api_mock):
+        identity_api_mock.return_value = Mock()
+
+        session_payload = session_payloads[1]
+        session_payload['session']['authentication_methods'][0]['method'] = 'oidc'
+
+        self.client.defaults[settings.OATHKEEPER_AUTH_HEADER] = '{} {}'.format(
+            settings.OATHKEEPER_AUTH_SCHEME, encode_jwt(session_payload))
+
+        response = self.client.patch(reverse('session-extend'))
+        self.assertEqual(response.status_code, 200)

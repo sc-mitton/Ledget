@@ -25,11 +25,11 @@ class OrySession:
 
     @property
     def auth_methods(self):
-        return self._auth_method
+        return self._auth_methods
 
     @auth_methods.setter
     def auth_methods(self, value):
-        self._auth_method = value
+        self._auth_methods = value
 
     @property
     def id(self):

@@ -97,6 +97,7 @@ services:
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
       - DEBUG=true
       - SILK_DEBUG=true
+      - PLAID_ENV=Sandbox
     volumes:
       - ./back/restapi:/restapi
     secrets:

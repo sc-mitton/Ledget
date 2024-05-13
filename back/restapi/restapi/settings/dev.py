@@ -65,8 +65,8 @@ else:
 SPARKPOST_API_KEY = get_secret('sparkpost_api_key')
 
 # Plaid
-PLAID_ENVIRONMENT = 'Sandbox'
-PLAID_API_KEY = get_secret('plaid_sand_api_key') if PLAID_ENVIRONMENT == 'Sandbox' else get_secret('plaid_api_key')
+PLAID_ENVIRONMENT = os.getenv('PLAID_ENVIRONMENT') or 'Sandbox'
+PLAID_API_KEY = get_secret('plaid_sand_api_key') if PLAID_ENVIRONMENT.lower() == 'sandbox' else get_secret('plaid_api_key')
 PLAID_CLIENT_ID = get_secret('plaid_client_id')
 PLAID_REDIRECT_URI_ONBOARDING = 'https://localhost:3000/welcome/connect'
 PLAID_REDIRECT_URI = 'https://localhost:3000/settings/connections'

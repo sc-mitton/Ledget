@@ -112,7 +112,6 @@ class TestTransactionViewSet(ViewTestsMixin):
             data={},
             format='json'
         )
-        print(response.data)
         self.assertEqual(response.status_code, 400)
 
     def test_get_transactions_recurring(self):

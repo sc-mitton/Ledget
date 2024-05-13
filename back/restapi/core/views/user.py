@@ -4,7 +4,7 @@ from rest_framework.generics import RetrieveUpdateAPIView, GenericAPIView, Creat
 from rest_framework.response import Response
 from rest_framework import status
 import ory_client
-from ory_client.api import identity_api
+from ory_client.api.identity_api import IdentityApi
 from django.conf import settings
 
 from core.serializers.user import UserSerializer, EmailSerializer, FeedbackSerializer
@@ -41,11 +41,13 @@ class UserSessionExtendView(GenericAPIView):
     def patch(self, request):
         try:
             with ory_client.ApiClient(ory_configuration) as api_client:
-                api_instance = identity_api.IdentityApi(api_client)
+                api_instance = IdentityApi(api_client)
                 api_instance.extend_session(id=self.request.ory_session.id)
         except ory_client.ApiException as e:
             logger.error(f"Failed to extend session: {e}")
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response(status=status.HTTP_200_OK)
 
 
 class EmailView(GenericAPIView):

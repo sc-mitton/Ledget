@@ -110,7 +110,7 @@ class ViewTestsMixin(TestCase):
         self.setup_main_test_user()
         self.setup_secondary_aal2_user()
 
-        self.createClients()
+        self.create_clients()
 
     def setup_secondary_aal2_user(self):
         # AAL2 user
@@ -159,7 +159,10 @@ class ViewTestsMixin(TestCase):
         institutions = Institution.objects.filter(
             created__gte=timezone.now() - timezone.timedelta(minutes=30))
         for i in institutions:
-            os.remove(i.logo.path)
+            try:
+                os.remove(i.logo.path)
+            except ValueError:
+                pass
 
     def add_user_to_financial_accounts(self, user):
         accounts = FinancialAccount.objects.all()
@@ -199,7 +202,7 @@ class ViewTestsMixin(TestCase):
         UserBill.objects.all().delete()
         UserBill.objects.bulk_create(userbills)
 
-    def createClients(self):
+    def create_clients(self):
         self.client = APIClient()
         self.client.defaults[settings.OATHKEEPER_AUTH_HEADER] = '{} {}'.format(
             settings.OATHKEEPER_AUTH_SCHEME, tokens[1])

@@ -32,10 +32,15 @@ services:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
       - DEBUG=true
+      - PLAID_ENV=sandbox
     secrets:
       - django_secret_key
       - postgres_user
       - postgres_password
+      - stripe_api_key
+      - plaid_sand_api_key
+      - ory_hook_api_key
+      - plaid_client_id
     depends_on:
       db:
         condition: service_healthy
@@ -54,3 +59,11 @@ secrets:
     file: ./test_secrets/postgres_password
   django_secret_key:
     file: ./test_secrets/django_secret_key
+  stripe_api_key:
+    file: ./test_secrets/stripe_api_key
+  plaid_sand_api_key:
+    file: ./secrets/plaid_sand_api_key
+  ory_hook_api_key:
+    file: ./secrets/ory_hook_api_key
+  plaid_client_id:
+    file: ./secrets/plaid_client_id
