@@ -62,8 +62,8 @@ secrets:
   stripe_api_key:
     file: ./test_secrets/stripe_api_key
   plaid_sand_api_key:
-    file: ./secrets/plaid_sand_api_key
+    file: ./test_secrets/plaid_sand_api_key
   ory_hook_api_key:
-    file: ./secrets/ory_hook_api_key
+    file: ./test_secrets/ory_hook_api_key
   plaid_client_id:
-    file: ./secrets/plaid_client_id
+    file: ./test_secrets/plaid_client_id
