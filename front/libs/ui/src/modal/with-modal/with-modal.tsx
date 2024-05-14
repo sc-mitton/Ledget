@@ -86,7 +86,7 @@ export function withModal<P>(WrappedComponent: FC<P & { closeModal: () => void }
       minWidth = '18.75rem',
       maxWidth = '28rem',
       zIndex = 200,
-      blur = 2,
+      blur = 1,
       style,
       ...rest
     } = props

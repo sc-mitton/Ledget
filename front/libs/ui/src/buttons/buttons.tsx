@@ -128,12 +128,14 @@ export const CloseButton =
   })
 
 export const CircleIconButton =
-  forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement> & { size?: string, darker?: boolean }>((props, ref) => {
-    const { style, className, darker, ...rest } = props
+  forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement> & { size?: 'small' | 'medium' | 'large', darker?: boolean }>((props, ref) => {
+    const { style, className, darker, size = 'small', color = 'gray', ...rest } = props
     return (
       <button
         ref={ref}
         className={`btn circle-icon-btn
+          ${color}
+          ${size}
           ${darker ? 'darker' : ''}
           ${className ? className : ''}`}
         style={{ borderRadius: '50%', ...style }}
