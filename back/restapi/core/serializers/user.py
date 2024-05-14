@@ -1,15 +1,9 @@
 from rest_framework import serializers
 from django.utils import timezone
+import segno
 
 from core.models import User, Feedback
 from .account import AccountSerializer
-
-
-class CoOwnerSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = User
-        fields = ("id",)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -21,7 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
     last_login = serializers.SerializerMethodField(read_only=True)
     session = serializers.SerializerMethodField(read_only=True)
     account = AccountSerializer(read_only=True)
-    co_owner = CoOwnerSerializer(read_only=True, required=False)
+    co_owner = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
@@ -51,6 +45,9 @@ class UserSerializer(serializers.ModelSerializer):
     def get_service_provisioned_until(self, obj):
         return obj.account.service_provisioned_until
 
+    def get_co_owner(self, obj):
+        return obj.co_owner
+
     def get_session(self, obj):
         auth_methods = self.context["request"].ory_session.auth_methods
         completed_at = auth_methods[0]['completed_at'] if auth_methods else None
@@ -75,6 +72,17 @@ class UserSerializer(serializers.ModelSerializer):
         if self.context["request"].device:
             return self.context["request"].device.last_login
         return None
+
+
+class LinkUserSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+
+class ActivationLinkQrSerializer(serializers.Serializer):
+    qr_code = serializers.CharField(read_only=True)
+
+    def to_representation(self, instance):
+        return segno.make(instance.recovery_link).terminal()
 
 
 class PaymentMethodSerializer(serializers.Serializer):

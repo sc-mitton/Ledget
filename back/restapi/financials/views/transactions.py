@@ -343,7 +343,7 @@ class TransactionViewSet(ModelViewSet):
                 raise ValidationError('Invalid account id')
         else:
             plaid_items = PlaidItem.objects.filter(
-                user_id__in=self.request.user.account_user_ids
+                user__in=self.request.user.account.users.all()
             )
 
         for item in plaid_items:
@@ -378,8 +378,8 @@ class TransactionViewSet(ModelViewSet):
     def _exract_filter_args(self):
         query_params = self.request.query_params
 
-        result = {'account__plaid_item__user_id__in':
-                  self.request.user.account_user_ids}
+        result = {'account__plaid_item__user__in':
+                  self.request.user.account.users.all()}
         result.update(self._extract_date_boundaries())
 
         # If querying for unconfirmed transactions

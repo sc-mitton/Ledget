@@ -51,6 +51,11 @@ STRIPE_WEBHOOK_SECRET = get_secret('stripe_webhook_secret')
 ORY_HOST = 'https://reverent-lewin-bqqp1o2zws.projects.oryapis.com'
 ORY_HOOK_API_KEY = get_secret('ory_hook_api_key')
 ORY_API_KEY = get_secret('ory_api_key')
+ORY_USER_SCHEMA_ID = (
+    '0a6ec3dda66dbf64a8274fd8da74139243ad7e3'
+    '004949f535b72d62754858d98ddbe057d886ab602'
+    'e0d2555e2e8ac78d8f3cb7a9c6294e40fb5983762a855651'
+)
 
 # Oathkeeper
 OATHKEEPER_ENDPOINT = 'http://oathkeeper:4456/.well-known/jwks.json'

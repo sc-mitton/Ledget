@@ -22,9 +22,10 @@ import {
     DropdownItem,
     BakedSwitch,
     useColorScheme,
+    CircleIconButton
 } from '@ledget/ui'
-import { UpdatePersonalInfo } from '@modals/index'
-import { CreditCard } from '@geist-ui/icons'
+import { UpdatePersonalInfo, AddUserModal } from '@modals/index'
+import { CreditCard, UserPlus } from '@geist-ui/icons'
 
 
 const getStatusColor = (subscription: Subscription) => {
@@ -53,19 +54,31 @@ const getStatus = (subscription: Subscription) => {
     return subscription.status?.toLowerCase()
 }
 
-const Info = ({ children }: { children: React.ReactNode }) => {
+const Info = () => {
     const { data: user } = useGetMeQuery()
+    const [editPersonalInfoModal, setEditPersonalInfoModal] = useState(false)
 
     return (
-        <div id="info-container">
-            <div>
-                <h3 >{`${user?.name.first} ${user?.name.last}`}</h3>
+        <>
+            <div id="info-container">
+                <div>
+                    <h3 >{`${user?.name.first} ${user?.name.last}`}</h3>
+                </div>
+                <div>
+                    <span>{`${user?.email}`}</span>
+                </div>
+                <IconButton
+                    id='edit-personal-info--button'
+                    onClick={() => setEditPersonalInfoModal(true)}
+                    aria-label="Edit personal info"
+                >
+                    <Edit2 className='icon' />
+                </IconButton>
             </div>
-            <div>
-                <span>{`${user?.email}`}</span>
-            </div>
-            {children}
-        </div>
+            {editPersonalInfoModal && (
+                <UpdatePersonalInfo onClose={() => setEditPersonalInfoModal(false)} />
+            )}
+        </>
     )
 }
 
@@ -251,7 +264,7 @@ const PaymentMethod = () => {
     )
 }
 
-const Settings = () => {
+const Preferences = () => {
     const { isDark, setDarkMode } = useColorScheme()
 
     return (
@@ -274,12 +287,31 @@ const Settings = () => {
     )
 }
 
+const Household = () => {
+    const [addUserModal, setAddUserModal] = useState(false)
+
+    return (
+        <>
+            <section className="section">
+                <h4 className='header2'>Household</h4>
+                <div className="settings-list inner-window" id='household'>
+                    <span>Members</span>
+                    <CircleIconButton size='medium' color='blue' id='add-user-button' onClick={() => setAddUserModal(true)}>
+                        <UserPlus className='icon' />
+                    </CircleIconButton>
+                </div>
+            </section>
+            {addUserModal && <AddUserModal onClose={() => setAddUserModal(false)} />}
+        </>
+    )
+}
+
+
 const Account = () => {
     const { isLoading: loadingPaymentMethod } = useGetPaymentMethodQuery()
     const { isLoading: loadingInvoice } = useGetNextInvoiceQuery()
     const { isLoading: loadingSubscription } = useGetSubscriptionQuery()
     const { data: user } = useGetMeQuery()
-    const [editPersonalInfoModal, setEditPersonalInfoModal] = useState(false)
 
     return (
         <>
@@ -295,27 +327,14 @@ const Account = () => {
                         {user && `${user.name.first.charAt(0).toUpperCase()} ${user.name.last.charAt(0).toUpperCase()}`}
                     </div>
                     <div className="sections">
-                        <Info>
-                            <IconButton
-                                id='edit-personal-info--button'
-                                onClick={() => setEditPersonalInfoModal(true)}
-                                aria-label="Edit personal info"
-                            >
-                                <Edit2 className='icon' />
-                            </IconButton>
-                        </Info>
+                        <Info />
+                        <Household />
                         <Plan />
                         <PaymentMethod />
-                        <Settings />
+                        <Preferences />
                     </div>
                 </div>
             </ShimmerDiv>
-            {editPersonalInfoModal && (
-                <UpdatePersonalInfo
-                    onClose={() =>
-                        setEditPersonalInfoModal(false)
-                    } />
-            )}
             <Outlet />
         </>
     )

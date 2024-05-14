@@ -62,7 +62,7 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
             return Bill.objects.filter(
                 Q(expires__gte=dbtz.now()) | Q(expires__isnull=True),
                 removed_on__isnull=True,
-                userbill__user_id__in=self.request.user.account_user_ids
+                userbill__user__in=self.request.user.account.users.all()
             )
 
     def get_object(self):
@@ -238,7 +238,7 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
         monthly_amounts_spent = Transaction.objects.filter(
                 transactioncategory__category__id=pk,
                 transactioncategory__category__usercategory__user_id__in # noqa
-                =self.request.user.account_user_ids
+                =self.request.user.account.users.all()
             ).annotate(
                 month=ExtractMonth('datetime'),
                 year=ExtractYear('datetime')

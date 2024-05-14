@@ -41,10 +41,8 @@ class User(models.Model):
         TOTP = 'totp', _('TOTP')
 
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
-    co_owner = models.ForeignKey(
-        'self', on_delete=models.SET_NULL, null=True, default=None
-    )
-    account = models.OneToOneField('Account', on_delete=models.CASCADE)
+    account = models.ForeignKey('Account', on_delete=models.CASCADE,
+                                related_name='users')
     is_active = models.BooleanField(default=True)  # tombstone
     is_onboarded = models.BooleanField(default=False)
     is_verified = models.BooleanField(default=False)
@@ -72,18 +70,19 @@ class User(models.Model):
         super().__setattr__(name, value)
 
     @property
-    def account_user_ids(self):
-        return [str(self.id)] \
-            if self.co_owner is None \
-            else [str(self.id), str(self.co_owner.id)]
-
-    @property
     def traits(self):
         return self._traits
 
     @traits.setter
     def traits(self, value: dict):
         self._traits = value
+
+    @property
+    def co_owner(self):
+        return next(
+            (user for user in self.account.users.all() if user.id != self.id),
+            None
+        )
 
     @property
     def is_authenticated(self):

@@ -109,6 +109,17 @@
     }
 }
 
+#household {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    #add-user-button {
+        color: var(--white);
+        margin: .375em;
+    }
+}
+
 
 @media (max-width: 550) {
     .card-info--container {

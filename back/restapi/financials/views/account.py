@@ -48,11 +48,11 @@ class AccountsView(GenericAPIView):
     def get_queryset(self, serializer):
         if isinstance(serializer.child, UserAccountSerializer):
             return UserAccount.objects.filter(
-                user_id__in=self.request.user.account_user_ids
+                user_in=self.request.user.account.users.all()
             )
         else:
             return Account.objects.filter(
-                useraccount__user_id__in=self.request.user.account_user_ids
+                useraccount__user__in=self.request.user.account.users.all()
             )
 
     def get_object(self, request):
@@ -76,7 +76,7 @@ class AccountsView(GenericAPIView):
         '''Get all the account data belonging to a specific user'''
 
         accounts = Account.objects.filter(
-            useraccount__user_id__in=self.request.user.account_user_ids) \
+            useraccount__user__in=self.request.user.account.users.all()) \
             .order_by('useraccount__order') \
             .prefetch_related('plaid_item') \
             .prefetch_related('institution')
