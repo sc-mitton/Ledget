@@ -2,10 +2,13 @@ import json
 from unittest import skip # noqa
 from unittest.mock import patch, Mock
 from datetime import datetime
+import uuid
+from pathlib import Path
 
 from django.urls import reverse
 from django.test import Client
 from django.conf import settings
+import ory_client
 
 from restapi.tests.utils import timeit # noqa
 from restapi.tests.mixins import ViewTestsMixin, session_payloads, encode_jwt
@@ -13,6 +16,13 @@ from core.models import Device
 
 
 class TestUserViews(ViewTestsMixin):
+
+    def setUp(self):
+        super().setUp()
+
+        file = Path(__file__).parent / 'mock_recovery_link_response.json'
+        with open(file) as f:
+            self.create_recovery_link_for_identity_mock_response = json.load(f)
 
     def test_get_me(self):
         response = self.client.get(reverse('user-me'))
@@ -76,3 +86,47 @@ class TestUserViews(ViewTestsMixin):
 
         response = self.client.patch(reverse('session-extend'))
         self.assertEqual(response.status_code, 200)
+
+    @patch('core.views.user.IdentityApi')
+    def test_add_user_to_account_view(self, identity_api_mock):
+
+        # Mocking
+        mock = Mock()
+        identity_api_mock.return_value = mock
+        mock.create_identity.return_value = {'id': str(uuid.uuid4())}
+        mock.create_recovery_link_for_identity.return_value = \
+            self.create_recovery_link_for_identity_mock_response
+
+        # Test
+        response = self.aal2_client.post(
+            reverse('add-user-to-account'),
+            data=json.dumps({"email": "newaccountemail@test.com"}),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNotNone(response.data['recovery_link'])
+        self.assertIsNotNone(response.data['expires_at'])
+
+    @patch('core.views.user.IdentityApi')
+    def test_retry_add_user_to_account(self, identity_api_mock):
+
+        # Mocking
+        mock = Mock()
+        identity_api_mock.return_value = mock
+        mock.create_identity.side_effect = ory_client.ApiException(
+            status=409,
+            reason='Conflict'
+        )
+        mock.list_identities.return_value = {'id': str(uuid.uuid4())}
+        mock.create_recovery_link_for_identity.return_value = \
+            self.create_recovery_link_for_identity_mock_response
+
+        # Test
+        response = self.aal2_client.post(
+            reverse('add-user-to-account'),
+            data=json.dumps({"email": "newaccountemail@test.com"}),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNotNone(response.data['recovery_link'])
+        self.assertIsNotNone(response.data['expires_at'])

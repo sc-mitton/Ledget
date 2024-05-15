@@ -86,6 +86,11 @@ class BaseFreshSessionClass(BasePermission):
         return seconds_since_last_login < settings.SESSION_MAX_AGE_SECONDS
 
     def get_last_ory_login_delta(self, request, aal):
+        '''
+        Check the session information for the last login with the given aal
+        and return the time since that login in seconds
+        '''
+
         logins = request.META[OATHKEEPER_HEADER]["session"]["authentication_methods"]
         last_login = None
         for login in reversed(logins):
@@ -97,7 +102,7 @@ class BaseFreshSessionClass(BasePermission):
             completed_at = datetime.fromisoformat(last_login["completed_at"])
             return int(time.time()) - int(completed_at.timestamp())
         else:
-            return time.time()
+            return 0
 
 
 class HighestAalFreshSession(BaseFreshSessionClass):

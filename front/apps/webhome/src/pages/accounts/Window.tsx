@@ -293,7 +293,6 @@ function Window() {
                             }}
                         />}
                     <CircleIconButton
-                        size='2em'
                         onClick={() => setShowFilters(prev => !prev)}
                         aria-label='Filter Transactions'
                         aria-expanded={showFilters}

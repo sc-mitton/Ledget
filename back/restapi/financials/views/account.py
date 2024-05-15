@@ -48,7 +48,7 @@ class AccountsView(GenericAPIView):
     def get_queryset(self, serializer):
         if isinstance(serializer.child, UserAccountSerializer):
             return UserAccount.objects.filter(
-                user_in=self.request.user.account.users.all()
+                user__in=self.request.user.account.users.all()
             )
         else:
             return Account.objects.filter(

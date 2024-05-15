@@ -79,10 +79,14 @@ class LinkUserSerializer(serializers.Serializer):
 
 
 class ActivationLinkQrSerializer(serializers.Serializer):
-    qr_code = serializers.CharField(read_only=True)
+    recovery_link = serializers.CharField(read_only=True)
+    expires_at = serializers.DateTimeField(read_only=True)
 
     def to_representation(self, instance):
-        return segno.make(instance.recovery_link).terminal()
+        return {
+            'recovery_link': segno.make(instance['recovery_link']).svg_data_uri(),
+            'expires_at': instance['expires_at']
+        }
 
 
 class PaymentMethodSerializer(serializers.Serializer):

@@ -40,3 +40,4 @@ export { default as ForgotPassword } from './images/ForgotPassword'
 export { default as StripeLogo } from './images/StripeLogo'
 export { default as AuthenticatorImage } from './images/Authenticator';
 export { default as RecoveryCodeImage } from './images/RecoveryCode';
+export { default as EnvelopeImage } from './images/Envelope';

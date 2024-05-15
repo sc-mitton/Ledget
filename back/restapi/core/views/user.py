@@ -39,69 +39,86 @@ class UserView(RetrieveUpdateAPIView):
 
 
 class AddUserToAccountView(GenericAPIView):
-    permission_classes = [HighestAalFreshSession]
+    permission_classes = [HighestAalFreshSession, IsAuthenticated]
 
     def post(self, request):
 
-        activation_link = self._get_activation_link()
-        data = ActivationLinkQrSerializer({"activation_link": activation_link}).data
-
-        return Response(data, status=status.HTTP_204_NO_CONTENT)
-
-    def _get_activation_link(self):
-
+        # Create or get the ory identity id
+        identity_id = None
         try:
             identity_id = self._create_identity()
-            activation_link = self._create_activation_link(identity_id)
+        except ory_client.ApiException as e:
+            if e.status == 409 and e.reason == 'Conflict':
+                identity_id = self._get_ory_identity_id()
+            else:
+                logger.error(f"Failed to create identity: {e}")
+                return Response(
+                    data={
+                        'error': 'Failed to create identity',
+                        'code': 'identity_creation_failed'
+                    },
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
+        finally:
+            self._update_or_create_db_user(identity_id)
+
+        # Create activation link and return it
+        recovery_link = None
+        try:
+            recovery_link = self._create_activation_link(identity_id)
         except Exception as e:
-            logger.error(f"Failed to create identity: {e}")
+            logger.error(f"Failed to create activation link: {e}")
             return Response(
                 data={
-                    'error': 'Failed to create identity',
-                    'code': 'identity_creation_failed'
+                    'error': 'Failed to create activation link',
+                    'code': 'activation_link_creation_failed'
                 },
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-        return activation_link
+
+        s = ActivationLinkQrSerializer(recovery_link)
+        return Response(s.data, status=status.HTTP_200_OK)
 
     def _create_activation_link(self, user_id):
         with ory_client.ApiClient(ory_configuration) as api_client:
             api_instance = IdentityApi(api_client)
-            create_response = api_instance.create_recovery_link_for_identity(
-                id=user_id,
-                body={"expires_in": settings.ORY_RECOVERY_LINK_EXPIRATION}
-            )
-            return create_response['recovery_link']['link']
+            recovery_link = api_instance.create_recovery_link_for_identity({
+                "expires_in": settings.ORY_RECOVERY_LINK_EXPIRATION,
+                'identity_id': user_id
+            })
+            return recovery_link
 
-    def _get_identity_id(self):
+    def _get_ory_identity_id(self):
+        email = self._get_validated_email()
 
         with ory_client.ApiClient(ory_configuration) as api_client:
             api_instance = IdentityApi(api_client)
-            identity = api_instance.get_identity()
-            get_user_model().objects.create(
-                account=self.request.user.account,
-                id=identity['id'],
-                is_onboarded=True
-            )
+            identity = api_instance.list_identities(credentials_identifier=email)
+
         return identity['id']
 
-    def _create_identity(self):
-        email = self._get_validated_serializer_data()
+    def _create_identity(self) -> str:
+        email = self._get_validated_email()
 
         with ory_client.ApiClient(ory_configuration) as api_client:
             api_instance = IdentityApi(api_client)
-            create_response = api_instance.create_identity(
-                body={
-                    "schema_id": settings.ORY_USER_SCHEMA_ID,
-                    "traits": {**email, 'name': {'first': '', 'last': ''}}
-                }
-            )
+            create_response = api_instance.create_identity({
+                "schema_id": settings.ORY_USER_SCHEMA_ID,
+                "traits": {'email': email, 'name': {'first': '', 'last': ''}}
+            })
         return create_response['id']
 
-    def _get_validated_serializer_data(self):
+    def _update_or_create_db_user(self, identity_id):
+        get_user_model().objects.update_or_create(
+            id=identity_id,
+            account=self.request.user.account,
+            is_onboarded=True
+        )
+
+    def _get_validated_email(self):
         serializer = LinkUserSerializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
-        return serializer.validated_data
+        return serializer.validated_data['email']
 
 
 class UserSessionExtendView(GenericAPIView):
@@ -113,7 +130,7 @@ class UserSessionExtendView(GenericAPIView):
         try:
             with ory_client.ApiClient(ory_configuration) as api_client:
                 api_instance = IdentityApi(api_client)
-                api_instance.extend_session(id=self.request.ory_session.id)
+                api_instance.extend_session(id=request.ory_session.id)
         except ory_client.ApiException as e:
             logger.error(f"Failed to extend session: {e}")
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)

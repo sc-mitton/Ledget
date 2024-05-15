@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, UTC
 import os
 
 from django.test import TestCase
@@ -23,7 +23,7 @@ from budget.models import UserCategory, UserBill, Category, Bill
 
 public_key = settings.OATHKEEPER_PUBLIC_KEY
 private_key = settings.OATHKEEPER_PRIVATE_KEY
-current_time = datetime.utcnow().isoformat(timespec='milliseconds') + 'Z'
+current_time = datetime.now(UTC).isoformat(timespec='milliseconds') + 'Z'
 
 session_payloads = [
     {
@@ -42,7 +42,7 @@ session_payloads = [
             'authentication_methods': [
                 {
                     "aal": f"aal{i % 2 + 1}",
-                    "completed_at": current_time,
+                    "completed_at": datetime.now(UTC).strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
                     "method": "password"
                 }
             ],
