@@ -107,6 +107,22 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
+    id: 'co_owner',
+    match: {
+      methods: ['GET'],
+      url: base_url + '/user/co-owner',
+    },
+  },
+  BaseWithAuth
+  {
+    id: 'account',
+    match: {
+      methods: ['POST'],
+      url: base_url + '/user/account',
+    },
+  },
+  BaseWithAuth
+  {
     id: 'email_user',
     match: {
       methods: ['POST'],
