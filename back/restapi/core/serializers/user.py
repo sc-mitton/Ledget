@@ -1,9 +1,25 @@
+from io import BytesIO
+from base64 import b64encode
+
 from rest_framework import serializers
 from django.utils import timezone
-import segno
+import qrcode
+from qrcode.image.styledpil import StyledPilImage
+from qrcode.image.styles.moduledrawers.pil import CircleModuleDrawer
+from qrcode.image.styles.colormasks import HorizontalGradiantColorMask
 
 from core.models import User, Feedback
 from .account import AccountSerializer
+
+
+class NameSerializer(serializers.Serializer):
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+
+
+class CoOwnerSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    name = NameSerializer()
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -46,7 +62,7 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.account.service_provisioned_until
 
     def get_co_owner(self, obj):
-        return obj.co_owner
+        return obj.co_owner.id
 
     def get_session(self, obj):
         auth_methods = self.context["request"].ory_session.auth_methods
@@ -83,8 +99,28 @@ class ActivationLinkQrSerializer(serializers.Serializer):
     expires_at = serializers.DateTimeField(read_only=True)
 
     def to_representation(self, instance):
+        recovery_link = instance['recovery_link'] + f"?code={instance['recovery_code']}"
+
+        qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_L)
+        qr.add_data(recovery_link)
+        mask = HorizontalGradiantColorMask(
+            left_color=(39, 54, 104),
+            right_color=(89, 113, 192)
+        )
+        img = qr.make_image(
+            image_factory=StyledPilImage,
+            module_drawer=CircleModuleDrawer(),
+            color_mask=mask
+        )
+
+        buffer = BytesIO()
+        img.save(buffer)
+        encoded_img = b64encode(buffer.getvalue()).decode()
+        data_uri = f"data:image/png;base64,{encoded_img}"
+
         return {
-            'recovery_link': segno.make(instance['recovery_link']).svg_data_uri(),
+            'recovery_link_qr': data_uri,
+            'recovery_link': recovery_link,
             'expires_at': instance['expires_at']
         }
 
