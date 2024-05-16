@@ -1,12 +1,13 @@
 body {
-    overflow-x: hidden;
-    overflow-y: auto;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
 }
 
 main {
     background-color: var(--window-background-color-portal);
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 #top-header {
@@ -50,6 +51,13 @@ main {
     display: grid;
     place-items: center;
     background: var(--gradient-window-background);
+}
+
+// If mozilla, no gradien background
+@-moz-document url-prefix() {
+    .page {
+        background: var(--window-background-color);
+    }
 }
 
 .window {
@@ -98,6 +106,15 @@ main {
 }
 
 @media only screen and (max-width: 700px) {
+
+    main.light {
+        .page {
+            background: none;
+        }
+
+        background-color: var(--window-background-color);
+    }
+
     .window {
         width: 80%;
         max-width: 100%;

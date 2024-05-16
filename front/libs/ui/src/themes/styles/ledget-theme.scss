@@ -94,7 +94,7 @@
         --window: hsl(0, 0%, 7%);
         --window--portal: hsl(0, 0%, 9%);
         --window2: var(--inner-window);
-        --window-background-color: hsl(0, 0%, 2%);
+        --window-background-color: hsl(0, 0%, 4%);
         --window-background-color-rgb: 5, 5, 5;
         --window-background-color-portal: hsl(0, 0%, 2%);
         --window-no-background: var(--window-background-color);
@@ -106,7 +106,7 @@
         --window-portal-drop-shadow-color: hsl(0, 0%, 6%);
 
         // Side Nav
-        --sidenav-drop-shadow: 0 0px 4px hsl(0, 0%, 20%);
+        --sidenav-drop-shadow: 0 0px 4px hsl(0, 0%, 16%);
         --side-window: hsl(0, 0%, 6%);
 
         --wafer-background: hsl(0, 0%, 1%);
@@ -190,7 +190,7 @@
         --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
         --sidenav-drop-shadow-color: hsl(0, 0%, 13%);
 
-        --header-box-shadow-color: hsl(0, 0%, 11%);
+        --header-box-shadow-color: hsl(0, 0%, 10%);
         --wafer-drop-shadow-color: hsl(0, 0%, 14%);
         --scroll-shadow: hsl(0, 0%, 3%), transparent;
         --dropdown-box-shadow-color: hsl(0, 0%, 0%);

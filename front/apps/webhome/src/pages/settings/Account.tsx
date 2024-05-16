@@ -306,7 +306,6 @@ const Household = () => {
     )
 }
 
-
 const Account = () => {
     const { isLoading: loadingPaymentMethod } = useGetPaymentMethodQuery()
     const { isLoading: loadingInvoice } = useGetNextInvoiceQuery()

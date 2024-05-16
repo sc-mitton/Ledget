@@ -1,4 +1,5 @@
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query'
+import { SerializedError } from '@reduxjs/toolkit'
 
 /**
  * Type predicate to narrow an unknown error to `FetchBaseQueryError`
@@ -36,4 +37,16 @@ export function isErrorWithCode(
         'code' in (error as any).error &&
         typeof (error as any).error.code === 'string'
     )
+}
+
+export function hasErrorCode(
+    code: string,
+    error?: FetchBaseQueryError | SerializedError,
+): boolean {
+    return (
+        error &&
+        'status' in error &&
+        isErrorWithCode(error.data) &&
+        error.data.error.code === code
+    ) || false
 }

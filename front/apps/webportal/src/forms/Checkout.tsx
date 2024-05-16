@@ -21,7 +21,8 @@ import {
     NameOnCardInput,
     CityStateZipInputs,
     baseBillingSchema,
-    DollarCents
+    DollarCents,
+    useColorScheme
 } from '@ledget/ui'
 import { LedgetLogoIcon, StripeLogo } from '@ledget/media'
 
@@ -41,7 +42,7 @@ const PriceRadios = ({ register }: { register: UseFormRegister<z.infer<typeof sc
             {prices &&
                 <div id="prices-container">
                     <div id="prices-container-header">
-                        <LedgetLogoIcon />
+                        <LedgetLogoIcon size={'1.75em'} />
                     </div>
                     <div id="subscription-radios--container">
                         {prices.map((p, i) =>
@@ -273,21 +274,23 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK)
 
 const CheckoutWindow = () => {
     const { isLoading } = useGetPricesQuery()
+    const { isDark } = useColorScheme()
 
     return (
         <>
             {!isLoading &&
                 <Elements stripe={stripePromise as any} options={cardOptions}>
-                    <div id="checkout-window" className="window">
+                    <div id="checkout-window" className={`${isDark ? 'dark' : 'light'} window`}>
                         <Form id="billing-form" />
-                        <div className="stripe-logo-container">
-                            <div>powered by</div>
-                            <div>
-                                <a href="https://stripe.com/" target="_blank" rel="noopener noreferrer">
-                                    <StripeLogo />
-                                </a>
-                            </div>
-                        </div>
+                        {window.innerWidth > 700 &&
+                            <div className="stripe-logo-container">
+                                <div>powered by</div>
+                                <div>
+                                    <a href="https://stripe.com/" target="_blank" rel="noopener noreferrer">
+                                        <StripeLogo />
+                                    </a>
+                                </div>
+                            </div>}
                     </div>
                 </Elements>
             }

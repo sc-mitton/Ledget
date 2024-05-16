@@ -8,7 +8,8 @@ import {
     FormError,
     JiggleDiv,
     VerificationForm,
-    VerificationStatusGraphic
+    VerificationStatusGraphic,
+    useColorScheme
 } from "@ledget/ui"
 import { useFlow } from '@ledget/ory'
 import { useLazyGetVerificationFlowQuery, useCompleteVerificationFlowMutation } from '@features/orySlice'
@@ -29,6 +30,7 @@ const Verification = () => {
         isCompletingFlow,
         isCompleteSuccess
     } = flowStatus
+    const { isDark } = useColorScheme()
 
     useEffect(() => { fetchFlow() }, [])
 
@@ -95,7 +97,7 @@ const Verification = () => {
                 <span>Step 3 of 4</span>
             </div>
             <div id="verification--container">
-                <VerificationStatusGraphic finished={codeIsCorrect} />
+                <VerificationStatusGraphic finished={codeIsCorrect} dark={isDark} />
                 {errMsg
                     ?
                     <div id="verification-form-error-container">

@@ -4,6 +4,7 @@ import { Check, Mail } from '@geist-ui/icons'
 import './status-pulse.scss'
 import { AuthenticatorImage, RecoveryCodeImage } from '@ledget/media'
 import { shuffleArray } from '../../utils/funcs'
+import { EnvelopeImage } from '@ledget/media'
 
 
 interface StatusPulseProps {
@@ -71,15 +72,18 @@ export const KeyPadGraphic = ({ finished = false }) => {
 
 }
 
-export const VerificationStatusGraphic = ({ finished = false }) => (
-  <div id='verify-graphic--container'>
-    <Mail size={'3em'} strokeWidth={1} />
-    <div id="verification-pulse-status">
-      <StatusPulse
-        positive={finished}
-        colorDefaultPositive={false}
-        size={'medium-large'}
-      />
+export const VerificationStatusGraphic = ({ finished = false, dark = false }) => {
+
+  return (
+    <div id='verify-graphic--container'>
+      <EnvelopeImage dark={dark} />
+      <div id="verification-pulse-status">
+        <StatusPulse
+          positive={finished}
+          colorDefaultPositive={false}
+          size={'medium-large'}
+        />
+      </div>
     </div>
-  </div>
-)
+  )
+}

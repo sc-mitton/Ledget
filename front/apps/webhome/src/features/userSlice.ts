@@ -189,11 +189,11 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
             }),
             invalidatesTags: ['user'],
         }),
-        addUserToAccount: builder.mutation<{ qr_code: string }, { email: string }>({
+        addUserToAccount: builder.mutation<{ recovery_link: string, recovery_link_qr: string, expires_at: string }, { email: string }>({
             query: ({ email }) => ({
                 url: 'user/account',
                 method: 'POST',
-                body: { email },
+                body: { email }
             })
         }),
     })

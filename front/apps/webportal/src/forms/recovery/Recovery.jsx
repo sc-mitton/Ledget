@@ -6,11 +6,10 @@ import { AnimatePresence } from "framer-motion"
 import './style/Recovery.scss'
 import { WindowLoadingBar } from '@pieces'
 import { ledgetapi } from "@api"
-import { FormError, MainButton, SlideMotionDiv, PlainTextInput, BackButton, StatusPulse, Otc } from '@ledget/ui'
+import { FormError, MainButton, SlideMotionDiv, PlainTextInput, BackButton, StatusPulse, Otc, useColorScheme } from '@ledget/ui'
 import { ForgotPassword } from '@ledget/media'
 import { useLazyGetRecoveryFlowQuery, useCompleteRecoveryFlowMutation } from '@features/orySlice'
 import { useFlow } from '@ledget/ory'
-import { useColorScheme } from '@ledget/ui'
 
 const Error = ({ msg }) => (
     <div className="recovery-error--container">
@@ -187,7 +186,7 @@ const RecoverAccount = () => {
 
                     setCodeSuccess(true)
                     timeout = setTimeout(() => {
-                        window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
+                        window.location.href = import.meta.env.VITE_RECOVERY_REDIRECT
                     }, 1200)
 
                 }).catch((err) => {

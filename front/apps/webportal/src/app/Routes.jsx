@@ -6,12 +6,14 @@ import LoginWindow from '@forms/Login'
 import RegisterWindow from '@forms/Register'
 import CheckoutWindow from '@forms/Checkout'
 import VerificationWindow from '@forms/Verification'
-import RecoverWindow from '@forms/Recovery'
+import RecoverWindow from '@forms/recovery/Main'
 import Header from './header'
 import { SendRegisteredToCheckout } from '@utils'
+import { useColorScheme } from '@ledget/ui'
 
 function AnimatedRoutes() {
     const location = useLocation()
+    const { isDark } = useColorScheme()
 
     // Set title to the current page
     useEffect(() => {
@@ -22,7 +24,7 @@ function AnimatedRoutes() {
     return (
         <>
             <Header />
-            <main>
+            <main className={`main ${isDark ? 'dark' : 'light'}`}>
                 <AnimatePresence mode="wait">
                     <motion.div
                         className='page'

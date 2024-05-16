@@ -29,7 +29,7 @@ import { DepositsIcon, FilterLines, CloseIcon } from '@ledget/media'
 import { AccountsProvider, useAccountsContext } from './context'
 import pathMappings from './path-mappings'
 import { SummaryBox } from './SmallScreenAccounSummary'
-import { isErrorWithCode } from '@api/helpers'
+import { hasErrorCode } from '@api/helpers'
 
 
 const _getNavIcon = (key = '', isCurrent: boolean) => {
@@ -153,13 +153,7 @@ const Filters = ({ visible = false, close }: { visible: boolean, close: () => vo
 
     // Handle get accounts error
     useEffect(() => {
-        if (
-            getAccountsError &&
-            'status' in getAccountsError &&
-            isErrorWithCode(getAccountsError.data) &&
-            getAccountsError.data.error.code === 'ITEM_LOGIN_REQUIRED'
-        ) {
-            console.log('dispatchingn toast...')
+        if (hasErrorCode('ITEM_LOGIN_REQUIRED', getAccountsError)) {
             dispatch(popToast({
                 type: 'error',
                 message: 'Account connection broken',
@@ -168,7 +162,6 @@ const Filters = ({ visible = false, close }: { visible: boolean, close: () => vo
                 timer: 10000
             }))
         }
-
     }, [getAccountsError])
 
     // Set filter options
