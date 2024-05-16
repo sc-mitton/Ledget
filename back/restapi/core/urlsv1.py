@@ -2,6 +2,7 @@ from django.urls import path
 
 from core.views.user import (
      UserView,
+     CoOwnerView,
      EmailView,
      UserSessionExtendView,
      FeedbackView,
@@ -17,6 +18,7 @@ from core.views import service as service_views
 
 urlpatterns = [
     path('user/me', UserView.as_view(), name='user-me'),
+    path('user/co_owner', CoOwnerView.as_view(), name='user-co-owner'),
     path('user/email', EmailView.as_view(), name='user_email'),
     path('user/account', AddUserToAccountView.as_view(), name='add-user-to-account'),
     path('user/session/extend', UserSessionExtendView.as_view(),

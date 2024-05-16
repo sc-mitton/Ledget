@@ -8,6 +8,7 @@ from pathlib import Path
 from django.urls import reverse
 from django.test import Client
 from django.conf import settings
+from django.contrib.auth import get_user_model
 import ory_client
 
 from restapi.tests.utils import timeit # noqa
@@ -20,13 +21,35 @@ class TestUserViews(ViewTestsMixin):
     def setUp(self):
         super().setUp()
 
+        # Mocking response file
         file = Path(__file__).parent / 'mock_recovery_link_response.json'
         with open(file) as f:
             self.create_recovery_link_for_identity_mock_response = json.load(f)
 
+        # Create co owner for self.user
+        get_user_model().objects.create(account=self.user.account)
+
     def test_get_me(self):
         response = self.client.get(reverse('user-me'))
         self.assertEqual(response.status_code, 200)
+
+    @patch('core.views.user.IdentityApi')
+    def test_get_co_owner(self, identity_api_mock):
+        mock = Mock()
+        identity_api_mock.return_value = mock
+        fake_email = 'foobar@test.com'
+        mock.get_identity.return_value = {
+            'traits': {
+                'email': fake_email,
+                'name': {
+                    'first_name': 'Foo',
+                    'last_name': 'Bar'
+                }
+            }
+        }
+        response = self.client.get(reverse('user-co-owner'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['email'], fake_email)
 
     def test_anonymous_user_get_me(self):
         client = Client()
@@ -117,7 +140,7 @@ class TestUserViews(ViewTestsMixin):
             status=409,
             reason='Conflict'
         )
-        mock.list_identities.return_value = {'id': str(uuid.uuid4())}
+        mock.list_identities.return_value = [{'id': str(uuid.uuid4())}]
         mock.create_recovery_link_for_identity.return_value = \
             self.create_recovery_link_for_identity_mock_response
 
