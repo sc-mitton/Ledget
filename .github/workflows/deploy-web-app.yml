@@ -10,9 +10,10 @@ on:
       s3-bucket:
         required: true
         type: string
-      test-only:
+      force_run_all:
         required: false
         type: boolean
+        default: false
       role:
         required: true
         type: string
@@ -20,14 +21,27 @@ on:
         required: true
         type: string
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      src: ${{ steps.changes.outputs.src }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            src:
+              - './front/apps/${{ inputs.app }}/**'
   build:
+    if: ${{ needs.changes.outputs.src == 'true' || github.event.inputs.force_run_all == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./front
     strategy:
       matrix:
-        node-version: [ 20.x ]
+        node-version: [20.x]
     steps:
       - uses: actions/checkout@v3
       - name: Use node ${{ matrix.node-version }}

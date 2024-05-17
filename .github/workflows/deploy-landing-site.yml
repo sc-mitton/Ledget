@@ -1,14 +1,7 @@
 name: Deploy Landing Site
 
 on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-permissions:
-  id-token: write
-  contents: read
-
+  workflow_call:
 jobs:
   changes:
     runs-on: ubuntu-latest
@@ -66,4 +59,4 @@ jobs:
       - name: Create CloudFront invalidation
         uses: ./.github/actions/invalidate-cloudfront
         with:
-          distribution: 'ledget.app'
+          distribution: "ledget.app"

@@ -1,0 +1,75 @@
+name: Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      deployments_to_run:
+        description: "Deployments to run"
+        required: true
+        type: choice
+        options:
+          - "all"
+          - "force-run-all"
+          - "webhome"
+          - "webportal"
+          - "landing"
+          - "rest-api"
+          - "lambda functions"
+          - "oathkeeper"
+          - "dynamic-router"
+      force_run:
+        description: "Force run all selected deployment's jobs"
+        required: false
+        type: boolean
+        default: false
+      environment:
+        description: "Environment to deploy to"
+        required: true
+        type: choice
+        default: "uat"
+        options:
+          - "uat"
+          - "prod"
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  deploy-rest-api:
+    if: ${{ inputs.deployments_to_run == 'all' || inputs.deployments_to_run == 'rest-api' || inputs.deployments_to_run == 'force-run-all' }}
+    uses: ./.github/workflows/deploy-rest-api.yml
+    with:
+      force_run_all: ${{ inputs.deployments_to_run == 'force-run-all' || inputs.force_run == true }}
+      version: 1
+      environment: ${{ inputs.environment }}
+      role: 'arn:aws:iam::905418323334:role/gh-actions'
+  deploy-webhome-app:
+    if: ${{ inputs.deployments_to_run == 'all' || inputs.deployments_to_run == 'webhome' || inputs.deployments_to_run == 'force-run-all' }}
+    uses: ./.github/workflows/deploy-web-app.yml
+    with:
+      app: "webhome"
+      version: 1
+      s3-bucket: ${{ inputs.environment == 'uat' && 'uataccounts.ledget.app' || 'accounts.ledget.app' }}
+      role: 'arn:aws:iam::905418323334:role/gh-actions'
+      environment: ${{ inputs.environment }}
+  deploy-webportal-app:
+    if: ${{ inputs.deployments_to_run == 'all' || inputs.deployments_to_run == 'webportal' || inputs.deployments_to_run == 'force-run-all' }}
+    uses: ./.github/workflows/deploy-web-app.yml
+    with:
+      app: "webportal"
+      version: 1
+      s3-bucket: ${{ inputs.environment == 'uat' && 'uatwebportal.ledget.app' || 'webportal.ledget.app' }}
+      role: 'arn:aws:iam::905418323334:role/gh-actions'
+      environment: ${{ inputs.environment }}
+  deploy-landing-app:
+    if: ${{ inputs.deployments_to_run == 'all' || inputs.deployments_to_run == 'landing' || inputs.deployments_to_run == 'force-run-all' }}
+    uses: ./.github/workflows/deploy-landing-site.yml
+  deploy-oathkeeper:
+    if: ${{ inputs.deployments_to_run == 'all' || inputs.deployments_to_run == 'oathkeeper' || inputs.deployments_to_run == 'force-run-all' }}
+    uses: ./.github/workflows/deploy-oathkeeper.yml
+    with:
+      environment: ${{ inputs.environment }}
+      role: 'arn:aws:iam::905418323334:role/gh-actions'
+      version: 1
+  deploy-dynamic-router:
+    if: ${{ inputs.deployments_to_run == 'all' || inputs.deployments_to_run == 'dynamic-router' || inputs.deployments_to_run == 'force-run-all' }}
+    uses: ./.github/workflows/deploy-dynamic-routing-lambda.yml

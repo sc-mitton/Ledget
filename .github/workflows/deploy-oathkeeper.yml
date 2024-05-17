@@ -1,21 +1,20 @@
 name: Oathkeeper pipeline
 
 on:
-    push:
-      branches: [ "main", "uat" ]
-    pull_request:
-      branches: [ "main", "uat" ]
-    workflow_dispatch:
-      inputs:
-        run_all:
-          description: 'Run all jobs'
-          required: false
-          default: false
-          type: 'boolean'
-permissions:
-  id-token: write
-  contents: read
-
+  workflow_call:
+    inputs:
+      environment:
+        description: "Environment to deploy to"
+        required: true
+        type: "string"
+      version:
+        description: "Version of the API"
+        required: true
+        type: "string"
+      role:
+        description: "Role to assume"
+        required: true
+        type: "string"
 jobs:
   # Check if oathkeeper authorizer has changed
   changes:
@@ -24,16 +23,16 @@ jobs:
     outputs:
       src: ${{ steps.changes.outputs.src }}
     steps:
-    - uses: actions/checkout@v3
-    - uses: dorny/paths-filter@v3
-      id: changes
-      with:
-        filters: |
-          src:
-              - './oathkeeper/**'
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            src:
+                - './oathkeeper/**'
   build:
     name: "Build and deploy authorizer"
-    if: ${{ needs.changes.outputs.src == 'true' || (github.event_name == 'workflow_dispatch' && github.event.inputs.run_all == true) }}
+    if: ${{ needs.changes.outputs.src == 'true' || github.event.inputs.force_run == 'true' }}
     needs: changes
     runs-on: ubuntu-latest
     steps:
@@ -48,7 +47,7 @@ jobs:
         with:
           file: ./oathkeeper/rules.jsonnet
           output_file: ./oathkeeper/rules.json
-          params: ${{ github.ref == 'refs/heads/main' && 'domain=api.ledget.app' || 'domain=uat.ledget.app' }}  version=1
+          params: ${{ inputs.environment == 'prod' && 'domain=api.ledget.app' || 'domain=uat.ledget.app' }}  version=${{ inputs.version}}
       - name: Zip the files and layers
         working-directory: ./oathkeeper
         run: |
@@ -57,9 +56,12 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: ${{ github.ref == 'refs/heads/main' && 'arn:aws:iam::905418323334:role/gh-actions' || github.ref == 'refs/heads/uat' && 'replace me' }}
+          role-to-assume: ${{ inputs.role }}
           aws-region: "us-west-2"
       - name: Copy zip to s3
         working-directory: ./oathkeeper/out
+        shell: bash
+        env:
+          bucket: ${{ inputs.environment == 'prod' && 'oathkeeper-authorization-prod' || 'oathkeeper-authorization-uat' }}
         run: |
-          aws s3 sync --delete . s3://oathkeeper-authorization
+          aws s3 sync --delete . s3://$bucket

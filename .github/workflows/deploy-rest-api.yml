@@ -1,0 +1,93 @@
+name: Rest Api Pipeline
+
+on:
+  workflow_call:
+    inputs:
+      force_run_all:
+        description: "Run all jobs"
+        required: false
+        default: false
+        type: "boolean"
+      version:
+        description: "Version of the API"
+        required: true
+        type: "string"
+      environment:
+        description: "Environment to deploy to"
+        required: true
+        type: "string"
+      role:
+        description: "Role to assume"
+        required: true
+        type: "string"
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    # Set job outputs to values from filter step
+    outputs:
+      src: ${{ steps.changes.outputs.src }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            src:
+                - './back/**'
+  test:
+    needs: changes
+    if: ${{ needs.changes.outputs.src == true || github.event.inputs.force_run_all == true }}
+    uses: ./.github/workflows/test-restapi.yml
+    with:
+      force_run_all: ${{ github.event.inputs.force_run_all }}
+  build:
+    name: "Build and Push to ECR"
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Build and push
+        uses: ./.github/actions/build-and-push
+        with:
+          tag: ledget-rest-api
+          version: ${{ github.event.inputs.version }}
+          context: ./back
+          role: ${{ github.event.inputs.role }}
+          environment: ${{ github.event.inputs.environment }}
+  deploy:
+    name: "Deploy Elastic Beanstalk Environment"
+    defaults:
+      run:
+        working-directory: ./back/restapi
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 2
+      matrix:
+        region: [us-west-2]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ github.event.inputs.role }}
+          aws-region: "us-west-2"
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          mask-password: true
+      - name: Install EB CLI
+        run: |
+          sudo apt-get install python3-pip
+          pip3 install awsebcli --upgrade
+      - name: Initialize EB CLI
+        env:
+          REGION: ${{ matrix.region }}
+        run: echo N | eb init ledget-restapi --region $REGION
+      - name: Deploy to Elastic Beanstalk
+        env:
+          REGION: "us-west-2"
+        run: eb deploy ledget-restapi-${{ github.event.inputs.environment }}

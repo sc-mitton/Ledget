@@ -1,14 +1,7 @@
 name: Deploy Dynamic Routing Lambda
 
 on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-permissions:
-  id-token: write
-  contents: read
-
+  workflow_call:
 jobs:
   changes:
     runs-on: ubuntu-latest
