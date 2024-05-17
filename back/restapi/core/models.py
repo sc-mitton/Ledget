@@ -6,6 +6,8 @@ from django.db import models
 from django.utils import timezone
 from django.core.validators import RegexValidator
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import AnonymousUser
+
 import core.tasks as tasks
 
 
@@ -81,7 +83,7 @@ class User(models.Model):
     def co_owner(self):
         return next(
             (user for user in self.account.users.all() if user.id != self.id),
-            None
+            AnonymousUser()
         )
 
     @property

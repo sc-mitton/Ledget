@@ -24,7 +24,7 @@ class TestUserViews(ViewTestsMixin):
         # Mocking response file
         file = Path(__file__).parent / 'mock_recovery_link_response.json'
         with open(file) as f:
-            self.create_recovery_link_for_identity_mock_response = json.load(f)
+            self.create_recovery_code_for_identity = json.load(f)
 
         # Create co owner for self.user
         get_user_model().objects.create(account=self.user.account)
@@ -117,8 +117,8 @@ class TestUserViews(ViewTestsMixin):
         mock = Mock()
         identity_api_mock.return_value = mock
         mock.create_identity.return_value = {'id': str(uuid.uuid4())}
-        mock.create_recovery_link_for_identity.return_value = \
-            self.create_recovery_link_for_identity_mock_response
+        mock.create_recovery_code_for_identity.return_value = \
+            self.create_recovery_code_for_identity
 
         # Test
         response = self.aal2_client.post(
@@ -141,8 +141,8 @@ class TestUserViews(ViewTestsMixin):
             reason='Conflict'
         )
         mock.list_identities.return_value = [{'id': str(uuid.uuid4())}]
-        mock.create_recovery_link_for_identity.return_value = \
-            self.create_recovery_link_for_identity_mock_response
+        mock.create_recovery_code_for_identity.return_value = \
+            self.create_recovery_code_for_identity
 
         # Test
         response = self.aal2_client.post(

@@ -1,9 +1,13 @@
+import functools
 import logging
 
 from rest_framework.permissions import BasePermission
 
 import stripe
 from django.conf import settings
+from rest_framework.response import Response
+from rest_framework.status import HTTP_401_UNAUTHORIZED
+
 
 stripe.api_key = settings.STRIPE_API_KEY
 stripe_logger = logging.getLogger("stripe")
@@ -128,3 +132,28 @@ class OwnsStripeSubscription(BasePermission):
                 customer=customer_id, status="all"
             ).data
         ]
+
+
+class AccountOwner(BasePermission):
+    '''
+    Checks if the user is the primary user on the account
+    '''
+
+    def has_permission(self, request, view):
+        return request.user.account.customer.user_id == request.user.id
+
+
+def is_account_owner(func):
+
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        request = args[1]
+        if not AccountOwner().has_permission(request, None):
+            return Response(
+                {"error": "You do not have permission to perform this action"},
+                status=HTTP_401_UNAUTHORIZED,
+            )
+        else:
+            return func(*args, **kwargs)
+
+    return wrapper

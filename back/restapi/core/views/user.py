@@ -65,7 +65,8 @@ class CoOwnerView(GenericAPIView):
 
 class AddUserToAccountView(GenericAPIView):
     '''
-
+    This view is used to add a user to an account. It creates an identity in ory
+    and updates the user in the database.
     '''
     permission_classes = [HighestAalFreshSession, IsAuthenticated]
 

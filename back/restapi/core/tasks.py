@@ -52,14 +52,17 @@ def delete_ory_identity(user_id: str):
             raise e
 
 
-@shared_task(
-    auto_retry_for=(OperationalError), retry_backoff=10, retry_jitter=True,
-    retry_kwargs={'max_retries': 3}
-)
-def update_db(user, plaid_items):
+@shared_task(auto_retry_for=(OperationalError), retry_backoff=10, retry_jitter=True,
+             retry_kwargs={'max_retries': 3})
+def cancelation_cleanup(user_id: str) -> None:
+    '''
+    Deletes all third party data for a user. This is called when a user
+    cancels their subscription and their billing cycle ends.
+    '''
+    from financials.models import PlaidItem
 
     @transaction.atomic
-    def update():
+    def update_db(user, plaid_items):
         try:
             user.is_active = False
             user.account.canceled_on = timezone.now()
@@ -68,22 +71,13 @@ def update_db(user, plaid_items):
         except Exception as e:
             logger.error(f'Failed to update db for user {user.id} on cancelation: {e}')
 
-    update()
-
-
-def cancelation_cleanup(user_id: str) -> None:
-    '''
-    Deletes all third party data for a user. This is called when a user
-    cancels their subscription and their billing cycle ends.
-    '''
-    from financials.models import PlaidItem
-
     try:
         user = get_user_model().objects.get(id=user_id)
     except get_user_model().DoesNotExist:
         return
 
-    plaid_items = PlaidItem.objects.filter(user_id=user_id)
+    plaid_items = PlaidItem.objects.filter(
+        user_id__in=[user.id, user.co_owner.id])
     delete_tasks = []
     for item in plaid_items:
         delete_task = delete_plaid_item.si(item.id, item.access_token)
@@ -93,7 +87,7 @@ def cancelation_cleanup(user_id: str) -> None:
         grouped_delete_tasks = group(delete_tasks)
         grouped_delete_tasks()
 
-    update_db.delay(user, plaid_items)
+    update_db(user, plaid_items)
     delete_ory_identity.delay(user_id)
 
 

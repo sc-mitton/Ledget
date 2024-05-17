@@ -24,7 +24,7 @@ from core.utils.stripe import stripe_error_handler, StripeError
 from core.models import Customer, Feedback
 from restapi.permissions.auth import can_create_stripe_subscription, IsAuthenticated
 from restapi.permissions.checks import HasCustomer
-from restapi.permissions.objects import OwnsStripeSubscription
+from restapi.permissions.objects import OwnsStripeSubscription, is_account_owner
 
 stripe.api_key = settings.STRIPE_API_KEY
 stripe_logger = logging.getLogger("stripe")
@@ -88,6 +88,7 @@ class DeleteRestartSubscriptionView(GenericAPIView):
             stripe_logger.error(f'Error updating subscription: {e}')
             return Response(status=HTTP_400_BAD_REQUEST)
 
+    @is_account_owner
     def delete(self, request, *args, **kwargs):
         '''
         Cancel the subscription at the end of the period
