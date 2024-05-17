@@ -14,6 +14,7 @@ import ory_client
 from restapi.tests.utils import timeit # noqa
 from restapi.tests.mixins import ViewTestsMixin, session_payloads, encode_jwt
 from core.models import Device
+from core.views.service import stripe as service_stripe
 
 
 class TestUserViews(ViewTestsMixin):
@@ -153,3 +154,27 @@ class TestUserViews(ViewTestsMixin):
         self.assertEqual(response.status_code, 200)
         self.assertIsNotNone(response.data['recovery_link'])
         self.assertIsNotNone(response.data['expires_at'])
+
+    @patch.object(service_stripe, 'Customer')
+    @patch.object(service_stripe, 'PaymentMethod')
+    def test_update_default_payment_method(self, payment_method_mock, customer_mock):
+        old_payment_method = 'pm_456'
+        new_payment_method = 'pm_123'
+
+        response = self.client.post(
+            reverse('default-payment-method'),
+            data=json.dumps({
+                'payment_method_id': new_payment_method,
+                'old_payment_method_id': old_payment_method
+            }),
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 200)
+        payment_method_mock.detach.assert_called_once_with(
+            old_payment_method
+        )
+        customer_mock.modify.assert_called_once_with(
+            self.user.account.customer.id,
+            invoice_settings={'default_payment_method': new_payment_method}
+        )

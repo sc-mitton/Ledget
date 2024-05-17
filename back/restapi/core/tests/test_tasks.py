@@ -2,8 +2,8 @@ from unittest.mock import patch
 from django.test import override_settings
 
 # Import the module you want to test after patching
-from restapi.tests.mixins import ViewTestsMixin
-from core.tasks import cancelation_cleanup
+from restapi.tests.mixins import ViewTestsMixin, session_payloads
+from core.tasks import cancelation_cleanup, cleanup_hanging_ory_users
 from plaid.model.item_remove_request import ItemRemoveRequest
 from core.tasks import plaid_client, identity_api  # Import it after patching
 
@@ -45,3 +45,13 @@ class TestTasks(ViewTestsMixin):
         self.user.refresh_from_db()
         self.assertEqual(self.user.is_active, False)
         self.assertEqual(len(self.user.plaiditem_set.all()), 0)
+
+    @patch.object(identity_api, 'IdentityApi')
+    def test_cleanup_hanging_ory_users(self, mock_identity_api):
+        mock_api_instance = mock_identity_api.return_value
+        mock_api_instance.get_identity.return_value = \
+            session_payloads[0]['session']['identity']
+
+        cleanup_hanging_ory_users(str(self.user.id))
+
+        mock_api_instance.get_identity.assert_called_once_with(self.user.id)

@@ -180,7 +180,7 @@ class SubscriptionView(GenericAPIView):
                 'client_secret': pending_setup_intent.client_secret,
                 'identifier': self.request.user.traits['email']},
                 HTTP_200_OK)
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             return Response({'error': str(e)}, HTTP_400_BAD_REQUEST)
 
     def _create_subscription(self, **kwargs):
@@ -219,7 +219,7 @@ class CreateCustomerView(APIView):
 
         try:
             self._create_customer()
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             stripe_logger.error(f'Error creating customer: {e}')
             return Response(status=HTTP_400_BAD_REQUEST)
 
@@ -261,26 +261,26 @@ class GetSetupIntent(APIView):
         )
 
 
-class PaymentMethodView(APIView):
+class PaymentMethodView(GenericAPIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = [PaymentMethodSerializer]
+    serializer_class = PaymentMethodSerializer
 
     def post(self, request, *args, **kwargs):
         '''
         Set the default payment method for the customer
         '''
         serializer = self.get_serializer(data=request.data)
-        data = serializer.is_valid(raise_exception=True)
+        serializer.is_valid(raise_exception=True)
 
         try:
             stripe.Customer.modify(
                 self.request.user.account.customer.id,
                 invoice_settings={
                     'default_payment_method':
-                    data['payment_method_id']
+                    serializer.data['payment_method_id']
                 }
             )
-            stripe.PaymentMethod.detach(data['old_payment_method_id'])
+            stripe.PaymentMethod.detach(serializer.data['old_payment_method_id'])
         except Exception as e:  # pragma: no cover
             stripe_logger.error(f'Error setting default payment method: {e}')
             return Response(status=HTTP_400_BAD_REQUEST)
@@ -302,7 +302,7 @@ class PaymentMethodView(APIView):
                 'exp_year': payment_methods.data[0].card.exp_year,
                 'last4': payment_methods.data[0].card.last4,
             }
-        except StripeError as e:
+        except StripeError as e:  # pragma: no cover
             stripe_logger.error(e)
             return Response(
                 {'error': e.message},

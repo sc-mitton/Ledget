@@ -152,7 +152,7 @@ def is_account_owner(func):
             return Response(
                 {"error": "You do not have permission to perform this action"},
                 status=HTTP_401_UNAUTHORIZED,
-            )
+            )  # pragma: no cover
         else:
             return func(*args, **kwargs)
 
