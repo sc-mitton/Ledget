@@ -32,7 +32,7 @@ jobs:
                 - './oathkeeper/**'
   build:
     name: "Build and deploy authorizer"
-    if: ${{ needs.changes.outputs.src == 'true' || github.event.inputs.force_run == 'true' }}
+    if: ${{ needs.changes.outputs.src == 'true' || inputs.force_run == 'true' }}
     needs: changes
     runs-on: ubuntu-latest
     steps:

@@ -36,10 +36,10 @@ jobs:
                 - './back/**'
   test:
     needs: changes
-    if: ${{ needs.changes.outputs.src == true || github.event.inputs.force_run_all == true }}
+    if: ${{ needs.changes.outputs.src == true || inputs.force_run_all == true }}
     uses: ./.github/workflows/test-restapi.yml
     with:
-      force_run_all: ${{ github.event.inputs.force_run_all }}
+      force_run_all: ${{ inputs.force_run_all }}
   build:
     name: "Build and Push to ECR"
     needs: test
@@ -51,10 +51,10 @@ jobs:
         uses: ./.github/actions/build-and-push
         with:
           tag: ledget-rest-api
-          version: ${{ github.event.inputs.version }}
+          version: ${{ inputs.version }}
           context: ./back
-          role: ${{ github.event.inputs.role }}
-          environment: ${{ github.event.inputs.environment }}
+          role: ${{ inputs.role }}
+          environment: ${{ inputs.environment }}
   deploy:
     name: "Deploy Elastic Beanstalk Environment"
     defaults:
@@ -72,7 +72,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: ${{ github.event.inputs.role }}
+          role-to-assume: ${{ inputs.role }}
           aws-region: "us-west-2"
       - name: Login to Amazon ECR
         id: login-ecr
@@ -90,4 +90,4 @@ jobs:
       - name: Deploy to Elastic Beanstalk
         env:
           REGION: "us-west-2"
-        run: eb deploy ledget-restapi-${{ github.event.inputs.environment }}
+        run: eb deploy ledget-restapi-${{ inputs.environment }}
