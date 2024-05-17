@@ -18,6 +18,7 @@ import { withReAuth } from '@utils/index'
 import { hasErrorCode } from '@api/helpers'
 import { useLoaded } from '@utils/hooks'
 import { ExternalLink } from '@geist-ui/icons'
+import { Person } from '@ledget/media'
 
 
 const schema = z.object({
@@ -36,8 +37,8 @@ const Slide1 = () => {
     return (
         <form onSubmit={handleSubmit(data => linkUser(data))} id="add-user-form">
             <h2>Add Household Member</h2>
-            <div id='envelope-image' className={`${isDark ? 'dark' : 'light'}`}>
-
+            <div id='person-image' className={`${isDark ? 'dark' : 'light'}`}>
+                <Person dark={isDark} />
             </div>
             <p>Enter the email address of the person you'd like to add to your account.</p>
             <PlainTextInput

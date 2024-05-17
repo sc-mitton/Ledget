@@ -1,11 +1,11 @@
-#envelope-image {
+#person-image {
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 2em 0 1em 0;
 
     &.light img {
-        filter: brightness(.97);
+        filter: brightness(.9);
     }
 }
 

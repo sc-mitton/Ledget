@@ -19,7 +19,6 @@
 #verification-form-container button:first-child {
     margin: 0 auto;
     margin-top: .75em;
-    color: var(--blue-medium-dark);
 }
 
 #verification-form-container span {

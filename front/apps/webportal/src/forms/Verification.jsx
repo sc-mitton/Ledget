@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 
 import { useNavigate } from "react-router-dom"
 
-import "./style/Verification.css"
+import "./style/Verification.scss"
 import { WindowLoadingBar } from "@pieces"
 import {
     FormError,
@@ -96,8 +96,8 @@ const Verification = () => {
                 <h2>Verify Email Address</h2>
                 <span>Step 3 of 4</span>
             </div>
+            <VerificationStatusGraphic finished={codeIsCorrect} dark={isDark} />
             <div id="verification--container">
-                <VerificationStatusGraphic finished={codeIsCorrect} dark={isDark} />
                 {errMsg
                     ?
                     <div id="verification-form-error-container">
@@ -107,8 +107,8 @@ const Verification = () => {
                     :
                     <>
                         <div className="subheader">
-                            <span>Enter the code we sent to your email address </span>
-                            <span>to verify your account:</span>
+                            <span>Enter the code we sent to your email address
+                                to verify your account:</span>
                         </div>
                         <VerificationForm
                             flow={flow}

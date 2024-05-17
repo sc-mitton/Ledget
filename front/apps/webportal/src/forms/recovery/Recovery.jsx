@@ -7,7 +7,7 @@ import './style/Recovery.scss'
 import { WindowLoadingBar } from '@pieces'
 import { ledgetapi } from "@api"
 import { FormError, MainButton, SlideMotionDiv, PlainTextInput, BackButton, StatusPulse, Otc, useColorScheme } from '@ledget/ui'
-import { ForgotPassword } from '@ledget/media'
+import { Key } from '@ledget/media'
 import { useLazyGetRecoveryFlowQuery, useCompleteRecoveryFlowMutation } from '@features/orySlice'
 import { useFlow } from '@ledget/ory'
 
@@ -30,10 +30,7 @@ const MainGraphic = ({ unLocked }) => {
             className={`${(unLocked) ? 'unlocked' : 'locked'}`}
             id="image-container"
         >
-            <ForgotPassword
-                fill={'var(--m-text-secondary)'}
-                stroke={isDark ? 'none' : 'none'}
-            />
+            <Key dark={isDark} />
             <StatusPulse positive={unLocked} size="medium" />
         </div>
     )

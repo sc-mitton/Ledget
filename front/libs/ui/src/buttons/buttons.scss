@@ -729,9 +729,14 @@ button.disabled-hover:hover svg {
 .resend-btn {
     display: flex;
     align-items: center;
+    justify-content: center;
     color: var(--monthly-color-hover);
-    padding: .25em .5em;
+    padding: .375em;
     gap: .125em;
+    border: 1.5px solid var(--blue-light);
+    border-radius: var(--border-radius2);
+    width: 100%;
+    color: var(--blue-medium);
 
     div {
         color: inherit;
