@@ -20,6 +20,11 @@ on:
         description: "Role to assume"
         required: true
         type: "string"
+    secrets:
+      DOCKERHUB_USER:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
 jobs:
   changes:
     runs-on: ubuntu-latest
@@ -40,6 +45,7 @@ jobs:
     uses: ./.github/workflows/test-restapi.yml
     with:
       force_run_all: ${{ inputs.force_run_all }}
+    secrets: inherit
   build:
     name: "Build and Push to ECR"
     needs: test

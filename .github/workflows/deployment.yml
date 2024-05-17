@@ -42,6 +42,7 @@ jobs:
       version: 1
       environment: ${{ inputs.environment }}
       role: 'arn:aws:iam::905418323334:role/gh-actions'
+    secrets: inherit
   deploy-webhome-app:
     if: ${{ inputs.deployments_to_run == 'all' || inputs.deployments_to_run == 'webhome' || inputs.deployments_to_run == 'force-run-all' }}
     uses: ./.github/workflows/deploy-web-app.yml
