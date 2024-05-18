@@ -6,7 +6,8 @@ import LoginWindow from '@forms/Login'
 import RegisterWindow from '@forms/Register'
 import CheckoutWindow from '@forms/Checkout'
 import VerificationWindow from '@forms/Verification'
-import RecoverWindow from '@forms/recovery/Main'
+import { RecoveryWindow } from '@forms/recovery'
+import { ActivationWindow } from '@forms/activation'
 import Header from './header'
 import { SendRegisteredToCheckout } from '@utils'
 import { useColorScheme } from '@ledget/ui'
@@ -38,8 +39,9 @@ function AnimatedRoutes() {
                             <Route path="/" element={<SendRegisteredToCheckout />}>
                                 <Route exact path="/" element={<Navigate to="/login" />} />
                                 <Route exact path="/login" element={<LoginWindow />} />
-                                <Route exact path="/recovery" element={<RecoverWindow />} />
+                                <Route exact path="/recovery" element={<RecoveryWindow />} />
                             </Route>
+                            <Route exact path="/activation" element={<ActivationWindow />} />
                             <Route path="/register" element={<RegisterWindow />} />
                             <Route path="/verification" element={<VerificationWindow />} />
                             <Route path="/checkout" element={<CheckoutWindow />} />

@@ -99,7 +99,8 @@ class ActivationLinkQrSerializer(serializers.Serializer):
     expires_at = serializers.DateTimeField(read_only=True)
 
     def to_representation(self, instance):
-        recovery_link = instance['recovery_link'] + f"?code={instance['recovery_code']}"
+        recovery_link = instance['recovery_link'].replace('recovery', 'activation') + \
+            f"?code={instance['recovery_code']}"
 
         qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_L)
         qr.add_data(recovery_link)

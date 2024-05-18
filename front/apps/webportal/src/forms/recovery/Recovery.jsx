@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { AnimatePresence } from "framer-motion"
 
-import './style/Recovery.scss'
+import './Recovery.scss'
 import { WindowLoadingBar } from '@pieces'
 import { ledgetapi } from "@api"
 import { FormError, MainButton, SlideMotionDiv, PlainTextInput, BackButton, StatusPulse, Otc, useColorScheme } from '@ledget/ui'
@@ -217,13 +217,10 @@ const RecoverAccount = () => {
 
     useEffect(() => { fetchFlow() }, [])
 
-    return (
-        <div className="window" id="recovery-window">
-            <WindowLoadingBar visible={isGettingFlow || isCompletingFlow} />
-            <AnimatePresence mode="wait">
-                {searchParams.get('step') === 'verify'
-                    ?
-                    // Verify Step
+    const renderPage = () => {
+        switch (searchParams.get('step')) {
+            case 'verify':
+                return (
                     <SlideMotionDiv
                         className="recovery-form"
                         id="recovery-verification-form-container"
@@ -233,13 +230,15 @@ const RecoverAccount = () => {
                         <RecoveryVerificationForm
                             flow={result}
                             submit={submit}
-                            finished={codeSuccess}
+                            codeSuccess={codeSuccess}
                             isCompleteError={isCompleteError}
                             errMsg={errMsg}
                         />
                     </SlideMotionDiv>
-                    :
-                    // Initial Step
+                )
+            default:
+            case 'code':
+                return (
                     <SlideMotionDiv
                         id="recovery-code-form-container"
                         key="recovery-code-form-container"
@@ -252,7 +251,15 @@ const RecoverAccount = () => {
                             errMsg={errMsg}
                         />
                     </SlideMotionDiv>
-                }
+                )
+        }
+    }
+
+    return (
+        <div id='recovery-window' className='window'>
+            <WindowLoadingBar visible={isGettingFlow || isCompletingFlow} />
+            <AnimatePresence mode="wait">
+                {renderPage()}
             </AnimatePresence>
         </div>
     )

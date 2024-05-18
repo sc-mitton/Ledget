@@ -38,12 +38,13 @@ $inner-circle-positive: var(--blue-light-hover);
 
 @mixin pulse-styles($outerOrInner: inner) {
 
-    @if $outerOrInner ==inner {
+    @if $outerOrInner==inner {
 
         &.negative {
             background: radial-gradient(circle at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 50%, $inner-circle-negative 80%);
             opacity: .04;
             animation: status-pulse 4s ease-in-out infinite;
+            animation-delay: .3s;
         }
 
         &.color-default-positive,
