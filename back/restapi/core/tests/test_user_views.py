@@ -43,8 +43,8 @@ class TestUserViews(ViewTestsMixin):
             'traits': {
                 'email': fake_email,
                 'name': {
-                    'first_name': 'Foo',
-                    'last_name': 'Bar'
+                    'first': 'Foo',
+                    'last': 'Bar'
                 }
             }
         }

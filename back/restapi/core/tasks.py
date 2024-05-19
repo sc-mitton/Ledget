@@ -30,7 +30,7 @@ def delete_plaid_item(item_id: str, access_token: str):
     try:
         request = ItemRemoveRequest(access_token=access_token)
         plaid_client.item_remove(request)
-    except plaid.ApiException as e:
+    except plaid.ApiException as e:  # pragma: no cover
         response = json.loads(e.body)
         if not response['error_code'] == 'ITEM_NOT_FOUND':
             logger.error(f'Failed to delete plaid item {item_id}: {e}')
@@ -45,9 +45,9 @@ def delete_ory_identity(user_id: str):
         api_instance = identity_api.IdentityApi(api_client)
         try:
             api_instance.delete_identity(user_id)
-        except ory_client.exceptions.NotFoundException as e:
+        except ory_client.exceptions.NotFoundException as e:  # pragma: no cover
             logger.error(f"Ory user doesn't exist {user_id}: {e}")
-        except ory_client.exceptions.ApiException as e:
+        except ory_client.exceptions.ApiException as e:  # pragma: no cover
             logger.error(f"Failed to delete ory user {user_id}: {e}")
             raise e
 
