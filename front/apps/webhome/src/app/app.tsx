@@ -1,6 +1,6 @@
-import { useEffect, useRef, lazy, Suspense } from 'react'
+import { useEffect, useRef } from 'react'
 
-import { Routes, Outlet, Route, useLocation, useNavigate, Navigate } from 'react-router-dom'
+import { Routes, Outlet, Route, useLocation, Navigate, useNavigate } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
 import '@styles/base.scss'
@@ -54,12 +54,9 @@ const PrivateRoute = () => {
   return isSuccess && <Outlet />
 }
 
-const OnboardedRoute = () => {
+const IsVerified = () => {
   const { data: user } = useGetMeQuery()
-  const location = useLocation()
-  return user?.is_onboarded
-    ? <Outlet />
-    : location.pathname.includes('welcome') ? <Outlet /> : <Navigate to='/welcome/connect' />
+  return !user?.is_verified ? <Navigate to="/verify-email" /> : <Outlet />
 }
 
 const App = () => {
@@ -68,8 +65,8 @@ const App = () => {
   const dispatch = useAppDispatch()
 
   const ref = useRef<HTMLDivElement>(null)
-  const { data: user } = useGetMeQuery()
   const { screenSize } = useScreenContext()
+  const { data: user } = useGetMeQuery()
 
   const toastStack = useAppSelector(toastStackSelector)
   const transactionModal = useAppSelector(selectTransactionModal)
@@ -77,21 +74,17 @@ const App = () => {
   const billModal = useAppSelector(selectBillModal)
   const reAuthModal = useAppSelector(selectReAuthModal)
 
-
-  // Handling the situations where the user missed the initial email verification
-  // or had errors in the checkout process
   useEffect(() => {
-    let timeout = setTimeout(() => {
-      if (!user?.is_verified) {
-        navigate('/budget/verify-email')
-      } else if (!user.account.has_customer || user.account.service_provisioned_until == 0) {
-        window.location.href = import.meta.env.VITE_CHECKOUT_REDIRECT
-      } else if (user.account.service_provisioned_until < Math.floor(Date.now() / 1000)) {
-        navigate('/settings/profile/update-payment')
-      }
-    }, 1000)
-    return () => { clearTimeout(timeout) }
-  }, [location.pathname])
+    if (!user) {
+      return
+    } else if (!user.is_onboarded) {
+      navigate('/welcome/connect')
+    } else if (user.account.service_provisioned_until && user.account.service_provisioned_until < Math.floor(Date.now() / 1000)) {
+      navigate('/settings/profile/update-payment')
+    } else if (!user.account.has_customer || user.account.service_provisioned_until == 0) {
+      window.location.href = import.meta.env.VITE_CHECKOUT_REDIRECT
+    }
+  }, [user])
 
   return (
     <>
@@ -102,20 +95,22 @@ const App = () => {
           ref={ref}
         >
           <Routes location={location} key={location.pathname.split('/')[1]}>
-            <Route path="/" element={<OnboardedRoute />} >
+            <Route path="/" element={<IsVerified />} >
               <Route path="budget" element={<Budget />} >
                 <Route path="new-category" element={<CreateCategory />} />
                 <Route path="new-bill" element={<CreateBill />} />
-                <Route path="verify-email" element={<ForceVerification />} />
               </Route>
               <Route path="accounts/*" element={<Accounts />} />
               <Route path="settings/*" element={<Profile />} />
               <Route path="*" element={<NotFound />} />
             </Route>
+            <Route path="verify-email" element={<ForceVerification />} />
             <Route path="welcome/*" element={<OnboardingModal />} />
           </Routes>
         </ZoomMotionDiv>
       </AnimatePresence>
+
+      {/* Modals */}
       {transactionModal.item &&
         <TransactionItem
           item={transactionModal.item}

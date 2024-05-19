@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { AnimatePresence } from "framer-motion"
@@ -6,7 +6,16 @@ import { AnimatePresence } from "framer-motion"
 import './Recovery.scss'
 import { WindowLoadingBar } from '@pieces'
 import { ledgetapi } from "@api"
-import { FormError, MainButton, SlideMotionDiv, PlainTextInput, BackButton, StatusPulse, Otc, useColorScheme } from '@ledget/ui'
+import {
+    FormError,
+    MainButton,
+    SlideMotionDiv,
+    PlainTextInput,
+    BackButton,
+    StatusPulse,
+    Otc,
+    useColorScheme
+} from '@ledget/ui'
 import { Key } from '@ledget/media'
 import { useLazyGetRecoveryFlowQuery, useCompleteRecoveryFlowMutation } from '@features/orySlice'
 import { useFlow } from '@ledget/ory'
@@ -37,12 +46,7 @@ const MainGraphic = ({ unLocked }) => {
 }
 
 const RecoveryForm = ({ flow, submit, isCompleteError, errMsg }) => {
-    const emailRef = useRef(null)
     const navigate = useNavigate()
-
-    useEffect(() => {
-        emailRef.current.focus()
-    }, [])
 
     return (
         <>
@@ -66,12 +70,12 @@ const RecoveryForm = ({ flow, submit, isCompleteError, errMsg }) => {
             <form
                 onSubmit={submit}
                 className="recovery-form"
+                id='send-recovery-code-form'
             >
                 <PlainTextInput
                     type="email"
                     placeholder="Email"
                     autoComplete="email"
-                    ref={emailRef}
                     name="email"
                     autoFocus
                     required
@@ -134,12 +138,7 @@ const RecoveryVerificationForm = ({ submit, flow, codeSuccess, isCompleteError, 
                 <Otc codeLength={6} />
                 <input type="hidden" name="csrf_token" value={csrfToken} />
                 <div className="verification-button-container">
-                    <MainButton
-                        name="method"
-                        type="submit"
-                        value="code"
-                        style={{ color: 'var(--blue-dark)' }}
-                    >
+                    <MainButton name="method" type="submit" value="code">
                         Verify Code
                     </MainButton>
                 </div>
@@ -242,7 +241,7 @@ const RecoverAccount = () => {
                     <SlideMotionDiv
                         id="recovery-code-form-container"
                         key="recovery-code-form-container"
-                        position={flow ? 'last' : 'fixed'}
+                        position={flow ? 'first' : 'fixed'}
                     >
                         <RecoveryForm
                             flow={flow}

@@ -20,14 +20,8 @@
     align-items: center;
     flex-direction: column;
 
-    a {
-        display: flex;
-        align-items: center;
-        gap: .5em;
-    }
-
     h4 {
-        margin: 1.75em 0 .5em 0;
+        margin: 1.75em 0 .25em 0;
     }
 
     &>div {
@@ -35,12 +29,19 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 2em 0 1em 0;
+
+        &:first-of-type {
+            margin: 2em 0 1em 0;
+        }
+
+        &:nth-of-type(2) {
+            gap: .5em;
+        }
     }
 
     &>div>img {
-        width: 70%;
-        height: 70%;
+        width: 50%;
+        height: 50%;
         filter: contrast(.97);
         z-index: 1;
         position: relative;
@@ -48,8 +49,11 @@
         border-radius: var(--border-radius3);
     }
 
-    span {
+    p {
         color: var(--m-text-tirtiary);
+        font-size: .875rem;
+        text-align: center;
+        margin: .25em 0 0 0;
     }
 
     &.dark img {

@@ -1,4 +1,4 @@
-import { useEffect, useState, Fragment } from 'react'
+import { useEffect, Fragment } from 'react'
 
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Tab } from '@headlessui/react'
@@ -7,7 +7,8 @@ import { useItemsContext, ItemS } from './ItemsContext'
 import { Recommendations as RecommendationsIcon } from '@ledget/media'
 import { useAddnewBillMutation, NewBill } from '@features/billSlice'
 import { useAddNewCategoryMutation, NewCategory } from '@features/categorySlice'
-import { useUpdateUserMutation, useGetMeQuery } from '@features/userSlice'
+import { useUpdateUserMutation } from '@features/userSlice'
+import { apiSlice } from '@api/apiSlice'
 import { BlueSubmitWithArrow, BlueSlimButton2, TabNavList } from '@ledget/ui'
 
 export const TabView = ({ children, item }: { children: React.ReactNode, item: ItemS }) => {
@@ -34,10 +35,8 @@ export const TabView = ({ children, item }: { children: React.ReactNode, item: I
 export const BottomButtons = ({ item }: { item: ItemS }) => {
     const navigate = useNavigate()
     const location = useLocation()
-    const { data: user } = useGetMeQuery()
     const [addNewBill, { isLoading: isBillLoading, isSuccess: isBillSuccess }] = useAddnewBillMutation()
     const [addNewCategory, { isLoading: isCategoryLoading, isSuccess: isCategorySuccess }] = useAddNewCategoryMutation()
-    const { refetch: refetchUser } = useGetMeQuery()
     const [updateUser, { isSuccess: patchedUserSuccess }] = useUpdateUserMutation()
 
     const { month: { items: monthItems }, year: { items: yearItems } } = useItemsContext(item)
@@ -45,13 +44,26 @@ export const BottomButtons = ({ item }: { item: ItemS }) => {
     const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
 
-        if (monthItems.length === 0 && yearItems.length === 0)
-            navigate('/welcome/add-categories')
-
-        if (location.pathname.includes('add-bills')) {
-            addNewBill([...monthItems, ...yearItems] as NewBill[])
-        } else {
-            addNewCategory([...monthItems, ...yearItems] as NewCategory[])
+        if (location.pathname.includes('connect')) {
+            navigate({
+                pathname: '/welcome/add-bills',
+                search: location.search,
+            })
+        } else if (location.pathname.includes('add-bills')) {
+            if (monthItems.length === 0 && yearItems.length === 0) {
+                navigate({
+                    pathname: '/welcome/add-categories',
+                    search: location.search,
+                })
+            } else {
+                addNewBill([...monthItems, ...yearItems] as NewBill[])
+            }
+        } else if (location.pathname.includes('add-categories')) {
+            if (monthItems.length === 0 && yearItems.length === 0) {
+                updateUser({ is_onboarded: true })
+            } else {
+                addNewCategory([...monthItems, ...yearItems] as NewCategory[])
+            }
         }
     }
 
@@ -66,7 +78,7 @@ export const BottomButtons = ({ item }: { item: ItemS }) => {
 
     // String of effects
     // 1) after categories added, patch user ->
-    // 2) refetch user ->
+    // 2) invalidate user cache ->
     // 3) if user is onboarded, navigate to dashboard
     useEffect(() => {
         if (isCategorySuccess) {
@@ -76,7 +88,8 @@ export const BottomButtons = ({ item }: { item: ItemS }) => {
 
     useEffect(() => {
         if (patchedUserSuccess) {
-            refetchUser()
+            apiSlice.util.invalidateTags(['User'])
+            navigate({ pathname: '/budget' })
         }
     }, [patchedUserSuccess])
 

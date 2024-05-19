@@ -71,10 +71,7 @@ const SetupApp = ({ flow, isError, isLoading, codeMode, setCodeMode }: SetupAppP
                             <span>Enter this code in your app</span>
                             <div>
                                 <span>{totpSecret}</span>
-                                <CopyButton
-                                    type="button"
-                                    onClick={() => navigator.clipboard.writeText(totpSecret)}
-                                />
+                                <CopyButton type="button" target={totpSecret} />
                             </div>
                         </ZoomMotionDiv>
                         :

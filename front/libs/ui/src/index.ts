@@ -1,3 +1,4 @@
+export * from './misc/avatar/avatar';
 export * from './inputs/date-picker/date-picker';
 export * from './pieces/containers/AutoResizeTextArea';
 export * from './themes/use-bill-cat-tab-theme/use-bill-cat-tab-theme';
@@ -35,4 +36,4 @@ export * from './utils/hooks';
 export * from './pieces/containers/ResponsiveLine';
 export * from './themes/themes';
 export * from './themes/Tooltip';
-export * from './utils/context/ScreenContext'
+export * from './utils/context/ScreenContext';

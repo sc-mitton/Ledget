@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 
-const useLoaded = (time?: number, initialLoaded: boolean = true) => {
+const useLoaded = (time?: number, initialLoaded: boolean = false) => {
     const [loaded, setLoaded] = useState(initialLoaded)
 
     useEffect(() => {
-        if (time && initialLoaded) {
+        if (time && !loaded) {
             const timeout = setTimeout(() => {
                 setLoaded(true)
             }, time)

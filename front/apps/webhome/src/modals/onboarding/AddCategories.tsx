@@ -5,7 +5,7 @@ import { Tab } from '@headlessui/react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Edit2, Plus, Check } from '@geist-ui/icons'
+import { Edit2, Check } from '@geist-ui/icons'
 
 import { TabView, BottomButtons } from './Reusables'
 import { GripButton } from '@components/buttons'
@@ -23,7 +23,6 @@ import {
     makeIntCurrencyFromStr,
     TabNavListUnderlined,
 } from '@ledget/ui'
-import { Recommendations } from '@ledget/media'
 import { useItemsContext, ItemsProvider, Period } from "./ItemsContext"
 import { monthRecommendations, yearRecommendations } from './categoryRecommendations'
 
@@ -341,8 +340,8 @@ export default function () {
         <ItemsProvider itemType="category">
             <div id="add-categories--window">
                 <div>
-                    <h1>Categories</h1>
-                    <h4>Now let's add a few spending categories</h4>
+                    <h2>Categories</h2>
+                    <span>Now let's add a few spending categories</span>
                 </div>
                 <ListOfCategories />
                 <AddSuggestedCustomCategories />

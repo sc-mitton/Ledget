@@ -118,8 +118,6 @@ class TestUserViews(ViewTestsMixin):
         mock = Mock()
         identity_api_mock.return_value = mock
         mock.create_identity.return_value = {'id': str(uuid.uuid4())}
-        mock.create_recovery_code_for_identity.return_value = \
-            self.create_recovery_code_for_identity
 
         # Test
         response = self.aal2_client.post(
@@ -142,8 +140,6 @@ class TestUserViews(ViewTestsMixin):
             reason='Conflict'
         )
         mock.list_identities.return_value = [{'id': str(uuid.uuid4())}]
-        mock.create_recovery_code_for_identity.return_value = \
-            self.create_recovery_code_for_identity
 
         # Test
         response = self.aal2_client.post(

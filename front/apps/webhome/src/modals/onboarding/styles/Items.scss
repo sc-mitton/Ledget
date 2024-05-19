@@ -41,7 +41,6 @@ $scrollbar-padding: 1em;
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: 2em;
 
     &>div:first-of-type {
         display: flex;
@@ -55,6 +54,7 @@ $scrollbar-padding: 1em;
         flex-direction: column;
         gap: 1.5em;
         align-items: center;
+        margin: 2em 0;
 
         &>div:last-of-type {
             width: calc(100% + $scrollbar-padding);

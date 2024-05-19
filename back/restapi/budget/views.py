@@ -146,7 +146,7 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
                                Q(expires__gte=dbtz.now()) | Q(expires__isnull=True),
                                Q(removed_on__month__gt=month) |
                                Q(removed_on__isnull=True),
-                               userbill__user=self.request.user,
+                               userbill__user__in=self.request.user.account.users.all(),
                                month__isnull=True,
                                year__isnull=True,
                             ) \
@@ -165,7 +165,7 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
                           .filter(
                               Q(removed_on__year__gt=year) |
                               Q(removed_on__isnull=True),
-                              userbill__user=self.request.user,
+                              userbill__user__in=self.request.user.account.users.all(),
                               month__gte=yearly_category_anchor.month,
                               month__lte=time_slice_end.month) \
                           .annotate(is_paid=is_paid_annotation) \
@@ -173,7 +173,7 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
         once_qset = Bill.objects \
                         .filter(
                             Q(expires__gte=dbtz.now()) | Q(expires__isnull=True),
-                            userbill__user=self.request.user,
+                            userbill__user__in=self.request.user.account.users.all(),
                             removed_on__isnull=True,
                             month=month,
                             year=year,
@@ -340,13 +340,13 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
 
         if ids:
             qset = Category.objects.filter(
-                usercategory__user=self.request.user,
+                usercategory__user__in=self.request.user.account.users.all(),
                 id__in=ids
             ).annotate(order=F('usercategory__order')).order_by('order', 'name')
         else:
             # Else get the active categories
             qset = Category.objects.filter(
-                usercategory__user=self.request.user,
+                usercategory__user__in=self.request.user.account.users.all(),
                 usercategory__category__removed_on__isnull=True
             ).annotate(has_transactions=Exists(
                 TransactionCategory.objects.filter(
@@ -371,13 +371,13 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
 
         monthly_qset = Category.objects.filter(
             Q(removed_on__gt=end) | Q(removed_on__isnull=True),
-            usercategory__user=self.request.user,
+            usercategory__user__in=self.request.user.account.users.all(),
             period='month'
         ).annotate(order=F('usercategory__order'))
 
         yearly_qset = Category.objects.filter(
             Q(removed_on__year__gt=end.year) | Q(removed_on__isnull=True),
-            usercategory__user=self.request.user,
+            usercategory__user__in=self.request.user.account.users.all(),
             usercategory__category__period='year',
         ).annotate(order=F('usercategory__order'))
 

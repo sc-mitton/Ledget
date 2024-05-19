@@ -11,7 +11,7 @@ import {
 import { Tooltip } from '../pieces/tooltip/tooltip'
 import { LoadingRing } from '../pieces/loading-indicators/loading-indicators'
 import { ButtonWithClassName, withArrow, withCheckMark, withLoading } from './button-utils'
-import { X, Copy, ChevronDown, ChevronsDown, Check, Circle } from '@geist-ui/icons'
+import { X, Copy, ChevronDown, ChevronsDown, Check } from '@geist-ui/icons'
 
 export const BlackPillButton = ButtonWithClassName('btn-chcl btn-pill')
 export const BlackPrimaryButton = ButtonWithClassName('btn-chcl btn3')
@@ -166,13 +166,36 @@ export const BackButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { withText
     </div>
   )
 
-export const CopyButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { withText?: boolean }>
-  = ({ withText = true, ...rest }) => (
-    <button className="copy-btn" {...rest}>
-      <Copy size={'1.25em'} />
-      {withText && 'Copy'}
-    </button>
-  )
+export const CopyButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { withText?: boolean, target: string }>
+  = ({ withText = true, target, ...rest }) => {
+    const [copying, setCopying] = useState(false)
+
+    useEffect(() => {
+      if (copying) {
+        const t = setTimeout(() => {
+          setCopying(false)
+        }, 1000)
+        return () => {
+          clearTimeout(t)
+        }
+      }
+    }, [copying])
+
+    return (
+      <button
+        onClick={() => {
+          setCopying(true)
+          navigator.clipboard.writeText(target)
+        }}
+        className={`copy-btn ${withText ? 'with-text' : ''} ${copying ? 'copying' : ''}`}
+        {...rest}
+      >
+        {withText && 'Copy'}
+        <Copy size={'1.25em'} />
+        <Check size={'1.25em'} />
+      </button>
+    )
+  }
 
 export const PlusButton: FC<ButtonHTMLAttributes<HTMLButtonElement>>
   = (props) => (

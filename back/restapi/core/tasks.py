@@ -54,6 +54,44 @@ def delete_ory_identity(user_id: str):
 
 @shared_task(auto_retry_for=(OperationalError), retry_backoff=10, retry_jitter=True,
              retry_kwargs={'max_retries': 3})
+def remove_co_owner(co_owner_id: str) -> None:
+    '''
+    Removes a co-owner from an account. This is called when the account owner
+    decides to remove the co-owner from their account.
+    '''
+    from financials.models import PlaidItem
+
+    @transaction.atomic
+    def update_db(user, plaid_items):
+        try:
+            user.account = None
+            user.save()
+            plaid_items.delete()
+        except Exception as e:
+            logger.error(
+                f'Failed to update db for user {user.id} on co-owner removal: {e}')
+
+    try:
+        user = get_user_model().objects.get(id=co_owner_id)
+    except get_user_model().DoesNotExist:
+        return
+
+    plaid_items = PlaidItem.objects.filter(user_id=co_owner_id)
+    delete_tasks = []
+    for item in plaid_items:
+        delete_task = delete_plaid_item.si(item.id, item.access_token)
+        delete_tasks.append(delete_task)
+
+    if delete_tasks:
+        grouped_delete_tasks = group(delete_tasks)
+        grouped_delete_tasks()
+
+    update_db(user, plaid_items)
+    delete_ory_identity.delay(co_owner_id)
+
+
+@shared_task(auto_retry_for=(OperationalError), retry_backoff=10, retry_jitter=True,
+             retry_kwargs={'max_retries': 3})
 def cancelation_cleanup(user_id: str) -> None:
     '''
     Deletes all third party data for a user. This is called when a user

@@ -9,6 +9,7 @@ import {
     JiggleDiv,
     VerificationForm
 } from "@ledget/ui"
+import { apiSlice } from '@api/apiSlice'
 import { useFlow } from '@ledget/ory'
 import { useGetMeQuery } from '@features/userSlice'
 import { useLazyGetVerificationFlowQuery, useCompleteVerificationFlowMutation } from '@features/orySlice'
@@ -128,7 +129,10 @@ export const ForceVerification = ({ onSuccess }: { onSuccess: () => void }) => {
 
 const ForceVerificationModal = withModal((props) => {
     return <ForceVerification
-        onSuccess={() => { props.closeModal() }}
+        onSuccess={() => {
+            props.closeModal()
+            apiSlice.util.invalidateTags(['User'])
+        }}
     />
 })
 

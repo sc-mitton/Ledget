@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 import CheckCircle from '@geist-ui/icons/checkCircle'
@@ -8,6 +8,7 @@ import './styles/Welcome.scss'
 import './styles/Main.css'
 import { useBakedPlaidLink } from '@utils/hooks'
 import { useGetPlaidItemsQuery, PlaidItem } from '@features/plaidSlice'
+import { useGetMeQuery } from '@features/userSlice'
 import { useTransactionsSyncMutation } from '@features/transactionsSlice'
 import {
     ExpandableContainer,
@@ -20,7 +21,8 @@ import {
 } from '@ledget/ui'
 
 const InstitutionLogos = ({ plaidItems }: { plaidItems: PlaidItem[] }) => {
-    const { isLoading } = useGetPlaidItemsQuery()
+    const { data: user } = useGetMeQuery()
+    const { isLoading } = useGetPlaidItemsQuery({ userId: user?.id })
 
     return (
         <>
@@ -109,11 +111,11 @@ const SecurityMessage = () => (
 
 const WelcomeConnect = () => {
     const [syncTransactions] = useTransactionsSyncMutation()
+    const { data: user } = useGetMeQuery()
     const {
         data: plaidItems,
         isSuccess: fetchedPlaidItemsSuccess
-    } = useGetPlaidItemsQuery()
-    const [continueDisabled, setContinueDisabled] = useState(true)
+    } = useGetPlaidItemsQuery({ userId: user?.id })
     const loaded = useLoaded(0, fetchedPlaidItemsSuccess)
 
     // We should only sync when there's been a new plaid item added
@@ -126,21 +128,15 @@ const WelcomeConnect = () => {
         }
     }, [plaidItems])
 
-    useEffect(() => {
-        if (plaidItems?.length && plaidItems?.length > 0) {
-            setContinueDisabled(false)
-        }
-    }, [plaidItems])
-
     return (
         <div id="welcome-connect">
-            <h1 className="spaced-header">Welcome to Ledget!</h1>
+            <h2 className="spaced-header">Welcome to Ledget!</h2>
             <div>
-                <h4>Let's get started by connecting your financial accounts.</h4>
+                <span>Let's get started by connecting your financial accounts.</span>
                 <SecurityMessage />
                 {fetchedPlaidItemsSuccess && <InstitutionLogos plaidItems={plaidItems} />}
             </div>
-            <BottomButtons continueDisabled={continueDisabled} />
+            <BottomButtons continueDisabled={false} />
         </div>
     )
 }

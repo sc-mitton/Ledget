@@ -1,12 +1,26 @@
 #activation-flow {
+    position: relative;
 
-    p {
-        margin: 0 0 .5em 0;
+    .step {
+        margin: 0;
+        position: absolute;
+        width: calc(100% - 4rem);
+        display: flex;
+        flex-direction: column;
+        gap: .25em;
+        top: 4.25em;
+
+        span:first-of-type {
+            font-size: .875em;
+        }
     }
 
     form {
         display: flex;
         flex-direction: column;
-        gap: .5em;
+
+        &>button {
+            margin-top: .5em;
+        }
     }
 }

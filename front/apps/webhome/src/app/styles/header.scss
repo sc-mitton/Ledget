@@ -105,7 +105,6 @@ header {
         &.enabled {
             transform: translateX(.95rem);
             transition: all 0.2s ease-in-out;
-            // background-color: var(--btn-gray);
             background: linear-gradient(to bottom right, var(--blue-medium), var(--blue-light));
             opacity: .7;
         }

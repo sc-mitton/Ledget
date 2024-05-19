@@ -44,7 +44,7 @@ class User(models.Model):
 
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     account = models.ForeignKey('Account', on_delete=models.CASCADE,
-                                related_name='users')
+                                related_name='users', null=True, default=None)
     is_active = models.BooleanField(default=True)  # tombstone
     is_onboarded = models.BooleanField(default=False)
     is_verified = models.BooleanField(default=False)
@@ -110,7 +110,7 @@ class User(models.Model):
             return 'aal1'
 
     @property
-    def is_primary_owner(self):
+    def is_account_owner(self):
         if hasattr(self.account, 'customer'):
             situation1 = self.account.customer.user.id == self.id
             situation2 = not situation1 and self.co_owner is None
@@ -197,6 +197,7 @@ class Customer(models.Model):
         Cleanup happens by kicking off a celery task.
         """
         tasks.cancelation_cleanup.delay(str(self.user_id))
+        tasks.cancelation_cleanup.delay(str(self.user.co_owner.id))
         return super().delete(*args, **kwargs)
 
     @property

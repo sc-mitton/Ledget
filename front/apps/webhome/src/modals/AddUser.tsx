@@ -11,7 +11,8 @@ import {
     useColorScheme,
     MainButton,
     FormError,
-    SlideMotionDiv
+    SlideMotionDiv,
+    CopyButton
 } from '@ledget/ui'
 import { useAddUserToAccountMutation } from '@features/userSlice'
 import { withReAuth } from '@utils/index'
@@ -83,9 +84,12 @@ const Slide2 = () => {
             {data &&
                 <>
                     <div><img src={data.recovery_link_qr} alt='qr code' /></div>
-                    <a>Finish <ExternalLink className='icon' /></a>
-                    <h4>To finish scan the qr code or follow the link</h4>
-                    <span>Link expires in {expiresIn} minutes</span>
+                    <div><CopyButton target={data.recovery_link} /></div>
+                    <h4>To finish, scan the qr code or follow the link</h4>
+                    <p>
+                        If the new household member has not completed the process
+                        within {expiresIn} minutes, you will need to start the process over.
+                    </p>
                 </>
             }
         </div>
@@ -93,7 +97,7 @@ const Slide2 = () => {
 }
 
 const AddUserModal = withReAuth(withSmallModal((props) => {
-    const isLoaded = useLoaded(500)
+    const isLoaded = useLoaded(1000)
     const [, { isSuccess }] = useAddUserToAccountMutation({
         fixedCacheKey: 'addUserToAccount'
     })

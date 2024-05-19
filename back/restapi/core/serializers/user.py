@@ -1,20 +1,13 @@
-from io import BytesIO
-from base64 import b64encode
-
 from rest_framework import serializers
 from django.utils import timezone
-import qrcode
-from qrcode.image.styledpil import StyledPilImage
-from qrcode.image.styles.moduledrawers.pil import CircleModuleDrawer
-from qrcode.image.styles.colormasks import HorizontalGradiantColorMask
 
 from core.models import User, Feedback
 from .account import AccountSerializer
 
 
 class NameSerializer(serializers.Serializer):
-    first_name = serializers.CharField()
-    last_name = serializers.CharField()
+    first = serializers.CharField()
+    last = serializers.CharField()
 
 
 class CoOwnerSerializer(serializers.Serializer):
@@ -32,6 +25,7 @@ class UserSerializer(serializers.ModelSerializer):
     session = serializers.SerializerMethodField(read_only=True)
     account = AccountSerializer(read_only=True)
     co_owner = serializers.SerializerMethodField(read_only=True)
+    is_account_owner = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
@@ -89,41 +83,12 @@ class UserSerializer(serializers.ModelSerializer):
             return self.context["request"].device.last_login
         return None
 
+    def get_is_account_owner(self, obj):
+        return obj.is_account_owner
+
 
 class LinkUserSerializer(serializers.Serializer):
     email = serializers.EmailField()
-
-
-class ActivationLinkQrSerializer(serializers.Serializer):
-    recovery_link = serializers.CharField(read_only=True)
-    expires_at = serializers.DateTimeField(read_only=True)
-
-    def to_representation(self, instance):
-        recovery_link = instance['recovery_link'].replace('recovery', 'activation') + \
-            f"?code={instance['recovery_code']}"
-
-        qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_L)
-        qr.add_data(recovery_link)
-        mask = HorizontalGradiantColorMask(
-            left_color=(39, 54, 104),
-            right_color=(89, 113, 192)
-        )
-        img = qr.make_image(
-            image_factory=StyledPilImage,
-            module_drawer=CircleModuleDrawer(),
-            color_mask=mask
-        )
-
-        buffer = BytesIO()
-        img.save(buffer)
-        encoded_img = b64encode(buffer.getvalue()).decode()
-        data_uri = f"data:image/png;base64,{encoded_img}"
-
-        return {
-            'recovery_link_qr': data_uri,
-            'recovery_link': recovery_link,
-            'expires_at': instance['expires_at']
-        }
 
 
 class PaymentMethodSerializer(serializers.Serializer):

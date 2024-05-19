@@ -61,7 +61,7 @@ local BaseWithAuth = {
   },
   Base
   {
-    id: 'get_prices',
+    id: 'get-prices',
     match: {
       methods: ['GET'],
       url: base_url + '/prices',
@@ -91,7 +91,7 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
-    id: 'delete_device',
+    id: 'delete-device',
     match: {
       methods: ['DELETE'],
       url: base_url + '/device/<[a-zA-Z0-9-]+>',
@@ -107,9 +107,9 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
-    id: 'co_owner',
+    id: 'co-owner',
     match: {
-      methods: ['GET'],
+      methods: ['GET', 'DELETE'],
       url: base_url + '/user/co-owner',
     },
   },
@@ -123,7 +123,7 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
-    id: 'email_user',
+    id: 'email-user',
     match: {
       methods: ['POST'],
       url: base_url + '/user/email',
@@ -131,50 +131,50 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
-    id: 'plaid_link_token',
+    id: 'plaid-link-token',
     match: {
       methods: ['GET'],
-      url: base_url + '/plaid_link_token',
+      url: base_url + '/plaid-link-token',
     },
   },
   BaseWithAuth
   {
-    id: 'plaid_link_token',
+    id: 'plaid-link-token',
     match: {
       methods: ['GET'],
-      url: base_url + '/plaid_link_token/<[a-zA-Z0-9]+>',
+      url: base_url + '/plaid-link-token/<[a-zA-Z0-9]+>',
     },
   },
   BaseWithAuth
   {
-    id: 'plaid_token_exchange',
+    id: 'plaid-token-exchange',
     match: {
       methods: ['POST'],
-      url: base_url + '/plaid_token_exchange',
+      url: base_url + '/plaid-token-exchange',
     },
   },
   BaseWithAuth
   {
-    id: 'plaid_items',
+    id: 'plaid-items',
     match: {
       methods: ['GET'],
-      url: base_url + '/plaid_items',
+      url: base_url + '/plaid-items',
     },
   },
   BaseWithAuth
   {
-    id: 'plaid_item',
+    id: 'plaid-item',
     match: {
       methods: ['DELETE', 'PATCH'],
-      url: base_url + '/plaid_item/<[a-zA-Z0-9]+>',
+      url: base_url + '/plaid-item/<[a-zA-Z0-9]+>',
     },
   },
   BaseWithAuth
   {
-    id: 'default_payment_method',
+    id: 'default-payment-method',
     match: {
       methods: ['GET', 'POST'],
-      url: base_url + '/default_payment_method',
+      url: base_url + '/default-payment-method',
     },
   },
   BaseWithAuth
@@ -195,7 +195,7 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
-    id: 'update_subscription',
+    id: 'update-subscription',
     match: {
       methods: ['POST', 'DELETE'],
       url: base_url + '/subscription/<[a-zA-Z0-9_]+>',
@@ -203,10 +203,10 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
-    id: 'subscription_item',
+    id: 'subscription-item',
     match: {
       methods: ['PUT'],
-      url: base_url + '/subscription_item',
+      url: base_url + '/subscription-item',
     },
   },
   BaseWithAuth
@@ -219,7 +219,7 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
-    id: 'delete_categories',
+    id: 'delete-categories',
     match: {
       methods: ['DELETE'],
       url: base_url + '/categories/items',
@@ -227,7 +227,7 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
-    id: 'update_category',
+    id: 'update-category',
     match: {
       methods: ['PUT', 'PATCH'],
       url: base_url + '/categories/<[a-zA-Z0-9-]+>',
@@ -235,7 +235,7 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
-    id: 'spending_history',
+    id: 'spending-history',
     match: {
       methods: ['GET'],
       url: base_url + '/categories/<[a-zA-Z0-9-]+>/spending-history',
@@ -259,7 +259,7 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
-    id: 'update_bill',
+    id: 'update-bill',
     match: {
       methods: ['PUT', 'PATCH'],
       url: base_url + '/bills/<[a-zA-Z0-9-]+>',
@@ -291,7 +291,7 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
-    id: 'transactions_count',
+    id: 'transactions-count',
     match: {
       methods: ['GET'],
       url: base_url + '/transactions/count',
@@ -299,7 +299,7 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
-    id: 'recurring_transactions',
+    id: 'recurring-transactions',
     match: {
       methods: ['GET'],
       url: base_url + '/transactions/recurring/get',
@@ -307,7 +307,7 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
-    id: 'update_transaction',
+    id: 'update-transaction',
     match: {
       methods: ['PATCH'],
       url: base_url + '/transactions/<[a-zA-Z0-9-]+>',
@@ -315,7 +315,7 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
-    id: 'confirm_transactions',
+    id: 'confirm-transactions',
     match: {
       methods: ['POST'],
       url: base_url + '/transactions/confirmation',
@@ -331,7 +331,7 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
-    id: 'add_note',
+    id: 'add-note',
     match: {
       methods: ['POST'],
       url: base_url + '/transactions/<[a-zA-Z0-9-]+>/note',
@@ -339,7 +339,7 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
-    id: 'update_delete_note',
+    id: 'update-delete-note',
     match: {
       methods: ['PUT', 'DELETE'],
       url: base_url + '/transactions/<[a-zA-Z0-9-]+>/note/<[a-zA-Z0-9-]+>',
@@ -347,18 +347,18 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
-    id: 'setup_intent',
+    id: 'setup-intent',
     match: {
       methods: ['GET'],
-      url: base_url + '/setup_intent',
+      url: base_url + '/setup-intent',
     },
   },
   BaseWithAuth
   {
-    id: 'next_invoice',
+    id: 'next-invoice',
     match: {
       methods: ['GET'],
-      url: base_url + '/next_invoice',
+      url: base_url + '/next-invoice',
     },
   },
   BaseWithAuth

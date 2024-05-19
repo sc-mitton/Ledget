@@ -19,7 +19,7 @@ from plaid.model.products import Products
 import plaid
 
 from restapi.permissions.auth import highest_aal_freshness, IsAuthedVerifiedSubscriber
-from restapi.permissions.objects import HasObjectAccess
+from restapi.permissions.objects import HasObjectAccess, UserQueryParamIsSelf
 from core.clients import create_plaid_client
 from financials.serializers.items import (
     ExchangePlaidTokenSerializer,
@@ -90,11 +90,16 @@ class PlaidTokenExchangeView(CreateAPIView):
 
 
 class PlaidItemsListView(ListAPIView):
-    permission_classes = [IsAuthedVerifiedSubscriber]
+    permission_classes = [IsAuthedVerifiedSubscriber, UserQueryParamIsSelf]
     serializer_class = PlaidItemsSerializer
 
     def get_queryset(self):
-        return PlaidItem.objects.filter(user=self.request.user)
+        user_id = self.request.query_params.get('user', None)
+        if user_id:
+            return PlaidItem.objects.filter(user_id=user_id)
+        else:
+            return PlaidItem.objects.filter(
+                user__in=self.request.user.account.users.all())
 
 
 class PlaidItemView(RetrieveUpdateDestroyAPIView):

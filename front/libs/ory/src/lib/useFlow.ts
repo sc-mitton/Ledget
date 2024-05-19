@@ -117,6 +117,12 @@ export const useFlow = <TFlow extends EndpointRootNames>(query: UseLazyQuery<Ory
         completeFlow({ data: data, params: { flow: flowId } } as any)
     }
 
+    const submitData = (data: any) => {
+        setErrMsg(undefined)
+        const flowId = searchParams.get('flow')
+        completeFlow({ data: data, params: { flow: flowId } } as any)
+    }
+
     useEffect(() => {
         if (searchParams.get('flow')) {
             setMutationCacheKey(`${searchParams.get('flow')}${searchParams.get('aal') || ''}`)
@@ -145,6 +151,14 @@ export const useFlow = <TFlow extends EndpointRootNames>(query: UseLazyQuery<Ory
         if (errorMessages) {
             setErrMsg(formatErrorMessages(errorMessages))
             setErrId(errorMessages[0].id)
+        } else {
+            if (errorData?.error) {
+                setErrMsg(errorData.error.message)
+            }
+
+            if (errorData?.error?.id) {
+                setErrId(errorData.error.id)
+            }
         }
 
         switch (status) {
@@ -209,6 +223,7 @@ export const useFlow = <TFlow extends EndpointRootNames>(query: UseLazyQuery<Ory
         fetchFlow,
         completeFlow,
         submit,
+        submitData,
         result,
         resetCompleteFlow,
         flowStatus: {

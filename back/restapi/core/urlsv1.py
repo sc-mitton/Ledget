@@ -18,7 +18,7 @@ from core.views import service as service_views
 
 urlpatterns = [
     path('user/me', UserView.as_view(), name='user-me'),
-    path('user/co_owner', CoOwnerView.as_view(), name='user-co-owner'),
+    path('user/co-owner', CoOwnerView.as_view(), name='user-co-owner'),
     path('user/email', EmailView.as_view(), name='user_email'),
     path('user/account', AddUserToAccountView.as_view(), name='add-user-to-account'),
     path('user/session/extend', UserSessionExtendView.as_view(),
@@ -31,7 +31,7 @@ urlpatterns = [
     path('health', HealthView.as_view(), name='health'),
 
     path('prices', service_views.PriceView.as_view(), name='prices'),
-    path('default_payment_method', service_views.PaymentMethodView.as_view(),
+    path('default-payment-method', service_views.PaymentMethodView.as_view(),
          name='default-payment-method'),
     path('customer', service_views.CreateCustomerView.as_view(),
          name='customer'),
@@ -41,10 +41,10 @@ urlpatterns = [
          service_views.DeleteRestartSubscriptionView.as_view(),
          name='delete-restart-subscription'
          ),
-    path('subscription_item', service_views.SubscriptionItemView.as_view(),
+    path('subscription-item', service_views.SubscriptionItemView.as_view(),
          name='subscription-item'),
-    path('setup_intent', service_views.GetSetupIntent.as_view(),
+    path('setup-intent', service_views.GetSetupIntent.as_view(),
          name='setup-intent'),
-    path('next_invoice', service_views.NextInvoice.as_view(),
+    path('next-invoice', service_views.NextInvoice.as_view(),
          name='next-invoice'),
 ]

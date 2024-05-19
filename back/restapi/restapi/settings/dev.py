@@ -15,6 +15,7 @@ DEVELOPMENT = True
 DOMAIN_URL = "https://localhost:8000/"
 DOMAIN = 'localhost'
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'localhost:3000', 'localhost:3001']
+ACCOUNTS_APP_DOMAIN = 'localhost:3001'
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_BROWSER_XSS_FILTER = True
@@ -56,6 +57,7 @@ ORY_USER_SCHEMA_ID = (
     '004949f535b72d62754858d98ddbe057d886ab602'
     'e0d2555e2e8ac78d8f3cb7a9c6294e40fb5983762a855651'
 )
+ORY_ACTIVATION_REDIRECT_URL = f'https://{ACCOUNTS_APP_DOMAIN}/activation'
 
 # Oathkeeper
 OATHKEEPER_ENDPOINT = 'http://oathkeeper:4456/.well-known/jwks.json'

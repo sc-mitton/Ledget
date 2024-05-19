@@ -12,6 +12,7 @@ ALLOWED_HOSTS = [
 ]
 DOMAIN_URL = "https://api.ledget.app/"
 DOMAIN = 'api.ledget.app'
+ACCOUNTS_APP_DOMAIN = 'accounts.ledget.app'
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_BROWSER_XSS_FILTER = True
@@ -39,6 +40,7 @@ ORY_USER_SCHEMA_ID = (
     '5b72d62754858d98ddbe057d886ab602e0d2555e2e8ac78d'
     '8f3cb7a9c6294e40fb5983762a855651'
 )
+ORY_ACTIVATION_REDIRECT_URL = f'https://{ACCOUNTS_APP_DOMAIN}/activation'
 
 # Oathkeeper
 jwks = get_secret('oathkeeper_jwks')

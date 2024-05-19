@@ -38,12 +38,12 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
     endpoints: (builder) => ({
         getPlaidToken: builder.query<string, { isOnboarding: boolean, itemId: string }>({
             query: ({ isOnboarding, itemId }) => ({
-                url: `plaid_link_token${isOnboarding ? '?is_onboarding=true' : ''}${itemId ? `/${itemId}` : ''}`,
+                url: `plaid-link-token${isOnboarding ? '?is_onboarding=true' : ''}${itemId ? `/${itemId}` : ''}`,
             }),
             providesTags: ['PlaidToken'],
         }),
-        getPlaidItems: builder.query<PlaidItem[], void>({
-            query: () => 'plaid_items',
+        getPlaidItems: builder.query<PlaidItem[], { userId?: string } | void>({
+            query: (data) => data ? `/plaid-items?user=${data.userId}` : '/plaid-items',
             providesTags: ['PlaidItem'],
         }),
         deletePlaidItem: builder.mutation<void, { itemId: string }>({
@@ -55,7 +55,7 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
         }),
         addNewPlaidItem: builder.mutation<any, { data: PlaidItem }>({
             query: ({ data }) => ({
-                url: 'plaid_token_exchange',
+                url: 'plaid-token-exchange',
                 method: 'POST',
                 body: data,
             }),
@@ -64,7 +64,7 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
         }),
         updatePlaidItem: builder.mutation<any, { itemId: string, data: PlaidItem }>({
             query: ({ itemId, data }) => ({
-                url: `/plaid_item/${itemId}`,
+                url: `/plaid-item/${itemId}`,
                 method: 'PATCH',
                 body: data,
             }),
@@ -80,5 +80,5 @@ export const {
     useGetPlaidItemsQuery,
     useAddNewPlaidItemMutation,
     useDeletePlaidItemMutation,
-    useUpdatePlaidItemMutation,
+    useUpdatePlaidItemMutation
 } = extendedApiSlice

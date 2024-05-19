@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState, useContext, createContext } from "react"
 import { useSearchParams } from "react-router-dom"
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -13,16 +13,90 @@ import {
     useCompleteSettingsFlowMutation,
 } from '@features/orySlice'
 import { useFlow } from '@ledget/ory'
-import { PlainTextInput, MainButton, SlideMotionDiv, useLoaded } from '@ledget/ui'
+import {
+    PlainTextInput,
+    PasswordInput,
+    MainButton,
+    SlideMotionDiv,
+    useLoaded,
+    Otc,
+    FormError
+} from '@ledget/ui'
 import { WindowLoadingBar } from '@pieces/index'
 import { Animation } from './Animation'
 
+interface EmailContext {
+    email?: string
+    setEmail: React.Dispatch<React.SetStateAction<string | undefined>>
+}
 
-const schema1 = z.object({
+const emailContext = createContext<EmailContext | null>(null)
+const EmailContextProvider = ({ children }: { children: React.ReactNode }) => {
+    const [email, setEmail] = useState<string | undefined>()
+    return (
+        <emailContext.Provider value={{ email, setEmail }}>
+            {children}
+        </emailContext.Provider>
+    )
+}
+const useEmailContext = () => {
+    const email = useContext(emailContext)
+    if (email === null) {
+        throw new Error('useEmailContext must be used within a EmailProvider')
+    }
+    return email
+}
+
+const sendCodeSchema = z.object({
     email: z.string().min(1, 'Email is required').email('Invalid email address')
 })
 
-const Step1 = () => {
+const SendCodeForm = ({ submit, csrf_token }: { submit: React.FormEventHandler<HTMLFormElement>, csrf_token: string }) => {
+    const { register, handleSubmit, formState: { errors } } = useForm<z.infer<typeof sendCodeSchema>>({
+        resolver: zodResolver(sendCodeSchema)
+    })
+    const { setEmail } = useEmailContext()
+
+    return (
+        <>
+            <div className='step'>
+                <span>Step 1 of 4</span>
+                <span>To finish joining another user's account, first enter your email address.</span>
+            </div>
+            <form onSubmit={handleSubmit((data, e) => { submit(e as any); setEmail(data.email); })} >
+                <PlainTextInput
+                    label="Email Address"
+                    placeholder="Enter email address"
+                    error={errors.email}
+                    {...register('email')}
+                />
+                <input type='hidden' name='csrf_token' value={csrf_token} />
+                <MainButton name='method' type="submit" value="code">
+                    Send Code
+                </MainButton>
+            </form>
+        </>
+    )
+}
+
+const ConfirmCodeForm = ({ submit, csrf_token }: { submit: React.FormEventHandler<HTMLFormElement>, csrf_token: string }) => (
+    <>
+        <div className='step'>
+            <span>Step 2 of 4</span>
+            <span>Enter the code sent to your email address.</span>
+        </div>
+        <form onSubmit={submit} >
+            <Otc codeLength={6} />
+            <input type='hidden' name='csrf_token' value={csrf_token} />
+            <MainButton type="submit" name="method" value="code">
+                Confirm
+            </MainButton>
+        </form>
+    </>
+)
+
+const SendAndConfirmCodeSteps = () => {
+    const loaded = useLoaded(1000)
     const [searchParams, setSearchParams] = useSearchParams()
     const {
         flow,
@@ -34,45 +108,87 @@ const Step1 = () => {
         useCompleteRecoveryFlowMutation,
         'recovery'
     )
-    const { register, handleSubmit, formState: { errors } } = useForm<z.infer<typeof schema1>>({
-        resolver: zodResolver(schema1)
-    })
 
     useEffect(() => { fetchFlow() }, [])
 
     useEffect(() => {
-        if (flowStatus.isCompleteSuccess) {
-            searchParams.delete('flow')
-            searchParams.set('step', '2')
+        if (flowStatus.isCompleteSuccess && searchParams.get('step') === 'send-code') {
+            searchParams.set('step', 'confirm-code')
             setSearchParams(searchParams)
         }
     }, [flowStatus.isCompleteSuccess])
 
+    useEffect(() => {
+        if (flowStatus.errId === 'browser_location_change_required') {
+            searchParams.set('step', 'set-traits')
+            searchParams.delete('flow')
+            setSearchParams(searchParams)
+        }
+    }, [flowStatus.errId])
+
     return (
         <>
             <WindowLoadingBar visible={flowStatus.isCompletingFlow} />
-            <p>To finish joining another user's account, first enter your email address.</p>
-            <form onSubmit={handleSubmit((_, e) => submit(e as any))} >
+            <AnimatePresence mode='wait'>
+                {searchParams.get('step') === 'send-code' &&
+                    <SlideMotionDiv key='send-code' position={loaded ? 'first' : 'fixed'}>
+                        <SendCodeForm submit={submit} csrf_token={flow?.csrf_token} />
+                    </SlideMotionDiv>
+                }
+                {searchParams.get('step') === 'confirm-code' &&
+                    <SlideMotionDiv key='confirm-code' position='last'>
+                        <ConfirmCodeForm submit={submit} csrf_token={flow?.csrf_token} />
+                    </SlideMotionDiv>
+                }
+            </AnimatePresence>
+        </>
+    )
+}
+
+const traitsSchema = z.object({
+    first: z.string().min(1, { message: 'required' }).transform(value => value.trim()),
+    last: z.string().min(1, { message: 'required' }).transform(value => value.trim())
+})
+
+const AddTraitsForm = ({ submit, csrf_token }: { submit: (data: any) => void, csrf_token: string }) => {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm<z.infer<typeof traitsSchema>>({
+        resolver: zodResolver(traitsSchema)
+    })
+    const { email } = useEmailContext()
+
+    const onSubmit = (data: any) => {
+        submit({ traits: { name: { ...data }, email }, method: 'profile', csrf_token })
+    }
+
+    return (
+        <>
+            <div className='step'>
+                <span>Step 3 of 4</span>
+                <span>Enter your Name</span>
+            </div>
+            <form onSubmit={handleSubmit(onSubmit)} >
                 <PlainTextInput
-                    label="Email Address"
-                    placeholder="Enter email address"
-                    error={errors.email}
-                    {...register('email')}
+                    label="First Name"
+                    placeholder="First name"
+                    error={errors?.first}
+                    {...register('first')}
                 />
-                <input type='hidden' name='csrf_token' value={flow?.csrf_token} />
-                <input type='hidden' name='code' value={searchParams.get('code') || ''} />
+                <PlainTextInput
+                    label="Last Name"
+                    placeholder="Last name"
+                    error={errors?.last}
+                    {...register('last')}
+                />
                 <MainButton type="submit">Next</MainButton>
             </form>
         </>
     )
 }
 
-const traitsSchema = z.object({
-    traits: z.object({
-        first_name: z.string().min(1, 'First name is required'),
-        last_name: z.string().min(1, 'Last name is required')
-    }),
-})
 const passwordSchema = z.object({
     password: z.string().min(1, { message: 'required' }).min(10, { message: 'Password must be at least 10 characters' }),
     confirmPassword: z.string().min(1, { message: 'required' })
@@ -81,26 +197,54 @@ const passwordSchema = z.object({
     path: ['confirmPassword']
 })
 
-const Steps2and3 = () => {
-    const [searchParams, setSearchParams] = useSearchParams()
+const PasswordForm = ({ submit, csrf_token }: { submit: React.FormEventHandler<HTMLFormElement>, csrf_token: string }) => {
     const {
-        register: traitsRegister,
-        handleSubmit: handleTraitsSubmit,
-        formState: { errors: traitsErrors }
-    } = useForm<z.infer<typeof traitsSchema>>({
-        resolver: zodResolver(traitsSchema)
-    })
-    const {
-        register: passwordRegister,
-        handleSubmit: handlePasswordSubmit,
-        formState: { errors: passwordErrors }
+        register,
+        handleSubmit,
+        formState: { errors }
     } = useForm<z.infer<typeof passwordSchema>>({
         resolver: zodResolver(passwordSchema)
     })
+    const [pwdVisible, setPwdVisible] = useState(false)
+
+    return (
+        <>
+            <div className='step'>
+                <span>Step 4 of 4</span>
+                <span>Set your password</span>
+            </div>
+            <form onSubmit={handleSubmit((_, e) => submit(e as any))} >
+                <PasswordInput
+                    placeholder="New password"
+                    {...register("password")}
+                    error={errors.password}
+                    visible={pwdVisible}
+                    setVisible={setPwdVisible}
+                />
+                <PasswordInput
+                    placeholder="Confirm password"
+                    inputType="confirm-password"
+                    {...register("confirmPassword")}
+                    error={errors.confirmPassword}
+                    visible={pwdVisible}
+                />
+                <input type='hidden' name='csrf_token' value={csrf_token} />
+                <input type='hidden' name='method' value='password' />
+                <MainButton type="submit">Next</MainButton>
+            </form>
+        </>
+    )
+}
+
+const AddTraitsAndPasswordSteps = () => {
+    const loaded = useLoaded(1000)
+    const [searchParams, setSearchParams] = useSearchParams()
+
     const {
         flow,
         fetchFlow,
         submit,
+        submitData,
         flowStatus
     } = useFlow(
         useLazyGetSettingsFlowQuery,
@@ -111,87 +255,51 @@ const Steps2and3 = () => {
     useEffect(() => { fetchFlow() }, [])
 
     useEffect(() => {
-        if (flowStatus.isCompleteSuccess && searchParams.get('step') === '3') {
-            window.location.href = import.meta.env.VITE_ACTIVATION_REDIRECT
-        } else if (flowStatus.isCompleteSuccess && searchParams.get('step') === '2') {
-            searchParams.set('step', '3')
-            setSearchParams(searchParams)
+        if (flowStatus.isCompleteSuccess) {
+            if (searchParams.get('step') === 'set-traits') {
+                searchParams.set('step', 'set-password')
+                setSearchParams(searchParams)
+            } else {
+                window.location.href = import.meta.env.VITE_ACTIVATION_REDIRECT
+            }
         }
     }, [flowStatus.isCompleteSuccess])
 
-    const TraitsForm = () => {
-        return (
-            <>
-                <SlideMotionDiv key='traits-form' position='default'>
-                    <p>Enter your name</p>
-                    <form onSubmit={handleTraitsSubmit((_, e) => submit(e as any))} >
-                        <PlainTextInput
-                            label="First Name"
-                            placeholder="First name"
-                            error={traitsErrors.traits?.first_name}
-                            {...traitsRegister('traits.first_name')}
-                        />
-                        <PlainTextInput
-                            label="Last Name"
-                            placeholder="Last name"
-                            error={traitsErrors.traits?.last_name}
-                            {...traitsRegister('traits.last_name')}
-                        />
-                        <input type='hidden' name='csrf_token' value={flow.csrf_token} />
-                        <input type='hidden' name='method' value='profile' />
-                        <MainButton type="submit">Next</MainButton>
-                    </form>
-                </SlideMotionDiv>
-            </>
-        )
-    }
-
-    const PasswordForm = () => {
-        return (
-            <>
-                <SlideMotionDiv key='password-form' position='last'>
-                    <p>Set your password</p>
-                    <form onSubmit={handlePasswordSubmit((_, e) => submit(e as any))} >
-                        <PlainTextInput
-                            label="Password"
-                            type="password"
-                            placeholder="Enter password"
-                            error={passwordErrors.password}
-                            {...passwordRegister('password')}
-                        />
-                        <PlainTextInput
-                            label="Confirm Password"
-                            type="password"
-                            placeholder="Confirm password"
-                            error={passwordErrors.confirmPassword}
-                            {...passwordRegister('confirmPassword')}
-                        />
-                        <input type='hidden' name='csrf_token' value={flow.csrf_token} />
-                        <input type='hidden' name='method' value='password' />
-                        <MainButton type="submit">Next</MainButton>
-                    </form>
-                </SlideMotionDiv>
-            </>
-        )
-    }
+    useEffect(() => {
+        if (flowStatus.errId === 'session_refresh_required') {
+            searchParams.set('step', 'send-code')
+            searchParams.delete('flow')
+            setSearchParams(searchParams)
+        }
+    }, [flowStatus.errId])
 
     return (
         <>
             <WindowLoadingBar visible={flowStatus.isCompletingFlow} />
-            {searchParams.get('step') === '2' && <TraitsForm />}
-            {searchParams.get('step') === '3' && <PasswordForm />}
+            <AnimatePresence mode='wait'>
+                {searchParams.get('step') === 'set-traits' &&
+                    <SlideMotionDiv key='add-traits' position={loaded ? 'first' : 'fixed'}>
+                        <AddTraitsForm submit={submitData} csrf_token={flow?.csrf_token} />
+                    </SlideMotionDiv>
+                }
+                {searchParams.get('step') === 'set-password' &&
+                    <SlideMotionDiv key='set-password' position='last'>
+                        <PasswordForm submit={submit} csrf_token={flow?.csrf_token} />
+                    </SlideMotionDiv>
+                }
+            </AnimatePresence>
         </>
     )
 }
 
 const Activation = () => {
     const loaded = useLoaded(1000)
-    const [searchParams] = useSearchParams()
+    const [searchParams, setSearchParams] = useSearchParams()
 
     useEffect(() => {
         if (!searchParams.get('step')) {
-            searchParams.set('step', '1')
-            window.location.search = searchParams.toString()
+            searchParams.set('step', 'send-code')
+            setSearchParams(searchParams)
         }
     }, [])
 
@@ -199,24 +307,20 @@ const Activation = () => {
         <div id='activation-flow' className="window">
             <h2>Join Household</h2>
             <Animation />
-            <AnimatePresence mode='wait'>
-                {searchParams.get('step') === '1'
-                    ?
-                    <SlideMotionDiv
-                        key='activation'
-                        position={'default'}
-                    >
-                        <Step1 />
-                    </SlideMotionDiv>
-                    :
-                    <SlideMotionDiv
-                        key='activation'
-                        position={loaded ? 'first' : 'fixed'}
-                    >
-                        <Steps2and3 />
-                    </SlideMotionDiv>
-                }
-            </AnimatePresence>
+            <EmailContextProvider>
+                <AnimatePresence mode='wait'>
+                    {[null, 'send-code', 'confirm-code'].includes(searchParams.get('step'))
+                        ?
+                        <SlideMotionDiv key='activation' position={loaded ? 'first' : 'fixed'}>
+                            <SendAndConfirmCodeSteps />
+                        </SlideMotionDiv>
+                        :
+                        <SlideMotionDiv key='activation' position={loaded ? 'last' : 'fixed'}>
+                            <AddTraitsAndPasswordSteps />
+                        </SlideMotionDiv>
+                    }
+                </AnimatePresence>
+            </EmailContextProvider>
         </div>
     )
 }

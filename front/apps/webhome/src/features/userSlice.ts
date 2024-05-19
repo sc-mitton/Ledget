@@ -21,6 +21,7 @@ interface Account {
 }
 
 export interface User {
+    id: string,
     password_last_changed: string,
     last_login: string,
     created_on: string,
@@ -37,6 +38,15 @@ export interface User {
     }
     co_owner: string | null,
     account: Account,
+    is_account_owner: boolean,
+}
+
+export interface CoOwner {
+    email: string,
+    name: {
+        first: string,
+        last: string,
+    }
 }
 
 export interface Device {
@@ -113,6 +123,10 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
                 maxRetries: 1,
             },
         }),
+        getCoOwner: builder.query<User, void>({
+            query: () => 'user/co-owner',
+            providesTags: ['User'],
+        }),
         getSubscription: builder.query<Subscription, void>({
             query: () => 'subscription',
         }),
@@ -120,7 +134,7 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
             query: () => 'prices'
         }),
         getPaymentMethod: builder.query<PaymentMethod, void>({
-            query: () => 'default_payment_method',
+            query: () => 'default-payment-method',
             providesTags: ['payment_method'],
         }),
         getSetupIntent: builder.query<{ client_secret: string }, void>({
@@ -131,7 +145,7 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
         }),
         getNextInvoice: builder.query<NextInvoice, void>({
             query: () => ({
-                url: 'next_invoice',
+                url: 'next-invoice',
                 method: 'GET',
             }),
             providesTags: ['invoice'],
@@ -176,7 +190,7 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
         }),
         updateSubscriptionItems: builder.mutation<any, { priceId: string }>({
             query: ({ priceId }) => ({
-                url: 'subscription_item',
+                url: 'subscription-item',
                 method: 'PUT',
                 body: { price: priceId },
             }),
@@ -196,11 +210,19 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
                 body: { email }
             })
         }),
+        delteCoOwner: builder.mutation<any, void>({
+            query: () => ({
+                url: 'user/co-owner',
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['User'],
+        }),
     })
 })
 
 export const {
     useGetMeQuery,
+    useGetCoOwnerQuery,
     useGetDevicesQuery,
     useGetSubscriptionQuery,
     useGetPaymentMethodQuery,
@@ -214,4 +236,5 @@ export const {
     useEmailUserMutation,
     useExtendSessionMutation,
     useAddUserToAccountMutation,
+    useDelteCoOwnerMutation,
 } = extendedApiSlice

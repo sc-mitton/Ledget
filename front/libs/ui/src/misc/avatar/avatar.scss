@@ -1,0 +1,34 @@
+.avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .125em;
+    position: relative;
+
+    &--initial {
+        font-weight: var(--fw-bold);
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        border-radius: 50%;
+        background-color: var(--btn-light-gray);
+        z-index: -1;
+    }
+
+    &.small::after {
+        width: 2.25em;
+        height: 2.25em;
+    }
+
+    &.medium::after {
+        width: 3.25em;
+        height: 3.25em;
+    }
+
+    &.large::after {
+        width: 4.25em;
+        height: 4.25em;
+    }
+}

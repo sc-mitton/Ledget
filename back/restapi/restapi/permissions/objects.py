@@ -134,6 +134,19 @@ class OwnsStripeSubscription(BasePermission):
         ]
 
 
+class UserQueryParamIsSelf(BasePermission):
+    """
+    Checks if the user ID in the query params is the same as the user ID in the
+    request.
+    """
+
+    def has_permission(self, request, view):
+        if request.query_params.get("user") is None:
+            return True
+
+        return str(request.user.id) == request.query_params.get("user")
+
+
 class AccountOwner(BasePermission):
     '''
     Checks if the user is the primary user on the account

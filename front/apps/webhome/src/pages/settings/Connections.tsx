@@ -236,8 +236,8 @@ const ConfirmModal = withReAuth(withSmallModal((props) => {
             <h2>Are you sure?</h2>
             <p>
                 This will remove the connection to your bank account
-                and all of the data associated with this bank. <strong>This action
-                    cannot be undone.</strong>
+                and all of the data associated with this bank.
+                <strong>This action cannot be undone.</strong>
             </p>
             <div id="confirm-modal-bottom-btns">
                 <SecondaryButton

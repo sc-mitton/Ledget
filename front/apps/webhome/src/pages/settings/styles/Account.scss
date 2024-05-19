@@ -96,7 +96,7 @@
     &>div:first-child {
         display: grid;
         grid-template-columns: minmax(auto, max-content) 1fr;
-        gap: .5em;
+        gap: .25em;
         column-gap: 1em;
 
         &>div:nth-child(2n) {
@@ -111,12 +111,24 @@
 
 #household {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 2.875em;
 
-    #add-user-button {
+    span {
+        margin: .25em 0;
+    }
+
+    span:nth-of-type(2)+button {
+        right: 3.25em;
+    }
+
+    span:nth-of-type(1)+button {
+        right: 3.75em;
+    }
+
+    button {
         color: var(--white);
-        margin: .375em;
+        position: absolute;
     }
 }
 

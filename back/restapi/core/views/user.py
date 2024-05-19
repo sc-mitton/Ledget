@@ -1,4 +1,6 @@
 import logging
+from io import BytesIO
+from base64 import b64encode
 
 from rest_framework.generics import (
     RetrieveUpdateAPIView,
@@ -11,13 +13,17 @@ import ory_client
 from ory_client.api.identity_api import IdentityApi
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.utils import timezone
+import qrcode
+from qrcode.image.styledpil import StyledPilImage
+from qrcode.image.styles.moduledrawers.pil import RoundedModuleDrawer
+from qrcode.image.styles.colormasks import HorizontalGradiantColorMask
 
 from core.serializers.user import (
     UserSerializer,
     EmailSerializer,
     FeedbackSerializer,
     LinkUserSerializer,
-    ActivationLinkQrSerializer,
     CoOwnerSerializer
 )
 from restapi.permissions.auth import (
@@ -25,7 +31,10 @@ from restapi.permissions.auth import (
     HasOidcSignin,
     HighestAalFreshSession
 )
+from restapi.permissions.objects import is_account_owner
 from restapi.errors.validation import ValidationError500
+from core.tasks import cleanup_hanging_ory_users, remove_co_owner
+
 
 ory_configuration = ory_client.Configuration(
     host=settings.ORY_HOST, access_token=settings.ORY_API_KEY
@@ -50,15 +59,29 @@ class CoOwnerView(GenericAPIView):
 
     def get(self, request):
         try:
-            return Response(self.get_response_data(), status=status.HTTP_200_OK)
+            data = self.get_response_data()
+            return Response(data, status=status.HTTP_200_OK)
         except ory_client.ApiException as e:
             logger.error(f"Failed to get identity: {e}")
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    @is_account_owner
+    def delete(self, request):
+
+        request.user.co_owner.account = None
+        request.user.co_owner.save()
+
+        remove_co_owner.delay(request.user.co_owner.id)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
     def get_response_data(self):
+        if not self.request.user.co_owner:
+            return None
+
         with ory_client.ApiClient(ory_configuration) as api_client:
             api_instance = IdentityApi(api_client)
-            response = api_instance.get_identity(id=self.request.user.co_owner.id)
+            id = str(self.request.user.co_owner.id)
+            response = api_instance.get_identity(id=id)
             serializer = self.get_serializer(response['traits'])
             return serializer.data
 
@@ -91,33 +114,39 @@ class AddUserToAccountView(GenericAPIView):
         finally:
             self._update_or_create_db_user(identity_id)
 
-        # Create activation link and return it
-        activation_link = None
-        try:
-            activation_link = self._create_activation_link(identity_id)
-        except Exception as e:
-            logger.error(f"Failed to create activation link: {e}")
-            return Response(
-                data={
-                    'error': 'Failed to create activation link',
-                    'code': 'ACTIVATION_LINK_CREATION_FAILED'
-                },
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+        response_data = self.generate_activation_link_response_data()
+        return Response(response_data, status=status.HTTP_200_OK)
 
-        s = ActivationLinkQrSerializer(activation_link)
-        return Response(s.data, status=status.HTTP_200_OK)
+    def generate_activation_link_response_data(self):
+        recovery_link = settings.ORY_ACTIVATION_REDIRECT_URL
 
-    def _create_activation_link(self, user_id):
-        with ory_client.ApiClient(ory_configuration) as api_client:
-            api_instance = IdentityApi(api_client)
-            activation_link = api_instance.create_recovery_code_for_identity(
-                create_recovery_code_for_identity_body={
-                    "expires_in": settings.ORY_RECOVERY_LINK_EXPIRATION,
-                    'identity_id': user_id
-                }
+        qr = qrcode.QRCode(
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            border=2
+        )
+        qr.add_data(recovery_link)
+        mask = HorizontalGradiantColorMask(
+            left_color=(39, 54, 104),
+            right_color=(89, 113, 192)
+        )
+        img = qr.make_image(
+            image_factory=StyledPilImage,
+            module_drawer=RoundedModuleDrawer(),
+            color_mask=mask
+        )
+
+        buffer = BytesIO()
+        img.save(buffer)
+        encoded_img = b64encode(buffer.getvalue()).decode()
+        data_uri = f"data:image/png;base64,{encoded_img}"
+
+        return {
+            'recovery_link_qr': data_uri,
+            'recovery_link': recovery_link,
+            'expires_at': timezone.now() + timezone.timedelta(
+                seconds=settings.ORY_RECOVERY_LINK_EXPIRATION
             )
-            return activation_link
+        }
 
     def _get_ory_identity_id(self):
         email = self._get_validated_email()
@@ -140,17 +169,23 @@ class AddUserToAccountView(GenericAPIView):
             api_instance = IdentityApi(api_client)
             create_response = api_instance.create_identity(create_identity_body={
                 "schema_id": settings.ORY_USER_SCHEMA_ID,
-                "traits": {'email': email, 'name': {'first': '', 'last': ''}}
+                "traits": {'email': email, 'name': {'first': '', 'last': ''}},
+                "is_verified": True,
             })
+
         return create_response['id']
 
     def _update_or_create_db_user(self, identity_id):
         try:
-            get_user_model().objects.update_or_create(
+            user, created = get_user_model().objects.update_or_create(
                 id=identity_id,
-                account=self.request.user.account,
-                is_onboarded=True
+                account=self.request.user.account
             )
+            if created:
+                cleanup_hanging_ory_users.apply_async(
+                    args=[user.id],
+                    countdown=settings.ORY_RECOVERY_LINK_EXPIRATION
+                )
         except Exception as e:
             logger.error(f"Failed to update or create user: {e}")
             raise ValidationError500(

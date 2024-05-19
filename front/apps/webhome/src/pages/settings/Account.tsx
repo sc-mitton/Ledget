@@ -7,6 +7,7 @@ import { Edit2 } from '@geist-ui/icons'
 import './styles/Account.scss'
 import {
     useGetMeQuery,
+    useGetCoOwnerQuery,
     useGetPaymentMethodQuery,
     useUpdateRestartSubscriptionMutation,
     useGetNextInvoiceQuery,
@@ -22,8 +23,9 @@ import {
     DropdownItem,
     BakedSwitch,
     useColorScheme,
-    CircleIconButton
+    CircleIconButton,
 } from '@ledget/ui'
+import { ConfirmRemoveCoOwner } from '@modals/index'
 import { UpdatePersonalInfo, AddUserModal } from '@modals/index'
 import { CreditCard, UserPlus } from '@geist-ui/icons'
 
@@ -85,6 +87,7 @@ const Info = () => {
 const ChangePlanMenu = () => {
     const [updateSubscription, { isLoading }] = useUpdateRestartSubscriptionMutation()
     const { data: subscription } = useGetSubscriptionQuery()
+    const { data: user } = useGetMeQuery()
     const navigate = useNavigate()
 
     const nickNameMap = {
@@ -140,7 +143,7 @@ const ChangePlanMenu = () => {
             {({ open }) => (
                 <>
                     <Menu.Button as={'div'}>
-                        <BlueSlimSubmitButton submitting={isLoading} rotate={0} >
+                        <BlueSlimSubmitButton submitting={isLoading} rotate={0} disabled={!user?.is_account_owner}>
                             change
                         </BlueSlimSubmitButton>
                     </Menu.Button>
@@ -227,6 +230,7 @@ const Plan = () => {
 
 const PaymentMethod = () => {
     const { data } = useGetPaymentMethodQuery()
+    const { data: user } = useGetMeQuery()
     const navigate = useNavigate()
 
     const expDate = data
@@ -256,6 +260,7 @@ const PaymentMethod = () => {
                 <BlueSlimButton
                     aria-label="Change plan"
                     onClick={() => navigate("/settings/profile/update-payment")}
+                    disabled={!user?.is_account_owner}
                 >
                     update
                 </BlueSlimButton>
@@ -289,16 +294,26 @@ const Preferences = () => {
 
 const Household = () => {
     const [addUserModal, setAddUserModal] = useState(false)
+    const { data: coOwner } = useGetCoOwnerQuery()
+    const { data: user } = useGetMeQuery()
+    const [removeCoOwnerModal, setRemoveCoOwnerModal] = useState(false)
 
     return (
         <>
+            {removeCoOwnerModal && <ConfirmRemoveCoOwner onClose={() => setRemoveCoOwnerModal(false)} />}
             <section className="section">
                 <h4 className='header2'>Household</h4>
                 <div className="settings-list inner-window" id='household'>
                     <span>Members</span>
-                    <CircleIconButton size='medium' color='blue' id='add-user-button' onClick={() => setAddUserModal(true)}>
-                        <UserPlus className='icon' />
-                    </CircleIconButton>
+                    {user?.co_owner
+                        ? coOwner && <span>{`${coOwner.name.first} ${coOwner.name.last}`}</span>
+                        : <CircleIconButton size='medium' color='blue' id='add-user-button' onClick={() => setAddUserModal(true)}>
+                            <UserPlus className='icon' />
+                        </CircleIconButton>}
+                    {user?.is_account_owner && coOwner &&
+                        <BlueSlimButton onClick={() => setRemoveCoOwnerModal(true)}>
+                            Remove
+                        </BlueSlimButton>}
                 </div>
             </section>
             {addUserModal && <AddUserModal onClose={() => setAddUserModal(false)} />}

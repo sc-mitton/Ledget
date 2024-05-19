@@ -230,8 +230,8 @@ const AddBills = () => (
     <ItemsProvider itemType="bill">
         <div id="add-bills--window">
             <div>
-                <h1>Bills</h1>
-                <h4>Let's add a few of your monthly and yearly bills</h4>
+                <h2>Bills</h2>
+                <span>Let's add a few of your monthly and yearly bills</span>
             </div>
             <TabView item='bill'>
                 <ListView />
