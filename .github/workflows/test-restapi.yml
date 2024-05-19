@@ -44,6 +44,6 @@ jobs:
           docker-compose -f docker-compose.test.yml run --rm restapi sh -c "
             python manage.py migrate &&
             coverage run manage.py test &&
-            coverage report &&"
+            coverage report"
       - name: Lint
         run: docker-compose -f docker-compose.test.yml run --rm restapi sh -c "flake8 --config=.flake8"
