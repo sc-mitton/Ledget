@@ -9,6 +9,12 @@ on:
         required: false
         default: false
         type: "boolean"
+  workflow_dispatch:
+    inputs:
+      force_run_all:
+        required: false
+        default: false
+        type: "boolean"
 jobs:
   changes:
     runs-on: ubuntu-latest
