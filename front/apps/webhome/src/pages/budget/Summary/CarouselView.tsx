@@ -4,8 +4,8 @@ import { AlertCircle } from '@geist-ui/icons'
 
 import { HashLink } from 'react-router-hash-link'
 
-import './styles/BudgetSummary.scss'
-import { MonthPicker } from './MonthPicker'
+import './styles/CarouselView.scss'
+import { MonthPicker } from '../MonthPicker'
 import { useGetCategoriesQuery } from '@features/categorySlice'
 import { useGetBillsQuery } from '@features/billSlice'
 import { useAppSelector } from '@hooks/store'

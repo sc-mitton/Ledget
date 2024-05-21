@@ -237,8 +237,12 @@
             border-radius: var(--border-radius2);
         }
 
-        &.disabled:not(.overflow)::after {
+        &.disabled.highlighted:not(.overflow)::after {
             @include transition-background(var(--btn-light-gray));
+        }
+
+        &.disabled.muted:not(.overflow) {
+            opacity: .3;
         }
 
         &.selected::after {

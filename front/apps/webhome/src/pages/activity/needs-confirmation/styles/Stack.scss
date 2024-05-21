@@ -106,7 +106,7 @@ $scrollbar-padding: .75em;
             align-items: baseline;
 
             &.is-debit span:nth-child(-n+2) {
-                color: var(--debit-text);
+                color: var(--green-text);
             }
 
             // amount

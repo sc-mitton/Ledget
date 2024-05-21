@@ -10,7 +10,7 @@ import { DatePicker } from '@ledget/ui'
 import { setBudgetMonthYear, selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
 
-export const MonthPicker = ({ darkMode = false }) => {
+export const MonthPicker = ({ darkMode = false, placement = 'middle' }: { darkMode?: boolean, placement?: 'left' | 'middle' }) => {
     const { data: user } = useGetMeQuery()
 
     const [date, setDate] = useState<Dayjs>()
@@ -61,25 +61,29 @@ export const MonthPicker = ({ darkMode = false }) => {
     return (
         <div className={`month-picker ${darkMode ? 'dark' : ''}`}>
             <div className='month-picker--container'>
-                <button onClick={() => seek(-1, 1)}>
+                {placement === 'middle' && <button onClick={() => seek(-1, 1)}>
                     <ChevronLeft size={'1.125em'} strokeWidth={2} />
-                </button>
+                </button>}
                 <button
                     aria-haspopup='true'
                     onClick={(e) => setShowDatePicker(!showDatePicker)}>
                     {date?.format('MMM YYYY')}
                 </button>
+                {placement === 'left' && <button onClick={() => seek(-1, 1)}>
+                    <ChevronLeft size={'1.125em'} strokeWidth={2} />
+                </button>}
                 <button onClick={() => seek(1, 1)}>
                     <ChevronRight size={'1.125em'} strokeWidth={2} />
                 </button>
             </div>
             <DatePicker
-                placement='middle'
+                placement={placement}
                 period='month'
                 hideInputElement={true}
                 dropdownVisible={showDatePicker}
-                disabled={[[undefined, dayjs(user?.created_on)], [dayjs().add(1, 'month'), undefined]]}
-                omitDisabled={true}
+                disabled={[[undefined, dayjs(user?.created_on)]]}
+                hidden={[[dayjs().add(1, 'month'), undefined]]}
+                disabledStyle='muted'
                 setDropdownVisible={setShowDatePicker}
                 defaultValue={date}
                 onChange={(date) => date && setDate(date)}

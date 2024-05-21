@@ -2,7 +2,7 @@
     /* Base Palet */
 
     --yellow: rgb(175, 175, 51);
-    --debit-text: #3aae83;
+    --green-text: #3aae83;
     --yearly-color-alt: hsl(156, 31%, 62%);
     --charcoal-rgb: 41, 41, 41;
 
@@ -93,7 +93,7 @@
 
         --window: hsl(0, 0%, 7%);
         --window--portal: hsl(0, 0%, 9%);
-        --window2: var(--inner-window);
+        --window2: hsl(240, 12%, 12%);
         --window-background-color: hsl(0, 0%, 4%);
         --window-background-color-rgb: 5, 5, 5;
         --window-background-color-portal: hsl(0, 0%, 2%);
@@ -292,10 +292,10 @@
 
         --window: hsl(var(--window-h), var(--window-s), 100%);
         --window--portal: hsl(var(--window-h), var(--window-s), 100%);
-        --window2: hsl(var(--steel-blue-h), 10%, 92%);
+        --window2: hsl(240, 32%, 92%);
         --window-no-background: var(--window-background-color);
         --window-drop-shadow-color: hsl(0, 0%, 93%);
-        --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 4px 0px;
+        // --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 4px 0px;
         --window-portal-drop-shadow-color: hsl(0, 0%, 85%);
 
         --window-rgb: 244, 244, 246;

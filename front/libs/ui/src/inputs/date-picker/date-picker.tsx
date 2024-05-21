@@ -25,8 +25,9 @@ type BaseDatePickerProps = {
   period: 'day' | 'month' | 'year'
   format?: 'MM/DD/YYYY' | 'M/D/YYYY' | 'MM/DD/YY' | 'DD/MM/YYYY' | 'DD/MM/YY'
   closeOnSelect?: boolean
-  omitDisabled?: boolean
   disabled?: [Dayjs | undefined, Dayjs | undefined][]
+  hidden?: [Dayjs | undefined, Dayjs | undefined][]
+  disabledStyle?: 'muted' | 'highlighted'
   autoFocus?: boolean
   placement?: 'left' | 'right' | 'middle'
 } & ({
@@ -54,7 +55,7 @@ type DatePickerProps<T extends TPicker> =
     onChange?: (value?: Dayjs) => void
   } & BaseDatePickerProps
 
-type P = 'defaultValue' | 'disabled' | 'pickerType' | 'period' | 'omitDisabled'
+type P = 'defaultValue' | 'disabled' | 'pickerType' | 'period' | 'hidden' | 'disabledStyle'
 type UnenrichedDatePickerProps<T extends TPicker> = Omit<DatePickerProps<T>, P>
 type DatePickerContextProps<T extends TPicker> = Pick<DatePickerProps<T>, P>
 
@@ -148,13 +149,14 @@ const useDatePickerContext = () => {
 const PickerCell: React.FC<HTMLProps<HTMLTableCellElement> & CalendarCellProps> = (props) => {
   const { isDisabled, isActiveTerminusEnd, isActiveTerminusStart, isActive, isToday,
     isOverflow, isSelected, isTerminusEnd, isTerminusStart, children, extraPadded, ...rest } = props
+  const { disabledStyle } = useDatePickerContext()
 
   return (
     <div {...rest} className={`
         cell
         ${extraPadded ? 'extra-padded' : ''}
         ${isOverflow ? 'overflow' : ''}
-        ${isDisabled ? 'disabled' : ''}
+        ${isDisabled ? `disabled ${disabledStyle}` : ''}
         ${isActive ? 'active' : ''}
         ${isSelected ? 'selected' : ''}
         ${isTerminusStart ? 'terminus-start' : ''}
@@ -176,7 +178,6 @@ const EmptyPickerCell = ({ period }: { period: 'day' | 'year' | 'month' }) => (
   </div>
 )
 
-
 const checkDisabled = (point: Dayjs, period: DatePickerProps<TPicker>['period'], disabled?: DatePickerProps<TPicker>['disabled']) => {
   // Is range type if condition met
   if (!disabled) return false
@@ -194,7 +195,7 @@ const checkDisabled = (point: Dayjs, period: DatePickerProps<TPicker>['period'],
 }
 
 const Years = ({ windowCenter, onSelect }: YearsMonthsProps) => {
-  const { pickerType, selectedValue, focusedInputIndex, inputTouchCount, disabled, omitDisabled, period } = useDatePickerContext()
+  const { pickerType, selectedValue, focusedInputIndex, inputTouchCount, disabled, hidden, period } = useDatePickerContext()
 
   const [active, setActive] = useState<Dayjs>()
 
@@ -225,9 +226,10 @@ const Years = ({ windowCenter, onSelect }: YearsMonthsProps) => {
           : false
         const ignoreUnSelectable = pickerType === 'range' && (!selectedValue?.[focusedInputIndex || 0] || inputTouchCount[focusedInputIndex || 0] < 1)
         const isDisabled = checkDisabled(djs, period, disabled)
+        const isHidden = checkDisabled(djs, period, hidden)
 
         return (
-          omitDisabled && isDisabled
+          isHidden
             ? <EmptyPickerCell period="year" />
             : <PickerCell
               onClick={() => { onSelect(djs) }}
@@ -250,7 +252,7 @@ const Years = ({ windowCenter, onSelect }: YearsMonthsProps) => {
 
 const Months = ({ windowCenter, onSelect }: YearsMonthsProps) => {
   const [activeMonth, setActiveMonth] = useState<Dayjs>()
-  const { selectedValue, pickerType, focusedInputIndex, disabled, omitDisabled, inputTouchCount, period } = useDatePickerContext()
+  const { selectedValue, pickerType, focusedInputIndex, disabled, hidden, inputTouchCount, period } = useDatePickerContext()
 
   return (
     <div className="month-calendar" onMouseLeave={() => setActiveMonth(undefined)}>
@@ -275,9 +277,10 @@ const Months = ({ windowCenter, onSelect }: YearsMonthsProps) => {
             : false
           const ignoreUnSelectable = pickerType === 'range' && (!selectedValue?.[focusedInputIndex || 0] || inputTouchCount[focusedInputIndex || 0] < 1)
           const isDisabled = checkDisabled(djs, period, disabled)
+          const isHidden = checkDisabled(djs, period, hidden)
 
           return (
-            omitDisabled && isDisabled
+            isHidden
               ? <EmptyPickerCell period="month" />
               : <PickerCell
                 onMouseEnter={() => setActiveMonth(djs)}
@@ -306,7 +309,7 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
     setSelectedValue,
     pickerType,
     disabled,
-    omitDisabled,
+    hidden,
     inputTouchCount,
     focusedInputIndex,
     period
@@ -362,6 +365,7 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
             : selectedValue?.[0] && day.isBefore(selectedValue?.[0], 'day')
           : false
         const isDisabled = checkDisabled(day, period, disabled)
+        const isHidden = checkDisabled(day, period, hidden)
         const isActive = activeDay && !isOverflow
           ? pickerType === 'range'
             ? focusedInputIndex === 0
@@ -383,8 +387,9 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
           ? selectedValue?.[1] && day.isSame(selectedValue[1], 'day')
           : selectedValue && day.isSame(selectedValue, 'day')
 
+
         return (
-          omitDisabled && isDisabled
+          isHidden
             ? <EmptyPickerCell period="day" />
             : <PickerCell
               onClick={() => {
@@ -719,7 +724,6 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
             className="clear-input-button"
             type='button'
             darker={true}
-            size={'1.25em'}
             onClick={() => { setSelectedValue(undefined) }}
           >
             <X size={'.8em'} />
@@ -746,15 +750,16 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
 
 export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<PT>) {
 
-  const { pickerType, period, disabled, defaultValue, omitDisabled, ...args } = props
+  const { pickerType, period, disabled, hidden, defaultValue, disabledStyle, ...args } = props
 
   return (
     <DatePickerContextProvider
       disabled={disabled}
+      hidden={hidden}
       pickerType={pickerType}
       defaultValue={defaultValue}
       period={period}
-      omitDisabled={omitDisabled}
+      disabledStyle={disabledStyle}
     >
       <UnenrichedDatePicker {...args} />
     </DatePickerContextProvider>

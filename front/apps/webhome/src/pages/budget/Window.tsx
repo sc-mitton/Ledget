@@ -4,7 +4,8 @@ import { Outlet } from 'react-router-dom'
 import { useSearchParams } from 'react-router-dom'
 
 import './styles/Window.scss'
-import BudgetSummary from './BudgetSummary'
+import CarouselViewSummary from './Summary/CarouselView'
+import CardsView from './Summary/CardsView'
 import SpendingCategories from './SpendingCategories'
 import Bills from './Bills'
 import { setConfirmedTransactionFilter } from '@features/transactionsSlice'
@@ -49,7 +50,9 @@ function Window() {
     return (
         <>
             <div id="budget-window" className={`main-window ${screenSize === 'small' ? 'small-screen' : ''}`}>
-                <BudgetSummary />
+                {window.innerWidth > 700
+                    ? <CardsView />
+                    : <CarouselViewSummary />}
                 <div>
                     <SpendingCategories />
                     <Bills />
