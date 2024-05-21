@@ -93,7 +93,7 @@
 
         --window: hsl(0, 0%, 7%);
         --window--portal: hsl(0, 0%, 9%);
-        --window2: hsl(240, 12%, 12%);
+        --window2: hsl(240, 12%, 10%);
         --window-background-color: hsl(0, 0%, 4%);
         --window-background-color-rgb: 5, 5, 5;
         --window-background-color-portal: hsl(0, 0%, 2%);
@@ -191,7 +191,7 @@
         --sidenav-drop-shadow-color: hsl(0, 0%, 13%);
 
         --header-box-shadow-color: hsl(0, 0%, 10%);
-        --wafer-drop-shadow-color: hsl(0, 0%, 14%);
+        --wafer-drop-shadow-color: hsl(var(--blue-h), 0%, 10%);
         --scroll-shadow: hsl(0, 0%, 3%), transparent;
         --dropdown-box-shadow-color: hsl(0, 0%, 0%);
         --antd-drop-shadow-color: hsl(0, 0%, 0%);
@@ -235,15 +235,15 @@
         --window-s: 10%;
 
         // Budget Item Pallet
-        --monthly-background-color: hsl(var(--monthly-h), 100%, 70%);
-        --monthly-background-color-darker: hsl(var(--monthly-h), 100%, 60%);
+        --monthly-background-color: hsl(var(--monthly-h), 100%, 80%);
         --monthly-hover-background-color: hsl(var(--monthly-h), 100%, 75%);
+        --monthly-background-color-darker: hsl(var(--monthly-h), 100%, 60%);
         --monthly-color: hsl(0, 0%, 100%);
         --monthly-color-faded: hsl(0, 0%, 100%);
 
-        --yearly-background-color: hsl(var(--yearly-h), 50%, 70%);
+        --yearly-background-color: hsl(var(--yearly-h), 50%, 80%);
         --yearly-background-color-darker: hsl(var(--yearly-h), 50%, 40%);
-        --yearly-hover-background-color: hsl(var(--yearly-h), 50%, 80%);
+        --yearly-hover-background-color: hsl(var(--yearly-h), 50%, 75%);
         --yearly-color: hsl(0, 0%, 100%);
         --yearly-color-faded: hsl(0, 0%, 100%);
 
@@ -295,7 +295,7 @@
         --window2: hsl(240, 32%, 92%);
         --window-no-background: var(--window-background-color);
         --window-drop-shadow-color: hsl(0, 0%, 93%);
-        // --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 4px 0px;
+        --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 4px 0px;
         --window-portal-drop-shadow-color: hsl(0, 0%, 85%);
 
         --window-rgb: 244, 244, 246;

@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef } from 'react'
+import { Fragment, useRef } from 'react'
 
 import { Tab } from '@headlessui/react'
 import { useNavigate } from 'react-router-dom'
@@ -119,6 +119,7 @@ const Categories = ({ period, includeHeader = true }: { period: 'month' | 'year'
                                 <Fragment key={category.id}>
                                     <div>
                                         <BillCatEmojiLabel
+                                            size='medium'
                                             as='button'
                                             emoji={category.emoji}
                                             color={period === 'month' ? 'blue' : 'green'}

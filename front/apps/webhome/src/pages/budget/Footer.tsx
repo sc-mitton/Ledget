@@ -6,20 +6,21 @@ import './styles/Footer.scss'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
 import { setBudgetItemsSort, selectBudgetItemsSort } from '@features/uiSlice'
 import { EditBudgetCategories, EditBudgetBills } from '@modals/index'
-import { PillOptionButton, FadedTextButton, FilterPillButton, Tooltip } from '@ledget/ui'
+import { FadedTextButton, FilterPillButton, Tooltip, useColorScheme } from '@ledget/ui'
 import { FilterLines } from '@ledget/media'
 
 const Footer = () => {
     const dispatch = useAppDispatch()
     const budgetItemSorting = useAppSelector(selectBudgetItemsSort)
     const [modal, setModal] = useState<'categories' | 'bills' | ''>('')
+    const { isDark } = useColorScheme()
 
     return (
         <>
             {modal === 'categories' && <EditBudgetCategories onClose={() => { setModal('') }} />}
             {modal === 'bills' && <EditBudgetBills onClose={() => { setModal('') }} />}
             <div id="budget-footer">
-                <div>
+                <div className={`${isDark ? 'dark' : 'light'}`}>
                     <span>View All</span>
                     <div>
                         <FadedTextButton onClick={() => setModal('categories')}>

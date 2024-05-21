@@ -15,12 +15,6 @@ $gap: 2.75em;
     flex-wrap: wrap;
     border-radius: var(--border-radius3);
 
-    &:not(.dark-mode) {
-        margin-bottom: .5em;
-        // background-color: var(--blue-medium);
-    }
-
-
     .slider {
         width: 300px;
         overflow: hidden;

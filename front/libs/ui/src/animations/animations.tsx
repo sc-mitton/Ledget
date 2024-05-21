@@ -65,9 +65,9 @@ export const DropDownDiv = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement> 
 
 export const ZoomMotionDiv = forwardRef<HTMLDivElement, HTMLMotionProps<'div'>>(({ children, ...rest }, ref) => (
   <motion.div
-    initial={{ opacity: 0, scale: 0.95 }}
+    initial={{ opacity: 0, scale: 0.97 }}
     animate={{ opacity: 1, scale: 1 }}
-    exit={{ opacity: 0, scale: 0.95 }}
+    exit={{ opacity: 0, scale: 0.97 }}
     transition={{ duration: 0.15 }}
     {...rest}
   >

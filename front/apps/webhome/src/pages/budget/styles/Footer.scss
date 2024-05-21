@@ -15,9 +15,12 @@
         &:first-child {
             cursor: pointer;
 
-            &>span,
-            &>div>button {
-                font-weight: var(--fw-bold);
+            &.dark {
+
+                &>span,
+                &>div>button {
+                    font-weight: var(--fw-bold);
+                }
             }
 
             &>span {

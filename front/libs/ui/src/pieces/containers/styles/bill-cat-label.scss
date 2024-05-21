@@ -24,14 +24,34 @@
         margin-right: .45em;
     }
 
+    &.small {
+        * {
+            font-size: 1em;
+        }
+
+        &::after {
+            width: 1.5em;
+            height: 1.5em;
+        }
+    }
+
+    &.medium {
+        * {
+            font-size: 1.25rem;
+        }
+
+        &::after {
+            width: 2em;
+            height: 2em;
+        }
+    }
+
     &::after {
         content: '';
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 1.5em;
-        height: 1.5em;
         border-radius: inherit;
         background-color: var(--m-background);
         z-index: -1;

@@ -26,6 +26,7 @@ type BillCateEmojiProps<C extends ElementType> = {
   slim?: boolean
   checked?: boolean
   active?: boolean
+  size?: 'small' | 'medium'
 } & ComponentPropsWithoutRef<C>
 
 type AllowedElements = 'div' | 'li' | 'button'
@@ -77,6 +78,7 @@ export const BillCatEmojiLabel = <C extends ElementType = 'div'>(props: Polymorp
     color = 'blue',
     hoverable = true,
     slim = false,
+    size = 'small',
     children,
     ...rest
   } = props
@@ -87,7 +89,7 @@ export const BillCatEmojiLabel = <C extends ElementType = 'div'>(props: Polymorp
   return (
     <Component
       {...rest}
-      className={`bill-cat-label-emoji ${color} ${hoverable ? 'hoverable' : ''} ${active ? 'active' : ''} ${!emoji ? 'empty' : ''}`}
+      className={`bill-cat-label-emoji ${color} ${hoverable ? 'hoverable' : ''} ${active ? 'active' : ''} ${!emoji ? 'empty' : ''} ${size ? size : ''}`}
     >
       <div>
         {emoji && <span>{emoji || ''}</span>}
