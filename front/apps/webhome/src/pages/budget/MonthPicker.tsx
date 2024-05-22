@@ -69,10 +69,11 @@ export const MonthPicker = ({ darkMode = false, placement = 'middle', size = 'sm
                     onClick={(e) => setShowDatePicker(!showDatePicker)}>
                     {date?.format('MMM YYYY')}
                 </button>
-                {placement === 'left' && <button onClick={() => seek(-1, 1)}>
-                    <ChevronLeft size={'1.125em'} strokeWidth={2} />
-                </button>}
-                <button onClick={() => seek(1, 1)}>
+                {placement === 'left' &&
+                    <button onClick={() => seek(-1, 1)} disabled={date?.add(-1, 'month').isBefore(dayjs(user?.created_on))}>
+                        <ChevronLeft size={'1.125em'} strokeWidth={2} />
+                    </button>}
+                <button onClick={() => seek(1, 1)} disabled={date?.add(1, 'month').isAfter(dayjs())}>
                     <ChevronRight size={'1.125em'} strokeWidth={2} />
                 </button>
             </div>

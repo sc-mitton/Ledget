@@ -87,7 +87,7 @@ export const BillCatEmojiLabel = <C extends ElementType = 'div'>(props: Polymorp
   } = props
 
   const Component = as || 'div'
-  const strokeWidth = 2
+  const strokeWidth = 1.75
   const svgSize = size === 'small' ? 28 : 38
 
   return (

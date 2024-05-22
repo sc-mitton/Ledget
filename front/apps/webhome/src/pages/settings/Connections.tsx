@@ -17,7 +17,7 @@ import { ShadowedContainer } from '@components/pieces'
 import {
     SecondaryButton,
     BlueSubmitButton,
-    IconButton,
+    CircleIconButton,
     ShimmerDiv,
     DeleteButton,
     BlueSlimSubmitButton,
@@ -100,7 +100,7 @@ const DeleteAllButton = ({ onClick }: { onClick: () => void }) => {
                     className={deleteClass}
                     aria-label="Remove account"
                     onClick={() => onClick()}
-                    disabled={!editing}
+                    show={editing}
                 />
             </Tooltip>
         </div >
@@ -277,17 +277,20 @@ const MainHeader = ({ onPlus }: { onPlus: () => void }) => {
             <div className='header-btns'>
                 {(!editing && plaidItems!.length > 0) &&
                     <Tooltip msg={'Edit connections'} ariaLabel={'Edit Connections'} type={'left'}>
-                        <IconButton
+                        <CircleIconButton
                             onClick={() => setEditing(!editing)}
                             aria-label="Edit institution connections"
                         >
-                            <Edit2 className='icon' />
-                        </IconButton>
+                            <Edit2 className='icon small' />
+                        </CircleIconButton>
                     </Tooltip>}
                 <Tooltip msg={'Add account'} ariaLabel={'Add Account'} type={'left'}>
-                    <IconButton onClick={onPlus} aria-label="Add institution connection">
-                        <Plus className='icon' />
-                    </IconButton>
+                    <CircleIconButton
+                        onClick={onPlus}
+                        aria-label="Add institution connection"
+                    >
+                        <Plus className='icon small' />
+                    </CircleIconButton>
                 </Tooltip>
             </div>
         </div>

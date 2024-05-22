@@ -91,32 +91,36 @@
         --modal-inner-window: var(--inner-window);
         --overlay: hsl(0, 0%, 10%);
 
-        --window: hsl(0, 0%, 7%);
-        --window--portal: hsl(0, 0%, 9%);
+        --window-h: 240;
+        --window-s: 3%;
+
+        --window: hsl(var(--window-h), var(--window-s), 7%);
+        --window-background: linear-gradient(to bottom, var(--window), hsl(var(--window-h), var(--window-s), 7%));
+        --window--portal: hsl(var(--window-h), varr(--window-s), 9%);
         --window2: hsl(240, 12%, 10%);
-        --window-background-color: hsl(0, 0%, 5%);
+        --window-background-color: hsl(var(--window-h), var(--window-s), 5%);
         --window-background-color-rgb: 5, 5, 5;
-        --window-background-color-portal: hsl(0, 0%, 2%);
+        --window-background-color-portal: hsl(var(--window-h), var(--window-s), 2%);
         --window-no-background: var(--window-background-color);
         --window-rgb: 28, 28, 28;
         --gradient-window-background: linear-gradient(to bottom, hsl(0, 0%, 8%) 0%, hsl(0, 0%, 5%) 100%);
         --gradient-window-background-small-screen: linear-gradient(to bottom, rgb(28, 28, 28) -20%, rgba(0, 0, 0, 1) 100%);
 
         --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
-        --window-portal-drop-shadow-color: hsl(0, 0%, 6%);
+        --window-portal-drop-shadow-color: hsl(var(--window-h), var(--window-s), 6%);
 
         // Side Nav
-        --sidenav-drop-shadow: 0 0px 4px hsl(0, 0%, 12%);
-        --side-window: hsl(0, 0%, 6%);
+        --sidenav-drop-shadow: 0 0px 4px hsl(var(--window-h), var(--window-s), 12%);
+        --side-window: hsl(var(--window-h), var(--window-s), 6%);
 
-        --wafer-background: hsl(0, 0%, 1%);
+        --wafer-background: hsl(var(--window-h), var(--window-s), 1%);
         --dropdown-background-rgb: 18, 18, 18;
         --dropdown-background: var(--window);
-        --dropdown-item-background: hsl(0, 0%, 12%);
+        --dropdown-item-background: hsl(var(--window-h), var(--window-s), 12%);
 
         // New Item
         // --new-item-border: hsl(0, 0%, 11%);
-        --new-item-drop-shadow-color: hsl(0, 0%, 7%);
+        --new-item-drop-shadow-color: hsl(var(--window-h), var(--window-s), 5%);
 
         // Header
         --header-background: hsl(240, 38%, 3%);
@@ -186,7 +190,7 @@
         --transaction-hover-background-dim: hsl(0, 0%, 7%);
 
         // Drop Shadows & Borders
-        --window-drop-shadow-color: hsl(0, 0%, 15%);
+        --window-drop-shadow-color: hsl(0, 0%, 12%);
         --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
 
         --header-box-shadow-color: hsl(0, 0%, 10%);
@@ -202,7 +206,8 @@
 
         --active-wafer-indicator: var(--blue-sat);
 
-        --border-color-ultra-dim: rgb(255, 255, 255, .07);
+        --border-color-ultra-dim: rgb(255, 255, 255, .05);
+        --border-color-super-dim: rgb(255, 255, 255, .05);
         --border-color-dim: rgb(255, 255, 255, .11);
         --border-color: rgb(255, 255, 255, .17);
         --institution-logo-border: rgb(255, 255, 255, .3);
@@ -290,6 +295,7 @@
         --gradient-window-background-small-screen: var(--gradient-window-background);
 
         --window: hsl(var(--window-h), var(--window-s), 100%);
+        --window-background: linear-gradient(to bottom, var(--window), hsl(var(--window-h), var(--window-s), 99%));
         --window--portal: hsl(var(--window-h), var(--window-s), 100%);
         --window2: hsl(240, 32%, 94%);
         --window-no-background: var(--window-background-color);
@@ -396,7 +402,8 @@
         --input-drop-shadow-color: rgba(0, 0, 0, 0.07);
         --toast-box-shadow: var(--mid-elevation-drop-shadow);
 
-        --border-color-ultra-dim: rgb(0, 0, 0, .06);
+        --border-color-ultra-dim: rgb(0, 0, 0, .03);
+        --border-color-super-dim: rgb(0, 0, 0, .05);
         --border-color-dim: rgb(0, 0, 0, .09);
         --border-color: rgb(0, 0, 0, .15);
         --institution-logo-border: rgb(0, 0, 0, .2);

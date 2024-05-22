@@ -74,7 +74,7 @@ $borderRadius2: var(--border-radius2);
         span {
             padding: 0 .5em 0 .25em;
             color: var(--m-text-quinary);
-            background-color: inherit;
+            background-color: var(--window);
 
             &:first-child {
                 position: relative;

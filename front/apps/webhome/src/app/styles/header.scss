@@ -37,6 +37,7 @@ header {
             display: flex;
             align-items: center;
             gap: 1em;
+            margin-right: 1em;
         }
     }
 
@@ -53,6 +54,12 @@ header {
             left: 0em;
             opacity: .2;
         }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    header>div>div:last-child {
+        margin-right: 0em;
     }
 }
 

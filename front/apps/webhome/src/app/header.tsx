@@ -5,7 +5,7 @@ import { Switch } from '@headlessui/react'
 
 import './styles/header.scss'
 import { LedgetLogoIcon2 } from '@ledget/media'
-import { User, HelpCircle, LogOut, Sun, Moon } from '@geist-ui/icons'
+import { User, LifeBuoy, LogOut, Sun, Moon } from '@geist-ui/icons'
 import { DropdownItem, DropDownDiv, useScreenContext, useColorScheme } from '@ledget/ui'
 import { Logout, Help } from '@modals/index'
 import { NotificationsDropdownMenu } from '@pages/activity'
@@ -70,7 +70,7 @@ const ProfileDropdownMenu = ({ setModal }:
                     >
                         <Menu.Items static>
                             <Wrapper onClick={() => setModal("help")}>
-                                <HelpCircle className='icon' />
+                                <LifeBuoy className='icon' />
                                 Help
                             </Wrapper>
                             <Wrapper onClick={() => setModal("logout")}>

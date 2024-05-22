@@ -268,6 +268,11 @@ svg.icon {
     height: 1.25em;
 }
 
+svg.icon.small {
+    width: 1em;
+    height: 1em;
+}
+
 /* --------------------------------- Windows & Dashboard -------------------------------- */
 
 .dashboard {
@@ -308,8 +313,7 @@ svg.icon {
     padding: var(--window-padding);
     box-sizing: border-box;
     border: 1.25px solid var(--window-border);
-    // background-color: var(--window);
-    background: linear-gradient(to bottom, var(--window), hsl(var(--window-h), var(--window-s), 99%));
+    background: var(--window-background);
 }
 
 .window-no-background {
@@ -371,7 +375,8 @@ svg.icon {
 .header-btns {
     display: flex;
     align-items: center;
-    gap: .125em;
+    gap: 1em;
+    margin-right: .8em;
 }
 
 /* -------------------------------- Dropdowns ------------------------------- */

@@ -454,12 +454,15 @@ const DayMonthYearPicker = () => {
       {/* Header */}
       <div>
         <div>
-          <IconButton3 onClick={(e) => handleSeek(e, -1, 'fast')}>
+          <IconButton3
+            onClick={(e) => handleSeek(e, -1, 'fast')}>
             <ChevronsLeft size="1.25em" />
           </IconButton3>
-          {view !== 'year' && <IconButton3 onClick={(e) => handleSeek(e, -1, 'normal')}>
-            <ChevronLeft size="1.25em" />
-          </IconButton3>}
+          {view !== 'year' &&
+            <IconButton3
+              onClick={(e) => handleSeek(e, -1, 'normal')}>
+              <ChevronLeft size="1.25em" />
+            </IconButton3>}
         </div>
         {focusedInputIndex === 0 && pickerType === 'range' && view === 'day' &&
           <div>
@@ -493,10 +496,13 @@ const DayMonthYearPicker = () => {
             </button>
           </div>}
         <div>
-          {view !== 'year' && <IconButton3 onClick={(e) => handleSeek(e, 1, 'normal')}>
-            <ChevronRight size="1.25em" />
-          </IconButton3>}
-          <IconButton3 onClick={(e) => handleSeek(e, 1, 'fast')}>
+          {view !== 'year' &&
+            <IconButton3
+              onClick={(e) => handleSeek(e, 1, 'normal')}>
+              <ChevronRight size="1.25em" />
+            </IconButton3>}
+          <IconButton3
+            onClick={(e) => handleSeek(e, 1, 'fast')}>
             <ChevronsRight size="1.25em" />
           </IconButton3>
         </div>
@@ -750,7 +756,7 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
 
 export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<PT>) {
 
-  const { pickerType, period, disabled, hidden, defaultValue, disabledStyle, ...args } = props
+  const { pickerType, period, disabled, hidden, defaultValue, disabledStyle = 'highlighted', ...args } = props
 
   return (
     <DatePickerContextProvider
