@@ -56,7 +56,7 @@ function Window() {
                 <div>
                     <SpendingCategories />
                     <Bills />
-                    <Footer />
+
                 </div>
             </div>
             <Outlet />

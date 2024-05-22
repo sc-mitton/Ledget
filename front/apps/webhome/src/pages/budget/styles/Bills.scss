@@ -13,10 +13,18 @@ $scroll-bar-padding: .5em;
 @import './SpendingCategories.scss';
 @import '@styles/table-mixins';
 
-.bills-summary-window {
+#bills {
     flex: 0 0 0;
     display: flex;
     position: relative;
+    display: flex;
+    flex-direction: column;
+
+    &>button {
+        position: absolute;
+        right: 1em;
+        top: .25em;
+    }
 
     &.collapsed {
         flex: 0 1 0;
@@ -37,6 +45,8 @@ $scroll-bar-padding: .5em;
     gap: .5em;
     transition: gap .2s ease-out .1s;
     height: min-content;
+    margin-top: .75em;
+    margin-bottom: 1.5em;
 
     // Div around the calendar and bill items
     &>div:nth-child(2) {
@@ -105,25 +115,29 @@ $scroll-bar-padding: .5em;
     &>div:nth-child(2) {
         display: flex;
         align-items: center;
-        gap: .5em;
+        gap: 1em;
     }
 
     &>div:last-child {
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        transition: opacity .2s ease-out;
         flex-grow: 1;
-        opacity: 0;
+        gap: .875em;
+        padding-right: .25em;
 
-        &:hover {
-            opacity: 1;
+        &>div:first-child {
+            opacity: 0;
             transition: opacity .2s ease-out;
+
+            &:hover {
+                opacity: 1;
+                transition: opacity .2s ease-out;
+            }
+
         }
 
-
         button {
-
             svg {
                 transform: rotate(0deg);
             }

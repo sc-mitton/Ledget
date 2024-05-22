@@ -377,4 +377,12 @@ local BaseWithAuth = {
       url: base_url + '/reminders',
     },
   },
+  BaseWithAuth
+  {
+    id: 'setup-intent',
+    match: {
+      methods: ['POST'],
+      url: base_url + '/setup-intent',
+    },
+  }
 ]

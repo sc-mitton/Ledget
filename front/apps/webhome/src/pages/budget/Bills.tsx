@@ -11,15 +11,18 @@ import { useGetBillsQuery } from '@features/billSlice';
 import { selectBudgetItemsSort } from '@features/uiSlice';
 import { selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
 import { setBillModal } from '@features/modalSlice';
+import { EditBudgetBills } from '@modals/index';
 import {
     DollarCents,
     IconButton3,
+    CircleIconButton,
     DropDownDiv,
     useAccessEsc,
     ShimmerText,
     BillCatLabel,
     useScreenContext,
-    Tooltip
+    Tooltip,
+    BlueTextButton
 } from '@ledget/ui';
 
 
@@ -162,9 +165,8 @@ const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
             </div>
             <div>
                 <h4>
-                    {selectedDate.toLocaleString('en-us', { month: 'short' }).toUpperCase()}&nbsp;
-                    {selectedDate.getFullYear()} BILLS
-                    {/* Bills */}
+                    {selectedDate.toLocaleString('en-us', { month: 'short' })}&nbsp;
+                    {selectedDate.getFullYear()}
                 </h4>
                 {showCalendarIcon &&
                     <IconButton3
@@ -176,19 +178,6 @@ const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
                     >
                         <CalendarIcon className="icon" />
                     </IconButton3>}
-                <Tooltip msg='Add bill'>
-                    <IconButton3
-                        onClick={() => {
-                            navigate({
-                                pathname: '/budget/new-bill',
-                                search: location.search
-                            })
-                        }}
-                        aria-label="Add bill"
-                    >
-                        <Plus className='icon' />
-                    </IconButton3>
-                </Tooltip>
             </div>
             <div>
                 <Tooltip msg={collapsed ? 'Expand' : 'Collapse'}>
@@ -199,6 +188,19 @@ const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
                     >
                         <ChevronsDown className='icon' />
                     </IconButton3>
+                </Tooltip>
+                <Tooltip msg='Add bill'>
+                    <CircleIconButton
+                        onClick={() => {
+                            navigate({
+                                pathname: '/budget/new-bill',
+                                search: location.search
+                            })
+                        }}
+                        aria-label="Add bill"
+                    >
+                        <Plus size='1em' />
+                    </CircleIconButton>
                 </Tooltip>
             </div>
         </div>
@@ -286,6 +288,7 @@ const BillsWindow = () => {
     const ref = useRef<HTMLDivElement>(null)
     const [showCalendar, setShowCalendar] = useState(true)
     const { screenSize } = useScreenContext()
+    const [modal, setModal] = useState(false)
 
     useEffect(() => {
         setShowCalendar(ref.current?.clientWidth! > 800)
@@ -303,15 +306,22 @@ const BillsWindow = () => {
     }, [ref.current])
 
     return (
-        <div className={`window bills-summary-window ${collapsed ? 'collapsed' : ''}`} ref={ref}>
-            <div className={`calendar-bills--container ${collapsed ? 'collapsed' : ''} ${['small', 'extra-small'].includes(screenSize) ? 'small-screen' : ''}`}>
-                <Header showCalendarIcon={!showCalendar} collapsed={collapsed} setCollapsed={setCollapsed} />
-                <div>
-                    {showCalendar && <Calendar />}
-                    {isLoading ? <SkeletonBills /> : <Bills collapsed={collapsed} />}
+        <>
+            <div id='bills' className={`${collapsed ? 'collapsed' : ''}`} ref={ref}>
+                <h3>Bills</h3>
+                <BlueTextButton onClick={() => setModal(true)} aria-label='View all bills'>
+                    View All
+                </BlueTextButton>
+                <div className={`window calendar-bills--container ${collapsed ? 'collapsed' : ''} ${['small', 'extra-small'].includes(screenSize) ? 'small-screen' : ''}`}>
+                    <Header showCalendarIcon={!showCalendar} collapsed={collapsed} setCollapsed={setCollapsed} />
+                    <div>
+                        {showCalendar && <Calendar />}
+                        {isLoading ? <SkeletonBills /> : <Bills collapsed={collapsed} />}
+                    </div>
                 </div>
             </div>
-        </div>
+            {modal && <EditBudgetBills onClose={() => setModal(false)} />}
+        </>
     )
 }
 

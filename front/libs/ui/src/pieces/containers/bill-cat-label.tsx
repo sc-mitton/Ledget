@@ -26,7 +26,9 @@ type BillCateEmojiProps<C extends ElementType> = {
   slim?: boolean
   checked?: boolean
   active?: boolean
+  progress?: number
   size?: 'small' | 'medium'
+
 } & ComponentPropsWithoutRef<C>
 
 type AllowedElements = 'div' | 'li' | 'button'
@@ -78,21 +80,44 @@ export const BillCatEmojiLabel = <C extends ElementType = 'div'>(props: Polymorp
     color = 'blue',
     hoverable = true,
     slim = false,
+    progress,
     size = 'small',
     children,
     ...rest
   } = props
 
   const Component = as || 'div'
-
+  const strokeWidth = 2
+  const svgSize = size === 'small' ? 28 : 38
 
   return (
     <Component
       {...rest}
       className={`bill-cat-label-emoji ${color} ${hoverable ? 'hoverable' : ''} ${active ? 'active' : ''} ${!emoji ? 'empty' : ''} ${size ? size : ''}`}
     >
+      {emoji && <span>{emoji || ''}</span>}
       <div>
-        {emoji && <span>{emoji || ''}</span>}
+        <svg viewBox="0 0 36 36" style={{ width: svgSize, height: svgSize }} className={`progress-circle ${color}`}>
+          <circle
+            cx="18"
+            cy="18"
+            r="14"
+            strokeWidth={strokeWidth}
+            strokeLinecap='round'
+            transform="rotate(-90 18 18)"
+            fill="transparent"
+          />
+          <circle
+            cx="18"
+            cy="18"
+            r="14"
+            strokeWidth={progress === undefined ? 0 : strokeWidth}
+            fill="transparent"
+            transform="rotate(-90 18 18)"
+            strokeLinecap='round'
+            strokeDasharray={`${progress ? parseFloat((Math.min(1, progress)).toFixed(2)) * 88 : 0}, 88`}
+          />
+        </svg>
       </div>
       {children}
     </Component>

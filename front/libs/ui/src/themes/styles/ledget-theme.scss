@@ -94,7 +94,7 @@
         --window: hsl(0, 0%, 7%);
         --window--portal: hsl(0, 0%, 9%);
         --window2: hsl(240, 12%, 10%);
-        --window-background-color: hsl(0, 0%, 4%);
+        --window-background-color: hsl(0, 0%, 5%);
         --window-background-color-rgb: 5, 5, 5;
         --window-background-color-portal: hsl(0, 0%, 2%);
         --window-no-background: var(--window-background-color);
@@ -106,7 +106,7 @@
         --window-portal-drop-shadow-color: hsl(0, 0%, 6%);
 
         // Side Nav
-        --sidenav-drop-shadow: 0 0px 4px hsl(0, 0%, 16%);
+        --sidenav-drop-shadow: 0 0px 4px hsl(0, 0%, 12%);
         --side-window: hsl(0, 0%, 6%);
 
         --wafer-background: hsl(0, 0%, 1%);
@@ -186,9 +186,8 @@
         --transaction-hover-background-dim: hsl(0, 0%, 7%);
 
         // Drop Shadows & Borders
-        --window-drop-shadow-color: hsl(0, 0%, 20%);
+        --window-drop-shadow-color: hsl(0, 0%, 15%);
         --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
-        --sidenav-drop-shadow-color: hsl(0, 0%, 13%);
 
         --header-box-shadow-color: hsl(0, 0%, 10%);
         --wafer-drop-shadow-color: hsl(var(--blue-h), 0%, 10%);
@@ -235,16 +234,16 @@
         --window-s: 10%;
 
         // Budget Item Pallet
-        --monthly-background-color: hsl(var(--monthly-h), 100%, 80%);
-        --monthly-hover-background-color: hsl(var(--monthly-h), 100%, 75%);
-        --monthly-background-color-darker: hsl(var(--monthly-h), 100%, 60%);
-        --monthly-color: hsl(0, 0%, 100%);
+        --monthly-background-color: hsl(var(--monthly-h), 80%, 94%);
+        --monthly-hover-background-color: hsl(var(--monthly-h), 80%, 89%);
+        --monthly-background-color-darker: hsl(var(--monthly-h), 80%, 73%);
+        --monthly-color: hsl(var(--monthly-h), 30%, 40%);
         --monthly-color-faded: hsl(0, 0%, 100%);
 
-        --yearly-background-color: hsl(var(--yearly-h), 50%, 80%);
-        --yearly-background-color-darker: hsl(var(--yearly-h), 50%, 40%);
-        --yearly-hover-background-color: hsl(var(--yearly-h), 50%, 75%);
-        --yearly-color: hsl(0, 0%, 100%);
+        --yearly-background-color: hsl(var(--yearly-h), 40%, 90%);
+        --yearly-hover-background-color: hsl(var(--yearly-h), 40%, 89%);
+        --yearly-background-color-darker: hsl(var(--yearly-h), 40%, 60%);
+        --yearly-color: hsl(var(--yearly-h), 30%, 40%);
         --yearly-color-faded: hsl(0, 0%, 100%);
 
         // Blue Green Pallet
@@ -278,7 +277,7 @@
         --green-dark: hsl(var(--green-h), 30%, 22%);
 
         // Windows
-        --window-background-color: hsl(240, 7%, 96%);
+        --window-background-color: hsl(240, 7%, 97%);
         --window-background-color-rgb: 250, 250, 250;
         --window-background-color-portal: hsl(0, 0%, 95%);
         --gradient-window-background: radial-gradient(at 40% 20%, rgba(255, 255, 255, 1) 0px, transparent 50%),
@@ -336,8 +335,8 @@
         --shimmer-text-background: hsl(0, 0%, 90%);
 
         // Text
-        --m-header-text: hsl(0, 0%, 0%);
-        --m-text: hsl(0, 0%, 0%);
+        --m-header-text: hsl(var(--window-h), calc(var(--window-s) + 10%), 27%);
+        --m-text: hsl(var(--window-h), calc(var(--window-s) + 10%), 27%);
         --m-invert-text: hsl(0, 0%, 97%);
         --m-text-secondary: color-mix(in srgb, var(--m-text), white 30%);
         --m-text-tirtiary: color-mix(in srgb, var(--m-text), white 50%);

@@ -16,7 +16,6 @@ import {
   DollarCents,
   SlideMotionDiv,
   BackButton,
-  FadedTextButton,
   FilterPillButton
 } from '@ledget/ui'
 import { useAppSelector } from '@hooks/store'

@@ -10,7 +10,7 @@ import { DatePicker } from '@ledget/ui'
 import { setBudgetMonthYear, selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
 
-export const MonthPicker = ({ darkMode = false, placement = 'middle' }: { darkMode?: boolean, placement?: 'left' | 'middle' }) => {
+export const MonthPicker = ({ darkMode = false, placement = 'middle', size = 'small' }: { darkMode?: boolean, placement?: 'left' | 'middle', size?: 'small' | 'medium' }) => {
     const { data: user } = useGetMeQuery()
 
     const [date, setDate] = useState<Dayjs>()
@@ -60,7 +60,7 @@ export const MonthPicker = ({ darkMode = false, placement = 'middle' }: { darkMo
 
     return (
         <div className={`month-picker ${darkMode ? 'dark' : ''}`}>
-            <div className='month-picker--container'>
+            <div className={`month-picker--container ${size}`}>
                 {placement === 'middle' && <button onClick={() => seek(-1, 1)}>
                     <ChevronLeft size={'1.125em'} strokeWidth={2} />
                 </button>}

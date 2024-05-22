@@ -19,6 +19,37 @@
     align-items: center;
     justify-content: center;
 
+    .progress-circle {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+
+        &.green {
+            color: var(--yearly-background-color-darker);
+        }
+
+        &.blue {
+            color: var(--monthly-background-color-darker);
+        }
+
+        circle:first-child {
+            stroke: currentColor;
+            opacity: .2;
+        }
+
+        circle:last-child {
+            stroke: currentColor;
+            opacity: .9;
+        }
+    }
+
+    span {
+        position: relative;
+        z-index: 1;
+    }
+
     &.empty {
         margin-left: .45em;
         margin-right: .45em;
@@ -37,7 +68,7 @@
 
     &.medium {
         * {
-            font-size: 1.25rem;
+            font-size: 1.125rem;
         }
 
         &::after {
@@ -53,26 +84,24 @@
         left: 50%;
         transform: translate(-50%, -50%);
         border-radius: inherit;
-        background-color: var(--m-background);
-        z-index: -1;
     }
 
     &.blue::after {
-        // background-color: var(--monthly-background-color);
+        background-color: var(--monthly-background-color);
         background: linear-gradient(to bottom right,
                 var(--monthly-background-color) 0%,
                 var(--monthly-hover-background-color) 100%)
     }
 
     &.green::after {
-        // background-color: var(--yearly-background-color);
+        background-color: var(--yearly-background-color);
         background: linear-gradient(to bottom right,
                 var(--yearly-background-color) 0%,
                 var(--yearly-hover-background-color) 100%)
     }
 
     &.green-blue::after {
-        // background-color: var(--yearly-background-color);
+        background-color: var(--yearly-background-color);
         background: linear-gradient(to bottom right,
                 var(--yearly-background-color) 0%,
                 var(--yearly-hover-background-color) 100%)
@@ -82,21 +111,21 @@
         cursor: pointer;
 
         &.blue:hover::after {
-            // background-color: var(--monthly-hover-background-color);
+            background-color: var(--monthly-hover-background-color);
             background: linear-gradient(to bottom right,
                     var(--monthly-hover-background-color) 0%,
                     var(--monthly-hover-background-color) 100%)
         }
 
         &.green:hover::after {
-            // background-color: var(--yearly-hover-background-color);
+            background-color: var(--yearly-hover-background-color);
             background: linear-gradient(to bottom right,
                     var(--yearly-hover-background-color) 0%,
                     var(--yearly-hover-background-color) 100%)
         }
 
         &.green-blue:hover::after {
-            // background-color: var(--yearly-hover-background-color);
+            background-color: var(--yearly-hover-background-color);
             background: linear-gradient(to bottom right,
                     var(--yearly-hover-background-color) 0%,
                     var(--yearly-hover-background-color) 100%)

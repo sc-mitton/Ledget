@@ -139,7 +139,7 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
         }),
         getSetupIntent: builder.query<{ client_secret: string }, void>({
             query: () => ({
-                url: 'setup_intent',
+                url: 'setup-intent',
                 method: 'GET',
             })
         }),

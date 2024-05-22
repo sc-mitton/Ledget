@@ -13,6 +13,14 @@
 
     &>.month-picker--container {
 
+        &.small {
+            font-size: 1em;
+        }
+
+        &.medium {
+            font-size: 1.125rem;
+        }
+
         button {
             opacity: 1;
             transition: opacity .2s ease-in-out;

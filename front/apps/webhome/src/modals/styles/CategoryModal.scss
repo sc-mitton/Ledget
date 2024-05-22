@@ -34,11 +34,11 @@
             }
 
             &.month::after {
-                background-color: var(--monthly-background-color);
+                background-color: var(--monthly-background-color-darker);
             }
 
             &.year::after {
-                background-color: var(--yearly-background-color);
+                background-color: var(--yearly-background-color-darker);
             }
         }
 

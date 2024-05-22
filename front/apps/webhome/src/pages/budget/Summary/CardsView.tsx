@@ -36,7 +36,7 @@ const BudgetSummary = () => {
         <>
             <div id='budget-summary-cards' className={`${screenSize} ${isDark ? 'dark' : 'light'}`}>
                 <div id="budget-summary-cards--month-picker" className={`${screenSize}`}>
-                    <MonthPicker darkMode={isDark} placement='left' />
+                    <MonthPicker darkMode={isDark} placement='left' size='medium' />
                 </div>
                 <div id='budget-summary-cards--cards'>
                     <div className='card'>

@@ -109,11 +109,11 @@
         }
 
         &.blue::after {
-            background-color: var(--monthly-background-color);
+            background-color: var(--monthly-hover-background-color);
         }
 
         &.green::after {
-            background-color: var(--yearly-background-color);
+            background-color: var(--yearly-hover-background-color);
         }
     }
 

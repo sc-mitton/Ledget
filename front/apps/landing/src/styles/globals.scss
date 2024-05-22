@@ -126,7 +126,7 @@ h4,
 h5,
 h6 {
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
-    color: var(--m-text-header);
+    color: var(--m-header-text);
 }
 
 h3,
@@ -180,10 +180,17 @@ input {
 
 footer {
     width: 100%;
-    border-top: 1.5px solid var(--border-color);
     display: flex;
     justify-content: center;
     padding: 2em 0;
+
+    &.dark {
+        border-top: 1.5px solid var(--border-color-ultra-dim);
+    }
+
+    &.light {
+        border-top: 1.5px solid var(--border-color);
+    }
 
     &>div {
         @include width-standard;

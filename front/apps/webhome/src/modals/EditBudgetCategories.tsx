@@ -22,7 +22,7 @@ import {
     BillCatLabel,
 } from '@ledget/ui'
 
-const itemHeight = 25
+const itemHeight = 28
 const itemPadding = 8
 
 interface Item {
@@ -39,10 +39,8 @@ const useAnimations = (items: Item[] | undefined) => {
         height: items?.length
             ? (items.length - .25) * (itemHeight + itemPadding)
             : 0,
-        maxHeight: items?.length
-            ? (items.length - .25) * (itemHeight + itemPadding)
-            : 0,
-        immediate: !loaded,
+        maxHeight: 283,
+        immediate: !loaded
     })
 
     const transitions = useTransition(items, {
