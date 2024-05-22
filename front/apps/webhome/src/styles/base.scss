@@ -308,7 +308,8 @@ svg.icon {
     padding: var(--window-padding);
     box-sizing: border-box;
     border: 1.25px solid var(--window-border);
-    background-color: var(--window);
+    // background-color: var(--window);
+    background: linear-gradient(to bottom, var(--window), hsl(var(--window-h), var(--window-s), 99%));
 }
 
 .window-no-background {

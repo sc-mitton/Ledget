@@ -329,7 +329,7 @@ const CategoryDetails = (props: { category: Category, setTransactionItem: React.
                         }
                     </ResponsiveLineContainer>
                 </div>
-                <div id='transactions' className={`${isLoadingTransactionsData ? '' : 'inner-window'}`} onScroll={handleScroll}>
+                <div id='transactions' className={`${isLoadingTransactionsData ? '' : 'modal-inner-window'}`} onScroll={handleScroll}>
                     {transactionsData?.results?.length === 0
                         ? !isLoadingTransactionsData && <ZeroConfig />
                         : <div id='transactions--grid'>

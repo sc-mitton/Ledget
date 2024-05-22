@@ -11,7 +11,6 @@ import Bills from './Bills'
 import { setConfirmedTransactionFilter } from '@features/transactionsSlice'
 import { useAppDispatch } from '@hooks/store'
 import { useScreenContext } from '@ledget/ui'
-import Footer from './Footer'
 
 function Window() {
     const [searchParams, setSearchParams] = useSearchParams()

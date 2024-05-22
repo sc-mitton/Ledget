@@ -308,7 +308,7 @@ const BillsWindow = () => {
     return (
         <>
             <div id='bills' className={`${collapsed ? 'collapsed' : ''}`} ref={ref}>
-                <h3>Bills</h3>
+                <h2>Bills</h2>
                 <BlueTextButton onClick={() => setModal(true)} aria-label='View all bills'>
                     View All
                 </BlueTextButton>

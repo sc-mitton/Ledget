@@ -13,12 +13,6 @@ $background: var(--window);
     position: relative;
     flex: 2 1 0;
 
-    &>button {
-        position: absolute;
-        right: 1em;
-        top: .25em;
-    }
-
     &--columns {
         margin-top: .75rem;
         display: flex;
@@ -41,6 +35,13 @@ $background: var(--window);
         &>div:first-child {
             display: flex;
             justify-content: space-between;
+
+            div {
+                display: flex;
+                gap: 1em;
+                align-items: center;
+                margin-right: .125em;
+            }
         }
 
         &>div:last-of-type {

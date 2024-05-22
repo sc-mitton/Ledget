@@ -241,7 +241,7 @@
         --monthly-color-faded: hsl(0, 0%, 100%);
 
         --yearly-background-color: hsl(var(--yearly-h), 40%, 90%);
-        --yearly-hover-background-color: hsl(var(--yearly-h), 40%, 89%);
+        --yearly-hover-background-color: hsl(var(--yearly-h), 40%, 85%);
         --yearly-background-color-darker: hsl(var(--yearly-h), 40%, 60%);
         --yearly-color: hsl(var(--yearly-h), 30%, 40%);
         --yearly-color-faded: hsl(0, 0%, 100%);
@@ -291,9 +291,9 @@
 
         --window: hsl(var(--window-h), var(--window-s), 100%);
         --window--portal: hsl(var(--window-h), var(--window-s), 100%);
-        --window2: hsl(240, 32%, 92%);
+        --window2: hsl(240, 32%, 94%);
         --window-no-background: var(--window-background-color);
-        --window-drop-shadow-color: hsl(0, 0%, 93%);
+        --window-drop-shadow-color: hsl(var(--window-h), var(--window-s), 96%);
         --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 4px 0px;
         --window-portal-drop-shadow-color: hsl(0, 0%, 85%);
 
@@ -305,7 +305,7 @@
 
         --inner-window: hsl(var(--steel-blue-h), 9%, 96%);
         --inner-window-small-screen: hsl(var(--steel-blue-h), 9%, 94%);
-        --modal-inner-window: hsl(0, 0%, 94%);
+        --modal-inner-window: hsl(var(--steel-blue-h), 8%, 95%);
         --overlay: hsl(0, 0%, 20%);
 
         --wafer-background: hsl(0, 0%, 20%);
@@ -369,8 +369,8 @@
         --btn-dark-gray-hover: hsl(0, 0%, 14%);
         --btn-black: hsl(0, 0%, 15%);
 
-        --transaction-hover-background: hsl(0, 0%, 95%);
-        --transaction-hover-background-dim: hsl(0, 0%, 92%);
+        --transaction-hover-background: hsl(var(--steel-blue-h), 8%, 96%);
+        --transaction-hover-background: hsl(var(--steel-blue-h), 8%, 96%);
 
         --default-pill-background: hsl(0, 0%, 95%);
         --default-tab-background: hsl(var(--window-h), var(--window-s), 85%);

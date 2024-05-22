@@ -1,4 +1,4 @@
-import { useState, Fragment } from 'react'
+import { useState, Fragment, createContext, useContext } from 'react'
 
 import { useNavigate, useLocation } from 'react-router-dom'
 
@@ -18,12 +18,28 @@ import {
 import { setCategoryModal } from '@features/modalSlice'
 import { selectBudgetItemsSort } from '@features/uiSlice'
 import { EditBudgetCategories } from '@modals/index'
-import { Plus } from '@geist-ui/icons'
+import { Plus, Edit2 } from '@geist-ui/icons'
 
-// - Combine the emoji symbol and it's progress towards the limit
-// - Side by side for yearly and monthly categories, split into two windows like the mercury screenshot
-// - Header for categories should be outside the window, 'view all' link positioned to the far right
+const ModalContext = createContext<{ modal: boolean, setModal: (modal: boolean) => void } | undefined>(undefined)
+const useModalContext = () => {
+    const context = useContext(ModalContext)
+    if (context === undefined) {
+        throw new Error('useModalContext must be used within a ModalProvider')
+    }
+    return context
+}
+const ModalProvider = ({ children }: { children: React.ReactNode }) => {
+    const [modal, setModal] = useState(false)
+    return (
+        <ModalContext.Provider value={{ modal, setModal }}>
+            {children}
+        </ModalContext.Provider>
+    )
+}
 
+
+// Add total spent somewhere in the category ui component
+// Change view all for spending categories to be an edit icon on the window
 
 const SkeletonCategories = ({ length, period }: { length: number, period: 'month' | 'year' }) => (
     <>
@@ -40,28 +56,31 @@ const CategoriesList = ({ period }: { period: Category['period'] }) => {
     const location = useLocation()
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
+    const { setModal } = useModalContext()
 
     return (
         <div className='categories'>
             <div>
                 <h4>{`${period.charAt(0).toUpperCase()}${period.slice(1)}ly`}</h4>
-                <Tooltip msg={`Add ${period}ly category`} >
-                    <CircleIconButton
-                        onClick={() => {
-                            navigate(
-                                `${location.pathname}/new-category/${location.search}`,
-                                { state: { period: period } }
-                            )
-                        }}
-                        aria-label='Add new category'
-                    >
-                        <Plus size='1em' />
-                    </CircleIconButton>
-                </Tooltip>
+                <div>
+                    <Tooltip msg={`Edit Categories`} >
+                        <CircleIconButton onClick={() => { setModal(true) }} aria-label='Edit Categories'>
+                            <Edit2 size='.875em' />
+                        </CircleIconButton>
+                    </Tooltip>
+                    <Tooltip msg={`Add ${period}ly category`} >
+                        <CircleIconButton
+                            onClick={() => { navigate(`${location.pathname}/new-category/${location.search}`, { state: { period: period } }) }}
+                            aria-label='Add new category'
+                        >
+                            <Plus size='1em' />
+                        </CircleIconButton>
+                    </Tooltip>
+                </div>
             </div>
             <hr />
             {isLoading
-                ? <SkeletonCategories length={5} period={period} />
+                ? <><SkeletonCategories length={5} period={period} /><div></div></>
                 : <div>
                     {categories?.filter(c => c.period === period)
                         .sort((a, b) => {
@@ -86,8 +105,7 @@ const CategoriesList = ({ period }: { period: Category['period'] }) => {
                                         color={period === 'month' ? 'blue' : 'green'}
                                         key={category.id}
                                         onClick={() => { dispatch(setCategoryModal({ category: category })) }}
-                                        // progress={Math.round(((category.amount_spent * 100) / category.limit_amount) * 100) / 100}
-                                        progress={.5}
+                                        progress={Math.round(((category.amount_spent * 100) / category.limit_amount) * 100) / 100}
                                     />
                                     {`${category.name.charAt(0).toUpperCase()}${category.name.slice(1)}`}
                                 </div>
@@ -119,15 +137,12 @@ const ColumnView = () => (
 )
 
 const SpendingCategories = () => {
-    const [modal, setModal] = useState(false)
+    const { modal, setModal } = useModalContext()
 
     return (
         <>
             <div id='spending-categories'>
-                <h3>Categories</h3>
-                <BlueTextButton onClick={() => setModal(true)} aria-label='View all categories'>
-                    View All
-                </BlueTextButton>
+                <h2>Categories</h2>
                 <ColumnView />
             </div>
             {modal && <EditBudgetCategories onClose={() => setModal(false)} />}
@@ -135,4 +150,10 @@ const SpendingCategories = () => {
     )
 }
 
-export default SpendingCategories
+export default function () {
+    return (
+        <ModalProvider>
+            <SpendingCategories />
+        </ModalProvider>
+    )
+}
