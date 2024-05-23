@@ -2,7 +2,7 @@
 
 /* ------------------------------ Transactions ------------------------------ */
 
-.transactions--container {
+.transactions-table {
     flex-grow: 1;
     position: relative;
     min-height: 20em;
@@ -42,7 +42,7 @@
 $subtleBorderColor: var(--border-color-ultra-dim);
 $borderRadius2: var(--border-radius2);
 
-.transactions--table {
+.transactions-list {
     position: absolute;
     z-index: 0;
     inset: 0;

@@ -75,7 +75,7 @@ export interface GetTransactionsParams {
     offset?: number
 }
 
-type GetTransactionsResponse = {
+export type GetTransactionsResponse = {
     results: Transaction[]
     next?: number
     previous?: number

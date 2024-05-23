@@ -11,10 +11,11 @@ interface ShimmerProps {
   shimmering?: boolean
   lightness?: number
   darkMode?: boolean
+  shimmerColor?: string
 }
 
 export const Shimmer = (props: ShimmerProps) => {
-  const { shimmering = false, lightness = 90, darkMode = false } = props
+  const { shimmering = false, lightness = 90, shimmerColor, darkMode = false } = props
   const transitions = useTransition(shimmering, {
     from: { opacity: 0 },
     enter: { opacity: 1 },
@@ -32,7 +33,11 @@ export const Shimmer = (props: ShimmerProps) => {
           >
             <div
               className={`shimmer ${isDark ? 'dark-mode' : ''}`}
-              style={{ '--shimmer-lightness': `${(isDark || darkMode) ? 99 - lightness : lightness}%` } as React.CSSProperties}
+              style={{
+                '--shimmer-color': shimmerColor
+                  ? shimmerColor
+                  : isDark ? `hsb(0, 0%, ${99 - lightness}%)` : `hsb(0, 0%, ${lightness}%)`
+              } as React.CSSProperties}
             />
           </animated.div>
       )}
@@ -169,13 +174,14 @@ export const TransactionShimmer = ({ shimmering = true, ...rest }: TransactionSh
 
 type ShimmerDivProps =
   HTMLProps<HTMLDivElement> &
-  Pick<ShimmerProps, 'shimmering' | 'lightness' | 'darkMode'> &
+  Pick<ShimmerProps, 'shimmering' | 'lightness' | 'darkMode' | 'shimmerColor'> &
   { background?: string }
 
 export const ShimmerDiv = (props: ShimmerDivProps) => {
   const {
     shimmering,
     background,
+    shimmerColor,
     children,
     style = {},
     lightness = 90,
@@ -193,7 +199,7 @@ export const ShimmerDiv = (props: ShimmerDivProps) => {
       }}
       {...rest}
     >
-      <Shimmer shimmering={shimmering} lightness={lightness} darkMode={darkMode} />
+      <Shimmer shimmering={shimmering} lightness={lightness} darkMode={darkMode} shimmerColor={shimmerColor} />
       {!shimmering && children}
     </div>
   )

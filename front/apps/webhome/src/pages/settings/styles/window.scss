@@ -19,7 +19,7 @@
     min-height: 50em;
     max-height: calc(100% - 4em);
 
-    &.window-no-background #hamburger {
+    &.naked-window #hamburger {
         left: .25em;
         top: .375em;
     }

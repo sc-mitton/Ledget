@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react'
 
 import { ResponsiveLine } from '@nivo/line'
 
-import { useLocation } from 'react-router-dom'
-import Big from 'big.js'
 import dayjs from 'dayjs'
 
 import './styles/BalanceHistory.scss'
@@ -16,13 +14,11 @@ import {
     ChartTip,
 } from '@ledget/ui'
 import { useAccountsContext } from './context'
-import pathMappings from './path-mappings'
 
-export const BalanceHistory = ({ color = '--blue' }: { color?: `--${string}` }) => {
+export const BalanceChart = ({ color = '--blue' }: { color?: `--${string}` }) => {
     const { accounts } = useAccountsContext()
     const nivoBaseProps = useMinimalistNivoResponsiveBaseProps(color)
     const nivoTheme = useMinimalistNivoResponsiveLineTheme(color)
-    const location = useLocation()
     const [yBoundaries, setYBoundaries] = useState<[number, number]>([0, 0])
 
     useEffect(() => {

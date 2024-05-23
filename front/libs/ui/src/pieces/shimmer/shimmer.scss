@@ -50,11 +50,7 @@ $green-shimmer-background: linear-gradient(115deg, transparent 30%, var(--yearly
     animation: shimmer .8s linear infinite;
     z-index: 102;
     position: relative;
-    background: linear-gradient(115deg, transparent 30%, hsl(240, 10%, var(--shimmer-lightness)) 50%, transparent 70%);
-
-    &.dark-mode {
-        background: linear-gradient(115deg, transparent 30%, hsl(0, 0%, var(--shimmer-lightness)) 50%, transparent 70%)
-    }
+    background: linear-gradient(115deg, transparent 30%, var(--shimmer-color) 50%, transparent 70%);
 }
 
 .colored-loading-shimmer.green .shimmer {

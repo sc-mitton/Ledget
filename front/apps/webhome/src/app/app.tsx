@@ -5,7 +5,7 @@ import { AnimatePresence } from 'framer-motion'
 
 import '@styles/base.scss'
 import Header from './header'
-import NotFound from '@pages/notFound/NotFound'
+import NotFound from '@pages/notFound'
 import Budget from '@pages/budget/Window'
 import Profile from '@pages/settings/Window'
 import Accounts from '@pages/accounts/Window'
