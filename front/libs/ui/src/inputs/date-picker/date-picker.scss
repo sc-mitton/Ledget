@@ -226,7 +226,7 @@
             border-bottom-left-radius: var(--border-radius2);
         }
 
-        &.today::before {
+        &.today:not(.terminus-end):not(.terminus-start)::before {
             position: absolute;
             top: .375em;
             bottom: .375em;

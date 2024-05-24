@@ -1,0 +1,29 @@
+.filter {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    gap: .5em;
+    position: relative;
+
+    &>div {
+        position: relative;
+
+        &>div {
+            border-radius: var(--border-radius25);
+            padding: .15em .6em;
+        }
+    }
+}
+
+.activefilterButton {
+    transition: color .2s;
+
+    &:hover * {
+        color: var(--blue-light-hover);
+        transition: color .2s;
+    }
+
+    * {
+        color: var(--blue-light);
+    }
+}

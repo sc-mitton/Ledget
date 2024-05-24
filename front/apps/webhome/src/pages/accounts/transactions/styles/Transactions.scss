@@ -7,6 +7,15 @@
     position: relative;
     min-height: 20em;
     background-color: inherit;
+    margin-top: 2.5em;
+
+    &--header {
+        display: flex;
+        justify-content: space-between;
+        align-self: center;
+        margin-top: -3.75em;
+        margin-left: -.25em;
+    }
 
     &.extra-small {
         .transactions--table {
@@ -38,6 +47,7 @@
     }
 }
 
+
 /* Border bottom for all cells except last child */
 $subtleBorderColor: var(--border-color-ultra-dim);
 $borderRadius2: var(--border-radius2);
@@ -45,8 +55,8 @@ $borderRadius2: var(--border-radius2);
 .transactions-list {
     position: absolute;
     z-index: 0;
-    inset: 0;
-    right: -1.25em;
+    inset: 1.25em;
+    right: .125em;
     overflow: auto;
     scrollbar-gutter: stable;
     display: grid;
@@ -54,7 +64,7 @@ $borderRadius2: var(--border-radius2);
     grid-auto-rows: minmax(auto, 5rem);
     grid-template-rows: min-content;
     row-gap: .75em;
-    padding-right: 1.5em;
+    padding-right: .75em;
     background-color: inherit;
 
     &>div:nth-child(2n) {
@@ -72,7 +82,7 @@ $borderRadius2: var(--border-radius2);
         height: min-content;
 
         span {
-            padding: 0 .5em 0 .25em;
+            padding: 0 .75em 0 .25em;
             color: var(--m-text-quinary);
             background-color: var(--window);
 
@@ -120,7 +130,7 @@ $borderRadius2: var(--border-radius2);
         // Name, date, category, pending
         &:first-child {
             padding: .25em;
-            padding-left: .75em;
+            padding-left: 1em;
             display: flex;
             flex-direction: column;
             justify-content: center;

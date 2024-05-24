@@ -52,7 +52,7 @@
     }
 }
 
-#filter {
+.filter {
     display: flex;
     gap: 1em;
     flex-wrap: wrap;
@@ -69,13 +69,13 @@
         padding: .75em 0 .5em 0;
     }
 
-    .divider {
-        height: 1.25em;
-        width: .125em;
-        background-color: var(--border-color-dim);
-    }
-
     button:last-child {
         margin-left: .5em;
     }
+}
+
+.divider {
+    height: 1.25em;
+    width: .125em;
+    background-color: var(--border-color-dim);
 }

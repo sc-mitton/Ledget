@@ -37,9 +37,38 @@ const ModalProvider = ({ children }: { children: React.ReactNode }) => {
     )
 }
 
+// Budget Page
 
 // Add total spent somewhere in the category ui component
-// Change view all for spending categories to be an edit icon on the window
+
+// Add total progress bar to category windows
+
+// Add note for when yearly categories reload
+
+// Add little note in categories header showing number of categories
+
+// Header underline for bills window
+
+// Filters for bills and categories
+
+
+// ACCOUNTS PAGE
+
+// Update the wafer for the credit card view so it looks more like a credit card with a split
+
+// Allow period selection for balance history chart
+
+// Make the outer div around the wafers shrink to hug the wafers
+
+// Add up/down for past 30 days for account totals
+// Make card wafers wider and do redesign as mentioned above
+
+// SECURITY
+
+// Automatic Logout security option
+
+// Add privacy and terms links at bottom of side nav (make it look more complete)
+
 
 const SkeletonCategories = ({ length, period }: { length: number, period: 'month' | 'year' }) => (
     <>

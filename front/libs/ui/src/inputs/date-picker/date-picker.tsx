@@ -112,13 +112,9 @@ const datePickerContext = createContext<TDatePickerContext<TPicker> | undefined>
 const DatePickerContextProvider = <TP extends TPicker>({ children, pickerType, defaultValue, ...rest }:
   DatePickerContextProps<TP> & { children: React.ReactNode }) => {
 
-  const [selectedValue, setSelectedValue] = useState<typeof defaultValue>()
+  const [selectedValue, setSelectedValue] = useState<typeof defaultValue>(defaultValue)
   const [focusedInputIndex, setFocusedInputIndex] = useState<TDatePickerContext<TP>['focusedInputIndex']>()
   const [inputTouchCount, setInputTouchCount] = useState<TDatePickerContext<TP>['inputTouchCount']>(pickerType === 'range' ? [0, 0] : 0)
-
-  useEffect(() => {
-    !selectedValue && setSelectedValue(defaultValue)
-  }, [defaultValue])
 
   return (
     <datePickerContext.Provider
@@ -637,8 +633,10 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
   // Call the onchange callback as the selected value changes
   useEffect(() => {
     if (props.onChange) {
-      if (pickerType === 'range' && selectedValue?.every(v => v !== undefined)) {
-        props.onChange(selectedValue as any)
+      if (pickerType === 'range') {
+        if (selectedValue?.every(v => v !== undefined) || !selectedValue) {
+          props.onChange(selectedValue as any)
+        }
       } else if (pickerType === 'date') {
         props.onChange(selectedValue as any)
       }
@@ -704,7 +702,7 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
           type='text'
           onFocus={() => { setFocusedInputIndex(0) }}
           onBlur={() => { handleBlur(0) }}
-          name={`${props.name}${pickerType === 'range' ? '[0]' : ''}`}
+          name={props.name ? `${props.name}${pickerType === 'range' ? '[0]' : ''}` : ''}
           value={pickerType === 'range' ? selectedValue?.[0]?.format(props.format) : selectedValue?.format(props.format)}
           placeholder={Array.isArray(props.placeholder) ? props.placeholder[0] : props.placeholder}
         />
@@ -718,7 +716,7 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
               autoComplete='off'
               onFocus={() => { setFocusedInputIndex(1) }}
               onBlur={() => { handleBlur(1) }}
-              name={`${props.name}[1]`}
+              name={props.name ? `${props.name}[1]` : ''}
               value={selectedValue?.[1]?.format(props.format)}
               placeholder={Array.isArray(props.placeholder) ? props.placeholder[1] : props.placeholder}
             />

@@ -8,7 +8,7 @@ import './styles/Wafers.scss'
 import { Nav } from './Nav'
 import { useScreenContext } from '@ledget/ui'
 import DepositsWafers from './accounstlist/DepositsWafers'
-import Transactions from './Transactions'
+import { DepositTransactions } from './transactions'
 import { NotImplimentedMessage } from '@components/pieces'
 import NotFound from '@pages/notFound'
 import { AccountsProvider } from './context'
@@ -45,7 +45,6 @@ const Window = () => {
                     </Routes>}
                 <AnimatePresence mode="wait">
                     <motion.div
-                        className={`${screenSize !== 'extra-small' ? 'window' : 'naked-window'}`}
                         key={location.pathname.split('/')[2]}
                         initial={{
                             opacity: 0,
@@ -57,9 +56,9 @@ const Window = () => {
                         exit={{ opacity: 0 }}
                     >
                         <Routes location={location} key={location.pathname.split('/')[2]}>
-                            <Route path="deposits" element={<Transactions />} />
+                            <Route path="deposits" element={<DepositTransactions />} />
+                            <Route path="credit" element={<DepositTransactions />} />
                             <Route path="investments" element={<NotImplimentedMessage />} />
-                            <Route path="credit" element={<Transactions />} />
                             <Route path="loans" element={<NotImplimentedMessage />} />
                             <Route path="*" element={<NotFound hasBackground={false} />} />
                         </Routes>

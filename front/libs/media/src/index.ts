@@ -30,7 +30,7 @@ export { default as LedgetLogoIcon2 } from './brand/LogoIcon2'
 export { default as Hamburger } from './icons/Hamburger';
 export { default as HalfArrow } from './icons/HalfArrow';
 export { default as Hourglass } from './icons/Hourglass';
-export { default as FilterLines } from './icons/FilterLines';
+export { default as Filter2 } from './icons/Filter2';
 export { default as Institution } from './icons/Institution'
 
 export { default as EmptyListImage } from './images/EmptyList';

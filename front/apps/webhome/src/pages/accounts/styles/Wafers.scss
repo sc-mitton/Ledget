@@ -34,10 +34,12 @@ $wafer-container-padding: .75rem;
             display: flex;
             gap: .75em;
         }
+    }
 
-        h4 {
-            white-space: nowrap;
-        }
+    h4 {
+        white-space: nowrap;
+        font-weight: var(--fw-regular);
+        color: var(--m-text-secondary);
     }
 
     #balance-history {
@@ -148,8 +150,7 @@ $wafer-container-padding: .75rem;
 }
 
 .account-wafer {
-    // background-color: var(--wafer-background);
-    background: linear-gradient(-45deg, color-mix(in srgb, var(--wafer-background), white 6%) 0%, var(--wafer-background) 50%, var(--wafer-background)100%);
+    background: var(--wafer-background);
     box-shadow: var(--wafer-drop-shadow);
     display: flex;
     flex-direction: column;
@@ -167,7 +168,7 @@ $wafer-container-padding: .75rem;
     /* User Interaction Styles */
     &:hover>button:first-child {
         visibility: visible;
-        opacity: .5;
+        opacity: .6;
         transition: opacity .2s ease-out;
     }
 

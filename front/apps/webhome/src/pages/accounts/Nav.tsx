@@ -19,7 +19,7 @@ import { popToast } from '@features/toastSlice'
 import { useAppDispatch } from '@hooks/store'
 import { useGetAccountsQuery } from '@features/accountsSlice'
 import { useTransactionsSyncMutation } from '@features/transactionsSlice'
-import { DepositsIcon, CloseIcon, FilterLines } from '@ledget/media'
+import { DepositsIcon, CloseIcon, Filter2 } from '@ledget/media'
 import { useAccountsContext } from './context'
 import pathMappings from './path-mappings'
 import { hasErrorCode } from '@api/helpers'
@@ -205,7 +205,7 @@ const Filters = ({ visible = false, close }: { visible: boolean, close: () => vo
                         {option.label}
                     </FilterPillButton>
                     {option.filterType !== accountsFilterOptions[i + 1]?.filterType
-                        && i !== accountsFilterOptions.length - 1 && <span className='divider' />}
+                        && i !== accountsFilterOptions.length - 1 && <span className={styles.divider} />}
                 </>
             ))}
             <CircleIconButton onClick={() => close()} >
@@ -265,7 +265,7 @@ export const Nav = () => {
                     aria-controls='filter'
                     aria-haspopup='true'
                 >
-                    <FilterLines />
+                    <Filter2 />
                 </CircleIconButton>
             </div>
             <Filters visible={showFilters} close={() => setShowFilters(false)} />

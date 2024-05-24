@@ -20,7 +20,6 @@
     /* Drop Shadows & Borders */
     --window-portal-drop-shadow: var(--window-portal-drop-shadow-color) 0px 0px 20px;
     --new-item-drop-shadow: var(--new-item-drop-shadow-color) 0px 0px 6px;
-    --wafer-drop-shadow: var(--wafer-drop-shadow-color) -1px 1px 2px;
 
     --low-elevation-drop-shadow: var(--low-elevation-drop-shadow-color) 0px 1px 1px 1px;
     --mid-elevation-drop-shadow: var(--mid-elevation-drop-shadow-color) 0px 3px 12px;
@@ -29,6 +28,8 @@
     --antd-drop-shadow: var(--antd-drop-shadow-color) 0 3px 12px;
 
     --accessible-focus-drop-shadow: 0 0 0 1.5px var(--blue-light-medium);
+
+    --wafer-drop-shadow: var(--wafer-drop-shadow-color) -1px 1px 2px;
     --active-wafer-drop-shadow: color-mix(in srgb, var(--monthly-hlight) 80%, var(--monthly-color)) 0px 0px 12px;
 
 }
@@ -96,7 +97,7 @@
 
         --window: hsl(var(--window-h), var(--window-s), 7%);
         --window-background: linear-gradient(to bottom, var(--window), hsl(var(--window-h), var(--window-s), 7%));
-        --window--portal: hsl(var(--window-h), varr(--window-s), 9%);
+        --window-portal: hsl(var(--window-h), var(--window-s), 9%);
         --window2: hsl(var(--window-h), calc(var(--window-s) + 10%), 10%);
         --window-background-color: hsl(var(--window-h), var(--window-s), 5%);
         --window-background-color-rgb: 5, 5, 5;
@@ -113,12 +114,13 @@
         --sidenav-drop-shadow: 0 0px 4px hsl(var(--window-h), var(--window-s), 12%);
         --side-window: hsl(var(--window-h), var(--window-s), 6%);
 
-        --wafer-background: hsl(var(--window-h), var(--window-s), 1%);
-        --skeleton-wafer-background: hsl(var(--window-h), calc(var(--window-s) + 10%), 12%);
+        // Wafers
+        --wafer-background-color: hsl(var(--window-h), calc(var(--window-s) + 5%), 18%);
+        --wafer-background: linear-gradient(to bottom left, color-mix(in srgb, var(--wafer-background-color), white 8%) 0%, var(--wafer-background-color) 50%, var(--wafer-background-color)100%);
+        --skeleton-wafer-background: hsl(var(--window-h), calc(var(--window-s) + 10%), 14%);
         --skeleton-wafer-shimmer: hsl(var(--window-h), calc(var(--window-s) + 10%), 11%);
-        --dropdown-background-rgb: 18, 18, 18;
-        --dropdown-background: var(--window);
-        --dropdown-item-background: hsl(var(--window-h), var(--window-s), 12%);
+        --wafer-drop-shadow-color: hsl(var(--window-h), calc(var(--window-s) + 20%), 9%);
+        --active-wafer-indicator: var(--blue-medium);
 
         // New Item
         // --new-item-border: hsl(0, 0%, 11%);
@@ -188,15 +190,18 @@
         --negative-pulse-outer: rgba(255, 255, 255, .5);
         --negative-pulse-inner: rgba(255, 255, 255, .7);
 
-        --transaction-hover-background: hsl(0, 0%, 11%);
+        --transaction-hover-background: hsl(var(--window-h), var(--window-s), 11%);
         --transaction-hover-background-dim: hsl(0, 0%, 7%);
 
         // Drop Shadows & Borders
+        --dropdown-background-rgb: 18, 18, 18;
+        --dropdown-background: var(--window);
+        --dropdown-item-background: hsl(var(--window-h), var(--window-s), 12%);
+
         --window-drop-shadow-color: hsl(0, 0%, 12%);
         --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
 
         --header-box-shadow-color: hsl(0, 0%, 10%);
-        --wafer-drop-shadow-color: hsl(var(--blue-h), 0%, 10%);
         --scroll-shadow: hsl(0, 0%, 3%), transparent;
         --dropdown-box-shadow-color: hsl(0, 0%, 0%);
         --antd-drop-shadow-color: hsl(0, 0%, 0%);
@@ -205,8 +210,6 @@
         --low-elevation-drop-shadow-color: rgba(255, 255, 255, 0.1);
         --mid-elevation-drop-shadow-color: rgba(255, 255, 255, 0.15);
         --input-drop-shadow-color: rgba(255, 255, 255, 0.07);
-
-        --active-wafer-indicator: var(--blue-sat);
 
         --border-color-ultra-dim: rgb(255, 255, 255, .05);
         --border-color-super-dim: rgb(255, 255, 255, .05);
@@ -298,7 +301,7 @@
 
         --window: hsl(var(--window-h), var(--window-s), 100%);
         --window-background: linear-gradient(to bottom, var(--window), hsl(var(--window-h), var(--window-s), 99%));
-        --window--portal: hsl(var(--window-h), var(--window-s), 100%);
+        --window-portal: hsl(var(--window-h), var(--window-s), 100%);
         --window2: hsl(240, 32%, 94%);
         --naked-window: var(--window-background-color);
         --window-drop-shadow-color: hsl(var(--window-h), var(--window-s), 96%);
@@ -316,12 +319,13 @@
         --modal-inner-window: hsl(var(--steel-blue-h), 8%, 95%);
         --overlay: hsl(0, 0%, 20%);
 
-        --wafer-background: hsl(0, 0%, 20%);
+        // Wafers
+        --wafer-background-color: hsl(var(--window-h), calc(var(--window-s) - 1%), 65%);
+        --wafer-background: linear-gradient(to bottom left, color-mix(in srgb, var(--wafer-background-color), white 20%) 0%, var(--wafer-background-color) 50%, var(--wafer-background-color)100%);
         --skeleton-wafer-background: hsl(var(--window-h), calc(var(--window-s) + 10%), 90%);
         --skeleton-wafer-shimmer: hsl(var(--window-h), calc(var(--window-s) + 10%), 87%);
-        --dropdown-background-rgb: 250, 250, 250;
-        --dropdown-background: hsl(0, 0%, 98%);
-        --dropdown-item-background: hsl(0, 0%, 93%);
+        --wafer-drop-shadow-color: hsl(var(--window-h), calc(var(--window-s) - 10%), 85%);
+        --active-wafer-indicator: var(--blue-sat);
 
         // Header
         --header-background: hsl(0, 0%, 10%);
@@ -361,8 +365,8 @@
         --fw-feather-light: 300;
         --fw-light: 400;
         --fw-regular: 400;
-        --fw-bold: 500;
-        --fw-extra-bold: 600;
+        --fw-bold: 400;
+        --fw-extra-bold: 500;
         --letter-spacing: .2px;
 
         // Icons & Buttons
@@ -396,11 +400,13 @@
         --switch-pill-shadow-disabled: var(--btn-medium-gray-hover);
 
         // Misc Drop Shadows & Borders
-        --wafer-drop-shadow-color: hsl(0, 0%, 70%);
+        --dropdown-background-rgb: 250, 250, 250;
+        --dropdown-background: hsl(0, 0%, 98%);
+        --dropdown-item-background: hsl(0, 0%, 93%);
+
         --scroll-shadow: hsl(0, 0%, 97%), transparent;
         --dropdown-box-shadow-color: rgba(0, 0, 0, 0.2);
         --antd-drop-shadow-color: var(--dropdown-box-shadow-color);
-        --active-wafer-indicator: var(--blue-medium);
         --low-elevation-drop-shadow-color: rgba(0, 0, 0, 0.1);
         --mid-elevation-drop-shadow-color: rgba(0, 0, 0, 0.1);
         --input-drop-shadow-color: rgba(0, 0, 0, 0.07);
