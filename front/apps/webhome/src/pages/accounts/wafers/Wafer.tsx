@@ -1,21 +1,23 @@
 import { useSearchParams } from "react-router-dom"
 import Big from 'big.js'
 
+import './styles/Wafer.scss'
 import { InsitutionLogo } from '@components/pieces'
 import { CornerGripButton } from '@components/buttons'
-import { Account } from '@features/accountsSlice'
 import { DollarCents } from '@ledget/ui'
+import { WaferProps } from "./types"
 
-
-const DepositAccountWafer = ({ account, onClick }: { account: Account, onClick: (arg: string) => void }) => {
+const Wafer = ({ account, onClick, styling }: WaferProps) => {
     const nameIsLong = account.official_name?.length || 0 > 18
     const nameLength = account.official_name?.length || 0
     const [searchParams] = useSearchParams()
 
+    const active = searchParams.get('account') === account.account_id
+
     return (
         <div
             tabIndex={0}
-            className={`account-wafer ${searchParams.get('account') === account.account_id ? 'active' : 'inactive'}`}
+            className={`account-wafer ${styling} ${active ? 'active' : 'inactive'}`}
         >
             <CornerGripButton
                 id={`${account.account_id}`}
@@ -48,4 +50,4 @@ const DepositAccountWafer = ({ account, onClick }: { account: Account, onClick: 
     )
 }
 
-export default DepositAccountWafer
+export default Wafer

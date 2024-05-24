@@ -4,6 +4,7 @@ import { useLocation, useSearchParams } from 'react-router-dom'
 import { animated } from '@react-spring/web'
 import Big from 'big.js'
 
+import './styles/Wafers.scss'
 import {
     DollarCents,
     CloseButton,
@@ -12,23 +13,32 @@ import {
 } from '@ledget/ui'
 import { LineGraph } from '@ledget/media'
 import { useAccountsContext } from '../context'
-import { BalanceChart } from '../BalanceChart'
+import { BalanceChart } from '../balance-chart/BalanceChart'
 import useAnimate from './useAnimate'
-import DepositAccountWafer from './DepositsAccountWafer'
+import Wafer from './Wafer'
 import SkeletonWafers from './SkeletonWafers'
 import pathMappings from '../path-mappings'
+import { WaferStyle } from './types'
 
 const waferWidth = 165
+const creditWaferWidth = 175
 const waferPadding = 6
 
-const Wafers = () => {
+const WaferList = () => {
+    const location = useLocation()
     const { accounts } = useAccountsContext()
     const [searchParams, setSearchParams] = useSearchParams()
-    const { transitions, bind, waferApi } = useAnimate({ accounts, waferWidth, waferPadding })
+    const { transitions, bind, waferApi } = useAnimate({
+        waferWidth: location.pathname.includes('credit') ? creditWaferWidth : waferWidth,
+        accounts,
+        waferPadding
+    })
 
     const handleClick = (id: string) => {
         searchParams.set('account', id)
         setSearchParams(searchParams)
+
+        // Click Animation
         waferApi.start((index: any, item: any) => {
             if (item._item.account_id === id) {
                 return ({
@@ -51,14 +61,18 @@ const Wafers = () => {
                     className='account-wafer-container'
                     {...bind(account.account_id)}
                 >
-                    <DepositAccountWafer account={account} onClick={handleClick} />
+                    <Wafer
+                        account={account}
+                        onClick={handleClick}
+                        styling={location.pathname.split('/')[2] as WaferStyle}
+                    />
                 </animated.div>
             ))}
         </div>
     )
 }
 
-function AccountWafers() {
+function Wafers() {
     const location = useLocation()
     const { accounts } = useAccountsContext()
     const { screenSize } = useScreenContext()
@@ -92,11 +106,11 @@ function AccountWafers() {
                     count={ref.current?.offsetWidth ? Math.floor(ref.current.offsetWidth / waferWidth) - 1 : 0}
                     width={waferWidth}
                 />
-                : <Wafers />}
+                : <WaferList />}
             {showBalanceHistory && <CloseButton onClick={() => setShowBalanceHistory(false)} />}
             {showBalanceHistory && <BalanceChart color={'--m-text'} />}
         </div>
     )
 }
 
-export default AccountWafers
+export default Wafers

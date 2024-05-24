@@ -321,7 +321,7 @@
 
         // Wafers
         --wafer-background-color: hsl(var(--window-h), calc(var(--window-s) - 1%), 65%);
-        --wafer-background: linear-gradient(to bottom left, color-mix(in srgb, var(--wafer-background-color), white 20%) 0%, var(--wafer-background-color) 50%, var(--wafer-background-color)100%);
+        --wafer-background: linear-gradient(to bottom left, color-mix(in srgb, var(--wafer-background-color), white 30%) 0%, var(--wafer-background-color) 50%, var(--wafer-background-color)100%);
         --skeleton-wafer-background: hsl(var(--window-h), calc(var(--window-s) + 10%), 90%);
         --skeleton-wafer-shimmer: hsl(var(--window-h), calc(var(--window-s) + 10%), 87%);
         --wafer-drop-shadow-color: hsl(var(--window-h), calc(var(--window-s) - 10%), 85%);

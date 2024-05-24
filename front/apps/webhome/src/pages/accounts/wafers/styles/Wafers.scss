@@ -1,0 +1,109 @@
+@import './constants.scss';
+@import '@styles/table-mixins.scss';
+
+.account-wafers-container {
+    width: auto;
+    padding: 0 1.5em;
+    background-color: var(--window2);
+    border-radius: var(--border-radius3);
+    display: flex;
+    position: relative;
+
+    #balance-history {
+        &>div {
+            max-width: 60%;
+        }
+
+        padding: 1em;
+    }
+
+    * {
+        scrollbar-width: none;
+    }
+
+    &>div:first-child {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        margin: 0 .75em;
+
+        &>div {
+            display: flex;
+            gap: .75em;
+        }
+    }
+
+    h4 {
+        white-space: nowrap;
+        font-weight: var(--fw-regular);
+        color: var(--m-text-secondary);
+    }
+
+    #balance-history {
+        display: flex;
+        flex-direction: column;
+
+        h3 {
+            font-size: 1.25rem;
+        }
+    }
+}
+
+
+/* --------------------------------- Wafers --------------------------------- */
+.account-wafers,
+.skeleton-wafers {
+    width: 100%;
+    display: inline-flex;
+    height: calc($wafer-height + 2 * $wafer-container-padding + .25em);
+    gap: .75em;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    animation: make-scroll 1s ease-in-out forwards;
+    animation-delay: 1s;
+    padding: 1.5em 1em .75em 1em;
+}
+
+@keyframes make-scroll {
+    0% {
+        overflow-x: hidden;
+    }
+
+    100% {
+        overflow-x: scroll;
+    }
+}
+
+.account-wafers {
+    z-index: 0;
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0;
+        z-index: -1;
+        animation: fade-in-background-image .5s ease-in-out forwards;
+        animation-delay: 1.1s;
+    }
+}
+
+.skeleton-account-wafers {
+    display: flex;
+    gap: .75em;
+}
+
+@keyframes fade-in-background-image {
+    0% {
+        animation: fade-in-background-image 2s ease-in-out forwards;
+        animation-delay: 1s;
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}

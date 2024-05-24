@@ -1,114 +1,4 @@
-$wafer-height: 6rem;
-$wafer-container-padding: .75rem;
-
-@import '@styles/table-mixins.scss';
-
-.account-wafers-container {
-    width: auto;
-    padding: 0 1.5em;
-    background-color: var(--window2);
-    border-radius: var(--border-radius3);
-    display: flex;
-    position: relative;
-
-    #balance-history {
-        &>div {
-            max-width: 60%;
-        }
-
-        padding: 1em;
-    }
-
-    * {
-        scrollbar-width: none;
-    }
-
-    &>div:first-child {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-        margin: 0 .75em;
-
-        &>div {
-            display: flex;
-            gap: .75em;
-        }
-    }
-
-    h4 {
-        white-space: nowrap;
-        font-weight: var(--fw-regular);
-        color: var(--m-text-secondary);
-    }
-
-    #balance-history {
-        display: flex;
-        flex-direction: column;
-
-        h3 {
-            font-size: 1.25rem;
-        }
-    }
-}
-
-
-/* --------------------------------- Wafers --------------------------------- */
-.account-wafers,
-.skeleton-wafers {
-    width: 100%;
-    display: inline-flex;
-    height: calc($wafer-height + 2 * $wafer-container-padding + .25em);
-    gap: .75em;
-    overflow-x: hidden;
-    overflow-y: hidden;
-    animation: make-scroll 1s ease-in-out forwards;
-    animation-delay: 1s;
-    padding: 1.5em 1em .75em 1em;
-}
-
-@keyframes make-scroll {
-    0% {
-        overflow-x: hidden;
-    }
-
-    100% {
-        overflow-x: scroll;
-    }
-}
-
-.account-wafers {
-    z-index: 0;
-    position: relative;
-
-    &::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        opacity: 0;
-        z-index: -1;
-        animation: fade-in-background-image .5s ease-in-out forwards;
-        animation-delay: 1.1s;
-    }
-}
-
-.skeleton-account-wafers {
-    display: flex;
-    gap: .75em;
-}
-
-@keyframes fade-in-background-image {
-    0% {
-        animation: fade-in-background-image 2s ease-in-out forwards;
-        animation-delay: 1s;
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
-    }
-}
+@import './constants.scss';
 
 /* Individual Wafers */
 .account-wafer-container,
@@ -116,7 +6,7 @@ $wafer-container-padding: .75rem;
     padding-top: .525em;
     padding-bottom: .525em;
     height: $wafer-height;
-    border-radius: var(--border-radius5);
+    border-radius: var(--border-radius3);
 }
 
 .account-wafer-container {
@@ -125,20 +15,20 @@ $wafer-container-padding: .75rem;
 
 .skeleton-account-wafer-container {
     position: relative;
+}
 
-    .wafer-institution-logo {
-        position: relative;
-        top: 0;
-        left: 0;
-        z-index: 10;
-        transform: translateY(-50%);
-        width: min-content;
-    }
+.wafer-institution-logo {
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    transform: translateY(-50%);
+    width: min-content;
 }
 
 .account-wafer,
 .skeleton-account-wafer {
-    border-radius: var(--border-radius4);
+    border-radius: var(--border-radius3);
     position: absolute;
     inset: 0;
     padding: .525em 0;
@@ -154,6 +44,21 @@ $wafer-container-padding: .75rem;
     box-shadow: var(--wafer-drop-shadow);
     display: flex;
     flex-direction: column;
+
+    &.credit {
+        &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 2.375em;
+            background-color: color-mix(in srgb, var(--wafer-background-color), var(--blue-dark) 6%);
+            border-top: 1.5px solid color-mix(in srgb, var(--wafer-background-color), var(--blue-dark) 9%);
+            border-bottom-left-radius: inherit;
+            border-bottom-right-radius: inherit;
+        }
+    }
 
     * {
         color: var(--white);
@@ -254,6 +159,8 @@ $wafer-container-padding: .75rem;
         width: 100%;
         display: flex;
         align-items: flex-end;
+        position: relative;
+        z-index: 1;
 
         div {
             font-size: 1rem;

@@ -1,4 +1,6 @@
 
+import './styles/Wafer.scss'
+import './styles/Wafer.scss'
 import { ShimmerDiv } from '@ledget/ui'
 
 const SkeletonWafers = ({ count, width }: { count: number, width: number }) => (

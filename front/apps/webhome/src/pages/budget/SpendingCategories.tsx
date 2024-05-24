@@ -54,14 +54,9 @@ const ModalProvider = ({ children }: { children: React.ReactNode }) => {
 
 // ACCOUNTS PAGE
 
-// Update the wafer for the credit card view so it looks more like a credit card with a split
-
 // Allow period selection for balance history chart
 
-// Make the outer div around the wafers shrink to hug the wafers
-
 // Add up/down for past 30 days for account totals
-// Make card wafers wider and do redesign as mentioned above
 
 // SECURITY
 

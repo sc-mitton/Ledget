@@ -4,10 +4,9 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Routes, Route } from 'react-router-dom'
 
 import styles from './styles/Window.module.scss'
-import './styles/Wafers.scss'
 import { Nav } from './Nav'
 import { useScreenContext } from '@ledget/ui'
-import DepositsWafers from './accounstlist/DepositsWafers'
+import Wafers from './wafers/Wafers'
 import { DepositTransactions } from './transactions'
 import { NotImplimentedMessage } from '@components/pieces'
 import NotFound from '@pages/notFound'
@@ -41,7 +40,8 @@ const Window = () => {
             <div>
                 {!['small', 'extra-small'].includes(screenSize) &&
                     <Routes location={location}>
-                        <Route path='deposits' element={<DepositsWafers />} />
+                        <Route path='deposits' element={<Wafers />} />
+                        <Route path='credit' element={<Wafers />} />
                     </Routes>}
                 <AnimatePresence mode="wait">
                     <motion.div

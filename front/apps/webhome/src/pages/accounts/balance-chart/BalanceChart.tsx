@@ -5,7 +5,7 @@ import { ResponsiveLine } from '@nivo/line'
 
 import dayjs from 'dayjs'
 
-import './styles/BalanceHistory.scss'
+import './BalanceChart.scss'
 import {
     ResponsiveLineContainer,
     useMinimalistNivoResponsiveBaseProps,
@@ -13,7 +13,7 @@ import {
     DollarCents,
     ChartTip,
 } from '@ledget/ui'
-import { useAccountsContext } from './context'
+import { useAccountsContext } from '../context'
 
 export const BalanceChart = ({ color = '--blue' }: { color?: `--${string}` }) => {
     const { accounts } = useAccountsContext()
