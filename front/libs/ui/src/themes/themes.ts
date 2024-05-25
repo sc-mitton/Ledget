@@ -19,7 +19,7 @@ export const useNivoResponsiveBaseProps = ({ disabled = false }: { disabled?: bo
         enableGridX: false,
         enableGridY: true,
         lineWidth: 1,
-        curve: 'monotoneX',
+        curve: 'natural',
         colors: [!disabled ? mainColor : 'transparent'],
         useMesh: !disabled,
         defs: [
@@ -76,22 +76,25 @@ export const useNivoResponsiveLineTheme = (): Theme => {
     })
 }
 
-export const useMinimalistNivoResponsiveBaseProps = (color: `--${string}` = '--blue'): NivoResponsiveLineBaseProps => {
-    const mainColor = useSchemeVar(color)
-    const gradientColor = useSchemeVar('--white')
+export const useMinimalistNivoResponsiveBaseProps = (
+    { primaryColor = '--blue', gradientColorStart = '--blue', gradientColorEnd }:
+        { primaryColor?: `--${string}`, gradientColorStart?: `--${string}`, gradientColorEnd?: `--${string}` }
+): NivoResponsiveLineBaseProps => {
+    const primary = useSchemeVar(primaryColor)
+    const gradientColors = useSchemeVar(gradientColorEnd ? [gradientColorStart, gradientColorEnd] : gradientColorStart)
 
     return ({
         enablePoints: true,
         enableArea: true,
-        pointColor: mainColor,
+        pointColor: primary,
         pointSize: 5,
-        pointBorderColor: mainColor,
+        pointBorderColor: primary,
         pointBorderWidth: 1,
         enableGridY: false,
-        enableGridX: true,
+        enableGridX: false,
         lineWidth: 1.5,
-        curve: 'monotoneX',
-        colors: [mainColor || 'transparent'],
+        curve: 'natural',
+        colors: [primary || 'transparent'],
         useMesh: true,
         motionConfig: {
             mass: 1,
@@ -120,8 +123,16 @@ export const useMinimalistNivoResponsiveBaseProps = (color: `--${string}` = '--b
                 id: 'gradientC',
                 type: 'linearGradient',
                 colors: [
-                    { offset: 0, color: gradientColor },
-                    { offset: 80, color: 'transparent' },
+                    {
+                        offset: 0, color: gradientColors
+                            ? typeof gradientColors === 'string' ? gradientColors
+                                : gradientColors[0] : 'transparent'
+                    },
+                    {
+                        offset: 50, color: gradientColors
+                            ? typeof gradientColors === 'string' ? gradientColors
+                                : gradientColors[1] : 'transparent'
+                    },
                 ],
             },
         ],
@@ -129,23 +140,26 @@ export const useMinimalistNivoResponsiveBaseProps = (color: `--${string}` = '--b
     })
 }
 
-export const useMinimalistNivoResponsiveLineTheme = (color: `--${string}` = '--blue'): Theme => {
-    const mainColor = useSchemeVar(color)
+export const useMinimalistNivoResponsiveLineTheme = ({ primaryColor = '--blue' }: { primaryColor?: `--${string}` }): Theme => {
+    const primary = useSchemeVar(primaryColor)
 
     return ({
-        grid: {
-            line: {
-                stroke: mainColor,
-                opacity: 0.3,
-                strokeWidth: 1,
-                fill: 'transparent',
-            },
-        },
         text: {
             fontSize: 11,
             fontWeight: 500,
-            fill: mainColor,
+            fill: primary,
             outlineColor: "transparent"
+        },
+        axis: {
+            ticks: {
+                line: { strokeWidth: 0 },
+                text: {
+                    fontSize: 12,
+                    fontFamily: 'inherit',
+                    fontWeight: 400,
+                    fill: primary,
+                },
+            },
         },
     })
 }

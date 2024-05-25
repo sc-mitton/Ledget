@@ -1,7 +1,7 @@
 
 
 import { useNavigate } from 'react-router-dom'
-import { BlackPrimaryButton } from '@ledget/ui'
+import { BlackPrimaryButton, Window } from '@ledget/ui'
 
 import './NotFound.scss'
 
@@ -9,8 +9,8 @@ const NotFound = ({ hasBackground = true }) => {
     const navigate = useNavigate()
 
     return (
-        <div
-            className="window main-window"
+        <Window
+            className="main-window"
             id="not-found-window"
             style={{
                 ...(!hasBackground ? { backgroundColor: 'none', boxShadow: 'none' } : {})
@@ -25,7 +25,7 @@ const NotFound = ({ hasBackground = true }) => {
                     Return home
                 </BlackPrimaryButton>
             </div>
-        </div>
+        </Window>
     )
 }
 

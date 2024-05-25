@@ -371,6 +371,14 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
+    id: 'account-balance-history',
+    match: {
+      methods: ['GET'],
+      url: base_url + '/accounts/balance-history',
+    },
+  },
+  BaseWithAuth
+  {
     id: 'reminders',
     match: {
       methods: ['GET'],

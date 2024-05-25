@@ -33,7 +33,8 @@ import {
     DropdownItem,
     SlideMotionDiv,
     BackButton,
-    stringLimit
+    stringLimit,
+    NestedWindow2
 } from '@ledget/ui'
 import { Ellipsis } from '@ledget/media'
 import { Category } from '@features/categorySlice'
@@ -329,7 +330,7 @@ const CategoryDetails = (props: { category: Category, setTransactionItem: React.
                         }
                     </ResponsiveLineContainer>
                 </div>
-                <div id='transactions' className={`${isLoadingTransactionsData ? '' : 'modal-inner-window'}`} onScroll={handleScroll}>
+                <NestedWindow2 id='transactions' onScroll={handleScroll}>
                     {transactionsData?.results?.length === 0
                         ? !isLoadingTransactionsData && <ZeroConfig />
                         : <div id='transactions--grid'>
@@ -351,7 +352,7 @@ const CategoryDetails = (props: { category: Category, setTransactionItem: React.
                             ))}
                         </div>
                     }
-                </div>
+                </NestedWindow2>
             </div>
         </div >
     )

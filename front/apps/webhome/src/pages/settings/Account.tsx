@@ -23,6 +23,7 @@ import {
     BakedSwitch,
     useColorScheme,
     CircleIconButton,
+    NestedWindow
 } from '@ledget/ui'
 import { ConfirmRemoveCoOwner } from '@modals/index'
 import { UpdatePersonalInfo, AddUserModal } from '@modals/index'
@@ -189,7 +190,7 @@ const Plan = () => {
                     </span>
                 </div>
             </div>
-            <div className="inner-window" id="invoice-details--container">
+            <NestedWindow id="invoice-details--container">
                 <div>
                     <div>Renews</div>
                     {subscription &&
@@ -222,7 +223,7 @@ const Plan = () => {
                 <div>
                     <ChangePlanMenu />
                 </div>
-            </div>
+            </NestedWindow>
         </section>
     )
 }
@@ -245,7 +246,7 @@ const PaymentMethod = () => {
                     <h4>Payment Method</h4>
                 </div>
             </div>
-            <div id="card-info--container" className="inner-window">
+            <NestedWindow id="card-info--container">
                 <div>
                     <CreditCard className='icon' />
                     <div >
@@ -263,7 +264,7 @@ const PaymentMethod = () => {
                 >
                     update
                 </BlueSlimButton>
-            </div>
+            </NestedWindow>
         </section>
     )
 }
@@ -275,7 +276,7 @@ const Preferences = () => {
         <section className="section">
             <h4 className='header2'>Preferences</h4>
             <div className="settings-list">
-                <section className='inner-window'>
+                <NestedWindow>
                     <ul>
                         <BakedSwitch
                             as='li'
@@ -285,7 +286,7 @@ const Preferences = () => {
                             <span>{isDark ? 'Dark' : 'Light'} mode</span>
                         </BakedSwitch>
                     </ul>
-                </section>
+                </NestedWindow>
             </div>
         </section>
     )
@@ -302,7 +303,7 @@ const Household = () => {
             {removeCoOwnerModal && <ConfirmRemoveCoOwner onClose={() => setRemoveCoOwnerModal(false)} />}
             <section className="section">
                 <h4 className='header2'>Household</h4>
-                <div className="settings-list inner-window" id='household'>
+                <NestedWindow className="settings-list" id='household'>
                     <span>Members</span>
                     {user?.co_owner
                         ? coOwner && <span>{`${coOwner.name.first} ${coOwner.name.last}`}</span>
@@ -313,7 +314,7 @@ const Household = () => {
                         <BlueSlimButton onClick={() => setRemoveCoOwnerModal(true)}>
                             Remove
                         </BlueSlimButton>}
-                </div>
+                </NestedWindow>
             </section>
             {addUserModal && <AddUserModal onClose={() => setAddUserModal(false)} />}
         </>

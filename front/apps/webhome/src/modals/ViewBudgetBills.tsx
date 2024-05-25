@@ -16,7 +16,8 @@ import {
   DollarCents,
   SlideMotionDiv,
   BackButton,
-  FilterPillButton
+  FilterPillButton,
+  NestedWindow2
 } from '@ledget/ui'
 import { useAppSelector } from '@hooks/store'
 import { selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
@@ -96,7 +97,7 @@ const EditBills = withModal((props) => {
         ?
         <SlideMotionDiv key="view-all-bills" position='first'>
           <h2>Bills</h2>
-          <Tab.Group as='div' id="view-all-bills--container" className="modal-inner-window">
+          <Tab.Group as={NestedWindow2} id="view-all-bills--container">
             {({ selectedIndex }) => (
               <>
                 <div>

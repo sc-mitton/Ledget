@@ -1,5 +1,7 @@
 import { apiSlice } from '@api/apiSlice'
 
+export type AccountType = 'depository' | 'credit' | 'loan' | 'investment' | 'other'
+
 export interface Account {
     account_id: string
     balances: {
@@ -8,12 +10,11 @@ export interface Account {
         limit: number
         iso_currency_code: string
     }
-    balance_history?: { month: string, balance: number }[]
     unofficial_currency_code: string
     mask: string
     name: string
     official_name?: string
-    type: string
+    type: AccountType
     subtype: string
     institution_id: string
 }
@@ -38,8 +39,17 @@ interface GetAccountsResponse {
     accounts: Account[]
 }
 
-const apiWithTag = apiSlice.enhanceEndpoints({ addTagTypes: ['Accounts'] })
+type AccountBalance = {
+    account_id: string
+    history: {
+        month: string
+        balance: number
+    }[]
+}
 
+type GetBalanceHistoryResponse = AccountBalance[]
+
+const apiWithTag = apiSlice.enhanceEndpoints({ addTagTypes: ['Accounts'] })
 
 export const accountsSlice = apiWithTag.injectEndpoints({
     endpoints: (builder) => ({
@@ -47,6 +57,16 @@ export const accountsSlice = apiWithTag.injectEndpoints({
             query: () => `/accounts`,
             keepUnusedDataFor: 60 * 30, // 30 minutes
             providesTags: ['Account'],
+        }),
+        getAccountBalanceHistory: builder.query<GetBalanceHistoryResponse, { start: number, end: number, type: 'depository' | 'investment' } | void>({
+            query: (params) => {
+                const queryObj = {
+                    url: `/accounts/balance-history`,
+                    method: 'GET',
+                }
+                return params ? { ...queryObj, params } : queryObj
+            },
+            keepUnusedDataFor: 60 * 30, // 30 minutes
         }),
         updateAccounts: builder.mutation<UpdateAccount[], UpdateAccount[]>({
             query: (data) => ({
@@ -59,6 +79,6 @@ export const accountsSlice = apiWithTag.injectEndpoints({
     }),
 })
 
-export const { useGetAccountsQuery, useUpdateAccountsMutation } = accountsSlice
+export const { useGetAccountsQuery, useUpdateAccountsMutation, useLazyGetAccountBalanceHistoryQuery } = accountsSlice
 
 export const useGetAccountsQueryState = accountsSlice.endpoints.getAccounts.useQueryState

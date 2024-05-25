@@ -2,7 +2,7 @@
 @import '@styles/table-mixins.scss';
 
 /* Header */
-.transaction-info--header {
+#transaction-info-header {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -63,7 +63,7 @@
 }
 
 /* All Info */
-.transaction-info--container {
+.transaction-info-container {
     display: flex;
     flex-direction: column;
     gap: 1.5em;
@@ -77,7 +77,7 @@
         @include window-corner-dropdown;
     }
 
-    .modal-inner-window {
+    #transaction-details {
 
         &:not(:nth-child(3))>div,
         &>div a {
@@ -118,7 +118,7 @@
         gap: .75em;
         position: relative;
 
-        #bill-cat-selector--container {
+        #bill-cat-selector-container {
             display: flex;
             flex-direction: column;
 
@@ -136,7 +136,7 @@
     // Add a note container
     $maxHeight: 12.5em;
 
-    #notes--container {
+    #notes-container {
         position: relative;
         overflow-x: visible;
         margin-top: .375em;
@@ -188,7 +188,7 @@
             }
         }
 
-        .note--container {
+        .note-container {
             width: 100%;
             height: 100%;
             position: relative;
@@ -230,7 +230,6 @@
                 position: absolute;
                 min-height: calc(100% - 1.5em);
                 max-height: $maxHeight;
-                background-color: var(--modal-inner-window);
                 z-index: 10;
             }
 

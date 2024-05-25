@@ -202,7 +202,7 @@ function SignUp() {
             <AnimatePresence mode="wait">
                 {Object.keys(userInfo).length === 0
                     ?
-                    <SlideMotionDiv className='window' key="sign-up" position={flow ? 'first' : 'fixed'}>
+                    <SlideMotionDiv className='portal-window' key="sign-up" position={flow ? 'first' : 'fixed'}>
                         <UserInfoWindow
                             setUserInfo={setUserInfo}
                             flow={flow}
@@ -211,7 +211,7 @@ function SignUp() {
                         />
                     </SlideMotionDiv>
                     :
-                    <SlideMotionDiv className='window' key="authenticate" position={'last'}>
+                    <SlideMotionDiv className='portal-window' key="authenticate" position={'last'}>
                         <AuthSelectionWindow
                             flow={flow}
                             submit={submit}

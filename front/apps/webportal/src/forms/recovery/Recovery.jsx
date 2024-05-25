@@ -255,7 +255,7 @@ const RecoverAccount = () => {
     }
 
     return (
-        <div id='recovery-window' className='window'>
+        <div id='recovery-window' className='portal-window'>
             <WindowLoadingBar visible={isGettingFlow || isCompletingFlow} />
             <AnimatePresence mode="wait">
                 {renderPage()}

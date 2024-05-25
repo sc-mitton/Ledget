@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState, useCallback, useMemo } from 'react'
 
 import { Location, useLocation } from 'react-router-dom'
 import { useTransition } from '@react-spring/web'
@@ -16,38 +16,23 @@ function useAnimate<A>({ accounts, waferWidth, waferPadding }: { accounts?: A[],
     const [updateOrder, { isLoading: isUpdating, isSuccess: isUpdateSuccess }] = useUpdateAccountsMutation()
     const [freezeWaferAnimation, setFreezeWaferAnimation] = useState(false)
     const location = useLocation()
+    const expandedContainerWidth = useMemo(() => (
+        waferWidth * (accounts?.length || 0)) + (waferPadding * (accounts?.length || 0)
+        ), [accounts, waferWidth, waferPadding])
 
     const order = useRef(_filterAccounts(accounts || [], location).map((item) => item.account_id))
 
-    useEffect(() => {
-        order.current = _filterAccounts(accounts || [], location).map((item) => item.account_id)
-    }, [accounts, location.pathname])
-
-    // Freeze Wafer Animation when updating order
-    useEffect(() => {
-        if (isUpdating) {
-            setFreezeWaferAnimation(true)
-        }
-        let timeout: NodeJS.Timeout
-        if (isUpdateSuccess) {
-            timeout = setTimeout(() => {
-                setFreezeWaferAnimation(false)
-            }, 2000)
-        }
-        return () => { clearTimeout(timeout) }
-    }, [isUpdateSuccess, isUpdating])
-
-    const [transitions, api] = useTransition(accounts, () => ({
+    const [transitions, waferApi] = useTransition(accounts, () => ({
         from: (item: any, index: number) => ({
             x: index * (waferWidth + waferPadding) + (15 * (index + 1) ** 2),
             scale: 1,
-            zIndex: 0,
             width: waferWidth,
             opacity: 0,
+            zIndex: (accounts?.length || 0) - index
         }),
         enter: (item: any, index: number) => ({
             x: index * (waferWidth + waferPadding),
-            opacity: 1,
+            opacity: 1
         }),
         key: (item: any) => item.account_id,
         immediate: freezeWaferAnimation,
@@ -67,31 +52,56 @@ function useAnimate<A>({ accounts, waferWidth, waferPadding }: { accounts?: A[],
                 )
             }
         },
-        api: api
+        api: waferApi
     })
 
-    const collapse = useCallback((collapsed: boolean) => {
-        api.start((index: number, item: any) => {
-            if (collapsed) {
+    const click = useCallback((id: string) => {
+        waferApi.start((index: any, item: any) => {
+            if (item._item.account_id === id) {
                 return ({
-                    to: {
-                        x: index * 25,
-                    }
-                })
-            } else {
-                return ({
-                    to: { x: index * (waferWidth + waferPadding) }
+                    to: async (next: any) => {
+                        await next({ scale: .95 })
+                        await next({ scale: 1 })
+                    },
+                    config: { duration: 100 }
                 })
             }
         })
-    }, [api, waferWidth])
+    }, [waferApi])
+
+
+    const collapse = useCallback((collapsed: boolean) => {
+        if (collapsed) {
+            waferApi.start({ to: { opacity: 0 } })
+        } else {
+            waferApi.start({ to: { opacity: 1 } })
+        }
+    }, [waferApi, waferWidth])
+
+    useEffect(() => {
+        order.current = _filterAccounts(accounts || [], location).map((item) => item.account_id)
+    }, [accounts, location.pathname])
+
+    // Freeze Wafer Animation when updating order
+    useEffect(() => {
+        if (isUpdating) {
+            setFreezeWaferAnimation(true)
+        }
+        let timeout: NodeJS.Timeout
+        if (isUpdateSuccess) {
+            timeout = setTimeout(() => {
+                setFreezeWaferAnimation(false)
+            }, 2000)
+        }
+        return () => { clearTimeout(timeout) }
+    }, [isUpdateSuccess, isUpdating])
 
     // Start initial animation
     useEffect(() => {
-        api.start()
+        waferApi.start()
     }, [location.pathname, accounts])
 
-    return { transitions, bind, api, collapse }
+    return { transitions, bind, waferApi, click, collapse }
 }
 
 export default useAnimate

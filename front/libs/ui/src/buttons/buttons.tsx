@@ -40,7 +40,7 @@ export const SlimInputButton = ButtonWithClassName('btn-input btn-less-full')
 export const SlimmestInputButton = ButtonWithClassName('btn-input btn-ultra-slim')
 export const BorderedButton = ButtonWithClassName('btn-bordered btn-pill')
 
-// Specialised Buttons
+// Stateful Buttons
 export const BlackPillButtonWithArrow = withArrow(BlackPillButton)
 export const BlackPrimaryButtonWithArrow = withArrow(BlackPrimaryButton)
 export const BlackSubmitWithArrow = withLoading(withArrow(BlackPrimaryButton))
@@ -59,6 +59,12 @@ export const IconButtonSubmit = withLoading(IconButton)
 export const LinkArrowButton = withArrow(ButtonWithClassName('btn-icon2'))
 export const FadedTextButton = ButtonWithClassName('btn-faded-text')
 export const BlueTextButton = ButtonWithClassName('btn-blue-text')
+
+export const BlueFadedSquareRadio = ({ selected, children, ...rest }: { selected?: boolean } & ButtonHTMLAttributes<HTMLButtonElement>) => (
+  <button className={`btn btn-blue-faded btn-square ${selected ? 'selected' : ''}`} {...rest}>
+    {children}
+  </button>
+)
 
 export const SmallArrowButton = ({ type = '', ...rest }) => (
   <button className="arrow-nav" {...rest}>

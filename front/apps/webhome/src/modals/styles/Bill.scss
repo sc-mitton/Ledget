@@ -26,7 +26,7 @@
         margin-top: 1.5em;
     }
 
-    .modal-inner-window {
+    &>div:last-of-type {
         display: grid;
         row-gap: .75em;
         column-gap: 1.5em;

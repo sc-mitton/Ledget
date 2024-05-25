@@ -31,7 +31,8 @@ import {
     CircleIconButton,
     Tooltip,
     IconButton,
-    AutoResizeTextArea
+    AutoResizeTextArea,
+    NestedWindow2
 } from '@ledget/ui'
 
 
@@ -248,10 +249,10 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
     }
 
     return (
-        <div className='modal-inner-window'>
+        <NestedWindow2>
             <h4>{`Note${notes.length > 0 ? 's' : ''}`}</h4>
             <div
-                id="notes--container"
+                id="notes-container"
                 className={`${focusedNoteId ? 'focused' : ''}`}
                 tabIndex={0}
                 ref={notesContainerRef}
@@ -279,7 +280,7 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
                     {focusedNoteId &&
                         <AutoResizeTextArea
                             ref={textAreaRef}
-                            divProps={{ className: "note--container focused" }}
+                            divProps={{ className: "note-container focused" }}
                             defaultValue={notes.concat(notesToSend2Server)
                                 .find(note => note.id === focusedNoteId)?.text}
                             onChange={(e) => handleTextAreaChange(e, focusedNoteId)}
@@ -292,7 +293,7 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
                         // Placeholder textarea to add a new note
                         // Also a tracker for the new note to keep the sizing right
                         divProps={{
-                            className: `note--container ${a11yNote === 0 ? 'accessible-focused' : ''}`,
+                            className: `note-container ${a11yNote === 0 ? 'accessible-focused' : ''}`,
                             onClick: () => setFocusedNoteId('new')
                         }}
                         value={newNote?.text || ''}
@@ -305,7 +306,7 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
                         .sort((a, b) => new Date(b.datetime).getTime() - new Date(a.datetime).getTime())
                         .map((note, index) => (
                             <div
-                                className={`note--container
+                                className={`note-container
                                 ${!note.is_current_users ? 'disabled' : ''}
                                 ${a11yNote === index ? 'accessible-focused' : ''}`}
                                 onClick={() =>
@@ -317,7 +318,7 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
                         ))}
                 </div>
             </div>
-        </div>
+        </NestedWindow2>
     )
 }
 
@@ -337,7 +338,7 @@ const InfoTableInnerWindow = ({ item }: { item: Transaction }) => {
     }, [accountsFetched])
 
     return (
-        <div className='modal-inner-window'>
+        <NestedWindow2 id='transaction-details'>
             <div>Account</div>
             <div id="account-info-cell">
                 <a href={institution?.url} target="_blank" rel="noreferrer">
@@ -374,7 +375,7 @@ const InfoTableInnerWindow = ({ item }: { item: Transaction }) => {
                     </div>
                 </>
             }
-        </div>
+        </NestedWindow2>
     )
 }
 
@@ -422,11 +423,11 @@ function CategoriesBillInnerWindow({ item, }: { item: Transaction }) {
     }, [billCat])
 
     return (
-        <div className='modal-inner-window' id="bills-and-categories">
+        <NestedWindow2 id="bills-and-categories">
             <div>{getBillCategoryLabel(item)}</div>
             {!itemIsSplit
                 ?
-                <div ref={buttonContainerRef} id="bill-cat-selector--container">
+                <div ref={buttonContainerRef} id="bill-cat-selector-container">
                     <BillCatLabel
                         as='button'
                         ref={buttonContainerRef}
@@ -464,7 +465,7 @@ function CategoriesBillInnerWindow({ item, }: { item: Transaction }) {
                     </div>
                 ))
             }
-        </div>
+        </NestedWindow2>
     )
 }
 
@@ -478,7 +479,7 @@ export const TransactionModalContent = (({ item, splitMode }: { item: Transactio
 
     return (
         <>
-            <div className='transaction-info--header'>
+            <div id='transaction-info-header'>
                 <div style={{ textAlign: 'center' }}>
                     <DollarCents value={item?.amount && new Big(item.amount).times(100).toNumber()} />
                 </div>
@@ -525,7 +526,7 @@ export const TransactionModalContent = (({ item, splitMode }: { item: Transactio
                 {action === undefined &&
                     <SlideMotionDiv key={'default-view'} position={loaded ? 'first' : 'fixed'}>
                         <Actions setAction={setAction} />
-                        <div className='transaction-info--container'>
+                        <div className='transaction-info-container'>
                             {(item.predicted_bill || item.predicted_category || item.bill || (item.categories?.length || 0) > 0)
                                 && <CategoriesBillInnerWindow item={item} />}
                             <InfoTableInnerWindow item={item} />

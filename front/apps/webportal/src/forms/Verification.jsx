@@ -90,7 +90,7 @@ const Verification = () => {
     }, [isCompleteSuccess])
 
     return (
-        <JiggleDiv className="window" id="verification-window" jiggle={jiggle}>
+        <JiggleDiv className="portal-window" id="verification-window" jiggle={jiggle}>
             <WindowLoadingBar visible={isGettingFlow || isCompletingFlow} />
             <div className="window-header">
                 <h2>Verify Email Address</h2>

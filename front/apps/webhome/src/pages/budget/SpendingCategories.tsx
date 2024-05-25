@@ -4,16 +4,16 @@ import { useNavigate, useLocation } from 'react-router-dom'
 
 import './styles/SpendingCategories.scss'
 import { useAppSelector, useAppDispatch } from '@hooks/store'
-import { selectCategoryMetaData, selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
+import { selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
 import { useGetCategoriesQuery } from '@features/categorySlice'
 import { Category } from '@features/categorySlice'
 import {
-    BlueTextButton,
     ColoredShimmer,
     CircleIconButton,
     Tooltip,
     BillCatEmojiLabel,
     DollarCents,
+    Window
 } from '@ledget/ui'
 import { setCategoryModal } from '@features/modalSlice'
 import { selectBudgetItemsSort } from '@features/uiSlice'
@@ -53,8 +53,6 @@ const ModalProvider = ({ children }: { children: React.ReactNode }) => {
 
 
 // ACCOUNTS PAGE
-
-// Allow period selection for balance history chart
 
 // Add up/down for past 30 days for account totals
 
@@ -151,12 +149,12 @@ const CategoriesList = ({ period }: { period: Category['period'] }) => {
 
 const ColumnView = () => (
     <div id='spending-categories--columns'>
-        <div className='window'>
+        <Window>
             <CategoriesList period='month' />
-        </div>
-        <div className='window'>
+        </Window>
+        <Window>
             <CategoriesList period='year' />
-        </div>
+        </Window>
     </div>
 )
 

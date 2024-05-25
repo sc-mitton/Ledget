@@ -304,7 +304,7 @@ const Activation = () => {
     }, [])
 
     return (
-        <div id='activation-flow' className="window">
+        <div id='activation-flow' className='portal-window'>
             <h2>Join Household</h2>
             <Animation />
             <EmailContextProvider>

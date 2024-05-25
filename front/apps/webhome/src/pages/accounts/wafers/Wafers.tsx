@@ -7,10 +7,10 @@ import Big from 'big.js'
 import './styles/Wafers.scss'
 import {
     DollarCents,
-    CloseButton,
     useScreenContext,
     IconButton3,
     useIsMount,
+    Window2
 } from '@ledget/ui'
 import { LineGraph } from '@ledget/media'
 import { useAccountsContext } from '../context'
@@ -30,7 +30,7 @@ const WaferList = ({ collapsed }: { collapsed: boolean }) => {
     const location = useLocation()
     const { accounts } = useAccountsContext()
     const [searchParams, setSearchParams] = useSearchParams()
-    const { transitions, bind, api, collapse } = useAnimate({
+    const { transitions, bind, collapse, click } = useAnimate({
         waferWidth: location.pathname.includes('credit') ? creditWaferWidth : waferWidth,
         accounts,
         waferPadding
@@ -39,19 +39,7 @@ const WaferList = ({ collapsed }: { collapsed: boolean }) => {
     const handleClick = (id: string) => {
         searchParams.set('account', id)
         setSearchParams(searchParams)
-
-        // Click Animation
-        api.start((index: any, item: any) => {
-            if (item._item.account_id === id) {
-                return ({
-                    to: async (next: any) => {
-                        await next({ scale: .95 })
-                        await next({ scale: 1 })
-                    },
-                    config: { duration: 100 }
-                })
-            }
-        })
+        click(id)
     }
 
     useEffect(() => {
@@ -85,45 +73,47 @@ function Wafers() {
     const { accounts } = useAccountsContext()
     const { screenSize } = useScreenContext()
     const { isLoading: isLoadingAccounts } = useAccountsContext()
-    const [showBalanceHistory, setShowBalanceHistory] = useState(false)
     const ref = useRef<HTMLDivElement>(null)
-    const [collapsed, setCollapsed] = useState(false)
     const [key, setKey] = useState(Math.random().toString().slice(2, 8))
+    const [showChart, setShowChart] = useState(false)
 
     useEffect(() => {
         setKey(Math.random().toString().slice(2, 8))
     }, [accounts])
 
     return (
-        <div className={`${'account-wafers-container'} ${screenSize}`} ref={ref} key={key}>
-            <div>
-                <div>
-                    <h4>{pathMappings.getWaferTitle(location)}</h4>
-                    {!showBalanceHistory && location.pathname.includes('deposits') &&
-                        <IconButton3
-                            aria-label='Show balance history'
-                            aria-haspopup='true'
-                            aria-expanded={showBalanceHistory}
-                            aria-controls='balance-history'
-                            onClick={() => setCollapsed(!collapsed)}
-                        >
-                            <LineGraph />
-                        </IconButton3>}
-                </div>
-                <h1>
-                    <DollarCents value={accounts?.reduce((acc, account) =>
-                        acc.plus(account.balances.current), Big(0)).times(100).toNumber() || 0} />
-                </h1>
+        <>
+            <div className={`${'account-wafers-container'} ${screenSize}`} ref={ref} key={key}>
+                <Window2>
+                    <div>
+                        <div>
+                            <h4>{pathMappings.getWaferTitle(location)}</h4>
+                            {location.pathname.includes('deposits') &&
+                                <IconButton3
+                                    aria-label='Show balance history'
+                                    aria-haspopup='true'
+                                    aria-expanded={showChart}
+                                    aria-controls='balance-history'
+                                    onClick={() => setShowChart(!showChart)}
+                                >
+                                    <LineGraph />
+                                </IconButton3>}
+                        </div>
+                        <h1>
+                            <DollarCents value={accounts?.reduce((acc, account) =>
+                                acc.plus(account.balances.current), Big(0)).times(100).toNumber() || 0} />
+                        </h1>
+                    </div>
+                    {isLoadingAccounts
+                        ? <SkeletonWafers
+                            count={ref.current?.offsetWidth ? Math.floor(ref.current.offsetWidth / waferWidth) - 1 : 0}
+                            width={waferWidth}
+                        />
+                        : <WaferList collapsed={showChart} />}
+                </Window2>
+                {showChart && <Window2><BalanceChart /></Window2>}
             </div>
-            {isLoadingAccounts
-                ? <SkeletonWafers
-                    count={ref.current?.offsetWidth ? Math.floor(ref.current.offsetWidth / waferWidth) - 1 : 0}
-                    width={waferWidth}
-                />
-                : <WaferList collapsed={collapsed} />}
-            {showBalanceHistory && <CloseButton onClick={() => setShowBalanceHistory(false)} />}
-            {showBalanceHistory && <BalanceChart color={'--m-text'} />}
-        </div>
+        </>
     )
 }
 

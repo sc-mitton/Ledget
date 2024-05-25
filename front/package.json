@@ -42,9 +42,10 @@
     "react-native": "0.73.2",
     "react-plaid-link": "^3.4.0",
     "react-redux": "^8.1.1",
-    "react-router-dom": "^6.10.0",
+    "react-router-dom": "6.11.2",
     "react-router-hash-link": "^2.4.3",
     "redux": "^4.2.1",
+    "styled-components": "^6.1.11",
     "tslib": "^2.3.0",
     "zod": "^3.22.4"
   },

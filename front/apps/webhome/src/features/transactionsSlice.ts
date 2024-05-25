@@ -6,10 +6,9 @@ import { Category, SplitCategory } from '@features/categorySlice'
 import { TransactionFilterSchema } from '@pages/activity/history/Filter'
 import { addTransaction2Cat, addTransaction2Bill } from '@features/budgetItemMetaDataSlice'
 import type { Bill } from '@features/billSlice'
+import type { AccountType } from '@features/accountsSlice'
 import type { RootState } from './store'
 import type { DeepPartial } from '@utils/types'
-
-export type AccountType = 'depository' | 'credit' | 'loan' | 'investment' | 'other'
 
 export type Note = {
     id: string

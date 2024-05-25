@@ -2,51 +2,42 @@
 @import '@styles/table-mixins.scss';
 
 .account-wafers-container {
-    width: auto;
-    padding: 0 1.5em;
-    background: var(--window2-background);
-    border-radius: var(--border-radius3);
     display: flex;
-    position: relative;
-
-    #balance-history {
-        &>div {
-            max-width: 60%;
-        }
-
-        padding: 1em;
-    }
-
-    * {
-        scrollbar-width: none;
-    }
+    gap: 1em;
+    justify-content: space-between;
 
     &>div:first-child {
+        padding: 0 1.5em;
         display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-        margin: 0 .75em;
+        width: auto;
+        position: relative;
+        justify-content: flex-start;
+        gap: 3em;
+        flex-grow: 1;
 
-        &>div {
+        * {
+            scrollbar-width: none;
+        }
+
+        &>div:first-child {
             display: flex;
-            gap: .75em;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-left: 1em;
+
+            &>div {
+                display: flex;
+                gap: .75em;
+            }
         }
-    }
 
-    h4 {
-        white-space: nowrap;
-        font-weight: var(--fw-regular);
-        color: var(--m-text-secondary);
-    }
-
-    #balance-history {
-        display: flex;
-        flex-direction: column;
-
-        h3 {
-            font-size: 1.25rem;
+        h4 {
+            white-space: nowrap;
+            font-weight: var(--fw-regular);
+            color: var(--m-text-secondary);
         }
+
     }
 }
 
@@ -62,7 +53,7 @@
     overflow-y: hidden;
     animation: make-scroll 1s ease-in-out forwards;
     animation-delay: 1s;
-    padding: 1.5em 1em .75em 1em;
+    padding: 1.5em 0em .75em 0em;
 }
 
 @keyframes make-scroll {

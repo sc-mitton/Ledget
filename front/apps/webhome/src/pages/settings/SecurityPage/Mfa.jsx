@@ -4,7 +4,13 @@ import { Plus } from '@geist-ui/icons'
 
 import './styles/Mfa.scss'
 import { useGetMeQuery } from '@features/userSlice'
-import { CircleIconButton, BlueSlimButton, Tooltip, BlueTextButton } from '@ledget/ui'
+import {
+    CircleIconButton,
+    BlueSlimButton,
+    Tooltip,
+    BlueTextButton,
+    NestedWindow
+} from '@ledget/ui'
 import { QrIcon } from '@ledget/media'
 
 const AuthenticatorApp = ({ user }) => {
@@ -72,9 +78,9 @@ const Mfa = () => {
             >
                 <h4>Multi-Factor</h4>
             </div>
-            <div className="inner-window" id="mfa-options--container">
+            <NestedWindow id="mfa-options--container">
                 <AuthenticatorApp user={user} />
-            </div>
+            </NestedWindow>
             {user.mfa_method === 'totp' &&
                 <div><Tooltip msg={'Recovery codes'} ariaLabel={'Recovery codes'}>
                     <BlueTextButton onClick={() => navigate('/profile/security/recovery-codes')} >

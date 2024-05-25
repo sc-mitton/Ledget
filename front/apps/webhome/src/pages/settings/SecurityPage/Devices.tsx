@@ -6,7 +6,7 @@ import './styles/Devices.scss'
 import { Disclosure } from '@headlessui/react'
 import { useDeleteRememberedDeviceMutation, } from '@features/authSlice'
 import { Device as DeviceType } from '@features/userSlice'
-import { IconButtonSubmit, Tooltip } from '@ledget/ui'
+import { IconButtonSubmit, Tooltip, NestedWindow } from '@ledget/ui'
 
 import { LocationIcon, ComputerIcon } from '@ledget/media'
 import { ChevronDown, LogOut, Smartphone } from '@geist-ui/icons'
@@ -133,14 +133,14 @@ const Devices = ({ devices }: { devices: DeviceType[] }) => {
     return (
         <section>
             <h4 className="header2">Devices</h4>
-            <div className="inner-window" id="device-list">
+            <NestedWindow id="device-list">
                 {(groupedDevices).map(([device, info], index) =>
                     <Device
                         key={device}
                         device={device}
                         info={info}
                     />)}
-            </div>
+            </NestedWindow>
         </section>
     )
 }

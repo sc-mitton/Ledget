@@ -1,17 +1,18 @@
-from dateutil.relativedelta import relativedelta
 from collections import defaultdict
 from decimal import Decimal
 import json
+from datetime import datetime
 
 import plaid.exceptions
-from rest_framework.generics import GenericAPIView
+from rest_framework.viewsets import ViewSet
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
 from rest_framework.serializers import ListSerializer
 from rest_framework.exceptions import ValidationError
 from django.db.models import Sum
 from django.utils import timezone
-from django.db.models.functions import TruncMonth
+from django.db.models.functions import TruncMonth, TruncYear
 from plaid.model.accounts_get_request import AccountsGetRequest
 import plaid
 
@@ -28,7 +29,7 @@ from financials.serializers.account import (
 plaid_client = create_plaid_client()
 
 
-class AccountsView(GenericAPIView):
+class AccountsViewSet(ViewSet):
     serializer_classes = [AccountSerializer, UserAccountSerializer]
     permission_classes = [IsAuthedVerifiedSubscriber, HasObjectAccess]
 
@@ -39,11 +40,6 @@ class AccountsView(GenericAPIView):
                 and 'order' in self.request.data[0]:
             return UserAccountSerializer
         return AccountSerializer
-
-    def get_serializer(self, *args, **kwargs):
-        if isinstance(kwargs.get('data', {}), list):
-            kwargs['many'] = True
-        return super().get_serializer(*args, **kwargs)
 
     def get_queryset(self, serializer):
         if isinstance(serializer.child, UserAccountSerializer):
@@ -59,8 +55,8 @@ class AccountsView(GenericAPIView):
         account = Account.objects.get(id=self.request.query_params.get('id'))
         self.check_object_permissions(request, account)
 
-    def patch(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+    def partial_update(self, request, *args, **kwargs):
+        serializer = UserAccountSerializer(data=request.data, many=True, partial=True)
         serializer.is_valid(raise_exception=True)
 
         if isinstance(serializer, ListSerializer):
@@ -72,23 +68,34 @@ class AccountsView(GenericAPIView):
 
         return Response(serializer.data)
 
-    def get(self, request, *args, **kwargs):
-        '''Get all the account data belonging to a specific user'''
+    @action(detail=False, methods=['get'], url_path='balance-history',
+            url_name='balance-history')
+    def balance_history(self, request, *args, **kwargs):
+        '''Get the balance history for the last 6 months'''
 
-        accounts = Account.objects.filter(
-            useraccount__user__in=self.request.user.account.users.all()) \
-            .order_by('useraccount__order') \
-            .prefetch_related('plaid_item') \
-            .prefetch_related('institution')
+        account_type = self.request.query_params.get('type', 'depository')
+        accounts = self._get_users_accounts()
 
         account_balances = self._fetch_plaid_account_data(accounts)
+        account_balances = {ab['account_id']: ab for ab in account_balances.values()
+                            if ab['type'] == account_type}
 
-        balance_history = self._get_balance_history({
-            k: account_balances[k]['balances']['current'] for k in account_balances})
+        balance_histories = self._get_balance_history(account_balances)
+        response_data = [
+            {
+                'account_id': account_id,
+                'history': balance_history
+            }
+            for account_id, balance_history in balance_histories.items()
+        ]
 
-        for account_id in balance_history:
-            account_balances[account_id]['balance_history'] = \
-                balance_history[account_id]
+        return Response(response_data, HTTP_200_OK)
+
+    def list(self, request, *args, **kwargs):
+        '''Get all the account data belonging to a specific user'''
+
+        accounts = self._get_users_accounts(include_institutions=True)
+        account_balances = self._fetch_plaid_account_data(accounts)
 
         institution_data = {
             account.institution.id: InstitutionSerializer(account.institution).data
@@ -98,6 +105,17 @@ class AccountsView(GenericAPIView):
             'accounts': account_balances.values(),
             'institutions': institution_data.values(),
         }, HTTP_200_OK)
+
+    def _get_users_accounts(self, include_institutions=False):
+        qset = Account.objects.filter(
+            useraccount__user__in=self.request.user.account.users.all()) \
+            .order_by('useraccount__order') \
+            .prefetch_related('plaid_item')
+
+        if include_institutions:
+            qset = qset.prefetch_related('institution')
+
+        return qset
 
     def _fetch_plaid_account_data(self, accounts: list) -> dict:
         already_fetched_tokens = []
@@ -127,27 +145,36 @@ class AccountsView(GenericAPIView):
 
         return account_balances
 
-    def _get_balance_history(self, accounts_balance: dict) -> dict:
+    def _get_balance_history(self, accounts_balance: dict,
+                             start: int = None, end: int = None) -> dict:
+
+        start = datetime.fromtimestamp(start).replace(tzinfo=timezone.utc) \
+                if start and end else timezone.now() - timezone.timedelta(days=180)
+        end = datetime.fromtimestamp(end).replace(tzinfo=timezone.utc) \
+            if start and end else timezone.now()
 
         qset = Transaction.objects.filter(
                 account__in=accounts_balance.keys(),
-                date__gte=timezone.now().replace(day=1) - relativedelta(months=5),
-                date__lte=timezone.now().replace(day=1)
+                date__gte=start,
+                date__lte=end,
             ).annotate(month=TruncMonth('date')) \
-             .values('month', 'account') \
+             .annotate(year=TruncYear('date')) \
+             .values('month', 'year', 'account') \
              .annotate(total=Sum('amount')) \
              .order_by('account', 'month')
 
         data = defaultdict(lambda: [])
         balance = Decimal(0)
+
         for item in qset:
             if item['account'] not in data:
-                balance = Decimal(accounts_balance[item['account']])
+                balance = Decimal(
+                    accounts_balance[item['account']]['balances']['current'])
             else:
                 balance += item['total']
 
             data[item['account']].append({
-                'month': item['month'],
+                'month': f"{item['month']}",
                 'balance': balance
             })
 

@@ -1,3 +1,4 @@
+export * from './containers/windows';
 export * from './misc/avatar/avatar';
 export * from './inputs/date-picker/date-picker';
 export * from './pieces/containers/AutoResizeTextArea';

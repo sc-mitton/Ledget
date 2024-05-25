@@ -22,7 +22,8 @@ import {
     BillCatLabel,
     useScreenContext,
     Tooltip,
-    BlueTextButton
+    BlueTextButton,
+    Window
 } from '@ledget/ui';
 
 
@@ -312,13 +313,13 @@ const BillsWindow = () => {
                 <BlueTextButton onClick={() => setModal(true)} aria-label='View all bills'>
                     View All
                 </BlueTextButton>
-                <div className={`window calendar-bills--container ${collapsed ? 'collapsed' : ''} ${['small', 'extra-small'].includes(screenSize) ? 'small-screen' : ''}`}>
+                <Window className={`calendar-bills--container ${collapsed ? 'collapsed' : ''} ${['small', 'extra-small'].includes(screenSize) ? 'small-screen' : ''}`}>
                     <Header showCalendarIcon={!showCalendar} collapsed={collapsed} setCollapsed={setCollapsed} />
                     <div>
                         {showCalendar && <Calendar />}
                         {isLoading ? <SkeletonBills /> : <Bills collapsed={collapsed} />}
                     </div>
-                </div>
+                </Window>
             </div>
             {modal && <EditBudgetBills onClose={() => setModal(false)} />}
         </>

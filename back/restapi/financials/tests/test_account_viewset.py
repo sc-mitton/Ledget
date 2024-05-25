@@ -14,7 +14,7 @@ class TestPlaidItemView(ViewTestsMixin):
         mock_accounts_get.return_value = \
             self._get_mock_accuonts_get_return_response()
 
-        response = self.client.get(reverse('account'))
+        response = self.client.get(reverse('accounts-list'))
         self.assertEqual(response.status_code, 200)
         self.assertIsNotNone(response.data)
 
@@ -50,7 +50,7 @@ class TestPlaidItemView(ViewTestsMixin):
         ]
         payload.reverse()
 
-        response = self.client.patch(reverse('account'), payload, format='json')
+        response = self.client.patch(reverse('accounts-list'), payload, format='json')
         self.assertEqual(response.status_code, 200)
 
         accounts = Account.objects.filter(useraccount__user_id=self.user.id)

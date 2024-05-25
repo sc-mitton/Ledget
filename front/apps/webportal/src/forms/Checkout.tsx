@@ -280,7 +280,7 @@ const CheckoutWindow = () => {
         <>
             {!isLoading &&
                 <Elements stripe={stripePromise as any} options={cardOptions}>
-                    <div id="checkout-window" className={`${isDark ? 'dark' : 'light'} window`}>
+                    <div id="checkout-window" className={`${isDark ? 'dark' : 'light'} portal-window`}>
                         <Form id="billing-form" />
                         {window.innerWidth > 700 &&
                             <div className="stripe-logo-container">

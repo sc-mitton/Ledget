@@ -20,6 +20,7 @@ import {
     withModal,
     TabNavList,
     BillCatLabel,
+    NestedWindow2
 } from '@ledget/ui'
 
 const itemHeight = 28
@@ -214,8 +215,8 @@ const EditCategoriesModal = withModal((props) => {
         <form onSubmit={handleSubmit}>
             <h2>Edit Categories</h2>
             <Tab.Group
-                as='div'
-                className={`modal-inner-window ${showSubmit ? 'submittable' : ''}`}
+                as={NestedWindow2}
+                className={`${showSubmit ? 'submittable' : ''}`}
                 id="reorder-categories"
             >
                 {({ selectedIndex }) => (

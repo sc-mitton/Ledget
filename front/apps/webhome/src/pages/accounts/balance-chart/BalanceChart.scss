@@ -1,28 +1,53 @@
-#balance-history {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: inherit;
-    border-radius: inherit;
-    padding-top: .5em;
-    background: inherit;
+.balance-history {
+    padding: 1em;
+    width: 100%;
+    max-width: 37em;
+    position: relative;
+    flex-grow: 1;
+    background-color: var(--window2);
+    border-radius: var(--border-radius3);
 
-    &>div:nth-last-child(2) {
+    &--buttons {
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        transform: translateX(-50%);
+        width: min-content;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        margin-right: 1em;
+        gap: .625em;
 
-        &>span {
-            white-space: nowrap;
+        * {
+            font-size: .75rem;
         }
     }
 
-    &>div:last-child {
-        flex-grow: 1;
+    &--chart {
+        height: 100%;
         width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        background-color: inherit;
+        border-radius: inherit;
+        background: inherit;
+
+        &>div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-right: 4em;
+            flex-grow: 1;
+            width: calc(100% - 2em);
+
+            &>span {
+                white-space: nowrap;
+            }
+        }
     }
 }

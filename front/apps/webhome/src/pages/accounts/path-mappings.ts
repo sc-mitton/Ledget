@@ -1,5 +1,5 @@
 
-import { AccountType } from '@features/transactionsSlice'
+import { AccountType } from '@features/accountsSlice'
 import { Location } from 'react-router-dom'
 
 const pathMappings = {

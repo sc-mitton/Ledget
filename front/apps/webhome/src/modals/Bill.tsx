@@ -14,7 +14,7 @@ import './styles/Bill.scss'
 import { billSchema } from './CreateBill'
 import { withModal } from '@ledget/ui'
 import { selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
-import { useGetBillsQuery, TransformedBill, useDeleteBillMutation, useUpdateBillsMutation, UpdateBill, Bill } from '@features/billSlice'
+import { TransformedBill, useDeleteBillMutation, useUpdateBillsMutation, UpdateBill, Bill } from '@features/billSlice'
 import { Reminder } from '@features/remindersSlice'
 import { SubmitForm } from '@components/pieces'
 import {
@@ -27,7 +27,8 @@ import {
     Checkbox,
     IconButton,
     DropdownItem,
-    DatePicker
+    DatePicker,
+    NestedWindow2
 } from '@ledget/ui'
 import { extractReminders } from '@modals/CreateBill'
 import { Ellipsis } from '@ledget/media'
@@ -146,7 +147,7 @@ const BillInfo = ({ bill }: { bill: TransformedBill }) => {
                         {`${bill.name.charAt(0).toUpperCase()}${bill?.name.slice(1)}`}
                     </h2>}
             </div>
-            <div className="modal-inner-window">
+            <NestedWindow2>
                 <div>Amount</div>
                 <div>
                     {bill.is_paid
@@ -205,7 +206,7 @@ const BillInfo = ({ bill }: { bill: TransformedBill }) => {
                     }
                 </div>
 
-            </div>
+            </NestedWindow2>
         </div>
     )
 }

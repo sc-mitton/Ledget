@@ -9,13 +9,13 @@ import { useAddnewBillMutation, NewBill } from '@features/billSlice'
 import { useAddNewCategoryMutation, NewCategory } from '@features/categorySlice'
 import { useUpdateUserMutation } from '@features/userSlice'
 import { apiSlice } from '@api/apiSlice'
-import { BlueSubmitWithArrow, BlueSlimButton2, TabNavList } from '@ledget/ui'
+import { BlueSubmitWithArrow, BlueSlimButton2, TabNavList, NestedWindow2 } from '@ledget/ui'
 
 export const TabView = ({ children, item }: { children: React.ReactNode, item: ItemS }) => {
     const { periodTabIndex, setPeriodTabIndex } = useItemsContext(item)
 
     return (
-        <Tab.Group selectedIndex={periodTabIndex} onChange={setPeriodTabIndex} as='div'>
+        <Tab.Group selectedIndex={periodTabIndex} onChange={setPeriodTabIndex} as={NestedWindow2}>
             {({ selectedIndex }) => (
                 <>
                     <TabNavList
