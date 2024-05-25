@@ -13,7 +13,7 @@
         gap: 3em;
         padding: 1.5em 2.25em 1.5em 2.25em;
         border-radius: var(--border-radius25);
-        background: linear-gradient(to bottom right, var(--window2), color-mix(in srgb, var(--window2), var(--window-background-color) 30%));
+        background: var(--window2-background);
     }
 
     .card {

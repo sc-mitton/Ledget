@@ -29,13 +29,6 @@ export const AccountsProvider = ({ children }: { children: React.ReactNode }) =>
     const [searchParams, setSearchParams] = useSearchParams();
     const location = useLocation();
 
-    useEffect(() => {
-        if (isSuccess) {
-            setState(data.accounts);
-
-        }
-    }, [isSuccess]);
-
     // Set first account on get accounts success
     useEffect(() => {
         const account = data?.accounts?.filter((account: any) =>

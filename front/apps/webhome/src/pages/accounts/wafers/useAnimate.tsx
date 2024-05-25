@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 
 import { Location, useLocation } from 'react-router-dom'
-import { useSpringRef, useTransition } from '@react-spring/web'
+import { useTransition } from '@react-spring/web'
 import { useUpdateAccountsMutation } from '@features/accountsSlice'
 import { useSpringDrag } from '@ledget/ui'
 import pathMappings from '../path-mappings'
@@ -23,11 +23,6 @@ function useAnimate<A>({ accounts, waferWidth, waferPadding }: { accounts?: A[],
         order.current = _filterAccounts(accounts || [], location).map((item) => item.account_id)
     }, [accounts, location.pathname])
 
-    // Start initial animation
-    useEffect(() => {
-        waferApi.start()
-    }, [location.pathname, accounts])
-
     // Freeze Wafer Animation when updating order
     useEffect(() => {
         if (isUpdating) {
@@ -42,8 +37,7 @@ function useAnimate<A>({ accounts, waferWidth, waferPadding }: { accounts?: A[],
         return () => { clearTimeout(timeout) }
     }, [isUpdateSuccess, isUpdating])
 
-    const waferApi = useSpringRef()
-    const transitions = useTransition(accounts, {
+    const [transitions, api] = useTransition(accounts, () => ({
         from: (item: any, index: number) => ({
             x: index * (waferWidth + waferPadding) + (15 * (index + 1) ** 2),
             scale: 1,
@@ -55,9 +49,9 @@ function useAnimate<A>({ accounts, waferWidth, waferPadding }: { accounts?: A[],
             x: index * (waferWidth + waferPadding),
             opacity: 1,
         }),
+        key: (item: any) => item.account_id,
         immediate: freezeWaferAnimation,
-        ref: waferApi
-    })
+    }))
 
     const bind = useSpringDrag({
         order: order,
@@ -73,10 +67,31 @@ function useAnimate<A>({ accounts, waferWidth, waferPadding }: { accounts?: A[],
                 )
             }
         },
-        api: waferApi
+        api: api
     })
 
-    return { transitions, bind, waferApi }
+    const collapse = useCallback((collapsed: boolean) => {
+        api.start((index: number, item: any) => {
+            if (collapsed) {
+                return ({
+                    to: {
+                        x: index * 25,
+                    }
+                })
+            } else {
+                return ({
+                    to: { x: index * (waferWidth + waferPadding) }
+                })
+            }
+        })
+    }, [api, waferWidth])
+
+    // Start initial animation
+    useEffect(() => {
+        api.start()
+    }, [location.pathname, accounts])
+
+    return { transitions, bind, api, collapse }
 }
 
 export default useAnimate

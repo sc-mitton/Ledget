@@ -14,7 +14,7 @@ const Main = () => {
     return (
         <ShimmerDiv shimmering={isLoading}>
             <div className="padded-content" id="security-page">
-                <h2>Security</h2>
+                <h1>Security</h1>
                 <Devices devices={devices} />
                 <Authentication />
                 <Mfa />

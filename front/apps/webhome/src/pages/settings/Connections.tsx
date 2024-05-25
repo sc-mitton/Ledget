@@ -273,7 +273,7 @@ const MainHeader = ({ onPlus }: { onPlus: () => void }) => {
 
     return (
         <div className="header">
-            <h2>Connections</h2>
+            <h1>Connections</h1>
             <div className='header-btns'>
                 {(!editing && plaidItems!.length > 0) &&
                     <Tooltip msg={'Edit connections'} ariaLabel={'Edit Connections'} type={'left'}>

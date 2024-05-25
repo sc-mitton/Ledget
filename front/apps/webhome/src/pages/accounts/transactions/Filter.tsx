@@ -19,7 +19,6 @@ const Filter = ({ value, onChange }: { value?: [Dayjs, Dayjs], onChange: React.D
     })
 
     useEffect(() => {
-        console.log('value', value)
         if (value && value.length && showDropDown) {
             setShowDropDown(false)
         }

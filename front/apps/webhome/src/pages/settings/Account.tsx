@@ -19,7 +19,6 @@ import {
     BlueSlimSubmitButton,
     ShimmerDiv,
     DropDownDiv,
-    IconButton,
     DropdownItem,
     BakedSwitch,
     useColorScheme,
@@ -69,13 +68,13 @@ const Info = () => {
                 <div>
                     <span>{`${user?.email}`}</span>
                 </div>
-                <IconButton
+                <CircleIconButton
                     id='edit-personal-info--button'
                     onClick={() => setEditPersonalInfoModal(true)}
                     aria-label="Edit personal info"
                 >
-                    <Edit2 className='icon' />
-                </IconButton>
+                    <Edit2 className='icon small' />
+                </CircleIconButton>
             </div>
             {editPersonalInfoModal && (
                 <UpdatePersonalInfo onClose={() => setEditPersonalInfoModal(false)} />
@@ -335,7 +334,7 @@ const Account = () => {
             >
                 <div id="account-page" className="padded-content">
                     <div className="header">
-                        <h2>Account</h2>
+                        <h1>Account</h1>
                     </div>
                     <div id="avatar">
                         {user && `${user.name.first.charAt(0).toUpperCase()} ${user.name.last.charAt(0).toUpperCase()}`}

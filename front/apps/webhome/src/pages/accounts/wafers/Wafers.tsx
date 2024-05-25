@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
 import { useLocation, useSearchParams } from 'react-router-dom'
 import { animated } from '@react-spring/web'
@@ -10,6 +10,7 @@ import {
     CloseButton,
     useScreenContext,
     IconButton3,
+    useIsMount,
 } from '@ledget/ui'
 import { LineGraph } from '@ledget/media'
 import { useAccountsContext } from '../context'
@@ -24,11 +25,12 @@ const waferWidth = 165
 const creditWaferWidth = 175
 const waferPadding = 6
 
-const WaferList = () => {
+const WaferList = ({ collapsed }: { collapsed: boolean }) => {
+    const isMounted = useIsMount()
     const location = useLocation()
     const { accounts } = useAccountsContext()
     const [searchParams, setSearchParams] = useSearchParams()
-    const { transitions, bind, waferApi } = useAnimate({
+    const { transitions, bind, api, collapse } = useAnimate({
         waferWidth: location.pathname.includes('credit') ? creditWaferWidth : waferWidth,
         accounts,
         waferPadding
@@ -39,7 +41,7 @@ const WaferList = () => {
         setSearchParams(searchParams)
 
         // Click Animation
-        waferApi.start((index: any, item: any) => {
+        api.start((index: any, item: any) => {
             if (item._item.account_id === id) {
                 return ({
                     to: async (next: any) => {
@@ -51,6 +53,12 @@ const WaferList = () => {
             }
         })
     }
+
+    useEffect(() => {
+        if (!isMounted) {
+            collapse(collapsed)
+        }
+    }, [collapsed])
 
     return (
         <div className='account-wafers'>
@@ -79,19 +87,25 @@ function Wafers() {
     const { isLoading: isLoadingAccounts } = useAccountsContext()
     const [showBalanceHistory, setShowBalanceHistory] = useState(false)
     const ref = useRef<HTMLDivElement>(null)
+    const [collapsed, setCollapsed] = useState(false)
+    const [key, setKey] = useState(Math.random().toString().slice(2, 8))
+
+    useEffect(() => {
+        setKey(Math.random().toString().slice(2, 8))
+    }, [accounts])
 
     return (
-        <div className={`${'account-wafers-container'} ${screenSize}`} ref={ref}>
+        <div className={`${'account-wafers-container'} ${screenSize}`} ref={ref} key={key}>
             <div>
                 <div>
                     <h4>{pathMappings.getWaferTitle(location)}</h4>
                     {!showBalanceHistory && location.pathname.includes('deposits') &&
                         <IconButton3
-                            onClick={() => setShowBalanceHistory(true)}
                             aria-label='Show balance history'
                             aria-haspopup='true'
                             aria-expanded={showBalanceHistory}
                             aria-controls='balance-history'
+                            onClick={() => setCollapsed(!collapsed)}
                         >
                             <LineGraph />
                         </IconButton3>}
@@ -106,7 +120,7 @@ function Wafers() {
                     count={ref.current?.offsetWidth ? Math.floor(ref.current.offsetWidth / waferWidth) - 1 : 0}
                     width={waferWidth}
                 />
-                : <WaferList />}
+                : <WaferList collapsed={collapsed} />}
             {showBalanceHistory && <CloseButton onClick={() => setShowBalanceHistory(false)} />}
             {showBalanceHistory && <BalanceChart color={'--m-text'} />}
         </div>

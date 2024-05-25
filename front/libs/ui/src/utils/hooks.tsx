@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 export const useLoaded = (time?: number, flag: boolean = true) => {
     const [loaded, setLoaded] = useState(false)
@@ -17,6 +17,14 @@ export const useLoaded = (time?: number, flag: boolean = true) => {
 
     return loaded
 }
+
+export const useIsMount = () => {
+    const isMountRef = useRef(true);
+    useEffect(() => {
+        isMountRef.current = false;
+    }, []);
+    return isMountRef.current;
+};
 
 interface Props {
     refs: React.RefObject<HTMLElement | undefined>[]
