@@ -5,7 +5,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import './styles/Authenticator.scss'
 import { useCompleteSettingsFlowMutation, useLazyGetSettingsFlowQuery } from '@features/orySlice'
-import { useUpdateUserMutation } from '@features/userSlice'
+import { useUpdateUserSettingsMutation } from '@features/userSlice'
 import { useAddRememberedDeviceMutation } from '@features/authSlice'
 import { GenerateViewRecoveryCodes } from '@modals/RecoveryCodes'
 import { useFlow } from '@ledget/ory'
@@ -105,8 +105,8 @@ const Authenticator = withReAuth(withModal((props) => {
     const [codeMode, setCodeMode] = useState(false)
     const loaded = useLoaded(100)
     const [step, setStep] = useState<'setup' | 'confirm' | undefined>('setup')
+    const [updateUserSettings] = useUpdateUserSettingsMutation()
 
-    const [updateUser] = useUpdateUserMutation()
     const [addRememberedDevice] = useAddRememberedDeviceMutation()
 
     const { flow, fetchFlow, submit, flowStatus } = useFlow(
@@ -139,7 +139,7 @@ const Authenticator = withReAuth(withModal((props) => {
     // Update the user's mfa settings and the device token cookie
     useEffect(() => {
         if (isCompleteSuccess) {
-            updateUser({ mfa_method: 'totp' })
+            updateUserSettings({ mfa_method: 'totp' })
             addRememberedDevice()
             const timeout = setTimeout(() => {
                 searchParams.set('lookup_secret_regenerate', 'true')

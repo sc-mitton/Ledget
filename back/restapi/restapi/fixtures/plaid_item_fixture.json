@@ -1,17 +1,18 @@
 [
-    {
-        "model": "financials.plaiditem",
-        "pk": "NzAp6Lg5Las4LnAZzBR9Sggnpy4aPWIWa6mon",
-        "fields": {
-            "privacy": "private",
-            "institution": "ins_25",
-            "user": "0d27b564-3be8-4153-8894-b31abb43e668",
-            "access_token": "access-sandbox-bb09ae84-9534-4bb7-ba3c-8cb7a07c9f4e",
-            "cursor": "CAESJVdqS2JWQno1QnFoMURKalc2ek1ac2VlS3dYZzU3d1U2M2czTGEaDAiskP6xBhDwqrCiAiIMCKyQ/rEGEPCqsKICKgwIrJD+sQYQ8KqwogI=",
-            "login_required": false,
-            "new_accounts_available": false,
-            "permission_revoked": false,
-            "pending_expiration": false
-        }
+{
+    "model": "financials.plaiditem",
+    "pk": "Z7x9yKjLK6Hvxw3MeKzasBA6DXA4vLue4jBdl",
+    "fields": {
+        "privacy": "private",
+        "institution": "ins_25",
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "access_token": "access-sandbox-630e6822-fa43-4bce-9781-431f2a658cb3",
+        "cursor": "CAESJThLeDVqTFI3TEFmOXlBbWFxZHZrRjltbVYzWng5bnVXcG9lOHIaDAj//sqyBhCwvrOKAiIMCP/+yrIGELC+s4oCKgwI//7KsgYQsL6zigI=",
+        "login_required": false,
+        "new_accounts_available": false,
+        "permission_revoked": false,
+        "pending_expiration": false,
+        "last_synced": "2024-05-26T04:50:07.756Z"
     }
+}
 ]

@@ -20,13 +20,18 @@ interface Account {
     subscription_status: SubscriptionStatus,
 }
 
+interface Settings {
+    mfa_method: null | 'totp'
+    mfa_enabled_on: string | null,
+    automatic_logout: boolean,
+}
+
 export interface User {
     id: string,
     password_last_changed: string,
     last_login: string,
     created_on: string,
-    mfa_method: null | 'totp'
-    mfa_enabled_on: string | null,
+    settings: Settings,
     is_verified: boolean,
     is_onboarded: boolean,
     highest_aal: 'aal1' | 'aal15' | 'aal2',
@@ -169,6 +174,14 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
             }),
             invalidatesTags: ['User'],
         }),
+        updateUserSettings: builder.mutation<any, Partial<Settings>>({
+            query: (data) => ({
+                url: 'user/settings',
+                method: 'PATCH',
+                body: data,
+            }),
+            invalidatesTags: ['User'],
+        }),
         emailUser: builder.mutation<any, { issue: string, detail: string }>({
             query: (data) => ({
                 url: 'user/email',
@@ -237,4 +250,5 @@ export const {
     useExtendSessionMutation,
     useAddUserToAccountMutation,
     useDelteCoOwnerMutation,
+    useUpdateUserSettingsMutation,
 } = extendedApiSlice

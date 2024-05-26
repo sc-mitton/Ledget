@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { Routes, Outlet, Route, useLocation, Navigate, useNavigate } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
@@ -24,7 +24,9 @@ import {
   BillModal,
   OnboardingModal,
   TransactionItem,
-  CategoryModal
+  CategoryModal,
+  Help as HelpModal,
+  Logout as LogoutModal
 } from '@modals/index'
 import { useGetMeQuery } from '@features/userSlice'
 import {
@@ -35,6 +37,12 @@ import {
   selectBillModal,
   clearBillModal,
   selectReAuthModal,
+  selectLogoutModal,
+  setLogoutModal,
+  refreshLogoutTimer,
+  clearLogoutModal,
+  selectHelpModal,
+  clearHelpModal
 } from '@features/modalSlice';
 import { toastStackSelector, tossToast } from '@features/toastSlice'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
@@ -67,12 +75,43 @@ const App = () => {
   const ref = useRef<HTMLDivElement>(null)
   const { screenSize } = useScreenContext()
   const { data: user } = useGetMeQuery()
+  const [isActivityDetected, setIsActivityDetected] = useState(false);
 
   const toastStack = useAppSelector(toastStackSelector)
   const transactionModal = useAppSelector(selectTransactionModal)
   const categoryModal = useAppSelector(selectCategoryModal)
   const billModal = useAppSelector(selectBillModal)
   const reAuthModal = useAppSelector(selectReAuthModal)
+  const logoutModal = useAppSelector(selectLogoutModal)
+  const helpModal = useAppSelector(selectHelpModal)
+
+  // Handle automatic logout
+  useEffect(() => {
+    if (user?.settings.automatic_logout) {
+      const handleUserActivity = () => {
+        setIsActivityDetected(true);
+      };
+
+      window.addEventListener('mousemove', handleUserActivity);
+      window.addEventListener('keydown', handleUserActivity);
+
+      const interval = setInterval(() => {
+
+        if (isActivityDetected) {
+          dispatch(refreshLogoutTimer());
+        } else if (((logoutModal.logoutTimerEnd || 0) < new Date().getTime()) && !logoutModal.open) {
+          dispatch(setLogoutModal({ open: true, fromTimeout: true }));
+        }
+        setIsActivityDetected(false);
+      }, 3000); // Poll every 3 seconds
+
+      return () => {
+        window.removeEventListener('mousemove', handleUserActivity);
+        window.removeEventListener('keydown', handleUserActivity);
+        clearInterval(interval);
+      };
+    }
+  }, [])
 
   useEffect(() => {
     if (!user) {
@@ -127,8 +166,14 @@ const App = () => {
           bill={billModal.bill}
           onClose={() => dispatch(clearBillModal())}
         />}
-      {reAuthModal &&
-        <ReAuthModal />}
+      {reAuthModal && <ReAuthModal />}
+      {logoutModal.open && <LogoutModal onClose={() => {
+        dispatch(clearLogoutModal())
+        dispatch(refreshLogoutTimer())
+      }} />}
+      {helpModal.open && <HelpModal onClose={() => dispatch(clearHelpModal())} />}
+
+      {/* Toasts */}
       <Toast toastStack={toastStack} cleanUp={(toastId) => dispatch(tossToast(toastId))} />
     </>
   )

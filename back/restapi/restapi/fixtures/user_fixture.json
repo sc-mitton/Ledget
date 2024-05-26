@@ -1,30 +1,38 @@
 [
-    {
-        "model": "core.user",
-        "pk": "0d27b564-3be8-4153-8894-b31abb43e668",
-        "fields": {
-            "account": "9f50abce-93da-4166-b261-0067dabdf9dc",
-            "is_active": true,
-            "is_onboarded": true,
-            "is_verified": true,
-            "password_last_changed": null,
-            "created_on": "2024-04-27T19:48:25.717Z",
-            "mfa_method": null,
-            "mfa_enabled_on": null
-        }
-    },
-    {
-        "model": "core.user",
-        "pk": "7e894309-2473-45e9-943f-4eacdfd709aa",
-        "fields": {
-            "account": "2d5f9d58-f820-4179-adcd-e6daa06495a8",
-            "is_active": true,
-            "is_onboarded": false,
-            "is_verified": false,
-            "password_last_changed": null,
-            "created_on": "2024-05-11T04:25:36.848Z",
-            "mfa_method": null,
-            "mfa_enabled_on": null
-        }
+{
+    "model": "core.user",
+    "pk": "0d27b564-3be8-4153-8894-b31abb43e668",
+    "fields": {
+        "account": "9f50abce-93da-4166-b261-0067dabdf9dc",
+        "is_active": true,
+        "is_onboarded": true,
+        "is_verified": true,
+        "password_last_changed": null,
+        "created_on": "2024-04-27T19:48:25.717Z"
     }
+},
+{
+    "model": "core.user",
+    "pk": "0d5af8e3-876f-494b-8fb8-7f97a697c965",
+    "fields": {
+        "account": null,
+        "is_active": true,
+        "is_onboarded": true,
+        "is_verified": false,
+        "password_last_changed": null,
+        "created_on": "2024-05-18T22:17:15.608Z"
+    }
+},
+{
+    "model": "core.user",
+    "pk": "38fbe210-704e-421f-a283-2afb3cb4b3a4",
+    "fields": {
+        "account": "9f50abce-93da-4166-b261-0067dabdf9dc",
+        "is_active": true,
+        "is_onboarded": true,
+        "is_verified": true,
+        "password_last_changed": null,
+        "created_on": "2024-05-19T01:40:08.080Z"
+    }
+}
 ]

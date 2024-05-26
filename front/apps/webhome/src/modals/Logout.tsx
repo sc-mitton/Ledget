@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
 import "./styles/Logout.css"
 import { withSmallModal } from '@ledget/ui'
+import { useAppSelector } from '@hooks/store'
+import { selectLogoutModal } from '@features/modalSlice'
 import { SecondaryButton, BlueSubmitButton } from '@ledget/ui'
 import { useGetLogoutFlowQuery, useLazyGetUpdatedLogoutFlowQuery } from '@features/orySlice'
 
 const LogoutModal = withSmallModal((props) => {
     const [quedLogout, setQuedLogout] = useState(false)
     const [seconds, setSeconds] = useState(30)
+    const { fromTimeout } = useAppSelector(selectLogoutModal)
 
     const {
         data: flow,
@@ -51,9 +54,11 @@ const LogoutModal = withSmallModal((props) => {
 
     return (
         <div>
-            <h2>Sign out of your account?</h2>
+            <h2>
+                {fromTimeout ? 'Your session is about to end' : 'Sign out of your account?'}
+            </h2>
             <div id="logout-countdown">
-                <span>Your session will end in {seconds} seconds</span>
+                <span>You will be automatically logged out in {seconds} seconds</span>
             </div>
             <div style={{ display: 'flex', 'justifyContent': 'end', marginTop: '.5em' }}>
                 <SecondaryButton
@@ -62,13 +67,13 @@ const LogoutModal = withSmallModal((props) => {
                 >
                     Cancel
                 </SecondaryButton>
-                <BlueSubmitButton
+                {!fromTimeout && <BlueSubmitButton
                     onClick={() => { setQuedLogout(true) }}
                     submitting={(fetchingFlow && quedLogout) || loggingOut}
                     aria-label="Sign out"
                 >
                     Logout
-                </BlueSubmitButton>
+                </BlueSubmitButton>}
             </div>
         </div>
     )

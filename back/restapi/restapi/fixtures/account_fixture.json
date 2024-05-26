@@ -1,94 +1,24 @@
 [
 {
     "model": "financials.account",
-    "pk": "1NPv5Am1A7HaMlbwogW5hEErQdQbopipXJQAP",
+    "pk": "31W6XevaeosX6ByWeRwaFwZKLxXWPBFZbvQw9",
     "fields": {
         "privacy": "private",
-        "plaid_item": "NzAp6Lg5Las4LnAZzBR9Sggnpy4aPWIWa6mon",
+        "plaid_item": "Z7x9yKjLK6Hvxw3MeKzasBA6DXA4vLue4jBdl",
         "institution": "ins_25",
-        "name": "Plaid Student Loan",
-        "mask": "7777",
-        "subtype": "student",
-        "type": "loan",
-        "verification_status": null
-    }
-},
-{
-    "model": "financials.account",
-    "pk": "7Z8wmglEgyIxP5pmAQyKikkxJmJgQ7Fdy9N7K",
-    "fields": {
-        "privacy": "private",
-        "plaid_item": "NzAp6Lg5Las4LnAZzBR9Sggnpy4aPWIWa6mon",
-        "institution": "ins_25",
-        "name": "Plaid CD",
-        "mask": "2222",
-        "subtype": "cd",
+        "name": "Plaid Saving",
+        "mask": "1111",
+        "subtype": "savings",
         "type": "depository",
         "verification_status": null
     }
 },
 {
     "model": "financials.account",
-    "pk": "LKg16Ao5AxIdNZrEKgjxsRRdGyGwoNikKrLV6",
+    "pk": "4L3XkQV4QDTZyjMqaEr6CgN3DrZj7aTJVq9gw",
     "fields": {
         "privacy": "private",
-        "plaid_item": "NzAp6Lg5Las4LnAZzBR9Sggnpy4aPWIWa6mon",
-        "institution": "ins_25",
-        "name": "Plaid Mortgage",
-        "mask": "8888",
-        "subtype": "mortgage",
-        "type": "loan",
-        "verification_status": null
-    }
-},
-{
-    "model": "financials.account",
-    "pk": "MrEL6no5ndTa4kenrJGVhjja1K1PWqtLpMDd1",
-    "fields": {
-        "privacy": "private",
-        "plaid_item": "NzAp6Lg5Las4LnAZzBR9Sggnpy4aPWIWa6mon",
-        "institution": "ins_25",
-        "name": "Plaid 401k",
-        "mask": "6666",
-        "subtype": "401k",
-        "type": "investment",
-        "verification_status": null
-    }
-},
-{
-    "model": "financials.account",
-    "pk": "P3mg6Lo5LNIPdeqv3EQ6frrP9R9A3Nio5Mwpg",
-    "fields": {
-        "privacy": "private",
-        "plaid_item": "NzAp6Lg5Las4LnAZzBR9Sggnpy4aPWIWa6mon",
-        "institution": "ins_25",
-        "name": "Plaid Checking",
-        "mask": "0000",
-        "subtype": "checking",
-        "type": "depository",
-        "verification_status": null
-    }
-},
-{
-    "model": "financials.account",
-    "pk": "Qx986Rm5RPIjEgw8xQmBI44j5v5qePcw68kq7",
-    "fields": {
-        "privacy": "private",
-        "plaid_item": "NzAp6Lg5Las4LnAZzBR9Sggnpy4aPWIWa6mon",
-        "institution": "ins_25",
-        "name": "Plaid Money Market",
-        "mask": "4444",
-        "subtype": "money market",
-        "type": "depository",
-        "verification_status": null
-    }
-},
-{
-    "model": "financials.account",
-    "pk": "ZQd96ke5kzUoaEjwQyGlh11gBrB4jKSemK8dl",
-    "fields": {
-        "privacy": "private",
-        "plaid_item": "NzAp6Lg5Las4LnAZzBR9Sggnpy4aPWIWa6mon",
+        "plaid_item": "Z7x9yKjLK6Hvxw3MeKzasBA6DXA4vLue4jBdl",
         "institution": "ins_25",
         "name": "Plaid IRA",
         "mask": "5555",
@@ -99,10 +29,66 @@
 },
 {
     "model": "financials.account",
-    "pk": "eAbK3R15Rei9MnwkP3pNU66X474ywKirBjMo1",
+    "pk": "BPqaKz58zATMrBl5NEW6FNnrR37zGxF45RXqe",
     "fields": {
         "privacy": "private",
-        "plaid_item": "NzAp6Lg5Las4LnAZzBR9Sggnpy4aPWIWa6mon",
+        "plaid_item": "Z7x9yKjLK6Hvxw3MeKzasBA6DXA4vLue4jBdl",
+        "institution": "ins_25",
+        "name": "Plaid Checking",
+        "mask": "0000",
+        "subtype": "checking",
+        "type": "depository",
+        "verification_status": null
+    }
+},
+{
+    "model": "financials.account",
+    "pk": "NKepjQndQ6fx8ZNmr5eLIqAxQN8rD9uypborm",
+    "fields": {
+        "privacy": "private",
+        "plaid_item": "Z7x9yKjLK6Hvxw3MeKzasBA6DXA4vLue4jBdl",
+        "institution": "ins_25",
+        "name": "Plaid 401k",
+        "mask": "6666",
+        "subtype": "401k",
+        "type": "investment",
+        "verification_status": null
+    }
+},
+{
+    "model": "financials.account",
+    "pk": "PzygZME4M6HaLvN8G5odC9owEmAzjeTo5b8wW",
+    "fields": {
+        "privacy": "private",
+        "plaid_item": "Z7x9yKjLK6Hvxw3MeKzasBA6DXA4vLue4jBdl",
+        "institution": "ins_25",
+        "name": "Plaid Student Loan",
+        "mask": "7777",
+        "subtype": "student",
+        "type": "loan",
+        "verification_status": null
+    }
+},
+{
+    "model": "financials.account",
+    "pk": "apEwra3AaKsWRmyj8vQEfBXEZGeL8yCZJboRz",
+    "fields": {
+        "privacy": "private",
+        "plaid_item": "Z7x9yKjLK6Hvxw3MeKzasBA6DXA4vLue4jBdl",
+        "institution": "ins_25",
+        "name": "Plaid Money Market",
+        "mask": "4444",
+        "subtype": "money market",
+        "type": "depository",
+        "verification_status": null
+    }
+},
+{
+    "model": "financials.account",
+    "pk": "dElq3PJKPBin7jDqJWG5TjVeEA8KyxCJzdlP7",
+    "fields": {
+        "privacy": "private",
+        "plaid_item": "Z7x9yKjLK6Hvxw3MeKzasBA6DXA4vLue4jBdl",
         "institution": "ins_25",
         "name": "Plaid Credit Card",
         "mask": "3333",
@@ -113,14 +99,28 @@
 },
 {
     "model": "financials.account",
-    "pk": "jywxNRPlRrigxdKB7MoQH88WVZVlKwi6mXyrB",
+    "pk": "jEexmMgdMNieRBVJ8AGxcVxbogldPpc6mkxyA",
     "fields": {
         "privacy": "private",
-        "plaid_item": "NzAp6Lg5Las4LnAZzBR9Sggnpy4aPWIWa6mon",
+        "plaid_item": "Z7x9yKjLK6Hvxw3MeKzasBA6DXA4vLue4jBdl",
         "institution": "ins_25",
-        "name": "Plaid Saving",
-        "mask": "1111",
-        "subtype": "savings",
+        "name": "Plaid Mortgage",
+        "mask": "8888",
+        "subtype": "mortgage",
+        "type": "loan",
+        "verification_status": null
+    }
+},
+{
+    "model": "financials.account",
+    "pk": "xldpW3Xo3yIJBw3ARPoMHeajbB9lmxc6PXk9x",
+    "fields": {
+        "privacy": "private",
+        "plaid_item": "Z7x9yKjLK6Hvxw3MeKzasBA6DXA4vLue4jBdl",
+        "institution": "ins_25",
+        "name": "Plaid CD",
+        "mask": "2222",
+        "subtype": "cd",
         "type": "depository",
         "verification_status": null
     }

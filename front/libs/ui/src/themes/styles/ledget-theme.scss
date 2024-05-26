@@ -87,24 +87,25 @@
         --green-dark: hsl(var(--green-h), 30%, 80%);
 
         // Windows
-        --inner-window: hsl(0, 0%, 10%);
-        --inner-window-small-screen: var(--inner-window);
-        --modal-inner-window: var(--inner-window);
+        --nested-window: hsl(0, 0%, 10%);
+        --nested-window-small-screen: var(--nested-window);
+        --modal-inner-window: var(--nested-window);
         --overlay: hsl(0, 0%, 10%);
 
         --window-h: 240;
         --window-s: 3%;
 
+        --window-rgb: 28, 28, 28;
         --window: hsl(var(--window-h), var(--window-s), 7%);
         --window-background: linear-gradient(to bottom, var(--window), hsl(var(--window-h), var(--window-s), 7%));
         --window-portal: hsl(var(--window-h), var(--window-s), 9%);
         --window2: hsl(var(--window-h), calc(var(--window-s) + 10%), 10%);
         --window2-background: linear-gradient(to bottom right, var(--window2), color-mix(in srgb, var(--window2), var(--window-background-color) 30%));
+        --naked-window: var(--window-background-color);
+
         --window-background-color: hsl(var(--window-h), var(--window-s), 5%);
         --window-background-color-rgb: 5, 5, 5;
         --window-background-color-portal: hsl(var(--window-h), var(--window-s), 2%);
-        --naked-window: var(--window-background-color);
-        --window-rgb: 28, 28, 28;
         --gradient-window-background: linear-gradient(to bottom, hsl(0, 0%, 8%) 0%, hsl(0, 0%, 5%) 100%);
         --gradient-window-background-small-screen: linear-gradient(to bottom, rgb(28, 28, 28) -20%, rgba(0, 0, 0, 1) 100%);
 
@@ -316,8 +317,8 @@
         --side-window: var(--window);
         --sidenav-drop-shadow: 0 10px 20px 0 hsl(0, 0%, 93%);
 
-        --inner-window: hsl(var(--steel-blue-h), 9%, 96%);
-        --inner-window-small-screen: hsl(var(--steel-blue-h), 9%, 94%);
+        --nested-window: hsl(var(--steel-blue-h), 9%, 96%);
+        --nested-window-small-screen: hsl(var(--steel-blue-h), 9%, 94%);
         --modal-inner-window: hsl(var(--steel-blue-h), 8%, 95%);
         --overlay: hsl(0, 0%, 20%);
 

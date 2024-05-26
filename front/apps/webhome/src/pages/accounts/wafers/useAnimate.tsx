@@ -69,15 +69,6 @@ function useAnimate<A>({ accounts, waferWidth, waferPadding }: { accounts?: A[],
         })
     }, [waferApi])
 
-
-    const collapse = useCallback((collapsed: boolean) => {
-        if (collapsed) {
-            waferApi.start({ to: { opacity: 0 } })
-        } else {
-            waferApi.start({ to: { opacity: 1 } })
-        }
-    }, [waferApi, waferWidth])
-
     useEffect(() => {
         order.current = _filterAccounts(accounts || [], location).map((item) => item.account_id)
     }, [accounts, location.pathname])
@@ -101,7 +92,7 @@ function useAnimate<A>({ accounts, waferWidth, waferPadding }: { accounts?: A[],
         waferApi.start()
     }, [location.pathname, accounts])
 
-    return { transitions, bind, waferApi, click, collapse }
+    return { transitions, bind, waferApi, click }
 }
 
 export default useAnimate

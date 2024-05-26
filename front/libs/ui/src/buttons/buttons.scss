@@ -221,7 +221,8 @@
 
     &.selected {
         background-color: var(--blue-light);
-        color: var(--blue-medium);
+        color: var(--blue-sat-hover);
+        font-weight: var(--fw-bold);
     }
 }
 

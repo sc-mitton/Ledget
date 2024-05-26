@@ -30,12 +30,12 @@ class DeviceView(ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         device_is_aal1 = not request.device or request.device.aal == 'aal1'
         session_is_aal1 = request.ory_session.aal == 'aal1'
-        user_has_mfa = bool(request.user.mfa_method)
+        user_has_mfa = bool(request.user.settings.mfa_method)
 
         # can't create new device when user has mfa set up
         if (device_is_aal1 and session_is_aal1) and user_has_mfa:
             return Response(
-                {'error': f'{request.user.mfa_method}'},
+                {'error': f'{request.user.settings.mfa_method}'},
                 HTTP_422_UNPROCESSABLE_ENTITY
             )
         elif not request.device:

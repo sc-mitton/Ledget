@@ -6,7 +6,8 @@ from core.views.user import (
      EmailView,
      UserSessionExtendView,
      FeedbackView,
-     AddUserToAccountView
+     AddUserToAccountView,
+     UserSettingsView,
 )
 from core.views.device import (
     DeviceView,
@@ -18,6 +19,7 @@ from core.views import service as service_views
 
 urlpatterns = [
     path('user/me', UserView.as_view(), name='user-me'),
+    path('user/settings', UserSettingsView.as_view(), name='user-settings'),
     path('user/co-owner', CoOwnerView.as_view(), name='user-co-owner'),
     path('user/email', EmailView.as_view(), name='user_email'),
     path('user/account', AddUserToAccountView.as_view(), name='add-user-to-account'),

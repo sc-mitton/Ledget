@@ -1,0 +1,22 @@
+[
+    {
+        "model": "core.settings",
+        "pk": "c2e8f654-b76c-4355-b6f7-bc6034e7f802",
+        "fields": {
+            "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+            "mfa_enabled_on": null,
+            "mfa_method": null,
+            "automatic_logout": false
+        }
+    },
+    {
+        "model": "core.settings",
+        "pk": "13adf91f-71c3-4f62-9ce7-1c6f02633b0f",
+        "fields": {
+            "user": "7e894309-2473-45e9-943f-4eacdfd709aa",
+            "mfa_enabled_on": null,
+            "mfa_method": null,
+            "automatic_logout": false
+        }
+    }
+]

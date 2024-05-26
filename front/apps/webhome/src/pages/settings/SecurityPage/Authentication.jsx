@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 
-import './styles/Authentication.css'
+import './styles/Authentication.scss'
 import { BlueSlimButton, NestedWindow } from '@ledget/ui'
 import { useGetMeQuery } from '@features/userSlice'
 import { Lock } from '@geist-ui/icons'

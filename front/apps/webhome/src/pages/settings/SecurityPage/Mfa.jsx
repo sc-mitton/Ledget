@@ -24,14 +24,14 @@ const AuthenticatorApp = ({ user }) => {
 
     return (
         <div className="mfa-settings--container">
-            {user.mfa_method === 'totp'
+            {user.settings.mfa_method === 'totp'
                 ?
                 <>
                     <div id="authenticator-set-up">
                         <QrIcon width={'1.3em'} height={'1.3em'} />
                         <div>
                             <span>Authenticator App</span>
-                            <span>Added {formatDate(user.mfa_enabled_on)}</span>
+                            <span>Added {formatDate(user.settings.mfa_enabled_on)}</span>
                         </div>
                     </div>
                     <div className="delete-btn--container">
@@ -81,7 +81,7 @@ const Mfa = () => {
             <NestedWindow id="mfa-options--container">
                 <AuthenticatorApp user={user} />
             </NestedWindow>
-            {user.mfa_method === 'totp' &&
+            {user.settings.mfa_method === 'totp' &&
                 <div><Tooltip msg={'Recovery codes'} ariaLabel={'Recovery codes'}>
                     <BlueTextButton onClick={() => navigate('/profile/security/recovery-codes')} >
                         Recovery Codes</BlueTextButton>

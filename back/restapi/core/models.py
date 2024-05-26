@@ -4,6 +4,7 @@ from user_agents.parsers import UserAgent
 
 from django.db import models
 from django.utils import timezone
+from django.db.transaction import atomic
 from django.core.validators import RegexValidator
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AnonymousUser
@@ -11,12 +12,39 @@ from django.contrib.auth.models import AnonymousUser
 import core.tasks as tasks
 
 
+class Settings(models.Model):
+
+    class MfaMethod(models.TextChoices):
+        TOTP = 'totp', _('TOTP')
+
+    id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
+    user = models.OneToOneField('User', on_delete=models.CASCADE)
+    automatic_logout = models.BooleanField(default=False)
+    mfa_method = models.CharField(
+        choices=MfaMethod.choices, null=True, default=None, max_length=4
+    )
+    mfa_enabled_on = models.DateTimeField(null=True, default=None)
+
+    def __setattr__(self, name, value):
+        if name == "mfa_method":
+            self.mfa_enabled_on = timezone.now() if value else None
+
+        super().__setattr__(name, value)
+
+
 class UserManager(models.Manager):
 
     def create_user(self, id, password=None, **extra_fields):
         """Create and save a new user."""
 
+        return self._create(id, **extra_fields)
+
+    @atomic
+    def _create(self, id, **extra_fields):
+        """Create and save a new user with settings."""
+
         user = self.model(id, **extra_fields)
+        Settings.objects.create(user=user)
         user.save(using=self._db)
 
         return user
@@ -33,15 +61,6 @@ class UserManager(models.Manager):
 
 class User(models.Model):
 
-    # mfa choices
-    class MfaDevice(models.TextChoices):
-        AUTHENTICATOR = 'totp', _('Authenticator')
-        EMAIL = 'email', _('Email')
-        SMS = 'sms', _('SMS')
-
-    class MfaMethod(models.TextChoices):
-        TOTP = 'totp', _('TOTP')
-
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     account = models.ForeignKey('Account', on_delete=models.CASCADE,
                                 related_name='users', null=True, default=None)
@@ -51,11 +70,6 @@ class User(models.Model):
     password_last_changed = models.DateTimeField(null=True, default=None)
     created_on = models.DateTimeField(auto_now_add=True)
 
-    mfa_method = models.CharField(
-        choices=MfaMethod.choices, null=True, default=None, max_length=4
-    )
-    mfa_enabled_on = models.DateTimeField(null=True, default=None)
-
     objects = UserManager()
     USERNAME_FIELD = 'id'
     REQUIRED_FIELDS = []
@@ -64,12 +78,6 @@ class User(models.Model):
         super().__init__(*args, **kwargs)
         self._traits = None
         self._is_verified = False
-
-    def __setattr__(self, name, value):
-        if name == "mfa_method":
-            self.mfa_enabled_on = timezone.now() if value else None
-
-        super().__setattr__(name, value)
 
     @property
     def traits(self):
@@ -104,10 +112,8 @@ class User(models.Model):
 
     @property
     def highest_aal(self):
-        if self.mfa_method == 'totp':
-            return 'aal2'
-        else:
-            return 'aal1'
+        if hasattr(self, 'settings'):
+            return 'aal2' if self.settings.mfa_method == 'totp' else 'aal1'
 
     @property
     def is_account_owner(self):

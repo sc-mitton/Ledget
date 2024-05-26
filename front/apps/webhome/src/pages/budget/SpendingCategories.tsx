@@ -52,13 +52,7 @@ const ModalProvider = ({ children }: { children: React.ReactNode }) => {
 // Filters for bills and categories
 
 
-// ACCOUNTS PAGE
-
-// Add up/down for past 30 days for account totals
-
 // SECURITY
-
-// Automatic Logout security option
 
 // Add privacy and terms links at bottom of side nav (make it look more complete)
 

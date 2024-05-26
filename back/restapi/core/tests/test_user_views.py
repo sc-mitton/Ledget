@@ -174,3 +174,14 @@ class TestUserViews(ViewTestsMixin):
             self.user.account.customer.id,
             invoice_settings={'default_payment_method': new_payment_method}
         )
+
+    def test_update_user_settings(self):
+        response = self.client.patch(
+            reverse('user-settings'),
+            data=json.dumps({'automatic_logout': True}),
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.settings.automatic_logout)

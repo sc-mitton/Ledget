@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.utils import timezone
 
-from core.models import User, Feedback
+from core.models import User, Feedback, Settings
 from .account import AccountSerializer
 
 
@@ -15,6 +15,13 @@ class CoOwnerSerializer(serializers.Serializer):
     name = NameSerializer()
 
 
+class UserSettingsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Settings
+        exclude = ("user",)
+        extra_kwargs = {'mfa_enabled_on': {'read_only': True}}
+
+
 class UserSerializer(serializers.ModelSerializer):
     email = serializers.SerializerMethodField(read_only=True)
     name = serializers.SerializerMethodField(read_only=True)
@@ -26,6 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
     account = AccountSerializer(read_only=True)
     co_owner = serializers.SerializerMethodField(read_only=True)
     is_account_owner = serializers.SerializerMethodField(read_only=True)
+    settings = UserSettingsSerializer(read_only=True)
 
     class Meta:
         model = User

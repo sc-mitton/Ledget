@@ -4,7 +4,7 @@ import { Switch } from '@headlessui/react'
 
 interface DefaultSwitchProps {
   checked?: boolean
-  onChange?: () => void,
+  onChange?: React.Dispatch<React.SetStateAction<boolean>>
   children: React.ReactNode
   className?: string
   as?: 'div' | 'li'

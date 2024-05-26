@@ -107,6 +107,14 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
+    id: 'user-settings',
+    match: {
+      methods: ['GET', 'PATCH'],
+      url: base_url + '/user/settings',
+    },
+  },
+  BaseWithAuth
+  {
     id: 'co-owner',
     match: {
       methods: ['GET', 'DELETE'],

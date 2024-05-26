@@ -25,7 +25,7 @@ class TestPlaidItemView(ViewTestsMixin):
     def setUp(self):
         super().setUp()
         self.set_user_on_all_plaid_items(self.aal2_user)
-        self.aal2_user.mfa_method = 'totp'
+        self.aal2_user.settings.mfa_method = 'totp'
         self.aal2_user.save()
         self.item = PlaidItem.objects.all().first()
 

@@ -96,6 +96,7 @@ class ViewTestsMixin(TestCase):
         'core_account_fixture.json',
         'customer_fixture.json',
         'user_fixture.json',
+        'settings_fixture.json',
         'user_account_fixture.json',
         'user_category_fixture.json',
         'user_bill_fixture.json',
@@ -119,6 +120,8 @@ class ViewTestsMixin(TestCase):
             id=self.aal2_payload['session']['identity']['id'],
             account=account_for_aal2_user
         )
+        self.aal2_user.settings.mfa_method = 'totp'
+        self.aal2_user.settings.save()
         customer_for_aal2_user = Customer.objects.create(
             user=self.aal2_user,
             id=uuid.uuid4(),

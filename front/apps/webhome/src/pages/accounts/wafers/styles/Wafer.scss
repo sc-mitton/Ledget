@@ -7,6 +7,7 @@
     padding-bottom: .525em;
     height: $wafer-height;
     border-radius: var(--border-radius3);
+    scroll-snap-align: start;
 }
 
 .account-wafer-container {

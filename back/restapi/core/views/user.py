@@ -14,6 +14,7 @@ from ory_client.api.identity_api import IdentityApi
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+from django.core.exceptions import PermissionDenied
 import qrcode
 from qrcode.image.styledpil import StyledPilImage
 from qrcode.image.styles.moduledrawers.pil import RoundedModuleDrawer
@@ -24,7 +25,8 @@ from core.serializers.user import (
     EmailSerializer,
     FeedbackSerializer,
     LinkUserSerializer,
-    CoOwnerSerializer
+    CoOwnerSerializer,
+    UserSettingsSerializer
 )
 from restapi.permissions.auth import (
     IsAuthenticated,
@@ -51,6 +53,22 @@ class UserView(RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class UserSettingsView(RetrieveUpdateAPIView):
+    """Get and update user settings"""
+
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserSettingsSerializer
+
+    def get_object(self):
+        return self.request.user.settings
+
+    def partial_update(self, request, *args, **kwargs):
+        if 'mfa_method' in request.data and not \
+                HighestAalFreshSession().check_session_is_fresh(request):
+            raise PermissionDenied('Cannot change MFA method without fresh session')
+        return super().partial_update(request, *args, **kwargs)
 
 
 class CoOwnerView(GenericAPIView):

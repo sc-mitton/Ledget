@@ -5,9 +5,10 @@ import { Switch } from '@headlessui/react'
 
 import './styles/header.scss'
 import { LedgetLogoIcon2 } from '@ledget/media'
+import { setLogoutModal, setHelpModal } from '@features/modalSlice'
+import { useAppDispatch } from '@hooks/store'
 import { User, LifeBuoy, LogOut, Sun, Moon } from '@geist-ui/icons'
 import { DropdownItem, DropDownDiv, useScreenContext, useColorScheme } from '@ledget/ui'
-import { Logout, Help } from '@modals/index'
 import { NotificationsDropdownMenu } from '@pages/activity'
 
 type Modal = "help" | "logout"
@@ -34,8 +35,8 @@ const LightDarkSwitch = () => {
     )
 }
 
-const ProfileDropdownMenu = ({ setModal }:
-    { setModal: React.Dispatch<React.SetStateAction<Modal | undefined>> }) => {
+const ProfileDropdownMenu = () => {
+    const dispatch = useAppDispatch()
 
     const Wrapper = ({ onClick, children }:
         { onClick: React.MouseEventHandler<HTMLButtonElement>, children: React.ReactNode }) => {
@@ -69,11 +70,11 @@ const ProfileDropdownMenu = ({ setModal }:
                         visible={open}
                     >
                         <Menu.Items static>
-                            <Wrapper onClick={() => setModal("help")}>
+                            <Wrapper onClick={() => dispatch(setHelpModal({ open: true }))}>
                                 <LifeBuoy className='icon' />
                                 Help
                             </Wrapper>
-                            <Wrapper onClick={() => setModal("logout")}>
+                            <Wrapper onClick={() => dispatch(setLogoutModal({ open: true }))}>
                                 <LogOut className='icon' />
                                 Log out
                             </Wrapper>
@@ -86,24 +87,8 @@ const ProfileDropdownMenu = ({ setModal }:
 }
 
 function Header() {
-    const [modal, setModal] = useState<Modal>()
     const { screenSize } = useScreenContext()
-    const { isDark, setDarkMode } = useColorScheme()
-
-    const Modal = ({ selection }: { selection?: Modal }) => {
-        switch (selection) {
-            case "help":
-                return (
-                    <Help onClose={() => setModal(undefined)} />
-                )
-            case "logout":
-                return (
-                    <Logout onClose={() => setModal(undefined)} maxWidth={"18.75rem"} hasExit={false} />
-                )
-            default:
-                return null
-        }
-    }
+    const { isDark } = useColorScheme()
 
     return (
         <>
@@ -115,11 +100,10 @@ function Header() {
                     <div>
                         <LightDarkSwitch />
                         <NotificationsDropdownMenu id='notifications' />
-                        <ProfileDropdownMenu setModal={setModal} />
+                        <ProfileDropdownMenu />
                     </div>
                 </div>
             </header>
-            <Modal selection={modal} />
         </>
     )
 }

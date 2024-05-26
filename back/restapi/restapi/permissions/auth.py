@@ -31,7 +31,7 @@ class IsAuthenticated(BasePermission):
         # in reality the device_aal should be at least as high as the session aal
         session_aal = request.ory_session.aal if request.ory_session else None
 
-        if request.user.mfa_method == "totp":
+        if request.user.settings.mfa_method == "totp":
             if device_aal == "aal2" or session_aal == "aal2":
                 return True
             else:
@@ -102,7 +102,7 @@ class BaseFreshSessionClass(BasePermission):
             completed_at = datetime.fromisoformat(last_login["completed_at"])
             return int(time.time()) - int(completed_at.timestamp())
         else:
-            return 0
+            return settings.SESSION_MAX_AGE_SECONDS + 1000
 
 
 class HighestAalFreshSession(BaseFreshSessionClass):

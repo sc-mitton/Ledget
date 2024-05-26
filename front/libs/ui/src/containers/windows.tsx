@@ -11,20 +11,21 @@ export const Window = styled.div`
 
 export const Window2 = styled.div`
   border-radius: var(--border-radius3);
+  box-shadow: var(--window-drop-shadow);
   padding: var(--window-padding);
   box-sizing: border-box;
   background: var(--window2);
 `
 
 export const NestedWindow = styled.div`
-  background-color: var(--inner-window);
+  background-color: var(--nested-window);
   border-radius: var(--border-radius2);
   padding: .75em 1em;
   margin: -.125em;
 `
 
 export const SmallScreenNestedWindow = styled(NestedWindow)`
-  background-color: var(--inner-window-small-screen);
+  background-color: var(--nested-window-small-screen);
 `
 
 export const NestedWindow2 = styled.div`

@@ -9,8 +9,8 @@ import {
     DollarCents,
     useScreenContext,
     IconButton3,
-    useIsMount,
-    Window2
+    Window2,
+    CloseButton
 } from '@ledget/ui'
 import { LineGraph } from '@ledget/media'
 import { useAccountsContext } from '../context'
@@ -25,12 +25,11 @@ const waferWidth = 165
 const creditWaferWidth = 175
 const waferPadding = 6
 
-const WaferList = ({ collapsed }: { collapsed: boolean }) => {
-    const isMounted = useIsMount()
+const WaferList = () => {
     const location = useLocation()
     const { accounts } = useAccountsContext()
     const [searchParams, setSearchParams] = useSearchParams()
-    const { transitions, bind, collapse, click } = useAnimate({
+    const { transitions, bind, click } = useAnimate({
         waferWidth: location.pathname.includes('credit') ? creditWaferWidth : waferWidth,
         accounts,
         waferPadding
@@ -41,12 +40,6 @@ const WaferList = ({ collapsed }: { collapsed: boolean }) => {
         setSearchParams(searchParams)
         click(id)
     }
-
-    useEffect(() => {
-        if (!isMounted) {
-            collapse(collapsed)
-        }
-    }, [collapsed])
 
     return (
         <div className='account-wafers'>
@@ -109,9 +102,12 @@ function Wafers() {
                             count={ref.current?.offsetWidth ? Math.floor(ref.current.offsetWidth / waferWidth) - 1 : 0}
                             width={waferWidth}
                         />
-                        : <WaferList collapsed={showChart} />}
+                        : <WaferList />}
                 </Window2>
-                {showChart && <Window2><BalanceChart /></Window2>}
+                <Window2 className={`${showChart ? '' : 'collapsed'}`}>
+                    <CloseButton onClick={() => setShowChart(false)} />
+                    <BalanceChart />
+                </Window2>
             </div>
         </>
     )
