@@ -1,22 +1,32 @@
 [
-    {
-        "model": "core.settings",
-        "pk": "c2e8f654-b76c-4355-b6f7-bc6034e7f802",
-        "fields": {
-            "user": "0d27b564-3be8-4153-8894-b31abb43e668",
-            "mfa_enabled_on": null,
-            "mfa_method": null,
-            "automatic_logout": false
-        }
-    },
-    {
-        "model": "core.settings",
-        "pk": "13adf91f-71c3-4f62-9ce7-1c6f02633b0f",
-        "fields": {
-            "user": "7e894309-2473-45e9-943f-4eacdfd709aa",
-            "mfa_enabled_on": null,
-            "mfa_method": null,
-            "automatic_logout": false
-        }
+{
+    "model": "core.settings",
+    "pk": "170e2bf6-9fd6-4a61-842e-a6f87d9e0937",
+    "fields": {
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "automatic_logout": false,
+        "mfa_method": null,
+        "mfa_enabled_on": null
     }
+},
+{
+    "model": "core.settings",
+    "pk": "735f6e78-029d-4e9f-95ad-c7faa9d043fd",
+    "fields": {
+        "user": "38fbe210-704e-421f-a283-2afb3cb4b3a4",
+        "automatic_logout": false,
+        "mfa_method": null,
+        "mfa_enabled_on": null
+    }
+},
+{
+    "model": "core.settings",
+    "pk": "dffe955e-a1f7-44b9-bc3a-91294a61679c",
+    "fields": {
+        "user": "0d5af8e3-876f-494b-8fb8-7f97a697c965",
+        "automatic_logout": false,
+        "mfa_method": null,
+        "mfa_enabled_on": null
+    }
+}
 ]

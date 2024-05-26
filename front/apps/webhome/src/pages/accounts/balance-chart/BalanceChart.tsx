@@ -60,12 +60,12 @@ export const BalanceChart = () => {
         if (balanceHistoryData) {
             let min: number = Infinity
             let max: number = -Infinity
-            // for (const account of balanceHistoryData) {
-            //     for (const item of account.history) {
-            //         min = Math.min(min, item.balance)
-            //         max = Math.max(max, item.balance)
-            //     }
-            // }
+            for (const account of balanceHistoryData) {
+                for (const item of account.history) {
+                    min = Math.min(min, item.balance)
+                    max = Math.max(max, item.balance)
+                }
+            }
             for (const item of fakeData) {
                 min = Math.min(min, item.y)
                 max = Math.max(max, item.y)
@@ -83,21 +83,21 @@ export const BalanceChart = () => {
                             <ResponsiveLine
                                 data={[{
                                     id: 'balance',
-                                    // data: Object.entries(
-                                    //     balanceHistoryData?.reduce((acc, account) => {
-                                    //         for (const item of account.history) {
-                                    //             if (!acc[item.month]) {
-                                    //                 acc[item.month] = 0
-                                    //             }
-                                    //             acc[item.month] += item.balance
-                                    //         }
-                                    //         return acc
-                                    //     }, {} as Record<string, number>) || {}
-                                    // ).map(([month, balance]) => ({
-                                    //     x: month,
-                                    //     y: balance
-                                    // }))
-                                    data: fakeData
+                                    data: Object.entries(
+                                        balanceHistoryData?.reduce((acc, account) => {
+                                            for (const item of account.history) {
+                                                if (!acc[item.month]) {
+                                                    acc[item.month] = 0
+                                                }
+                                                acc[item.month] += item.balance
+                                            }
+                                            return acc
+                                        }, {} as Record<string, number>) || {}
+                                    ).map(([month, balance]) => ({
+                                        x: month,
+                                        y: balance
+                                    }))
+                                    // data: fakeData
                                 }]}
                                 tooltip={({ point }) => {
                                     return (

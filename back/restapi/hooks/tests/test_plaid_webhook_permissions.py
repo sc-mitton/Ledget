@@ -11,21 +11,26 @@ from django.test import TestCase, Client
 from hooks.permissions import plaid_client
 import plaid
 
+from financials.models import PlaidItem
+
+
 body = {
   'environment': 'sandbox',
   'error': None,
-  'item_id': 'NzAp6Lg5Las4LnAZzBR9Sggnpy4aPWIWa6mon',
+  'item_id': 'replace_me',
   'new_webhook_url': 'https://d1fb-2601-681-77e-21e0-8154-afd5-81cf-2529.ngrok-free.app',  # noqa
   'webhook_code': 'WEBHOOK_UPDATE_ACKNOWLEDGED',
   'webhook_type': 'ITEM'
 }
-body_sha = hashlib.sha256()
-body_sha.update(json.dumps(body, indent=2).encode('utf-8'))
 
 
 class PlaidWebhooker:
 
-    def __init__(self):
+    def __init__(self, body):
+        self.body = body
+        self.body_sha = hashlib.sha256()
+        self.body_sha.update(json.dumps(body, indent=2).encode('utf-8'))
+
         self.key = JWK.generate(
             kty='EC',
             crv='P-256',
@@ -40,13 +45,13 @@ class PlaidWebhooker:
         self.public_key['expired_at'] = None
 
     def refresh(self):
-        self.__init__()
+        self.__init__(self.body)
 
     @property
     def expired_header(self):
         expired_header = {
             'iat': int(time.time()) - 60 * 7,
-            'request_body_sha256': body_sha.hexdigest()
+            'request_body_sha256': self.body_sha.hexdigest()
         }
         return jwt.encode(
             expired_header,
@@ -59,7 +64,7 @@ class PlaidWebhooker:
     def unexpired_header(self):
         unexpired_header = {
             'iat': int(time.time()),
-            'request_body_sha256': body_sha.hexdigest()
+            'request_body_sha256': self.body_sha.hexdigest()
         }
         return jwt.encode(
             unexpired_header,
@@ -86,8 +91,10 @@ class BaseTest(TestCase):
     ]
 
     def setUp(self):
+        plaid_item_id = PlaidItem.objects.all().first().id
+        body['item_id'] = plaid_item_id
         self.client = Client()
-        self.plaid_webhooker = PlaidWebhooker()
+        self.plaid_webhooker = PlaidWebhooker(body)
 
 
 class TestPlaidWebhookPermissions(BaseTest):

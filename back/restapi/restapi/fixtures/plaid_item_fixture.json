@@ -7,12 +7,12 @@
         "institution": "ins_25",
         "user": "0d27b564-3be8-4153-8894-b31abb43e668",
         "access_token": "access-sandbox-630e6822-fa43-4bce-9781-431f2a658cb3",
-        "cursor": "CAESJThLeDVqTFI3TEFmOXlBbWFxZHZrRjltbVYzWng5bnVXcG9lOHIaDAj//sqyBhCwvrOKAiIMCP/+yrIGELC+s4oCKgwI//7KsgYQsL6zigI=",
+        "cursor": "CAESJXpLNGd3ZDU4ZFZmVm1xUjR3azhKRkF3cnFkQUFrWmZsTnFFeUUaCwiB/8qyBhDAnasfIgsIgf/KsgYQwJ2rHyoLCIH/yrIGEMCdqx8=",
         "login_required": false,
         "new_accounts_available": false,
         "permission_revoked": false,
         "pending_expiration": false,
-        "last_synced": "2024-05-26T04:50:07.756Z"
+        "last_synced": "2024-05-26T17:11:49.234Z"
     }
 }
 ]

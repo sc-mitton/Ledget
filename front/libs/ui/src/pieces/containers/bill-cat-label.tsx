@@ -3,7 +3,7 @@ import { Check } from '@geist-ui/icons'
 
 import { toLower as tolower, startCase as startcase } from 'lodash-es'
 
-import { ElementType, ComponentPropsWithoutRef } from 'react'
+import { ElementType, ComponentPropsWithoutRef, useEffect } from 'react'
 import { PolymorphicComponentProps } from '../../types/helpers'
 
 import './styles/bill-cat-label.scss'
@@ -89,6 +89,10 @@ export const BillCatEmojiLabel = <C extends ElementType = 'div'>(props: Polymorp
   const Component = as || 'div'
   const strokeWidth = 1.75
   const svgSize = size === 'small' ? 28 : 38
+
+  useEffect(() => {
+    console.log('progress', progress)
+  }, [progress])
 
   return (
     <Component

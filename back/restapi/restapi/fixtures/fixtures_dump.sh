@@ -11,3 +11,4 @@ python ../../manage.py dumpdata core.Customer --indent 4 > ./customer_fixture.js
 python ../../manage.py dumpdata financials.UserAccount --indent 4 > ./user_account_fixture.json
 python ../../manage.py dumpdata budget.UserCategory --indent 4 > ./user_category_fixture.json
 python ../../manage.py dumpdata budget.userBill --indent 4 > ./user_bill_fixture.json
+python ../../manage.py dumpdata core.Settings --indent 4 > ./settings_fixture.json
