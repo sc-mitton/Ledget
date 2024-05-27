@@ -15,7 +15,7 @@ import { NeedsConfirmationStack } from './needs-confirmation/Stack'
 import { History } from './history/History'
 import { SpendingViewContextProvider, useFilterFormContext } from './context'
 
-const NotificationsDropdownMenu = (props: HTMLProps<HTMLDivElement>) => {
+const ActivityDropdown = (props: HTMLProps<HTMLDivElement>) => {
     const { month, year } = useAppSelector(selectBudgetMonthYear)
     const { data: tCountData } = useGetTransactionsCountQuery({ confirmed: false, month, year }, { skip: !month || !year })
     const [showDropdown, setShowDropdown] = useState(false)
@@ -138,7 +138,7 @@ export default function (props: HTMLProps<HTMLDivElement>) {
 
     return (
         <SpendingViewContextProvider>
-            <NotificationsDropdownMenu {...props} />
+            <ActivityDropdown {...props} />
         </SpendingViewContextProvider>
     )
 }

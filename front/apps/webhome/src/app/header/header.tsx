@@ -9,9 +9,7 @@ import { setLogoutModal, setHelpModal } from '@features/modalSlice'
 import { useAppDispatch } from '@hooks/store'
 import { User, LifeBuoy, LogOut, Sun, Moon } from '@geist-ui/icons'
 import { DropdownItem, DropDownDiv, useScreenContext, useColorScheme } from '@ledget/ui'
-import { NotificationsDropdownMenu } from '@pages/activity'
-
-type Modal = "help" | "logout"
+import { ActivityDropdown } from '../header'
 
 const LightDarkSwitch = () => {
     const { isDark, setDarkMode } = useColorScheme()
@@ -99,7 +97,7 @@ function Header() {
                     </div>
                     <div>
                         <LightDarkSwitch />
-                        <NotificationsDropdownMenu id='notifications' />
+                        <ActivityDropdown id='notifications' />
                         <ProfileDropdownMenu />
                     </div>
                 </div>

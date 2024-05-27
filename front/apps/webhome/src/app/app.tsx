@@ -4,7 +4,7 @@ import { Routes, Outlet, Route, useLocation, Navigate, useNavigate } from 'react
 import { AnimatePresence } from 'framer-motion'
 
 import '@styles/base.scss'
-import Header from './header'
+import Header from './header/header'
 import NotFound from '@pages/notFound'
 import Budget from '@pages/budget/Window'
 import Profile from '@pages/settings/Window'
