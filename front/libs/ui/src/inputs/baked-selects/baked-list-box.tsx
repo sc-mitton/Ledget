@@ -5,7 +5,7 @@ import { Control, useController, UseControllerReturn, FieldError } from 'react-h
 import { ChevronDown, Check } from '@geist-ui/icons'
 
 import './baked-selects.scss'
-import { DropDownDiv } from '../../animations/animations'
+import { DropdownDiv } from '../../animations/animations'
 import { InputButton } from '../../buttons/buttons'
 import { DropdownItem } from "../../pieces/containers/containers"
 import { LoadingRingDiv } from '../../pieces/loading-indicators/loading-indicators'
@@ -19,7 +19,7 @@ export interface BakedSelectPropsBase<O> {
   valueKey?: string
   labelPrefix?: string
   subLabelPrefix?: string
-  placement?: ComponentProps<typeof DropDownDiv>['placement']
+  placement?: ComponentProps<typeof DropdownDiv>['placement']
   placeholder?: string
   withCheckMarkIndicator?: boolean
   as?: React.FC<ComponentPropsWithoutRef<'button'>>
@@ -168,7 +168,7 @@ export const BakedListBox = <O extends Option | string>(props: BakedSelectProps<
             }}
           </Listbox.Button>
           <div>
-            <DropDownDiv
+            <DropdownDiv
               className='dropdown-div'
               placement={props.placement}
               visible={open}
@@ -234,7 +234,7 @@ export const BakedListBox = <O extends Option | string>(props: BakedSelectProps<
                   <LoadingRingDiv loading={true} />
                 </div>
               }
-            </DropDownDiv>
+            </DropdownDiv>
           </div>
         </>
       )}

@@ -16,7 +16,7 @@ import {
     DollarCents,
     IconButton3,
     CircleIconButton,
-    DropDownDiv,
+    DropdownDiv,
     useAccessEsc,
     ShimmerText,
     BillCatLabel,
@@ -155,14 +155,14 @@ const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
     return (
         <div style={{ marginLeft: showCalendar ? '.125em' : '' }} className='bills--header'>
             <div>
-                <DropDownDiv
+                <DropdownDiv
                     placement='left'
                     visible={showCalendar}
                     ref={dropdownRef}
                     style={{ borderRadius: 'var(--border-radius25)' }}
                 >
                     <Calendar ref={calendarRef} />
-                </DropDownDiv>
+                </DropdownDiv>
             </div>
             <div>
                 <h4>

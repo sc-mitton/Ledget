@@ -37,25 +37,14 @@ const ModalProvider = ({ children }: { children: React.ReactNode }) => {
     )
 }
 
-// Budget Page
-
 // Add total spent somewhere in the category ui component
-
 // Add total progress bar to category windows
 
-// Add note for when yearly categories reload
-
-// Add little note in categories header showing number of categories
+// Add note for when yearly categories reload (tool tip)
 
 // Header underline for bills window
 
 // Filters for bills and categories
-
-
-// SECURITY
-
-// Add privacy and terms links at bottom of side nav (make it look more complete)
-
 
 const SkeletonCategories = ({ length, period }: { length: number, period: 'month' | 'year' }) => (
     <>

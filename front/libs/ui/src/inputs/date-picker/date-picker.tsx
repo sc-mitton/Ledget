@@ -4,7 +4,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { Calendar as CalendarIcon, X, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Tool } from '@geist-ui/icons'
 
 import './date-picker.scss'
-import { DropDownDiv } from '../../animations/animations';
+import { DropdownDiv } from '../../animations/animations';
 import { HalfArrow } from '@ledget/media'
 import { TextInputWrapper } from '../text/text';
 import { Tooltip } from '../../pieces/tooltip/tooltip';
@@ -733,7 +733,7 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
             <X size={'.8em'} />
           </CircleIconButton>}
       </TextInputWrapper>}
-      <DropDownDiv
+      <DropdownDiv
         ref={dropdownRef}
         visible={props.dropdownVisible !== undefined ? props.dropdownVisible : showPicker}
         placement={placement}
@@ -747,7 +747,7 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
         }}
       >
         <DayMonthYearPicker />
-      </DropDownDiv>
+      </DropdownDiv>
     </div>
   )
 }

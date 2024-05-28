@@ -21,7 +21,7 @@ import {
     DollarCents,
     getDaySuffix,
     mapWeekDayNumberToName,
-    DropDownDiv,
+    DropdownDiv,
     SlideMotionDiv,
     useLoaded,
     Checkbox,
@@ -96,7 +96,7 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
                         <Ellipsis rotate={90} size={'1.375em'} />
                     </Menu.Button>
                     <div>
-                        <DropDownDiv
+                        <DropdownDiv
                             placement='right'
                             arrow='right'
                             className='right'
@@ -129,7 +129,7 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
                                     )}
                                 </Menu.Item>
                             </Menu.Items>
-                        </DropDownDiv>
+                        </DropdownDiv>
                     </div>
                 </>
             )}

@@ -29,7 +29,7 @@ import {
     PillOptionButton,
     LoadingRing,
     IconButton,
-    DropDownDiv,
+    DropdownDiv,
     DropdownItem,
     SlideMotionDiv,
     BackButton,
@@ -148,7 +148,7 @@ const Options = ({ onEdit, onDelete }: { onEdit: () => void, onDelete: () => voi
                     <Ellipsis rotate={90} />
                 </Menu.Button>
                 <div style={{ position: 'absolute', right: '0' }}>
-                    <DropDownDiv
+                    <DropdownDiv
                         placement='right'
                         visible={open}
                     >
@@ -178,7 +178,7 @@ const Options = ({ onEdit, onDelete }: { onEdit: () => void, onDelete: () => voi
                                 )}
                             </Menu.Item>
                         </Menu.Items>
-                    </DropDownDiv>
+                    </DropdownDiv>
                 </div>
             </div>
         )

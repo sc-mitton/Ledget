@@ -173,29 +173,34 @@ const App = () => {
       }} />}
       {helpModal.open && <HelpModal onClose={() => dispatch(clearHelpModal())} />}
 
-      {/* Toasts */}
+      {/* Toast */}
       <Toast toastStack={toastStack} cleanUp={(toastId) => dispatch(tossToast(toastId))} />
     </>
   )
 }
 
-const EnrichedApp = () => {
+const AppWithNav = () => {
+  const { screenSize } = useScreenContext()
 
   return (
-    <ScreenProvider>
-      <ColorSchemedDiv className='full-screen-div'>
-        <Header />
-        <main>
-          <Sidenav />
-          <Routes>
-            <Route path="/*" element={<App />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
-      </ColorSchemedDiv >
-    </ScreenProvider>
+    <ColorSchemedDiv className={`app ${screenSize ? screenSize : ''}`}>
+      <Header />
+      <main>
+        <Sidenav />
+        <Routes>
+          <Route path="/*" element={<App />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
+    </ColorSchemedDiv >
   )
 }
+
+const EnrichedApp = () => (
+  <ScreenProvider>
+    <AppWithNav />
+  </ScreenProvider>
+)
 
 const PrivatizedApp = () => (
   <Routes>

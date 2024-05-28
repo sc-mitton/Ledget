@@ -16,7 +16,7 @@ import { Search, ChevronDown } from '@geist-ui/icons'
 import './SelectCategoryBill.scss'
 import { Category, useLazyGetCategoriesQuery } from '@features/categorySlice'
 import { Bill, useLazyGetBillsQuery } from '@features/billSlice'
-import { LoadingRingDiv, DropDownDiv, useAccessEsc, BillCatLabel } from '@ledget/ui'
+import { LoadingRingDiv, DropdownDiv, useAccessEsc, BillCatLabel } from '@ledget/ui'
 import { useAppSelector } from '@hooks/store'
 import { selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
 
@@ -251,7 +251,7 @@ export const FullSelectCategoryBill =
                     {children}
                 </SelectorComponent>
                 <div>
-                    <DropDownDiv
+                    <DropdownDiv
                         placement='left'
                         visible={showBillCatSelect}
                         ref={dropdownRef}
@@ -262,7 +262,7 @@ export const FullSelectCategoryBill =
                             onChange={onChange}
                             name={name.current}
                         />
-                    </DropDownDiv>
+                    </DropdownDiv>
                 </div>
             </div>
         )

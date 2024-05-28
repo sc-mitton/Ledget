@@ -4,7 +4,7 @@ import { Dayjs } from 'dayjs'
 import { Filter as FilterIcon } from '@geist-ui/icons'
 
 import styles from './styles/Filter.module.scss'
-import { DatePicker, DropDownDiv, IconButton3, useAccessEsc } from '@ledget/ui'
+import { DatePicker, DropdownDiv, IconButton3, useAccessEsc } from '@ledget/ui'
 
 const Filter = ({ value, onChange }: { value?: [Dayjs, Dayjs], onChange: React.Dispatch<React.SetStateAction<[Dayjs, Dayjs] | undefined>> }) => {
     const [showDropDown, setShowDropDown] = useState(false)
@@ -42,7 +42,7 @@ const Filter = ({ value, onChange }: { value?: [Dayjs, Dayjs], onChange: React.D
                 />
             </IconButton3 >
             <div>
-                <DropDownDiv
+                <DropdownDiv
                     placement='right'
                     id='transactions-filter-dropdown'
                     visible={showDropDown}
@@ -57,7 +57,7 @@ const Filter = ({ value, onChange }: { value?: [Dayjs, Dayjs], onChange: React.D
                             (date && date.length) ? setActive(true) : setActive(false)
                         }}
                     />
-                </DropDownDiv>
+                </DropdownDiv>
             </div>
         </div>
     )

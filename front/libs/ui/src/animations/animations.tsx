@@ -4,7 +4,7 @@ import './styles/animations.scss'
 import { useTransition, animated, useSpring } from '@react-spring/web'
 import { motion, HTMLMotionProps } from 'framer-motion'
 
-interface IDropDownDiv {
+interface IDropdownDiv {
   visible: boolean
   placement?: 'middle' | 'left' | 'right'
   verticlePlacement?: 'top' | 'bottom'
@@ -12,7 +12,7 @@ interface IDropDownDiv {
   arrow?: 'right'
 }
 
-export const DropDownDiv = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement> & IDropDownDiv>((props, ref) => {
+export const DropdownDiv = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement> & IDropdownDiv>((props, ref) => {
 
   const {
     visible,

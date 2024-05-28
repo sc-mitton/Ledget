@@ -19,7 +19,7 @@ import {
     RecoveryCodes
 } from '@modals/index'
 import { useGetMeQuery } from '@features/userSlice'
-import { ShimmerDiv, useScreenContext } from '@ledget/ui'
+import { ShimmerDiv, useScreenContext, Window } from '@ledget/ui'
 
 const GutterContext = createContext<[
     boolean,
@@ -51,7 +51,7 @@ function Settings() {
     const { screenSize } = useScreenContext()
 
     return (
-        <div id="profile-window--container" className={`${screenSize === 'extra-small' ? 'naked-window' : 'window'}`}>
+        <Window id="profile-window--container" className={screenSize}>
             {['large', 'extra-large'].includes(screenSize) && <Gutter />}
             <ShimmerDiv
                 className={`${open ? 'with-open-gutter' : ''} ${screenSize}`}
@@ -83,7 +83,7 @@ function Settings() {
                     </motion.div>
                 </AnimatePresence>
             </ShimmerDiv>
-        </div>
+        </Window>
     )
 }
 

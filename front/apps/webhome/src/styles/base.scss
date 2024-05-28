@@ -44,7 +44,7 @@ main {
     display: flex;
 }
 
-.full-screen-div {
+.app {
     height: 100%;
     width: 100%;
     overflow: hidden;
@@ -52,6 +52,10 @@ main {
     background-color: var(--window-background-color);
     display: flex;
     flex-direction: column;
+
+    &.extra-small {
+        background-color: var(--window-background-color-small-screen);
+    }
 }
 
 div,
@@ -286,10 +290,6 @@ svg.icon.small {
     scrollbar-width: none;
 }
 
-.dashboard.extra-small .window {
-    padding: var(--window-padding-extra-small);
-}
-
 .dashboard.extra-small .main-window {
     padding: 1.5em;
 }
@@ -300,61 +300,6 @@ svg.icon.small {
     max-width: 55rem;
     width: calc(100% - 4em);
     padding: 2em;
-}
-
-.window {
-    box-shadow: var(--window-drop-shadow);
-    border-radius: var(--border-radius3);
-    padding: var(--window-padding);
-    box-sizing: border-box;
-    border: 1.25px solid var(--window-border);
-    background: var(--window-background);
-}
-
-.naked-window {
-    background-color: var(--naked-window);
-    padding: var(--window-padding);
-}
-
-.window-header {
-    padding-bottom: 1em;
-    padding-left: .25em;
-    height: 1.875rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 0;
-}
-
-.overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    backdrop-filter: blur(2px);
-    background-color: var(--overlay2);
-}
-
-/* ------------------------------- Ant Picker ------------------------------- */
-
-.ant-picker-header-view {
-    display: flex;
-}
-
-.ant-picker:focus-within {
-    border-color: transparent;
-    box-shadow: var(--input-focus-drop-shadow);
-}
-
-/* ---------------------------- New Button Styles --------------------------- */
-
-/* Header Buttons */
-.header-btns {
-    display: flex;
-    align-items: center;
-    gap: 1em;
-    margin-right: .8em;
 }
 
 /* -------------------------------- Dropdowns ------------------------------- */

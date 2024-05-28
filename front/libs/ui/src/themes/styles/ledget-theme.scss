@@ -90,7 +90,6 @@
         --nested-window: hsl(0, 0%, 10%);
         --nested-window-small-screen: var(--nested-window);
         --modal-inner-window: var(--nested-window);
-        --overlay: hsl(0, 0%, 10%);
 
         --window-h: 240;
         --window-s: 3%;
@@ -101,9 +100,12 @@
         --window-portal: hsl(var(--window-h), var(--window-s), 9%);
         --window2: hsl(var(--window-h), calc(var(--window-s) + 10%), 10%);
         --window2-background: linear-gradient(to bottom right, var(--window2), color-mix(in srgb, var(--window2), var(--window-background-color) 30%));
-        --naked-window: var(--window-background-color);
+        --blue-window-background: linear-gradient(to top right,
+                hsl(var(--window-h), calc(var(--window-s) + 20%), 15%),
+                hsl(var(--window-h), calc(var(--window-s) + 20%), 15%));
 
         --window-background-color: hsl(var(--window-h), var(--window-s), 5%);
+        --window-background-color-small-screen: hsl(var(--window-h), var(--window-s), 6%);
         --window-background-color-rgb: 5, 5, 5;
         --window-background-color-portal: hsl(var(--window-h), var(--window-s), 2%);
         --gradient-window-background: linear-gradient(to bottom, hsl(0, 0%, 8%) 0%, hsl(0, 0%, 5%) 100%);
@@ -193,7 +195,7 @@
         --negative-pulse-inner: rgba(255, 255, 255, .7);
 
         --transaction-hover-background: hsl(var(--window-h), var(--window-s), 11%);
-        --transaction-hover-background-dim: hsl(0, 0%, 7%);
+        --transaction-hover-background-dim: hsl(0, 0%, 8%);
 
         // Drop Shadows & Borders
         --dropdown-background-rgb: 18, 18, 18;
@@ -290,6 +292,7 @@
 
         // Windows
         --window-background-color: hsl(240, 7%, 97%);
+        --window-background-color-small-screen: hsl(240, 7%, 99%);
         --window-background-color-rgb: 250, 250, 250;
         --window-background-color-portal: hsl(0, 0%, 95%);
         --gradient-window-background: radial-gradient(at 40% 20%, rgba(255, 255, 255, 1) 0px, transparent 50%),
@@ -306,10 +309,12 @@
         --window-portal: hsl(var(--window-h), var(--window-s), 100%);
         --window2: hsl(var(--window-h), calc(var(--window-s) + 22%), 94%);
         --window2-background: linear-gradient(to bottom right, var(--window2), color-mix(in srgb, var(--window2), var(--window-background-color) 30%));
-        --naked-window: var(--window-background-color);
         --window-drop-shadow-color: hsl(var(--window-h), var(--window-s), 96%);
         --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 4px 0px;
         --window-portal-drop-shadow-color: hsl(0, 0%, 85%);
+        --blue-window-background: linear-gradient(to top right,
+                hsl(var(--window-h), calc(var(--window-s) + 30%), 92%),
+                hsl(var(--window-h), calc(var(--window-s) + 30%), 92%));
 
         --window-rgb: 244, 244, 246;
 
@@ -320,7 +325,6 @@
         --nested-window: hsl(var(--steel-blue-h), 9%, 96%);
         --nested-window-small-screen: hsl(var(--steel-blue-h), 9%, 94%);
         --modal-inner-window: hsl(var(--steel-blue-h), 8%, 95%);
-        --overlay: hsl(0, 0%, 20%);
 
         // Wafers
         --wafer-background-color: hsl(var(--window-h), calc(var(--window-s) - 1%), 65%);
@@ -387,7 +391,7 @@
         --btn-black: hsl(0, 0%, 15%);
 
         --transaction-hover-background: hsl(var(--steel-blue-h), 8%, 96%);
-        --transaction-hover-background: hsl(var(--steel-blue-h), 8%, 96%);
+        --transaction-hover-background-dim: hsl(var(--steel-blue-h), 8%, 93%);
 
         --default-pill-background: hsl(0, 0%, 95%);
         --default-tab-background: hsl(var(--window-h), var(--window-s), 85%);

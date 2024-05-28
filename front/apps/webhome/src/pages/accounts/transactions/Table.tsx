@@ -10,7 +10,8 @@ import {
     InfiniteScrollDiv,
     ShadowScrollDiv,
     useLoaded,
-    useScreenContext
+    useScreenContext,
+    Window
 } from '@ledget/ui'
 
 import pathMappings from '../path-mappings'
@@ -20,7 +21,7 @@ type Props = Omit<HTMLProps<HTMLDivElement>, 'children'> & {
     children: ({ transactionsData }: { transactionsData?: GetTransactionsResponse }) => React.ReactNode
 }
 
-const Table = ({ children, className, ...rest }: Props) => {
+const Table = ({ children, ...rest }: Props) => {
     const containerRef = useRef<HTMLDivElement>(null)
     const [fetchMorePulse, setFetchMorePulse] = useState(false)
     const [searchParams] = useSearchParams()
@@ -71,17 +72,16 @@ const Table = ({ children, className, ...rest }: Props) => {
     }
 
     return (
-        <>
+        <Window className={screenSize} id='transactions-table'>
+            <div id='transactions-table--header'>
+                <h3>Transactions</h3>
+                <Filter value={dateRange} onChange={setDateRange} />
+            </div>
             <InfiniteScrollDiv
                 animate={loaded && fetchMorePulse}
-                className={`transactions-table ${screenSize !== 'extra-small' ? 'window' : 'naked-window'} ${isLoadingTransactions ? 'loading' : ''} ${screenSize} ${className || ''}`}
                 ref={containerRef}
                 {...rest}
             >
-                <div className='transactions-table--header'>
-                    <h3>Transactions</h3>
-                    <Filter value={dateRange} onChange={setDateRange} />
-                </div>
                 <ShadowScrollDiv
                     className={`transactions-list  ${transactionsData ? 'not-skeleton' : ''} ${screenSize ? screenSize : ''} `}
                     onScroll={handleScroll}
@@ -101,7 +101,7 @@ const Table = ({ children, className, ...rest }: Props) => {
                     {children({ transactionsData })}
                 </ShadowScrollDiv>
             </InfiniteScrollDiv>
-        </>
+        </Window>
     )
 }
 

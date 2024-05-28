@@ -18,7 +18,9 @@ import {
     PasswordInput,
     SlideMotionDiv,
     PlainTextInput,
-    BackButton
+    BackButton,
+    WindowHeader,
+    WindowHeader
 } from "@ledget/ui"
 import { useFlow } from '@ledget/ory'
 import {
@@ -41,10 +43,10 @@ const UserInfoWindow = ({ setUserInfo, flow, submit, flowStatus }) => {
     return (
         <>
             <WindowLoadingBar visible={flowStatus.isGettingFlow} />
-            <div className="window-header">
+            <WindowHeader>
                 <h2>Create Account</h2>
                 <span>Step 1 of 4</span>
-            </div>
+            </WindowHeader>
             <form
                 onSubmit={handleSubmit((e) => setUserInfo(e))}
                 className="sign-up-form"
@@ -112,7 +114,7 @@ const AuthSelectionWindow = ({ userInfo, setUserInfo, flow, flowStatus, submit }
     return (
         <>
             <WindowLoadingBar visible={flowStatus.isCompletingFlow} />
-            <div className="window-header">
+            <WindowHeader>
                 {typeof (PublicKeyCredential) != "undefined"
                     ? <h2>Sign In Method</h2>
                     : <h2>Create a Password</h2>}
@@ -123,7 +125,7 @@ const AuthSelectionWindow = ({ userInfo, setUserInfo, flow, flowStatus, submit }
                     />
                     <span>Step 2 of 4</span>
                 </div>
-            </div>
+            </WindowHeader>
             <form
                 action={flow?.ui.action}
                 method={flow?.ui.method}

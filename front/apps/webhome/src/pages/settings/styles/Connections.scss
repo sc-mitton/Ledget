@@ -3,51 +3,112 @@
     flex-direction: column;
     height: 100%;
     flex-grow: 1;
-}
 
-#connections-page .header {
-    margin-bottom: .75em;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
+    .header-btns {
+        display: flex;
+        align-items: center;
+        gap: 1em;
+        margin-right: .8em;
+    }
 
-}
 
-#connections-page .institution {
-    width: 100%;
-    margin-top: 1.5em;
-    margin-bottom: 1em;
-    max-height: 100%;
-    position: relative;
-}
+    .header {
+        margin-bottom: .75em;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
 
-#connections-page .institution .header2 {
-    margin-bottom: .75em;
-    margin-right: .375em;
-    padding: 0 .25em;
-    opacity: 1;
-    display: flex;
-    justify-content: space-between;
-}
+    }
 
-#connections-page .institution .header2 img {
-    border-radius: 50%;
-}
+    .institution {
+        width: 100%;
+        margin-top: 1.5em;
+        margin-bottom: 1em;
+        max-height: 100%;
+        position: relative;
 
-#connections-page .header2>div:first-child {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
+        .header2 {
+            margin-bottom: .75em;
+            margin-right: .375em;
+            padding: 0 .25em;
+            opacity: 1;
+            display: flex;
+            justify-content: space-between;
 
-#connections-page #accounts-list {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    padding-right: 1em;
+            &>div:first-child {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+
+        .header2 img {
+            border-radius: 50%;
+        }
+
+    }
+
+    #accounts-list {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        padding-right: 1em;
+    }
+
+    .accounts {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
+        row-gap: .25em;
+
+        >div {
+            align-self: center;
+
+            &:nth-child(6n + 1),
+            &:nth-child(6n + 2),
+            &:nth-child(6n + 3) {
+                background-color: var(--btn-feather-light-gray);
+            }
+
+            &:nth-child(3n + 2),
+            &:nth-child(3n + 3) {
+                color: var(--m-text-secondary);
+                padding: .375em 0;
+                font-size: .8rem;
+            }
+
+            &:nth-child(3n) {
+                padding-right: 1em;
+                border-top-right-radius: var(--border-radius1);
+                border-bottom-right-radius: var(--border-radius1);
+                text-align: right;
+            }
+
+            &:nth-child(3n + 1) {
+                padding: .25em 0;
+                padding-left: .525em;
+                border-top-left-radius: var(--border-radius1);
+                border-bottom-left-radius: var(--border-radius1);
+            }
+
+            &:nth-child(n+3):nth-last-child(-n+3) {
+                border-bottom: 0;
+            }
+        }
+    }
+
+    .account-headers {
+        padding: .375em .525em;
+        font-weight: var(--fw-bold);
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
+
+        >h4:nth-child(3) {
+            text-align: right;
+        }
+    }
 }
 
 #confirm-modal-bottom-btns {
@@ -55,64 +116,6 @@
     flex-direction: row;
     justify-content: flex-end;
     margin-top: 1.5em;
-}
-
-/* -------------------------- Account Rows Styling -------------------------- */
-
-#connections-page .accounts {
-    display: grid;
-    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
-    row-gap: .25em;
-}
-
-#connections-page .account-headers {
-    padding: .375em .525em;
-    font-weight: var(--fw-bold);
-    display: grid;
-    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
-}
-
-#connections-page .account-headers>h4:nth-child(3) {
-    text-align: right;
-}
-
-#connections-page .accounts>div {
-    align-self: center;
-}
-
-/* Alternate Row Styling */
-#connections-page .accounts>div:nth-child(6n + 1),
-#connections-page .accounts>div:nth-child(6n + 2),
-#connections-page .accounts>div:nth-child(6n + 3) {
-    background-color: var(--btn-feather-light-gray);
-}
-
-#connections-page .accounts>div:nth-child(3n + 2),
-#connections-page .accounts>div:nth-child(3n + 3) {
-    color: var(--m-text-secondary);
-    padding: .375em 0;
-    font-size: .8rem;
-}
-
-#connections-page .accounts>div:nth-child(3n) {
-    padding-right: 1em;
-    border-top-right-radius: var(--border-radius1);
-    border-bottom-right-radius: var(--border-radius1);
-}
-
-#connections-page .accounts>div:nth-child(3n + 1) {
-    padding: .25em 0;
-    padding-left: .525em;
-    border-top-left-radius: var(--border-radius1);
-    border-bottom-left-radius: var(--border-radius1);
-}
-
-#connections-page .accounts>div:nth-child(n+3):nth-last-child(-n+3) {
-    border-bottom: 0;
-}
-
-#connections-page .accounts>div:nth-child(3n) {
-    text-align: right;
 }
 
 

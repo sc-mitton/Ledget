@@ -4,7 +4,7 @@ import { Activity, Filter } from '@geist-ui/icons'
 import { Tab } from '@headlessui/react'
 
 import './Dropdown.scss'
-import { DropDownDiv, useAccessEsc, RefreshButton, IconButton, Tooltip, TabNavListUnderlined } from '@ledget/ui'
+import { DropdownDiv, useAccessEsc, RefreshButton, IconButton, Tooltip, TabNavListUnderlined } from '@ledget/ui'
 import { CheckAll } from '@ledget/media'
 import { selectNotificationsTabIndex, setNotificationsTabIndex } from '@features/uiSlice'
 import { useGetTransactionsCountQuery, useTransactionsSyncMutation } from '@features/transactionsSlice'
@@ -72,7 +72,7 @@ const ActivityDropdown = (props: HTMLProps<HTMLDivElement>) => {
             >
                 <Activity className='icon' stroke={'var(--white)'} />
             </button>
-            <DropDownDiv
+            <DropdownDiv
                 ref={dropdownRef}
                 placement='right'
                 arrow='right'
@@ -129,7 +129,7 @@ const ActivityDropdown = (props: HTMLProps<HTMLDivElement>) => {
                         </>
                     )}
                 </Tab.Group>
-            </DropDownDiv>
+            </DropdownDiv>
         </div>
     )
 }

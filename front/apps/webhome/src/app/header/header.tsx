@@ -8,7 +8,7 @@ import { LedgetLogoIcon2 } from '@ledget/media'
 import { setLogoutModal, setHelpModal } from '@features/modalSlice'
 import { useAppDispatch } from '@hooks/store'
 import { User, LifeBuoy, LogOut, Sun, Moon } from '@geist-ui/icons'
-import { DropdownItem, DropDownDiv, useScreenContext, useColorScheme } from '@ledget/ui'
+import { DropdownItem, DropdownDiv, useScreenContext, useColorScheme } from '@ledget/ui'
 import { ActivityDropdown } from '../header'
 
 const LightDarkSwitch = () => {
@@ -61,7 +61,7 @@ const ProfileDropdownMenu = () => {
                     <Menu.Button className="profile-button">
                         <User className='icon' stroke={'var(--white)'} />
                     </Menu.Button>
-                    <DropDownDiv
+                    <DropdownDiv
                         placement='right'
                         arrow='right'
                         className='profile-dropdown'
@@ -77,7 +77,7 @@ const ProfileDropdownMenu = () => {
                                 Log out
                             </Wrapper>
                         </Menu.Items>
-                    </DropDownDiv>
+                    </DropdownDiv>
                 </div>
             )}
         </Menu >

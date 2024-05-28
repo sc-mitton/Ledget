@@ -2,11 +2,10 @@
 
 /* ------------------------------ Transactions ------------------------------ */
 
-.transactions-table {
+#transactions-table {
     flex-grow: 1;
     position: relative;
     min-height: 28em;
-    background-color: inherit;
     margin-top: 2.5em;
 
     &--header {
@@ -18,32 +17,12 @@
     }
 
     &.extra-small {
-        .transactions--table {
-            right: -.75em;
-            padding-right: 1em;
-            row-gap: 1.25em;
+        margin-top: 0;
 
-            /* all name cells */
-            &>div:nth-child(2n)>div:first-child {
-                padding-left: .5em;
-                padding-right: 3.5em;
-            }
-
-            /* all amount cells */
-            &>div:nth-child(2n)>div:last-child {
-                padding-right: .5em;
-                justify-content: flex-end;
-            }
-
-            &>div:nth-child(2n):not(:last-child)>div {
-                @include table-dividers(-.5em, false, 1.5px);
-            }
-
+        #transactions-table--header {
+            margin: 0;
+            visibility: hidden;
         }
-    }
-
-    &.loading {
-        border-radius: var(--border-radius3);
     }
 }
 
@@ -84,7 +63,7 @@ $borderRadius2: var(--border-radius2);
         span {
             padding: 0 .75em 0 .25em;
             color: var(--m-text-quinary);
-            background-color: var(--window);
+            background-color: inherit;
 
             &:first-child {
                 position: relative;
@@ -97,6 +76,10 @@ $borderRadius2: var(--border-radius2);
                 z-index: 1;
             }
         }
+    }
+
+    &.extra-small {
+        inset: 0 -.75em 0 0;
     }
 
     &>div:nth-child(2n):not(:last-child)>div {

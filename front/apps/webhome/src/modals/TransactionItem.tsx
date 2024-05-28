@@ -23,7 +23,7 @@ import { Category, isCategory } from "@features/categorySlice";
 import { Ellipsis } from '@ledget/media'
 import { SplitTransactionInput } from '@components/split'
 import {
-    DropDownDiv,
+    DropdownDiv,
     useAccessEsc,
     DropdownItem,
     SlideMotionDiv,
@@ -49,7 +49,7 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
                         <Ellipsis rotate={90} size={'1.375em'} />
                     </Menu.Button>
                     <div>
-                        <DropDownDiv
+                        <DropdownDiv
                             placement='right'
                             arrow='right'
                             className='right'
@@ -71,7 +71,7 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
                                     )}
                                 </Menu.Item>
                             </Menu.Items>
-                        </DropDownDiv>
+                        </DropdownDiv>
                     </div>
                 </>
             )}
@@ -438,7 +438,7 @@ function CategoriesBillInnerWindow({ item, }: { item: Transaction }) {
                         onClick={() => { setShowBillCatSelect(!showBillCatSelect) }}
                     />
                     <div>
-                        <DropDownDiv
+                        <DropdownDiv
                             placement='left'
                             visible={showBillCatSelect}
                             ref={dropdownRef}
@@ -450,7 +450,7 @@ function CategoriesBillInnerWindow({ item, }: { item: Transaction }) {
                                 month={dayjs(item.datetime || item.date).month() + 1}
                                 year={dayjs(item.datetime || item.date).year()}
                             />
-                        </DropDownDiv>
+                        </DropdownDiv>
                     </div>
                 </div>
                 : item.categories?.map((cat) => (

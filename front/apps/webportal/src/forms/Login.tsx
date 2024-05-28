@@ -23,7 +23,8 @@ import {
     JiggleDiv,
     LinkArrowButton,
     TotpAppGraphic,
-    RecoveryCodeGraphic
+    RecoveryCodeGraphic,
+    WindowHeader
 } from "@ledget/ui"
 import { useFlow } from '@ledget/ory'
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'
@@ -58,9 +59,9 @@ const EmailForm = ({ flow, setEmail, socialSubmit }: EmailFormProps) => {
 
     return (
         <>
-            <div className="window-header">
+            <WindowHeader>
                 <h2>Sign in to Ledget</h2>
-            </div>
+            </WindowHeader>
             <form onSubmit={handleSubmit(submit)} className="login-form">
                 <div>
                     <PlainTextInput

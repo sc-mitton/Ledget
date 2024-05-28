@@ -1,16 +1,15 @@
-import { useLocation } from 'react-router-dom'
-
 import { AnimatePresence, motion } from 'framer-motion'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
 
-import styles from './styles/Window.module.scss'
-import { Nav } from './Nav'
-import { useScreenContext } from '@ledget/ui'
+import './styles/Window.scss'
+import NotFound from '@pages/notFound'
 import Wafers from './wafers/Wafers'
+import { AccountSelector } from './selector'
+import { AccountsProvider } from './context'
+import { Nav } from './Nav'
 import { DepositTransactions } from './transactions'
 import { NotImplimentedMessage } from '@components/pieces'
-import NotFound from '@pages/notFound'
-import { AccountsProvider } from './context'
+import { useScreenContext } from '@ledget/ui'
 
 
 const _getNavHeaderPhrase = (key = '') => {
@@ -34,15 +33,16 @@ const Window = () => {
     const currentPath = location.pathname.split('/')[2]
 
     return (
-        <div className={`main-window  ${screenSize === 'small' ? 'small' : ''} ${styles.window}`}>
+        <div className={`main-window  ${screenSize === 'small' ? 'small' : ''}`} id='accounts-window'>
             <h2>{_getNavHeaderPhrase(currentPath)}</h2>
             <Nav />
             <div>
-                {!['small', 'extra-small'].includes(screenSize) &&
+                {!['extra-small'].includes(screenSize) &&
                     <Routes location={location}>
                         <Route path='deposits' element={<Wafers />} />
                         <Route path='credit' element={<Wafers />} />
                     </Routes>}
+                {'extra-small' === screenSize && <AccountSelector />}
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={location.pathname.split('/')[2]}

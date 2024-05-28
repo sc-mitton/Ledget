@@ -7,6 +7,12 @@ export const Window = styled.div`
   box-sizing: border-box;
   border: 1.25px solid var(--window-border);
   background: var(--window-background);
+
+  &.extra-small {
+    background: none;
+    box-shadow: none;
+    padding: var(--window-padding-extra-small);
+  }
 `
 
 export const Window2 = styled.div`
@@ -15,6 +21,14 @@ export const Window2 = styled.div`
   padding: var(--window-padding);
   box-sizing: border-box;
   background: var(--window2);
+`
+
+export const BlueWindow = styled.div`
+  border-radius: var(--border-radius3);
+  box-shadow: var(--window-drop-shadow);
+  padding: var(--window-padding);
+  box-sizing: border-box;
+  background: var(--blue-window-background);
 `
 
 export const NestedWindow = styled.div`

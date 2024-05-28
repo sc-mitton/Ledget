@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { animated } from '@react-spring/web'
 
-import styles from './styles/Nav.module.scss'
+import './styles/Nav.scss'
 import { CreditCard, Clock, TrendingUp } from '@geist-ui/icons'
 
 import {
@@ -97,7 +97,7 @@ const TabButtons = () => {
 
     return (
         <>
-            <div className={`${screenSize} ${styles.nav}`}>
+            <div className={`${screenSize}`}>
                 <ul ref={ref}>
                     {['deposits', 'credit', 'loans', 'investments'].map((path) => (
                         <li
@@ -128,6 +128,7 @@ const Filters = ({ visible = false, close }: { visible: boolean, close: () => vo
     const [accountsFilterOptions, setAccountsFilterOptions] = useState<SelectOption[]>()
     const location = useLocation()
     const dispatch = useAppDispatch()
+    const { screenSize } = useScreenContext()
 
     // Handle get accounts error
     useEffect(() => {
@@ -194,7 +195,7 @@ const Filters = ({ visible = false, close }: { visible: boolean, close: () => vo
     }, [accountsFilterOptions])
 
     return (
-        <ExpandableContainer expanded={visible} className={styles.filter} >
+        <ExpandableContainer expanded={visible} id={'account-filters'} className={screenSize}>
             {accountsFilterOptions?.map((option, i) => (
                 <>
                     <FilterPillButton
@@ -205,7 +206,7 @@ const Filters = ({ visible = false, close }: { visible: boolean, close: () => vo
                         {option.label}
                     </FilterPillButton>
                     {option.filterType !== accountsFilterOptions[i + 1]?.filterType
-                        && i !== accountsFilterOptions.length - 1 && <span className={styles.divider} />}
+                        && i !== accountsFilterOptions.length - 1 && <span className={'account-filters-divider'} />}
                 </>
             ))}
             <CircleIconButton onClick={() => close()} >
@@ -247,7 +248,7 @@ export const Nav = () => {
     }, [isTransactionsSyncError])
 
     return (
-        <div className={styles.nav}>
+        <div id={'accounts-nav'}>
             <div>
                 <TabButtons />
                 <RefreshButton

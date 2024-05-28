@@ -7,7 +7,7 @@ import { ChevronDown } from '@geist-ui/icons';
 
 import './baked-selects.scss';
 import { FormErrorTip } from '../../pieces/form-errors/form-errors';
-import { DropDownDiv } from '../../animations/animations';
+import { DropdownDiv } from '../../animations/animations';
 import { TextInputWrapper } from '../text/text';
 import { DropdownItem } from "../../pieces/containers/containers";
 import { LoadingRingDiv } from '../../pieces/loading-indicators/loading-indicators';
@@ -80,7 +80,7 @@ export const BakedComboBox = (props: Omit<BakedSelectProps<string>, 'as'> & { sl
             {props.error && <FormErrorTip error={props.error} />}
           </TextInputWrapper>
           <div className="provence-options--container">
-            <DropDownDiv
+            <DropdownDiv
               placement="left"
               visible={open}
               style={{
@@ -126,7 +126,7 @@ export const BakedComboBox = (props: Omit<BakedSelectProps<string>, 'as'> & { sl
                   <LoadingRingDiv loading={true} />
                 </div>
               }
-            </DropDownDiv>
+            </DropdownDiv>
           </div>
         </>
       )}

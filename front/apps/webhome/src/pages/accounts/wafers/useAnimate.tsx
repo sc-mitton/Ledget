@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback, useMemo } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 
 import { Location, useLocation } from 'react-router-dom'
 import { useTransition } from '@react-spring/web'
@@ -16,9 +16,6 @@ function useAnimate<A>({ accounts, waferWidth, waferPadding }: { accounts?: A[],
     const [updateOrder, { isLoading: isUpdating, isSuccess: isUpdateSuccess }] = useUpdateAccountsMutation()
     const [freezeWaferAnimation, setFreezeWaferAnimation] = useState(false)
     const location = useLocation()
-    const expandedContainerWidth = useMemo(() => (
-        waferWidth * (accounts?.length || 0)) + (waferPadding * (accounts?.length || 0)
-        ), [accounts, waferWidth, waferPadding])
 
     const order = useRef(_filterAccounts(accounts || [], location).map((item) => item.account_id))
 

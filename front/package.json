@@ -26,6 +26,7 @@
     "@use-gesture/react": "^10.2.27",
     "axios": "^1.4.0",
     "big.js": "^6.2.1",
+    "client": "link:@types/ory/client",
     "core-js": "^3.30.2",
     "dayjs": "^1.11.10",
     "emoji-mart": "^5.5.2",

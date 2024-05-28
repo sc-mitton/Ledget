@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 
-import { DropDownDiv } from '@ledget/ui'
+import { DropdownDiv } from '@ledget/ui'
 import { useClickClose } from '../../utils/hooks'
 import './abs-pos-menu.css'
 
@@ -48,7 +48,7 @@ export const AbsPosMenu = ({ pos, show, setShow, topArrow = true, children }:
         left: pos ? pos.x : 0,
       }}
     >
-      <DropDownDiv
+      <DropdownDiv
         placement={'right'}
         visible={show}
         className={`options-dropdown ${topArrow ? 'arrow-right' : ''}`}
@@ -56,7 +56,7 @@ export const AbsPosMenu = ({ pos, show, setShow, topArrow = true, children }:
         ref={menuRef}
       >
         {children}
-      </DropDownDiv>
+      </DropdownDiv>
     </div>
   )
 }

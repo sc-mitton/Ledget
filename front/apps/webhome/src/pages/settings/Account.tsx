@@ -18,7 +18,7 @@ import {
     BlueSlimButton,
     BlueSlimSubmitButton,
     ShimmerDiv,
-    DropDownDiv,
+    DropdownDiv,
     DropdownItem,
     BakedSwitch,
     useColorScheme,
@@ -148,13 +148,13 @@ const ChangePlanMenu = () => {
                         </BlueSlimSubmitButton>
                     </Menu.Button>
                     <div style={{ position: 'relative' }}>
-                        <DropDownDiv
+                        <DropdownDiv
                             visible={open}
                             id="change-plan--menu"
                             placement='right'
                         >
                             <Items />
-                        </DropDownDiv>
+                        </DropdownDiv>
                     </div>
                 </>
             )}

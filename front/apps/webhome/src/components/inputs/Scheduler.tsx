@@ -14,7 +14,7 @@ import {
     SlimmestInputButton,
     InputButton,
     FormErrorTip,
-    DropDownDiv,
+    DropdownDiv,
     getDaySuffix,
     useSchemeVar,
     TabNavList
@@ -519,7 +519,7 @@ const DayWeekPicker = () => {
 
     return (
         <div ref={ref} >
-            <DropDownDiv
+            <DropdownDiv
                 placement={placement}
                 verticlePlacement={verticlePlacement}
                 visible={open}
@@ -549,7 +549,7 @@ const DayWeekPicker = () => {
                         </>
                     )}
                 </Tab.Group>
-            </DropDownDiv>
+            </DropdownDiv>
         </div >
     )
 }
@@ -680,7 +680,7 @@ const MonthDayPicker = () => {
 
     return (
         <div ref={ref} >
-            <DropDownDiv
+            <DropdownDiv
                 placement={placement}
                 verticlePlacement={verticlePlacement}
                 visible={open}
@@ -701,7 +701,7 @@ const MonthDayPicker = () => {
                     <hr style={{ opacity: '.7', margin: '.5em 0', width: '100%' }} />
                     <DayPicker />
                 </div>
-            </DropDownDiv>
+            </DropdownDiv>
         </div>
     )
 }

@@ -3,7 +3,7 @@ import Picker from '@emoji-mart/react'
 import { Smile } from '@geist-ui/icons'
 
 import './styles/EmojiPicker.css'
-import { IconButton3, DropDownDiv, useColorScheme } from '@ledget/ui'
+import { IconButton3, DropdownDiv, useColorScheme } from '@ledget/ui'
 
 export type emoji = string | { native: string, [key: string]: any }
 
@@ -91,7 +91,7 @@ const EmojiPicker = () => {
     const { isDark } = useColorScheme()
 
     return (
-        <DropDownDiv visible={picker} style={{ 'backgroundColor': 'transparent', boxShadow: 'none' }}>
+        <DropdownDiv visible={picker} style={{ 'backgroundColor': 'transparent', boxShadow: 'none' }}>
             <div id="em-picker-container" >
                 <Picker
                     autoFocus
@@ -109,7 +109,7 @@ const EmojiPicker = () => {
                     categoryIcons={categoryIcons}
                 />
             </div>
-        </DropDownDiv>
+        </DropdownDiv>
     )
 }
 
