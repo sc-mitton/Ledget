@@ -68,7 +68,14 @@ const AccountSelector = () => {
     }, [selectedAccount])
 
     useEffect(() => {
-        setKey(Math.random().toString().slice(3, 10))
+        if (open) {
+            setKey(Math.random().toString().slice(3, 10))
+        } else {
+            const timeout = setTimeout(() => {
+                setKey(Math.random().toString().slice(3, 10))
+            }, 1000)
+            return () => clearTimeout(timeout)
+        }
     }, [open])
 
     return (

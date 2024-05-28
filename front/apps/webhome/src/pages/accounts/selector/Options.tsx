@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, useEffect, useRef } from "react";
+import { ComponentPropsWithoutRef, useEffect, useRef, useState } from "react";
 
 import { animated, useTransition, useSpring, useSpringRef } from '@react-spring/web';
 
@@ -18,6 +18,7 @@ const Options = (props: Props) => {
     const { open, setOpen, children, ...rest } = props;
     const [updateOrder] = useUpdateAccountsMutation()
     const { accounts, setAccounts } = useAccountsContext()
+    const [localOpen, setLocalOpen] = useState(false)
 
     let order = useRef<string[]>([])
 
@@ -31,7 +32,7 @@ const Options = (props: Props) => {
 
     const containerStyles = useSpring({
         opacity: open ? 1 : 0,
-        height: open ? '100%' : '0%',
+        height: open ? 'calc(100% + 2em)' : '0%',
     })
 
     const optionsApi = useSpringRef()
@@ -76,7 +77,20 @@ const Options = (props: Props) => {
         }
     })
 
-    useEffect(() => { optionsApi.start() }, [open])
+    useEffect(() => {
+        if (!localOpen && open) {
+            optionsApi.start()
+            setLocalOpen(true)
+        } else if (!open) {
+            optionsApi.start((index: number) => ({
+                opacity: 0,
+                y: index * (optionHeight + optionPadding) - 25 * (index ** 2),
+                onRest: () => { setLocalOpen(false) }
+            }))
+        }
+    }, [open])
+
+    useEffect(() => { optionsApi.start() }, [])
 
     return (
         <animated.div
@@ -85,7 +99,7 @@ const Options = (props: Props) => {
             {...rest}
         >
             <CloseButton onClick={() => setOpen(false)} />
-            {open &&
+            {localOpen &&
                 <ul>
                     {optionTransitions((s, item) => (
                         item &&

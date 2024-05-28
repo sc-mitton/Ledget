@@ -13,7 +13,8 @@ import {
     ExpandableContainer,
     CircleIconButton,
     FilterPillButton,
-    RefreshButton
+    RefreshButton,
+    useColorScheme,
 } from '@ledget/ui'
 import { popToast } from '@features/toastSlice'
 import { useAppDispatch } from '@hooks/store'
@@ -195,7 +196,7 @@ const Filters = ({ visible = false, close }: { visible: boolean, close: () => vo
     }, [accountsFilterOptions])
 
     return (
-        <ExpandableContainer expanded={visible} id={'account-filters'} className={screenSize}>
+        <ExpandableContainer expanded={visible} id={'account-filters'} className={`${screenSize}`}>
             {accountsFilterOptions?.map((option, i) => (
                 <>
                     <FilterPillButton
@@ -226,6 +227,7 @@ export const Nav = () => {
     }] = useTransactionsSyncMutation()
     const dispatch = useAppDispatch()
     const [showFilters, setShowFilters] = useState(false)
+    const { isDark } = useColorScheme()
 
     // Dispatch synced toast
     useEffect(() => {
@@ -249,7 +251,7 @@ export const Nav = () => {
 
     return (
         <div id={'accounts-nav'}>
-            <div>
+            <div className={`${isDark ? 'dark' : 'light'}`}>
                 <TabButtons />
                 <RefreshButton
                     stroke={'var(--m-text)'}
