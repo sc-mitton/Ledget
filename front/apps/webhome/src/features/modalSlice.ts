@@ -1,4 +1,4 @@
-import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 import { RootState } from '@hooks/store';
 import { PayloadAction } from "@reduxjs/toolkit";
@@ -10,23 +10,18 @@ interface InitialState {
     transactionModal: {
         item?: Transaction
         splitMode?: boolean
-    }
+    },
     categoryModal: {
         category?: Category
-    }
+    },
+    modal: 'reAuth' | 'help' | 'editCategories' | undefined,
     billModal: {
         bill?: TransformedBill
-    }
-    reAuthModal: {
-        open: boolean
     },
     logoutModal: {
         open: boolean
         fromTimeout?: boolean
         logoutTimerEnd?: number
-    },
-    helpModal: {
-        open: boolean
     }
 }
 
@@ -34,9 +29,8 @@ const initialState: InitialState = {
     transactionModal: {},
     categoryModal: {},
     billModal: {},
-    reAuthModal: { open: false },
+    modal: undefined,
     logoutModal: { open: false, logoutTimerEnd: new Date().getTime() + (Number(import.meta.env.VITE_AUTOMATIC_LOGOUT_LENGTH) * 1000) },
-    helpModal: { open: false }
 }
 
 export const modalSlice = createSlice({
@@ -63,8 +57,11 @@ export const modalSlice = createSlice({
         clearBillModal: (state) => {
             state.billModal.bill = undefined;
         },
-        setReAuthModal: (state, action: PayloadAction<{ open: boolean }>) => {
-            state.reAuthModal.open = action.payload.open;
+        setModal: (state, action: PayloadAction<'reAuth' | 'help' | 'editCategories' | undefined>) => {
+            state.modal = action.payload;
+        },
+        clearModal: (state) => {
+            state.modal = undefined;
         },
         setLogoutModal: (state, action: PayloadAction<{ open: boolean, fromTimeout?: boolean }>) => {
             state.logoutModal.open = action.payload.open;
@@ -75,12 +72,6 @@ export const modalSlice = createSlice({
         },
         refreshLogoutTimer: (state) => {
             state.logoutModal.logoutTimerEnd = new Date().getTime() + (Number(import.meta.env.VITE_AUTOMATIC_LOGOUT_LENGTH) * 1000);
-        },
-        setHelpModal: (state, action: PayloadAction<{ open: boolean }>) => {
-            state.helpModal.open = action.payload.open;
-        },
-        clearHelpModal: (state) => {
-            state.helpModal.open = false;
         }
     },
 })
@@ -89,9 +80,8 @@ export const selectTransactionModal = (state: RootState) => state.modal.transact
 export const selectTransactionModalItem = (state: RootState) => state.modal.transactionModal.item;
 export const selectCategoryModal = (state: RootState) => state.modal.categoryModal;
 export const selectBillModal = (state: RootState) => state.modal.billModal;
-export const selectReAuthModal = (state: RootState) => state.modal.reAuthModal.open;
 export const selectLogoutModal = (state: RootState) => state.modal.logoutModal;
-export const selectHelpModal = (state: RootState) => state.modal.helpModal;
+export const selectModal = (state: RootState) => state.modal.modal;
 
 export const {
     setTransactionModal,
@@ -100,12 +90,11 @@ export const {
     clearCategoryModal,
     setBillModal,
     clearBillModal,
-    setReAuthModal,
     setLogoutModal,
     clearLogoutModal,
-    setHelpModal,
-    clearHelpModal,
-    refreshLogoutTimer
+    refreshLogoutTimer,
+    setModal,
+    clearModal
 } = modalSlice.actions;
 
 export default modalSlice.reducer;

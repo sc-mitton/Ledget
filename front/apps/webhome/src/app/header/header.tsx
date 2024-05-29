@@ -5,7 +5,7 @@ import { Switch } from '@headlessui/react'
 
 import './styles/header.scss'
 import { LedgetLogoIcon2 } from '@ledget/media'
-import { setLogoutModal, setHelpModal } from '@features/modalSlice'
+import { setLogoutModal, setModal } from '@features/modalSlice'
 import { useAppDispatch } from '@hooks/store'
 import { User, LifeBuoy, LogOut, Sun, Moon } from '@geist-ui/icons'
 import { DropdownItem, DropdownDiv, useScreenContext, useColorScheme } from '@ledget/ui'
@@ -68,7 +68,7 @@ const ProfileDropdownMenu = () => {
                         visible={open}
                     >
                         <Menu.Items static>
-                            <Wrapper onClick={() => dispatch(setHelpModal({ open: true }))}>
+                            <Wrapper onClick={() => dispatch(setModal('help'))}>
                                 <LifeBuoy className='icon' />
                                 Help
                             </Wrapper>

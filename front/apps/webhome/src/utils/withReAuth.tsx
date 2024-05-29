@@ -12,7 +12,7 @@ import {
     aal1ReAuthed,
     aal2ReAuthed
 } from '@features/authSlice'
-import { setReAuthModal } from '@features/modalSlice'
+import { setModal, clearModal } from '@features/modalSlice'
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'
 import { useFlow } from '@ledget/ory'
 import {
@@ -293,14 +293,14 @@ export const ReAuthProtected = ({ children, requiredAal, onReAuth }: {
     useEffect(() => {
         if (isReAuthing) {
             if (!isReAuthed) {
-                dispatch(setReAuthModal({ open: true }))
+                dispatch(setModal('reAuth'))
             } else {
                 onReAuth()
             }
         }
         return () => {
             setSearchParams({})
-            dispatch(setReAuthModal({ open: false }))
+            dispatch(clearModal())
         }
     }, [isReAuthing])
 
@@ -309,11 +309,11 @@ export const ReAuthProtected = ({ children, requiredAal, onReAuth }: {
         if (isReAuthed) {
             onReAuth()
             setIsReAuthing(false)
-            dispatch(setReAuthModal({ open: false }))
+            dispatch(clearModal())
         }
         return () => {
             setSearchParams({})
-            dispatch(setReAuthModal({ open: false }))
+            dispatch(clearModal())
         }
     }, [isReAuthed])
 

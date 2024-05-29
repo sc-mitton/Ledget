@@ -26,7 +26,8 @@ import {
   TransactionItem,
   CategoryModal,
   Help as HelpModal,
-  Logout as LogoutModal
+  Logout as LogoutModal,
+  EditBudgetCategories
 } from '@modals/index'
 import { useGetMeQuery } from '@features/userSlice'
 import {
@@ -36,13 +37,12 @@ import {
   clearCategoryModal,
   selectBillModal,
   clearBillModal,
-  selectReAuthModal,
   selectLogoutModal,
   setLogoutModal,
   refreshLogoutTimer,
   clearLogoutModal,
-  selectHelpModal,
-  clearHelpModal
+  clearModal,
+  selectModal
 } from '@features/modalSlice';
 import { toastStackSelector, tossToast } from '@features/toastSlice'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
@@ -81,9 +81,8 @@ const App = () => {
   const transactionModal = useAppSelector(selectTransactionModal)
   const categoryModal = useAppSelector(selectCategoryModal)
   const billModal = useAppSelector(selectBillModal)
-  const reAuthModal = useAppSelector(selectReAuthModal)
   const logoutModal = useAppSelector(selectLogoutModal)
-  const helpModal = useAppSelector(selectHelpModal)
+  const modal = useAppSelector(selectModal)
 
   // Handle automatic logout
   useEffect(() => {
@@ -166,12 +165,14 @@ const App = () => {
           bill={billModal.bill}
           onClose={() => dispatch(clearBillModal())}
         />}
-      {reAuthModal && <ReAuthModal />}
       {logoutModal.open && <LogoutModal onClose={() => {
         dispatch(clearLogoutModal())
         dispatch(refreshLogoutTimer())
       }} />}
-      {helpModal.open && <HelpModal onClose={() => dispatch(clearHelpModal())} />}
+
+      {modal === 'reAuth' && <ReAuthModal />}
+      {modal === 'editCategories' && <EditBudgetCategories onClose={() => dispatch(clearModal())} />}
+      {modal === 'help' && <HelpModal onClose={() => dispatch(clearModal())} />}
 
       {/* Toast */}
       <Toast toastStack={toastStack} cleanUp={(toastId) => dispatch(tossToast(toastId))} />

@@ -90,10 +90,6 @@ export const BillCatEmojiLabel = <C extends ElementType = 'div'>(props: Polymorp
   const strokeWidth = 1.75
   const svgSize = size === 'small' ? 28 : 38
 
-  useEffect(() => {
-    console.log('progress', progress)
-  }, [progress])
-
   return (
     <Component
       {...rest}
