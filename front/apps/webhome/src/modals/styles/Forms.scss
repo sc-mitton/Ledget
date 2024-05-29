@@ -57,11 +57,13 @@
 
 .multi-input-row {
     display: flex;
+    flex-wrap: wrap;
     gap: .5em;
     align-items: center;
+    box-sizing: border-box;
 
     &>div {
-        flex: 0 0 1;
+        flex: 0 1 1;
         max-width: 50%;
 
         &>div {
