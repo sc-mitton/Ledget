@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom'
 import { Key } from '@geist-ui/icons'
 
 import { withModal } from '@ledget/ui'
-import './PassKey.css'
+import './PassKey.scss'
 
 const Modal = withModal((props) => {
     return (

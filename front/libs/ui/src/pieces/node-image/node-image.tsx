@@ -1,5 +1,3 @@
-import './node-image.css';
-
 export const NodeImage = ({ node, attributes }: { node: any, attributes: any }) => {
   return (
     <img

@@ -6,7 +6,7 @@ import { z } from 'zod'
 import { useForm } from "react-hook-form"
 import { AnimatePresence } from "framer-motion"
 
-import './style/SignUp.css'
+import './style/SignUp.scss'
 import SocialAuth from "./SocialAuth"
 import ledgetapi from '@api/axios'
 import { WindowLoadingBar } from "@pieces"

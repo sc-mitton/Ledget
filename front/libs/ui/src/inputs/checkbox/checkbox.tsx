@@ -1,6 +1,6 @@
 import { forwardRef, useState } from 'react'
 
-import './checkbox.css'
+import './checkbox.scss'
 
 
 interface CheckboxProps {

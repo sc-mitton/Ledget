@@ -4,7 +4,7 @@ import Big from 'big.js'
 import { Control, useController } from 'react-hook-form'
 import { Plus, CornerDownLeft, ChevronDown, Check } from '@geist-ui/icons'
 
-import './styles/Dropdowns.css'
+import './styles/Dropdowns.scss'
 import ComboSelect from './ComboSelect'
 import { SlimInputButton, MenuTextInput, DropdownDiv, DollarCents, DropdownItem } from '@ledget/ui'
 

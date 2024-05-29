@@ -2,7 +2,7 @@ import { ReactNode, createContext, useContext, useState } from 'react'
 import Picker from '@emoji-mart/react'
 import { Smile } from '@geist-ui/icons'
 
-import './styles/EmojiPicker.css'
+import './styles/EmojiPicker.scss'
 import { IconButton3, DropdownDiv, useColorScheme } from '@ledget/ui'
 
 export type emoji = string | { native: string, [key: string]: any }

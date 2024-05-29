@@ -2,7 +2,7 @@ import React, { useState, Dispatch, SetStateAction, useEffect } from 'react'
 
 import { Plus, Check } from '@geist-ui/icons'
 
-import './styles/Dropdowns.css'
+import './styles/Dropdowns.scss'
 import { Listbox } from '@headlessui/react'
 import { SlimInputButton, DropdownDiv, DropdownItem } from '@ledget/ui'
 import { useGetRemindersQuery, Reminder } from '@features/remindersSlice'

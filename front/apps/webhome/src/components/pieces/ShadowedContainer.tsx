@@ -1,6 +1,6 @@
 import { FC, useRef, HTMLProps, useState, useEffect } from 'react'
 
-import './styles/ShadowedContainer.css'
+import './styles/ShadowedContainer.scss'
 
 const getMaskImage = (string: 'top' | 'bottom' | 'bottom-top' | '') => {
     switch (string) {

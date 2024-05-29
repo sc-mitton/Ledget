@@ -6,7 +6,7 @@ import { Tab } from '@headlessui/react'
 import { ChevronDown } from '@geist-ui/icons'
 import { Calendar } from '@geist-ui/icons'
 
-import './styles/Dropdowns.css'
+import './styles/Dropdowns.scss'
 import './styles/Scheduler.scss'
 import type { Bill } from '@features/billSlice'
 import { useClickClose } from '@ledget/ui'

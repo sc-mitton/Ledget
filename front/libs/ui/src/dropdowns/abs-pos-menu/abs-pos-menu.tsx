@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 
 import { DropdownDiv } from '@ledget/ui'
 import { useClickClose } from '../../utils/hooks'
-import './abs-pos-menu.css'
+import './abs-pos-menu.scss'
 
 export const AbsPosMenu = ({ pos, show, setShow, topArrow = true, children }:
   {

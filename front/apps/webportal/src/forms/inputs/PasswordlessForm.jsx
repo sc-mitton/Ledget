@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom'
 import { filterNodesByGroups, isUiNodeInputAttributes } from '@ory/integrations/ui'
 import { HelpCircle, Key } from '@geist-ui/icons'
 
-import './styles/PasswordlessFormSection.css'
+import './styles/PasswordlessFormSection.scss'
 import { GrayWideButton } from '@ledget/ui'
 
 

@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react"
-import "./otc.css"
+import "./otc.scss"
 
 
 export function Otc({ codeLength = 6, required = true, colorful = false }) {

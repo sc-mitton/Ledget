@@ -1,4 +1,4 @@
-import './buttons.css'
+import './buttons.scss'
 import { Delete, Grip, CornerGrip } from '@ledget/media'
 
 export const DeleteButton = ({ onClick }) => (

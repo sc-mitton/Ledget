@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import './ReAuth.css'
+import './ReAuth.scss'
 import { useSearchParams, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
