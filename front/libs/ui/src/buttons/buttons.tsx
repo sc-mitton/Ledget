@@ -10,7 +10,7 @@ import {
 } from '@ledget/media'
 import { Tooltip } from '../pieces/tooltip/tooltip'
 import { LoadingRing } from '../pieces/loading-indicators/loading-indicators'
-import { ButtonWithClassName, withArrow, withCheckMark, withLoading } from './button-utils'
+import { ButtonWithClassName, withArrow, withCheckMark, withLoading } from './utils'
 import { X, Copy, ChevronDown, ChevronsDown, Check } from '@geist-ui/icons'
 
 export const BlackPillButton = ButtonWithClassName('btn-chcl btn-pill')

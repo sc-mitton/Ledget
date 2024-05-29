@@ -57,7 +57,6 @@ export default defineConfig({
       '@api': path.resolve(__dirname, './src/api'),
       '@context': path.resolve(__dirname, './src/context'),
       '@modals': path.resolve(__dirname, './src/modals'),
-      '@utils': path.resolve(__dirname, './src/utils'),
       '@features': path.resolve(__dirname, './src/features'),
       '@styles': path.resolve(__dirname, './src/styles'),
     }

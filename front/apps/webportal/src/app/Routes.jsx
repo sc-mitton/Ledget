@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { Routes, Route, Outlet, Navigate, Navigate, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 
 import LoginWindow from '@forms/Login'
@@ -11,6 +11,11 @@ import { ActivationWindow } from '@forms/activation'
 import Header from './header'
 import { SendRegisteredToCheckout } from '@utils'
 import { useColorScheme } from '@ledget/ui'
+
+export const SendRegisteredToCheckout = () => (
+    JSON.parse(sessionStorage.getItem('identifier' || null))
+        ? <Navigate to="/checkout" /> : <Outlet />
+)
 
 function AnimatedRoutes() {
     const location = useLocation()

@@ -1,5 +1,5 @@
 import { forwardRef, ButtonHTMLAttributes, FC, useEffect, useState } from 'react'
-import { ChevronDown, ChevronRight, Check } from '@geist-ui/icons'
+import { ChevronRight, Check } from '@geist-ui/icons'
 
 import { LoadingRing } from '../pieces/loading-indicators/loading-indicators'
 import { TranslucentShimmerDiv } from '../pieces/shimmer/shimmer'
