@@ -4,7 +4,7 @@ import { Plus, Check } from '@geist-ui/icons'
 
 import './styles/Dropdowns.css'
 import { Listbox } from '@headlessui/react'
-import { SlimmestInputButton, DropdownDiv, DropdownItem } from '@ledget/ui'
+import { SlimInputButton, DropdownDiv, DropdownItem } from '@ledget/ui'
 import { useGetRemindersQuery, Reminder } from '@features/remindersSlice'
 
 
@@ -80,8 +80,8 @@ const AddReminder = ({ value, onChange, defaultSelected }:
                 {({ open }) => (
                     <>
                         <Listbox.Button
-                            as={SlimmestInputButton}
-                            id="add-reminder-btn"
+                            as={SlimInputButton}
+                            className="add-reminder-btn"
                             style={{ fontWeight: '400' }}
                         >
                             <span>Reminder</span>

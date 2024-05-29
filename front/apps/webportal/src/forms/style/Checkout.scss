@@ -289,7 +289,7 @@ input[type="radio"]:not(:checked)+.subscription-radio--container .dog-ear {
 
         &.dark {
             .dog-ear svg {
-                color: var(--blue-medium);
+                color: var(--btn-feather-light-gray);
             }
 
             #prices-container {

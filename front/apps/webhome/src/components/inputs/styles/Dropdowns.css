@@ -4,34 +4,28 @@
 }
 
 .select {
-    margin-top: .5rem;
+    margin-top: .25rem;
 }
 
-#add-alert-btn {
+.add-alert-btn {
     width: 100%;
     display: flex;
     justify-content: space-between;
+    gap: 1em;
 }
 
-#period-select-btn {
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-    justify-content: space-between;
+.add-alert-btn.selected {
+    color: var(--m-text);
 }
 
-#add-reminder-btn {
+.add-reminder-btn {
     gap: .5rem;
     color: var(--m-text);
 }
 
-#add-reminder-btn.unset span,
-#add-reminder-btn.unset svg {
+.add-reminder-btn.unset span,
+.add-reminder-btn.unset svg {
     opacity: .5
-}
-
-#add-alert-btn svg {
-    margin-left: .375rem;
 }
 
 .slct-item {

@@ -47,7 +47,7 @@ export const BalanceChart = () => {
                 window === '1Y' ? dayjs().subtract(1, 'year').startOf('month').unix() :
                     dayjs().subtract(5, 'years').startOf('month').unix()
 
-        if (accounts) {
+        if (accounts?.length) {
             getAccountBalance({
                 start,
                 end: dayjs().endOf('month').unix(),

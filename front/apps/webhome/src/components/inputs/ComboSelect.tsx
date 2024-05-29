@@ -6,6 +6,7 @@ import React, {
     useRef,
     forwardRef,
     ComponentPropsWithRef,
+    ComponentPropsWithoutRef
 } from 'react'
 
 import { useClickClose } from '@ledget/ui'
@@ -103,7 +104,7 @@ const ComboSelect = <TV extends OptionValue, TO extends { id: string | number, v
 }
 
 interface ButtonProps {
-    as?: React.FC<ComponentPropsWithRef<'button'>>
+    as?: React.FC<ComponentPropsWithoutRef<'button'>>
 }
 
 const Button = forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement> & ButtonProps>((props, ref) => {

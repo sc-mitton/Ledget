@@ -21,32 +21,17 @@ import {
   CreateCategory,
   CreateBill,
   ForceVerification,
-  BillModal,
   OnboardingModal,
-  TransactionItem,
-  CategoryModal,
-  Help as HelpModal,
-  Logout as LogoutModal,
-  EditBudgetCategories
 } from '@modals/index'
 import { useGetMeQuery } from '@features/userSlice'
 import {
-  selectTransactionModal,
-  clearTransactionModal,
-  selectCategoryModal,
-  clearCategoryModal,
-  selectBillModal,
-  clearBillModal,
   selectLogoutModal,
   setLogoutModal,
-  refreshLogoutTimer,
-  clearLogoutModal,
-  clearModal,
-  selectModal
+  refreshLogoutTimer
 } from '@features/modalSlice';
 import { toastStackSelector, tossToast } from '@features/toastSlice'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
-import { ReAuthModal } from '@utils/withReAuth'
+import Modals from './modals'
 
 const PrivateRoute = () => {
   const { isSuccess, isError } = useGetMeQuery()
@@ -78,11 +63,7 @@ const App = () => {
   const [isActivityDetected, setIsActivityDetected] = useState(false);
 
   const toastStack = useAppSelector(toastStackSelector)
-  const transactionModal = useAppSelector(selectTransactionModal)
-  const categoryModal = useAppSelector(selectCategoryModal)
-  const billModal = useAppSelector(selectBillModal)
   const logoutModal = useAppSelector(selectLogoutModal)
-  const modal = useAppSelector(selectModal)
 
   // Handle automatic logout
   useEffect(() => {
@@ -147,34 +128,7 @@ const App = () => {
           </Routes>
         </ZoomMotionDiv>
       </AnimatePresence>
-
-      {/* Modals */}
-      {transactionModal.item &&
-        <TransactionItem
-          item={transactionModal.item}
-          splitMode={transactionModal.splitMode}
-          onClose={() => dispatch(clearTransactionModal())}
-        />}
-      {categoryModal.category &&
-        <CategoryModal
-          category={categoryModal.category}
-          onClose={() => dispatch(clearCategoryModal())}
-        />}
-      {billModal.bill &&
-        <BillModal
-          bill={billModal.bill}
-          onClose={() => dispatch(clearBillModal())}
-        />}
-      {logoutModal.open && <LogoutModal onClose={() => {
-        dispatch(clearLogoutModal())
-        dispatch(refreshLogoutTimer())
-      }} />}
-
-      {modal === 'reAuth' && <ReAuthModal />}
-      {modal === 'editCategories' && <EditBudgetCategories onClose={() => dispatch(clearModal())} />}
-      {modal === 'help' && <HelpModal onClose={() => dispatch(clearModal())} />}
-
-      {/* Toast */}
+      <Modals />
       <Toast toastStack={toastStack} cleanUp={(toastId) => dispatch(tossToast(toastId))} />
     </>
   )

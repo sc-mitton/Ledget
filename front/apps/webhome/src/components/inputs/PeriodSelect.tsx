@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 
 import { Control } from 'react-hook-form'
 
-import { SlimmestInputButton, BakedListBox } from '@ledget/ui'
+import { SlimInputButton, BakedListBox } from '@ledget/ui'
 
 const baseopts = [
     { id: 1, value: 'month', label: 'Monthly', disabled: false, default: true },
@@ -43,7 +43,7 @@ const PeriodSelect = (props: P) => {
                 placement='left'
                 control={control as any}
                 name={name}
-                as={SlimmestInputButton}
+                as={SlimInputButton}
                 options={options}
                 defaultValue={options.find(op => op.value === defaultValue)}
                 labelPrefix={labelPrefix}

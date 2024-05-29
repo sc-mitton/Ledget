@@ -16,10 +16,12 @@ const Trend = () => {
     const [getBalanceTrend, { data: accountBalanceTrend }] = useLazyGetAccountBalanceTrendQuery()
 
     useEffect(() => {
-        getBalanceTrend({
-            type: pathMappings.getAccountType(location) as 'depository' | 'investment',
-            accounts: accounts?.map(account => account.account_id)
-        })
+        if (accounts?.length) {
+            getBalanceTrend({
+                type: pathMappings.getAccountType(location) as 'depository' | 'investment',
+                accounts: accounts?.map(account => account.account_id)
+            }, true)
+        }
     }, [location.pathname])
 
     const total = useMemo(() =>

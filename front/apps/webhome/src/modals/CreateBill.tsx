@@ -21,7 +21,6 @@ import { Checkbox } from '@ledget/ui'
 import { useAddnewBillMutation } from '@features/billSlice'
 import { Reminder } from '@features/remindersSlice'
 
-
 export const billSchema = z.object({
     name: z.string().toLowerCase().min(1, { message: 'required' }).max(50, { message: 'Name is too long.' }),
     emoji: z.string().optional(),
@@ -109,7 +108,7 @@ const Form = withModal((props) => {
                 id="new-bill-form"
                 onSubmit={submitForm}
             >
-                <div className="padded-row">
+                <div>
                     <label htmlFor="schedule">Schedule</label>
                     <div className="multi-input-row">
                         <div>
@@ -135,7 +134,6 @@ const Form = withModal((props) => {
                         <AddReminder />
                     </div>
                 </div>
-
                 <div>
                     <EmojiComboText
                         emoji={emoji}
@@ -164,13 +162,14 @@ const Form = withModal((props) => {
                     </div>
                 </div>
                 <div className='padded-row' style={{ width: '50%' }}>
+                    <label htmlFor="expires">Expires</label>
                     <Controller
                         name="expires"
                         control={control}
                         render={(props) => (
                             <DatePicker
                                 disabled={[[undefined, dayjs().subtract(1, 'day')]]}
-                                placeholder="Expires"
+                                placeholder="Date"
                                 format="M/D/YYYY"
                                 aria-label='Expiration date'
                                 onChange={(e) => { props.field.onChange(e?.toISOString()) }}
@@ -193,7 +192,7 @@ export default function () {
 
     return (
         <Form
-            onClose={() => navigate(-1)}
+            onClose={() => navigate('/budget')}
             maxWidth={'21.875rem'}
             minWidth={'0'}
             blur={2}

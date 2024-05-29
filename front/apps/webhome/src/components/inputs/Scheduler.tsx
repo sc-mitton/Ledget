@@ -11,7 +11,7 @@ import './styles/Scheduler.scss'
 import type { Bill } from '@features/billSlice'
 import { useClickClose } from '@ledget/ui'
 import {
-    SlimmestInputButton,
+    SlimInputButton,
     InputButton,
     FormErrorTip,
     DropdownDiv,
@@ -87,7 +87,7 @@ const Scheduler = (props: Omit<Context, 'open' | 'setOpen' | 'buttonRef'> & { ch
 }
 
 const Button: FC<React.HTMLAttributes<HTMLButtonElement> & { iconPlaceholder?: boolean }> = ({ children, iconPlaceholder, ...props }) => {
-    const Component = iconPlaceholder ? InputButton : SlimmestInputButton
+    const Component = iconPlaceholder ? InputButton : SlimInputButton
 
     const [placeholder, setPlaceholder] = useState('')
     const {

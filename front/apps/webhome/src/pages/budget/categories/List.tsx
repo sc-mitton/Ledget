@@ -86,7 +86,7 @@ const CategoriesList = ({ period }: { period: Category['period'] }) => {
                 <h4><DollarCents value={totalLimit} withCents={false} /></h4>
             </div>
             <div className={`${period}`}>
-                <ProgressBar progress={Big(totalSpent).div(Big(totalLimit || 1)).toNumber()} />
+                <ProgressBar progress={Big(totalSpent).div(Big(totalLimit || 1)).times(100).toNumber()} />
             </div>
             {isLoading
                 ? <><SkeletonCategories length={5} period={period} /><div></div></>

@@ -6,7 +6,7 @@ import { Plus, CornerDownLeft, ChevronDown, Check } from '@geist-ui/icons'
 
 import './styles/Dropdowns.css'
 import ComboSelect from './ComboSelect'
-import { SlimmestInputButton, MenuTextInput, DropdownDiv, DollarCents, DropdownItem } from '@ledget/ui'
+import { SlimInputButton, MenuTextInput, DropdownDiv, DollarCents, DropdownItem } from '@ledget/ui'
 
 const baseAlertOptions = [
     { id: 1, value: { percent_amount: 25 }, disabled: false },
@@ -123,8 +123,7 @@ const AddAlert = (props: { limitAmount?: number, defaultValues?: typeof baseAler
 
     const ButtonText = () => (
         <>
-            {(selectedAlerts?.length && selectedAlerts?.length > 0)
-                &&
+            {selectedAlerts && selectedAlerts?.length > 0 &&
                 <div style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -152,16 +151,8 @@ const AddAlert = (props: { limitAmount?: number, defaultValues?: typeof baseAler
                     </span>
                 </div>
             }
-            {(selectedAlerts?.length && selectedAlerts.length === 0 || selectedAlerts == undefined) &&
-                <span>
-                    Add Alert
-                </span>}
-            {(selectedAlerts?.length && selectedAlerts.length > 0)
-                ?
-                <ChevronDown className='icon' />
-                :
-                <Plus className='icon' />
-            }
+            {!selectedAlerts?.length && <span>Add Alert</span>}
+            {selectedAlerts?.length ? <ChevronDown className='icon' /> : <Plus className='icon' />}
         </>
     )
 
@@ -189,8 +180,8 @@ const AddAlert = (props: { limitAmount?: number, defaultValues?: typeof baseAler
                 <>
                     <ComboSelect.Button
                         tabIndex={0}
-                        as={SlimmestInputButton}
-                        id="add-alert-btn"
+                        as={SlimInputButton}
+                        className={`add-alert-btn ${selectedAlerts?.length ? 'selected' : ''}`}
                         ref={buttonRef}
                     >
                         <ButtonText />
@@ -212,8 +203,9 @@ const AddAlert = (props: { limitAmount?: number, defaultValues?: typeof baseAler
                         </DropdownDiv>
                     </ComboSelect.Options>
                 </>
-            )}
-        </ComboSelect>
+            )
+            }
+        </ComboSelect >
     )
 }
 

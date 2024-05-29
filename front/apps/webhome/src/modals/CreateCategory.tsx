@@ -47,36 +47,29 @@ const CreateCategoryModal = withModal((props) => {
                 id="new-cat-form"
                 className="create-form"
             >
-                <div className="split-inputs">
-                    <div>
-                        <EmojiComboText
-                            emoji={emoji}
-                            setEmoji={setEmoji}
-                            name="name"
-                            placeholder="Name"
-                            register={register}
-                            error={errors.name}
-                        />
-                    </div>
-                    <div>
-                        <LimitAmountInput withCents={false} control={control}>
-                            <FormErrorTip error={errors.limit_amount} />
-                        </LimitAmountInput>
-                    </div>
-
+                <div>
+                    <EmojiComboText
+                        emoji={emoji}
+                        setEmoji={setEmoji}
+                        name="name"
+                        placeholder="Name"
+                        register={register}
+                        error={errors.name}
+                    />
                 </div>
-                <div className="extra-padded-row">
-                    <div>
-                        <PeriodSelect
-                            name="period"
-                            control={control}
-                            labelPrefix={'Resets'}
-                            default={location.state?.period}
-                        />
-                    </div>
-                    <div>
-                        <AddAlert limitAmount={watchLimitAmount} control={control} />
-                    </div>
+                <div>
+                    <LimitAmountInput withCents={false} control={control}>
+                        <FormErrorTip error={errors.limit_amount} />
+                    </LimitAmountInput>
+                </div>
+                <div className='multi-input-row'>
+                    <PeriodSelect
+                        name="period"
+                        control={control}
+                        labelPrefix={'Resets'}
+                        default={location.state?.period}
+                    />
+                    <div><AddAlert limitAmount={watchLimitAmount} control={control} /></div>
                 </div>
                 <SubmitForm
                     submitting={isLoading}
