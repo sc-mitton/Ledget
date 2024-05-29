@@ -19,7 +19,6 @@ import {
     SlideMotionDiv,
     PlainTextInput,
     BackButton,
-    WindowHeader,
     WindowHeader
 } from "@ledget/ui"
 import { useFlow } from '@ledget/ory'

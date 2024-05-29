@@ -55,3 +55,14 @@ class TestPlaidItemView(ViewTestsMixin):
 
         accounts = Account.objects.filter(useraccount__user_id=self.user.id)
         self.assertEqual(accounts[0].id, payload[-1]['account'])
+
+    def test_get_account_balance_trend(self):
+        '''
+        Test the balance trend endpoint by checking if the response contains
+        the expected keys
+        '''
+
+        response = self.client.get(reverse('account-balance-trend'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('days', response.data)
+        self.assertIn('trends', response.data)

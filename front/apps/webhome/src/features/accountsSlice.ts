@@ -39,12 +39,33 @@ interface GetAccountsResponse {
     accounts: Account[]
 }
 
+interface GetAccountBalanceHistoryParams {
+    start: number
+    end: number
+    type: 'depository' | 'investment'
+    accounts?: string[]
+}
+
+interface GetAccountBalanceTrendParams extends Omit<GetAccountBalanceHistoryParams, 'start' | 'end'> {
+    days?: number
+}
+
+type BalanceTrend = {
+    'trend': number
+    'date': string
+}
+
 type AccountBalance = {
     account_id: string
     history: {
         month: string
         balance: number
     }[]
+}
+
+type GetAccountBalanceTrendResponse = {
+    days: number
+    trends: BalanceTrend[]
 }
 
 type GetBalanceHistoryResponse = AccountBalance[]
@@ -58,13 +79,25 @@ export const accountsSlice = apiWithTag.injectEndpoints({
             keepUnusedDataFor: 60 * 30, // 30 minutes
             providesTags: ['Account'],
         }),
-        getAccountBalanceHistory: builder.query<GetBalanceHistoryResponse, { start: number, end: number, type: 'depository' | 'investment' } | void>({
+        getAccountBalanceHistory: builder.query<GetBalanceHistoryResponse, GetAccountBalanceHistoryParams | void>({
             query: (params) => {
+                const { accounts, ...rest } = params || {}
                 const queryObj = {
-                    url: `/accounts/balance-history`,
+                    url: `/accounts/balance-history${accounts ? `?account=${accounts.join('&account=')}` : ''}`,
                     method: 'GET',
                 }
-                return params ? { ...queryObj, params } : queryObj
+                return rest ? { ...queryObj, params: rest } : queryObj
+            },
+            keepUnusedDataFor: 60 * 30, // 30 minutes
+        }),
+        getAccountBalanceTrend: builder.query<GetAccountBalanceTrendResponse, GetAccountBalanceTrendParams>({
+            query: (params) => {
+                const { accounts, ...rest } = params || {}
+                const queryObj = {
+                    url: `/accounts/balance-trend${accounts ? `?account=${accounts.join('&account=')}` : ''}`,
+                    method: 'GET',
+                }
+                return rest ? { ...queryObj, params: rest } : queryObj
             },
             keepUnusedDataFor: 60 * 30, // 30 minutes
         }),
@@ -79,6 +112,11 @@ export const accountsSlice = apiWithTag.injectEndpoints({
     }),
 })
 
-export const { useGetAccountsQuery, useUpdateAccountsMutation, useLazyGetAccountBalanceHistoryQuery } = accountsSlice
+export const {
+    useGetAccountsQuery,
+    useUpdateAccountsMutation,
+    useLazyGetAccountBalanceHistoryQuery,
+    useLazyGetAccountBalanceTrendQuery,
+} = accountsSlice
 
 export const useGetAccountsQueryState = accountsSlice.endpoints.getAccounts.useQueryState

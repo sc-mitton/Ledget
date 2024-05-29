@@ -113,17 +113,18 @@
     display: flex;
     align-items: center;
     gap: 2.875em;
+    position: relative;
 
     span {
         margin: .25em 0;
     }
 
     span:nth-of-type(2)+button {
-        right: 3.25em;
+        right: 1em;
     }
 
     span:nth-of-type(1)+button {
-        right: 3.75em;
+        right: 1.75em;
     }
 
     button {

@@ -1,7 +1,7 @@
-from collections import defaultdict
 from decimal import Decimal
 import json
 from datetime import datetime
+from typing import List
 
 import plaid.exceptions
 from rest_framework.viewsets import ViewSet
@@ -91,6 +91,24 @@ class AccountsViewSet(ViewSet):
 
         return Response(response_data, HTTP_200_OK)
 
+    @action(detail=False, methods=['get'], url_path='balance-trend',
+            url_name='balance-trend')
+    def balance_trend(self, request, *args, **kwargs):
+        '''Get the balance trend for the last 30 days'''
+
+        account_type = self.request.query_params.get('type', 'depository')
+        days = self.request.query_params.get('days', 30)
+
+        accounts = [
+            a.id for a in self._get_users_accounts()
+            if a.type == account_type
+        ]
+
+        trends = self._get_balance_trend(accounts, days)
+        response_data = {'days': days, 'trends': trends}
+
+        return Response(response_data, HTTP_200_OK)
+
     def list(self, request, *args, **kwargs):
         '''Get all the account data belonging to a specific user'''
 
@@ -107,17 +125,22 @@ class AccountsViewSet(ViewSet):
         }, HTTP_200_OK)
 
     def _get_users_accounts(self, include_institutions=False):
+        account_ids = self.request.query_params.getlist('accounts')
+
         qset = Account.objects.filter(
-            useraccount__user__in=self.request.user.account.users.all()) \
-            .order_by('useraccount__order') \
-            .prefetch_related('plaid_item')
+            useraccount__user__in=self.request.user.account.users.all())
+
+        if account_ids:
+            qset = qset.filter(id__in=account_ids)
+
+        qset = qset.order_by('useraccount__order').prefetch_related('plaid_item')
 
         if include_institutions:
             qset = qset.prefetch_related('institution')
 
         return qset
 
-    def _fetch_plaid_account_data(self, accounts: list) -> dict:
+    def _fetch_plaid_account_data(self, accounts: List[Account]) -> dict:
         already_fetched_tokens = []
 
         account_balances = {}
@@ -161,21 +184,43 @@ class AccountsViewSet(ViewSet):
              .annotate(year=TruncYear('date')) \
              .values('month', 'year', 'account') \
              .annotate(total=Sum('amount')) \
-             .order_by('account', 'month')
+             .order_by('account', '-month')
 
-        data = defaultdict(lambda: [])
-        balance = Decimal(0)
+        data = {
+            a['account_id']: [{
+                'month': f"{datetime.now().strftime('%Y-%m-%d')}",
+                'balance': Decimal(a['balances']['current'])
+            }]
+            for a in accounts_balance.values()
+        }
 
         for item in qset:
-            if item['account'] not in data:
-                balance = Decimal(
-                    accounts_balance[item['account']]['balances']['current'])
-            else:
-                balance += item['total']
-
+            balance = data[item['account']][-1]['balance'] - item['total']
             data[item['account']].append({
                 'month': f"{item['month']}",
                 'balance': balance
+            })
+
+        return data
+
+    def _get_balance_trend(self, accounts: list, days: int):
+
+        start = datetime.now() - timezone.timedelta(days=days)
+        end = datetime.now()
+
+        qset = Transaction.objects.filter(
+            account__in=accounts,
+            date__gte=start,
+            date__lte=end,
+        ).values('account') \
+         .annotate(total=Sum('amount')) \
+         .order_by('account')
+
+        data = []
+        for item in qset:
+            data.append({
+                'trend': item['total'],
+                'account': item['account']
             })
 
         return data

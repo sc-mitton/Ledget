@@ -387,6 +387,14 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
+    id: 'account-balance-trend',
+    match: {
+      methods: ['GET'],
+      url: base_url + '/accounts/balance-trend',
+    },
+  },
+  BaseWithAuth
+  {
     id: 'reminders',
     match: {
       methods: ['GET'],

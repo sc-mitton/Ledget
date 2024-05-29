@@ -1,0 +1,21 @@
+.account-balance-trend {
+    display: flex;
+    align-items: center;
+    gap: .25em;
+
+    &.positive {
+        color: var(--green-text);
+    }
+
+    &.negative {
+        color: var(--mute-red);
+    }
+
+    &>div {
+        font-size: 1rem;
+    }
+
+    &>div span:not([role='tooltip']) {
+        color: var(--m-text-secondary);
+    }
+}

@@ -5,14 +5,14 @@ import Big from "big.js"
 import { Listbox } from '@headlessui/react'
 
 import "./styles/AccountSelector.scss"
-import { DollarCents, BlueWindow, useAccessEsc } from "@ledget/ui"
+import { DollarCents, BlueWindow, useAccessEsc, } from "@ledget/ui"
 import { InsitutionLogo } from '@components/pieces'
-import { Account } from "@features/accountsSlice"
+import { Account, } from "@features/accountsSlice"
 import { useAccountsContext } from '../context'
 import { ChevronDown } from "@geist-ui/icons"
+import AccountBalanceTrend from '../Trend'
 import pathMappings from "../path-mappings"
 import Options from "./Options"
-
 
 const HeaderWindow = () => {
     const location = useLocation()
@@ -20,13 +20,12 @@ const HeaderWindow = () => {
 
     return (
         <BlueWindow id='small-screen-accounts-header'>
-            <div>
-                <h4>{pathMappings.getWaferTitle(location)}</h4>
-            </div>
+            <h4>{pathMappings.getWaferTitle(location)}</h4>
             <h1>
                 <DollarCents value={accounts?.reduce((acc, account) =>
                     acc.plus(account.balances.current), Big(0)).times(100).toNumber() || 0} />
             </h1>
+            <AccountBalanceTrend />
         </BlueWindow>
     )
 }

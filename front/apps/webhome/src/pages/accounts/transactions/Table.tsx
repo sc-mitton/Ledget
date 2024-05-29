@@ -30,10 +30,7 @@ const Table = ({ children, ...rest }: Props) => {
     const { screenSize } = useScreenContext()
     const [dateRange, setDateRange] = useState<[Dayjs, Dayjs]>()
 
-    const [getTransactions, {
-        data: transactionsData,
-        isLoading: isLoadingTransactions,
-    }] = useLazyGetTransactionsQuery()
+    const [getTransactions, { data: transactionsData }] = useLazyGetTransactionsQuery()
 
     // Initial fetch
     useEffect(() => {

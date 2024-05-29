@@ -15,11 +15,12 @@ import {
 import { LineGraph } from '@ledget/media'
 import { useAccountsContext } from '../context'
 import { BalanceChart } from '../balance-chart/BalanceChart'
-import useAnimate from './useAnimate'
-import Wafer from './Wafer'
-import SkeletonWafers from './SkeletonWafers'
-import pathMappings from '../path-mappings'
 import { WaferStyle } from './types'
+import pathMappings from '../path-mappings'
+import SkeletonWafers from './SkeletonWafers'
+import Wafer from './Wafer'
+import Trend from '../Trend'
+import useAnimate from './useAnimate'
 
 const waferWidth = 165
 const creditWaferWidth = 175
@@ -96,6 +97,7 @@ function Wafers() {
                             <DollarCents value={accounts?.reduce((acc, account) =>
                                 acc.plus(account.balances.current), Big(0)).times(100).toNumber() || 0} />
                         </h1>
+                        <Trend />
                     </div>
                     {isLoadingAccounts
                         ? <SkeletonWafers

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { ResponsiveLine } from '@nivo/line'
 import { useLocation } from 'react-router-dom'
 import dayjs from 'dayjs'
+import Big from 'big.js'
 
 import './BalanceChart.scss'
 import { useLazyGetAccountBalanceHistoryQuery } from '@features/accountsSlice'
@@ -18,14 +19,14 @@ import {
 import { useAccountsContext } from '../context'
 import pathMappings from '../path-mappings'
 
-const fakeData = [
-    { x: '2024-01-01', y: 1200 },
-    { x: '2024-02-01', y: 1500 },
-    { x: '2024-03-01', y: 2120 },
-    { x: '2024-04-01', y: 2000 },
-    { x: '2024-05-01', y: 2700 },
-    { x: '2024-06-01', y: 3000 },
-]
+// const fakeData = [
+//     { x: '2024-01-01', y: 1200 },
+//     { x: '2024-02-01', y: 1500 },
+//     { x: '2024-03-01', y: 2120 },
+//     { x: '2024-04-01', y: 2000 },
+//     { x: '2024-05-01', y: 2700 },
+//     { x: '2024-06-01', y: 3000 },
+// ]
 
 export const BalanceChart = () => {
     const { accounts } = useAccountsContext()
@@ -50,7 +51,8 @@ export const BalanceChart = () => {
             getAccountBalance({
                 start,
                 end: dayjs().endOf('month').unix(),
-                type: pathMappings.getAccountType(location) as 'depository' | 'investment'
+                type: pathMappings.getAccountType(location) as 'depository' | 'investment',
+                accounts: accounts.map(account => account.account_id)
             })
         }
     }, [location.pathname, window])
@@ -66,10 +68,10 @@ export const BalanceChart = () => {
                     max = Math.max(max, item.balance)
                 }
             }
-            for (const item of fakeData) {
-                min = Math.min(min, item.y)
-                max = Math.max(max, item.y)
-            }
+            // for (const item of fakeData) {
+            //     min = Math.min(min, item.y)
+            //     max = Math.max(max, item.y)
+            // }
             setYBoundaries([min * .875, max * 1.5])
         }
     }, [accounts, balanceHistoryData])
@@ -101,10 +103,10 @@ export const BalanceChart = () => {
                                 }]}
                                 tooltip={({ point }) => {
                                     return (
-                                        <ChartTip position={point.index >= accounts.length / 2 ? 'left' : 'right'}>
-                                            <span>{`${dayjs(point.data.x).format('MMM')}`}</span>
+                                        <ChartTip position={point.index <= accounts.length / 2 ? 'left' : 'right'}>
+                                            <span style={{ opacity: .5 }}>{`${dayjs(point.data.x).format('MMM D')}`}</span>
                                             &nbsp;&nbsp;
-                                            <DollarCents value={point.data.y as number} />
+                                            <DollarCents value={Big(point.data.y as number).times(100).toNumber()} />
                                         </ChartTip>
                                     )
                                 }}

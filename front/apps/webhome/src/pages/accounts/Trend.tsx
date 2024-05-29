@@ -1,0 +1,38 @@
+import { useMemo, useEffect } from 'react'
+
+import './styles/Trend.scss'
+import { useLocation } from 'react-router-dom'
+import Big from 'big.js'
+
+import { useLazyGetAccountBalanceTrendQuery } from '@features/accountsSlice'
+import { Tooltip, DollarCents } from '@ledget/ui'
+import { ArrowUpRight, ArrowDownLeft } from '@geist-ui/icons'
+import pathMappings from './path-mappings'
+import { useAccountsContext } from './context'
+
+const Trend = () => {
+    const { accounts } = useAccountsContext()
+    const location = useLocation()
+    const [getBalanceTrend, { data: accountBalanceTrend }] = useLazyGetAccountBalanceTrendQuery()
+
+    useEffect(() => {
+        getBalanceTrend({
+            type: pathMappings.getAccountType(location) as 'depository' | 'investment',
+            accounts: accounts?.map(account => account.account_id)
+        })
+    }, [location.pathname])
+
+    const total = useMemo(() => accountBalanceTrend?.trends.reduce((acc, trend) =>
+        acc.plus(trend.trend), Big(0)).times(100).toNumber() || 0, [accountBalanceTrend])
+
+    return (
+        <div className={`account-balance-trend ${total >= 0 ? 'positive' : 'negative'}`}>
+            <Tooltip msg={'Last 30 days'} delay={0}>
+                <DollarCents value={total} withCents={false} />
+            </Tooltip>
+            {total >= 0 ? <ArrowUpRight className='icon' /> : <ArrowDownLeft className='icon' />}
+        </div>
+    )
+}
+
+export default Trend

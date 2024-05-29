@@ -291,7 +291,8 @@ svg.icon.small {
 }
 
 .dashboard.extra-small .main-window {
-    padding: 1.5em;
+    padding: 1em;
+    width: calc(100% - 2.5em);
 }
 
 .main-window {

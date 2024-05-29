@@ -6,6 +6,10 @@
     gap: 1em;
     justify-content: space-between;
 
+    h1 {
+        margin-left: -.125em;
+    }
+
     &>div:first-child {
         padding: 0 1.5em;
         display: flex;
@@ -23,10 +27,10 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             margin-left: 1em;
 
-            &>div {
+            &>div:first-child {
                 display: flex;
                 gap: .75em;
             }
