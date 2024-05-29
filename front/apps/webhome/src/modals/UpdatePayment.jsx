@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 
-import './styles/UpdatePayment.css'
+import './styles/UpdatePayment.scss'
 import { withModal } from '@ledget/ui'
 import {
     CardInput,

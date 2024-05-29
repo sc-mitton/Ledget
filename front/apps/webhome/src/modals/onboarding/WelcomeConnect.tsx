@@ -5,7 +5,7 @@ import CheckCircle from '@geist-ui/icons/checkCircle'
 import { Plus } from '@geist-ui/icons'
 
 import './styles/Welcome.scss'
-import './styles/Main.css'
+import './styles/Main.scss'
 import { useBakedPlaidLink } from '@utils/hooks'
 import { useGetPlaidItemsQuery, PlaidItem } from '@features/plaidSlice'
 import { useGetMeQuery } from '@features/userSlice'

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
-import './styles/DeactivateAuthenticator.css'
+import './styles/DeactivateAuthenticator.scss'
 import { useUpdateUserMutation } from '@features/userSlice'
 import { useCompleteSettingsFlowMutation, useLazyGetSettingsFlowQuery } from '@features/orySlice'
 import { withSmallModal } from '@ledget/ui'

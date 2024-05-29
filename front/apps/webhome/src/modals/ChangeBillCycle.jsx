@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import './styles/ChangeBillCycle.css'
+import './styles/ChangeBillCycle.scss'
 import { withSmallModal } from '@ledget/ui'
 import { useNavigate } from 'react-router-dom'
 import { BlueSubmitButton, LoadingRing } from '@ledget/ui'

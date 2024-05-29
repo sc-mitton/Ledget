@@ -1,8 +1,7 @@
 
-import './verification-form.css';
 import { useState, useEffect, useRef } from 'react'
 
-import './verification-form.css'
+import './verification-form.scss';
 import { LightBlueWideButton, ResendButton } from '../../buttons/buttons'
 import { Otc } from '../../inputs/otc/otc'
 

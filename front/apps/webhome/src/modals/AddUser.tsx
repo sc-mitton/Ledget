@@ -18,9 +18,7 @@ import { useAddUserToAccountMutation } from '@features/userSlice'
 import { withReAuth } from '@utils/index'
 import { hasErrorCode } from '@api/helpers'
 import { useLoaded } from '@utils/hooks'
-import { ExternalLink } from '@geist-ui/icons'
 import { Person } from '@ledget/media'
-
 
 const schema = z.object({
     email: z.string().min(1, 'Email is required').email('Invalid email address')

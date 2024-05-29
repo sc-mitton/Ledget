@@ -39,7 +39,7 @@ export const EmojiComboText = (props:
                 <Emoji emoji={emoji} setEmoji={setEmoji}>
                     {({ emoji }) => (
                         <>
-                            <div id="emoji-picker-ledget--button-container">
+                            <div className="emoji-picker-ledget--button-container">
                                 <Emoji.Button
                                     id='emoji-picker-ledget--button'
                                     emoji={emoji}

@@ -18,33 +18,6 @@
     margin-left: .125em;
 }
 
-.form-top {
-    margin-bottom: 1em;
-}
-
-.flex-responsive1 {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    margin-top: .5em;
-    box-sizing: border-box;
-}
-
-.flex-responsive1 label,
-.flex-responsive2 label {
-    margin-left: .25em;
-}
-
-.flex-responsive1>div:first-child {
-    flex: 6;
-    padding-right: .25em;
-}
-
-.flex-responsive1>div:last-child {
-    flex: 4;
-    padding-left: .25em;
-}
-
 .padded-row {
     margin: .25em 0;
 }
@@ -97,39 +70,9 @@
         @include s;
         margin-left: .25em;
     }
-
-}
-
-/* ---------------------------------- Emoji --------------------------------- */
-
-input.emoji {
-    width: 1.25em;
-    font-size: 1rem;
-    padding: 0 .25em 0 0;
-}
-
-#emoji-picker-ledget--button-container {
-    display: flex;
-    align-items: center;
-    margin-left: -.25em;
-    margin-right: .25em;
 }
 
 /* ---------------------------- Create Bill Form ---------------------------- */
-
-.limit-button {
-    opacity: 1;
-    cursor: pointer;
-    transition: opacity .2s ease;
-}
-
-#limit-radios button {
-    font-weight: var(--fw-light);
-}
-
-#bottom-inputs .checkbox-container {
-    margin-left: .75em;
-}
 
 #new-bill-form {
     #add-reminder--container {
@@ -144,8 +87,6 @@ input.emoji {
         margin-bottom: 1.5em;
     }
 }
-
-
 
 @media only screen and (max-width: 700px) {
     .split-inputs {

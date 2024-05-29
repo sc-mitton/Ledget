@@ -93,3 +93,10 @@
         animation: split-right .7s ease-out;
     }
 }
+
+.emoji-picker-ledget--button-container {
+    display: flex;
+    align-items: center;
+    margin-left: -.25em;
+    margin-right: .25em;
+}

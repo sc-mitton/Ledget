@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-import "./styles/Logout.css"
+import "./styles/Logout.scss"
 import { withSmallModal } from '@ledget/ui'
 import { useAppSelector } from '@hooks/store'
 import { selectLogoutModal } from '@features/modalSlice'
