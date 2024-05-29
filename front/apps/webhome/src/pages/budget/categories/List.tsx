@@ -1,75 +1,72 @@
-import { useState, Fragment, createContext, useContext } from 'react'
+import { Fragment, useMemo } from 'react'
 
 import { useNavigate, useLocation } from 'react-router-dom'
+import Big from 'big.js'
+import dayjs from 'dayjs'
 
-import './styles/SpendingCategories.scss'
+import './styles/Categories.scss'
 import { useAppSelector, useAppDispatch } from '@hooks/store'
 import { selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
 import { useGetCategoriesQuery } from '@features/categorySlice'
 import { Category } from '@features/categorySlice'
 import {
-    ColoredShimmer,
     CircleIconButton,
     Tooltip,
     BillCatEmojiLabel,
     DollarCents,
-    Window
+    ProgressBar
 } from '@ledget/ui'
-import { setCategoryModal } from '@features/modalSlice'
+import { useGetMeQuery } from '@features/userSlice'
+import { setCategoryModal, setModal } from '@features/modalSlice'
 import { selectBudgetItemsSort } from '@features/uiSlice'
-import { EditBudgetCategories } from '@modals/index'
 import { Plus, Edit2 } from '@geist-ui/icons'
-
-const ModalContext = createContext<{ modal: boolean, setModal: (modal: boolean) => void } | undefined>(undefined)
-const useModalContext = () => {
-    const context = useContext(ModalContext)
-    if (context === undefined) {
-        throw new Error('useModalContext must be used within a ModalProvider')
-    }
-    return context
-}
-const ModalProvider = ({ children }: { children: React.ReactNode }) => {
-    const [modal, setModal] = useState(false)
-    return (
-        <ModalContext.Provider value={{ modal, setModal }}>
-            {children}
-        </ModalContext.Provider>
-    )
-}
-
-// Add total spent somewhere in the category ui component
-// Add total progress bar to category windows
-
-// Add note for when yearly categories reload (tool tip)
-
-// Header underline for bills window
-
-// Filters for bills and categories
-
-const SkeletonCategories = ({ length, period }: { length: number, period: 'month' | 'year' }) => (
-    <>
-        {Array.from({ length: length }).map((_, i) => (
-            <ColoredShimmer className='category-shimmer' shimmering={true} color={period === 'month' ? 'blue' : 'green'} />
-        ))}
-    </>
-)
+import SkeletonCategories from './Skeleton'
 
 const CategoriesList = ({ period }: { period: Category['period'] }) => {
     const { month, year } = useAppSelector(selectBudgetMonthYear)
+    const { data: user } = useGetMeQuery()
     const { data: categories, isLoading } = useGetCategoriesQuery({ month, year }, { skip: !month || !year })
     const sort = useAppSelector(selectBudgetItemsSort)
     const location = useLocation()
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
-    const { setModal } = useModalContext()
+
+    const totalSpent = useMemo(() => {
+        if (categories) {
+            return categories?.filter(c => c.period === period).reduce((acc, c) => acc + c.amount_spent, 0)
+        } else {
+            return 0
+        }
+    }, [categories, period])
+
+    const totalLimit = useMemo(() => {
+        if (categories) {
+            return categories?.filter(c => c.period === period).reduce((acc, c) => acc + c.limit_amount, 0)
+        } else {
+            return 0
+        }
+    }, [categories, period])
 
     return (
         <div className='categories'>
             <div>
-                <h4>{`${period.charAt(0).toUpperCase()}${period.slice(1)}ly`}</h4>
+                {period === 'year'
+                    ?
+                    <Tooltip delay={.2} msg={
+                        user?.yearly_anchor
+                            ? `Yearly categories reload on ${dayjs(user?.yearly_anchor).format('MMM D')}`
+                            : 'No yearly categories set yet'}>
+                        <h4>{`${period.charAt(0).toUpperCase()}${period.slice(1)}ly`}</h4>
+                    </Tooltip>
+                    :
+                    <h4>{`${period.charAt(0).toUpperCase()}${period.slice(1)}ly`}</h4>
+                }
                 <div>
                     <Tooltip msg={`Edit Categories`} >
-                        <CircleIconButton onClick={() => { setModal(true) }} aria-label='Edit Categories'>
+                        <CircleIconButton
+                            onClick={() => { dispatch(setModal('editCategories')) }}
+                            aria-label='Edit Categories'
+                        >
                             <Edit2 size='.875em' />
                         </CircleIconButton>
                     </Tooltip>
@@ -83,7 +80,14 @@ const CategoriesList = ({ period }: { period: Category['period'] }) => {
                     </Tooltip>
                 </div>
             </div>
-            <hr />
+            <div className={`${period}`}>
+                <h4><DollarCents value={totalSpent} withCents={false} /></h4>
+                <span>spent of</span>
+                <h4><DollarCents value={totalLimit} withCents={false} /></h4>
+            </div>
+            <div className={`${period}`}>
+                <ProgressBar progress={Big(totalSpent).div(Big(totalLimit || 1)).toNumber()} />
+            </div>
             {isLoading
                 ? <><SkeletonCategories length={5} period={period} /><div></div></>
                 : <div>
@@ -130,35 +134,4 @@ const CategoriesList = ({ period }: { period: Category['period'] }) => {
     )
 }
 
-const ColumnView = () => (
-    <div id='spending-categories--columns'>
-        <Window>
-            <CategoriesList period='month' />
-        </Window>
-        <Window>
-            <CategoriesList period='year' />
-        </Window>
-    </div>
-)
-
-const SpendingCategories = () => {
-    const { modal, setModal } = useModalContext()
-
-    return (
-        <>
-            <div id='spending-categories'>
-                <h2>Categories</h2>
-                <ColumnView />
-            </div>
-            {modal && <EditBudgetCategories onClose={() => setModal(false)} />}
-        </>
-    )
-}
-
-export default function () {
-    return (
-        <ModalProvider>
-            <SpendingCategories />
-        </ModalProvider>
-    )
-}
+export default CategoriesList;

@@ -44,6 +44,7 @@ export interface User {
     co_owner: string | null,
     account: Account,
     is_account_owner: boolean,
+    yearly_anchor?: string,
 }
 
 export interface CoOwner {

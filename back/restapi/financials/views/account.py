@@ -219,6 +219,7 @@ class AccountsViewSet(ViewSet):
         data = []
         for item in qset:
             data.append({
+                'account': item['account'],
                 'trend': item['total'],
                 'account': item['account']
             })

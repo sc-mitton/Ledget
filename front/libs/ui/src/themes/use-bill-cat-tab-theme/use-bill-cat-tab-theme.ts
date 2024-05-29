@@ -7,8 +7,8 @@ export function useBillCatTabTheme() {
     pillBackgroundColor1, pillBackgroundColor2,
     tabBackgroundColor1, tabBackgroundColor2,
     tabColor1, tabColor2] = useSchemeVar([
-      '--monthly-color',
-      '--yearly-color',
+      '--monthly-color1',
+      '--yearly-color1',
       '--monthly-background-color-darker',
       '--yearly-background-color-darker',
       '--btn-feather-light',

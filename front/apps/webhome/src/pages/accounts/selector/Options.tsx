@@ -99,15 +99,14 @@ const Options = (props: Props) => {
             {...rest}
         >
             <CloseButton onClick={() => setOpen(false)} />
-            {localOpen &&
-                <ul>
-                    {optionTransitions((s, item) => (
-                        item &&
-                        <animated.li style={s} {...bind(item?.account_id)}>
-                            <SelectOption account={item} />
-                        </animated.li>
-                    ))}
-                </ul>}
+            {localOpen && <ul>
+                {optionTransitions((s, item) => (
+                    item &&
+                    <animated.li style={s} {...bind(item?.account_id)}>
+                        <SelectOption account={item} />
+                    </animated.li>
+                ))}
+            </ul>}
         </animated.div>
     )
 }

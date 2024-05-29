@@ -1,3 +1,4 @@
+export * from './pieces/progress-bar/ProgressBar';
 export * from './containers/headers';
 export * from './containers/windows';
 export * from './misc/avatar/avatar';

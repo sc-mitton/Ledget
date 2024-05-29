@@ -51,8 +51,9 @@ interface GetAccountBalanceTrendParams extends Omit<GetAccountBalanceHistoryPara
 }
 
 type BalanceTrend = {
-    'trend': number
-    'date': string
+    trend: number
+    date: string
+    account: string
 }
 
 type AccountBalance = {

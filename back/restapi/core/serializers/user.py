@@ -34,6 +34,7 @@ class UserSerializer(serializers.ModelSerializer):
     co_owner = serializers.SerializerMethodField(read_only=True)
     is_account_owner = serializers.SerializerMethodField(read_only=True)
     settings = UserSettingsSerializer(read_only=True)
+    yearly_anchor = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
@@ -93,6 +94,9 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_is_account_owner(self, obj):
         return obj.is_account_owner
+
+    def get_yearly_anchor(self, obj):
+        return obj.account.yearly_anchor
 
 
 class LinkUserSerializer(serializers.Serializer):

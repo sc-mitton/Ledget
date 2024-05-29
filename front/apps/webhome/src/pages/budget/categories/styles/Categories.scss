@@ -1,4 +1,4 @@
-@import './Variables.scss';
+@import '../../styles/Variables.scss';
 @import '@styles/table-mixins.scss';
 
 $bill-flex-grid-gap: calc(.25em + .5vw);
@@ -21,12 +21,15 @@ $background: var(--window);
 
         &>div {
             flex: 1;
+            max-height: calc(6.75 * (1em + 2 * $item-row-gap + 2 * $row-padding) + 2.75em);
         }
     }
 
     .categories {
         height: 100%;
-        max-height: calc(5.75 * (1em + 2 * $item-row-gap + 2 * $row-padding) + 2.75em);
+        display: flex;
+        flex-direction: column;
+        gap: .25em;
 
         hr {
             margin: .75em 0 .375em 0;
@@ -36,6 +39,10 @@ $background: var(--window);
             display: flex;
             justify-content: space-between;
 
+            h4 {
+                color: var(--m-text-secondary);
+            }
+
             div {
                 display: flex;
                 gap: 1em;
@@ -44,7 +51,36 @@ $background: var(--window);
             }
         }
 
+        &>div:nth-of-type(2) {
+            display: flex;
+
+            &.month * {
+                color: var(--monthly-color2);
+            }
+
+            &.year * {
+                color: var(--yearly-color2);
+            }
+
+            &>span {
+                margin: 0 .5em;
+            }
+        }
+
+        &>div:nth-of-type(3) {
+            margin: .375em 0 .5em 0;
+
+            &.month {
+                color: var(--monthly-hover-background-color);
+            }
+
+            &.year {
+                color: var(--yearly-hover-background-color);
+            }
+        }
+
         &>div:last-of-type {
+            flex-grow: 1;
             display: grid;
             grid-template-columns: 1fr auto auto auto;
             grid-auto-rows: min-content;

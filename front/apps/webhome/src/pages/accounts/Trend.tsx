@@ -22,8 +22,11 @@ const Trend = () => {
         })
     }, [location.pathname])
 
-    const total = useMemo(() => accountBalanceTrend?.trends.reduce((acc, trend) =>
-        acc.plus(trend.trend), Big(0)).times(100).toNumber() || 0, [accountBalanceTrend])
+    const total = useMemo(() =>
+        accountBalanceTrend?.trends
+            .filter(t => accounts?.some(a => a.account_id === t.account))
+            .reduce((acc, trend) => acc.plus(trend.trend), Big(0)).times(100).toNumber() || 0
+        , [accountBalanceTrend, accounts])
 
     return (
         <div className={`account-balance-trend ${total >= 0 ? 'positive' : 'negative'}`}>

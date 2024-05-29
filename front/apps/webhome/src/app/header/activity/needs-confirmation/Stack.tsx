@@ -113,7 +113,7 @@ const _getBackGroundColor = (index: number, expanded: boolean, darkMode: boolean
         lightness = darkMode ? 10 - (index * 1) : 100 - (index * 1.5)
     }
 
-    return `hsl(0, 0%, ${lightness}%)`
+    return `hsl(240, 3%, ${lightness}%)`
 }
 
 const NewItem: FC<{

@@ -6,8 +6,8 @@ import { useSearchParams } from 'react-router-dom'
 import './styles/Window.scss'
 import CarouselViewSummary from './Summary/CarouselView'
 import CardsView from './Summary/CardsView'
-import SpendingCategories from './SpendingCategories'
 import Bills from './Bills'
+import { SpendingCategories } from './categories'
 import { setConfirmedTransactionFilter } from '@features/transactionsSlice'
 import { useAppDispatch } from '@hooks/store'
 import { useScreenContext } from '@ledget/ui'
@@ -49,13 +49,10 @@ function Window() {
     return (
         <>
             <div id="budget-window" className={`main-window ${screenSize === 'small' ? 'small-screen' : ''}`}>
-                {window.innerWidth > 700
-                    ? <CardsView />
-                    : <CarouselViewSummary />}
+                {window.innerWidth > 700 ? <CardsView /> : <CarouselViewSummary />}
                 <div>
                     <SpendingCategories />
                     <Bills />
-
                 </div>
             </div>
             <Outlet />

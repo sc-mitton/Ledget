@@ -25,7 +25,7 @@ const HeaderWindow = () => {
                 <DollarCents value={accounts?.reduce((acc, account) =>
                     acc.plus(account.balances.current), Big(0)).times(100).toNumber() || 0} />
             </h1>
-            <AccountBalanceTrend />
+            {location.pathname.includes('deposits') && <AccountBalanceTrend />}
         </BlueWindow>
     )
 }

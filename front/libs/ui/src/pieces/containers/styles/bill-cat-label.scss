@@ -55,6 +55,17 @@
         margin-right: .45em;
     }
 
+    &.extra-small {
+        * {
+            font-size: .75em;
+        }
+
+        &::after {
+            width: 1em;
+            height: 1em;
+        }
+    }
+
     &.small {
         * {
             font-size: 1em;
@@ -166,7 +177,7 @@
         transition: background-color 0.2s ease-in-out;
 
         * {
-            color: var(--monthly-color);
+            color: var(--monthly-color1);
         }
 
         &.hoverable:hover {
@@ -187,7 +198,7 @@
         transition: background-color 0.2s ease-in-out;
 
         * {
-            color: var(--yearly-color);
+            color: var(--yearly-color1);
         }
 
         &.hoverable:hover {

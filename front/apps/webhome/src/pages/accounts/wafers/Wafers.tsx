@@ -19,7 +19,7 @@ import { WaferStyle } from './types'
 import pathMappings from '../path-mappings'
 import SkeletonWafers from './SkeletonWafers'
 import Wafer from './Wafer'
-import Trend from '../Trend'
+import AccountBalanceTrend from '../Trend'
 import useAnimate from './useAnimate'
 
 const waferWidth = 165
@@ -97,7 +97,7 @@ function Wafers() {
                             <DollarCents value={accounts?.reduce((acc, account) =>
                                 acc.plus(account.balances.current), Big(0)).times(100).toNumber() || 0} />
                         </h1>
-                        <Trend />
+                        {location.pathname.includes('deposits') && <AccountBalanceTrend />}
                     </div>
                     {isLoadingAccounts
                         ? <SkeletonWafers

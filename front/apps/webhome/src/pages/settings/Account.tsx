@@ -32,8 +32,8 @@ import { CreditCard, UserPlus } from '@geist-ui/icons'
 
 const getStatusColor = (subscription: Subscription) => {
     const statusColorMap = {
-        active: 'var(--yearly-color-alt)',
-        trialing: 'var(--yearly-color-alt)',
+        active: 'var(--yearly-color1-alt)',
+        trialing: 'var(--yearly-color1-alt)',
         paused: 'var(--yellow)',
         default: 'var(--dark-red)'
     } as { [key: string]: string }
