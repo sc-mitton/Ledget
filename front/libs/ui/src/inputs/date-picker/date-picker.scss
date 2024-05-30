@@ -1,5 +1,10 @@
 .ledget-datepicker--container {
     position: relative;
+
+    &>div input {
+        width: 100%;
+        width: unset;
+    }
 }
 
 @mixin transition-background($value) {

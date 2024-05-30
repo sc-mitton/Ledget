@@ -8,7 +8,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Edit2, Check } from '@geist-ui/icons'
 
 import { TabView, BottomButtons } from './Reusables'
-import { GripButton } from '@components/buttons'
 import { EmojiComboText, LimitAmountInput, emoji } from '@components/inputs'
 import {
     ShadowScrollDiv,
@@ -22,6 +21,7 @@ import {
     formatCurrency,
     makeIntCurrencyFromStr,
     TabNavListUnderlined,
+    GripButton
 } from '@ledget/ui'
 import { useItemsContext, ItemsProvider, Period } from "./ItemsContext"
 import { monthRecommendations, yearRecommendations } from './categoryRecommendations'
@@ -146,7 +146,7 @@ const CategoriesColumn = ({ period }: { period: Period }) => {
                             </div >
                             <div>
                                 <DeleteButton
-                                    show={true}
+                                    visible={true}
                                     onClick={() => {
                                         if (period === 'month') {
                                             setMonthItems((prev) => prev.filter((i) => i !== item))

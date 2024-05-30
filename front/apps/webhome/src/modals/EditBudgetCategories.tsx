@@ -10,7 +10,6 @@ import {
     useRemoveCategoriesMutation,
     Category
 } from '@features/categorySlice'
-import { GripButton } from '@components/buttons'
 import { SubmitForm } from '@components/pieces'
 import {
     useSpringDrag,
@@ -20,7 +19,8 @@ import {
     withModal,
     TabNavList,
     BillCatLabel,
-    NestedWindow2
+    NestedWindow2,
+    GripButton
 } from '@ledget/ui'
 
 const itemHeight = 28
@@ -158,7 +158,7 @@ const Categories = ({ period, setDeletedItems }: {
                         <div>
                             {!item?.is_default &&
                                 <DeleteButton
-                                    show={true}
+                                    visible={true}
                                     stroke={'var(--m-text)'}
                                     onClick={() => {
                                         deleteButtonHandler(item, setItems, setDeletedItems, order)

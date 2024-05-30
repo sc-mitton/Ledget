@@ -3,8 +3,7 @@ import Big from 'big.js'
 
 import './styles/Wafer.scss'
 import { InsitutionLogo } from '@components/pieces'
-import { CornerGripButton } from '@components/buttons'
-import { DollarCents } from '@ledget/ui'
+import { DollarCents, CornerGripButton } from '@ledget/ui'
 import { WaferProps } from "./types"
 
 const Wafer = ({ account, onClick, styling }: WaferProps) => {

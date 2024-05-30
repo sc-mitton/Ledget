@@ -1,0 +1,473 @@
+.expandButton {
+
+    &>div {
+        transform: rotate(0deg);
+        transition: transform 0.2s ease-in;
+    }
+
+    &[data-flipped="true"]>div {
+        transform: rotate(180deg);
+    }
+
+    div {
+        display: flex;
+        align-items: center;
+        color: var(--m-text-quaternary);
+    }
+
+    &:hover>div {
+        color: var(--m-text);
+    }
+}
+
+.circleIconButton {
+    overflow: visible;
+    z-index: 0;
+    border-radius: 50%;
+    font-size: 1rem;
+    position: relative;
+
+    svg {
+        position: relative;
+        z-index: 0;
+    }
+
+    &[data-size="small"] {
+        font-size: 1rem;
+    }
+
+    &[data-size="medium"] {
+        font-size: 1.5rem;
+    }
+
+    &[data-size="large"] {
+        font-size: 2rem;
+    }
+
+    &::after {
+        width: 1.375em;
+        height: 1.375em;
+    }
+
+    &[data-color="blue"] {
+
+        &::after {
+            background-color: var(--blue-medium);
+        }
+
+        &:hover::after {
+            background-color: var(--blue-medium-hover);
+        }
+    }
+
+    &[data-color='blue-darker'] {
+        &::after {
+            background-color: var(--blue-medium);
+        }
+
+        &:hover::after {
+            background-color: var(--blue-medium-hover);
+        }
+    }
+
+    &[data-color='gray'] {
+        &::after {
+            background-color: var(--btn-light-gray);
+        }
+
+        &:hover::after {
+            background-color: var(--btn-light-gray-hover);
+        }
+    }
+
+    &[data-color='gray-darker'] {
+        &::after {
+            background-color: var(--btn-light-gray);
+        }
+
+        &:hover::after {
+            background-color: var(--btn-light-gray-hover);
+        }
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        z-index: -1;
+        transition: background-color ease-in-out .2s;
+    }
+
+    &:hover::after {
+        transition: background-color ease-in-out .2s;
+    }
+}
+
+.close {
+    position: absolute;
+    top: 1.1em;
+    right: 1.25em;
+    border-radius: 50%;
+    border: none;
+    z-index: 5;
+
+    svg {
+        width: 1em;
+        height: 1em;
+    }
+}
+
+.back {
+    width: auto;
+    padding-left: .375em;
+    margin-left: -.5em;
+    color: var(--m-text);
+    gap: 0;
+
+    svg {
+        height: 1.3em;
+        width: 1.3em;
+    }
+
+    path:first-of-type {
+        stroke-dasharray: 50;
+        stroke-dashoffset: 50;
+        transition: all 0.2s ease-in .1s;
+    }
+
+    &:hover path:first-of-type {
+        stroke-dashoffset: 0;
+        transition: all 0.2s ease-in .1s;
+    }
+
+    path:nth-of-type(2),
+    path:nth-of-type(3) {
+        transition: all 0.2s ease-in .2s;
+    }
+
+    &:hover path:nth-of-type(2),
+    &:hover path:nth-of-type(3) {
+        transform: translateX(3px);
+        transition: all 0.2s ease-in;
+    }
+}
+
+.copy {
+    gap: .25em;
+
+    svg:first-of-type {
+        display: block;
+    }
+
+    svg:last-of-type {
+        display: none;
+    }
+
+    &[data-copying="true"] {
+        svg:first-of-type {
+            display: none;
+        }
+
+        svg:last-of-type {
+            display: block;
+            animation: pop-fade-in 0.3s ease-in-out;
+        }
+    }
+}
+
+.delete {
+    border-radius: 50%;
+    opacity: 0;
+    margin: 0 .125em;
+    cursor: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotate(0deg);
+
+    span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &[data-visible="true"] {
+        opacity: 1;
+        cursor: pointer;
+    }
+
+    &[data-pop="true"]:not([data-visible='false']) {
+        animation: pop-fade-in 0.3s ease-in-out;
+    }
+
+    &[data-animated="true"] {
+
+        line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+        }
+
+
+        line:first-of-type {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 0;
+        }
+
+        line:last-of-type {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+        }
+
+        &:hover {
+            transform: rotate(-45deg);
+            transition-delay: .1s;
+            animation: draw 1s ease-in-out forwards;
+
+            line:last-of-type {
+                animation: draw .5s ease-in-out forwards;
+                animation-delay: .2s;
+            }
+
+            svg {
+                opacity: .9;
+            }
+        }
+    }
+
+    &[data-remove="true"] {
+        animation: pop-out .22s ease;
+    }
+
+    &[data-animated="false"] {
+        transform: rotate(-45deg);
+    }
+}
+
+.resend {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--monthly-color1-hover);
+    padding: .375em;
+    gap: .125em;
+    border: 1.5px solid var(--blue-light);
+    border-radius: var(--border-radius2);
+    width: 100%;
+    color: var(--blue-medium);
+
+    div {
+        color: inherit;
+        display: flex;
+        align-items: center;
+
+        svg {
+            transform: scale(1);
+            transition: all 0.2s ease-in-out;
+            animation: pop-fade-in 0.3s ease-in-out;
+        }
+    }
+
+    &[data-succes='true'] div {
+        animation: pop-fade-in 0.3s ease-in-out;
+    }
+
+    &[data-active='true'] svg {
+        display: flex;
+        align-items: center;
+        color: inherit;
+        animation: pop-fade-in, rotate 0.3s ease-in-out,
+    }
+
+    &:hover svg {
+        transform: scale(1.1);
+        transition: all 0.2s ease-in-out;
+    }
+}
+
+.popCheck {
+    position: absolute;
+    animation: pop-fade-in 0.3s ease-in-out;
+}
+
+.refresh {
+    margin: 0;
+    border-radius: 50%;
+    min-height: 1.125rem;
+    min-width: 1.125rem;
+    transform: scale(1);
+    position: relative;
+
+    &[data-active="true"] svg {
+        animation: spin .3s ease-in-out forwards;
+    }
+}
+
+.scaleIcon {
+    &:hover svg {
+        max-width: 1rem;
+        margin-left: 0rem;
+        transform: scale(1) translateX(.25em);
+    }
+
+    svg {
+        max-width: 0;
+        margin: 0;
+        padding: 0;
+        transform: scale(0);
+        transition: all 0.2s ease-in-out;
+    }
+
+    &[data-nohover='true'] svg {
+        max-width: 0;
+        margin: 0;
+        transform: scale(0);
+        transition: all 0.2s ease-in-out;
+    }
+}
+
+.withLoading {
+
+    &[data-loading='false']>div:first-of-type {
+        visibility: hidden;
+    }
+
+    &>div:first-of-type {
+        visibility: visible;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: currentColor;
+    }
+}
+
+.grip {
+    cursor: grab;
+    margin-right: .375rem;
+    touch-action: none;
+    border-radius: .125em;
+    color: inherit;
+}
+
+.cornerGrip {
+    color: inherit;
+    opacity: .65;
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+    cursor: grab;
+    touch-action: none;
+}
+
+/* ------------------------------- Animations ------------------------------- */
+
+.btn-red2::before,
+.btn-gr2::before,
+.btn-gr3::before,
+.btn-gr::before,
+.btn-grn::before,
+.btn-chcl::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    width: 1rem;
+    height: 1rem;
+    background-color: currentColor;
+    opacity: 0;
+    transform-origin: center;
+    animation-fill-mode: forwards;
+}
+
+.btn-red2.clicked::before,
+.btn-gr2.clicked::before,
+.btn-gr3.clicked::before,
+.btn-gr.clicked::before,
+.btn-grn.clicked::before,
+.btn-chcl.clicked::before {
+    animation: burst 1s ease-out forwards;
+}
+
+@keyframes burst {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0.08;
+    }
+
+    30% {
+        transform: translate(-50%, -50%) scale(9);
+        opacity: 0.08;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(5);
+        opacity: 0;
+    }
+}
+
+.btn-wide.clicked::before {
+    animation: big-burst 1s ease-out forwards;
+}
+
+@keyframes big-burst {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0.06;
+    }
+
+    30% {
+        transform: translate(-50%, -50%) scale(30);
+        opacity: 0.06;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(5);
+        opacity: 0;
+    }
+}
+
+@keyframes draw {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes rotate {
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(360deg);
+    }
+}
+
+@keyframes pop-fade-in {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(1.1);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

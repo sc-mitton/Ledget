@@ -10,7 +10,7 @@ import './styles/TransactionItem.scss'
 import { Transaction } from '@features/transactionsSlice'
 import { useGetAccountsQuery } from "@features/accountsSlice"
 import { withModal, Base64Logo, DollarCents, BillCatLabel } from '@ledget/ui'
-import { SelectCategoryBill } from '@components/dropdowns'
+import { SelectCategoryBill } from '@components/inputs'
 import {
     useConfirmTransactionsMutation,
     useAddNoteMutation,

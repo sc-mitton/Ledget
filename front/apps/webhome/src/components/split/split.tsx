@@ -10,9 +10,9 @@ import { selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
 import { SubmitForm } from '@components/pieces'
 import { Transaction, useConfirmTransactionsMutation } from '@features/transactionsSlice'
 import { useGetCategoriesQuery } from '@features/categorySlice';
-import { InputButton } from '@ledget/ui'
+import { FormInputButton } from '@ledget/ui'
 import { LimitAmountInput } from '@components/inputs'
-import { FullSelectCategoryBill } from '@components/dropdowns'
+import { FullSelectCategoryBill } from '@components/inputs'
 import { FormErrorTip, AnimatedDollarCents, DeleteButton, PlusButton } from '@ledget/ui'
 import './split.scss';
 
@@ -102,7 +102,7 @@ export function SplitTransactionInput({ item, onCancel }: { item: Transaction, o
             <section key={field.id}>
               <FullSelectCategoryBill
                 includeBills={false}
-                SelectorComponent={InputButton}
+                SelectorComponent={FormInputButton}
                 month={new Date(item.datetime).getMonth() + 1}
                 year={new Date(item.datetime).getFullYear()}
                 defaultValue={categoriesData?.find((c) => c.id === field.category)}
@@ -124,7 +124,7 @@ export function SplitTransactionInput({ item, onCancel }: { item: Transaction, o
                   <DeleteButton
                     fill={'var(--input-background)'}
                     stroke={'var(--m-text)'}
-                    show={true}
+                    visible={true}
                     type='button'
                     onClick={() => remove(index)}
                     size={'1.4em'}

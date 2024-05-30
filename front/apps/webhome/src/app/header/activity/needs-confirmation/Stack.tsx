@@ -9,7 +9,7 @@ import { Check } from '@geist-ui/icons'
 
 import "./styles/Stack.scss"
 import { Ellipsis } from "@ledget/media"
-import { SelectCategoryBill } from '@components/dropdowns'
+import { SelectCategoryBill } from '@components/inputs'
 import { InsitutionLogo, ZeroConfig } from '@components/pieces'
 import ItemOptions from "./ItemOptions"
 import {

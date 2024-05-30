@@ -4,8 +4,7 @@ import Big from 'big.js'
 
 import styles from './styles/SelectOption.module.scss'
 import { InsitutionLogo } from '@components/pieces'
-import { GripButton } from '@components/buttons'
-import { DollarCents } from '@ledget/ui'
+import { DollarCents, GripButton } from '@ledget/ui'
 
 
 const SelectOption = ({ account }: { account: Account }) => (

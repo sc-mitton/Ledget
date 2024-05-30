@@ -6,7 +6,7 @@ import { ChevronDown, Check } from '@geist-ui/icons'
 
 import './baked-selects.scss'
 import { DropdownDiv } from '../../animations/animations'
-import { InputButton } from '../../buttons/buttons'
+import { FormInputButton } from '../../buttons'
 import { DropdownItem } from "../../pieces/containers/containers"
 import { LoadingRingDiv } from '../../pieces/loading-indicators/loading-indicators'
 import { FormErrorTip } from '../../pieces/form-errors/form-errors'
@@ -245,7 +245,7 @@ export const BakedListBox = <O extends Option | string>(props: BakedSelectProps<
 BakedListBox.defaultProps = {
   withCheckMarkIndicator: false,
   showLabel: true,
-  as: InputButton,
+  as: FormInputButton,
   labelPrefix: '',
   labelKey: 'label',
   valueKey: 'value',

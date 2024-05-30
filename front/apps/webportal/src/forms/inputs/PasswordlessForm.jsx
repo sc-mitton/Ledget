@@ -5,7 +5,7 @@ import { filterNodesByGroups, isUiNodeInputAttributes } from '@ory/integrations/
 import { HelpCircle, Key } from '@geist-ui/icons'
 
 import './styles/PasswordlessFormSection.scss'
-import { GrayWideButton } from '@ledget/ui'
+import { GrayMainButton } from '@ledget/ui'
 
 
 const PasswordlessOptionsHeader = () => {
@@ -98,13 +98,13 @@ const PasswordlessForm = ({ flow = { flow }, helpIcon = true, children }) => {
                                 }
                                 return (
                                     <div className='passwordless-button-container' key={attrs.name}>
-                                        <GrayWideButton
+                                        <GrayMainButton
                                             disabled={attrs.disabled}
                                             {...submit}
                                         >
                                             <Key className='icon' />
                                             <div style={{ marginLeft: '.25em' }}>Passkey</div>
-                                        </GrayWideButton>
+                                        </GrayMainButton>
                                         {helpIcon && <WrappedHelpIcon />}
                                     </div>
                                 )
@@ -146,13 +146,13 @@ export const PasskeySignIn = () => {
         <div className='passwordless-form-section-container'>
             <PasswordlessOptionsHeader />
             <div className='passwordless-inputs-container'>
-                <GrayWideButton
+                <GrayMainButton
                     name="webauthn_register_trigger"
                     value="webauthn"
                 >
                     <Key className='icon' />
                     <div style={{ marginLeft: '.25em' }}>Passkey</div>
-                </GrayWideButton>
+                </GrayMainButton>
             </div>
         </div>
     )

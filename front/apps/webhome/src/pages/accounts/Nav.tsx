@@ -210,7 +210,7 @@ const Filters = ({ visible = false, close }: { visible: boolean, close: () => vo
                         && i !== accountsFilterOptions.length - 1 && <span className={'account-filters-divider'} />}
                 </>
             ))}
-            <CircleIconButton onClick={() => close()} >
+            <CircleIconButton onClick={() => close()} size='small'>
                 <CloseIcon />
             </CircleIconButton>
         </ExpandableContainer>

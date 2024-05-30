@@ -3,7 +3,7 @@ import Picker from '@emoji-mart/react'
 import { Smile } from '@geist-ui/icons'
 
 import './styles/EmojiPicker.scss'
-import { IconButton3, DropdownDiv, useColorScheme } from '@ledget/ui'
+import { FadedIconButton, DropdownDiv, useColorScheme } from '@ledget/ui'
 
 export type emoji = string | { native: string, [key: string]: any }
 
@@ -117,7 +117,7 @@ const EmojiButton = ({ ...rest }) => {
     const { emoji, picker, setPicker } = useContext(EmojiContext) as EmojiContextType
 
     return (
-        <IconButton3
+        <FadedIconButton
             type="button"
             onClick={(e) => {
                 e.stopPropagation()
@@ -134,13 +134,12 @@ const EmojiButton = ({ ...rest }) => {
             aria-expanded={picker}
             aria-controls="emoji-picker-ledget--container"
             tabIndex={0}
-            style={{ color: !emoji && "var(--input-placeholder)" } as React.CSSProperties}
             {...rest}
         >
             {emoji
                 ? typeof emoji === 'string' ? emoji : emoji.native
                 : <Smile size={'1.25em'} />}
-        </IconButton3>
+        </FadedIconButton>
     )
 }
 

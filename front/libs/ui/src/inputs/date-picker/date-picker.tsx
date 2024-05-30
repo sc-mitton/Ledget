@@ -8,7 +8,7 @@ import { DropdownDiv } from '../../animations/animations';
 import { HalfArrow } from '@ledget/media'
 import { TextInputWrapper } from '../text/text';
 import { Tooltip } from '../../pieces/tooltip/tooltip';
-import { IconButton3, CircleIconButton, BlueTextButton } from '../../buttons/buttons';
+import { BlueIconButton, CircleIconButton } from '../../buttons';
 import { useAccessEsc } from '../../modal/with-modal/with-modal';
 import { useLoaded } from '../../utils/hooks';
 
@@ -450,15 +450,15 @@ const DayMonthYearPicker = () => {
       {/* Header */}
       <div>
         <div>
-          <IconButton3
+          <BlueIconButton
             onClick={(e) => handleSeek(e, -1, 'fast')}>
             <ChevronsLeft size="1.25em" />
-          </IconButton3>
+          </BlueIconButton>
           {view !== 'year' &&
-            <IconButton3
+            <BlueIconButton
               onClick={(e) => handleSeek(e, -1, 'normal')}>
               <ChevronLeft size="1.25em" />
-            </IconButton3>}
+            </BlueIconButton>}
         </div>
         {focusedInputIndex === 0 && pickerType === 'range' && view === 'day' &&
           <div>
@@ -493,14 +493,14 @@ const DayMonthYearPicker = () => {
           </div>}
         <div>
           {view !== 'year' &&
-            <IconButton3
+            <BlueIconButton
               onClick={(e) => handleSeek(e, 1, 'normal')}>
               <ChevronRight size="1.25em" />
-            </IconButton3>}
-          <IconButton3
+            </BlueIconButton>}
+          <BlueIconButton
             onClick={(e) => handleSeek(e, 1, 'fast')}>
             <ChevronsRight size="1.25em" />
-          </IconButton3>
+          </BlueIconButton>
         </div>
       </div>
       {/* Items Pick */}
@@ -556,13 +556,13 @@ const DayMonthYearPicker = () => {
       </div>
       {/* Today Window Seek */}
       <div>
-        <BlueTextButton
+        <BlueIconButton
           type='button'
           onClick={() => { setWindowCenter(dayjs()) }}
           aria-label='Go to today'
         >
           Today
-        </BlueTextButton>
+        </BlueIconButton>
       </div>
     </div>
   )

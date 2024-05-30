@@ -15,11 +15,11 @@ import {
     clearConfirmedTransactionFilter
 } from '@features/transactionsSlice'
 import { useLazyGetCategoriesQuery } from '@features/categorySlice'
-import { FullSelectCategoryBill } from '@components/dropdowns'
+import { FullSelectCategoryBill } from '@components/inputs'
 import { LimitAmountInput } from '@components/inputs'
 import {
     BlueSlimButton2,
-    SlimInputButton,
+    FormInputButton2,
     BakedListBox,
     BakedComboBox,
     SecondaryButtonSlim,
@@ -138,7 +138,7 @@ export const FilterForm = () => {
                             month={new Date(dateRangeFieldValue?.[1] || new Date().getTime()).getMonth() + 1}
                             year={new Date(dateRangeFieldValue?.[1] || new Date().getTime()).getFullYear()}
                             placeholder="Select"
-                            SelectorComponent={SlimInputButton}
+                            SelectorComponent={FormInputButton2}
                             name="items"
                             control={control}
                             multiple={true}
@@ -166,7 +166,7 @@ export const FilterForm = () => {
                         <div key={resetAccountMerchantKeys[1]}>
                             <BakedListBox
                                 defaultValue={accountsData?.accounts.filter(acc => accountsFieldValue?.includes(acc.account_id))}
-                                as={SlimInputButton}
+                                as={FormInputButton2}
                                 name="accounts"
                                 control={control as any}
                                 options={accountsData?.accounts}
@@ -189,8 +189,8 @@ export const FilterForm = () => {
                         ))}
                         {merchantsFieldValue &&
                             <DeleteButton
-                                show={true}
-                                drawable={false}
+                                visible={true}
+                                animated={false}
                                 onClick={() => {
                                     setResetAccountMerchantKeys(prev => [
                                         Math.random().toString(36).slice(2, 9),
@@ -209,8 +209,8 @@ export const FilterForm = () => {
                         ))}
                         {(accountsFieldValue?.length as any > 0) &&
                             <DeleteButton
-                                show={true}
-                                drawable={false}
+                                visible={true}
+                                animated={false}
                                 onClick={() => {
                                     setResetAccountMerchantKeys(prev => [
                                         prev[0],

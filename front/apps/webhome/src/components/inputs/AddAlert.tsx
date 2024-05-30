@@ -6,7 +6,7 @@ import { Plus, CornerDownLeft, ChevronDown, Check } from '@geist-ui/icons'
 
 import './styles/Dropdowns.scss'
 import ComboSelect from './ComboSelect'
-import { SlimInputButton, MenuTextInput, DropdownDiv, DollarCents, DropdownItem } from '@ledget/ui'
+import { FormInputButton2, MenuTextInput, DropdownDiv, DollarCents, DropdownItem } from '@ledget/ui'
 
 const baseAlertOptions = [
     { id: 1, value: { percent_amount: 25 }, disabled: false },
@@ -180,7 +180,7 @@ const AddAlert = (props: { limitAmount?: number, defaultValues?: typeof baseAler
                 <>
                     <ComboSelect.Button
                         tabIndex={0}
-                        as={SlimInputButton}
+                        as={FormInputButton2}
                         className={`add-alert-btn ${selectedAlerts?.length ? 'selected' : ''}`}
                         ref={buttonRef}
                     >

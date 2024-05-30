@@ -2,7 +2,7 @@ import React, { FC, useRef, useState, useEffect } from 'react'
 import { useTransition, animated } from '@react-spring/web'
 
 import './with-modal.scss'
-import { CloseButton } from '../../buttons/buttons'
+import { CloseButton } from '../../buttons'
 import { useColorScheme } from '../../themes/hooks/use-color-scheme/use-color-scheme'
 
 

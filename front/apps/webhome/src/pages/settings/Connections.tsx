@@ -100,7 +100,7 @@ const DeleteAllButton = ({ onClick }: { onClick: () => void }) => {
                     className={deleteClass}
                     aria-label="Remove account"
                     onClick={() => onClick()}
-                    show={editing}
+                    visible={editing}
                 />
             </Tooltip>
         </div >

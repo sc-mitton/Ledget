@@ -15,7 +15,7 @@ import {
     Subscription
 } from '@features/userSlice'
 import {
-    BlueSlimButton,
+    BlueSlimButton3,
     BlueSlimSubmitButton,
     ShimmerDiv,
     DropdownDiv,
@@ -257,13 +257,13 @@ const PaymentMethod = () => {
                     </div>
                     <div>{`Exp. ${expDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}`}</div>
                 </div>
-                <BlueSlimButton
+                <BlueSlimButton3
                     aria-label="Change plan"
                     onClick={() => navigate("/settings/profile/update-payment")}
                     disabled={!user?.is_account_owner}
                 >
                     update
-                </BlueSlimButton>
+                </BlueSlimButton3>
             </NestedWindow>
         </section>
     )
@@ -311,9 +311,9 @@ const Household = () => {
                             <UserPlus className='icon' />
                         </CircleIconButton>}
                     {user?.is_account_owner && coOwner &&
-                        <BlueSlimButton onClick={() => setRemoveCoOwnerModal(true)}>
+                        <BlueSlimButton3 onClick={() => setRemoveCoOwnerModal(true)}>
                             Remove
-                        </BlueSlimButton>}
+                        </BlueSlimButton3>}
                 </NestedWindow>
             </section>
             {addUserModal && <AddUserModal onClose={() => setAddUserModal(false)} />}

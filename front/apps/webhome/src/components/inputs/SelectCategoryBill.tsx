@@ -13,7 +13,7 @@ import { useController, Control } from 'react-hook-form'
 import { Search, ChevronDown } from '@geist-ui/icons'
 
 
-import './SelectCategoryBill.scss'
+import './styles/SelectCategoryBill.scss'
 import { Category, useLazyGetCategoriesQuery } from '@features/categorySlice'
 import { Bill, useLazyGetBillsQuery } from '@features/billSlice'
 import { LoadingRingDiv, DropdownDiv, useAccessEsc, BillCatLabel } from '@ledget/ui'

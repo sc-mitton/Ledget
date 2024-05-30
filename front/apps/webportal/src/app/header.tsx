@@ -1,5 +1,5 @@
 import { useLocation, useNavigate, Link } from 'react-router-dom'
-import { BlackPillButtonWithArrow } from '@ledget/ui'
+import { GlossMiniCta } from '@ledget/ui'
 import { LedgetLogo } from '@ledget/media'
 import { useColorScheme } from '@ledget/ui'
 
@@ -34,13 +34,13 @@ const Header = () => {
                     &&
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         {`${text.login}`}
-                        <BlackPillButtonWithArrow
+                        <GlossMiniCta
                             onClick={() => navigate('/register')}
                             aria-label="Sign Up"
                             style={{ marginLeft: '.5rem' }}
                         >
                             Sign Up
-                        </BlackPillButtonWithArrow>
+                        </GlossMiniCta>
                     </div>
                 }
             </div>

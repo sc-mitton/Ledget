@@ -32,7 +32,7 @@ export * from './inputs/text/text';
 export * from './inputs/otc/otc';
 export * from './inputs/switch/switch';
 export * from './inputs/checkbox/checkbox';
-export * from './buttons/buttons';
+export * from './buttons';
 export * from './inputs/select-provence/select-provence';
 export * from './utils/funcs';
 export * from './utils/hooks';

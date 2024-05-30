@@ -11,6 +11,7 @@
         &>div {
             border-radius: var(--border-radius25);
             padding: .15em .6em;
+            min-width: 100%;
         }
     }
 }

@@ -14,7 +14,6 @@ import { setBillModal } from '@features/modalSlice';
 import { EditBudgetBills } from '@modals/index';
 import {
     DollarCents,
-    IconButton3,
     CircleIconButton,
     DropdownDiv,
     useAccessEsc,
@@ -23,6 +22,8 @@ import {
     useScreenContext,
     Tooltip,
     BlueTextButton,
+    BlueTextButton2,
+    ExpandButton,
     Window
 } from '@ledget/ui';
 
@@ -170,7 +171,7 @@ const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
                     {selectedDate.getFullYear()}
                 </h4>
                 {showCalendarIcon &&
-                    <IconButton3
+                    <BlueTextButton
                         ref={buttonRef}
                         onClick={() => setShowCalendar(!showCalendar)}
                         tabIndex={0}
@@ -178,17 +179,15 @@ const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
                         aria-haspopup="true"
                     >
                         <CalendarIcon className="icon" />
-                    </IconButton3>}
+                    </BlueTextButton>}
             </div>
             <div>
                 <Tooltip msg={collapsed ? 'Expand' : 'Collapse'}>
-                    <IconButton3
+                    <ExpandButton
                         onClick={() => setCollapsed(!collapsed)}
                         aria-label={collapsed ? 'Expand' : 'Collapse'}
-                        className={`${collapsed ? 'rotated' : ''}`}
-                    >
-                        <ChevronsDown className='icon' />
-                    </IconButton3>
+                        flipped={collapsed}
+                    />
                 </Tooltip>
                 <Tooltip msg='Add bill'>
                     <CircleIconButton
@@ -310,9 +309,9 @@ const BillsWindow = () => {
         <>
             <div id='bills' className={`${collapsed ? 'collapsed' : ''}`} ref={ref}>
                 <h2>Bills</h2>
-                <BlueTextButton onClick={() => setModal(true)} aria-label='View all bills'>
+                <BlueTextButton2 onClick={() => setModal(true)} aria-label='View all bills'>
                     View All
-                </BlueTextButton>
+                </BlueTextButton2>
                 <Window className={`calendar-bills--container ${collapsed ? 'collapsed' : ''} ${['small', 'extra-small'].includes(screenSize) ? 'small-screen' : ''}`}>
                     <Header showCalendarIcon={!showCalendar} collapsed={collapsed} setCollapsed={setCollapsed} />
                     <div>

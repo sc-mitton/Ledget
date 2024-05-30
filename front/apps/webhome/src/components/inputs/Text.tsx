@@ -7,7 +7,7 @@ import './styles/Text.scss'
 import Emoji from './Emoji'
 import { EmojiProps, emoji } from './Emoji'
 import { formatCurrency, makeIntCurrencyFromStr } from '@ledget/ui'
-import { IconButton3, TextInputWrapper, FormErrorTip, FormError } from '@ledget/ui'
+import { FadedIconButton, TextInputWrapper, FormErrorTip, FormError } from '@ledget/ui'
 
 
 export const EmojiComboText = (props:
@@ -112,22 +112,22 @@ const decrement: IncrementFunction = ({ val, setVal, field, withCents }) => {
 
 const IncrementDecrementButton = ({ val, setVal, field, withCents = true }: IncrementDecrement) => (
     <div className="increment-arrows--container">
-        <IconButton3
+        <FadedIconButton
             type="button"
             onClick={() => increment({ val, setVal, field, withCents })}
             aria-label="increment"
             tabIndex={-1}
         >
             <ChevronUp size={'1.25em'} />
-        </IconButton3>
-        <IconButton3
+        </FadedIconButton>
+        <FadedIconButton
             type="button"
             onClick={() => decrement({ val, setVal, field, withCents })}
             aria-label="decrement"
             tabIndex={-1}
         >
             <ChevronDown size={'1.25em'} />
-        </IconButton3>
+        </FadedIconButton>
     </div>
 )
 

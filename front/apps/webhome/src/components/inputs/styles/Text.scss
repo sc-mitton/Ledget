@@ -20,20 +20,20 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    right: .375em;
+    right: 1.25em;
     border-radius: var(--border-radius1);
     height: 80%;
 
     button {
-        margin: 0;
-        border: none;
-        background-color: transparent;
-        cursor: pointer;
-        outline: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: var(--border-radius);
+        position: absolute;
+
+        &:first-of-type {
+            top: -.25em;
+        }
+
+        &:last-of-type {
+            bottom: -.25em;
+        }
 
         &:hover {
             color: var(--m-text);

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Routes, Route, Outlet, Navigate, Navigate, useLocation } from 'react-router-dom'
+import { Routes, Route, Outlet, Navigate, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 
 import LoginWindow from '@forms/Login'
@@ -9,7 +9,6 @@ import VerificationWindow from '@forms/Verification'
 import { RecoveryWindow } from '@forms/recovery'
 import { ActivationWindow } from '@forms/activation'
 import Header from './header'
-import { SendRegisteredToCheckout } from '@utils'
 import { useColorScheme } from '@ledget/ui'
 
 export const SendRegisteredToCheckout = () => (
