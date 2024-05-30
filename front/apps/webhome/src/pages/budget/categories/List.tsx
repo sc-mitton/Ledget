@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import Big from 'big.js'
 import dayjs from 'dayjs'
 
-import './styles/Categories.scss'
+import styles from './styles.module.scss'
 import { useAppSelector, useAppDispatch } from '@hooks/store'
 import { selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
 import { useGetCategoriesQuery } from '@features/categorySlice'
@@ -48,7 +48,7 @@ const CategoriesList = ({ period }: { period: Category['period'] }) => {
     }, [categories, period])
 
     return (
-        <div className='categories'>
+        <div className={styles.categories}>
             <div>
                 {period === 'year'
                     ?
@@ -80,7 +80,7 @@ const CategoriesList = ({ period }: { period: Category['period'] }) => {
                     </Tooltip>
                 </div>
             </div>
-            <div className={`${period}`}>
+            <div className={styles[period]}>
                 <h4><DollarCents value={totalSpent} withCents={false} /></h4>
                 <span>spent of</span>
                 <h4><DollarCents value={totalLimit} withCents={false} /></h4>
@@ -89,8 +89,10 @@ const CategoriesList = ({ period }: { period: Category['period'] }) => {
                 <ProgressBar progress={Big(totalSpent).div(Big(totalLimit || 1)).times(100).toNumber()} />
             </div>
             {isLoading
-                ? <><SkeletonCategories length={5} period={period} /><div></div></>
-                : <div>
+                ? <div>
+                    <SkeletonCategories length={5} period={period} />
+                </div>
+                : <div className={styles.grid}>
                     {categories?.filter(c => c.period === period)
                         .sort((a, b) => {
                             if (sort === 'amount-des') {

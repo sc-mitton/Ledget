@@ -179,9 +179,9 @@ $inner-circle-positive: var(--blue-light-hover);
     margin-bottom: 1em;
 }
 
-#verify-graphic--container {
+#verify-graphic-container {
     height: 4em;
-    margin: 3em 0 2em 0;
+    margin: 4em 0 3em 0;
     position: relative;
     display: flex;
     width: auto;
@@ -189,7 +189,7 @@ $inner-circle-positive: var(--blue-light-hover);
     justify-content: center;
 }
 
-#verify-graphic--container img {
+#verify-graphic-container img {
     z-index: 3;
     filter: contrast(.97);
 }

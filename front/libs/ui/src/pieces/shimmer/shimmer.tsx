@@ -74,8 +74,8 @@ export const ColoredShimmer = (props: ColoredShimmerProps) => {
         className={`colored-loading-shimmer ${color} ${className ? className : ''}`}
         style={{
           width: '100%',
-          height: '1.5em',
-          margin: '.5em 0',
+          height: '1.25em',
+          margin: '.75em 0',
           borderRadius: 'var(--border-radius1)',
           position: 'relative',
           ...style,

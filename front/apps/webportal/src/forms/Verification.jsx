@@ -10,7 +10,7 @@ import {
     VerificationForm,
     VerificationStatusGraphic,
     useColorScheme,
-    WindowHeader
+    ColumnWindowHeader
 } from "@ledget/ui"
 import { useFlow } from '@ledget/ory'
 import { useLazyGetVerificationFlowQuery, useCompleteVerificationFlowMutation } from '@features/orySlice'
@@ -93,10 +93,10 @@ const Verification = () => {
     return (
         <JiggleDiv className="portal-window" id="verification-window" jiggle={jiggle}>
             <WindowLoadingBar visible={isGettingFlow || isCompletingFlow} />
-            <WindowHeader>
+            <ColumnWindowHeader>
                 <h2>Verify Email Address</h2>
-                <span>Step 3 of 4</span>
-            </WindowHeader>
+                <div>Step 3 of 4</div>
+            </ColumnWindowHeader>
             <VerificationStatusGraphic finished={codeIsCorrect} dark={isDark} />
             <div id="verification--container">
                 {errMsg

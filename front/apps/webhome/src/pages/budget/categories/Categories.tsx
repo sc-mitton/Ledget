@@ -1,12 +1,13 @@
 
 import { Window } from '@ledget/ui'
 import List from './List'
+import styles from './styles.module.scss'
 
 
 // Filters for bills and categories
 
 const ColumnView = () => (
-    <div id='spending-categories--columns'>
+    <div className={styles.columns}>
         <Window>
             <List period='month' />
         </Window>
@@ -17,7 +18,7 @@ const ColumnView = () => (
 )
 
 const SpendingCategories = () => (
-    <div id='spending-categories'>
+    <div className={styles.container}>
         <h2>Categories</h2>
         <ColumnView />
     </div>

@@ -75,7 +75,7 @@ export const KeyPadGraphic = ({ finished = false }) => {
 export const VerificationStatusGraphic = ({ finished = false, dark = false }) => {
 
   return (
-    <div id='verify-graphic--container'>
+    <div id='verify-graphic-container'>
       <EnvelopeImage dark={dark} />
       <div id="verification-pulse-status">
         <StatusPulse
