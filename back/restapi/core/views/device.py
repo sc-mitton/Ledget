@@ -35,7 +35,7 @@ class DeviceView(ListCreateAPIView):
         # can't create new device when user has mfa set up
         if (device_is_aal1 and session_is_aal1) and user_has_mfa:
             return Response(
-                {'error': f'{request.user.settings.mfa_method}'},
+                {'error': f'{request.user.settings.mfa_method}'.upper()},
                 HTTP_422_UNPROCESSABLE_ENTITY
             )
         elif not request.device:

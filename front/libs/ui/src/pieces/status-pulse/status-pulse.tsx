@@ -8,7 +8,7 @@ import { EnvelopeImage } from '@ledget/media'
 
 
 interface StatusPulseProps {
-  positive: boolean,
+  positive?: boolean,
   colorDefaultPositive?: boolean,
   size?: 'small' | 'medium' | 'medium-large' | 'large'
 }

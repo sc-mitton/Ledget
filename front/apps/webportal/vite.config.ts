@@ -52,8 +52,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@forms': path.resolve(__dirname, './src/forms'),
-      '@pieces': path.resolve(__dirname, './src/pieces'),
+      '@pages': path.resolve(__dirname, './src/pages'),
+      '@components': path.resolve(__dirname, './src/components'),
       '@api': path.resolve(__dirname, './src/api'),
       '@context': path.resolve(__dirname, './src/context'),
       '@modals': path.resolve(__dirname, './src/modals'),

@@ -4,6 +4,7 @@ import { ColorSchemeProvider } from '@ledget/ui'
 import { HelmetProvider } from "react-helmet-async";
 import { Helmet } from "react-helmet-async";
 
+import "@styles/globals.scss"
 import App from './app/app'
 
 

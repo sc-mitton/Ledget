@@ -1,0 +1,44 @@
+.header {
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: .75rem;
+    display: flex;
+    flex-direction: row;
+
+    &:before,
+    &:after {
+        content: "";
+        flex: 1 1;
+        border-top: 2px solid var(--border-color-ultra-dim);
+        margin: auto;
+    }
+
+    &:before {
+        margin-right: .625rem;
+    }
+
+    &:after {
+        margin-left: .625rem;
+    }
+}
+
+.form {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    gap: .375em;
+
+    button {
+        margin: .25em 0;
+    }
+
+    button:first-child {
+        margin-right: .5rem;
+    }
+
+    button:last-child {
+        margin-left: .5rem;
+    }
+}

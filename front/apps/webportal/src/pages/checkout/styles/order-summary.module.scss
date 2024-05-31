@@ -1,0 +1,37 @@
+.orderSummary {
+    text-align: left;
+    display: flex;
+    justify-content: end;
+    padding: .75em .5em;
+    margin-bottom: .5em;
+    border-top: .125em solid var(--border-color-ultra-dim);
+
+    table {
+        border-collapse: collapse;
+    }
+
+    * {
+        font-size: 1em
+    }
+
+    tr {
+        line-height: 1.5;
+
+        td {
+            text-align: right;
+
+            &:first-child {
+                padding-right: 1em;
+            }
+
+            &:last-child {
+                font-weight: var(--fw-regular);
+            }
+
+            &:last-child span {
+                font-size: .65em;
+            }
+        }
+    }
+
+}

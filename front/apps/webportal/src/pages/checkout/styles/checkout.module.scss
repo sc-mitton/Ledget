@@ -1,0 +1,65 @@
+.window {
+    width: 90%;
+    max-width: 31.25rem;
+    display: flex;
+    flex-direction: column;
+
+    h4 {
+        font-weight: var(--fw-regular);
+        font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
+        color: var(--m-text);
+        margin: .5em 0;
+        margin-left: .25em;
+    }
+
+    &[data-size='extra-small'] {
+        inset: 0;
+        transform: none;
+        width: 100%;
+        top: 0;
+        margin: 0;
+        border-radius: 0;
+        padding: 0;
+        max-width: unset;
+        position: absolute;
+    }
+}
+
+.billingForm {
+    padding-bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    height: 100%;
+
+    &[data-size='extra-small']>div:nth-child(2) {
+        justify-content: space-between;
+    }
+
+    &>div:nth-child(2) {
+        padding: 2em;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        height: 100%;
+    }
+}
+
+.textInputs {
+    margin: .5em 0 2.5em 0;
+}
+
+.generalError {
+    margin-bottom: 1.5em;
+    text-align: center;
+    font-weight: var(--fw-regular);
+
+    img {
+        height: 1em;
+        margin-right: .5em;
+        position: relative;
+        top: .125em;
+        text-align: left;
+        animation: pop .22s ease;
+    }
+}

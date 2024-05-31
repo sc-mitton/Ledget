@@ -1,8 +1,7 @@
 import { FC, HTMLAttributes } from 'react'
 import './loading-indicators.scss'
 import { useTransition, animated } from '@react-spring/web'
-
-
+import { AnimatePresence, motion } from 'framer-motion'
 
 export const LoadingRing = ({ visible = false, style, className = '' }: { visible?: boolean, style?: React.CSSProperties, className?: string }) => {
   return (
@@ -60,3 +59,22 @@ export const LoadingMessage = ({ message = 'Loading' }) => {
     </div>
   )
 }
+
+export const WindowLoadingBar = ({ visible }: { visible: boolean }) => (
+  <AnimatePresence initial={false}>
+    {visible &&
+      <motion.div
+        className="loading-bar-container"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: visible ? 1 : 0 }}
+        exit={{ opacity: 0 }}
+        transition={{ ease: "easeInOut", duration: 0.2 }}
+      >
+        <div className="loading-bar">
+          <div className="loading-bar-edges"></div>
+          <div className="loading-bar-shimmer"></div>
+        </div>
+      </motion.div>
+    }
+  </AnimatePresence>
+)

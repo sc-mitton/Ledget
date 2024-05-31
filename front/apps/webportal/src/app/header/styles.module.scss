@@ -1,0 +1,38 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: .75rem 1.25rem;
+    box-sizing: border-box;
+    width: 100%;
+    background-color: var(--window);
+    z-index: 100;
+
+    &[data-size='extra-small'] {
+        background-color: var(--window-background-color);
+    }
+
+    button {
+        padding: .25em 1em;
+    }
+
+    &>div:first-child {
+        a {
+            border-bottom: none;
+
+            &:before {
+                height: 0;
+            }
+        }
+    }
+
+    * {
+        font-size: .875rem;
+    }
+
+    img {
+        height: 2.2em;
+    }
+
+}

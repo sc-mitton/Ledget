@@ -1,0 +1,27 @@
+.email {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 1.25em;
+
+    h3 {
+        margin: 0;
+        margin-bottom: .125em;
+    }
+
+    div,
+    button {
+        display: flex;
+        align-items: center;
+        margin-left: -.25em;
+    }
+
+    span,
+    button {
+        opacity: .9;
+    }
+
+    button:hover {
+        transition: all 0.3s ease-out;
+        opacity: 1;
+    }
+}

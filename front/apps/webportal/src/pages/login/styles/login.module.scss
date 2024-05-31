@@ -1,0 +1,39 @@
+.fullScreen {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    place-items: center;
+}
+
+.passwordAuth {
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+    margin-top: .25em;
+}
+
+.recover {
+    position: relative;
+    bottom: 0em;
+    width: 100%;
+    display: flex;
+    margin-top: 1.75em;
+    margin-bottom: -.5em;
+    justify-content: center;
+    color: var(--m-text-tirtiary);
+
+    &[data-size='extra-small'] {
+        color: var(--blue-medium);
+    }
+
+    button {
+        font-size: .875rem;
+    }
+}
+
+.recover {
+
+    span {
+        color: var(--m-text-secondary);
+    }
+}

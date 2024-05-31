@@ -1,0 +1,33 @@
+.signup {
+    input {
+        width: 100%;
+    }
+}
+
+.authForm {
+
+    &>div:last-of-type {
+        margin-top: -.25em;
+        margin-bottom: .5em;
+    }
+}
+
+.error {
+    margin: .5em 0 .75em 0;
+}
+
+.continue {
+    margin-top: 1em;
+}
+
+.splitInputs {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: .5rem;
+
+    &>div {
+        width: 48.5%;
+        margin: 0;
+    }
+}

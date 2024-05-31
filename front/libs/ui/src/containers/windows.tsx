@@ -15,6 +15,32 @@ export const Window = styled.div`
   }
 `
 
+export const PortalWindow = styled.div<{ size?: string, maxWidth?: number }>`
+  font-size: .875rem;
+  border-radius: var(--border-radius3);
+  border: 1.5px solid var(--window-border);
+  padding: 2em;
+  margin: 1rem 0;
+  position: relative;
+  max-width: ${props => props.maxWidth ? `${props.maxWidth}em` : '24em'};
+  width: ${props => props.size === 'extra-small' ? '100%' : '85%;'};
+  box-shadow: ${props => props.size === 'extra-small' ? 'none' : 'var(--window-portal-drop-shadow)'};
+  background-color: ${props => props.size === 'extra-small' ? 'transparent' : 'var(--window-portal)'};
+
+  height: ${props => props.size === 'extra-small' ? 'calc(100% - 4em)' : 'auto'};
+  max-height: ${props => props.size === 'extra-small' ? '40em' : 'none'};
+  display: ${props => props.size === 'extra-small' ? 'flex' : 'block'};
+  flex-direction: ${props => props.size === 'extra-small' ? 'column' : 'row'};
+  justify-content: ${props => props.size === 'extra-small' ? 'space-between' : 'flex-start'};
+`
+
+export const MinimalPortalWindow = styled.div<{ size?: string, maxWidth?: number }>`
+  border-radius: var(--border-radius3);
+  border: 1.5px solid var(--window-border);
+  box-shadow: ${props => props.size === 'extra-small' ? 'none' : 'var(--window-portal-drop-shadow)'};
+  background-color: ${props => props.size === 'extra-small' ? 'transparent' : 'var(--window-portal)'};
+`
+
 export const Window2 = styled.div`
   border-radius: var(--border-radius3);
   box-shadow: var(--window-drop-shadow);
@@ -36,10 +62,6 @@ export const NestedWindow = styled.div`
   border-radius: var(--border-radius2);
   padding: .75em 1em;
   margin: -.125em;
-`
-
-export const SmallScreenNestedWindow = styled(NestedWindow)`
-  background-color: var(--nested-window-small-screen);
 `
 
 export const NestedWindow2 = styled.div`

@@ -44,6 +44,9 @@
       "@ledget/ory": [
         "../../libs/ory/src"
       ],
+      "@ledget/helpers": [
+        "../../libs/helpers/src"
+      ],
     }
   },
   "files": [],

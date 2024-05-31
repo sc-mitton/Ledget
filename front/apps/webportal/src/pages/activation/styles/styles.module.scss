@@ -1,0 +1,13 @@
+.step {
+    margin: 0;
+    position: absolute;
+    width: calc(100% - 4rem);
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+    top: 4.25em;
+
+    span:first-of-type {
+        color: var(--m-text-tirtiary);
+    }
+}

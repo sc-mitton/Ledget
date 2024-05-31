@@ -1,0 +1,32 @@
+.mfa {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+
+    * {
+        margin-top: .5em;
+        font-size: .9375rem;
+    }
+
+    button {
+        color: var(--blue-medium-dark);
+        position: relative;
+
+        &:before {
+            content: "";
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: -1px;
+            left: 0;
+            background-color: var(--blue-medium-dark);
+        }
+
+        &:hover:before {
+            width: 100%;
+            transition: all 0.2s ease-out;
+        }
+
+    }
+
+}

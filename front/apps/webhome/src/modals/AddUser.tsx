@@ -16,7 +16,7 @@ import {
 } from '@ledget/ui'
 import { useAddUserToAccountMutation } from '@features/userSlice'
 import { withReAuth } from '@utils/index'
-import { hasErrorCode } from '@api/helpers'
+import { hasErrorCode } from '@ledget/helpers'
 import { useLoaded } from '@utils/hooks'
 import { Person } from '@ledget/media'
 

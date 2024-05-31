@@ -23,7 +23,7 @@ import { useTransactionsSyncMutation } from '@features/transactionsSlice'
 import { DepositsIcon, CloseIcon, Filter2 } from '@ledget/media'
 import { useAccountsContext } from './context'
 import pathMappings from './path-mappings'
-import { hasErrorCode } from '@api/helpers'
+import { hasErrorCode } from '@ledget/helpers'
 
 
 const _getNavIcon = (key = '', isCurrent: boolean) => {

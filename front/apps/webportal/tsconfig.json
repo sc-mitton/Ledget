@@ -17,8 +17,14 @@
       "@features/*": [
         "src/features/*"
       ],
-      "@pieces/*": [
-        "src/pieces/*"
+      "@pages/*": [
+        "src/pages/*"
+      ],
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@modals/*": [
+        "src/modals/*"
       ],
       "@ledget/ui": [
         "../../libs/ui/src"
@@ -28,6 +34,9 @@
       ],
       "@ledget/ory": [
         "../../libs/ory/src"
+      ],
+      "@ledget/helpers": [
+        "../../libs/helpers/src"
       ],
     },
   },
