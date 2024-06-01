@@ -21,8 +21,8 @@ import {
     BillCatLabel,
     useScreenContext,
     Tooltip,
-    BlueTextButton,
-    BlueTextButton2,
+    TextButtonHalfBlue,
+    TextButtonBlue,
     ExpandButton,
     Window
 } from '@ledget/ui';
@@ -171,7 +171,7 @@ const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
                     {selectedDate.getFullYear()}
                 </h4>
                 {showCalendarIcon &&
-                    <BlueTextButton
+                    <TextButtonHalfBlue
                         ref={buttonRef}
                         onClick={() => setShowCalendar(!showCalendar)}
                         tabIndex={0}
@@ -179,7 +179,7 @@ const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
                         aria-haspopup="true"
                     >
                         <CalendarIcon className="icon" />
-                    </BlueTextButton>}
+                    </TextButtonHalfBlue>}
             </div>
             <div>
                 <Tooltip msg={collapsed ? 'Expand' : 'Collapse'}>
@@ -309,9 +309,9 @@ const BillsWindow = () => {
         <>
             <div id='bills' className={`${collapsed ? 'collapsed' : ''}`} ref={ref}>
                 <h2>Bills</h2>
-                <BlueTextButton2 onClick={() => setModal(true)} aria-label='View all bills'>
+                <TextButtonBlue onClick={() => setModal(true)} aria-label='View all bills'>
                     View All
-                </BlueTextButton2>
+                </TextButtonBlue>
                 <Window className={`calendar-bills--container ${collapsed ? 'collapsed' : ''} ${['small', 'extra-small'].includes(screenSize) ? 'small-screen' : ''}`}>
                     <Header showCalendarIcon={!showCalendar} collapsed={collapsed} setCollapsed={setCollapsed} />
                     <div>

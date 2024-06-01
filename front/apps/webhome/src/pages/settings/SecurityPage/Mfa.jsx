@@ -8,7 +8,7 @@ import {
     CircleIconButton,
     BlueSlimButton,
     Tooltip,
-    BlueTextButton,
+    TextButtonHalfBlue,
     NestedWindow
 } from '@ledget/ui'
 import { QrIcon } from '@ledget/media'
@@ -83,8 +83,8 @@ const Mfa = () => {
             </NestedWindow>
             {user.settings.mfa_method === 'totp' &&
                 <div><Tooltip msg={'Recovery codes'} ariaLabel={'Recovery codes'}>
-                    <BlueTextButton onClick={() => navigate('/profile/security/recovery-codes')} >
-                        Recovery Codes</BlueTextButton>
+                    <TextButtonHalfBlue onClick={() => navigate('/profile/security/recovery-codes')} >
+                        Recovery Codes</TextButtonHalfBlue>
                 </Tooltip></div>}
         </section>
     )

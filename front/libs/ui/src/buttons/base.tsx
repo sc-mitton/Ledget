@@ -176,7 +176,23 @@ export const inputStyle = css`
     }
 `
 
-export const hoverBlueText = css`
+export const hoverText = css`
+    color: var(--m-text-secondary);
+
+    * {
+        color: var(--m-text-secondary);
+    }
+
+    &:hover {
+        color: var(--m-text);
+
+        * {
+            color: var(--m-text);
+        }
+    }
+`
+
+export const hoverHalfBlueText = css`
     color: var(--m-text-secondary);
 
     * {
@@ -192,7 +208,7 @@ export const hoverBlueText = css`
     }
 `
 
-export const hoverBlueText2 = css`
+export const hoverBlueText = css`
     color: var(--blue-sat);
     font-weight: var(--fw-bold);
 

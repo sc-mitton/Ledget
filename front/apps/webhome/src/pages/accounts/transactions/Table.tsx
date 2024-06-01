@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState, HTMLProps, useRef } from 'react'
+import { useEffect, useState, HTMLProps, useRef } from 'react'
 
 import { useLocation, useSearchParams } from 'react-router-dom'
 import { Dayjs } from 'dayjs'
@@ -6,7 +6,6 @@ import { Dayjs } from 'dayjs'
 import './styles/Transactions.scss'
 import { useLazyGetTransactionsQuery, GetTransactionsResponse } from '@features/transactionsSlice'
 import {
-    TransactionShimmer,
     InfiniteScrollDiv,
     ShadowScrollDiv,
     useLoaded,
@@ -16,6 +15,7 @@ import {
 
 import pathMappings from '../path-mappings'
 import Filter from './Filter'
+import Skeleton from './Skeleton'
 
 type Props = Omit<HTMLProps<HTMLDivElement>, 'children'> & {
     children: ({ transactionsData }: { transactionsData?: GetTransactionsResponse }) => React.ReactNode
@@ -69,32 +69,20 @@ const Table = ({ children, ...rest }: Props) => {
     }
 
     return (
-        <Window className={screenSize} id='transactions-table'>
+        <Window className={screenSize} id='transactions-table' ref={containerRef}>
             <div id='transactions-table--header'>
                 <h3>Transactions</h3>
                 <Filter value={dateRange} onChange={setDateRange} />
             </div>
             <InfiniteScrollDiv
                 animate={loaded && fetchMorePulse}
-                ref={containerRef}
                 {...rest}
             >
                 <ShadowScrollDiv
                     className={`transactions-list  ${transactionsData ? 'not-skeleton' : ''} ${screenSize ? screenSize : ''} `}
                     onScroll={handleScroll}
                 >
-                    {!transactionsData && Array(containerRef.current ? Math.round(containerRef.current?.offsetHeight / 70) : 0)
-                        .fill(0)
-                        .map((_, index) =>
-                            <Fragment key={`transaction-${index}`}>
-                                <div />
-                                <TransactionShimmer
-                                    key={index}
-                                    shimmering={true}
-                                />
-                            </Fragment>
-                        )
-                    }
+                    {!transactionsData && <Skeleton ref={containerRef} />}
                     {children({ transactionsData })}
                 </ShadowScrollDiv>
             </InfiniteScrollDiv>

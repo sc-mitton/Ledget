@@ -2,7 +2,7 @@ import { Listbox } from '@headlessui/react'
 import { Account } from '@features/accountsSlice'
 import Big from 'big.js'
 
-import styles from './styles/SelectOption.module.scss'
+import styles from './styles/option.module.scss'
 import { InsitutionLogo } from '@components/pieces'
 import { DollarCents, GripButton } from '@ledget/ui'
 

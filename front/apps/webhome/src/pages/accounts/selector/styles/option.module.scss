@@ -10,7 +10,6 @@
 
     &:hover {
         border-color: var(--btn-feather-light-gray-hover);
-        box-shadow: 0 0 1px 1px var(--btn-feather-light-gray);
     }
 
     &:has(div[aria-selected=true]) {

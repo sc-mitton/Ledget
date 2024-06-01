@@ -1,16 +1,15 @@
 'react'
 
 const Grip = ({
-    width = "1.25em",
-    height = "1.25em",
+    size = "1.25em",
     className = '',
     stroke = "currentColor",
 }) => {
 
     return (
         <svg
-            width={width}
-            height={height}
+            width={size}
+            height={size}
             viewBox={`0 0 25 25`}
             className={className}
             aria-label="Filter"

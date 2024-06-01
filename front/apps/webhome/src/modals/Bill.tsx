@@ -1,6 +1,5 @@
 import { useId, useState, useEffect } from 'react'
 
-import { useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import { Menu, RadioGroup } from '@headlessui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -25,7 +24,7 @@ import {
     SlideMotionDiv,
     useLoaded,
     Checkbox,
-    IconButton,
+    IconButtonHalfGray,
     DropdownItem,
     DatePicker,
     NestedWindow2
@@ -92,7 +91,7 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
         <Menu as="div" className="corner-dropdown">
             {({ open }) => (
                 <>
-                    <Menu.Button as={IconButton} onClick={() => setOpenEllipsis(!openEllipsis)}>
+                    <Menu.Button as={IconButtonHalfGray} onClick={() => setOpenEllipsis(!openEllipsis)}>
                         <Ellipsis rotate={90} size={'1.375em'} />
                     </Menu.Button>
                     <div>

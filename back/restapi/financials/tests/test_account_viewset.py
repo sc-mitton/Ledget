@@ -62,7 +62,7 @@ class TestPlaidItemView(ViewTestsMixin):
         the expected keys
         '''
 
-        response = self.client.get(reverse('account-balance-trend'))
+        response = self.client.get(reverse('accounts-balance-trend'))
         self.assertEqual(response.status_code, 200)
         self.assertIn('days', response.data)
         self.assertIn('trends', response.data)

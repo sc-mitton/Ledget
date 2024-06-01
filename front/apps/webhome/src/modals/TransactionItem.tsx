@@ -30,11 +30,10 @@ import {
     useLoaded,
     CircleIconButton,
     Tooltip,
-    IconButton,
+    IconButtonHalfGray,
     AutoResizeTextArea,
     NestedWindow2
 } from '@ledget/ui'
-
 
 type Action = 'split'
 
@@ -45,7 +44,7 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
         <Menu as="div" className="corner-dropdown">
             {({ open }) => (
                 <>
-                    <Menu.Button as={IconButton} onClick={() => setOpenEllipsis(!openEllipsis)}>
+                    <Menu.Button as={IconButtonHalfGray} onClick={() => setOpenEllipsis(!openEllipsis)}>
                         <Ellipsis rotate={90} size={'1.375em'} />
                     </Menu.Button>
                     <div>

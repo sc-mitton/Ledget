@@ -8,7 +8,7 @@ import './styles/Wafers.scss'
 import {
     DollarCents,
     useScreenContext,
-    BlueIconButton,
+    IconButtonHalfBlue,
     Window2,
     CloseButton
 } from '@ledget/ui'
@@ -83,7 +83,7 @@ function Wafers() {
                         <div>
                             <h4>{pathMappings.getWaferTitle(location)}</h4>
                             {location.pathname.includes('deposits') &&
-                                <BlueIconButton
+                                <IconButtonHalfBlue
                                     aria-label='Show balance history'
                                     aria-haspopup='true'
                                     aria-expanded={showChart}
@@ -91,7 +91,7 @@ function Wafers() {
                                     onClick={() => setShowChart(!showChart)}
                                 >
                                     <LineGraph />
-                                </BlueIconButton>}
+                                </IconButtonHalfBlue>}
                         </div>
                         <h1>
                             <DollarCents value={accounts?.reduce((acc, account) =>

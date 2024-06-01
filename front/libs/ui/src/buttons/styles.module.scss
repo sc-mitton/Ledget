@@ -294,11 +294,14 @@
 
 .refresh {
     margin: 0;
-    border-radius: 50%;
     min-height: 1.125rem;
     min-width: 1.125rem;
     transform: scale(1);
     position: relative;
+
+    &[data-background='true'] {
+        border-radius: 50%;
+    }
 
     &[data-active="true"] svg {
         animation: spin .3s ease-in-out forwards;

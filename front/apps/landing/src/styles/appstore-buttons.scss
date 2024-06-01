@@ -1,5 +1,5 @@
 .app-download-button {
-    background-color: var(--btn-feather-light-gray);
+    background-color: var(--btn-light-gray);
     border-radius: .75em;
     display: flex;
     align-items: center;
@@ -10,7 +10,7 @@
     transition: all .3s;
 
     &:hover {
-        background-color: var(--btn-feather-light-gray-hover);
+        background-color: var(--btn-light-gray-hover);
         transition: all .3s;
     }
 

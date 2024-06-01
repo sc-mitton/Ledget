@@ -8,7 +8,7 @@ import { DropdownDiv } from '../../animations/animations';
 import { HalfArrow } from '@ledget/media'
 import { TextInputWrapper } from '../text/text';
 import { Tooltip } from '../../pieces/tooltip/tooltip';
-import { BlueIconButton, CircleIconButton } from '../../buttons';
+import { IconButtonBlue, CircleIconButton } from '../../buttons';
 import { useAccessEsc } from '../../modal/with-modal/with-modal';
 import { useLoaded } from '../../utils/hooks';
 
@@ -450,15 +450,15 @@ const DayMonthYearPicker = () => {
       {/* Header */}
       <div>
         <div>
-          <BlueIconButton
+          <IconButtonBlue
             onClick={(e) => handleSeek(e, -1, 'fast')}>
             <ChevronsLeft size="1.25em" />
-          </BlueIconButton>
+          </IconButtonBlue>
           {view !== 'year' &&
-            <BlueIconButton
+            <IconButtonBlue
               onClick={(e) => handleSeek(e, -1, 'normal')}>
               <ChevronLeft size="1.25em" />
-            </BlueIconButton>}
+            </IconButtonBlue>}
         </div>
         {focusedInputIndex === 0 && pickerType === 'range' && view === 'day' &&
           <div>
@@ -493,14 +493,14 @@ const DayMonthYearPicker = () => {
           </div>}
         <div>
           {view !== 'year' &&
-            <BlueIconButton
+            <IconButtonBlue
               onClick={(e) => handleSeek(e, 1, 'normal')}>
               <ChevronRight size="1.25em" />
-            </BlueIconButton>}
-          <BlueIconButton
+            </IconButtonBlue>}
+          <IconButtonBlue
             onClick={(e) => handleSeek(e, 1, 'fast')}>
             <ChevronsRight size="1.25em" />
-          </BlueIconButton>
+          </IconButtonBlue>
         </div>
       </div>
       {/* Items Pick */}
@@ -556,13 +556,13 @@ const DayMonthYearPicker = () => {
       </div>
       {/* Today Window Seek */}
       <div>
-        <BlueIconButton
+        <IconButtonBlue
           type='button'
           onClick={() => { setWindowCenter(dayjs()) }}
           aria-label='Go to today'
         >
           Today
-        </BlueIconButton>
+        </IconButtonBlue>
       </div>
     </div>
   )

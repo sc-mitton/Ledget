@@ -112,6 +112,12 @@ class ViewTestsMixin(TestCase):
         self.setup_secondary_aal2_user()
 
         self.create_clients()
+        self.update_period_end(self.user)
+        self.update_period_end(self.aal2_user)
+
+    def update_period_end(self, user):
+        user.customer.period_end = timezone.now().timestamp()
+        user.customer.save()
 
     def setup_secondary_aal2_user(self):
         # AAL2 user

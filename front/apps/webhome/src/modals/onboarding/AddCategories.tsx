@@ -17,7 +17,7 @@ import {
     getLongestLength,
     DollarCents,
     FormErrorTip,
-    IconButton,
+    IconButtonHalfGray,
     formatCurrency,
     makeIntCurrencyFromStr,
     TabNavListUnderlined,
@@ -255,7 +255,7 @@ const CustomTabPanel = () => {
                         </LimitAmountInput>
                     </div>
                     <div>
-                        <IconButton><Check className="icon" /></IconButton>
+                        <IconButtonHalfGray><Check className="icon" /></IconButtonHalfGray>
                     </div>
                 </div>
             </form>

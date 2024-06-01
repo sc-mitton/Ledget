@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useId, ComponentProps, ComponentPropsWithoutRef } from 'react'
+import { useRef, useEffect, useState, useId, ComponentProps, FC } from 'react'
 
 import { Listbox } from '@headlessui/react'
 import { Control, useController, UseControllerReturn, FieldError } from 'react-hook-form'
@@ -22,7 +22,7 @@ export interface BakedSelectPropsBase<O> {
   placement?: ComponentProps<typeof DropdownDiv>['placement']
   placeholder?: string
   withCheckMarkIndicator?: boolean
-  as?: React.FC<ComponentPropsWithoutRef<'button'>>
+  as?: FC<React.HTMLAttributes<HTMLButtonElement>>
   error?: FieldError
   style?: React.CSSProperties
   dropdownStyle?: React.CSSProperties

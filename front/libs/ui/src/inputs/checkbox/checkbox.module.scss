@@ -1,0 +1,101 @@
+.container {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    white-space: nowrap;
+
+    * {
+        box-sizing: border-box;
+        cursor: pointer;
+    }
+
+}
+
+.symbol {
+    position: absolute;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    user-select: none;
+}
+
+
+.input {
+    position: absolute;
+    visibility: hidden;
+
+    &:checked+.checkbox span:first-child {
+        background: var(--blue-medium);
+        border-color: var(--blue-medium-hover);
+        animation: zoom-in-out 0.2s ease;
+    }
+
+    &:checked+.checkbox span:first-child svg {
+        stroke: var(--white);
+        animation: draw 0.5s ease-in-out forwards;
+    }
+
+}
+
+.checkbox {
+    user-select: none;
+    margin: .375em 0;
+    padding: 0 .25em;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    border-radius: var(--border-radius);
+
+    &:focus-visible {
+        outline: none;
+        box-shadow: var(--accessible-focus-drop-shadow);
+    }
+
+
+    span {
+        vertical-align: middle;
+    }
+
+    span:first-child {
+        width: .875rem;
+        height: .875rem;
+        font-size: .75rem;
+        transform: scale(1);
+        background-color: var(--btn-light-gray);
+        border: 1px solid var(--btn-light-gray-hover);
+        border-radius: var(--border-radius);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    span:first-child svg {
+        fill: none;
+        stroke: 1.5px var(--blue-light);
+        stroke-dasharray: 30;
+        stroke-dashoffset: 30;
+    }
+
+    span:last-child {
+        padding-left: .5em;
+    }
+
+    &:hover span:first-child {
+        transform: scale(1.12);
+        transition: all 0.2s ease;
+    }
+}
+
+@keyframes draw {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes zoom-in-out {
+    50% {
+        transform: scale(0.9);
+    }
+}

@@ -96,7 +96,7 @@ export const ShimmerText = (props: Omit<ColoredShimmerProps, 'color'> & { backgr
     shimmering = false,
     length = 12,
     style = {} as React.CSSProperties,
-    backgroundColor = 'var(--shimmer-text-background)',
+    backgroundColor,
     darkMode,
     ...rest
   } = props
@@ -109,8 +109,8 @@ export const ShimmerText = (props: Omit<ColoredShimmerProps, 'color'> & { backgr
           fontSize: 'inherit',
           height: '1em',
           margin: '2px 0',
-          borderRadius: 'var(--border-radius1)',
-          backgroundColor: backgroundColor,
+          borderRadius: '.375em',
+          backgroundColor: backgroundColor || 'var(--shimmer-text-background)',
           position: 'relative',
           ...style,
         }}
@@ -164,11 +164,11 @@ export const TransactionShimmer = ({ shimmering = true, ...rest }: TransactionSh
   <>
     <div >
       <div style={{ display: 'flex', flexDirection: 'column', gap: '.125em' }}>
-        <ShimmerText length={25} shimmering={shimmering} {...rest} backgroundColor={'var(--input-background)'} />
-        <ShimmerText length={10} shimmering={shimmering}  {...rest} backgroundColor={'var(--input-background)'} />
+        <ShimmerText length={25} shimmering={shimmering} {...rest} />
+        <ShimmerText length={10} shimmering={shimmering}  {...rest} />
       </div>
       <div>
-        <ShimmerText length={10} shimmering={shimmering}  {...rest} backgroundColor={'var(--input-background)'} />
+        <ShimmerText length={10} shimmering={shimmering}  {...rest} />
       </div>
     </div>
   </>

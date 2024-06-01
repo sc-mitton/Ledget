@@ -127,48 +127,48 @@
             }
         }
     }
+}
 
-    .wafer-institution-logo {
-        margin-left: -.125em;
-        margin-top: .25em;
+
+.wafer-institution-logo {
+    margin-left: -.125em;
+    margin-top: .25em;
+}
+
+.wafer-name {
+    position: relative;
+    overflow: hidden;
+    width: calc(100% - .375em);
+    display: inline-flex;
+    flex-direction: column;
+    white-space: nowrap;
+    margin-top: .25em;
+
+    * {
+        font-weight: var(--fw-bold);
     }
+}
 
-    .wafer-name {
-        position: relative;
-        overflow: hidden;
-        width: calc(100% - .375em);
-        display: inline-flex;
-        flex-direction: column;
-        white-space: nowrap;
-        margin-top: .25em;
+.wafer-meta {
+    opacity: .8;
+    font-size: .8rem;
+    display: flex;
+    gap: .25em;
+    align-items: center;
+}
 
-        * {
-            font-weight: var(--fw-bold);
-        }
+.wafer-balance {
+    flex-grow: 1;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+    z-index: 1;
+
+    div {
+        font-size: 1rem;
+        letter-spacing: .0625em;
     }
-
-    .wafer-meta {
-        opacity: .8;
-        font-size: .8rem;
-        display: flex;
-        gap: .25em;
-        align-items: center;
-    }
-
-    .wafer-balance {
-        flex-grow: 1;
-        width: 100%;
-        display: flex;
-        align-items: flex-end;
-        position: relative;
-        z-index: 1;
-
-        div {
-            font-size: 1rem;
-            letter-spacing: .0625em;
-        }
-    }
-
 }
 
 $marquee-spacing: 1.5em;

@@ -18,7 +18,7 @@ import {
     ShadowScrollDiv,
     DollarCents,
     FormErrorTip,
-    IconButton,
+    IconButtonHalfGray,
     TabNavListUnderlined
 } from '@ledget/ui'
 import { extractReminders } from '@modals/CreateBill'
@@ -197,9 +197,9 @@ const CutomTabPanel = () => {
                         />
                     </div>
                     <div>
-                        <IconButton>
+                        <IconButtonHalfGray>
                             <Check className='icon' />
-                        </IconButton>
+                        </IconButtonHalfGray>
                     </div>
                 </div>
             </form>

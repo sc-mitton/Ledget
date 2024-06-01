@@ -1,6 +1,6 @@
 import { FC, useState, forwardRef, ButtonHTMLAttributes, useEffect } from 'react';
 
-import { X, Copy, ChevronsDown, Check } from '@geist-ui/icons'
+import { X, Copy, ChevronsDown, Check, Circle } from '@geist-ui/icons'
 import styled from 'styled-components';
 
 import styles from './styles.module.scss';
@@ -30,10 +30,9 @@ import {
     BluePrimaryButton,
     BlueSlimButton3,
     BlackPillButton,
-    IconButton,
-    FadedTextButton,
-    FadedIconButton,
+    TextButton,
     FeatherGrayPillButton,
+    IconButtonHalfGray
 } from './styled-buttons';
 
 export const BlackPillButtonWithArrow = withArrow(BlackPillButton)
@@ -49,7 +48,7 @@ export const BlueSlimSubmitButton = withLoading(BlueSlimButton3)
 export const BlackCheckSubmitButton = withCheckMark(BlackSubmitButton)
 export const BlueCheckSubmitButton = withCheckMark(BlueSubmitButton)
 
-export const IconButtonSubmit = withLoading(IconButton)
+export const IconButtonSubmit = withLoading(IconButtonHalfGray)
 export const LinkArrowButton = withArrow(BaseButton)
 export const GlossMiniCta = withArrow(GlossMini)
 
@@ -65,23 +64,6 @@ export const FacebookLoginButton = (props: ButtonHTMLAttributes<HTMLButtonElemen
 export const GoogleLoginButton = (props: ButtonHTMLAttributes<HTMLButtonElement>) => (
     <SocialButton {...props}> <GoogleLogo /> </SocialButton>
 )
-
-export const BlueFadedSquareRadio = styled(BaseButton) <React.HTMLProps<HTMLButtonElement> & { selected?: boolean }>`
-    background-color: ${props => props.selected ? 'var(--blue-light)' : 'var(--btn-light-gray)'};
-    color: ${props => props.selected ? 'var(--blue-sat-hover)' : 'var(--btn-gray)'};
-    font-weight: ${props => props.selected ? 'var(--fw-bold)' : 'var(--fw-regular)'};
-`
-
-export const FilterPillButton = styled(BaseButton) <React.HTMLProps<HTMLButtonElement> & { selected?: boolean }>`
-    padding: .125em 1em;
-    color: var(--m-text-secondary);
-    border: ${props => props.selected ? '1px solid var(--blue-sat)' : '1px solid var(--border-color)'};
-    border-radius: 1em;
-
-    &:hover {
-        border-color: var(--m-text-tirtiary);
-    }
-`
 
 export const ExpandButton = ({ flipped = false, size = '1.25em', ...rest }) => (
     <BaseButton
@@ -209,7 +191,7 @@ export const ResendButton = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<H
         }
 
         return (
-            <FadedTextButton
+            <TextButton
                 ref={ref}
                 data-active={active}
                 data-success={success}
@@ -223,12 +205,12 @@ export const ResendButton = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<H
                         ? <Check className="resend-btn-success-icon" size={'1.25em'} />
                         : <ReplayIcon stroke={'currentColor'} size={'1.1em'} />}
                 </div>
-            </FadedTextButton>
+            </TextButton>
         )
     }
 )
 
-export const RefreshButton = ({ stroke = 'currentColor', hasBackground = true, loading = false, onClick = () => { }, ...rest }) => {
+export const RefreshButton = ({ loading = false, onClick = () => { }, ...rest }) => {
     const [active, setActive] = useState(false)
 
     useEffect(() => {
@@ -242,32 +224,46 @@ export const RefreshButton = ({ stroke = 'currentColor', hasBackground = true, l
 
     return (
         <Tooltip msg={"Refresh"} ariaLabel={"Refresh list"}>
-            {hasBackground
-                ?
-                <CircleIconButton
-                    className={styles.refresh}
-                    data-active={active}
-                    data-loading={!active && loading}
-                    onClick={() => { setActive(true); onClick(); }}
-                    aria-label="Refresh"
-                    {...rest}
-                >
-                    {!active && loading && <LoadingRing visible={true} />}
-                    {(active || !loading) && <ReplayIcon stroke={stroke} />}
-                </CircleIconButton>
-                :
-                <IconButton
-                    className={styles.refresh}
-                    data-active={active}
-                    data-loading={!active && loading}
-                    aria-label="Refresh"
-                    onClick={() => { setActive(true); onClick(); }}
-                    {...rest}
-                >
-                    <LoadingRing visible={!active && loading} />
-                    <ReplayIcon stroke={stroke} />
-                </IconButton>
-            }
+            <CircleIconButton
+                className={styles.refresh}
+                data-active={active}
+                data-loading={!active && loading}
+                onClick={() => { setActive(true); onClick(); }}
+                aria-label="Refresh"
+                {...rest}
+            >
+                {!active && loading && <LoadingRing visible={true} />}
+                {(active || !loading) && <ReplayIcon size={'1.125em'} />}
+            </CircleIconButton>
+        </Tooltip>
+    )
+}
+
+export const RefreshButton2 = ({ loading = false, onClick = () => { }, ...rest }) => {
+    const [active, setActive] = useState(false)
+
+    useEffect(() => {
+        let timeout = setTimeout(() => {
+            setActive(false)
+        }, 400)
+        return () => {
+            clearTimeout(timeout)
+        }
+    }, [active])
+
+    return (
+        <Tooltip msg={"Refresh"} ariaLabel={"Refresh list"}>
+            <IconButtonHalfGray
+                className={styles.refresh}
+                data-active={active}
+                data-loading={!active && loading}
+                aria-label="Refresh"
+                onClick={() => { setActive(true); onClick(); }}
+                {...rest}
+            >
+                <LoadingRing visible={!active && loading} />
+                <ReplayIcon size={'1.4em'} />
+            </IconButtonHalfGray>
         </Tooltip>
     )
 }

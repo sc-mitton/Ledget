@@ -1,18 +1,14 @@
 import { useRef, useState, useEffect } from 'react'
 
-import { animated, useSpring } from '@react-spring/web'
+import { animated } from '@react-spring/web'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import {
     usePillAnimation,
     useSchemeVar,
-    IconButton,
-    useAccessEsc,
     useScreenContext
 } from '@ledget/ui'
-import { Hamburger } from '@ledget/media'
 import { useGetMeQuery } from '@features/userSlice'
-import { useGutterContext } from './Window'
 import { useColorScheme } from '@ledget/ui'
 import { Shield, Link, User } from '@geist-ui/icons'
 

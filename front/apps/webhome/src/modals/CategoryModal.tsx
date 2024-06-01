@@ -28,7 +28,7 @@ import {
     ResponsiveLineContainer,
     PillOptionButton,
     LoadingRing,
-    IconButton,
+    IconButtonHalfGray,
     DropdownDiv,
     DropdownItem,
     SlideMotionDiv,
@@ -144,7 +144,7 @@ const Options = ({ onEdit, onDelete }: { onEdit: () => void, onDelete: () => voi
     <Menu>
         {({ open }) => (
             <div style={{ position: 'absolute', top: '.875em', right: '3.25em' }}>
-                <Menu.Button as={IconButton}>
+                <Menu.Button as={IconButtonHalfGray}>
                     <Ellipsis rotate={90} />
                 </Menu.Button>
                 <div style={{ position: 'absolute', right: '0' }}>

@@ -4,7 +4,7 @@ from restapi.utils import reverse
 from restapi.tests.mixins import ViewTestsMixin
 from django.utils import timezone
 
-from financials.models import Transaction, PlaidItem
+from financials.models import Transaction, PlaidItem, Note
 from budget.models import Category, Bill
 
 
@@ -15,6 +15,10 @@ class TestTransactionViewSet(ViewTestsMixin):
         self.add_user_to_budget_categories(self.user)
         self.add_user_to_budget_bills(self.user)
         self.set_user_on_all_plaid_items(self.user)
+
+        self.transaction = Transaction.objects \
+            .filter(account__useraccount__user=self.user) \
+            .first()
 
     def test_get_merchants(self):
         response = self.client.get(reverse('transactions-merchants'))
@@ -144,3 +148,47 @@ class TestTransactionViewSet(ViewTestsMixin):
         ))
         self.assertEqual(response.status_code, 200)
         self.assertIsNotNone(response.data)
+
+    def test_adding_note_to_transaction(self):
+        """Test adding a note to a transaction."""
+
+        response = self.client.post(
+            reverse('note-list', kwargs={'id': self.transaction.pk}),
+            {'text': 'This is a note'}
+        )
+
+        self.assertEqual(response.status_code, 201)
+        notes = Note.objects.filter(transaction=self.transaction)
+        self.assertEqual(any(note.text == 'This is a note' for note in notes), True)
+
+    def test_updating_note_to_transaction(self):
+        """Test updating a note for a transaction."""
+
+        note = Note.objects.create(
+            transaction=self.transaction,
+            user=self.user,
+            text='This is a note'
+        )
+
+        edited_note = 'This is a new note'
+        response = self.client.put(
+            reverse('note-detail', kwargs={'id': self.transaction.pk, 'pk': note.pk}),
+            {'text': edited_note}
+        )
+
+        self.assertEqual(response.status_code, 200)
+        note.refresh_from_db()
+        self.assertEqual(note.text, edited_note)
+
+    def test_updating_transaction_preferred_name(self):
+        """Test adding a preferred name to a transaction."""
+
+        preferred_name = 'Preferred Name'
+        response = self.client.patch(
+            reverse('transactions-detail', kwargs={'pk': self.transaction.pk}),
+            {'preferred_name': preferred_name}
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.transaction.refresh_from_db()
+        self.assertEqual(self.transaction.preferred_name, preferred_name)

@@ -5,6 +5,7 @@ import styles from './styles.module.scss'
 
 
 // Filters for bills and categories
+// Auto logout cleaner
 
 const ColumnView = () => (
     <div className={styles.columns}>

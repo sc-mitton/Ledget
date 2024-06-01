@@ -27,7 +27,7 @@ import {
     RecoveryCodeGraphic,
     BackButton,
     useLoaded,
-    BlueTextButton
+    TextButtonHalfBlue
 } from '@ledget/ui'
 
 const ErrorFetchingFlow = () => (<FormError msg={"Something went wrong, please try again later."} />)
@@ -137,13 +137,13 @@ const Totp = () => {
                     :
                     <div className="recovery-code-option--container">
                         <span>or use a&nbsp;&nbsp;</span>
-                        <BlueTextButton
+                        <TextButtonHalfBlue
                             type="button"
                             onClick={() => { setUseLookupSecret(true) }}
                             aria-label="Use recovery code"
                         >
                             recovery code
-                        </BlueTextButton>
+                        </TextButtonHalfBlue>
                     </div>
                 }
 

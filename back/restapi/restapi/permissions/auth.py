@@ -63,7 +63,6 @@ class IsAuthedVerifiedSubscriber(IsAuthenticated):
     """Class for bundling permissions for User views"""
 
     def has_permission(self, request, view):
-
         checks = [
             request.user.account.service_provisioned_until > int(time.time()),
             request.user.account.customer.subscription_not_canceled,

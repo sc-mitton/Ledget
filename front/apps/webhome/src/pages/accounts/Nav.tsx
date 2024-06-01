@@ -268,7 +268,7 @@ export const Nav = () => {
                     aria-controls='filter'
                     aria-haspopup='true'
                 >
-                    <Filter2 />
+                    <Filter2 size={'1em'} />
                 </CircleIconButton>
             </div>
             <Filters visible={showFilters} close={() => setShowFilters(false)} />

@@ -15,8 +15,9 @@ import {
     red,
     clearGray,
     inputStyle,
+    hoverHalfBlueText,
     hoverBlueText,
-    hoverBlueText2
+    hoverText
 } from './base';
 
 // Pill Buttons
@@ -50,15 +51,28 @@ export const RedSlimButton = styled(SlimButton)`${red}`
 
 export const ClearNarrowButton = styled(NarrowButton)`${clearGray}`
 
-export const FadedTextButton = styled(PrimaryButton)`${hoverBlueText}`
-export const BlueTextButton = styled(SlimButton)`${hoverBlueText}`
-export const BlueTextButton2 = styled(SlimButton)`${hoverBlueText2}`
-export const BlueIconButton = styled(BaseButton)`${hoverBlueText}`
+export const TextButton = styled(PrimaryButton)`${hoverText}`
+export const TextButtonHalfBlue = styled(SlimButton)`${hoverHalfBlueText}`
+export const TextButtonBlue = styled(SlimButton)`${hoverBlueText}`
 
-export const IconButton = styled(BaseButton)`
-    ${clearGray}
-    padding: .125em;
+export const PrimaryTextButton = styled(PrimaryButton)`
+    color: var(--m-text-tirtiary);
+
+    * {
+        color: var(--m-text-tirtiary);
+    }
+
+    &:hover {
+        color: var(--m-text);
+
+        * {
+            color: var(--m-text);
+        }
+    }
 `
+export const IconButtonHalfBlue = styled(BaseButton)`${hoverHalfBlueText}`
+export const IconButtonHalfGray = styled(BaseButton)`${clearGray} border-radius: .375em; padding: .125em;`
+export const IconButtonBlue = styled(BaseButton)`${hoverBlueText}`
 
 export const FadedIconButton = styled(BaseButton)`
     color: var(--m-text-quaternary);
@@ -84,18 +98,26 @@ export const FormInputButton2 = styled(BaseButton)`
     margin: .375em 0;
     border-radius: var(--border-radius2);
 `
-export const PrimaryTextButton = styled(PrimaryButton)`
-    color: var(--m-text-tirtiary);
 
-    * {
-        color: var(--m-text-tirtiary);
-    }
+export const BlueFadedSquareRadio = styled(BaseButton) <React.HTMLProps<HTMLButtonElement> & { selected?: boolean }>`
+    background-color: ${props => props.selected ? 'var(--blue-light)' : 'var(--btn-light-gray)'};
+    color: ${props => props.selected ? 'var(--blue-sat-hover)' : 'var(--btn-gray)'};
+    font-weight: ${props => props.selected ? 'var(--fw-bold)' : 'var(--fw-regular)'};
+    border-radius: .375em;
+    padding: .125em .25em;
 
     &:hover {
-        color: var(--m-text);
+        background-color: ${props => props.selected ? 'var(--blue-light)' : 'var(--btn-light-gray-hover)'};
+    }
+`
 
-        * {
-            color: var(--m-text);
-        }
+export const FilterPillButton = styled(BaseButton) <React.HTMLProps<HTMLButtonElement> & { selected?: boolean }>`
+    padding: .125em 1em;
+    color: var(--m-text-secondary);
+    border: ${props => props.selected ? '1px solid var(--blue-sat)' : '1px solid var(--border-color)'};
+    border-radius: 1em;
+
+    &:hover {
+        border-color: var(--m-text-tirtiary);
     }
 `

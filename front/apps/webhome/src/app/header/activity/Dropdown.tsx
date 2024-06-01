@@ -4,7 +4,7 @@ import { Activity, Filter } from '@geist-ui/icons'
 import { Tab } from '@headlessui/react'
 
 import './Dropdown.scss'
-import { DropdownDiv, useAccessEsc, RefreshButton, IconButton, Tooltip, TabNavListUnderlined } from '@ledget/ui'
+import { DropdownDiv, useAccessEsc, RefreshButton2, IconButtonHalfGray, Tooltip, TabNavListUnderlined } from '@ledget/ui'
 import { CheckAll } from '@ledget/media'
 import { selectNotificationsTabIndex, setNotificationsTabIndex } from '@features/uiSlice'
 import { useGetTransactionsCountQuery, useTransactionsSyncMutation } from '@features/transactionsSlice'
@@ -95,25 +95,23 @@ const ActivityDropdown = (props: HTMLProps<HTMLDivElement>) => {
                                         {selectedIndex === 0 && (
                                             <>
                                                 <Tooltip msg="Confirm all" ariaLabel="Confirm all">
-                                                    <IconButton
+                                                    <IconButtonHalfGray
                                                         onClick={() => setConfirmAll(true)}
                                                         disabled={tCountData?.count === 0}
                                                     >
                                                         <CheckAll />
-                                                    </IconButton>
+                                                    </IconButtonHalfGray>
                                                 </Tooltip>
-                                                <RefreshButton
-                                                    stroke={'currentColor'}
-                                                    hasBackground={false}
+                                                <RefreshButton2
                                                     loading={isSyncing}
                                                     onClick={() => syncTransactions({})}
                                                 /></>)}
                                         {selectedIndex === 1 && (
                                             <>
                                                 <Tooltip msg="Filter" ariaLabel="Filter">
-                                                    <IconButton onClick={() => setShowFilterForm(!showFilterForm)}>
+                                                    <IconButtonHalfGray onClick={() => setShowFilterForm(!showFilterForm)}>
                                                         <Filter size={'1.125em'} />
-                                                    </IconButton>
+                                                    </IconButtonHalfGray>
                                                 </Tooltip>
                                             </>
                                         )}

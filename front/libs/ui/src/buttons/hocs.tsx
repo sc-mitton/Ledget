@@ -14,7 +14,7 @@ interface LoadingButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     rotate?: number;
 }
 
-export const withArrow = (Component: FC<any>) => {
+export const withArrow = (Component: FC<React.HTMLAttributes<HTMLButtonElement>>) => {
 
     return (props: LoadingButtonProps & { [key: string]: any }) => {
         const {

@@ -1,7 +1,6 @@
-import { forwardRef, useState } from 'react'
+import { forwardRef } from 'react'
 
-import './checkbox.scss'
-
+import styles from './checkbox.module.scss'
 
 interface CheckboxProps {
   id: string
@@ -20,8 +19,8 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(({ checked, 
   }
 
   return (
-    <div className="checkbox-container">
-      <svg className="checkbox-symbol">
+    <div className={styles.container}>
+      <svg className={styles.symbol}>
         <symbol id="check" viewBox="0 0 12 10">
           <polyline
             points="3 5.5 5.5 8 9.5 2"
@@ -34,13 +33,13 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(({ checked, 
       <input
         value={checked ? 'on' : 'off'}
         onChange={() => setChecked && setChecked(!checked)}
-        className="checkbox-input"
+        className={styles.input}
         type="checkbox"
         ref={ref}
         {...rest}
       />
       <label
-        className="checkbox"
+        className={styles.checkbox}
         htmlFor={rest.id}
         onKeyDown={handleLabelKeyDown}
         tabIndex={0}
