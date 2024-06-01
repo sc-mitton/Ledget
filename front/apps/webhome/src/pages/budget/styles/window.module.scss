@@ -1,6 +1,6 @@
 @import '@styles/table-mixins.scss';
 
-#budget-window {
+.window {
     flex: 6;
     display: flex;
     flex-direction: column;
@@ -33,20 +33,12 @@
         margin-left: .25em;
     }
 
-    .window {
-        padding: 1.75em;
-    }
-
     &.small-screen .window {
         padding: 1em;
     }
 }
 
-#budget-window .window-header {
-    z-index: 100;
-}
-
-#budget-items--container {
+.items {
     flex-grow: 1;
     flex-shrink: 1;
 

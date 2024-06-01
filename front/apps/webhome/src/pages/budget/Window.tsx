@@ -3,14 +3,16 @@ import { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import { useSearchParams } from 'react-router-dom'
 
-import './styles/Window.scss'
+import styles from './styles/window.module.scss'
 import CarouselViewSummary from './Summary/CarouselView'
 import CardsView from './Summary/CardsView'
-import Bills from './Bills'
+import Bills from './Bills/Bills'
+import { MainWindow } from '@components/index'
 import { SpendingCategories } from './categories'
 import { setConfirmedTransactionFilter } from '@features/transactionsSlice'
 import { useAppDispatch } from '@hooks/store'
 import { useScreenContext } from '@ledget/ui'
+import { SortProvider } from './context'
 
 function Window() {
     const [searchParams, setSearchParams] = useSearchParams()
@@ -47,16 +49,16 @@ function Window() {
     }, [searchParams.get('year'), searchParams.get('month')])
 
     return (
-        <>
-            <div id="budget-window" className={`main-window ${screenSize === 'small' ? 'small-screen' : ''}`}>
+        <SortProvider>
+            <MainWindow className={styles.window} size={screenSize}>
                 {window.innerWidth > 700 ? <CardsView /> : <CarouselViewSummary />}
                 <div>
                     <SpendingCategories />
                     <Bills />
                 </div>
-            </div>
+            </MainWindow>
             <Outlet />
-        </>
+        </SortProvider>
     )
 }
 

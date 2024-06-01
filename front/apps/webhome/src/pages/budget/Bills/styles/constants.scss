@@ -1,0 +1,8 @@
+@import '../../styles/variables.scss';
+
+$gap: calc(.75em + 2vw);
+$bill-flex-grid-gap: calc(.25em + .5vw);
+$bill-item-padding: .25em .75em;
+$window-padding: $bill-flex-grid-gap;
+$number-of-bill-rows: 5;
+$scroll-bar-padding: .5em;

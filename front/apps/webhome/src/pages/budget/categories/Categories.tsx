@@ -2,10 +2,7 @@
 import { Window } from '@ledget/ui'
 import List from './List'
 import styles from './styles.module.scss'
-
-
-// Filters for bills and categories
-// Auto logout cleaner
+import Sort from '../Sort'
 
 const ColumnView = () => (
     <div className={styles.columns}>
@@ -21,6 +18,7 @@ const ColumnView = () => (
 const SpendingCategories = () => (
     <div className={styles.container}>
         <h2>Categories</h2>
+        <Sort type='categories' />
         <ColumnView />
     </div>
 )

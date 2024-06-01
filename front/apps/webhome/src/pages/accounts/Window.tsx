@@ -1,12 +1,13 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { Routes, Route, useLocation } from 'react-router-dom'
 
-import './styles/Window.scss'
+import styles from './styles/window.module.scss'
 import NotFound from '@pages/notFound'
 import Wafers from './wafers/Wafers'
 import { AccountSelector } from './selector'
 import { AccountsProvider } from './context'
 import { Nav } from './Nav'
+import { MainWindow } from '@components/index'
 import { DepositTransactions } from './transactions'
 import { NotImplimentedMessage } from '@components/pieces'
 import { useScreenContext } from '@ledget/ui'
@@ -33,7 +34,7 @@ const Window = () => {
     const currentPath = location.pathname.split('/')[2]
 
     return (
-        <div className={`main-window  ${screenSize === 'small' ? 'small' : ''}`} id='accounts-window'>
+        <MainWindow size={screenSize} className={styles.window}>
             <h2>{_getNavHeaderPhrase(currentPath)}</h2>
             <Nav />
             <div>
@@ -65,7 +66,7 @@ const Window = () => {
                     </motion.div>
                 </AnimatePresence>
             </div>
-        </div>
+        </MainWindow>
     )
 }
 

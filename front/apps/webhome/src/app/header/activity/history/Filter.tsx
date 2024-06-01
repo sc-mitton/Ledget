@@ -18,7 +18,7 @@ import { useLazyGetCategoriesQuery } from '@features/categorySlice'
 import { FullSelectCategoryBill } from '@components/inputs'
 import { LimitAmountInput } from '@components/inputs'
 import {
-    BlueSlimButton2,
+    BlueSlimButton,
     FormInputButton2,
     BakedListBox,
     BakedComboBox,
@@ -239,9 +239,9 @@ export const FilterForm = () => {
                         >
                             Cancel
                         </SecondaryButtonSlim>
-                        <BlueSlimButton2>
+                        <BlueSlimButton>
                             Filter
-                        </BlueSlimButton2>
+                        </BlueSlimButton>
                     </div>
                 </div>
             </form>

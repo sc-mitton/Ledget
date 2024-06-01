@@ -167,6 +167,7 @@ const Login = () => {
                                     <Password />
                                     <input type="hidden" name="identifier" value={email || ''} />
                                 </OryFormWrapper>
+                                <WindowLoadingBar visible={[isGettingFlow, isCompletingFlow, isRefreshingDevices].some(Boolean)} />
                             </PortalWindow>
                         </SlideMotionDiv>
                     }
@@ -177,6 +178,7 @@ const Login = () => {
                                 <OryFormWrapper {...oryFormArgs}>
                                     <TotpMfa finished={devicesRefreshedSuccess} />
                                 </OryFormWrapper>
+                                <WindowLoadingBar visible={[isGettingFlow, isCompletingFlow, isRefreshingDevices].some(Boolean)} />
                             </PortalWindow>
                         </SlideMotionDiv>
                     }
@@ -187,12 +189,10 @@ const Login = () => {
                                 <OryFormWrapper {...oryFormArgs}>
                                     <LookupSecretMfa finished={devicesRefreshedSuccess} />
                                 </OryFormWrapper>
+                                <WindowLoadingBar visible={[isGettingFlow, isCompletingFlow, isRefreshingDevices].some(Boolean)} />
                             </PortalWindow>
                         </SlideMotionDiv>
                     }
-                    <WindowLoadingBar
-                        visible={[isGettingFlow, isCompletingFlow, isRefreshingDevices].some(Boolean)}
-                    />
                 </JiggleDiv>
             }
         </AnimatePresence>

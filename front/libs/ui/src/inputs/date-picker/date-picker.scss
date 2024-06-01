@@ -4,6 +4,10 @@
     &>div input {
         width: 100%;
         width: unset;
+
+        &:last-of-type {
+            margin-left: .375em;
+        }
     }
 }
 

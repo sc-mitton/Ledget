@@ -13,6 +13,7 @@ import { FormErrorTip } from '../../pieces/form-errors/form-errors'
 
 export interface BakedSelectPropsBase<O> {
   name?: string
+  hideSelectedLabel?: boolean
   options?: O[]
   labelKey?: string
   subLabelKey?: string
@@ -73,6 +74,7 @@ export const BakedListBox = <O extends Option | string>(props: BakedSelectProps<
   const id = useId()
   const buttonRef = useRef<HTMLButtonElement | null>(null)
   const [value, onChange] = useState<typeof props.defaultValue>()
+  const [resetKey, setResetKey] = useState(Math.random().toString().slice(3, 10))
 
   // Controll for react-hook-form
   const { field } = useOptionalControl({
@@ -88,8 +90,8 @@ export const BakedListBox = <O extends Option | string>(props: BakedSelectProps<
   // Update field value if value changes
   // Also call props.onChange if it exists to keep parent state in sync
   useEffect(() => {
-    if (value) field?.onChange(value)
-    if (props.onChange && value) props.onChange(value as any)
+    field?.onChange(value)
+    if (props.onChange) props.onChange(value as any)
   }, [value])
 
   // Set default value if any
@@ -112,14 +114,25 @@ export const BakedListBox = <O extends Option | string>(props: BakedSelectProps<
     }
   }, [props.options])
 
+  const handleChange = (val: typeof props.defaultValue) => {
+    console.log('val !== value', val !== value)
+    if (props.multiple || val !== value) {
+      onChange(val)
+    } else {
+      setResetKey(Math.random().toString().slice(3, 10))
+      onChange(undefined)
+    }
+  }
+
   return (
     <Listbox
       name={props.name}
       value={value}
-      onChange={onChange}
+      onChange={handleChange}
       as='div'
       className="baked-listbox--container"
       multiple={props.multiple}
+      key={resetKey}
     >
       {({ open }) => (
         <>
@@ -151,18 +164,22 @@ export const BakedListBox = <O extends Option | string>(props: BakedSelectProps<
 
               return (
                 <>
-                  <div className={`${(isActive
-                    ? props.showLabel ? 'active' : 'semi-active'
-                    : ''
-                  )} baked-listbox--button`}>
-                    <span>{`${props.labelPrefix + ' '}${label}`}</span>
-                    {val
-                      ? props.withCheckMarkIndicator
-                        ? <Check size={'1.25em'} />
-                        : <ChevronDown size={'1.25em'} />
-                      : <ChevronDown size={'1.25em'} />}
-                  </div>
-                  <FormErrorTip error={props.error} />
+                  {!props.hideSelectedLabel && (
+                    <>
+                      <div className={`${(isActive
+                        ? props.showLabel ? 'active' : 'semi-active'
+                        : ''
+                      )} baked-listbox--button`}>
+                        <span>{`${props.labelPrefix + ' '}${label}`}</span>
+                        {val
+                          ? props.withCheckMarkIndicator
+                            ? <Check size={'1.25em'} />
+                            : <ChevronDown size={'1.25em'} />
+                          : <ChevronDown size={'1.25em'} />}
+                      </div>
+                      <FormErrorTip error={props.error} />
+                    </>
+                  )}
                 </>
               )
             }}

@@ -1,0 +1,45 @@
+.picker {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    gap: .5em;
+    border-radius: var(--border-radius4);
+    padding: .125em 0em;
+
+    &[data-size='small'] {
+        font-size: 1em;
+    }
+
+    &[data-size='medium'] {
+        font-size: 1.25rem;
+    }
+
+    button {
+        opacity: 1;
+        transition: opacity .2s ease-in-out;
+
+        &:first-child {
+            margin-right: .5em;
+        }
+
+        &:not(:first-child) {
+            font-size: 1rem;
+            margin-left: -.5rem;
+        }
+    }
+
+    button:disabled {
+        cursor: default;
+        opacity: .5;
+    }
+
+    button:not(:disabled):hover {
+        opacity: .5;
+        transition: opacity .2s ease-in-out;
+    }
+}

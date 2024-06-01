@@ -290,19 +290,6 @@ svg.icon.small {
     scrollbar-width: none;
 }
 
-.dashboard.extra-small .main-window {
-    padding: 1em;
-    width: calc(100% - 2.5em);
-}
-
-.main-window {
-    overflow: auto;
-    scrollbar-width: none;
-    max-width: 55rem;
-    width: calc(100% - 4em);
-    padding: 2em;
-}
-
 /* -------------------------------- Dropdowns ------------------------------- */
 
 ul hr {

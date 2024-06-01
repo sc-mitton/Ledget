@@ -17,11 +17,11 @@
         position: relative;
 
         &>div:first-child {
-            padding: .45em .5em .75em .5em;
+            padding: .45em .5em .75em .75em;
             position: relative;
 
             button:first-child {
-                gap: .875em;
+                gap: .75em;
 
                 span {
                     position: relative;
@@ -37,8 +37,8 @@
                         left: 50%;
                         bottom: 52%;
                         transform: translate(-50%, 50%);
-                        width: 1.5em;
-                        height: 1.5em;
+                        width: 1.625em;
+                        height: 1.625em;
                         background-color: var(--blue-sat);
                     }
                 }

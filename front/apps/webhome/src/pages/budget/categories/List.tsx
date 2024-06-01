@@ -18,15 +18,15 @@ import {
 } from '@ledget/ui'
 import { useGetMeQuery } from '@features/userSlice'
 import { setCategoryModal, setModal } from '@features/modalSlice'
-import { selectBudgetItemsSort } from '@features/uiSlice'
 import { Plus, Edit2 } from '@geist-ui/icons'
 import SkeletonCategories from './Skeleton'
+import { useSortContext } from '../context'
 
 const CategoriesList = ({ period }: { period: Category['period'] }) => {
     const { month, year } = useAppSelector(selectBudgetMonthYear)
     const { data: user } = useGetMeQuery()
     const { data: categories, isLoading } = useGetCategoriesQuery({ month, year }, { skip: !month || !year })
-    const sort = useAppSelector(selectBudgetItemsSort)
+    const { categoriesSort: sort } = useSortContext()
     const location = useLocation()
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
@@ -95,16 +95,21 @@ const CategoriesList = ({ period }: { period: Category['period'] }) => {
                 : <div className={styles.grid}>
                     {categories?.filter(c => c.period === period)
                         .sort((a, b) => {
-                            if (sort === 'amount-des') {
-                                return b.amount_spent - a.amount_spent
-                            } else if (sort === 'amount-asc') {
-                                return a.amount_spent - b.amount_spent
-                            } else if (sort === 'alpha-des') {
-                                return a.name.localeCompare(b.name)
-                            } else if (sort === 'alpha-asc') {
-                                return b.name.localeCompare(a.name)
-                            } else {
-                                return 0
+                            switch (sort) {
+                                case 'alpha-asc':
+                                    return a.name.localeCompare(b.name)
+                                case 'alpha-des':
+                                    return b.name.localeCompare(a.name)
+                                case 'limit-asc':
+                                    return a.limit_amount - b.limit_amount
+                                case 'limit-des':
+                                    return b.limit_amount - a.limit_amount
+                                case 'amount-asc':
+                                    return a.amount_spent - b.amount_spent
+                                case 'amount-des':
+                                    return b.amount_spent - a.amount_spent
+                                default:
+                                    return 0
                             }
                         }).map((category, i) => (
                             <Fragment key={category.id}>

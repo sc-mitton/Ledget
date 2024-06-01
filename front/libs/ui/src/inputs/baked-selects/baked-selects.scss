@@ -1,6 +1,5 @@
 .baked-listbox--container {
     display: inline-flex;
-    min-width: 4em;
     flex-direction: column;
 
     &>div:last-of-type {
@@ -10,11 +9,6 @@
     hr {
         width: calc(100% - .5em);
         margin: 0 auto;
-    }
-
-    .dropdown-div {
-        overflow: hidden;
-        max-height: 20em;
     }
 
     .baked-dropdown-item {
@@ -30,6 +24,8 @@
     }
 
     &>button {
+        display: flex;
+        justify-content: space-between;
 
         &>div:first-of-type {
             display: flex;
@@ -67,9 +63,14 @@
         padding: 1em;
     }
 
+    .dropdown-div {
+        overflow: hidden;
+        max-height: 22em;
+    }
+
     .dropdown {
         margin-top: .25em;
-        max-height: calc(25vh);
+        max-height: calc(27vh);
         padding: 0.25em;
 
         &>ul {

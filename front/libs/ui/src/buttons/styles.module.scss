@@ -332,8 +332,9 @@
 }
 
 .withLoading {
+    position: relative;
 
-    &[data-loading='false']>div:first-of-type {
+    &[data-loading='true']>div:last-of-type {
         visibility: hidden;
     }
 

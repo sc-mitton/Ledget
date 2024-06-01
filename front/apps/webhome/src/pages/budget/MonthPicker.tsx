@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom'
 import dayjs, { Dayjs } from 'dayjs'
 import { ChevronLeft, ChevronRight } from '@geist-ui/icons'
 
-import './styles/MonthPicker.scss'
+import styles from './styles/month-picker.module.scss'
 import { useGetMeQuery } from '@features/userSlice'
 import { DatePicker } from '@ledget/ui'
 import { setBudgetMonthYear, selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
@@ -59,8 +59,8 @@ export const MonthPicker = ({ darkMode = false, placement = 'middle', size = 'sm
     }
 
     return (
-        <div className={`month-picker ${darkMode ? 'dark' : ''}`}>
-            <div className={`month-picker--container ${size}`}>
+        <div className={styles.picker}>
+            <div className={styles.container} data-size={size}>
                 {placement === 'middle' && <button onClick={() => seek(-1, 1)}>
                     <ChevronLeft size={'1.125em'} strokeWidth={2} />
                 </button>}

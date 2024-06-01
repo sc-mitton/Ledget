@@ -31,13 +31,17 @@ $scrollbar-padding: .75em;
 .new-items-expand-button--container {
     position: relative;
     z-index: 0;
-    height: .5em;
+    height: .75em;
     transition: height .2s ease-out;
+    transition-delay: .2s;
     width: 100%;
+    display: flex;
+    align-items: center;
 
     &:hover {
-        height: 1.25em;
+        height: 2em;
         transition: height .2s ease-out;
+        transition-delay: .1s;
     }
 
     button {
@@ -49,6 +53,7 @@ $scrollbar-padding: .75em;
     &:hover button {
         opacity: 1;
         transition: opacity .2s ease-out;
+        transition-delay: .1s;
     }
 }
 
