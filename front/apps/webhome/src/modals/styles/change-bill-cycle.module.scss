@@ -1,0 +1,20 @@
+.newPlainContainer {
+    display: inline-flex;
+    align-items: center;
+    margin-top: .125em;
+    margin-bottom: .75em;
+    border-radius: var(--border-radius2);
+
+    span:first-child {
+        font-weight: var(--fw-bold);
+    }
+
+    span:last-child {
+        color: var(--blue-dark);
+    }
+
+    >div {
+        position: relative;
+        margin-left: .5em;
+    }
+}

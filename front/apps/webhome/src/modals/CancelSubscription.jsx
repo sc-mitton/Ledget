@@ -4,7 +4,7 @@ import { useSpring, animated } from '@react-spring/web'
 import { useNavigate } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
-import './styles/CancelSubscription.scss'
+import styles from './styles/cancel-subscription.module.scss'
 import { withModal } from '@ledget/ui'
 import { withReAuth } from '@utils'
 import { RedButton, BluePrimaryButton, SlideMotionDiv, useLoaded, BakedListBox } from '@ledget/ui'
@@ -51,13 +51,13 @@ export const CancelationWindow = (props) => {
     }
 
     return (
-        <div id='cancelation-modal--container'>
+        <div className={styles.cancelationModalContainer}>
             <h2>Are you sure?</h2>
             <div>
                 Before you go, we'd love to hear why you're leaving
                 and what we can do to improve.
             </div>
-            <div id="cancellation--container">
+            <div className={styles.cancelationContainer}>
                 <div>
                     <div>
                         <h4>{'Reason for cancellation'}</h4>

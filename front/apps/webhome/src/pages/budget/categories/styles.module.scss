@@ -15,9 +15,9 @@ $background: var(--window);
 }
 
 .columns {
-    margin-top: .75rem;
     display: flex;
     gap: 2.25rem;
+    padding: 1em 0;
     height: calc(100% - 1.75em);
     overflow-x: scroll;
     scrollbar-width: none;

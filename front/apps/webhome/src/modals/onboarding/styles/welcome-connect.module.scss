@@ -1,0 +1,88 @@
+.onboardingApp {
+    border-radius: inherit;
+
+    &::after {
+        inset: 0;
+        content: '';
+        z-index: -1;
+        background-color: var(--modal-background-color);
+        position: absolute;
+        border-radius: inherit;
+    }
+}
+
+.btnContainerEnabled {
+    display: flex;
+    justify-content: space-between;
+    margin-top: .75rem;
+}
+
+.btnContainer {
+    display: flex;
+    justify-content: flex-end;
+    max-height: 6.25rem;
+    transition: max-height 0.3s ease-in-out;
+    margin-top: .5em;
+}
+
+.welcomeConnect {
+
+    &>div:first-of-type {
+        font-size: 1.125rem;
+
+        h4 {
+            margin-top: 1.5em;
+        }
+    }
+}
+
+.checklist {
+    margin: 1.25em 0 1.75em 0;
+
+
+    &>div {
+        margin: .5em 0;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    &>div div:first-child {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: .25em;
+        margin-right: .5em;
+    }
+
+
+    &>div div:last-child {
+        opacity: .7
+    }
+}
+
+.institutionLogos {
+
+    &>div {
+        margin-top: .5em;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 1.25em;
+        margin-left: .125em;
+    }
+}
+
+
+.institutionLogo {
+    img {
+        width: 2rem;
+        height: 2rem;
+        padding: 0;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--low-elevation-drop-shadow);
+    }
+}

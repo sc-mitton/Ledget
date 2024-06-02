@@ -1,13 +1,13 @@
-.account-balance-trend {
+.accountBalanceTrend {
     display: flex;
     align-items: center;
     gap: .25em;
 
-    &.positive {
+    &[data-trend='positive'] {
         color: var(--green-text);
     }
 
-    &.negative {
+    &[data-trend='negative'] {
         color: var(--mute-red);
     }
 

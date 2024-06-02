@@ -3,6 +3,7 @@ import Picker from '@emoji-mart/react'
 import { Smile } from '@geist-ui/icons'
 
 import './styles/EmojiPicker.scss'
+import styles from './styles/emoji-picker.module.scss'
 import { FadedIconButton, DropdownDiv, useColorScheme } from '@ledget/ui'
 
 export type emoji = string | { native: string, [key: string]: any }
@@ -31,7 +32,7 @@ const Emoji = (props: EmojiProps) => {
 
     return (
         <EmojiContext.Provider value={{ emoji, setEmoji, picker, setPicker }}>
-            <div id="emoji-picker-ledget">
+            <div className={styles.ledgetEmojiPicker}>
                 {children && children({ emoji })}
             </div>
         </EmojiContext.Provider>
@@ -92,7 +93,7 @@ const EmojiPicker = () => {
 
     return (
         <DropdownDiv visible={picker} style={{ 'backgroundColor': 'transparent', boxShadow: 'none' }}>
-            <div id="em-picker-container" >
+            <div className={styles.emojiPickerContainer}>
                 <Picker
                     autoFocus
                     previewPosition="none"

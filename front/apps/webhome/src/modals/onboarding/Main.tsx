@@ -6,12 +6,13 @@ import { SlideMotionDiv } from '@ledget/ui'
 import AddBills from './AddBills'
 import AddCategories from './AddCategories'
 import WelcomeConnect from './WelcomeConnect'
+import styles from './styles/welcome-connect.module.scss'
 
 const Main = withModal((props) => {
     const location = useLocation()
 
     return (
-        <div id="onboarding-app">
+        <div className={styles.onboardingApp}>
             <AnimatePresence mode='wait'>
                 <Routes location={location} key={location.pathname}>
                     <Route path='connect' element={<SlideMotionDiv position={'first'}><WelcomeConnect /></SlideMotionDiv>} />

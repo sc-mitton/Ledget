@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
-import './styles/DeactivateAuthenticator.scss'
+import styles from './styles/deactivate-authenticator.module.scss'
 import { useUpdateUserMutation } from '@features/userSlice'
 import { useCompleteSettingsFlowMutation, useLazyGetSettingsFlowQuery } from '@features/orySlice'
 import { withSmallModal } from '@ledget/ui'
@@ -66,7 +66,7 @@ const DeactivateAuthenticator = (props) => {
     return (
         <>
             <form onSubmit={handleUnlinkSubmit}>
-                <fieldset disabled={isGettingFlow} id="deactivate-authenticator--content">
+                <fieldset disabled={isGettingFlow} className={styles.deactivateAuthenticatorContent}>
                     <div>
                         <h3>Remove Your Authenticator?</h3>
                         You will no longer be able to use your authenticator app to log in.

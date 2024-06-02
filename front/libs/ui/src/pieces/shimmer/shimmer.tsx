@@ -15,7 +15,7 @@ interface ShimmerProps {
 }
 
 export const Shimmer = (props: ShimmerProps) => {
-  const { shimmering = false, lightness = 94, shimmerColor, darkMode = false } = props
+  const { shimmering = false, lightness = 91, shimmerColor, darkMode = false } = props
   const transitions = useTransition(shimmering, {
     from: { opacity: 0 },
     enter: { opacity: 1 },
@@ -37,7 +37,7 @@ export const Shimmer = (props: ShimmerProps) => {
                 '--shimmer-color': shimmerColor
                   ? shimmerColor
                   : isDark || darkMode
-                    ? `hsl(var(--window-h), 0%, ${99 - lightness}%)`
+                    ? `hsl(var(--window-h), 0%, ${100 - lightness}%)`
                     : `hsl(var(--window-h), 0%, ${lightness}%)`
               } as React.CSSProperties}
             />
@@ -187,7 +187,7 @@ export const ShimmerDiv = (props: ShimmerDivProps) => {
     shimmerColor,
     children,
     style = {},
-    lightness = 94,
+    lightness = 91,
     darkMode,
     ...rest
   } = props
@@ -214,7 +214,7 @@ export const InputShimmerDiv = (props: Pick<ShimmerDivProps, 'darkMode'>) => {
     <TextInputWrapper>
       <span style={{ color: 'transparent' }}>Shimmering</span>
       <div className={stylesModule.blockShimmerContainer}>
-        <ShimmerDiv shimmering={true} lightness={94} darkMode={props.darkMode} />
+        <ShimmerDiv shimmering={true} lightness={91} darkMode={props.darkMode} />
       </div>
     </TextInputWrapper>
   )

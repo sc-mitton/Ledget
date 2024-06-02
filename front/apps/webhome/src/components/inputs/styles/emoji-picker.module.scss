@@ -1,0 +1,12 @@
+.ledgetEmojiPicker {
+    position: relative;
+    z-index: 100;
+}
+
+.emojiPickerContainer {
+    position: absolute;
+    top: 1rem;
+    left: -1em;
+    right: 0;
+    color: rgb(72, 83, 206);
+}

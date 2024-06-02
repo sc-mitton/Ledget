@@ -1,6 +1,6 @@
 import { useMemo, useEffect } from 'react'
 
-import './styles/Trend.scss'
+import styles from './styles/trend.module.scss'
 import { useLocation } from 'react-router-dom'
 import Big from 'big.js'
 
@@ -31,7 +31,7 @@ const Trend = () => {
         , [accountBalanceTrend, accounts])
 
     return (
-        <div className={`account-balance-trend ${total >= 0 ? 'positive' : 'negative'}`}>
+        <div className={styles.accountBalanceTrend} data-trend={total >= 0 ? 'positive' : 'negative'}>
             <Tooltip msg={'Last 30 days'} delay={0}>
                 <DollarCents value={total} withCents={false} />
             </Tooltip>

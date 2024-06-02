@@ -50,7 +50,7 @@ function Window() {
 
     return (
         <SortProvider>
-            <MainWindow className={styles.window} size={screenSize}>
+            <MainWindow className={styles.window} data-size={screenSize}>
                 {window.innerWidth > 700 ? <CardsView /> : <CarouselViewSummary />}
                 <div>
                     <SpendingCategories />

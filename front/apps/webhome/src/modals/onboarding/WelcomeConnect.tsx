@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import CheckCircle from '@geist-ui/icons/checkCircle'
 import { Plus } from '@geist-ui/icons'
 
-import './styles/Welcome.scss'
-import './styles/Main.scss'
+import styles from './styles/welcome-connect.module.scss'
 import { useBakedPlaidLink } from '@utils/hooks'
 import { useGetPlaidItemsQuery, PlaidItem } from '@features/plaidSlice'
 import { useGetMeQuery } from '@features/userSlice'
@@ -28,29 +27,31 @@ const InstitutionLogos = ({ plaidItems }: { plaidItems: PlaidItem[] }) => {
         <>
             {plaidItems.length > 0 &&
                 <>
-                    <h4 className="spaced-header2">Connected Institutions</h4>
-                    <div id="institution-logos">
-                        {plaidItems.map((item, index) => (
-                            <div
-                                key={item.id}
-                                className="institution-logo"
-                                style={{
-                                    marginLeft: index === 0 ? '0' : '-.5rem',
-                                    zIndex: index
-                                }}
-                            >
-                                <Tooltip msg={item.institution.name}>
-                                    <Base64Logo
-                                        size="1.5em"
-                                        data={item.institution.logo}
-                                        alt={item.institution.name.charAt(0).toUpperCase()}
-                                        backgroundColor={item.institution.primary_color}
-                                    />
-                                </Tooltip>
+                    <div className={styles.institutionLogos}>
+                        <span>Connected Institutions</span>
+                        <div>
+                            {plaidItems.map((item, index) => (
+                                <div
+                                    key={item.id}
+                                    className={styles.institutionLogo}
+                                    style={{
+                                        marginLeft: index === 0 ? '0' : '-.5rem',
+                                        zIndex: index
+                                    }}
+                                >
+                                    <Tooltip msg={item.institution.name}>
+                                        <Base64Logo
+                                            size="1.5em"
+                                            data={item.institution.logo}
+                                            alt={item.institution.name.charAt(0).toUpperCase()}
+                                            backgroundColor={item.institution.primary_color}
+                                        />
+                                    </Tooltip>
+                                </div>
+                            ))}
+                            <div style={{ marginLeft: '1em' }}>
+                                <LoadingRing visible={isLoading} />
                             </div>
-                        ))}
-                        <div style={{ marginLeft: '1em' }}>
-                            <LoadingRing visible={isLoading} />
                         </div>
                     </div>
                 </>
@@ -64,7 +65,7 @@ const BottomButtons = ({ continueDisabled }: { continueDisabled: boolean }) => {
     const navigate = useNavigate()
 
     return (
-        <div className="btn-container-enabled">
+        <div className={styles.btnContainerEnabled}>
             <BluePrimaryButton
                 onClick={() => open()}
                 aria-label="Link Account"
@@ -87,7 +88,7 @@ const BottomButtons = ({ continueDisabled }: { continueDisabled: boolean }) => {
 }
 
 const SecurityMessage = () => (
-    <div className="checklist">
+    <div className={styles.checklist}>
         <div>
             <div><CheckCircle className='icon' /></div>
             <div>
@@ -129,7 +130,7 @@ const WelcomeConnect = () => {
     }, [plaidItems])
 
     return (
-        <div id="welcome-connect">
+        <div className={styles.welcomeConnect}>
             <h2 className="spaced-header">Welcome to Ledget!</h2>
             <div>
                 <span>Let's get started by connecting your financial accounts.</span>

@@ -12,6 +12,7 @@ export const Window = styled.div<{ size?: string }>`
 
 export const UnPaddedWindow = styled(Window)`
   padding: 0;
+  background: ${props => props.size === 'extra-small' ? 'transparent' : 'var(--window-background)'};
 `
 
 export const PortalWindow = styled.div<{ size?: string, maxWidth?: number }>`

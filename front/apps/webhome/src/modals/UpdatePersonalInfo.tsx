@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import './styles/UpdatePersonalInfo.scss'
+import styles from './styles/update-personal-info.module.scss'
 import { useSearchParams } from 'react-router-dom'
 import { withSmallModal } from '@ledget/ui'
 import { useFlow } from '@ledget/ory'
@@ -83,7 +83,7 @@ const UpdatePersonalInfo = withReAuth(withSmallModal((props) => {
                         params: { flow: flow.id }
                     })
                 )}
-                id='update-personal-info-form'
+                className={styles.updatePersonalInfoForm}
             >
                 <div>
                     <label htmlFor="name">Name</label>

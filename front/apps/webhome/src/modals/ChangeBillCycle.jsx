@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import './styles/ChangeBillCycle.scss'
+import styles from './styles/change-bill-cycle.module.scss'
 import { withSmallModal } from '@ledget/ui'
 import { useNavigate } from 'react-router-dom'
 import { BlueSubmitButton, LoadingRing } from '@ledget/ui'
@@ -45,7 +45,7 @@ const Modal = withSmallModal((props) => {
         <div id="change-plan">
             <div style={{ margin: '.75em 0 1em 0' }}>
                 <h3 className="spaced-header2">Change Your Subscription?</h3>
-                <div id="new-plan--container">
+                <div styles={styles.newPlainContainer}>
                     <span>New Plan:</span>&nbsp;&nbsp;
                     {newPlan
                         ? <span>{`$${newPlan.unit_amount / 100}/${newPlan.interval}`}</span>

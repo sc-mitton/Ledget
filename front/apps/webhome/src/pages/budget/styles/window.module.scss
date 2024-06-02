@@ -21,8 +21,8 @@
         gap: 2em;
     }
 
-    h1 {
-        font-size: 1.75em;
+    &[data-size='extra-small'] h2 {
+        font-size: 1.25em;
     }
 
     h4 {
@@ -30,10 +30,10 @@
     }
 
     h2 {
-        margin-left: .25em;
+        margin-left: .375em;
     }
 
-    &.small-screen .window {
+    &[data-size='extra-small'] .window {
         padding: 1em;
     }
 }
@@ -47,4 +47,5 @@
     grid-template-rows: minmax(0, 1fr) minmax(0, max-content);
     row-gap: 1.75em;
     margin-top: 1.75em;
+
 }

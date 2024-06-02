@@ -1,9 +1,9 @@
 
-import './styles/NotImplimented.scss'
+import styles from './styles/not-implimented.module.scss'
 
 const NotImplimented = () => {
     return (
-        <div className="not-implimented-message">
+        <div className={styles.notImplimentedMessage}>
             <span>Feature Coming Soon</span>
         </div>
     )

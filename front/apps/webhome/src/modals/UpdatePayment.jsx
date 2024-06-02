@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 
-import './styles/UpdatePayment.scss'
+import styles from './styles/update-payment.module.scss'
 import { withModal } from '@ledget/ui'
 import {
     CardInput,
@@ -98,7 +98,7 @@ const Modal = withModal((props) => {
             <h2>Update Payment Method</h2>
             <hr />
             <form onSubmit={submitForm}>
-                <div id="update-payment-form">
+                <div className={styles.updatePaymentForm}>
                     <h4>Info</h4>
                     <CityStateZipInputs
                         register={register}

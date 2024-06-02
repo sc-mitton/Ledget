@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-import "./styles/Logout.scss"
+import styles from "./styles/logout.module.scss"
 import { withSmallModal } from '@ledget/ui'
 import { useAppSelector } from '@hooks/store'
 import { selectLogoutModal } from '@features/modalSlice'
@@ -57,7 +57,7 @@ const LogoutModal = withSmallModal((props) => {
             <h2>
                 {fromTimeout ? 'Your session is about to end' : 'Sign out of your account?'}
             </h2>
-            <div id="logout-countdown">
+            <div className={styles.countdown}>
                 <span>You will be automatically logged out in {seconds} seconds</span>
             </div>
             <div style={{ display: 'flex', 'justifyContent': 'end', marginTop: '.5em' }}>
