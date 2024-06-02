@@ -128,12 +128,14 @@ header {
 /* ------------------------------ Profile Dropdown Menu ----------------------------- */
 
 .profile-dropdown {
-    position: absolute;
+    position: relative;
     flex-direction: column;
-    display: flex;
-    text-align: left;
-    top: 2.125em;
-    margin-left: 1em;
+
+    &>div {
+        position: relative;
+        top: .5em;
+        right: -.2em;
+    }
 
     &>button {
         width: 100%;

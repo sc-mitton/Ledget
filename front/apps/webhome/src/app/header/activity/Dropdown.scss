@@ -1,5 +1,12 @@
 .notifications-dropdown {
     position: relative;
+    display: flex;
+    flex-direction: column;
+
+    &>div:last-child {
+        position: relative;
+        top: .5em;
+    }
 
     &--menu {
         min-width: 30em;

@@ -60,7 +60,7 @@ export const MonthPicker = ({ darkMode = false, placement = 'middle', size = 'sm
 
     return (
         <div className={styles.picker}>
-            <div className={styles.container} data-size={size}>
+            <div className={styles.container} data-size={size} data-placement={placement}>
                 {placement === 'middle' && <button onClick={() => seek(-1, 1)}>
                     <ChevronLeft size={'1.125em'} strokeWidth={2} />
                 </button>}
@@ -71,10 +71,10 @@ export const MonthPicker = ({ darkMode = false, placement = 'middle', size = 'sm
                 </button>
                 {placement === 'left' &&
                     <button onClick={() => seek(-1, 1)} disabled={date?.add(-1, 'month').isBefore(dayjs(user?.created_on))}>
-                        <ChevronLeft size={'1.125em'} strokeWidth={2} />
+                        <ChevronLeft size={'1.125em'} strokeWidth={1.5} />
                     </button>}
                 <button onClick={() => seek(1, 1)} disabled={date?.add(1, 'month').isAfter(dayjs())}>
-                    <ChevronRight size={'1.125em'} strokeWidth={2} />
+                    <ChevronRight size={'1.125em'} strokeWidth={1.5} />
                 </button>
             </div>
             <DatePicker

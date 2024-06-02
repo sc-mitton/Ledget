@@ -3,7 +3,7 @@ import { useEffect, useState, HTMLProps, useRef } from 'react'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import { Dayjs } from 'dayjs'
 
-import './styles/Transactions.scss'
+import styles from './styles/table.module.scss'
 import { useLazyGetTransactionsQuery, GetTransactionsResponse } from '@features/transactionsSlice'
 import {
     InfiniteScrollDiv,
@@ -69,8 +69,8 @@ const Table = ({ children, ...rest }: Props) => {
     }
 
     return (
-        <Window className={screenSize} id='transactions-table' ref={containerRef}>
-            <div id='transactions-table--header'>
+        <Window size={screenSize} className={styles.table} ref={containerRef} data-size={screenSize}>
+            <div className={styles.header} data-size={screenSize}>
                 <h3>Transactions</h3>
                 <Filter value={dateRange} onChange={setDateRange} />
             </div>
@@ -79,7 +79,8 @@ const Table = ({ children, ...rest }: Props) => {
                 {...rest}
             >
                 <ShadowScrollDiv
-                    className={`transactions-list  ${transactionsData ? 'not-skeleton' : ''} ${screenSize ? screenSize : ''} `}
+                    className={styles.list}
+                    data-size={screenSize}
                     onScroll={handleScroll}
                 >
                     {!transactionsData && <Skeleton ref={containerRef} />}

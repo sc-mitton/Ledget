@@ -1,13 +1,12 @@
-import React, { useState } from 'react'
 import Big from 'big.js'
 import { AlertCircle } from '@geist-ui/icons'
 
-import './styles/CardsView.scss'
+import styles from './styles/cards-view.module.scss'
 import { MonthPicker } from '../MonthPicker'
 import { useGetCategoriesQuery } from '@features/categorySlice'
 import { useGetBillsQuery } from '@features/billSlice'
 import { useAppSelector } from '@hooks/store'
-import { AnimatedDollarCents, useScreenContext } from '@ledget/ui'
+import { AnimatedDollarCents } from '@ledget/ui'
 import { selectBudgetMonthYear, selectCategoryMetaData, selectBillMetaData } from '@features/budgetItemMetaDataSlice'
 import { useColorScheme } from '@ledget/ui'
 
@@ -30,16 +29,15 @@ const BudgetSummary = () => {
     } = useAppSelector(selectBillMetaData)
 
     const { isDark } = useColorScheme()
-    const { screenSize } = useScreenContext()
 
     return (
         <>
-            <div id='budget-summary-cards' className={`${screenSize} ${isDark ? 'dark' : 'light'}`}>
-                <div id="budget-summary-cards--month-picker" className={`${screenSize}`}>
+            <div className={styles.summaryCards}>
+                <div className={styles.monthPicker}>
                     <MonthPicker darkMode={isDark} placement='left' size='medium' />
                 </div>
-                <div id='budget-summary-cards--cards'>
-                    <div className='card'>
+                <div className={styles.cards}>
+                    <div>
                         <div>
                             <AnimatedDollarCents
                                 value={loadingCategories || loadingBills ? 0 : Big(yearly_spent).add(monthly_spent).toNumber()}
@@ -47,14 +45,14 @@ const BudgetSummary = () => {
                         </div>
                         <span>total spending</span>
                     </div>
-                    <div className='card'>
+                    <div>
                         <div>
                             {monthly_bills_paid + yearly_bills_paid}
                             /{number_of_monthly_bills + number_of_yearly_bills}
                         </div>
                         <span>bills paid</span>
                     </div>
-                    <div className='card'>
+                    <div>
                         <div>
                             <AnimatedDollarCents
                                 value={Big(limit_amount_monthly || 0).minus(monthly_spent).toNumber()}
@@ -70,7 +68,7 @@ const BudgetSummary = () => {
                                 : <span>monthly spending left</span>}
                         </div>
                     </div>
-                    <div className='card'>
+                    <div>
                         <div>
                             <AnimatedDollarCents
                                 value={Big(limit_amount_yearly || 0).minus(yearly_spent).toNumber() || 0}

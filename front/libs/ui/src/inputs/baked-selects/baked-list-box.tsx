@@ -4,10 +4,10 @@ import { Listbox } from '@headlessui/react'
 import { Control, useController, UseControllerReturn, FieldError } from 'react-hook-form'
 import { ChevronDown, Check } from '@geist-ui/icons'
 
-import './baked-selects.scss'
+import styles from './baked-selects.module.scss'
 import { DropdownDiv } from '../../animations/animations'
 import { FormInputButton } from '../../buttons'
-import { DropdownItem } from "../../pieces/containers/containers"
+import { DropdownItem } from "../../containers/specialty"
 import { LoadingRingDiv } from '../../pieces/loading-indicators/loading-indicators'
 import { FormErrorTip } from '../../pieces/form-errors/form-errors'
 
@@ -130,7 +130,7 @@ export const BakedListBox = <O extends Option | string>(props: BakedSelectProps<
       value={value}
       onChange={handleChange}
       as='div'
-      className="baked-listbox--container"
+      className={styles.bakedListBoxContainer}
       multiple={props.multiple}
       key={resetKey}
     >
@@ -166,10 +166,7 @@ export const BakedListBox = <O extends Option | string>(props: BakedSelectProps<
                 <>
                   {!props.hideSelectedLabel && (
                     <>
-                      <div className={`${(isActive
-                        ? props.showLabel ? 'active' : 'semi-active'
-                        : ''
-                      )} baked-listbox--button`}>
+                      <div className={styles.buttonContainer} data-filled={Boolean(value)}>
                         <span>{`${props.labelPrefix + ' '}${label}`}</span>
                         {val
                           ? props.withCheckMarkIndicator
@@ -184,75 +181,73 @@ export const BakedListBox = <O extends Option | string>(props: BakedSelectProps<
               )
             }}
           </Listbox.Button>
-          <div>
-            <DropdownDiv
-              className='dropdown-div'
-              placement={props.placement}
-              visible={open}
-              style={{
-                minWidth: `${buttonRef?.current?.offsetWidth}px`,
-                maxWidth: props.buttonMaxWidth ? `${buttonRef?.current?.offsetWidth}px` : 'none',
-                ...props.dropdownStyle,
-              }}
-            >
-              {props.options?.length
-                ?
-                <Listbox.Options className="baked-list-options" static>
-                  {props.options.map((op, index) => {
-                    const isDisabled = typeof op === 'string'
-                      ? props.disabled?.includes(op)
-                      : props.disabled?.includes(op[props.valueKey || 'value']) || op.disabled
-                    const label = typeof op === 'string'
-                      ? op
-                      : op[props.labelKey || 'label']
-                    const value =
-                      typeof op !== 'string'
-                        ? op[props.valueKey || 'value']
-                        : op
+          <DropdownDiv
+            className={styles.dropdown}
+            placement={props.placement}
+            visible={open}
+            style={{
+              minWidth: `${buttonRef?.current?.offsetWidth}px`,
+              maxWidth: props.buttonMaxWidth ? `${buttonRef?.current?.offsetWidth}px` : 'none',
+              ...props.dropdownStyle,
+            }}
+          >
+            {props.options?.length
+              ?
+              <Listbox.Options className={styles.bakedListOptions} static>
+                {props.options.map((op, index) => {
+                  const isDisabled = typeof op === 'string'
+                    ? props.disabled?.includes(op)
+                    : props.disabled?.includes(op[props.valueKey || 'value']) || op.disabled
+                  const label = typeof op === 'string'
+                    ? op
+                    : op[props.labelKey || 'label']
+                  const value =
+                    typeof op !== 'string'
+                      ? op[props.valueKey || 'value']
+                      : op
 
-                    const hasDivider =
-                      props.dividerKey &&
-                      typeof op === 'object' && index !== 0 &&
-                      op[props.dividerKey] !== (props.options as any)[index - 1]?.[props.dividerKey]
+                  const hasDivider =
+                    props.dividerKey &&
+                    typeof op === 'object' && index !== 0 &&
+                    op[props.dividerKey] !== (props.options as any)[index - 1]?.[props.dividerKey]
 
-                    return (
-                      <>
-                        {hasDivider && <hr />}
-                        <Listbox.Option
-                          key={`${id}${index}`}
-                          value={value}
-                          disabled={isDisabled}
-                        >
-                          {({ active, selected }) => {
-                            return (
-                              <DropdownItem
-                                active={active}
-                                selected={selected}
-                                className="baked-dropdown-item"
-                              >
-                                <span>
-                                  {label.slice(0, props.maxLength)}
-                                  {`${(props.maxLength || label.length) < label.length ? '...' : ''}`}
-                                </span>
-                                {props.subLabelKey &&
-                                  <span className='sub-label'>
-                                    {typeof op !== 'string' && `${props.subLabelPrefix + ' '}${op[props.subLabelKey]}`}
-                                  </span>}
-                              </DropdownItem>
-                            )
-                          }
-                          }
-                        </Listbox.Option>
-                      </>
-                    )
-                  })}
-                </Listbox.Options>
-                : <div className='baked-select-loading'>
-                  <LoadingRingDiv loading={true} />
-                </div>
-              }
-            </DropdownDiv>
-          </div>
+                  return (
+                    <>
+                      {hasDivider && <hr />}
+                      <Listbox.Option
+                        key={`${id}${index}`}
+                        value={value}
+                        disabled={isDisabled}
+                      >
+                        {({ active, selected }) => {
+                          return (
+                            <DropdownItem
+                              active={active}
+                              selected={selected}
+                              className={styles.bakedDropdownItem}
+                            >
+                              <span>
+                                {label.slice(0, props.maxLength)}
+                                {`${(props.maxLength || label.length) < label.length ? '...' : ''}`}
+                              </span>
+                              {props.subLabelKey &&
+                                <span className={styles.subLabel}>
+                                  {typeof op !== 'string' && `${props.subLabelPrefix + ' '}${op[props.subLabelKey]}`}
+                                </span>}
+                            </DropdownItem>
+                          )
+                        }
+                        }
+                      </Listbox.Option>
+                    </>
+                  )
+                })}
+              </Listbox.Options>
+              : <div className={styles.bakedSelectLoading}>
+                <LoadingRingDiv loading={true} />
+              </div>
+            }
+          </DropdownDiv>
         </>
       )}
     </Listbox>

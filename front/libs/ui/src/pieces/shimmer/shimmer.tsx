@@ -1,6 +1,6 @@
 import { HTMLProps, forwardRef } from 'react'
 
-import './shimmer.scss';
+import stylesModule from './shimmer.module.scss';
 import { useTransition, animated } from '@react-spring/web'
 import { TextInputWrapper } from '../../inputs/text/text'
 import { useColorScheme } from '../../themes/hooks/use-color-scheme/use-color-scheme'
@@ -29,10 +29,10 @@ export const Shimmer = (props: ShimmerProps) => {
         (styles, item) => item &&
           <animated.div
             style={styles}
-            className="loading-shimmer"
+            className={stylesModule.loadingShimmer}
           >
             <div
-              className={`shimmer ${isDark ? 'dark-mode' : ''}`}
+              className={stylesModule.shimmer}
               style={{
                 '--shimmer-color': shimmerColor
                   ? shimmerColor
@@ -71,7 +71,8 @@ export const ColoredShimmer = (props: ColoredShimmerProps) => {
     <>
       <div
         {...rest}
-        className={`colored-loading-shimmer ${color} ${className ? className : ''}`}
+        data-color={color}
+        className={stylesModule.coloredLoadingShimmer}
         style={{
           width: '100%',
           height: '1.25em',
@@ -193,7 +194,7 @@ export const ShimmerDiv = (props: ShimmerDivProps) => {
 
   return (
     <div
-      className="loading-shimmer--container"
+      className={stylesModule.loadingShimmerContainer}
       style={{
         position: 'relative',
         ...(background && shimmering ? { backgroundColor: background } : {}),
@@ -212,7 +213,7 @@ export const InputShimmerDiv = (props: Pick<ShimmerDivProps, 'darkMode'>) => {
   return (
     <TextInputWrapper>
       <span style={{ color: 'transparent' }}>Shimmering</span>
-      <div className='block-shimmer--container'>
+      <div className={stylesModule.blockShimmerContainer}>
         <ShimmerDiv shimmering={true} lightness={94} darkMode={props.darkMode} />
       </div>
     </TextInputWrapper>
@@ -220,7 +221,7 @@ export const InputShimmerDiv = (props: Pick<ShimmerDivProps, 'darkMode'>) => {
 }
 
 export const TranslucentShimmerDiv = (props: Pick<ShimmerDivProps, 'darkMode'>) => (
-  <div className="translucent-shimmer--container">
-    <ShimmerDiv shimmering={true} darkMode={props.darkMode} />
+  <div className={stylesModule.translucentShimmerDiv}>
+    <ShimmerDiv shimmering={true} data-dark={props.darkMode} />
   </div>
 )

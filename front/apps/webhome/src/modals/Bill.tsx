@@ -94,42 +94,40 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
                     <Menu.Button as={IconButtonHalfGray} onClick={() => setOpenEllipsis(!openEllipsis)}>
                         <Ellipsis rotate={90} size={'1.375em'} />
                     </Menu.Button>
-                    <div>
-                        <DropdownDiv
-                            placement='right'
-                            arrow='right'
-                            className='right'
-                            visible={open}
-                        >
-                            <Menu.Items static>
-                                <Menu.Item>
-                                    {({ active }) => (
-                                        <DropdownItem
-                                            as='button'
-                                            active={active}
-                                            onClick={() => setAction('edit')}
-                                        >
-                                            <Edit2 className="icon" />
-                                            <span>Edit Bill</span>
-                                        </DropdownItem>
-                                    )}
-                                </Menu.Item>
-                                <hr />
-                                <Menu.Item>
-                                    {({ active }) => (
-                                        <DropdownItem
-                                            as='button'
-                                            active={active}
-                                            onClick={() => setAction('delete')}
-                                        >
-                                            <Trash2 className="icon" />
-                                            <span>Delete Bill</span>
-                                        </DropdownItem>
-                                    )}
-                                </Menu.Item>
-                            </Menu.Items>
-                        </DropdownDiv>
-                    </div>
+                    <DropdownDiv
+                        placement='right'
+                        arrow='right'
+                        className='right'
+                        visible={open}
+                    >
+                        <Menu.Items static>
+                            <Menu.Item>
+                                {({ active }) => (
+                                    <DropdownItem
+                                        as='button'
+                                        active={active}
+                                        onClick={() => setAction('edit')}
+                                    >
+                                        <Edit2 className="icon" />
+                                        <span>Edit Bill</span>
+                                    </DropdownItem>
+                                )}
+                            </Menu.Item>
+                            <hr />
+                            <Menu.Item>
+                                {({ active }) => (
+                                    <DropdownItem
+                                        as='button'
+                                        active={active}
+                                        onClick={() => setAction('delete')}
+                                    >
+                                        <Trash2 className="icon" />
+                                        <span>Delete Bill</span>
+                                    </DropdownItem>
+                                )}
+                            </Menu.Item>
+                        </Menu.Items>
+                    </DropdownDiv>
                 </>
             )}
         </Menu>

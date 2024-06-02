@@ -1,7 +1,7 @@
 
-import { Check, Mail } from '@geist-ui/icons'
+import { Check } from '@geist-ui/icons'
 
-import './status-pulse.scss'
+import styles from './status-pulse.module.scss'
 import { AuthenticatorImage, RecoveryCodeImage } from '@ledget/media'
 import { shuffleArray } from '../../utils/funcs'
 import { EnvelopeImage } from '@ledget/media'
@@ -16,12 +16,16 @@ interface StatusPulseProps {
 export const StatusPulse = ({ positive, colorDefaultPositive = false, size = 'medium' }: StatusPulseProps) => (
   <>
     <div
-      id="inner-circle"
-      className={`status-circle ${positive ? 'positive' : 'negative'} ${colorDefaultPositive ? 'color-default-positive' : ''} ${size}`}
+      className={styles.innerCircle}
+      data-status={positive ? 'positive' : 'negative'}
+      data-default={colorDefaultPositive ? 'positive' : 'negative'}
+      data-size={size}
     />
     <div
-      id="outer-circle"
-      className={`status-circle ${positive ? 'positive' : 'negative'} ${colorDefaultPositive ? 'color-default-positive' : ''} ${size}`}
+      className={styles.outerCircle}
+      data-status={positive ? 'positive' : 'negative'}
+      data-default={colorDefaultPositive ? 'positive' : 'negative'}
+      data-size={size}
     />
   </>
 )
@@ -29,9 +33,9 @@ export const StatusPulse = ({ positive, colorDefaultPositive = false, size = 'me
 export const TotpAppGraphic = ({ finished = false }) => {
 
   return (
-    <div className="auth-factor-status-graphic">
+    <div className={styles.authFactorStatusGraphic}>
       {finished &&
-        <div id="success-checkmark">
+        <div className={styles.successCheck}>
           <Check
             stroke={'var(--blue-dark'}
             size={'1.5em'}
@@ -45,7 +49,7 @@ export const TotpAppGraphic = ({ finished = false }) => {
 }
 
 export const RecoveryCodeGraphic = ({ finished = false }) => (
-  <div className="auth-factor-status-graphic">
+  <div className={styles.authFactorStatusGraphic}>
     <RecoveryCodeImage />
     <StatusPulse positive={finished} size="medium" />
   </div>
@@ -58,7 +62,7 @@ export const KeyPadGraphic = ({ finished = false }) => {
   )
 
   return (
-    <div className={`keypad-graphic-status ${finished ? 'finished' : 'unfinished'}`}>
+    <div className={styles.keypadGraphicStatus} data-finished={finished}>
       {nums.map((num, index) => (
         <div
           key={index}
@@ -75,9 +79,9 @@ export const KeyPadGraphic = ({ finished = false }) => {
 export const VerificationStatusGraphic = ({ finished = false, dark = false }) => {
 
   return (
-    <div id='verify-graphic-container'>
+    <div className={styles.verifyGraphicContainer}>
       <EnvelopeImage dark={dark} />
-      <div id="verification-pulse-status">
+      <div>
         <StatusPulse
           positive={finished}
           colorDefaultPositive={false}

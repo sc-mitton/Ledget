@@ -1,7 +1,6 @@
 import React, { FC, useRef, useState, useEffect } from 'react'
 import { useTransition, animated } from '@react-spring/web'
 
-import './with-modal.scss'
 import { CloseButton } from '../../buttons'
 import { useColorScheme } from '../../themes/hooks/use-color-scheme/use-color-scheme'
 
@@ -158,18 +157,13 @@ export function withModal<P>(WrappedComponent: FC<P & { closeModal: () => void }
         {backgroundTransitions((opacityStyles: any, item1: boolean) =>
           item1 && (
             <animated.div
-              className="modal"
               style={opacityStyles}
               aria-modal="true"
               {...rest}
             >
               {modalContainerTransitions((scaleStyles: any, item2: boolean) =>
                 item2 && (
-                  <animated.div
-                    className="modal-content"
-                    style={scaleStyles}
-                    ref={modalRef}
-                  >
+                  <animated.div style={scaleStyles} ref={modalRef}>
                     {hasExit &&
                       <CloseButton
                         onClick={() => setCloseAll(true)}

@@ -1,0 +1,36 @@
+.window {
+    display: flex;
+    flex-direction: column;
+
+    &>div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: .75em 0;
+        gap: .75em;
+
+        &:first-child {
+            padding-top: .25em;
+        }
+
+        &:last-child {
+            padding-bottom: .25em;
+        }
+
+        &>div:first-child {
+            display: flex;
+            align-items: center;
+        }
+
+        &>div:nth-child(2) {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        &>div:last-child {
+            display: flex;
+            align-items: center;
+        }
+    }
+}

@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext, createContext, Fragment } from 
 import { useSpring, animated } from '@react-spring/web'
 import { useSearchParams } from 'react-router-dom'
 
-import './styles/Connections.scss'
+import styles from './styles/connections.module.scss'
 import {
     useGetPlaidItemsQuery,
     useDeletePlaidItemMutation,
@@ -111,7 +111,7 @@ const ReconnectButton = ({ itemId = '' }) => {
     const { open, fetchingToken } = useBakedUpdatePlaidLink({ itemId })
 
     return (
-        <div className={`reconnect--container ${fetchingToken ? '' : 'wiggle'}`}>
+        <div className={styles.reconnect} data-wiggle={fetchingToken}>
             <BlueSlimSubmitButton
                 onClick={() => !fetchingToken && open()}
                 aria-label="Reconnect"
@@ -163,11 +163,11 @@ const PlaidItem = ({ item }: { item: TPlaidItem }) => {
     })
 
     return (
-        <animated.div className="institution" style={springProps}>
+        <animated.div className={styles.institution} style={springProps}>
             {(item.login_required || item.permission_revoked) &&
                 <ReconnectButton itemId={item.id} />
             }
-            <div className="header2">
+            <div>
                 <div>
                     <Base64Logo
                         data={item.institution.logo}
@@ -181,12 +181,12 @@ const PlaidItem = ({ item }: { item: TPlaidItem }) => {
                     <DeleteAllButton onClick={handleRemoveAll} />
                 </div>
             </div >
-            <div className="account-headers">
+            <div className={styles.tableHeaders}>
                 <h4>Acct. Name</h4>
                 <h4>Type</h4>
                 <h4>Acct. Num.</h4>
             </div>
-            <div className="accounts">
+            <div className={styles.accounts}>
                 {item.accounts.map((account) => (
                     <Fragment key={account.name}>
                         <div>
@@ -232,14 +232,14 @@ const ConfirmModal = withReAuth(withSmallModal((props) => {
     }, [isSuccess])
 
     return (
-        <div>
+        <div className={styles.confirmModal}>
             <h2>Are you sure?</h2>
             <p>
                 This will remove the connection to your bank account
                 and all of the data associated with this bank.
                 <strong>This action cannot be undone.</strong>
             </p>
-            <div id="confirm-modal-bottom-btns">
+            <div>
                 <SecondaryButton
                     onClick={() => { props.closeModal() }}
                     aria-label="Cancel"
@@ -260,7 +260,7 @@ const ConfirmModal = withReAuth(withSmallModal((props) => {
 }))
 
 const EmptyState = () => (
-    <div id="no-connections-message">
+    <div className={styles.noConnections}>
         <h2>No Connections</h2>
         <span>Click the plus icon to get started </span>
         <br />
@@ -272,9 +272,9 @@ const MainHeader = ({ onPlus }: { onPlus: () => void }) => {
     const { editing, setEditing, plaidItems } = useDeleteContext()
 
     return (
-        <div className="header">
+        <div className={styles.header}>
             <h1>Connections</h1>
-            <div className='header-btns'>
+            <div>
                 {(!editing && plaidItems!.length > 0) &&
                     <Tooltip msg={'Edit connections'} ariaLabel={'Edit Connections'} type={'left'}>
                         <CircleIconButton
@@ -307,7 +307,7 @@ const Connections = () => {
         setDeleteQue,
     } = useDeleteContext()
     const [showConfirmModal, setShowConfirmModal] = useState(false)
-    const { open, exit, ready } = useBakedPlaidLink()
+    const { open } = useBakedPlaidLink()
 
     // if (import.meta.env.VITE_PLAID_REDIRECT_URI) {
     //     config.receivedRedirectUri = import.meta.env.VITE_PLAID_REDIRECT_URI
@@ -349,19 +349,17 @@ const Connections = () => {
                     }}
                 />
             }
-            <ShimmerDiv shimmering={fetchingPlaidItems} id="connections-page" className="padded-content">
+            <ShimmerDiv shimmering={fetchingPlaidItems} className={styles.connectionsPage}>
                 <MainHeader onPlus={() => open()} />
                 {plaidItems?.length === 0
-                    ?
-                    <EmptyState />
-                    :
-                    <>
-                        <ShadowedContainer id="accounts-list">
+                    ? <EmptyState />
+                    : <>
+                        <ShadowedContainer className={styles.accountsList}>
                             {plaidItems?.map((item) => (
                                 <PlaidItem key={item.id} item={item} />
                             ))}
                         </ShadowedContainer>
-                        <div className="footer-container">
+                        <div>
                             {editing &&
                                 <form onSubmit={handleFormSubmit}>
                                     <Inputs />

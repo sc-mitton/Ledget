@@ -1,6 +1,6 @@
 import React from 'react'
 
-import './tooltip.scss'
+import styles from './tooltip.module.scss'
 
 interface Props {
   msg?: string,
@@ -15,12 +15,13 @@ export const Tooltip = ({ msg, ariaLabel, children, type = 'top', delay = 1.2, .
 
   return (
     <div
-      className="tooltip"
+      className={styles.tooltip}
       aria-label={ariaLabel}
     >
       {children}
       <span
-        className={`tooltiptext ${type}`}
+        className={styles.tooltipText}
+        data-type={type}
         role="tooltip"
         style={{ '--delay': `${delay}s` } as React.CSSProperties}
         {...rest}

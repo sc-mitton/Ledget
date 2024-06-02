@@ -4,17 +4,20 @@ import { Outlet } from 'react-router-dom'
 import Big from 'big.js'
 import dayjs from 'dayjs'
 
+import styles from './styles/deposit-transactions.module.scss'
 import { setTransactionModal } from '@features/modalSlice'
 import { useAppDispatch } from '@hooks/store'
 import {
     Tooltip,
-    DollarCents
+    DollarCents,
+    useScreenContext
 } from '@ledget/ui'
 import { Hourglass } from '@ledget/media'
 import Table from './Table'
 
 const Transactions = () => {
     const dispatch = useAppDispatch()
+    const { screenSize } = useScreenContext()
 
     return (
         <Table>
@@ -37,6 +40,8 @@ const Transactions = () => {
                                                 : <span></span>}
                                         </div>
                                         <div
+                                            className={styles.transaction}
+                                            data-size={screenSize}
                                             key={transaction.transaction_id}
                                             role="button"
                                             onClick={() => { dispatch(setTransactionModal({ item: transaction })) }}
@@ -54,8 +59,8 @@ const Transactions = () => {
                                                         <span key={index}>{c.emoji}</span>))}
                                                 </div>
                                             </div>
-                                            <div>
-                                                <div className={transaction.amount < 0 ? 'debit' : 'credit'}>
+                                            <div data-debit={transaction.amount < 0}>
+                                                <div>
                                                     <DollarCents
                                                         value={Big(transaction.amount).times(100).toNumber()}
                                                     />

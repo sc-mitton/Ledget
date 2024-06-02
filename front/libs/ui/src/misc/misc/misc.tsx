@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react'
 
 import { useTransition, animated, useSpringRef } from '@react-spring/web';
 
-import './misc.scss'
+import styles from './misc.module.scss'
 import { formatCurrency } from '../../utils/funcs'
 import { useLoaded } from '../../utils/hooks';
 
@@ -21,7 +21,7 @@ export const Base64Logo = (props: Base64LogoProps) => {
 
   return (
     <div
-      className={`base64-image--container ${className ? className : ''} ${data ? 'has-data' : ''}`}
+      className={styles.b64image}
       style={size ? { width: size, height: size, ...style } : style}
       {...rest}
     >
@@ -88,7 +88,7 @@ export const AnimatedDollarCents = ({ value = 0, withCents = true, ...rest }:
         config: { mass: 1, tension: 150, friction: 25 }
       }
     },
-    update: (item) => ({
+    update: (item: any) => ({
       y: !isNaN(Number(slotRefs.current[item])) ? `-${100 - (Number(slotRefs.current[item]) + 1) * 10}%` : '0em',
     }),
     leave: { maxWidth: '0ch', opacity: 0 },
@@ -137,16 +137,16 @@ export const AnimatedDollarCents = ({ value = 0, withCents = true, ...rest }:
   }, [slots, slotRefs.current])
 
   return (
-    <div className={`animated-dollar ${withCents ? 'with-cents' : ''}`}>
-      <div className="slots">
-        <div className='slot--container'>
+    <div className={styles.animatedAmount}>
+      <div className={styles.slots} data-cents={withCents}>
+        <div className={styles.slotContainer}>
           <span>$</span>
         </div>
         {transitions((style, item) => (
           <animated.div
             key={item}
             style={style}
-            className='slot--container'
+            className={styles.slotContainer}
           >
             {'$.,'.includes(slotRefs.current[item])
               ? <span>{slotRefs.current[item]}</span>
@@ -170,7 +170,7 @@ export const AnimatedDollarCents = ({ value = 0, withCents = true, ...rest }:
         {`${formatCurrency(value).split('.')[0]}`}
       </span>
       {withCents &&
-        <span>
+        <span className={styles.cents}>
           {`.${formatCurrency(value).split('.')[1]}`}
         </span>
       }

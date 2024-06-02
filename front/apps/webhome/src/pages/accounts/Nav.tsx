@@ -196,7 +196,12 @@ const Filters = ({ visible = false, close }: { visible: boolean, close: () => vo
     }, [accountsFilterOptions])
 
     return (
-        <ExpandableContainer expanded={visible} id={'account-filters'} className={`${screenSize}`}>
+        <ExpandableContainer
+            expanded={visible}
+            id={'account-filters'}
+            className={`${screenSize}`}
+            aria-expanded={visible}
+        >
             {accountsFilterOptions?.map((option, i) => (
                 <>
                     <FilterPillButton

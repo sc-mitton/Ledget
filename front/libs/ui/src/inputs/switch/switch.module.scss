@@ -1,0 +1,42 @@
+.switchContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.switchCrib {
+    margin-top: .0625em;
+    width: 2em;
+    padding: .125em;
+    border-radius: 1.25em;
+
+    &[data-enabled='true'] {
+        background-color: var(--switch-crib-enabled);
+        transition: background-color 0.2s ease-in-out;
+    }
+
+    &[data-enabled='false'] {
+        background-color: var(--switch-crib-disabled);
+        transition: background-color 0.2s ease-in-out;
+    }
+}
+
+.switchPill {
+    width: .75rem;
+    height: .75rem;
+    border-radius: 50%;
+
+    &[data-enabled='true'] {
+        transform: translateX(.82rem);
+        background-color: var(--switch-pill-enabled);
+        transition: all 0.2s ease-in-out;
+        box-shadow: 0 2px 1px var(--switch-pill-shadow-enabled);
+    }
+
+    &[data-enabled='false'] {
+        transform: translateX(0);
+        background-color: var(--switch-pill-disabled);
+        transition: all 0.2s ease-in-out;
+        box-shadow: 0 2px 1px var(--switch-pill-shadow-disabled);
+    }
+}

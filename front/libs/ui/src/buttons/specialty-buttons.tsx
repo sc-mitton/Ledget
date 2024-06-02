@@ -1,6 +1,6 @@
 import { FC, useState, forwardRef, ButtonHTMLAttributes, useEffect } from 'react';
 
-import { X, Copy, ChevronsDown, Check, Circle } from '@geist-ui/icons'
+import { X, Copy, ChevronsDown, Check, Plus } from '@geist-ui/icons'
 import styled from 'styled-components';
 
 import styles from './styles.module.scss';
@@ -9,7 +9,6 @@ import {
     GoogleLogo,
     Delete,
     ReplayIcon,
-    Plus,
     Grip,
     CornerGrip
 } from '@ledget/media'
@@ -151,7 +150,7 @@ export const CopyButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { withText
 
 export const PlusButton: FC<ButtonHTMLAttributes<HTMLButtonElement>> = (props) => (
     <CircleIconButton {...props}>
-        <Plus stroke={'currentColor'} size={'.8em'} />
+        <Plus size='1em' />
     </CircleIconButton>
 )
 

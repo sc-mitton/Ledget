@@ -6,8 +6,8 @@ import { z } from 'zod'
 import { FieldError, Control } from 'react-hook-form'
 import { Eye, EyeOff } from '@geist-ui/icons'
 
-import './text.scss'
-import './password-input.scss'
+import textStyles from './text.module.scss'
+import passwordStyles from './password-input.module.scss'
 import { FormErrorTip, FormError } from '../../pieces/form-errors/form-errors'
 import { SelectProvence } from '../select-provence/select-provence'
 import { InputShimmerDiv } from '../../pieces/shimmer/shimmer'
@@ -26,7 +26,9 @@ export const TextInputWrapper = forwardRef<HTMLDivElement, TextInputWrapperProps
 
   return (
     <div
-      className={`input-container ${className || ''} ${slim ? 'slim' : ''} ${focused ? 'focused' : ''}`}
+      className={textStyles.inputContainer}
+      data-slim={slim}
+      data-focused={focused}
       ref={ref}
       {...rest}
     >
@@ -83,7 +85,7 @@ export const MenuTextInput: FC<React.HTMLProps<HTMLDivElement>> = (props) => {
 
   return (
     <div
-      className={`menu-text-input-container ${className || ''}`}
+      className={[textStyles.menuTextInputContainer, className].join(' ')}
       onClick={handleClick}
       ref={ref}
       {...rest}
@@ -111,7 +113,7 @@ export const CardInput = ({ requiredError, onComplete, clearError, loading }: Ca
     <>
       {loading
         ? <InputShimmerDiv />
-        : <div className={`card-container${cardFocus ? ' focused' : ''}`}>
+        : <div className={textStyles.cardContainer} data-focused={cardFocus}>
           <CardElement
             id='card-element'
             onBlur={() => setCardFocus(false)}
@@ -219,32 +221,32 @@ export const CityStateZipInputs = ({ errors, register, control, loading }: CityS
 
   return (
     <>
-      <div id='location-inputs-container' >
-        <div id="city-container">
+      <div className={textStyles.locationInputsContainer}>
+        <div className={textStyles.cityContainer}>
           {loading
             ? <InputShimmerDiv />
             : <CityInput {...register('city')} errors={errors} />
           }
         </div>
-        <div id="state-container">
+        <div className={textStyles.stateContainer}>
           {loading
             ? <InputShimmerDiv />
             : <SelectProvence control={control} errors={errors} />}
         </div>
-        <div id="zip-container">
+        <div className={textStyles.zipContainer}>
           {loading
             ? <InputShimmerDiv />
             : <ZipInput {...register('zip')} errors={errors} />}
         </div>
       </div>
       {(hasErrorMsg('city') || hasErrorMsg('state') || hasErrorMsg('zip')) &&
-        <div id="location-input-errors">
-          <div id="city-error">
+        <div className={textStyles.locationInputErrors}>
+          <div className={textStyles.cityError}>
             <FormError msg={errors.city?.message} />
           </div>
-          <div id="state-error">
+          <div className={textStyles.stateError}>
           </div>
-          <div id="zip-error">
+          <div className={textStyles.zipError}>
             <FormError msg={errors.zip?.message} />
           </div>
         </div>
@@ -292,7 +294,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordProps>((props,
         ?
         <InputShimmerDiv />
         :
-        <TextInputWrapper className="password-input-container">
+        <TextInputWrapper className={passwordStyles.passwordInputContainer}>
           <input
             name={name}
             type={visible ? 'text' : 'password'}

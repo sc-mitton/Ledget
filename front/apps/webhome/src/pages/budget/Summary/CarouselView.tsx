@@ -4,12 +4,12 @@ import { AlertCircle } from '@geist-ui/icons'
 
 import { HashLink } from 'react-router-hash-link'
 
-import './styles/CarouselView.scss'
+import styles from './styles/carousel-view.module.scss'
 import { MonthPicker } from '../MonthPicker'
 import { useGetCategoriesQuery } from '@features/categorySlice'
 import { useGetBillsQuery } from '@features/billSlice'
 import { useAppSelector } from '@hooks/store'
-import { AnimatedDollarCents, useScreenContext } from '@ledget/ui'
+import { AnimatedDollarCents } from '@ledget/ui'
 import { selectBudgetMonthYear, selectCategoryMetaData, selectBillMetaData } from '@features/budgetItemMetaDataSlice'
 import { useColorScheme } from '@ledget/ui'
 
@@ -32,7 +32,6 @@ const BudgetSummary = () => {
     } = useAppSelector(selectBillMetaData)
 
     const { isDark } = useColorScheme()
-    const { screenSize } = useScreenContext()
     const [carouselIndex, setCarouselIndex] = useState(0)
 
     const updateCarouselIndex = (e: React.UIEvent<HTMLDivElement>) => {
@@ -45,13 +44,13 @@ const BudgetSummary = () => {
 
     return (
         <>
-            <div className={`budget-summary--container ${screenSize} ${isDark ? 'dark-mode' : ''}`}>
-                <div id="month-picker--container" className={`${screenSize}`}>
+            <div className={styles.container}>
+                <div>
                     <MonthPicker darkMode={isDark} />
                 </div>
-                <div className='slider'>
-                    <div className='slides' onScroll={updateCarouselIndex}>
-                        <div className='slide' id='slide-1'>
+                <div className={styles.slider}>
+                    <div className={styles.slides} onScroll={updateCarouselIndex}>
+                        <div id='slide-1'>
                             <div>
                                 <AnimatedDollarCents
                                     value={loadingCategories || loadingBills ? 0 : Big(yearly_spent).add(monthly_spent).toNumber()}
@@ -59,7 +58,7 @@ const BudgetSummary = () => {
                             </div>
                             <span>total spending</span>
                         </div>
-                        <div className='slide' id='slide-2'>
+                        <div id='slide-2'>
                             <div>
                                 <AnimatedDollarCents
                                     value={Big(limit_amount_monthly || 0).minus(monthly_spent).toNumber()}
@@ -75,7 +74,7 @@ const BudgetSummary = () => {
                                     : <span>monthly spending left</span>}
                             </div>
                         </div>
-                        <div className='slide' id='slide-3'>
+                        <div id='slide-3'>
                             <div>
                                 <AnimatedDollarCents
                                     value={Big(limit_amount_yearly || 0).minus(yearly_spent).toNumber() || 0}
@@ -91,7 +90,7 @@ const BudgetSummary = () => {
                                     : <span>yearly spending left</span>}
                             </div>
                         </div>
-                        <div className='slide' id='slide-4'>
+                        <div id='slide-4'>
                             <div>
                                 {monthly_bills_paid + yearly_bills_paid}
                                 /{number_of_monthly_bills + number_of_yearly_bills}
@@ -99,14 +98,14 @@ const BudgetSummary = () => {
                             <span>bills paid</span>
                         </div>
                     </div>
-                    <div className='jump-links'>
+                    <div className={styles.jumpLinks}>
                         {Array.from({ length: 4 }, (_, i) => i).map((i) => (
                             <HashLink
                                 smooth
                                 scroll={(el) => el.scrollIntoView({ behavior: 'smooth', block: 'center' })}
                                 to={`#slide-${i + 1}`}
                                 key={`carousel-${i}`}
-                                className={carouselIndex === i ? 'active' : ''}
+                                data-active={carouselIndex === i}
                             />
                         ))}
                     </div>

@@ -2,11 +2,11 @@ import React, { useEffect, useRef } from 'react'
 
 import { groupBy as groupby } from 'lodash-es'
 
-import './styles/Devices.scss'
+import styles from './styles/devices.module.scss'
 import { Disclosure } from '@headlessui/react'
 import { useDeleteRememberedDeviceMutation, } from '@features/authSlice'
 import { Device as DeviceType } from '@features/userSlice'
-import { IconButtonSubmit, Tooltip, NestedWindow } from '@ledget/ui'
+import { IconButtonSubmit, Tooltip, NestedWindowLight } from '@ledget/ui'
 
 import { LocationIcon, ComputerIcon } from '@ledget/media'
 import { ChevronDown, LogOut, Smartphone } from '@geist-ui/icons'
@@ -51,49 +51,47 @@ const Device = (props: { device: string, info: DeviceType[] }) => {
     }, [])
 
     return (
-        <section className="device--container">
+        <section>
             <Disclosure as={React.Fragment}>
                 {({ open }) => (
                     <>
                         <Disclosure.Button
                             ref={buttonRef}
                             key={device}
-                            className={`device ${open ? 'open' : 'closed'}`}
+                            data-open={open}
                         >
-                            <div className="device-icon">
+                            <div>
                                 {iconKey === 'is_pc' && <ComputerIcon size='3em' />}
-                                {iconKey === 'is_mobile' && <Smartphone className="smart-phone-icon" />}
+                                {iconKey === 'is_mobile' && <Smartphone className={styles.smartPhoneIcon} />}
                                 {!iconKey && <ComputerIcon />}
                             </div>
-                            <div className="device-info">
-                                <div className="device-title">
+                            <div>
+                                <div>
                                     <span>{device.split(',')[0]}</span>&ndash;
                                     <span>{`${info.length} session${info.length > 1 ? 's' : ''}`}</span>
                                 </div>
-                                <div className="device-location">
+                                <div>
                                     <LocationIcon />
                                     {device.split(',')[2] === undefined ? 'unknown' : device.split(',')[1] + ', ' + device.split(',')[2]}
                                 </div>
                             </div>
-                            <div className={`discolsure-indicator ${open ? 'open' : ''}`}>
+                            <div data-open={open}>
                                 <ChevronDown className='icon' />
                             </div>
                         </Disclosure.Button>
-                        <Disclosure.Panel className={`device-sessions ${open ? 'open' : ''}`} ref={panelRef}>
+                        <Disclosure.Panel data-open={open} ref={panelRef}>
                             {info.map((session) =>
-                                <div key={session.id} className="device-session">
-                                    <div className="device-session-info">
+                                <div key={session.id}>
+                                    <div>
                                         <div>Browser</div>
                                         <div>{session.browser_family}</div>
                                         <div>Last Login </div>
                                         <div>{formatDateTime(session.last_login)}</div>
                                     </div>
-                                    <div className={`${session.current_device ? '' : 'logout-device'}`}>
+                                    <div className={`${session.current_device ? '' : styles.logoutDevice}`}>
                                         {session.current_device
                                             ?
-                                            <span className="current-device">
-                                                This Device
-                                            </span>
+                                            <span className={styles.currentDevice}>This Device</span>
                                             :
                                             <ReAuthProtected
                                                 requiredAal={'aal1'}
@@ -133,14 +131,14 @@ const Devices = ({ devices }: { devices: DeviceType[] }) => {
     return (
         <section>
             <h4 className="header2">Devices</h4>
-            <NestedWindow id="device-list">
+            <NestedWindowLight className={styles.deviceList}>
                 {(groupedDevices).map(([device, info], index) =>
                     <Device
                         key={device}
                         device={device}
                         info={info}
                     />)}
-            </NestedWindow>
+            </NestedWindowLight>
         </section>
     )
 }

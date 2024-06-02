@@ -1,0 +1,51 @@
+.windowContainer {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    max-width: 60rem;
+    position: relative;
+    margin: 2em 0 2.5em 0;
+    padding: 0;
+    flex-grow: 1;
+    min-height: 50em;
+    max-height: calc(100% - 4em);
+}
+
+.window {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 2em;
+    position: relative;
+    max-height: 100%;
+    border-radius: inherit;
+
+    &[data-size='extra-small'] {
+        padding: 0;
+    }
+
+    section {
+        display: flex;
+        flex-direction: column;
+        gap: .5em;
+
+        &>div:nth-child(3) {
+            margin: .125em 0 0 .25em;
+        }
+    }
+
+    &[data-gutter='open'] h2 {
+        margin-left: 0;
+    }
+
+    h1 {
+        font-size: 1.75em;
+    }
+}
+
+.content {
+    flex: 2;
+    border-radius: inherit;
+    max-height: 100%;
+}

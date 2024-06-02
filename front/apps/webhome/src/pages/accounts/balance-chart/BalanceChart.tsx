@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom'
 import dayjs from 'dayjs'
 import Big from 'big.js'
 
-import './BalanceChart.scss'
+import styles from './balance-chart.module.scss'
 import { useLazyGetAccountBalanceHistoryQuery } from '@features/accountsSlice'
 import {
     ResponsiveLineContainer,
@@ -77,8 +77,8 @@ export const BalanceChart = () => {
     }, [accounts, balanceHistoryData])
 
     return (
-        <div className='balance-history'>
-            <div className='balance-history--chart'>
+        <div className={styles.history}>
+            <div className={styles.chart}>
                 <div>
                     <ResponsiveLineContainer>
                         {accounts &&
@@ -137,7 +137,7 @@ export const BalanceChart = () => {
                     </ResponsiveLineContainer>
                 </div>
             </div>
-            <div className='balance-history--buttons'>
+            <div className={styles.buttons}>
                 <BlueFadedSquareRadio
                     onClick={() => setWindow('6M')}
                     selected={window === '6M'}

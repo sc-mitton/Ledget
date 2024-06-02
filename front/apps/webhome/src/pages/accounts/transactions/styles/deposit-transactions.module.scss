@@ -1,0 +1,15 @@
+.transaction {
+    cursor: pointer;
+
+    &[data-size='extra-small'] {
+        padding: 0;
+
+        &:hover>div {
+            background-color: var(--transaction-hover-background-dim);
+        }
+    }
+
+    &:hover>div {
+        background-color: var(--transaction-hover-background);
+    }
+}

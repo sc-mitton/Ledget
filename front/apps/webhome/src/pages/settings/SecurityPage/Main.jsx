@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom'
 
-import './styles/Main.scss'
+import styles from './styles/main.module.scss'
 import { useGetDevicesQuery } from '@features/userSlice'
 import { ShimmerDiv } from '@ledget/ui'
 import Devices from './Devices'
@@ -14,7 +14,7 @@ const Main = () => {
 
     return (
         <ShimmerDiv shimmering={isLoading}>
-            <div className="padded-content" id="security-page">
+            <div className={styles.securityPage}>
                 <h1>Security</h1>
                 <Devices devices={devices} />
                 <Authentication />

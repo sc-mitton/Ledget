@@ -17,8 +17,10 @@ $background: var(--window);
 .columns {
     margin-top: .75rem;
     display: flex;
-    gap: 1.75rem;
+    gap: 2.25rem;
     height: calc(100% - 1.75em);
+    overflow-x: scroll;
+    scrollbar-width: none;
 
     &>div {
         flex: 1;
@@ -62,6 +64,7 @@ $background: var(--window);
 
     &>div:nth-of-type(2) {
         display: flex;
+        margin-top: .25em;
 
         &>span {
             margin: 0 .5em;
@@ -96,5 +99,6 @@ $background: var(--window);
         display: flex;
         align-items: center;
         gap: 1em;
+        margin-right: 4em;
     }
 }

@@ -72,62 +72,64 @@ const ActivityDropdown = (props: HTMLProps<HTMLDivElement>) => {
             >
                 <Activity className='icon' stroke={'var(--white)'} />
             </button>
-            <DropdownDiv
-                ref={dropdownRef}
-                placement='right'
-                arrow='right'
-                className='notifications-dropdown--menu'
-                visible={showDropdown}
-                style={{ borderRadius: '.75rem' }}
-            >
-                <Tab.Group as={Fragment} defaultIndex={tabIndex} onChange={setTabIndex}>
-                    {({ selectedIndex }) => (
-                        <>
-                            <div className='header'>
-                                <TabNavListUnderlined selectedIndex={selectedIndex}>
-                                    <Tab>
-                                        {tCountData?.count! > 0 &&
-                                            <span className='count'>{tCountData?.count}</span>}
-                                        New Items
-                                    </Tab>
-                                    <Tab>History</Tab>
-                                    <div className='actions'>
-                                        {selectedIndex === 0 && (
-                                            <>
-                                                <Tooltip msg="Confirm all" ariaLabel="Confirm all">
-                                                    <IconButtonHalfGray
-                                                        onClick={() => setConfirmAll(true)}
-                                                        disabled={tCountData?.count === 0}
-                                                    >
-                                                        <CheckAll />
-                                                    </IconButtonHalfGray>
-                                                </Tooltip>
-                                                <RefreshButton2
-                                                    loading={isSyncing}
-                                                    onClick={() => syncTransactions({})}
-                                                /></>)}
-                                        {selectedIndex === 1 && (
-                                            <>
-                                                <Tooltip msg="Filter" ariaLabel="Filter">
-                                                    <IconButtonHalfGray onClick={() => setShowFilterForm(!showFilterForm)}>
-                                                        <Filter size={'1.125em'} />
-                                                    </IconButtonHalfGray>
-                                                </Tooltip>
-                                            </>
-                                        )}
-                                    </div>
-                                </TabNavListUnderlined>
-                            </div>
-                            <Tab.Panel>
-                                <NeedsConfirmationStack />
-                            </Tab.Panel>
-                            <Tab.Panel>
-                                <History />
-                            </Tab.Panel>
-                        </>
-                    )}
-                </Tab.Group>
-            </DropdownDiv>
+            <div>
+                <DropdownDiv
+                    ref={dropdownRef}
+                    placement='right'
+                    arrow='right'
+                    className='notifications-dropdown--menu'
+                    visible={showDropdown}
+                    style={{ borderRadius: '.75rem' }}
+                >
+                    <Tab.Group as={Fragment} defaultIndex={tabIndex} onChange={setTabIndex}>
+                        {({ selectedIndex }) => (
+                            <>
+                                <div className='header'>
+                                    <TabNavListUnderlined selectedIndex={selectedIndex}>
+                                        <Tab>
+                                            {tCountData?.count! > 0 &&
+                                                <span className='count'>{tCountData?.count}</span>}
+                                            New Items
+                                        </Tab>
+                                        <Tab>History</Tab>
+                                        <div className='actions'>
+                                            {selectedIndex === 0 && (
+                                                <>
+                                                    <Tooltip msg="Confirm all" ariaLabel="Confirm all">
+                                                        <IconButtonHalfGray
+                                                            onClick={() => setConfirmAll(true)}
+                                                            disabled={tCountData?.count === 0}
+                                                        >
+                                                            <CheckAll />
+                                                        </IconButtonHalfGray>
+                                                    </Tooltip>
+                                                    <RefreshButton2
+                                                        loading={isSyncing}
+                                                        onClick={() => syncTransactions({})}
+                                                    /></>)}
+                                            {selectedIndex === 1 && (
+                                                <>
+                                                    <Tooltip msg="Filter" ariaLabel="Filter">
+                                                        <IconButtonHalfGray onClick={() => setShowFilterForm(!showFilterForm)}>
+                                                            <Filter size={'1.125em'} />
+                                                        </IconButtonHalfGray>
+                                                    </Tooltip>
+                                                </>
+                                            )}
+                                        </div>
+                                    </TabNavListUnderlined>
+                                </div>
+                                <Tab.Panel>
+                                    <NeedsConfirmationStack />
+                                </Tab.Panel>
+                                <Tab.Panel>
+                                    <History />
+                                </Tab.Panel>
+                            </>
+                        )}
+                    </Tab.Group>
+                </DropdownDiv>
+            </div>
         </div>
     )
 }

@@ -3,6 +3,7 @@ import { useRef, useState, useEffect } from 'react'
 import { animated } from '@react-spring/web'
 import { useLocation, useNavigate } from 'react-router-dom'
 
+import styles from './styles/gutter.module.scss'
 import {
     usePillAnimation,
     useSchemeVar,
@@ -15,7 +16,6 @@ import { Shield, Link, User } from '@geist-ui/icons'
 const tabs = ['details', 'connections', 'security']
 
 const NavList = () => {
-    const rootPath = useLocation().pathname.split("/")[2]
     const navigate = useNavigate()
 
     const Icon = (props: { name: string, stroke: string }) => {
@@ -38,9 +38,9 @@ const NavList = () => {
                 data-current={location.pathname.includes(route) ? "page" : ''}
                 key={route}
                 id={route}
+                className={styles.navItem}
                 onClick={() => navigate(route)}
                 onKeyDown={(e) => { e.key === "Enter" && navigate(route) }}
-                className={`slim side-nav-item ${rootPath === route ? "current" : ''}`}
             >
                 <div><Icon name={route} stroke={'currentColor'} /></div>
                 <div>
@@ -59,11 +59,10 @@ const Profile = () => {
     return (
         <li
             role="menuitem"
-            data-current={location.pathname === "/settings/profile" ? "page" : ''}
             onClick={() => navigate("/settings/profile")}
             onKeyDown={(e) => e.key === "Enter" && navigate("/settings/profile")}
-            className={`side-nav-item ${location.pathname === "/settings/profile" ? "current" : ''}`}
-            id="profile"
+            className={styles.profile}
+            data-current={location.pathname === "/settings/profile" ? "page" : ''}
         >
             <div><User size="1.6em" stroke={'currentColor'} /></div>
             <div>
@@ -113,7 +112,7 @@ const Gutter = () => {
     }, [screenSize])
 
     return (
-        <nav id='gutter'>
+        <nav className={styles.gutter}>
             <ul ref={ulRef}>
                 <Profile />
                 <NavList />

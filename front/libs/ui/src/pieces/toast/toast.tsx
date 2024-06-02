@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { InfoFill, AlertCircle, CheckInCircle } from '@geist-ui/icons'
 
 
-import './toast.scss'
+import styles from './toast.module.scss'
 import { useTransition, animated } from '@react-spring/web';
 
 export type ToastType = 'success' | 'info' | 'error';
@@ -96,11 +96,14 @@ export const Toast = ({ toastStack, cleanUp }: { toastStack: ToastItem[] | [], c
   })
 
   return (
-    <div className='toast--container'>
+    <div className={styles.container}>
       {transitions((style, item) => (
         <animated.div
           style={{ ...style, ...{ '--toast-timer': `${item.timer || 5000}ms` } as React.CSSProperties }}
-          className={`toast ${item.type} ${item.hasLoadingBar ? 'has-loading-bar' : ''}`}
+          // className={`toast ${item.type} ${item.hasLoadingBar ? 'has-loading-bar' : ''}`}
+          className={styles.toast}
+          data-loadingbar={item.hasLoadingBar}
+          data-error={item.type === 'error'}
         >
           <div>
             {item.type === 'success' &&

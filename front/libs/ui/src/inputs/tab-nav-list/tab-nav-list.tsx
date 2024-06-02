@@ -4,7 +4,7 @@ import { Tab } from '@headlessui/react';
 import { animated, useSpringRef } from '@react-spring/web'
 import { useSpring } from '@react-spring/web'
 
-import './tab-nav-list.scss';
+import stylesModule from './tab-nav-list.module.scss';
 import { usePillAnimation } from '../../animations/use-pill-animation/use-pill-animation'
 import useSchemeVar from '../../themes/hooks/use-scheme-var/use-scheme-var';
 
@@ -56,7 +56,8 @@ export function TabNavList(props: TabNavListProps & React.HTMLAttributes<HTMLDiv
     <>
       <Tab.List
         ref={ref} {...rest}
-        className={`tab-list-div ${className ? className : ''} ${size ? `${size}-size` : ''}`}
+        className={stylesModule.tabListDiv}
+        data-size={size}
         style={{
           ...(theme && Array.isArray(theme)
             ? {
@@ -118,7 +119,7 @@ export function TabNavListUnderlined(props: Omit<TabNavListProps, 'theme' | 'lab
   }, [selectedIndex])
 
   return (
-    <Tab.List as='div' className='tab-nav-list-underlined' ref={ref} {...rest}>
+    <Tab.List as='div' className={stylesModule.tabNavListUnderlined} ref={ref} {...rest}>
       {children}
       <animated.span style={styles} />
     </Tab.List>

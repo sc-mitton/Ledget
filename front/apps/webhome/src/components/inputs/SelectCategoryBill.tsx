@@ -250,20 +250,18 @@ export const FullSelectCategoryBill =
                     <ChevronDown size={'1.25em'} />
                     {children}
                 </SelectorComponent>
-                <div>
-                    <DropdownDiv
-                        placement='left'
-                        visible={showBillCatSelect}
-                        ref={dropdownRef}
-                    >
-                        <SelectCategoryBillBody
-                            {...rest}
-                            value={value as any}
-                            onChange={onChange}
-                            name={name.current}
-                        />
-                    </DropdownDiv>
-                </div>
+                <DropdownDiv
+                    placement='left'
+                    visible={showBillCatSelect}
+                    ref={dropdownRef}
+                >
+                    <SelectCategoryBillBody
+                        {...rest}
+                        value={value as any}
+                        onChange={onChange}
+                        name={name.current}
+                    />
+                </DropdownDiv>
             </div>
         )
     }

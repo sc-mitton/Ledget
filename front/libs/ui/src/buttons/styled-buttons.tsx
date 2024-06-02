@@ -51,7 +51,14 @@ export const RedSlimButton = styled(SlimButton)`${red}`
 
 export const ClearNarrowButton = styled(NarrowButton)`${clearGray}`
 
-export const TextButton = styled(PrimaryButton)`${hoverText}`
+export const TextButton = styled(BaseButton)`
+    &:not(:disabled) * {
+        ${hoverText}
+    }
+    &:disabled {
+        opacity: 1
+    }
+`
 export const TextButtonHalfBlue = styled(SlimButton)`${hoverHalfBlueText}`
 export const TextButtonBlue = styled(SlimButton)`${hoverBlueText}`
 

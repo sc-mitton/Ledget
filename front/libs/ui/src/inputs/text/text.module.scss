@@ -1,0 +1,157 @@
+@mixin input-focus-styling {
+    box-shadow: 0 0 0 0 transparent;
+    transition: box-shadow 1s ease;
+    border: var(--input-border);
+    transition: all .25s ease;
+
+    &:focus-within,
+    &[data-focused='true'] {
+        border: var(--input-border-focus);
+        box-shadow: var(--input-focus-drop-shadow);
+        transition: all .25s ease;
+    }
+
+    &:hover:not(:focus-within):not([data-focused='true']) {
+        border: var(--input-border-hover);
+        transition: all .25s ease;
+    }
+}
+
+.inputContainer {
+    background-color: var(--input-background);
+    border-radius: var(--border-radius2);
+    padding: var(--input-padding);
+    margin: .375em 0;
+    box-sizing: border-box;
+    display: flex;
+    position: relative;
+    width: auto;
+    align-items: center;
+    width: max-content;
+    width: 100%;
+
+    &[data-slim='true'] {
+        padding-top: .3em;
+        padding-bottom: .3em;
+    }
+
+    @include input-focus-styling;
+
+    input::placeholder {
+        color: var(--input-placeholder);
+    }
+
+    input:focus::placeholder,
+    &.focused>input::placeholder {
+        transition: color .2s ease;
+        color: var(--input-placeholder-focus);
+        opacity: 1;
+    }
+
+    input {
+        width: 100%;
+    }
+
+    svg {
+        border-radius: var(--border-radius1);
+        padding: .125em;
+    }
+
+    svg:hover {
+        cursor: pointer;
+    }
+
+}
+
+.menuTextInputContainer {
+    flex-grow: 1;
+    cursor: text;
+    display: flex;
+
+    &>div {
+        padding: .125em;
+        background-color: var(--input-background);
+        color: var(--m-text);
+        border-radius: var(--border-radius2);
+        box-sizing: border-box;
+        display: flex;
+        gap: .5em;
+        align-items: center;
+        justify-content: space-between;
+        transition: border .2s ease;
+        position: relative;
+
+        @include input-focus-styling;
+    }
+
+    input {
+        padding-left: .5em;
+    }
+}
+
+
+
+/* ------------------------------ Card Element ------------------------------ */
+.cardContainer {
+    background-color: var(--input-background);
+    border-radius: var(--border-radius2);
+    z-index: 0;
+    padding: .75em 1em;
+    margin: .25em 0;
+    box-sizing: border-box;
+    position: relative;
+
+    @include input-focus-styling;
+}
+
+
+.paymentError {
+    margin-left: .875em;
+}
+
+/* --------------------------- Location Inputs Row -------------------------- */
+
+.locationInputsContainer {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    gap: .75em;
+
+    input {
+        width: 100%;
+    }
+}
+
+.cityContainer,
+.cityError {
+    flex: 1;
+}
+
+.stateError {
+    width: 25%;
+    min-width: 4.6875em;
+}
+
+.stateContainer {
+    width: 30%;
+    min-width: 4.6875em;
+    position: relative;
+}
+
+.zipContainer,
+.zipError {
+    width: 25%;
+}
+
+.zipError,
+.cityError {
+    height: 0px;
+}
+
+.locationInputErrors {
+    position: relative;
+    top: -.25em;
+    display: flex;
+    height: 1.25rem;
+}

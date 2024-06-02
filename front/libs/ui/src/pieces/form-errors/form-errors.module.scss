@@ -1,0 +1,37 @@
+/* ------------------------------- Form Errors ------------------------------ */
+
+.errorTip {
+    position: absolute;
+    top: -.625em;
+    right: -.125em;
+    height: .75em;
+    width: .75em;
+    animation: pop .22s ease;
+}
+
+.formErrorContainer {
+    margin-left: -.375em;
+    display: flex;
+    align-items: center;
+
+    &[data-inside='true'] {
+        margin-left: 0em;
+    }
+
+    svg {
+        height: .9em;
+        margin-left: .25em;
+        margin-right: .3125em;
+        position: relative;
+        text-align: left;
+        animation: pop .22s ease;
+    }
+
+}
+
+.formError {
+    display: inline-block;
+    font-size: .875rem;
+    font-weight: var(--fw-regular);
+    color: var(--mute-red);
+}

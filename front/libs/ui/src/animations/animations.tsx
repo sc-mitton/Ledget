@@ -1,6 +1,6 @@
 import { ReactNode, FC, forwardRef, useEffect, useState, useId, HTMLProps } from 'react'
 
-import './styles/animations.scss'
+import stylesModule from './styles/animations.module.scss'
 import { useTransition, animated, useSpring } from '@react-spring/web'
 import { motion, HTMLMotionProps } from 'framer-motion'
 
@@ -56,9 +56,18 @@ export const DropdownDiv = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement> 
 
   return transitions((styles, item) =>
     item && (
-      <animated.div className={`dropdown arrow-${arrow ? arrow : ''} ${className}`} style={styles} {...rest} ref={ref}>
-        {children}
-      </animated.div>
+      <div className={stylesModule.dropdownContainer}>
+        <animated.div
+          className={[stylesModule.dropdown, `${className}`].join(' ')}
+          data-arrow={arrow}
+          data-position={placement}
+          style={styles}
+          {...rest}
+          ref={ref}
+        >
+          {children}
+        </animated.div>
+      </div>
     )
   )
 })

@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useLocation } from 'react-router-dom'
 
-import './styles/window.scss'
+import styles from './styles/window.module.scss'
 import Gutter from './Gutter'
 import AccountPage from './Account'
 import ConnectionsPage from './Connections'
@@ -19,7 +19,7 @@ import {
     RecoveryCodes
 } from '@modals/index'
 import { useGetMeQuery } from '@features/userSlice'
-import { ShimmerDiv, useScreenContext, Window } from '@ledget/ui'
+import { ShimmerDiv, useScreenContext, UnPaddedWindow } from '@ledget/ui'
 
 const GutterContext = createContext<[
     boolean,
@@ -51,11 +51,12 @@ function Settings() {
     const { screenSize } = useScreenContext()
 
     return (
-        <Window id="profile-window--container" className={screenSize}>
+        <UnPaddedWindow className={styles.windowContainer} size={screenSize}>
             {['large', 'extra-large'].includes(screenSize) && <Gutter />}
             <ShimmerDiv
-                className={`${open ? 'with-open-gutter' : ''} ${screenSize}`}
-                id="profile-window"
+                className={styles.window}
+                data-size={screenSize}
+                data-gutter={open ? 'open' : 'closed'}
                 shimmering={userLoading}
             >
                 <AnimatePresence mode="wait">
@@ -64,7 +65,7 @@ function Settings() {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         key={location.pathname.split('/')[2]}
-                        className="content"
+                        className={styles.content}
                     >
                         <Routes location={location} key={location.pathname.split('/')[2]}>
                             <Route path="profile" element={<AccountPage />} >
@@ -83,7 +84,7 @@ function Settings() {
                     </motion.div>
                 </AnimatePresence>
             </ShimmerDiv>
-        </Window>
+        </UnPaddedWindow>
     )
 }
 

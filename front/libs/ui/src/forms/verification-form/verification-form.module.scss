@@ -1,0 +1,16 @@
+.container {
+    button:last-child {
+        width: 100%;
+        padding: .5em 0;
+    }
+
+
+    button:first-child {
+        margin: 0 auto;
+        margin-top: .75em;
+    }
+
+    span {
+        font-weight: var(--fw-regular);
+    }
+}

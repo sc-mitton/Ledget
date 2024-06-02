@@ -1,0 +1,14 @@
+.securityPage {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    height: 100%;
+    overflow: auto;
+    overflow-x: hidden;
+    position: relative;
+    z-index: 1;
+
+    &>div:first-child {
+        margin-top: 15em;
+    }
+}

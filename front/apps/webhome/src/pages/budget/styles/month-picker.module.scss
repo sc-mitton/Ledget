@@ -12,7 +12,7 @@
     padding: .125em 0em;
 
     &[data-size='small'] {
-        font-size: 1em;
+        font-size: 1.125em;
     }
 
     &[data-size='medium'] {
@@ -22,14 +22,15 @@
     button {
         opacity: 1;
         transition: opacity .2s ease-in-out;
+    }
 
-        &:first-child {
-            margin-right: .5em;
+    &[data-placement='left'] {
+        button:last-child {
+            margin-left: -.5em;
         }
 
-        &:not(:first-child) {
-            font-size: 1rem;
-            margin-left: -.5rem;
+        button:first-child {
+            font-weight: var(--fw-bold);
         }
     }
 

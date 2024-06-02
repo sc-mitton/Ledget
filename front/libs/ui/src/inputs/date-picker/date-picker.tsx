@@ -1,14 +1,14 @@
-import { useState, useRef, useEffect, useCallback, HTMLProps, createContext, useContext, memo } from 'react';
+import { useState, useRef, useEffect, HTMLProps, createContext, useContext } from 'react';
 
 import dayjs, { Dayjs } from 'dayjs';
-import { Calendar as CalendarIcon, X, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Tool } from '@geist-ui/icons'
+import { Calendar as CalendarIcon, X, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from '@geist-ui/icons'
 
-import './date-picker.scss'
+import styles from './date-picker.module.scss'
 import { DropdownDiv } from '../../animations/animations';
 import { HalfArrow } from '@ledget/media'
 import { TextInputWrapper } from '../text/text';
 import { Tooltip } from '../../pieces/tooltip/tooltip';
-import { IconButtonBlue, CircleIconButton } from '../../buttons';
+import { IconButtonBlue, IconButtonHalfBlue, CircleIconButton } from '../../buttons';
 import { useAccessEsc } from '../../modal/with-modal/with-modal';
 import { useLoaded } from '../../utils/hooks';
 
@@ -84,13 +84,13 @@ type TDatePickerContext<TP extends TPicker> =
 type CalendarCellProps = {
   isDisabled?: boolean
   isOverflow?: boolean
-  isTerminusStart?: boolean
-  isTerminusEnd?: boolean
+  isWindowStart?: boolean
+  isWindowEnd?: boolean
   isActive?: boolean
   isSelected?: boolean
   isToday?: boolean
-  isActiveTerminusStart?: boolean
-  isActiveTerminusEnd?: boolean
+  isActiveWindowStart?: boolean
+  isActiveWindowEnd?: boolean
   extraPadded?: boolean
 }
 
@@ -143,31 +143,32 @@ const useDatePickerContext = () => {
 
 // Components
 const PickerCell: React.FC<HTMLProps<HTMLTableCellElement> & CalendarCellProps> = (props) => {
-  const { isDisabled, isActiveTerminusEnd, isActiveTerminusStart, isActive, isToday,
-    isOverflow, isSelected, isTerminusEnd, isTerminusStart, children, extraPadded, ...rest } = props
+  const { isDisabled, isActiveWindowEnd, isActiveWindowStart, isActive, isToday,
+    isOverflow, isSelected, isWindowEnd, isWindowStart, children, extraPadded, ...rest } = props
   const { disabledStyle } = useDatePickerContext()
 
   return (
-    <div {...rest} className={`
-        cell
-        ${extraPadded ? 'extra-padded' : ''}
-        ${isOverflow ? 'overflow' : ''}
-        ${isDisabled ? `disabled ${disabledStyle}` : ''}
-        ${isActive ? 'active' : ''}
-        ${isSelected ? 'selected' : ''}
-        ${isTerminusStart ? 'terminus-start' : ''}
-        ${isToday ? 'today' : ''}
-        ${isActiveTerminusStart ? 'active-terminus-start' : ''}
-        ${isActiveTerminusEnd ? 'active-terminus-end' : ''}
-        ${isTerminusEnd ? 'terminus-end' : ''}
-      `}>
+    <div {...rest}
+      className={styles.cell}
+      data-overflow={Boolean(isOverflow)}
+      data-disabled={Boolean(isDisabled)}
+      data-active={Boolean(isActive)}
+      data-selected={Boolean(isSelected)}
+      data-today={Boolean(isToday)}
+      data-active-window-start={Boolean(isActiveWindowStart)}
+      data-active-window-end={Boolean(isActiveWindowEnd)}
+      data-window-start={Boolean(isWindowStart)}
+      data-window-end={Boolean(isWindowEnd)}
+      data-extra-padded={Boolean(extraPadded)}
+      data-disabled-style={disabledStyle}
+    >
       {children}
     </div>
   )
 }
 
 const EmptyPickerCell = ({ period }: { period: 'day' | 'year' | 'month' }) => (
-  <div className={`cell empty ${period !== 'day' ? 'extra-padded' : ''}`}>
+  <div className={styles.cell} data-empty={true} data-extra-padded={period !== 'day'}>
     {period === 'day' ? 1
       : period === 'month' ? 'Jan'
         : '2020'}
@@ -196,7 +197,7 @@ const Years = ({ windowCenter, onSelect }: YearsMonthsProps) => {
   const [active, setActive] = useState<Dayjs>()
 
   return (
-    <div className="year-calendar">
+    <div className={styles.yearCalendar}>
       {Array.from({ length: 12 }).map((_, i) => {
         const djs = i === 0
           ? windowCenter.year(Math.round(windowCenter.year() / 10) * 10).subtract(1, 'year')
@@ -234,10 +235,10 @@ const Years = ({ windowCenter, onSelect }: YearsMonthsProps) => {
               isDisabled={(unSelectable || isDisabled) && !ignoreUnSelectable}
               isActive={isActive}
               isSelected={isSelected}
-              isActiveTerminusEnd={pickerType === 'range' && focusedInputIndex === 1 && djs.isSame(active, 'year') && djs.isAfter(selectedValue?.[0], 'year')}
-              isActiveTerminusStart={pickerType === 'range' && focusedInputIndex === 0 && djs.isSame(active, 'year') && djs.isBefore(selectedValue?.[1], 'year')}
-              isTerminusStart={pickerType === 'range' ? selectedValue?.[0] && djs.isSame(selectedValue[0], 'year') : djs.isSame(selectedValue, 'year')}
-              isTerminusEnd={pickerType === 'range' ? selectedValue?.[1] && djs.isSame(selectedValue[1], 'year') : djs.isSame(selectedValue, 'year')}
+              isActiveWindowEnd={pickerType === 'range' && focusedInputIndex === 1 && djs.isSame(active, 'year') && djs.isAfter(selectedValue?.[0], 'year')}
+              isActiveWindowStart={pickerType === 'range' && focusedInputIndex === 0 && djs.isSame(active, 'year') && djs.isBefore(selectedValue?.[1], 'year')}
+              isWindowStart={pickerType === 'range' ? selectedValue?.[0] && djs.isSame(selectedValue[0], 'year') : djs.isSame(selectedValue, 'year')}
+              isWindowEnd={pickerType === 'range' ? selectedValue?.[1] && djs.isSame(selectedValue[1], 'year') : djs.isSame(selectedValue, 'year')}
             >
               {djs.format('YYYY')}
             </PickerCell>)
@@ -251,7 +252,7 @@ const Months = ({ windowCenter, onSelect }: YearsMonthsProps) => {
   const { selectedValue, pickerType, focusedInputIndex, disabled, hidden, inputTouchCount, period } = useDatePickerContext()
 
   return (
-    <div className="month-calendar" onMouseLeave={() => setActiveMonth(undefined)}>
+    <div className={styles.monthCalendar} onMouseLeave={() => setActiveMonth(undefined)}>
       <>
         {Array.from({ length: 12 }).map((_, i) => {
           const djs = windowCenter.month(i)
@@ -284,10 +285,10 @@ const Months = ({ windowCenter, onSelect }: YearsMonthsProps) => {
                 isDisabled={(unSelectable || isDisabled) && !ignoreUnSelectable}
                 onClick={() => { onSelect(djs) }}
                 isSelected={isSelected}
-                isActiveTerminusEnd={pickerType === 'range' && focusedInputIndex === 1 && djs.isSame(activeMonth, 'month') && djs.isAfter(selectedValue?.[0], 'day')}
-                isActiveTerminusStart={pickerType === 'range' && focusedInputIndex === 0 && djs.isSame(activeMonth, 'month') && djs.isBefore(selectedValue?.[1], 'day')}
-                isTerminusStart={pickerType === 'range' ? djs.isSame(selectedValue?.[0], 'month') : djs.isSame(selectedValue, 'month')}
-                isTerminusEnd={pickerType === 'range' ? djs.isSame(selectedValue?.[1], 'month') : djs.isSame(selectedValue, 'month')}
+                isActiveWindowEnd={pickerType === 'range' && focusedInputIndex === 1 && djs.isSame(activeMonth, 'month') && djs.isAfter(selectedValue?.[0], 'day')}
+                isActiveWindowStart={pickerType === 'range' && focusedInputIndex === 0 && djs.isSame(activeMonth, 'month') && djs.isBefore(selectedValue?.[1], 'day')}
+                isWindowStart={pickerType === 'range' ? djs.isSame(selectedValue?.[0], 'month') : djs.isSame(selectedValue, 'month')}
+                isWindowEnd={pickerType === 'range' ? djs.isSame(selectedValue?.[1], 'month') : djs.isSame(selectedValue, 'month')}
                 extraPadded={true}
               >
                 {djs.month(i).format('MMM')}
@@ -338,7 +339,7 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
   }, [firstDay])
 
   return (
-    <div className="day-calendar" onMouseLeave={unsetActiveDay}>
+    <div className={styles.dayCalendar} onMouseLeave={unsetActiveDay}>
       <div onMouseEnter={unsetActiveDay}>Su</div>
       <div onMouseEnter={unsetActiveDay}>Mo</div>
       <div onMouseEnter={unsetActiveDay}>Tu</div>
@@ -374,12 +375,12 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
             ? day.isAfter(selectedValue?.[0], 'day') && day.isBefore(selectedValue?.[1], 'day')
             : false
           : false
-        const isActiveTerminusEnd = pickerType === 'range' && focusedInputIndex === 1 && day.isSame(activeDay, 'day') && day.isAfter(selectedValue?.[0], 'day')
-        const isActiveTerminusStart = pickerType === 'range' && focusedInputIndex === 0 && day.isSame(activeDay, 'day') && day.isBefore(selectedValue?.[1], 'day')
-        const isTerminusStart = pickerType === 'range'
+        const isActiveWindowEnd = pickerType === 'range' && focusedInputIndex === 1 && day.isSame(activeDay, 'day') && day.isAfter(selectedValue?.[0], 'day')
+        const isActiveWindowStart = pickerType === 'range' && focusedInputIndex === 0 && day.isSame(activeDay, 'day') && day.isBefore(selectedValue?.[1], 'day')
+        const isWindowStart = pickerType === 'range'
           ? selectedValue?.[0] && day.isSame(selectedValue[0], 'day')
           : selectedValue && day.isSame(selectedValue, 'day')
-        const isTerminusEnd = pickerType === 'range'
+        const isWindowEnd = pickerType === 'range'
           ? selectedValue?.[1] && day.isSame(selectedValue[1], 'day')
           : selectedValue && day.isSame(selectedValue, 'day')
 
@@ -391,7 +392,7 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
               onClick={() => {
                 isOverflow
                   ? handleClick(day, true) :
-                  !isDisabled && handleClick(day, isSelected || (!isActive && !isActiveTerminusEnd && !isActiveTerminusStart))
+                  !isDisabled && handleClick(day, isSelected || (!isActive && !isActiveWindowEnd && !isActiveWindowStart))
               }}
               onMouseEnter={() =>
                 !isOverflow
@@ -400,12 +401,12 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
               }
               isDisabled={(unSelectable || isDisabled) && !ignoreUnSelectable}
               isActive={isActive}
-              isActiveTerminusEnd={!isOverflow && isActiveTerminusEnd}
-              isActiveTerminusStart={!isOverflow && isActiveTerminusStart}
+              isActiveWindowEnd={!isOverflow && isActiveWindowEnd}
+              isActiveWindowStart={!isOverflow && isActiveWindowStart}
               isToday={!isOverflow && day.isSame(dayjs(), 'day')}
               isSelected={!isOverflow && isSelected}
-              isTerminusStart={!isOverflow && isTerminusStart}
-              isTerminusEnd={!isOverflow && isTerminusEnd}
+              isWindowStart={!isOverflow && isWindowStart}
+              isWindowEnd={!isOverflow && isWindowEnd}
               isOverflow={isOverflow}
             >
               <Tooltip msg={day.format('YYYY-M-D')}>{day.date()}</Tooltip>
@@ -446,19 +447,19 @@ const DayMonthYearPicker = () => {
   }
 
   return (
-    <div className="ledget-datepicker--calendar">
+    <div className={styles.ledgetDatePickerCalendar}>
       {/* Header */}
       <div>
         <div>
-          <IconButtonBlue
+          <IconButtonHalfBlue
             onClick={(e) => handleSeek(e, -1, 'fast')}>
             <ChevronsLeft size="1.25em" />
-          </IconButtonBlue>
+          </IconButtonHalfBlue>
           {view !== 'year' &&
-            <IconButtonBlue
+            <IconButtonHalfBlue
               onClick={(e) => handleSeek(e, -1, 'normal')}>
               <ChevronLeft size="1.25em" />
-            </IconButtonBlue>}
+            </IconButtonHalfBlue>}
         </div>
         {focusedInputIndex === 0 && pickerType === 'range' && view === 'day' &&
           <div>
@@ -493,14 +494,14 @@ const DayMonthYearPicker = () => {
           </div>}
         <div>
           {view !== 'year' &&
-            <IconButtonBlue
+            <IconButtonHalfBlue
               onClick={(e) => handleSeek(e, 1, 'normal')}>
               <ChevronRight size="1.25em" />
-            </IconButtonBlue>}
-          <IconButtonBlue
+            </IconButtonHalfBlue>}
+          <IconButtonHalfBlue
             onClick={(e) => handleSeek(e, 1, 'fast')}>
             <ChevronsRight size="1.25em" />
-          </IconButtonBlue>
+          </IconButtonHalfBlue>
         </div>
       </div>
       {/* Items Pick */}
@@ -685,14 +686,16 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
   }
 
   return (
-    <div className='ledget-datepicker--container' style={{ display: verticlePlacement === 'top' ? 'flex' : '' }}>
+    <div
+      className={styles.ledgetDatePickerContainer}
+      data-filled={pickerType === 'range' ? Boolean(selectedValue?.length) : Boolean(selectedValue) ? 1 : 0}
+    >
       {!props.hideInputElement && <TextInputWrapper
         focused={showPicker}
-        className={`ledget-datepicker
-          ${pickerType === 'range' ? selectedValue?.some(v => v) ? 'filled' : '' : selectedValue ? 'filled' : ''}
-          ${focusedInputIndex !== undefined ? `focused-${focusedInputIndex}` : ''}
-          ${pickerType === 'range' ? 'range' : 'single'}
-          ${pickerType === 'range'}`}
+        className={styles.ledgetDatePicker}
+        data-pickertype={pickerType}
+        data-focused={focusedInputIndex !== undefined ? `${focusedInputIndex}` : ''}
+        data-filled={pickerType === 'range' ? selectedValue?.some(v => v) : ''}
         slim={true}
         ref={inputContainerRef}
       >

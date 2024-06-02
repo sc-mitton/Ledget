@@ -1,5 +1,5 @@
 import { FC, HTMLAttributes } from 'react'
-import './loading-indicators.scss'
+import styles from './loading-indicators.module.scss'
 import { useTransition, animated } from '@react-spring/web'
 import { AnimatePresence, motion } from 'framer-motion'
 
@@ -16,7 +16,7 @@ export const LoadingRing = ({ visible = false, style, className = '' }: { visibl
         ...style
       }}
     >
-      <div className={`lds-ring ${className}`}>
+      <div className={styles.ldsRing}>
         <div></div>
         <div></div>
         <div></div>
@@ -53,7 +53,7 @@ export const LoadingRingDiv: FC<HTMLAttributes<HTMLDivElement> & { loading: bool
 export const LoadingMessage = ({ message = 'Loading' }) => {
 
   return (
-    <div className="loading-message">
+    <div className={styles.loadingMessage}>
       {message}
       <span /><span /><span />
     </div>
@@ -64,15 +64,15 @@ export const WindowLoadingBar = ({ visible }: { visible: boolean }) => (
   <AnimatePresence initial={false}>
     {visible &&
       <motion.div
-        className="loading-bar-container"
+        className={styles.loadingBarContainer}
         initial={{ opacity: 0 }}
         animate={{ opacity: visible ? 1 : 0 }}
         exit={{ opacity: 0 }}
         transition={{ ease: "easeInOut", duration: 0.2 }}
       >
-        <div className="loading-bar">
-          <div className="loading-bar-edges"></div>
-          <div className="loading-bar-shimmer"></div>
+        <div className={styles.loadingBar}>
+          <div></div>
+          <div></div>
         </div>
       </motion.div>
     }

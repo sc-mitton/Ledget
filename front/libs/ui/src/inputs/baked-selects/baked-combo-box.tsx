@@ -5,11 +5,11 @@ import { useController } from 'react-hook-form';
 import { BakedSelectProps } from './baked-list-box';
 import { ChevronDown } from '@geist-ui/icons';
 
-import './baked-selects.scss';
+import styles from './baked-selects.module.scss';
 import { FormErrorTip } from '../../pieces/form-errors/form-errors';
 import { DropdownDiv } from '../../animations/animations';
 import { TextInputWrapper } from '../text/text';
-import { DropdownItem } from "../../pieces/containers/containers";
+import { DropdownItem } from '../../containers/specialty';
 import { LoadingRingDiv } from '../../pieces/loading-indicators/loading-indicators';
 
 
@@ -50,13 +50,13 @@ export const BakedComboBox = (props: Omit<BakedSelectProps<string>, 'as'> & { sl
         if (props.onChange) props.onChange(val)
       }}
       as='div'
-      className="baked-listbox--container"
+      className={styles.backedListboxContainer}
       defaultValue={props.defaultValue}
       multiple={props.multiple as any}
     >
       {({ open }) => (
         <>
-          <TextInputWrapper ref={inputRef} className="baked-combo-list-wrapper" slim={props.slim}>
+          <TextInputWrapper ref={inputRef} slim={props.slim}>
             <Combobox.Input
               onChange={(event) => setQuery(event.target.value)}
               onFocus={() => setFocused(true)}
@@ -79,7 +79,7 @@ export const BakedComboBox = (props: Omit<BakedSelectProps<string>, 'as'> & { sl
             </Combobox.Button>
             {props.error && <FormErrorTip error={props.error} />}
           </TextInputWrapper>
-          <div className="provence-options--container">
+          <>
             <DropdownDiv
               placement="left"
               visible={open}
@@ -91,7 +91,7 @@ export const BakedComboBox = (props: Omit<BakedSelectProps<string>, 'as'> & { sl
             >
               {props.options?.length
                 ?
-                <Combobox.Options className="baked-list-options" static>
+                <Combobox.Options className={styles.bakedListOptions} static>
                   {filterOptions?.map((op, index) => {
                     const isDisabled = props.disabled?.includes(op) || op.disabled
                     const value = typeof op === 'string' ? op : op[props.valueKey || 'value']
@@ -122,12 +122,12 @@ export const BakedComboBox = (props: Omit<BakedSelectProps<string>, 'as'> & { sl
                     )
                   })}
                 </Combobox.Options>
-                : <div className='baked-select-loading'>
+                : <div className={styles.bakedSelectLoading}>
                   <LoadingRingDiv loading={true} />
                 </div>
               }
             </DropdownDiv>
-          </div>
+          </>
         </>
       )}
     </Combobox>

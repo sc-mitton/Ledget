@@ -1,0 +1,95 @@
+.bakedDropdownItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: .5em;
+}
+
+.subLabel {
+    opacity: .7;
+    font-size: .875em;
+}
+
+.buttonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--input-placeholder2);
+    gap: .5em;
+
+    &[data-filled='true'] * {
+        color: var(--m-text);
+    }
+}
+
+.bakedListBoxContainer {
+    display: inline-flex;
+    flex-direction: column;
+
+    &>div:last-of-type {
+        position: relative;
+    }
+
+    hr {
+        width: calc(100% - .5em);
+        margin: 0 auto;
+    }
+
+    &>button {
+        display: flex;
+        justify-content: space-between;
+
+        &>div:first-of-type {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: .5em;
+            width: 100%;
+            overflow: auto;
+            scrollbar-width: none;
+        }
+
+        &:not(.valid)>div:not(.active):not(.semi-active) {
+            :not(span) {
+                color: var(--input-placeholder2);
+            }
+        }
+
+        &.valid,
+        &>div.active {
+            color: var(--m-text);
+        }
+
+        &>div.semi-active {
+            color: var(--m-text);
+
+            span {
+                color: var(--input-placeholder2);
+            }
+        }
+    }
+}
+
+.bakedSelectLoading {
+    padding: 1em;
+}
+
+.dropdown {
+    overflow: hidden;
+    max-height: 22em;
+    max-height: calc(27vh);
+    padding: 0.25em;
+
+    &>ul {
+        overflow: scroll;
+        margin: .125em -.375em .125em .125em;
+        padding-right: .75em;
+    }
+}
+
+.bakedListOptions {
+    display: flex;
+    flex-direction: column;
+    gap: .25em;
+    overflow: hidden;
+}

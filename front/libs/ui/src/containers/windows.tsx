@@ -1,18 +1,17 @@
 import styled from 'styled-components';
 
-export const Window = styled.div`
-  box-shadow: var(--window-drop-shadow);
+export const Window = styled.div<{ size?: string }>`
   border-radius: var(--border-radius3);
-  padding: var(--window-padding);
   box-sizing: border-box;
   border: 1.25px solid var(--window-border);
-  background: var(--window-background);
 
-  &.extra-small {
-    background: none;
-    box-shadow: none;
-    padding: var(--window-padding-extra-small);
-  }
+  box-shadow: ${props => props.size === 'extra-small' ? 'none' : 'var(--window-drop-shadow)'};
+  padding: var(--window-padding);
+  background: var(--window-background);
+`
+
+export const UnPaddedWindow = styled(Window)`
+  padding: 0;
 `
 
 export const PortalWindow = styled.div<{ size?: string, maxWidth?: number }>`
@@ -61,12 +60,16 @@ export const NestedWindow = styled.div`
   background-color: var(--nested-window);
   border-radius: var(--border-radius2);
   padding: .75em 1em;
-  margin: -.125em;
+  width: 100%;
+  box-sizing: border-box;
+`
+
+export const NestedWindowLight = styled(NestedWindow)`
+  padding: .25em .5em;
 `
 
 export const NestedWindow2 = styled.div`
   background-color: var(--modal-inner-window);
   border-radius: var(--border-radius2);
   padding: .75em;
-  margin: -.125em;
 `

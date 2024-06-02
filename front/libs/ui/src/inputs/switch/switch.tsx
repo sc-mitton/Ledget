@@ -1,5 +1,5 @@
 
-import './switch.scss'
+import styles from './switch.module.scss'
 import { Switch } from '@headlessui/react'
 
 interface DefaultSwitchProps {
@@ -13,16 +13,17 @@ interface DefaultSwitchProps {
 export const BakedSwitch = ({ checked, className, onChange, children, as = 'div', ...rest }: DefaultSwitchProps) => {
 
   return (
-    <Switch.Group className={`switch--container ${className}`} as={as}>
+    <Switch.Group className={[styles.switchContainer, className].join(' ')} as={as}>
       <Switch.Label>{children}</Switch.Label>
       <Switch
         checked={checked}
         onChange={onChange}
-        className={`switch-crib ${checked ? 'enabled' : 'disabled'}`}
+        className={styles.switchCrib}
+        data-enabled={checked}
         {...rest}
       >
         {({ checked: isChecked }) => (
-          <span className={`switch-pill ${isChecked ? 'enabled' : 'disabled'}`} />
+          <span className={styles.switchPill} data-enabled={isChecked}></span>
         )}
       </Switch>
     </Switch.Group>

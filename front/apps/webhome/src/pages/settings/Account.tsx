@@ -4,7 +4,7 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import { Menu } from '@headlessui/react'
 import { Edit2 } from '@geist-ui/icons'
 
-import './styles/Account.scss'
+import styles from './styles/account.module.scss'
 import {
     useGetMeQuery,
     useGetCoOwnerQuery,
@@ -62,7 +62,7 @@ const Info = () => {
 
     return (
         <>
-            <div id="info-container">
+            <div className={styles.info}>
                 <div>
                     <h3 >{`${user?.name.first} ${user?.name.last}`}</h3>
                 </div>
@@ -70,7 +70,6 @@ const Info = () => {
                     <span>{`${user?.email}`}</span>
                 </div>
                 <CircleIconButton
-                    id='edit-personal-info--button'
                     onClick={() => setEditPersonalInfoModal(true)}
                     aria-label="Edit personal info"
                 >
@@ -147,15 +146,13 @@ const ChangePlanMenu = () => {
                             change
                         </BlueSlimSubmitButton>
                     </Menu.Button>
-                    <div style={{ position: 'relative' }}>
-                        <DropdownDiv
-                            visible={open}
-                            id="change-plan--menu"
-                            placement='right'
-                        >
-                            <Items />
-                        </DropdownDiv>
-                    </div>
+                    <DropdownDiv
+                        visible={open}
+                        id="change-plan--menu"
+                        placement='right'
+                    >
+                        <Items />
+                    </DropdownDiv>
                 </>
             )}
         </Menu>
@@ -178,19 +175,17 @@ const Plan = () => {
     })
 
     return (
-        <section className="section">
-            <div className="header2">
-                <div>
-                    <h4>Plan</h4>
-                    <span
-                        className="indicator"
-                        style={{ color: subscription ? getStatusColor(subscription) : '' }}
-                    >
-                        {subscription ? getStatus(subscription) : ''}
-                    </span>
-                </div>
-            </div>
-            <NestedWindow id="invoice-details--container">
+        <section>
+            <h4>
+                Plan
+                <span
+                    className="indicator"
+                    style={{ color: subscription ? getStatusColor(subscription) : '' }}
+                >
+                    {subscription ? getStatus(subscription) : ''}
+                </span>
+            </h4>
+            <NestedWindow className={styles.invoice}>
                 <div>
                     <div>Renews</div>
                     {subscription &&
@@ -240,13 +235,9 @@ const PaymentMethod = () => {
         : new Date()
 
     return (
-        <section className="section">
-            <div className="header2">
-                <div>
-                    <h4>Payment Method</h4>
-                </div>
-            </div>
-            <NestedWindow id="card-info--container">
+        <section>
+            <h4>Payment Method</h4>
+            <NestedWindow className={styles.paymentMethod}>
                 <div>
                     <CreditCard className='icon' />
                     <div >
@@ -273,9 +264,9 @@ const Preferences = () => {
     const { isDark, setDarkMode } = useColorScheme()
 
     return (
-        <section className="section">
-            <h4 className='header2'>Preferences</h4>
-            <div className="settings-list">
+        <section>
+            <h4>Preferences</h4>
+            <div>
                 <NestedWindow>
                     <ul>
                         <BakedSwitch
@@ -301,9 +292,9 @@ const Household = () => {
     return (
         <>
             {removeCoOwnerModal && <ConfirmRemoveCoOwner onClose={() => setRemoveCoOwnerModal(false)} />}
-            <section className="section">
-                <h4 className='header2'>Household</h4>
-                <NestedWindow className="settings-list" id='household'>
+            <section>
+                <h4>Household</h4>
+                <NestedWindow className={styles.household}>
                     <span>Members</span>
                     {user?.co_owner
                         ? coOwner && <span>{`${coOwner.name.first} ${coOwner.name.last}`}</span>
@@ -333,14 +324,12 @@ const Account = () => {
                 shimmering={loadingInvoice || loadingPaymentMethod || loadingSubscription}
                 style={{ borderRadius: 'var(--border-radius3)' }}
             >
-                <div id="account-page" className="padded-content">
-                    <div className="header">
-                        <h1>Account</h1>
-                    </div>
-                    <div id="avatar">
+                <div className={styles.accountsPage}>
+                    <h1>Account</h1>
+                    <div className={styles.avatar}>
                         {user && `${user.name.first.charAt(0).toUpperCase()} ${user.name.last.charAt(0).toUpperCase()}`}
                     </div>
-                    <div className="sections">
+                    <div className={styles.sections}>
                         <Info />
                         <Household />
                         <Plan />

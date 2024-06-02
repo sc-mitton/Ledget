@@ -143,43 +143,42 @@ const fakeChartData = [
 const Options = ({ onEdit, onDelete }: { onEdit: () => void, onDelete: () => void }) => (
     <Menu>
         {({ open }) => (
-            <div style={{ position: 'absolute', top: '.875em', right: '3.25em' }}>
+            <div style={{ position: 'absolute', top: '1.125em', right: '3.5em' }}>
                 <Menu.Button as={IconButtonHalfGray}>
                     <Ellipsis rotate={90} />
                 </Menu.Button>
-                <div style={{ position: 'absolute', right: '0' }}>
-                    <DropdownDiv
-                        placement='right'
-                        visible={open}
-                    >
-                        <Menu.Items static>
-                            <Menu.Item as={Fragment}>
-                                {({ active }) => (
-                                    <DropdownItem
-                                        as='button'
-                                        active={active}
-                                        onClick={() => { onEdit() }}
-                                    >
-                                        <Edit2 className='icon' />
-                                        Edit
-                                    </DropdownItem>
-                                )}
-                            </Menu.Item>
-                            <Menu.Item as={Fragment}>
-                                {({ active }) => (
-                                    <DropdownItem
-                                        as='button'
-                                        active={active}
-                                        onClick={() => { onDelete() }}
-                                    >
-                                        <Trash2 className='icon' />
-                                        Delete
-                                    </DropdownItem>
-                                )}
-                            </Menu.Item>
-                        </Menu.Items>
-                    </DropdownDiv>
-                </div>
+                <DropdownDiv
+                    arrow='right'
+                    placement='right'
+                    visible={open}
+                >
+                    <Menu.Items static>
+                        <Menu.Item as={Fragment}>
+                            {({ active }) => (
+                                <DropdownItem
+                                    as='button'
+                                    active={active}
+                                    onClick={() => { onEdit() }}
+                                >
+                                    <Edit2 className='icon' />
+                                    Edit
+                                </DropdownItem>
+                            )}
+                        </Menu.Item>
+                        <Menu.Item as={Fragment}>
+                            {({ active }) => (
+                                <DropdownItem
+                                    as='button'
+                                    active={active}
+                                    onClick={() => { onDelete() }}
+                                >
+                                    <Trash2 className='icon' />
+                                    Delete
+                                </DropdownItem>
+                            )}
+                        </Menu.Item>
+                    </Menu.Items>
+                </DropdownDiv>
             </div>
         )
         }

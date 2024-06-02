@@ -41,24 +41,22 @@ const Filter = ({ value, onChange }: { value?: [Dayjs, Dayjs], onChange: React.D
                     stroke={active ? 'var(--blue-medium)' : 'currentColor'}
                 />
             </TextButtonHalfBlue >
-            <div>
-                <DropdownDiv
-                    placement='right'
-                    id='transactions-filter-dropdown'
-                    visible={showDropDown}
-                >
-                    <DatePicker
-                        pickerType='range'
-                        aria-label='Filter transactions'
-                        placeholder={['Start', 'End']}
-                        defaultValue={value}
-                        onChange={(date) => {
-                            onChange(date);
-                            (date && date.length) ? setActive(true) : setActive(false)
-                        }}
-                    />
-                </DropdownDiv>
-            </div>
+            <DropdownDiv
+                placement='right'
+                id='transactions-filter-dropdown'
+                visible={showDropDown}
+            >
+                <DatePicker
+                    pickerType='range'
+                    aria-label='Filter transactions'
+                    placeholder={['Start', 'End']}
+                    defaultValue={value}
+                    onChange={(date) => {
+                        onChange(date);
+                        (date && date.length) ? setActive(true) : setActive(false)
+                    }}
+                />
+            </DropdownDiv>
         </div>
     )
 }

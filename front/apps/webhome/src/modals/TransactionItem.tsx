@@ -47,31 +47,29 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
                     <Menu.Button as={IconButtonHalfGray} onClick={() => setOpenEllipsis(!openEllipsis)}>
                         <Ellipsis rotate={90} size={'1.375em'} />
                     </Menu.Button>
-                    <div>
-                        <DropdownDiv
-                            placement='right'
-                            arrow='right'
-                            className='right'
-                            visible={open}
-                        >
-                            <Menu.Items static>
-                                <Menu.Item>
-                                    {({ active }) => (
-                                        <DropdownItem
-                                            as='button'
-                                            active={active}
-                                            onClick={() => setAction('split')}
-                                        >
-                                            <div style={{ marginLeft: '-.25em' }}>
-                                                <ArrowLeft size={'.8em'} strokeWidth={2} /><ArrowRight size={'.8em'} strokeWidth={2} />
-                                            </div>
-                                            <span>Split</span>
-                                        </DropdownItem>
-                                    )}
-                                </Menu.Item>
-                            </Menu.Items>
-                        </DropdownDiv>
-                    </div>
+                    <DropdownDiv
+                        placement='right'
+                        arrow='right'
+                        className='right'
+                        visible={open}
+                    >
+                        <Menu.Items static>
+                            <Menu.Item>
+                                {({ active }) => (
+                                    <DropdownItem
+                                        as='button'
+                                        active={active}
+                                        onClick={() => setAction('split')}
+                                    >
+                                        <div style={{ marginLeft: '-.25em' }}>
+                                            <ArrowLeft size={'.8em'} strokeWidth={2} /><ArrowRight size={'.8em'} strokeWidth={2} />
+                                        </div>
+                                        <span>Split</span>
+                                    </DropdownItem>
+                                )}
+                            </Menu.Item>
+                        </Menu.Items>
+                    </DropdownDiv>
                 </>
             )}
         </Menu>
@@ -436,21 +434,19 @@ function CategoriesBillInnerWindow({ item, }: { item: Transaction }) {
                         slim={true}
                         onClick={() => { setShowBillCatSelect(!showBillCatSelect) }}
                     />
-                    <div>
-                        <DropdownDiv
-                            placement='left'
-                            visible={showBillCatSelect}
-                            ref={dropdownRef}
-                        >
-                            <SelectCategoryBill
-                                includeBills={false}
-                                value={billCat}
-                                onChange={setBillCat}
-                                month={dayjs(item.datetime || item.date).month() + 1}
-                                year={dayjs(item.datetime || item.date).year()}
-                            />
-                        </DropdownDiv>
-                    </div>
+                    <DropdownDiv
+                        placement='left'
+                        visible={showBillCatSelect}
+                        ref={dropdownRef}
+                    >
+                        <SelectCategoryBill
+                            includeBills={false}
+                            value={billCat}
+                            onChange={setBillCat}
+                            month={dayjs(item.datetime || item.date).month() + 1}
+                            year={dayjs(item.datetime || item.date).year()}
+                        />
+                    </DropdownDiv>
                 </div>
                 : item.categories?.map((cat) => (
                     <div key={cat.id}>

@@ -1,16 +1,17 @@
 import { useEffect, useState, useRef } from 'react';
 
 import { useSearchParams, useLocation, useNavigate } from 'react-router-dom';
-import { Plus, Calendar as CalendarIcon } from '@geist-ui/icons'
+import { Plus } from '@geist-ui/icons'
 
 import styles from './styles/header.module.scss'
 import {
     CircleIconButton,
-    DropdownDiv,
     useAccessEsc,
     Tooltip,
-    TextButtonHalfBlue,
     ExpandButton,
+    useScreenContext,
+    TextButton,
+    DropdownDiv
 } from '@ledget/ui';
 import Calendar from './Calendar';
 
@@ -27,6 +28,7 @@ const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
     const [showCalendar, setShowCalendar] = useState(false)
     const location = useLocation()
     const navigate = useNavigate()
+    const { screenSize } = useScreenContext()
 
     useEffect(() => {
         if (showCalendar) {
@@ -37,37 +39,31 @@ const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
     useAccessEsc({
         refs: [dropdownRef, buttonRef],
         visible: showCalendar,
-        setVisible: () => showCalendar && setShowCalendar(false),
+        setVisible: setShowCalendar,
     })
 
     return (
-        <div className={styles.header} data-show-calendar={showCalendar}>
-            <div>
-                <DropdownDiv
-                    placement='left'
-                    visible={showCalendar}
-                    ref={dropdownRef}
-                    style={{ borderRadius: 'var(--border-radius25)' }}
-                >
-                    <Calendar ref={calendarRef} />
-                </DropdownDiv>
-            </div>
-            <div>
+        <div className={styles.header} data-show-calendar={showCalendar} data-size={screenSize}>
+            <DropdownDiv
+                placement='left'
+                verticlePlacement='top'
+                visible={showCalendar}
+                ref={dropdownRef}
+            >
+                <Calendar ref={calendarRef} />
+            </DropdownDiv>
+            <TextButton
+                onClick={() => setShowCalendar(!showCalendar)}
+                tabIndex={0}
+                aria-label="Show calendar"
+                disabled={screenSize !== 'extra-small'}
+                ref={buttonRef}
+            >
                 <h4>
                     {selectedDate.toLocaleString('en-us', { month: 'short' })}&nbsp;
                     {selectedDate.getFullYear()}
                 </h4>
-                {showCalendarIcon &&
-                    <TextButtonHalfBlue
-                        ref={buttonRef}
-                        onClick={() => setShowCalendar(!showCalendar)}
-                        tabIndex={0}
-                        aria-label="Show calendar"
-                        aria-haspopup="true"
-                    >
-                        <CalendarIcon className="icon" />
-                    </TextButtonHalfBlue>}
-            </div>
+            </TextButton>
             <div>
                 <Tooltip msg={collapsed ? 'Expand' : 'Collapse'}>
                     <ExpandButton

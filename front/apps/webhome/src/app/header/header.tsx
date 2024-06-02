@@ -57,14 +57,13 @@ const ProfileDropdownMenu = () => {
     return (
         <Menu>
             {({ open }) => (
-                <div style={{ position: 'relative' }}>
+                <div className='profile-dropdown'>
                     <Menu.Button className="profile-button">
                         <User className='icon' stroke={'var(--white)'} />
                     </Menu.Button>
                     <DropdownDiv
                         placement='right'
                         arrow='right'
-                        className='profile-dropdown'
                         visible={open}
                     >
                         <Menu.Items static>

@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react"
-import "./otc.scss"
+import styles from "./otc.module.scss"
 
 
 export function Otc({ codeLength = 6, required = true, colorful = false }) {
@@ -105,7 +105,7 @@ export function Otc({ codeLength = 6, required = true, colorful = false }) {
   )
 
   return (
-    <div className='otc'>
+    <div className={styles.otc}>
       <fieldset>
         <div>
           {inputStates.map((input, index) => (

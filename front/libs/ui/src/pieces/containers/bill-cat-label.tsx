@@ -3,10 +3,10 @@ import { Check } from '@geist-ui/icons'
 
 import { toLower as tolower, startCase as startcase } from 'lodash-es'
 
-import { ElementType, ComponentPropsWithoutRef, useEffect } from 'react'
+import { ElementType, ComponentPropsWithoutRef } from 'react'
 import { PolymorphicComponentProps } from '../../types/helpers'
 
-import './styles/bill-cat-label.scss'
+import styles from './styles/bill-cat-label.module.scss'
 
 
 type BillCatProps<C extends ElementType> = {
@@ -51,12 +51,11 @@ export const BillCatLabel = <C extends ElementType = 'div'>(props: PolymorphicCo
   return (
     <Component
       {...rest}
-      className={`bill-cat-label
-      ${color}
-      ${hoverable ? 'hoverable' : ''}
-      ${active ? 'active' : ''}
-      ${slim ? 'slim' : ''}`
-      }
+      className={styles.billCatLabel}
+      data-color={color}
+      data-hoverable={hoverable}
+      data-slim={slim}
+      data-active={active}
     >
       <div>
         {emoji && <span>{emoji || ''}</span>}
@@ -93,11 +92,21 @@ export const BillCatEmojiLabel = <C extends ElementType = 'div'>(props: Polymorp
   return (
     <Component
       {...rest}
-      className={`bill-cat-label-emoji ${color} ${hoverable ? 'hoverable' : ''} ${active ? 'active' : ''} ${!emoji ? 'empty' : ''} ${size ? size : ''}`}
+      className={styles.billCatLabelEmoji}
+      data-color={color}
+      data-hoverable={hoverable}
+      data-slim={slim}
+      data-active={active}
+      data-size={size}
     >
       {emoji && <span>{emoji || ''}</span>}
       {progress !== undefined && <div>
-        <svg viewBox="0 0 36 36" style={{ width: svgSize, height: svgSize }} className={`progress-circle ${color}`}>
+        <svg
+          viewBox="0 0 36 36"
+          style={{ width: svgSize, height: svgSize }}
+          className={styles.progressCircle}
+          data-color={color}
+        >
           <circle
             cx="18"
             cy="18"

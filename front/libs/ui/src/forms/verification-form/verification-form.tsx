@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 
-import './verification-form.scss';
+import styles from './verification-form.module.scss';
 import { LightBlueMainButton, ResendButton } from '../../buttons'
 import { Otc } from '../../inputs/otc/otc'
 
@@ -39,7 +39,7 @@ export const VerificationForm = (props: VerificationFormProps) => {
 
   return (
     <>
-      <div id='verification-form-container'>
+      <div className={styles.container}>
         <form
           action={flow?.ui.action}
           method={flow?.ui.method}

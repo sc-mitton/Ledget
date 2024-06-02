@@ -1,0 +1,39 @@
+.options-dropdown-container {
+    display: flex;
+    flex-direction: column;
+
+    &:focus-visible {
+        box-shadow: none;
+        outline: none;
+    }
+
+    div {
+        display: flex;
+        flex: 1;
+    }
+}
+
+.topArrow {
+
+    &::after {
+        position: absolute;
+        top: -.375rem;
+        right: 1rem;
+        display: inline-block;
+        border-right: .375rem solid transparent;
+        border-bottom: .375rem solid var(--dropdown-background);
+        border-left: .375rem solid transparent;
+        content: '';
+    }
+
+    &::before {
+        position: absolute;
+        top: -.4375rem;
+        right: .95rem;
+        display: inline-block;
+        border-right: .4375rem solid transparent;
+        border-bottom: .4375rem solid var(--border-color-ultra-dim);
+        border-left: .4375rem solid transparent;
+        content: '';
+    }
+}

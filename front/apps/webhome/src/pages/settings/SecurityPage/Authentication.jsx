@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 
-import './styles/Authentication.scss'
+import styles from './styles/authentication.module.scss'
 import { BlueSlimButton, NestedWindow } from '@ledget/ui'
 import { useGetMeQuery } from '@features/userSlice'
 import { Lock } from '@geist-ui/icons'
@@ -23,9 +23,9 @@ const PasswordReset = () => {
 
     return (
         <section>
-            <h4 className="header2">Authentication</h4>
-            <NestedWindow id="authentication-methods">
-                <div className="authentication-method">
+            <h4>Authentication</h4>
+            <NestedWindow className={styles.window}>
+                <div>
                     <div><Lock className='icon' /></div>
                     <div>
                         <span>Password</span>

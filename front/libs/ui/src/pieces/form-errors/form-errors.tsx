@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import './form-errors.scss';
+import styles from './form-errors.module.scss';
 
 import { Alert2 } from '@ledget/media'
 
@@ -11,7 +11,7 @@ export interface Error {
 export const FormErrorTip = ({ error }: { error?: Error }) => (
   <>
     {(error?.type === 'required' || error?.message?.toLowerCase() === 'required') &&
-      <div className='error-tip'>
+      <div className={styles.errorTip}>
         <Alert2 />
       </div>
     }
@@ -33,18 +33,18 @@ export const FormError = ({ msg, insideForm = true }: { msg: string | string[], 
           {(typeof msg === 'string')
             ?
             !msg.includes('required') &&
-            <div className={`form-error--container ${insideForm ? 'inside-form' : ''}`}>
+            <div className={styles.formErrorContainer} data-inside={insideForm}>
               <Alert2 />
-              <div className="form-error">
+              <div className={styles.formError}>
                 {renderLines(msg)}
               </div>
             </div>
             :
             msg.map((m, index) => (
               !m.includes('required') &&
-              <div className="form-error--container" key={index}>
+              <div className={styles.formErrorContainer} key={index}>
                 <Alert2 />
-                <div className="form-error">
+                <div className={styles.formError}>
                   {renderLines(m)}
                 </div>
               </div>

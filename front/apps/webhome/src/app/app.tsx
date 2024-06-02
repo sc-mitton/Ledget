@@ -4,6 +4,7 @@ import { Routes, Outlet, Route, useLocation, Navigate, useNavigate } from 'react
 import { AnimatePresence } from 'framer-motion'
 
 import '@styles/base.scss'
+import styles from './styles/app.module.scss'
 import Header from './header/header'
 import NotFound from '@pages/notFound'
 import Budget from '@pages/budget/Window'
@@ -110,7 +111,8 @@ const App = () => {
       <AnimatePresence mode="wait">
         <ZoomMotionDiv
           key={location.pathname.split('/')[1]}
-          className={`dashboard ${screenSize ? screenSize : ''}`}
+          className={styles.dashboard}
+          data-size={screenSize}
           ref={ref}
         >
           <Routes location={location} key={location.pathname.split('/')[1]}>
@@ -134,22 +136,18 @@ const App = () => {
   )
 }
 
-const AppWithNav = () => {
-  const { screenSize } = useScreenContext()
-
-  return (
-    <ColorSchemedDiv className={`app ${screenSize ? screenSize : ''}`}>
-      <Header />
-      <main>
-        <Sidenav />
-        <Routes>
-          <Route path="/*" element={<App />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </main>
-    </ColorSchemedDiv >
-  )
-}
+const AppWithNav = () => (
+  <ColorSchemedDiv className={styles.app}>
+    <Header />
+    <main>
+      <Sidenav />
+      <Routes>
+        <Route path="/*" element={<App />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </main>
+  </ColorSchemedDiv >
+)
 
 const EnrichedApp = () => (
   <ScreenProvider>

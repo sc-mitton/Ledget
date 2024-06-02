@@ -1,0 +1,17 @@
+.tip {
+    background-color: var(--m-header-text);
+    color: var(--m-invert-text);
+    border-radius: var(--border-radius1);
+    box-shadow: var(--low-elevation-drop-shadow);
+    padding: .125em .5em;
+    font-size: 1em;
+    display: flex;
+    align-items: baseline;
+    background-color: var(--btn-dark-gray);
+    font-weight: var(--fw-bold);
+
+    * {
+        color: var(--m-invert-text);
+        font-weight: var(--fw-bold);
+    }
+}

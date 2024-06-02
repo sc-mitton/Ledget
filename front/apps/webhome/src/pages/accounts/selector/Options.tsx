@@ -2,7 +2,7 @@ import { ComponentPropsWithoutRef, useEffect, useRef, useState } from "react";
 
 import { animated, useTransition, useSpring, useSpringRef } from '@react-spring/web';
 
-import './styles/Options.scss'
+import styles from './styles/options.module.scss'
 import { useScreenContext, useSpringDrag, CloseButton } from '@ledget/ui'
 import { useAccountsContext } from "../context";
 import { useUpdateAccountsMutation } from "@features/accountsSlice";
@@ -95,7 +95,7 @@ const Options = (props: Props) => {
     return (
         <animated.div
             style={containerStyles}
-            className={`select-account-options ${screenSize}`}
+            className={styles.options}
             {...rest}
         >
             <CloseButton onClick={() => setOpen(false)} />
