@@ -4,14 +4,14 @@ import { useSearchParams } from 'react-router-dom'
 import { Key } from '@geist-ui/icons'
 
 import { withModal } from '@ledget/ui'
-import './PassKey.scss'
+import styles from './passkey-info.module.scss'
 
 const Modal = withModal((props) => {
     return (
-        <div id='passkey-modal-content'>
+        <div className={styles.content}>
             <h2>Say goodby to passwords</h2>
             <Key stroke={'var(--blue-medium)'} size={'2em'} />
-            <div id="passkey-modal-text">
+            <div className={styles.text}>
                 <p>
                     Passkeys are a new way to sign in to applications without having to remember a password.
                 </p>

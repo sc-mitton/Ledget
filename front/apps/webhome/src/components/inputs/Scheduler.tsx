@@ -6,8 +6,8 @@ import { Tab } from '@headlessui/react'
 import { ChevronDown } from '@geist-ui/icons'
 import { Calendar } from '@geist-ui/icons'
 
-import './styles/Dropdowns.scss'
-import './styles/Scheduler.scss'
+import dropdownStyles from './styles/dropdowns.module.scss'
+import schedulerStyles from './styles/scheduler.module.scss'
 import type { Bill } from '@features/billSlice'
 import { useClickClose } from '@ledget/ui'
 import {
@@ -124,7 +124,7 @@ const Button: FC<React.HTMLAttributes<HTMLButtonElement> & { iconPlaceholder?: b
                 role="button"
                 type="button"
                 name="schedule-dropdown"
-                id="schedule-dropdown-button"
+                className={schedulerStyles.scheduleDropdownButton}
                 aria-label="Open schedule dropdown"
                 aria-haspopup="true"
                 aria-expanded={`${open}`}
@@ -160,10 +160,9 @@ const DayPicker = () => {
     const Day = ({ dayNumber }: { dayNumber: NonNullable<typeof day> }) => (
         <td key={dayNumber}>
             <div
-                className={`day picker-item
-                    ${day === dayNumber ? 'selected' : 'unselected'}
-                    ${activeDay === dayNumber ? 'active' : ''}
-                    `}
+                className={[schedulerStyles.pickerItem, schedulerStyles.dayPickerItem].join(' ')}
+                data-selected={day === dayNumber}
+                data-active={activeDay === dayNumber}
                 onClick={() => setDay(dayNumber)}
                 role="button"
                 aria-label={`Select day ${dayNumber ? dayNumber + 1 : ''}`}
@@ -244,7 +243,7 @@ const DayPicker = () => {
 
     return (
         <div
-            className="day-picker"
+            className={schedulerStyles.dayPicker}
             ref={ref}
             onBlur={() => {
                 setActiveDay(undefined)
@@ -322,10 +321,9 @@ const WeekPicker = () => {
     const WeekNumber = ({ week }: { week: NonNullable<typeof weekNumber> }) => (
         <li>
             <div
-                className={`picker-item
-                    ${week === weekNumber ? 'selected' : 'unselected'}
-                    ${week === activeWeekNumber ? 'active' : ''}
-                    `}
+                className={[schedulerStyles.pickerItem, schedulerStyles.weekPickerItem].join(' ')}
+                data-selected={week === weekNumber}
+                data-active={week === activeWeekNumber}
                 onClick={() => {
                     setWeekNumber(week)
                 }}
@@ -349,10 +347,9 @@ const WeekPicker = () => {
     const WeekDay = ({ dayNumber }: { dayNumber: NonNullable<typeof weekDay> }) => (
         <li>
             <div
-                className={`picker-item
-                    ${weekDay === dayNumber ? 'selected' : 'unselected'}
-                    ${activeWeekDay === dayNumber ? 'active' : ''}
-                    `}
+                className={[schedulerStyles.pickerItem, schedulerStyles.weekDayPickerItem].join(' ')}
+                data-selected={weekDay === dayNumber}
+                data-active={activeWeekDay === dayNumber}
                 onClick={() =>
                     setWeekDay(dayNumber)
                 }
@@ -417,7 +414,7 @@ const WeekPicker = () => {
 
     return (
         <div
-            className="week-picker-container"
+            className={schedulerStyles.weekPickerContainer}
             ref={ref}
             onBlur={() => {
                 setActiveWeekDay(undefined)
@@ -431,7 +428,7 @@ const WeekPicker = () => {
             tabIndex={0}
         >
             <ul
-                className="week-picker"
+                className={schedulerStyles.weekPicker}
                 role="listbox"
                 aria-label="Select week number"
                 aria-activedescendant={`week-${activeWeekNumber}`}
@@ -451,7 +448,7 @@ const WeekPicker = () => {
                 }}
             />
             <ul
-                className="week-day-picker"
+                className={schedulerStyles.weekDayPicker}
                 role="listbox"
                 aria-label="Select week day"
                 aria-activedescendant={`week-day-${activeWeekDay}`}
@@ -518,39 +515,37 @@ const DayWeekPicker = () => {
     const { placement, verticlePlacement } = useResponsiveDropdownPlacement({ ref })
 
     return (
-        <div ref={ref} >
-            <DropdownDiv
-                placement={placement}
-                verticlePlacement={verticlePlacement}
-                visible={open}
-                id="schedule-dropdown"
-            >
-                <Tab.Group as='div' ref={ref} defaultIndex={(week && weekDay) ? 1 : 0}>
-                    {({ selectedIndex }) => (
-                        <>
-                            <TabNavList
-                                size='sm'
-                                selectedIndex={selectedIndex}
-                                labels={['Day', 'Week']}
-                                theme={{
-                                    pillBackgroundColor: pillBackgroundColor || 'black',
-                                    tabColor: 'inherit',
-                                    tabBackgroundColor: 'transparent'
-                                }}
-                            />
-                            <Tab.Panels>
-                                <Tab.Panel>
-                                    <DayPicker />
-                                </Tab.Panel>
-                                <Tab.Panel>
-                                    <WeekPicker />
-                                </Tab.Panel>
-                            </Tab.Panels>
-                        </>
-                    )}
-                </Tab.Group>
-            </DropdownDiv>
-        </div >
+        <DropdownDiv
+            placement={placement}
+            verticlePlacement={verticlePlacement}
+            visible={open}
+            className={schedulerStyles.scheduleDropdown}
+        >
+            <Tab.Group as='div' ref={ref} defaultIndex={(week && weekDay) ? 1 : 0}>
+                {({ selectedIndex }) => (
+                    <>
+                        <TabNavList
+                            size='sm'
+                            selectedIndex={selectedIndex}
+                            labels={['Day', 'Week']}
+                            theme={{
+                                pillBackgroundColor: pillBackgroundColor || 'black',
+                                tabColor: 'inherit',
+                                tabBackgroundColor: 'transparent'
+                            }}
+                        />
+                        <Tab.Panels>
+                            <Tab.Panel>
+                                <DayPicker />
+                            </Tab.Panel>
+                            <Tab.Panel>
+                                <WeekPicker />
+                            </Tab.Panel>
+                        </Tab.Panels>
+                    </>
+                )}
+            </Tab.Group>
+        </DropdownDiv>
     )
 }
 
@@ -563,10 +558,9 @@ const MonthPicker = () => {
     const Month = ({ monthNumber }: { monthNumber: typeof month }) => (
         <li>
             <div
-                className={`picker-item
-                    ${month === monthNumber ? 'selected' : 'unselected'}
-                    ${activeMonth === monthNumber ? 'active' : ''}
-                    `}
+                className={schedulerStyles.pickerItem}
+                data-selected={month === monthNumber}
+                data-active={activeMonth === monthNumber}
                 onClick={() => setMonth(monthNumber)}
                 role="button"
                 aria-label={`Select month ${monthNumber}`}
@@ -618,7 +612,7 @@ const MonthPicker = () => {
 
     return (
         <div
-            id="month-picker2-container"
+            className={schedulerStyles.monthPicker2Container}
             ref={ref}
             onBlur={() => {
                 setActiveMonth(undefined)
@@ -630,7 +624,7 @@ const MonthPicker = () => {
             tabIndex={0}
         >
             <ul
-                id="month-picker2"
+                className={schedulerStyles.monthPicker2}
                 role="listbox"
                 aria-label="Select month number"
                 aria-activedescendant={`month-${setActiveMonth}`}
@@ -679,30 +673,28 @@ const MonthDayPicker = () => {
     const { placement, verticlePlacement } = useResponsiveDropdownPlacement({ ref })
 
     return (
-        <div ref={ref} >
-            <DropdownDiv
-                placement={placement}
-                verticlePlacement={verticlePlacement}
-                visible={open}
-                id="schedule-dropdown"
-                style={{ marginTop: '.5em' }}
+        <DropdownDiv
+            placement={placement}
+            verticlePlacement={verticlePlacement}
+            visible={open}
+            className={schedulerStyles.scheduleDropdown}
+            style={{ marginTop: '.5em' }}
+        >
+            <div
+                className={dropdownStyles.monthDayPickerContainer}
+                ref={ref}
+                onKeyDown={(event) => {
+                    event.stopPropagation()
+                    if (event.key === 'Escape') {
+                        setOpen(false)
+                    }
+                }}
             >
-                <div
-                    id="month-day-picker-container"
-                    ref={ref}
-                    onKeyDown={(event) => {
-                        event.stopPropagation()
-                        if (event.key === 'Escape') {
-                            setOpen(false)
-                        }
-                    }}
-                >
-                    <MonthPicker />
-                    <hr style={{ opacity: '.7', margin: '.5em 0', width: '100%' }} />
-                    <DayPicker />
-                </div>
-            </DropdownDiv>
-        </div>
+                <MonthPicker />
+                <hr style={{ opacity: '.7', margin: '.5em 0', width: '100%' }} />
+                <DayPicker />
+            </div>
+        </DropdownDiv>
     )
 }
 
@@ -752,7 +744,7 @@ export const BillScheduler = (props: BSP) => {
                 weekDay={weekDay}
                 setWeekDay={setWeekDay}
             >
-                <div id="scheduler--container">
+                <div className={schedulerStyles.schedulerContainer}>
                     <Scheduler.Button iconPlaceholder={props.iconPlaceholder}>
                         {error && <FormErrorTip error={{ type: 'required' }} />}
                     </Scheduler.Button>

@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import { Download, Copy } from '@geist-ui/icons'
 
-import './styles/RecoveryCodes.scss'
+import styles from './styles/recovery-codes.module.scss'
 import { BlueSubmitButton, BluePrimaryButton, SlideMotionDiv, LoadingMessage } from '@ledget/ui'
 import { withSmallModal, ExpandableContainer } from '@ledget/ui'
 import { withReAuth } from '@utils/index'
@@ -121,10 +121,10 @@ export const GenerateViewRecoveryCodes = (props: { onFinish: () => void }) => {
     }, [errId])
 
     return (
-        <div id="recovery-codes--container">
+        <div className={styles.recoveryCodesContainer}>
             <h2>Recovery Codes</h2>
             <div
-                id="recovery-codes-save--container"
+                className={styles.recoveryCodesSaveContainer}
                 style={{
                     ...(location.pathname.includes('authenticator-setup') ? { marginBottom: '0' } : {})
                 }}
@@ -132,7 +132,6 @@ export const GenerateViewRecoveryCodes = (props: { onFinish: () => void }) => {
                 <BlueSubmitButton
                     type="button"
                     loading={loading}
-                    className="recovery-codes-button"
                     onClick={(e) => {
                         handleDownload()
                         confirmedSavedCodes()
@@ -144,7 +143,6 @@ export const GenerateViewRecoveryCodes = (props: { onFinish: () => void }) => {
                 <BlueSubmitButton
                     type="button"
                     loading={loading}
-                    className="recovery-codes-button"
                     onClick={() => {
                         handleCopy()
                         confirmedSavedCodes()
@@ -172,7 +170,10 @@ const RecoveryCodesFlow = withReAuth(withSmallModal((props) => {
                 ? <SlideMotionDiv key='generate-view-codes' position='last'>
                     <GenerateViewRecoveryCodes onFinish={() => props.closeModal()} />
                 </SlideMotionDiv>
-                : <SlideMotionDiv key='select-code-action' id="select-code-action--container" position='first'>
+                : <SlideMotionDiv
+                    key='select-code-action'
+                    className={styles.selectCodeActionContainer}
+                    position='first'>
                     <BluePrimaryButton
                         onClick={() => {
                             searchParams.set('lookup_secret_regenerate', 'true')

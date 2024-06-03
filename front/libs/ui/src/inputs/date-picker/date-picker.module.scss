@@ -12,6 +12,11 @@
         }
     }
 
+    &>div>button {
+        position: absolute;
+        right: .5em;
+    }
+
     &[data-filled='false'],
     &[data-filled='false']>div {
         color: var(--input-placeholder2);

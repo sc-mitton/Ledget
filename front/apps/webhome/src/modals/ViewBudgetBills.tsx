@@ -1,11 +1,11 @@
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useState } from 'react'
 
 import { Tab } from '@headlessui/react'
 import dayjs from 'dayjs'
 import { AnimatePresence } from 'framer-motion'
 import { ArrowUp, ArrowDown } from '@geist-ui/icons'
 
-import './styles/EditBudgetItems.scss'
+import styles from './styles/edit-budget-items.module.scss'
 import { TransformedBill, useGetBillsQuery } from '@features/billSlice'
 import { BillModalContent } from '@modals/index'
 import {
@@ -44,11 +44,11 @@ const Bills = ({ period, onBillClick, billOrder }: {
   const { data: bills } = useGetBillsQuery({ month, year }, { skip: !month || !year })
 
   return (
-    <div className="view-all-bills" key="all-bills">
+    <div className={styles.viewAllBills} key="all-bills">
       {bills?.filter(b => b.period === period)?.length === 0
         ? <div style={{ opacity: .5 }}>No {period}ly bills to display</div>
         :
-        <div className="bills-grid">
+        <div className={styles.billsGrid}>
           {bills?.filter(b => b.period === period)
             .sort((a, b) => {
               if (billOrder === 'amount-desc') {
@@ -97,7 +97,7 @@ const EditBills = withModal((props) => {
         ?
         <SlideMotionDiv key="view-all-bills" position='first'>
           <h2>Bills</h2>
-          <Tab.Group as={NestedWindow2} id="view-all-bills--container">
+          <Tab.Group as={NestedWindow2} className={styles.viewAllBillsContainer}>
             {({ selectedIndex }) => (
               <>
                 <div>
@@ -114,7 +114,7 @@ const EditBills = withModal((props) => {
               </>
             )}
           </Tab.Group>
-          <div id='order-buttons'>
+          <div className={styles.orderButtons}>
             <FilterPillButton
               onClick={() => { order === 'amount-desc' ? setOrder('amount-asc') : order === 'amount-asc' ? setOrder(undefined) : setOrder('amount-desc') }}
               selected={order === 'amount-desc' || order === 'amount-asc'}
@@ -130,7 +130,7 @@ const EditBills = withModal((props) => {
           </div>
         </SlideMotionDiv>
         :
-        <SlideMotionDiv className="inspected-bill--container" key={inspectedBill.id} position='last'>
+        <SlideMotionDiv className={styles.inspectBillContainer} key={inspectedBill.id} position='last'>
           <BackButton onClick={() => setInspectedBill(undefined)} />
           <BillModalContent bill={inspectedBill} onClose={() => setInspectedBill(undefined)} />
         </SlideMotionDiv>}

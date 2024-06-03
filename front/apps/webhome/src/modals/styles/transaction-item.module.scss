@@ -1,0 +1,240 @@
+@import '@styles/base.scss';
+@import '@styles/table-mixins.scss';
+
+/* Header */
+.transactionInfoHeader {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    &>div:first-child {
+        font-size: 2rem;
+    }
+
+    &>div:nth-child(2),
+    &>button:nth-child(2) {
+        font-size: 1rem;
+        color: var(--m-text-secondary);
+    }
+
+    &>div:nth-child(2) {
+        width: 70%;
+
+        input {
+            text-align: center;
+            width: 100%;
+            padding: 0;
+            mask-image: linear-gradient(to right, transparent, black 1.25em, black 100%);
+        }
+    }
+
+    &>button:nth-child(2) {
+        max-width: 70%;
+        white-space: normal;
+        text-align: center;
+        position: relative;
+        border-radius: var(--border-radius1);
+        padding: 0 .25em;
+
+        svg {
+            position: absolute;
+            right: -1em;
+            top: 50%;
+            transform: scale(0) translateY(-50%);
+            transition: transform .2s ease-in-out;
+        }
+
+        &:not(:focus-within):hover svg {
+            top: 50%;
+            transform: scale(1) translateY(-50%);
+            transition: transform .2s ease-in-out;
+        }
+    }
+}
+
+.pending {
+    margin-top: .5em;
+    text-align: center;
+    font-size: .8rem;
+    background-color: var(--btn-light-gray);
+    border-radius: var(--border-radius1);
+    padding: 0 .5em;
+    color: var(--m-text-secondary);
+}
+
+/* All Info */
+.transactionInfoContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    margin-top: 2em;
+
+    a {
+        text-decoration: underline;
+    }
+}
+
+.transactionDetails {
+
+    &:not(:nth-child(3))>div,
+    &>div a {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    // Account and institution info
+    // accunt, merchant, date, etc. info
+    &:nth-last-child(2) {
+        display: grid;
+        column-gap: 1.5em;
+        row-gap: .25em;
+        grid-template-columns: minmax(0, auto) 1fr;
+
+        &>div {
+            display: flex;
+            align-items: center;
+        }
+
+        &>div:nth-child(2n),
+        &>div:nth-child(2n) * {
+            color: var(--m-text-secondary);
+        }
+    }
+}
+
+.accountInfoCell {
+    display: flex;
+    gap: .5em;
+}
+
+.billsAndCategories {
+    display: flex;
+    align-items: center;
+    gap: .75em;
+    position: relative;
+}
+
+.billCatSelectorContainer {
+    display: flex;
+    flex-direction: column;
+
+    &>div {
+        position: relative;
+        width: 100%;
+
+        &>div {
+            margin-top: .375em;
+        }
+    }
+}
+
+// Add a note container
+$maxHeight: 12.5em;
+
+.notesContainer {
+    position: relative;
+    overflow-x: visible;
+    margin-top: .375em;
+    box-sizing: border-box;
+
+    &[data-focused='true'] {
+        padding-bottom: 2em;
+    }
+
+    // Tooltip divs around delete and save buttons
+    &>div[role="tooltip"] {
+        z-index: 20;
+        position: absolute;
+        bottom: -.125em;
+        right: 0em;
+
+        &:not(:first-of-type) {
+            z-index: 20;
+            right: 2em;
+        }
+    }
+
+    span {
+        white-space: nowrap;
+    }
+
+    &>div:last-child {
+        overflow-y: auto;
+        overflow-x: visible;
+        padding-right: 1.125em;
+        width: 100%;
+        max-height: $maxHeight;
+        height: min-content;
+        display: flex;
+        flex-direction: column;
+        gap: .5em;
+        box-sizing: border-box;
+
+        &[data-focused='true'] {
+            margin-bottom: 1.75em;
+        }
+    }
+}
+
+.lastChanged {
+    position: absolute;
+    z-index: 20;
+    left: 0;
+    bottom: -.125em;
+    color: var(--m-text-quaternary);
+}
+
+.addNotePlaceholder {
+    color: var(--input-placeholder2);
+}
+
+.noteContainer {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    padding: .25em 0;
+    display: flex;
+    color: var(--m-text-secondary);
+    cursor: text;
+
+    &[data-disabled='true'] {
+        cursor: default;
+    }
+
+    &[data-accessible-focused='true']::before {
+        content: '';
+        position: absolute;
+        width: .5em;
+        height: .5em;
+        border-radius: 50%;
+        background-color: var(--input-focus-dropshadow-color);
+        right: 0em;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    &[data-focused='false']:not(:last-child) {
+        @include table-dividers(-.25em, false);
+    }
+
+    textarea {
+        width: 100%;
+        height: 100%;
+    }
+
+    &[data-focused='true'] {
+        position: absolute;
+        min-height: calc(100% - 1.5em);
+        max-height: $maxHeight;
+        z-index: 10;
+
+        textarea {
+            margin-right: -.25em;
+            width: calc(100% + 20em);
+            min-height: calc(100% - 1.5em);
+            max-height: $maxHeight;
+            padding-right: 1.125em;
+        }
+    }
+}

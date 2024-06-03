@@ -1,0 +1,144 @@
+.header {
+    background-color: var(--header-background);
+    box-shadow: var(--header-box-shadow);
+    z-index: 100;
+    position: sticky;
+    top: 0;
+    position: relative;
+
+    // Same as dashboard
+    width: 100%;
+    padding: 1em 0;
+
+    &[data-size='extra-small']>div>div:first-child svg,
+    &[data-size='small']>div>div:first-child svg,
+    &[data-size='medium']>div>div:first-child svg {
+        opacity: 0;
+    }
+
+    &>div {
+        max-width: calc(100% - 2.75rem);
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+
+        // Logo
+        &>div:first-child {
+            cursor: pointer;
+            margin-left: .25em;
+            display: flex;
+            align-items: center;
+        }
+
+        // Icons in menu (dark mode, notifications, profile)
+        &>div:last-child {
+            display: flex;
+            align-items: center;
+            gap: 1em;
+            margin-right: 1em;
+        }
+    }
+}
+
+
+.profileButton {
+    margin-left: 1em;
+
+    &::before {
+        content: '';
+        width: 1.5px;
+        background-color: var(--white);
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0em;
+        opacity: .2;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    header>div>div:last-child {
+        margin-right: 0em;
+    }
+}
+
+.darkModeSwitch {
+    font-size: .875rem;
+    margin-right: .25em;
+    position: relative;
+
+    svg {
+        z-index: 1;
+    }
+
+    button[data-headlessui-state='checked'] {
+        background-color: var(--btn-light-gray);
+        transition: background-color 0.2s ease-in-out;
+
+        span:last-child {
+            transform: translateX(.95rem);
+            transition: all 0.2s ease-in-out;
+            background: linear-gradient(to bottom right, var(--blue-medium), var(--blue-light));
+            opacity: .7;
+        }
+    }
+
+    button[data-headlessui-state=''] {
+        background-color: var(--btn-dark-gray);
+        transition: background-color 0.2s ease-in-out;
+        opacity: 1;
+
+        span:last-child {
+            left: .25em;
+            transform: translateX(0);
+            background: linear-gradient(to bottom right, var(--blue-medium), var(--blue-light-medium));
+            transition: all 0.2s ease-in-out;
+        }
+    }
+
+    button {
+        margin-top: .0625em;
+        padding: .5em .55em;
+        border-radius: 1.25em;
+        display: flex;
+        align-items: center;
+        gap: .875rem;
+        width: auto;
+        justify-content: space-evenly;
+
+        &>div {
+            font-size: .875rem;
+            display: flex;
+            place-content: center;
+            color: var(--white);
+        }
+    }
+
+    span:last-child {
+        position: absolute;
+        width: 1.625rem;
+        height: 1.625rem;
+        border-radius: 50%;
+        box-shadow: none;
+        z-index: 0;
+    }
+}
+
+/* ------------------------------ Profile Dropdown Menu ----------------------------- */
+
+.profileDropdown {
+    position: relative;
+    flex-direction: column;
+
+    &>div {
+        position: relative;
+        top: .5em;
+        right: -.2em;
+    }
+
+    &>button {
+        width: 100%;
+    }
+}

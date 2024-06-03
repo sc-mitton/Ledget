@@ -13,7 +13,7 @@ import { useController, Control } from 'react-hook-form'
 import { Search, ChevronDown } from '@geist-ui/icons'
 
 
-import './styles/SelectCategoryBill.scss'
+import styles from './styles/select-category-bill.module.scss'
 import { Category, useLazyGetCategoriesQuery } from '@features/categorySlice'
 import { Bill, useLazyGetBillsQuery } from '@features/billSlice'
 import { LoadingRingDiv, DropdownDiv, useAccessEsc, BillCatLabel } from '@ledget/ui'
@@ -115,9 +115,9 @@ function SelectCategoryBillBody(props: I) {
             multiple={props.multiple as any}
             onChange={props.onChange as any}
             as={'div'}
-            className="select-bill-category"
+            className={styles.selectBillCategory}
         >
-            <div className="category-select--container">
+            <div>
                 <div>
                     <Search size={'1.25em'} />
                     <Combobox.Input
@@ -131,7 +131,7 @@ function SelectCategoryBillBody(props: I) {
                 </div>
                 {isFetchingCategories || !isFetchBillsSuccess
                     ? <LoadingRingDiv loading={true} style={{ height: '2em' }} />
-                    : <Combobox.Options className="options" static>
+                    : <Combobox.Options className={styles.options} static>
                         {filteredBillCats.map((billcat) => (
                             <Combobox.Option key={billcat.id} value={billcat}>
                                 {({ active, selected }) => (
@@ -209,13 +209,14 @@ export const FullSelectCategoryBill =
         })
 
         return (
-            <div className="bill-cat-select--container--container">
+            <div className={styles.billCatSelectContainer}>
                 <SelectorComponent
-                    className={`bill-category-selector--button
-                        ${Array.isArray(value)
-                            ? value?.length > 0 ? 'active' : ''
-                            : value ? 'active' : ''}
-                        ${showBillCatSelect ? 'active' : ''}`}
+                    data-active={
+                        (Array.isArray(value)
+                            ? value?.length > 0
+                            : Boolean(value))
+                        || showBillCatSelect
+                    }
                     type='button'
                     onClick={() => setShowBillCatSelect(!showBillCatSelect)}
                     ref={buttonRef}

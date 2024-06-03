@@ -1,0 +1,203 @@
+@import './constants.scss';
+
+.accountWafer,
+.skeletonAccountWafer {
+    border-radius: var(--border-radius3);
+    position: absolute;
+    inset: 0;
+    padding: .525em 0;
+    margin: 0 .25em;
+}
+
+.skeletonAccountWafer {
+    background-color: var(--window);
+}
+
+.accountWafer {
+    background: var(--wafer-background);
+    box-shadow: var(--wafer-drop-shadow);
+    display: flex;
+    flex-direction: column;
+
+    &[data-styling='credit'] {
+        &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 2.375em;
+            background-color: color-mix(in srgb, var(--wafer-background-color), var(--blue-dark) 6%);
+            border-top: 1.5px solid color-mix(in srgb, var(--wafer-background-color), var(--blue-dark) 9%);
+            border-bottom-left-radius: inherit;
+            border-bottom-right-radius: inherit;
+        }
+    }
+
+    * {
+        color: var(--white);
+    }
+
+    &>button:first-child {
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity .2s ease-out;
+    }
+
+    /* User Interaction Styles */
+    &:hover>button:first-child {
+        visibility: visible;
+        opacity: .6;
+        transition: opacity .2s ease-out;
+    }
+
+    &[data-active='true']::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: -.75em;
+        width: 35%;
+        height: 3px;
+        border-radius: var(--border-radius1);
+        background: linear-gradient(to bottom right, var(--active-wafer-indicator), var(--blue-light-medium));
+    }
+
+    &[data-active='false'] {
+        transform: scale(1);
+        transition: all .2s ease-out;
+    }
+
+    &[data-active='false']:hover,
+    &[data-active='false']:focus-visible {
+        outline: none;
+        transform: scale(1.03);
+        transition: all .2s ease-out;
+    }
+
+    /* Wafer Text */
+    &>div[role='button'] {
+        flex-grow: 1;
+        display: flex;
+        gap: .125em;
+        flex-direction: column;
+        align-items: flex-start;
+        cursor: pointer;
+        padding-left: 1em;
+        padding-right: 1em;
+
+        // Turn off marquee animation when not hovered
+        &:not(:hover)>div:nth-child(2) {
+            mask-image: none;
+
+            div:not(:nth-last-child(4)) {
+                animation: none;
+                visibility: collapse;
+            }
+
+            &>div:first-child {
+                visibility: visible;
+            }
+        }
+    }
+}
+
+.name {
+    position: relative;
+    overflow: hidden;
+    width: calc(100% - .375em);
+    display: inline-flex;
+    flex-direction: column;
+    white-space: nowrap;
+    margin-top: .25em;
+
+    * {
+        font-weight: var(--fw-bold);
+    }
+}
+
+.meta {
+    opacity: .8;
+    font-size: .8rem;
+    display: flex;
+    gap: .25em;
+    align-items: center;
+}
+
+.balance {
+    flex-grow: 1;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+    z-index: 1;
+
+    div {
+        font-size: 1rem;
+        letter-spacing: .0625em;
+    }
+}
+
+$marquee-spacing: 1.5em;
+
+.marquee {
+    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+
+    &>div:first-child {
+        visibility: collapse;
+    }
+
+    &>div:nth-child(2),
+    &>div:nth-last-child(2) {
+        left: 0;
+        position: absolute;
+    }
+
+    &>div:nth-child(2) {
+        animation-name: marquee-leader;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+    }
+
+    &>div:nth-last-child(2) {
+        animation-name: marquee-caboose;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+    }
+
+    &>div:last-child {
+        visibility: hidden;
+    }
+
+    @keyframes marquee-caboose {
+
+        0%,
+        2% {
+            transform: translateX(calc(100% + #{$marquee-spacing}));
+        }
+
+        100% {
+            transform: translateX(calc(-100% - #{$marquee-spacing}));
+        }
+    }
+
+    @keyframes marquee-leader {
+
+        0%,
+        2% {
+            transform: translateX(0);
+        }
+
+        51.5% {
+            transform: translateX(calc(-100% - #{$marquee-spacing}));
+        }
+
+        51.501% {
+            transform: translateX(calc(100% + #{$marquee-spacing}));
+        }
+
+        100% {
+            transform: translateX(0);
+        }
+    }
+}

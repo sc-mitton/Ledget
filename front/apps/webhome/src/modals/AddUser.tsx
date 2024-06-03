@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { AnimatePresence } from 'framer-motion'
 
-import './styles/AddUser.scss'
+import styles from './styles/add-user.module.scss'
 import {
     withSmallModal,
     PlainTextInput,
@@ -34,9 +34,9 @@ const Slide1 = () => {
     const { isDark } = useColorScheme()
 
     return (
-        <form onSubmit={handleSubmit(data => linkUser(data))} id="add-user-form">
+        <form onSubmit={handleSubmit(data => linkUser(data))} id="add-user-form" className={styles.addUserForm}>
             <h2>Add Household Member</h2>
-            <div id='person-image' className={`${isDark ? 'dark' : 'light'}`}>
+            <div className={styles.personImage} data-dark={isDark}>
                 <Person dark={isDark} />
             </div>
             <p>Enter the email address of the person you'd like to add to your account.</p>
@@ -78,7 +78,7 @@ const Slide2 = () => {
     }, [expiresIn])
 
     return (
-        <div id='create-linked-account-qr-code' className={`${isDark ? 'dark' : 'light'}`}>
+        <div className={styles.createLinkedAccountQrCode} data-dark={isDark}>
             {data &&
                 <>
                     <div><img src={data.recovery_link_qr} alt='qr code' /></div>

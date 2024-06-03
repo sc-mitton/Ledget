@@ -4,7 +4,7 @@ import { useForm, useWatch } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import './styles/Forms.scss'
+import styles from './styles/forms.module.scss'
 import { useUpdateCategoriesMutation, Category } from '@features/categorySlice'
 import { AddAlert, EmojiComboText, LimitAmountInput, PeriodSelect, emoji } from '@components/inputs'
 import SubmitForm from '@components/pieces/SubmitForm'
@@ -64,11 +64,11 @@ export const EditCategory = (props: { category: Category, onClose: () => void })
             <form
                 onSubmit={handleSubmit((data, e) => onSubmit(data))}
                 id="new-cat-form"
-                className="create-form"
+                className={styles.createForm}
             >
                 <h3>Edit Category</h3>
                 <hr />
-                <div className="split-inputs">
+                <div className={styles.splitInputs}>
                     <div>
                         <EmojiComboText
                             emoji={emoji}
@@ -88,7 +88,7 @@ export const EditCategory = (props: { category: Category, onClose: () => void })
                         </LimitAmountInput>
                     </div>
                 </div>
-                <div className="extra-padded-row">
+                <div className={styles.extraPaddedRow}>
                     <div>
                         <PeriodSelect
                             control={control}

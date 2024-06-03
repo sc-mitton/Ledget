@@ -50,6 +50,10 @@
     position: absolute;
     inset: 0;
 
+    &[data-size='extra-small']>div {
+        padding: 0;
+    }
+
     &>div {
         padding: 2em;
         box-sizing: border-box;

@@ -16,3 +16,7 @@ export const ColumnWindowHeader = styled.div`
     flex-direction: column;
     z-index: 0;
 `
+
+export const SpacedHeader = styled.div`
+    margin-bottom: .5em;
+`

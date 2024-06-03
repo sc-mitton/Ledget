@@ -6,7 +6,7 @@ import { useForm, useWatch, Controller } from "react-hook-form"
 import { z } from 'zod'
 import dayjs from 'dayjs'
 
-import './styles/Forms.scss'
+import styles from './styles/forms.module.scss'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { withModal, DatePicker } from '@ledget/ui'
 import {
@@ -104,13 +104,12 @@ const Form = withModal((props) => {
             <h3>New Bill</h3>
             <hr />
             <form
-                className="create-form"
-                id="new-bill-form"
+                className={[styles.createForm, styles.newBillForm].join(' ')}
                 onSubmit={submitForm}
             >
                 <div>
                     <label htmlFor="schedule">Schedule</label>
-                    <div className="multi-input-row">
+                    <div className={styles.multiInputRow}>
                         <div>
                             <PeriodSelect
                                 name="period"
@@ -144,14 +143,14 @@ const Form = withModal((props) => {
                         error={errors.name}
                     />
                 </div>
-                <div className="padded-row">
+                <div className={styles.paddedRow}>
                     <DollarRangeInput
                         rangeMode={rangeMode}
                         control={control}
                         errors={errors}
                         defaultUpperValue={location.state?.upper_amount}
                     />
-                    <div id="range-checkbox--container">
+                    <div className={styles.rangeCheckboxContainer}>
                         <Checkbox
                             checked={rangeMode}
                             setChecked={setRangeMode}
@@ -161,7 +160,7 @@ const Form = withModal((props) => {
                         />
                     </div>
                 </div>
-                <div className='padded-row' style={{ width: '50%' }}>
+                <div className={styles.paddedRow} style={{ width: '50%' }}>
                     <label htmlFor="expires">Expires</label>
                     <Controller
                         name="expires"

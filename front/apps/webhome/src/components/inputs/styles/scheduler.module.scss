@@ -1,0 +1,158 @@
+.schedulerContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    &>div {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: calc(100% + .5em);
+    }
+
+    &>button {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.scheduleDropdownButton {
+    justify-content: space-between;
+    position: relative;
+    overflow: auto;
+    gap: .5em;
+    z-index: 10;
+
+    &>div:first-child {
+        display: flex;
+        justify-content: space-between;
+        white-space: nowrap;
+    }
+}
+
+.scheduleDropdown {
+    z-index: 1000;
+    padding: .75em .75em .5em .75em;
+
+    label {
+        margin: 0;
+        border-radius: var(--border-radius2);
+    }
+
+    fieldset {
+        margin: .25em;
+    }
+
+    &>div {
+        border-radius: var(--border-radius25);
+    }
+}
+
+.dayPicker {
+    margin-top: 1em;
+}
+
+.dayPickerItem {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2em;
+    height: 2em;
+    border-radius: 50%;
+}
+
+.pickerItem {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    border-radius: var(--border-radius1);
+
+    &[data-selected='true'] {
+        background-color: var(--blue-light);
+        transition: all 0.3s ease-out;
+    }
+
+    &[data-active='true'] {
+        background-color: var(--btn-light-gray);
+        transition: all 0.3s ease-out;
+    }
+
+    &[data-selected='false']:hover {
+        background-color: var(--btn-light-gray);
+        transition: all 0.3s ease-out;
+    }
+
+    &[data-selected='true'][data-active='true'] {
+        background-color: var(--blue-light-hover);
+        transition: all 0.3s ease-out;
+    }
+}
+
+.weekPickerContainer {
+    display: flex;
+    flex-direction: column;
+    margin: .5em;
+    margin-top: 1em;
+    padding: .25em;
+}
+
+.weekPicker {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: .25em;
+}
+
+.weekPickerItem {
+    padding: 0px .75em;
+}
+
+.weekDayPicker {
+    margin-top: .25em;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: .25em;
+}
+
+.weekDayPickerItem {
+    padding: 0px .75em;
+}
+
+.monthDayPickerContainer {
+    padding: .25em;
+}
+
+.monthPicker2Container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: .75em;
+}
+
+.monthPicker2 {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+
+    &>div:first-child,
+    &>div:last-child {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        width: 100%;
+    }
+
+    &>div:first-child td>div,
+    &>div:first-child li>div {
+        padding: .125em .25em;
+        margin: .125em .25em;
+    }
+
+    &>div:last-child td>div,
+    &>div:last-child li>div {
+        padding: .125em .25em;
+        margin: .125em 4.5px;
+    }
+}

@@ -1,0 +1,143 @@
+.billInfoModal {
+
+    &>div {
+        display: flex;
+        flex-direction: column;
+        margin-top: 1.5em;
+    }
+
+    &>div:last-of-type {
+        display: grid;
+        row-gap: .75em;
+        column-gap: 1.5em;
+        grid-template-columns: minmax(0, min-content) 1fr;
+
+        &>div {
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: .5em;
+        }
+
+        &>div:nth-child(2n+1) {
+            font-weight: var(--fw-regular);
+        }
+
+        // Reminders row
+        &>div:nth-last-child(2) {
+            align-items: flex-start;
+        }
+
+        &>div:last-child {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            gap: .125em;
+        }
+    }
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: .25em;
+    margin: 1.5em 0 1em 0;
+    text-align: center;
+
+    &>div {
+        display: flex;
+        align-items: center;
+        gap: .5em;
+
+        &>div {
+            font-size: 1.25em;
+        }
+    }
+}
+
+.billEdit {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-top: 1em;
+
+    label {
+        font-weight: var(--fw-regular);
+        margin-left: .25em;
+    }
+
+    &>hr {
+        margin-bottom: 1em;
+    }
+
+    &>div {
+        margin: .25em 0;
+    }
+
+    &>div:first-of-type {
+        margin-bottom: .625em;
+
+        &>div {
+            margin-top: .5em;
+            display: flex;
+            gap: .5em;
+        }
+    }
+
+    &>div:last-of-type {
+        margin-top: 1em;
+    }
+}
+
+.deleteBillRadios {
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+    margin: 1em 0;
+
+    label {
+        margin-bottom: .5em;
+    }
+
+    h4 {
+        margin: .125em 0;
+        font-weight: var(--fw-light);
+    }
+
+    &>div {
+        display: flex;
+        align-items: center;
+        gap: .75em;
+        cursor: pointer;
+        position: relative;
+    }
+}
+
+.radioOption {
+
+    &[aria-checked='true'] span:first-of-type::after {
+        width: .25rem;
+        height: .25rem;
+        background-color: var(--blue-sat);
+        border-radius: 50%;
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    &[aria-checked='false']:hover span:first-of-type {
+        box-shadow: 0 0 0 3px var(--blue-light);
+    }
+
+    span:first-of-type {
+        border: 1px solid var(--blue-sat);
+        border-radius: 50%;
+        width: .75rem;
+        height: .75rem;
+        position: relative;
+
+    }
+}

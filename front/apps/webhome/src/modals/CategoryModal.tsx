@@ -9,6 +9,7 @@ import dayjs from 'dayjs'
 import { ZeroConfig } from '@components/pieces'
 import { AnimatePresence } from 'framer-motion'
 
+import styles from './styles/category-modal.module.scss'
 import { EditCategory } from './EditCategory'
 import { DeleteCategory } from './DeleteCategoryModal'
 import { useGetCategorySpendingHistoryQuery } from '@features/categorySlice'
@@ -38,9 +39,6 @@ import {
 } from '@ledget/ui'
 import { Ellipsis } from '@ledget/media'
 import { Category } from '@features/categorySlice'
-
-import './styles/CategoryModal.scss'
-
 
 const AmountSpentChart = ({ data, disabled = false }: { data: Datum[], disabled?: boolean }) => {
     const xaxisPadding = 8
@@ -263,7 +261,7 @@ const CategoryDetails = (props: { category: Category, setTransactionItem: React.
     }, [spendingSummaryDataIsFetched])
 
     const WindowSelection = () => (
-        <div className='chart-window-selectors'>
+        <div>
             <BakedListBox
                 as={PillOptionButton}
                 options={windowOptions}
@@ -290,8 +288,8 @@ const CategoryDetails = (props: { category: Category, setTransactionItem: React.
     }
 
     return (
-        <div id='category-modal'>
-            <div id='category-modal--header'>
+        <div className={styles.categoryModal}>
+            <div className={styles.categoryModalHeader}>
                 <h2>{`${props.category.emoji}`}  {`${props.category.name.charAt(0).toUpperCase()}${props.category.name.slice(1)}`}</h2>
                 <div>
                     <DollarCents
@@ -306,16 +304,16 @@ const CategoryDetails = (props: { category: Category, setTransactionItem: React.
                             withCents={false}
                         /> : '—'}
                 </div>
-                <span className={`${props.category.period === 'month' ? 'month' : 'year'}`}>
+                <span className={props.category.period === 'month' ? styles.month : styles.year}>
                     {month && year && dayjs().month(month).year(year).format('MMM YYYY')}
                 </span>
             </div>
-            <div id={`graph-and-details`}>
+            <div className={styles.graphAndDetails}>
                 <div>
                     <ResponsiveLineContainer>
                         {window && <WindowSelection />}
                         {(spendingSummaryData && spendingSummaryData?.length < 2) &&
-                            <span id="not-enough-data-message">
+                            <span className={styles.notEnoughDataMessage}>
                                 Not enough data to display yet
                             </span>
                         }
@@ -329,10 +327,10 @@ const CategoryDetails = (props: { category: Category, setTransactionItem: React.
                         }
                     </ResponsiveLineContainer>
                 </div>
-                <NestedWindow2 id='transactions' onScroll={handleScroll}>
+                <NestedWindow2 className={styles.transactions} onScroll={handleScroll}>
                     {transactionsData?.results?.length === 0
                         ? !isLoadingTransactionsData && <ZeroConfig />
-                        : <div id='transactions--grid'>
+                        : <div className={styles.transactionsGrid}>
                             {transactionsData?.results?.map(transaction => (
                                 <div
                                     key={transaction.transaction_id}

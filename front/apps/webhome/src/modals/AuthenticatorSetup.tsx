@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
-import './styles/Authenticator.scss'
+import styles from './styles/authenticator.module.scss'
 import { useCompleteSettingsFlowMutation, useLazyGetSettingsFlowQuery } from '@features/orySlice'
 import { useUpdateUserSettingsMutation } from '@features/userSlice'
 import { useAddRememberedDeviceMutation } from '@features/authSlice'
@@ -26,7 +26,8 @@ import {
     SlideMotionDiv,
     TotpAppGraphic,
     useLoaded,
-    useColorScheme
+    useColorScheme,
+    SpacedHeader
 } from '@ledget/ui'
 
 interface SetupAppProps {
@@ -54,20 +55,20 @@ const SetupApp = ({ flow, isError, isLoading, codeMode, setCodeMode }: SetupAppP
     return (
         <div >
             {!codeMode &&
-                <div className="spaced-header2">
+                <SpacedHeader className={styles.header}>
                     <span>
                         Scan the QR code below with your authenticator app
                     </span>
                     <span>
                         e.g. Google Authenticator, Authy, etc.
                     </span>
-                </div>
+                </SpacedHeader>
             }
-            <LoadingRingDiv loading={isLoading} color='dark' className="content">
+            <LoadingRingDiv loading={isLoading} color='dark' className={styles.content}>
                 <AnimatePresence mode="wait">
                     {codeMode
                         ?
-                        <ZoomMotionDiv id="code-setup--container" key={'code-setup--container'}>
+                        <ZoomMotionDiv className={styles.codeSetupContainer} key={'code-setup--container'}>
                             <span>Enter this code in your app</span>
                             <div>
                                 <span>{totpSecret}</span>
@@ -76,10 +77,10 @@ const SetupApp = ({ flow, isError, isLoading, codeMode, setCodeMode }: SetupAppP
                         </ZoomMotionDiv>
                         :
                         <div>
-                            <ZoomMotionDiv id="qr-setup--container" key={'qr-setup--container'}>
+                            <ZoomMotionDiv className={styles.qrSetupContainer} key={'qr-setup--container'}>
                                 {(qrNode && !isError) &&
                                     <>
-                                        <div className={`qr-image ${isDark ? 'dark-mode' : ''}`}>
+                                        <div className={styles.qrImage} data-dark={isDark}>
                                             <NodeImage node={qrNode} attributes={qrNode.attributes} />
                                         </div>
                                         <PrimaryTextButton
@@ -151,8 +152,8 @@ const Authenticator = withReAuth(withModal((props) => {
     }, [isCompleteSuccess])
 
     return (
-        <div id="authenticator-page">
-            <form onSubmit={submit} id='authenticator-setup-form'>
+        <div className={styles.authenticatorPage}>
+            <form onSubmit={submit} className={styles.authenticatorSetupForm}>
                 <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
                 <AnimatePresence mode="wait">
                     {/* Page 1: Setup App */}
@@ -174,7 +175,7 @@ const Authenticator = withReAuth(withModal((props) => {
                             key="confirm-code"
                             position={step === 'confirm' ? 'last' : step ? 'last' : 'first'}
                         >
-                            <JiggleDiv jiggle={isCompleteError} className="content">
+                            <JiggleDiv jiggle={isCompleteError} className={styles.content}>
                                 <div>
                                     <TotpAppGraphic finished={isCompleteSuccess} />
                                     <label htmlFor="code" >

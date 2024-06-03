@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { BackButton, MainButton, PlainTextInput } from '@ledget/ui'
 import MainGraphic from './Graphic'
 import Error from './Error'
+import styles from './styles/form.module.scss'
 
 interface Props {
     flow: any
@@ -35,7 +36,7 @@ const RecoveryForm = ({ flow, submit, isCompleteError, errMsg }: Props) => {
             <MainGraphic />
             <form
                 onSubmit={submit}
-                className="recovery-form"
+                className={styles.recoveryForm}
                 id='send-recovery-code-form'
             >
                 <PlainTextInput

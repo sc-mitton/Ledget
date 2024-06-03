@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { Tab } from '@headlessui/react'
 import { useTransition, useSpringRef, useSpring, animated } from '@react-spring/web'
 
-import './styles/EditBudgetItems.scss'
+import styles from './styles/edit-budget-items.module.scss'
 import {
     useGetCategoriesQuery,
     useReorderCategoriesMutation,
@@ -143,7 +143,7 @@ const Categories = ({ period, setDeletedItems }: {
         <animated.div style={containerProps}>
             <>
                 {transitions((style, item) => (
-                    <animated.div className="item" style={style} {...bind(item?.id)}>
+                    <animated.div className={styles.budgetItem} style={style} {...bind(item?.id)}>
                         <GripButton />
                         <div>
                             <BillCatLabel
@@ -216,15 +216,15 @@ const EditCategoriesModal = withModal((props) => {
             <h2>Edit Categories</h2>
             <Tab.Group
                 as={NestedWindow2}
-                className={`${showSubmit ? 'submittable' : ''}`}
-                id="reorder-categories"
+                data-submittable={showSubmit}
+                className={styles.reorderCategories}
             >
                 {({ selectedIndex }) => (
                     <>
                         <div>
                             <TabNavList selectedIndex={selectedIndex} labels={['Month', 'Year']} />
                         </div>
-                        <Tab.Panels as={'div'} className="edit-budget-items--container">
+                        <Tab.Panels as={'div'} className={styles.editBudgetItemsContainer}>
                             <Tab.Panel as={React.Fragment}>
                                 <Categories period={'month'} setDeletedItems={setDeletedItems} />
                             </Tab.Panel>

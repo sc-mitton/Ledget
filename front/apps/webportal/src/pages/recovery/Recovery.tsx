@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { AnimatePresence } from "framer-motion"
 
-import './Recovery.scss'
+import styles from './styles/recovery.module.scss'
 import { ledgetapi } from "@api/index"
 import {
     SlideMotionDiv,
@@ -81,7 +81,7 @@ const RecoverAccount = () => {
             case 'verify':
                 return (
                     <SlideMotionDiv
-                        className="recovery-form"
+                        className={styles.recoveryForm}
                         id="recovery-verification-form-container"
                         key="recovery-verification-form-container"
                         position={'last'}
@@ -99,6 +99,7 @@ const RecoverAccount = () => {
             case 'code':
                 return (
                     <SlideMotionDiv
+                        className={styles.recoveryCodeFormContainer}
                         id="recovery-code-form-container"
                         key="recovery-code-form-container"
                         position={flow ? 'first' : 'fixed'}

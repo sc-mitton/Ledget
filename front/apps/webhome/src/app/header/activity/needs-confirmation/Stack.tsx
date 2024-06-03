@@ -5,23 +5,15 @@ import { useSpring, animated, useTransition, useSpringRef } from '@react-spring/
 import { shallowEqual } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '@hooks/store'
 import dayjs from 'dayjs'
-import { Check } from '@geist-ui/icons'
 
-import "./styles/Stack.scss"
-import { Ellipsis } from "@ledget/media"
+import styles from './styles/stack.module.scss'
 import { SelectCategoryBill } from '@components/inputs'
-import { InsitutionLogo, ZeroConfig } from '@components/pieces'
+import { ZeroConfig } from '@components/pieces'
 import ItemOptions from "./ItemOptions"
 import {
-    NarrowButton,
     ExpandableContainer,
     ExpandButton,
-    IconButtonHalfGray,
-    Tooltip,
-    DollarCents,
-    BillCatLabel,
     AbsPosMenu,
-    formatDateOrRelativeDate,
     InfiniteScrollDiv,
     useLoaded,
     useColorScheme,
@@ -30,7 +22,7 @@ import {
 import { setTransactionModal } from '@features/modalSlice'
 import { Category, isCategory, SplitCategory } from '@features/categorySlice'
 import { addTransaction2Cat, addTransaction2Bill, selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
-import { Bill, isBill } from '@features/billSlice'
+import { Bill } from '@features/billSlice'
 import {
     useLazyGetUnconfirmedTransactionsQuery,
     confirmAndUpdateMetaData,
@@ -45,171 +37,14 @@ import {
 } from '@features/transactionsSlice'
 import type { Transaction } from '@features/transactionsSlice'
 import { useFilterFormContext } from '../context'
-
-// Sizing (in ems)
-const translate = 1
-const expandedTranslate = 6.125;
-const expandedHeight = 25
-const collapsedHeight = 8
-const scale = .1
-const stackMax = 2
-
-const _getContainerHeight = (length: number, expanded: boolean) => {
-    if (expanded) {
-        return `${Math.min(length * expandedTranslate + 1, expandedHeight)}em`
-    } else if (length > stackMax) {
-        return `${collapsedHeight}em`
-    } else if (length > 0) {
-        return `${collapsedHeight - ((stackMax - length) * translate)}em`
-    } else {
-        return `0em`
-    }
-}
-
-const _getOpacity = (index: number, expanded: boolean) => {
-    const belowStackMax = index > stackMax
-    return (!expanded && belowStackMax && index !== 0) ? 0 : 1
-}
-
-const _getScale = (index: number, expanded: boolean, loaded = true,) => {
-
-    if (!loaded) {
-        return 1 - ((index + 1) * scale * 2)
-    }
-
-    if (expanded) {
-        return 1
-    } else {
-        if (index > stackMax) {
-            return 1 - (stackMax * scale)
-        } else {
-            return 1 - (index * scale)
-        }
-    }
-}
-
-const _getY = (index: number, expanded: boolean, loaded = true) => {
-    if (!loaded) {
-        return `${(index ** 2) * .3125 + 1.875}em`
-    }
-
-    if (index === 0 || expanded) {
-        return `${index * expandedTranslate + .5}em`
-    } else {
-        if (index > stackMax) {
-            return `${stackMax * translate + .5}em`
-        } else {
-            return `${index * translate + .5}em`
-        }
-    }
-}
-
-const _getBackGroundColor = (index: number, expanded: boolean, darkMode: boolean) => {
-    let lightness: number
-
-    if (index === 0 || expanded) {
-        lightness = darkMode ? 10 : 100
-    } else {
-        lightness = darkMode ? 10 - (index * 1) : 100 - (index * 1.5)
-    }
-
-    return `hsl(240, 3%, ${lightness}%)`
-}
-
-const NewItem: FC<{
-    item: Transaction
-    style: React.CSSProperties
-    onEllipsis: (e: any, item: Transaction) => void
-    onBillCat: (e: any, item: Transaction) => void
-    handleConfirm: (transaction: Transaction) => void
-    updatedBillCat?: SplitCategory[] | Bill
-    tabIndex: number
-}> = (props) => {
-    const { item, style, updatedBillCat, onEllipsis, onBillCat, handleConfirm, tabIndex } = props
-    const [name, setName] = useState<string>(
-        item.predicted_category
-            ? `${item.predicted_category?.name.charAt(0).toUpperCase()}${item.predicted_category?.name.slice(1)}`
-            : ''
-    )
-    const [color, setColor] = useState<'blue' | 'green' | 'green-split' | 'blue-split' | 'green-blue-split'>(
-        item.predicted_category?.period === 'month' ? 'blue' : 'green'
-    )
-
-    useEffect(() => {
-        if (isBill(updatedBillCat)) {
-            updatedBillCat.period === 'month' ? setColor('blue') : setColor('green')
-            updatedBillCat
-                ? setName(updatedBillCat.name.charAt(0).toUpperCase() + updatedBillCat.name.slice(1))
-                : setName(`${item.predicted_category?.name.charAt(0).toUpperCase()}${item.predicted_category?.name.slice(1)}`)
-        } else if (typeof updatedBillCat !== 'undefined') {
-            // If all the categories are the 'month' period, then color can be set
-            if (updatedBillCat.every(cat => cat.period === 'month')) {
-                setColor('blue-split')
-            } else if (updatedBillCat.every(cat => ['once', 'year'].includes(cat.period))) {
-                setColor('green-split')
-            } else {
-                setColor('green-blue-split')
-            }
-
-            setName(`${updatedBillCat[0].name.charAt(0).toUpperCase()}${updatedBillCat[0].name.slice(1)}`)
-        }
-    }, [updatedBillCat])
-
-    return (
-        <animated.div
-            key={`item-${item.transaction_id}`}
-            className="new-item"
-            style={style}
-        >
-            <div className='new-item-data'>
-                <div>
-                    <InsitutionLogo accountId={item.account} />
-                </div>
-                <div>
-                    <div>
-                        <span>{item.name}</span>
-                    </div>
-                    <div className={item.amount! < 0 ? 'is-debit' : ''}>
-                        <DollarCents value={item.amount!} />
-                        <span>{formatDateOrRelativeDate(dayjs(item.datetime! || item.date).valueOf())}</span>
-                    </div>
-                </div>
-            </div>
-            <div className='new-item-icons' >
-                <BillCatLabel
-                    labelName={name}
-                    slim={true}
-                    as='button'
-                    color={color}
-                    aria-label="Choose budget category"
-                    tabIndex={tabIndex}
-                    onClick={(e) => { onBillCat(e, item) }}
-                />
-                <Tooltip
-                    msg="Confirm"
-                    ariaLabel="Confirm"
-                >
-                    <IconButtonHalfGray
-                        onClick={() => { handleConfirm(item) }}
-                        aria-label="Confirm"
-                        tabIndex={tabIndex}
-                        className="confirm-button"
-                    >
-                        <Check className="icon" strokeWidth={2} />
-                    </IconButtonHalfGray>
-                </Tooltip>
-                <NarrowButton
-                    tabIndex={tabIndex}
-                    onClick={(e) => { onEllipsis(e, item) }}
-                    aria-label="More options"
-                    aria-haspopup="menu"
-                >
-                    <Ellipsis />
-                </NarrowButton>
-            </div>
-        </animated.div>
-    )
-}
+import NewItem from './NewItem'
+import {
+    _getContainerHeight,
+    _getOpacity,
+    _getScale,
+    _getY,
+    _getBackGroundColor
+} from './helpers'
 
 export const NeedsConfirmationStack = () => {
     const loaded = useLoaded(1000)
@@ -359,7 +194,7 @@ export const NeedsConfirmationStack = () => {
     // 1. Animate the item out of the container
     // 2. Remove the item from the items array
     // 3. Add the item to the confirmed items array
-    const handleItemConfirm = (transaction: Transaction) => {
+    const handleItemConfirm = useCallback((transaction: Transaction) => {
         itemsApi.start((index: any, item: any) => {
             if (item._item.transaction_id === transaction.transaction_id) {
                 const updatedCategories = transactionUpdates[transaction.transaction_id]?.categories
@@ -385,7 +220,7 @@ export const NeedsConfirmationStack = () => {
                 }
             }
         })
-    }
+    }, [])
 
     // Confirm All
     // Send the updates to the backend whilst updating the category
@@ -451,7 +286,7 @@ export const NeedsConfirmationStack = () => {
         return () => { setConfirmAll(false) }
     }, [confirmAll])
 
-    const flushConfirmedQue = () => {
+    const flushConfirmedQue = useCallback(() => {
         if (confirmedTransactions.length > 0) {
             confirmTransactions(confirmedTransactions.map((item) => ({
                 transaction_id: item.transaction.transaction_id,
@@ -461,7 +296,7 @@ export const NeedsConfirmationStack = () => {
                 bill: item.bill
             })))
         }
-    }
+    }, [confirmedTransactions])
 
     const handleEllipsis = useCallback((e: any, item: Transaction) => {
         const buttonRect = e.target.closest('button').getBoundingClientRect()
@@ -494,12 +329,12 @@ export const NeedsConfirmationStack = () => {
     }
 
     return (
-        <LoadingRingDiv className='needs-confirmation-stack' loading={isFetchingTransactions}>
+        <LoadingRingDiv className={styles.needsConfirmationStack} loading={isFetchingTransactions}>
             {tCountData?.count === 0 && isGetTransactionsCountSuccess
                 ? <ZeroConfig />
                 : <>
                     <InfiniteScrollDiv
-                        id="new-items"
+                        className={styles.newItems}
                         ref={newItemsRef}
                         onMouseLeave={() => flushConfirmedQue()}
                     >
@@ -586,7 +421,7 @@ export const NeedsConfirmationStack = () => {
                         </AbsPosMenu>
                     </InfiniteScrollDiv >
                     <ExpandableContainer
-                        className='new-items-expand-button--container'
+                        className={styles.newItemsExpandButtonContainer}
                         expanded={unconfirmedTransactions ? unconfirmedTransactions?.length > 1 : false}>
                         <ExpandButton
                             hasBackground={false}

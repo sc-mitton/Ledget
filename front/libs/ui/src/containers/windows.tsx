@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useScreenContext } from '../utils/context/ScreenContext';
 
 export const Window = styled.div<{ size?: string }>`
   border-radius: var(--border-radius3);
@@ -57,20 +58,62 @@ export const BlueWindow = styled.div`
   background: var(--blue-window-background);
 `
 
-export const NestedWindow = styled.div`
-  background-color: var(--nested-window);
+const StylesNestedWindow = styled.div`
+  background-color: var(--nested-window-background-color);
   border-radius: var(--border-radius2);
   padding: .75em 1em;
   width: 100%;
   box-sizing: border-box;
 `
 
-export const NestedWindowLight = styled(NestedWindow)`
-  padding: .25em .5em;
-`
+export const NestedWindow = ({ children, ...rest }: React.HTMLAttributes<HTMLDivElement>) => {
+  const { screenSize } = useScreenContext()
+  return (
+    <StylesNestedWindow
+      {...rest}
+      style={{
+        backgroundColor: screenSize === 'extra-small'
+          ? 'var(--nested-window-background-color-small-screen'
+          : 'var(--nested-window-background-color)'
+      }}
+    >
+      {children}
+    </StylesNestedWindow >
+  )
+}
 
 export const NestedWindow2 = styled.div`
   background-color: var(--modal-inner-window);
   border-radius: var(--border-radius2);
   padding: .75em;
+`
+
+export const NestedWindowSlimmer = styled(NestedWindow)`
+  padding: .25em .5em;
+`
+
+export const WindowCorner = styled.div`
+  display: inline-flex;
+  align-items: center;
+  border-radius: .25em;
+  position: absolute;
+  top: 1em;
+  right: 3.5em;
+  z-index: 10;
+
+  &>div {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      // transform: translateX(50%);
+  }
+
+  hr {
+      margin: .375em 0;
+  }
+
+  button {
+      display: flex;
+      gap: .75em;
+  }
 `

@@ -4,7 +4,7 @@ import Big from 'big.js'
 import { Control, useController } from 'react-hook-form'
 import { Plus, CornerDownLeft, ChevronDown, Check } from '@geist-ui/icons'
 
-import './styles/Dropdowns.scss'
+import styles from './styles/dropdowns.module.scss'
 import ComboSelect from './ComboSelect'
 import { FormInputButton2, MenuTextInput, DropdownDiv, DollarCents, DropdownItem } from '@ledget/ui'
 
@@ -51,7 +51,7 @@ const AddAlert = (props: { limitAmount?: number, defaultValues?: typeof baseAler
         })
 
         return (
-            <div className='custom-input'>
+            <div className={styles.customInput}>
                 <MenuTextInput>
                     <ComboSelect.Custom
                         ref={ref}
@@ -77,7 +77,8 @@ const AddAlert = (props: { limitAmount?: number, defaultValues?: typeof baseAler
                                     }}
                                 />
                                 <div
-                                    id={`return-btn${focused ? '-focused' : ''}`}
+                                    className={styles.returnBtn}
+                                    data-focused={focused}
                                     role="button"
                                     aria-label="Add custom alert"
                                 >
@@ -99,7 +100,7 @@ const AddAlert = (props: { limitAmount?: number, defaultValues?: typeof baseAler
                 key={option.id}
             >
                 {({ active, selected }) => (
-                    <DropdownItem active={active} selected={selected} className="slct-item" >
+                    <DropdownItem active={active} selected={selected} className={styles.selectItem}>
                         <div>{option.value.percent_amount}%</div>
                         <div>
                             <DollarCents
@@ -181,18 +182,18 @@ const AddAlert = (props: { limitAmount?: number, defaultValues?: typeof baseAler
                     <ComboSelect.Button
                         tabIndex={0}
                         as={FormInputButton2}
-                        className={`add-alert-btn ${selectedAlerts?.length ? 'selected' : ''}`}
+                        className={styles.addAlertBtn}
+                        data-selected={selectedAlerts?.length}
                         ref={buttonRef}
                     >
                         <ButtonText />
                     </ComboSelect.Button>
                     <ComboSelect.Options
-                        className="select-container"
+                        className={styles.selectContainer}
                         static
                     >
                         <DropdownDiv
                             placement='left'
-                            className="select"
                             visible={open}
                             style={{
                                 minWidth: buttonRef.current?.offsetWidth,

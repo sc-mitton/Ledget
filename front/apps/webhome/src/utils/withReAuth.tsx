@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 
-import './ReAuth.scss'
 import { useSearchParams, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
+import styles from './reauth.module.scss'
 import { BlueSubmitButton, withSmallModal } from '@ledget/ui'
 import { useGetMeQuery, User, useExtendSessionMutation } from '@features/userSlice'
 import { useAppSelector, useAppDispatch } from '@hooks/store'
@@ -62,7 +62,7 @@ const PassWord = ({ onCancel }: { onCancel: () => void }) => {
     }, [isCompleteSuccess])
 
     return (
-        <form onSubmit={submit} className="reauth-form">
+        <form onSubmit={submit} className={styles.reauthForm}>
             <div>
                 {['setup', 'change', 'delete'].some((word) => location.pathname.includes(word))
                     ? 'Confirm your password to make this change'
@@ -126,7 +126,7 @@ const Totp = () => {
     }, [isCompleteSuccess])
 
     return (
-        <form onSubmit={submit} className="reauth-form">
+        <form onSubmit={submit} className={styles.reauthForm}>
             <div>
                 <h3>
                     {useLookupSecret ? 'Enter one of your recovery codes' : 'Enter your authenticator code'}
@@ -135,7 +135,7 @@ const Totp = () => {
                     ?
                     <BackButton onClick={() => { setUseLookupSecret(false) }} type="button" />
                     :
-                    <div className="recovery-code-option--container">
+                    <div className={styles.recoveryCodeOptionContainer}>
                         <span>or use a&nbsp;&nbsp;</span>
                         <TextButtonHalfBlue
                             type="button"
@@ -149,7 +149,7 @@ const Totp = () => {
 
             </div>
             <div>
-                <div className="graphic">
+                <div className={styles.graphic}>
                     {useLookupSecret
                         ? <RecoveryCodeGraphic finished={isCompleteSuccess} />
                         : <TotpAppGraphic finished={isCompleteSuccess} />}

@@ -1,9 +1,9 @@
-import React, { useState, Fragment } from 'react'
+import React from 'react'
 
 import { Menu } from '@headlessui/react'
 import { Switch } from '@headlessui/react'
 
-import './styles/header.scss'
+import styles from './styles/header.module.scss'
 import { LedgetLogoIcon2 } from '@ledget/media'
 import { setLogoutModal, setModal } from '@features/modalSlice'
 import { useAppDispatch } from '@hooks/store'
@@ -15,19 +15,14 @@ const LightDarkSwitch = () => {
     const { isDark, setDarkMode } = useColorScheme()
 
     return (
-        <Switch.Group id="light-dark-switch" as={'div'}>
+        <Switch.Group className={styles.darkModeSwitch} as={'div'}>
             <Switch
                 checked={isDark}
                 onChange={setDarkMode}
-                className={`switch-crib ${isDark ? 'enabled' : 'disabled'}`}
             >
-                {({ checked: isChecked }) => (
-                    <>
-                        <div><Sun className='icon' /></div>
-                        <div><Moon className='icon' /></div>
-                        <span className={`switch-pill ${isChecked ? 'enabled' : 'disabled'}`} />
-                    </>
-                )}
+                <div><Sun className='icon' /></div>
+                <div><Moon className='icon' /></div>
+                <span />
             </Switch>
         </Switch.Group>
     )
@@ -57,8 +52,8 @@ const ProfileDropdownMenu = () => {
     return (
         <Menu>
             {({ open }) => (
-                <div className='profile-dropdown'>
-                    <Menu.Button className="profile-button">
+                <div className={styles.profileDropdown}>
+                    <Menu.Button className={styles.profileButton}>
                         <User className='icon' stroke={'var(--white)'} />
                     </Menu.Button>
                     <DropdownDiv
@@ -85,11 +80,10 @@ const ProfileDropdownMenu = () => {
 
 function Header() {
     const { screenSize } = useScreenContext()
-    const { isDark } = useColorScheme()
 
     return (
         <>
-            <header className={`${screenSize} ${isDark ? 'dark-mode' : ''}`}>
+            <header className={styles.header} data-size={screenSize}>
                 <div>
                     <div>
                         <LedgetLogoIcon2 />

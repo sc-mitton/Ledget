@@ -1,6 +1,6 @@
 import { FC, useRef, HTMLProps, useState, useEffect } from 'react'
 
-import './styles/ShadowedContainer.scss'
+import styles from './styles/shadowed-container.module.scss'
 
 const getMaskImage = (string: 'top' | 'bottom' | 'bottom-top' | '') => {
     switch (string) {
@@ -53,7 +53,7 @@ const ShadowedContainer: FC<ShadowedContainerProps> = ({ children, showShadow = 
 
     return (
         <div
-            className="scroll-shadows--container"
+            className={styles.scrollShadowContainer}
             {...rest}
             style={{ maskImage: showShadow ? getMaskImage(shadow) : '' }}
             ref={ref}

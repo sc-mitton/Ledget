@@ -3,7 +3,7 @@ import { useEffect, useState, Fragment } from 'react'
 import dayjs from 'dayjs'
 import { ChevronRight } from '@geist-ui/icons'
 
-import './styles/History.scss'
+import styles from './styles/history.module.scss'
 import { FilterForm } from './Filter'
 import { setTransactionModal } from '@features/modalSlice'
 import { useLazyGetTransactionsQuery, useGetTransactionsQuery } from "@features/transactionsSlice"
@@ -54,16 +54,17 @@ export function History() {
     }
 
     return (
-        <div id="all-items-window" >
+        <div className={styles.allItemsWindow}>
             {showFilterForm
                 ? <FilterForm />
-                : <ShadowedContainer className="transactions-history-table--container" >
+                : <ShadowedContainer className={styles.transactionsHistoryTableContainer}>
                     <LoadingRingDiv loading={isLoading}>
                         {!transactionsData?.length && !isLoading && !isError
                             ? <ZeroConfig />
                             : <InfiniteScrollDiv
                                 animate={isFetchingMore}
-                                className={`transactions-history--table ${isLoading ? 'skeleton' : ''}`}
+                                className={styles.transactionsHistoryTable}
+                                data-skeleton={isLoading}
                                 onScroll={handleScroll}
                             >
                                 {transactionsData?.map((transaction) => {
@@ -72,7 +73,7 @@ export function History() {
                                     monthholder = date.getUTCMonth()
                                     return (
                                         <Fragment key={transaction.transaction_id}>
-                                            <div className="month-header">
+                                            <div className={styles.monthHeader}>
                                                 {newMonth && <div>
                                                     {date.toLocaleString('default', { month: 'short', year: 'numeric' })}
                                                 </div>}
@@ -86,9 +87,17 @@ export function History() {
                                                 </div>
                                                 <div>
                                                     {transaction.bill &&
-                                                        <BillCatEmojiLabel emoji={transaction.bill.emoji} name={transaction.bill.name} />}
+                                                        <BillCatEmojiLabel
+                                                            emoji={transaction.bill.emoji}
+                                                            name={transaction.bill.name}
+                                                            color={transaction.bill.period === 'month' ? 'blue' : 'green'}
+                                                        />}
                                                     {transaction.categories?.map((category) => (
-                                                        <BillCatEmojiLabel emoji={category.emoji} name={category.name} />))}
+                                                        <BillCatEmojiLabel
+                                                            emoji={category.emoji}
+                                                            name={category.name}
+                                                            color={category.period === 'month' ? 'blue' : 'green'}
+                                                        />))}
                                                 </div>
                                                 <div className={`${transaction.amount < 0 ? 'debit' : ''}`}>
                                                     <div><DollarCents value={transaction.amount} /></div>

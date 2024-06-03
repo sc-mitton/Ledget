@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 
 import { useNavigate } from 'react-router-dom'
 
-import './styles/ForceVerification.scss'
+import styles from './styles/force-verification.module.scss'
 import { withModal } from '@ledget/ui'
 import {
     FormError,
@@ -95,16 +95,16 @@ export const ForceVerification = ({ onSuccess }: { onSuccess: () => void }) => {
             <div>
                 <h2>Verify Your Email Address</h2>
             </div>
-            <div id="force-verification-form--container">
+            <div className={styles.ForceVerification}>
                 {errMsg
                     ?
-                    <div id="verification-form-error-container">
+                    <div>
                         {unhandledIdMessage && <FormError msg={unhandledIdMessage} />}
                         <FormError msg={errMsg} />
                     </div>
                     :
                     <>
-                        <div className="subheader">
+                        <div className={styles.subheader}>
                             <span>
                                 Looks like you still need to verify your email address,
                                 enter the code we sent you below.

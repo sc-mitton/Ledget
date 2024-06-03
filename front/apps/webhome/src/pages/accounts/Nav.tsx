@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { animated } from '@react-spring/web'
 
-import './styles/Nav.scss'
+import styles from './styles/nav.module.scss'
 import { CreditCard, Clock, TrendingUp } from '@geist-ui/icons'
 
 import {
@@ -198,8 +198,8 @@ const Filters = ({ visible = false, close }: { visible: boolean, close: () => vo
     return (
         <ExpandableContainer
             expanded={visible}
-            id={'account-filters'}
-            className={`${screenSize}`}
+            className={styles.accountFilters}
+            data-size={`${screenSize}`}
             aria-expanded={visible}
         >
             {accountsFilterOptions?.map((option, i) => (
@@ -255,8 +255,8 @@ export const Nav = () => {
     }, [isTransactionsSyncError])
 
     return (
-        <div id={'accounts-nav'}>
-            <div className={`${isDark ? 'dark' : 'light'}`}>
+        <div className={styles.accountsNav}>
+            <div data-dark={isDark}>
                 <TabButtons />
                 <RefreshButton
                     stroke={'var(--m-text)'}

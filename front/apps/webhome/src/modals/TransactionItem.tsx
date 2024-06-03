@@ -6,7 +6,7 @@ import { AnimatePresence } from 'framer-motion'
 import dayjs from 'dayjs'
 import { Check, Trash2, Edit2, ArrowLeft, ArrowRight } from '@geist-ui/icons'
 
-import './styles/TransactionItem.scss'
+import styles from './styles/transaction-item.module.scss'
 import { Transaction } from '@features/transactionsSlice'
 import { useGetAccountsQuery } from "@features/accountsSlice"
 import { withModal, Base64Logo, DollarCents, BillCatLabel } from '@ledget/ui'
@@ -32,7 +32,8 @@ import {
     Tooltip,
     IconButtonHalfGray,
     AutoResizeTextArea,
-    NestedWindow2
+    NestedWindow2,
+    WindowCorner
 } from '@ledget/ui'
 
 type Action = 'split'
@@ -41,7 +42,7 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
     const [openEllipsis, setOpenEllipsis] = useState(false)
 
     return (
-        <Menu as="div" className="corner-dropdown">
+        <Menu as={WindowCorner}>
             {({ open }) => (
                 <>
                     <Menu.Button as={IconButtonHalfGray} onClick={() => setOpenEllipsis(!openEllipsis)}>
@@ -249,8 +250,8 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
         <NestedWindow2>
             <h4>{`Note${notes.length > 0 ? 's' : ''}`}</h4>
             <div
-                id="notes-container"
-                className={`${focusedNoteId ? 'focused' : ''}`}
+                className={styles.notesContainer}
+                data-focused={Boolean(focusedNoteId)}
                 tabIndex={0}
                 ref={notesContainerRef}
                 onKeyDown={handleNoteAccessibleNav}
@@ -264,7 +265,7 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
                     </Tooltip>}
                 {focusedNoteId && focusedNoteId !== 'new' &&
                     <>
-                        <span className="last-changed">
+                        <span className={styles.lastChanged}>
                             Last changed&nbsp;
                             {dayjs(notes.find(n => n.id === focusedNoteId)?.datetime).format('h:mma M/DD/YY')}
                         </span>
@@ -277,7 +278,8 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
                     {focusedNoteId &&
                         <AutoResizeTextArea
                             ref={textAreaRef}
-                            divProps={{ className: "note-container focused" }}
+                            className={styles.noteContainer}
+                            data-focused={true}
                             defaultValue={notes.concat(notesToSend2Server)
                                 .find(note => note.id === focusedNoteId)?.text}
                             onChange={(e) => handleTextAreaChange(e, focusedNoteId)}
@@ -289,10 +291,9 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
                     <AutoResizeTextArea
                         // Placeholder textarea to add a new note
                         // Also a tracker for the new note to keep the sizing right
-                        divProps={{
-                            className: `note-container ${a11yNote === 0 ? 'accessible-focused' : ''}`,
-                            onClick: () => setFocusedNoteId('new')
-                        }}
+                        divProps={{ onClick: () => setFocusedNoteId('new') }}
+                        className={styles.noteContainer}
+                        data-accessible-focused={a11yNote === 0}
                         value={newNote?.text || ''}
                         onChange={() => { }}
                         placeholder='Add a note...'
@@ -303,9 +304,9 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
                         .sort((a, b) => new Date(b.datetime).getTime() - new Date(a.datetime).getTime())
                         .map((note, index) => (
                             <div
-                                className={`note-container
-                                ${!note.is_current_users ? 'disabled' : ''}
-                                ${a11yNote === index ? 'accessible-focused' : ''}`}
+                                className={styles.noteContainer}
+                                data-disabled={!note.is_current_users}
+                                data-accessible-focused={a11yNote === index}
                                 onClick={() =>
                                     note.is_current_users &&
                                     setFocusedNoteId(note.id)}
@@ -335,9 +336,9 @@ const InfoTableInnerWindow = ({ item }: { item: Transaction }) => {
     }, [accountsFetched])
 
     return (
-        <NestedWindow2 id='transaction-details'>
+        <NestedWindow2 className={styles.transactionDetails}>
             <div>Account</div>
-            <div id="account-info-cell">
+            <div className={styles.accountInfoCell}>
                 <a href={institution?.url} target="_blank" rel="noreferrer">
                     <Base64Logo
                         data={institution?.logo}
@@ -350,7 +351,7 @@ const InfoTableInnerWindow = ({ item }: { item: Transaction }) => {
             {item?.merchant_name &&
                 <>
                     <div>Merchant </div>
-                    <div className="merchant-cell">
+                    <div>
                         {item?.merchant_name}
                     </div>
                 </>}
@@ -420,11 +421,11 @@ function CategoriesBillInnerWindow({ item, }: { item: Transaction }) {
     }, [billCat])
 
     return (
-        <NestedWindow2 id="bills-and-categories">
+        <NestedWindow2 className={styles.billsAndCategories}>
             <div>{getBillCategoryLabel(item)}</div>
             {!itemIsSplit
                 ?
-                <div ref={buttonContainerRef} id="bill-cat-selector-container">
+                <div ref={buttonContainerRef} className={styles.billCatSelectorContainer}>
                     <BillCatLabel
                         as='button'
                         ref={buttonContainerRef}
@@ -474,7 +475,7 @@ export const TransactionModalContent = (({ item, splitMode }: { item: Transactio
 
     return (
         <>
-            <div id='transaction-info-header'>
+            <div className={styles.transactionInfoHeader}>
                 <div style={{ textAlign: 'center' }}>
                     <DollarCents value={item?.amount && new Big(item.amount).times(100).toNumber()} />
                 </div>
@@ -507,7 +508,7 @@ export const TransactionModalContent = (({ item, splitMode }: { item: Transactio
                         <Edit2 size={'1em'} />
                     </button>}
                 {item.pending &&
-                    <div className='pending'>Pending</div>}
+                    <div className={styles.pending}>Pending</div>}
             </div>
             <AnimatePresence mode='wait'>
                 {action === 'split' &&
@@ -521,7 +522,7 @@ export const TransactionModalContent = (({ item, splitMode }: { item: Transactio
                 {action === undefined &&
                     <SlideMotionDiv key={'default-view'} position={loaded ? 'first' : 'fixed'}>
                         <Actions setAction={setAction} />
-                        <div className='transaction-info-container'>
+                        <div className={styles.transactionInfoContainer}>
                             {(item.predicted_bill || item.predicted_category || item.bill || (item.categories?.length || 0) > 0)
                                 && <CategoriesBillInnerWindow item={item} />}
                             <InfoTableInnerWindow item={item} />

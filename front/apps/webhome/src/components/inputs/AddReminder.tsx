@@ -2,7 +2,7 @@ import React, { useState, Dispatch, SetStateAction, useEffect } from 'react'
 
 import { Plus, Check } from '@geist-ui/icons'
 
-import './styles/Dropdowns.scss'
+import styles from './styles/dropdowns.module.scss'
 import { Listbox } from '@headlessui/react'
 import { FormInputButton2, DropdownDiv, DropdownItem } from '@ledget/ui'
 import { useGetRemindersQuery, Reminder } from '@features/remindersSlice'
@@ -81,7 +81,7 @@ const AddReminder = ({ value, onChange, defaultSelected }:
                     <>
                         <Listbox.Button
                             as={FormInputButton2}
-                            className="add-reminder-btn"
+                            className={styles.addReminderBtn}
                             style={{ fontWeight: '400' }}
                         >
                             <span>Reminder</span>
@@ -91,11 +91,10 @@ const AddReminder = ({ value, onChange, defaultSelected }:
                                 /> :
                                 <Plus size={"1em"} />}
                         </Listbox.Button>
-                        <Listbox.Options className="select-container" static>
+                        <Listbox.Options className={styles.selectContainer} static>
                             <DropdownDiv
                                 placement='left'
                                 visible={open}
-                                className="select"
                             >
                                 <Options />
                             </DropdownDiv>

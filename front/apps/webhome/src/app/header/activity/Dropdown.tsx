@@ -3,7 +3,7 @@ import { HTMLProps, useState, useRef, useEffect, Fragment } from 'react'
 import { Activity, Filter } from '@geist-ui/icons'
 import { Tab } from '@headlessui/react'
 
-import './Dropdown.scss'
+import styles from './dropdown.module.scss'
 import { DropdownDiv, useAccessEsc, RefreshButton2, IconButtonHalfGray, Tooltip, TabNavListUnderlined } from '@ledget/ui'
 import { CheckAll } from '@ledget/media'
 import { selectNotificationsTabIndex, setNotificationsTabIndex } from '@features/uiSlice'
@@ -64,7 +64,7 @@ const ActivityDropdown = (props: HTMLProps<HTMLDivElement>) => {
     }, [tabIndex])
 
     return (
-        <div style={{ position: 'relative' }} {...props} className='notifications-dropdown'>
+        <div style={{ position: 'relative' }} {...props} className={styles.notificationsDropdown}>
             <button
                 ref={buttonRef}
                 className={`${tCountData?.count ? 'active' : ''}`}
@@ -77,14 +77,14 @@ const ActivityDropdown = (props: HTMLProps<HTMLDivElement>) => {
                     ref={dropdownRef}
                     placement='right'
                     arrow='right'
-                    className='notifications-dropdown--menu'
+                    className={styles.notificationsDropdownMenu}
                     visible={showDropdown}
                     style={{ borderRadius: '.75rem' }}
                 >
                     <Tab.Group as={Fragment} defaultIndex={tabIndex} onChange={setTabIndex}>
                         {({ selectedIndex }) => (
                             <>
-                                <div className='header'>
+                                <div className={styles.notificationsDropdownHeader}>
                                     <TabNavListUnderlined selectedIndex={selectedIndex}>
                                         <Tab>
                                             {tCountData?.count! > 0 &&
@@ -92,7 +92,7 @@ const ActivityDropdown = (props: HTMLProps<HTMLDivElement>) => {
                                             New Items
                                         </Tab>
                                         <Tab>History</Tab>
-                                        <div className='actions'>
+                                        <div className={styles.notificationsDropdownActions}>
                                             {selectedIndex === 0 && (
                                                 <>
                                                     <Tooltip msg="Confirm all" ariaLabel="Confirm all">

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 
 import { useSearchParams } from 'react-router-dom'
 
+import styles from './styles/form.module.scss'
 import { BackButton, Otc, MainButton } from '@ledget/ui'
 import MainGraphic from './Graphic'
 import Error from './Error'
@@ -53,12 +54,12 @@ const RecoveryVerificationForm = ({ submit, flow, codeSuccess, isCompleteError, 
             <MainGraphic unLocked={codeSuccess} />
             <form
                 id="recovery-verification-form"
-                className="recovery-form"
+                className={styles.recoveryForm}
                 onSubmit={handleSubmit}
             >
                 <Otc codeLength={6} />
                 <input type="hidden" name="csrf_token" value={csrfToken} />
-                <div className="verification-button-container">
+                <div className={styles.verificationButton}>
                     <MainButton name="method" type="submit" value="code">
                         Verify Code
                     </MainButton>

@@ -14,8 +14,7 @@ import { FormInputButton } from '@ledget/ui'
 import { LimitAmountInput } from '@components/inputs'
 import { FullSelectCategoryBill } from '@components/inputs'
 import { FormErrorTip, AnimatedDollarCents, DeleteButton, PlusButton } from '@ledget/ui'
-import './split.scss';
-
+import styles from './split.module.scss'
 
 const schema = z.object({
   splits: z.array(z.object({
@@ -40,9 +39,10 @@ const TotalLeft = ({ control, amount, error }: { control: Control<SplitsSchema>,
   return (
     <>
       {remaining !== 0 &&
-        <div className={`total-left--container
-            ${error ? 'has-error' : ''}
-             ${remaining > 0 ? 'has-remaining' : remaining === 0 ? 'is-even' : 'is-over'}`}
+        <div
+          className={styles.totalLeftContainer}
+          data-error={Boolean(error)}
+          data-status={remaining > 0 ? 'remaining' : remaining === 0 ? 'even' : 'over'}
         >
           <AnimatedDollarCents value={remaining} />
           <span>{remaining > 0 ? 'left' : remaining === 0 ? '' : 'over'}</span>
@@ -91,7 +91,7 @@ export function SplitTransactionInput({ item, onCancel }: { item: Transaction, o
 
   return (
     <div>
-      <form id="split-transaction--form" onSubmit={handleSubmit(onSubmit)}>
+      <form className={styles.splitTransactionForm} onSubmit={handleSubmit(onSubmit)}>
         <TotalLeft
           control={control}
           amount={Big(item.amount).times(100).toNumber()}

@@ -4,7 +4,7 @@ import { useLocation, useSearchParams } from 'react-router-dom'
 import { animated } from '@react-spring/web'
 import Big from 'big.js'
 
-import './styles/Wafers.scss'
+import styles from './styles/wafers.module.scss'
 import {
     DollarCents,
     useScreenContext,
@@ -43,12 +43,12 @@ const WaferList = () => {
     }
 
     return (
-        <div className='account-wafers'>
+        <div className={styles.accountWafers}>
             {transitions((style, account) => (
                 account &&
                 <animated.div
                     style={style}
-                    className='account-wafer-container'
+                    className={styles.accountWaferContainer}
                     {...bind(account.account_id)}
                 >
                     <Wafer
@@ -65,7 +65,6 @@ const WaferList = () => {
 function Wafers() {
     const location = useLocation()
     const { accounts } = useAccountsContext()
-    const { screenSize } = useScreenContext()
     const { isLoading: isLoadingAccounts } = useAccountsContext()
     const ref = useRef<HTMLDivElement>(null)
     const [key, setKey] = useState(Math.random().toString().slice(2, 8))
@@ -77,7 +76,7 @@ function Wafers() {
 
     return (
         <>
-            <div className={`${'account-wafers-container'} ${screenSize}`} ref={ref} key={key}>
+            <div className={styles.accountWafersContainer} ref={ref} key={key}>
                 <Window2>
                     <div>
                         <div>
@@ -106,7 +105,7 @@ function Wafers() {
                         />
                         : <WaferList />}
                 </Window2>
-                <Window2 className={`${showChart ? '' : 'collapsed'}`}>
+                <Window2 data-collapsed={Boolean(!showChart)}>
                     <CloseButton onClick={() => setShowChart(false)} />
                     <BalanceChart />
                 </Window2>

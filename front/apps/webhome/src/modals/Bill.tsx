@@ -9,7 +9,7 @@ import dayjs from 'dayjs'
 import { Trash2, Edit2, CheckInCircle, Circle, BellOff } from '@geist-ui/icons'
 import { startCase, toLower } from 'lodash-es'
 
-import './styles/Bill.scss'
+import styles from './styles/bill.module.scss'
 import { billSchema } from './CreateBill'
 import { withModal } from '@ledget/ui'
 import { selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
@@ -27,7 +27,8 @@ import {
     IconButtonHalfGray,
     DropdownItem,
     DatePicker,
-    NestedWindow2
+    NestedWindow2,
+    WindowCorner
 } from '@ledget/ui'
 import { extractReminders } from '@modals/CreateBill'
 import { Ellipsis } from '@ledget/media'
@@ -88,7 +89,7 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
     const [openEllipsis, setOpenEllipsis] = useState(false)
 
     return (
-        <Menu as="div" className="corner-dropdown">
+        <Menu as={WindowCorner}>
             {({ open }) => (
                 <>
                     <Menu.Button as={IconButtonHalfGray} onClick={() => setOpenEllipsis(!openEllipsis)}>
@@ -136,8 +137,8 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
 
 const BillInfo = ({ bill }: { bill: TransformedBill }) => {
     return (
-        <div id="bill-info">
-            <div className="header">
+        <div className={styles.billInfoModal}>
+            <div className={styles.header}>
                 {bill &&
                     <h2>
                         {bill.emoji}&nbsp;&nbsp;
@@ -227,31 +228,31 @@ const DeleteBill = ({ bill, onCancel, onDelete }: { bill?: TransformedBill, onCa
     }, [isDeleteSuccess])
 
     return (
-        <form id="delete-bill" onSubmit={onSubmit}>
-            <RadioGroup id="radios" value={value} onChange={setValue}>
+        <form onSubmit={onSubmit}>
+            <RadioGroup className={styles.deleteBillRadios} value={value} onChange={setValue}>
                 <RadioGroup.Label className={bill?.period}>
                     <h3>Delete {`${bill?.name.charAt(0).toUpperCase()}${bill?.name.slice(1) || ''}`} Bill</h3>
                 </RadioGroup.Label>
-                <RadioGroup.Option value="single" className="radio-option">
+                <RadioGroup.Option value="single" className={styles.radioOption}>
                     {({ checked }) => (
                         <>
-                            <span className={`button ${checked ? 'checked' : ''}`} />
+                            <span role='button' />
                             <span>Just this month's bill</span>
                         </>
                     )}
                 </RadioGroup.Option>
-                <RadioGroup.Option value="complement" className="radio-option">
+                <RadioGroup.Option value="complement" className={styles.radioOption}>
                     {({ checked }) => (
                         <>
-                            <span className={`button ${checked ? 'checked' : ''}`} />
+                            <span role='button' />
                             <span>All future bills</span>
                         </>
                     )}
                 </RadioGroup.Option>
-                <RadioGroup.Option value="all" className="radio-option">
+                <RadioGroup.Option value="all" className={styles.radioOption}>
                     {({ checked }) => (
                         <>
-                            <span className={`button ${checked ? 'checked' : ''}`} />
+                            <span role='button' />
                             <span>All including this month</span>
                         </>
                     )}
@@ -320,7 +321,7 @@ const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, 
     return (
         <form onSubmit={submitForm}>
             <input type="hidden" {...register('period')} value={bill.period} />
-            <div id="bill-edit">
+            <div className={styles.billEdit}>
                 <h3>Edit Bill</h3>
                 <hr />
                 <div>
@@ -411,7 +412,7 @@ export const BillModalContent = (props: ModalContentProps) => {
     const { month, year } = useAppSelector(selectBudgetMonthYear)
 
     return (
-        <div id="bill-modal--content">
+        <div className={styles.billModalContent}>
             <Actions setAction={setAction} />
             <AnimatePresence mode="wait">
                 {action === 'none' &&

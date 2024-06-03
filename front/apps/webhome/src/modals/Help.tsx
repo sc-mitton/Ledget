@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import './styles/Help.scss'
+import styles from './styles/help.module.scss'
 import { useEmailUserMutation } from '@features/userSlice'
 import { TextInputWrapper, FormErrorTip, BakedListBox } from '@ledget/ui'
 import { SubmitForm } from '@components/pieces'
@@ -50,7 +50,7 @@ const HelpModal = withModal((props) => {
     }, [isSuccess])
 
     return (
-        <div id="help-modal">
+        <div className={styles.helpModal}>
             <h1>Help</h1>
             <div>
                 <p>

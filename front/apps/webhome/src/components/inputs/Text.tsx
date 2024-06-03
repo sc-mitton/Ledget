@@ -3,7 +3,7 @@ import React, { FC, useRef, useEffect, useState, HTMLProps } from 'react'
 import { useController, Control } from 'react-hook-form'
 import { ChevronUp, ChevronDown } from '@geist-ui/icons'
 
-import './styles/Text.scss'
+import styles from './styles/text.module.scss'
 import Emoji from './Emoji'
 import { EmojiProps, emoji } from './Emoji'
 import { formatCurrency, makeIntCurrencyFromStr } from '@ledget/ui'
@@ -39,11 +39,8 @@ export const EmojiComboText = (props:
                 <Emoji emoji={emoji} setEmoji={setEmoji}>
                     {({ emoji }) => (
                         <>
-                            <div className="emoji-picker-ledget--button-container">
-                                <Emoji.Button
-                                    id='emoji-picker-ledget--button'
-                                    emoji={emoji}
-                                />
+                            <div className={styles.emojiPickerLedgetButtonContainer}>
+                                <Emoji.Button emoji={emoji} />
                             </div>
                             <Emoji.Picker />
                             <input
@@ -111,7 +108,7 @@ const decrement: IncrementFunction = ({ val, setVal, field, withCents }) => {
 }
 
 const IncrementDecrementButton = ({ val, setVal, field, withCents = true }: IncrementDecrement) => (
-    <div className="increment-arrows--container">
+    <div className={styles.incrementArrowsContainer}>
         <FadedIconButton
             type="button"
             onClick={() => increment({ val, setVal, field, withCents })}
@@ -130,82 +127,6 @@ const IncrementDecrementButton = ({ val, setVal, field, withCents = true }: Incr
         </FadedIconButton>
     </div>
 )
-
-export const HeadlessLimitAmountInput: FC<HTMLProps<HTMLInputElement> & {
-    control?: Control<any>,
-    defaultValue?: number,
-    hasLabel?: boolean
-    withCents?: boolean
-    slim?: boolean
-}> = ({
-    control,
-    defaultValue,
-    children,
-    hasLabel = true,
-    withCents = true,
-    required = true,
-    slim = false,
-    ...rest
-}) => {
-        const [val, setVal] = useState<string>('')
-
-        const { field } = useController({
-            control,
-            name: rest.name || 'limit_amount',
-            rules: { required }
-        })
-
-        // set field value to default if present
-        useEffect(() => {
-            if (defaultValue) {
-                field.onChange(formatCurrency(defaultValue, withCents))
-                setVal(formatCurrency(defaultValue, withCents))
-            }
-        }, [defaultValue])
-
-        // Update controller value
-        useEffect(() => {
-            if (val)
-                field.onChange(makeIntCurrencyFromStr(val))
-        }, [val])
-
-        return (
-            <>
-                <input
-                    type="text"
-                    name='limit_amount'
-                    id="limit_amount"
-                    placeholder={withCents ? '$0.00' : '$0'}
-                    value={val}
-                    ref={field.ref}
-                    onKeyDown={(e) => {
-                        if (e.key === 'Right' || e.key === 'ArrowRight') {
-                            e.preventDefault()
-                            increment({ val, setVal, field })
-                        } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
-                            e.preventDefault()
-                            decrement({ val, setVal, field })
-                        }
-                    }}
-                    onChange={(e) => {
-                        setVal(formatCurrency(e.target.value, withCents))
-                    }}
-                    onFocus={(e) => {
-                        if (e.target.value.length <= 1 || val === '$0') {
-                            withCents ? setVal('$0.00') : setVal('$0')
-                        }
-                    }}
-                    onBlur={(e) => {
-                        (e.target.value.length <= 1 && setVal(''))
-                    }
-                    }
-                    size={14}
-                    {...rest}
-                />
-                {children}
-            </>
-        )
-    }
 
 export const LimitAmountInput: FC<HTMLProps<HTMLInputElement> & {
     control?: Control<any>,
@@ -252,7 +173,8 @@ export const LimitAmountInput: FC<HTMLProps<HTMLInputElement> & {
 
                 <TextInputWrapper
                     slim={slim}
-                    className={`limit-amount--container ${val ? 'valid' : ''}`}
+                    className={styles.limitAmountContainer}
+                    data-valid={val ? 'true' : 'false'}
                     onBlur={() => {
                         (val === '$0' || val === '$0.00') && setVal('')
                     }}
@@ -314,7 +236,7 @@ export const DollarRangeInput = (
     return (
         <>
             {hasLabel && <label htmlFor="upper_amount">Amount</label>}
-            <div className={`dollar-range-input--container ${rangeMode ? 'range-mode' : ''}`}>
+            <div className={styles.dollarRangeInputContainer} data-mode={rangeMode ? 'range' : 'single'}>
                 {rangeMode &&
                     <LimitAmountInput
                         hasLabel={false}

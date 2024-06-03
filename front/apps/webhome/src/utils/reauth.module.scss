@@ -1,0 +1,33 @@
+.recoveryCodeOptionContainer {
+    display: flex;
+
+    button {
+        color: var(--blue-medium-dark);
+        position: relative;
+    }
+}
+
+.reauthForm {
+    margin-top: 1em;
+
+    &>div:first-of-type {
+        margin-top: .5em;
+        margin-left: .125em;
+        margin-bottom: 1em;
+        font-weight: var(--fw-regular);
+    }
+
+    &>div:nth-child(2) {
+        margin: 1em 0 1.5em 0;
+    }
+
+    &>div:last-of-type {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+}
+
+.graphic {
+    margin: 1.25em 0;
+}

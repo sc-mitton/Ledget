@@ -7,7 +7,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Check } from '@geist-ui/icons'
 
-import './styles/Items.scss'
+import styles from './styles/items.module.scss'
 import { TabView, BottomButtons } from './Reusables'
 import { useItemsContext, ItemsProvider } from "./ItemsContext"
 import { LimitAmountInput, EmojiComboText, BillScheduler, emoji } from '@components/inputs'
@@ -66,13 +66,10 @@ const BillsColumn = ({ period }: { period: 'month' | 'year' }) => {
             <animated.div style={containerProps} >
                 {transitions((style, item, index) =>
                     <animated.div
-                        className="budget-item bill-item"
+                        className={[styles.budgetItem, styles.billItem].join(' ')}
                         style={style}
                     >
-                        <div
-                            className="budget-item-name--container"
-                            style={{ flexBasis: nameFlexBasis }}
-                        >
+                        <div style={{ flexBasis: nameFlexBasis }}>
                             <BillCatLabel
                                 labelName={item?.name || ''}
                                 emoji={item?.emoji}
@@ -81,14 +78,14 @@ const BillsColumn = ({ period }: { period: 'month' | 'year' }) => {
                                 hoverable={false}
                             />
                         </div>
-                        <div className="amount--container">
-                            <div className="budget-dollar--container">
+                        <div className={styles.amountContainer}>
+                            <div className={styles.budgetDollarContainer}>
                                 <DollarCents value={item?.upper_amount || 0} />
                             </div>
                         </div >
                         <div>
                             <DeleteButton
-                                show={true}
+                                visible={true}
                                 onClick={() => {
                                     if (period === 'month') {
                                         setMonthItems((prev) => prev.filter((i) => i !== item))
@@ -116,7 +113,7 @@ const ListView = () => {
             <Tab.Panel as={Fragment}>
                 {(emptyMonthItems)
                     ?
-                    <div className="empty-message--container">
+                    <div className={styles.emptyMessageContainer}>
                         <span>No monthly bills added yet</span>
                     </div>
                     : <BillsColumn period={'month'} />}
@@ -124,7 +121,7 @@ const ListView = () => {
             <Tab.Panel as={Fragment}>
                 {(emptyYearItems)
                     ?
-                    <div className="empty-message--container">
+                    <div className={styles.emptyMessageContainer}>
                         <span>No yearly categories added yet</span>
                     </div>
                     : <BillsColumn period={'year'} />}
@@ -217,7 +214,7 @@ const AddSuggestedCustomBills = () => (
                 </TabNavListUnderlined>
                 <Tab.Panels as={Fragment}>
                     <CutomTabPanel />
-                    <Tab.Panel className="suggested-bills--container">
+                    <Tab.Panel className={styles.suggestedBillsContainer}>
                         <span>Coming soon</span>
                     </Tab.Panel>
                 </Tab.Panels>
@@ -228,7 +225,7 @@ const AddSuggestedCustomBills = () => (
 
 const AddBills = () => (
     <ItemsProvider itemType="bill">
-        <div id="add-bills--window">
+        <div className={styles.addItemsWindow}>
             <div>
                 <h2>Bills</h2>
                 <span>Let's add a few of your monthly and yearly bills</span>

@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useController, useWatch, useForm } from 'react-hook-form'
 import dayjs from 'dayjs'
 
-import './styles/Filter.scss'
+import styles from './styles/filter.module.scss'
 import { useGetAccountsQuery } from '@features/accountsSlice'
 import {
     useGetMerchantsQuery,
@@ -28,7 +28,6 @@ import {
     DatePicker
 } from '@ledget/ui'
 import { useFilterFormContext } from '../context';
-import { selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
 import { useGetStartEndQueryParams } from '@hooks/index'
 
@@ -78,7 +77,7 @@ export const FilterForm = () => {
     const { field } = useController({ name: 'date_range', control })
 
     return (
-        <div id='filter-window'>
+        <div className={styles.filterWindow}>
             <form
                 className={`${isDark ? 'dark' : ''}`}
                 key={resetKey}
@@ -111,7 +110,7 @@ export const FilterForm = () => {
                         }}
                     />
                     <label htmlFor='limit_amount'>Amount</label>
-                    <div className='amounts'>
+                    <div className={styles.amounts}>
                         <LimitAmountInput
                             defaultValue={Number(filter?.limit_amount_lower)}
                             slim={true}

@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { useForm, useWatch } from "react-hook-form"
 import { useNavigate, useLocation } from 'react-router-dom'
 
-import './styles/Forms.scss'
+import styles from './styles/forms.module.scss'
 import { useAddNewCategoryMutation } from '@features/categorySlice'
 import { AddAlert, EmojiComboText, LimitAmountInput, PeriodSelect, emoji } from '@components/inputs'
 import { withModal } from '@ledget/ui'
@@ -45,7 +45,7 @@ const CreateCategoryModal = withModal((props) => {
                     addNewCategory({ ...data, emoji: em })
                 })}
                 id="new-cat-form"
-                className="create-form"
+                className={styles.createForm}
             >
                 <div>
                     <EmojiComboText
@@ -62,7 +62,7 @@ const CreateCategoryModal = withModal((props) => {
                         <FormErrorTip error={errors.limit_amount} />
                     </LimitAmountInput>
                 </div>
-                <div className='multi-input-row'>
+                <div className={styles.multiInputRow}>
                     <PeriodSelect
                         name="period"
                         control={control}

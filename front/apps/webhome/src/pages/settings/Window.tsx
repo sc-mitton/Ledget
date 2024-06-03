@@ -66,6 +66,7 @@ function Settings() {
                         exit={{ opacity: 0 }}
                         key={location.pathname.split('/')[2]}
                         className={styles.content}
+                        data-size={screenSize}
                     >
                         <Routes location={location} key={location.pathname.split('/')[2]}>
                             <Route path="profile" element={<AccountPage />} >

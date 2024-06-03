@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { animated } from '@react-spring/web'
 import { DollarSign, BarChart2, Settings, ChevronDown, User, Link, Shield } from '@geist-ui/icons'
 
-import './styles/sidenav.scss'
+import styles from './styles/sidenav.module.scss'
 import { Institution, Hamburger, LedgetLogo } from '@ledget/media'
 import {
     usePillAnimation,
@@ -19,7 +19,7 @@ const SubSettingsSidebar = () => {
 
     return (
         <ul
-            className='sub-nav'
+            className={styles.subNav}
             role='menu'
         >
             <li data-current={location.pathname.includes('profile') ? "page" : ''}>
@@ -83,7 +83,7 @@ const Nav = () => {
     }, [ulRef.current])
 
     return (
-        <nav className={`sidenav ${screenSize}`}>
+        <nav className={styles.sideNav} data-size={screenSize}>
             <ul ref={ulRef} role='menu'>
                 <li data-current={location.pathname === '/' ? "page" : ''}>
                     <a onClick={() => { }} aria-disabled>
@@ -147,7 +147,7 @@ const Sidebar = () => {
         ['small', 'extra-small', 'medium'].includes(screenSize)
             ?
             <>
-                <div id='sidebar-hamburger'>
+                <div className={styles.hamburger}>
                     <button
                         onClick={() => { setOpen(!open) }}
                         ref={buttonRef}
@@ -159,7 +159,12 @@ const Sidebar = () => {
                         <Hamburger />
                     </button>
                 </div>
-                <div id='hiding-sidebar' ref={hidingSidebarRef} className={open ? 'open' : ''}>
+                <div
+                    id='hiding-sidebar'
+                    className={styles.hidingSidebar}
+                    ref={hidingSidebarRef}
+                    data-open={open}
+                >
                     <LedgetLogo darkMode={isDark} />
                     <Nav />
                 </div>

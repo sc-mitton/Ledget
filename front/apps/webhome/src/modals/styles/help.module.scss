@@ -1,0 +1,31 @@
+.helpModal {
+
+    &>div {
+        margin: .75em 0 1.25em 0;
+        width: 85%;
+    }
+
+    fieldset {
+        display: grid;
+        grid-template-columns: 1fr;
+        column-gap: 1em;
+        margin: 1em 0 1.5em 0;
+
+        label {
+            margin-top: .5em;
+            margin-left: .125em;
+        }
+
+        textarea {
+            width: 100%;
+
+            &+span {
+                color: var(--input-placeholder);
+                opacity: .5;
+                position: absolute;
+                right: .5em;
+                bottom: .25em;
+            }
+        }
+    }
+}

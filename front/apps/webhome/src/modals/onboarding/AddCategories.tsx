@@ -7,6 +7,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Edit2, Check } from '@geist-ui/icons'
 
+import styles from './styles/items.module.scss'
 import { TabView, BottomButtons } from './Reusables'
 import { EmojiComboText, LimitAmountInput, emoji } from '@components/inputs'
 import {
@@ -105,13 +106,13 @@ const CategoriesColumn = ({ period }: { period: Period }) => {
                 {transitions((style, item, _, index) => {
                     return (
                         <animated.div
-                            className="budget-item category-item"
+                            className={[styles.budgetItem, styles.categoryItem].join(' ')}
                             style={style}
                             {...bind(item?.id)}
                         >
                             <GripButton />
                             <div
-                                className="budget-item-name--container"
+                                className={styles.budgetItemNameContainer}
                                 style={{ flexBasis: getLongestLength(items, 'name') + 6 }}
                             >
                                 <BillCatLabel
@@ -124,7 +125,7 @@ const CategoriesColumn = ({ period }: { period: Period }) => {
                             </div>
                             <div >
                                 <button
-                                    className="budget-dollar--container"
+                                    className={styles.budgetDollarContainer}
                                     onClick={() => setEditAmountIndex(index)}
                                 >
                                     {editAmountIndex === index
@@ -175,7 +176,7 @@ const ListOfCategories = () => {
             <Tab.Panel as={Fragment}>
                 {emptyMonthItems
                     ?
-                    <div className="empty-message--container">
+                    <div className={styles.emptyMessageContainer}>
                         <span>No monthly categories added yet</span>
                     </div>
                     : <CategoriesColumn period={'month'} />
@@ -184,7 +185,7 @@ const ListOfCategories = () => {
             <Tab.Panel as={Fragment}>
                 {emptyYearItems
                     ?
-                    <div className="empty-message--container">
+                    <div className={styles.emptyMessageContainer}>
                         <span>No yearly categories added yet</span>
                     </div>
                     : <CategoriesColumn period={'year'} />
@@ -271,7 +272,7 @@ const SuggestedTabPanel = () => {
     } = useItemsContext('category')
 
     return (
-        <Tab.Panel className="suggested-items--container" as='div'>
+        <Tab.Panel className={styles.suggestedItemsContainer} as='div'>
             {periodTabIndex === 0
                 ? monthRecommendations.filter(r => !monthItems.find(i => i.name === r.name)).map((item, index) => {
                     return (
@@ -338,7 +339,7 @@ const AddSuggestedCustomCategories = () => (
 export default function () {
     return (
         <ItemsProvider itemType="category">
-            <div id="add-categories--window">
+            <div className={styles.addItemsWindow}>
                 <div>
                     <h2>Categories</h2>
                     <span>Now let's add a few spending categories</span>

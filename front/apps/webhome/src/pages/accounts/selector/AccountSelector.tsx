@@ -4,7 +4,7 @@ import { useLocation, useSearchParams } from "react-router-dom"
 import Big from "big.js"
 import { Listbox } from '@headlessui/react'
 
-import "./styles/AccountSelector.scss"
+import styles from './styles/account-selector.module.scss'
 import { DollarCents, BlueWindow, useAccessEsc, } from "@ledget/ui"
 import { InsitutionLogo } from '@components/pieces'
 import { Account, } from "@features/accountsSlice"
@@ -19,7 +19,7 @@ const HeaderWindow = () => {
     const { accounts } = useAccountsContext()
 
     return (
-        <BlueWindow id='small-screen-accounts-header'>
+        <BlueWindow className={styles.smallScreenAccountsHeader}>
             <h4>{pathMappings.getWaferTitle(location)}</h4>
             <h1>
                 <DollarCents value={accounts?.reduce((acc, account) =>
@@ -84,7 +84,7 @@ const AccountSelector = () => {
                 value={selectedAccount}
                 onChange={setSelectedAccount}
                 as='div'
-                id='accounts-selector'
+                className={styles.accountsSelector}
                 ref={containerRef}
             >
                 <Listbox.Button ref={buttonRef} onClick={() => setOpen(!open)}>
