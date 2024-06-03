@@ -14,7 +14,8 @@ import {
     CardInput,
     CityStateZipInputs,
     baseBillingSchema as schema,
-    FormError
+    FormError,
+    ErrorBanner
 } from '@ledget/ui'
 import {
     useLazyGetSetupIntentQuery,
@@ -97,6 +98,11 @@ const Modal = withModal((props) => {
         <>
             <h2>Update Payment Method</h2>
             <hr />
+            {user.account.subscription_status === 'past_due' &&
+                <ErrorBanner
+                    title="Past Due"
+                    msg="Your account is past due. Please update your payment method to continue using the app."
+                />}
             <form onSubmit={submitForm}>
                 <div className={styles.updatePaymentForm}>
                     <h4>Info</h4>

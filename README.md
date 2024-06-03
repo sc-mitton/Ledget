@@ -306,4 +306,3 @@ Oathkeeper is in the local dev environment as a access control decision point. I
 For debugging Oathkeeper, there is a debugging launch.json file already setup for vscode users. If the prelauch and postDebug tasks aren't working, you can run them manually before and after debugging (cmd+P > Tasks:Run Task).
 
 ### Versioning
-

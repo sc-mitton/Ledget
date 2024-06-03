@@ -103,6 +103,8 @@ const App = () => {
       navigate('/settings/profile/update-payment')
     } else if (!user.account.has_customer || user.account.service_provisioned_until == 0) {
       window.location.href = import.meta.env.VITE_CHECKOUT_REDIRECT
+    } else if (user.account.subscription_status === 'past_due') {
+      navigate('/settings/profile/update-payment')
     }
   }, [user])
 
