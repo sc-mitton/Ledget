@@ -1,0 +1,39 @@
+.errorBanner {
+    display: flex;
+    width: 100%;
+    gap: .75em;
+    justify-content: flex-start;
+    padding: 1.125em 1em;
+    border-radius: var(--border-radius2);
+    box-sizing: border-box;
+    position: relative;
+
+    &::after {
+        position: absolute;
+        inset: 0;
+        background-color: var(--mute-red);
+        border: 1.5px solid var(--alert-red);
+        opacity: .15;
+        content: '';
+        border-radius: inherit;
+        z-index: -1;
+    }
+
+    * {
+        color: var(--alert-red);
+    }
+
+    span {
+        opacity: .8;
+    }
+
+    h4 {
+        font-weight: var(--fw-extra-bold);
+    }
+
+    &>div {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+}
