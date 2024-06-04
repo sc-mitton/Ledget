@@ -193,10 +193,10 @@ export const hoverText = css`
 `
 
 export const hoverHalfBlueText = css`
-    color: var(--m-text-tirtiary);
+    color: var(--m-text-secondary);
 
     * {
-        color: var(--m-text-tirtiary);
+        color: var(--m-text-secondary);
     }
 
     &:hover {

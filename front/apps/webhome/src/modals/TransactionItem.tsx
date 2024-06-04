@@ -258,7 +258,7 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
                 onBlur={() => setA11yNote(undefined)}
             >
                 {focusedNoteId &&
-                    <Tooltip msg={'Save'} ariaLabel={'save'}>
+                    <Tooltip msg={'Save'} ariaLabel={'save'} className={styles.noteButton}>
                         <CircleIconButton onClick={() => handleTextAreaBlur()} darker={true}>
                             <Check size={'1.1em'} />
                         </CircleIconButton>
@@ -269,7 +269,7 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
                             Last changed&nbsp;
                             {dayjs(notes.find(n => n.id === focusedNoteId)?.datetime).format('h:mma M/DD/YY')}
                         </span>
-                        <Tooltip msg={'Delete'} ariaLabel={'delete'}>
+                        <Tooltip msg={'Delete'} ariaLabel={'delete'} className={styles.noteButton}>
                             <CircleIconButton onClick={() => { handleTrashButtonClick() }} darker={true}>
                                 <Trash2 size={'1.1em'} />
                             </CircleIconButton>
@@ -339,13 +339,15 @@ const InfoTableInnerWindow = ({ item }: { item: Transaction }) => {
         <NestedWindow2 className={styles.transactionDetails}>
             <div>Account</div>
             <div className={styles.accountInfoCell}>
-                <a href={institution?.url} target="_blank" rel="noreferrer">
-                    <Base64Logo
-                        data={institution?.logo}
-                        alt={institution?.name?.charAt(0).toUpperCase()}
-                    />
-                </a>
-                <span>{account?.official_name}</span>
+                <div>
+                    <a href={institution?.url} target="_blank" rel="noreferrer">
+                        <Base64Logo
+                            data={institution?.logo}
+                            alt={institution?.name?.charAt(0).toUpperCase()}
+                        />
+                    </a>
+                    <span>{account?.official_name}</span>
+                </div>
                 <span>&nbsp;&bull;&nbsp;&bull;&nbsp;{account?.mask}</span>
             </div>
             {item?.merchant_name &&

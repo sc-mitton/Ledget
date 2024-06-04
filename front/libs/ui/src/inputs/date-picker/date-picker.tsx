@@ -4,7 +4,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { Calendar as CalendarIcon, X, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from '@geist-ui/icons'
 
 import styles from './date-picker.module.scss'
-import { DropdownDiv } from '../../animations/animations';
+import { DropdownDiv } from '../../animations/dropdowndiv/dropdowndiv';
 import { HalfArrow } from '@ledget/media'
 import { TextInputWrapper } from '../text/text';
 import { Tooltip } from '../../pieces/tooltip/tooltip';
@@ -30,6 +30,7 @@ type BaseDatePickerProps = {
   disabledStyle?: 'muted' | 'highlighted'
   autoFocus?: boolean
   placement?: 'left' | 'right' | 'middle'
+  verticlePlacement?: 'top' | 'bottom'
 } & ({
   hideInputElement: true,
   dropdownVisible: boolean,
@@ -584,7 +585,7 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
   const dropdownRef = useRef<HTMLDivElement>(null)
   const inputContainerRef = useRef<HTMLDivElement>(null)
   const [placement, setPlacement] = useState<'left' | 'right' | 'middle'>(props.placement || 'left')
-  const [verticlePlacement, setVerticlePlacement] = useState<'top' | 'bottom'>('bottom')
+  const [verticlePlacement, setVerticlePlacement] = useState<'top' | 'bottom'>(props.verticlePlacement || 'bottom')
   const startInputRef = useRef<HTMLInputElement>(null)
   const endInputRef = useRef<HTMLInputElement>(null)
   const loaded = useLoaded(200)

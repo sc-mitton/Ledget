@@ -5,7 +5,7 @@ import { Control, useController, UseControllerReturn, FieldError } from 'react-h
 import { ChevronDown, Check } from '@geist-ui/icons'
 
 import styles from './baked-selects.module.scss'
-import { DropdownDiv } from '../../animations/animations'
+import { DropdownDiv } from '../../animations/dropdowndiv/dropdowndiv'
 import { FormInputButton } from '../../buttons'
 import { DropdownItem } from "../../containers/specialty"
 import { LoadingRingDiv } from '../../pieces/loading-indicators/loading-indicators'

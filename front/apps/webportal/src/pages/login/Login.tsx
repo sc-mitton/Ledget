@@ -113,11 +113,11 @@ const Login = () => {
         if (devicesRefreshedSuccess) {
             if (searchParams.get('mfa')) {
                 const timeout = setTimeout(() => {
-                    // window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
+                    window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
                 }, 1000)
                 return () => clearTimeout(timeout)
             } else {
-                // window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
+                window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
             }
         }
     }, [devicesRefreshedSuccess])

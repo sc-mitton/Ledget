@@ -74,12 +74,6 @@
         --blue-dark-hover: hsl(var(--blue-h), 25%, 85%);
         --blue-ultra-dark: hsl(var(--blue-h), 85%, 90%);
         --blue-ultra-dark-hover: hsl(var(--blue-h), 85%, 80%);
-        --btn-div: var(--blue-medium);
-        --btn-div-hover: var(--blue-medium-hover);
-        --btn-chcl: hsl(0, 0%, 90%);
-        --btn-chcl-hover: hsl(0, 0%, 85%);
-        --btn-main: var(--blue-medium);
-        --btn-main-hover: var(--blue-medium-hover);
 
         --green-light: hsl(var(--green-h), 30%, 27%);
         --green-light-hover: hsl(var(--green-h), 30%, 22%);
@@ -87,6 +81,13 @@
         --green-sat: hsl(var(--green-h), 30%, 57%);
         --green-medium: hsl(var(--green-h), 30%, 70%);
         --green-dark: hsl(var(--green-h), 30%, 80%);
+
+        // Buttons
+        --btn-chcl: hsl(0, 0%, 90%);
+        --btn-chcl-hover: hsl(0, 0%, 85%);
+        --btn-main: var(--blue-medium);
+        --btn-main-hover: var(--blue-medium-hover);
+
 
         // Windows
         --nested-window-background-color: hsl(0, 0%, 10%);
@@ -116,7 +117,7 @@
         --gradient-window-background-small-screen: linear-gradient(to bottom, rgb(28, 28, 28) -20%, rgba(0, 0, 0, 1) 100%);
 
         --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
-        --window-portal-drop-shadow-color: hsl(var(--window-h), var(--window-s), 9%);
+        --window-portal-drop-shadow-color: hsl(var(--window-h), var(--window-s), 4%);
 
         // Side Nav
         --sidenav-drop-shadow: 0 0px 4px hsl(var(--window-h), var(--window-s), 12%);
@@ -154,11 +155,10 @@
         --m-header-text: hsl(0, 0%, 100%);
         --m-text: hsl(0, 0%, 100%);
         --m-invert-text: hsl(0, 0%, 10%);
-        --m-text-secondary: color-mix(in srgb, var(--m-text), black 20%);
-        --m-text-tirtiary: color-mix(in srgb, var(--m-text), black 40%);
-        --m-text-quaternary: color-mix(in srgb, var(--m-text), black 50%);
-        --m-text-quinary: color-mix(in srgb, var(--m-text), black 60%);
-        --m-text-senary: color-mix(in srgb, var(--m-text), black 70%);
+        --m-text-secondary: color-mix(in srgb, var(--m-text), black 40%);
+        --m-text-tirtiary: color-mix(in srgb, var(--m-text), black 50%);
+        --m-text-quaternary: color-mix(in srgb, var(--m-text), black 60%);
+        --m-text-quinary: color-mix(in srgb, var(--m-text), black 70%);
 
         --input-placeholder: hsl(0, 0%, 66%);
         --input-placeholder2: rgb(115, 115, 117);
@@ -280,12 +280,6 @@
         --blue-dark: hsl(var(--blue-h), 32%, 22%);
         --blue-ultra-dark: hsl(var(--blue-h), 32%, 15%);
         --blue-ultra-dark-hover: hsl(var(--blue-h), 32%, 8%);
-        --btn-div: var(--blue);
-        --btn-div-hover: var(--blue-hover);
-        --btn-chcl: hsl(0, 0%, 10%);
-        --btn-chcl-hover: hsl(0, 0%, 15%);
-        --btn-main: hsl(var(--blue-h), 50%, 57%);
-        --btn-main-hover: hsl(var(--blue-h), 40%, 53%);
 
         --green-light: hsl(var(--green-h), 80%, 95%);
         --green-light-hover: hsl(var(--green-h), 80%, 90%);
@@ -293,6 +287,12 @@
         --green-sat: hsl(var(--green-h), 50%, 52%);
         --green-medium: hsl(var(--green-h), 30%, 42%);
         --green-dark: hsl(var(--green-h), 30%, 22%);
+
+        // Buttons
+        --btn-chcl: hsl(0, 0%, 10%);
+        --btn-chcl-hover: hsl(0, 0%, 15%);
+        --btn-main: hsl(var(--blue-h), 50%, 57%);
+        --btn-main-hover: hsl(var(--blue-h), 40%, 53%);
 
         // Windows
         --window-background-color: hsl(240, 7%, 96%);
@@ -367,7 +367,7 @@
         --m-header-text: hsl(var(--window-h), calc(var(--window-s) + 10%), 27%);
         --m-text: hsl(var(--window-h), calc(var(--window-s) + 10%), 27%);
         --m-invert-text: hsl(0, 0%, 97%);
-        --m-text-secondary: color-mix(in srgb, var(--m-text), white 50%);
+        --m-text-secondary: color-mix(in srgb, var(--m-text), white 40%);
         --m-text-tirtiary: color-mix(in srgb, var(--m-text), white 60%);
         --m-text-quaternary: color-mix(in srgb, var(--m-text), white 70%);
         --m-text-quinary: color-mix(in srgb, var(--m-text), white 80%);

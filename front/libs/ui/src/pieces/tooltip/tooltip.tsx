@@ -9,13 +9,14 @@ interface Props {
   delay?: number,
   style?: React.CSSProperties,
   children: React.ReactNode
+  className?: string
 }
 
-export const Tooltip = ({ msg, ariaLabel, children, type = 'top', delay = 1.2, ...rest }: Props) => {
+export const Tooltip = ({ msg, ariaLabel, className, children, type = 'top', delay = 1.2, ...rest }: Props) => {
 
   return (
     <div
-      className={styles.tooltip}
+      className={[styles.tooltip, className].join(' ')}
       aria-label={ariaLabel}
     >
       {children}

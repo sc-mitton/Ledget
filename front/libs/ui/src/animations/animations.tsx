@@ -1,76 +1,7 @@
-import { ReactNode, FC, forwardRef, useEffect, useState, useId, HTMLProps } from 'react'
+import { ReactNode, forwardRef, useEffect, useState, useId, HTMLProps } from 'react'
 
-import stylesModule from './styles/animations.module.scss'
-import { useTransition, animated, useSpring } from '@react-spring/web'
+import { animated, useSpring } from '@react-spring/web'
 import { motion, HTMLMotionProps } from 'framer-motion'
-
-interface IDropdownDiv {
-  visible: boolean
-  placement?: 'middle' | 'left' | 'right'
-  verticlePlacement?: 'top' | 'bottom'
-  transformOrigin?: 'center' | 'left' | 'right'
-  arrow?: 'right'
-}
-
-export const DropdownDiv = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement> & IDropdownDiv>((props, ref) => {
-
-  const {
-    visible,
-    children,
-    placement = 'middle',
-    verticlePlacement = 'bottom',
-    transformOrigin,
-    style = {},
-    className,
-    arrow,
-    ...rest
-  } = props
-
-  const transitions = useTransition(visible, {
-    from: {
-      opacity: 0,
-      y: `${verticlePlacement === 'top' ? '-100%' : '0%'}`,
-      left: `${placement === 'middle' ? '50%' : placement === 'left' ? '0%' : '100%'}`,
-      x: `-${placement === 'middle' ? '50%' : placement === 'left' ? '0%' : '100%'}`,
-      transform: 'scale(0.85)',
-      transformOrigin:
-        transformOrigin
-          ? `${verticlePlacement === 'top' ? 'bottom' : 'top'} ${transformOrigin}`
-          : (`${verticlePlacement === 'top' ? 'bottom' : 'top'} ${placement === 'middle' ? 'center' : placement === 'left' ? 'left' : 'right'}`)
-    },
-    enter: {
-      opacity: 1,
-      transform: 'scale(1)',
-      ...style
-    },
-    leave: {
-      transform: 'scale(0.85)',
-      opacity: 0,
-    },
-    config: {
-      tension: 500,
-      friction: 28,
-      mass: 1,
-    },
-  })
-
-  return transitions((styles, item) =>
-    item && (
-      <div className={stylesModule.dropdownContainer}>
-        <animated.div
-          className={[stylesModule.dropdown, `${className}`].join(' ')}
-          data-arrow={arrow}
-          data-position={placement}
-          style={styles}
-          {...rest}
-          ref={ref}
-        >
-          {children}
-        </animated.div>
-      </div>
-    )
-  )
-})
 
 export const ZoomMotionDiv = forwardRef<HTMLDivElement, HTMLMotionProps<'div'>>(({ children, ...rest }, ref) => (
   <motion.div

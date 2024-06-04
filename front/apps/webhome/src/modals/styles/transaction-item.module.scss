@@ -79,7 +79,6 @@
     &:not(:nth-child(3))>div,
     &>div a {
         display: flex;
-        align-items: center;
         flex-wrap: wrap;
     }
 
@@ -93,11 +92,10 @@
 
         &>div {
             display: flex;
-            align-items: center;
         }
 
-        &>div:nth-child(2n),
-        &>div:nth-child(2n) * {
+        &>div:nth-child(2n + 1),
+        &>div:nth-child(2n + 1) * {
             color: var(--m-text-secondary);
         }
     }
@@ -105,14 +103,26 @@
 
 .accountInfoCell {
     display: flex;
-    gap: .5em;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .25em;
+
+    &>div {
+        display: flex;
+        align-items: center;
+        gap: .25em;
+    }
 }
 
 .billsAndCategories {
     display: flex;
     align-items: center;
-    gap: .75em;
+    gap: 1.375em;
     position: relative;
+
+    &>div:first-child {
+        color: var(--m-text-secondary);
+    }
 }
 
 .billCatSelectorContainer {
@@ -187,6 +197,18 @@ $maxHeight: 12.5em;
 
 .addNotePlaceholder {
     color: var(--input-placeholder2);
+}
+
+.noteButton {
+    z-index: 20;
+    position: absolute;
+    bottom: -.125em;
+    right: 0em;
+
+    &:not(:first-of-type) {
+        z-index: 20;
+        right: 2em;
+    }
 }
 
 .noteContainer {

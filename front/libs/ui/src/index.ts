@@ -41,3 +41,4 @@ export * from './themes/themes';
 export * from './themes/ChartTip';
 export * from './utils/context/ScreenContext';
 export * from './pieces/error-banner/ErrorBanner';
+export * from './animations/dropdowndiv/dropdowndiv';

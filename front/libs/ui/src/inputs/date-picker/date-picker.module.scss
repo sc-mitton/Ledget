@@ -81,8 +81,8 @@
         transition: left .2s linear, height .2s ease-in-out, background-color .2s ease-in-out, ;
     }
 
-    &[data-range='true'].focused-0::after {
-        background-color: var(--blue-medium);
+    &[data-pickertype='range'][data-focused='0']::after {
+        background-color: var(--blue);
         left: 1em;
         transition: left .2s linear;
     }
@@ -297,7 +297,6 @@
         color: var(--m-text-quinary);
     }
 }
-
 
 .dayCalendar {
     display: grid;

@@ -2,14 +2,14 @@
     display: flex;
     align-items: center;
     border-radius: var(--border-radius3);
-    border: 1.5px solid var(--btn-feather-light-gray);
+    border: 1.5px solid var(--btn-light-gray);
     cursor: pointer;
     width: 100%;
     box-sizing: border-box;
     background-color: inherit;
 
     &:hover {
-        border-color: var(--btn-feather-light-gray-hover);
+        border-color: var(--btn-light-gray-hover);
     }
 
     &:has(div[aria-selected=true]) {
@@ -40,7 +40,7 @@
             }
 
             &>span:last-child {
-                color: var(--m-text-tirtiary);
+                color: var(--m-text-secondary);
                 font-size: .875em;
             }
         }

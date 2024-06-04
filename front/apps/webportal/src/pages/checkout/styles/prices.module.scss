@@ -1,7 +1,9 @@
 .prices {
-    background: linear-gradient(to top right, var(--blue-medium) 0%, color-mix(in srgb, var(--blue-medium), var(--blue-light) 20%) 100%);
+    background: linear-gradient(to top right, var(--blue-light-medium) 0%, color-mix(in srgb, var(--blue-medium), var(--blue-light) 40%) 100%);
     border-top-left-radius: var(--border-radius3);
     border-top-right-radius: var(--border-radius3);
+    border-bottom-left-radius: .25em;
+    border-bottom-right-radius: .25em;
     position: relative;
     border: 2px solid var(--blue-light);
     z-index: 1000;
@@ -12,12 +14,16 @@
         border: none;
     }
 
-    &[data-size='extra-small'][data-dark='false'] {
-        border-radius: 0;
-        border: none;
+    &[data-dark='false'] {
         background: linear-gradient(to top right, var(--btn-dark-gray) 0%, color-mix(in srgb, var(--btn-dark-gray), var(--btn-light-gray) 10%) 100%);
-    }
+        border: none;
+        border-bottom: 2px solid var(--btn-medium-gray);
 
+        &[data-size='extra-small'] {
+            border: none;
+            border-radius: 0;
+        }
+    }
 }
 
 .pricesHeader {
@@ -62,11 +68,11 @@
     }
 
     input[type="radio"]:checked+div {
-        box-shadow: inset 0 0 0 1.5px var(--white);
+        box-shadow: inset 0 0 0 1.25px var(--white);
     }
 
     input[type="radio"]:not(:checked)+div {
-        box-shadow: inset 0 0 0 1.5px var(--white);
+        box-shadow: inset 0 0 0 1.25px var(--white);
         opacity: .5;
         transition: opacity .2s ease-in-out;
     }
@@ -92,7 +98,7 @@
     flex: .5;
     position: relative;
     overflow: hidden;
-    border-radius: var(--border-radius25);
+    border-radius: var(--border-radius2);
     padding: .375em 1em;
     min-width: 7.5rem;
     cursor: pointer;
@@ -106,23 +112,18 @@
     background-color: var(--white);
     width: 2.875rem;
     height: 2.875rem;
-    transform: translate(50%, -50%) rotate(45deg);
+    z-index: -1;
+    transform: translate(50%, -50%) rotate(42deg);
 
     svg {
         color: var(--blue-medium);
         position: absolute;
         top: 2em;
         left: 1em;
-        transform: rotate(-45deg);
+        transform: rotate(-42deg);
     }
 
     &[data-dark='true'][data-size='extra-small'] {
-        svg {
-            color: var(--btn-feather-light-gray);
-        }
-    }
-
-    &[data-dark='false'][data-size='extra-small'] {
         svg {
             color: var(--btn-feather-light-gray);
         }

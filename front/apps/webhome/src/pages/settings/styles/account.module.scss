@@ -101,7 +101,7 @@
         gap: .25em;
         column-gap: 1em;
 
-        &>div:nth-child(2n) {
+        &>div:nth-child(2n + 1) {
             color: var(--m-text-secondary);
         }
 

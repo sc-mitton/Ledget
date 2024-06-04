@@ -212,7 +212,7 @@ const Filters = ({ visible = false, close }: { visible: boolean, close: () => vo
                         {option.label}
                     </FilterPillButton>
                     {option.filterType !== accountsFilterOptions[i + 1]?.filterType
-                        && i !== accountsFilterOptions.length - 1 && <span className={'account-filters-divider'} />}
+                        && i !== accountsFilterOptions.length - 1 && <span className={styles.accountFiltersDivider} />}
                 </>
             ))}
             <CircleIconButton onClick={() => close()} size='small'>

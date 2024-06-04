@@ -41,13 +41,11 @@ const Filter = ({ value, onChange }: { value?: [Dayjs, Dayjs], onChange: React.D
                     stroke={active ? 'var(--blue-medium)' : 'currentColor'}
                 />
             </TextButtonHalfBlue >
-            <DropdownDiv
-                placement='right'
-                id='transactions-filter-dropdown'
-                visible={showDropDown}
-            >
+            <DropdownDiv placement='right' id='transactions-filter-dropdown' visible={showDropDown}>
                 <DatePicker
                     pickerType='range'
+                    placement='right'
+                    verticlePlacement='bottom'
                     aria-label='Filter transactions'
                     placeholder={['Start', 'End']}
                     defaultValue={value}
