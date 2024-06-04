@@ -6,11 +6,22 @@
     padding: .75rem 1.25rem;
     box-sizing: border-box;
     width: 100%;
-    background-color: var(--window);
     z-index: 100;
+    background-color: var(--window);
+    position: relative;
+
+    &::after {
+        background-color: var(--btn-gray);
+        content: '';
+        inset: 0;
+        position: absolute;
+        z-index: -1;
+        opacity: .02;
+        backdrop-filter: blur(2px);
+    }
 
     &[data-size='extra-small'] {
-        background-color: var(--window-background-color);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
     }
 
     button {

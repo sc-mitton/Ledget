@@ -18,7 +18,7 @@ const OryFormWrapper = ({ children, onSubmit, flow, errMsg, email, setEmail }: O
     const navigate = useNavigate()
 
     return (
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} className={styles.loginAuthForm}>
             <div className={styles.email}>
                 <h3>
                     {searchParams.get('mfa')
@@ -42,8 +42,10 @@ const OryFormWrapper = ({ children, onSubmit, flow, errMsg, email, setEmail }: O
                         {searchParams.get('mfa') ? '' : email}
                     </BackButton>}
             </div>
-            {errMsg && <FormError msg={errMsg} />}
-            {children}
+            <div>
+                {errMsg && <FormError msg={errMsg} />}
+                {children}
+            </div>
             <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
         </form>
     )

@@ -164,7 +164,7 @@ export function withModal<P>(WrappedComponent: FC<P & { closeModal: () => void }
               {modalContainerTransitions((scaleStyles: any, item2: boolean) =>
                 item2 && (
                   <animated.div style={scaleStyles} ref={modalRef}>
-                    {hasExit &&
+                    {hasExit && !disableClose &&
                       <CloseButton
                         onClick={() => setCloseAll(true)}
                         aria-label="Close modal"

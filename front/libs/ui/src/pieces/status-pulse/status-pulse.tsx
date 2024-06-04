@@ -16,13 +16,13 @@ interface StatusPulseProps {
 export const StatusPulse = ({ positive, colorDefaultPositive = false, size = 'medium' }: StatusPulseProps) => (
   <>
     <div
-      className={styles.innerCircle}
+      className={[styles.innerCircle, styles.statusCircle].join(' ')}
       data-status={positive ? 'positive' : 'negative'}
       data-default={colorDefaultPositive ? 'positive' : 'negative'}
       data-size={size}
     />
     <div
-      className={styles.outerCircle}
+      className={[styles.outerCircle, styles.statusCircle].join(' ')}
       data-status={positive ? 'positive' : 'negative'}
       data-default={colorDefaultPositive ? 'positive' : 'negative'}
       data-size={size}

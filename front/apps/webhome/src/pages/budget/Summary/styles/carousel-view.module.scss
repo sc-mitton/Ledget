@@ -42,6 +42,11 @@ $gap: 2.75em;
 
         &>div:first-child {
             font-size: 2rem;
+            font-weight: 400;
+
+            * {
+                font-weight: 400;
+            }
         }
 
         &>div:last-child {

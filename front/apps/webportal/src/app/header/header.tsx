@@ -27,14 +27,14 @@ const Header = () => {
                 {splitPath[splitPath.length - 1] === 'register'
                     &&
                     <>
-                        {`${text.register}`}&nbsp;
+                        {screenSize !== 'extra-small' && `${text.register}`}&nbsp;
                         <Link to="/login" tabIndex={0} >Login</Link>
                     </>
                 }
                 {splitPath[splitPath.length - 1] === 'login'
                     &&
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                        {`${text.login}`}
+                        {screenSize !== 'extra-small' && `${text.login}`}
                         <GlossMiniCta
                             onClick={() => navigate('/register')}
                             aria-label="Sign Up"

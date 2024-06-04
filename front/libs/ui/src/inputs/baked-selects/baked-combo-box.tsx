@@ -83,6 +83,7 @@ export const BakedComboBox = (props: Omit<BakedSelectProps<string>, 'as'> & { sl
             <DropdownDiv
               placement="left"
               visible={open}
+              className={styles.dropdown}
               style={{
                 minWidth: `${inputRef?.current?.offsetWidth}px`,
                 maxWidth: props.buttonMaxWidth ? `${inputRef?.current?.offsetWidth}px` : 'none',

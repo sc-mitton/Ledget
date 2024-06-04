@@ -53,7 +53,8 @@ const BudgetSummary = () => {
                         <div id='slide-1'>
                             <div>
                                 <AnimatedDollarCents
-                                    value={loadingCategories || loadingBills ? 0 : Big(yearly_spent).add(monthly_spent).toNumber()}
+                                    // value={loadingCategories || loadingBills ? 0 : Big(yearly_spent).add(monthly_spent).toNumber()}
+                                    value={207452}
                                 />
                             </div>
                             <span>total spending</span>
@@ -95,7 +96,9 @@ const BudgetSummary = () => {
                                 {monthly_bills_paid + yearly_bills_paid}
                                 /{number_of_monthly_bills + number_of_yearly_bills}
                             </div>
-                            <span>bills paid</span>
+                            <div>
+                                <span>bills paid</span>
+                            </div>
                         </div>
                     </div>
                     <div className={styles.jumpLinks}>

@@ -31,9 +31,9 @@
     z-index: 0;
 }
 
-$outer-circle-negative: var(--negative-pulse-outer);
+$outer-circle-negative: rgba(var(--pulse-rgb), .4);
 $outer-circle-positive: var(--blue-light);
-$inner-circle-negative: var(--negative-pulse-inner);
+$inner-circle-negative: rgba(var(--pulse-rgb), 0.7);
 $inner-circle-positive: var(--blue-light-hover);
 
 @mixin pulse-styles($outerOrInner: inner) {
@@ -41,7 +41,7 @@ $inner-circle-positive: var(--blue-light-hover);
     @if $outerOrInner==inner {
 
         &[data-status='negative'] {
-            background: radial-gradient(circle at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 50%, $inner-circle-negative 80%);
+            background: radial-gradient(circle at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 30%, $inner-circle-negative 70%);
             opacity: .04;
             animation: status-pulse 4s ease-in-out infinite;
             animation-delay: .3s;
@@ -62,7 +62,7 @@ $inner-circle-positive: var(--blue-light-hover);
     @else if $outerOrInner ==outer {
 
         &[data-status='negative'] {
-            background: radial-gradient(circle at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 50%, $inner-circle-negative 80%);
+            background: radial-gradient(circle at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 50%, $outer-circle-negative 80%);
             opacity: .07;
             animation: status-pulse 4s ease-in-out infinite;
         }
@@ -211,7 +211,7 @@ $inner-circle-positive: var(--blue-light-hover);
         border: 1px solid var(--m-text);
         border-radius: 50%;
         font-size: .875rem;
-        font-weight: var(--fw-light);
+        font-weight: var(--fw-regular);
         padding: .25em;
         display: flex;
         align-items: center;

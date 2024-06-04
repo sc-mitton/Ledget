@@ -1,7 +1,19 @@
 .recoveryCodeFormContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+
     h2 {
         margin-bottom: .5em;
     }
+}
+
+.recoveryForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
 }
 
 .verificationButton {

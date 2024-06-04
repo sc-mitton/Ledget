@@ -13,13 +13,15 @@
     margin-left: -.375em;
     display: flex;
     align-items: center;
+    color: var(--mute-red);
 
     &[data-inside='true'] {
         margin-left: 0em;
     }
 
     svg {
-        height: .9em;
+        color: currentColor;
+        height: 1.1em;
         margin-left: .25em;
         margin-right: .3125em;
         position: relative;

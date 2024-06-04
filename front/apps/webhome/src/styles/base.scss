@@ -11,15 +11,21 @@
 
     /* Paddings */
     --input-padding: .525em 1em;
-    --window-padding: 1.5em;
+    --window-padding: 1em 1.5em;
     --window-padding-extra-small: 1em;
 }
 
 @import '@styles/animations.scss';
 
-
 *::-webkit-scrollbar {
     width: .25em;
+}
+
+@-moz-document url-prefix() {
+    * {
+        font-smooth: antialiased;
+        -moz-osx-font-smoothing: antialiased;
+    }
 }
 
 * {
@@ -63,7 +69,7 @@ td {
 
 p {
     font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
-    font-weight: var(--fw-light);
+    font-weight: var(--fw-regular);
     font-size: .875rem;
     color: var(--m-text);
     opacity: .8

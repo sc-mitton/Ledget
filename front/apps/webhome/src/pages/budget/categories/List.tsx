@@ -80,12 +80,12 @@ const CategoriesList = ({ period }: { period: Category['period'] }) => {
                     </Tooltip>
                 </div>
             </div>
-            <div className={styles[period]}>
+            <div className={period === 'month' ? styles.month : styles.year}>
                 <h4><DollarCents value={totalSpent} withCents={false} /></h4>
                 <span>spent of</span>
                 <h4><DollarCents value={totalLimit} withCents={false} /></h4>
             </div>
-            <div className={`${period}`}>
+            <div className={period === 'month' ? styles.month : styles.year} >
                 <ProgressBar progress={Big(totalSpent).div(Big(totalLimit || 1)).times(100).toNumber()} />
             </div>
             {isLoading

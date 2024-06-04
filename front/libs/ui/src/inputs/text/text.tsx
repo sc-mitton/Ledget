@@ -26,7 +26,7 @@ export const TextInputWrapper = forwardRef<HTMLDivElement, TextInputWrapperProps
 
   return (
     <div
-      className={textStyles.inputContainer}
+      className={[textStyles.inputContainer, className].join(' ')}
       data-slim={slim}
       data-focused={focused}
       ref={ref}
@@ -255,7 +255,6 @@ export const CityStateZipInputs = ({ errors, register, control, loading }: CityS
   )
 }
 
-
 interface PasswordProps extends React.HTMLProps<HTMLInputElement> {
   name?: string,
   inputType?: 'password' | 'confirm-password',
@@ -307,12 +306,13 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordProps>((props,
             {...rest}
           />
           {pwdInput && inputType != 'confirm-password' &&
-            <button
-              onClick={(e) => { e.preventDefault(); setVisible(!visible) }}
-              role='button'
+            <div
+              onClick={(e) => { setVisible(!visible) }}
+              className={passwordStyles.passwordVisibilityIcon}
+              tabIndex={0}
             >
               {visible ? <EyeOff size={'1.25em'} /> : <Eye size={'1.25em'} />}
-            </button>}
+            </div>}
           {error && (error.type === 'required' || error.msg?.includes('required'))
             && <FormErrorTip error={{ type: 'required' }} />}
         </TextInputWrapper>

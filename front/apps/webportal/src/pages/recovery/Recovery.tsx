@@ -100,7 +100,6 @@ const RecoverAccount = () => {
                 return (
                     <SlideMotionDiv
                         className={styles.recoveryCodeFormContainer}
-                        id="recovery-code-form-container"
                         key="recovery-code-form-container"
                         position={flow ? 'first' : 'fixed'}
                     >
@@ -123,7 +122,7 @@ const RecoverAccount = () => {
                     {renderPage()}
                 </AnimatePresence>
             </PortalWindow>
-        </div>
+        </div >
     )
 }
 

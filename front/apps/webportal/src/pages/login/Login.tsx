@@ -113,11 +113,11 @@ const Login = () => {
         if (devicesRefreshedSuccess) {
             if (searchParams.get('mfa')) {
                 const timeout = setTimeout(() => {
-                    window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
+                    // window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
                 }, 1000)
                 return () => clearTimeout(timeout)
             } else {
-                window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
+                // window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
             }
         }
     }, [devicesRefreshedSuccess])
@@ -140,7 +140,7 @@ const Login = () => {
             {!email && !searchParams.get('mfa')
                 ?
                 <SlideMotionDiv key="initial" position={flow ? 'first' : 'fixed'}>
-                    <PortalWindow size={screenSize}>
+                    <PortalWindow className={styles.loginInfoWindow}>
                         <EmailForm setEmail={setEmail} flow={flow} socialSubmit={submit} />
                         <div className={styles.recover} data-size={screenSize}>
                             <LinkArrowButton
@@ -162,7 +162,7 @@ const Login = () => {
                             key="password-login"
                             position={isCompleteSuccess ? 'first' : 'last'}
                         >
-                            <PortalWindow size={screenSize}>
+                            <PortalWindow>
                                 <OryFormWrapper {...oryFormArgs}>
                                     <Password />
                                     <input type="hidden" name="identifier" value={email || ''} />
@@ -174,7 +174,7 @@ const Login = () => {
                     {/* Totp 2nd Factor */}
                     {searchParams.get('mfa') === 'totp' &&
                         <SlideMotionDiv key='mfa-totp' position={'last'} className={styles.fullScreen}>
-                            <PortalWindow size={screenSize}>
+                            <PortalWindow>
                                 <OryFormWrapper {...oryFormArgs}>
                                     <TotpMfa finished={devicesRefreshedSuccess} />
                                 </OryFormWrapper>
@@ -185,7 +185,7 @@ const Login = () => {
                     {/* Recovery Code 2nd Factor */}
                     {searchParams.get('mfa') === 'lookup_secret' &&
                         <SlideMotionDiv key='lookup-secret' position={'last'} className={styles.fullScreen}>
-                            <PortalWindow size={screenSize}>
+                            <PortalWindow>
                                 <OryFormWrapper {...oryFormArgs}>
                                     <LookupSecretMfa finished={devicesRefreshedSuccess} />
                                 </OryFormWrapper>

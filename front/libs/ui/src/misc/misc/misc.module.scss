@@ -81,10 +81,11 @@
         opacity: 0;
         visibility: hidden;
     }
-}
 
-.cents {
-    font-size: .75em;
+    // cents
+    &>span:nth-of-type(2) {
+        font-size: .875em;
+    }
 }
 
 .slots {

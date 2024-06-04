@@ -23,6 +23,7 @@ import {
   CreateBill,
   ForceVerification,
   OnboardingModal,
+  AccountErrorModal
 } from '@modals/index'
 import { useGetMeQuery } from '@features/userSlice'
 import {
@@ -105,6 +106,8 @@ const App = () => {
       window.location.href = import.meta.env.VITE_CHECKOUT_REDIRECT
     } else if (user.account.subscription_status === 'past_due') {
       navigate('/settings/profile/update-payment')
+    } else if (user.account.service_provisioned_until < new Date().getTime() / 1000) {
+      navigate('/budget/error')
     }
   }, [user])
 
@@ -122,6 +125,7 @@ const App = () => {
               <Route path="budget" element={<Budget />} >
                 <Route path="new-category" element={<CreateCategory />} />
                 <Route path="new-bill" element={<CreateBill />} />
+                <Route path="error" element={<AccountErrorModal />} />
               </Route>
               <Route path="accounts/*" element={<Accounts />} />
               <Route path="settings/*" element={<Profile />} />

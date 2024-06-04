@@ -8,7 +8,6 @@ import { PasskeyInfoModal } from '@modals/index'
 import {
     SlideMotionDiv,
     PortalWindow,
-    useScreenContext,
 } from "@ledget/ui"
 import { useFlow } from '@ledget/ory'
 import {
@@ -26,7 +25,6 @@ function SignUp() {
         'registration'
     )
     const { isCompleteSuccess, errId } = flowStatus
-    const { screenSize } = useScreenContext()
 
     const [searchParams] = useSearchParams()
     const [userInfo, setUserInfo] = useState({})
@@ -61,7 +59,7 @@ function SignUp() {
                 {Object.keys(userInfo).length === 0
                     ?
                     <SlideMotionDiv key="sign-up" position={flow ? 'first' : 'fixed'}>
-                        <PortalWindow size={screenSize}>
+                        <PortalWindow>
                             <UserInfoWindow
                                 setUserInfo={setUserInfo}
                                 flow={flow}
@@ -72,7 +70,7 @@ function SignUp() {
                     </SlideMotionDiv>
                     :
                     <SlideMotionDiv key="authenticate" position={'last'}>
-                        <PortalWindow size={screenSize}>
+                        <PortalWindow>
                             <AuthSelectionWindow
                                 flow={flow}
                                 submit={submit}

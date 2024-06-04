@@ -9,6 +9,10 @@ export const Window = styled.div<{ size?: string }>`
   box-shadow: ${props => props.size === 'extra-small' ? 'none' : 'var(--window-drop-shadow)'};
   padding: var(--window-padding);
   background: var(--window-background);
+
+  @-moz-document url-prefix() {
+    background: var(--window);
+  }
 `
 
 export const UnPaddedWindow = styled(Window)`
@@ -16,7 +20,7 @@ export const UnPaddedWindow = styled(Window)`
   background: ${props => props.size === 'extra-small' ? 'transparent' : 'var(--window-background)'};
 `
 
-export const PortalWindow = styled.div<{ size?: string, maxWidth?: number }>`
+const StyledPortalWindow = styled.div<{ size?: string, maxWidth?: number }>`
   font-size: .875rem;
   border-radius: var(--border-radius3);
   border: 1.5px solid var(--window-border);
@@ -34,6 +38,15 @@ export const PortalWindow = styled.div<{ size?: string, maxWidth?: number }>`
   flex-direction: ${props => props.size === 'extra-small' ? 'column' : 'row'};
   justify-content: ${props => props.size === 'extra-small' ? 'space-between' : 'flex-start'};
 `
+
+export const PortalWindow = ({ children, maxWidth, ...rest }: React.HTMLAttributes<HTMLDivElement> & { maxWidth?: number }) => {
+  const { screenSize } = useScreenContext()
+  return (
+    <StyledPortalWindow {...rest} size={screenSize}>
+      {children}
+    </StyledPortalWindow>
+  )
+}
 
 export const MinimalPortalWindow = styled.div<{ size?: string, maxWidth?: number }>`
   border-radius: var(--border-radius3);

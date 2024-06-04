@@ -42,9 +42,7 @@ const EmailForm = ({ flow, setEmail, socialSubmit }: EmailFormProps) => {
 
     return (
         <>
-            <WindowHeader>
-                <h2>Sign in to Ledget</h2>
-            </WindowHeader>
+            <div><h2>Sign in to Ledget</h2></div>
             <form onSubmit={handleSubmit(submit)} className={styles.form}>
                 <div>
                     <PlainTextInput

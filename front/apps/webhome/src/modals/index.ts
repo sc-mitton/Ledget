@@ -21,4 +21,6 @@ export { default as EditBudgetBills } from './ViewBudgetBills'
 export { default as CategoryModal } from './CategoryModal'
 export { default as AddUserModal } from './AddUser'
 export { default as ConfirmRemoveCoOwner } from './ConfirmRemoveCoOwner'
+export { default as AccountErrorModal } from './AccountErrorModal'
+
 export * from './Bill'

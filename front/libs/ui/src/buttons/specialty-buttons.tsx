@@ -100,7 +100,7 @@ export const CloseButton = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HT
     )
 })
 
-export const BackButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { withText?: boolean }> = ({ children, withText = true, ...rest }) => (
+export const BackButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { withText?: boolean, text?: string }> = ({ children, text, withText = true, ...rest }) => (
     <div>
         <BaseButton className={styles.back} {...rest}>
             <svg width="20" height="20" viewBox="0 0 20 20">
@@ -113,7 +113,8 @@ export const BackButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & { withText
                         strokeLinecap="round" strokeLinejoin="round" fill="none" />
                 </g>
             </svg>
-            {withText && <span>back</span>}
+            {withText && !text && <span>back</span>}
+            {text && <span>{text}</span>}
             {children}
         </BaseButton>
     </div>

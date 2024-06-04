@@ -150,13 +150,8 @@ label:focus-visible {
 
 /* Override default browser styles */
 
-input:-webkit-autofill {
-    -webkit-box-shadow: inset 0 0 0px 9999px var(--input-background) !important;
-    background-color: none;
-    background-clip: content-box !important;
-    border: none;
-    font-size: 1rem;
-    outline: none;
+input {
+    all: unset;
 }
 
 input {
@@ -176,13 +171,38 @@ input:focus {
     outline: none;
 }
 
+input:autofill,
+input:indeterminate,
+input:enabled,
+input:valid,
+input::placeholder {
+    background-color: none;
+    border: none;
+    font-size: 1rem;
+    outline: none;
+    font-family: "Source Sans 3";
+    letter-spacing: var(--letter-spacing);
+    font-weight: var(--fw-regular);
+    color: var(--m-text);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill::first-line,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
-input:-webkit-autofill:active,
-input:-webkit-autofill::after {
-    border: none;
-    background-color: #fafafa !important;
+input:-webkit-autofill:active {
+    -webkit-box-shadow: inset 0 0 0px 9999px var(--input-background) !important;
+    background-color: transparent !important;
     background-clip: content-box !important;
+    border: none !important;
+    font-size: 1rem !important;
+    outline: none !important;
+    font-family: "Source Sans 3" !important;
+    letter-spacing: var(--letter-spacing) !important;
+    font-weight: var(--fw-regular) !important;
+    color: var(--m-text) !important;
+    caret-color: var(--m-text) !important;
+    -webkit-text-fill-color: var(--m-text) !important;
 }
 
 label {

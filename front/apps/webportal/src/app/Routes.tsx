@@ -36,7 +36,7 @@ function AnimatedRoutes() {
     return (
         <>
             <Header />
-            <main className={`main ${isDark ? 'dark' : 'light'}`}>
+            <main>
                 <MainDiv size={screenSize} dark={isDark}>
                     <AnimatePresence mode="wait">
                         <motion.div

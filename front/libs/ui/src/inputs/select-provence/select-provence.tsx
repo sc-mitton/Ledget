@@ -12,6 +12,5 @@ export const SelectProvence = ({ control, errors }: { control: Control, errors: 
     control={control}
     placement="left"
     options={provences}
-
   />
 )

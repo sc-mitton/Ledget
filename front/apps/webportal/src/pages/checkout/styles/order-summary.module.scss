@@ -21,11 +21,8 @@
             text-align: right;
 
             &:first-child {
+                color: var(--m-text-secondary);
                 padding-right: 1em;
-            }
-
-            &:last-child {
-                font-weight: var(--fw-regular);
             }
 
             &:last-child span {
