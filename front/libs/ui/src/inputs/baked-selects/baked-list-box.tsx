@@ -115,7 +115,6 @@ export const BakedListBox = <O extends Option | string>(props: BakedSelectProps<
   }, [props.options])
 
   const handleChange = (val: typeof props.defaultValue) => {
-    console.log('val !== value', val !== value)
     if (props.multiple || val !== value) {
       onChange(val)
     } else {

@@ -6,6 +6,7 @@ export const BaseButton = styled.button`
     justify-content: center;
     cursor: pointer;
     transition: all .3s ease;
+    border-radius: .25em;
 
     &:disabled {
         opacity: .5;

@@ -27,6 +27,19 @@
     font-size: 1rem;
     position: relative;
 
+    &:focus-within::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        width: 1.375em;
+        height: 1.375em;
+        box-shadow: var(--accessible-focus-drop-shadow);
+        z-index: -1;
+    }
+
     svg {
         position: relative;
         z-index: 0;

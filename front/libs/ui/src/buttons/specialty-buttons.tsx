@@ -84,6 +84,7 @@ export const CircleIconButton = forwardRef<HTMLButtonElement, ButtonHTMLAttribut
             className={[className, styles.circleIconButton].join(' ')}
             data-size={size}
             data-color={darker ? `${color}-darker` : color}
+            tabIndex={0}
             {...rest}
         >
             {props.children}

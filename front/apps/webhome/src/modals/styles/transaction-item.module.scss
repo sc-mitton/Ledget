@@ -143,46 +143,59 @@
 $maxHeight: 12.5em;
 
 .notesContainer {
-    position: relative;
-    overflow-x: visible;
-    margin-top: .375em;
-    box-sizing: border-box;
 
-    &[data-focused='true'] {
-        padding-bottom: 2em;
+    &>h4 {
+        color: var(--m-text-secondary);
     }
 
-    // Tooltip divs around delete and save buttons
-    &>div[role="tooltip"] {
-        z-index: 20;
-        position: absolute;
-        bottom: -.125em;
-        right: 0em;
-
-        &:not(:first-of-type) {
-            z-index: 20;
-            right: 2em;
-        }
-    }
-
-    span {
-        white-space: nowrap;
-    }
-
-    &>div:last-child {
-        overflow-y: auto;
+    &>div {
+        position: relative;
         overflow-x: visible;
-        padding-right: 1.125em;
-        width: 100%;
-        max-height: $maxHeight;
-        height: min-content;
-        display: flex;
-        flex-direction: column;
-        gap: .5em;
+        margin-top: .375em;
         box-sizing: border-box;
+        background-color: inherit;
 
         &[data-focused='true'] {
-            margin-bottom: 1.75em;
+            padding-bottom: 2em;
+        }
+
+        span {
+            white-space: nowrap;
+        }
+
+        &:focus-within {
+            outline: none;
+            box-shadow: none;
+
+            &>div:last-child>div[data-accessible-focused='true']::before {
+                content: '';
+                position: absolute;
+                width: .375em;
+                height: .375em;
+                border-radius: 50%;
+                right: 0em;
+                top: 50%;
+                transform: translateY(-50%);
+                background-color: var(--blue-medium);
+            }
+        }
+
+        &>div:last-child {
+            background-color: inherit;
+            overflow-y: auto;
+            overflow-x: visible;
+            padding-right: 1.125em;
+            width: 100%;
+            max-height: $maxHeight;
+            height: min-content;
+            display: flex;
+            flex-direction: column;
+            gap: .5em;
+            box-sizing: border-box;
+
+            &[data-focused='true'] {
+                margin-bottom: 1.75em;
+            }
         }
     }
 }
@@ -217,27 +230,14 @@ $maxHeight: 12.5em;
     position: relative;
     padding: .25em 0;
     display: flex;
-    color: var(--m-text-secondary);
     cursor: text;
 
     &[data-disabled='true'] {
         cursor: default;
     }
 
-    &[data-accessible-focused='true']::before {
-        content: '';
-        position: absolute;
-        width: .5em;
-        height: .5em;
-        border-radius: 50%;
-        background-color: var(--input-focus-dropshadow-color);
-        right: 0em;
-        top: 50%;
-        transform: translateY(-50%);
-    }
-
-    &[data-focused='false']:not(:last-child) {
-        @include table-dividers(-.25em, false);
+    &:not([data-focused='true']):not(:last-child) {
+        @include table-dividers($bottom: -.125em, $color: var(--border-color-dim));
     }
 
     textarea {
@@ -246,6 +246,7 @@ $maxHeight: 12.5em;
     }
 
     &[data-focused='true'] {
+        background-color: inherit;
         position: absolute;
         min-height: calc(100% - 1.5em);
         max-height: $maxHeight;

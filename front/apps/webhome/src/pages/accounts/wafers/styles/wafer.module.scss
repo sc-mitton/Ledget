@@ -19,6 +19,11 @@
     display: flex;
     flex-direction: column;
 
+    &:focus-within {
+        border-radius: inherit;
+        outline: none;
+    }
+
     &[data-styling='credit'] {
         &::before {
             content: '';

@@ -31,11 +31,12 @@ const fetch = keyframes`
 
 export const InfiniteScrollDiv = styled.div<{ animate?: boolean }>`
   overflow: hidden;
+  position: relative;
 
   &::after {
     content: '';
     position: absolute;
-    z-index: 1000;
+    z-index: 0;
     bottom: 0;
     left: 0;
     right: 0;

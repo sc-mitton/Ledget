@@ -3,7 +3,6 @@ export * from './containers/headers';
 export * from './containers/windows';
 export * from './misc/avatar/avatar';
 export * from './inputs/date-picker/date-picker';
-export * from './pieces/containers/AutoResizeTextArea';
 export * from './themes/use-bill-cat-tab-theme/use-bill-cat-tab-theme';
 export * from './themes/hooks/use-scheme-var/use-scheme-var';
 export * from './themes/color-schemed-div';
@@ -42,3 +41,5 @@ export * from './themes/ChartTip';
 export * from './utils/context/ScreenContext';
 export * from './pieces/error-banner/ErrorBanner';
 export * from './animations/dropdowndiv/dropdowndiv';
+
+export { default as TextArea } from './pieces/containers/AutoResizeTextArea';

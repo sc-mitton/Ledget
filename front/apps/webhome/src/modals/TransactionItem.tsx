@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 
 import Big from 'big.js'
 import { Menu } from '@headlessui/react'
@@ -31,7 +31,7 @@ import {
     CircleIconButton,
     Tooltip,
     IconButtonHalfGray,
-    AutoResizeTextArea,
+    TextArea,
     NestedWindow2,
     WindowCorner
 } from '@ledget/ui'
@@ -111,6 +111,39 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
     const textAreaRef = useRef<HTMLTextAreaElement>(null)
     const dirtyFields = useRef<{ [key: string]: boolean }>({})
 
+    const handler = useCallback((e: any) => {
+        if (e.key === 'Escape') {
+            e.stopPropagation()
+            setFocusedNoteId(undefined)
+            notesContainerRef.current?.blur()
+            notesContainerRef.current?.querySelector<HTMLTextAreaElement>(
+                `[data-focused='true']`)?.blur()
+        } else if (e.key === 'Enter') {
+            e.stopPropagation()
+            if (a11yNote === undefined) {
+                setFocusedNoteId('new')
+            } else {
+                setFocusedNoteId(notes.concat(notesToSend2Server).find((_, index) => index === a11yNote)?.id)
+            }
+            notesContainerRef.current?.querySelector<HTMLTextAreaElement>(
+                `[data-accessible-focused='true']`)?.focus()
+        } else if (e.key === 'ArrowUp') {
+            e.stopPropagation()
+            setA11yNote(prev => prev === 0
+                ? undefined
+                : prev === undefined ? undefined : Math.max(0, prev - 1))
+        } else if (e.key === 'ArrowDown') {
+            e.stopPropagation()
+            if (a11yNote === undefined) {
+                setA11yNote(0)
+            } else {
+                setA11yNote(prev => Math.min(notes.concat(notesToSend2Server).length - 1, prev! + 1))
+            }
+        } else {
+            return
+        }
+    }, [a11yNote])
+
     // As responses come from the server, there may possibily by
     // new notes that are backed up in the notesToSend2Server state
     // which need to be posted to the server
@@ -155,26 +188,6 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
         }
         // Unset dirtiness
         dirtyFields.current[noteId] = false
-    }
-
-    // Handle navigating between notes
-    const handleNoteAccessibleNav = (e: React.KeyboardEvent) => {
-        document.activeElement === notesContainerRef.current && e.preventDefault()
-        if (e.key === 'ArrowUp') {
-            setA11yNote(a11yNote === undefined ? notes.length - 1 : a11yNote - 1)
-        } else if (e.key === 'ArrowDown') {
-            setA11yNote(a11yNote === undefined ? 0 : a11yNote + 1)
-        } else if (e.key === 'Enter' && a11yNote !== undefined) {
-            setFocusedNoteId(notes.concat(notesToSend2Server).find((_, index) => index === a11yNote)?.id)
-            notesContainerRef.current?.querySelector<HTMLTextAreaElement>(
-                `[data-accessible-focused='true']`)?.focus()
-        } else if (e.key === 'Escape') {
-            e.stopPropagation()
-            setFocusedNoteId(undefined)
-            notesContainerRef.current?.blur()
-            notesContainerRef.current?.querySelector<HTMLTextAreaElement>(
-                `[data-focused='true']`)?.blur()
-        }
     }
 
     const handleTextAreaChange = (e: React.FormEvent<HTMLTextAreaElement>, noteId: string) => {
@@ -247,15 +260,14 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
     }
 
     return (
-        <NestedWindow2>
+
+        <NestedWindow2 className={styles.notesContainer}>
             <h4>{`Note${notes.length > 0 ? 's' : ''}`}</h4>
             <div
-                className={styles.notesContainer}
                 data-focused={Boolean(focusedNoteId)}
                 tabIndex={0}
+                onKeyDown={handler}
                 ref={notesContainerRef}
-                onKeyDown={handleNoteAccessibleNav}
-                onBlur={() => setA11yNote(undefined)}
             >
                 {focusedNoteId &&
                     <Tooltip msg={'Save'} ariaLabel={'save'} className={styles.noteButton}>
@@ -276,30 +288,35 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
                         </Tooltip></>}
                 <div>
                     {focusedNoteId &&
-                        <AutoResizeTextArea
-                            ref={textAreaRef}
+                        <TextArea>
+                            <TextArea.Area className={styles.noteContainer} data-focused={'true'}>
+                                <TextArea.Text
+                                    ref={textAreaRef}
+                                    defaultValue={notes.concat(notesToSend2Server)
+                                        .find(note => note.id === focusedNoteId)?.text}
+                                    onChange={(e) => handleTextAreaChange(e, focusedNoteId)}
+                                    onBlur={handleTextAreaBlur}
+                                    placeholder='Add a note...'
+                                    tabIndex={-1}
+                                    autoFocus
+                                />
+                            </TextArea.Area>
+                        </TextArea>}
+                    <TextArea>
+                        <TextArea.Area
                             className={styles.noteContainer}
-                            data-focused={true}
-                            defaultValue={notes.concat(notesToSend2Server)
-                                .find(note => note.id === focusedNoteId)?.text}
-                            onChange={(e) => handleTextAreaChange(e, focusedNoteId)}
-                            onBlur={handleTextAreaBlur}
-                            placeholder='Add a note...'
-                            tabIndex={-1}
-                            autoFocus
-                        />}
-                    <AutoResizeTextArea
-                        // Placeholder textarea to add a new note
-                        // Also a tracker for the new note to keep the sizing right
-                        divProps={{ onClick: () => setFocusedNoteId('new') }}
-                        className={styles.noteContainer}
-                        data-accessible-focused={a11yNote === 0}
-                        value={newNote?.text || ''}
-                        onChange={() => { }}
-                        placeholder='Add a note...'
-                        tabIndex={-1}
-                        readOnly
-                    />
+                            data-accessible-focused={a11yNote === undefined}
+                            onClick={() => { setFocusedNoteId('new') }}
+                        >
+                            <TextArea.Text
+                                value={newNote?.text || ''}
+                                onChange={() => { }}
+                                placeholder='Add a note...'
+                                tabIndex={-1}
+                                readOnly
+                            />
+                        </TextArea.Area>
+                    </TextArea>
                     {notes.concat(notesToSend2Server)
                         .sort((a, b) => new Date(b.datetime).getTime() - new Date(a.datetime).getTime())
                         .map((note, index) => (
