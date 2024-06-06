@@ -24,7 +24,7 @@ import { Ellipsis } from '@ledget/media'
 import { SplitTransactionInput } from '@components/split'
 import {
     DropdownDiv,
-    useAccessEsc,
+    useCloseDropdown,
     DropdownItem,
     SlideMotionDiv,
     useLoaded,
@@ -421,7 +421,7 @@ function CategoriesBillInnerWindow({ item, }: { item: Transaction }) {
         }
     }, [item])
 
-    useAccessEsc({
+    useCloseDropdown({
         refs: [buttonContainerRef, dropdownRef],
         visible: showBillCatSelect,
         setVisible: setShowBillCatSelect,

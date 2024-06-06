@@ -6,7 +6,7 @@ import { Plus } from '@geist-ui/icons'
 import styles from './styles/header.module.scss'
 import {
     CircleIconButton,
-    useAccessEsc,
+    useCloseDropdown,
     Tooltip,
     ExpandButton,
     useScreenContext,
@@ -36,7 +36,7 @@ const Header = ({ collapsed, setCollapsed, showCalendarIcon = false }:
         }
     }, [showCalendar])
 
-    useAccessEsc({
+    useCloseDropdown({
         refs: [dropdownRef, buttonRef],
         visible: showCalendar,
         setVisible: setShowCalendar,

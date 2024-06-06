@@ -3,55 +3,7 @@ import { useTransition, animated } from '@react-spring/web'
 
 import { CloseButton } from '../../buttons'
 import { useColorScheme } from '../../themes/hooks/use-color-scheme/use-color-scheme'
-
-
-interface I {
-  refs: React.RefObject<HTMLElement>[],
-  visible: boolean,
-  setVisible: (b: boolean) => void
-}
-
-export function useAccessEsc({ refs, visible, setVisible }: I) {
-  useEffect(() => {
-    const handleClick = (event: MouseEvent) => {
-      event.stopPropagation()
-
-      let shouldClose = true
-      for (const ref of refs) {
-        if ((event.target as any)?.ariaHasPopup) {
-          shouldClose = false
-          break
-        }
-        if (ref.current === null) {
-          shouldClose = false
-          break
-        }
-        if (ref.current && ref.current.contains(event.target as Node)) {
-          shouldClose = false
-          break
-        }
-      }
-
-      shouldClose && setVisible(false)
-    }
-
-    const handleEscape = (event: KeyboardEvent) => {
-      event.stopPropagation()
-      if (event.key === 'Escape') {
-        setVisible(false)
-      }
-    }
-
-    window.addEventListener('keydown', handleEscape)
-    window.addEventListener('mousedown', handleClick)
-
-    return () => {
-      window.removeEventListener('mousedown', handleClick)
-      window.removeEventListener('keydown', handleEscape)
-    }
-  }, [refs, visible, setVisible])
-}
-
+import { useCloseDropdown } from '../../utils/hooks'
 
 export interface WithModalI {
   onClose?: () => void
@@ -94,7 +46,7 @@ export function withModal<P>(WrappedComponent: FC<P & { closeModal: () => void }
     const modalRef = useRef<HTMLDivElement>(null)
     const { isDark } = useColorScheme()
 
-    useAccessEsc({
+    useCloseDropdown({
       refs: overLayExit ? [modalRef] : [],
       visible: closeAll,
       setVisible: () => !disableClose && setCloseAll(true),

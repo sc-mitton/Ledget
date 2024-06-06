@@ -9,7 +9,7 @@ import { HalfArrow } from '@ledget/media'
 import { TextInputWrapper } from '../text/text';
 import { Tooltip } from '../../pieces/tooltip/tooltip';
 import { IconButtonBlue, IconButtonHalfBlue, CircleIconButton } from '../../buttons';
-import { useAccessEsc } from '../../modal/with-modal/with-modal';
+import { useCloseDropdown } from '../../utils/hooks';
 import { useLoaded } from '../../utils/hooks';
 
 // Types
@@ -590,7 +590,7 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
   const endInputRef = useRef<HTMLInputElement>(null)
   const loaded = useLoaded(200)
 
-  useAccessEsc(props.dropdownVisible !== undefined && props.setDropdownVisible !== undefined
+  useCloseDropdown(props.dropdownVisible !== undefined && props.setDropdownVisible !== undefined
     ? { refs: [dropdownRef], visible: props.dropdownVisible, setVisible: props.setDropdownVisible }
     : { refs: [dropdownRef, inputContainerRef], visible: showPicker, setVisible: setShowPicker })
 

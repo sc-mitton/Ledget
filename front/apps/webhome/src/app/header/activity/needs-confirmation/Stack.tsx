@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState, useEffect, useRef } from 'react'
+import React, { useCallback, useState, useEffect, useRef } from 'react'
 
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useSpring, animated, useTransition, useSpringRef } from '@react-spring/web'
@@ -14,10 +14,9 @@ import {
     ExpandableContainer,
     ExpandButton,
     AbsPosMenu,
-    InfiniteScrollDiv,
     useLoaded,
     useColorScheme,
-    LoadingRingDiv
+    LoadingRingDiv,
 } from "@ledget/ui"
 import { setTransactionModal } from '@features/modalSlice'
 import { Category, isCategory, SplitCategory } from '@features/categorySlice'
@@ -87,7 +86,6 @@ export const NeedsConfirmationStack = () => {
             fetchTransactions({ month, year, offset: 0 }, true)
         }
     }, [month, year])
-
 
     const [containerProps, containerApi] = useSpring(() => ({
         position: 'relative',
@@ -315,7 +313,7 @@ export const NeedsConfirmationStack = () => {
             y: buttonRect.top - newItemsRef.current!.getBoundingClientRect().top - 12 || 0,
         })
         setFocusedItem(item)
-        setShowBillCatSelect(false)
+        setShowMenu(false)
     }, [])
 
     // Handle scrolling
@@ -333,7 +331,7 @@ export const NeedsConfirmationStack = () => {
             {tCountData?.count === 0 && isGetTransactionsCountSuccess
                 ? <ZeroConfig />
                 : <>
-                    <InfiniteScrollDiv
+                    <div
                         className={styles.newItems}
                         ref={newItemsRef}
                         onMouseLeave={() => flushConfirmedQue()}
@@ -363,63 +361,65 @@ export const NeedsConfirmationStack = () => {
                                 }
                             </animated.div >
                         </div>
-                        <AbsPosMenu
-                            show={showBillCatSelect}
-                            setShow={setShowBillCatSelect}
-                            pos={billCatSelectPos}
-                            topArrow={false}
-                        >
-                            <SelectCategoryBill
-                                includeCategories={true}
-                                includeBills={true}
-                                value={billCatSelectVal}
-                                onChange={setBillCatSelectVal}
-                                month={month}
-                                year={year}
-                            />
-                        </AbsPosMenu>
-                        <AbsPosMenu
-                            show={showMenu}
-                            setShow={setShowMenu}
-                            pos={menuPos}
-                        >
-                            <ItemOptions handlers={[
-                                () => {
-                                    focusedItem && dispatch(setTransactionModal({ item: focusedItem, splitMode: true }))
-                                },
-                                () => {
-                                    navigate({
-                                        pathname: '/budget/new-bill',
-                                        search: location.search,
-                                    }, {
-                                        state: {
-                                            period: 'month',
-                                            upper_amount: focusedItem?.amount,
-                                            name: focusedItem?.name,
-                                            day: dayjs(focusedItem?.datetime || focusedItem?.date).date()
-                                        },
-                                    }), setShowMenu(false)
-                                },
-                                () => {
-                                    navigate({
-                                        pathname: '/budget/new-bill',
-                                        search: location.search,
-                                    }, {
-                                        state: {
-                                            period: 'year',
-                                            upper_amount: focusedItem?.amount,
-                                            name: focusedItem?.name,
-                                            day: dayjs(focusedItem?.datetime || focusedItem?.date).date(),
-                                            month: dayjs(focusedItem?.datetime || focusedItem?.date).month() + 1
-                                        },
-                                    }), setShowMenu(false)
-                                },
-                                () => {
-                                    focusedItem && dispatch(setTransactionModal({ item: focusedItem }))
-                                },
-                            ]} />
-                        </AbsPosMenu>
-                    </InfiniteScrollDiv >
+                    </div >
+                    <AbsPosMenu
+                        show={showBillCatSelect}
+                        setShow={setShowBillCatSelect}
+                        pos={billCatSelectPos}
+                        topArrow={false}
+                        id='select-new-item-bill-category'
+                    >
+                        <SelectCategoryBill
+                            includeCategories={true}
+                            includeBills={true}
+                            value={billCatSelectVal}
+                            onChange={setBillCatSelectVal}
+                            month={month}
+                            year={year}
+                        />
+                    </AbsPosMenu>
+                    <AbsPosMenu
+                        show={showMenu}
+                        setShow={setShowMenu}
+                        pos={menuPos}
+                        id='new-item-menu'
+                    >
+                        <ItemOptions handlers={[
+                            () => {
+                                focusedItem && dispatch(setTransactionModal({ item: focusedItem, splitMode: true }))
+                            },
+                            () => {
+                                navigate({
+                                    pathname: '/budget/new-bill',
+                                    search: location.search,
+                                }, {
+                                    state: {
+                                        period: 'month',
+                                        upper_amount: focusedItem?.amount,
+                                        name: focusedItem?.name,
+                                        day: dayjs(focusedItem?.datetime || focusedItem?.date).date()
+                                    },
+                                }), setShowMenu(false)
+                            },
+                            () => {
+                                navigate({
+                                    pathname: '/budget/new-bill',
+                                    search: location.search,
+                                }, {
+                                    state: {
+                                        period: 'year',
+                                        upper_amount: focusedItem?.amount,
+                                        name: focusedItem?.name,
+                                        day: dayjs(focusedItem?.datetime || focusedItem?.date).date(),
+                                        month: dayjs(focusedItem?.datetime || focusedItem?.date).month() + 1
+                                    },
+                                }), setShowMenu(false)
+                            },
+                            () => {
+                                focusedItem && dispatch(setTransactionModal({ item: focusedItem }))
+                            },
+                        ]} />
+                    </AbsPosMenu>
                     <ExpandableContainer
                         className={styles.newItemsExpandButtonContainer}
                         expanded={unconfirmedTransactions ? unconfirmedTransactions?.length > 1 : false}>

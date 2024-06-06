@@ -22,7 +22,7 @@ const Trend = () => {
                 accounts: accounts?.map(account => account.account_id)
             }, true)
         }
-    }, [location.pathname])
+    }, [location.pathname, accounts])
 
     const total = useMemo(() =>
         accountBalanceTrend?.trends

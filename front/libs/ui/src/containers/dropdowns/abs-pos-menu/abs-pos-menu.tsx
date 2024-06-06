@@ -1,24 +1,36 @@
 import React, { useEffect, useRef } from 'react'
 
 import { DropdownDiv } from '@ledget/ui'
-import { useClickClose } from '../../../utils/hooks'
+import { useCloseDropdown } from '../../../utils/hooks'
 import styles from './abs-pos-menu.module.scss'
 
-export const AbsPosMenu = ({ pos, show, setShow, topArrow = true, children }:
+export const AbsPosMenu = ({ pos, show, setShow, topArrow = true, id, children }:
   {
     pos: { x: number, y: number } | undefined,
     show: boolean,
     setShow: (show: boolean) => void,
     topArrow?: boolean,
     children: React.ReactNode
+    id?: string
   }) => {
   const menuRef = useRef<HTMLDivElement>(null)
+  const cachedPos = useRef<{ x: number, y: number } | undefined>(undefined)
 
-  useClickClose({
+  useCloseDropdown({
     refs: [menuRef],
     visible: show,
     setVisible: setShow,
+    controllerId: id ? id : []
   })
+
+  useEffect(() => {
+    if (!cachedPos.current) {
+      cachedPos.current = pos
+    } else if (pos?.x === cachedPos.current.x && pos.y === cachedPos.current.y) {
+      setShow(false)
+      cachedPos.current = undefined
+    }
+  }, [pos])
 
   useEffect(() => {
     if (!menuRef.current && pos) { setShow(true) }
@@ -45,8 +57,9 @@ export const AbsPosMenu = ({ pos, show, setShow, topArrow = true, children }:
       style={{
         position: 'absolute',
         top: pos ? pos.y + 32 : 0,
-        left: pos ? pos.x : 0,
+        left: pos ? pos.x + 13 : 0,
       }}
+      id={id}
     >
       <DropdownDiv
         placement={'right'}

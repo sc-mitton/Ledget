@@ -5,7 +5,7 @@ import Big from "big.js"
 import { Listbox } from '@headlessui/react'
 
 import styles from './styles/account-selector.module.scss'
-import { DollarCents, BlueWindow, useAccessEsc, } from "@ledget/ui"
+import { DollarCents, BlueWindow, useCloseDropdown, } from "@ledget/ui"
 import { InsitutionLogo } from '@components/pieces'
 import { Account, } from "@features/accountsSlice"
 import { useAccountsContext } from '../context'
@@ -51,7 +51,7 @@ const AccountSelector = () => {
         setSelectedAccount(accounts?.find(account => account.account_id === searchParams.get('account')))
     }, [location.pathname, accounts])
 
-    useAccessEsc({
+    useCloseDropdown({
         refs: [buttonRef, containerRef],
         visible: open,
         setVisible: setOpen

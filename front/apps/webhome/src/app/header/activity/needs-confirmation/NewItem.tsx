@@ -87,6 +87,7 @@ const NewItem: FC<{
                     aria-label="Choose budget category"
                     tabIndex={tabIndex}
                     onClick={(e) => { onBillCat(e, item) }}
+                    aria-controls={'select-new-item-bill-category'}
                 />
                 <Tooltip
                     msg="Confirm"
@@ -106,6 +107,7 @@ const NewItem: FC<{
                     onClick={(e) => { onEllipsis(e, item) }}
                     aria-label="More options"
                     aria-haspopup="menu"
+                    aria-controls={'new-item-menu'}
                 >
                     <Ellipsis />
                 </NarrowButton>

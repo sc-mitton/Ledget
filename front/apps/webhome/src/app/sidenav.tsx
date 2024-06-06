@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import { useNavigate, useLocation } from 'react-router-dom'
 import { animated } from '@react-spring/web'
-import { DollarSign, BarChart2, Settings, ChevronDown, User, Link, Shield } from '@geist-ui/icons'
+import { DollarSign, Home, Settings, ChevronDown, User, Link, Shield } from '@geist-ui/icons'
 
 import styles from './styles/sidenav.module.scss'
 import { Institution, Hamburger, LedgetLogo } from '@ledget/media'
@@ -11,7 +11,7 @@ import {
     useScreenContext,
     useColorScheme,
     useSchemeVar,
-    useAccessEsc,
+    useCloseDropdown,
 } from '@ledget/ui'
 
 const SubSettingsSidebar = () => {
@@ -87,8 +87,8 @@ const Nav = () => {
             <ul ref={ulRef} role='menu'>
                 <li data-current={location.pathname === '/' ? "page" : ''}>
                     <a onClick={() => { }} aria-disabled>
-                        <BarChart2 className='icon' />
-                        <span>Stats</span>
+                        <Home className='icon' />
+                        <span>Home</span>
                     </a>
                 </li>
                 <li data-current={location.pathname.includes('budget') ? "page" : ''}>
@@ -133,7 +133,7 @@ const Sidebar = () => {
     const location = useLocation()
     const { isDark } = useColorScheme()
 
-    useAccessEsc({
+    useCloseDropdown({
         visible: open,
         setVisible: setOpen,
         refs: [buttonRef, hidingSidebarRef]

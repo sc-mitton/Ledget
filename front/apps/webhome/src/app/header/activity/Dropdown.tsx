@@ -4,7 +4,7 @@ import { Activity, Filter } from '@geist-ui/icons'
 import { Tab } from '@headlessui/react'
 
 import styles from './dropdown.module.scss'
-import { DropdownDiv, useAccessEsc, RefreshButton2, IconButtonHalfGray, Tooltip, TabNavListUnderlined } from '@ledget/ui'
+import { DropdownDiv, useCloseDropdown, RefreshButton2, IconButtonHalfGray, Tooltip, TabNavListUnderlined } from '@ledget/ui'
 import { CheckAll } from '@ledget/media'
 import { selectNotificationsTabIndex, setNotificationsTabIndex } from '@features/uiSlice'
 import { useGetTransactionsCountQuery, useTransactionsSyncMutation } from '@features/transactionsSlice'
@@ -32,7 +32,7 @@ const ActivityDropdown = (props: HTMLProps<HTMLDivElement>) => {
     const notificationTabIndex = useAppSelector(selectNotificationsTabIndex)
     const [tabIndex, setTabIndex] = useState(notificationTabIndex)
 
-    useAccessEsc({
+    useCloseDropdown({
         refs: [dropdownRef, buttonRef],
         visible: showDropdown,
         setVisible: setShowDropdown,

@@ -16,7 +16,7 @@ import { Search, ChevronDown } from '@geist-ui/icons'
 import styles from './styles/select-category-bill.module.scss'
 import { Category, useLazyGetCategoriesQuery } from '@features/categorySlice'
 import { Bill, useLazyGetBillsQuery } from '@features/billSlice'
-import { LoadingRingDiv, DropdownDiv, useAccessEsc, BillCatLabel } from '@ledget/ui'
+import { LoadingRingDiv, DropdownDiv, useCloseDropdown, BillCatLabel } from '@ledget/ui'
 import { useAppSelector } from '@hooks/store'
 import { selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
 
@@ -202,7 +202,7 @@ export const FullSelectCategoryBill =
             }
         }, [value])
 
-        useAccessEsc({
+        useCloseDropdown({
             refs: [dropdownRef, buttonRef],
             visible: showBillCatSelect,
             setVisible: setShowBillCatSelect
