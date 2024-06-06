@@ -4,16 +4,21 @@ import List from './List'
 import styles from './styles.module.scss'
 import Sort from '../Sort'
 
-const ColumnView = () => (
-    <div className={styles.columns}>
-        <Window>
-            <List period='month' />
-        </Window>
-        <Window>
-            <List period='year' />
-        </Window>
-    </div>
-)
+import { useScreenContext } from '@ledget/ui'
+
+const ColumnView = () => {
+    const { screenSize } = useScreenContext()
+    return (
+        <div className={styles.columns} data-size={screenSize}>
+            <Window>
+                <List period='month' />
+            </Window>
+            <Window>
+                <List period='year' />
+            </Window>
+        </div>
+    )
+}
 
 const SpendingCategories = () => (
     <div className={styles.container}>

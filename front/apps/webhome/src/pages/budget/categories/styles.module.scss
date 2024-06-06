@@ -19,8 +19,13 @@ $background: var(--window);
     gap: 2.25rem;
     padding: 1em 0;
     height: calc(100% - 1.75em);
-    overflow-x: scroll;
     scrollbar-width: none;
+    max-width: 100%;
+
+    &[data-size='small'],
+    &[data-size='extra-small'] {
+        overflow-x: auto;
+    }
 
     &>div {
         flex: 1;

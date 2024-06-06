@@ -35,12 +35,15 @@
                 gap: .5em;
                 align-items: center;
             }
+
+            h1 * {
+                font-weight: var(--fw-bold);
+            }
         }
 
         h4 {
             white-space: nowrap;
             font-weight: var(--fw-regular);
-            color: var(--m-text-secondary);
         }
     }
 

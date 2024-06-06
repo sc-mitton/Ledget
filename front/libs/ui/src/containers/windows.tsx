@@ -7,7 +7,7 @@ export const Window = styled.div<{ size?: string }>`
   border: 1.25px solid var(--window-border);
 
   box-shadow: ${props => props.size === 'extra-small' ? 'none' : 'var(--window-drop-shadow)'};
-  padding: var(--window-padding);
+  padding: 1em 1.5em;
   background: var(--window-background);
 
   @-moz-document url-prefix() {
@@ -58,7 +58,7 @@ export const MinimalPortalWindow = styled.div<{ size?: string, maxWidth?: number
 export const Window2 = styled.div`
   border-radius: var(--border-radius3);
   box-shadow: var(--window-drop-shadow);
-  padding: var(--window-padding);
+  padding: 1em 1.5em;
   box-sizing: border-box;
   background: var(--window2);
 `
@@ -66,7 +66,7 @@ export const Window2 = styled.div`
 export const BlueWindow = styled.div`
   border-radius: var(--border-radius3);
   box-shadow: var(--window-drop-shadow);
-  padding: var(--window-padding);
+  padding: 1.25em 1.5em;
   box-sizing: border-box;
   background: var(--blue-window-background);
 `

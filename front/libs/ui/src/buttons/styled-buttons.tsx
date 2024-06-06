@@ -78,7 +78,8 @@ export const PrimaryTextButton = styled(PrimaryButton)`
     }
 `
 export const IconButtonHalfBlue = styled(BaseButton)`${hoverHalfBlueText}`
-export const IconButtonHalfGray = styled(BaseButton)`${clearGray} border-radius: .375em; padding: .125em;`
+export const IconButtonHalfGray = styled(BaseButton)`
+    ${clearGray} border-radius: .375em; padding: .125em;`
 export const IconButtonBlue = styled(BaseButton)`${hoverBlueText}`
 
 export const FadedIconButton = styled(BaseButton)`

@@ -75,6 +75,7 @@ $web-focused-width: 90%;
     position: relative;
     z-index: 100;
     width: 100%;
+    max-width: 60vw;
 
     &>div {
         margin: 1.75em 0 .75em 0;

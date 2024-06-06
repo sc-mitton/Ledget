@@ -15,7 +15,5 @@
         font-size: 1rem;
     }
 
-    &>div span:not([role='tooltip']) {
-        color: var(--m-text-secondary);
-    }
+    &>div span:not([role='tooltip']) {}
 }

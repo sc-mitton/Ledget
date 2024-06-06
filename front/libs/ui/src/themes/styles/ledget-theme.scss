@@ -155,10 +155,10 @@
         --m-header-text: hsl(0, 0%, 100%);
         --m-text: hsl(0, 0%, 100%);
         --m-invert-text: hsl(0, 0%, 10%);
-        --m-text-secondary: color-mix(in srgb, var(--m-text), black 40%);
-        --m-text-tirtiary: color-mix(in srgb, var(--m-text), black 50%);
-        --m-text-quaternary: color-mix(in srgb, var(--m-text), black 60%);
-        --m-text-quinary: color-mix(in srgb, var(--m-text), black 70%);
+        --m-text-secondary: color-mix(in srgb, var(--m-text), black 27%);
+        --m-text-tirtiary: color-mix(in srgb, var(--m-text), black 40%);
+        --m-text-quaternary: color-mix(in srgb, var(--m-text), black 50%);
+        --m-text-quinary: color-mix(in srgb, var(--m-text), black 60%);
 
         --input-placeholder: hsl(0, 0%, 66%);
         --input-placeholder2: rgb(115, 115, 117);
@@ -186,7 +186,7 @@
         --default-pill-background: hsl(0, 0%, 21%);
         --default-tab-background: hsl(0, 0%, 13%);
 
-        --switch-crib-enabled: var(--blue-light);
+        --switch-crib-enabled: var(--blue-light-hover);
         --switch-crib-disabled: var(--btn-medium-gray);
         --switch-pill-enabled: var(--blue-sat-hover);
         --switch-pill-disabled: var(--btn-gray-hover);
@@ -253,16 +253,17 @@
 
         // Budget Item Pallet
         --monthly-background-color: hsl(var(--monthly-h), 80%, 92%);
+        --col: rgb(218, 226, 251);
         --monthly-hover-background-color: hsl(var(--monthly-h), 80%, 85%);
         --monthly-background-color-darker: hsl(var(--monthly-h), 80%, 73%);
-        --monthly-color1: hsl(var(--monthly-h), 50%, 50%);
-        --monthly-color2: hsl(var(--monthly-h), 50%, 40%);
+        --monthly-color1: hsl(var(--monthly-h), 50%, 40%);
+        --monthly-color2: hsl(var(--monthly-h), 50%, 70%);
 
         --yearly-background-color: hsl(var(--yearly-h), 50%, 88%);
         --yearly-hover-background-color: hsl(var(--yearly-h), 40%, 80%);
         --yearly-background-color-darker: hsl(var(--yearly-h), 40%, 60%);
         --yearly-color1: hsl(var(--yearly-h), 50%, 40%);
-        --yearly-color2: hsl(var(--yearly-h), 50%, 30%);
+        --yearly-color2: hsl(var(--yearly-h), 30%, 60%);
 
         // Blue Green Pallet
         --blue-light: hsl(var(--blue-h), 70%, 90%);
@@ -386,7 +387,7 @@
         --btn-feather-light-gray: hsl(var(--steel-blue-h), var(--steel-blue-s), 94%);
         --btn-feather-light-gray-hover: hsl(var(--steel-blue-h), var(--steel-blue-s), 88%);
         --btn-light-gray: hsl(var(--steel-blue-h), var(--steel-blue-s), 90%);
-        --btn-light-gray-hover: hsl(var(--steel-blue-h), var(--steel-blue-s), 86%);
+        --btn-light-gray-hover: hsl(var(--steel-blue-h), var(--steel-blue-s), 84%);
         --btn-medium-gray: hsl(var(--steel-blue-h), var(--steel-blue-s), 80%);
         --btn-medium-gray-hover: hsl(var(--steel-blue-h), var(--steel-blue-s), 75%);
         --btn-gray: hsl(var(--steel-blue-h), var(--steel-blue-s), 50%);

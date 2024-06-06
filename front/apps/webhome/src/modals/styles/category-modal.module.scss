@@ -24,7 +24,6 @@
             width: .5em;
             height: .5em;
             border-radius: 50%;
-            background-color: var(--m-background-secondary);
             z-index: -1;
         }
     }
@@ -37,7 +36,7 @@
 }
 
 .month {
-    ::after {
+    &::after {
         background-color: var(--monthly-background-color-darker);
     }
 }

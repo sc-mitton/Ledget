@@ -6,7 +6,7 @@
         position: absolute;
         width: var(--progress);
         content: '';
-        height: 3px;
+        height: 2px;
         left: 1px;
         right: 1px;
         border-radius: 2em;
@@ -14,21 +14,20 @@
         top: 50%;
         transform: translateY(-50%);
         z-index: 1;
-        background: linear-gradient(to right, color-mix(in srgb, currentColor, var(--m-invert-text)40%), currentColor);
+        background-color: currentColor;
     }
 
     &::after {
         position: absolute;
         width: 100%;
         content: '';
-        height: 3px;
+        height: 2px;
         border-radius: 2em;
         bottom: 0;
         top: 50%;
         transform: translateY(-50%);
         opacity: .4;
         z-index: 0;
-        background-color: var(--btn-light-gray);
-        border: 1px solid var(--btn-light-gray-hover);
+        background-color: currentColor;
     }
 }
