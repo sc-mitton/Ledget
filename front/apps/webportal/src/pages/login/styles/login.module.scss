@@ -51,7 +51,7 @@
         flex-grow: 1
     }
 
-    &>div:last-child {
+    &>div:nth-last-child(2) {
         flex-grow: 1;
     }
 }

@@ -1,3 +1,24 @@
+.legalLinks {
+    position: absolute;
+    bottom: .5em;
+    display: flex;
+    align-items: center;
+
+    a {
+        font-size: .75rem;
+        opacity: .3;
+        text-decoration: none;
+        transition: all .2s;
+        font-weight: var(--fw-bold);
+        white-space: nowrap;
+
+        &:hover {
+            opacity: .7;
+            transition: all .2s;
+        }
+    }
+}
+
 .hidingSidebar {
     display: flex;
     position: absolute;

@@ -37,12 +37,22 @@ body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+
+
 }
 
 main {
     overflow-y: auto;
     overflow-x: hidden;
     background: var(--gradient-window-background);
+
+    &::after {
+        position: fixed;
+        inset: 0;
+        content: "";
+        background: var(--window-background-color-portal);
+        z-index: -1;
+    }
 }
 
 body {
@@ -105,46 +115,15 @@ button:focus-visible {
     box-shadow: var(--accessible-focus-drop-shadow);
 }
 
-a {
-    outline: none;
-    text-decoration: none;
-    border-bottom: 1px solid var(--m-text-secondary);
-    text-decoration-skip-ink: none;
-    text-underline-offset: 1.75px;
-    cursor: pointer;
-    position: relative;
-}
-
-a::before {
-    content: "";
-    display: block;
-    height: 1px;
-    background-color: var(--m-text);
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 100%;
-    transform: scaleX(0);
-    transition: transform .2s ease-in-out;
-    transition-delay: .1s;
-    transform-origin: bottom right;
-}
-
-a:focus-visible::before,
-a:hover::before {
-    transform: scaleX(1);
-    transform-origin: bottom left;
-    background-color: var(--m-text);
-    transition: transform .2s ease-in-out;
-    transition-delay: .2s;
-}
-
 label:focus-visible {
     outline: none;
     box-shadow: var(--accessible-focus-drop-shadow);
     border-radius: var(--border-radius1);
 }
 
+a {
+    text-decoration: none;
+}
 
 /* *** */
 

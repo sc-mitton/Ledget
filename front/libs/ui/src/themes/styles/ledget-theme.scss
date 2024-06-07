@@ -98,7 +98,7 @@
         --window-s: 3%;
 
         --window-rgb: 28, 28, 28;
-        --window: hsl(var(--window-h), var(--window-s), 8%);
+        --window: hsl(var(--window-h), var(--window-s), 7%);
         --window-background: linear-gradient(to bottom, var(--window), hsl(var(--window-h), var(--window-s), 7%));
         --window-portal: hsl(var(--window-h), var(--window-s), 9%);
         --window2: hsl(var(--window-h), calc(var(--window-s) + 10%), 10%);

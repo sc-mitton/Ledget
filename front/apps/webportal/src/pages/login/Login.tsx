@@ -25,6 +25,7 @@ import {
     Password,
     TotpMfa
 } from "./Auth"
+import { LegalLinks } from "@components/index"
 
 const Login = () => {
     const [searchParams, setSearchParams] = useSearchParams()
@@ -151,6 +152,7 @@ const Login = () => {
                             </LinkArrowButton>
                         </div>
                         <WindowLoadingBar visible={[isGettingFlow, isCompletingFlow, isRefreshingDevices].some(Boolean)} />
+                        <LegalLinks />
                     </PortalWindow>
                 </SlideMotionDiv>
                 :
@@ -168,6 +170,7 @@ const Login = () => {
                                     <input type="hidden" name="identifier" value={email || ''} />
                                 </OryFormWrapper>
                                 <WindowLoadingBar visible={[isGettingFlow, isCompletingFlow, isRefreshingDevices].some(Boolean)} />
+                                <LegalLinks />
                             </PortalWindow>
                         </SlideMotionDiv>
                     }
@@ -179,6 +182,7 @@ const Login = () => {
                                     <TotpMfa finished={devicesRefreshedSuccess} />
                                 </OryFormWrapper>
                                 <WindowLoadingBar visible={[isGettingFlow, isCompletingFlow, isRefreshingDevices].some(Boolean)} />
+                                <LegalLinks />
                             </PortalWindow>
                         </SlideMotionDiv>
                     }
@@ -190,6 +194,7 @@ const Login = () => {
                                     <LookupSecretMfa finished={devicesRefreshedSuccess} />
                                 </OryFormWrapper>
                                 <WindowLoadingBar visible={[isGettingFlow, isCompletingFlow, isRefreshingDevices].some(Boolean)} />
+                                <LegalLinks />
                             </PortalWindow>
                         </SlideMotionDiv>
                     }

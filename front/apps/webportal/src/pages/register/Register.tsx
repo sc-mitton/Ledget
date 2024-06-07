@@ -10,6 +10,7 @@ import {
     PortalWindow,
 } from "@ledget/ui"
 import { useFlow } from '@ledget/ory'
+import { LegalLinks } from "@components/index"
 import {
     useLazyGetRegistrationFlowQuery,
     useCompleteRegistrationFlowMutation
@@ -66,6 +67,7 @@ function SignUp() {
                                 submit={submit}
                                 flowStatus={flowStatus}
                             />
+                            <LegalLinks />
                         </PortalWindow>
                     </SlideMotionDiv>
                     :
@@ -78,6 +80,7 @@ function SignUp() {
                                 userInfo={userInfo}
                                 setUserInfo={setUserInfo}
                             />
+                            <LegalLinks />
                         </PortalWindow>
                     </SlideMotionDiv>
                 }

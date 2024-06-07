@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, Link as RouterLink } from 'react-router-dom'
 import { animated } from '@react-spring/web'
 import { DollarSign, Home, Settings, ChevronDown, User, Link, Shield } from '@geist-ui/icons'
 
@@ -43,6 +43,13 @@ const SubSettingsSidebar = () => {
         </ul>
     )
 }
+
+const LegalLinks = () => (
+    <div className={styles.legalLinks}>
+        <RouterLink to={`${import.meta.env.VITE_LANDING}/privacy-policy`}>Privacy</RouterLink>
+        <RouterLink to={`${import.meta.env.VITE_LANDING}/terms-of-service`}>Terms</RouterLink>
+    </div>
+)
 
 const Nav = () => {
 
@@ -121,6 +128,7 @@ const Nav = () => {
                     <SubSettingsSidebar />}
                 <animated.span style={props} />
             </ul>
+            <LegalLinks />
         </nav>
     )
 }

@@ -7,14 +7,15 @@ import '../styles/globals.scss';
   <head>
     <meta
       http-equiv="Content-Security-Policy"
-      content="
+      content=`
         default-src 'self';
-        script-src 'self' ledget.app localhost:4321 'sha256-OuwM78SJYm/zsc4rWhl8ZTRGO/1T/SE5TtELSFU0mEE=' 'sha256-C+MFT9uMJPIBROzgRJWxmbJwinQwPQcN4v02Ao5gdvA=';
+        script-src 'self' 'unsafe-eval' https://app.termly.io ${import.meta.env.HOST} 'sha256-OuwM78SJYm/zsc4rWhl8ZTRGO/1T/SE5TtELSFU0mEE=' 'sha256-C+MFT9uMJPIBROzgRJWxmbJwinQwPQcN4v02Ao5gdvA=';
         style-src 'unsafe-inline' fonts.googleapis.com self ledget.app localhost:4321;
         img-src 'self' ledget.app localhost data:;
         child-src 'none';
+        frame-src 'self' https://app.termly.io;
         font-src 'self' fonts.gstatic.com fonts.googleapis.com;
-      "
+      `
     />
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -43,6 +44,7 @@ import '../styles/globals.scss';
       '(prefers-color-scheme: dark)',
     ).matches;
     const colorScheme = isDarkModeMediaQuery ? 'dark' : 'light';
+    document.querySelector('body')?.classList.add(`${colorScheme}`);
     document.querySelector('.body')?.classList.add(`${colorScheme}`);
     document.querySelector('.main-background')?.classList.add(`${colorScheme}`);
     document.querySelector('footer')?.classList.add(`${colorScheme}`);

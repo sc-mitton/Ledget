@@ -5,12 +5,12 @@ import { useLocation } from "react-router-dom"
 import styles from './styles.module.scss'
 import { FacebookLoginButton, GoogleLoginButton } from "@ledget/ui"
 
-function SocialAuth({ flow, submit }) {
+function SocialAuth({ flow, submit, className }: { flow: any, submit: any, className?: string }) {
     const location = useLocation()
-    const [socialNodes, setSocialNodes] = useState([])
+    const [socialNodes, setSocialNodes] = useState<any[]>([])
 
     useEffect(() => {
-        setSocialNodes(flow && flow.ui.nodes.filter(node => node.group === 'oidc'))
+        setSocialNodes(flow && flow.ui.nodes.filter((node: any) => node.group === 'oidc'))
     }, [flow])
 
     const SocialLoginButtons = () => {
@@ -48,7 +48,7 @@ function SocialAuth({ flow, submit }) {
     }
 
     return (
-        <div>
+        <div className={className}>
             <div className={styles.header}>
                 {location.pathname === '/login' ?
                     <span>Or log in with</span>

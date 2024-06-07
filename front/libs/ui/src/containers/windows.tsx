@@ -17,7 +17,6 @@ export const Window = styled.div<{ size?: string }>`
 
 export const UnPaddedWindow = styled(Window)`
   padding: 0;
-  background: ${props => props.size === 'extra-small' ? 'transparent' : 'var(--window-background)'};
 `
 
 const StyledPortalWindow = styled.div<{ size?: string, maxWidth?: number }>`
@@ -25,14 +24,14 @@ const StyledPortalWindow = styled.div<{ size?: string, maxWidth?: number }>`
   border-radius: var(--border-radius3);
   border: 1.5px solid var(--window-border);
   padding: 2em;
-  margin: 1rem 0;
+  margin: 1rem 0 2rem 0;
   position: relative;
   max-width: ${props => props.maxWidth ? `${props.maxWidth}em` : '24em'};
   width: ${props => props.size === 'extra-small' ? '100%' : '85%;'};
   box-shadow: ${props => props.size === 'extra-small' ? 'none' : 'var(--window-portal-drop-shadow)'};
   background-color: ${props => props.size === 'extra-small' ? 'transparent' : 'var(--window-portal)'};
 
-  height: ${props => props.size === 'extra-small' ? 'calc(100% - 4em)' : 'auto'};
+  height: ${props => props.size === 'extra-small' ? 'calc(100% - 2em)' : 'auto'};
   max-height: ${props => props.size === 'extra-small' ? '40em' : 'none'};
   display: ${props => props.size === 'extra-small' ? 'flex' : 'block'};
   flex-direction: ${props => props.size === 'extra-small' ? 'column' : 'row'};

@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../../layouts/base-layout.astro';
+import '../../styles/termly.scss';
+---
+
+<BaseLayout>
+  <script>
+    let isDarkMode = document
+      .querySelector('.body')
+      ?.classList.contains('dark');
+    console.log(document.querySelector('.body')?.classList);
+
+    if (isDarkMode) {
+      document.querySelector('.termly')?.classList.add('dark');
+    }
+
+    const script = document.createElement('script');
+    script.src = 'https://app.termly.io/embed-policy.min.js';
+    script.async = true;
+    document.body.appendChild(script);
+  </script>
+  <div
+    name="termly-embed"
+    class="termly"
+    data-id="1cf2c96e-3e01-40ce-acf3-e9ba31a7fd32"
+  >
+  </div>
+</BaseLayout>

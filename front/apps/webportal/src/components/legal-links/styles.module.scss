@@ -1,0 +1,38 @@
+.legalLinks {
+    display: flex;
+    gap: 1em;
+    padding: 0.5em 2em;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: -3em;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+
+    &[data-size='extra-small'] {
+        position: fixed;
+        bottom: 0;
+        background-color: var(--window-background-color-small-screen);
+    }
+
+    span {
+        color: var(--m-text-tirtiary);
+        font-size: .75rem;
+        font-weight: var(--fw-extra-bold);
+    }
+
+    a {
+        font-size: .75rem;
+        color: var(--m-text-tirtiary);
+        text-decoration: none;
+        transition: color .2s;
+        font-weight: var(--fw-bold);
+        white-space: nowrap;
+
+        &:hover {
+            color: var(--m-text);
+            transition: color .2s;
+        }
+    }
+}

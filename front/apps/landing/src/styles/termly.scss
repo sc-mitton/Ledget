@@ -1,0 +1,9 @@
+.termly {
+    width: calc(100% - 4em);
+    max-width: 50em;
+    padding-top: 2em;
+}
+
+body.dark .termly iframe {
+    filter: invert(1) hue-rotate(175deg) brightness(1.1);
+}

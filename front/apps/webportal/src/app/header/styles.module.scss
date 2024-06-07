@@ -10,6 +10,41 @@
     background-color: var(--window);
     position: relative;
 
+    a {
+        outline: none;
+        text-decoration: none;
+        border-bottom: 1px solid var(--m-text-secondary);
+        text-decoration-skip-ink: none;
+        text-underline-offset: 1.75px;
+        cursor: pointer;
+        position: relative;
+    }
+
+    a::before {
+        content: "";
+        display: block;
+        height: 1px;
+        background-color: var(--m-text);
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        transform: scaleX(0);
+        transition: transform .2s ease-in-out;
+        transition-delay: .1s;
+        transform-origin: bottom right;
+    }
+
+    a:focus-visible::before,
+    a:hover::before {
+        transform: scaleX(1);
+        transform-origin: bottom left;
+        background-color: var(--m-text);
+        transition: transform .2s ease-in-out;
+        transition-delay: .2s;
+    }
+
+
     &::after {
         background-color: var(--btn-gray);
         content: '';

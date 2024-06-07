@@ -74,7 +74,7 @@ const UserInfoWindow = ({ setUserInfo, flow, submit, flowStatus }: Omit<Props, '
                     </MainButton>
                 </div>
             </form>
-            <SocialAuth flow={flow} submit={submit} />
+            <SocialAuth flow={flow} submit={submit} className={styles.socialAuthContainer} />
         </>
     )
 }
