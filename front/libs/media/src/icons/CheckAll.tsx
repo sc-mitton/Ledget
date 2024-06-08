@@ -1,4 +1,4 @@
-'react'
+
 
 const CheckAll = ({
     className = 'check-all',

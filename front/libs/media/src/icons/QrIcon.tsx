@@ -1,4 +1,4 @@
-'react'
+
 
 const QrIcon = ({
     width = "1em",

@@ -1,4 +1,4 @@
-'react';
+;
 
 const FacebookLogo = ({
     width = "1.3em",

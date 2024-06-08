@@ -1,4 +1,4 @@
-'react'
+
 
 const Suggestions = ({
     width = "1.5em",

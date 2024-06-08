@@ -1,4 +1,4 @@
-'react'
+
 
 const Deposits = ({
     width = "1.4em",

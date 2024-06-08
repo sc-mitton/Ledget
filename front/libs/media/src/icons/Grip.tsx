@@ -1,4 +1,4 @@
-'react'
+
 
 const Grip = ({
     width = "1em",

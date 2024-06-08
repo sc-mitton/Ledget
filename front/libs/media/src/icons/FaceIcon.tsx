@@ -1,4 +1,4 @@
-'react'
+
 
 const Face = ({
     fill = 'var(--m-text)',

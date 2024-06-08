@@ -1,4 +1,4 @@
-'react'
+
 
 const Ellipsis = ({
     className = '',

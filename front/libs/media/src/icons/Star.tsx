@@ -1,4 +1,4 @@
-'react'
+
 
 const Star = ({
     className = '',

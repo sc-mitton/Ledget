@@ -1,4 +1,4 @@
-'react'
+
 
 const Grip = ({
     size = "1.25em",
