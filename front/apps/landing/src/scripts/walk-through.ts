@@ -17,7 +17,7 @@ function animate() {
         scrollTrigger: {
             trigger: '#product-walk-through',
             start: 'top 80%',
-            toggleActions: 'restart none none none',
+            toggleActions: 'restart none none reset',
         },
         repeatDelay: 4,
         repeat: Infinity,

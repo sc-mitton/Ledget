@@ -26,6 +26,7 @@ $web-focused-width: 90%;
         font-weight: 600;
         margin-bottom: 1rem;
         line-height: clamp(2.75rem, 5.25vw, 4.75rem);
+        text-shadow: 0 .5px 0 var(--btn-gray);
     }
 
     &--products {

@@ -31,7 +31,7 @@ import ArrowLink from './links/arrow-link.astro';
     </span>
     <div class="buttons">
       <ArrowLink
-        hrefTarget="https://accounts.ledget.app/register"
+        hrefTarget={`${import.meta.env.ACCOUNTS_HOST}/register`}
         text="Try for Free"
         className="cta"
       />

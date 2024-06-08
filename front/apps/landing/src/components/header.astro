@@ -28,7 +28,7 @@ import ActionLink from './links/arrow-link.astro';
         <ActionLink
           text="Sign In"
           className="sign-in"
-          hrefTarget="https://accounts.ledget.app/login"
+          hrefTarget={`${import.meta.env.ACCOUNTS_HOST}/login`}
         />
       </div>
     </div>
