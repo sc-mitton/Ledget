@@ -52,7 +52,9 @@
     box-sizing: border-box;
 
     &>div {
-        flex: 0 1 1;
+        flex: 1;
+        flex-grow: 1;
+        flex-shrink: 1;
         max-width: 50%;
 
         &>div {

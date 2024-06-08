@@ -32,6 +32,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(({ checked, 
       </svg>
       <input
         value={checked ? 'on' : 'off'}
+        checked={checked}
         onChange={() => setChecked && setChecked(!checked)}
         className={styles.input}
         type="checkbox"

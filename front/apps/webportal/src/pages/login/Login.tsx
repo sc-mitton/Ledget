@@ -35,7 +35,7 @@ const Login = () => {
 
     const [email, setEmail] = useState<string>()
     const [healthCheckResult, setHealthCheckResult] = useState<'aal2_required' | 'aal15_required' | 'healthy'>()
-    const [trustDevice, setTrustDevice] = useState<boolean>(false)
+    const [trustDevice, setTrustDevice] = useState(true)
     const [redirectToApp, setRedirectToApp] = useState(false)
 
     const [refreshDevices, { isLoading: isRefreshingDevices, isSuccess: devicesRefreshedSuccess, error: refreshDevicesError }] = useRefreshDevicesMutation()
