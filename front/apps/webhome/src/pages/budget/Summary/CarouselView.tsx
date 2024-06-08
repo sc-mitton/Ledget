@@ -52,10 +52,7 @@ const BudgetSummary = () => {
                     <div className={styles.slides} onScroll={updateCarouselIndex}>
                         <div id='slide-1'>
                             <div>
-                                <AnimatedDollarCents
-                                    // value={loadingCategories || loadingBills ? 0 : Big(yearly_spent).add(monthly_spent).toNumber()}
-                                    value={207452}
-                                />
+                                <AnimatedDollarCents value={loadingCategories || loadingBills ? 0 : Big(yearly_spent).add(monthly_spent).toNumber()} />
                             </div>
                             <span>total spending</span>
                         </div>

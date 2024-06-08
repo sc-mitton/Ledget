@@ -10,6 +10,7 @@ on:
         options:
           - "all"
           - "force-run-all"
+          - "web"
           - "webhome"
           - "webportal"
           - "landing"
@@ -35,7 +36,7 @@ permissions:
   contents: read
 jobs:
   deploy-rest-api:
-    if: ${{ inputs.deployments_to_run == 'all' || inputs.deployments_to_run == 'rest-api' || inputs.deployments_to_run == 'force-run-all' }}
+    if: ${{ contains('all rest-api force-run-all', inputs.deployments_to_run) }}
     uses: ./.github/workflows/deploy-rest-api.yml
     with:
       force_run_all: ${{ inputs.deployments_to_run == 'force-run-all' || inputs.force_run == true }}
@@ -44,7 +45,7 @@ jobs:
       role: 'arn:aws:iam::905418323334:role/gh-actions'
     secrets: inherit
   deploy-webhome-app:
-    if: ${{ inputs.deployments_to_run == 'all' || inputs.deployments_to_run == 'webhome' || inputs.deployments_to_run == 'force-run-all' }}
+    if: ${{ contains('all webhome force-run-all web', inputs.deployments_to_run) }}
     uses: ./.github/workflows/deploy-web-app.yml
     with:
       app: "webhome"
@@ -54,25 +55,25 @@ jobs:
       environment: ${{ inputs.environment }}
       force_run_all: ${{ inputs.deployments_to_run == 'force-run-all' || inputs.force_run == true }}
   deploy-webportal-app:
-    if: ${{ inputs.deployments_to_run == 'all' || inputs.deployments_to_run == 'webportal' || inputs.deployments_to_run == 'force-run-all' }}
+    if: ${{ contains('all webportal force-run-all web', inputs.deployments_to_run) }}
     uses: ./.github/workflows/deploy-web-app.yml
     with:
       app: "webportal"
       version: 1
-      s3-bucket: ${{ inputs.environment == 'uat' && 'uatwebportal.ledget.app' || 'webportal.ledget.app' }}
+      s3-bucket: ${{ inputs.environment == 'uat' && 'uat.ledget.app' || 'ledget.app' }}
       role: 'arn:aws:iam::905418323334:role/gh-actions'
       environment: ${{ inputs.environment }}
       force_run_all: ${{ inputs.deployments_to_run == 'force-run-all' || inputs.force_run == true }}
   deploy-landing-app:
-    if: ${{ inputs.deployments_to_run == 'all' || inputs.deployments_to_run == 'landing' || inputs.deployments_to_run == 'force-run-all' }}
+    if: ${{ contains('all landing force-run-all web', inputs.deployments_to_run) }}
     uses: ./.github/workflows/deploy-landing-site.yml
   deploy-oathkeeper:
-    if: ${{ inputs.deployments_to_run == 'all' || inputs.deployments_to_run == 'oathkeeper' || inputs.deployments_to_run == 'force-run-all' }}
+    if: ${{ contains('all oathkeeper force-run-all', inputs.deployments_to_run) }}
     uses: ./.github/workflows/deploy-oathkeeper.yml
     with:
       environment: ${{ inputs.environment }}
       role: 'arn:aws:iam::905418323334:role/gh-actions'
       version: 1
   deploy-dynamic-router:
-    if: ${{ inputs.deployments_to_run == 'all' || inputs.deployments_to_run == 'dynamic-router' || inputs.deployments_to_run == 'force-run-all' }}
+    if: ${{ contains('all dynamic-router force-run-all', inputs.deployments_to_run) }}
     uses: ./.github/workflows/deploy-dynamic-routing-lambda.yml
