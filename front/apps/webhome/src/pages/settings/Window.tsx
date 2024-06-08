@@ -8,7 +8,7 @@ import styles from './styles/window.module.scss'
 import Gutter from './Gutter'
 import AccountPage from './Account'
 import ConnectionsPage from './Connections'
-import { SecurityPage } from './SecurityPage'
+import { SecurityPage } from './security'
 import {
     UpdatePayment,
     CancelSubscription,
