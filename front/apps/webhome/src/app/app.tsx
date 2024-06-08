@@ -42,7 +42,7 @@ const PrivateRoute = () => {
 
     // Check the condition for redirection here
     if (isError) {
-      window.location.href = import.meta.env.VITE_LOGOUT_REDIRECT_URL
+      window.location.href = `${import.meta.env.VITE_LOGOUT_REDIRECT_URL}?redirect=${window.location.href}`
     }
   }, [isError])
 
