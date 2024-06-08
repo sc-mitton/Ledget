@@ -52,6 +52,7 @@ jobs:
       s3-bucket: ${{ inputs.environment == 'uat' && 'uataccounts.ledget.app' || 'accounts.ledget.app' }}
       role: 'arn:aws:iam::905418323334:role/gh-actions'
       environment: ${{ inputs.environment }}
+      force_run_all: ${{ inputs.deployments_to_run == 'force-run-all' || inputs.force_run == true }}
   deploy-webportal-app:
     if: ${{ inputs.deployments_to_run == 'all' || inputs.deployments_to_run == 'webportal' || inputs.deployments_to_run == 'force-run-all' }}
     uses: ./.github/workflows/deploy-web-app.yml
@@ -61,6 +62,7 @@ jobs:
       s3-bucket: ${{ inputs.environment == 'uat' && 'uatwebportal.ledget.app' || 'webportal.ledget.app' }}
       role: 'arn:aws:iam::905418323334:role/gh-actions'
       environment: ${{ inputs.environment }}
+      force_run_all: ${{ inputs.deployments_to_run == 'force-run-all' || inputs.force_run == true }}
   deploy-landing-app:
     if: ${{ inputs.deployments_to_run == 'all' || inputs.deployments_to_run == 'landing' || inputs.deployments_to_run == 'force-run-all' }}
     uses: ./.github/workflows/deploy-landing-site.yml

@@ -10,19 +10,15 @@ import '../../styles/termly.scss';
       ?.classList.contains('dark');
     console.log(document.querySelector('.body')?.classList);
 
+    document.querySelector('.termly')?.setAttribute('name', 'termly-embed');
+
     if (isDarkMode) {
       document.querySelector('.termly')?.classList.add('dark');
     }
-
     const script = document.createElement('script');
     script.src = 'https://app.termly.io/embed-policy.min.js';
     script.async = true;
     document.body.appendChild(script);
   </script>
-  <div
-    name="termly-embed"
-    class="termly"
-    data-id="efcc8c57-cf4f-4979-af35-191bf7667aeb"
-  >
-  </div>
+  <div class="termly" data-id="efcc8c57-cf4f-4979-af35-191bf7667aeb"></div>
 </BaseLayout>
