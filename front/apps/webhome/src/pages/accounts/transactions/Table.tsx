@@ -14,7 +14,7 @@ import {
 } from '@ledget/ui'
 
 import pathMappings from '../path-mappings'
-import Filter from './Filter'
+import Filter from './TransactionsFilter'
 import Skeleton from './Skeleton'
 
 type Props = Omit<HTMLProps<HTMLDivElement>, 'children'> & {

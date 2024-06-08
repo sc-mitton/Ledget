@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react'
 import { Dayjs } from 'dayjs'
 import { Filter as FilterIcon } from '@geist-ui/icons'
 
-import styles from './styles/filter.module.scss'
+import styles from './styles/transactions-filter.module.scss'
 import { DatePicker, DropdownDiv, TextButtonHalfBlue, useCloseDropdown } from '@ledget/ui'
 
 const Filter = ({ value, onChange }: { value?: [Dayjs, Dayjs], onChange: React.Dispatch<React.SetStateAction<[Dayjs, Dayjs] | undefined>> }) => {
