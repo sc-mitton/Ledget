@@ -1,10 +1,9 @@
 import { Fragment, useMemo } from 'react'
 
 import { useNavigate, useLocation } from 'react-router-dom'
-import Big from 'big.js'
 import dayjs from 'dayjs'
 
-import styles from './syles/styles.module.scss'
+import styles from './styles.module.scss'
 import { useAppSelector, useAppDispatch } from '@hooks/store'
 import { selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
 import { useGetCategoriesQuery } from '@features/categorySlice'
