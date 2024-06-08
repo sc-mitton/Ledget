@@ -13,7 +13,7 @@ import { AnimatedDollarCents } from '@ledget/ui'
 import { selectBudgetMonthYear, selectCategoryMetaData, selectBillMetaData } from '@features/budgetItemMetaDataSlice'
 import { useColorScheme } from '@ledget/ui'
 
-const BudgetSummary = () => {
+export const BudgetSummary = () => {
     const { month, year } = useAppSelector(selectBudgetMonthYear)
 
     const { isLoading: loadingCategories } = useGetCategoriesQuery({ month, year }, { skip: !month || !year })
