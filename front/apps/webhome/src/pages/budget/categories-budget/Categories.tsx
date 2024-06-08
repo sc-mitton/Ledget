@@ -1,7 +1,7 @@
 
 import { Window } from '@ledget/ui'
 import List from './List'
-import styles from './styles.module.scss'
+import styles from './styles/styles.module.scss'
 import Sort from '../Sort'
 
 import { useScreenContext } from '@ledget/ui'
