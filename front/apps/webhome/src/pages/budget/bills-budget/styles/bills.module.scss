@@ -4,7 +4,7 @@
     --number-of-bill-rows: 5;
 }
 
-@import '../../styles/variables.scss';
+@import '../../styles/constants.scss';
 @import '@styles/table-mixins';
 
 .bills {
