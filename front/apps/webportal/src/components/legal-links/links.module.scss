@@ -1,6 +1,6 @@
 .legalLinks {
     display: flex;
-    gap: 1em;
+    gap: .5em;
     padding: 0.5em 2em;
     justify-content: center;
     align-items: center;
@@ -24,15 +24,16 @@
 
     a {
         font-size: .75rem;
-        color: var(--m-text-tirtiary);
+        color: var(--m-text);
+        opacity: .4;
         text-decoration: none;
         transition: color .2s;
-        font-weight: var(--fw-bold);
         white-space: nowrap;
+        transition: all .2s;
 
         &:hover {
-            color: var(--m-text);
-            transition: color .2s;
+            opacity: 1;
+            transition: all .2s;
         }
     }
 }

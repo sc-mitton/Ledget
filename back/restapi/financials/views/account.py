@@ -220,8 +220,7 @@ class AccountsViewSet(ViewSet):
         for item in qset:
             data.append({
                 'account': item['account'],
-                'trend': item['total'],
-                'account': item['account']
+                'trend': item['total']
             })
 
         return data
