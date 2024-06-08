@@ -34,7 +34,7 @@ jobs:
             src:
               - './front/apps/${{ inputs.app }}/**'
   build:
-    if: ${{ needs.changes.outputs.src == 'true' || inputs.force_run_all == 'true' }}
+    if: ${{ needs.changes.outputs.src == true || inputs.force_run_all == true }}
     runs-on: ubuntu-latest
     defaults:
       run:
