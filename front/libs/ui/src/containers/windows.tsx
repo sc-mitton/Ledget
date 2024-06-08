@@ -41,7 +41,7 @@ const StyledPortalWindow = styled.div<{ size?: string, maxWidth?: number }>`
 export const PortalWindow = ({ children, maxWidth, ...rest }: React.HTMLAttributes<HTMLDivElement> & { maxWidth?: number }) => {
   const { screenSize } = useScreenContext()
   return (
-    <StyledPortalWindow {...rest} size={screenSize}>
+    <StyledPortalWindow {...rest} size={screenSize} maxWidth={maxWidth}>
       {children}
     </StyledPortalWindow>
   )

@@ -9,6 +9,7 @@ import {
     MainButton,
 } from '@ledget/ui'
 import { useEmailContext } from './context'
+import { SubHeader } from '@components/index'
 
 
 const sendCodeSchema = z.object({
@@ -25,7 +26,7 @@ const SendCodeForm = ({ submit, csrf_token }: { submit: React.FormEventHandler<H
         <>
             <div className={styles.step}>
                 <span>Step 1 of 4</span>
-                <span>To finish joining another user's account, first enter your email address.</span>
+                <SubHeader>To finish joining another user's account, first enter your email address.</SubHeader>
             </div>
             <form onSubmit={handleSubmit((data, e) => { submit(e as any); setEmail(data.email); })} >
                 <PlainTextInput

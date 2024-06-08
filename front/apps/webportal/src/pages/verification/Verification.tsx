@@ -112,8 +112,7 @@ const Verification = () => {
                         :
                         <>
                             <SubHeader>
-                                <span>Enter the code we sent to your email address
-                                    to verify your account:</span>
+                                Enter the code we sent to your email address to verify your account:
                             </SubHeader>
                             <VerificationForm
                                 flow={flow}

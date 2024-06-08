@@ -3,7 +3,7 @@
 const Refresh = ({
     className = '',
     size = "1.25em",
-    stroke = "var(--icon-full)",
+    stroke = "currentColor",
 }) => {
     return (
         <svg

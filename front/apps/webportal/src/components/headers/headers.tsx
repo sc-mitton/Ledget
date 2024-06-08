@@ -27,14 +27,15 @@ export const SignUpFlowHeader = () => {
 }
 
 export const SubHeader = styled.div`
-    .subheader {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 1.5rem;
-        width: 90%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+    width: 90%;
+    font-size: .9em;
+    color: var(--m-text-secondary);
 
-        span {
-            opacity: .8;
-        }
+    * {
+        font-size: .875em;
+        color: var(--m-text-secondary);
     }
 `

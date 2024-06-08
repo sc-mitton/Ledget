@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import styles from './styles/styles.module.scss'
 import { PlainTextInput, MainButton } from '@ledget/ui'
 import { useEmailContext } from './context'
+import { SubHeader } from '@components/index'
 
 const traitsSchema = z.object({
     first: z.string().min(1, { message: 'required' }).transform(value => value.trim()),
@@ -29,7 +30,7 @@ const AddTraitsForm = ({ submit, csrf_token }: { submit: (data: any) => void, cs
         <>
             <div className={styles.step}>
                 <span>Step 3 of 4</span>
-                <span>Enter your Name</span>
+                <SubHeader>Enter your Name</SubHeader>
             </div>
             <form onSubmit={handleSubmit(onSubmit)} >
                 <PlainTextInput

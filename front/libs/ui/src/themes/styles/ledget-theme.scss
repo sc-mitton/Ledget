@@ -63,6 +63,7 @@
         --blue-light: hsl(var(--blue-h), 45%, 17%);
         --blue-light-hover: hsl(var(--blue-h), 45%, 23%);
         --blue-light-medium: hsl(var(--blue-h), 45%, 35%);
+        --blue-light-medium-hover: hsl(var(--blue-h), 45%, 27%);
         --blue-medium: hsl(var(--blue-h), 45%, 40%);
         --blue-medium-hover: hsl(var(--blue-h), 45%, 45%);
         --blue: hsl(var(--blue-h), 45%, 50%);
@@ -267,9 +268,9 @@
 
         // Blue Green Pallet
         --blue-light: hsl(var(--blue-h), 70%, 90%);
-        --blue-light-hover: hsl(var(--blue-h), 70%, 85%);
+        --blue-light-hover: hsl(var(--blue-h), 70%, 83%);
         --blue-light-medium: hsl(var(--blue-h), 70%, 75%);
-        --blue-light-medium-hover: hsl(var(--blue-h), 70%, 70%);
+        --blue-light-medium-hover: hsl(var(--blue-h), 70%, 85%);
         --blue-medium: hsl(var(--blue-h), 50%, 60%);
         --blue-medium-hover: hsl(var(--blue-h), 50%, 50%);
         --blue: hsl(var(--blue-h), 50%, 52%);

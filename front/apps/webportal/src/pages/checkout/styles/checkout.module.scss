@@ -3,12 +3,19 @@
     max-width: 31.25rem;
     display: flex;
     flex-direction: column;
+    margin: 2em 0;
 
     h4 {
         font-weight: var(--fw-regular);
-        color: var(--m-text);
-        margin: .5em 0;
-        margin-left: .25em;
+        margin-left: .5em;
+        font-size: 1.125rem;
+    }
+
+    hr {
+        width: calc(100% - 1em);
+        color: var(--border-color-dim);
+        margin-top: .25em;
+        margin-bottom: .625em;
     }
 
     &[data-size='extra-small'] {
@@ -22,6 +29,14 @@
         max-width: unset;
         position: absolute;
     }
+
+    label {
+        margin-top: .25em;
+        margin-left: .25em;
+        margin-bottom: .125em;
+        font-size: .875rem;
+        font-weight: var(--fw-bold);
+    }
 }
 
 .billingForm {
@@ -31,11 +46,11 @@
     flex-direction: column;
     height: 100%;
 
-    &[data-size='extra-small']>div:nth-child(2) {
+    &[data-size='extra-small']>div:first-of-type {
         justify-content: space-between;
     }
 
-    &>div:nth-child(2) {
+    &>div:nth-of-type(2) {
         padding: 2em;
         display: flex;
         flex-direction: column;

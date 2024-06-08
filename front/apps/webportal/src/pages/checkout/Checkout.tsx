@@ -9,6 +9,7 @@ import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 
 import styles from './styles/checkout.module.scss'
+import moduleStyles from './styles/styles.module.scss'
 import ledgetapi from '@api/axios'
 import { useGetPricesQuery } from '@features/pricesSlice'
 import {
@@ -137,7 +138,7 @@ const Form = (props: { id: string }) => {
                 <PriceRadios register={register} />
                 <div>
                     <div className={styles.textInputs}>
-                        <h4>Billing Info</h4>
+                        <label>Billing Info</label>
                         <NameOnCardInput {...register('name')} errors={errors} />
                         <CityStateZipInputs
                             loading={processing}
@@ -145,7 +146,7 @@ const Form = (props: { id: string }) => {
                             register={register as any}
                             control={control}
                         />
-                        <h4>Card</h4>
+                        <label>Card</label>
                         <CardInput
                             requiredError={cardNotEnteredError}
                             onComplete={() => setCardEntered(true)}

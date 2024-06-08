@@ -265,15 +265,17 @@
     color: var(--monthly-color1-hover);
     padding: .375em;
     gap: .125em;
-    border: 1.5px solid var(--blue-light);
+    border: 1.5px solid var(--blue-light-medium);
     border-radius: var(--border-radius2);
     width: 100%;
     color: var(--blue-medium);
+    transition: all 0.2s ease-in-out;
 
     div {
         color: inherit;
         display: flex;
         align-items: center;
+        color: inherit;
 
         svg {
             transform: scale(1);
@@ -293,8 +295,8 @@
         animation: pop-fade-in, rotate 0.3s ease-in-out,
     }
 
-    &:hover svg {
-        transform: scale(1.1);
+    &:hover {
+        border-color: var(--blue-light-medium-hover);
         transition: all 0.2s ease-in-out;
     }
 }

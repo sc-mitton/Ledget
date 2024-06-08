@@ -192,7 +192,7 @@ export const ResendButton = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<H
         }
 
         return (
-            <TextButton
+            <BaseButton
                 ref={ref}
                 data-active={active}
                 data-success={success}
@@ -201,12 +201,12 @@ export const ResendButton = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<H
                 {...rest}
             >
                 Resend
-                <div className="resend-icon">
+                <div>
                     {success
                         ? <Check className="resend-btn-success-icon" size={'1.25em'} />
-                        : <ReplayIcon stroke={'currentColor'} size={'1.1em'} />}
+                        : <ReplayIcon size={'1.1em'} />}
                 </div>
-            </TextButton>
+            </BaseButton>
         )
     }
 )

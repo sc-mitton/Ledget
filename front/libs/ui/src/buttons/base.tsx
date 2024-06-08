@@ -6,7 +6,6 @@ export const BaseButton = styled.button`
     justify-content: center;
     cursor: pointer;
     transition: all .3s ease;
-    border-radius: .25em;
 
     &:disabled {
         opacity: .5;
@@ -91,6 +90,7 @@ export const blue = css`
 export const main = css`
     background-color: var(--btn-main);
     color: var(--white);
+    box-shadow: 0 .5px 0 1px color-mix(in srgb, var(--btn-main), var(--m-invert-text) 70%);
 
     * {
         color: inherit;
@@ -147,7 +147,7 @@ export const red = css`
     }
 `
 
-export const blueTest = css`
+export const blueText = css`
     color: var(--blue-sat);
 
     * {

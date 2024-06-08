@@ -59,7 +59,10 @@ export const TextButton = styled(BaseButton)`
         opacity: 1
     }
 `
-export const TextButtonHalfBlue = styled(SlimButton)`${hoverHalfBlueText}`
+export const TextButtonHalfBlue = styled(SlimButton)`
+    ${hoverHalfBlueText}
+    border-radius: .25em;
+`
 export const TextButtonBlue = styled(SlimButton)`${hoverBlueText}`
 
 export const PrimaryTextButton = styled(PrimaryButton)`
@@ -77,10 +80,9 @@ export const PrimaryTextButton = styled(PrimaryButton)`
         }
     }
 `
-export const IconButtonHalfBlue = styled(BaseButton)`${hoverHalfBlueText}`
-export const IconButtonHalfGray = styled(BaseButton)`
-    ${clearGray} border-radius: .375em; padding: .125em;`
-export const IconButtonBlue = styled(BaseButton)`${hoverBlueText}`
+export const IconButtonHalfBlue = styled(BaseButton)`${hoverHalfBlueText} border-radius: .25em;`
+export const IconButtonHalfGray = styled(BaseButton)`${clearGray} border-radius: .375em;  padding: .125em;`
+export const IconButtonBlue = styled(BaseButton)`${hoverBlueText} border-radius: .25em;`
 
 export const FadedIconButton = styled(BaseButton)`
     color: var(--m-text-quaternary);

@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import styles from './styles/styles.module.scss'
 import { PasswordInput, MainButton } from '@ledget/ui'
+import { SubHeader } from '@components/index'
 
 const passwordSchema = z.object({
     password: z.string().min(1, { message: 'required' }).min(10, { message: 'Password must be at least 10 characters' }),
@@ -29,7 +30,7 @@ const PasswordForm = ({ submit, csrf_token }: { submit: React.FormEventHandler<H
         <>
             <div className={styles.step}>
                 <span>Step 4 of 4</span>
-                <span>Set your password</span>
+                <SubHeader>Set your password</SubHeader>
             </div>
             <form onSubmit={handleSubmit((_, e) => submit(e as any))} >
                 <PasswordInput

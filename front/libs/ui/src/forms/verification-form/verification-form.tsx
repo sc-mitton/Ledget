@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from 'react'
 
 import styles from './verification-form.module.scss';
-import { LightBlueMainButton, ResendButton } from '../../buttons'
+import { MainButton, ResendButton } from '../../buttons'
 import { Otc } from '../../inputs/otc/otc'
 
 interface VerificationFormProps {
@@ -48,7 +48,7 @@ export const VerificationForm = (props: VerificationFormProps) => {
           <Otc codeLength={6} />
           <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
           <input type="hidden" name="email" value={identifier} />
-          <LightBlueMainButton
+          <MainButton
             type="submit"
             name="method"
             value="code"
@@ -57,7 +57,7 @@ export const VerificationForm = (props: VerificationFormProps) => {
             submitting={hasInitialSent && submitting}
           >
             Submit
-          </LightBlueMainButton>
+          </MainButton>
         </form>
         <form
           action={flow?.ui.action}

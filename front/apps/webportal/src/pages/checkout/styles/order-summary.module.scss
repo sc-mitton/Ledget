@@ -1,10 +1,9 @@
 .orderSummary {
     text-align: left;
     display: flex;
-    justify-content: end;
-    padding: .75em .5em;
-    margin-bottom: .5em;
-    border-top: .125em solid var(--border-color-ultra-dim);
+    justify-content: start;
+    padding: .125em .5em .75em .5em;
+    margin-bottom: 1em;
 
     table {
         border-collapse: collapse;
@@ -18,10 +17,11 @@
         line-height: 1.5;
 
         td {
-            text-align: right;
+            text-align: left;
 
             &:first-child {
-                color: var(--m-text-secondary);
+                color: var(--m-text-tirtiary);
+                font-size: .875rem;
                 padding-right: 1em;
             }
 
