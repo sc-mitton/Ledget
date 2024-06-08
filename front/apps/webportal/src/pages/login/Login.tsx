@@ -12,7 +12,8 @@ import {
     LinkArrowButton,
     PortalWindow,
     useScreenContext,
-    WindowLoadingBar
+    WindowLoadingBar,
+    Checkbox
 } from "@ledget/ui"
 import { useFlow } from '@ledget/ory'
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'
@@ -34,6 +35,8 @@ const Login = () => {
 
     const [email, setEmail] = useState<string>()
     const [healthCheckResult, setHealthCheckResult] = useState<'aal2_required' | 'aal15_required' | 'healthy'>()
+    const [trustDevice, setTrustDevice] = useState<boolean>(false)
+    const [redirectToApp, setRedirectToApp] = useState(false)
 
     const [refreshDevices, { isLoading: isRefreshingDevices, isSuccess: devicesRefreshedSuccess, error: refreshDevicesError }] = useRefreshDevicesMutation()
 
@@ -94,12 +97,24 @@ const Login = () => {
         }
     }, [searchParams.get('mfa')])
 
-    // Refresh devices on finishing login steps
+    // Refresh devices on finishing login steps if trust device is checked
+    // or redirect to app if trust device is not checked
     useEffect(() => {
-        if (isCompleteSuccess || errId === 'session_already_available') {
-            refreshDevices()
+        if ((isCompleteSuccess || errId === 'session_already_available')) {
+            if (trustDevice) {
+                refreshDevices()
+            } else {
+                setRedirectToApp(true)
+            }
         }
     }, [isCompleteSuccess])
+
+    // Redirect to app after devices are refreshed
+    useEffect(() => {
+        if (devicesRefreshedSuccess) {
+            setRedirectToApp(true)
+        }
+    }, [devicesRefreshedSuccess])
 
     // Watch for complete devices error indicating mfa is needed
     useEffect(() => {
@@ -109,19 +124,20 @@ const Login = () => {
         }
     }, [refreshDevicesError])
 
-    // Handle Login Finished
+    // Handle Redirecting to App
     useEffect(() => {
-        if (devicesRefreshedSuccess) {
+        if (redirectToApp) {
+            const redirectUrl = searchParams.get('redirect') || import.meta.env.VITE_LOGIN_REDIRECT
             if (searchParams.get('mfa')) {
                 const timeout = setTimeout(() => {
-                    window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
+                    window.location.href = redirectUrl
                 }, 1000)
                 return () => clearTimeout(timeout)
             } else {
-                window.location.href = import.meta.env.VITE_LOGIN_REDIRECT
+                window.location.href = redirectUrl
             }
         }
-    }, [devicesRefreshedSuccess])
+    }, [redirectToApp])
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -168,6 +184,14 @@ const Login = () => {
                                 <OryFormWrapper {...oryFormArgs}>
                                     <Password />
                                     <input type="hidden" name="identifier" value={email || ''} />
+                                    <div className={styles.trustDevice}>
+                                        <Checkbox
+                                            id="trust-device"
+                                            checked={trustDevice}
+                                            setChecked={setTrustDevice}
+                                            label="Trust Device"
+                                        />
+                                    </div>
                                 </OryFormWrapper>
                                 <WindowLoadingBar visible={[isGettingFlow, isCompletingFlow, isRefreshingDevices].some(Boolean)} />
                                 <LegalLinks />

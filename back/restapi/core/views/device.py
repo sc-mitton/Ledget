@@ -44,13 +44,7 @@ class DeviceView(ListCreateAPIView):
             instance = self.update(request, *args, **kwargs)
 
         response = Response(status=HTTP_200_OK)
-        response.set_cookie(
-            key=f"ledget_device${generate_random_string()}",
-            value=f"{instance.token}",
-            secure=True,
-            samesite='None',
-            httponly=True,
-        )
+        response = self._set_cookies(response, instance)
         return response
 
     def update(self, request, *args, **kwargs):
@@ -65,6 +59,20 @@ class DeviceView(ListCreateAPIView):
 
     def get_object(self, ):
         return self.request.device
+
+    def _set_cookies(self, response, device):
+        response.set_cookie(
+            key=f"ledget_device${generate_random_string()}",
+            value=f"{device.token}",
+            secure=True,
+            samesite='None',
+            httponly=True,
+        )
+        # Unset all previous device cookies
+        for key in [k for k in self.request.COOKIES.keys() if 'ledget_device' in k]:
+            response.set_cookie(key=key, value='', max_age=0)
+
+        return response
 
     def _add_device(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

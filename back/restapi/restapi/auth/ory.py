@@ -3,6 +3,8 @@ import logging
 from rest_framework.authentication import SessionAuthentication
 from django.contrib.auth import get_user_model
 from django.conf import settings
+from secrets import compare_digest
+
 
 logger = logging.getLogger('ledget')
 
@@ -40,7 +42,8 @@ class OryBackend(SessionAuthentication):
                                 if 'ledget_device' in k}
 
         for device in user.device_set.all():
-            if device.token in device_token_cookies.values():
+            if any(compare_digest(device.token.encode(), token.encode())
+                   for token in device_token_cookies.values()):
                 return device
 
     def get_user(self, request, decoded_token: dict):
