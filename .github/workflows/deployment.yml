@@ -10,7 +10,7 @@ on:
         options:
           - "all"
           - "force-run-all"
-          - "web"
+          - "webapps"
           - "webhome"
           - "webportal"
           - "landing"
@@ -45,7 +45,7 @@ jobs:
       role: 'arn:aws:iam::905418323334:role/gh-actions'
     secrets: inherit
   deploy-webhome-app:
-    if: ${{ contains('all webhome force-run-all web', inputs.deployments_to_run) }}
+    if: ${{ contains('all webhome force-run-all webapps', inputs.deployments_to_run) }}
     uses: ./.github/workflows/deploy-web-app.yml
     with:
       app: "webhome"
@@ -55,7 +55,7 @@ jobs:
       environment: ${{ inputs.environment }}
       force_run_all: ${{ inputs.deployments_to_run == 'force-run-all' || inputs.force_run == true }}
   deploy-webportal-app:
-    if: ${{ contains('all webportal force-run-all web', inputs.deployments_to_run) }}
+    if: ${{ contains('all webportal force-run-all webapps', inputs.deployments_to_run) }}
     uses: ./.github/workflows/deploy-web-app.yml
     with:
       app: "webportal"
@@ -65,7 +65,7 @@ jobs:
       environment: ${{ inputs.environment }}
       force_run_all: ${{ inputs.deployments_to_run == 'force-run-all' || inputs.force_run == true }}
   deploy-landing-app:
-    if: ${{ contains('all landing force-run-all web', inputs.deployments_to_run) }}
+    if: ${{ contains('all landing force-run-all', inputs.deployments_to_run) }}
     uses: ./.github/workflows/deploy-landing-site.yml
   deploy-oathkeeper:
     if: ${{ contains('all oathkeeper force-run-all', inputs.deployments_to_run) }}
