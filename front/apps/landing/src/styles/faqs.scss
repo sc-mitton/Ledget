@@ -18,7 +18,7 @@
         width: 100%;
         bottom: 0;
         height: 1.25px;
-        background-color: var(--border-color-dim);
+        background-color: var(--border-color-ultra-dim);
     }
 
     button {
@@ -53,6 +53,19 @@
     &>div {
         font-size: 1rem;
         color: var(--m-text-secondary);
+        font-weight: var(--fw-regular);
         padding: 1em .3em;
+        animation: expand-on 2s;
+    }
+}
+
+
+@keyframes expand-on {
+    0% {
+        max-height: 0;
+    }
+
+    100% {
+        max-height: 100vh;
     }
 }

@@ -229,7 +229,7 @@
     &--top-bar,
     &--bottom-bar {
         top: 1em;
-        left: -2em;
+        left: -3em;
         transform: translateX(-50%);
         bottom: -1em;
         width: 2px;
@@ -255,7 +255,7 @@
         border-radius: 10em;
         background-color: var(--btn-light-gray);
         position: absolute;
-        left: -2.375em;
+        left: -3.28em;
         top: .625em;
         z-index: 1;
         color: var(--m-invert-text);

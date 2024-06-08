@@ -28,7 +28,7 @@ const StyledPortalWindow = styled.div<{ size?: string, maxWidth?: number }>`
   position: relative;
   max-width: ${props => props.maxWidth ? `${props.maxWidth}em` : '24em'};
   width: ${props => props.size === 'extra-small' ? '100%' : '85%;'};
-  box-shadow: ${props => props.size === 'extra-small' ? 'none' : 'var(--window-portal-drop-shadow)'};
+  box-shadow: ${props => props.size === 'extra-small' ? 'none' : 'var(--window-portal-drop-shadow), 0 1px 1px .5px var(--btn-feather-light-gray);'};
   background-color: ${props => props.size === 'extra-small' ? 'transparent' : 'var(--window-portal)'};
 
   height: ${props => props.size === 'extra-small' ? 'calc(100% - 2em)' : 'auto'};
