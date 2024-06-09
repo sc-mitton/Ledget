@@ -3,8 +3,6 @@ export { default as CashFlow } from './icons/CashFlow';
 export { default as CheckAll } from './icons/CheckAll';
 export { default as Delete } from './icons/Delete';
 export { default as DepositsIcon } from './icons/Deposits';
-export { default as Ellipsis } from './icons/Ellipsis';
-export { default as Ellipsis2 } from './icons/Ellipsis2';
 export { default as Grip } from './icons/Grip';
 export { default as ReplayIcon } from './icons/Replay';
 export { default as CloseIcon } from './icons/Close'
@@ -28,6 +26,7 @@ export { default as HalfArrow } from './icons/HalfArrow';
 export { default as Hourglass } from './icons/Hourglass';
 export { default as Filter2 } from './icons/Filter2';
 export { default as Institution } from './icons/Institution'
+export { default as Stars } from './icons/Stars'
 
 export { default as EmptyListImage } from './images/EmptyList';
 export { default as EmptyListDark } from './images/EmptyListDark';

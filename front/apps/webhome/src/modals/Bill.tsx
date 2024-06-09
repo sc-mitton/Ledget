@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, Controller } from 'react-hook-form'
 import { z } from 'zod'
 import dayjs from 'dayjs'
-import { Trash2, Edit2, CheckInCircle, Circle, BellOff } from '@geist-ui/icons'
+import { Trash2, Edit2, CheckInCircle, Circle, BellOff, MoreHorizontal } from '@geist-ui/icons'
 import { startCase, toLower } from 'lodash-es'
 
 import styles from './styles/bill.module.scss'
@@ -31,7 +31,6 @@ import {
     WindowCorner
 } from '@ledget/ui'
 import { extractReminders } from '@modals/CreateBill'
-import { Ellipsis } from '@ledget/media'
 import {
     EmojiComboText,
     DollarRangeInput,
@@ -93,7 +92,7 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
             {({ open }) => (
                 <>
                     <Menu.Button as={IconButtonHalfGray} onClick={() => setOpenEllipsis(!openEllipsis)}>
-                        <Ellipsis rotate={90} size={'1.375em'} />
+                        <MoreHorizontal className='icon' />
                     </Menu.Button>
                     <DropdownDiv
                         placement='right'

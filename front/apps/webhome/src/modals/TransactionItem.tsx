@@ -4,7 +4,7 @@ import Big from 'big.js'
 import { Menu } from '@headlessui/react'
 import { AnimatePresence } from 'framer-motion'
 import dayjs from 'dayjs'
-import { Check, Trash2, Edit2, ArrowLeft, ArrowRight } from '@geist-ui/icons'
+import { Check, Trash2, Edit2, Maximize2, MoreHorizontal } from '@geist-ui/icons'
 
 import styles from './styles/transaction-item.module.scss'
 import { Transaction } from '@features/transactionsSlice'
@@ -20,7 +20,6 @@ import {
 } from '@features/transactionsSlice'
 import { Bill } from "@features/billSlice";
 import { Category, isCategory } from "@features/categorySlice";
-import { Ellipsis } from '@ledget/media'
 import { SplitTransactionInput } from '@components/split'
 import {
     DropdownDiv,
@@ -46,7 +45,7 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
             {({ open }) => (
                 <>
                     <Menu.Button as={IconButtonHalfGray} onClick={() => setOpenEllipsis(!openEllipsis)}>
-                        <Ellipsis rotate={90} size={'1.375em'} />
+                        <MoreHorizontal className='icon' />
                     </Menu.Button>
                     <DropdownDiv
                         placement='right'
@@ -63,7 +62,7 @@ const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction
                                         onClick={() => setAction('split')}
                                     >
                                         <div style={{ marginLeft: '-.25em' }}>
-                                            <ArrowLeft size={'.8em'} strokeWidth={2} /><ArrowRight size={'.8em'} strokeWidth={2} />
+                                            <Maximize2 className='icon' transform='rotate(45)' />
                                         </div>
                                         <span>Split</span>
                                     </DropdownItem>

@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { Tab } from '@headlessui/react'
 
 import { useItemsContext, ItemS } from './ItemsContext'
-import { Recommendations as RecommendationsIcon } from '@ledget/media'
+import { Stars } from '@ledget/media'
 import { useAddnewBillMutation, NewBill } from '@features/billSlice'
 import { useAddNewCategoryMutation, NewCategory } from '@features/categorySlice'
 import { useUpdateUserMutation } from '@features/userSlice'
@@ -126,7 +126,7 @@ export const RecommendationsButton = ({ item }: { item: ItemS }) => {
                 onClick={() => setRecommendationsMode(true)}
                 aria-label="Recommendations"
             >
-                Recommendations <RecommendationsIcon />
+                <Stars />
             </BlueSlimButton2>
         </div>
     )

@@ -2,10 +2,9 @@ import React, { FC, useState, useEffect } from 'react'
 
 import { animated } from '@react-spring/web'
 import dayjs from 'dayjs'
-import { Check } from '@geist-ui/icons'
+import { Check, MoreVertical } from '@geist-ui/icons'
 
 import styles from './styles/new-item.module.scss'
-import { Ellipsis } from "@ledget/media"
 import { InsitutionLogo } from '@components/pieces'
 import {
     NarrowButton,
@@ -109,7 +108,7 @@ const NewItem: FC<{
                     aria-haspopup="menu"
                     aria-controls={'new-item-menu'}
                 >
-                    <Ellipsis />
+                    <MoreVertical className='icon' />
                 </NarrowButton>
             </div>
         </animated.div>

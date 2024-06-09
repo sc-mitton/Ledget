@@ -4,7 +4,7 @@ import Big from 'big.js'
 import { ResponsiveLine } from '@nivo/line'
 import type { Datum } from '@nivo/line'
 import { Menu } from '@headlessui/react'
-import { Edit2, Trash2, ChevronRight } from '@geist-ui/icons'
+import { Edit2, Trash2, ChevronRight, MoreHorizontal } from '@geist-ui/icons'
 import dayjs from 'dayjs'
 import { ZeroConfig } from '@components/pieces'
 import { AnimatePresence } from 'framer-motion'
@@ -37,7 +37,6 @@ import {
     stringLimit,
     NestedWindow2
 } from '@ledget/ui'
-import { Ellipsis } from '@ledget/media'
 import { Category } from '@features/categorySlice'
 
 const AmountSpentChart = ({ data, disabled = false }: { data: Datum[], disabled?: boolean }) => {
@@ -143,7 +142,7 @@ const Options = ({ onEdit, onDelete }: { onEdit: () => void, onDelete: () => voi
         {({ open }) => (
             <div style={{ position: 'absolute', top: '1.125em', right: '3.5em' }}>
                 <Menu.Button as={IconButtonHalfGray}>
-                    <Ellipsis rotate={90} />
+                    <MoreHorizontal className='icon' />
                 </Menu.Button>
                 <DropdownDiv
                     arrow='right'
