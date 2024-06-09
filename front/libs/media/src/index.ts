@@ -6,16 +6,12 @@ export { default as DepositsIcon } from './icons/Deposits';
 export { default as Ellipsis } from './icons/Ellipsis';
 export { default as Ellipsis2 } from './icons/Ellipsis2';
 export { default as Grip } from './icons/Grip';
-export { default as Plus } from './icons/Plus';
-export { default as Recommendations } from './icons/Recommendations';
 export { default as ReplayIcon } from './icons/Replay';
-export { default as ArrowIcon } from './icons/Arrow'
 export { default as CloseIcon } from './icons/Close'
 export { default as FacebookLogo } from './icons/FacebookLogo'
 export { default as GoogleLogo } from './icons/GoogleLogo'
 export { default as PasskeyIcon } from './icons/PasskeyIcon';
 export { default as Star } from './icons/Star';
-export { default as SuccessIcon } from './icons/SuccessIcon';
 export { default as Alert2 } from './icons/Alert2';
 export { default as QrIcon } from './icons/QrIcon';
 export { default as LocationIcon } from './icons/LocationIcon';
@@ -35,7 +31,6 @@ export { default as Institution } from './icons/Institution'
 
 export { default as EmptyListImage } from './images/EmptyList';
 export { default as EmptyListDark } from './images/EmptyListDark';
-export { default as DesertImage } from './images/Desert';
 export { default as ForgotPassword } from './images/ForgotPassword'
 export { default as StripeLogo } from './images/StripeLogo'
 export { default as AuthenticatorImage } from './images/Authenticator';
