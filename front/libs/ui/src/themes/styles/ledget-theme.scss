@@ -66,15 +66,12 @@
         --blue-light-medium-hover: hsl(var(--blue-h), 45%, 27%);
         --blue-medium: hsl(var(--blue-h), 45%, 40%);
         --blue-medium-hover: hsl(var(--blue-h), 45%, 45%);
-        --blue: hsl(var(--blue-h), 45%, 50%);
-        --blue-steel-gray: hsl(var(--blue-h), 25%, 35%);
+        --blue: hsl(var(--blue-h), 45%, 65%);
         --blue-sat: hsl(var(--blue-h), 55%, 55%);
         --blue-sat-hover: hsl(var(--blue-h), 55%, 65%);
         --blue-medium-dark: hsl(var(--blue-h), 25%, 75%);
         --blue-dark: hsl(var(--blue-h), 25%, 90%);
         --blue-dark-hover: hsl(var(--blue-h), 25%, 85%);
-        --blue-ultra-dark: hsl(var(--blue-h), 85%, 90%);
-        --blue-ultra-dark-hover: hsl(var(--blue-h), 85%, 80%);
 
         --green-light: hsl(var(--green-h), 30%, 27%);
         --green-light-hover: hsl(var(--green-h), 30%, 22%);
@@ -91,8 +88,8 @@
 
 
         // Windows
-        --nested-window-background-color: hsl(0, 0%, 10%);
-        --nested-window-background-color-small-screen: var(--nested-window-background-color);
+        --nested-window-background-color: hsl(0, 0%, 9%);
+        --nested-window-background-color-small-screen: hsl(0, 0%, 8%);
         --modal-inner-window: var(--nested-window-background-color);
 
         --window-h: 240;
@@ -275,13 +272,10 @@
         --blue-medium-hover: hsl(var(--blue-h), 50%, 50%);
         --blue: hsl(var(--blue-h), 50%, 52%);
         --blue-hover: hsl(var(--blue-h), 50%, 60%);
-        --blue-steel-gray: hsl(var(--blue-h), 32%, 85%);
         --blue-sat: hsl(var(--blue-h), 82%, 60%);
         --blue-sat-hover: hsl(var(--blue-h), 82%, 70%);
         --blue-medium-dark: hsl(var(--blue-h), 32%, 37%);
         --blue-dark: hsl(var(--blue-h), 32%, 22%);
-        --blue-ultra-dark: hsl(var(--blue-h), 32%, 15%);
-        --blue-ultra-dark-hover: hsl(var(--blue-h), 32%, 8%);
 
         --green-light: hsl(var(--green-h), 80%, 95%);
         --green-light-hover: hsl(var(--green-h), 80%, 90%);
@@ -331,7 +325,7 @@
         --side-window: var(--window);
         --sidenav-drop-shadow: 0 10px 20px 0 hsl(0, 0%, 93%);
 
-        --nested-window-background-color: hsl(var(--steel-blue-h), 9%, 96%);
+        --nested-window-background-color: hsl(var(--steel-blue-h), 9%, 97%);
         --nested-window-background-color-small-screen: hsl(var(--steel-blue-h), 9%, 93%);
         --modal-inner-window: hsl(var(--steel-blue-h), 8%, 95%);
 
