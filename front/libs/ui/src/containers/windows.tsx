@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useScreenContext } from '../utils/context/ScreenContext';
 
 export const Window = styled.div<{ size?: string }>`
-  border-radius: var(--border-radius3);
+  border-radius: var(--border-radius5);
   box-sizing: border-box;
   border: 1.25px solid var(--window-border);
 
@@ -22,7 +22,7 @@ export const UnPaddedWindow = styled(Window)`
 
 const StyledPortalWindow = styled.div<{ size?: string, maxWidth?: number }>`
   font-size: .875rem;
-  border-radius: var(--border-radius3);
+  border-radius: var(--border-radius5);
   border: 1.5px solid var(--window-border);
   padding: 2em;
   margin: 1rem 0 2rem 0;
@@ -49,14 +49,14 @@ export const PortalWindow = ({ children, maxWidth, ...rest }: React.HTMLAttribut
 }
 
 export const MinimalPortalWindow = styled.div<{ size?: string, maxWidth?: number }>`
-  border-radius: var(--border-radius3);
+  border-radius: var(--border-radius5);
   border: 1.5px solid var(--window-border);
   box-shadow: ${props => props.size === 'extra-small' ? 'none' : 'var(--window-portal-drop-shadow)'};
   background-color: ${props => props.size === 'extra-small' ? 'transparent' : 'var(--window-portal)'};
 `
 
 export const Window2 = styled.div`
-  border-radius: var(--border-radius3);
+  border-radius: var(--border-radius5);
   box-shadow: var(--window-drop-shadow);
   padding: 1em 1.5em;
   box-sizing: border-box;
@@ -64,7 +64,7 @@ export const Window2 = styled.div`
 `
 
 export const BlueWindow = styled.div`
-  border-radius: var(--border-radius3);
+  border-radius: var(--border-radius5);
   box-shadow: var(--window-drop-shadow);
   padding: 1.25em 1.5em;
   box-sizing: border-box;
@@ -73,7 +73,7 @@ export const BlueWindow = styled.div`
 
 const StylesNestedWindow = styled.div`
   background-color: var(--nested-window-background-color);
-  border-radius: var(--border-radius2);
+  border-radius: var(--border-radius3);
   padding: .75em 1em;
   width: 100%;
   box-sizing: border-box;
@@ -97,7 +97,7 @@ export const NestedWindow = ({ children, ...rest }: React.HTMLAttributes<HTMLDiv
 
 export const NestedWindow2 = styled.div`
   background-color: var(--modal-inner-window);
-  border-radius: var(--border-radius2);
+  border-radius: var(--border-radius3);
   padding: .75em;
 `
 

@@ -22,7 +22,7 @@
             margin: .25em 0;
             gap: 1em;
             transition: background-color 0.2s ease-in-out;
-            border-radius: var(--border-radius1);
+            border-radius: var(--border-radius2);
             position: relative;
 
             &>div:nth-child(2) {
@@ -82,8 +82,8 @@
         // Disclosure Panel
         &>div {
             background-color: var(--window);
-            border-bottom-left-radius: var(--border-radius2);
-            border-bottom-right-radius: var(--border-radius2);
+            border-bottom-left-radius: var(--border-radius3);
+            border-bottom-right-radius: var(--border-radius3);
             padding: .5em .75em 0 .5em;
             display: flex;
             flex-direction: column;

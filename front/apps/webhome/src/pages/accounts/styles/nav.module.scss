@@ -41,7 +41,7 @@
             padding: .125em 1em;
             font-weight: var(--fw-regular);
             background-color: var(--btn-feather-light-gray);
-            border-radius: var(--border-radius3);
+            border-radius: var(--border-radius5);
             transition: background-color 0.2s ease-in-out;
             display: inline-flex;
             align-items: center;
@@ -72,7 +72,7 @@
     flex-wrap: wrap;
     align-items: center;
     padding: 0;
-    border-radius: var(--border-radius25);
+    border-radius: var(--border-radius4);
     visibility: hidden;
     background-color: inherit;
     position: relative;

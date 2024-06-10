@@ -45,7 +45,7 @@
     overflow: hidden;
     display: flex;
     align-items: center;
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius1);
 
     &:focus-visible {
         outline: none;
@@ -64,7 +64,7 @@
         transform: scale(1);
         background-color: var(--btn-light-gray);
         border: 1px solid var(--btn-light-gray-hover);
-        border-radius: var(--border-radius);
+        border-radius: var(--border-radius1);
         transition: all 0.3s ease;
         display: flex;
         align-items: center;

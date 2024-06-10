@@ -29,7 +29,7 @@ $duration: .2s;
         cursor: pointer;
         margin: .5em;
         padding: .25em;
-        border-radius: var(--border-radius2);
+        border-radius: var(--border-radius3);
         transition: background-color .3s ease-in-out;
         display: flex;
         flex-direction: row;
@@ -61,7 +61,7 @@ $duration: .2s;
 }
 
 .profile {
-    border-radius: var(--border-radius25);
+    border-radius: var(--border-radius4);
     margin-top: 0;
     padding-top: .375em;
     padding-bottom: .375em;

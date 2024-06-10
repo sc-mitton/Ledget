@@ -2,7 +2,7 @@
 
 .accountWafer,
 .skeletonAccountWafer {
-    border-radius: var(--border-radius3);
+    border-radius: var(--border-radius5);
     position: absolute;
     inset: 0;
     padding: .525em 0;
@@ -64,7 +64,7 @@
         bottom: -.75em;
         width: 35%;
         height: 3px;
-        border-radius: var(--border-radius1);
+        border-radius: var(--border-radius2);
         background: linear-gradient(to bottom right, var(--active-wafer-indicator), var(--blue-light-medium));
     }
 

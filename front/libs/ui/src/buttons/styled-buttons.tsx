@@ -97,7 +97,7 @@ export const FormInputButton = styled(BaseButton)`
     padding: .625em 1em;
     margin: .375em 0;
     min-height: 2.75em;
-    border-radius: var(--border-radius2);
+    border-radius: var(--border-radius3);
     width: 100%;
     overflow: visible;
 `
@@ -106,7 +106,7 @@ export const FormInputButton2 = styled(BaseButton)`
     ${inputStyle}
     padding: .375em 1em;
     margin: .375em 0;
-    border-radius: var(--border-radius2);
+    border-radius: var(--border-radius3);
 `
 
 export const BlueFadedSquareRadio = styled(BaseButton) <React.HTMLProps<HTMLButtonElement> & { selected?: boolean }>`

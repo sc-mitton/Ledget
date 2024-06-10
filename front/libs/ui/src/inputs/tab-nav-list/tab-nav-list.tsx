@@ -36,7 +36,7 @@ export function TabNavList(props: TabNavListProps & React.HTMLAttributes<HTMLDiv
     refresh: [],
     styles: {
       zIndex: 1,
-      borderRadius: 'var(--border-radius1)',
+      borderRadius: 'var(--border-radius2)',
       backgroundColor: theme
         ? Array.isArray(theme) ? theme[props.selectedIndex]?.pillBackgroundColor : theme?.pillBackgroundColor
         : defaultBackgroundColor

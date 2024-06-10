@@ -1,6 +1,7 @@
 export { default as BackArrow } from './icons/BackArrow';
 export { default as CashFlow } from './icons/CashFlow';
 export { default as CheckAll } from './icons/CheckAll';
+export { default as Delete } from './icons/Delete';
 export { default as DepositsIcon } from './icons/Deposits';
 export { default as Grip } from './icons/Grip';
 export { default as CloseIcon } from './icons/Close'

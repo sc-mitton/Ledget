@@ -77,7 +77,7 @@ export const ColoredShimmer = (props: ColoredShimmerProps) => {
           width: '100%',
           height: '1.25em',
           margin: '.75em 0',
-          borderRadius: 'var(--border-radius1)',
+          borderRadius: 'var(--border-radius2)',
           position: 'relative',
           ...style,
         }}
@@ -144,7 +144,7 @@ export const ShimmerTextDiv = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElemen
               fontSize: 'inherit',
               height: '1em',
               margin: '2px 0',
-              borderRadius: 'var(--border-radius1)',
+              borderRadius: 'var(--border-radius2)',
               backgroundColor: 'var(--shimmer-text-background)',
               position: 'relative',
               ...style,

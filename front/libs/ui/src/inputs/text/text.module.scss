@@ -19,7 +19,7 @@
 
 .inputContainer {
     background-color: var(--input-background);
-    border-radius: var(--border-radius2);
+    border-radius: var(--border-radius3);
     padding: .525em 1em;
     margin: .375em 0;
     box-sizing: border-box;
@@ -53,7 +53,7 @@
     }
 
     svg {
-        border-radius: var(--border-radius1);
+        border-radius: var(--border-radius2);
         padding: .125em;
     }
 
@@ -72,7 +72,7 @@
         padding: .125em;
         background-color: var(--input-background);
         color: var(--m-text);
-        border-radius: var(--border-radius2);
+        border-radius: var(--border-radius3);
         box-sizing: border-box;
         display: flex;
         gap: .5em;
@@ -94,7 +94,7 @@
 /* ------------------------------ Card Element ------------------------------ */
 .cardContainer {
     background-color: var(--input-background);
-    border-radius: var(--border-radius2);
+    border-radius: var(--border-radius3);
     z-index: 0;
     padding: .75em 1em;
     margin: .25em 0;

@@ -33,7 +33,7 @@
         white-space: normal;
         text-align: center;
         position: relative;
-        border-radius: var(--border-radius1);
+        border-radius: var(--border-radius2);
         padding: 0 .25em;
 
         svg {
@@ -57,7 +57,7 @@
     text-align: center;
     font-size: .8rem;
     background-color: var(--btn-light-gray);
-    border-radius: var(--border-radius1);
+    border-radius: var(--border-radius2);
     padding: 0 .5em;
     color: var(--m-text-secondary);
 }

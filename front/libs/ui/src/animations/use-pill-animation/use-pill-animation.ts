@@ -34,7 +34,7 @@ export const usePillAnimation = ({ ref, find, querySelectall, update = [], refre
   const baseStyles = {
     position: "absolute",
     backgroundColor: backgroundColor,
-    borderRadius: 'var(--border-radius2)',
+    borderRadius: 'var(--border-radius3)',
     zIndex: 0,
     config: { tension: 200, friction: 22 }
   } as React.CSSProperties

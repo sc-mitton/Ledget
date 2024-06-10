@@ -36,7 +36,7 @@
 
     label {
         margin: 0;
-        border-radius: var(--border-radius2);
+        border-radius: var(--border-radius3);
     }
 
     fieldset {
@@ -44,7 +44,7 @@
     }
 
     &>div {
-        border-radius: var(--border-radius25);
+        border-radius: var(--border-radius4);
     }
 }
 
@@ -66,7 +66,7 @@
     cursor: pointer;
     display: flex;
     justify-content: center;
-    border-radius: var(--border-radius1);
+    border-radius: var(--border-radius2);
 
     &[data-selected='true'] {
         background-color: var(--blue-light);

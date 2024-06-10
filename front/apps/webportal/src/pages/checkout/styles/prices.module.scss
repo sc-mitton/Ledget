@@ -1,7 +1,7 @@
 .prices {
     background: linear-gradient(to top right, var(--blue-light-medium) 0%, color-mix(in srgb, var(--blue-medium), var(--blue-light) 40%) 100%);
-    border-top-left-radius: var(--border-radius3);
-    border-top-right-radius: var(--border-radius3);
+    border-top-left-radius: var(--border-radius5);
+    border-top-right-radius: var(--border-radius5);
     border-bottom-left-radius: .25em;
     border-bottom-right-radius: .25em;
     position: relative;
@@ -98,7 +98,7 @@
     flex: .5;
     position: relative;
     overflow: hidden;
-    border-radius: var(--border-radius2);
+    border-radius: var(--border-radius3);
     padding: .375em 1em;
     min-width: 7.5rem;
     cursor: pointer;

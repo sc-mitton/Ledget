@@ -209,7 +209,7 @@
 
     &:hover[data-active='false'][data-disabled='false'][data-active-window-start='false'][data-active-window-end='false'][data-window-start='false'][data-window-end='false']::after {
         @include transition-background(var(--btn-light-gray));
-        border-radius: var(--border-radius2);
+        border-radius: var(--border-radius3);
         left: .375em;
         right: .375em;
     }
@@ -222,15 +222,15 @@
     &[data-active-window-end='true'][data-window-end='false'][data-window-start='false'][data-disabled='false'][data-today='false'][data-selected='false']::after {
         border: 1px dashed var(--blue-medium);
         border-left: none;
-        border-top-right-radius: var(--border-radius2);
-        border-bottom-right-radius: var(--border-radius2);
+        border-top-right-radius: var(--border-radius3);
+        border-bottom-right-radius: var(--border-radius3);
     }
 
     &[data-active-window-start='true'][data-window-end='false'][data-window-start='false'][data-disabled='false'][data-today='false'][data-selected='false']::after {
         border: 1px dashed var(--blue-medium);
         border-right: none;
-        border-top-left-radius: var(--border-radius2);
-        border-bottom-left-radius: var(--border-radius2);
+        border-top-left-radius: var(--border-radius3);
+        border-bottom-left-radius: var(--border-radius3);
     }
 
     &[data-today='true'][data-window-end='false'][data-window-start='false']::before {
@@ -241,7 +241,7 @@
         right: .375em;
         content: '';
         border: 1px solid var(--blue);
-        border-radius: var(--border-radius2);
+        border-radius: var(--border-radius3);
     }
 
     &[data-disabled='true'][data-dissabled-style='highlighted'][data-overflow='true']::after {
@@ -281,14 +281,14 @@
     }
 
     &[data-window-start='true']::after {
-        border-top-left-radius: var(--border-radius2);
-        border-bottom-left-radius: var(--border-radius2);
+        border-top-left-radius: var(--border-radius3);
+        border-bottom-left-radius: var(--border-radius3);
         left: 0em;
     }
 
     &[data-window-end='true']::after {
-        border-top-right-radius: var(--border-radius2);
-        border-bottom-right-radius: var(--border-radius2);
+        border-top-right-radius: var(--border-radius3);
+        border-bottom-right-radius: var(--border-radius3);
         right: 0em;
     }
 

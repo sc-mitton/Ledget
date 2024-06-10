@@ -322,7 +322,7 @@ const Account = () => {
         <>
             <ShimmerDiv
                 shimmering={loadingInvoice || loadingPaymentMethod || loadingSubscription}
-                style={{ borderRadius: 'var(--border-radius3)' }}
+                style={{ borderRadius: 'var(--border-radius5)' }}
             >
                 <div className={styles.accountsPage}>
                     <h1>Account</h1>

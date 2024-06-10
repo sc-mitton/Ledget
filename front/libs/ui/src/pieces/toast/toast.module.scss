@@ -7,7 +7,7 @@
 }
 
 .toast {
-    border-radius: calc(var(--border-radius2) + 2px);
+    border-radius: calc(var(--border-radius3) + 2px);
     display: flex;
     align-items: center;
     gap: .625em;
@@ -52,7 +52,7 @@
     &>div {
         display: flex;
         align-items: center;
-        border-radius: var(--border-radius2);
+        border-radius: var(--border-radius3);
     }
 
     &>div:last-child {

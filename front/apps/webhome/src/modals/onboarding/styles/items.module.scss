@@ -78,7 +78,7 @@ $scrollbar-padding: 1em;
     span {
         color: var(--blue-sat);
         padding: 0 .5em;
-        border-radius: var(--border-radius1);
+        border-radius: var(--border-radius2);
     }
 }
 
@@ -89,7 +89,7 @@ $scrollbar-padding: 1em;
 
     button {
         padding: 0 .5em;
-        border-radius: var(--border-radius2);
+        border-radius: var(--border-radius3);
         z-index: 0;
 
         &[role='tab'] {

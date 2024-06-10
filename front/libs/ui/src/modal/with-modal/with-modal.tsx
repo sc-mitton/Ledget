@@ -80,7 +80,7 @@ export function withModal<P>(WrappedComponent: FC<P & { closeModal: () => void }
       width: width,
       maxWidth: maxWidth,
       minWidth: minWidth,
-      borderRadius: 'var(--border-radius3)',
+      borderRadius: 'var(--border-radius5)',
       padding: '28px',
       zIndex: zIndex + 1,
       position: "relative",

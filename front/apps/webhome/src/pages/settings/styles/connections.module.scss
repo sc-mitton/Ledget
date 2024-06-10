@@ -81,16 +81,16 @@
 
         &:nth-child(3n) {
             padding-right: 1em;
-            border-top-right-radius: var(--border-radius1);
-            border-bottom-right-radius: var(--border-radius1);
+            border-top-right-radius: var(--border-radius2);
+            border-bottom-right-radius: var(--border-radius2);
             text-align: right;
         }
 
         &:nth-child(3n + 1) {
             padding: .25em 0;
             padding-left: .525em;
-            border-top-left-radius: var(--border-radius1);
-            border-bottom-left-radius: var(--border-radius1);
+            border-top-left-radius: var(--border-radius2);
+            border-bottom-left-radius: var(--border-radius2);
         }
 
         &:nth-child(n+3):nth-last-child(-n+3) {
@@ -135,7 +135,7 @@
     align-items: center;
     justify-content: center;
     background-color: rgb(var(--window-rgb), .5);
-    border-radius: var(--border-radius2);
+    border-radius: var(--border-radius3);
 
     &[data-wiggle='true'] button {
         padding-top: .25em;

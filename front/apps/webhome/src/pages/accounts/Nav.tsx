@@ -75,7 +75,7 @@ const TabButtons = () => {
         find: (element) => element.getAttribute('aria-current') === 'true',
         styles: {
             backgroundColor: backgroundColor,
-            borderRadius: 'var(--border-radius3)',
+            borderRadius: 'var(--border-radius5)',
         }
     })
 
