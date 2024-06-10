@@ -104,11 +104,11 @@
         border-radius: 50%;
 
         &[data-period='month'] {
-            background-color: var(--blue-sat);
+            background-color: var(--monthly-color2);
         }
 
         &[data-period='year'] {
-            background-color: var(--green-sat);
+            background-color: var(--yearly-color2);
         }
     }
 }

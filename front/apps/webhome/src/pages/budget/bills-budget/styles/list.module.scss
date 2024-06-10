@@ -92,10 +92,10 @@
     }
 
     &[data-period='month'] {
-        color: var(--blue-sat);
+        color: var(--yearly-color2);
     }
 
     &[data-period='year'] {
-        color: var(--green-sat);
+        color: var(--monthly-color2);
     }
 }

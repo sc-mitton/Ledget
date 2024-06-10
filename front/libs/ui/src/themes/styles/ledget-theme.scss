@@ -74,13 +74,6 @@
         --blue-dark: hsl(var(--blue-h), 25%, 90%);
         --blue-dark-hover: hsl(var(--blue-h), 25%, 85%);
 
-        --green-light: hsl(var(--green-h), 30%, 27%);
-        --green-light-hover: hsl(var(--green-h), 30%, 22%);
-        --green: hsl(var(--green-h), 30%, 47%);
-        --green-sat: hsl(var(--green-h), 30%, 57%);
-        --green-medium: hsl(var(--green-h), 30%, 70%);
-        --green-dark: hsl(var(--green-h), 30%, 80%);
-
         // Buttons
         --btn-chcl: hsl(0, 0%, 90%);
         --btn-chcl-hover: hsl(0, 0%, 85%);
@@ -209,7 +202,6 @@
         --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
 
         --header-box-shadow-color: hsl(0, 0%, 10%);
-        --scroll-shadow: hsl(0, 0%, 3%), transparent;
         --dropdown-box-shadow-color: hsl(0, 0%, 0%);
         --antd-drop-shadow-color: hsl(0, 0%, 0%);
         --header-box-shadow: var(--header-box-shadow-color) 0px 1px 1px 1px;
@@ -224,7 +216,6 @@
         --border-color: rgb(255, 255, 255, .17);
         --institution-logo-border: rgb(255, 255, 255, .3);
         --toast-border: 1px solid var(--border-color-dim);
-        --gray-button-border: hsl(0, 0%, 23%);
         // --sidewindow-border-color: hsl(0, 0%, 12%);
     }
 
@@ -251,7 +242,6 @@
 
         // Budget Item Pallet
         --monthly-background-color: hsl(var(--monthly-h), 80%, 92%);
-        --col: rgb(218, 226, 251);
         --monthly-hover-background-color: hsl(var(--monthly-h), 80%, 85%);
         --monthly-background-color-darker: hsl(var(--monthly-h), 80%, 73%);
         --monthly-color1: hsl(var(--monthly-h), 50%, 40%);
@@ -276,13 +266,6 @@
         --blue-sat-hover: hsl(var(--blue-h), 82%, 70%);
         --blue-medium-dark: hsl(var(--blue-h), 32%, 37%);
         --blue-dark: hsl(var(--blue-h), 32%, 22%);
-
-        --green-light: hsl(var(--green-h), 80%, 95%);
-        --green-light-hover: hsl(var(--green-h), 80%, 90%);
-        --green: hsl(var(--green-h), 30%, 62%);
-        --green-sat: hsl(var(--green-h), 50%, 52%);
-        --green-medium: hsl(var(--green-h), 30%, 42%);
-        --green-dark: hsl(var(--green-h), 30%, 22%);
 
         // Buttons
         --btn-chcl: hsl(0, 0%, 10%);
@@ -412,7 +395,6 @@
         --dropdown-item-background: hsl(0, 0%, 93%);
         // --dropdown-border: 1.5px solid hsl(var(--window-h), var(--window-s), 92%);
 
-        --scroll-shadow: hsl(0, 0%, 97%), transparent;
         --dropdown-box-shadow-color: rgba(0, 0, 0, 0.2);
         --antd-drop-shadow-color: var(--dropdown-box-shadow-color);
         --low-elevation-drop-shadow-color: rgba(0, 0, 0, 0.1);
@@ -426,7 +408,6 @@
         --border-color: rgb(0, 0, 0, .15);
         --institution-logo-border: rgb(0, 0, 0, .2);
         --toast-border: transparent;
-        --gray-button-border: hsl(0, 0%, 86%);
         --sidewindow-border-color: hsl(0, 0%, 95%);
     }
 
