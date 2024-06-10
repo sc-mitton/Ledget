@@ -6,13 +6,13 @@ import { Check, MoreVertical } from '@geist-ui/icons'
 
 import styles from './styles/new-item.module.scss'
 import { InsitutionLogo } from '@components/pieces'
+import { formatDateOrRelativeDate } from '@ledget/helpers'
 import {
     NarrowButton,
     IconButtonHalfGray,
     Tooltip,
     DollarCents,
-    BillCatLabel,
-    formatDateOrRelativeDate
+    BillCatLabel
 } from "@ledget/ui"
 import { SplitCategory } from '@features/categorySlice'
 import { Bill, isBill } from '@features/billSlice'

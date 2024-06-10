@@ -6,7 +6,7 @@ import { ChevronUp, ChevronDown } from '@geist-ui/icons'
 import styles from './styles/text.module.scss'
 import Emoji from './Emoji'
 import { EmojiProps, emoji } from './Emoji'
-import { formatCurrency, makeIntCurrencyFromStr } from '@ledget/ui'
+import { formatCurrency, makeIntCurrencyFromStr } from '@ledget/helpers'
 import { FadedIconButton, TextInputWrapper, FormErrorTip, FormError } from '@ledget/ui'
 
 

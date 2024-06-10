@@ -3,7 +3,7 @@ import { Check } from '@geist-ui/icons'
 
 import styles from './status-pulse.module.scss'
 import { AuthenticatorImage, RecoveryCodeImage } from '@ledget/media'
-import { shuffleArray } from '../../utils/funcs'
+import { shuffleArray } from '@ledget/helpers'
 import { EnvelopeImage } from '@ledget/media'
 
 

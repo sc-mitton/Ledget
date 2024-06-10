@@ -8,11 +8,11 @@ import { ArrowUp, ArrowDown } from '@geist-ui/icons'
 import styles from './styles/edit-budget-items.module.scss'
 import { TransformedBill, useGetBillsQuery } from '@features/billSlice'
 import { BillModalContent } from '@modals/index'
+import { getDaySuffix } from '@ledget/helpers'
 import {
   withModal,
   TabNavList,
   BillCatLabel,
-  getDaySuffix,
   DollarCents,
   SlideMotionDiv,
   BackButton,

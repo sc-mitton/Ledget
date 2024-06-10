@@ -11,8 +11,8 @@ import styles from './styles/items.module.scss'
 import { TabView, BottomButtons } from './Reusables'
 import { useItemsContext, ItemsProvider } from "./ItemsContext"
 import { LimitAmountInput, EmojiComboText, BillScheduler, emoji } from '@components/inputs'
+import { getLongestLength } from '@ledget/helpers'
 import {
-    getLongestLength,
     BillCatLabel,
     DeleteButton,
     ShadowScrollDiv,

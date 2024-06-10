@@ -35,6 +35,7 @@
 
 :root {
     div.dark {
+        @include common;
 
         --mute-red: hsl(352, 98%, 90%);
         --hover-red: hsl(352, 95%, 85%);
@@ -225,11 +226,10 @@
         --toast-border: 1px solid var(--border-color-dim);
         --gray-button-border: hsl(0, 0%, 23%);
         // --sidewindow-border-color: hsl(0, 0%, 12%);
-
-        @include common;
     }
 
     div.light {
+        @include common;
 
         --mute-red: #fe8797;
         --hover-red: #fb6a7e;
@@ -428,8 +428,6 @@
         --toast-border: transparent;
         --gray-button-border: hsl(0, 0%, 86%);
         --sidewindow-border-color: hsl(0, 0%, 95%);
-
-        @include common;
     }
 
 }

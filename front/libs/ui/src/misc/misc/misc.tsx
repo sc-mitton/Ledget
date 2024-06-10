@@ -3,8 +3,8 @@ import { useEffect, useState, useRef } from 'react'
 import { useTransition, animated, useSpringRef } from '@react-spring/web';
 
 import styles from './misc.module.scss'
-import { formatCurrency } from '../../utils/funcs'
 import { useLoaded } from '../../utils/hooks';
+import { formatCurrency } from '@ledget/helpers';
 
 interface Base64LogoProps {
   data?: string;

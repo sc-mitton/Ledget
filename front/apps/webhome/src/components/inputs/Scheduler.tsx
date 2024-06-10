@@ -10,12 +10,12 @@ import dropdownStyles from './styles/dropdowns.module.scss'
 import schedulerStyles from './styles/scheduler.module.scss'
 import type { Bill } from '@features/billSlice'
 import { useClickClose } from '@ledget/ui'
+import { getDaySuffix } from '@ledget/helpers'
 import {
     FormInputButton2,
     FormInputButton,
     FormErrorTip,
     DropdownDiv,
-    getDaySuffix,
     useSchemeVar,
     TabNavList
 } from '@ledget/ui'
