@@ -123,6 +123,10 @@
         transform: rotate(-42deg);
     }
 
+    &[data-dark='true'] svg {
+        color: var(--blue-medium);
+    }
+
     &[data-dark='true'][data-size='extra-small'] {
         svg {
             color: var(--btn-feather-light-gray);

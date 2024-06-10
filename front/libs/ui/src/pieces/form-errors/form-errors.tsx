@@ -1,8 +1,7 @@
 import { Fragment } from 'react';
 import styles from './form-errors.module.scss';
 
-import { Alert2 } from '@ledget/media'
-import { AlertCircle } from '@geist-ui/icons';
+import { AlertCircle, AlertCircleFill } from '@geist-ui/icons';
 
 export interface Error {
   message?: string,
@@ -13,7 +12,7 @@ export const FormErrorTip = ({ error }: { error?: Error }) => (
   <>
     {(error?.type === 'required' || error?.message?.toLowerCase() === 'required') &&
       <div className={styles.errorTip}>
-        <Alert2 />
+        <AlertCircleFill stroke={'var(--m-invert-text)'} strokeWidth={2} size='1.25em' />
       </div>
     }
   </>

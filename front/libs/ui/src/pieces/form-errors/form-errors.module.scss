@@ -3,10 +3,11 @@
 .errorTip {
     position: absolute;
     top: -.625em;
-    right: -.125em;
+    right: 0;
     height: .75em;
     width: .75em;
     animation: pop .22s ease;
+    color: var(--alert-red);
 }
 
 .formErrorContainer {

@@ -1,16 +1,12 @@
 export { default as BackArrow } from './icons/BackArrow';
 export { default as CashFlow } from './icons/CashFlow';
 export { default as CheckAll } from './icons/CheckAll';
-export { default as Delete } from './icons/Delete';
 export { default as DepositsIcon } from './icons/Deposits';
 export { default as Grip } from './icons/Grip';
-export { default as ReplayIcon } from './icons/Replay';
 export { default as CloseIcon } from './icons/Close'
 export { default as FacebookLogo } from './icons/FacebookLogo'
 export { default as GoogleLogo } from './icons/GoogleLogo'
-export { default as PasskeyIcon } from './icons/PasskeyIcon';
 export { default as Star } from './icons/Star';
-export { default as Alert2 } from './icons/Alert2';
 export { default as QrIcon } from './icons/QrIcon';
 export { default as LocationIcon } from './icons/LocationIcon';
 export { default as LineGraph } from './icons/LineGraph';

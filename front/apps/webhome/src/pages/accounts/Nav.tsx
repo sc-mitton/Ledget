@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { animated } from '@react-spring/web'
 
 import styles from './styles/nav.module.scss'
-import { CreditCard, Clock, TrendingUp } from '@geist-ui/icons'
+import { CreditCard, Clock, TrendingUp, X } from '@geist-ui/icons'
 
 import {
     usePillAnimation,
@@ -216,7 +216,7 @@ const Filters = ({ visible = false, close }: { visible: boolean, close: () => vo
                 </>
             ))}
             <CircleIconButton onClick={() => close()} size='small'>
-                <CloseIcon />
+                <X size='1em' />
             </CircleIconButton>
         </ExpandableContainer>
     )

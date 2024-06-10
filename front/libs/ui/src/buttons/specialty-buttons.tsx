@@ -1,6 +1,6 @@
 import { FC, useState, forwardRef, ButtonHTMLAttributes, useEffect } from 'react';
 
-import { X, Copy, ChevronsDown, Check, Plus } from '@geist-ui/icons'
+import { X, Copy, ChevronsDown, Check, Plus, RotateCw } from '@geist-ui/icons'
 import styled from 'styled-components';
 
 import styles from './styles.module.scss';
@@ -8,7 +8,6 @@ import {
     FacebookLogo,
     GoogleLogo,
     Delete,
-    ReplayIcon,
     Grip,
     CornerGrip
 } from '@ledget/media'
@@ -204,7 +203,7 @@ export const ResendButton = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<H
                 <div>
                     {success
                         ? <Check className="resend-btn-success-icon" size={'1.25em'} />
-                        : <ReplayIcon size={'1.1em'} />}
+                        : <RotateCw size={'1.1em'} />}
                 </div>
             </BaseButton>
         )
@@ -234,7 +233,7 @@ export const RefreshButton = ({ loading = false, onClick = () => { }, ...rest })
                 {...rest}
             >
                 {!active && loading && <LoadingRing visible={true} />}
-                {(active || !loading) && <ReplayIcon size={'1.125em'} />}
+                {(active || !loading) && <RotateCw size={'1.125em'} />}
             </CircleIconButton>
         </Tooltip>
     )
@@ -263,7 +262,7 @@ export const RefreshButton2 = ({ loading = false, onClick = () => { }, ...rest }
                 {...rest}
             >
                 <LoadingRing visible={!active && loading} />
-                <ReplayIcon size={'1.4em'} />
+                <RotateCw size={'1.4em'} />
             </IconButtonHalfGray>
         </Tooltip>
     )
