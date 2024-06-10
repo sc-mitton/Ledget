@@ -1,19 +1,12 @@
 /* Root css file for style variables and global styles */
 
 :root {
-    /* Borders */
-    --border-color-ultra-dim: rgb(0, 0, 0, .07);
-    --subtle-border: .75px solid var(--border-color-ultra-dim);
-
-    --input-padding: .525em 1em;
-
     /* Border Radius */
     --border-radius: 4px;
     --border-radius1: 6px;
     --border-radius2: 8px;
     --border-radius25: 12px;
     --border-radius3: 16px;
-    --border-radius5: 24px;
 }
 
 #root {
