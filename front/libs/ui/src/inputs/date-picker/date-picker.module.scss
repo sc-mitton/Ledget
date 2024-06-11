@@ -252,6 +252,10 @@
         opacity: .3;
     }
 
+    &[data-disabled='true'][data-disabled-style='highlighted'][data-overflow='false']::after {
+        background-color: var(--btn-feather-light-gray);
+    }
+
     &[data-selected='true']::after {
         opacity: .4;
         transition: opacity .2s ease-in-out .3s;
