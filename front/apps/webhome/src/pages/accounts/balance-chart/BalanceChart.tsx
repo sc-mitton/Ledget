@@ -35,7 +35,8 @@ export const BalanceChart = () => {
     const nivoBaseProps = useMinimalistNivoResponsiveBaseProps({
         primaryColor: '--blue-medium',
         gradientColorStart: '--blue-light-medium',
-        gradientColorEnd: '--window2'
+        gradientColorEnd: '--window2',
+        borderColor: '--window2'
     })
     const nivoTheme = useMinimalistNivoResponsiveLineTheme({ primaryColor: '--blue-medium' })
     const [yBoundaries, setYBoundaries] = useState<[number, number]>([0, 0])

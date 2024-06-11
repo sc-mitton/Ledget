@@ -168,6 +168,7 @@ const Form = withModal((props) => {
                         render={(props) => (
                             <DatePicker
                                 disabled={[[undefined, dayjs().subtract(1, 'day')]]}
+                                disabledStyle='muted'
                                 placeholder="Date"
                                 format="M/D/YYYY"
                                 aria-label='Expiration date'

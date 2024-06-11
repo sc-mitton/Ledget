@@ -67,7 +67,7 @@
         --blue-light-medium-hover: hsl(var(--blue-h), 45%, 27%);
         --blue-medium: hsl(var(--blue-h), 45%, 40%);
         --blue-medium-hover: hsl(var(--blue-h), 45%, 45%);
-        --blue: hsl(var(--blue-h), 45%, 65%);
+        --blue: hsl(var(--blue-h), 45%, 50%);
         --blue-sat: hsl(var(--blue-h), 55%, 55%);
         --blue-sat-hover: hsl(var(--blue-h), 55%, 65%);
         --blue-medium-dark: hsl(var(--blue-h), 25%, 75%);
@@ -245,13 +245,13 @@
         --monthly-hover-background-color: hsl(var(--monthly-h), 80%, 85%);
         --monthly-background-color-darker: hsl(var(--monthly-h), 80%, 73%);
         --monthly-color1: hsl(var(--monthly-h), 50%, 40%);
-        --monthly-color2: hsl(var(--monthly-h), 50%, 70%);
+        --monthly-color2: hsl(var(--monthly-h), 50%, 60%);
 
         --yearly-background-color: hsl(var(--yearly-h), 50%, 88%);
         --yearly-hover-background-color: hsl(var(--yearly-h), 40%, 80%);
         --yearly-background-color-darker: hsl(var(--yearly-h), 40%, 60%);
         --yearly-color1: hsl(var(--yearly-h), 50%, 40%);
-        --yearly-color2: hsl(var(--yearly-h), 30%, 60%);
+        --yearly-color2: hsl(var(--yearly-h), 40%, 60%);
 
         // Blue Green Pallet
         --blue-light: hsl(var(--blue-h), 70%, 90%);

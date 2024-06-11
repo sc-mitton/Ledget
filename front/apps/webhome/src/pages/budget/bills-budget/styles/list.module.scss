@@ -88,14 +88,14 @@
     }
 
     &[data-paid='false'] {
-        opacity: .4;
+        opacity: .6;
     }
 
     &[data-period='month'] {
-        color: var(--yearly-color2);
+        color: var(--monthly-color2);
     }
 
     &[data-period='year'] {
-        color: var(--monthly-color2);
+        color: var(--yearly-color2);
     }
 }

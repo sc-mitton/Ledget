@@ -125,10 +125,7 @@ const AddAlert = (props: { limitAmount?: number, defaultValues?: typeof baseAler
     const ButtonText = () => (
         <>
             {selectedAlerts && selectedAlerts?.length > 0 &&
-                <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                }}>
+                <div className={styles.addAlertBtn}>
                     <span
                         style={{
                             backgroundColor: 'var(--m-text)',

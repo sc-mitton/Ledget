@@ -77,19 +77,20 @@ export const useNivoResponsiveLineTheme = (): Theme => {
 }
 
 export const useMinimalistNivoResponsiveBaseProps = (
-    { primaryColor = '--blue', gradientColorStart = '--blue', gradientColorEnd }:
-        { primaryColor?: `--${string}`, gradientColorStart?: `--${string}`, gradientColorEnd?: `--${string}` }
+    { primaryColor = '--blue', gradientColorStart = '--blue', gradientColorEnd, borderColor }:
+        { primaryColor?: `--${string}`, gradientColorStart?: `--${string}`, gradientColorEnd?: `--${string}`, borderColor?: `--${string}` }
 ): NivoResponsiveLineBaseProps => {
     const primary = useSchemeVar(primaryColor)
     const gradientColors = useSchemeVar(gradientColorEnd ? [gradientColorStart, gradientColorEnd] : gradientColorStart)
+    const pointBorderColor = useSchemeVar(borderColor || '--m-text-invert')
 
     return ({
         enablePoints: true,
         enableArea: true,
         pointColor: primary,
-        pointSize: 5,
-        pointBorderColor: primary,
-        pointBorderWidth: 1,
+        pointSize: 8,
+        pointBorderColor: pointBorderColor,
+        pointBorderWidth: 3,
         enableGridY: false,
         enableGridX: true,
         lineWidth: 1.5,
