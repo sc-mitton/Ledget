@@ -5,10 +5,11 @@
   "dependencies": {
     "@testing-library/jest-native": "*",
     "@testing-library/react-native": "*",
+    "expo": "*",
     "metro-config": "*",
     "react-native": "*",
-    "expo": "*",
     "react-native-svg": "*",
+    "react-native-svg-transformer": "1.2.0",
     "react-native-web": "*"
   },
   "scripts": {
