@@ -6,13 +6,10 @@
         color: var(--blue-dark);
     }
 
-    h4 {
-        color: var(--m-text-secondary);
-    }
-
     h1 {
-
         font-size: 1.75rem;
+        line-height: 1.75rem;
+        margin-top: .2em;
 
         * {
             font-weight: var(--fw-bold);
@@ -31,9 +28,9 @@
     gap: .5em;
     border-radius: inherit;
 
-    &:hover>button {
+    &>button:hover {
         * {
-            color: var(--blue);
+            color: var(--blue-sat);
         }
 
         transition: border-color .25s;
@@ -45,7 +42,6 @@
 
     &>button {
         padding: .75em .5em 0em .5em;
-        width: 100%;
         height: 100%;
         display: flex;
         flex-direction: column;

@@ -89,7 +89,6 @@ export const blue = css`
 export const main = css`
     background-color: var(--btn-main);
     color: var(--white);
-    box-shadow: 0 .5px 0 1px color-mix(in srgb, var(--btn-main), var(--m-invert-text) 70%);
 
     * {
         color: inherit;
@@ -132,6 +131,14 @@ export const clearGray = css`
 
     &:hover {
         background-color: var(--btn-light-gray);
+    }
+`
+
+export const clearBlue = css`
+    background-color: transparent;
+
+    &:hover {
+        background-color: var(--blue-light);
     }
 `
 

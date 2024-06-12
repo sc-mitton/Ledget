@@ -14,7 +14,7 @@
 
     &:has(div[aria-selected=true]) {
         border-color: var(--blue-light-medium);
-        box-shadow: 0 0 1px 1px var(--blue-light);
+        box-shadow: 0 0 1px 1px var(--blue-light-hover);
     }
 
     &>button {

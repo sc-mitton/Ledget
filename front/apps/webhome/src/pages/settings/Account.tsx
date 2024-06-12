@@ -15,8 +15,8 @@ import {
     Subscription
 } from '@features/userSlice'
 import {
-    BlueSlimButton3,
-    BlueSlimSubmitButton,
+    HalfTextSlimBlueButton,
+    HalfTextSlimBlueSubmitButton,
     ShimmerDiv,
     DropdownDiv,
     DropdownItem,
@@ -140,11 +140,11 @@ const ChangePlanMenu = () => {
     return (
         <Menu>
             {({ open }) => (
-                <>
+                <div className={styles.changePlanMenu}>
                     <Menu.Button as={'div'}>
-                        <BlueSlimSubmitButton submitting={isLoading} rotate={0} disabled={!user?.is_account_owner}>
+                        <HalfTextSlimBlueSubmitButton submitting={isLoading} rotate={0} disabled={!user?.is_account_owner}>
                             change
-                        </BlueSlimSubmitButton>
+                        </HalfTextSlimBlueSubmitButton>
                     </Menu.Button>
                     <DropdownDiv
                         visible={open}
@@ -153,7 +153,7 @@ const ChangePlanMenu = () => {
                     >
                         <Items />
                     </DropdownDiv>
-                </>
+                </div>
             )}
         </Menu>
     )
@@ -248,13 +248,13 @@ const PaymentMethod = () => {
                     </div>
                     <div>{`Exp. ${expDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}`}</div>
                 </div>
-                <BlueSlimButton3
+                <HalfTextSlimBlueButton
                     aria-label="Change plan"
                     onClick={() => navigate("/settings/profile/update-payment")}
                     disabled={!user?.is_account_owner}
                 >
                     update
-                </BlueSlimButton3>
+                </HalfTextSlimBlueButton>
             </NestedWindow>
         </section>
     )
@@ -302,9 +302,9 @@ const Household = () => {
                             <UserPlus className='icon' />
                         </CircleIconButton>}
                     {user?.is_account_owner && coOwner &&
-                        <BlueSlimButton3 onClick={() => setRemoveCoOwnerModal(true)}>
+                        <HalfTextSlimBlueButton onClick={() => setRemoveCoOwnerModal(true)}>
                             Remove
-                        </BlueSlimButton3>}
+                        </HalfTextSlimBlueButton>}
                 </NestedWindow>
             </section>
             {addUserModal && <AddUserModal onClose={() => setAddUserModal(false)} />}

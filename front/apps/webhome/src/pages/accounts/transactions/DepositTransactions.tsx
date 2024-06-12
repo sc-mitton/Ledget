@@ -9,15 +9,13 @@ import { setTransactionModal } from '@features/modalSlice'
 import { useAppDispatch } from '@hooks/store'
 import {
     Tooltip,
-    DollarCents,
-    useScreenContext
+    DollarCents
 } from '@ledget/ui'
 import { Hourglass } from '@ledget/media'
 import Table from './Table'
 
 const Transactions = () => {
     const dispatch = useAppDispatch()
-    const { screenSize } = useScreenContext()
 
     return (
         <Table>
@@ -41,7 +39,6 @@ const Transactions = () => {
                                         </div>
                                         <div
                                             className={styles.transaction}
-                                            data-size={screenSize}
                                             key={transaction.transaction_id}
                                             role="button"
                                             onClick={() => { dispatch(setTransactionModal({ item: transaction })) }}

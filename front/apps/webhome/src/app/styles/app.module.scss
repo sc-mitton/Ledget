@@ -6,6 +6,10 @@
     background-color: var(--window-background-color);
     display: flex;
     flex-direction: column;
+
+    &[data-size='extra-small'] {
+        background-color: var(--window-background-color-small-screen);
+    }
 }
 
 .dashboard {

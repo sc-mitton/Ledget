@@ -15,12 +15,13 @@ import {
     FilterPillButton,
     RefreshButton,
     useColorScheme,
+    Tooltip,
 } from '@ledget/ui'
 import { popToast } from '@features/toastSlice'
 import { useAppDispatch } from '@hooks/store'
 import { useGetAccountsQuery } from '@features/accountsSlice'
 import { useTransactionsSyncMutation } from '@features/transactionsSlice'
-import { DepositsIcon, CloseIcon, Filter2 } from '@ledget/media'
+import { DepositsIcon, Filter2 } from '@ledget/media'
 import { useAccountsContext } from './context'
 import pathMappings from './path-mappings'
 import { hasErrorCode } from '@ledget/helpers'
@@ -57,7 +58,7 @@ const _getNavLabel = (key = '') => {
     }
 }
 
-const TabButtons = () => {
+const TabButtons = ({ showFilters = false }) => {
     const ref = useRef(null)
     const [windowWidth, setWindowWidth] = useState(0)
 
@@ -65,16 +66,25 @@ const TabButtons = () => {
     const navigate = useNavigate()
     const currentPath = location.pathname.split('/')[2]
     const { screenSize } = useScreenContext()
+    const { isDark } = useColorScheme()
+    const [lightBlue, blue] = useSchemeVar(['--blue-light', '--blue'])
+    const [updatePill, setUpdatePill] = useState(false)
 
-    const [backgroundColor] = useSchemeVar(['--blue'])
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setUpdatePill(true)
+        }, 300)
+        return () => clearTimeout(timeout)
+    }, [showFilters])
 
     const [props] = usePillAnimation({
         ref: ref,
-        update: [location.pathname, windowWidth],
+        update: [location.pathname, windowWidth, updatePill],
         querySelectall: '[role=link]',
         find: (element) => element.getAttribute('aria-current') === 'true',
         styles: {
-            backgroundColor: backgroundColor,
+            backgroundColor: isDark ? lightBlue : blue,
+            ...(isDark ? { borderColor: blue } : {}),
             borderRadius: 'var(--border-radius5)',
         }
     })
@@ -257,7 +267,7 @@ export const Nav = () => {
     return (
         <div className={styles.accountsNav}>
             <div data-dark={isDark}>
-                <TabButtons />
+                <TabButtons showFilters={showFilters} />
                 <RefreshButton
                     stroke={'var(--m-text)'}
                     loading={isSyncing}
@@ -266,15 +276,17 @@ export const Nav = () => {
                         syncTransactions({})
                     }}
                 />
-                <CircleIconButton
-                    onClick={() => setShowFilters(prev => !prev)}
-                    aria-label='Filter Transactions'
-                    aria-expanded={showFilters}
-                    aria-controls='filter'
-                    aria-haspopup='true'
-                >
-                    <Filter2 size={'1em'} />
-                </CircleIconButton>
+                <Tooltip msg='Filter Accounts' ariaLabel='Filter Accounts' >
+                    <CircleIconButton
+                        onClick={() => setShowFilters(prev => !prev)}
+                        aria-label='Filter Transactions'
+                        aria-expanded={showFilters}
+                        aria-controls='filter'
+                        aria-haspopup='true'
+                    >
+                        <Filter2 size={'1em'} />
+                    </CircleIconButton>
+                </Tooltip>
             </div>
             <Filters visible={showFilters} close={() => setShowFilters(false)} />
         </div>

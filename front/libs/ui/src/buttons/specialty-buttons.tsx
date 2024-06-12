@@ -30,7 +30,8 @@ import {
     BlackPillButton,
     TextButton,
     FeatherGrayPillButton,
-    IconButtonHalfGray
+    IconButtonHalfGray,
+    HalfTextSlimBlueButton
 } from './styled-buttons';
 
 export const BlackPillButtonWithArrow = withArrow(BlackPillButton)
@@ -42,6 +43,7 @@ export const BlueSubmitWithArrow = withLoading(withArrow(BluePrimaryButton))
 export const BlackSubmitButton = withLoading(BlackPrimaryButton)
 export const BlueSubmitButton = withLoading(BluePrimaryButton)
 export const BlueSlimSubmitButton = withLoading(BlueSlimButton3)
+export const HalfTextSlimBlueSubmitButton = withLoading(HalfTextSlimBlueButton)
 
 export const BlackCheckSubmitButton = withCheckMark(BlackSubmitButton)
 export const BlueCheckSubmitButton = withCheckMark(BlueSubmitButton)
@@ -50,10 +52,9 @@ export const IconButtonSubmit = withLoading(IconButtonHalfGray)
 export const LinkArrowButton = withArrow(BaseButton)
 export const GlossMiniCta = withArrow(GlossMini)
 
-export const GrayMainButton = withLoading(styled(WideButton)`${gray}`)
-export const MainButton = withLoading(styled(WideButton)`${main}`)
-export const LightBlueMainButton = withLoading(styled(WideButton)`${blue}`)
-
+export const GrayMainButton = withLoading(styled(WideButton)`${gray} justify-content: center;`)
+export const MainButton = withLoading(styled(WideButton)`${main} justify-content: center;`)
+export const LightBlueMainButton = withLoading(styled(WideButton)`${blue} justify-content: center;`)
 
 export const FacebookLoginButton = (props: ButtonHTMLAttributes<HTMLButtonElement>) => (
     <SocialButton {...props}> <FacebookLogo /> </SocialButton>
@@ -203,7 +204,7 @@ export const ResendButton = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<H
                 <div>
                     {success
                         ? <Check className="resend-btn-success-icon" size={'1.25em'} />
-                        : <RotateCw size={'1.1em'} />}
+                        : <RotateCw size={'1em'} />}
                 </div>
             </BaseButton>
         )
@@ -233,7 +234,7 @@ export const RefreshButton = ({ loading = false, onClick = () => { }, ...rest })
                 {...rest}
             >
                 {!active && loading && <LoadingRing visible={true} />}
-                {(active || !loading) && <RotateCw size={'1.125em'} />}
+                {(active || !loading) && <RotateCw size={'.875em'} strokeWidth={2} />}
             </CircleIconButton>
         </Tooltip>
     )
@@ -254,7 +255,7 @@ export const RefreshButton2 = ({ loading = false, onClick = () => { }, ...rest }
     return (
         <Tooltip msg={"Refresh"} ariaLabel={"Refresh list"}>
             <IconButtonHalfGray
-                className={styles.refresh}
+                className={styles.refresh2}
                 data-active={active}
                 data-loading={!active && loading}
                 aria-label="Refresh"
@@ -262,7 +263,7 @@ export const RefreshButton2 = ({ loading = false, onClick = () => { }, ...rest }
                 {...rest}
             >
                 <LoadingRing visible={!active && loading} />
-                <RotateCw size={'1.4em'} />
+                <RotateCw size={'1.125em'} strokeWidth={2} />
             </IconButtonHalfGray>
         </Tooltip>
     )

@@ -142,18 +142,21 @@ const App = () => {
   )
 }
 
-const AppWithNav = () => (
-  <ColorSchemedDiv className={styles.app}>
-    <Header />
-    <main>
-      <Sidenav />
-      <Routes>
-        <Route path="/*" element={<App />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </main>
-  </ColorSchemedDiv >
-)
+const AppWithNav = () => {
+  const { screenSize } = useScreenContext()
+  return (
+    <ColorSchemedDiv className={styles.app} data-size={screenSize}>
+      <Header />
+      <main>
+        <Sidenav />
+        <Routes>
+          <Route path="/*" element={<App />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
+    </ColorSchemedDiv >
+  )
+}
 
 const EnrichedApp = () => (
   <ScreenProvider>

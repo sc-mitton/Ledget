@@ -65,10 +65,10 @@ export const Window2 = styled.div`
 
 export const BlueWindow = styled.div`
   border-radius: var(--border-radius5);
-  box-shadow: var(--window-drop-shadow);
-  padding: 1.25em 1.5em;
+  padding: 1.125em 1.5em;
   box-sizing: border-box;
   background: var(--blue-window-background);
+  box-shadow: var(--blue-window-box-shadow);
 `
 
 const StylesNestedWindow = styled.div`
@@ -96,7 +96,7 @@ export const NestedWindow = ({ children, ...rest }: React.HTMLAttributes<HTMLDiv
 }
 
 export const NestedWindow2 = styled.div`
-  background-color: var(--modal-inner-window);
+  background-color: var(--modal-nested-window);
   border-radius: var(--border-radius3);
   padding: .75em;
 `

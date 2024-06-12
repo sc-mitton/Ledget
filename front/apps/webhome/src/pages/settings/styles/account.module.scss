@@ -89,6 +89,9 @@
     top: .5em;
 }
 
+.changePlanMenu {
+    position: relative;
+}
 
 .invoice {
     display: flex;
@@ -101,7 +104,7 @@
         gap: .25em;
         column-gap: 1em;
 
-        &>div:nth-child(2n + 1) {
+        &>div:nth-child(2n) {
             color: var(--m-text-secondary);
         }
 
@@ -120,7 +123,7 @@
     span {
         margin: .25em 0;
 
-        &:first-child {
+        &:last-of-type {
             color: var(--m-text-secondary);
         }
     }
@@ -134,7 +137,6 @@
     }
 
     button {
-        color: var(--white);
         position: absolute;
     }
 }

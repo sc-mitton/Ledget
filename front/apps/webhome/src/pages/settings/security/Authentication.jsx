@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 
 import styles from './styles/authentication.module.scss'
-import { BlueSlimButton, NestedWindow } from '@ledget/ui'
+import { HalfTextSlimBlueButton, NestedWindow } from '@ledget/ui'
 import { useGetMeQuery } from '@features/userSlice'
 import { Lock } from '@geist-ui/icons'
 
@@ -34,12 +34,12 @@ const PasswordReset = () => {
                                 at {formatTime(user.password_last_changed)}</span>}
                     </div>
                     <div>
-                        <BlueSlimButton
+                        <HalfTextSlimBlueButton
                             onClick={() => navigate('/settings/security/change-password')}
                             aria-label="Change password"
                         >
                             change
-                        </BlueSlimButton>
+                        </HalfTextSlimBlueButton>
                     </div>
                 </div>
             </NestedWindow>

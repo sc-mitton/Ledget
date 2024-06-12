@@ -14,6 +14,7 @@ import {
     featherGray,
     red,
     clearGray,
+    clearBlue,
     inputStyle,
     hoverHalfBlueText,
     hoverBlueText,
@@ -48,6 +49,15 @@ export const BlueSlimButton = styled(SlimButton)`${blue}`
 export const BlueSlimButton2 = styled(SlimButton2)`${blue}`
 export const BlueSlimButton3 = styled(SlimButton3)`${blue}`
 export const RedSlimButton = styled(SlimButton)`${red}`
+export const HalfTextSlimBlueButton = styled(SlimButton)`
+    ${clearBlue}
+    color: var(--blue);
+    font-weight: var(--fw-bold);
+    * {
+        color: var(--blue);
+        font-weight: var(--fw-bold);
+    }
+`
 
 export const ClearNarrowButton = styled(NarrowButton)`${clearGray}`
 
@@ -115,6 +125,7 @@ export const BlueFadedSquareRadio = styled(BaseButton) <React.HTMLProps<HTMLButt
     font-weight: ${props => props.selected ? 'var(--fw-bold)' : 'var(--fw-regular)'};
     border-radius: .375em;
     padding: .125em .25em;
+    justify-content: center;
 
     &:hover {
         background-color: ${props => props.selected ? 'var(--blue-light)' : 'var(--btn-light-gray-hover)'};
@@ -123,7 +134,7 @@ export const BlueFadedSquareRadio = styled(BaseButton) <React.HTMLProps<HTMLButt
 
 export const FilterPillButton = styled(BaseButton) <React.HTMLProps<HTMLButtonElement> & { selected?: boolean }>`
     padding: .125em 1em;
-    color: ${props => props.selected ? 'var(--blue)' : 'var(--m-text-secondary)'};
+    color: ${props => props.selected ? 'var(--blue-sat)' : 'var(--m-text-secondary)'};
     border: ${props => props.selected ? '1px solid var(--blue-sat)' : '1px solid var(--border-color)'};
     border-radius: 1em;
 

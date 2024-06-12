@@ -310,8 +310,29 @@
     margin: 0;
     min-height: 1.125rem;
     min-width: 1.125rem;
-    transform: scale(1);
     position: relative;
+    align-items: center;
+    justify-content: center;
+
+    &[data-background='true'] {
+        border-radius: 50%;
+    }
+
+    &[data-active="true"] svg {
+        animation: spin .3s ease-in-out forwards;
+    }
+}
+
+
+.refresh2 {
+    margin: 0;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+        padding: .2em;
+    }
 
     &[data-background='true'] {
         border-radius: 50%;

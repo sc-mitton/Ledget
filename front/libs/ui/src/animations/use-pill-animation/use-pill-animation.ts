@@ -11,6 +11,8 @@ interface Props {
   styles?: React.CSSProperties
 }
 
+const borderWidth = 1.5
+
 /**
  * Custom hook for animating a pill element behind selected options.
  *
@@ -34,6 +36,9 @@ export const usePillAnimation = ({ ref, find, querySelectall, update = [], refre
   const baseStyles = {
     position: "absolute",
     backgroundColor: backgroundColor,
+    borderWidth: `${borderWidth}px`,
+    borderStyle: 'solid',
+    borderColor: 'transparent',
     borderRadius: 'var(--border-radius3)',
     zIndex: 0,
     config: { tension: 200, friction: 22 }
@@ -66,7 +71,7 @@ export const usePillAnimation = ({ ref, find, querySelectall, update = [], refre
     if (selectors.length > 0) {
       const element = selectors.find(find)
       if (element) {
-        setSelectorHeight(element.offsetHeight)
+        setSelectorHeight(element.offsetHeight - borderWidth * 2)
         setSelectorWidth(element.offsetWidth)
         setSelectorLeft(element.offsetLeft)
         setSelectorTop(element.offsetTop)
