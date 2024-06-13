@@ -1,0 +1,27 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "strict": true,
+    "jsx": "react-jsx",
+    "allowJs": false,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+  },
+  "paths": {
+    "@ledget/ui": [
+      "../../libs/ui/src"
+    ],
+    "@ledget/media": [
+      "../../libs/media/src"
+    ],
+    "@ledget/ory": [
+      "../../libs/ory/src"
+    ],
+    "@ledget/helpers": [
+      "../../libs/helpers/src"
+    ],
+    "@/*": [
+      "src/*"
+    ]
+  }
+}
