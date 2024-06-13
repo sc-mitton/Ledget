@@ -14,7 +14,7 @@
         position: relative;
 
         button:first-child {
-            gap: .75em;
+            gap: 1em;
 
             span {
                 position: relative;
@@ -69,13 +69,15 @@
         margin-top: .5em;
     }
 
-    &>button.active {
+    &>button {
+        padding: .25em;
+        border-radius: var(--border-radius2);
         position: relative;
 
-        &::after {
+        &[data-active='true']::after {
             content: '';
             position: absolute;
-            top: -.375em;
+            top: -.125em;
             right: -.125em;
             width: .375em;
             height: .375em;

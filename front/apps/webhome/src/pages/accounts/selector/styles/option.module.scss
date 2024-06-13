@@ -8,6 +8,12 @@
     box-sizing: border-box;
     background-color: inherit;
 
+    &>button,
+    &>div {
+        z-index: 1;
+        position: relative;
+    }
+
     &:hover {
         border-color: var(--btn-light-gray-hover);
     }
@@ -15,6 +21,16 @@
     &:has(div[aria-selected=true]) {
         border-color: var(--blue-light-medium);
         box-shadow: 0 0 1px 1px var(--blue-light-hover);
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-color: var(--btn-feather-light-gray);
+            opacity: .3;
+            z-index: 0;
+            border-radius: inherit;
+        }
     }
 
     &>button {

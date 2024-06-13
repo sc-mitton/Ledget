@@ -45,6 +45,8 @@
 
 .profileButton {
     margin-left: 1em;
+    padding: .25em;
+    border-radius: var(--border-radius2);
 
     &::before {
         content: '';
@@ -136,9 +138,5 @@
         position: relative;
         top: .5em;
         right: -2em;
-    }
-
-    &>button {
-        width: 100%;
     }
 }

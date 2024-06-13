@@ -67,12 +67,13 @@
     flex-grow: 1;
     cursor: text;
     display: flex;
+    padding-bottom: .125em;
 
     &>div {
         padding: .125em;
         background-color: var(--input-background);
         color: var(--m-text);
-        border-radius: var(--border-radius3);
+        border-radius: var(--border-radius2);
         box-sizing: border-box;
         display: flex;
         gap: .5em;
@@ -80,6 +81,7 @@
         justify-content: space-between;
         transition: border .2s ease;
         position: relative;
+        width: 100%;
 
         @include input-focus-styling;
     }

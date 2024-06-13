@@ -67,7 +67,7 @@ const ActivityDropdown = (props: HTMLProps<HTMLDivElement>) => {
         <div style={{ position: 'relative' }} {...props} className={styles.notificationsDropdown}>
             <button
                 ref={buttonRef}
-                className={`${tCountData?.count ? 'active' : ''}`}
+                data-active={Boolean(tCountData?.count)}
                 onClick={() => setShowDropdown(!showDropdown)}
             >
                 <Activity className='icon' stroke={'var(--white)'} />
