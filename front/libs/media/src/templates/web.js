@@ -6,7 +6,7 @@ module.exports = (
     import {SvgProps} from '../../types';
     ${interfaces}
 
-    function ${componentName}({size, ...props}: SvgProps) {
+    function ${componentName}({size = '1.25em', ...props}: SvgProps) {
       return ${jsx};
     }
 

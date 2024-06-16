@@ -8,7 +8,7 @@ import { useDeleteRememberedDeviceMutation, } from '@features/authSlice'
 import { Device as DeviceType } from '@features/userSlice'
 import { IconButtonSubmit, Tooltip, NestedWindowSlimmer } from '@ledget/ui'
 
-import { LocationIcon, ComputerIcon } from '@ledget/media'
+import { MapPin2, Computer } from '@ledget/media'
 import { ChevronDown, LogOut, Smartphone } from '@geist-ui/icons'
 import { ReAuthProtected } from '@utils/withReAuth'
 
@@ -61,9 +61,9 @@ const Device = (props: { device: string, info: DeviceType[] }) => {
                             data-open={open}
                         >
                             <div>
-                                {iconKey === 'is_pc' && <ComputerIcon size='3em' />}
+                                {iconKey === 'is_pc' && <Computer size='3em' />}
                                 {iconKey === 'is_mobile' && <Smartphone className={styles.smartPhoneIcon} />}
-                                {!iconKey && <ComputerIcon />}
+                                {!iconKey && <Computer />}
                             </div>
                             <div>
                                 <div>
@@ -71,8 +71,8 @@ const Device = (props: { device: string, info: DeviceType[] }) => {
                                     <span>{`${info.length} session${info.length > 1 ? 's' : ''}`}</span>
                                 </div>
                                 <div>
-                                    <LocationIcon />
-                                    {device.split(',')[2] === undefined ? 'unknown' : device.split(',')[1] + ', ' + device.split(',')[2]}
+                                    <MapPin2 />
+                                    <span>{device.split(',')[2] === undefined ? 'unknown' : device.split(',')[1] + ', ' + device.split(',')[2]}</span>
                                 </div>
                             </div>
                             <div data-open={open}>

@@ -11,7 +11,7 @@ import {
     TextButtonHalfBlue,
     NestedWindow
 } from '@ledget/ui'
-import { QrIcon } from '@ledget/media'
+import { Qr } from '@ledget/media'
 
 const Mfa = () => {
     const { data: user } = useGetMeQuery()
@@ -31,7 +31,7 @@ const Mfa = () => {
                     ?
                     <>
                         <div>
-                            <QrIcon width={'1.3em'} height={'1.3em'} />
+                            <Qr width={'1.3em'} height={'1.3em'} />
                             <div>
                                 <span>Authenticator App</span>
                                 <span>Added {formatDate(user.settings.mfa_enabled_on)}</span>
@@ -53,7 +53,7 @@ const Mfa = () => {
                     :
                     <>
                         <div>
-                            <QrIcon width={'1.25em'} height={'1.25em'} />
+                            <Qr width={'1.25em'} height={'1.25em'} />
                             <span>Authenticator App</span>
                         </div>
                         <CircleIconButton onClick={() => navigate('/settings/security/authenticator-setup')} darker={true} >

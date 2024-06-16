@@ -12,7 +12,7 @@ import {
 import { useBakedPlaidLink, useBakedUpdatePlaidLink } from '@utils/hooks'
 import { withSmallModal } from '@ledget/ui'
 import SubmitForm from '@components/pieces/SubmitForm'
-import { RelinkIcon } from '@ledget/media'
+import { Relink } from '@ledget/media'
 import { ShadowedContainer } from '@components/pieces'
 import {
     SecondaryButton,
@@ -116,7 +116,7 @@ const ReconnectButton = ({ itemId = '' }) => {
                 onClick={() => !fetchingToken && open()}
                 aria-label="Reconnect"
             >
-                <RelinkIcon />
+                <Relink />
                 Reconnect
             </BlueSlimSubmitButton>
         </div>

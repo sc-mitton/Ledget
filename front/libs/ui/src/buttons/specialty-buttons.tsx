@@ -7,7 +7,6 @@ import styles from './styles.module.scss';
 import {
     FacebookLogo,
     GoogleLogo,
-    Delete,
     Grip,
     CornerGrip
 } from '@ledget/media'
@@ -166,7 +165,6 @@ export const DeleteButton: FC<ButtonHTMLAttributes<HTMLButtonElement> &
             data-animated={animated}
             {...rest}
         >
-            <Delete stroke={stroke} size={size} />
             <svg
                 className={className}
                 width={size}

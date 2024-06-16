@@ -6,7 +6,7 @@ module.exports = (
     import {NativeSvgProps} from '../../types';
     ${interfaces}
 
-    function ${componentName}({size, ...props}: NativeSvgProps) {
+    function ${componentName}({size = '1.25em', ...props}: NativeSvgProps) {
       return ${jsx};
     }
 

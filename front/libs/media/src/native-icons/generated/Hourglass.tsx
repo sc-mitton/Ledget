@@ -2,7 +2,7 @@ import * as React from 'react';
 import Svg, { Path } from 'react-native-svg';
 import type { SvgProps } from 'react-native-svg';
 import { NativeSvgProps } from '../../types';
-function SvgHourglass({ size, ...props }: NativeSvgProps) {
+function SvgHourglass({ size = '1.25em', ...props }: NativeSvgProps) {
   return (
     <Svg
       xmlns="http://www.w3.org/2000/svg"

@@ -7,12 +7,11 @@ import Big from 'big.js'
 import styles from './styles/wafers.module.scss'
 import {
     DollarCents,
-    useScreenContext,
     IconButtonHalfBlue,
     Window2,
     CloseButton
 } from '@ledget/ui'
-import { LineGraph } from '@ledget/media'
+import { Graph } from '@ledget/media'
 import { useAccountsContext } from '../context'
 import { BalanceChart } from '../balance-chart/BalanceChart'
 import { WaferStyle } from './types'
@@ -89,7 +88,7 @@ function Wafers() {
                                     aria-controls='balance-history'
                                     onClick={() => setShowChart(!showChart)}
                                 >
-                                    <LineGraph />
+                                    <Graph />
                                 </IconButtonHalfBlue>}
                         </div>
                         <h1>

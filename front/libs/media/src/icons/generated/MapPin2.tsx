@@ -1,7 +1,7 @@
 import * as React from 'react';
 import type { SVGProps } from 'react';
 import { SvgProps } from '../../types';
-function SvgMapPin2({ size, ...props }: SvgProps) {
+function SvgMapPin2({ size = '1.25em', ...props }: SvgProps) {
   return (
     <svg
       data-name="Layer 1"

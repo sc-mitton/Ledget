@@ -21,7 +21,7 @@ import { popToast } from '@features/toastSlice'
 import { useAppDispatch } from '@hooks/store'
 import { useGetAccountsQuery } from '@features/accountsSlice'
 import { useTransactionsSyncMutation } from '@features/transactionsSlice'
-import { DepositsIcon, Filter2 } from '@ledget/media'
+import { CurrencyNote, Filter2 } from '@ledget/media'
 import { useAccountsContext } from './context'
 import pathMappings from './path-mappings'
 import { hasErrorCode } from '@ledget/helpers'
@@ -31,7 +31,7 @@ const _getNavIcon = (key = '', isCurrent: boolean) => {
 
     switch (key) {
         case 'deposits':
-            return <DepositsIcon stroke={'currentColor'} />
+            return <CurrencyNote stroke={'currentColor'} />
         case 'credit':
             return <CreditCard stroke={'currentColor'} className='icon' />
         case 'investments':

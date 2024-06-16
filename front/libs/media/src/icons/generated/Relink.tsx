@@ -1,7 +1,7 @@
 import * as React from 'react';
 import type { SVGProps } from 'react';
 import { SvgProps } from '../../types';
-function SvgRelink({ size, ...props }: SvgProps) {
+function SvgRelink({ size = '1.25em', ...props }: SvgProps) {
   return (
     <svg
       data-name="Layer 1"

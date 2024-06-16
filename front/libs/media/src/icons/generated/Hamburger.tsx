@@ -1,7 +1,7 @@
 import * as React from 'react';
 import type { SVGProps } from 'react';
 import { SvgProps } from '../../types';
-function SvgHamburger({ size, ...props }: SvgProps) {
+function SvgHamburger({ size = '1.25em', ...props }: SvgProps) {
   return (
     <svg
       data-name="Layer 1"
