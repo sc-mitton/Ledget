@@ -85,7 +85,10 @@ const CategoriesList = ({ period }: { period: Category['period'] }) => {
                 <h4><DollarCents value={totalLimit} withCents={false} /></h4>
             </div>
             <div className={period === 'month' ? styles.month : styles.year} >
-                <ProgressBar progress={50} />
+                <ProgressBar
+                    progress={Math.round(((totalSpent * 100) / totalLimit) * 100) / 100}
+                // progress={50}
+                />
             </div>
             {isLoading
                 ? <div>
