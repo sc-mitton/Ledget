@@ -1,7 +1,6 @@
 {
   "name": "@front/source",
   "version": "0.0.0",
-  "license": "MIT",
   "scripts": {},
   "private": true,
   "type": "module",
@@ -21,6 +20,7 @@
     "@stripe/react-stripe-js": "^2.7.1",
     "@stripe/stripe-js": "^1.54.2",
     "@svgr/babel-plugin-remove-jsx-attribute": "^8.0.0",
+    "@svgr/babel-plugin-replace-jsx-attribute-value": "^8.0.0",
     "@svgr/cli": "^8.1.0",
     "@use-gesture/react": "^10.3.1",
     "axios": "^1.7.2",

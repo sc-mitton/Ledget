@@ -3,10 +3,6 @@
   "version": "0.0.1",
   "main": "./index.js",
   "types": "./index.d.ts",
-  "scripts": {
-    "build-native": "svgr --native --icon --typescript -d --config-file .svgrrc.native.cjs ./src/native ./src/svg",
-    "build": "svgr --icon --typescript -d --config-file .svgrrc.cjs ./src/icons ./src/svg && pnpm run build-native"
-  },
   "exports": {
     ".": {
       "import": "./index.mjs",

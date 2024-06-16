@@ -53,6 +53,9 @@ importers:
       '@svgr/babel-plugin-remove-jsx-attribute':
         specifier: ^8.0.0
         version: 8.0.0(@babel/core@7.24.7)
+      '@svgr/babel-plugin-replace-jsx-attribute-value':
+        specifier: ^8.0.0
+        version: 8.0.0(@babel/core@7.24.7)
       '@svgr/cli':
         specifier: ^8.1.0
         version: 8.1.0(typescript@5.3.3)
