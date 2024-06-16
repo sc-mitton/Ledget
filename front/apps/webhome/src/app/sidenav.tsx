@@ -2,10 +2,18 @@ import { useEffect, useRef, useState } from 'react'
 
 import { useNavigate, useLocation, Link as RouterLink } from 'react-router-dom'
 import { animated } from '@react-spring/web'
-import { DollarSign, Home, Settings, ChevronDown, User, Link, Shield } from '@geist-ui/icons'
+import {
+    DollarSign,
+    Home,
+    Settings,
+    ChevronDown,
+    User,
+    Link,
+    Shield
+} from '@geist-ui/icons'
 
 import styles from './styles/sidenav.module.scss'
-import { Institution, Hamburger, LedgetLogo } from '@ledget/media'
+import { Institution, LedgetLogo, Hamburger } from '@ledget/media'
 import {
     usePillAnimation,
     useScreenContext,

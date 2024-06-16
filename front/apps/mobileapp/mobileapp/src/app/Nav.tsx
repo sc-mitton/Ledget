@@ -1,24 +1,20 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { Home, DollarSign, Activity, User } from '@geist-ui/icons';
+import { Home, DollarSign, Activity, User } from 'geist-native-icons';
 
 export default function Nav() {
   return (
     <View style={styles.nav}>
       <View style={styles.navItem}>
-        {/* <Home /> */}
-        <Text>Home</Text>
+        <Home />
       </View>
       <View style={styles.navItem}>
-        {/* <DollarSign /> */}
-        <Text>Transactions</Text>
+        <DollarSign />
       </View>
       <View style={styles.navItem}>
-        {/* <Activity /> */}
-        <Text>Activity</Text>
+        <Activity />
       </View>
       <View style={styles.navItem}>
-        {/* <User /> */}
-        <Text>Profile</Text>
+        <User />
       </View>
     </View>
   );
@@ -38,5 +34,9 @@ const styles = StyleSheet.create({
   navItem: {
     alignItems: 'center',
     justifyContent: 'center',
-  }
+
+  },
+  navSvg: {
+    color: '#000',
+  },
 });
