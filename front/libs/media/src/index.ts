@@ -1,25 +1,3 @@
-export { default as CheckAll } from './icons/CheckAll';
-export { default as Delete } from './icons/Delete';
-export { default as DepositsIcon } from './icons/Deposits';
-export { default as Grip } from './icons/Grip';
-export { default as FacebookLogo } from './icons/FacebookLogo'
-export { default as GoogleLogo } from './icons/GoogleLogo'
-export { default as QrIcon } from './icons/QrIcon';
-export { default as LocationIcon } from './icons/LocationIcon';
-export { default as LineGraph } from './icons/LineGraph';
-export { default as RelinkIcon } from './icons/Relink';
-export { default as ComputerIcon } from './icons/Computer';
-export { default as CornerGrip } from './icons/CornerGrip';
-export { default as LedgetLogo } from './brand/Logo'
-export { default as LedgetLogoIcon } from './brand/LogoIcon'
-export { default as LedgetLogoIcon2 } from './brand/LogoIcon2'
-export { default as Hamburger } from './icons/Hamburger';
-export { default as HalfArrow } from './icons/HalfArrow';
-export { default as Hourglass } from './icons/Hourglass';
-export { default as Filter2 } from './icons/Filter2';
-export { default as Institution } from './icons/Institution'
-export { default as Stars } from './icons/Stars'
-
 export { default as EmptyListImage } from './images/EmptyList';
 export { default as EmptyListDark } from './images/EmptyListDark';
 export { default as ForgotPassword } from './images/ForgotPassword'
@@ -30,3 +8,9 @@ export { default as EnvelopeImage } from './images/Envelope';
 export { default as Person } from './images/Person'
 export { default as Key } from './images/Key'
 export { default as Circle3d } from './images/Circle'
+
+export { default as LedgetLogo } from './brand/Logo'
+export { default as LedgetLogoIcon } from './brand/LogoIcon'
+export { default as LedgetLogoIcon2 } from './brand/LogoIcon2'
+
+export * from './icons';

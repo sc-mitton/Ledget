@@ -167,6 +167,32 @@ export const DeleteButton: FC<ButtonHTMLAttributes<HTMLButtonElement> &
             {...rest}
         >
             <Delete stroke={stroke} size={size} />
+            <svg
+                className={className}
+                width={size}
+                height={size}
+                viewBox="0 0 144 144"
+                xmlns="http://www.w3.org/2000/svg"
+                strokeLinecap="round"
+                x="0px"
+                y="0px"
+                aria-label="Delete"
+            >
+                <svg
+                    className={className}
+                    width={size}
+                    height={size}
+                    viewBox="0 0 25 25"
+                    xmlns="http://www.w3.org/2000/svg"
+                    strokeLinecap="round"
+                    x="0px"
+                    y="0px"
+                    aria-label="Delete"
+                >
+                    <line stroke={stroke} strokeWidth={1.5} x1="1.6" y1="12.1" x2="21.9" y2="12.1" />
+                    <line stroke={stroke} strokeWidth={1.5} x1="11.7" y1="1.9" x2="11.7" y2="22.3" />
+                </svg>
+            </svg>
         </CircleIconButton>
     )
 
