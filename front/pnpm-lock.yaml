@@ -93,8 +93,8 @@ importers:
         specifier: ^10.18.0
         version: 10.18.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       geist-native-icons:
-        specifier: ^0.0.1
-        version: 0.0.1
+        specifier: ^0.0.2
+        version: 0.0.2
       gsap:
         specifier: ^3.12.5
         version: 3.12.5
@@ -5114,8 +5114,8 @@ packages:
   functions-have-names@1.2.3:
     resolution: {integrity: sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==}
 
-  geist-native-icons@0.0.1:
-    resolution: {integrity: sha512-jCNUiOJiLgGj1plm0xy6PYY4e5GtzKKoEaUuNEEEnSTpw9khIs7/ZT4a4WnNQ/TaRnJtfyoQ+7f9gaEgv9Hlog==}
+  geist-native-icons@0.0.2:
+    resolution: {integrity: sha512-CiLHgxXtw93v5mbZWhoeVUm7DAGWwbdLJi7XRyJkbgeuMQkcNc7pH/OHGWuIAI9rilas22FQAUy8noAPi8uuow==}
 
   generic-names@4.0.0:
     resolution: {integrity: sha512-ySFolZQfw9FoDb3ed9d80Cm9f0+r7qj+HJkWjeD9RBfpxEVTlVhol+gvaQB/78WbwYfbnNh8nWHHBSlg072y6A==}
@@ -16402,7 +16402,7 @@ snapshots:
 
   functions-have-names@1.2.3: {}
 
-  geist-native-icons@0.0.1: {}
+  geist-native-icons@0.0.2: {}
 
   generic-names@4.0.0:
     dependencies:
