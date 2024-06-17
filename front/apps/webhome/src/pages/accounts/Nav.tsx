@@ -31,7 +31,7 @@ const _getNavIcon = (key = '', isCurrent: boolean) => {
 
     switch (key) {
         case 'deposits':
-            return <CurrencyNote stroke={'currentColor'} />
+            return <CurrencyNote stroke={'currentColor'} size={'1.375em'} />
         case 'credit':
             return <CreditCard stroke={'currentColor'} className='icon' />
         case 'investments':
@@ -109,13 +109,14 @@ const TabButtons = ({ showFilters = false }) => {
     return (
         <>
             <div className={`${screenSize}`}>
-                <ul ref={ref}>
+                <ul ref={ref} data-screen-size={screenSize}>
                     {['deposits', 'credit', 'loans', 'investments'].map((path) => (
                         <li
                             key={path}
                             role='link'
                             aria-current={currentPath === path}
                             tabIndex={0}
+                            data-screen-size={screenSize}
                             onClick={() => location.pathname !== `/accounts/${path}` && navigate(`/accounts/${path}`)}
                         >
                             {_getNavIcon(path, currentPath === path)}

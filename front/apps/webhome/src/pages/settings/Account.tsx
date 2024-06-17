@@ -331,8 +331,8 @@ const Account = () => {
                     </div>
                     <div className={styles.sections}>
                         <Info />
-                        <Household />
                         <Plan />
+                        <Household />
                         <PaymentMethod />
                         <Preferences />
                     </div>

@@ -73,7 +73,7 @@ export const usePillAnimation = ({ ref, find, querySelectall, update = [], refre
       if (element) {
         setSelectorHeight(element.offsetHeight - borderWidth * 2)
         setSelectorWidth(element.offsetWidth)
-        setSelectorLeft(element.offsetLeft)
+        setSelectorLeft(element.offsetLeft - borderWidth)
         setSelectorTop(element.offsetTop)
       }
     }

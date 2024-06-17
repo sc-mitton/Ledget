@@ -100,7 +100,7 @@ const ActivityDropdown = (props: HTMLProps<HTMLDivElement>) => {
                                                             onClick={() => setConfirmAll(true)}
                                                             disabled={tCountData?.count === 0}
                                                         >
-                                                            <CheckAll />
+                                                            <CheckAll size={'1.5em'} />
                                                         </IconButtonHalfGray>
                                                     </Tooltip>
                                                     <RefreshButton2

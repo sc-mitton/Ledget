@@ -37,6 +37,10 @@
         gap: .75em;
         margin: .5em 0em;
 
+        &[data-screen-size='extra-small'] {
+            margin-right: .625em;
+        }
+
         li {
             padding: .125em 1em;
             font-weight: var(--fw-regular);
@@ -50,6 +54,10 @@
             z-index: 1;
             gap: .5em;
             min-width: 4ch;
+
+            &[data-screen-size='extra-small'] {
+                padding: .25em 1em;
+            }
         }
 
         li[aria-current="true"],
