@@ -3,10 +3,9 @@ module.exports = (
   { tpl },
 ) => {
   return tpl`${imports}
-    import {SvgProps} from '../../types';
     ${interfaces}
 
-    function ${componentName}({size = '1.25em', ...props}: SvgProps) {
+    function ${componentName}({size = '1.25em', ...props}: SVGProps<SVGSVGElement> & {size?: string | number}) {
       return ${jsx};
     }
 

@@ -1,11 +1,14 @@
 import * as React from 'react';
 import Svg, { Path } from 'react-native-svg';
 import type { SvgProps } from 'react-native-svg';
-import { NativeSvgProps } from '../../types';
-function SvgRelink({ size = '1.25em', ...props }: NativeSvgProps) {
+function SvgRelink({
+  size = '1.25em',
+  ...props
+}: SvgProps & {
+  size?: string | number;
+}) {
   return (
     <Svg
-      xmlns="http://www.w3.org/2000/svg"
       data-name="Layer 1"
       viewBox="0 0 24 24"
       width={size}

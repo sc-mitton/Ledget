@@ -1,7 +1,11 @@
 import * as React from 'react';
 import type { SVGProps } from 'react';
-import { SvgProps } from '../../types';
-function SvgCurrencyNote({ size = '1.25em', ...props }: SvgProps) {
+function SvgCurrencyNote({
+  size = '1.25em',
+  ...props
+}: SVGProps<SVGSVGElement> & {
+  size?: string | number;
+}) {
   return (
     <svg
       data-name="Layer 1"

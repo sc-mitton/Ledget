@@ -3,10 +3,9 @@ module.exports = (
   { tpl },
 ) => {
   return tpl`${imports}
-    import {NativeSvgProps} from '../../types';
     ${interfaces}
 
-    function ${componentName}({size = '1.25em', ...props}: NativeSvgProps) {
+    function ${componentName}({size = '1.25em', ...props}: SvgProps & {size?: string | number}) {
       return ${jsx};
     }
 
