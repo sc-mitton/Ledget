@@ -1,0 +1,19 @@
+{
+  "name": "ledget-api",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/ledget-api/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/ledget-api",
+        "main": "libs/ledget-api/src/index.ts",
+        "tsConfig": "libs/ledget-api/tsconfig.lib.json",
+        "assets": ["libs/ledget-api/*.md"]
+      }
+    }
+  }
+}
