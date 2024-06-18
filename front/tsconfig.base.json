@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@ledget/helpers": ["libs/helpers/src/index.ts"],
-      "@ledget/media": ["libs/media/src/index.ts"],
+      "@ledget/media": ["libs/media/web/src/index.ts"],
+      "@ledget/media/native": ["libs/media/native/src/index.ts"],
       "@ledget/ory": ["libs/ory/src/index.ts"],
       "@ledget/ui": ["libs/ui/src/index.ts"]
     }

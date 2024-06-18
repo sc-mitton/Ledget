@@ -30,7 +30,7 @@
         "../../libs/ui/src"
       ],
       "@ledget/media": [
-        "../../libs/media/src"
+        "../../libs/media/web/src"
       ],
       "@ledget/ory": [
         "../../libs/ory/src"

@@ -1,58 +1,63 @@
-const { exec } = require('child_process');
-const path = require('path');
-const fs = require('fs');
+import { exec } from 'child_process';
+import path from 'path';
+import fs from 'fs';
 
+const inputDir = path.resolve(import.meta.dirname, 'shared', 'svg-icons');
+const nativeIconsOutDir = path.resolve(import.meta.dirname, 'native', 'src', 'icons', 'generated');
+const webIconsOutDir = path.resolve(import.meta.dirname, 'web', 'src', 'icons', 'generated');
 const svgrPath = path.resolve('../../node_modules', '.bin', 'svgr');
-const iconsOutDir = path.resolve(__dirname, './src/icons/generated');
-const nativeIconsOutDir = path.resolve(__dirname, './src/native-icons/generated');
+
+const nativeTemplate = './native-icon-template.cjs';
+const webTempalte = './web-icon-template.cjs';
+
 
 const runCommand = (command) => {
-    return new Promise((resolve, reject) => {
-        exec(command, (error, stdout, stderr) => {
-            if (error) {
-                console.error(`Error executing command: ${command}`);
-                console.error(stderr);
-                reject(error);
-            } else {
-                console.log(stdout);
-                resolve(stdout);
-            }
-        });
+  return new Promise((resolve, reject) => {
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error executing command: ${command}`);
+        console.error(stderr);
+        reject(error);
+      } else {
+        console.log(stdout);
+        resolve(stdout);
+      }
     });
+  });
 };
 
 const buildNativeIcons = async () => {
-    if (!fs.existsSync(iconsOutDir)) {
-        fs.mkdirSync(iconsOutDir);
-    }
-    if (!fs.existsSync(nativeIconsOutDir)) {
-        fs.mkdirSync(nativeIconsOutDir);
-    }
+  if (!fs.existsSync(nativeIconsOutDir)) {
+    fs.mkdirSync(nativeIconsOutDir);
+  }
+  if (!fs.existsSync(webIconsOutDir)) {
+    fs.mkdirSync(webIconsOutDir);
+  }
 
-    const command = `${svgrPath} --config-file .svgrrc.native.cjs --template ./src/templates/native.js -d ${nativeIconsOutDir} ./src/svg`;
-    await runCommand(command);
+  const command = `${svgrPath} --config-file .svgrrc.native.cjs --template ${nativeTemplate} -d ${nativeIconsOutDir} ${inputDir}`;
+  await runCommand(command);
 };
 
 const buildIcons = async () => {
-    if (!fs.existsSync(iconsOutDir)) {
-        fs.mkdirSync(iconsOutDir);
-    }
+  if (!fs.existsSync(webIconsOutDir)) {
+    fs.mkdirSync(webIconsOutDir);
+  }
 
-    const command = `${svgrPath} --config-file .svgrrc.cjs --template ./src/templates/web.js -d ${iconsOutDir} ./src/svg`;
-    await runCommand(command);
+  const command = `${svgrPath} --config-file .svgrrc.cjs --template ${webTempalte} -d ${webIconsOutDir} ${inputDir}`;
+  await runCommand(command);
 };
 
 const main = async () => {
-    const args = process.argv.slice(2);
-    const isNative = args.includes('--native');
+  const args = process.argv.slice(2);
+  const isNative = args.includes('--native');
 
-    if (isNative) {
-        await buildNativeIcons();
-    } else {
-        await buildIcons();
-    }
+  if (isNative) {
+    await buildNativeIcons();
+  } else {
+    await buildIcons();
+  }
 };
 
 main()
-    .then(() => console.log('Icons built successfully'))
-    .catch((error) => console.error('Error building icons:', error));
+  .then(() => console.log('Icons built successfully'))
+  .catch((error) => console.error('Error building icons:', error));
