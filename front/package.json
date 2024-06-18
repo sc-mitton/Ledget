@@ -14,6 +14,7 @@
     "@hookform/resolvers": "^3.6.0",
     "@nivo/core": "^0.83.1",
     "@nivo/line": "^0.83.1",
+    "@ory/client": "^1.9.0",
     "@ory/integrations": "^1.2.1",
     "@react-spring/web": "^9.7.3",
     "@reduxjs/toolkit": "^1.9.7",

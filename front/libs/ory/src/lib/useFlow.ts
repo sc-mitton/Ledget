@@ -2,9 +2,8 @@ import { useState, useEffect } from "react"
 
 import { useSearchParams } from "react-router-dom"
 
-
 import { UseLazyQuery, UseMutation } from "@reduxjs/toolkit/dist/query/react/buildHooks";
-import { EndpointRootNames, OryGetFlowEndpoint, OryCompleteFlowEndpoint } from './ory-sdk'
+import { EndpointRootNames, OryGetFlowEndpoint, OryCompleteFlowEndpoint } from './types'
 
 const formatErrorMessages = (errorMessages: { id: number, [key: string]: any }[]) => {
     const filteredMessages = []

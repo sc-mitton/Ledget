@@ -35,6 +35,9 @@ importers:
       '@nivo/line':
         specifier: ^0.83.1
         version: 0.83.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ory/client':
+        specifier: ^1.9.0
+        version: 1.9.0
       '@ory/integrations':
         specifier: ^1.2.1
         version: 1.2.1(@ory/client@1.9.0)(next@14.2.4(@babel/core@7.24.7)(@playwright/test@1.44.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(sass@1.62.1))

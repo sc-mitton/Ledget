@@ -1,55 +1,14 @@
-import axios, { AxiosError, AxiosRequestConfig } from 'axios'
-import { EndpointBuilder, MutationDefinition, QueryDefinition } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
-import { LoginFlow, SettingsFlow, RegistrationFlow, LogoutFlow, VerificationFlow, RecoveryFlow } from '@ory/client'
-
-
-const endpointRootNames = [
-  'settings', 'login', 'registration', 'logout', 'verification', 'recovery'
-] as const
-
-export type EndpointRootNames = typeof endpointRootNames[number]
-
-type FlowTypes = SettingsFlow | LoginFlow | RegistrationFlow | LogoutFlow | VerificationFlow | RecoveryFlow
-type TransformedFlow<F extends FlowTypes> = F & { csrf_token: string }
-
-type AxiosBaseQueryConfig = {
-  url: string
-  method: AxiosRequestConfig['method']
-  data?: AxiosRequestConfig['data']
-  params?: AxiosRequestConfig['params']
-  headers?: AxiosRequestConfig['headers']
-  transformResponse?: AxiosRequestConfig['transformResponse']
-}
-
-type FlowType<T extends EndpointRootNames> =
-  T extends 'settings' ? TransformedFlow<SettingsFlow> :
-  T extends 'login' ? TransformedFlow<LoginFlow> :
-  T extends 'registration' ? TransformedFlow<RegistrationFlow> :
-  T extends 'logout' ? TransformedFlow<LogoutFlow> :
-  T extends 'verification' ? TransformedFlow<VerificationFlow> :
-  T extends 'recovery' ? TransformedFlow<RecoveryFlow> :
-  never
-
-type TOryEndpoint<TName extends EndpointRootNames, TType extends 'get' | 'complete'> =
-  TType extends 'get' ? QueryDefinition<any, any, any, FlowType<TName>, any> :
-  TType extends 'complete' ? MutationDefinition<any, any, any, FlowType<TName>, any> :
-  never
-
-export type OryGetFlowEndpoint<TName extends EndpointRootNames> = TOryEndpoint<TName, 'get'>
-
-export type OryCompleteFlowEndpoint<TName extends EndpointRootNames> = TOryEndpoint<TName, 'complete'>
-
-type GetEndpointName<TName extends EndpointRootNames> = `get${Capitalize<TName>}Flow`
-type CompleteEndpointName<TName extends EndpointRootNames> = `complete${Capitalize<TName>}Flow`
-
-type OryEndpointDefenitions = {
-  [K in EndpointRootNames as GetEndpointName<K>]: OryGetFlowEndpoint<K>
-} & {
-    [K in EndpointRootNames as CompleteEndpointName<K>]: OryCompleteFlowEndpoint<K>
-  } & {
-    getUpdatedLogoutFlow: OryGetFlowEndpoint<'logout'>
-  }
-
+import axios, { AxiosError } from 'axios'
+import { EndpointBuilder } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
+import {
+  AxiosBaseQueryConfig,
+  endpointRootNames,
+  GetEndpointName,
+  OryEndpointDefenitions,
+  CompleteEndpointName,
+  Platform,
+  OryAxiosQueryConfig
+} from './types'
 
 const axiosBaseQuery = async ({ url, headers, ...rest }: AxiosBaseQueryConfig) => {
   const oryBaseUrl = import.meta.env.VITE_ORY_API_URI;
@@ -77,9 +36,9 @@ const axiosBaseQuery = async ({ url, headers, ...rest }: AxiosBaseQueryConfig) =
   }
 }
 
-const createFlow = async ({ url, params, transformResponse }: Omit<AxiosBaseQueryConfig, 'method' | 'withCredentials'>) => {
+const createFlow = async ({ url, params, transformResponse, platform }: OryAxiosQueryConfig) => {
   const data = await axiosBaseQuery({
-    url: `${url}/browser`,
+    url: `${url}/${platform === 'browser' ? 'browser' : 'api'}`,
     method: 'GET',
     params: params,
     transformResponse: transformResponse,
@@ -87,7 +46,7 @@ const createFlow = async ({ url, params, transformResponse }: Omit<AxiosBaseQuer
   return data.error ? { error: data.error } : { data: data.data }
 }
 
-const getFlow = async ({ url, params = {}, transformResponse }: Omit<AxiosBaseQueryConfig, 'method' | 'withCredentials'>) => {
+const getFlow = async ({ url, params = {}, transformResponse, platform }: OryAxiosQueryConfig) => {
   const { id, ...rest } = params
   if (id) {
     const data = await axiosBaseQuery({
@@ -100,7 +59,8 @@ const getFlow = async ({ url, params = {}, transformResponse }: Omit<AxiosBaseQu
       return createFlow({
         url,
         transformResponse,
-        params: { ...rest }
+        params: { ...rest },
+        platform
       })
     } else {
       return data.error ? { error: data.error } : { data: data.data }
@@ -109,12 +69,13 @@ const getFlow = async ({ url, params = {}, transformResponse }: Omit<AxiosBaseQu
     return createFlow({
       url,
       transformResponse,
-      params: { ...rest }
+      params: { ...rest },
+      platform
     })
   }
 }
 
-const completeFlow = async ({ url, data, params }: Omit<AxiosBaseQueryConfig, 'method' | 'withCredentials'>) => {
+const completeFlow = async ({ url, data, params }: Omit<OryAxiosQueryConfig, 'platform'>) => {
   const responseData = await axiosBaseQuery({
     url: `${url}`,
     method: 'POST',
@@ -124,7 +85,7 @@ const completeFlow = async ({ url, data, params }: Omit<AxiosBaseQueryConfig, 'm
   return responseData.error ? { error: responseData.error } : { data: responseData.data }
 }
 
-const generateOryEndpoints = (builder: EndpointBuilder<any, any, any>) => {
+const generateOryEndpoints = (builder: EndpointBuilder<any, any, any>, platform: Platform) => {
   const endpoints = {} as OryEndpointDefenitions
 
   endpointRootNames.forEach((endpoint) => {
@@ -151,7 +112,8 @@ const generateOryEndpoints = (builder: EndpointBuilder<any, any, any>) => {
           if (csrf_token) filteredData['csrf_token'] = csrf_token
 
           return json.error ? json.error : filteredData
-        }
+        },
+        platform
       })
     })
 
@@ -178,6 +140,5 @@ const generateOryEndpoints = (builder: EndpointBuilder<any, any, any>) => {
 
   return endpoints
 }
-
 
 export const generateEndpoints = generateOryEndpoints
