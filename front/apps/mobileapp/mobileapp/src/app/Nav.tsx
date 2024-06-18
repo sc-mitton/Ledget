@@ -1,21 +1,15 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { Home, DollarSign, Activity, User } from 'geist-native-icons';
+import { StyleSheet, View } from 'react-native';
+import { Home, DollarSign, Activity, User } from 'geist-icons-native';
+// import { Institution } from '@ledget/media/native-icons';
 
 export default function Nav() {
   return (
     <View style={styles.nav}>
-      <View style={styles.navItem}>
-        <Home />
-      </View>
-      <View style={styles.navItem}>
-        <DollarSign />
-      </View>
-      <View style={styles.navItem}>
-        <Activity />
-      </View>
-      <View style={styles.navItem}>
-        <User />
-      </View>
+      <Home stroke={'#000'} size={24} />
+      <DollarSign stroke={'#000'} size={24} />
+      {/* <Institution stroke={'#000'} size={24} /> */}
+      <Activity stroke={'#000'} size={24} />
+      <User stroke={'#000'} size={24} />
     </View>
   );
 }
@@ -34,7 +28,6 @@ const styles = StyleSheet.create({
   navItem: {
     alignItems: 'center',
     justifyContent: 'center',
-
   },
   navSvg: {
     color: '#000',

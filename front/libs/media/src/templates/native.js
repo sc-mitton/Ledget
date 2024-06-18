@@ -5,7 +5,7 @@ module.exports = (
   return tpl`${imports}
     ${interfaces}
 
-    function ${componentName}({size = '1.25em', ...props}: SvgProps & {size?: string | number}) {
+    function ${componentName}({size = 24, ...props}: SvgProps & {size?: string | number}) {
       return ${jsx};
     }
 
