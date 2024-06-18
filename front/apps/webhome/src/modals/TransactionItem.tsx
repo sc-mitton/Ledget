@@ -28,11 +28,11 @@ import {
     SlideMotionDiv,
     useLoaded,
     CircleIconButton,
-    Tooltip,
     IconButtonHalfGray,
+    Tooltip,
     TextArea,
     NestedWindow2,
-    WindowCorner
+    WindowCorner,
 } from '@ledget/ui'
 
 type Action = 'split'
@@ -521,10 +521,12 @@ export const TransactionModalContent = (({ item, splitMode }: { item: Transactio
                             }}
                         />
                     </div>
-                    : <button onClick={() => setEdit(true)}>
-                        {preferredName || item?.preferred_name || item?.name}
-                        <Edit2 size={'1em'} />
-                    </button>}
+                    : <div className={styles.nameContainer}>
+                        <span>{preferredName || item?.preferred_name || item?.name}</span>
+                        <IconButtonHalfGray onClick={() => setEdit(true)}>
+                            <Edit2 size={'1em'} />
+                        </IconButtonHalfGray>
+                    </div>}
                 {item.pending &&
                     <div className={styles.pending}>Pending</div>}
             </div>

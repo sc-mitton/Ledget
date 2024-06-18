@@ -27,28 +27,32 @@
             mask-image: linear-gradient(to right, transparent, black 1.25em, black 100%);
         }
     }
+}
 
-    &>button:nth-child(2) {
-        max-width: 70%;
-        white-space: normal;
-        text-align: center;
-        position: relative;
-        border-radius: var(--border-radius2);
-        padding: 0 .25em;
 
-        svg {
-            position: absolute;
-            right: -1em;
-            top: 50%;
-            transform: scale(0) translateY(-50%);
-            transition: transform .2s ease-in-out;
-        }
+.nameContainer {
+    max-width: 70%;
+    white-space: normal;
+    text-align: center;
+    position: relative;
+    border-radius: var(--border-radius2);
+    padding: 0 .25em;
+    display: flex;
+    justify-content: center;
+    gap: .5em;
+    margin-left: 1em;
+    cursor: pointer;
 
-        &:not(:focus-within):hover svg {
-            top: 50%;
-            transform: scale(1) translateY(-50%);
-            transition: transform .2s ease-in-out;
-        }
+    button {
+        opacity: 0;
+        transform: scale(.9);
+        transition: all .2s ease-in-out;
+    }
+
+    &:not(:focus-within):hover button {
+        opacity: 1;
+        transform: scale(1);
+        transition: all .2s ease-in-out;
     }
 }
 
