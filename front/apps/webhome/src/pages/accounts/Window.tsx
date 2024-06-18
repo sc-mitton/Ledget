@@ -7,10 +7,9 @@ import Wafers from './wafers/Wafers'
 import { AccountSelector } from './selector'
 import { AccountsProvider } from './context'
 import { Nav } from './Nav'
-import { MainWindow } from '@components/index'
 import { DepositTransactions } from './transactions'
 import { NotImplimentedMessage } from '@components/pieces'
-import { useScreenContext } from '@ledget/ui'
+import { useScreenContext, MainWindow } from '@ledget/ui'
 
 
 const _getNavHeaderPhrase = (key = '') => {

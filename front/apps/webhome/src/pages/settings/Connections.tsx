@@ -13,7 +13,6 @@ import { useBakedPlaidLink, useBakedUpdatePlaidLink } from '@utils/hooks'
 import { withSmallModal } from '@ledget/ui'
 import SubmitForm from '@components/pieces/SubmitForm'
 import { Relink } from '@ledget/media'
-import { ShadowedContainer } from '@components/pieces'
 import {
     SecondaryButton,
     BlueSubmitButton,
@@ -22,7 +21,8 @@ import {
     DeleteButton,
     BlueSlimSubmitButton,
     Tooltip,
-    Base64Logo
+    Base64Logo,
+    ShadowedContainer
 } from '@ledget/ui'
 import { withReAuth } from '@utils/index'
 import { Edit2, Plus } from '@geist-ui/icons'

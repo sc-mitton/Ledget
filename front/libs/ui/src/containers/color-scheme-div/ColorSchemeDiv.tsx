@@ -1,6 +1,6 @@
 import { HTMLProps } from 'react'
 
-import { useColorScheme } from "./hooks/use-color-scheme/use-color-scheme"
+import { useColorScheme } from "../../themes/hooks/use-color-scheme/use-color-scheme"
 import '../themes/styles/ledget-theme.scss'
 
 type Props = HTMLProps<HTMLDivElement>

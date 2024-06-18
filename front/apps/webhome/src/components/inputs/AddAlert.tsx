@@ -5,8 +5,7 @@ import { Control, useController } from 'react-hook-form'
 import { Plus, CornerDownLeft, ChevronDown, Check } from '@geist-ui/icons'
 
 import styles from './styles/dropdowns.module.scss'
-import ComboSelect from './ComboSelect'
-import { FormInputButton2, MenuTextInput, DropdownDiv, DollarCents, DropdownItem } from '@ledget/ui'
+import { FormInputButton2, MenuTextInput, DropdownDiv, DollarCents, DropdownItem, ComboSelect } from '@ledget/ui'
 
 const baseAlertOptions = [
     { id: 1, value: { percent_amount: 25 }, disabled: false },

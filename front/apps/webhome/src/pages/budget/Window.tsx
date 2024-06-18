@@ -8,10 +8,9 @@ import { SpendingCategories } from './categories-budget'
 import { BudgetSummary as CarouselViewSummary } from './CarouselSummaryView'
 import { BudgetSummary as CardsView } from './CardsSummaryView'
 import { Bills } from './bills-budget'
-import { MainWindow } from '@components/index'
 import { setConfirmedTransactionFilter } from '@features/transactionsSlice'
 import { useAppDispatch } from '@hooks/store'
-import { useScreenContext } from '@ledget/ui'
+import { useScreenContext, MainWindow } from '@ledget/ui'
 import { SortProvider } from './context'
 
 function Window() {

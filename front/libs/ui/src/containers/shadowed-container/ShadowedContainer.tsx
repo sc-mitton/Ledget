@@ -1,6 +1,6 @@
 import { FC, useRef, HTMLProps, useState, useEffect } from 'react'
 
-import styles from './styles/shadowed-container.module.scss'
+import styles from './shadowed-container.module.scss'
 
 const getMaskImage = (string: 'top' | 'bottom' | 'bottom-top' | '') => {
     switch (string) {
@@ -19,7 +19,7 @@ type ShadowedContainerProps = HTMLProps<HTMLDivElement> & {
     showShadow?: boolean;
 }
 
-const ShadowedContainer: FC<ShadowedContainerProps> = ({ children, showShadow = true, ...rest }) => {
+export const ShadowedContainer: FC<ShadowedContainerProps> = ({ children, showShadow = true, ...rest }) => {
     const [shadow, setShadow] = useState<'top' | 'bottom' | 'bottom-top' | ''>('');
     const ref = useRef<HTMLDivElement | null>(null);
 
@@ -62,5 +62,3 @@ const ShadowedContainer: FC<ShadowedContainerProps> = ({ children, showShadow = 
         </div>
     );
 };
-
-export default ShadowedContainer

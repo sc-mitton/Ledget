@@ -2,7 +2,7 @@ import { ReactNode, createContext, useContext, useState } from 'react'
 import Picker from '@emoji-mart/react'
 import { Smile } from '@geist-ui/icons'
 
-import './styles/EmojiPicker.scss'
+import './styles/emoji-picker.module.scss'
 import styles from './styles/emoji-picker.module.scss'
 import { FadedIconButton, DropdownDiv, useColorScheme } from '@ledget/ui'
 

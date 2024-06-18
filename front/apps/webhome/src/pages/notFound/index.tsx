@@ -2,7 +2,7 @@
 import styles from './styles.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { BlackPrimaryButton } from '@ledget/ui'
-import { MainWindow } from '@components/index'
+import { MainWindow } from '@ledget/ui'
 
 const NotFound = ({ hasBackground = true }) => {
     const navigate = useNavigate()
