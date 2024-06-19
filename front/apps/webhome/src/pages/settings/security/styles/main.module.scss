@@ -8,6 +8,10 @@
     position: relative;
     z-index: 1;
 
+    h4 {
+        padding: 0 .25em;
+    }
+
     &>div:first-child {
         margin-top: 15em;
     }

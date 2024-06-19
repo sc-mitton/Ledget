@@ -67,12 +67,11 @@ const Device = (props: { device: string; info: DeviceType[] }) => {
               <div>
                 <div>
                   <span>{device.split(',')[0]}</span>&ndash;
-                  <span>{`${info.length} session${
-                    info.length > 1 ? 's' : ''
-                  }`}</span>
+                  <span>{`${info.length} session${info.length > 1 ? 's' : ''
+                    }`}</span>
                 </div>
                 <div>
-                  <MapPin2 />
+                  <MapPin2 size={'1em'} />
                   <span>
                     {device.split(',')[2] === undefined
                       ? 'unknown'
@@ -94,9 +93,8 @@ const Device = (props: { device: string; info: DeviceType[] }) => {
                     <div>{formatDateTime(session.last_login)}</div>
                   </div>
                   <div
-                    className={`${
-                      session.current_device ? '' : styles.logoutDevice
-                    }`}
+                    className={`${session.current_device ? '' : styles.logoutDevice
+                      }`}
                   >
                     {session.current_device ? (
                       <span className={styles.currentDevice}>This Device</span>

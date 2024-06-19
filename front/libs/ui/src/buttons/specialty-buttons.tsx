@@ -156,40 +156,42 @@ export const PlusButton: FC<ButtonHTMLAttributes<HTMLButtonElement>> = (props) =
 
 export const DeleteButton: FC<ButtonHTMLAttributes<HTMLButtonElement> &
 { fill?: string, stroke?: string, visible?: boolean, pop?: boolean, animated?: boolean, size?: `${number}em` }>
-    = ({ className, visible, fill, stroke, pop, animated = true, size = '1em', ...rest }) => (
+    = ({ className, visible, fill, stroke = 'currentColor', pop, animated = true, size = '.875em', ...rest }) => (
         <CircleIconButton
             className={styles.delete}
             darker={true}
             data-pop={pop}
             data-visible={visible}
             data-animated={animated}
+            size={'small'}
             {...rest}
         >
             <svg
                 className={className}
                 width={size}
                 height={size}
-                viewBox="0 0 144 144"
-                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
                 strokeLinecap="round"
                 x="0px"
                 y="0px"
                 aria-label="Delete"
             >
-                <svg
-                    className={className}
-                    width={size}
-                    height={size}
-                    viewBox="0 0 25 25"
-                    xmlns="http://www.w3.org/2000/svg"
-                    strokeLinecap="round"
-                    x="0px"
-                    y="0px"
-                    aria-label="Delete"
-                >
-                    <line stroke={stroke} strokeWidth={1.5} x1="1.6" y1="12.1" x2="21.9" y2="12.1" />
-                    <line stroke={stroke} strokeWidth={1.5} x1="11.7" y1="1.9" x2="11.7" y2="22.3" />
-                </svg>
+                <line
+                    strokeWidth={1.875}
+                    x1="3.22" y1="12" x2="20.78" y2="12"
+                    fill="none"
+                    stroke={stroke}
+                    stroke-linecap="round"
+                    stroke-miterlimit="10"
+                />
+                <line
+                    strokeWidth={1.875}
+                    x1="12" y1="3.22" x2="12" y2="20.78"
+                    fill="none"
+                    stroke={stroke}
+                    stroke-linecap="round"
+                    stroke-miterlimit="10"
+                />
             </svg>
         </CircleIconButton>
     )
@@ -315,6 +317,6 @@ export const CornerGripButton = (props: ButtonHTMLAttributes<HTMLButtonElement>)
         draggable-item="true"
         {...props}
     >
-        <CornerGrip />
+        <CornerGrip size={'1em'} />
     </button>
 )

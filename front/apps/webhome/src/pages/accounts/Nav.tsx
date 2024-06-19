@@ -290,11 +290,10 @@ export const Nav = () => {
       dispatch(
         popToast({
           type: 'success',
-          message: `Synced${
-            syncResult?.added
+          message: `Synced${syncResult?.added
               ? `, ${syncResult?.added} new transactions`
               : ' successfully'
-          }`
+            }`
         })
       );
     }

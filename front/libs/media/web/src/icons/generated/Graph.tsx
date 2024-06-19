@@ -23,13 +23,13 @@ function SvgGraph({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={1.5}
-        d="M21.7 21.6H3.3V4.2"
+        d="M21.7 20.2H3.3V4.8"
       />
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={1.5}
-        d="m6.1 16.2 5.3-5.3 3.1 3.1 5.9-5.9"
+        d="m6.1 15.8 5.3-5.3 3.1 3.1 5.9-5.9"
       />
     </svg>
   );

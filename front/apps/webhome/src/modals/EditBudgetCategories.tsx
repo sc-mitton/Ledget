@@ -175,7 +175,6 @@ const Categories = ({
               {!item?.is_default && (
                 <DeleteButton
                   visible={true}
-                  stroke={'var(--m-text)'}
                   onClick={() => {
                     deleteButtonHandler(item, setItems, setDeletedItems, order);
                   }}

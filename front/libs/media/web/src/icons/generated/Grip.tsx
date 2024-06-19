@@ -19,12 +19,12 @@ function SvgGrip({
       fill="none"
       {...props}
     >
-      <circle cx={6.5} cy={3.5} r={1.9} fill="currentColor" />
-      <circle cx={17.5} cy={3.5} r={1.9} fill="currentColor" />
-      <circle cx={6.5} cy={12.2} r={1.9} fill="currentColor" />
-      <circle cx={17.5} cy={12.2} r={1.9} fill="currentColor" />
-      <circle cx={6.5} cy={20.8} r={1.9} fill="currentColor" />
-      <circle cx={17.5} cy={20.8} r={1.9} fill="currentColor" />
+      <circle cx={7.5} cy={4.5} r={1.16} fill="currentColor" />
+      <circle cx={16.5} cy={4.5} r={1.16} fill="currentColor" />
+      <circle cx={7.5} cy={12.2} r={1.16} fill="currentColor" />
+      <circle cx={16.5} cy={12.2} r={1.16} fill="currentColor" />
+      <circle cx={7.5} cy={19.9} r={1.16} fill="currentColor" />
+      <circle cx={16.5} cy={19.9} r={1.16} fill="currentColor" />
     </svg>
   );
 }

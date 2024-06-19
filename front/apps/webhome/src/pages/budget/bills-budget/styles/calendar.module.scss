@@ -23,31 +23,11 @@
             z-index: 1;
         }
 
-        // Number of bills hover tip
-        &>div:not(.has-bill-dot) {
-            padding: .125em .5em;
-            border-radius: var(--border-radius2);
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translate(-50%, -100%);
-            opacity: 0;
-            display: flex;
-            background-color: var(--m-text);
-            display: flex;
-            gap: .125em;
-            align-items: center;
-
-            * {
-                color: var(--m-invert-text);
-            }
-        }
-
-        &.hoverable {
+        &[data-hoverable='true'] {
             cursor: pointer;
         }
 
-        &.hoverable::after {
+        &[data-hoverable='true']::after {
             content: '';
             position: absolute;
             z-index: 0;
@@ -56,18 +36,18 @@
             transform: translate(-50%, -50%);
             width: 1.5em;
             height: 1.5em;
-            border-radius: 50%;
+            border-radius: 25%;
             background-color: transparent;
             transition: background-color .2s ease-in-out;
         }
 
-        &.hoverable:hover::after,
-        &.hoverable.selected::after {
+        &[data-hoverable='true']:hover::after,
+        &[data-hoverable='true'][data-selected='true']::after {
             background-color: var(--btn-light-gray);
             transition: background-color .2s ease-in-out;
         }
 
-        &.hoverable.selected:hover::after {
+        &[data-hoverable='true'][data-selected='true']:hover::after {
             background-color: var(--btn-light-gray-hover);
             transition: background-color .2s ease-in-out;
         }
@@ -88,27 +68,89 @@
     font-weight: var(--fw-regular);
 }
 
-// Indicators for bills on that day
-.hasBillDot {
+.billDotTip {
+    padding: .25em .75em;
+    border-radius: var(--border-radius2);
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -120%);
+    opacity: 0;
+    display: flex;
+    background-color: var(--m-text);
+    display: flex;
+    gap: .125em;
+    align-items: center;
+    z-index: 1;
+
+    &::before {
+        position: absolute;
+        z-index: -2;
+        bottom: -.5em;
+        right: 50%;
+        transform: translateX(50%) rotate(180deg);
+        display: inline-block;
+        border-right: 6px solid transparent;
+        border-bottom: 7px solid var(--m-text-secondary);
+        border-left: 6px solid transparent;
+        content: '';
+    }
+
+    &::after {
+        position: absolute;
+        z-index: -1;
+        bottom: -.4em;
+        right: 50%;
+        transform: translateX(50%) rotate(180deg);
+        display: inline-block;
+        border-right: 6px solid transparent;
+        border-bottom: 7px solid var(--m-text);
+        border-left: 6px solid transparent;
+        content: '';
+    }
+
+    * {
+        color: var(--m-invert-text);
+        font-weight: var(--fw-bold);
+    }
+
+    span:first-of-type,
+    span:nth-of-type(3) {
+        width: .3em;
+        height: .3em;
+        border-radius: 50%;
+    }
+
+    span[data-period='month'] {
+        background-color: var(--monthly-color2);
+    }
+
+    span[data-period='year'] {
+        background-color: var(--yearly-color2);
+    }
+}
+
+.billDotContainer {
     position: absolute;
     bottom: -.375em;
     left: 50%;
     transform: translateX(-50%);
     display: inline-flex;
     gap: .125em;
+}
 
-    span {
-        display: inline-block;
-        width: .3em;
-        height: .3em;
-        border-radius: 50%;
+// Indicators for bills on that day
+.billDot {
+    display: inline-block;
+    width: .3em;
+    height: .3em;
+    border-radius: 50%;
 
-        &[data-period='month'] {
-            background-color: var(--monthly-color2);
-        }
+    &[data-period='month'] {
+        background-color: var(--monthly-color2);
+    }
 
-        &[data-period='year'] {
-            background-color: var(--yearly-color2);
-        }
+    &[data-period='year'] {
+        background-color: var(--yearly-color2);
     }
 }

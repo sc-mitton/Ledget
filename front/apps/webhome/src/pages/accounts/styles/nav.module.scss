@@ -80,6 +80,7 @@
     flex-wrap: wrap;
     align-items: center;
     padding: 0;
+    margin-left: -.5em;
     border-radius: var(--border-radius4);
     visibility: hidden;
     background-color: inherit;
@@ -93,7 +94,7 @@
 
     &[aria-expanded='true'] {
         visibility: visible;
-        padding: .75em 0 .5em 0;
+        padding: .75em .25em .5em .75em;
     }
 
     button:last-child {

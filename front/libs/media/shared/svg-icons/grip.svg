@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-  <circle cx="6.5" cy="3.5" r="1.9" fill="#292929"/>
-  <circle cx="17.5" cy="3.5" r="1.9" fill="#292929"/>
-  <circle cx="6.5" cy="12.2" r="1.9" fill="#292929"/>
-  <circle cx="17.5" cy="12.2" r="1.9" fill="#292929"/>
-  <circle cx="6.5" cy="20.8" r="1.9" fill="#292929"/>
-  <circle cx="17.5" cy="20.8" r="1.9" fill="#292929"/>
+  <circle cx="7.5" cy="4.5" r="1.16" fill="#292929"/>
+  <circle cx="16.5" cy="4.5" r="1.16" fill="#292929"/>
+  <circle cx="7.5" cy="12.2" r="1.16" fill="#292929"/>
+  <circle cx="16.5" cy="12.2" r="1.16" fill="#292929"/>
+  <circle cx="7.5" cy="19.9" r="1.16" fill="#292929"/>
+  <circle cx="16.5" cy="19.9" r="1.16" fill="#292929"/>
 </svg>

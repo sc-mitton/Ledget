@@ -96,7 +96,8 @@
     position: relative;
 
     &>div:first-of-type {
-        margin-top: 1.5em;
+        margin-top: 1.25em;
+        padding-top: .25em;
         display: flex;
         flex-direction: column;
         position: relative;

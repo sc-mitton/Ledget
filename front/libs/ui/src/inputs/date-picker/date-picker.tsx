@@ -713,7 +713,7 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
         {pickerType === 'range'
           &&
           <>
-            <HalfArrow size={'.7em'} stroke={'currentColor'} />
+            <HalfArrow size={'1em'} stroke={'currentColor'} />
             <input
               ref={endInputRef}
               type='text'
