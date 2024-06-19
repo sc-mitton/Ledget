@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-  <circle cx="18.1" cy="18.1" r="2.8" fill="#292929"/>
-  <circle cx="5.9" cy="5.9" r="2.8" fill="#292929"/>
-  <circle cx="5.9" cy="18.1" r="2.8" fill="#292929"/>
+  <circle cx="5.9" cy="5.9" r="1.66" fill="#292929"/>
+  <circle cx="5.9" cy="18.1" r="1.66" fill="#292929"/>
+  <circle cx="18.1" cy="18.1" r="1.66" fill="#292929"/>
 </svg>

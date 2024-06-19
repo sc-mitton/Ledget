@@ -174,6 +174,7 @@
         background: linear-gradient(to bottom right,
                 var(--monthly-background-color) 0%,
                 var(--monthly-hover-background-color) 100%);
+        border: 1px solid var(--monthly-hover-background-color);
 
         * {
             color: var(--monthly-color1);
@@ -191,6 +192,7 @@
         background: linear-gradient(to bottom right,
                 var(--yearly-background-color) 0%,
                 var(--yearly-hover-background-color) 100%);
+        border: 1px solid var(--yearly-hover-background-color);
 
         * {
             color: var(--yearly-color1);
@@ -208,6 +210,7 @@
         background: linear-gradient(to bottom right,
                 var(--yearly-background-color) 0%,
                 var(--yearly-hover-background-color) 100%);
+        border: 1px solid var(--yearly-hover-background-color);
 
         &[data-hoverable='true']:hover {
             background: linear-gradient(to bottom right,
