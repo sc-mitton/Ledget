@@ -1,459 +1,579 @@
-import { useId, useState, useEffect } from 'react'
+import { useId, useState, useEffect } from 'react';
 
-import { AnimatePresence } from 'framer-motion'
-import { Menu, RadioGroup } from '@headlessui/react'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm, Controller } from 'react-hook-form'
-import { z } from 'zod'
-import dayjs from 'dayjs'
-import { Trash2, Edit2, CheckInCircle, Circle, BellOff, MoreHorizontal } from '@geist-ui/icons'
-import { startCase, toLower } from 'lodash-es'
-
-import styles from './styles/bill.module.scss'
-import { billSchema } from './CreateBill'
-import { withModal } from '@ledget/ui'
-import { selectBudgetMonthYear } from '@features/budgetItemMetaDataSlice'
-import { TransformedBill, useDeleteBillMutation, useUpdateBillsMutation, UpdateBill, Bill } from '@features/billSlice'
-import { Reminder } from '@features/remindersSlice'
-import { SubmitForm } from '@components/pieces'
-import { getDaySuffix } from '@ledget/helpers'
-import { mapWeekDayNumberToName } from '@ledget/helpers'
+import { AnimatePresence } from 'framer-motion';
+import { Menu, RadioGroup } from '@headlessui/react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, Controller } from 'react-hook-form';
+import { z } from 'zod';
+import dayjs from 'dayjs';
 import {
-    DollarCents,
-    DropdownDiv,
-    SlideMotionDiv,
-    useLoaded,
-    Checkbox,
-    IconButtonHalfGray,
-    DropdownItem,
-    DatePicker,
-    NestedWindow2,
-    WindowCorner
-} from '@ledget/ui'
-import { extractReminders } from '@modals/CreateBill'
+  Trash2,
+  Edit2,
+  CheckInCircle,
+  Circle,
+  BellOff,
+  MoreHorizontal
+} from '@geist-ui/icons';
+import { startCase, toLower } from 'lodash-es';
+
+import styles from './styles/bill.module.scss';
+import { billSchema } from './CreateBill';
+import { withModal } from '@ledget/ui';
 import {
-    EmojiComboText,
-    DollarRangeInput,
-    BillScheduler,
-    AddReminder,
-    emoji,
-} from '@components/inputs'
-import { useAppSelector } from '@hooks/store'
+  TransformedBill,
+  useDeleteBillMutation,
+  useUpdateBillsMutation,
+  UpdateBill,
+  Reminder,
+  selectBudgetMonthYear
+} from '@ledget/shared-features';
+import { SubmitForm } from '@components/pieces';
+import { getDaySuffix } from '@ledget/helpers';
+import { mapWeekDayNumberToName } from '@ledget/helpers';
+import {
+  DollarCents,
+  DropdownDiv,
+  SlideMotionDiv,
+  useLoaded,
+  Checkbox,
+  IconButtonHalfGray,
+  DropdownItem,
+  DatePicker,
+  NestedWindow2,
+  WindowCorner
+} from '@ledget/ui';
+import { extractReminders } from '@modals/CreateBill';
+import {
+  EmojiComboText,
+  DollarRangeInput,
+  BillScheduler,
+  AddReminder,
+  emoji
+} from '@components/inputs';
+import { useAppSelector } from '@hooks/store';
 
+const getRepeatsDescription = ({
+  day,
+  week,
+  week_day,
+  month,
+  year
+}: {
+  day: number | undefined;
+  week: number | undefined;
+  week_day: number | undefined;
+  month: number | undefined;
+  year: number | undefined;
+}) => {
+  if (year && month && day) {
+    return `One time on ${new Date(year, month, day).toLocaleDateString(
+      'en-US',
+      { month: 'short', day: 'numeric', year: 'numeric' }
+    )}`;
+  } else if (month) {
+    return `Yearly on ${new Date(2000, month, day).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric'
+    })}`;
+  } else if (week_day && week) {
+    return `The ${week_day}${getDaySuffix(week_day)} ${mapWeekDayNumberToName(
+      week
+    )} of the month`;
+  } else if (day) {
+    return `The ${day}${getDaySuffix(day)} of every month`;
+  } else {
+    return '';
+  }
+};
 
-const getRepeatsDescription = ({ day, week, week_day, month, year }:
-    { day: number | undefined, week: number | undefined, week_day: number | undefined, month: number | undefined, year: number | undefined }) => {
+const getNextBillDate = ({
+  day,
+  week,
+  week_day,
+  month,
+  year
+}: {
+  day: number | undefined;
+  week: number | undefined;
+  week_day: number | undefined;
+  month: number | undefined;
+  year: number | undefined;
+}) => {
+  let date = new Date();
 
-    if (year && month && day) {
-        return `One time on ${new Date(year, month, day).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
-    } else if (month) {
-        return `Yearly on ${new Date(2000, month, day).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
-    } else if (week_day && week) {
-        return `The ${week_day}${getDaySuffix(week_day)} ${mapWeekDayNumberToName(week)} of the month`
-    } else if (day) {
-        return `The ${day}${getDaySuffix(day)} of every month`
-    } else {
-        return ''
-    }
-}
+  if (year && month && day) {
+    return new Date(year, month, day).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  } else if (month && day) {
+    date.setMonth(month);
+    date.setDate(day);
+    date.setFullYear(date.getFullYear() + 1);
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  } else if (week_day && week) {
+    date.setMonth(date.getMonth() + 1);
+    date.setDate(1 + (week! - 1) * 7);
+    date.setDate(date.getDate() + ((week_day! - 1 - date.getDay() + 7) % 7));
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  } else if (day) {
+    date.setMonth(date.getMonth() + 1);
+    date.setDate(day);
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  } else {
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  }
+};
 
-const getNextBillDate = ({ day, week, week_day, month, year }:
-    { day: number | undefined, week: number | undefined, week_day: number | undefined, month: number | undefined, year: number | undefined }) => {
-    let date = new Date()
+type Action = 'delete' | 'edit' | 'none';
 
-    if (year && month && day) {
-        return new Date(year, month, day).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-    } else if (month && day) {
-        date.setMonth(month)
-        date.setDate(day)
-        date.setFullYear(date.getFullYear() + 1)
-        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-    } else if (week_day && week) {
-        date.setMonth(date.getMonth() + 1)
-        date.setDate(1 + (week! - 1) * 7)
-        date.setDate(date.getDate() + (week_day! - 1 - date.getDay() + 7) % 7)
-        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-    } else if (day) {
-        date.setMonth(date.getMonth() + 1)
-        date.setDate(day)
-        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-    } else {
-        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-    }
-}
+const Actions = ({
+  setAction
+}: {
+  setAction: React.Dispatch<React.SetStateAction<Action>>;
+}) => {
+  const [openEllipsis, setOpenEllipsis] = useState(false);
 
-type Action = 'delete' | 'edit' | 'none'
-
-const Actions = ({ setAction }: { setAction: React.Dispatch<React.SetStateAction<Action>> }) => {
-    const [openEllipsis, setOpenEllipsis] = useState(false)
-
-    return (
-        <Menu as={WindowCorner}>
-            {({ open }) => (
-                <>
-                    <Menu.Button as={IconButtonHalfGray} onClick={() => setOpenEllipsis(!openEllipsis)}>
-                        <MoreHorizontal className='icon' />
-                    </Menu.Button>
-                    <DropdownDiv
-                        placement='right'
-                        arrow='right'
-                        className='right'
-                        visible={open}
-                    >
-                        <Menu.Items static>
-                            <Menu.Item>
-                                {({ active }) => (
-                                    <DropdownItem
-                                        as='button'
-                                        active={active}
-                                        onClick={() => setAction('edit')}
-                                    >
-                                        <Edit2 className="icon" />
-                                        <span>Edit Bill</span>
-                                    </DropdownItem>
-                                )}
-                            </Menu.Item>
-                            <hr />
-                            <Menu.Item>
-                                {({ active }) => (
-                                    <DropdownItem
-                                        as='button'
-                                        active={active}
-                                        onClick={() => setAction('delete')}
-                                    >
-                                        <Trash2 className="icon" />
-                                        <span>Delete Bill</span>
-                                    </DropdownItem>
-                                )}
-                            </Menu.Item>
-                        </Menu.Items>
-                    </DropdownDiv>
-                </>
-            )}
-        </Menu>
-    )
-}
+  return (
+    <Menu as={WindowCorner}>
+      {({ open }) => (
+        <>
+          <Menu.Button
+            as={IconButtonHalfGray}
+            onClick={() => setOpenEllipsis(!openEllipsis)}
+          >
+            <MoreHorizontal className="icon" />
+          </Menu.Button>
+          <DropdownDiv
+            placement="right"
+            arrow="right"
+            className="right"
+            visible={open}
+          >
+            <Menu.Items static>
+              <Menu.Item>
+                {({ active }) => (
+                  <DropdownItem
+                    as="button"
+                    active={active}
+                    onClick={() => setAction('edit')}
+                  >
+                    <Edit2 className="icon" />
+                    <span>Edit Bill</span>
+                  </DropdownItem>
+                )}
+              </Menu.Item>
+              <hr />
+              <Menu.Item>
+                {({ active }) => (
+                  <DropdownItem
+                    as="button"
+                    active={active}
+                    onClick={() => setAction('delete')}
+                  >
+                    <Trash2 className="icon" />
+                    <span>Delete Bill</span>
+                  </DropdownItem>
+                )}
+              </Menu.Item>
+            </Menu.Items>
+          </DropdownDiv>
+        </>
+      )}
+    </Menu>
+  );
+};
 
 const BillInfo = ({ bill }: { bill: TransformedBill }) => {
-    return (
-        <div className={styles.billInfoModal}>
-            <div className={styles.header}>
-                {bill &&
-                    <h2>
-                        {bill.emoji}&nbsp;&nbsp;
-                        {`${bill.name.charAt(0).toUpperCase()}${bill?.name.slice(1)}`}
-                    </h2>}
-            </div>
-            <NestedWindow2>
-                <div>Amount</div>
-                <div>
-                    {bill.is_paid
-                        ? <CheckInCircle size={'1em'} style={{ marginLeft: '.125em' }} />
-                        : <Circle size={'1em'} style={{ marginLeft: '.125em' }} />}
-                    <div>
-                        {bill.lower_amount && <><DollarCents value={bill.lower_amount} /> <span>&nbsp;-&nbsp;</span></>}
-                        {bill.upper_amount && <DollarCents value={bill.upper_amount} />}
-                    </div>
-                </div>
-                <div>Schedule</div>
-                <div>{getRepeatsDescription({
-                    day: bill?.day,
-                    week: bill?.week,
-                    week_day: bill?.week_day,
-                    month: bill?.month,
-                    year: bill?.year
-                })}</div>
-                <div>Next</div>
-                <div>
-                    {bill?.is_paid
-                        ? `${getNextBillDate({
-                            day: bill?.day,
-                            week: bill?.week,
-                            week_day: bill?.week_day,
-                            month: bill?.month,
-                            year: bill?.year
-                        })}`
-                        : `${new Date(bill.date).toLocaleDateString(
-                            'en-US',
-                            { month: 'short', day: 'numeric', year: 'numeric' })}`
-                    }
-                </div>
-                {bill?.expires &&
-                    <><div>Expires</div>
-                        <div>
-                            {`${new Date(bill.expires).toLocaleDateString(
-                                'en-US',
-                                { month: 'short', day: 'numeric', year: 'numeric' })}`}
-                        </div></>}
-                <div>
-                    Reminders
-                </div>
-                <div>
-                    {bill.reminders && bill.reminders?.length > 0
-                        ?
-                        <>
-                            {bill.reminders.map((reminder, i) => (
-                                <span>
-                                    {`${reminder.offset} `}
-                                    {`${reminder.period}${reminder.offset > 1 ? 's' : ''} before`}
-                                </span>
-                            ))}
-                        </>
-                        : <BellOff size={'1.1em'} />
-                    }
-                </div>
-
-            </NestedWindow2>
+  return (
+    <div className={styles.billInfoModal}>
+      <div className={styles.header}>
+        {bill && (
+          <h2>
+            {bill.emoji}&nbsp;&nbsp;
+            {`${bill.name.charAt(0).toUpperCase()}${bill?.name.slice(1)}`}
+          </h2>
+        )}
+      </div>
+      <NestedWindow2>
+        <div>Amount</div>
+        <div>
+          {bill.is_paid ? (
+            <CheckInCircle size={'1em'} style={{ marginLeft: '.125em' }} />
+          ) : (
+            <Circle size={'1em'} style={{ marginLeft: '.125em' }} />
+          )}
+          <div>
+            {bill.lower_amount && (
+              <>
+                <DollarCents value={bill.lower_amount} />{' '}
+                <span>&nbsp;-&nbsp;</span>
+              </>
+            )}
+            {bill.upper_amount && <DollarCents value={bill.upper_amount} />}
+          </div>
         </div>
-    )
-}
-
-const DeleteBill = ({ bill, onCancel, onDelete }: { bill?: TransformedBill, onCancel: () => void, onDelete: () => void }) => {
-    const [deleteBill, { isLoading: isDeleting, isSuccess: isDeleteSuccess }] = useDeleteBillMutation()
-    const [value, setValue] = useState('all' as 'all' | 'single' | 'complement')
-
-    const onSubmit = (e: any) => {
-        e.preventDefault()
-        deleteBill({
-            billId: bill?.id || '',
-            data: { instances: value }
-        })
-    }
-
-    useEffect(() => {
-        if (isDeleteSuccess) {
-            onDelete()
-        }
-    }, [isDeleteSuccess])
-
-    return (
-        <form onSubmit={onSubmit}>
-            <RadioGroup className={styles.deleteBillRadios} value={value} onChange={setValue}>
-                <RadioGroup.Label className={bill?.period}>
-                    <h3>Delete {`${bill?.name.charAt(0).toUpperCase()}${bill?.name.slice(1) || ''}`} Bill</h3>
-                </RadioGroup.Label>
-                <RadioGroup.Option value="single" className={styles.radioOption}>
-                    {({ checked }) => (
-                        <>
-                            <span role='button' />
-                            <span>Just this month's bill</span>
-                        </>
-                    )}
-                </RadioGroup.Option>
-                <RadioGroup.Option value="complement" className={styles.radioOption}>
-                    {({ checked }) => (
-                        <>
-                            <span role='button' />
-                            <span>All future bills</span>
-                        </>
-                    )}
-                </RadioGroup.Option>
-                <RadioGroup.Option value="all" className={styles.radioOption}>
-                    {({ checked }) => (
-                        <>
-                            <span role='button' />
-                            <span>All including this month</span>
-                        </>
-                    )}
-                </RadioGroup.Option>
-            </RadioGroup>
-            <SubmitForm
-                text="OK"
-                submitting={isDeleting}
-                success={isDeleteSuccess}
-                onCancel={onCancel}
-            />
-        </form>
-    )
-}
-
-const EditBill = ({ bill, onCancel, onUpdateSuccess }: { bill: TransformedBill, onCancel: () => void, onUpdateSuccess: () => void }) => {
-    const [updateBill, { isLoading: isUpdating, isSuccess: isUpdateSuccess }] = useUpdateBillsMutation()
-    const { register, handleSubmit, formState: { errors }, control } = useForm<z.infer<typeof billSchema>>({
-        resolver: zodResolver(billSchema),
-        defaultValues: { name: startCase(toLower(bill?.name)) }
-    })
-
-    const [emoji, setEmoji] = useState<emoji>()
-    const [reminders, setReminders] = useState<Reminder[]>()
-    const [rangeMode, setRangeMode] = useState(Boolean(bill.lower_amount))
-
-    const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        // parse form data
-        const reminders = extractReminders(e)
-
-        handleSubmit((data) => {
-            if (data.upper_amount || data.lower_amount) {
-                updateBill({
-                    id: bill?.id,
-                    reminders: reminders,
-                    ...data,
-                })
-            } else {
-                const payload = { id: bill?.id } as any
-                let k: keyof typeof data
-                for (k in data)
-                    if (data[k] !== bill?.[k])
-                        payload[k] = data[k]
-                updateBill(payload as UpdateBill)
-            }
-        })(e)
-    }
-
-    // Set values on load
-    useEffect(() => {
-        setEmoji(bill.emoji)
-    }, [])
-
-    // Update success
-    useEffect(() => {
-        let timeout: NodeJS.Timeout
-        if (isUpdateSuccess) {
-            timeout = setTimeout(() => {
-                onUpdateSuccess()
-            }, 1000)
-        }
-        return () => clearTimeout(timeout)
-    }, [isUpdateSuccess])
-
-    return (
-        <form onSubmit={submitForm}>
-            <input type="hidden" {...register('period')} value={bill.period} />
-            <div className={styles.billEdit}>
-                <h3>Edit Bill</h3>
-                <hr />
-                <div>
-                    <label htmlFor="schedule">Schedule</label>
-                    <div>
-                        <BillScheduler
-                            defaultValue={{
-                                day: bill.day,
-                                week: bill.week,
-                                weekDay: bill.week_day,
-                                month: bill.month
-                            }}
-                            billPeriod={bill.period}
-                            error={errors.day}
-                            register={register}
-                        />
-                        <AddReminder
-                            value={reminders}
-                            onChange={setReminders}
-                            defaultSelected={
-                                bill.reminders && bill.reminders.map((reminder) => reminder.id)
-                            }
-                        />
-                    </div>
-                </div>
-                <div>
-                    <EmojiComboText
-                        emoji={emoji}
-                        setEmoji={setEmoji}
-                        name="name"
-                        placeholder="Name"
-                        register={register}
-                        error={errors.name}
-                    />
-                </div>
-                <div>
-                    <DollarRangeInput
-                        defaultLowerValue={bill.lower_amount}
-                        defaultUpperValue={bill.upper_amount}
-                        rangeMode={rangeMode}
-                        control={control}
-                        errors={errors}
-                    />
-                    <Checkbox
-                        label='Range'
-                        id="range"
-                        aria-label='Change bill amount to a range.'
-                        checked={rangeMode}
-                        setChecked={setRangeMode}
-                    />
-                </div>
-                <div>
-                    <Controller
-                        name="expires"
-                        control={control}
-                        render={(props) => (
-                            <DatePicker
-                                disabled={[[undefined, dayjs().subtract(1, 'day')]]}
-                                placeholder="Expires"
-                                format="M/D/YYYY"
-                                aria-label='Expiration date'
-                                onChange={(e) => { props.field.onChange(e?.toISOString()) }}
-                            />
-                        )}
-                    />
-                </div>
-                <SubmitForm
-                    text="Save"
-                    submitting={isUpdating}
-                    success={isUpdateSuccess}
-                    onCancel={onCancel}
-                />
+        <div>Schedule</div>
+        <div>
+          {getRepeatsDescription({
+            day: bill?.day,
+            week: bill?.week,
+            week_day: bill?.week_day,
+            month: bill?.month,
+            year: bill?.year
+          })}
+        </div>
+        <div>Next</div>
+        <div>
+          {bill?.is_paid
+            ? `${getNextBillDate({
+                day: bill?.day,
+                week: bill?.week,
+                week_day: bill?.week_day,
+                month: bill?.month,
+                year: bill?.year
+              })}`
+            : `${new Date(bill.date).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+              })}`}
+        </div>
+        {bill?.expires && (
+          <>
+            <div>Expires</div>
+            <div>
+              {`${new Date(bill.expires).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+              })}`}
             </div>
-        </form>
-    )
-}
+          </>
+        )}
+        <div>Reminders</div>
+        <div>
+          {bill.reminders && bill.reminders?.length > 0 ? (
+            <>
+              {bill.reminders.map((reminder, i) => (
+                <span>
+                  {`${reminder.offset} `}
+                  {`${reminder.period}${reminder.offset > 1 ? 's' : ''} before`}
+                </span>
+              ))}
+            </>
+          ) : (
+            <BellOff size={'1.1em'} />
+          )}
+        </div>
+      </NestedWindow2>
+    </div>
+  );
+};
 
+const DeleteBill = ({
+  bill,
+  onCancel,
+  onDelete
+}: {
+  bill?: TransformedBill;
+  onCancel: () => void;
+  onDelete: () => void;
+}) => {
+  const [deleteBill, { isLoading: isDeleting, isSuccess: isDeleteSuccess }] =
+    useDeleteBillMutation();
+  const [value, setValue] = useState('all' as 'all' | 'single' | 'complement');
+
+  const onSubmit = (e: any) => {
+    e.preventDefault();
+    deleteBill({
+      billId: bill?.id || '',
+      data: { instances: value }
+    });
+  };
+
+  useEffect(() => {
+    if (isDeleteSuccess) {
+      onDelete();
+    }
+  }, [isDeleteSuccess]);
+
+  return (
+    <form onSubmit={onSubmit}>
+      <RadioGroup
+        className={styles.deleteBillRadios}
+        value={value}
+        onChange={setValue}
+      >
+        <RadioGroup.Label className={bill?.period}>
+          <h3>
+            Delete{' '}
+            {`${bill?.name.charAt(0).toUpperCase()}${
+              bill?.name.slice(1) || ''
+            }`}{' '}
+            Bill
+          </h3>
+        </RadioGroup.Label>
+        <RadioGroup.Option value="single" className={styles.radioOption}>
+          {({ checked }) => (
+            <>
+              <span role="button" />
+              <span>Just this month's bill</span>
+            </>
+          )}
+        </RadioGroup.Option>
+        <RadioGroup.Option value="complement" className={styles.radioOption}>
+          {({ checked }) => (
+            <>
+              <span role="button" />
+              <span>All future bills</span>
+            </>
+          )}
+        </RadioGroup.Option>
+        <RadioGroup.Option value="all" className={styles.radioOption}>
+          {({ checked }) => (
+            <>
+              <span role="button" />
+              <span>All including this month</span>
+            </>
+          )}
+        </RadioGroup.Option>
+      </RadioGroup>
+      <SubmitForm
+        text="OK"
+        submitting={isDeleting}
+        success={isDeleteSuccess}
+        onCancel={onCancel}
+      />
+    </form>
+  );
+};
+
+const EditBill = ({
+  bill,
+  onCancel,
+  onUpdateSuccess
+}: {
+  bill: TransformedBill;
+  onCancel: () => void;
+  onUpdateSuccess: () => void;
+}) => {
+  const [updateBill, { isLoading: isUpdating, isSuccess: isUpdateSuccess }] =
+    useUpdateBillsMutation();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control
+  } = useForm<z.infer<typeof billSchema>>({
+    resolver: zodResolver(billSchema),
+    defaultValues: { name: startCase(toLower(bill?.name)) }
+  });
+
+  const [emoji, setEmoji] = useState<emoji>();
+  const [reminders, setReminders] = useState<Reminder[]>();
+  const [rangeMode, setRangeMode] = useState(Boolean(bill.lower_amount));
+
+  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // parse form data
+    const reminders = extractReminders(e);
+
+    handleSubmit((data) => {
+      if (data.upper_amount || data.lower_amount) {
+        updateBill({
+          id: bill?.id,
+          reminders: reminders,
+          ...data
+        });
+      } else {
+        const payload = { id: bill?.id } as any;
+        let k: keyof typeof data;
+        for (k in data) if (data[k] !== bill?.[k]) payload[k] = data[k];
+        updateBill(payload as UpdateBill);
+      }
+    })(e);
+  };
+
+  // Set values on load
+  useEffect(() => {
+    setEmoji(bill.emoji);
+  }, []);
+
+  // Update success
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    if (isUpdateSuccess) {
+      timeout = setTimeout(() => {
+        onUpdateSuccess();
+      }, 1000);
+    }
+    return () => clearTimeout(timeout);
+  }, [isUpdateSuccess]);
+
+  return (
+    <form onSubmit={submitForm}>
+      <input type="hidden" {...register('period')} value={bill.period} />
+      <div className={styles.billEdit}>
+        <h3>Edit Bill</h3>
+        <hr />
+        <div>
+          <label htmlFor="schedule">Schedule</label>
+          <div>
+            <BillScheduler
+              defaultValue={{
+                day: bill.day,
+                week: bill.week,
+                weekDay: bill.week_day,
+                month: bill.month
+              }}
+              billPeriod={bill.period}
+              error={errors.day}
+              register={register}
+            />
+            <AddReminder
+              value={reminders}
+              onChange={setReminders}
+              defaultSelected={
+                bill.reminders && bill.reminders.map((reminder) => reminder.id)
+              }
+            />
+          </div>
+        </div>
+        <div>
+          <EmojiComboText
+            emoji={emoji}
+            setEmoji={setEmoji}
+            name="name"
+            placeholder="Name"
+            register={register}
+            error={errors.name}
+          />
+        </div>
+        <div>
+          <DollarRangeInput
+            defaultLowerValue={bill.lower_amount}
+            defaultUpperValue={bill.upper_amount}
+            rangeMode={rangeMode}
+            control={control}
+            errors={errors}
+          />
+          <Checkbox
+            label="Range"
+            id="range"
+            aria-label="Change bill amount to a range."
+            checked={rangeMode}
+            setChecked={setRangeMode}
+          />
+        </div>
+        <div>
+          <Controller
+            name="expires"
+            control={control}
+            render={(props) => (
+              <DatePicker
+                disabled={[[undefined, dayjs().subtract(1, 'day')]]}
+                placeholder="Expires"
+                format="M/D/YYYY"
+                aria-label="Expiration date"
+                onChange={(e) => {
+                  props.field.onChange(e?.toISOString());
+                }}
+              />
+            )}
+          />
+        </div>
+        <SubmitForm
+          text="Save"
+          submitting={isUpdating}
+          success={isUpdateSuccess}
+          onCancel={onCancel}
+        />
+      </div>
+    </form>
+  );
+};
 
 interface ModalContentProps {
-    bill: TransformedBill
-    onClose: () => void
+  bill: TransformedBill;
+  onClose: () => void;
 }
 
 export const BillModalContent = (props: ModalContentProps) => {
-    const id = useId()
-    const loaded = useLoaded(100)
-    const [action, setAction] = useState<Action>('none')
-    const { month, year } = useAppSelector(selectBudgetMonthYear)
+  const id = useId();
+  const loaded = useLoaded(100);
+  const [action, setAction] = useState<Action>('none');
+  const { month, year } = useAppSelector(selectBudgetMonthYear);
 
-    return (
-        <div className={styles.billModalContent}>
-            <Actions setAction={setAction} />
-            <AnimatePresence mode="wait">
-                {action === 'none' &&
-                    <SlideMotionDiv position={loaded ? 'first' : 'fixed'} key={id}>
-                        <BillInfo bill={props.bill} />
-                    </SlideMotionDiv>}
-                {action === 'edit' &&
-                    <SlideMotionDiv position={'last'} key={`${id}1`}>
-                        <EditBill
-                            bill={props.bill}
-                            onCancel={() => { setAction('none') }}
-                            onUpdateSuccess={() => { props.onClose() }}
-                        />
-                    </SlideMotionDiv>
-                }
-                {action === 'delete' &&
-                    <SlideMotionDiv position={'last'} key={`${id}2`}>
-                        <DeleteBill
-                            bill={props.bill}
-                            onCancel={() => { setAction('none') }}
-                            onDelete={() => { props.onClose() }}
-                        />
-                    </SlideMotionDiv>
-                }
-            </AnimatePresence>
-        </div>
-    )
-}
+  return (
+    <div className={styles.billModalContent}>
+      <Actions setAction={setAction} />
+      <AnimatePresence mode="wait">
+        {action === 'none' && (
+          <SlideMotionDiv position={loaded ? 'first' : 'fixed'} key={id}>
+            <BillInfo bill={props.bill} />
+          </SlideMotionDiv>
+        )}
+        {action === 'edit' && (
+          <SlideMotionDiv position={'last'} key={`${id}1`}>
+            <EditBill
+              bill={props.bill}
+              onCancel={() => {
+                setAction('none');
+              }}
+              onUpdateSuccess={() => {
+                props.onClose();
+              }}
+            />
+          </SlideMotionDiv>
+        )}
+        {action === 'delete' && (
+          <SlideMotionDiv position={'last'} key={`${id}2`}>
+            <DeleteBill
+              bill={props.bill}
+              onCancel={() => {
+                setAction('none');
+              }}
+              onDelete={() => {
+                props.onClose();
+              }}
+            />
+          </SlideMotionDiv>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
 
 const BillModal = withModal<ModalContentProps>((props) => {
-
-    return (
-        <BillModalContent
-            bill={props.bill}
-            onClose={() => {
-                props.closeModal()
-                props.onClose()
-            }}
-        />
-    )
-})
+  return (
+    <BillModalContent
+      bill={props.bill}
+      onClose={() => {
+        props.closeModal();
+        props.onClose();
+      }}
+    />
+  );
+});
 
 export default function (props: ModalContentProps) {
-    return <BillModal maxWidth='25em' {...props} />
+  return <BillModal maxWidth="25em" {...props} />;
 }

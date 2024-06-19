@@ -1,94 +1,109 @@
-import { useEffect, useState, HTMLProps, useRef } from 'react'
+import { useEffect, useState, HTMLProps, useRef } from 'react';
 
-import { useLocation, useSearchParams } from 'react-router-dom'
-import { Dayjs } from 'dayjs'
+import { useLocation, useSearchParams } from 'react-router-dom';
+import { Dayjs } from 'dayjs';
 
-import styles from './styles/table.module.scss'
-import { useLazyGetTransactionsQuery, GetTransactionsResponse } from '@features/transactionsSlice'
+import styles from './styles/table.module.scss';
 import {
-    InfiniteScrollDiv,
-    ShadowScrollDiv,
-    useLoaded,
-    useScreenContext,
-    Window
-} from '@ledget/ui'
+  useLazyGetTransactionsQuery,
+  GetTransactionsResponse
+} from '@ledget/shared-features';
+import {
+  InfiniteScrollDiv,
+  ShadowScrollDiv,
+  useLoaded,
+  useScreenContext,
+  Window
+} from '@ledget/ui';
 
-import pathMappings from '../path-mappings'
-import Filter from './TransactionsFilter'
-import Skeleton from './Skeleton'
+import pathMappings from '../path-mappings';
+import Filter from './TransactionsFilter';
+import Skeleton from './Skeleton';
 
 type Props = Omit<HTMLProps<HTMLDivElement>, 'children'> & {
-    children: ({ transactionsData }: { transactionsData?: GetTransactionsResponse }) => React.ReactNode
-}
+  children: ({
+    transactionsData
+  }: {
+    transactionsData?: GetTransactionsResponse;
+  }) => React.ReactNode;
+};
 
 const Table = ({ children, ...rest }: Props) => {
-    const containerRef = useRef<HTMLDivElement>(null)
-    const [fetchMorePulse, setFetchMorePulse] = useState(false)
-    const [searchParams] = useSearchParams()
-    const loaded = useLoaded(0)
-    const location = useLocation()
-    const { screenSize } = useScreenContext()
-    const [dateRange, setDateRange] = useState<[Dayjs, Dayjs]>()
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [fetchMorePulse, setFetchMorePulse] = useState(false);
+  const [searchParams] = useSearchParams();
+  const loaded = useLoaded(0);
+  const location = useLocation();
+  const { screenSize } = useScreenContext();
+  const [dateRange, setDateRange] = useState<[Dayjs, Dayjs]>();
 
-    const [getTransactions, { data: transactionsData }] = useLazyGetTransactionsQuery()
+  const [getTransactions, { data: transactionsData }] =
+    useLazyGetTransactionsQuery();
 
-    // Initial fetch
-    useEffect(() => {
-        if (searchParams.get('account')) {
-            getTransactions({
-                account: searchParams.get('account') || '',
-                type: pathMappings.getTransactionType(location),
-                limit: 25,
-                offset: 0,
-                ...(dateRange ? {
-                    start: Math.floor(dateRange[0].valueOf() / 1000),
-                    end: Math.floor(dateRange[1].valueOf() / 1000)
-                } : {})
-            }, true)
-        }
-    }, [searchParams.get('account'), dateRange])
-
-    // Fetch more transactions
-    const handleScroll = (e: any) => {
-        const bottom = e.target.scrollTop === e.target.scrollTopMax
-        // Update cursors to add new transactions node to the end
-        if (bottom && transactionsData?.next !== null && transactionsData) {
-            setFetchMorePulse(true)
-            getTransactions({
-                account: searchParams.get('account')!,
-                type: pathMappings.getTransactionType(location),
-                offset: transactionsData.next,
-                limit: transactionsData.limit,
-                ...(dateRange ? { start_date: dateRange[0].format('YYYY-MM-DD'), end_date: dateRange[1].format('YYYY-MM-DD') } : {})
-            })
-
-            setTimeout(() => {
-                setFetchMorePulse(false)
-            }, 1500)
-        }
+  // Initial fetch
+  useEffect(() => {
+    if (searchParams.get('account')) {
+      getTransactions(
+        {
+          account: searchParams.get('account') || '',
+          type: pathMappings.getTransactionType(location),
+          limit: 25,
+          offset: 0,
+          ...(dateRange
+            ? {
+                start: Math.floor(dateRange[0].valueOf() / 1000),
+                end: Math.floor(dateRange[1].valueOf() / 1000)
+              }
+            : {})
+        },
+        true
+      );
     }
+  }, [searchParams.get('account'), dateRange]);
 
-    return (
-        <Window className={styles.table} ref={containerRef} data-size={screenSize}>
-            <div className={styles.header} data-size={screenSize}>
-                <h3>Transactions</h3>
-                <Filter value={dateRange} onChange={setDateRange} />
-            </div>
-            <InfiniteScrollDiv
-                animate={loaded && fetchMorePulse}
-                {...rest}
-            >
-                <ShadowScrollDiv
-                    className={styles.list}
-                    data-size={screenSize}
-                    onScroll={handleScroll}
-                >
-                    {!transactionsData && <Skeleton ref={containerRef} />}
-                    {children({ transactionsData })}
-                </ShadowScrollDiv>
-            </InfiniteScrollDiv>
-        </Window>
-    )
-}
+  // Fetch more transactions
+  const handleScroll = (e: any) => {
+    const bottom = e.target.scrollTop === e.target.scrollTopMax;
+    // Update cursors to add new transactions node to the end
+    if (bottom && transactionsData?.next !== null && transactionsData) {
+      setFetchMorePulse(true);
+      getTransactions({
+        account: searchParams.get('account')!,
+        type: pathMappings.getTransactionType(location),
+        offset: transactionsData.next,
+        limit: transactionsData.limit,
+        ...(dateRange
+          ? {
+              start_date: dateRange[0].format('YYYY-MM-DD'),
+              end_date: dateRange[1].format('YYYY-MM-DD')
+            }
+          : {})
+      });
 
-export default Table
+      setTimeout(() => {
+        setFetchMorePulse(false);
+      }, 1500);
+    }
+  };
+
+  return (
+    <Window className={styles.table} ref={containerRef} data-size={screenSize}>
+      <div className={styles.header} data-size={screenSize}>
+        <h3>Transactions</h3>
+        <Filter value={dateRange} onChange={setDateRange} />
+      </div>
+      <InfiniteScrollDiv animate={loaded && fetchMorePulse} {...rest}>
+        <ShadowScrollDiv
+          className={styles.list}
+          data-size={screenSize}
+          onScroll={handleScroll}
+        >
+          {!transactionsData && <Skeleton ref={containerRef} />}
+          {children({ transactionsData })}
+        </ShadowScrollDiv>
+      </InfiniteScrollDiv>
+    </Window>
+  );
+};
+
+export default Table;

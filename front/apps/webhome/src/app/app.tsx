@@ -1,71 +1,82 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react';
 
-import { Routes, Outlet, Route, useLocation, Navigate, useNavigate } from 'react-router-dom'
-import { AnimatePresence } from 'framer-motion'
+import {
+  Routes,
+  Outlet,
+  Route,
+  useLocation,
+  Navigate,
+  useNavigate
+} from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 
-import '@styles/base.scss'
-import styles from './styles/app.module.scss'
-import Header from './header/header'
-import NotFound from '@pages/notFound'
-import Budget from '@pages/budget/Window'
-import Profile from '@pages/settings/Window'
-import Accounts from '@pages/accounts/Window'
-import Sidenav from './sidenav'
+import '@styles/base.scss';
+import styles from './styles/app.module.scss';
+import Header from './header/header';
+import NotFound from '@pages/notFound';
+import Budget from '@pages/budget/Window';
+import Profile from '@pages/settings/Window';
+import Accounts from '@pages/accounts/Window';
+import Sidenav from './sidenav';
 import {
   ZoomMotionDiv,
   Toast,
   ColorSchemedDiv,
   ScreenProvider,
   useScreenContext
-} from '@ledget/ui'
+} from '@ledget/ui';
 import {
   CreateCategory,
   CreateBill,
   ForceVerification,
   OnboardingModal,
   AccountErrorModal
-} from '@modals/index'
-import { useGetMeQuery } from '@features/userSlice'
+} from '@modals/index';
+import {
+  useGetMeQuery,
+  toastStackSelector,
+  tossToast
+} from '@ledget/shared-features';
 import {
   selectLogoutModal,
   setLogoutModal,
   refreshLogoutTimer
 } from '@features/modalSlice';
-import { toastStackSelector, tossToast } from '@features/toastSlice'
-import { useAppDispatch, useAppSelector } from '@hooks/store'
-import Modals from './modals'
+import { useAppDispatch, useAppSelector } from '@hooks/store';
+import Modals from './modals';
 
 const PrivateRoute = () => {
-  const { isSuccess, isError } = useGetMeQuery()
+  const { isSuccess, isError } = useGetMeQuery();
 
   useEffect(() => {
-
     // Check the condition for redirection here
     if (isError) {
-      window.location.href = `${import.meta.env.VITE_LOGOUT_REDIRECT_URL}?redirect=${window.location.href}`
+      window.location.href = `${
+        import.meta.env.VITE_LOGOUT_REDIRECT_URL
+      }?redirect=${window.location.href}`;
     }
-  }, [isError])
+  }, [isError]);
 
-  return isSuccess && <Outlet />
-}
+  return isSuccess && <Outlet />;
+};
 
 const IsVerified = () => {
-  const { data: user } = useGetMeQuery()
-  return !user?.is_verified ? <Navigate to="/verify-email" /> : <Outlet />
-}
+  const { data: user } = useGetMeQuery();
+  return !user?.is_verified ? <Navigate to="/verify-email" /> : <Outlet />;
+};
 
 const App = () => {
-  const location = useLocation()
-  const navigate = useNavigate()
-  const dispatch = useAppDispatch()
+  const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const ref = useRef<HTMLDivElement>(null)
-  const { screenSize } = useScreenContext()
-  const { data: user } = useGetMeQuery()
+  const ref = useRef<HTMLDivElement>(null);
+  const { screenSize } = useScreenContext();
+  const { data: user } = useGetMeQuery();
   const [isActivityDetected, setIsActivityDetected] = useState(false);
 
-  const toastStack = useAppSelector(toastStackSelector)
-  const logoutModal = useAppSelector(selectLogoutModal)
+  const toastStack = useAppSelector(toastStackSelector);
+  const logoutModal = useAppSelector(selectLogoutModal);
 
   // Handle automatic logout
   useEffect(() => {
@@ -78,10 +89,12 @@ const App = () => {
       window.addEventListener('keydown', handleUserActivity);
 
       const interval = setInterval(() => {
-
         if (isActivityDetected) {
           dispatch(refreshLogoutTimer());
-        } else if (((logoutModal.logoutTimerEnd || 0) < new Date().getTime()) && !logoutModal.open) {
+        } else if (
+          (logoutModal.logoutTimerEnd || 0) < new Date().getTime() &&
+          !logoutModal.open
+        ) {
           dispatch(setLogoutModal({ open: true, fromTimeout: true }));
         }
         setIsActivityDetected(false);
@@ -93,23 +106,32 @@ const App = () => {
         clearInterval(interval);
       };
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (!user) {
-      return
+      return;
     } else if (!user.is_onboarded) {
-      navigate('/welcome/connect')
-    } else if (user.account.service_provisioned_until && user.account.service_provisioned_until < Math.floor(Date.now() / 1000)) {
-      navigate('/settings/profile/update-payment')
-    } else if (!user.account.has_customer || user.account.service_provisioned_until == 0) {
-      window.location.href = import.meta.env.VITE_CHECKOUT_REDIRECT
+      navigate('/welcome/connect');
+    } else if (
+      user.account.service_provisioned_until &&
+      user.account.service_provisioned_until < Math.floor(Date.now() / 1000)
+    ) {
+      navigate('/settings/profile/update-payment');
+    } else if (
+      !user.account.has_customer ||
+      user.account.service_provisioned_until == 0
+    ) {
+      window.location.href = import.meta.env.VITE_CHECKOUT_REDIRECT;
     } else if (user.account.subscription_status === 'past_due') {
-      navigate('/settings/profile/update-payment')
-    } else if (user.account.service_provisioned_until < new Date().getTime() / 1000) {
-      navigate('/budget/error')
+      navigate('/settings/profile/update-payment');
+    } else if (
+      user.account.service_provisioned_until <
+      new Date().getTime() / 1000
+    ) {
+      navigate('/budget/error');
     }
-  }, [user])
+  }, [user]);
 
   return (
     <>
@@ -121,8 +143,8 @@ const App = () => {
           ref={ref}
         >
           <Routes location={location} key={location.pathname.split('/')[1]}>
-            <Route path="/" element={<IsVerified />} >
-              <Route path="budget" element={<Budget />} >
+            <Route path="/" element={<IsVerified />}>
+              <Route path="budget" element={<Budget />}>
                 <Route path="new-category" element={<CreateCategory />} />
                 <Route path="new-bill" element={<CreateBill />} />
                 <Route path="error" element={<AccountErrorModal />} />
@@ -137,13 +159,16 @@ const App = () => {
         </ZoomMotionDiv>
       </AnimatePresence>
       <Modals />
-      <Toast toastStack={toastStack} cleanUp={(toastId) => dispatch(tossToast(toastId))} />
+      <Toast
+        toastStack={toastStack}
+        cleanUp={(toastId) => dispatch(tossToast(toastId))}
+      />
     </>
-  )
-}
+  );
+};
 
 const AppWithNav = () => {
-  const { screenSize } = useScreenContext()
+  const { screenSize } = useScreenContext();
   return (
     <ColorSchemedDiv className={styles.app} data-size={screenSize}>
       <Header />
@@ -154,22 +179,22 @@ const AppWithNav = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
-    </ColorSchemedDiv >
-  )
-}
+    </ColorSchemedDiv>
+  );
+};
 
 const EnrichedApp = () => (
   <ScreenProvider>
     <AppWithNav />
   </ScreenProvider>
-)
+);
 
 const PrivatizedApp = () => (
   <Routes>
-    <Route path="/" element={<PrivateRoute />} >
+    <Route path="/" element={<PrivateRoute />}>
       <Route path="*" element={<EnrichedApp />} />
     </Route>
   </Routes>
-)
+);
 
-export default PrivatizedApp
+export default PrivatizedApp;

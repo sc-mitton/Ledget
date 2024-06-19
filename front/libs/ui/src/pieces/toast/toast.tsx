@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { InfoFill, AlertCircle, CheckInCircle } from '@geist-ui/icons'
 
-
 import styles from './toast.module.scss'
 import { useTransition, animated } from '@react-spring/web';
 

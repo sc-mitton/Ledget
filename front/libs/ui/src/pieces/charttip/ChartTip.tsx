@@ -1,6 +1,6 @@
 import { FC, HTMLProps } from 'react'
 
-import moduleStyles from './styles/tooltip.module.scss'
+import moduleStyles from './charttip.module.scss'
 
 export const ChartTip: FC<HTMLProps<HTMLDivElement> & { position?: 'left' | 'right' }> = ({ children, position }) => {
     const styles = {

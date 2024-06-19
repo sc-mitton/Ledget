@@ -47,6 +47,9 @@
       "@ledget/helpers": [
         "../../libs/helpers/src"
       ],
+      "@ledget/shared-features": [
+        "../../libs/shared-features/src"
+      ],
     }
   },
   "files": [],
