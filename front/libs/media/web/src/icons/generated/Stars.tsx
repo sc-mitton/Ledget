@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { SVGProps } from 'react';
+import { SVGProps } from 'react';
 function SvgStars({
   size = '1.25em',
   ...props
@@ -8,7 +8,6 @@ function SvgStars({
 }) {
   return (
     <svg
-      data-name="Layer 1"
       viewBox="0 0 24 24"
       width={size}
       height={size}
@@ -16,10 +15,12 @@ function SvgStars({
       strokeLinejoin="round"
       strokeWidth={1.5}
       stroke="currentColor"
-      fill="none"
+      fill="currentColor"
       {...props}
     >
       <path
+        fill="none"
+        stroke="currentColor"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={1.5}

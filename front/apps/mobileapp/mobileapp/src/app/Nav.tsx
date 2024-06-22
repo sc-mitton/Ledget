@@ -9,11 +9,11 @@ export default function Nav() {
 
   return (
     <View style={styles.nav}>
-      <Home stroke={'#000'} size={20} />
-      <DollarSign stroke={'#000'} size={20} />
-      <Activity stroke={'#000'} size={20} />
-      <Institution stroke={'#000'} size={20} />
-      <User stroke={'#000'} size={20} />
+      <Home stroke={theme.colors.text} size={20} />
+      <DollarSign stroke={theme.colors.text} size={20} />
+      <Activity stroke={theme.colors.text} size={20} />
+      <Institution stroke={theme.colors.text} size={20} />
+      <User stroke={theme.colors.text} size={20} />
     </View>
   );
 }
@@ -32,8 +32,5 @@ const styles = StyleSheet.create({
   navItem: {
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  navSvg: {
-    color: '#000',
-  },
+  }
 });

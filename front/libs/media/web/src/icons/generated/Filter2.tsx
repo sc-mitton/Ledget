@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { SVGProps } from 'react';
+import { SVGProps } from 'react';
 function SvgFilter2({
   size = '1.25em',
   ...props
@@ -8,7 +8,6 @@ function SvgFilter2({
 }) {
   return (
     <svg
-      data-name="Layer 1"
       viewBox="0 0 25 25"
       width={size}
       height={size}
@@ -16,10 +15,12 @@ function SvgFilter2({
       strokeLinejoin="round"
       strokeWidth={1.5}
       stroke="currentColor"
-      fill="none"
+      fill="currentColor"
       {...props}
     >
       <path
+        fill="none"
+        stroke="currentColor"
         strokeLinecap="round"
         strokeMiterlimit={10}
         strokeWidth={1.5}

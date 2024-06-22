@@ -31,6 +31,8 @@ const palette = {
   blue300: `hsl(${blueH}, ${blueS}%, 70%)`,
   blue200: `hsl(${blueH}, ${blueS}%, 80%)`,
   blue100: `hsl(${blueH}, ${blueS}%, 90%)`,
+
+  offWhite: `hsl(${grayH}, ${grayS}%, 96%)`,
 }
 
 export const darkTheme = createTheme({
@@ -38,5 +40,6 @@ export const darkTheme = createTheme({
   color: {
     ...lightTheme.colors,
     mainBackground: palette.gray900,
+    text: palette.white,
   }
 });

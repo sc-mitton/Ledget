@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { SVGProps } from 'react';
+import { SVGProps } from 'react';
 function SvgGrip({
   size = '1.25em',
   ...props
@@ -8,7 +8,6 @@ function SvgGrip({
 }) {
   return (
     <svg
-      data-name="Layer 1"
       viewBox="0 0 24 24"
       width={size}
       height={size}
@@ -16,7 +15,7 @@ function SvgGrip({
       strokeLinejoin="round"
       strokeWidth={1.5}
       stroke="currentColor"
-      fill="none"
+      fill="currentColor"
       {...props}
     >
       <circle cx={7.5} cy={4.5} r={1.16} fill="currentColor" />

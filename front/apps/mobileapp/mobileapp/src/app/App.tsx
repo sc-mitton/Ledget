@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Appearance } from 'react-native';
 import { ThemeProvider } from '@shopify/restyle';
+
 import { darkTheme, lightTheme } from '../theme'
 
 import Nav from './Nav';

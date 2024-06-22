@@ -1,6 +1,5 @@
 import * as React from 'react';
-import Svg, { Circle } from 'react-native-svg';
-import type { SvgProps } from 'react-native-svg';
+import Svg, { SvgProps, Circle } from 'react-native-svg';
 function SvgGrip({
   size = 24,
   ...props
@@ -9,8 +8,6 @@ function SvgGrip({
 }) {
   return (
     <Svg
-      xmlns="http://www.w3.org/2000/svg"
-      data-name="Layer 1"
       viewBox="0 0 24 24"
       width={size}
       height={size}

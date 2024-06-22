@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { SVGProps } from 'react';
+import { SVGProps } from 'react';
 function SvgHourglass({
   size = '1.25em',
   ...props
@@ -8,7 +8,6 @@ function SvgHourglass({
 }) {
   return (
     <svg
-      data-name="Layer 1"
       viewBox="0 0 24 24"
       width={size}
       height={size}
@@ -16,16 +15,20 @@ function SvgHourglass({
       strokeLinejoin="round"
       strokeWidth={1.5}
       stroke="currentColor"
-      fill="none"
+      fill="currentColor"
       {...props}
     >
       <path
+        fill="none"
+        stroke="currentColor"
         strokeLinecap="round"
         strokeMiterlimit={10}
         strokeWidth={1.5}
         d="M4.2 20.8h15.6M6.4 20.8c0-2.6 2.1-8.6 5.6-8.6s5.5 5.9 5.5 8.6zM19.8 3.6H4.2M17.6 3.6c0 2.6-2.1 8.6-5.6 8.6s-5.5-6-5.5-8.6z"
       />
       <path
+        fill="none"
+        stroke="currentColor"
         strokeLinecap="round"
         strokeMiterlimit={10}
         strokeWidth={1.5}

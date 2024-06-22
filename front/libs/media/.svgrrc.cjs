@@ -12,7 +12,7 @@ module.exports = {
     strokeLinejoin: 'round',
     strokeWidth: 1.5,
     stroke: 'currentColor',
-    fill: 'none'
+    fill: 'currentColor'
   },
   jsx: {
     babelConfig: {
@@ -26,16 +26,17 @@ module.exports = {
               'className',
               'id',
               'xmlSpace',
-              'style',
-              'stroke',
-              'fill'
+              'data-name'
             ]
           }
         ],
         [
           '@svgr/babel-plugin-replace-jsx-attribute-value',
           {
-            values: [{ value: '#292929', newValue: 'currentColor' }]
+            values: [
+              { value: '#292929', newValue: 'currentColor' },
+              { value: '#000', newValue: 'currentColor' }
+            ]
           }
         ]
       ]

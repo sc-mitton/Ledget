@@ -1,6 +1,5 @@
 import * as React from 'react';
-import Svg, { Path } from 'react-native-svg';
-import type { SvgProps } from 'react-native-svg';
+import Svg, { SvgProps, Path } from 'react-native-svg';
 function SvgQr({
   size = 24,
   ...props
@@ -9,8 +8,6 @@ function SvgQr({
 }) {
   return (
     <Svg
-      xmlns="http://www.w3.org/2000/svg"
-      data-name="Layer 1"
       viewBox="0 0 24 24"
       width={size}
       height={size}
@@ -22,8 +19,6 @@ function SvgQr({
       {...props}
     >
       <Path
-        fill="none"
-        stroke="#000"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={1.5}

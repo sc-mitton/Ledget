@@ -1,6 +1,5 @@
 import * as React from 'react';
-import Svg, { Path } from 'react-native-svg';
-import type { SvgProps } from 'react-native-svg';
+import Svg, { SvgProps, Path } from 'react-native-svg';
 function SvgRelink({
   size = 24,
   ...props
@@ -9,8 +8,6 @@ function SvgRelink({
 }) {
   return (
     <Svg
-      xmlns="http://www.w3.org/2000/svg"
-      data-name="Layer 1"
       viewBox="0 0 24 24"
       width={size}
       height={size}
@@ -22,16 +19,12 @@ function SvgRelink({
       {...props}
     >
       <Path
-        fill="none"
-        stroke="#000"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={1.5}
         d="M13.8 9.1H18c2.6 0 4.8 2.1 4.8 4.8v-.2c0 2.6-2.1 4.8-4.8 4.8H6c-2.6 0-4.8-2.1-4.8-4.8v.2c0-2.6 2.1-4.8 4.8-4.8h2"
       />
       <Path
-        fill="none"
-        stroke="#000"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={1.5}

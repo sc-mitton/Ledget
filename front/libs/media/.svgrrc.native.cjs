@@ -18,18 +18,28 @@ module.exports = {
   jsx: {
     babelConfig: {
       plugins: [
-        // xmlns is not typed correctly
         [
           '@svgr/babel-plugin-remove-jsx-attribute',
           {
             elements: ['Svg', 'Path'],
-            attributes: ['xmlns', 'xmlSpace', 'style', 'stroke', 'fill']
-          }
+            attributes: [
+              'xmlns',
+              'className',
+              'id',
+              'xmlSpace',
+              'data-name',
+              'fill',
+              'stroke'
+            ]
+          },
         ],
         [
           '@svgr/babel-plugin-replace-jsx-attribute-value',
           {
-            values: [{ value: '#292929', newValue: 'currentColor' }]
+            values: [
+              { value: '#292929', newValue: 'currentColor' },
+              { value: '#000', newValue: 'currentColor' }
+            ]
           }
         ]
       ]

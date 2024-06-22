@@ -28,11 +28,14 @@ const palette = {
   blue300: `hsl(${blueH}, ${blueS}%, 70%)`,
   blue200: `hsl(${blueH}, ${blueS}%, 80%)`,
   blue100: `hsl(${blueH}, ${blueS}%, 90%)`,
+
+  offBlack: `hsl(${grayH}, ${grayS}%, 27%)`,
 }
 
 export const lightTheme = createTheme({
   colors: {
     mainBackground: palette.gray100,
+    text: palette.offBlack,
   },
   spacing: {
     s: 8,

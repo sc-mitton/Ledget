@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { SVGProps } from 'react';
+import { SVGProps } from 'react';
 function SvgCornerGrip({
   size = '1.25em',
   ...props
@@ -8,7 +8,6 @@ function SvgCornerGrip({
 }) {
   return (
     <svg
-      data-name="Layer 1"
       viewBox="0 0 24 24"
       width={size}
       height={size}
@@ -16,7 +15,7 @@ function SvgCornerGrip({
       strokeLinejoin="round"
       strokeWidth={1.5}
       stroke="currentColor"
-      fill="none"
+      fill="currentColor"
       {...props}
     >
       <circle cx={5.9} cy={5.9} r={1.66} fill="currentColor" />

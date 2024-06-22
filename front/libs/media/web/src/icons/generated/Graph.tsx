@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { SVGProps } from 'react';
+import { SVGProps } from 'react';
 function SvgGraph({
   size = '1.25em',
   ...props
@@ -8,7 +8,6 @@ function SvgGraph({
 }) {
   return (
     <svg
-      data-name="Layer 1"
       viewBox="0 0 25 25"
       width={size}
       height={size}
@@ -16,16 +15,20 @@ function SvgGraph({
       strokeLinejoin="round"
       strokeWidth={1.5}
       stroke="currentColor"
-      fill="none"
+      fill="currentColor"
       {...props}
     >
       <path
+        fill="none"
+        stroke="currentColor"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={1.5}
         d="M21.7 20.2H3.3V4.8"
       />
       <path
+        fill="none"
+        stroke="currentColor"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={1.5}
