@@ -2,7 +2,7 @@
 
 .body.dark .header {
     &--blur {
-        background-color: rgb(var(--window-background-color-rgb), .3);
+        background-color: rgb(var(--main-background-color-rgb), .3);
     }
 }
 
@@ -20,7 +20,7 @@
     &--blur {
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
-        background-color: rgb(var(--window-background-color-rgb), .5);
+        background-color: rgb(var(--main-background-color-rgb), .5);
         inset: 0;
         position: absolute;
         z-index: 4;

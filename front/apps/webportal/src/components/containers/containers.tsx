@@ -14,12 +14,12 @@ export const MainDiv = styled.div<PageProps>`
     display: grid;
     place-items: center;
 
-    background: ${({ dark }) => (dark ? 'var(--window-background-color)' : 'none')};
+    background: ${({ dark }) => (dark ? 'var(--main-background-color)' : 'none')};
     background-color: ${({ size }) => (size === 'extra-small' ? 'var(--window)' : 'initial')};
 
     /* Specific styles for Firefox */
     @-moz-document url-prefix() {
-      background: ${({ dark }) => dark && 'var(--window-background-color)'};
+      background: ${({ dark }) => dark && 'var(--main-background-color)'};
     }
 
     &>div {

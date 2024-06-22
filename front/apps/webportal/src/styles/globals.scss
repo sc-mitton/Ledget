@@ -43,7 +43,7 @@ main {
         position: fixed;
         inset: 0;
         content: "";
-        background: var(--window-background-color-portal);
+        background: var(--main-background-color-portal);
         z-index: -1;
     }
 }

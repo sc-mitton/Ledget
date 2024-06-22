@@ -3,12 +3,12 @@
     width: 100%;
     overflow: hidden;
     margin: 0;
-    background-color: var(--window-background-color);
+    background-color: var(--main-background-color);
     display: flex;
     flex-direction: column;
 
     &[data-size='extra-small'] {
-        background-color: var(--window-background-color-small-screen);
+        background-color: var(--main-background-color-small-screen);
     }
 }
 

@@ -86,10 +86,10 @@
     background-color: inherit;
     position: relative;
     z-index: 10;
-    background-color: var(--window-background-color);
+    background-color: var(--main-background-color);
 
     &[data-size='extra-small'] {
-        background-color: var(--window-background-color-small-screen);
+        background-color: var(--main-background-color-small-screen);
     }
 
     &[aria-expanded='true'] {
