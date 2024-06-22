@@ -9,11 +9,11 @@ export default function Nav() {
 
   return (
     <View style={styles.nav}>
-      <Home stroke={'#000'} size={24} />
-      <DollarSign stroke={'#000'} size={24} />
-      <Activity stroke={'#000'} size={24} />
-      <Institution stroke={'#000'} size={24} />
-      <User stroke={'#000'} size={24} />
+      <Home stroke={'#000'} size={20} />
+      <DollarSign stroke={'#000'} size={20} />
+      <Activity stroke={'#000'} size={20} />
+      <Institution stroke={'#000'} size={20} />
+      <User stroke={'#000'} size={20} />
     </View>
   );
 }
