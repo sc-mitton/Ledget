@@ -6,7 +6,6 @@
     --yearly-color1-alt: hsl(156, 31%, 62%);
     --charcoal-rgb: 41, 41, 41;
 
-
     /* Input Colors */
     --input-border-focus: solid 1px var(--blue-medium);
     --input-border-hover: solid 1px var(--input-border-hover-color);
@@ -30,7 +29,6 @@
 
     --wafer-drop-shadow: var(--wafer-drop-shadow-color) 0px 1px 5px;
     --active-wafer-drop-shadow: color-mix(in srgb, var(--monthly-hlight) 80%, var(--monthly-color1)) 0px 0px 12px;
-
 }
 
 :root {
@@ -80,12 +78,10 @@
         --btn-main: var(--blue-medium);
         --btn-main-hover: var(--blue-medium-hover);
 
-
         // Windows
         --nested-window-background-color: hsl(0, 0%, 9%);
         --nested-window-background-color-small-screen: hsl(0, 0%, 8%);
         --modal-nested-window: hsl(0, 0%, 10%);
-        ;
 
         --window-h: 240;
         --window-s: 3%;
@@ -240,7 +236,7 @@
         --yearly-h: 150;
 
         --window-h: 240;
-        --window-s: 10%;
+        --window-s: 7%;
 
         // Budget Item Pallet
         --monthly-background-color: hsl(var(--monthly-h), 80%, 87%);
@@ -276,7 +272,7 @@
         --btn-main-hover: hsl(var(--blue-h), 40%, 53%);
 
         // Windows
-        --window-background-color: hsl(240, 7%, 96%);
+        --window-background-color: hsl(var(--window-h), var(--window-s), 96%);
         --window-background-color-small-screen: hsl(240, 7%, 96%);
         --window-background-color-rgb: 250, 250, 250;
         --window-background-color-portal: hsl(0, 0%, 95%);
