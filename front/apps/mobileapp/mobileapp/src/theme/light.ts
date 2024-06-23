@@ -1,5 +1,6 @@
 import { createTheme } from '@shopify/restyle';
 import basePalette from './base-palette';
+import { gray } from '../../../../../libs/ui/src/buttons/base';
 
 const grayH = 240;
 const grayS = 7;
@@ -20,14 +21,16 @@ const palette = {
   gray900: `hsl(${grayH}, ${grayS}%, 20%)`,
 
   blue900: `hsl(${blueH}, ${blueS}%, 10%)`,
-  blue800: `hsl(${blueH}, ${blueS}%, 20%)`,
-  blue700: `hsl(${blueH}, ${blueS}%, 30%)`,
-  blue600: `hsl(${blueH}, ${blueS}%, 40%)`,
-  blue500: `hsl(${blueH}, ${blueS}%, 50%)`,
-  blue400: `hsl(${blueH}, ${blueS}%, 60%)`,
-  blue300: `hsl(${blueH}, ${blueS}%, 70%)`,
-  blue200: `hsl(${blueH}, ${blueS}%, 80%)`,
-  blue100: `hsl(${blueH}, ${blueS}%, 90%)`,
+  blue800: `hsl(${blueH}, ${blueS}%, 15%)`,
+  blue700: `hsl(${blueH}, ${blueS}%, 25%)`,
+  blue600: `hsl(${blueH}, ${blueS}%, 30%)`,
+  blue500: `hsl(${blueH}, ${blueS}%, 35%)`,
+  blue400: `hsl(${blueH}, ${blueS}%, 40%)`,
+  blue300: `hsl(${blueH}, ${blueS}%, 45%)`,
+  blue200: `hsl(${blueH}, ${blueS}%, 50%)`,
+  blue100: `hsl(${blueH}, ${blueS}%, 55%)`,
+
+  blueSat: `hsl(${blueH}, ${blueS + 10}%, 50%)`,
 
   offBlack: `hsl(${grayH}, ${grayS}%, 27%)`,
 }
@@ -35,7 +38,12 @@ const palette = {
 export const lightTheme = createTheme({
   colors: {
     mainBackground: palette.gray100,
+    navBackground: palette.gray200,
+    navShadow: palette.gray100,
+
+    // Text
     text: palette.offBlack,
+    activeText: palette.blueSat,
   },
   spacing: {
     s: 8,
@@ -56,3 +64,5 @@ export const lightTheme = createTheme({
     },
   },
 });
+
+export type Theme = typeof lightTheme;

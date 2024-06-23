@@ -1,5 +1,4 @@
 {
-  "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "jsx": "react-native",
@@ -11,7 +10,21 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "strict": true,
-    "declaration": true
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "@components": [
+        "src/components"
+      ],
+      "@theme": [
+        "src/theme"
+      ],
+      "@ledget/media/native": [
+        "../../../libs/media/native/src/index.ts"
+      ],
+    },
   },
   "files": [],
   "include": [],
@@ -23,4 +36,5 @@
       "path": "./tsconfig.spec.json"
     }
   ],
+  "extends": "../../../tsconfig.base.json"
 }
