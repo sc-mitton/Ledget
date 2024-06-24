@@ -21,6 +21,9 @@
       "@theme": [
         "src/theme"
       ],
+      "@screens": [
+        "src/screens"
+      ],
       "@ledget/media/native": [
         "../../../libs/media/native/src/index.ts"
       ],

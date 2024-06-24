@@ -16,8 +16,8 @@ const customConfig = {
         babelTransformerPath: require.resolve('./custom-transformer.js'),
     },
     resolver: {
-        assetExts: assetExts.filter(ext => ext !== 'svg'),
-        sourceExts: [...sourceExts, 'cjs', 'mjs', 'svg'],
+        assetExts: assetExts.filter((ext) => ext !== "svg"),
+        sourceExts: [...sourceExts, 'cjs', 'mjs', 'svg', 'ttf'],
     },
 };
 
@@ -26,8 +26,7 @@ module.exports = withNxMetro(mergeConfig(defaultConfig, customConfig), {
     // Useful if you have issues resolving modules
     debug: false,
     // all the file extensions used for imports other than 'ts', 'tsx', 'js', 'jsx', 'json'
-    extensions: [],
+    extensions: ['.ttf'],
     // Specify folders to watch, in addition to Nx defaults (workspace libraries and node_modules)
     watchFolders: [],
 });
-

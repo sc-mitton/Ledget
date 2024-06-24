@@ -33,6 +33,8 @@ const palette = {
   blueSat: `hsl(${blueH}, ${blueS + 10}%, 50%)`,
 
   offBlack: `hsl(${grayH}, ${grayS}%, 27%)`,
+  offBlack2: `hsl(${grayH}, ${grayS}%, 35%)`,
+  offBlack3: `hsl(${grayH}, ${grayS}%, 43%)`,
 }
 
 export const lightTheme = createTheme({
@@ -42,7 +44,10 @@ export const lightTheme = createTheme({
     navShadow: palette.gray100,
 
     // Text
-    text: palette.offBlack,
+    mainText: palette.offBlack,
+    secondaryText: palette.offBlack2,
+    tertiaryText: palette.offBlack3,
+
     activeText: palette.blueSat,
   },
   spacing: {
@@ -53,15 +58,21 @@ export const lightTheme = createTheme({
   },
   textVariants: {
     header: {
-      fontWeight: 'bold',
-      fontSize: 34,
+      fontSize: 32,
+      fontFamily: 'SourceSans3SemiBold',
+      color: 'mainText',
+    },
+    header2: {
+      fontSize: 24,
+      fontFamily: 'SourceSans3Medium',
+      color: 'mainText',
     },
     body: {
       fontSize: 16,
       lineHeight: 24,
-    },
-    defaults: {
-    },
+      fontFamily: 'SourceSans3Regular',
+      color: 'mainText',
+    }
   },
 });
 

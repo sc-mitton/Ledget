@@ -31,7 +31,10 @@ const palette = {
   blue100: `hsl(${blueH}, ${blueS}%, 50%)`,
 
   blueSat: `hsl(${blueH}, ${blueS + 10}%, 50%)`,
+
   offWhite: `hsl(${grayH}, ${grayS}%, 96%)`,
+  offWhite2: `hsl(${grayH}, ${grayS}%, 86%)`,
+  offWhite3: `hsl(${grayH}, ${grayS}%, 76%)`,
 }
 
 export const darkTheme = createTheme({
@@ -43,7 +46,27 @@ export const darkTheme = createTheme({
     navBackground: palette.gray800,
     navShadow: palette.gray900,
 
-    text: palette.white,
+    mainText: palette.white,
+    secondaryText: palette.offWhite2,
+    tertiaryText: palette.offWhite3,
     activeText: palette.blueSat,
+  },
+  textVariants: {
+    header: {
+      fontSize: 32,
+      fontFamily: 'SourceSans3Medium',
+      color: 'mainText',
+    },
+    header2: {
+      fontSize: 24,
+      fontFamily: 'SourceSans3Regular',
+      color: 'mainText',
+    },
+    body: {
+      fontSize: 16,
+      lineHeight: 24,
+      fontFamily: 'SourceSans3Regular',
+      color: 'mainText',
+    }
   },
 });
