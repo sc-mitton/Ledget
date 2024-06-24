@@ -1,7 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
 
 import { StatusBar } from 'expo-status-bar';
-import { Appearance } from 'react-native';
 import { ThemeProvider } from '@shopify/restyle';
 import { useFonts } from 'expo-font';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
@@ -9,7 +8,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as SplashScreen from 'expo-splash-screen';
 
 import { styles } from './Styles';
-import { darkTheme, lightTheme } from '@theme'
+import { darkTheme, lightTheme, AppearanceProvider, useAppearance } from '@theme'
 import { Box } from '@components';
 import { Budget, Accounts } from '@screens';
 import Nav from './Nav';
@@ -28,8 +27,8 @@ const navTheme = {
   }
 };
 
-export default function App() {
-  const [theme, setTheme] = useState(Appearance.getColorScheme());
+function App() {
+  const { mode } = useAppearance();
 
   const [fontsLoaded, fontError] = useFonts({
     'SourceSans3Regular': SourceSans3Regular,
@@ -44,16 +43,8 @@ export default function App() {
     }
   }, [fontsLoaded, fontError]);
 
-  useEffect(() => {
-    const subscription = Appearance.addChangeListener(({ colorScheme }) => {
-      setTheme(colorScheme);
-    });
-
-    return () => subscription.remove();
-  }, []);
-
   return (
-    <ThemeProvider theme={theme === 'dark' ? darkTheme : lightTheme}>
+    <ThemeProvider theme={mode === 'dark' ? darkTheme : lightTheme}>
       <StatusBar style="auto" />
       <Box
         backgroundColor={'mainBackground'}
@@ -72,4 +63,12 @@ export default function App() {
       <Nav />
     </ThemeProvider>
   );
+}
+
+export default function EnrichedApp() {
+  return (
+    <AppearanceProvider>
+      <App />
+    </AppearanceProvider>
+  )
 }

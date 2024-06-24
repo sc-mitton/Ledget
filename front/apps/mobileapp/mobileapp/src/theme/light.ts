@@ -39,6 +39,8 @@ const palette = {
 
 export const lightTheme = createTheme({
   colors: {
+    transparent: 'transparent',
+
     mainBackground: palette.gray100,
     navBackground: palette.gray200,
     navShadow: palette.gray100,
