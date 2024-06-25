@@ -77,21 +77,7 @@ function App() {
   );
 }
 
-function EnrichedApp() {
-  const { mode } = useAppearance();
-
-  return (
-    <AppearanceProvider>
-      <ReduxProvider store={store}>
-        <RestyleThemeProvider theme={mode === 'dark' ? darkTheme : lightTheme}>
-          <App />
-        </RestyleThemeProvider>
-      </ReduxProvider>
-    </AppearanceProvider>
-  )
-}
-
-export default function () {
+const AppWithEnvironment = () => {
   const dispatch = useAppDispatch();
   const environment = useAppSelector(selectEnvironment);
 
@@ -99,5 +85,25 @@ export default function () {
     dispatch(setEnvironment(ENV));
   }, [dispatch]);
 
-  return environment ? <EnrichedApp /> : null;
+  return environment ? <App /> : null;
+}
+
+const ThemedApp = () => {
+  const { mode } = useAppearance();
+  return (
+    <RestyleThemeProvider theme={mode === 'dark' ? darkTheme : lightTheme}>
+      <AppWithEnvironment />
+    </RestyleThemeProvider>
+  )
+}
+
+export default function EnrichedApp() {
+
+  return (
+    <AppearanceProvider>
+      <ReduxProvider store={store}>
+        <ThemedApp />
+      </ReduxProvider>
+    </AppearanceProvider>
+  )
 }

@@ -188,26 +188,6 @@ const AppWithNav = () => {
   );
 };
 
-const EnrichedApp = () => (
-  <ScreenProvider>
-    <Provider store={store}>
-      <ColorSchemeProvider>
-        <BrowserRouter>
-          <AppWithNav />
-        </BrowserRouter>
-      </ColorSchemeProvider>
-    </Provider>
-  </ScreenProvider>
-);
-
-const PrivatizedApp = () => (
-  <Routes>
-    <Route path="/" element={<PrivateRoute />}>
-      <Route path="*" element={<EnrichedApp />} />
-    </Route>
-  </Routes>
-);
-
 const AppWithEnvironment = () => {
   const dispatch = useAppDispatch();
   const environment = useAppSelector(selectEnvironment);
@@ -216,7 +196,27 @@ const AppWithEnvironment = () => {
     dispatch(setEnvironment(import.meta.env.VITE_ENVIRONMENT as 'dev' | 'prod'));
   }, []);
 
-  return environment ? <PrivatizedApp /> : null;
+  return environment ? <AppWithNav /> : null;
 }
 
-export default AppWithEnvironment;
+const EnrichedApp = () => (
+  <ScreenProvider>
+    <Provider store={store}>
+      <ColorSchemeProvider>
+        <BrowserRouter>
+          <AppWithEnvironment />
+        </BrowserRouter>
+      </ColorSchemeProvider>
+    </Provider>
+  </ScreenProvider>
+);
+
+export default function () {
+  return (
+    <Routes>
+      <Route path="/" element={<PrivateRoute />}>
+        <Route path="*" element={<EnrichedApp />} />
+      </Route>
+    </Routes>
+  );
+}

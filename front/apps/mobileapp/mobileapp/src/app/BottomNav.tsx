@@ -61,6 +61,7 @@ export default function Nav({ state, descriptors, navigation }: Props) {
 
             return (
               <TouchableOpacity
+                key={route.key}
                 accessibilityRole="button"
                 accessibilityState={isFocused ? { selected: true } : {}}
                 accessibilityLabel={options.tabBarAccessibilityLabel}
