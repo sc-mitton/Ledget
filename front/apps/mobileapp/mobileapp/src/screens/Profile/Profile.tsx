@@ -2,8 +2,9 @@ import React from 'react'
 
 import { Header } from '@components'
 
-export default function Accounts() {
+
+export default function Budget() {
     return (
-        <Header>Accounts</Header>
+        <Header>Profile</Header>
     )
 }

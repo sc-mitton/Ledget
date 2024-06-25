@@ -17,15 +17,15 @@ export const styles = StyleSheet.create({
         paddingRight: 32,
         paddingTop: 24,
         paddingBottom: 40,
-        left: 0,
-        right: 0,
+        left: -24,
+        right: -24,
     },
     navBack: {
         position: 'absolute',
         opacity: .5,
         top: 0,
-        left: 0,
-        right: 0,
+        left: -24,
+        right: -24,
         bottom: 0,
     },
     nav: {
@@ -34,6 +34,8 @@ export const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
+        paddingLeft: 8,
+        paddingRight: 8,
     },
     navItem: {
         alignItems: 'center',

@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, Slice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { NewToast, ToastItem, RootStateWithToast } from './types';
 
 export const toastSlice = createSlice({

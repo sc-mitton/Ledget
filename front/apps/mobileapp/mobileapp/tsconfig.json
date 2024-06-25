@@ -11,6 +11,9 @@
     "resolveJsonModule": true,
     "strict": true,
     "baseUrl": ".",
+    "typeRoots": [
+      "./types"
+    ],
     "paths": {
       "@/*": [
         "src/*"
@@ -24,8 +27,20 @@
       "@screens": [
         "src/screens"
       ],
+      "@features/*": [
+        "src/features/*"
+      ],
+      "@hooks/*": [
+        "src/hooks/*"
+      ],
+      "@ledget/ory": [
+        "../../../libs/ory/src"
+      ],
       "@ledget/media/native": [
         "../../../libs/media/native/src/index.ts"
+      ],
+      "@ledget/shared-features": [
+        "../../../libs/shared-features/src/index.ts"
       ],
     },
   },

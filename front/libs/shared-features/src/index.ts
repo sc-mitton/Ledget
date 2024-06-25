@@ -11,6 +11,7 @@ export * from './lib/userSlice/slice';
 export * from './lib/budgetItemMetaDataSlice/slice';
 export * from './lib/toastSlice/slice';
 export * from './lib/deviceSlice/slice';
+export * from './lib/environmentSlice/slice';
 
 export * from './lib/accountsSlice/types';
 export * from './lib/billSlice/types';

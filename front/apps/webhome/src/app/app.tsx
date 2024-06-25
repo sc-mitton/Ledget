@@ -9,6 +9,8 @@ import {
   useNavigate
 } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 
 import '@styles/base.scss';
 import styles from './styles/app.module.scss';
@@ -22,8 +24,9 @@ import {
   ZoomMotionDiv,
   Toast,
   ColorSchemedDiv,
-  ScreenProvider,
-  useScreenContext
+  useScreenContext,
+  ColorSchemeProvider,
+  ScreenProvider
 } from '@ledget/ui';
 import {
   CreateCategory,
@@ -35,7 +38,9 @@ import {
 import {
   useGetMeQuery,
   toastStackSelector,
-  tossToast
+  tossToast,
+  setEnvironment,
+  selectEnvironment
 } from '@ledget/shared-features';
 import {
   selectLogoutModal,
@@ -43,6 +48,7 @@ import {
   refreshLogoutTimer
 } from '@features/modalSlice';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
+import store from '@features/store';
 import Modals from './modals';
 
 const PrivateRoute = () => {
@@ -51,9 +57,8 @@ const PrivateRoute = () => {
   useEffect(() => {
     // Check the condition for redirection here
     if (isError) {
-      window.location.href = `${
-        import.meta.env.VITE_LOGOUT_REDIRECT_URL
-      }?redirect=${window.location.href}`;
+      window.location.href = `${import.meta.env.VITE_LOGOUT_REDIRECT_URL
+        }?redirect=${window.location.href}`;
     }
   }, [isError]);
 
@@ -185,7 +190,13 @@ const AppWithNav = () => {
 
 const EnrichedApp = () => (
   <ScreenProvider>
-    <AppWithNav />
+    <Provider store={store}>
+      <ColorSchemeProvider>
+        <BrowserRouter>
+          <AppWithNav />
+        </BrowserRouter>
+      </ColorSchemeProvider>
+    </Provider>
   </ScreenProvider>
 );
 
@@ -197,4 +208,15 @@ const PrivatizedApp = () => (
   </Routes>
 );
 
-export default PrivatizedApp;
+const AppWithEnvironment = () => {
+  const dispatch = useAppDispatch();
+  const environment = useAppSelector(selectEnvironment);
+
+  useEffect(() => {
+    dispatch(setEnvironment(import.meta.env.VITE_ENVIRONMENT as 'dev' | 'prod'));
+  }, []);
+
+  return environment ? <PrivatizedApp /> : null;
+}
+
+export default AppWithEnvironment;

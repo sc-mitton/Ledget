@@ -11,6 +11,7 @@ const blueS = 50;
 const palette = {
   ...basePalette,
   gray900: `hsl(${grayH}, ${grayS}%, 5%)`,
+  gray850: `hsl(${grayH}, ${grayS}%, 9%)`,
   gray800: `hsl(${grayH}, ${grayS}%, 13%)`,
   gray700: `hsl(${grayH}, ${grayS}%, 18%)`,
   gray600: `hsl(${grayH}, ${grayS}%, 23%)`,
@@ -42,9 +43,11 @@ export const darkTheme = createTheme({
   colors: {
     ...lightTheme.colors,
     mainBackground: palette.gray900,
+    navBackground: palette.gray850,
 
-    navBackground: palette.gray800,
     navShadow: palette.gray900,
+
+    activeIcon: palette.blueSat,
 
     mainText: palette.white,
     secondaryText: palette.offWhite2,

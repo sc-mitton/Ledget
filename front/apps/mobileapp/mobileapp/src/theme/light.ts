@@ -43,13 +43,15 @@ export const lightTheme = createTheme({
 
     mainBackground: palette.gray100,
     navBackground: palette.gray200,
+
     navShadow: palette.gray100,
+
+    activeIcon: palette.blueSat,
 
     // Text
     mainText: palette.offBlack,
     secondaryText: palette.offBlack2,
     tertiaryText: palette.offBlack3,
-
     activeText: palette.blueSat,
   },
   spacing: {
