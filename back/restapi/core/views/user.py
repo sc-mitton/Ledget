@@ -30,7 +30,7 @@ from core.serializers.user import (
 )
 from restapi.permissions.auth import (
     IsAuthenticated,
-    HasOidcSignin,
+    CanExtendSession,
     HighestAalFreshSession
 )
 from restapi.permissions.objects import is_account_owner
@@ -220,7 +220,7 @@ class AddUserToAccountView(GenericAPIView):
 class UserSessionExtendView(GenericAPIView):
     """Extend user session"""
 
-    permission_classes = [IsAuthenticated, HasOidcSignin]
+    permission_classes = [IsAuthenticated, CanExtendSession]
 
     def patch(self, request):
         try:
