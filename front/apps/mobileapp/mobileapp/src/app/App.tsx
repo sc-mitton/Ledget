@@ -7,17 +7,18 @@ import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Provider as ReduxProvider } from 'react-redux';
 import { selectEnvironment, setEnvironment } from '@ledget/shared-features';
-import * as SplashScreen from 'expo-splash-screen';
 import { ENV } from '@env';
+import * as SplashScreen from 'expo-splash-screen';
 
 import { styles } from './Styles';
 import { darkTheme, lightTheme, AppearanceProvider, useAppearance } from '@theme'
 import { Box } from '@components';
 import { Budget, Accounts, Profile, Activity } from '@screens';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
-
+import { useGetMeQuery } from '@ledget/shared-features';
 import store from '@features/store';
 import Nav from './BottomNav';
+import Authentication from './Authentication';
 import SourceSans3Regular from '../../assets/fonts/SourceSans3Regular.ttf';
 import SourceSans3Medium from '../../assets/fonts/SourceSans3Medium.ttf';
 import SourceSans3SemiBold from '../../assets/fonts/SourceSans3SemiBold.ttf';
@@ -34,6 +35,7 @@ const navTheme = {
 };
 
 function App() {
+  const { data: user } = useGetMeQuery();
   const [fontsLoaded, fontError] = useFonts({
     'SourceSans3Regular': SourceSans3Regular,
     'SourceSans3Medium': SourceSans3Medium,
@@ -58,19 +60,21 @@ function App() {
         onLayout={onLayoutRootView}
       >
         <NavigationContainer theme={navTheme}>
-          <Tab.Navigator
-            initialRouteName='budget'
-            backBehavior='history'
-            screenOptions={{ headerShown: false }}
-            tabBar={({ state, descriptors, navigation }) =>
-              <Nav state={state} descriptors={descriptors} navigation={navigation} />}
-          >
-            <Tab.Screen name="home" component={Budget} />
-            <Tab.Screen name="budget" component={Budget} />
-            <Tab.Screen name="activity" component={Activity} />
-            <Tab.Screen name="accounts" component={Accounts} />
-            <Tab.Screen name="profile" component={Profile} />
-          </Tab.Navigator>
+          {user
+            ? <Tab.Navigator
+              initialRouteName='budget'
+              backBehavior='history'
+              screenOptions={{ headerShown: false }}
+              tabBar={({ state, descriptors, navigation }) =>
+                <Nav state={state} descriptors={descriptors} navigation={navigation} />}
+            >
+              <Tab.Screen name="home" component={Budget} />
+              <Tab.Screen name="budget" component={Budget} />
+              <Tab.Screen name="activity" component={Activity} />
+              <Tab.Screen name="accounts" component={Accounts} />
+              <Tab.Screen name="profile" component={Profile} />
+            </Tab.Navigator>
+            : <Authentication />}
         </NavigationContainer>
       </Box>
     </>

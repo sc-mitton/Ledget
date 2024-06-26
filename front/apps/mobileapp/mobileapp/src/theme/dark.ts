@@ -57,13 +57,15 @@ export const darkTheme = createTheme({
   textVariants: {
     header: {
       fontSize: 32,
+      marginTop: 's',
+      marginBottom: 's',
       fontFamily: 'SourceSans3Medium',
       color: 'mainText',
     },
     header2: {
-      fontSize: 24,
+      fontSize: 18,
       fontFamily: 'SourceSans3Regular',
-      color: 'mainText',
+      color: 'secondaryText',
     },
     body: {
       fontSize: 16,

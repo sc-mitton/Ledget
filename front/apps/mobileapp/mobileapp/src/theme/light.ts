@@ -63,11 +63,15 @@ export const lightTheme = createTheme({
   textVariants: {
     header: {
       fontSize: 32,
+      marginTop: 18,
+      marginBottom: 18,
       fontFamily: 'SourceSans3SemiBold',
       color: 'mainText',
     },
     header2: {
-      fontSize: 24,
+      fontSize: 18,
+      marginTop: 8,
+      marginBottom: 8,
       fontFamily: 'SourceSans3Medium',
       color: 'mainText',
     },
