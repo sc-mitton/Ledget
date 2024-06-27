@@ -7,9 +7,9 @@ const LegalLinks = () => {
     const { screenSize } = useScreenContext()
     return (
         <div className={styles.legalLinks} data-size={screenSize}>
-            <Link to={`${import.meta.env.VITE_LANDING}/privacy-policy`}>Privacy Policy</Link>
+            <Link to={`${import.meta.env.VITE_LANDING}/privacy`}>Privacy Policy</Link>
             <span>&bull;</span>
-            <Link to={`${import.meta.env.VITE_LANDING}/terms-and-conditions`}>Terms & Conditions</Link>
+            <Link to={`${import.meta.env.VITE_LANDING}/terms`}>Terms & Conditions</Link>
         </div>
     )
 }

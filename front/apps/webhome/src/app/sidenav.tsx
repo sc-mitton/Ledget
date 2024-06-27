@@ -54,8 +54,8 @@ const SubSettingsSidebar = () => {
 
 const LegalLinks = () => (
     <div className={styles.legalLinks}>
-        <RouterLink to={`${import.meta.env.VITE_LANDING}/privacy-policy`}>Privacy</RouterLink>
-        <RouterLink to={`${import.meta.env.VITE_LANDING}/terms-of-service`}>Terms</RouterLink>
+        <RouterLink to={`${import.meta.env.VITE_LANDING}/privacy`}>Privacy</RouterLink>
+        <RouterLink to={`${import.meta.env.VITE_LANDING}/terms`}>Terms</RouterLink>
     </div>
 )
 

@@ -4,9 +4,9 @@ import { useTheme } from '@shopify/restyle';
 import { ParamListBase, TabNavigationState } from '@react-navigation/native';
 import { Home, DollarSign, Activity, User } from 'geist-icons-native';
 
+import styles from './styles/bottom-nav';
 import { Box, Icon } from '@components';
 import { Institution } from '@ledget/media/native';
-import { styles } from './Styles';
 import { useAppearance } from '@/theme';
 
 

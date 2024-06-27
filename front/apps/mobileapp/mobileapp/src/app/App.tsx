@@ -10,7 +10,7 @@ import { selectEnvironment, setEnvironment } from '@ledget/shared-features';
 import { ENV } from '@env';
 import * as SplashScreen from 'expo-splash-screen';
 
-import { styles } from './Styles';
+import styles from './styles/app';
 import { darkTheme, lightTheme, AppearanceProvider, useAppearance } from '@theme'
 import { Box } from '@components';
 import { Budget, Accounts, Profile, Activity } from '@screens';
@@ -54,8 +54,6 @@ function App() {
       <StatusBar style="auto" />
       <Box
         backgroundColor={'mainBackground'}
-        flex={1}
-        flexDirection='column'
         style={styles.main}
         onLayout={onLayoutRootView}
       >

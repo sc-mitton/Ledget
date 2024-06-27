@@ -2,9 +2,9 @@ import * as React from 'react';
 import Svg, { Path } from 'react-native-svg';
 import type { SvgProps } from 'react-native-svg';
 
-function SvgComponent(props: SvgProps) {
+function SvgComponent({ size = 28, ...rest }: SvgProps & { size?: number }) {
   return (
-    <Svg x="0px" y="0px" viewBox="0 0 48 48" {...props}>
+    <Svg x="0px" y="0px" viewBox="0 0 48 48" width={size} height={size} {...rest}>
       <Path
         d="M46.5 19.5h-1.8v-.1H24v9.2h13c-1.8 5.4-7 9.2-13 9.2-7.6 0-13.8-6.2-13.8-13.8S16.4 10.2 24 10.2c3.6 0 6.7 1.4 9.2 3.4l6.5-6.5c-4.2-3.6-9.6-6-15.7-6C11.4 1.1 1.1 11.4 1.1 24S11.4 46.9 24 46.9 46.9 36.6 46.9 24c0-1.5-.1-3-.4-4.5z"
         fill="#ffc107"
