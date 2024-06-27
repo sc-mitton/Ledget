@@ -18,7 +18,7 @@ import { useAppDispatch, useAppSelector } from '@hooks/store';
 import { useGetMeQuery } from '@ledget/shared-features';
 import store from '@features/store';
 import Nav from './BottomNav';
-import Authentication from './Authentication';
+import Authentication from './Accounts';
 import SourceSans3Regular from '../../assets/fonts/SourceSans3Regular.ttf';
 import SourceSans3Medium from '../../assets/fonts/SourceSans3Medium.ttf';
 import SourceSans3SemiBold from '../../assets/fonts/SourceSans3SemiBold.ttf';

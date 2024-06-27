@@ -1,10 +1,10 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  loginScreen: {
-    flex: 1,
+  emailScreen: {
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    flex: 1,
   },
   form: {
     marginTop: 32,

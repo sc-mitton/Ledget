@@ -48,7 +48,6 @@ const extractData: React.FormEventHandler<HTMLFormElement> = (event) => {
     return body
 }
 
-
 export const useFlow = <TFlow extends EndpointRootNames>(query: UseLazyQuery<OryGetFlowEndpoint<TFlow>>, mutation: UseMutation<OryCompleteFlowEndpoint<TFlow>>, flowType: TFlow) => {
     const [errMsg, setErrMsg] = useState<string[]>()
     const [errId, setErrId] = useState<string | number>('')

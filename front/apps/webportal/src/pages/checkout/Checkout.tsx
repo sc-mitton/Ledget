@@ -9,7 +9,6 @@ import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 
 import styles from './styles/checkout.module.scss'
-import moduleStyles from './styles/styles.module.scss'
 import ledgetapi from '@api/axios'
 import { useGetPricesQuery } from '@features/pricesSlice'
 import {
