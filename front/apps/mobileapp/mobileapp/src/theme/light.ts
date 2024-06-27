@@ -1,6 +1,5 @@
 import { createTheme } from '@shopify/restyle';
 import basePalette from './base-palette';
-import { gray } from '../../../../../libs/ui/src/buttons/base';
 
 const grayH = 240;
 const grayS = 7;
@@ -10,7 +9,13 @@ const blueS = 50;
 
 const palette = {
   ...basePalette,
+
+  red: 'hsl(0, 55%, 58%)',
+  mutedRed: 'hsl(352, 98%, 76%)',
+  darkRed: 'hsl(0, 59%, 34%)',
+
   gray100: `hsl(${grayH}, ${grayS}%, 96%)`,
+  gray150: `hsl(${grayH}, ${grayS}%, 94%)`,
   gray200: `hsl(${grayH}, ${grayS}%, 88%)`,
   gray250: `hsl(${grayH}, ${grayS}%, 86%)`,
   gray300: `hsl(${grayH}, ${grayS}%, 80%)`,
@@ -26,6 +31,7 @@ const palette = {
   blue700: `hsl(${blueH}, ${blueS}%, 30%)`,
   blue600: `hsl(${blueH}, ${blueS}%, 40%)`,
   blue500: `hsl(${blueH}, ${blueS}%, 50%)`,
+  blue450: `hsl(${blueH}, ${blueS}%, 55%)`,
   blue400: `hsl(${blueH}, ${blueS}%, 60%)`,
   blue300: `hsl(${blueH}, ${blueS}%, 70%)`,
   blue200: `hsl(${blueH}, ${blueS}%, 80%)`,
@@ -55,7 +61,6 @@ export const lightTheme = createTheme({
 
     // Shadows
     navShadow: palette.gray100,
-
     activeIcon: palette.blueSat,
 
     // Text
@@ -65,15 +70,23 @@ export const lightTheme = createTheme({
     secondaryText: palette.offBlack3,
     tertiaryText: palette.offBlack4,
     activeText: palette.blueSat,
+    blueText: palette.blue500,
     placeholderText: palette.offBlack4,
     buttonLabel: palette.offBlack,
 
     // Buttons
     blueButton: palette.blue500,
+    blueButtonBorder: palette.blue450,
+    grayButton: palette.gray200,
+    grayButtonBorder: palette.gray250,
 
     // Seperators
-    seperator: palette.gray300,
-    lightSeperator: palette.gray200,
+    seperator: palette.gray200,
+    lightSeperator: palette.gray150,
+    blueseperator: palette.blue100,
+
+    // Misc
+    alert: palette.red,
   },
   spacing: {
     xxs: 2,
@@ -81,56 +94,52 @@ export const lightTheme = createTheme({
     s: 8,
     m: 12,
     l: 16,
-    xl: 28,
+    xl: 24,
     xxl: 36,
+    xxxl: 48,
   },
   textVariants: {
     header: {
-      fontSize: 32,
-      lineHeight: 40,
-      marginTop: 'xs',
+      fontSize: 28,
+      lineHeight: 30,
+      marginTop: 'xl',
       marginBottom: 'xs',
       fontFamily: 'SourceSans3SemiBold',
       color: 'mainText',
+      width: '100%',
     },
     header2: {
       fontSize: 18,
       lineHeight: 26,
       fontFamily: 'SourceSans3Medium',
       color: 'mainText',
+      width: '100%',
     },
     subheader: {
-      fontSize: 32,
+      fontSize: 24,
       lineHeight: 40,
       marginTop: 's',
       marginBottom: 's',
       fontFamily: 'SourceSans3SemiBold',
       color: 'secondaryText',
+      width: '100%',
     },
     subheader2: {
-      fontSize: 18,
-      lineHeight: 26,
-      fontFamily: 'SourceSans3Medium',
-      color: 'secondaryText',
-    },
-    label: {
-      fontSize: 16,
-      fontFamily: 'SourceSans3Regular',
-      color: 'mainText',
-      marginLeft: 'xs',
-    },
-    body: {
       fontSize: 16,
       lineHeight: 24,
-      fontFamily: 'SourceSans3Regular',
-      color: 'mainText',
+      fontFamily: 'SourceSans3Medium',
+      color: 'secondaryText',
+      width: '100%',
+    },
+    label: {
+      marginLeft: 'xs',
     },
     defaults: {
       fontSize: 16,
       lineHeight: 24,
       fontFamily: 'SourceSans3Regular',
       color: 'mainText',
-    },
+    }
   },
   buttonVariants: {
     main: {
@@ -141,9 +150,42 @@ export const lightTheme = createTheme({
       justifyContent: 'center',
       backgroundColor: 'blueButton',
       color: 'whiteText',
+      borderWidth: 1.5,
+      borderColor: 'blueButtonBorder',
+    },
+    grayMain: {
+      padding: 'm',
+      borderRadius: 12,
+      marginHorizontal: 'xxs',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'grayButton',
+      color: 'mainText',
+      borderWidth: 1.5,
+      borderColor: 'grayButtonBorder',
+    },
+    borderedGrayMain: {
+      padding: 'm',
+      borderRadius: 12,
+      marginHorizontal: 'xxs',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderWidth: 1.5,
+      borderColor: 'seperator',
+      color: 'mainText',
+    },
+    blueBorderedMain: {
+      padding: 'm',
+      borderRadius: 12,
+      marginHorizontal: 'xxs',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderWidth: 1.5,
+      borderColor: 'blueseperator',
+      color: 'blueButton',
     },
     socialSignIn: {
-      padding: 'm',
+      padding: 's',
       borderRadius: 40,
       alignItems: 'center',
       justifyContent: 'center',
@@ -154,6 +196,8 @@ export const lightTheme = createTheme({
     defaults: {
       padding: 's',
       alignItems: 'center',
+      flexDirection: 'row',
+      gap: 's',
     }
   },
   seperatorVariants: {
@@ -172,7 +216,23 @@ export const lightTheme = createTheme({
       marginVertical: 'xxl',
       backgroundColor: 'seperator',
     },
-  }
+    xl: {
+      height: 1.5,
+      marginVertical: 'xxxl',
+      backgroundColor: 'seperator',
+    },
+  },
+  boxVariants: {
+    fullCentered: {
+      flex: 1,
+      justifyContent: 'center'
+    },
+    even: {
+      flex: 1,
+      justifyContent: 'space-evenly'
+    },
+    defaults: {}
+  },
 });
 
 export type Theme = typeof lightTheme;

@@ -15,7 +15,7 @@ import {
 import { SocialAuth } from '@components/index'
 
 const schema = z.object({
-    email: z.string().min(1, { message: 'required' }).email({ message: 'Invalid email' }),
+    email: z.string().min(1, { message: 'required' }).email({ message: 'Invalid email' }).transform(value => value.trim()),
     remember: z.union([z.boolean(), z.string()])
 })
 

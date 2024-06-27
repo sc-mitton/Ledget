@@ -39,8 +39,7 @@
         --hover-red: hsl(352, 95%, 85%);
         --alert-red: hsl(352, 86%, 69%);
         --red-rgb: 243, 80, 80;
-        --dark-red: #8b2424;
-        --blue-text: #e9eeff;
+        --dark-red: hsl(0, 59%, 34%);
 
         // Secondary and Primary Base Values
         --blue-h: 226;
@@ -221,11 +220,11 @@
     div.light {
         @include common;
 
-        --mute-red: #fe8797;
-        --hover-red: #fb6a7e;
-        --alert-red: #ce5858;
+        --mute-red: hsl(352, 98%, 76%);
+        --hover-red: hsl(352, 95%, 70%);
+        --alert-red: hsl(0, 55%, 58%);
         --red-rgb: 243, 80, 80;
-        --dark-red: #8b2424;
+        --dark-red: hsl(0, 59%, 34%);
 
         --steel-blue-h: 240;
         --steel-blue-s: 10%;

@@ -1,43 +1,55 @@
 import React from 'react'
 
-import { TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { TouchableWithoutFeedback, Keyboard, View } from 'react-native';
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod';
 
 import {
-  Box,
   Header,
   SubHeader2,
   TextInput,
   Button,
-  Seperator
+  Seperator,
+  Box
 } from '@components';
 import {
   FacebookLogo,
   GoogleLogo,
 } from '@ledget/media/native';
 import { EmailProps } from '@types';
+import { LogoIcon } from '@ledget/media/native';
 import Legal from './Legal';
-import Logo from './Logo';
+
 
 import styles from './styles/email'
 
-const schema = z.object({ email: z.string().email() });
+const schema = z.object({
+  email: z.string()
+    .min(1, { message: 'required' })
+    .email({ message: 'Invalid email' })
+    .transform(value => value.trim())
+});
 
 export default function Login({ navigation, route }: EmailProps) {
-  const { control, handleSubmit } = useForm<z.infer<typeof schema>>({
+  const { control, handleSubmit, formState: { errors } } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
-    mode: 'onBlur',
+    mode: 'onSubmit',
   });
+
+  const onSubmit = (data: z.infer<typeof schema>) => {
+    navigation.navigate('Aal1Authentication', { identifier: data.email });
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <Box style={styles.emailScreen}>
-        <Logo />
-        <Header>Welcome Back</Header>
-        <SubHeader2>Please login to continue</SubHeader2>
-        <Box style={styles.form}>
+      <Box variant='fullCentered'>
+        <View style={styles.logoContainer}>
+          <LogoIcon />
+        </View>
+        <Header style={styles.header}>Welcome Back</Header>
+        <SubHeader2 style={styles.header}>Please login to continue</SubHeader2>
+        <View style={styles.form}>
           <Controller
             control={control}
             rules={{ required: 'This is a required field' }}
@@ -49,38 +61,33 @@ export default function Login({ navigation, route }: EmailProps) {
                 textContentType='emailAddress'
                 autoCapitalize='none'
                 autoCorrect={false}
-                returnKeyType='next'
-                onChangeText={onChange}
+                returnKeyType='go'
                 onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                error={errors.email}
               />
             )}
             name="email"
-            defaultValue=""
           />
           <Button
             label="Next"
             variant="main"
-            onPress={() => {
-              handleSubmit((data) => {
-                navigation.navigate(
-                  'Aal1Authentication',
-                  { identifier: data.email })
-              })
-            }}
+            onPress={handleSubmit(onSubmit)}
           />
-        </Box>
+        </View>
         <Legal />
-        <Box style={styles.socialForm}>
+        <View style={styles.socialForm}>
           <Seperator label='Or Sign In With' variant='l' />
-          <Box style={styles.socialButtons}>
+          <View style={styles.socialButtons}>
             <Button variant='socialSignIn' onPress={() => { }}>
               <FacebookLogo />
             </Button>
             <Button variant='socialSignIn' onPress={() => { }}>
               <GoogleLogo />
             </Button>
-          </Box>
-        </Box>
+          </View>
+        </View>
       </Box>
     </TouchableWithoutFeedback>
   )

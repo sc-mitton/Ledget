@@ -21,7 +21,7 @@ import { useLoaded } from '@utils/hooks';
 import { Person } from '@ledget/media';
 
 const schema = z.object({
-  email: z.string().min(1, 'Email is required').email('Invalid email address')
+  email: z.string().min(1, 'Email is required').email('Invalid email address').transform(value => value.trim())
 });
 
 const Slide1 = () => {

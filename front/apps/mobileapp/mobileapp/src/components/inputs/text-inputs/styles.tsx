@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     width: '100%',
     borderRadius: 14,
     marginBottom: 12,
+    position: 'relative',
   },
   textInputContainer1: {
     paddingHorizontal: 16,

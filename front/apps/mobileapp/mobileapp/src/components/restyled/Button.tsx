@@ -30,17 +30,16 @@ type Props = RestyleProps & {
   label?: string;
   textColor?: string;
   children?: React.ReactNode;
+  labelPlacement?: 'left' | 'right';
 };
 
-export const Button = ({ onPress, label, textColor, children, ...rest }: Props) => {
+export const Button = ({ onPress, label, textColor, children, labelPlacement = 'right', ...rest }: Props) => {
   const props = useRestyle(restyleFunctions, rest);
 
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      activeOpacity={.8}
-    >
+    <TouchableOpacity onPress={onPress} activeOpacity={.8}>
       <View {...props}>
+        {labelPlacement === 'right' && children}
         {label &&
           <Text
             {...((props as any).style[0].color
@@ -48,7 +47,7 @@ export const Button = ({ onPress, label, textColor, children, ...rest }: Props) 
               : {})}>
             {label}
           </Text>}
-        {children}
+        {labelPlacement === 'left' && children}
       </View>
     </TouchableOpacity>
   );

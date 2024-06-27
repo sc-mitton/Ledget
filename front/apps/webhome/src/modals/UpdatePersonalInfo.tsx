@@ -25,7 +25,7 @@ const schema = z.object({
       first: z.string().min(1, { message: 'required' }),
       last: z.string().min(1, { message: 'required' })
     }),
-    email: z.string().email()
+    email: z.string().email().transform(value => value.trim())
   })
 });
 

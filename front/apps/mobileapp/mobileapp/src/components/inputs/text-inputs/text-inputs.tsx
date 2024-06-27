@@ -2,16 +2,23 @@ import { useState } from 'react';
 import {
   TextInputProps,
   TextInput as ReactNativeTextInput,
-  TouchableHighlight
+  TouchableHighlight,
+  NativeSyntheticEvent,
+  TextInputFocusEventData,
 } from "react-native";
 import { Eye, EyeOff } from 'geist-icons-native';
 import { useTheme } from '@shopify/restyle';
 
-import { Box, Icon, InputLabel } from '../../index';
+import { ErrorTip, Box, Icon, InputLabel } from '@components'
 import styles from './styles';
 
-export const TextInput = (props: TextInputProps & { label?: string }) => {
-  const { children, style, label, ...rest } = props
+type Error = {
+  message?: string,
+  type?: string
+}
+
+export const TextInput = (props: TextInputProps & { label?: string, error?: Error }) => {
+  const { children, style, label, onBlur, error, ...rest } = props
   const [focused, setFocused] = useState(false)
   const theme = useTheme()
 
@@ -31,7 +38,10 @@ export const TextInput = (props: TextInputProps & { label?: string }) => {
         >
           <ReactNativeTextInput
             onFocus={() => setFocused(true)}
-            onBlur={() => setFocused(false)}
+            onBlur={(e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+              onBlur && onBlur(e);
+              setFocused(false);
+            }}
             style={{
               ...styles.textInput,
               color: theme.colors.mainText,
@@ -39,12 +49,13 @@ export const TextInput = (props: TextInputProps & { label?: string }) => {
             {...rest} />
           {children}
         </Box>
+        {error && <ErrorTip />}
       </Box>
     </Box>
   )
 }
 
-export const PasswordInput = (props: TextInputProps & { label?: boolean }) => {
+export const PasswordInput = (props: TextInputProps & { label?: boolean, error?: Error }) => {
   const [showPassword, setShowPassword] = useState(false)
   const { label, ...rest } = props
 

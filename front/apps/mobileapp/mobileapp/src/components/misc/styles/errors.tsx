@@ -1,11 +1,11 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  logo: {
+  errorTip: {
     position: 'absolute',
-    top: 20,
-    left: 20,
-  },
-})
+    top: -8,
+    right: -4
+  }
+});
 
 export default styles;

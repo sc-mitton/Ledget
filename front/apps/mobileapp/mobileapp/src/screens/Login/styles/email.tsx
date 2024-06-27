@@ -1,10 +1,8 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  emailScreen: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
+  header: {
+    textAlign: 'center'
   },
   form: {
     marginTop: 32,
@@ -18,6 +16,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 26,
     justifyContent: 'center',
+  },
+  logoContainer: {
+    alignItems: 'center',
+    width: '100%',
   }
 })
 

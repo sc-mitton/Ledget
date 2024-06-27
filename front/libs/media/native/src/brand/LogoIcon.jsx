@@ -4,5 +4,5 @@ import logoicon from '../../../shared/brand-pngs/logoicon.png'
 export const LogoIcon = () => {
   return <Image
     source={logoicon}
-    style={{ width: 50, height: 50 }} />
+    style={{ width: 32, height: 32 }} />
 }

@@ -10,6 +10,11 @@ const blueS = 50;
 
 const palette = {
   ...basePalette,
+
+  mutedRed: 'hsl(352, 98%, 90%)',
+  red: 'hsl(352, 86%, 69%)',
+  darkRed: 'hsl(0, 59%, 34%)',
+
   gray900: `hsl(${grayH}, ${grayS}%, 5%)`,
   gray850: `hsl(${grayH}, ${grayS}%, 9%)`,
   gray800: `hsl(${grayH}, ${grayS}%, 13%)`,
@@ -68,30 +73,41 @@ export const darkTheme = createTheme({
     tertiaryText: palette.offWhite4,
     activeText: palette.blueSat,
     focusedText: palette.blueSat,
+    blueText: palette.blue200,
     placeholderText: palette.offWhite4,
     buttonLabel: palette.white,
 
     // Buttons
     blueButton: palette.blue500,
+    blueButtonBorder: palette.blue400,
+    grayButton: palette.gray800,
+    grayButtonBorder: palette.gray750,
 
     // Seperators
     seperator: palette.gray700,
     lightSeperator: palette.gray800,
+    blueseperator: palette.blue400,
+
+    // Misc
+    alert: palette.red,
+
   },
   textVariants: {
     header: {
-      fontSize: 32,
+      fontSize: 28,
       lineHeight: 40,
       marginTop: 'xs',
       marginBottom: 'xs',
       fontFamily: 'SourceSans3Medium',
       color: 'mainText',
+      width: '100%',
     },
     header2: {
       fontSize: 18,
       lineHeight: 26,
       fontFamily: 'SourceSans3Regular',
       color: 'mainText',
+      width: '100%',
     },
     subheader: {
       fontSize: 32,
@@ -100,12 +116,14 @@ export const darkTheme = createTheme({
       marginBottom: 'xs',
       fontFamily: 'SourceSans3SemiBold',
       color: 'secondaryText',
+      width: '100%',
     },
     subheader2: {
       fontSize: 18,
-      lineHeight: 26,
+      lineHeight: 24,
       fontFamily: 'SourceSans3Medium',
       color: 'secondaryText',
+      width: '100%',
     },
     label: {
       fontSize: 16,
@@ -127,7 +145,41 @@ export const darkTheme = createTheme({
         marginHorizontal: 'xxs',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'blueButton'
+        backgroundColor: 'blueButton',
+        borderWidth: 1.5,
+        borderColor: 'blueButtonBorder',
+      },
+      grayMain: {
+        paddingTop: 'm',
+        paddingBottom: 'm',
+        borderRadius: 12,
+        marginHorizontal: 'xxs',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'grayButton',
+        color: 'mainText',
+        borderWidth: 1.5,
+        borderColor: 'grayButtonBorder',
+      },
+      borderedGrayMain: {
+        paddingTop: 'm',
+        paddingBottom: 'm',
+        borderRadius: 12,
+        marginHorizontal: 'xxs',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 1.5,
+        borderColor: 'seperator',
+      },
+      blueBorderedMain: {
+        paddingTop: 'm',
+        paddingBottom: 'm',
+        borderRadius: 12,
+        marginHorizontal: 'xxs',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 1.5,
+        borderColor: 'blueseperator',
       },
       socialSignIn: {
         padding: 's',
