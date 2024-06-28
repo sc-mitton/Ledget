@@ -12,12 +12,14 @@ import {
   aal2ReAuthed
 } from '@features/authSlice';
 import {
-  useLazyGetLoginFlowQuery,
-  useCompleteLoginFlowMutation,
   useGetMeQuery,
   User,
   useExtendSessionMutation
 } from '@ledget/shared-features';
+import {
+  useLazyGetLoginFlowQuery,
+  useCompleteLoginFlowMutation,
+} from '@features/orySlice';
 import { setModal, clearModal } from '@features/modalSlice';
 import { useFlow } from '@ledget/ory';
 import {
@@ -240,7 +242,7 @@ const useReauthCheck = ({
   const [extendSession] = useExtendSessionMutation();
   const [continueToComponent, setContinueToComponent] = useState(
     Date.now() - (reAuthed.at || 0) < 1000 * 60 * 9 &&
-      reAuthed.level === (requiredAal ?? user?.highest_aal)
+    reAuthed.level === (requiredAal ?? user?.highest_aal)
   );
 
   // Controller for checking if the user has reached the required

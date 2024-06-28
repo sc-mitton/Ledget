@@ -9,8 +9,8 @@ import {
   budgetItemMetaDataSlice,
   remindersApiSlice,
   environmentSlice,
-  orySlice
 } from '@ledget/shared-features';
+import { orySlice } from '@features/orySlice';
 
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,

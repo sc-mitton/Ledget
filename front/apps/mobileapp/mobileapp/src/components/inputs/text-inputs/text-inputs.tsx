@@ -76,11 +76,9 @@ export const PasswordInput = (props: TextInputProps & { label?: boolean, error?:
           underlayColor='transparent'
           style={styles.visibilityButton}
         >
-          {showPassword ? (
-            <Icon icon={EyeOff} color='placeholderText' />
-          ) : (
-            <Icon icon={Eye} color='placeholderText' />
-          )}
+          {showPassword
+            ? <Icon icon={EyeOff} color='placeholderText' />
+            : <Icon icon={Eye} color='placeholderText' />}
         </TouchableHighlight>
       </TextInput>
     </Box>

@@ -3,7 +3,6 @@ export { default as apiSlice } from './lib/apiSlice/slice';
 export * from './lib/accountsSlice/slice';
 export * from './lib/billSlice/slice';
 export * from './lib/categorySlice/slice';
-export * from './lib/orySlice/slice';
 export * from './lib/plaidSlice/slice';
 export * from './lib/remindersSlice/slice';
 export * from './lib/transactionSlice/slice';

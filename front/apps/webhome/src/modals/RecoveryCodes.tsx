@@ -17,7 +17,7 @@ import { useFlow } from '@ledget/ory';
 import {
   useCompleteSettingsFlowMutation,
   useLazyGetSettingsFlowQuery
-} from '@ledget/shared-features';
+} from '@features/orySlice';
 
 export const GenerateViewRecoveryCodes = (props: { onFinish: () => void }) => {
   const [searchParams] = useSearchParams();

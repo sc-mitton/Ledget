@@ -3,11 +3,11 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import styles from './styles/deactivate-authenticator.module.scss';
+import { useUpdateUserMutation } from '@ledget/shared-features';
 import {
-  useUpdateUserMutation,
   useCompleteSettingsFlowMutation,
   useLazyGetSettingsFlowQuery
-} from '@ledget/shared-features';
+} from '@features/orySlice';
 import { withSmallModal } from '@ledget/ui';
 import { BlueSubmitButton, SecondaryButton, FormError } from '@ledget/ui';
 import { withReAuth } from '@utils';

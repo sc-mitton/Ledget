@@ -5,11 +5,13 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import styles from './styles/authenticator.module.scss';
 import {
-  useCompleteSettingsFlowMutation,
-  useLazyGetSettingsFlowQuery,
   useUpdateUserSettingsMutation,
   useAddRememberedDeviceMutation
 } from '@ledget/shared-features';
+import {
+  useLazyGetSettingsFlowQuery,
+  useCompleteSettingsFlowMutation,
+} from '@features/orySlice';
 import { GenerateViewRecoveryCodes } from '@modals/RecoveryCodes';
 import { useFlow } from '@ledget/ory';
 import { withModal } from '@ledget/ui';

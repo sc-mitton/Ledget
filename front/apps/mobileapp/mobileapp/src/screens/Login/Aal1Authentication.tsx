@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { TouchableWithoutFeedback, Keyboard, View } from 'react-native';
 import { useForm, Controller } from "react-hook-form"
@@ -7,9 +7,10 @@ import { Key } from 'geist-icons-native';
 import { z } from 'zod';
 
 import styles from './styles/aal1authentication';
-import { Aal1AuthenticationProps } from '@types';
-import { LogoIcon } from '@ledget/media/native';
 import { Header, SubHeader2, PasswordInput, Button, Seperator, Icon } from '@components'
+import { Aal1AuthenticationProps } from '@types';
+import { useNativeFlow } from '@ledget/ory';
+import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice';
 
 const schema = z.object({
   password: z.string()
@@ -22,9 +23,22 @@ const Aal1Authentication = ({ navigation, route }: Aal1AuthenticationProps) => {
     resolver: zodResolver(schema),
     mode: 'onSubmit',
   });
+  const { fetchFlow, flow, completeFlow } = useNativeFlow(
+    useLazyGetLoginFlowQuery,
+    useCompleteLoginFlowMutation,
+    'login'
+  )
+
+  useEffect(() => { console.log('flow', flow) }, [flow])
+
+  useEffect(() => fetchFlow({ aal: 'aal1' }), [])
 
   const onSubmit = (data: z.infer<typeof schema>) => {
-    console.log(data);
+    completeFlow({
+      ...data,
+      identifier: route.params.identifier,
+      method: 'password'
+    })
   };
 
   return (
@@ -50,12 +64,12 @@ const Aal1Authentication = ({ navigation, route }: Aal1AuthenticationProps) => {
             )}
           />
           <Button
-            label="Continue"
+            label="Submit"
             variant='main'
             marginTop='xs'
             onPress={handleSubmit(onSubmit)}
           />
-          <Seperator variant='xl' label='Or' />
+          <Seperator variant='l' label='Or' />
           <Button
             label="Passkey"
             variant='grayMain'

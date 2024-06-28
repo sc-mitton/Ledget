@@ -12,6 +12,8 @@ import { useAppDispatch } from '@hooks/store';
 import {
   useCompleteSettingsFlowMutation,
   useLazyGetSettingsFlowQuery,
+} from '@features/orySlice';
+import {
   extendedApiSlice,
   useGetMeQuery
 } from '@ledget/shared-features';

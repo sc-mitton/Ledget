@@ -1,4 +1,5 @@
 import { createBox } from "@shopify/restyle";
+import { ViewProps } from "react-native";
 import {
   useRestyle,
   createVariant,
@@ -33,7 +34,7 @@ const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([
   layout,
 ]);
 
-type Props = RestyleProps & { children?: React.ReactNode, style?: object };
+type Props = RestyleProps & ViewProps;
 
 export const Box = ({ children, ...rest }: Props) => {
   const props = useRestyle(restyleFunctions, rest);

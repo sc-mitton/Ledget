@@ -9,9 +9,11 @@ import { useFlow } from '@ledget/ory';
 import {
   apiSlice,
   useGetMeQuery,
+} from '@ledget/shared-features';
+import {
   useLazyGetVerificationFlowQuery,
   useCompleteVerificationFlowMutation
-} from '@ledget/shared-features';
+} from '@features/orySlice';
 
 export const ForceVerification = ({ onSuccess }: { onSuccess: () => void }) => {
   const { data: user } = useGetMeQuery();

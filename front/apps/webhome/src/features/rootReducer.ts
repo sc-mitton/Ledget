@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import { authSlice } from '@features/authSlice';
 import { uiSlice } from '@features/uiSlice';
 import { modalSlice } from '@features/modalSlice';
+import { orySlice } from '@features/orySlice';
 import {
   apiSlice,
   toastSlice,
@@ -27,7 +28,8 @@ const rootReducer = combineReducers({
     filteredFetchedConfirmedTransactions.reducer,
   modal: modalSlice.reducer,
   reminders: remindersApiSlice.reducer,
-  budgetItemMetaData: budgetItemMetaDataSlice.reducer
+  budgetItemMetaData: budgetItemMetaDataSlice.reducer,
+  ory: orySlice.reducer,
 });
 
 export default rootReducer;

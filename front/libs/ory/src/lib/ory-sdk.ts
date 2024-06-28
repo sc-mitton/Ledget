@@ -11,11 +11,10 @@ import {
 } from './types'
 
 const axiosBaseQuery = async ({ url, headers, ...rest }: AxiosBaseQueryConfig) => {
-  const oryBaseUrl = import.meta.env.VITE_ORY_API_URI;
 
   try {
     const result = await axios({
-      url: `${oryBaseUrl}${url}`,
+      url,
       withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
@@ -85,7 +84,7 @@ const completeFlow = async ({ url, data, params }: Omit<OryAxiosQueryConfig, 'pl
   return responseData.error ? { error: responseData.error } : { data: responseData.data }
 }
 
-const generateOryEndpoints = (builder: EndpointBuilder<any, any, any>, platform: Platform) => {
+const generateOryEndpoints = (builder: EndpointBuilder<any, any, any>, platform: Platform, baseUrl: string) => {
   const endpoints = {} as OryEndpointDefenitions
 
   endpointRootNames.forEach((endpoint) => {
@@ -120,7 +119,7 @@ const generateOryEndpoints = (builder: EndpointBuilder<any, any, any>, platform:
     if (endpoint === 'logout') {
       endpoints['getUpdatedLogoutFlow'] = builder.query<any, any>({
         queryFn: (arg: any) => axiosBaseQuery({
-          url: '/self-service/logout',
+          url: `${baseUrl}/self-service/logout`,
           method: 'GET',
           params: { token: arg.token },
         })
@@ -130,7 +129,7 @@ const generateOryEndpoints = (builder: EndpointBuilder<any, any, any>, platform:
 
     endpoints[completeEndpointNameName] = builder.mutation<any, any>({
       queryFn: (arg) => completeFlow({
-        url: `/self-service/${endpoint}`,
+        url: `${baseUrl}/self-service/${endpoint}`,
         params: arg?.params,
         data: arg?.data,
       }),

@@ -8,7 +8,7 @@ import { SecondaryButton, BlueSubmitButton } from '@ledget/ui';
 import {
   useGetLogoutFlowQuery,
   useLazyGetUpdatedLogoutFlowQuery
-} from '@ledget/shared-features';
+} from '@features/orySlice';
 
 const LogoutModal = withSmallModal((props) => {
   const [quedLogout, setQuedLogout] = useState(false);

@@ -1,18 +1,9 @@
-import apiSlice from '../apiSlice/slice';
+import { apiSlice } from '@ledget/shared-features';
 import { generateEndpoints } from '@ledget/ory';
-
-const getPlatform = () => {
-  // Check if web or mobile, else return web
-  if (typeof window !== 'undefined') {
-    return 'browser';
-  } else {
-    return 'mobile';
-  }
-}
 
 export const orySlice = apiSlice.injectEndpoints({
   endpoints: (builder) =>
-    generateEndpoints(builder, getPlatform())
+    generateEndpoints(builder, 'browser', import.meta.env.VITE_ORY_API_URI)
 });
 
 export const {

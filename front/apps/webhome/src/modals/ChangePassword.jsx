@@ -13,7 +13,7 @@ import { useFlow } from '@ledget/ory';
 import {
   useLazyGetSettingsFlowQuery,
   useCompleteSettingsFlowMutation
-} from '@ledget/shared-features';
+} from '@features/orySlice';
 
 const schema = z
   .object({

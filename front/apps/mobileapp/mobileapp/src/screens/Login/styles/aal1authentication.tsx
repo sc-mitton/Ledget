@@ -9,6 +9,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     marginBottom: 128
+  },
+  logo: {
+    marginTop: 12,
+    marginBottom: 8,
+    marginLeft: 2
   }
 })
 
