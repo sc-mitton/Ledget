@@ -25,7 +25,7 @@ import {
   CircleIconButton,
   ShimmerDiv,
   DeleteButton,
-  BlueSlimSubmitButton,
+  BlueSlimButton2,
   Tooltip,
   Base64Logo,
   ShadowedContainer
@@ -119,14 +119,13 @@ const ReconnectButton = ({ itemId = '' }) => {
   const { open, fetchingToken } = useBakedUpdatePlaidLink({ itemId });
 
   return (
-    <div className={styles.reconnect} data-wiggle={fetchingToken}>
-      <BlueSlimSubmitButton
+    <div className={styles.reconnect} data-wiggle={true}>
+      <BlueSlimButton2
         onClick={() => !fetchingToken && open()}
         aria-label="Reconnect"
       >
-        <Relink />
         Reconnect
-      </BlueSlimSubmitButton>
+      </BlueSlimButton2>
     </div>
   );
 };
@@ -173,9 +172,6 @@ const PlaidItem = ({ item }: { item: TPlaidItem }) => {
 
   return (
     <animated.div className={styles.institution} style={springProps}>
-      {(item.login_required || item.permission_revoked) && (
-        <ReconnectButton itemId={item.id} />
-      )}
       <div>
         <div>
           <Base64Logo
@@ -209,6 +205,7 @@ const PlaidItem = ({ item }: { item: TPlaidItem }) => {
           </Fragment>
         ))}
       </div>
+      {(item.login_required || item.permission_revoked) && <ReconnectButton itemId={item.id} />}
     </animated.div>
   );
 };

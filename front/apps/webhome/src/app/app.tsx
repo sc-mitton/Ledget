@@ -55,7 +55,6 @@ const PrivateRoute = () => {
   const { isSuccess, isError } = useGetMeQuery();
 
   useEffect(() => {
-    // Check the condition for redirection here
     if (isError) {
       window.location.href = `${import.meta.env.VITE_LOGOUT_REDIRECT_URL
         }?redirect=${window.location.href}`;
@@ -139,54 +138,48 @@ const App = () => {
   }, [user]);
 
   return (
-    <>
-      <AnimatePresence mode="wait">
-        <ZoomMotionDiv
-          key={location.pathname.split('/')[1]}
-          className={styles.dashboard}
-          data-size={screenSize}
-          ref={ref}
-        >
-          <Routes location={location} key={location.pathname.split('/')[1]}>
-            <Route path="/" element={<IsVerified />}>
-              <Route path="budget" element={<Budget />}>
-                <Route path="new-category" element={<CreateCategory />} />
-                <Route path="new-bill" element={<CreateBill />} />
-                <Route path="error" element={<AccountErrorModal />} />
-              </Route>
-              <Route path="accounts/*" element={<Accounts />} />
-              <Route path="settings/*" element={<Profile />} />
-              <Route path="*" element={<NotFound />} />
-            </Route>
-            <Route path="verify-email" element={<ForceVerification />} />
-            <Route path="welcome/*" element={<OnboardingModal />} />
-          </Routes>
-        </ZoomMotionDiv>
-      </AnimatePresence>
-      <Modals />
-      <Toast
-        toastStack={toastStack}
-        cleanUp={(toastId) => dispatch(tossToast(toastId))}
-      />
-    </>
-  );
-};
-
-const AppWithNav = () => {
-  const { screenSize } = useScreenContext();
-  return (
     <ColorSchemedDiv className={styles.app} data-size={screenSize}>
       <Header />
       <main>
         <Sidenav />
-        <Routes>
-          <Route path="/*" element={<App />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AnimatePresence mode="wait">
+          <ZoomMotionDiv
+            key={location.pathname.split('/')[1]}
+            className={styles.dashboard}
+            data-size={screenSize}
+            ref={ref}
+          >
+            <Routes location={location} key={location.pathname.split('/')[1]}>
+              <Route path="/" element={<IsVerified />}>
+                <Route path="budget" element={<Budget />}>
+                  <Route path="new-category" element={<CreateCategory />} />
+                  <Route path="new-bill" element={<CreateBill />} />
+                  <Route path="error" element={<AccountErrorModal />} />
+                </Route>
+                <Route path="accounts/*" element={<Accounts />} />
+                <Route path="settings/*" element={<Profile />} />
+                <Route path="*" element={<NotFound />} />
+              </Route>
+              <Route path="verify-email" element={<ForceVerification />} />
+              <Route path="welcome/*" element={<OnboardingModal />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </ZoomMotionDiv>
+        </AnimatePresence>
+        <Modals />
+        <Toast toastStack={toastStack} cleanUp={(toastId) => dispatch(tossToast(toastId))} />
       </main>
     </ColorSchemedDiv>
   );
 };
+
+const PrivatizedApp = () => (
+  <Routes>
+    <Route path="/" element={<PrivateRoute />}>
+      <Route path="*" element={<App />} />
+    </Route>
+  </Routes>
+)
 
 const AppWithEnvironment = () => {
   const dispatch = useAppDispatch();
@@ -196,27 +189,21 @@ const AppWithEnvironment = () => {
     dispatch(setEnvironment(import.meta.env.VITE_ENVIRONMENT as 'dev' | 'prod'));
   }, []);
 
-  return environment ? <AppWithNav /> : null;
-}
+  return environment
+    ? <ColorSchemeProvider>
+      <ScreenProvider>
+        <BrowserRouter>
+          <PrivatizedApp />
+        </BrowserRouter>
+      </ScreenProvider>
+    </ColorSchemeProvider>
+    : null;
+};
 
 const EnrichedApp = () => (
-  <ScreenProvider>
-    <Provider store={store}>
-      <ColorSchemeProvider>
-        <BrowserRouter>
-          <AppWithEnvironment />
-        </BrowserRouter>
-      </ColorSchemeProvider>
-    </Provider>
-  </ScreenProvider>
+  <Provider store={store}>
+    <AppWithEnvironment />
+  </Provider>
 );
 
-export default function () {
-  return (
-    <Routes>
-      <Route path="/" element={<PrivateRoute />}>
-        <Route path="*" element={<EnrichedApp />} />
-      </Route>
-    </Routes>
-  );
-}
+export default EnrichedApp;

@@ -139,6 +139,6 @@ export const FilterPillButton = styled(BaseButton) <React.HTMLProps<HTMLButtonEl
     border-radius: 1em;
 
     &:hover {
-        border-color: var(--m-text-tirtiary);
+        border-color: var(--m-text-secondary);
     }
 `

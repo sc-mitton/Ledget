@@ -313,7 +313,7 @@
         --modal-nested-window: hsl(var(--steel-blue-h), 8%, 95%);
 
         // Wafers
-        --wafer-background-color: hsl(var(--window-h), calc(var(--window-s) - 1%), 65%);
+        --wafer-background-color: hsl(var(--window-h), calc(var(--window-s) + 8%), 65%);
         --wafer-background: linear-gradient(to bottom left, color-mix(in srgb, var(--wafer-background-color), white 30%) 0%, var(--wafer-background-color) 50%, var(--wafer-background-color)100%);
         --skeleton-wafer-background: hsl(var(--window-h), calc(var(--window-s) + 10%), 90%);
         --skeleton-wafer-shimmer: hsl(var(--window-h), calc(var(--window-s) + 10%), 87%);
@@ -405,7 +405,7 @@
         --border-color-ultra-dim: rgb(0, 0, 0, .03);
         --border-color-super-dim: rgb(0, 0, 0, .05);
         --border-color-dim: rgb(0, 0, 0, .09);
-        --border-color: rgb(0, 0, 0, .15);
+        --border-color: rgb(0, 0, 0, .1);
         --institution-logo-border: rgb(0, 0, 0, .2);
         --toast-border: transparent;
         --sidewindow-border-color: hsl(0, 0%, 95%);

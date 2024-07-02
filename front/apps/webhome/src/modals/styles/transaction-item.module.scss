@@ -18,7 +18,6 @@
     }
 
     &>div:nth-child(2) {
-        width: 70%;
 
         input {
             text-align: center;
@@ -40,18 +39,21 @@
     display: flex;
     justify-content: center;
     gap: .5em;
-    margin-left: 1em;
     cursor: pointer;
+    width: min-content;
 
     button {
+        position: absolute;
+        right: -1.25em;
+        top: 50%;
         opacity: 0;
-        transform: scale(.9);
+        transform: scale(.9) translateY(-50%);
         transition: all .2s ease-in-out;
     }
 
     &:not(:focus-within):hover button {
         opacity: 1;
-        transform: scale(1);
+        transform: scale(1) translateY(-50%);
         transition: all .2s ease-in-out;
     }
 }

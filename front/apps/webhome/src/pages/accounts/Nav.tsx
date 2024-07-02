@@ -31,7 +31,7 @@ import { hasErrorCode } from '@ledget/helpers';
 const _getNavIcon = (key = '', isCurrent: boolean) => {
   switch (key) {
     case 'deposits':
-      return <CurrencyNote stroke={'currentColor'} size={'1.375em'} />;
+      return <CurrencyNote stroke={'currentColor'} size={'1.5em'} />;
     case 'credit':
       return <CreditCard stroke={'currentColor'} className="icon" />;
     case 'investments':
@@ -291,8 +291,8 @@ export const Nav = () => {
         popToast({
           type: 'success',
           message: `Synced${syncResult?.added
-              ? `, ${syncResult?.added} new transactions`
-              : ' successfully'
+            ? `, ${syncResult?.added} new transactions`
+            : ' successfully'
             }`
         })
       );

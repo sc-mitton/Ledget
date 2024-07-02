@@ -13,20 +13,19 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
       { isOnboarding: boolean; itemId: string }
     >({
       query: ({ isOnboarding, itemId }) => ({
-        url: `plaid-link-token${isOnboarding ? '?is_onboarding=true' : ''}${
-          itemId ? `/${itemId}` : ''
-        }`
+        url: `plaid-link-token${isOnboarding ? '?is_onboarding=true' : ''}${itemId ? `/${itemId}` : ''
+          }`
       }),
       providesTags: ['PlaidToken']
     }),
     getPlaidItems: builder.query<PlaidItem[], { userId?: string } | void>({
       query: (data) =>
-        data ? `/plaid-items?user=${data.userId}` : '/plaid-items',
+        data ? `plaid-items?user=${data.userId}` : 'plaid-items',
       providesTags: ['PlaidItem']
     }),
     deletePlaidItem: builder.mutation<void, { itemId: string }>({
       query: ({ itemId }) => ({
-        url: `/plaid_item/${itemId}`,
+        url: `plaid_item/${itemId}`,
         method: 'DELETE'
       }),
       invalidatesTags: ['PlaidItem']
@@ -43,7 +42,7 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
     updatePlaidItem: builder.mutation<any, { itemId: string; data: PlaidItem }>(
       {
         query: ({ itemId, data }) => ({
-          url: `/plaid-item/${itemId}`,
+          url: `plaid-item/${itemId}`,
           method: 'PATCH',
           body: data
         }),

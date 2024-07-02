@@ -161,6 +161,12 @@ class AccountsViewSet(ViewSet):
 
         except plaid.exceptions.ApiException as e:  # pragma: no cover
             error = json.loads(e.body)
+
+            if error['error_code'] == 'ITEM_LOGIN_REQUIRED':
+                account = accounts[len(account_balances)]
+                account.plaid_item.login_required = True
+                account.plaid_item.save()
+
             raise ValidationError({'error': {
                 'code': error['error_code'],
                 'message': error['error_message'],

@@ -13,7 +13,7 @@ const apiWithTag = apiSlice.enhanceEndpoints({ addTagTypes: ['Accounts'] });
 export const accountsSlice = apiWithTag.injectEndpoints({
   endpoints: (builder) => ({
     getAccounts: builder.query<GetAccountsResponse, void>({
-      query: () => `/accounts`,
+      query: () => `accounts`,
       keepUnusedDataFor: 60 * 30, // 30 minutes
       providesTags: ['Account']
     }),
@@ -24,9 +24,8 @@ export const accountsSlice = apiWithTag.injectEndpoints({
       query: (params) => {
         const { accounts, ...rest } = params || {};
         const queryObj = {
-          url: `/accounts/balance-history${
-            accounts ? `?account=${accounts.join('&account=')}` : ''
-          }`,
+          url: `accounts/balance-history${accounts ? `?account=${accounts.join('&account=')}` : ''
+            }`,
           method: 'GET'
         };
         return rest ? { ...queryObj, params: rest } : queryObj;
@@ -40,9 +39,8 @@ export const accountsSlice = apiWithTag.injectEndpoints({
       query: (params) => {
         const { accounts, ...rest } = params || {};
         const queryObj = {
-          url: `/accounts/balance-trend${
-            accounts ? `?account=${accounts.join('&account=')}` : ''
-          }`,
+          url: `accounts/balance-trend${accounts ? `?account=${accounts.join('&account=')}` : ''
+            }`,
           method: 'GET'
         };
         return rest ? { ...queryObj, params: rest } : queryObj;
@@ -51,7 +49,7 @@ export const accountsSlice = apiWithTag.injectEndpoints({
     }),
     updateAccounts: builder.mutation<UpdateAccount[], UpdateAccount[]>({
       query: (data) => ({
-        url: `/accounts`,
+        url: `accounts`,
         method: 'PATCH',
         body: data
       }),

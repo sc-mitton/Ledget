@@ -13,7 +13,7 @@ import {
 } from '@geist-ui/icons';
 
 import styles from './styles/transaction-item.module.scss';
-import {} from '@ledget/shared-features';
+import { } from '@ledget/shared-features';
 import { withModal, Base64Logo, DollarCents, BillCatLabel } from '@ledget/ui';
 import { SelectCategoryBill } from '@components/inputs';
 import {
@@ -38,7 +38,7 @@ import {
   SlideMotionDiv,
   useLoaded,
   CircleIconButton,
-  IconButtonHalfGray,
+  IconButtonHalfBlue,
   Tooltip,
   TextArea,
   NestedWindow2,
@@ -59,7 +59,7 @@ const Actions = ({
       {({ open }) => (
         <>
           <Menu.Button
-            as={IconButtonHalfGray}
+            as={IconButtonHalfBlue}
             onClick={() => setOpenEllipsis(!openEllipsis)}
           >
             <MoreHorizontal className="icon" />
@@ -156,8 +156,8 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
           prev === 0
             ? undefined
             : prev === undefined
-            ? undefined
-            : Math.max(0, prev - 1)
+              ? undefined
+              : Math.max(0, prev - 1)
         );
       } else if (e.key === 'ArrowDown') {
         e.stopPropagation();
@@ -242,11 +242,11 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
         prev
           ? { ...prev, text: text }
           : {
-              id: `new-${Math.random().toString(36).substring(2, 10)}`,
-              text: text,
-              is_current_users: true,
-              datetime: new Date().toISOString()
-            }
+            id: `new-${Math.random().toString(36).substring(2, 10)}`,
+            text: text,
+            is_current_users: true,
+            datetime: new Date().toISOString()
+          }
       );
     }
     // Otherwise, then we need to update the note in the state
@@ -256,10 +256,10 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
           prev.map((note) =>
             note.id === noteId
               ? {
-                  ...note,
-                  text: text,
-                  datetime: new Date().toISOString()
-                }
+                ...note,
+                text: text,
+                datetime: new Date().toISOString()
+              }
               : note
           )
         );
@@ -268,10 +268,10 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
           prev.map((note) =>
             note.id === noteId
               ? {
-                  ...note,
-                  text: text,
-                  datetime: new Date().toISOString()
-                }
+                ...note,
+                text: text,
+                datetime: new Date().toISOString()
+              }
               : note
           )
         );
@@ -393,7 +393,7 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
             >
               <TextArea.Text
                 value={newNote?.text || ''}
-                onChange={() => {}}
+                onChange={() => { }}
                 placeholder="Add a note..."
                 tabIndex={-1}
                 readOnly
@@ -477,8 +477,8 @@ const InfoTableInnerWindow = ({ item }: { item: Transaction }) => {
               {item.city && item.region
                 ? `${item.city}, ${item.region}`
                 : item.city
-                ? `${item.city}`
-                : `${item.region}`}
+                  ? `${item.city}`
+                  : `${item.region}`}
             </span>
           </div>
         </>
@@ -507,10 +507,10 @@ function CategoriesBillInnerWindow({ item }: { item: Transaction }) {
         item?.categories?.length
           ? item.categories[0]
           : item.bill
-          ? item.bill
-          : item.predicted_category
-          ? item.predicted_category
-          : item.predicted_bill
+            ? item.bill
+            : item.predicted_category
+              ? item.predicted_category
+              : item.predicted_bill
       );
     }
   }, [item]);
@@ -637,9 +637,9 @@ export const TransactionModalContent = ({
         ) : (
           <div className={styles.nameContainer}>
             <span>{preferredName || item?.preferred_name || item?.name}</span>
-            <IconButtonHalfGray onClick={() => setEdit(true)}>
+            <IconButtonHalfBlue onClick={() => setEdit(true)}>
               <Edit2 size={'1em'} />
-            </IconButtonHalfGray>
+            </IconButtonHalfBlue>
           </div>
         )}
         {item.pending && <div className={styles.pending}>Pending</div>}
@@ -666,8 +666,8 @@ export const TransactionModalContent = ({
                 item.predicted_category ||
                 item.bill ||
                 (item.categories?.length || 0) > 0) && (
-                <CategoriesBillInnerWindow item={item} />
-              )}
+                  <CategoriesBillInnerWindow item={item} />
+                )}
               <InfoTableInnerWindow item={item} />
               <NoteInnerWindow item={item} />
             </div>
