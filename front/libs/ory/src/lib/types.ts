@@ -52,4 +52,4 @@ export type OryEndpointDefenitions = {
     getUpdatedLogoutFlow: OryGetFlowEndpoint<'logout'>
   }
 
-export type OryAxiosQueryConfig = Omit<AxiosBaseQueryConfig, 'method' | 'withCredentials'> & { platform: Platform }
+export type OryAxiosQueryConfig = Omit<AxiosBaseQueryConfig, 'method' | 'withCredentials'>

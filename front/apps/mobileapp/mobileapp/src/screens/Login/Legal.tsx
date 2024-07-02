@@ -8,8 +8,6 @@ import styles from './styles/legal-footer'
 export default function LegalFooter() {
 
   const openLink = (url: string) => {
-    console.log('Opening link', url)
-    console.log(process.env.NODE_ENV)
     try {
       Linking.openURL(url)
     } catch (error) {
@@ -21,11 +19,11 @@ export default function LegalFooter() {
     <Box style={styles.legalFooter}>
       <Button
         label="Terms"
-        onPress={() => openLink(`${LANDING_URL}/terms-and-conditions`)}
+        onPress={() => openLink(`${LANDING_URL}/terms`)}
       />
       <Button
         label="Privacy"
-        onPress={() => openLink(`${LANDING_URL}/privacy-policy`)}
+        onPress={() => openLink(`${LANDING_URL}/privacy`)}
       />
     </Box>
   )

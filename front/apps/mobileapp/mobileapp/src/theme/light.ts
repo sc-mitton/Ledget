@@ -56,7 +56,7 @@ export const lightTheme = createTheme({
 
     // Borders
     inputBorder: palette.gray250,
-    focusedInputBorder1: palette.blue400,
+    focusedInputBorder1: palette.blue300,
     focusedInputBorder2: palette.blue100,
 
     // Shadows

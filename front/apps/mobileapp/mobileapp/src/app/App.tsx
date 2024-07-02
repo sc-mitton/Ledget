@@ -43,11 +43,15 @@ function App() {
     'SourceSans3Bold': SourceSans3Bold,
   });
 
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded || fontError) {
-      await SplashScreen.hideAsync();
+  useEffect(() => {
+    if (fontsLoaded && !fontError) {
+      SplashScreen.hideAsync();
     }
   }, [fontsLoaded, fontError]);
+
+  if (!fontsLoaded || fontError) {
+    return null;
+  }
 
   return (
     <>
@@ -55,7 +59,7 @@ function App() {
       <Box
         backgroundColor={'mainBackground'}
         style={styles.main}
-        onLayout={onLayoutRootView}
+        onLayout={SplashScreen.preventAutoHideAsync}
       >
         <NavigationContainer theme={navTheme}>
           {user

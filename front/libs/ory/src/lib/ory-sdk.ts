@@ -35,9 +35,9 @@ const axiosBaseQuery = async ({ url, headers, ...rest }: AxiosBaseQueryConfig) =
   }
 }
 
-const createFlow = async ({ url, params, transformResponse, platform }: OryAxiosQueryConfig) => {
+const createFlow = async ({ url, params, transformResponse }: OryAxiosQueryConfig) => {
   const data = await axiosBaseQuery({
-    url: `${url}/${platform === 'browser' ? 'browser' : 'api'}`,
+    url,
     method: 'GET',
     params: params,
     transformResponse: transformResponse,
@@ -45,7 +45,7 @@ const createFlow = async ({ url, params, transformResponse, platform }: OryAxios
   return data.error ? { error: data.error } : { data: data.data }
 }
 
-const getFlow = async ({ url, params = {}, transformResponse, platform }: OryAxiosQueryConfig) => {
+const getFlow = async ({ url, params = {}, transformResponse, platform }: OryAxiosQueryConfig & { platform: Platform }) => {
   const { id, ...rest } = params
   if (id) {
     const data = await axiosBaseQuery({
@@ -56,25 +56,23 @@ const getFlow = async ({ url, params = {}, transformResponse, platform }: OryAxi
     })
     if (data.error?.status === 410) {
       return createFlow({
-        url,
+        url: `${url}/${platform === 'browser' ? 'browser' : 'api'}`,
         transformResponse,
         params: { ...rest },
-        platform
       })
     } else {
       return data.error ? { error: data.error } : { data: data.data }
     }
   } else {
     return createFlow({
-      url,
+      url: `${url}/${platform === 'browser' ? 'browser' : 'api'}`,
       transformResponse,
-      params: { ...rest },
-      platform
+      params: { ...rest }
     })
   }
 }
 
-const completeFlow = async ({ url, data, params }: Omit<OryAxiosQueryConfig, 'platform'>) => {
+const completeFlow = async ({ url, data, params }: OryAxiosQueryConfig) => {
   const responseData = await axiosBaseQuery({
     url: `${url}`,
     method: 'POST',
@@ -95,7 +93,7 @@ const generateOryEndpoints = (builder: EndpointBuilder<any, any, any>, platform:
 
     endpoints[getEndpointName] = builder.query<any, any>({
       queryFn: (arg) => getFlow({
-        url: `/self-service/${endpoint}`,
+        url: `${baseUrl}/self-service/${endpoint}`,
         params: arg?.params,
         transformResponse: (data: any) => {
           const json = JSON.parse(data)

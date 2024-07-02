@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    marginTop: 48
+    marginTop: 32
   },
   form: {
     flex: 1,

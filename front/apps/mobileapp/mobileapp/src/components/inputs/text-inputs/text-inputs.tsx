@@ -9,7 +9,10 @@ import {
 import { Eye, EyeOff } from 'geist-icons-native';
 import { useTheme } from '@shopify/restyle';
 
-import { ErrorTip, Box, Icon, InputLabel } from '@components'
+import { ErrorTip } from '../../misc/Errors';
+import { Box } from '../../restyled/Box';
+import { Icon } from '../../restyled/Icon';
+import { InputLabel } from '../../restyled/Text';
 import styles from './styles';
 
 type Error = {

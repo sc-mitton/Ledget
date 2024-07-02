@@ -1,6 +1,6 @@
 import { TouchableOpacity } from 'react-native';
 
-import { Text } from '@components';
+import { Text } from '../../restyled/Text';
 import { ChevronLeft } from 'geist-icons-native';
 import { useTheme } from '@shopify/restyle';
 

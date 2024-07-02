@@ -77,5 +77,3 @@ export const Password = () => (
         {(typeof (PublicKeyCredential) != "undefined") && <PasskeySignIn />}
     </div>
 )
-
-

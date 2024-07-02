@@ -23,13 +23,11 @@ const Aal1Authentication = ({ navigation, route }: Aal1AuthenticationProps) => {
     resolver: zodResolver(schema),
     mode: 'onSubmit',
   });
-  const { fetchFlow, flow, completeFlow } = useNativeFlow(
+  const { fetchFlow, flow, completeFlow, flowStatus } = useNativeFlow(
     useLazyGetLoginFlowQuery,
     useCompleteLoginFlowMutation,
     'login'
   )
-
-  useEffect(() => { console.log('flow', flow) }, [flow])
 
   useEffect(() => fetchFlow({ aal: 'aal1' }), [])
 
