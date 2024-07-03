@@ -31,7 +31,7 @@ jobs:
       run:
         working-directory: ./front/apps/landing
     steps:
-      - uses: pnpm/action-setup@v4
+      - uses: actions/checkout@v4
       - name: pnpm setup
         uses: pnpm/action-setup@v4
         with:
