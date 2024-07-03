@@ -332,7 +332,6 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
   useEffect(() => {
     if (!firstDay) return
 
-    console.log(firstDay.daysInMonth(), firstDay.day())
     setDays(Array.from({ length: firstDay.day() }).map((_, i) => i).concat(
       Array.from({ length: firstDay.daysInMonth() }).map((_, i) => i).concat(
         Array.from({ length: 7 - firstDay.add(1, 'month').date(1).day() }).map((_, i) => i).concat(

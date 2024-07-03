@@ -122,10 +122,6 @@ $borderRadius2: var(--border-radius3);
             &>div:first-child {
                 display: flex;
                 align-items: center;
-
-                span {
-                    opacity: .9;
-                }
             }
 
             &>div:last-child span {

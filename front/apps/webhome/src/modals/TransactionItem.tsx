@@ -42,7 +42,8 @@ import {
   Tooltip,
   TextArea,
   NestedWindow2,
-  WindowCorner
+  WindowCorner,
+  IconButtonHalfGray
 } from '@ledget/ui';
 
 type Action = 'split';
@@ -59,7 +60,7 @@ const Actions = ({
       {({ open }) => (
         <>
           <Menu.Button
-            as={IconButtonHalfBlue}
+            as={IconButtonHalfGray}
             onClick={() => setOpenEllipsis(!openEllipsis)}
           >
             <MoreHorizontal className="icon" />

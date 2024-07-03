@@ -40,7 +40,6 @@
     justify-content: center;
     gap: .5em;
     cursor: pointer;
-    width: min-content;
 
     button {
         position: absolute;
@@ -100,8 +99,8 @@
             display: flex;
         }
 
-        &>div:nth-child(2n),
-        &>div:nth-child(2n) * {
+        &>div:nth-child(2n + 1),
+        &>div:nth-child(2n + 1) * {
             color: var(--m-text-secondary);
         }
     }
@@ -125,6 +124,10 @@
     align-items: center;
     gap: 1.375em;
     position: relative;
+
+    &>div:first-of-type {
+        color: var(--m-text-secondary);
+    }
 }
 
 .billCatSelectorContainer {
@@ -145,6 +148,10 @@
 $maxHeight: 12.5em;
 
 .notesContainer {
+
+    h4 {
+        color: var(--m-text-secondary);
+    }
 
     &>div {
         position: relative;

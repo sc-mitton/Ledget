@@ -184,6 +184,7 @@ const Sidebar = () => {
                     <LedgetLogo darkMode={isDark} />
                     <Nav />
                 </div>
+                <div className={styles.hidingSidebarBackdrop} data-open={open} />
             </>
             :
             <Nav />

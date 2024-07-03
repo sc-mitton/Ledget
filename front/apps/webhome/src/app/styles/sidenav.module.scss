@@ -19,13 +19,30 @@
     }
 }
 
+.hidingSidebarBackdrop {
+    position: absolute;
+    z-index: 9;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--m-text);
+    opacity: 0;
+    transition: all .3s ease-in-out;
+    visibility: hidden;
+
+    &[data-open='true'] {
+        opacity: .06;
+        visibility: visible;
+    }
+}
+
 .hidingSidebar {
     display: flex;
     position: absolute;
     z-index: 10;
     top: 0;
     bottom: 0;
-    box-shadow: var(--mid-elevation-drop-shadow);
     background-color: var(--side-window);
     border-right: 1px solid var(--window2);
     max-width: 0;

@@ -31,8 +31,8 @@ import { CreditCard, UserPlus } from '@geist-ui/icons';
 
 const getStatusColor = (subscription: Subscription) => {
   const statusColorMap = {
-    active: 'var(--yearly-color1-alt)',
-    trialing: 'var(--yearly-color1-alt)',
+    active: 'var(--green-text)',
+    trialing: 'var(--green-text)',
     paused: 'var(--yellow)',
     default: 'var(--dark-red)'
   } as { [key: string]: string };
@@ -165,8 +165,8 @@ const Plan = () => {
   const nextTimeStamp = nextInvoice?.next_payment_date
     ? new Date(nextInvoice.next_payment_date * 1000)
     : subscription
-    ? new Date(subscription?.current_period_end * 1000)
-    : new Date();
+      ? new Date(subscription?.current_period_end * 1000)
+      : new Date();
   const nextDate = nextTimeStamp.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
@@ -246,7 +246,7 @@ const PaymentMethod = () => {
           <div>
             {data && `${data.brand.charAt(0).toUpperCase()}`}
             {data && `${data.brand.slice(1)}`}
-            &nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;
             {data && `${data.last4}`}
           </div>
           <div>{`Exp. ${expDate.toLocaleDateString('en-US', {
