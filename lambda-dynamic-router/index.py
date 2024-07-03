@@ -16,7 +16,7 @@ def lambda_handler(event, context):
     # Check if should be redirected to main app
     should_redirect_checks = [
         origin['s3']['domainName'] == DEFAULT_ORIGIN,
-        re.match(r'\/[a-zA-Z\/]+', uri),
+        re.match(r'^\/[a-zA-Z\/]+$', uri),
         all([route not in uri for route in LANDING_ROUTES])
     ]
     if all(should_redirect_checks):
@@ -26,11 +26,13 @@ def lambda_handler(event, context):
     # For the landing page, automatically add index.html to the uri
     # if navigating to subfolder
     should_append_index_html = [
-        origin['s3']['domainName'] == DEFAULT_ORIGIN,
-        re.match(r'\/[a-zA-Z\/]+', uri),
+        request['origin'] == DEFAULT_ORIGIN,
+        re.match(r'^\/[a-zA-Z\/]+$', uri),
         any([route in uri for route in LANDING_ROUTES])
     ]
     if all(should_append_index_html):
         request['uri'] = f'{uri}/index.html'
+
+    print('request', request)
 
     return request
