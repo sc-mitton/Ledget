@@ -13,7 +13,7 @@ jobs:
     outputs:
       src: ${{ steps.changes.outputs.src }}
     steps:
-      - uses: pnpm/action-setup@v4
+      - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v3
         id: changes
         with:
@@ -31,7 +31,8 @@ jobs:
       run:
         working-directory: ./front/apps/landing
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
       - name: pnpm setup
         uses: pnpm/action-setup@v4
         with:
