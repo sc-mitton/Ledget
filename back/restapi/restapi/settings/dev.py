@@ -6,7 +6,6 @@ import requests
 import jwt
 import json
 import sys
-import uuid
 
 
 # IMPORTANT FLAGS
