@@ -306,7 +306,7 @@ export const GripButton = (props: ButtonHTMLAttributes<HTMLButtonElement>) => (
         draggable-item="true"
         {...props}
     >
-        <Grip />
+        <Grip size='1em' />
     </BaseButton>
 )
 

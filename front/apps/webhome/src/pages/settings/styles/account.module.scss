@@ -103,6 +103,7 @@
         grid-template-columns: minmax(auto, max-content) 1fr;
         gap: .25em;
         column-gap: 1em;
+        row-gap: .5em;
 
         &>div:nth-child(2n + 1) {
             color: var(--m-text-secondary);

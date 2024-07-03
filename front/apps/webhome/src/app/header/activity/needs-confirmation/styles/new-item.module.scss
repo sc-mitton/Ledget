@@ -61,10 +61,10 @@
             &>span:last-child {
                 color: var(--m-text-secondary);
                 font-size: .75rem;
-                font-weight: var(--fw-regular);
+                font-weight: var(--fw-regula);
 
                 &:last-child {
-                    margin-left: .5em;
+                    margin-left: .625em;
                 }
             }
         }
@@ -80,7 +80,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    gap: .25em;
+    gap: .5em;
 
     button {
         margin: 0;

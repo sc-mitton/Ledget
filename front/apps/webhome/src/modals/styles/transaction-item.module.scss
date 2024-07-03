@@ -92,7 +92,7 @@
     &:nth-last-child(2) {
         display: grid;
         column-gap: 1.5em;
-        row-gap: .25em;
+        row-gap: .5em;
         grid-template-columns: minmax(0, auto) 1fr;
 
         &>div {
