@@ -2,6 +2,10 @@ import re
 
 DEFAULT_ORIGIN = 'ledget-landing.s3.amazonaws.com'
 MAIN_APP_ORIGIN = 'app.ledget.s3.amazonaws.com'
+LANDING_ROUTES = [
+    '/privacy',
+    '/terms'
+]
 
 
 def lambda_handler(event, context):
@@ -13,8 +17,7 @@ def lambda_handler(event, context):
     should_redirect_checks = [
         origin['s3']['domainName'] == DEFAULT_ORIGIN,
         re.match(r'\/[a-zA-Z\/]+', uri),
-        'privacy' not in uri,
-        'terms' not in uri,
+        all([route not in uri for route in LANDING_ROUTES])
     ]
     if all(should_redirect_checks):
         origin['s3']['domainName'] = MAIN_APP_ORIGIN
@@ -22,7 +25,12 @@ def lambda_handler(event, context):
 
     # For the landing page, automatically add index.html to the uri
     # if navigating to subfolder
-    if origin['s3']['domainName'] == DEFAULT_ORIGIN and re.match(r'\/[a-zA-Z\/]+', uri):
+    should_append_index_html = [
+        origin['s3']['domainName'] == DEFAULT_ORIGIN,
+        re.match(r'\/[a-zA-Z\/]+', uri),
+        any([route in uri for route in LANDING_ROUTES])
+    ]
+    if all(should_append_index_html):
         request['uri'] = f'{uri}/index.html'
 
     return request
