@@ -168,6 +168,8 @@ export const mapWeekDayNumberToName = (day: number) => {
       return 'Friday'
     case 6:
       return 'Saturday'
+    default:
+      return ''
   }
 }
 
