@@ -20,13 +20,12 @@ def lambda_handler(event, context):
         all([route not in uri for route in LANDING_ROUTES])
     ]
     if all(should_redirect_checks):
-        origin['s3']['domainName'] = MAIN_APP_ORIGIN
-        request['origin'] = origin
+        request['origin']['s3']['domainName'] = origin
 
     # For the landing page, automatically add index.html to the uri
     # if navigating to subfolder
     should_append_index_html = [
-        request['origin'] == DEFAULT_ORIGIN,
+        origin['s3']['domainName'] == DEFAULT_ORIGIN,
         re.match(r'^\/[a-zA-Z\/]+$', uri),
         any([route in uri for route in LANDING_ROUTES])
     ]
