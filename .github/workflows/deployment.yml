@@ -67,6 +67,8 @@ jobs:
   deploy-landing-app:
     if: ${{ contains('all landing force-run-all', inputs.deployments_to_run) }}
     uses: ./.github/workflows/deploy-landing-site.yml
+    with:
+      environment: ${{ inputs.environment }}
   deploy-oathkeeper:
     if: ${{ contains('all oathkeeper force-run-all', inputs.deployments_to_run) }}
     uses: ./.github/workflows/deploy-oathkeeper.yml
