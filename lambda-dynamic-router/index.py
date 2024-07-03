@@ -1,7 +1,7 @@
 import re
 
-DEFAULT_ORIGIN = 'ledget-landing.s3.amazonaws.com'
-MAIN_APP_ORIGIN = 'app.ledget.s3.amazonaws.com'
+DEFAULT_ORIGIN = 'ledget-landing.s3.us-west-2.amazonaws.com'
+MAIN_APP_ORIGIN = 'app.ledget.s3.us-west-2.amazonaws.com'
 LANDING_ROUTES = [
     '/privacy',
     '/terms'
@@ -31,7 +31,5 @@ def lambda_handler(event, context):
     ]
     if all(should_append_index_html):
         request['uri'] = f'{uri}/index.html'
-
-    print('request', request)
 
     return request
