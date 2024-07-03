@@ -104,7 +104,7 @@
         gap: .25em;
         column-gap: 1em;
 
-        &>div:nth-child(2n) {
+        &>div:nth-child(2n + 1) {
             color: var(--m-text-secondary);
         }
 
@@ -117,13 +117,13 @@
 .household {
     display: flex;
     align-items: center;
-    gap: 2.875em;
+    gap: 1em;
     position: relative;
 
     span {
         margin: .25em 0;
 
-        &:last-of-type {
+        &:first-of-type {
             color: var(--m-text-secondary);
         }
     }
