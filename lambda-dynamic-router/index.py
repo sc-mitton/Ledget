@@ -9,7 +9,6 @@ def lambda_handler(event, context):
     default_origin = 'ledget-landing.s3.amazonaws.com'
     main_app_origin = 'app.ledget.s3.amazonaws.com'
 
-    print('uri', uri)
     should_redirect_checks = [
         origin['s3']['domainName'] == default_origin,
         re.match(r'\/[a-zA-Z]+', uri),
@@ -20,4 +19,5 @@ def lambda_handler(event, context):
         origin['s3']['domainName'] = main_app_origin
 
     request['origin'] = origin
+    print('request: ', request)
     return request
