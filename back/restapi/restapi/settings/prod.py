@@ -19,8 +19,8 @@ SECURE_BROWSER_XSS_FILTER = True
 
 # ----------------------------------- Csrf ----------------------------------- #
 
-CSRF_TRUSTED_ORIGINS = ['https://ledget.app']
-CSRF_COOKIE_DOMAIN = '.ledget.app'
+CSRF_TRUSTED_ORIGINS = ['https://ledget.app', 'https://accounts.ledget.app']
+CSRF_COOKIE_DOMAIN = 'ledget.app'
 
 # ---------------------------------- 3rd Party Services --------------------------------- #
 
