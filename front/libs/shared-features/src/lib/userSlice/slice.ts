@@ -24,7 +24,7 @@ export const userSlice = apiWithTags.injectEndpoints({
       query: () => 'user/me',
       providesTags: ['User'],
       extraOptions: {
-        maxRetries: 1
+        maxRetries: 1,
       }
     }),
     getCoOwner: builder.query<User, void>({
