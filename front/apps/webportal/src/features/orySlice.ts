@@ -1,4 +1,4 @@
-import { apiSlice } from '@api/apiSlice'
+import { apiSlice } from '@ledget/shared-features'
 import { generateEndpoints } from '@ledget/ory'
 
 export const orySlice = apiSlice.injectEndpoints({

@@ -1,6 +1,6 @@
 import rootReducer from '@features/rootReducer';
 import { configureStore } from '@reduxjs/toolkit';
-import { apiSlice } from '@api/apiSlice'
+import { apiSlice } from '@ledget/shared-features'
 
 const store = configureStore({
     reducer: rootReducer,

@@ -1,6 +1,5 @@
 import React from 'react'
 import * as ReactDOMClient from 'react-dom/client'
-import { ColorSchemeProvider } from '@ledget/ui'
 import { HelmetProvider } from "react-helmet-async";
 import { Helmet } from "react-helmet-async";
 
@@ -22,16 +21,14 @@ const csp = `
 
 root.render(
   <React.StrictMode>
-    <ColorSchemeProvider>
-      <HelmetProvider>
-        <Helmet>
-          <meta
-            httpEquiv="Content-Security-Policy"
-            content={csp}
-          ></meta>
-        </Helmet>
-        <App />
-      </HelmetProvider>
-    </ColorSchemeProvider>
+    <HelmetProvider>
+      <Helmet>
+        <meta
+          httpEquiv="Content-Security-Policy"
+          content={csp}
+        ></meta>
+      </Helmet>
+      <App />
+    </HelmetProvider>
   </React.StrictMode>,
 )

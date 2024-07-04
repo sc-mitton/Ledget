@@ -1,4 +1,4 @@
-import { apiSlice } from '@api/apiSlice'
+import { apiSlice } from '@ledget/shared-features'
 
 export const deviceSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({

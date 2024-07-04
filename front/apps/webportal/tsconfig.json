@@ -26,6 +26,9 @@
       "@modals/*": [
         "src/modals/*"
       ],
+      "@hooks/*": [
+        "src/hooks/*"
+      ],
       "@ledget/ui": [
         "../../libs/ui/src"
       ],
