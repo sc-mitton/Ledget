@@ -32,7 +32,7 @@ const Login = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     const navigate = useNavigate()
     const { screenSize } = useScreenContext()
-    // const { error } = useGetMeQuery()
+    const { error } = useGetMeQuery()
 
     const [email, setEmail] = useState<string>()
     const [healthCheckResult, setHealthCheckResult] = useState<'aal2_required' | 'aal15_required' | 'healthy'>()
@@ -61,15 +61,15 @@ const Login = () => {
     // login page and we want to automatically go to the 2nd factor step.
     // No flows should be fetched until this is first checked, since this always
     // needs to happen first.
-    // useEffect(() => {
-    //     if (hasErrorCode('AAL2_REQUIRED', error)) {
-    //         setHealthCheckResult('aal2_required')
-    //     } else if (hasErrorCode('AAL15_REQUIRED', error)) {
-    //         setHealthCheckResult('aal15_required')
-    //     } else {
-    //         setHealthCheckResult('healthy')
-    //     }
-    // }, [error])
+    useEffect(() => {
+        if (hasErrorCode('AAL2_REQUIRED', error)) {
+            setHealthCheckResult('aal2_required')
+        } else if (hasErrorCode('AAL15_REQUIRED', error)) {
+            setHealthCheckResult('aal15_required')
+        } else {
+            setHealthCheckResult('healthy')
+        }
+    }, [error])
 
     // After health check result, set proper mfa if needed
     useEffect(() => {
