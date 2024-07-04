@@ -60,7 +60,7 @@ jobs:
     with:
       app: "webportal"
       version: 1
-      s3-bucket: ${{ inputs.environment == 'uat' && 'uat.ledget.app' || 'ledget.app' }}
+      s3-bucket: ${{ inputs.environment == 'uat' && 'uataccounts.ledget.app' || 'accounts.ledget.app' }}
       role: 'arn:aws:iam::905418323334:role/gh-actions'
       environment: ${{ inputs.environment }}
       force_run_all: ${{ inputs.deployments_to_run == 'force-run-all' || inputs.force_run == true }}
