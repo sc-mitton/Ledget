@@ -1,6 +1,3 @@
-export { default as EmptyListImage } from './images/EmptyList';
-export { default as EmptyListDark } from './images/EmptyListDark';
-export { default as ForgotPassword } from './images/ForgotPassword';
 export { default as StripeLogo } from './images/StripeLogo';
 export { default as AuthenticatorImage } from './images/Authenticator';
 export { default as RecoveryCodeImage } from './images/RecoveryCode';

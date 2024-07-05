@@ -1,11 +1,9 @@
-import { useCallback } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Animated } from 'react-native';
-import { useTheme } from "@shopify/restyle";
 
 import Email from './Email';
-import Aal1Authentication from './Aal1Authentication';
-import Aal2Authentication from './Aal2Authentication';
+import Aal1 from './Aal1';
+import Aal2Authenticator from './Aal2Authenticator';
+import Aal2RecoveryCode from './Aal2RecoveryCode';
 import { RootAccountStackParamList } from '@types';
 import { BackHeader } from '@components';
 import { useCardStyleInterpolator } from "@/hooks";
@@ -30,13 +28,18 @@ export default function () {
       />
       <Stack.Screen
         options={{ headerShown: true }}
-        name="Aal1Authentication"
-        component={Aal1Authentication}
+        name="Aal1"
+        component={Aal1}
       />
       <Stack.Screen
         options={{ headerShown: true }}
-        name="Aal2Authentication"
-        component={Aal2Authentication}
+        name="Aal2Authenticator"
+        component={Aal2Authenticator}
+      />
+      <Stack.Screen
+        options={{ headerShown: true }}
+        name="Aal2RecoveryCode"
+        component={Aal2RecoveryCode}
       />
     </Stack.Navigator>
   )

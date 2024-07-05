@@ -38,7 +38,7 @@ export default function Login({ navigation, route }: EmailProps) {
   });
 
   const onSubmit = (data: z.infer<typeof schema>) => {
-    navigation.navigate('Aal1Authentication', { identifier: data.email });
+    navigation.navigate('Aal2Authenticator', { identifier: data.email });
   };
 
   return (

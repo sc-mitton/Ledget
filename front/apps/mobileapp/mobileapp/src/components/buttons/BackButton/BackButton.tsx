@@ -11,7 +11,7 @@ export const BackButton = ({ onPress, label }: { onPress: () => void, label?: st
 
   return (
     <TouchableOpacity onPress={onPress} style={styles.container} activeOpacity={0.5}>
-      <ChevronLeft stroke={theme.colors.blueText} size={18} />
+      <ChevronLeft stroke={theme.colors.blueText} size={22} />
       <Text color={'blueText'} fontSize={18}>{label ? label : 'back'}</Text>
     </TouchableOpacity>
   )

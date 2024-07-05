@@ -3,9 +3,9 @@ import keydark from '../../../shared/images/keydark.png';
 
 const Key = ({ dark }: { dark: boolean }) => {
   return dark ? (
-    <img style={{ height: '3em' }} src={keydark} alt="desert" />
+    <img style={{ height: '3em' }} src={keydark} alt="key" />
   ) : (
-    <img style={{ height: '3em' }} src={keylight} alt="desert" />
+    <img style={{ height: '3em' }} src={keylight} alt="key" />
   );
 };
 

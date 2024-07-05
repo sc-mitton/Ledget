@@ -6,7 +6,6 @@ const styles = StyleSheet.create({
   },
   form: {
     marginTop: 32,
-    gap: 4,
   },
   socialForm: {
     marginTop: 32,

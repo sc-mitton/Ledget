@@ -3,7 +3,7 @@
         border: 0;
         padding: 0;
         margin: 0;
-        margin: .75rem 0;
+        margin: 1rem 0;
 
         div {
             display: flex;
@@ -15,7 +15,7 @@
     input[type="text"] {
         flex: 1;
         line-height: 1;
-        margin: .2em;
+        margin: .25em;
         padding: .25em 0;
         min-width: 1.5em;
         font-size: 1.5em;
@@ -55,10 +55,10 @@
     div::before {
         width: .625rem;
         content: '';
-        height: .125rem;
+        height: .25rem;
         margin: 0 .2em;
         order: 1;
-        background: var(--m-text-secondary);
+        background: var(--border-color);
     }
 
 }

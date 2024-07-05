@@ -6,8 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Key } from 'geist-icons-native';
 import { z } from 'zod';
 
-import styles from './styles/aal1authentication';
-import { Header, SubHeader2, PasswordInput, Button, Seperator, Icon } from '@components'
+import sharedStyles from './styles/shared';
+import { Header, SubHeader2, PasswordInput, Button, Seperator, Icon, Box } from '@components'
 import { Aal1AuthenticationProps } from '@types';
 import { useNativeFlow } from '@ledget/ory';
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice';
@@ -41,12 +41,12 @@ const Aal1Authentication = ({ navigation, route }: Aal1AuthenticationProps) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.screen}>
+      <Box variant='screenWithHeader'>
         <View>
           <Header>Finish Logging In</Header>
           <SubHeader2>Enter your password or use a pass-key login</SubHeader2>
         </View>
-        <View style={styles.form}>
+        <View style={sharedStyles.form}>
           <Controller
             control={control}
             name="password"
@@ -64,7 +64,6 @@ const Aal1Authentication = ({ navigation, route }: Aal1AuthenticationProps) => {
           <Button
             label="Submit"
             variant='main'
-            marginTop='xs'
             onPress={handleSubmit(onSubmit)}
           />
           <Seperator variant='l' label='Or' />
@@ -76,7 +75,7 @@ const Aal1Authentication = ({ navigation, route }: Aal1AuthenticationProps) => {
             <Icon icon={Key} />
           </Button>
         </View>
-      </View>
+      </Box>
     </TouchableWithoutFeedback>
   )
 }

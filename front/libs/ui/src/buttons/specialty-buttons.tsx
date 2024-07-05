@@ -199,7 +199,6 @@ export const DeleteButton: FC<ButtonHTMLAttributes<HTMLButtonElement> &
 export const ResendButton = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement> & { success: boolean }>(
     (props, ref) => {
         const { success, onClick, ...rest } = props
-
         const [active, setActive] = useState(false)
 
         useEffect(() => {

@@ -2,8 +2,8 @@ import { View } from 'react-native'
 import React from 'react'
 import { AlertCircle } from 'geist-icons-native'
 
-import { Icon } from '../restyled/Icon'
-import styles from './styles/errors'
+import { Icon } from '../../restyled/Icon'
+import styles from './styles'
 
 export const ErrorTip = () => (
   <View style={styles.errorTip}>

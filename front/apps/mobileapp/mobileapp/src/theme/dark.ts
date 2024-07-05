@@ -14,6 +14,7 @@ const palette = {
   mutedRed: 'hsl(352, 98%, 90%)',
   red: 'hsl(352, 86%, 69%)',
   darkRed: 'hsl(0, 59%, 34%)',
+  successGreen: 'hsl(144, 72%, 43%)',
 
   gray900: `hsl(${grayH}, ${grayS}%, 5%)`,
   gray850: `hsl(${grayH}, ${grayS}%, 9%)`,
@@ -90,7 +91,8 @@ export const darkTheme = createTheme({
 
     // Misc
     alert: palette.red,
-
+    pulseWaiting: palette.gray800,
+    pulseSuccess: palette.successGreen,
   },
   textVariants: {
     header: {
@@ -121,7 +123,14 @@ export const darkTheme = createTheme({
     subheader2: {
       fontSize: 18,
       lineHeight: 24,
-      fontFamily: 'SourceSans3Medium',
+      fontFamily: 'SourceSans3Regular',
+      color: 'secondaryText',
+      width: '100%',
+    },
+    subheader3: {
+      fontSize: 16,
+      lineHeight: 20,
+      fontFamily: 'SourceSans3Regular',
       color: 'secondaryText',
       width: '100%',
     },
@@ -141,6 +150,7 @@ export const darkTheme = createTheme({
       main: {
         paddingTop: 'm',
         paddingBottom: 'm',
+        marginVerticle: 'xs',
         borderRadius: 12,
         marginHorizontal: 'xxs',
         alignItems: 'center',
@@ -169,7 +179,8 @@ export const darkTheme = createTheme({
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: 1.5,
-        borderColor: 'seperator',
+        borderColor: 'grayButtonBorder',
+        color: 'secondaryText',
       },
       blueBorderedMain: {
         paddingTop: 'm',

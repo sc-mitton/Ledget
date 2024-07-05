@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, forwardRef } from 'react';
 import {
   TextInputProps,
   TextInput as ReactNativeTextInput,
@@ -9,7 +9,7 @@ import {
 import { Eye, EyeOff } from 'geist-icons-native';
 import { useTheme } from '@shopify/restyle';
 
-import { ErrorTip } from '../../misc/Errors';
+import { ErrorTip } from '../../misc/Errors/Errors';
 import { Box } from '../../restyled/Box';
 import { Icon } from '../../restyled/Icon';
 import { InputLabel } from '../../restyled/Text';
@@ -20,7 +20,7 @@ type Error = {
   type?: string
 }
 
-export const TextInput = (props: TextInputProps & { label?: string, error?: Error }) => {
+export const TextInput = forwardRef<ReactNativeTextInput, TextInputProps & { label?: string, error?: Error }>((props, ref) => {
   const { children, style, label, onBlur, error, ...rest } = props
   const [focused, setFocused] = useState(false)
   const theme = useTheme()
@@ -30,13 +30,13 @@ export const TextInput = (props: TextInputProps & { label?: string, error?: Erro
       {label && <InputLabel>{label}</InputLabel>}
       <Box
         borderColor={focused ? 'focusedInputBorder2' : 'transparent'}
-        borderWidth={2}
+        borderWidth={1.5}
         style={styles.textInputContainer2}
       >
         <Box
           backgroundColor='inputBackground'
           borderColor={focused ? 'focusedInputBorder1' : 'inputBorder'}
-          borderWidth={1.5}
+          borderWidth={1.25}
           style={styles.textInputContainer1}
         >
           <ReactNativeTextInput
@@ -56,7 +56,7 @@ export const TextInput = (props: TextInputProps & { label?: string, error?: Erro
       </Box>
     </Box>
   )
-}
+})
 
 export const PasswordInput = (props: TextInputProps & { label?: boolean, error?: Error }) => {
   const [showPassword, setShowPassword] = useState(false)

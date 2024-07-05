@@ -5,9 +5,9 @@ export * from './restyled/Button';
 export * from './restyled/Seperator';
 
 export * from './inputs/text-inputs/text-inputs';
+export * from './inputs/Otc/Otc'
 
-export * from './buttons';
-export * from './misc/Errors';
-
+export * from './buttons/BackButton/BackButton';
+export * from './misc/Errors/Errors';
+export * from './misc/Pulse/Pulse';
 export * from './headers/BackHeader';
-

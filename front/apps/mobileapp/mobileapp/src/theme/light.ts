@@ -13,18 +13,19 @@ const palette = {
   red: 'hsl(0, 55%, 58%)',
   mutedRed: 'hsl(352, 98%, 76%)',
   darkRed: 'hsl(0, 59%, 34%)',
+  successGreen: 'hsl(144, 72%, 43%)',
 
-  gray100: `hsl(${grayH}, ${grayS}%, 96%)`,
-  gray150: `hsl(${grayH}, ${grayS}%, 94%)`,
-  gray200: `hsl(${grayH}, ${grayS}%, 88%)`,
-  gray250: `hsl(${grayH}, ${grayS}%, 86%)`,
-  gray300: `hsl(${grayH}, ${grayS}%, 80%)`,
-  gray400: `hsl(${grayH}, ${grayS}%, 70%)`,
-  gray500: `hsl(${grayH}, ${grayS}%, 60%)`,
-  gray600: `hsl(${grayH}, ${grayS}%, 50%)`,
-  gray700: `hsl(${grayH}, ${grayS}%, 40%)`,
-  gray800: `hsl(${grayH}, ${grayS}%, 30%)`,
-  gray900: `hsl(${grayH}, ${grayS}%, 20%)`,
+  gray100: `hsl(${grayH}, ${grayS}%, 98%)`,
+  gray150: `hsl(${grayH}, ${grayS}%, 96%)`,
+  gray200: `hsl(${grayH}, ${grayS}%, 92%)`,
+  gray250: `hsl(${grayH}, ${grayS}%, 90%)`,
+  gray300: `hsl(${grayH}, ${grayS}%, 82%)`,
+  gray400: `hsl(${grayH}, ${grayS}%, 72%)`,
+  gray500: `hsl(${grayH}, ${grayS}%, 62%)`,
+  gray600: `hsl(${grayH}, ${grayS}%, 52%)`,
+  gray700: `hsl(${grayH}, ${grayS}%, 42%)`,
+  gray800: `hsl(${grayH}, ${grayS}%, 32%)`,
+  gray900: `hsl(${grayH}, ${grayS}%, 22%)`,
 
   blue900: `hsl(${blueH}, ${blueS}%, 10%)`,
   blue800: `hsl(${blueH}, ${blueS}%, 20%)`,
@@ -87,6 +88,8 @@ export const lightTheme = createTheme({
 
     // Misc
     alert: palette.red,
+    pulseWaiting: palette.gray300,
+    pulseSuccess: palette.successGreen,
   },
   spacing: {
     xxs: 2,
@@ -120,7 +123,7 @@ export const lightTheme = createTheme({
       lineHeight: 40,
       marginTop: 's',
       marginBottom: 's',
-      fontFamily: 'SourceSans3SemiBold',
+      fontFamily: 'SourceSans3Medium',
       color: 'secondaryText',
       width: '100%',
     },
@@ -128,6 +131,13 @@ export const lightTheme = createTheme({
       fontSize: 16,
       lineHeight: 24,
       fontFamily: 'SourceSans3Medium',
+      color: 'secondaryText',
+      width: '100%',
+    },
+    subheader3: {
+      fontSize: 16,
+      lineHeight: 20,
+      fontFamily: 'SourceSans3Regular',
       color: 'secondaryText',
       width: '100%',
     },
@@ -144,6 +154,7 @@ export const lightTheme = createTheme({
   buttonVariants: {
     main: {
       padding: 'm',
+      marginVertical: 's',
       borderRadius: 12,
       marginHorizontal: 'xxs',
       alignItems: 'center',
@@ -155,6 +166,7 @@ export const lightTheme = createTheme({
     },
     grayMain: {
       padding: 'm',
+      marginVertical: 'l',
       borderRadius: 12,
       marginHorizontal: 'xxs',
       alignItems: 'center',
@@ -166,13 +178,14 @@ export const lightTheme = createTheme({
     },
     borderedGrayMain: {
       padding: 'm',
+      marginVertical: 's',
       borderRadius: 12,
       marginHorizontal: 'xxs',
       alignItems: 'center',
       justifyContent: 'center',
       borderWidth: 1.5,
-      borderColor: 'seperator',
-      color: 'mainText',
+      borderColor: 'grayButtonBorder',
+      color: 'secondaryText',
     },
     blueBorderedMain: {
       padding: 'm',
@@ -230,6 +243,10 @@ export const lightTheme = createTheme({
     even: {
       flex: 1,
       justifyContent: 'space-evenly'
+    },
+    screenWithHeader: {
+      flex: 1,
+      marginTop: 'xxl',
     },
     defaults: {}
   },

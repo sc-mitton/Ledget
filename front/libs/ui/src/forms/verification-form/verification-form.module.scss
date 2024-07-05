@@ -1,13 +1,11 @@
 .container {
     button:last-child {
         width: 100%;
-        padding: .5em 0;
     }
 
-
-    button:first-child {
+    button:first-of-type {
         margin: 0 auto;
-        margin-top: .75em;
+        margin-top: 1em;
     }
 
     span {
