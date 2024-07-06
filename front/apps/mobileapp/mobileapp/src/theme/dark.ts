@@ -11,8 +11,8 @@ const blueS = 50;
 const palette = {
   ...basePalette,
 
-  mutedRed: 'hsl(352, 98%, 90%)',
-  red: 'hsl(352, 86%, 69%)',
+  mutedRed: 'hsl(352, 30%, 30%)',
+  red: 'hsl(352, 56%, 49%)',
   darkRed: 'hsl(0, 59%, 34%)',
   successGreen: 'hsl(144, 62%, 33%)',
   successGreenFaint: 'hsl(144, 62%, 18%)',
@@ -59,8 +59,10 @@ export const darkTheme = createTheme({
 
     // Borders
     inputBorder: palette.gray750,
-    focusedInputBorder1: palette.blue400,
-    focusedInputBorder2: palette.blue800,
+    inputBorderErrorMain: palette.red,
+    inputBorderErrorSecondary: palette.mutedRed,
+    focusedInputBorderMain: palette.blue400,
+    focusedInputBorderSecondary: palette.blue800,
 
     // Shadows
     navShadow: palette.gray900,
@@ -94,7 +96,7 @@ export const darkTheme = createTheme({
     alert: palette.red,
     pulseWaiting: palette.gray800,
     pulseGreen: palette.successGreenFaint,
-    successIndicator: palette.successGreen,
+    successIcon: palette.successGreen,
     grayIcon: palette.gray100,
   },
   textVariants: {

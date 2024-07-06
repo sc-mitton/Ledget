@@ -20,7 +20,9 @@ export type RootAccountStackParamList = {
   Recovery: {
     identifier: string;
   };
-  Verification: undefined;
+  Verification: {
+    identifier: string;
+  };
 };
 
 export type EmailScreenProps = CompositeScreenProps<StackScreenProps<LoginStackParamList, 'Email'>, StackScreenProps<RootAccountStackParamList>>
@@ -29,3 +31,4 @@ export type Aal2AuthenticatorScreenProps = CompositeScreenProps<StackScreenProps
 export type Aal2RecoveryCodeScreenProps = CompositeScreenProps<StackScreenProps<LoginStackParamList, 'Aal2RecoveryCode'>, StackScreenProps<RootAccountStackParamList>>
 
 export type RecoveryScreenProps = StackScreenProps<RootAccountStackParamList, 'Recovery'>
+export type VerificationScreenProps = StackScreenProps<RootAccountStackParamList, 'Verification'>

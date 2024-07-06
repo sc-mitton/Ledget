@@ -1,12 +1,36 @@
-import React from 'react'
+import React from 'react';
 
-import { KeyboardAvoidingView, Platform } from 'react-native'
+import { KeyboardAvoidingView, Platform, View } from 'react-native';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { useTheme } from '@shopify/restyle';
 
-import { Header, NestedScreenWOFeedback, SubHeader2 } from '@components'
+import styles from './styles/shared';
+import { useNativeFlow } from '@ledget/ory';
+import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@/features/orySlice';
+import { RecoveryCode } from '@ledget/media/native';
+import { Header, NestedScreenWOFeedback, SubHeader2, TextInput, Button, Pulse, JiggleView } from '@components';
 
-
+const schema = z.object({
+  code: z.string().min(1, 'Recovery code is required'),
+});
 
 const Aal2RecoveryCode = () => {
+  const theme = useTheme();
+  const { control, handleSubmit, formState: { errors } } = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+  });
+  const { flow, fetchFlow, completeFlow, flowStatus } = useNativeFlow(
+    useLazyGetLoginFlowQuery,
+    useCompleteLoginFlowMutation,
+    'login'
+  );
+
+  const onSubmit = (data: z.infer<typeof schema>) => {
+    console.log(data);
+  }
+
   return (
     <NestedScreenWOFeedback>
       <KeyboardAvoidingView
@@ -15,6 +39,33 @@ const Aal2RecoveryCode = () => {
       >
         <Header>Recovery Code</Header>
         <SubHeader2>Enter one of your saved recovery codes to login</SubHeader2>
+        <View style={styles.graphicContainer}>
+          <RecoveryCode
+            fill={theme.colors.mainBackground}
+            stroke={flowStatus.isCompleteSuccess ? theme.colors.successIcon : theme.colors.grayIcon}
+          />
+          <Pulse success={flowStatus.isCompleteSuccess} />
+        </View>
+        <JiggleView style={styles.centeredForm} jiggle={flowStatus.isCompleteError}>
+          <Controller
+            control={control}
+            render={({ field: { onChange } }) => (
+              <TextInput
+                label="Code"
+                placeholder="Enter your recovery code"
+                onChangeText={onChange}
+                error={errors.code}
+              />
+            )}
+            name="code"
+            defaultValue=""
+          />
+          <Button
+            variant='main'
+            label="Submit"
+            onPress={handleSubmit(onSubmit)}
+          />
+        </JiggleView>
       </KeyboardAvoidingView>
     </NestedScreenWOFeedback>
   )

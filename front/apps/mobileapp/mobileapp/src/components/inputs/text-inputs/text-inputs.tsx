@@ -9,7 +9,6 @@ import {
 import { Eye, EyeOff } from 'geist-icons-native';
 import { useTheme } from '@shopify/restyle';
 
-import { ErrorTip } from '../../misc/Errors/Errors';
 import { Box } from '../../restyled/Box';
 import { Icon } from '../../restyled/Icon';
 import { InputLabel } from '../../restyled/Text';
@@ -29,13 +28,13 @@ export const TextInput = forwardRef<ReactNativeTextInput, TextInputProps & { lab
     <Box style={styles.textInputLabelContainer}>
       {label && <InputLabel>{label}</InputLabel>}
       <Box
-        borderColor={focused ? 'focusedInputBorder2' : 'transparent'}
+        borderColor={error ? 'inputBorderErrorSecondary' : focused ? 'focusedInputBorderSecondary' : 'transparent'}
         borderWidth={1.5}
         style={styles.textInputContainer2}
       >
         <Box
           backgroundColor='inputBackground'
-          borderColor={focused ? 'focusedInputBorder1' : 'inputBorder'}
+          borderColor={focused ? error ? 'inputBorderErrorMain' : 'focusedInputBorderMain' : 'inputBorder'}
           borderWidth={1.25}
           style={styles.textInputContainer1}
         >
@@ -52,7 +51,6 @@ export const TextInput = forwardRef<ReactNativeTextInput, TextInputProps & { lab
             {...rest} />
           {children}
         </Box>
-        {error && <ErrorTip />}
       </Box>
     </Box>
   )

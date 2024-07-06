@@ -9,7 +9,8 @@ export * from './inputs/Otc/Otc'
 
 export * from './buttons/BackButton/BackButton';
 export * from './misc/Errors/Errors';
-export * from './misc/Pulse/Pulse';
+export * from './animated/Pulse/Pulse';
+export * from './animated/JiggleView/JiggleView';
 export * from './headers/BackHeader';
 
 export * from './containers/baked-boxes';

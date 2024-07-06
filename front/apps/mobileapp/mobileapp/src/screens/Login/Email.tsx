@@ -74,7 +74,6 @@ export default function Login({ navigation, route }: EmailScreenProps) {
             onPress={handleSubmit(onSubmit)}
           />
         </View>
-        <Legal />
         <View style={styles.socialForm}>
           <Seperator label='Or Sign In With' variant='l' />
           <View style={styles.socialButtons}>
@@ -86,6 +85,7 @@ export default function Login({ navigation, route }: EmailScreenProps) {
             </Button>
           </View>
         </View>
+        <Legal />
       </Box>
     </TouchableWithoutFeedback>
   )

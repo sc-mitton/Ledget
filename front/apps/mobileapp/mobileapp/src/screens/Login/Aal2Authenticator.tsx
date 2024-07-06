@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { useTheme } from '@shopify/restyle';
 
 import sharedStyles from './styles/shared';
-import { Header, SubHeader2, Otc, Button, Pulse, NestedScreenWOFeedback } from '@components'
+import { Header, SubHeader2, Otc, Button, Pulse, NestedScreenWOFeedback, JiggleView } from '@components'
 import { Aal2AuthenticatorScreenProps } from '@types'
 import { useNativeFlow } from '@ledget/ory'
 import { Authenticator } from '@ledget/media/native';
@@ -53,15 +53,15 @@ const Aal1Authentication = ({ navigation, route }: Aal2AuthenticatorScreenProps)
         <View style={sharedStyles.graphicContainer}>
           <Authenticator
             fill={theme.colors.mainBackground}
-            stroke={flowStatus.isCompleteSuccess ? theme.colors.successIndicator : theme.colors.grayIcon}
+            stroke={flowStatus.isCompleteSuccess ? theme.colors.successIcon : theme.colors.grayIcon}
           />
           <Pulse success={flowStatus.isCompleteSuccess} />
         </View>
-        <View style={sharedStyles.form}>
+        <JiggleView style={sharedStyles.form} jiggle={flowStatus.isCompleteError}>
           <Controller
             control={control}
             name='otc'
-            render={({ field: { onChange, value } }) => (
+            render={({ field: { onChange } }) => (
               <Otc
                 autoFocus
                 codeLength={6}
@@ -80,7 +80,7 @@ const Aal1Authentication = ({ navigation, route }: Aal2AuthenticatorScreenProps)
             variant='borderedGrayMain'
             onPress={() => navigation.navigate('Aal2RecoveryCode', { identifier: route.params.identifier })}
           />
-        </View>
+        </JiggleView>
       </KeyboardAvoidingView>
     </NestedScreenWOFeedback>
   )

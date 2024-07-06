@@ -16,7 +16,7 @@ export default function LegalFooter() {
   }
 
   return (
-    <Box style={styles.legalFooter}>
+    <Box style={styles.legalFooter} variant='footer'>
       <Button
         label="Terms"
         onPress={() => openLink(`${LANDING_URL}/terms`)}

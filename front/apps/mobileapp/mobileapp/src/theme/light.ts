@@ -10,8 +10,8 @@ const blueS = 50;
 const palette = {
   ...basePalette,
 
-  red: 'hsl(0, 55%, 58%)',
-  mutedRed: 'hsl(352, 98%, 76%)',
+  red: 'hsl(0, 55%, 68%)',
+  mutedRed: 'hsl(352, 98%, 86%)',
   darkRed: 'hsl(0, 59%, 34%)',
   successGreen: 'hsl(144, 62%, 73%)',
   successGreenFaint: 'hsl(144, 62%, 83%)',
@@ -59,8 +59,10 @@ export const lightTheme = createTheme({
 
     // Borders
     inputBorder: palette.gray250,
-    focusedInputBorder1: palette.blue300,
-    focusedInputBorder2: palette.blue100,
+    inputBorderErrorSecondary: palette.mutedRed,
+    inputBorderErrorMain: palette.red,
+    focusedInputBorderSecondary: palette.blue100,
+    focusedInputBorderMain: palette.blue300,
 
     // Shadows
     navShadow: palette.gray100,
@@ -94,8 +96,8 @@ export const lightTheme = createTheme({
     pulseGreen: palette.successGreenFaint,
 
     // Icons
-    successIndicator: palette.successGreen,
-    grayIcon: palette.gray400,
+    successIcon: palette.successGreen,
+    grayIcon: palette.gray600,
   },
   spacing: {
     none: 0,
@@ -240,17 +242,36 @@ export const lightTheme = createTheme({
     },
   },
   boxVariants: {
+    header: {
+      paddingHorizontal: 'xl',
+    },
     fullCentered: {
       flex: 1,
-      justifyContent: 'center'
+      justifyContent: 'center',
+      paddingHorizontal: 'xl',
     },
     even: {
       flex: 1,
       justifyContent: 'space-evenly'
     },
+    screen: {
+      flex: 1,
+      paddingHorizontal: 'xl',
+    },
     screenWithHeader: {
       flex: 1,
       marginTop: 'xxl',
+      paddingHorizontal: 'xl',
+    },
+    footer: {
+      position: 'absolute',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      paddingBottom: 'xl',
+      right: 24,
+      left: 24,
+      bottom: 0,
+      zIndex: 100
     },
     defaults: {}
   },

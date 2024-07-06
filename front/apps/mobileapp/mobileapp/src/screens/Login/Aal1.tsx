@@ -15,7 +15,7 @@ import {
   Seperator,
   Icon,
   Box,
-  Text
+  JiggleView
 } from '@components'
 import { Aal1AuthenticatorScreenProps } from '@types';
 import { useNativeFlow } from '@ledget/ory';
@@ -55,7 +55,7 @@ const Aal1Authentication = ({ navigation, route }: Aal1AuthenticatorScreenProps)
           <Header>Finish Logging In</Header>
           <SubHeader2>Enter your password or use a pass-key login</SubHeader2>
         </View>
-        <View style={styles.form}>
+        <JiggleView style={styles.form} jiggle={flowStatus.isCompleteError}>
           <Controller
             control={control}
             name="password"
@@ -83,7 +83,7 @@ const Aal1Authentication = ({ navigation, route }: Aal1AuthenticatorScreenProps)
           >
             <Icon icon={Key} />
           </Button>
-        </View>
+        </JiggleView>
         <View style={styles.bottomButton}>
           <Button
             label='Recover Account'

@@ -6,7 +6,7 @@ import styles from './styles';
 
 export function BackHeader({ navigation, route, options, back }: StackHeaderProps) {
   return (
-    <Box style={styles.backHeader}>
+    <Box style={styles.backHeader} variant='header'>
       <BackButton onPress={navigation.goBack} />
     </Box>
   )

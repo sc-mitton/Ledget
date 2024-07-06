@@ -72,13 +72,13 @@ export const Otc = (props: Props) => {
           <>
             <Box
               key={`otc-${index}`}
-              borderColor={focused === index ? 'focusedInputBorder2' : 'transparent'}
+              borderColor={focused === index ? 'focusedInputBorderMain' : 'transparent'}
               borderWidth={1.5}
               style={styles.otcInputContainer2}
             >
               <Box
                 backgroundColor='inputBackground'
-                borderColor={focused === index ? 'focusedInputBorder1' : 'inputBorder'}
+                borderColor={focused === index ? 'focusedInputBorderSecondary' : 'inputBorder'}
                 borderWidth={1.25}
                 style={styles.otcInputContainer1}
               >

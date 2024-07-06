@@ -5,8 +5,6 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
     paddingTop: 80,
-    paddingLeft: 24,
-    paddingRight: 24,
   }
 });
 
