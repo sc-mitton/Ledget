@@ -5,14 +5,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: '50%',
     top: '50%',
-    transform: [{ translateY: 32 }],
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: -1,
   },
-  radialGradient: {
+  svg: {
     position: 'absolute',
-    borderRadius: 200,
+    left: '50%',
+    top: '50%',
   }
 });
 

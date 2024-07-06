@@ -3,12 +3,21 @@ import React, { useEffect } from 'react'
 import { TouchableWithoutFeedback, Keyboard, View } from 'react-native';
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Key } from 'geist-icons-native';
+import { Key, Lock } from 'geist-icons-native';
 import { z } from 'zod';
 
-import sharedStyles from './styles/shared';
-import { Header, SubHeader2, PasswordInput, Button, Seperator, Icon, Box } from '@components'
-import { Aal1AuthenticationProps } from '@types';
+import styles from './styles/aal1';
+import {
+  Header,
+  SubHeader2,
+  PasswordInput,
+  Button,
+  Seperator,
+  Icon,
+  Box,
+  Text
+} from '@components'
+import { Aal1AuthenticatorScreenProps } from '@types';
 import { useNativeFlow } from '@ledget/ory';
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice';
 
@@ -18,7 +27,7 @@ const schema = z.object({
     .transform(value => value.trim())
 });
 
-const Aal1Authentication = ({ navigation, route }: Aal1AuthenticationProps) => {
+const Aal1Authentication = ({ navigation, route }: Aal1AuthenticatorScreenProps) => {
   const { control, handleSubmit, formState: { errors } } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: 'onSubmit',
@@ -46,7 +55,7 @@ const Aal1Authentication = ({ navigation, route }: Aal1AuthenticationProps) => {
           <Header>Finish Logging In</Header>
           <SubHeader2>Enter your password or use a pass-key login</SubHeader2>
         </View>
-        <View style={sharedStyles.form}>
+        <View style={styles.form}>
           <Controller
             control={control}
             name="password"
@@ -74,6 +83,16 @@ const Aal1Authentication = ({ navigation, route }: Aal1AuthenticationProps) => {
           >
             <Icon icon={Key} />
           </Button>
+        </View>
+        <View style={styles.bottomButton}>
+          <Button
+            label='Recover Account'
+            variant='grayLinkButton'
+            onPress={() => navigation.navigate('Recovery', { identifier: route.params.identifier })}
+          />
+          <View style={styles.forgotIconContainer}>
+            <Icon icon={Lock} color='tertiaryText' size={18} />
+          </View>
         </View>
       </Box>
     </TouchableWithoutFeedback>

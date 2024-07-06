@@ -14,7 +14,8 @@ const palette = {
   mutedRed: 'hsl(352, 98%, 90%)',
   red: 'hsl(352, 86%, 69%)',
   darkRed: 'hsl(0, 59%, 34%)',
-  successGreen: 'hsl(144, 72%, 43%)',
+  successGreen: 'hsl(144, 62%, 33%)',
+  successGreenFaint: 'hsl(144, 62%, 18%)',
 
   gray900: `hsl(${grayH}, ${grayS}%, 5%)`,
   gray850: `hsl(${grayH}, ${grayS}%, 9%)`,
@@ -92,7 +93,9 @@ export const darkTheme = createTheme({
     // Misc
     alert: palette.red,
     pulseWaiting: palette.gray800,
-    pulseSuccess: palette.successGreen,
+    pulseGreen: palette.successGreenFaint,
+    successIndicator: palette.successGreen,
+    grayIcon: palette.gray100,
   },
   textVariants: {
     header: {
@@ -121,15 +124,8 @@ export const darkTheme = createTheme({
       width: '100%',
     },
     subheader2: {
-      fontSize: 18,
-      lineHeight: 24,
-      fontFamily: 'SourceSans3Regular',
-      color: 'secondaryText',
-      width: '100%',
-    },
-    subheader3: {
       fontSize: 16,
-      lineHeight: 20,
+      lineHeight: 22,
       fontFamily: 'SourceSans3Regular',
       color: 'secondaryText',
       width: '100%',
@@ -200,6 +196,10 @@ export const darkTheme = createTheme({
         borderWidth: 1.5,
         borderColor: 'seperator',
         flexDirection: 'row',
+      },
+      grayLinkButton: {
+        color: 'tertiaryText',
+        paddingVertical: 'xxs',
       }
     },
     seperatorVariants: {

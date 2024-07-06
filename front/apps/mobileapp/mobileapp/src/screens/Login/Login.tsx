@@ -4,11 +4,11 @@ import Email from './Email';
 import Aal1 from './Aal1';
 import Aal2Authenticator from './Aal2Authenticator';
 import Aal2RecoveryCode from './Aal2RecoveryCode';
-import { RootAccountStackParamList } from '@types';
+import { LoginStackParamList } from '@types';
 import { BackHeader } from '@components';
 import { useCardStyleInterpolator } from "@/hooks";
 
-const Stack = createStackNavigator<RootAccountStackParamList>();
+const Stack = createStackNavigator<LoginStackParamList>();
 
 export default function () {
   const cardStyleInterpolator = useCardStyleInterpolator();
@@ -19,7 +19,7 @@ export default function () {
         header: (props) => <BackHeader {...props} />,
         cardStyleInterpolator,
       }}
-      id='Accounts'
+      id='LoginStack'
     >
       <Stack.Screen
         options={{ headerShown: false }}

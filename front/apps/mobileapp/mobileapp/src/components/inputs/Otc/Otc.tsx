@@ -71,12 +71,12 @@ export const Otc = (props: Props) => {
         Array(codeLength).fill('').map((_, index) => (
           <>
             <Box
+              key={`otc-${index}`}
               borderColor={focused === index ? 'focusedInputBorder2' : 'transparent'}
               borderWidth={1.5}
               style={styles.otcInputContainer2}
             >
               <Box
-                key={index}
                 backgroundColor='inputBackground'
                 borderColor={focused === index ? 'focusedInputBorder1' : 'inputBorder'}
                 borderWidth={1.25}
@@ -102,7 +102,7 @@ export const Otc = (props: Props) => {
               </Box>
             </Box>
             {codeLength / 2 === (index + 1) &&
-              <Box key='dash' backgroundColor='seperator' style={styles.dash} />}
+              <Box key={`otc-dash-${index}`} backgroundColor='seperator' style={styles.dash} />}
           </>
         ))
       }

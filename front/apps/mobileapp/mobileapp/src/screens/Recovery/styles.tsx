@@ -2,8 +2,8 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   form: {
-    justifyContent: 'flex-start',
     flex: 1,
+    justifyContent: 'flex-start',
   },
   graphicContainer: {
     alignItems: 'center',

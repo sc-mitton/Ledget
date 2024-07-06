@@ -5,6 +5,7 @@ import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod';
 
+import styles from './styles/email'
 import {
   Header,
   SubHeader2,
@@ -17,12 +18,9 @@ import {
   FacebookLogo,
   GoogleLogo,
 } from '@ledget/media/native';
-import { EmailProps } from '@types';
+import { EmailScreenProps } from '@types';
 import { LogoIcon } from '@ledget/media/native';
 import Legal from './Legal';
-
-
-import styles from './styles/email'
 
 const schema = z.object({
   email: z.string()
@@ -31,14 +29,14 @@ const schema = z.object({
     .transform(value => value.trim())
 });
 
-export default function Login({ navigation, route }: EmailProps) {
+export default function Login({ navigation, route }: EmailScreenProps) {
   const { control, handleSubmit, formState: { errors } } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: 'onSubmit',
   });
 
   const onSubmit = (data: z.infer<typeof schema>) => {
-    navigation.navigate('Aal2Authenticator', { identifier: data.email });
+    navigation.navigate('Aal1', { identifier: data.email });
   };
 
   return (

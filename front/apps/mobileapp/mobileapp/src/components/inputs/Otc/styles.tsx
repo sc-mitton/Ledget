@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
   },
   otcInputContainer2: {
     width: 48,
-    height: 52,
+    height: 58,
     lineHeight: 36,
     borderRadius: 12,
     position: 'relative',

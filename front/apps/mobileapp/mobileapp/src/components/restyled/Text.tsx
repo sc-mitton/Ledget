@@ -37,14 +37,6 @@ export const SubHeader2 = (props: TextProps) => {
   );
 }
 
-export const SubHeader3 = (props: TextProps) => {
-  const { children, ...rest } = props;
-
-  return (
-    <Text variant="subheader3" {...rest}>{children}</Text>
-  );
-}
-
 export const InputLabel = (props: TextProps) => {
   const { children, ...rest } = props;
 

@@ -2,10 +2,12 @@ import { TouchableOpacity, View } from 'react-native';
 import {
   useRestyle,
   spacing,
+  layout,
   createVariant,
   backgroundColor,
   SpacingProps,
   VariantProps,
+  LayoutProps,
   BackgroundColorProps,
   composeRestyleFunctions,
 } from '@shopify/restyle';
@@ -15,6 +17,7 @@ import { Theme } from '../../theme';
 
 type RestyleProps = SpacingProps<Theme> &
   VariantProps<Theme, 'buttonVariants'> &
+  LayoutProps<Theme> &
   BackgroundColorProps<Theme>;
 
 const variant = createVariant({ themeKey: 'buttonVariants' });
@@ -23,6 +26,7 @@ const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([
   spacing,
   variant,
   backgroundColor,
+  layout,
 ]);
 
 type Props = RestyleProps & {

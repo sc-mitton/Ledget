@@ -13,10 +13,12 @@ const palette = {
   red: 'hsl(0, 55%, 58%)',
   mutedRed: 'hsl(352, 98%, 76%)',
   darkRed: 'hsl(0, 59%, 34%)',
-  successGreen: 'hsl(144, 72%, 43%)',
+  successGreen: 'hsl(144, 62%, 73%)',
+  successGreenFaint: 'hsl(144, 62%, 83%)',
 
   gray100: `hsl(${grayH}, ${grayS}%, 98%)`,
   gray150: `hsl(${grayH}, ${grayS}%, 96%)`,
+  gray175: `hsl(${grayH}, ${grayS}%, 93%)`,
   gray200: `hsl(${grayH}, ${grayS}%, 92%)`,
   gray250: `hsl(${grayH}, ${grayS}%, 90%)`,
   gray300: `hsl(${grayH}, ${grayS}%, 82%)`,
@@ -88,10 +90,15 @@ export const lightTheme = createTheme({
 
     // Misc
     alert: palette.red,
-    pulseWaiting: palette.gray300,
-    pulseSuccess: palette.successGreen,
+    pulseWaiting: palette.gray250,
+    pulseGreen: palette.successGreenFaint,
+
+    // Icons
+    successIndicator: palette.successGreen,
+    grayIcon: palette.gray400,
   },
   spacing: {
+    none: 0,
     xxs: 2,
     xs: 4,
     s: 8,
@@ -129,15 +136,8 @@ export const lightTheme = createTheme({
     },
     subheader2: {
       fontSize: 16,
-      lineHeight: 24,
+      lineHeight: 22,
       fontFamily: 'SourceSans3Medium',
-      color: 'secondaryText',
-      width: '100%',
-    },
-    subheader3: {
-      fontSize: 16,
-      lineHeight: 20,
-      fontFamily: 'SourceSans3Regular',
       color: 'secondaryText',
       width: '100%',
     },
@@ -205,6 +205,10 @@ export const lightTheme = createTheme({
       borderWidth: 1.5,
       borderColor: 'seperator',
       flexDirection: 'row',
+    },
+    grayLinkButton: {
+      color: 'tertiaryText',
+      paddingVertical: 'xxs',
     },
     defaults: {
       padding: 's',

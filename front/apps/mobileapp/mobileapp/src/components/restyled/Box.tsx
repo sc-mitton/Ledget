@@ -6,7 +6,8 @@ import {
   backgroundColor,
   spacing,
   layout,
-  border,
+  shadow,
+  ShadowProps,
   SpacingProps,
   BorderProps,
   LayoutProps,
@@ -23,6 +24,7 @@ type RestyleProps = SpacingProps<Theme> &
   VariantProps<Theme, 'boxVariants'> &
   BackgroundColorProps<Theme> &
   BorderProps<Theme> &
+  ShadowProps<Theme> &
   LayoutProps<Theme>;
 
 const variant = createVariant({ themeKey: 'boxVariants' });
@@ -32,6 +34,7 @@ const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([
   backgroundColor,
   spacing,
   layout,
+  shadow,
 ]);
 
 type Props = RestyleProps & ViewProps;

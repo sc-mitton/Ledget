@@ -1,15 +1,37 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import { Login, Recovery, Verification } from '@screens';
+import { RootAccountStackParamList } from '@types';
+import { BackHeader } from '@components';
+import { useCardStyleInterpolator } from "@/hooks";
 
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator<RootAccountStackParamList>();
 
 const Authentication = () => {
+  const cardStyleInterpolator = useCardStyleInterpolator();
+
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="Recovery" component={Recovery} />
-      <Stack.Screen name="Verification" component={Verification} />
+    <Stack.Navigator
+      screenOptions={{
+        header: (props) => <BackHeader {...props} />,
+        cardStyleInterpolator,
+      }}
+    >
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Recovery"
+        component={Recovery}
+        options={{ headerShown: true }}
+      />
+      <Stack.Screen
+        name="Verification"
+        component={Verification}
+        options={{ headerShown: true }}
+      />
     </Stack.Navigator>
   );
 };

@@ -1,6 +1,8 @@
 import type { StackScreenProps } from '@react-navigation/stack';
+import { NavigatorScreenParams } from '@react-navigation/native';
+import type { CompositeScreenProps } from '@react-navigation/native';
 
-export type RootAccountStackParamList = {
+export type LoginStackParamList = {
   Email: undefined;
   Aal1: {
     identifier: string;
@@ -13,8 +15,17 @@ export type RootAccountStackParamList = {
   };
 };
 
+export type RootAccountStackParamList = {
+  Login: NavigatorScreenParams<LoginStackParamList>;
+  Recovery: {
+    identifier: string;
+  };
+  Verification: undefined;
+};
 
-export type EmailProps = StackScreenProps<RootAccountStackParamList, 'Email', 'Accounts'>;
-export type Aal1AuthenticationProps = StackScreenProps<RootAccountStackParamList, 'Aal1', 'Accounts'>;
-export type Aal2AuthenticationProps = StackScreenProps<RootAccountStackParamList, 'Aal2Authenticator', 'Accounts'>;
-export type Aal2RecoveryCodeProps = StackScreenProps<RootAccountStackParamList, 'Aal2RecoveryCode', 'Accounts'>;
+export type EmailScreenProps = CompositeScreenProps<StackScreenProps<LoginStackParamList, 'Email'>, StackScreenProps<RootAccountStackParamList>>
+export type Aal1AuthenticatorScreenProps = CompositeScreenProps<StackScreenProps<LoginStackParamList, 'Aal1'>, StackScreenProps<RootAccountStackParamList>>
+export type Aal2AuthenticatorScreenProps = CompositeScreenProps<StackScreenProps<LoginStackParamList, 'Aal2Authenticator'>, StackScreenProps<RootAccountStackParamList>>
+export type Aal2RecoveryCodeScreenProps = CompositeScreenProps<StackScreenProps<LoginStackParamList, 'Aal2RecoveryCode'>, StackScreenProps<RootAccountStackParamList>>
+
+export type RecoveryScreenProps = StackScreenProps<RootAccountStackParamList, 'Recovery'>
