@@ -14,12 +14,12 @@ import { BrowserRouter } from 'react-router-dom';
 
 import '@styles/base.scss';
 import styles from './styles/app.module.scss';
-import Header from './header/header';
 import NotFound from '@pages/notFound';
 import Budget from '@pages/budget/Window';
 import Profile from '@pages/settings/Window';
 import Accounts from '@pages/accounts/Window';
 import Sidenav from './sidenav';
+import Header from './header/header';
 import {
   ZoomMotionDiv,
   Toast,

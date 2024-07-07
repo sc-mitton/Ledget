@@ -9,7 +9,7 @@ import { setLogoutModal, setModal } from '@features/modalSlice'
 import { useAppDispatch } from '@hooks/store'
 import { User, LifeBuoy, LogOut, Sun, Moon } from '@geist-ui/icons'
 import { DropdownItem, DropdownDiv, useScreenContext, useColorScheme } from '@ledget/ui'
-import { ActivityDropdown } from '../header'
+import ActivityDropdown from './activity/Dropdown';
 
 const LightDarkSwitch = () => {
     const { isDark, setDarkMode } = useColorScheme()
