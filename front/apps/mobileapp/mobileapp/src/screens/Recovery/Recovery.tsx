@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { View, KeyboardAvoidingView, Platform } from 'react-native';
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Mail } from 'geist-icons-native';
+import { Mail } from 'geist-native-icons';
 import { z } from 'zod';
 
 import styles from './styles';

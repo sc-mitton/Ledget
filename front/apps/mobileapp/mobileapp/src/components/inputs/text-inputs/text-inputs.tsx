@@ -6,7 +6,7 @@ import {
   NativeSyntheticEvent,
   TextInputFocusEventData,
 } from "react-native";
-import { Eye, EyeOff } from 'geist-icons-native';
+import { Eye, EyeOff } from 'geist-native-icons';
 import { useTheme } from '@shopify/restyle';
 
 import { Box } from '../../restyled/Box';

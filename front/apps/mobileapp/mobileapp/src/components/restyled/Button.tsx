@@ -8,6 +8,7 @@ import {
   SpacingProps,
   VariantProps,
   LayoutProps,
+  PositionProps,
   BackgroundColorProps,
   composeRestyleFunctions,
 } from '@shopify/restyle';
@@ -29,7 +30,7 @@ const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([
   layout,
 ]);
 
-type Props = RestyleProps & {
+export type Props = RestyleProps & {
   onPress: () => void;
   label?: string;
   textColor?: string;
@@ -52,6 +53,7 @@ export const Button = ({ onPress, label, textColor, children, labelPlacement = '
             {label}
           </Text>}
         {labelPlacement === 'left' && children}
+        {!labelPlacement && children}
       </View>
     </TouchableOpacity>
   );

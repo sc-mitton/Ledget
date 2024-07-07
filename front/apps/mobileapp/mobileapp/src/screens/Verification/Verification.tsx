@@ -1,43 +1,66 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { KeyboardAvoidingView, View, Platform } from 'react-native';
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod';
-import { useTheme } from '@shopify/restyle';
-import { Mail } from 'geist-icons-native';
+import { Mail } from 'geist-native-icons';
+import { apiSlice } from '@ledget/shared-features';
 
 import styles from './styles';
-import { Header, SubHeader2, Otc, Button, Pulse, NestedScreenWOFeedback, Icon } from '@components'
+import { Header, SubHeader2, Otc, SubmitButton, Pulse, NestedScreenWOFeedback, Icon, JiggleView, FormError } from '@components'
 import { VerificationScreenProps } from '@types'
-import { useNativeFlow } from '@ledget/ory'
-import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice';
+import { useNativeFlow, useVerificationCodeHandler } from '@ledget/ory'
+import { useLazyGetVerificationFlowQuery, useCompleteVerificationFlowMutation } from '@features/orySlice';
 
 const schema = z.object({
   code: z.string().length(6, { message: 'Invalid code' })
 })
 
 const Verification = ({ navigation, route }: VerificationScreenProps) => {
+  const [isResending, setIsResending] = useState(false)
+
   const { control, handleSubmit, formState: { errors } } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: 'onSubmit',
   });
 
-  const { flow, fetchFlow, completeFlow, flowStatus } = useNativeFlow(
-    useLazyGetLoginFlowQuery,
-    useCompleteLoginFlowMutation,
-    'login'
+  const { fetchFlow, submitFlow, flowStatus, result } = useNativeFlow(
+    useLazyGetVerificationFlowQuery,
+    useCompleteVerificationFlowMutation,
+    'verification'
   )
 
-  useEffect(() => fetchFlow({ aal: 'aal1' }), [])
-  const theme = useTheme()
+  const { jiggle, unhandledIdMessage, refreshSuccess, codeIsCorrect } = useVerificationCodeHandler({
+    dependencies: [flowStatus.isCompleteSuccess],
+    onExpired: () => console.log('Expired'),
+    onSuccess: () => console.log('Success'),
+    result
+  })
+
+  useEffect(() => fetchFlow(), [])
+
+  // Lower resending state when flow is resent
+  useEffect(() => {
+    if (flowStatus.isCompleteSuccess) {
+      setIsResending(false)
+    }
+  }, [flowStatus.isCompleteSuccess])
+
+  // Handle code verification success, invalidate user cache
+  useEffect(() => {
+    if (codeIsCorrect) {
+      apiSlice.util.invalidateTags(['User']);
+    }
+  }, [codeIsCorrect])
 
   const onSubmit = (data: z.infer<typeof schema>) => {
-    completeFlow({
-      ...data,
-      identifier: route.params.identifier,
-      method: 'password'
-    })
+    submitFlow({ ...data, method: 'code' })
+  }
+
+  const onResendSubmit = () => {
+    setIsResending(true)
+    submitFlow({ email: route.params.identifier, method: 'code' })
   }
 
   return (
@@ -54,7 +77,7 @@ const Verification = ({ navigation, route }: VerificationScreenProps) => {
           <Icon icon={Mail} color={flowStatus.isCompleteSuccess ? 'successIcon' : 'grayIcon'} size={54} />
           <Pulse success={flowStatus.isCompleteSuccess} />
         </View>
-        <View style={styles.form}>
+        <JiggleView style={styles.form} jiggle={jiggle}>
           <Controller
             control={control}
             name='code'
@@ -67,17 +90,21 @@ const Verification = ({ navigation, route }: VerificationScreenProps) => {
               />
             )}
           />
-          <Button
+          {unhandledIdMessage && <FormError error={unhandledIdMessage} />}
+          <SubmitButton
             label='Submit'
             variant='main'
             onPress={handleSubmit(onSubmit)}
+            isSubmitting={flowStatus.isCompletingFlow && !isResending}
           />
-          <Button
+          <SubmitButton
             label='Resend'
             variant='borderedGrayMain'
-            onPress={() => console.log('Resend')}
+            onPress={onResendSubmit}
+            isSuccess={refreshSuccess}
+            isSubmitting={flowStatus.isCompletingFlow && isResending}
           />
-        </View>
+        </JiggleView>
       </KeyboardAvoidingView>
     </NestedScreenWOFeedback>
   )

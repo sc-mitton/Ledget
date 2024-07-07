@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './styles/force-verification.module.scss';
 import { withModal } from '@ledget/ui';
 import { FormError, JiggleDiv, VerificationForm } from '@ledget/ui';
-import { useFlow } from '@ledget/ory';
+import { useFlow, useVerificationCodeHandler } from '@ledget/ory';
 import {
   apiSlice,
   useGetMeQuery,
@@ -17,79 +17,22 @@ import {
 
 export const ForceVerification = ({ onSuccess }: { onSuccess: () => void }) => {
   const { data: user } = useGetMeQuery();
-  const [jiggle, setJiggle] = useState(false);
-  const [codeIsCorrect, setCodeIsCorrect] = useState(false);
-  const [unhandledIdMessage, setUnhandledIdMessage] = useState('');
-  const [refreshSuccess, setRefreshSuccess] = useState(false);
   const navigate = useNavigate();
   const { flow, result, fetchFlow, submit, flowStatus } = useFlow(
     useLazyGetVerificationFlowQuery,
     useCompleteVerificationFlowMutation,
     'verification'
   );
-  const { errMsg, isGettingFlow, isCompletingFlow, isCompleteSuccess } =
-    flowStatus;
+  const { errMsg, isGettingFlow, isCompletingFlow, isCompleteSuccess } = flowStatus;
 
-  useEffect(() => {
-    fetchFlow();
-  }, []);
+  useEffect(() => { fetchFlow() }, []);
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setJiggle(false);
-    }, 1000);
-    return () => clearTimeout(timeout);
-  }, [jiggle]);
-
-  useEffect(() => {
-    let timeout: NodeJS.Timeout;
-    if (codeIsCorrect) {
-      timeout = setTimeout(() => {
-        onSuccess();
-      }, 1000);
-    }
-    return () => clearTimeout(timeout);
-  }, [codeIsCorrect]);
-
-  // Lower refreshSuccess flag
-  useEffect(() => {
-    let timeout = setTimeout(() => {
-      setRefreshSuccess(false);
-    }, 1200);
-    return () => clearTimeout(timeout);
-  }, [refreshSuccess]);
-
-  // Response code handler
-  useEffect(() => {
-    const messages = result?.ui?.messages || [];
-    for (const message of messages) {
-      switch (message.id) {
-        case 4070006:
-          // Invalid code
-          setJiggle(true);
-          break;
-        case 407005 || 407003:
-          // Expired verification flow
-          // Send new email & navigate to verification page
-          // which will create a new verification flow
-          navigate(0);
-          break;
-        case 1080002:
-          // Successful verification
-          setCodeIsCorrect(true);
-          break;
-        case 1080003:
-          // Email w/ code/link sent
-          setRefreshSuccess(true);
-          break;
-        default:
-          setUnhandledIdMessage(
-            'Well this is awkward... something went wrong.\n Please try back again later.'
-          );
-          break;
-      }
-    }
-  }, [isCompleteSuccess]);
+  const { jiggle, unhandledIdMessage, refreshSuccess } = useVerificationCodeHandler({
+    dependencies: [isCompleteSuccess],
+    onExpired: () => navigate(0),
+    onSuccess,
+    result
+  });
 
   return (
     <>

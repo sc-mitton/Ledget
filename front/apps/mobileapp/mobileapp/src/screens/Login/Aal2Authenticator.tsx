@@ -14,7 +14,7 @@ import { Authenticator } from '@ledget/media/native';
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice';
 
 const schema = z.object({
-  otc: z.string().length(6, { message: 'Invalid code' })
+  totp: z.string().length(6, { message: 'Invalid code' })
 })
 
 const Aal1Authentication = ({ navigation, route }: Aal2AuthenticatorScreenProps) => {
@@ -23,7 +23,7 @@ const Aal1Authentication = ({ navigation, route }: Aal2AuthenticatorScreenProps)
     mode: 'onSubmit',
   });
 
-  const { flow, fetchFlow, completeFlow, flowStatus } = useNativeFlow(
+  const { fetchFlow, submitFlow, flowStatus } = useNativeFlow(
     useLazyGetLoginFlowQuery,
     useCompleteLoginFlowMutation,
     'login'
@@ -33,7 +33,7 @@ const Aal1Authentication = ({ navigation, route }: Aal2AuthenticatorScreenProps)
   const theme = useTheme()
 
   const onSubmit = (data: z.infer<typeof schema>) => {
-    completeFlow({
+    submitFlow({
       ...data,
       identifier: route.params.identifier,
       method: 'password'
@@ -60,13 +60,13 @@ const Aal1Authentication = ({ navigation, route }: Aal2AuthenticatorScreenProps)
         <JiggleView style={sharedStyles.form} jiggle={flowStatus.isCompleteError}>
           <Controller
             control={control}
-            name='otc'
+            name='totp'
             render={({ field: { onChange } }) => (
               <Otc
                 autoFocus
                 codeLength={6}
                 onCodeChange={onChange}
-                error={errors.otc?.message}
+                error={errors.totp?.message}
               />
             )}
           />

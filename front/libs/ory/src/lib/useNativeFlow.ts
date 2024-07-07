@@ -66,7 +66,7 @@ export const useNativeFlow = <TFlow extends EndpointRootNames>(
     getFlow({ params: params }, true)
   }, [flow])
 
-  const submitData = useCallback((data: object) => {
+  const submitFlow = useCallback((data: object) => {
     setErrMsg(undefined)
     setErrId('')
 
@@ -80,10 +80,8 @@ export const useNativeFlow = <TFlow extends EndpointRootNames>(
   }, [flowId, aal, refresh])
 
   return {
-    flow,
     fetchFlow,
-    completeFlow,
-    submitData,
+    submitFlow,
     result,
     resetCompleteFlow,
     flowStatus: {

@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { TouchableWithoutFeedback, Keyboard, View } from 'react-native';
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Key, Lock } from 'geist-icons-native';
+import { Key, Lock } from 'geist-native-icons';
 import { z } from 'zod';
 
 import styles from './styles/aal1';
@@ -33,7 +33,7 @@ const Aal1Authentication = ({ navigation, route }: Aal1AuthenticatorScreenProps)
     resolver: zodResolver(schema),
     mode: 'onSubmit',
   });
-  const { fetchFlow, flow, completeFlow, flowStatus } = useNativeFlow(
+  const { fetchFlow, submitFlow, flowStatus } = useNativeFlow(
     useLazyGetLoginFlowQuery,
     useCompleteLoginFlowMutation,
     'login'
@@ -42,7 +42,7 @@ const Aal1Authentication = ({ navigation, route }: Aal1AuthenticatorScreenProps)
   useEffect(() => fetchFlow({ aal: 'aal1' }), [])
 
   const onSubmit = (data: z.infer<typeof schema>) => {
-    completeFlow({
+    submitFlow({
       ...data,
       identifier: route.params.identifier,
       method: 'password'
@@ -71,7 +71,7 @@ const Aal1Authentication = ({ navigation, route }: Aal1AuthenticatorScreenProps)
               />
             )}
           />
-          <FormError error={"Error with the server"} />
+          <FormError error={flowStatus.errMsg} />
           <Button
             label="Submit"
             variant='main'

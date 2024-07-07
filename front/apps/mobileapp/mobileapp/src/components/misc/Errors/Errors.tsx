@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 import React from 'react';
-import { AlertCircle } from 'geist-icons-native';
+import { AlertCircle } from 'geist-native-icons';
 
 import { Icon } from '../../restyled/Icon';
 import { Text } from '../../restyled/Text';

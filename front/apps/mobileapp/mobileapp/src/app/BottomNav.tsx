@@ -2,7 +2,7 @@ import { BlurView } from 'expo-blur';
 import { View, TouchableOpacity } from 'react-native';
 import { useTheme } from '@shopify/restyle';
 import { ParamListBase, TabNavigationState } from '@react-navigation/native';
-import { Home, DollarSign, Activity, User } from 'geist-icons-native';
+import { Home, DollarSign, Activity, User } from 'geist-native-icons';
 
 import styles from './styles/bottom-nav';
 import { Box, Icon } from '@components';

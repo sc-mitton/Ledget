@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { KeyboardAvoidingView, Platform, View } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
@@ -11,24 +11,31 @@ import { useNativeFlow } from '@ledget/ory';
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@/features/orySlice';
 import { Header, NestedScreenWOFeedback, SubHeader2, TextInput, Button, Pulse, JiggleView } from '@components';
 import { RecoveryCode } from '@ledget/media/native';
+import { Aal2RecoveryCodeScreenProps } from '@types';
 
 const schema = z.object({
-  code: z.string().min(1, 'Recovery code is required'),
+  lookup_secret: z.string().min(1, 'Recovery code is required'),
 });
 
-const Aal2RecoveryCode = () => {
+const Aal2RecoveryCode = ({ navigation, route }: Aal2RecoveryCodeScreenProps) => {
   const theme = useTheme();
   const { control, handleSubmit, formState: { errors } } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
-  const { flow, fetchFlow, completeFlow, flowStatus } = useNativeFlow(
+  const { fetchFlow, submitFlow, flowStatus } = useNativeFlow(
     useLazyGetLoginFlowQuery,
     useCompleteLoginFlowMutation,
     'login'
   );
 
+  useEffect(() => fetchFlow({ aal: 'aal2' }), []);
+
   const onSubmit = (data: z.infer<typeof schema>) => {
-    console.log(data);
+    submitFlow({
+      ...data,
+      method: 'lookup_secret',
+      identifier: route.params.identifier,
+    })
   }
 
   return (
@@ -51,10 +58,10 @@ const Aal2RecoveryCode = () => {
                 label="Code"
                 placeholder="Enter your recovery code"
                 onChangeText={onChange}
-                error={errors.code}
+                error={errors.lookup_secret}
               />
             )}
-            name="code"
+            name="lookup_secret"
             defaultValue=""
           />
           <Button
