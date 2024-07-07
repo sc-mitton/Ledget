@@ -12,7 +12,7 @@ import * as SplashScreen from 'expo-splash-screen';
 
 import styles from './styles/app';
 import { darkTheme, lightTheme, AppearanceProvider, useAppearance } from '@theme'
-import { Box } from '@components';
+import { Box } from '@ledget/native-ui';
 import { Budget, Accounts, Profile, Activity } from '@screens';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
 import { useGetMeQuery } from '@ledget/shared-features';

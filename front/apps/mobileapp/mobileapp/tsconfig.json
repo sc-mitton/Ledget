@@ -19,9 +19,6 @@
       "@/*": [
         "src/*"
       ],
-      "@components": [
-        "src/components"
-      ],
       "@theme": [
         "src/theme"
       ],
@@ -45,6 +42,9 @@
       ],
       "@ledget/shared-features": [
         "../../../libs/shared-features/src/index.ts"
+      ],
+      "@ledget/native-ui": [
+        "../../../libs/native-ui/src/index.ts"
       ],
     },
   },

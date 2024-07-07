@@ -1,6 +1,6 @@
 import { Linking } from 'react-native'
 
-import { Box, Button } from '@components'
+import { Box, Button } from '@ledget/native-ui'
 import { LANDING_URL } from '@env'
 
 import styles from './styles/legal-footer'

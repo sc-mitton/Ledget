@@ -9,7 +9,7 @@ import { useTheme } from '@shopify/restyle';
 import styles from './styles/shared';
 import { useNativeFlow } from '@ledget/ory';
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@/features/orySlice';
-import { Header, NestedScreenWOFeedback, SubHeader2, TextInput, Button, Pulse, JiggleView } from '@components';
+import { Header, NestedScreenWOFeedback, SubHeader2, TextInput, Button, Pulse, JiggleView } from '@ledget/native-ui';
 import { RecoveryCode } from '@ledget/media/native';
 import { Aal2RecoveryCodeScreenProps } from '@types';
 

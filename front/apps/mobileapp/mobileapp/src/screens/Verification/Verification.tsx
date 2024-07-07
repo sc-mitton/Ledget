@@ -8,7 +8,7 @@ import { Mail } from 'geist-native-icons';
 import { apiSlice } from '@ledget/shared-features';
 
 import styles from './styles';
-import { Header, SubHeader2, Otc, SubmitButton, Pulse, NestedScreenWOFeedback, Icon, JiggleView, FormError } from '@components'
+import { Header, SubHeader2, Otc, SubmitButton, Pulse, NestedScreenWOFeedback, Icon, JiggleView, FormError } from '@ledget/native-ui'
 import { VerificationScreenProps } from '@types'
 import { useNativeFlow, useVerificationCodeHandler } from '@ledget/ory'
 import { useLazyGetVerificationFlowQuery, useCompleteVerificationFlowMutation } from '@features/orySlice';

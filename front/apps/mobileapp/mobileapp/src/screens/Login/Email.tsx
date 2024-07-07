@@ -13,7 +13,7 @@ import {
   Button,
   Seperator,
   Box
-} from '@components';
+} from '@ledget/native-ui';
 import {
   FacebookLogo,
   GoogleLogo,

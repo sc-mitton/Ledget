@@ -2,7 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import { Login, Recovery, Verification } from '@screens';
 import { RootAccountStackParamList } from '@types';
-import { BackHeader } from '@components';
+import { BackHeader } from '@ledget/native-ui';
 import { useCardStyleInterpolator } from "@/hooks";
 
 const Stack = createStackNavigator<RootAccountStackParamList>();

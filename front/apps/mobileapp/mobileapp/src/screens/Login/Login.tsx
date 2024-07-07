@@ -5,7 +5,7 @@ import Aal1 from './Aal1';
 import Aal2Authenticator from './Aal2Authenticator';
 import Aal2RecoveryCode from './Aal2RecoveryCode';
 import { LoginStackParamList } from '@types';
-import { BackHeader } from '@components';
+import { BackHeader } from '@ledget/native-ui';
 import { useCardStyleInterpolator } from "@/hooks";
 
 const Stack = createStackNavigator<LoginStackParamList>();

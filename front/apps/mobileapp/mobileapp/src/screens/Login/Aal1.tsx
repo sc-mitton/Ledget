@@ -17,7 +17,7 @@ import {
   Box,
   JiggleView,
   FormError
-} from '@components'
+} from '@ledget/native-ui'
 import { Aal1AuthenticatorScreenProps } from '@types';
 import { useNativeFlow } from '@ledget/ory';
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice';

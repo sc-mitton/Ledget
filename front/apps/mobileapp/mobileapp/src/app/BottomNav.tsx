@@ -5,7 +5,7 @@ import { ParamListBase, TabNavigationState } from '@react-navigation/native';
 import { Home, DollarSign, Activity, User } from 'geist-native-icons';
 
 import styles from './styles/bottom-nav';
-import { Box, Icon } from '@components';
+import { Box, Icon } from '@ledget/native-ui';
 import { Institution } from '@ledget/media/native';
 import { useAppearance } from '@/theme';
 

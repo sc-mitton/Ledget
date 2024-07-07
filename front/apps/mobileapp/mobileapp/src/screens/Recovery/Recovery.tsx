@@ -8,7 +8,7 @@ import { z } from 'zod';
 import styles from './styles';
 import { useNativeFlow } from '@ledget/ory';
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@/features/orySlice';
-import { Header, NestedScreenWOFeedback, SubHeader2, Button, Pulse, Otc, Icon } from '@components'
+import { Header, NestedScreenWOFeedback, SubHeader2, Button, Pulse, Otc, Icon } from '@ledget/native-ui'
 import { RecoveryScreenProps } from '@types'
 
 const schema = z.object({

@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { useTheme } from '@shopify/restyle';
 
 import sharedStyles from './styles/shared';
-import { Header, SubHeader2, Otc, Button, Pulse, NestedScreenWOFeedback, JiggleView } from '@components'
+import { Header, SubHeader2, Otc, Button, Pulse, NestedScreenWOFeedback, JiggleView } from '@ledget/native-ui'
 import { Aal2AuthenticatorScreenProps } from '@types'
 import { useNativeFlow } from '@ledget/ory'
 import { Authenticator } from '@ledget/media/native';
