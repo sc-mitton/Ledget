@@ -63,7 +63,7 @@ const Circle = ({ green = false, size = 'l', position }: CircleProps) => {
           <Stop stopColor={theme.colors.mainBackground} offset={
             green
               ? position === 'inner' ? .3 : .4
-              : position === 'inner' ? .9 : .9} />
+              : position === 'inner' ? .85 : .9} />
           <Stop stopColor={green ? theme.colors.pulseGreen : theme.colors.pulseWaiting} offset={1} />
         </SVGRadialGradient>
       </Defs>
@@ -74,7 +74,7 @@ const Circle = ({ green = false, size = 'l', position }: CircleProps) => {
 export const Pulse = ({ size = 'm', success }: PulseProps) => {
 
   // Shared scale values
-  const inactiveInnerPulse = useSharedValue(1.1);
+  const inactiveInnerPulse = useSharedValue(.8);
   const inactiveOuterPulse = useSharedValue(1.3);
   const activeInnerPulse = useSharedValue(0);
   const activeOuterPulse = useSharedValue(0);

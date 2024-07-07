@@ -9,8 +9,8 @@ import { useTheme } from '@shopify/restyle';
 import styles from './styles/shared';
 import { useNativeFlow } from '@ledget/ory';
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@/features/orySlice';
-import { RecoveryCode } from '@ledget/media/native';
 import { Header, NestedScreenWOFeedback, SubHeader2, TextInput, Button, Pulse, JiggleView } from '@components';
+import { RecoveryCode } from '@ledget/media/native';
 
 const schema = z.object({
   code: z.string().min(1, 'Recovery code is required'),
@@ -40,10 +40,7 @@ const Aal2RecoveryCode = () => {
         <Header>Recovery Code</Header>
         <SubHeader2>Enter one of your saved recovery codes to login</SubHeader2>
         <View style={styles.graphicContainer}>
-          <RecoveryCode
-            fill={theme.colors.mainBackground}
-            stroke={flowStatus.isCompleteSuccess ? theme.colors.successIcon : theme.colors.grayIcon}
-          />
+          <RecoveryCode fill={theme.colors.mainBackground} stroke={theme.colors.grayIcon} />
           <Pulse success={flowStatus.isCompleteSuccess} />
         </View>
         <JiggleView style={styles.centeredForm} jiggle={flowStatus.isCompleteError}>

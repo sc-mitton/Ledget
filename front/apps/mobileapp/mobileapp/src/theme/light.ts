@@ -97,7 +97,7 @@ export const lightTheme = createTheme({
 
     // Icons
     successIcon: palette.successGreen,
-    grayIcon: palette.gray600,
+    grayIcon: palette.gray400,
   },
   spacing: {
     none: 0,
@@ -112,8 +112,8 @@ export const lightTheme = createTheme({
   },
   textVariants: {
     header: {
-      fontSize: 28,
-      lineHeight: 30,
+      fontSize: 26,
+      lineHeight: 28,
       marginTop: 'xl',
       marginBottom: 'xs',
       fontFamily: 'SourceSans3SemiBold',

@@ -17,6 +17,7 @@ export const Icon = ({ icon: Icon, size = 20, color = 'mainText', ...rest }: Pro
   return <Icon
     size={size}
     stroke={(props as any).style[0].borderColor || (props as any).style[0].color}
+    fill={(props as any).style[0].borderColor ? (props as any).style[0].borderColor : 'none'}
     {...props}
   />
 }

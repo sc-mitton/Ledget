@@ -18,7 +18,6 @@ export const FormErrorTip = ({ error }: { error?: Error }) => (
   </>
 )
 
-
 export const FormError = ({ msg, insideForm = true }: { msg: string | string[], insideForm?: boolean }) => {
 
   const renderLines = (text: string) => {

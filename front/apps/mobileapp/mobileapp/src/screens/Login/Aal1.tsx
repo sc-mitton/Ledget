@@ -15,7 +15,8 @@ import {
   Seperator,
   Icon,
   Box,
-  JiggleView
+  JiggleView,
+  FormError
 } from '@components'
 import { Aal1AuthenticatorScreenProps } from '@types';
 import { useNativeFlow } from '@ledget/ory';
@@ -70,6 +71,7 @@ const Aal1Authentication = ({ navigation, route }: Aal1AuthenticatorScreenProps)
               />
             )}
           />
+          <FormError error={"Error with the server"} />
           <Button
             label="Submit"
             variant='main'

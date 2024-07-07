@@ -1,14 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, KeyboardAvoidingView, Platform } from 'react-native';
-import { useTheme } from '@shopify/restyle';
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Mail } from 'geist-icons-native';
 import { z } from 'zod';
 
 import styles from './styles';
-import { Header, NestedScreenWOFeedback, SubHeader2, Button, Pulse, Otc } from '@components'
-import { Key } from '@ledget/media/native';
-import { useAppearance } from '@theme';
+import { useNativeFlow } from '@ledget/ory';
+import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@/features/orySlice';
+import { Header, NestedScreenWOFeedback, SubHeader2, Button, Pulse, Otc, Icon } from '@components'
 import { RecoveryScreenProps } from '@types'
 
 const schema = z.object({
@@ -20,9 +20,13 @@ export default function Login({ navigation, route }: RecoveryScreenProps) {
     resolver: zodResolver(schema),
     mode: 'onSubmit',
   });
-  const appearance = useAppearance()
+  const { flow, fetchFlow, completeFlow, flowStatus } = useNativeFlow(
+    useLazyGetLoginFlowQuery,
+    useCompleteLoginFlowMutation,
+    'login'
+  )
 
-  const theme = useTheme()
+  useEffect(() => { fetchFlow() }, [])
 
   const onSubmit = (data: z.infer<typeof schema>) => {
     console.log(data)
@@ -37,10 +41,7 @@ export default function Login({ navigation, route }: RecoveryScreenProps) {
         <Header>Recover Account</Header>
         <SubHeader2>Enter the code sent to your email</SubHeader2>
         <View style={styles.graphicContainer}>
-          <Key
-            fill={appearance.mode === 'light' ? theme.colors.grayIcon : theme.colors.mainBackground}
-            stroke={theme.colors.grayIcon}
-          />
+          <Icon icon={Mail} color={flowStatus.isCompleteSuccess ? 'successIcon' : 'grayIcon'} size={54} />
           <Pulse success={false} />
         </View>
         <View style={styles.form}>

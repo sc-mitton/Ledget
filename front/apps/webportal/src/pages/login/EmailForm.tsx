@@ -6,7 +6,6 @@ import { z } from 'zod'
 
 import styles from './styles/email-form.module.scss'
 import {
-    WindowHeader,
     Checkbox,
     FormError,
     PlainTextInput,
