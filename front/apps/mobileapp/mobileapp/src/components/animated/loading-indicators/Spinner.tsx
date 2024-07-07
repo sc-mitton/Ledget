@@ -6,6 +6,8 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
+import styles from './styles';
+
 export const Spinner = () => {
 
   return (

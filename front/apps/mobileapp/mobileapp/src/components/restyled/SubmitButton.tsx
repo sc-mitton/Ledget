@@ -9,7 +9,7 @@ import Animated, {
 
 import { Button } from './Button';
 import type { Props } from './Button';
-import { Spinner } from '../animated/LoadingIndicators/Spinner';
+import { Spinner } from '../animated/loading-indicators/Spinner';
 import { Icon } from './Icon';
 
 interface ExtraProps {

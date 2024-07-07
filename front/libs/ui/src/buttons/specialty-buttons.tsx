@@ -10,7 +10,7 @@ import {
     Grip,
     CornerGrip
 } from '@ledget/media'
-import { Tooltip } from '../pieces/tooltip/tooltip'
+import { Tooltip } from '../pieces/tooltip/Tooltip'
 import { LoadingRing } from '../pieces/loading-indicators/loading-indicators'
 import { withArrow, withLoading, withCheckMark } from './hocs';
 import {

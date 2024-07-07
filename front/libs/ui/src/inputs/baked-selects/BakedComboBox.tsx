@@ -2,7 +2,7 @@ import { useRef, useEffect, useState, useId } from 'react';
 
 import { Combobox } from '@headlessui/react';
 import { useController } from 'react-hook-form';
-import { BakedSelectProps } from './baked-list-box';
+import { BakedSelectProps } from './BakedListBox';
 import { ChevronDown } from '@geist-ui/icons';
 
 import styles from './baked-selects.module.scss';

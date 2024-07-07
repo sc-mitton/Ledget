@@ -3,7 +3,7 @@ import { ChevronRight, Check } from '@geist-ui/icons'
 
 import styles from './styles.module.scss'
 import { LoadingRing } from '../pieces/loading-indicators/loading-indicators'
-import { TranslucentShimmerDiv } from '../pieces/shimmer/shimmer'
+import { TranslucentShimmerDiv } from '../pieces/shimmers/shimmers'
 
 interface LoadingButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     loading?: boolean;

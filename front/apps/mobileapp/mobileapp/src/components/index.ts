@@ -6,13 +6,13 @@ export * from './restyled/Seperator';
 export * from './restyled/SubmitButton';
 
 export * from './inputs/text-inputs/text-inputs';
-export * from './inputs/Otc/Otc';
+export * from './inputs/otc/Otc';
 
-export * from './buttons/BackButton/BackButton';
-export * from './misc/Errors/Errors';
-export * from './animated/LoadingIndicators/Spinner';
-export * from './animated/Pulse/Pulse';
-export * from './animated/JiggleView/JiggleView';
+export * from './buttons/back-button/BackButton';
+export * from './misc/form-errors/form-errors';
+export * from './animated/loading-indicators/Spinner';
+export * from './animated/pulse/Pulse';
+export * from './animated/views/JiggleView';
 export * from './headers/BackHeader';
 
 export * from './containers/baked-boxes';

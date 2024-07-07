@@ -18,7 +18,7 @@ dayjs.extend(localeData)
 dayjs.extend(weekOfYear)
 dayjs.extend(weekYear)
 
-import App from './app/app';
+import App from './app/App';
 import store from '@features/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)

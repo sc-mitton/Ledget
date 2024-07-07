@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 
 import styles from './verification-form.module.scss';
 import { MainButton, ResendButton } from '../../buttons'
-import { Otc } from '../../inputs/otc/otc'
+import { Otc } from '../../inputs/otc/Otc'
 
 interface VerificationFormProps {
   flow: any

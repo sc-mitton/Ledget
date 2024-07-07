@@ -18,8 +18,8 @@ import NotFound from '@pages/notFound';
 import Budget from '@pages/budget/Window';
 import Profile from '@pages/settings/Window';
 import Accounts from '@pages/accounts/Window';
-import Sidenav from './sidenav';
-import Header from './header/header';
+import Sidenav from './SideNav';
+import Header from './header/Header';
 import {
   ZoomMotionDiv,
   Toast,
@@ -49,7 +49,7 @@ import {
 } from '@features/modalSlice';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
 import store from '@features/store';
-import Modals from './modals';
+import Modals from './Modals';
 
 const PrivateRoute = () => {
   const { isSuccess, isError } = useGetMeQuery();

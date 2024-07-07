@@ -1,5 +1,5 @@
 
-export * from './misc/avatar/avatar';
+export * from './misc/avatar/Avatar';
 
 export * from './themes/use-bill-cat-tab-theme/use-bill-cat-tab-theme';
 export * from './themes/hooks/use-scheme-var/use-scheme-var';
@@ -9,7 +9,7 @@ export * from './modal/with-small-modal/with-small-modal';
 export * from './modal/with-modal/with-modal';
 
 export * from './misc/misc/misc';
-export * from './forms/verification-form/verification-form';
+export * from './forms/verification-form/VerificationForm';
 
 export * from './utils/hooks';
 export * from './utils/context/ScreenContext';

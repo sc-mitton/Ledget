@@ -10,7 +10,7 @@ import {
     Recovery,
     Activation
 } from '@pages/index'
-import Header from './header/header'
+import Header from './header/Header'
 import { useColorScheme, useScreenContext } from '@ledget/ui'
 import { MainDiv } from '@components/index'
 

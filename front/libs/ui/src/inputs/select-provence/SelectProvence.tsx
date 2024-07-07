@@ -2,7 +2,7 @@
 import { Control } from "react-hook-form";
 
 import { states as provences } from './provences-data'
-import BakedComboBox from "../baked-selects/baked-combo-box";
+import BakedComboBox from "../baked-selects/BakedComboBox";
 
 export const SelectProvence = ({ control, errors }: { control: Control, errors: any }) => (
   <BakedComboBox
