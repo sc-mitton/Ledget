@@ -19,9 +19,6 @@
       "@/*": [
         "src/*"
       ],
-      "@theme": [
-        "src/theme"
-      ],
       "@screens": [
         "src/screens",
       ],
@@ -45,6 +42,9 @@
       ],
       "@ledget/native-ui": [
         "../../../libs/native-ui/src/index.ts"
+      ],
+      "@ledget/helpers": [
+        "../../../libs/helpers/src"
       ],
     },
   },

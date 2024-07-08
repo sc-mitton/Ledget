@@ -5,24 +5,16 @@ import { AnimatePresence, motion } from 'framer-motion'
 
 export const LoadingRing = ({ visible = false, style, className = '' }: { visible?: boolean, style?: React.CSSProperties, className?: string }) => {
   return (
-    <div
-      style={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        display: visible ? 'block' : 'none',
-        color: 'inherit',
-        ...style
-      }}
-    >
-      <div className={styles.ldsRing}>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-    </div>
+    <>
+      {visible && <div style={style} className={styles.ldsRingContainer}>
+        <div className={styles.ldsRing}>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>}
+    </>
   )
 }
 

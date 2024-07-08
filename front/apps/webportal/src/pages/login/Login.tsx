@@ -16,10 +16,9 @@ import {
     Checkbox
 } from "@ledget/ui"
 import { useFlow } from '@ledget/ory'
-import { useGetMeQuery } from '@ledget/shared-features'
+import { useGetMeQuery, useRefreshDevicesMutation } from '@ledget/shared-features'
 import { hasErrorCode } from '@ledget/helpers'
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice'
-import { useRefreshDevicesMutation } from '@features/deviceSlice'
 import OryFormWrapper from "./FormWrapper"
 import EmailForm from "./EmailForm"
 import {
@@ -35,7 +34,7 @@ const Login = () => {
     const { error } = useGetMeQuery()
 
     const [email, setEmail] = useState<string>()
-    const [healthCheckResult, setHealthCheckResult] = useState<'aal2_required' | 'aal15_required' | 'healthy'>()
+    const [healthCheckResult, setHealthCheckResult] = useState<'aal2_totp_required' | 'healthy'>()
     const [trustDevice, setTrustDevice] = useState(true)
     const [redirectToApp, setRedirectToApp] = useState(false)
 
@@ -62,10 +61,8 @@ const Login = () => {
     // No flows should be fetched until this is first checked, since this always
     // needs to happen first.
     useEffect(() => {
-        if (hasErrorCode('AAL2_REQUIRED', error)) {
-            setHealthCheckResult('aal2_required')
-        } else if (hasErrorCode('AAL15_REQUIRED', error)) {
-            setHealthCheckResult('aal15_required')
+        if (hasErrorCode('AAL2_TOTP_REQUIRED', error)) {
+            setHealthCheckResult('aal2_totp_required')
         } else {
             setHealthCheckResult('healthy')
         }
@@ -73,7 +70,7 @@ const Login = () => {
 
     // After health check result, set proper mfa if needed
     useEffect(() => {
-        if (healthCheckResult === 'aal2_required') {
+        if (healthCheckResult === 'aal2_totp_required') {
             searchParams.set('mfa', 'totp')
             setSearchParams(searchParams)
         } else {

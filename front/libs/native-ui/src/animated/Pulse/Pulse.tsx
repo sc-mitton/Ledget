@@ -78,7 +78,7 @@ export const Pulse = ({ size = 'm', success }: PulseProps) => {
   const inactiveOuterPulse = useSharedValue(1.3);
   const activeInnerPulse = useSharedValue(0);
   const activeOuterPulse = useSharedValue(0);
-  const opacityOuter = useSharedValue(.3);
+  const opacityOuter = useSharedValue(.2);
   const opacityInner = useSharedValue(.45);
 
   const successOpacity = useSharedValue(1);

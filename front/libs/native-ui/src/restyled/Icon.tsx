@@ -6,7 +6,7 @@ import {
   border,
   useRestyle
 } from '@shopify/restyle';
-import { Theme } from '@theme';
+import { Theme } from '../theme';
 
 const restyleFunctions = composeRestyleFunctions([color, border])
 type Props = ColorProps<Theme> & BorderProps<Theme> & { icon: React.ComponentType<any>, size?: number };

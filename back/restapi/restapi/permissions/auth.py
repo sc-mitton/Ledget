@@ -37,8 +37,8 @@ class IsAuthenticated(BasePermission):
             else:
                 raise ValidationError(
                     {
-                        "message": "Device must have aal2 level session",
-                        "code": "AAL2_REQUIRED",
+                        "message": "Device must have aal2 level session via totp",
+                        "code": "AAL2_TOTP_REQUIRED",
                     }
                 )
         else:

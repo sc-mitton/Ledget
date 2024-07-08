@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 
 import { TouchableWithoutFeedback, Keyboard, View } from 'react-native';
-import { useForm, Controller } from "react-hook-form"
-import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Key, Lock } from 'geist-native-icons';
 import { z } from 'zod';
 
@@ -17,9 +17,11 @@ import {
   Box,
   JiggleView,
   FormError
-} from '@ledget/native-ui'
+} from '@ledget/native-ui';
+import { useGetMeQuery } from '@ledget/shared-features';
 import { Aal1AuthenticatorScreenProps } from '@types';
 import { useNativeFlow } from '@ledget/ory';
+import { hasErrorCode } from '@ledget/helpers';
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice';
 
 const schema = z.object({
@@ -29,6 +31,8 @@ const schema = z.object({
 });
 
 const Aal1Authentication = ({ navigation, route }: Aal1AuthenticatorScreenProps) => {
+  const { error, data: user } = useGetMeQuery()
+
   const { control, handleSubmit, formState: { errors } } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: 'onSubmit',
@@ -41,6 +45,17 @@ const Aal1Authentication = ({ navigation, route }: Aal1AuthenticatorScreenProps)
 
   useEffect(() => fetchFlow({ aal: 'aal1' }), [])
 
+  // Navigate to aal2 if needed or if user is not verified
+  // then navigate to verification
+  useEffect(() => {
+    if (hasErrorCode('AAL2_TOTP_REQUIRED', error)) {
+      navigation.navigate('Aal2Authenticator', { identifier: route.params.identifier })
+    } else if (!user?.is_verified) {
+      navigation.navigate('Verification', { identifier: route.params.identifier })
+    }
+  }, [error, user])
+
+  // Submit the form
   const onSubmit = (data: z.infer<typeof schema>) => {
     submitFlow({
       ...data,

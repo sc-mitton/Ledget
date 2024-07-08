@@ -94,16 +94,16 @@ export const darkTheme = createTheme({
 
     // Misc
     alert: palette.red,
-    pulseWaiting: palette.gray800,
+    pulseWaiting: palette.gray700,
     pulseGreen: palette.successGreenFaint,
     successIcon: palette.successGreen,
     grayIcon: palette.gray100,
   },
   textVariants: {
     header: {
-      fontSize: 28,
-      lineHeight: 40,
-      marginTop: 'xs',
+      fontSize: 26,
+      lineHeight: 28,
+      marginTop: 'm',
       marginBottom: 'xs',
       fontFamily: 'SourceSans3Medium',
       color: 'mainText',

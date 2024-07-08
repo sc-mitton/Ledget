@@ -6,9 +6,11 @@ import Animated, {
   withTiming,
   withDelay,
 } from 'react-native-reanimated';
+import { Check } from 'geist-native-icons';
 
 import { Button } from './Button';
 import type { Props } from './Button';
+import { Box } from './Box';
 import { Spinner } from '../animated/loading-indicators/Spinner';
 import { Icon } from './Icon';
 
@@ -24,25 +26,30 @@ export const SubmitButton = (props: Props & ExtraProps) => {
   const checkScale = useSharedValue(.9);
 
   useEffect(() => {
+    let timeout: NodeJS.Timeout;
     if (isSuccess) {
 
       setShowCheck(true);
 
       checkScale.value = withSequence(
-        withTiming(1.1, { duration: 200 }),
-        withTiming(1, { duration: 200 }),
-        withDelay(1000, withTiming(.7, { duration: 200 }))
+        withTiming(1.3, { duration: 200 }),
+        withTiming(1.2, { duration: 200 }),
+        withDelay(2000, withTiming(.7, { duration: 200 }))
       );
 
-      setShowCheck(false);
+      timeout = setTimeout(() => {
+        setShowCheck(false);
+      }, 2600);
     }
+    return () => clearTimeout(timeout);
+
   }, [isSuccess]);
 
   return (
-    <Button label={showCheck ? undefined : label} {...rest} >
-      {isSubmitting && <Spinner />}
+    <Button label={(isSubmitting || showCheck) ? undefined : label} {...rest} >
+      {isSubmitting && <Box padding='xxs'><Spinner /></Box>}
       <Animated.View style={{ transform: [{ scale: checkScale }] }}>
-        {showCheck && <Icon icon={Icon} color={'successIcon'} />}
+        {showCheck && <Box padding='xxs'><Icon icon={Check} color={'successIcon'} /></Box>}
       </Animated.View>
     </Button>
   );

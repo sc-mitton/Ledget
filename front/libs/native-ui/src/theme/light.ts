@@ -13,7 +13,7 @@ const palette = {
   red: 'hsl(0, 55%, 68%)',
   mutedRed: 'hsl(352, 98%, 86%)',
   darkRed: 'hsl(0, 59%, 34%)',
-  successGreen: 'hsl(144, 62%, 73%)',
+  successGreen: 'hsl(144, 62%, 53%)',
   successGreenFaint: 'hsl(144, 62%, 83%)',
 
   gray100: `hsl(${grayH}, ${grayS}%, 98%)`,
@@ -92,7 +92,7 @@ export const lightTheme = createTheme({
 
     // Misc
     alert: palette.red,
-    pulseWaiting: palette.gray250,
+    pulseWaiting: palette.gray300,
     pulseGreen: palette.successGreenFaint,
 
     // Icons
@@ -114,7 +114,7 @@ export const lightTheme = createTheme({
     header: {
       fontSize: 26,
       lineHeight: 28,
-      marginTop: 'xl',
+      marginTop: 'm',
       marginBottom: 'xs',
       fontFamily: 'SourceSans3SemiBold',
       color: 'mainText',

@@ -15,11 +15,18 @@ export const deviceSlice = apiSlice.injectEndpoints({
         method: 'DELETE'
       }),
       invalidatesTags: ['Device']
-    })
+    }),
+    refreshDevices: builder.mutation<void, void>({
+      query: () => ({
+        url: 'devices',
+        method: 'POST',
+      })
+    }),
   })
 });
 
 export const {
   useAddRememberedDeviceMutation,
-  useDeleteRememberedDeviceMutation
+  useDeleteRememberedDeviceMutation,
+  useRefreshDevicesMutation
 } = deviceSlice;

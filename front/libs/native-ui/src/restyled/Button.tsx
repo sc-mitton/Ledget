@@ -8,13 +8,12 @@ import {
   SpacingProps,
   VariantProps,
   LayoutProps,
-  PositionProps,
   BackgroundColorProps,
   composeRestyleFunctions,
 } from '@shopify/restyle';
 
 import { Text } from './Text';
-import { Theme } from '../../theme';
+import { Theme } from '../theme';
 
 type RestyleProps = SpacingProps<Theme> &
   VariantProps<Theme, 'buttonVariants'> &

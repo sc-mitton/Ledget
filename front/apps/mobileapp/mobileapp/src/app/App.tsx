@@ -11,11 +11,10 @@ import { ENV } from '@env';
 import * as SplashScreen from 'expo-splash-screen';
 
 import styles from './styles/app';
-import { darkTheme, lightTheme, AppearanceProvider, useAppearance } from '@theme'
-import { Box } from '@ledget/native-ui';
+import { darkTheme, lightTheme, AppearanceProvider, useAppearance, Box } from '@ledget/native-ui'
 import { Budget, Accounts, Profile, Activity } from '@screens';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
-import { useGetMeQuery } from '@ledget/shared-features';
+import { useGetMeQuery, useRefreshDevicesMutation } from '@ledget/shared-features';
 import store from '@features/store';
 import Nav from './BottomNav';
 import Authentication from './Accounts';
@@ -35,6 +34,7 @@ const navTheme = {
 };
 
 function App() {
+  const [refreshDevices] = useRefreshDevicesMutation()
   const { data: user } = useGetMeQuery();
   const [fontsLoaded, fontError] = useFonts({
     'SourceSans3Regular': SourceSans3Regular,
@@ -53,6 +53,11 @@ function App() {
     return null;
   }
 
+  // Refresh devices when token is set
+  useEffect(() => {
+    console.log('Refreshing devices')
+  }, [])
+
   return (
     <>
       <StatusBar style="auto" />
@@ -62,7 +67,7 @@ function App() {
         onLayout={SplashScreen.preventAutoHideAsync}
       >
         <NavigationContainer theme={navTheme}>
-          {user
+          {(user && user.is_verified)
             ? <Tab.Navigator
               initialRouteName='budget'
               backBehavior='history'

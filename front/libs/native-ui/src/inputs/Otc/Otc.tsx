@@ -1,12 +1,17 @@
 import { useState, useRef, useEffect } from 'react'
 
 import { View, TextInput, Keyboard } from 'react-native'
-import React from 'react'
 
 import styles from './styles';
 import { Box } from '../../restyled/Box';
-import type { Props } from './types';
 import { useTheme } from '@shopify/restyle';
+
+type Props = {
+  codeLength: number;
+  onCodeChange: (code: string) => void;
+  error?: string;
+  autoFocus?: boolean;
+}
 
 export const Otc = (props: Props) => {
   const { codeLength, onCodeChange, autoFocus, error } = props
@@ -72,13 +77,13 @@ export const Otc = (props: Props) => {
           <>
             <Box
               key={`otc-${index}`}
-              borderColor={focused === index ? 'focusedInputBorderMain' : 'transparent'}
+              borderColor={focused === index ? 'focusedInputBorderSecondary' : 'transparent'}
               borderWidth={1.5}
               style={styles.otcInputContainer2}
             >
               <Box
                 backgroundColor='inputBackground'
-                borderColor={focused === index ? 'focusedInputBorderSecondary' : 'inputBorder'}
+                borderColor={focused === index ? 'focusedInputBorderMain' : 'inputBorder'}
                 borderWidth={1.25}
                 style={styles.otcInputContainer1}
               >

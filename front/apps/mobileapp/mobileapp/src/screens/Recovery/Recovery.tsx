@@ -20,7 +20,7 @@ export default function Login({ navigation, route }: RecoveryScreenProps) {
     resolver: zodResolver(schema),
     mode: 'onSubmit',
   });
-  const { flow, fetchFlow, completeFlow, flowStatus } = useNativeFlow(
+  const { fetchFlow, flowStatus } = useNativeFlow(
     useLazyGetLoginFlowQuery,
     useCompleteLoginFlowMutation,
     'login'
