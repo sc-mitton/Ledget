@@ -34,10 +34,6 @@ function SignUp() {
 
     useEffect(() => {
         if (isCompleteSuccess) {
-            sessionStorage.setItem(
-                'identifier',
-                JSON.stringify(result.identity?.traits.email)
-            )
             ledgetapi.post('devices')
                 .then(() => { navigate('/verification') })
                 .catch(() => { navigate('/login') })

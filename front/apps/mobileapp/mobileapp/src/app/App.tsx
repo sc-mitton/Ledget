@@ -14,7 +14,7 @@ import styles from './styles/app';
 import { darkTheme, lightTheme, AppearanceProvider, useAppearance, Box } from '@ledget/native-ui'
 import { Budget, Accounts, Profile, Activity } from '@screens';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
-import { useGetMeQuery, useRefreshDevicesMutation } from '@ledget/shared-features';
+import { useGetMeQuery, useRefreshDevicesMutation, useGetPricesQuery } from '@ledget/shared-features';
 import store from '@features/store';
 import Nav from './BottomNav';
 import Authentication from './Accounts';
@@ -34,6 +34,7 @@ const navTheme = {
 };
 
 function App() {
+  const { data: prices } = useGetPricesQuery()
   const [refreshDevices] = useRefreshDevicesMutation()
   const { data: user } = useGetMeQuery();
   const [fontsLoaded, fontError] = useFonts({
@@ -51,7 +52,9 @@ function App() {
 
   // Refresh devices when token is set
   useEffect(() => {
-    console.log('Refreshing devices')
+    if (false) {
+      console.log('Refreshing devices')
+    }
   }, [])
 
   if (!fontsLoaded || fontError) {

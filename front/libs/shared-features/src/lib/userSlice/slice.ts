@@ -1,8 +1,5 @@
 import apiSlice from '../apiSlice/slice';
 
-const apiWithTags = apiSlice.enhanceEndpoints({
-  addTagTypes: ['devices', 'user', 'payment_method', 'invoice']
-});
 import {
   Device,
   PaymentMethod,
@@ -13,6 +10,10 @@ import {
   NextInvoice,
   Settings
 } from './types';
+
+const apiWithTags = apiSlice.enhanceEndpoints({
+  addTagTypes: ['devices', 'user', 'payment_method', 'invoice']
+});
 
 export const userSlice = apiWithTags.injectEndpoints({
   endpoints: (builder) => ({
@@ -33,9 +34,6 @@ export const userSlice = apiWithTags.injectEndpoints({
     }),
     getSubscription: builder.query<Subscription, void>({
       query: () => 'subscription'
-    }),
-    getPrices: builder.query({
-      query: () => 'prices'
     }),
     getPaymentMethod: builder.query<PaymentMethod, void>({
       query: () => 'default-payment-method',
@@ -146,7 +144,6 @@ export const {
   useLazyGetSetupIntentQuery,
   useUpdateDefaultPaymentMethodMutation,
   useUpdateRestartSubscriptionMutation,
-  useGetPricesQuery,
   useUpdateSubscriptionItemsMutation,
   useEmailUserMutation,
   useExtendSessionMutation,

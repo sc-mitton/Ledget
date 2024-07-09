@@ -9,11 +9,13 @@
     position: relative;
     height: 0;
     font-weight: var(--fw-regular);
+    gap: .125em;
 
     a {
         border: none;
         display: flex;
-        align-items: center;
+        align-items: baseline;
+        margin-bottom: -1px;
     }
 
 

@@ -12,7 +12,7 @@ const traitsSchema = z.object({
     last: z.string().min(1, { message: 'required' }).transform(value => value.trim())
 })
 
-const AddTraitsForm = ({ submit, csrf_token }: { submit: (data: any) => void, csrf_token: string }) => {
+const AddTraitsForm = ({ submit, csrf_token }: { submit: (data: any) => void, csrf_token?: string }) => {
     const {
         register,
         handleSubmit,

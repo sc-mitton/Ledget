@@ -16,7 +16,7 @@ const passwordSchema = z.object({
     path: ['confirmPassword']
 })
 
-const PasswordForm = ({ submit, csrf_token }: { submit: React.FormEventHandler<HTMLFormElement>, csrf_token: string }) => {
+const PasswordForm = ({ submit, csrf_token }: { submit: React.FormEventHandler<HTMLFormElement>, csrf_token?: string }) => {
     const {
         register,
         handleSubmit,

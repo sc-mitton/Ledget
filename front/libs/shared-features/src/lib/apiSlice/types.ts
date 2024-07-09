@@ -7,5 +7,6 @@ export const tagTypes = [
   'SpendingHistory',
   'Device',
   'User',
-  'TransactionCount'
+  'TransactionCount',
+  'Price'
 ];

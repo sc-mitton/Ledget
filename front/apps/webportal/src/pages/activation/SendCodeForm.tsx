@@ -16,7 +16,7 @@ const sendCodeSchema = z.object({
     email: z.string().min(1, 'Email is required').email('Invalid email address')
 })
 
-const SendCodeForm = ({ submit, csrf_token }: { submit: React.FormEventHandler<HTMLFormElement>, csrf_token: string }) => {
+const SendCodeForm = ({ submit, csrf_token }: { submit: React.FormEventHandler<HTMLFormElement>, csrf_token?: string }) => {
     const { register, handleSubmit, formState: { errors } } = useForm<z.infer<typeof sendCodeSchema>>({
         resolver: zodResolver(sendCodeSchema)
     })

@@ -10,7 +10,7 @@ import { loadStripe } from '@stripe/stripe-js'
 
 import styles from './styles/checkout.module.scss'
 import ledgetapi from '@api/axios'
-import { useGetPricesQuery } from '@features/pricesSlice'
+import { useGetPricesQuery } from '@ledget/shared-features'
 import {
     MainButton,
     CardInput,

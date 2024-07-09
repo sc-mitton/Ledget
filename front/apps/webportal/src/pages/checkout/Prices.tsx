@@ -1,7 +1,7 @@
 
 import { LedgetLogoIcon } from '@ledget/media'
 
-import { useGetPricesQuery } from '@features/pricesSlice'
+import { useGetPricesQuery } from '@ledget/shared-features'
 import { UseFormRegister } from 'react-hook-form'
 import { Star } from '@geist-ui/icons'
 import { z } from 'zod'
@@ -41,7 +41,7 @@ const PriceRadios = ({ register }: { register: UseFormRegister<z.infer<typeof sc
                                 <div className={styles.subscriptionRadio}>
                                     {p.nickname.toLowerCase() == 'year' &&
                                         <div className={styles.dogEar} data-dark={isDark} data-size={screenSize}>
-                                            <Star fill={'currentColor'} size={'1.25em'} />
+                                            <Star fill={'currentColor'} size={'.75em'} />
                                         </div>
                                     }
                                     <span className={styles.nickname}>{p.nickname}</span>
