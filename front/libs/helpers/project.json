@@ -4,16 +4,6 @@
   "sourceRoot": "libs/helpers/src",
   "projectType": "library",
   "tags": [],
-  "targets": {
-    "build": {
-      "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/libs/helpers",
-        "main": "libs/helpers/src/index.ts",
-        "tsConfig": "libs/helpers/tsconfig.lib.json",
-        "assets": ["libs/helpers/*.md"]
-      }
-    }
-  }
+  "// targets": "to see all targets run: nx show project helpers --web",
+  "targets": {}
 }

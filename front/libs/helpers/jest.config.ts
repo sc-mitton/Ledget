@@ -1,11 +1,21 @@
-/* eslint-disable */
-export default {
+module.exports = {
   displayName: 'helpers',
-  preset: '../../jest.preset.cjs',
-  testEnvironment: 'node',
-  transform: {
-    '^.+\\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }]
+  resolver: '@nx/jest/plugins/resolver',
+  preset: 'jest-expo',
+  moduleFileExtensions: ['ts', 'js', 'html', 'tsx', 'jsx'],
+  setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
+  moduleNameMapper: {
+    '\\.svg$': '@nx/expo/plugins/jest/svg-mock'
   },
-  moduleFileExtensions: ['ts', 'js', 'html'],
+  transform: {
+    '.[jt]sx?$': [
+      'babel-jest',
+      {
+        configFile: __dirname + '/.babelrc.js'
+      }
+    ],
+    '^.+.(bmp|gif|jpg|jpeg|mp4|png|psd|svg|webp|ttf|otf|m4v|mov|mp4|mpeg|mpg|webm|aac|aiff|caf|m4a|mp3|wav|html|pdf|obj)$':
+      require.resolve('jest-expo/src/preset/assetFileTransformer.js')
+  },
   coverageDirectory: '../../coverage/libs/helpers'
 };

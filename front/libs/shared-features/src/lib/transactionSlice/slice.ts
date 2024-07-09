@@ -103,9 +103,9 @@ export const transactionSlice = apiSlice.injectEndpoints({
       providesTags: (result, error, arg) => {
         return result
           ? result.results.map((item) => ({
-              type: 'Transaction',
-              id: item.transaction_id
-            }))
+            type: 'Transaction',
+            id: item.transaction_id
+          }))
           : [{ type: 'Transaction', id: 'LIST' } as const];
       },
       // For merging in paginated responses to the cache

@@ -1,8 +1,8 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef } from 'react';
 
 import { useTransition, animated, useSpringRef } from '@react-spring/web';
 
-import styles from './misc.module.scss'
+import styles from './misc.module.scss';
 import { useLoaded } from '../../utils/hooks';
 import { formatCurrency } from '@ledget/helpers';
 
@@ -17,7 +17,16 @@ interface Base64LogoProps {
 }
 
 export const Base64Logo = (props: Base64LogoProps) => {
-  const { data, backgroundColor, className, alt, style, styled = true, size = '1em', ...rest } = props
+  const {
+    data,
+    backgroundColor,
+    className,
+    alt,
+    style,
+    styled = true,
+    size = '1em',
+    ...rest
+  } = props;
 
   return (
     <div
@@ -25,8 +34,8 @@ export const Base64Logo = (props: Base64LogoProps) => {
       style={size ? { width: size, height: size, ...style } : style}
       {...rest}
     >
-      {data
-        ? <img
+      {data ? (
+        <img
           style={{
             height: size,
             width: size
@@ -34,107 +43,130 @@ export const Base64Logo = (props: Base64LogoProps) => {
           src={`data:image/png;base64,${data}`}
           alt={alt}
         />
-        : <span>{alt}</span>
-      }
+      ) : (
+        <span>{alt}</span>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export const DollarCents = ({ value = 0, style = {}, withCents = true }:
-  { value: string | number, isDebit?: boolean, style?: React.CSSProperties, [key: string]: any }
-) => {
-  const str = formatCurrency(typeof value === 'string' ? value.replace(/^-/, '') : Math.abs(value))
-  const isDebit = Number(value) < 0
+export const DollarCents = ({
+  value = 0,
+  style = {},
+  withCents = true
+}: {
+  value: string | number;
+  isDebit?: boolean;
+  style?: React.CSSProperties;
+  [key: string]: any;
+}) => {
+  const str = formatCurrency(
+    typeof value === 'string' ? value.replace(/^-/, '') : Math.abs(value)
+  );
+  const isDebit = Number(value) < 0;
 
   return (
     <>
       <span style={{ fontSize: 'inherit', ...style }}>
         {`${isDebit ? '+' : ''}${str.split('.')[0]}`}
       </span>
-      {withCents &&
+      {withCents && (
         <span style={{ fontSize: '.75em', ...style }}>
           {`.${str.split('.')[1]}`}
         </span>
-      }
+      )}
     </>
-  )
-}
-
+  );
+};
 
 // Value is integer like 1000 (ie 1000 = $10.00)
-export const AnimatedDollarCents = ({ value = 0, withCents = true, ...rest }:
-  { value: number, withCents?: boolean }) => {
+export const AnimatedDollarCents = ({
+  value = 0,
+  withCents = true,
+  ...rest
+}: {
+  value: number;
+  withCents?: boolean;
+}) => {
+  const loaded = useLoaded(2000);
+  const [slots, setSlots] = useState<string[]>([]);
+  const slotRefs = useRef<{ [key: string]: string }>({});
 
-  const loaded = useLoaded(2000)
-  const [slots, setSlots] = useState<string[]>([])
-  const slotRefs = useRef<{ [key: string]: string }>({})
-
-  const slotsApi = useSpringRef()
+  const slotsApi = useSpringRef();
   const transitions = useTransition(slots, {
     from: (item: string) => {
-      const y = !isNaN(Number(slotRefs.current[item])) ? `-${100 - (Number(slotRefs.current[item]) + 1) * 10}%` : '0em'
+      const y = !isNaN(Number(slotRefs.current[item]))
+        ? `-${100 - (Number(slotRefs.current[item]) + 1) * 10}%`
+        : '0em';
       return {
         maxWidth: loaded ? '0ch' : '1ch',
         opacity: loaded ? 0 : 1,
-        y: y,
-      }
+        y: y
+      };
     },
     enter: (item) => {
-      const y = !isNaN(Number(slotRefs.current[item])) ? `-${100 - (Number(slotRefs.current[item]) + 1) * 10}%` : '0em'
+      const y = !isNaN(Number(slotRefs.current[item]))
+        ? `-${100 - (Number(slotRefs.current[item]) + 1) * 10}%`
+        : '0em';
       return {
         opacity: 1,
         maxWidth: '1ch',
         y: y,
         config: { mass: 1, tension: 150, friction: 25 }
-      }
+      };
     },
     update: (item: any) => ({
-      y: !isNaN(Number(slotRefs.current[item])) ? `-${100 - (Number(slotRefs.current[item]) + 1) * 10}%` : '0em',
+      y: !isNaN(Number(slotRefs.current[item]))
+        ? `-${100 - (Number(slotRefs.current[item]) + 1) * 10}%`
+        : '0em'
     }),
     leave: { maxWidth: '0ch', opacity: 0 },
     config: { mass: 1, tension: 150, friction: 25 },
     ref: slotsApi,
     immediate: !loaded
-  })
+  });
 
   useEffect(() => {
-    let newVal = formatCurrency(value, withCents).replace(/^\$/, '')
+    let newVal = formatCurrency(value, withCents).replace(/^\$/, '');
 
     // If updating slots or upsizing (setting new slotRef values)
     if (newVal.length >= slots.length) {
       const newChars = Object.fromEntries(
-        newVal.split('').slice(0, newVal.length - slots.length).map((char) =>
-          [Math.random().toString(36).slice(2, 9), char]
-        ))
+        newVal
+          .split('')
+          .slice(0, newVal.length - slots.length)
+          .map((char) => [Math.random().toString(36).slice(2, 9), char])
+      );
       const updatedChars = Object.fromEntries(
-        newVal.split('').slice(newVal.length - slots.length).map((char, index) =>
-          [slots[index], char]
-        ))
+        newVal
+          .split('')
+          .slice(newVal.length - slots.length)
+          .map((char, index) => [slots[index], char])
+      );
 
       slotRefs.current = {
         ...newChars,
         ...updatedChars
-      }
+      };
 
-      setSlots([...Object.keys({ ...newChars, ...updatedChars })])
+      setSlots([...Object.keys({ ...newChars, ...updatedChars })]);
     } else {
       // Downsizing
-      const numberToRemove = slots.length - newVal.length
-      const newKeys = slots.slice(numberToRemove)
-      setSlots(prev => prev.slice(numberToRemove))
+      const numberToRemove = slots.length - newVal.length;
+      const newKeys = slots.slice(numberToRemove);
+      setSlots((prev) => prev.slice(numberToRemove));
       slotRefs.current = Object.fromEntries(
-        newVal.split('').map((char, index) =>
-          [newKeys[index], char]
-        ))
+        newVal.split('').map((char, index) => [newKeys[index], char])
+      );
     }
-  }, [value])
+  }, [value]);
 
   // Start animations
   useEffect(() => {
     if (slots.length == Object.keys(slotRefs.current).length) {
-      slotsApi.start()
+      slotsApi.start();
     }
-  }, [slots, slotRefs.current])
+  }, [slots, slotRefs.current]);
 
   return (
     <div className={styles.animatedAmount}>
@@ -148,9 +180,10 @@ export const AnimatedDollarCents = ({ value = 0, withCents = true, ...rest }:
             style={style}
             className={styles.slotContainer}
           >
-            {'$.,'.includes(slotRefs.current[item])
-              ? <span>{slotRefs.current[item]}</span>
-              : <>
+            {'$.,'.includes(slotRefs.current[item]) ? (
+              <span>{slotRefs.current[item]}</span>
+            ) : (
+              <>
                 <span>9</span>
                 <span>8</span>
                 <span>7</span>
@@ -162,29 +195,39 @@ export const AnimatedDollarCents = ({ value = 0, withCents = true, ...rest }:
                 <span>1</span>
                 <span>0</span>
               </>
-            }
+            )}
           </animated.div>
         ))}
       </div>
-      <span>
-        {`${formatCurrency(value).split('.')[0]}`}
-      </span>
-      {withCents &&
+      <span>{`${formatCurrency(value).split('.')[0]}`}</span>
+      {withCents && (
         <span className={styles.cents}>
           {`.${formatCurrency(value).split('.')[1]}`}
         </span>
-      }
+      )}
     </div>
-  )
-}
+  );
+};
 
-export const DollarCentsRange = ({ lower, upper }: { lower?: number | undefined, upper: number }) => (
+export const DollarCentsRange = ({
+  lower,
+  upper
+}: {
+  lower?: number | undefined;
+  upper: number;
+}) => (
   <>
-    {lower && <div><DollarCents value={lower} /></div>}
+    {lower && (
+      <div>
+        <DollarCents value={lower} />
+      </div>
+    )}
     {lower && <span>&nbsp;&nbsp;&ndash;&nbsp;&nbsp;</span>}
-    <div><DollarCents value={upper} /></div>
+    <div>
+      <DollarCents value={upper} />
+    </div>
   </>
-)
+);
 
 export const StaticProgressCircle = ({
   color,
@@ -193,13 +236,16 @@ export const StaticProgressCircle = ({
   strokeWidth = 3,
   noProgress = false
 }: {
-  color?: 'green' | 'blue',
-  value?: number,
-  size?: string,
-  strokeWidth?: number,
-  noProgress?: boolean
+  color?: 'green' | 'blue';
+  value?: number;
+  size?: string;
+  strokeWidth?: number;
+  noProgress?: boolean;
 }) => (
-  <div className="progress-circle--container" style={{ width: size, height: size }}>
+  <div
+    className="progress-circle--container"
+    style={{ width: size, height: size }}
+  >
     <div className={`progress-circle--svg ${color ? color : ''}`}>
       <svg viewBox="0 0 36 36" style={{ width: size, height: size }}>
         <circle
@@ -207,7 +253,7 @@ export const StaticProgressCircle = ({
           cy="18"
           r="14"
           strokeWidth={strokeWidth}
-          strokeLinecap='round'
+          strokeLinecap="round"
           transform="rotate(-90 18 18)"
           fill="transparent"
         />
@@ -218,12 +264,12 @@ export const StaticProgressCircle = ({
           strokeWidth={noProgress ? 0 : strokeWidth}
           fill="transparent"
           transform="rotate(-90 18 18)"
-          strokeLinecap='round'
-          strokeDasharray={`${value ? parseFloat((Math.min(1, value)).toFixed(2)) * 88 : 0}, 88`}
+          strokeLinecap="round"
+          strokeDasharray={`${
+            value ? parseFloat(Math.min(1, value).toFixed(2)) * 88 : 0
+          }, 88`}
         />
       </svg>
     </div>
   </div>
-)
-
-
+);

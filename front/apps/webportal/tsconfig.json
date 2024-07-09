@@ -44,6 +44,9 @@
       "@ledget/shared-features": [
         "../../libs/shared-features/src"
       ],
+      "@ledget/foobar": [
+        "../../libs/foobar/src"
+      ],
     },
   },
   "files": [],

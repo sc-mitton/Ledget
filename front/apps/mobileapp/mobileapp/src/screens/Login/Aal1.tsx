@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { TouchableWithoutFeedback, Keyboard, View } from 'react-native';
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Key, Lock } from 'geist-native-icons';
 import { z } from 'zod';
@@ -22,45 +22,60 @@ import { useGetMeQuery, apiSlice } from '@ledget/shared-features';
 import { Aal1AuthenticatorScreenProps } from '@types';
 import { useNativeFlow } from '@ledget/ory';
 import { hasErrorCode } from '@ledget/helpers';
-import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice';
+import {
+  useLazyGetLoginFlowQuery,
+  useCompleteLoginFlowMutation
+} from '@features/orySlice';
 
 const schema = z.object({
-  password: z.string()
+  password: z
+    .string()
     .min(1, { message: 'required' })
-    .transform(value => value.trim())
+    .transform((value) => value.trim())
 });
 
-const Aal1Authentication = ({ navigation, route }: Aal1AuthenticatorScreenProps) => {
-  const { error, data: user } = useGetMeQuery()
+const Aal1Authentication = ({
+  navigation,
+  route
+}: Aal1AuthenticatorScreenProps) => {
+  const { error, data: user } = useGetMeQuery();
 
-  const { control, handleSubmit, formState: { errors } } = useForm<z.infer<typeof schema>>({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
-    mode: 'onSubmit',
+    mode: 'onSubmit'
   });
   const { fetchFlow, submitFlow, flowStatus } = useNativeFlow(
     useLazyGetLoginFlowQuery,
     useCompleteLoginFlowMutation,
     'login'
-  )
+  );
 
-  useEffect(() => fetchFlow({ aal: 'aal1' }), [])
+  useEffect(() => fetchFlow({ aal: 'aal1' }), []);
 
   // Navigate to aal2 if needed or if user is not verified
   // then navigate to verification
   useEffect(() => {
     if (hasErrorCode('AAL2_TOTP_REQUIRED', error)) {
-      navigation.navigate('Aal2Authenticator', { identifier: route.params.identifier })
+      navigation.navigate('Aal2Authenticator', {
+        identifier: route.params.identifier
+      });
     } else if (user && !user.is_verified) {
-      navigation.navigate('Verification', { identifier: route.params.identifier })
+      navigation.navigate('Verification', {
+        identifier: route.params.identifier
+      });
     }
-  }, [error, user])
+  }, [error, user]);
 
   // Invalidate user query cache on successful login
   useEffect(() => {
     if (flowStatus.isCompleteSuccess) {
-      apiSlice.util.invalidateTags(['User'])
+      apiSlice.util.invalidateTags(['User']);
     }
-  }, [flowStatus.isCompleteSuccess])
+  }, [flowStatus.isCompleteSuccess]);
 
   // Submit the form
   const onSubmit = (data: z.infer<typeof schema>) => {
@@ -68,12 +83,12 @@ const Aal1Authentication = ({ navigation, route }: Aal1AuthenticatorScreenProps)
       ...data,
       identifier: route.params.identifier,
       method: 'password'
-    })
+    });
   };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <Box variant='screenWithHeader'>
+      <Box variant="screenWithHeader">
         <View>
           <Header>Finish Logging In</Header>
           <SubHeader2>Enter your password or use a pass-key login</SubHeader2>
@@ -96,13 +111,13 @@ const Aal1Authentication = ({ navigation, route }: Aal1AuthenticatorScreenProps)
           <FormError error={flowStatus.errMsg} />
           <Button
             label="Submit"
-            variant='main'
+            variant="main"
             onPress={handleSubmit(onSubmit)}
           />
-          <Seperator variant='l' label='Or' />
+          <Seperator variant="l" label="Or" />
           <Button
             label="Passkey"
-            variant='grayMain'
+            variant="grayMain"
             onPress={() => console.log('passkey')}
           >
             <Icon icon={Key} />
@@ -110,17 +125,21 @@ const Aal1Authentication = ({ navigation, route }: Aal1AuthenticatorScreenProps)
         </JiggleView>
         <View style={styles.bottomButton}>
           <Button
-            label='Recover Account'
-            variant='grayLinkButton'
-            onPress={() => navigation.navigate('Recovery', { identifier: route.params.identifier })}
+            label="Recover Account"
+            variant="grayLinkButton"
+            onPress={() =>
+              navigation.navigate('Recovery', {
+                identifier: route.params.identifier
+              })
+            }
           />
           <View style={styles.forgotIconContainer}>
-            <Icon icon={Lock} color='tertiaryText' size={18} />
+            <Icon icon={Lock} color="tertiaryText" size={18} />
           </View>
         </View>
       </Box>
     </TouchableWithoutFeedback>
-  )
-}
+  );
+};
 
-export default Aal1Authentication
+export default Aal1Authentication;
