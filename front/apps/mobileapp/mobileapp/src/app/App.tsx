@@ -49,14 +49,14 @@ function App() {
     }
   }, [fontsLoaded, fontError]);
 
-  if (!fontsLoaded || fontError) {
-    return null;
-  }
-
   // Refresh devices when token is set
   useEffect(() => {
     console.log('Refreshing devices')
   }, [])
+
+  if (!fontsLoaded || fontError) {
+    return null;
+  }
 
   return (
     <>

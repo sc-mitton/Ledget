@@ -18,7 +18,7 @@ import {
   JiggleView,
   FormError
 } from '@ledget/native-ui';
-import { useGetMeQuery } from '@ledget/shared-features';
+import { useGetMeQuery, apiSlice } from '@ledget/shared-features';
 import { Aal1AuthenticatorScreenProps } from '@types';
 import { useNativeFlow } from '@ledget/ory';
 import { hasErrorCode } from '@ledget/helpers';
@@ -50,10 +50,17 @@ const Aal1Authentication = ({ navigation, route }: Aal1AuthenticatorScreenProps)
   useEffect(() => {
     if (hasErrorCode('AAL2_TOTP_REQUIRED', error)) {
       navigation.navigate('Aal2Authenticator', { identifier: route.params.identifier })
-    } else if (!user?.is_verified) {
+    } else if (user && !user.is_verified) {
       navigation.navigate('Verification', { identifier: route.params.identifier })
     }
   }, [error, user])
+
+  // Invalidate user query cache on successful login
+  useEffect(() => {
+    if (flowStatus.isCompleteSuccess) {
+      apiSlice.util.invalidateTags(['User'])
+    }
+  }, [flowStatus.isCompleteSuccess])
 
   // Submit the form
   const onSubmit = (data: z.infer<typeof schema>) => {
