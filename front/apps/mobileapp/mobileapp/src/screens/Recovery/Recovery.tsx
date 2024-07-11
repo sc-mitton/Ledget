@@ -10,21 +10,28 @@ import { useNativeFlow } from '@ledget/ory';
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@/features/orySlice';
 import { Header, NestedScreenWOFeedback, SubHeader2, Button, Pulse, Otc, Icon } from '@ledget/native-ui'
 import { RecoveryScreenProps } from '@types'
+import { apiSlice } from '@ledget/shared-features';
 
 const schema = z.object({
   otc: z.string().length(6, { message: 'Invalid code' })
 })
 
-export default function Login({ navigation, route }: RecoveryScreenProps) {
+export default function Recovery({ navigation, route }: RecoveryScreenProps) {
   const { control, handleSubmit, formState: { errors } } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: 'onSubmit',
   });
-  const { fetchFlow, flowStatus } = useNativeFlow(
+  const { fetchFlow, flowStatus: { isCompleteSuccess } } = useNativeFlow(
     useLazyGetLoginFlowQuery,
     useCompleteLoginFlowMutation,
     'login'
   )
+
+  useEffect(() => {
+    if (isCompleteSuccess) {
+      apiSlice.util.invalidateTags(['User']);
+    }
+  }, [isCompleteSuccess])
 
   useEffect(() => { fetchFlow() }, [])
 
@@ -41,7 +48,7 @@ export default function Login({ navigation, route }: RecoveryScreenProps) {
         <Header>Recover Account</Header>
         <SubHeader2>Enter the code sent to your email</SubHeader2>
         <View style={styles.graphicContainer}>
-          <Icon icon={Mail} color={flowStatus.isCompleteSuccess ? 'successIcon' : 'grayIcon'} size={54} />
+          <Icon icon={Mail} color={isCompleteSuccess ? 'successIcon' : 'grayIcon'} size={54} />
           <Pulse success={false} />
         </View>
         <View style={styles.form}>

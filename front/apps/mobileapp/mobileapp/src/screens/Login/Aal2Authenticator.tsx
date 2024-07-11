@@ -12,6 +12,7 @@ import { Aal2AuthenticatorScreenProps } from '@types'
 import { useNativeFlow } from '@ledget/ory'
 import { Authenticator } from '@ledget/media/native';
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice';
+import { useCheckFlowProgress } from '@hooks/useCheckFlowProgress';
 
 const schema = z.object({
   totp: z.string().length(6, { message: 'Invalid code' })
@@ -23,11 +24,13 @@ const Aal1Authentication = ({ navigation, route }: Aal2AuthenticatorScreenProps)
     mode: 'onSubmit',
   });
 
-  const { fetchFlow, submitFlow, flowStatus } = useNativeFlow(
+  const { fetchFlow, submitFlow, flowStatus: { isCompleteSuccess, isCompleteError } } = useNativeFlow(
     useLazyGetLoginFlowQuery,
     useCompleteLoginFlowMutation,
     'login'
   )
+  useCheckFlowProgress({ navigation, route, invalidates: [isCompleteSuccess] });
+
 
   useEffect(() => fetchFlow({ aal: 'aal1' }), [])
   const theme = useTheme()
@@ -53,11 +56,11 @@ const Aal1Authentication = ({ navigation, route }: Aal2AuthenticatorScreenProps)
         <View style={sharedStyles.graphicContainer}>
           <Authenticator
             fill={theme.colors.mainBackground}
-            stroke={flowStatus.isCompleteSuccess ? theme.colors.successIcon : theme.colors.grayIcon}
+            stroke={isCompleteSuccess ? theme.colors.successIcon : theme.colors.grayIcon}
           />
-          <Pulse success={flowStatus.isCompleteSuccess} />
+          <Pulse success={isCompleteSuccess} />
         </View>
-        <JiggleView style={sharedStyles.form} jiggle={flowStatus.isCompleteError}>
+        <JiggleView style={sharedStyles.form} jiggle={isCompleteError}>
           <Controller
             control={control}
             name='totp'

@@ -5,13 +5,13 @@ import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod';
 import { Mail } from 'geist-native-icons';
-import { apiSlice } from '@ledget/shared-features';
 
 import styles from './styles';
 import { Header, SubHeader2, Otc, SubmitButton, Pulse, NestedScreenWOFeedback, Icon, JiggleView, FormError } from '@ledget/native-ui'
 import { VerificationScreenProps } from '@types'
 import { useNativeFlow, useVerificationCodeHandler } from '@ledget/ory'
 import { useLazyGetVerificationFlowQuery, useCompleteVerificationFlowMutation } from '@features/orySlice';
+import { useCheckFlowProgress } from '@/hooks/useCheckFlowProgress';
 
 const schema = z.object({
   code: z.string().length(6, { message: 'Invalid code' })
@@ -24,35 +24,28 @@ const Verification = ({ navigation, route }: VerificationScreenProps) => {
     resolver: zodResolver(schema),
     mode: 'onSubmit',
   });
-
-  const { fetchFlow, submitFlow, flowStatus, result } = useNativeFlow(
+  const { fetchFlow, submitFlow, flowStatus: { isCompleteSuccess, isCompletingFlow }, result } = useNativeFlow(
     useLazyGetVerificationFlowQuery,
     useCompleteVerificationFlowMutation,
     'verification'
   )
-
   const { jiggle, unhandledIdMessage, refreshSuccess, codeIsCorrect } = useVerificationCodeHandler({
-    dependencies: [flowStatus.isCompleteSuccess],
+    dependencies: [isCompleteSuccess],
     onExpired: () => console.log('Expired'),
     onSuccess: () => console.log('Success'),
     result
   })
 
+  useCheckFlowProgress({ navigation, route, invalidates: [codeIsCorrect] })
+
   useEffect(() => fetchFlow(), [])
 
   // Lower resending state when flow is resent
   useEffect(() => {
-    if (flowStatus.isCompleteSuccess) {
+    if (isCompleteSuccess) {
       setIsResending(false)
     }
-  }, [flowStatus.isCompleteSuccess])
-
-  // Handle code verification success, invalidate user cache
-  useEffect(() => {
-    if (codeIsCorrect) {
-      apiSlice.util.invalidateTags(['User']);
-    }
-  }, [codeIsCorrect])
+  }, [isCompleteSuccess])
 
   const onSubmit = (data: z.infer<typeof schema>) => {
     submitFlow({ ...data, method: 'code' })
@@ -74,8 +67,8 @@ const Verification = ({ navigation, route }: VerificationScreenProps) => {
           <SubHeader2>To verify your account, please enter the code sent to your email</SubHeader2>
         </View>
         <View style={styles.graphicContainer}>
-          <Icon icon={Mail} color={flowStatus.isCompleteSuccess ? 'successIcon' : 'grayIcon'} size={54} />
-          <Pulse success={flowStatus.isCompleteSuccess} />
+          <Icon icon={Mail} color={isCompleteSuccess ? 'successIcon' : 'grayIcon'} size={54} />
+          <Pulse success={isCompleteSuccess} />
         </View>
         <JiggleView style={styles.form} jiggle={jiggle}>
           <Controller
@@ -95,14 +88,14 @@ const Verification = ({ navigation, route }: VerificationScreenProps) => {
             label='Submit'
             variant='main'
             onPress={handleSubmit(onSubmit)}
-            isSubmitting={flowStatus.isCompletingFlow && !isResending}
+            isSubmitting={isCompletingFlow && !isResending}
           />
           <SubmitButton
             label='Resend'
             variant='borderedGrayMain'
             onPress={onResendSubmit}
             isSuccess={refreshSuccess}
-            isSubmitting={flowStatus.isCompletingFlow && isResending}
+            isSubmitting={isCompletingFlow && isResending}
           />
         </JiggleView>
       </KeyboardAvoidingView>

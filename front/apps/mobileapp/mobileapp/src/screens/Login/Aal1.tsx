@@ -18,14 +18,13 @@ import {
   JiggleView,
   FormError
 } from '@ledget/native-ui';
-import { useGetMeQuery, apiSlice } from '@ledget/shared-features';
 import { Aal1AuthenticatorScreenProps } from '@types';
 import { useNativeFlow } from '@ledget/ory';
-import { hasErrorCode } from '@ledget/helpers';
 import {
   useLazyGetLoginFlowQuery,
   useCompleteLoginFlowMutation
 } from '@features/orySlice';
+import { useCheckFlowProgress } from '@hooks/useCheckFlowProgress';
 
 const schema = z.object({
   password: z
@@ -38,8 +37,6 @@ const Aal1Authentication = ({
   navigation,
   route
 }: Aal1AuthenticatorScreenProps) => {
-  const { error, data: user } = useGetMeQuery();
-
   const {
     control,
     handleSubmit,
@@ -48,34 +45,14 @@ const Aal1Authentication = ({
     resolver: zodResolver(schema),
     mode: 'onSubmit'
   });
-  const { fetchFlow, submitFlow, flowStatus } = useNativeFlow(
+  const { fetchFlow, submitFlow, flowStatus: { isCompleteSuccess, isCompleteError, errMsg } } = useNativeFlow(
     useLazyGetLoginFlowQuery,
     useCompleteLoginFlowMutation,
     'login'
   );
 
   useEffect(() => fetchFlow({ aal: 'aal1' }), []);
-
-  // Navigate to aal2 if needed or if user is not verified
-  // then navigate to verification
-  useEffect(() => {
-    if (hasErrorCode('AAL2_TOTP_REQUIRED', error)) {
-      navigation.navigate('Aal2Authenticator', {
-        identifier: route.params.identifier
-      });
-    } else if (user && !user.is_verified) {
-      navigation.navigate('Verification', {
-        identifier: route.params.identifier
-      });
-    }
-  }, [error, user]);
-
-  // Invalidate user query cache on successful login
-  useEffect(() => {
-    if (flowStatus.isCompleteSuccess) {
-      apiSlice.util.invalidateTags(['User']);
-    }
-  }, [flowStatus.isCompleteSuccess]);
+  useCheckFlowProgress({ navigation, route, invalidates: [isCompleteSuccess] });
 
   // Submit the form
   const onSubmit = (data: z.infer<typeof schema>) => {
@@ -93,7 +70,7 @@ const Aal1Authentication = ({
           <Header>Finish Logging In</Header>
           <SubHeader2>Enter your password or use a pass-key login</SubHeader2>
         </View>
-        <JiggleView style={styles.form} jiggle={flowStatus.isCompleteError}>
+        <JiggleView style={styles.form} jiggle={isCompleteError}>
           <Controller
             control={control}
             name="password"
@@ -108,7 +85,7 @@ const Aal1Authentication = ({
               />
             )}
           />
-          <FormError error={flowStatus.errMsg} />
+          <FormError error={errMsg} />
           <Button
             label="Submit"
             variant="main"

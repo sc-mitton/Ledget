@@ -1,7 +1,6 @@
 
 export const formatErrorMessages = (errorMessages: { id: number, [key: string]: any }[]) => {
   const filteredMessages: string[] = []
-  console.log(errorMessages)
   for (const message of errorMessages) {
     switch (message.id) {
       case 4000006:

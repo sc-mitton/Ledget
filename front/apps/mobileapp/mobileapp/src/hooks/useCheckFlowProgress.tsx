@@ -1,0 +1,42 @@
+import { useEffect } from 'react';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
+
+import { useGetMeQuery, apiSlice } from '@ledget/shared-features';
+import { hasErrorCode } from '@ledget/helpers';
+
+interface Props {
+  navigation: StackNavigationProp<any>
+  route: RouteProp<any, any>
+  invalidates: any[]
+}
+
+export const useCheckFlowProgress = ({ navigation, route, invalidates }: Props) => {
+  const { error, data: user } = useGetMeQuery();
+
+  // Navigate to aal2 if needed or if user is not verified
+  // then navigate to verification
+  useEffect(() => {
+    if (error && hasErrorCode('AAL2_TOTP_REQUIRED', error)) {
+      navigation.navigate('Login', {
+        screen: 'Aal2Authenticator',
+        identifier: route.params?.identifier
+      })
+    } else if (user && !user.is_verified) {
+      navigation.navigate('Login', {
+        screen: 'Verification',
+        params: {
+          identifier: route.params?.identifier
+        }
+      })
+    }
+  }, [error, user, navigation, route.params?.identifier]);
+
+  // Invalidate user query cache on successful login
+  useEffect(() => {
+    if (invalidates.some((i) => i)) {
+      apiSlice.util.invalidateTags(['User']);
+    }
+  }, [invalidates]);
+
+};

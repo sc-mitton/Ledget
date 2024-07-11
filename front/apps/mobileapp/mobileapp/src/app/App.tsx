@@ -34,7 +34,6 @@ const navTheme = {
 };
 
 function App() {
-  const { data: prices } = useGetPricesQuery()
   const [refreshDevices] = useRefreshDevicesMutation()
   const { data: user } = useGetMeQuery();
   const [fontsLoaded, fontError] = useFonts({
