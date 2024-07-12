@@ -3,10 +3,14 @@ import { useState, useEffect } from "react"
 import { useSearchParams } from "react-router-dom";
 
 import { UseLazyQuery, UseMutation } from "@reduxjs/toolkit/dist/query/react/buildHooks";
-import { EndpointRootNames, OryGetFlowEndpoint, OryCompleteFlowEndpoint } from './types';
+import { EndpointRootNames, OryGetFlowQueryDefinition, OryCompleteFlowQueryDefinition } from './types';
 import { formatErrorMessages, extractData } from './helpers';
 
-export const useFlow = <TFlow extends EndpointRootNames>(query: UseLazyQuery<OryGetFlowEndpoint<TFlow>>, mutation: UseMutation<OryCompleteFlowEndpoint<TFlow>>, flowType: TFlow) => {
+export const useFlow = <TFlow extends EndpointRootNames>(
+    query: UseLazyQuery<OryGetFlowQueryDefinition<TFlow>>,
+    mutation: UseMutation<OryCompleteFlowQueryDefinition<TFlow>>,
+    flowType: TFlow
+) => {
     const [errMsg, setErrMsg] = useState<string[]>()
     const [errId, setErrId] = useState<string | number>('')
     const [searchParams, setSearchParams] = useSearchParams()

@@ -32,7 +32,7 @@ export const Spinner = () => {
   useEffect(() => {
     pop.value = withSequence(
       withTiming(1.1, { duration: 200 }),
-      withTiming(.9, { duration: 200 }),
+      withTiming(1, { duration: 200 }),
     )
     r1.value = withRepeat(withTiming(360, config), -1);
     r2.value = withDelay(150, withRepeat(withTiming(360, config), -1));

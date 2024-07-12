@@ -215,8 +215,7 @@ export const lightTheme = createTheme({
     defaults: {
       padding: 's',
       alignItems: 'center',
-      flexDirection: 'row',
-      gap: 's',
+      flexDirection: 'row'
     }
   },
   seperatorVariants: {

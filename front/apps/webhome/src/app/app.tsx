@@ -61,7 +61,7 @@ const PrivateRoute = () => {
     }
   }, [isError]);
 
-  return isSuccess && <Outlet />;
+  return isSuccess ? <Outlet /> : null;
 };
 
 const IsVerified = () => {

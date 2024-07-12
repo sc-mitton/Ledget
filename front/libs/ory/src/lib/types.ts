@@ -1,5 +1,6 @@
 import { AxiosRequestConfig } from 'axios'
 import { MutationDefinition, QueryDefinition } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
+import { LoginFlow, SettingsFlow, RegistrationFlow, LogoutFlow, VerificationFlow, RecoveryFlow, SuccessfulNativeLogin } from '@ory/client'
 
 export const endpointRootNames = [
   'settings', 'login', 'registration', 'logout', 'verification', 'recovery'
@@ -7,13 +8,53 @@ export const endpointRootNames = [
 
 export type Platform = 'mobile' | 'browser'
 
-import { LoginFlow, SettingsFlow, RegistrationFlow, LogoutFlow, VerificationFlow, RecoveryFlow } from '@ory/client'
-
 export type EndpointRootNames = typeof endpointRootNames[number]
 
 export type FlowTypes = SettingsFlow | LoginFlow | RegistrationFlow | LogoutFlow | VerificationFlow | RecoveryFlow
-export type TransformedFlow<F extends FlowTypes> = F & { csrf_token: string }
+export type Flow<F extends FlowTypes> = F & { csrf_token: string }
 
+type FlowResult<N extends EndpointRootNames> =
+  N extends 'settings' ? Flow<SettingsFlow> :
+  N extends 'login' ? Flow<LoginFlow> :
+  N extends 'registration' ? Flow<RegistrationFlow> :
+  N extends 'logout' ? Flow<LogoutFlow> :
+  N extends 'verification' ? Flow<VerificationFlow> :
+  N extends 'recovery' ? Flow<RecoveryFlow> :
+  never
+
+export type NativeFlowResult<N extends EndpointRootNames> =
+  N extends 'login' ? SuccessfulNativeLogin :
+  N extends 'recovery' ? SuccessfulNativeLogin :
+  N extends EndpointRootNames ? FlowResult<N> :
+  never
+
+export type OryGetFlowQueryDefinition<TName extends EndpointRootNames> = QueryDefinition<any, any, any, FlowResult<TName>, any>
+
+export type OryCompleteFlowQueryDefinition<TName extends EndpointRootNames> = MutationDefinition<any, any, any, FlowResult<TName>, any>
+
+export type OryCompleteNativeFlowQueryDefinition<TName extends EndpointRootNames> = MutationDefinition<any, any, any, NativeFlowResult<TName>, any>
+
+export type GetEndpointName<TName extends EndpointRootNames> = `get${Capitalize<TName>}Flow`
+export type CompleteEndpointName<TName extends EndpointRootNames> = `complete${Capitalize<TName>}Flow`
+
+//
+export type OryEndpointDefenitions = {
+  [K in EndpointRootNames as GetEndpointName<K>]: OryGetFlowQueryDefinition<K>
+} & {
+  [K in EndpointRootNames as CompleteEndpointName<K>]: OryCompleteFlowQueryDefinition<K>
+} & {
+  getUpdatedLogoutFlow: OryGetFlowQueryDefinition<'logout'>
+}
+
+export type OryNativeEndpointDefenitions = {
+  [K in EndpointRootNames as GetEndpointName<K>]: OryGetFlowQueryDefinition<K>
+} & {
+  [K in EndpointRootNames as CompleteEndpointName<K>]: OryCompleteNativeFlowQueryDefinition<K>
+} & {
+  getUpdatedLogoutFlow: OryGetFlowQueryDefinition<'logout'>
+}
+
+//
 export type AxiosBaseQueryConfig = {
   url: string
   method: AxiosRequestConfig['method']
@@ -22,34 +63,5 @@ export type AxiosBaseQueryConfig = {
   headers?: AxiosRequestConfig['headers']
   transformResponse?: AxiosRequestConfig['transformResponse']
 }
-
-export type FlowType<T extends EndpointRootNames> =
-  T extends 'settings' ? TransformedFlow<SettingsFlow> :
-  T extends 'login' ? TransformedFlow<LoginFlow> :
-  T extends 'registration' ? TransformedFlow<RegistrationFlow> :
-  T extends 'logout' ? TransformedFlow<LogoutFlow> :
-  T extends 'verification' ? TransformedFlow<VerificationFlow> :
-  T extends 'recovery' ? TransformedFlow<RecoveryFlow> :
-  never
-
-export type TOryEndpoint<TName extends EndpointRootNames, TType extends 'get' | 'complete'> =
-  TType extends 'get' ? QueryDefinition<any, any, any, FlowType<TName>, any> :
-  TType extends 'complete' ? MutationDefinition<any, any, any, FlowType<TName>, any> :
-  never
-
-export type OryGetFlowEndpoint<TName extends EndpointRootNames> = TOryEndpoint<TName, 'get'>
-
-export type OryCompleteFlowEndpoint<TName extends EndpointRootNames> = TOryEndpoint<TName, 'complete'>
-
-export type GetEndpointName<TName extends EndpointRootNames> = `get${Capitalize<TName>}Flow`
-export type CompleteEndpointName<TName extends EndpointRootNames> = `complete${Capitalize<TName>}Flow`
-
-export type OryEndpointDefenitions = {
-  [K in EndpointRootNames as GetEndpointName<K>]: OryGetFlowEndpoint<K>
-} & {
-    [K in EndpointRootNames as CompleteEndpointName<K>]: OryCompleteFlowEndpoint<K>
-  } & {
-    getUpdatedLogoutFlow: OryGetFlowEndpoint<'logout'>
-  }
 
 export type OryAxiosQueryConfig = Omit<AxiosBaseQueryConfig, 'method' | 'withCredentials'>

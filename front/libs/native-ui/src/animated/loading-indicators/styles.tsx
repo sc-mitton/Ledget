@@ -3,17 +3,17 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: '50%',
+    top: '100%',
     left: '50%',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   ringContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     transformOrigin: 'center',
-    width: 24,
-    height: 24,
+    width: 20,
+    height: 20,
     position: 'absolute',
     left: '50%',
     top: '50%',

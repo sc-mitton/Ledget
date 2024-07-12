@@ -1,19 +1,20 @@
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback } from "react";
+import * as SecureStore from 'expo-secure-store';
+import dayjs from 'dayjs';
 
 import { UseLazyQuery, UseMutation } from "@reduxjs/toolkit/dist/query/react/buildHooks";
-import { EndpointRootNames, OryGetFlowEndpoint, OryCompleteFlowEndpoint } from './types'
+import { EndpointRootNames, OryGetFlowQueryDefinition, OryCompleteNativeFlowQueryDefinition, NativeFlowResult } from './types';
 
-export const useNativeFlow = <TFlow extends EndpointRootNames>(
-  query: UseLazyQuery<OryGetFlowEndpoint<TFlow>>,
-  mutation: UseMutation<OryCompleteFlowEndpoint<TFlow>>,
-  flowType: TFlow
+export const useNativeFlow = <E extends EndpointRootNames>(
+  query: UseLazyQuery<OryGetFlowQueryDefinition<E>>,
+  mutation: UseMutation<OryCompleteNativeFlowQueryDefinition<E>>,
+  endpoint: E
 ) => {
   const [errMsg, setErrMsg] = useState<string[]>()
   const [errId, setErrId] = useState<string | number>('')
   const [aal, setAal] = useState<string | undefined>('')
   const [flowId, setFlowId] = useState<string | undefined>('')
   const [refresh, setRefresh] = useState<boolean | undefined>(false)
-  const [mutationCacheKey, setMutationCacheKey] = useState('')
 
   const [
     getFlow,
@@ -36,7 +37,7 @@ export const useNativeFlow = <TFlow extends EndpointRootNames>(
       isUninitialized: isCompleteUninitialized,
       reset: resetCompleteFlow,
     },
-  ] = mutation({ fixedCacheKey: mutationCacheKey })
+  ] = mutation()
 
   useEffect(() => {
     if (flow && 'id' in flow) {
@@ -53,17 +54,18 @@ export const useNativeFlow = <TFlow extends EndpointRootNames>(
     setAal(aal)
     setRefresh(refresh)
 
-    if (aal === 'aal2') {
-      setMutationCacheKey('')
-    }
-
     const params = {
       ...(aal ? { aal: aal } : {}),
       ...(refresh ? { refresh: true } : {}),
       ...((flow && 'id' in flow) ? { id: flow.id } : {})
     }
 
-    getFlow({ params: params }, true)
+    let fetchFromCache = true;
+    if (flow && 'expires_at' in flow) {
+      fetchFromCache = dayjs(flow.expires_at).subtract(1, 'minute').isAfter(dayjs())
+    }
+
+    getFlow({ params: params }, fetchFromCache)
   }, [flow])
 
   const submitFlow = useCallback((data: object) => {
@@ -71,13 +73,22 @@ export const useNativeFlow = <TFlow extends EndpointRootNames>(
     setErrId('')
 
     const params = {
-      ...(flowId ? { id: flowId } : {}),
+      ...(flowId ? { flow: flowId } : {}),
       ...(aal ? { aal: aal } : {}),
       ...(refresh ? { refresh: true } : {}),
     }
 
     completeFlow({ data: data, params })
   }, [flowId, aal, refresh])
+
+  useEffect(() => {
+    if (isCompleteSuccess && ['login', 'recovery'].includes(endpoint)) {
+      const token = (result as NativeFlowResult<'login'>).session_token
+      if (token) {
+        SecureStore.setItemAsync('session_token', token)
+      }
+    }
+  }, [isCompleteSuccess, result, endpoint])
 
   return {
     fetchFlow,
@@ -95,7 +106,6 @@ export const useNativeFlow = <TFlow extends EndpointRootNames>(
       isCompleteError,
       isCompleteSuccess,
       isCompleteUninitialized,
-    },
-    mutationCacheKey
+    }
   }
 }

@@ -7,7 +7,7 @@ import { z } from 'zod';
 
 import styles from './styles';
 import { useNativeFlow } from '@ledget/ory';
-import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@/features/orySlice';
+import { useLazyGetRecoveryFlowQuery, useCompleteRecoveryFlowMutation } from '@features/orySlice'
 import { Header, NestedScreenWOFeedback, SubHeader2, Button, Pulse, Otc, Icon } from '@ledget/native-ui'
 import { RecoveryScreenProps } from '@types'
 import { apiSlice } from '@ledget/shared-features';
@@ -22,9 +22,9 @@ export default function Recovery({ navigation, route }: RecoveryScreenProps) {
     mode: 'onSubmit',
   });
   const { fetchFlow, flowStatus: { isCompleteSuccess } } = useNativeFlow(
-    useLazyGetLoginFlowQuery,
-    useCompleteLoginFlowMutation,
-    'login'
+    useLazyGetRecoveryFlowQuery,
+    useCompleteRecoveryFlowMutation,
+    'recovery'
   )
 
   useEffect(() => {

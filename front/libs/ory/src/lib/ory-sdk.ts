@@ -5,6 +5,7 @@ import {
   endpointRootNames,
   GetEndpointName,
   OryEndpointDefenitions,
+  OryNativeEndpointDefenitions,
   CompleteEndpointName,
   Platform,
   OryAxiosQueryConfig
@@ -83,7 +84,7 @@ const completeFlow = async ({ url, data, params }: OryAxiosQueryConfig) => {
 }
 
 const generateOryEndpoints = (builder: EndpointBuilder<any, any, any>, platform: Platform, baseUrl: string) => {
-  const endpoints = {} as OryEndpointDefenitions
+  const endpoints = platform === 'mobile' ? {} as OryNativeEndpointDefenitions : {} as OryEndpointDefenitions
 
   endpointRootNames.forEach((endpoint) => {
 

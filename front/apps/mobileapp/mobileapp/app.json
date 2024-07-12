@@ -40,6 +40,13 @@
             "./assets/fonts/SourceSans3Regular.ttf"
           ]
         }
+      ],
+      [
+        "expo-secure-store",
+        {
+          "faceIDPermission": "Allow $(PRODUCT_NAME) to access your Face ID biometric data.",
+          "touchIDPermission": "Allow $(PRODUCT_NAME) to access your Touch ID biometric data."
+        }
       ]
     ]
   }

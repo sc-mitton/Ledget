@@ -12,6 +12,7 @@ import {
   SubHeader2,
   PasswordInput,
   Button,
+  SubmitButton,
   Seperator,
   Icon,
   Box,
@@ -45,7 +46,16 @@ const Aal1Authentication = ({
     resolver: zodResolver(schema),
     mode: 'onSubmit'
   });
-  const { fetchFlow, submitFlow, flowStatus: { isCompleteSuccess, isCompleteError, errMsg } } = useNativeFlow(
+  const {
+    fetchFlow,
+    submitFlow,
+    flowStatus: {
+      isCompleteSuccess,
+      isCompletingFlow,
+      isCompleteError,
+      errMsg
+    }
+  } = useNativeFlow(
     useLazyGetLoginFlowQuery,
     useCompleteLoginFlowMutation,
     'login'
@@ -86,9 +96,10 @@ const Aal1Authentication = ({
             )}
           />
           <FormError error={errMsg} />
-          <Button
+          <SubmitButton
             label="Submit"
             variant="main"
+            isSubmitting={isCompletingFlow}
             onPress={handleSubmit(onSubmit)}
           />
           <Seperator variant="l" label="Or" />

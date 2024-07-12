@@ -22,7 +22,7 @@ interface ExtraProps {
 
 export const SubmitButton = (props: Props & ExtraProps) => {
   const [showCheck, setShowCheck] = useState(false);
-  const { isLoading, isSuccess, isSubmitting, label, ...rest } = props;
+  const { isLoading, isSuccess, isSubmitting, ...rest } = props;
   const checkScale = useSharedValue(.9);
 
   useEffect(() => {
@@ -46,8 +46,8 @@ export const SubmitButton = (props: Props & ExtraProps) => {
   }, [isSuccess]);
 
   return (
-    <Button label={(isSubmitting || showCheck) ? undefined : label} {...rest} >
-      {isSubmitting && <Box padding='xxs'><Spinner /></Box>}
+    <Button transparent={isSubmitting || showCheck} {...rest}>
+      {isSubmitting && <Spinner />}
       <Animated.View style={{ transform: [{ scale: checkScale }] }}>
         {showCheck && <Box padding='xxs'><Icon icon={Check} color={'successIcon'} /></Box>}
       </Animated.View>
