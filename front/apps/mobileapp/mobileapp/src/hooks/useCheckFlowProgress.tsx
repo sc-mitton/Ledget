@@ -8,10 +8,10 @@ import { hasErrorCode } from '@ledget/helpers';
 interface Props {
   navigation: StackNavigationProp<any>
   route: RouteProp<any, any>
-  invalidates: any[]
+  isComplete: boolean
 }
 
-export const useCheckFlowProgress = ({ navigation, route, invalidates }: Props) => {
+export const useCheckFlowProgress = ({ navigation, route, isComplete }: Props) => {
   const { error, data: user } = useGetMeQuery();
 
   // Navigate to aal2 if needed or if user is not verified
@@ -32,11 +32,12 @@ export const useCheckFlowProgress = ({ navigation, route, invalidates }: Props) 
     }
   }, [error, user, navigation, route.params?.identifier]);
 
-  // Invalidate user query cache on successful login
+  // Invalidate user query cache on successful flow, no matter the stage
+  // to check for updated user data
   useEffect(() => {
-    if (invalidates.some((i) => i)) {
+    if (isComplete) {
       apiSlice.util.invalidateTags(['User']);
     }
-  }, [invalidates]);
+  }, [isComplete]);
 
 };

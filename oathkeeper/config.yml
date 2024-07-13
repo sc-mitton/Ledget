@@ -35,6 +35,18 @@ authenticators:
         - ory_session_relaxedbassieqk8kfge8r
       extra_from: "@this"
       subject_from: "identity.id"
+  bearer_token:
+    enabled: true
+    config:
+      check_session_url: https://reverent-lewin-bqqp1o2zws.projects.oryapis.com/sessions/whoami
+      preserve_path: true
+      token_from:
+        header: Authorization
+      forward_http_headers:
+        - Authorization
+        - X-Forwarded-For
+      subject_from: "identity.id"
+      extra_from: "@this"
 
 errors:
   fallback:

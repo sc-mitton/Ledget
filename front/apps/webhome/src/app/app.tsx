@@ -186,7 +186,11 @@ const AppWithEnvironment = () => {
   const environment = useAppSelector(selectEnvironment);
 
   useEffect(() => {
-    dispatch(setEnvironment(import.meta.env.VITE_ENVIRONMENT as 'dev' | 'prod'));
+    dispatch(setEnvironment({
+      name: import.meta.env.VITE_ENVIRONMENT as 'dev' | 'prod',
+      apiUrl: import.meta.env.VITE_LEDGET_API_URI,
+      platform: 'browser'
+    }));
   }, []);
 
   return environment

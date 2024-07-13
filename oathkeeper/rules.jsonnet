@@ -12,6 +12,13 @@ local cookie_session_authenticator = {
     'Authorization',
   ],
 };
+local bearer_token_authenticator = {
+  handler: 'bearer_token',
+  forward_http_headers: [
+    'X-Forwarded-For',
+    'Authorization',
+  ],
+};
 
 /* Authorizors */
 local allow_authorizer = { handler: 'allow' };
@@ -31,7 +38,7 @@ local Base = {
 
 local BaseWithAuth = {
   version: version,
-  authenticators: [cookie_session_authenticator],
+  authenticators: [cookie_session_authenticator, bearer_token_authenticator],
   mutators: [id_token],
   authorizer: allow_authorizer,
 };
@@ -408,5 +415,5 @@ local BaseWithAuth = {
       methods: ['POST'],
       url: base_url + '/setup-intent',
     },
-  }
+  },
 ]

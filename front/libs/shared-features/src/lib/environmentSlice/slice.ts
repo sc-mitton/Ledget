@@ -1,9 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type EnvironmentName = 'dev' | 'prod'
+type Platform = 'browser' | 'mobile'
 
 interface State {
   name?: EnvironmentName
+  platform?: Platform
+  sessionToken?: string
   apiUrl: string
 }
 
@@ -14,28 +17,31 @@ export interface RootStateWithEnvironment {
 
 const initialState: State = {
   name: undefined,
-  apiUrl: ''
+  apiUrl: '',
+  platform: undefined,
+  sessionToken: undefined
 }
 
 export const environmentSlice = createSlice({
   name: 'environment',
   initialState,
   reducers: {
-    setEnvironment: (state, action: PayloadAction<EnvironmentName>) => {
-      if (action.payload === 'dev') {
-        state.name = 'dev'
-        state.apiUrl = 'https://localhost/v1'
-      } else if (action.payload === 'prod') {
-        state.name = 'prod'
-        state.apiUrl = 'https://api.ledget.app/v1'
-      }
+    setEnvironment: (state, action: PayloadAction<{ name: EnvironmentName, apiUrl: string, platform: Platform }>) => {
+      state.name = action.payload.name
+      state.apiUrl = action.payload.apiUrl
+      state.platform = action.payload.platform
+    },
+    setSessionToken: (state, action: PayloadAction<string>) => {
+      state.sessionToken = action.payload
     }
   }
 })
 
-export const { setEnvironment } = environmentSlice.actions
+export const { setEnvironment, setSessionToken } = environmentSlice.actions
 
 export const selectEnvironment = (state: RootStateWithEnvironment) => state.environment.name
 export const selectApiUrl = (state: RootStateWithEnvironment) => state.environment.apiUrl
+export const selectPlatform = (state: RootStateWithEnvironment) => state.environment.platform
+export const selectSessionToken = (state: RootStateWithEnvironment) => state.environment.sessionToken
 
 export default environmentSlice.reducer

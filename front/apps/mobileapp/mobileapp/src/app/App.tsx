@@ -6,15 +6,21 @@ import { ThemeProvider as RestyleThemeProvider } from '@shopify/restyle';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Provider as ReduxProvider } from 'react-redux';
-import { selectEnvironment, setEnvironment } from '@ledget/shared-features';
-import { ENV } from '@env';
+import { ENV, LEDGET_API_URI } from '@env';
+import * as SecureStore from 'expo-secure-store';
 import * as SplashScreen from 'expo-splash-screen';
 
 import styles from './styles/app';
 import { darkTheme, lightTheme, AppearanceProvider, useAppearance, Box } from '@ledget/native-ui'
 import { Budget, Accounts, Profile, Activity } from '@screens';
-import { useAppDispatch, useAppSelector } from '@hooks/store';
-import { useGetMeQuery, useRefreshDevicesMutation, useGetPricesQuery } from '@ledget/shared-features';
+import { useAppDispatch, useAppSelector } from '@hooks';
+import {
+  useGetMeQuery,
+  useRefreshDevicesMutation,
+  setSessionToken,
+  selectEnvironment,
+  setEnvironment
+} from '@ledget/shared-features';
 import store from '@features/store';
 import Nav from './BottomNav';
 import Authentication from './Accounts';
@@ -34,7 +40,9 @@ const navTheme = {
 };
 
 function App() {
-  const [refreshDevices] = useRefreshDevicesMutation()
+  const dispatch = useAppDispatch();
+
+  const [refreshDevices, { isUninitialized }] = useRefreshDevicesMutation()
   const { data: user } = useGetMeQuery();
   const [fontsLoaded, fontError] = useFonts({
     'SourceSans3Regular': SourceSans3Regular,
@@ -49,12 +57,21 @@ function App() {
     }
   }, [fontsLoaded, fontError]);
 
-  // Refresh devices when token is set
+  // Refresh devices on user verification
   useEffect(() => {
-    if (false) {
-      console.log('Refreshing devices')
+    if (user && user.is_verified && isUninitialized) {
+      refreshDevices();
     }
-  }, [])
+  }, [user]);
+
+  // Set the token from the secure store on app load if it exists
+  useEffect(() => {
+    SecureStore.getItemAsync('session_token').then((token) => {
+      if (token) {
+        dispatch(setSessionToken(token))
+      }
+    });
+  }, []);
 
   if (!fontsLoaded || fontError) {
     return null;
@@ -65,6 +82,7 @@ function App() {
       <StatusBar style="auto" />
       <Box
         backgroundColor={'mainBackground'}
+        paddingHorizontal='xl'
         style={styles.main}
         onLayout={SplashScreen.preventAutoHideAsync}
       >
@@ -95,8 +113,14 @@ const AppWithEnvironment = () => {
   const environment = useAppSelector(selectEnvironment);
 
   useEffect(() => {
-    dispatch(setEnvironment(ENV));
+    dispatch(setEnvironment({
+      name: ENV,
+      apiUrl: LEDGET_API_URI,
+      platform: 'mobile'
+    }));
   }, [dispatch]);
+
+
 
   return environment ? <App /> : null;
 }

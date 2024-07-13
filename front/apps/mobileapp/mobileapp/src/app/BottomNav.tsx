@@ -26,7 +26,7 @@ export default function Nav({ state, descriptors, navigation }: Props) {
         tint={mode === 'dark' ? 'dark' : 'light'}
         style={styles.navBlurView}
       >
-        <View style={{ ...styles.navBack, backgroundColor: theme.colors.navBackground }} />
+        <Box backgroundColor={'navBackground'} style={styles.navBack} />
         <Box
           style={styles.nav}
           shadowColor='navShadow'

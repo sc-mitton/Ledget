@@ -13,6 +13,7 @@ import { Header, NestedScreenWOFeedback, SubHeader2, TextInput, Button, Pulse, J
 import { useGetMeQuery } from '@ledget/shared-features';
 import { RecoveryCode } from '@ledget/media/native';
 import { Aal2RecoveryCodeScreenProps } from '@types';
+import { useStoreToken } from '@hooks';
 
 const schema = z.object({
   lookup_secret: z.string().min(1, 'Recovery code is required'),
@@ -24,13 +25,15 @@ const Aal2RecoveryCode = ({ navigation, route }: Aal2RecoveryCodeScreenProps) =>
   const { control, handleSubmit, formState: { errors } } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
-  const { fetchFlow, submitFlow, flowStatus } = useNativeFlow(
+  const { fetchFlow, submitFlow, flowStatus: { isCompleteSuccess, isCompleteError }, result } = useNativeFlow(
     useLazyGetLoginFlowQuery,
     useCompleteLoginFlowMutation,
     'login'
   );
 
   useEffect(() => fetchFlow({ aal: 'aal2' }), []);
+
+  useStoreToken(result?.session_token);
 
   // Navigate to verification if user is not verified
   useEffect(() => {
@@ -59,9 +62,9 @@ const Aal2RecoveryCode = ({ navigation, route }: Aal2RecoveryCodeScreenProps) =>
         <SubHeader2>Enter one of your saved recovery codes to login</SubHeader2>
         <View style={styles.graphicContainer}>
           <RecoveryCode fill={theme.colors.mainBackground} stroke={theme.colors.grayIcon} />
-          <Pulse success={flowStatus.isCompleteSuccess} />
+          <Pulse success={isCompleteSuccess} />
         </View>
-        <JiggleView style={styles.centeredForm} jiggle={flowStatus.isCompleteError}>
+        <JiggleView style={styles.centeredForm} jiggle={isCompleteError}>
           <Controller
             control={control}
             render={({ field: { onChange } }) => (

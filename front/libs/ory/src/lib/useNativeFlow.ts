@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from "react";
-import * as SecureStore from 'expo-secure-store';
 import dayjs from 'dayjs';
 
 import { UseLazyQuery, UseMutation } from "@reduxjs/toolkit/dist/query/react/buildHooks";
@@ -72,23 +71,10 @@ export const useNativeFlow = <E extends EndpointRootNames>(
     setErrMsg(undefined)
     setErrId('')
 
-    const params = {
-      ...(flowId ? { flow: flowId } : {}),
-      ...(aal ? { aal: aal } : {}),
-      ...(refresh ? { refresh: true } : {}),
-    }
+    const params = flowId ? { flow: flowId } : {};
 
-    completeFlow({ data: data, params })
+    completeFlow({ data: data, params });
   }, [flowId, aal, refresh])
-
-  useEffect(() => {
-    if (isCompleteSuccess && ['login', 'recovery'].includes(endpoint)) {
-      const token = (result as NativeFlowResult<'login'>).session_token
-      if (token) {
-        SecureStore.setItemAsync('session_token', token)
-      }
-    }
-  }, [isCompleteSuccess, result, endpoint])
 
   return {
     fetchFlow,

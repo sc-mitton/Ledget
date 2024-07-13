@@ -25,9 +25,7 @@ const styles = StyleSheet.create({
     zIndex: 101,
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingLeft: 8,
-    paddingRight: 8,
+    justifyContent: 'space-between'
   },
   navItem: {
     alignItems: 'center',

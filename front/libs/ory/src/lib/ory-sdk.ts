@@ -16,7 +16,6 @@ const axiosBaseQuery = async ({ url, headers, ...rest }: AxiosBaseQueryConfig) =
   try {
     const result = await axios({
       url,
-      withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -36,12 +35,10 @@ const axiosBaseQuery = async ({ url, headers, ...rest }: AxiosBaseQueryConfig) =
   }
 }
 
-const createFlow = async ({ url, params, transformResponse }: OryAxiosQueryConfig) => {
+const createFlow = async (args: OryAxiosQueryConfig) => {
   const data = await axiosBaseQuery({
-    url,
     method: 'GET',
-    params: params,
-    transformResponse: transformResponse,
+    ...args
   })
   return data.error ? { error: data.error } : { data: data.data }
 }
@@ -52,8 +49,8 @@ const getFlow = async ({ url, params = {}, transformResponse, platform }: OryAxi
     const data = await axiosBaseQuery({
       url: `${url}/flows`,
       method: 'GET',
-      params: params,
-      transformResponse: transformResponse,
+      params,
+      transformResponse,
     })
     if (data.error?.status === 410) {
       return createFlow({
@@ -73,12 +70,10 @@ const getFlow = async ({ url, params = {}, transformResponse, platform }: OryAxi
   }
 }
 
-const completeFlow = async ({ url, data, params }: OryAxiosQueryConfig) => {
+const completeFlow = async (args: OryAxiosQueryConfig) => {
   const responseData = await axiosBaseQuery({
-    url: `${url}`,
     method: 'POST',
-    data: data,
-    params: params
+    ...args
   })
   return responseData.error ? { error: responseData.error } : { data: responseData.data }
 }
@@ -131,6 +126,7 @@ const generateOryEndpoints = (builder: EndpointBuilder<any, any, any>, platform:
         url: `${baseUrl}/self-service/${endpoint}`,
         params: arg?.params,
         data: arg?.data,
+        withCredentials: platform === 'browser',
       }),
     })
   }

@@ -7,7 +7,7 @@ import type {
 import Cookies from 'js-cookie';
 
 import { tagTypes } from './types';
-import { selectApiUrl } from '../environmentSlice/slice'
+import { selectApiUrl, selectSessionToken } from '../environmentSlice/slice'
 import type { RootStateWithEnvironment } from '../environmentSlice/slice'
 
 const rawBaseQuery = retry(
@@ -15,11 +15,18 @@ const rawBaseQuery = retry(
     baseUrl: '',
     credentials: 'include',
     prepareHeaders: async (headers, { getState }) => {
+      const sessionToken = selectSessionToken(getState() as RootStateWithEnvironment);
+
+      if (sessionToken) {
+        headers.set('Authorization', `Bearer ${sessionToken}`);
+      }
+
       // Set http_x_csrftoken header from the cookies
       const csrftoken = Cookies.get('csrftoken') || '';
       if (csrftoken) {
         headers.set('X-CsrfToken', csrftoken);
       }
+      console.log('headers', headers)
       return headers;
     }
   }),
@@ -32,6 +39,7 @@ const dynamicBaseQuery: BaseQueryFn<
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   const apiUrl = selectApiUrl(api.getState() as RootStateWithEnvironment);
+
   // gracefully handle scenarios where data to generate the URL is missing
   if (!apiUrl) {
     return {
@@ -45,9 +53,9 @@ const dynamicBaseQuery: BaseQueryFn<
 
   const urlEnd = typeof args === 'string' ? args : args.url
   // construct a dynamically generated portion of the url
-  const adjustedUrl = `${apiUrl}/${urlEnd}`
-  const adjustedArgs =
-    typeof args === 'string' ? adjustedUrl : { ...args, url: adjustedUrl }
+  const adjustedUrl = `${apiUrl}${urlEnd}`
+  const adjustedArgs = typeof args === 'string' ? adjustedUrl : { ...args, url: adjustedUrl }
+
   // provide the amended url and other params to the raw base query
   return rawBaseQuery(adjustedArgs, api, extraOptions)
 }

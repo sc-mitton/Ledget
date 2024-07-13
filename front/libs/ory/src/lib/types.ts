@@ -62,6 +62,7 @@ export type AxiosBaseQueryConfig = {
   params?: AxiosRequestConfig['params']
   headers?: AxiosRequestConfig['headers']
   transformResponse?: AxiosRequestConfig['transformResponse']
+  withCredentials?: boolean
 }
 
-export type OryAxiosQueryConfig = Omit<AxiosBaseQueryConfig, 'method' | 'withCredentials'>
+export type OryAxiosQueryConfig = Omit<AxiosBaseQueryConfig, 'method'>

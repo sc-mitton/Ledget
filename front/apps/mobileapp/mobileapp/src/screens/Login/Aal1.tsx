@@ -5,6 +5,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Key, Lock } from 'geist-native-icons';
 import { z } from 'zod';
+import * as SecureStore from 'expo-secure-store';
 
 import styles from './styles/aal1';
 import {
@@ -25,7 +26,7 @@ import {
   useLazyGetLoginFlowQuery,
   useCompleteLoginFlowMutation
 } from '@features/orySlice';
-import { useCheckFlowProgress } from '@hooks/useCheckFlowProgress';
+import { useCheckFlowProgress, useStoreToken } from '@hooks';
 
 const schema = z.object({
   password: z
@@ -54,7 +55,8 @@ const Aal1Authentication = ({
       isCompletingFlow,
       isCompleteError,
       errMsg
-    }
+    },
+    result
   } = useNativeFlow(
     useLazyGetLoginFlowQuery,
     useCompleteLoginFlowMutation,
@@ -62,7 +64,7 @@ const Aal1Authentication = ({
   );
 
   useEffect(() => fetchFlow({ aal: 'aal1' }), []);
-  useCheckFlowProgress({ navigation, route, invalidates: [isCompleteSuccess] });
+  useCheckFlowProgress({ navigation, route, isComplete: isCompleteSuccess });
 
   // Submit the form
   const onSubmit = (data: z.infer<typeof schema>) => {
@@ -72,6 +74,8 @@ const Aal1Authentication = ({
       method: 'password'
     });
   };
+
+  useStoreToken(result?.session_token);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

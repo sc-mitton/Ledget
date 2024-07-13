@@ -36,7 +36,7 @@ const Verification = ({ navigation, route }: VerificationScreenProps) => {
     result
   })
 
-  useCheckFlowProgress({ navigation, route, invalidates: [codeIsCorrect] })
+  useCheckFlowProgress({ navigation, route, isComplete: isCompleteSuccess })
 
   useEffect(() => fetchFlow(), [])
 
