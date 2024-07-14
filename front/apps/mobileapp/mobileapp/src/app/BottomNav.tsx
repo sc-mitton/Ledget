@@ -17,7 +17,6 @@ interface Props {
 
 export default function Nav({ state, descriptors, navigation }: Props) {
   const { mode } = useAppearance();
-  const theme = useTheme();
 
   return (
     <>
@@ -29,6 +28,7 @@ export default function Nav({ state, descriptors, navigation }: Props) {
         <Box backgroundColor={'navBackground'} style={styles.navBack} />
         <Box
           style={styles.nav}
+          variant='bottomNav'
           shadowColor='navShadow'
           shadowOffset={{ width: 0, height: -5 }}
           shadowRadius={20}
@@ -68,13 +68,13 @@ export default function Nav({ state, descriptors, navigation }: Props) {
                 onPress={onPress}
                 onLongPress={onLongPress}
               >
-                {route.name === 'home'
+                {route.name === 'Home'
                   ? <Icon icon={Home} color={isFocused ? 'activeIcon' : 'mainText'} />
-                  : route.name === 'budget'
+                  : route.name === 'Budget'
                     ? <Icon icon={DollarSign} color={isFocused ? 'activeIcon' : 'mainText'} />
-                    : route.name === 'accounts'
+                    : route.name === 'Accounts'
                       ? <Icon icon={Institution} color={isFocused ? 'activeIcon' : 'mainText'} />
-                      : route.name === 'activity'
+                      : route.name === 'Activity'
                         ? <Icon icon={Activity} color={isFocused ? 'activeIcon' : 'mainText'} />
                         : <Icon icon={User} color={isFocused ? 'activeIcon' : 'mainText'} />
                 }

@@ -11,7 +11,7 @@ import {
 } from '@shopify/restyle';
 
 import { Text } from './Text';
-import { Theme } from '../../theme';
+import { Theme } from '../theme/light';
 
 const Box = createBox<Theme>();
 
@@ -26,36 +26,23 @@ const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([variant, 
 
 export const Seperator = ({ label, ...rest }: Props) => {
 
-  const { color, variant } = rest;
   const restyledprops = useRestyle(restyleFunctions, rest);
 
   return (
-    <Box
-      flexDirection='row'
-      alignItems='center'
-      paddingHorizontal='s'
-    >
-      <Box
-        backgroundColor={color || 'seperator'}
-        height={1}
-        flex={1}
-        variant={variant}
-        {...restyledprops}
-      />
+    <Box flexDirection='row' alignItems='center'>
+      <Box {...restyledprops} />
       {label &&
-        <Text
-          paddingLeft='m'
-          paddingRight='m'
-        >
+        <Text paddingHorizontal='m'>
           {label}
         </Text>
       }
-      <Box
-        backgroundColor={color || 'seperator'}
-        height={1}
-        flex={1}
-        {...restyledprops}
-      />
+      <Box {...restyledprops} />
     </Box>
   );
+}
+
+Seperator.defaultProps = {
+  variant: 's',
+  backgroundColor: 'lightSeperator',
+  flex: 1
 }

@@ -56,6 +56,9 @@ export const lightTheme = createTheme({
     mainBackground: palette.gray100,
     navBackground: palette.gray200,
     inputBackground: palette.gray200,
+    nestedContainer: palette.gray200,
+    avatarBackground: palette.gray200,
+    tabNavPill: palette.blue100,
 
     // Borders
     inputBorder: palette.gray250,
@@ -63,6 +66,7 @@ export const lightTheme = createTheme({
     inputBorderErrorMain: palette.red,
     focusedInputBorderSecondary: palette.blue100,
     focusedInputBorderMain: palette.blue300,
+    tabNavPillBorder: palette.blue450,
 
     // Shadows
     navShadow: palette.gray100,
@@ -113,7 +117,7 @@ export const lightTheme = createTheme({
   textVariants: {
     header: {
       fontSize: 26,
-      lineHeight: 28,
+      lineHeight: 30,
       marginTop: 'm',
       marginBottom: 'xs',
       fontFamily: 'SourceSans3SemiBold',
@@ -126,6 +130,7 @@ export const lightTheme = createTheme({
       fontFamily: 'SourceSans3Medium',
       color: 'mainText',
       width: '100%',
+      marginTop: 'm',
     },
     subheader: {
       fontSize: 24,
@@ -220,25 +225,26 @@ export const lightTheme = createTheme({
   },
   seperatorVariants: {
     s: {
-      height: 1.5,
-      marginVertical: 'xxl',
+      height: 2,
+      marginVertical: 's',
       backgroundColor: 'seperator',
     },
     m: {
-      height: 1.5,
-      marginVertical: 'xl',
+      height: 2,
+      marginVertical: 'l',
       backgroundColor: 'seperator',
     },
     l: {
-      height: 1.5,
-      marginVertical: 'xxl',
+      height: 2,
+      marginVertical: 'xl',
       backgroundColor: 'seperator',
     },
     xl: {
-      height: 1.5,
+      height: 2,
       marginVertical: 'xxxl',
       backgroundColor: 'seperator',
     },
+    defaults: {}
   },
   boxVariants: {
     header: {
@@ -260,6 +266,14 @@ export const lightTheme = createTheme({
     screenWithHeader: {
       flex: 1,
       marginTop: 'xxl',
+      paddingHorizontal: 'xl',
+    },
+    nestedContainer: {
+      borderRadius: 12,
+      padding: 's',
+      marginVertical: 's',
+    },
+    bottomNav: {
       paddingHorizontal: 'xl',
     },
     footer: {

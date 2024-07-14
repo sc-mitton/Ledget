@@ -6,7 +6,7 @@ import { ThemeProvider as RestyleThemeProvider } from '@shopify/restyle';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Provider as ReduxProvider } from 'react-redux';
-import { ENV, LEDGET_API_URI } from '@env';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import * as SecureStore from 'expo-secure-store';
 import * as SplashScreen from 'expo-splash-screen';
 
@@ -21,15 +21,17 @@ import {
   selectEnvironment,
   setEnvironment
 } from '@ledget/shared-features';
+import { RootTabParamList } from '@types';
+import { ENV, LEDGET_API_URI } from '@env';
 import store from '@features/store';
-import Nav from './BottomNav';
+import BottomNav from './BottomNav';
 import Authentication from './Accounts';
 import SourceSans3Regular from '../../assets/fonts/SourceSans3Regular.ttf';
 import SourceSans3Medium from '../../assets/fonts/SourceSans3Medium.ttf';
 import SourceSans3SemiBold from '../../assets/fonts/SourceSans3SemiBold.ttf';
 import SourceSans3Bold from '../../assets/fonts/SourceSans3Bold.ttf';
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<RootTabParamList>();
 
 const navTheme = {
   ...DefaultTheme,
@@ -52,10 +54,10 @@ function App() {
   });
 
   useEffect(() => {
-    if (fontsLoaded && !fontError) {
+    if (fontsLoaded && !fontError && user && user.is_verified) {
       SplashScreen.hideAsync();
     }
-  }, [fontsLoaded, fontError]);
+  }, [fontsLoaded, fontError, user]);
 
   // Refresh devices on user verification
   useEffect(() => {
@@ -82,24 +84,23 @@ function App() {
       <StatusBar style="auto" />
       <Box
         backgroundColor={'mainBackground'}
-        paddingHorizontal='xl'
         style={styles.main}
         onLayout={SplashScreen.preventAutoHideAsync}
       >
         <NavigationContainer theme={navTheme}>
           {(user && user.is_verified)
             ? <Tab.Navigator
-              initialRouteName='budget'
+              initialRouteName='Budget'
               backBehavior='history'
               screenOptions={{ headerShown: false }}
               tabBar={({ state, descriptors, navigation }) =>
-                <Nav state={state} descriptors={descriptors} navigation={navigation} />}
+                <BottomNav state={state} descriptors={descriptors} navigation={navigation} />}
             >
-              <Tab.Screen name="home" component={Budget} />
-              <Tab.Screen name="budget" component={Budget} />
-              <Tab.Screen name="activity" component={Activity} />
-              <Tab.Screen name="accounts" component={Accounts} />
-              <Tab.Screen name="profile" component={Profile} />
+              <Tab.Screen name="Home" component={Budget} />
+              <Tab.Screen name="Budget" component={Budget} />
+              <Tab.Screen name="Activity" component={Activity} />
+              <Tab.Screen name="Accounts" component={Accounts} />
+              <Tab.Screen name="Profile" component={Profile} />
             </Tab.Navigator>
             : <Authentication />}
         </NavigationContainer>
@@ -139,7 +140,9 @@ export default function EnrichedApp() {
   return (
     <AppearanceProvider>
       <ReduxProvider store={store}>
-        <ThemedApp />
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <ThemedApp />
+        </GestureHandlerRootView>
       </ReduxProvider>
     </AppearanceProvider>
   )

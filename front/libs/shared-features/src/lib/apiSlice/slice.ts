@@ -26,7 +26,6 @@ const rawBaseQuery = retry(
       if (csrftoken) {
         headers.set('X-CsrfToken', csrftoken);
       }
-      console.log('headers', headers)
       return headers;
     }
   }),

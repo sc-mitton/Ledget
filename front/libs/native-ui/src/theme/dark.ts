@@ -55,7 +55,10 @@ export const darkTheme = createTheme({
     // Backgrounds
     mainBackground: palette.gray900,
     navBackground: palette.gray850,
+    nestedContainer: palette.gray800,
     inputBackground: palette.gray800,
+    avatarBackground: palette.gray800,
+    tabNavPill: palette.blue700,
 
     // Borders
     inputBorder: palette.gray750,
@@ -63,6 +66,7 @@ export const darkTheme = createTheme({
     inputBorderErrorSecondary: palette.mutedRed,
     focusedInputBorderMain: palette.blue400,
     focusedInputBorderSecondary: palette.blue800,
+    tabNavPillBorder: palette.blue400,
 
     // Shadows
     navShadow: palette.gray900,
@@ -102,7 +106,7 @@ export const darkTheme = createTheme({
   textVariants: {
     header: {
       fontSize: 26,
-      lineHeight: 28,
+      lineHeight: 30,
       marginTop: 'm',
       marginBottom: 'xs',
       fontFamily: 'SourceSans3Medium',
@@ -203,23 +207,6 @@ export const darkTheme = createTheme({
         color: 'tertiaryText',
         paddingVertical: 'xxs',
       }
-    },
-    seperatorVariants: {
-      s: {
-        height: 1.5,
-        marginVertical: 'l',
-        backgroundColor: 'seperator',
-      },
-      m: {
-        height: 1.5,
-        marginVertical: 'xl',
-        backgroundColor: 'seperator',
-      },
-      l: {
-        height: 1.5,
-        marginVertical: 'xxl',
-        backgroundColor: 'seperator',
-      },
     }
   }
 });
