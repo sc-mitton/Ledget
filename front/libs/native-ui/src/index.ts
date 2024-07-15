@@ -16,4 +16,5 @@ export * from './animated/views/JiggleView';
 export * from './headers/BackHeader';
 
 export * from './containers/baked-boxes';
+export * from './containers/tabs-navigator/TabsNavigator';
 export * from './theme';

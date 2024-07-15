@@ -1,4 +1,10 @@
-import { TouchableOpacity, View } from 'react-native';
+import {
+  TouchableOpacity,
+  View,
+  StyleProp,
+  ViewStyle,
+  LayoutChangeEvent
+} from 'react-native';
 import {
   useRestyle,
   spacing,
@@ -34,18 +40,39 @@ export type Props = RestyleProps & {
   label?: string;
   children?: React.ReactNode;
   labelPlacement?: 'left' | 'right';
+  textColor?: string;
   transparent?: boolean;
+  style?: StyleProp<ViewStyle>;
+  onLayout?: (event: LayoutChangeEvent) => void;
 };
 
-export const Button = ({ onPress, label, children, transparent, labelPlacement = 'right', ...rest }: Props) => {
-  const props = useRestyle(restyleFunctions, rest);
-  const color = (props as any).style[0].color;
+export const Button = (props: Props) => {
+  const {
+    onPress,
+    label,
+    children,
+    transparent,
+    style,
+    labelPlacement = 'right',
+    textColor = 'mainText',
+    onLayout,
+    ...rest
+  } = props;
+  const restyledProps = useRestyle(restyleFunctions, rest);
+  const color = (restyledProps as any).style[0]?.color;
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={.8}>
-      <View {...props}>
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={.8}
+      style={style}
+      onLayout={onLayout}
+    >
+      <View {...restyledProps}>
         {labelPlacement === 'right' && children}
-        <Text style={{ color: transparent ? 'transparent' : color ? color : '' }}>
+        <Text
+          color={textColor}
+          style={textColor ? {} : { color: transparent ? 'transparent' : color ? color : '' }}>
           {label}
         </Text>
         {labelPlacement === 'left' && children}

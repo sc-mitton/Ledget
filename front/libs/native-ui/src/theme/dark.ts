@@ -75,11 +75,11 @@ export const darkTheme = createTheme({
 
     // Text
     mainText: palette.offWhite,
-    invertedText: palette.gray900,
-    whiteText: palette.offWhite,
     secondaryText: palette.offWhite3,
     tertiaryText: palette.offWhite4,
     activeText: palette.blueSat,
+    invertedText: palette.gray900,
+    whiteText: palette.offWhite,
     focusedText: palette.blueSat,
     blueText: palette.blue200,
     placeholderText: palette.offWhite4,
@@ -206,7 +206,15 @@ export const darkTheme = createTheme({
       grayLinkButton: {
         color: 'tertiaryText',
         paddingVertical: 'xxs',
-      }
+      },
+      grayPill: {
+        paddingVertical: 'none',
+        paddingHorizontal: 's',
+        borderRadius: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'grayButton',
+      },
     }
   }
 });

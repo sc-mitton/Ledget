@@ -58,7 +58,7 @@ export const lightTheme = createTheme({
     inputBackground: palette.gray200,
     nestedContainer: palette.gray200,
     avatarBackground: palette.gray200,
-    tabNavPill: palette.blue100,
+    tabNavPill: palette.blue500,
 
     // Borders
     inputBorder: palette.gray250,
@@ -66,7 +66,7 @@ export const lightTheme = createTheme({
     inputBorderErrorMain: palette.red,
     focusedInputBorderSecondary: palette.blue100,
     focusedInputBorderMain: palette.blue300,
-    tabNavPillBorder: palette.blue450,
+    tabNavPillBorder: palette.blue400,
 
     // Shadows
     navShadow: palette.gray100,
@@ -74,10 +74,10 @@ export const lightTheme = createTheme({
 
     // Text
     mainText: palette.offBlack,
-    whiteText: palette.white,
-    invertedText: palette.gray100,
     secondaryText: palette.offBlack3,
     tertiaryText: palette.offBlack4,
+    whiteText: palette.white,
+    invertedText: palette.gray100,
     activeText: palette.blueSat,
     blueText: palette.blue500,
     placeholderText: palette.offBlack4,
@@ -91,7 +91,7 @@ export const lightTheme = createTheme({
 
     // Seperators
     seperator: palette.gray200,
-    lightSeperator: palette.gray150,
+    lightSeperator: palette.gray175,
     blueseperator: palette.blue100,
 
     // Misc
@@ -217,10 +217,27 @@ export const lightTheme = createTheme({
       color: 'tertiaryText',
       paddingVertical: 'xxs',
     },
+    grayPill: {
+      paddingVertical: 'none',
+      paddingHorizontal: 'm',
+      borderRadius: 40,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'grayButton',
+    },
+    transparentPill: {
+      paddingVertical: 'none',
+      paddingHorizontal: 'm',
+      borderRadius: 40,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'transparent',
+    },
     defaults: {
       padding: 's',
       alignItems: 'center',
-      flexDirection: 'row'
+      flexDirection: 'row',
+      color: 'mainText'
     }
   },
   seperatorVariants: {
