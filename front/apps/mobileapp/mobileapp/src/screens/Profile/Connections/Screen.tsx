@@ -4,7 +4,7 @@ import React from 'react'
 const Screen = () => {
   return (
     <Box variant='screen'>
-      <Text>Screen</Text>
+      <Text>Connections</Text>
     </Box>
   )
 }

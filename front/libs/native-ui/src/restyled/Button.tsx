@@ -36,7 +36,7 @@ const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([
 ]);
 
 export type Props = RestyleProps & {
-  onPress: () => void;
+  onPress?: () => void;
   label?: string;
   children?: React.ReactNode;
   labelPlacement?: 'left' | 'right';
@@ -53,8 +53,8 @@ export const Button = (props: Props) => {
     children,
     transparent,
     style,
+    textColor,
     labelPlacement = 'right',
-    textColor = 'mainText',
     onLayout,
     ...rest
   } = props;

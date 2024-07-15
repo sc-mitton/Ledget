@@ -5,7 +5,7 @@ const Screen = () => {
 
   return (
     <Box variant='screen'>
-      <Text>Screen</Text>
+      <Text>Account</Text>
     </Box>
   )
 }
