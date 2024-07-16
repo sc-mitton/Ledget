@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { View } from 'react-native';
 import PagerView from 'react-native-pager-view';
 import Animated, {
@@ -21,7 +21,7 @@ interface Props {
 
 const springConfig = {
   mass: 1,
-  damping: 24,
+  damping: 25,
   stiffness: 310,
   overshootClamping: false,
   restDisplacementThreshold: 0.01,
@@ -31,12 +31,11 @@ const springConfig = {
 
 export function TabsNavigator({ screens, seperator = true }: Props) {
   const [index, setIndex] = useState(0);
-  const refPagerView = useRef<PagerView>(null);
   const height = useSharedValue(0);
   const width = useSharedValue(0);
-  const [dragging, setDragging] = useState(false);
   const translateX = useSharedValue(0);
-
+  const refPagerView = useRef<PagerView>(null);
+  const dragState = useRef<'idle' | 'dragging' | 'settling'>('idle');
   const layouts = useRef(Array.from({ length: Object.keys(screens).length }, () => ({ width: 0, x: 0 })));
 
   const animatedStyles = useAnimatedStyle(() => ({
@@ -46,27 +45,45 @@ export function TabsNavigator({ screens, seperator = true }: Props) {
   }));
 
   const handleScroll = ({ nativeEvent }: { nativeEvent: { position: number, offset: number } }) => {
+    const isLeftSwipe = nativeEvent.position < index;
 
-    if (dragging) {
-      // Left swipe
-      if (nativeEvent.position < index) {
+    if (dragState.current === 'dragging') {
+      if (isLeftSwipe) {
+        // Left swipe
         const delta = (-1 * nativeEvent.offset + 1) / (-4 * nativeEvent.offset + 5)
-
         width.value = layouts.current[index].width + delta * layouts.current[index].width
 
-        if (translateX.value <= layouts.current[index].x) {
+        if (translateX.value <= layouts.current[index].x && dragState.current === 'dragging') {
           translateX.value = layouts.current[index].x - delta * layouts.current[index].width
         } else {
           translateX.value = withTiming(layouts.current[index].x - delta, { duration: 200 })
         }
-      }
-      // Right swipe
-      else {
+      } else {
+        // Right swipe
         const delta = (nativeEvent.offset / (4 * nativeEvent.offset + 1)) * layouts.current[index].width;
         width.value = layouts.current[index].width + delta
       }
     }
+
+    if (dragState.current === 'settling') {
+      const i = isLeftSwipe ?
+        nativeEvent.offset < .5 ? index - 1 : index :
+        nativeEvent.offset > .5 ? index + 1 : index;
+      if (i !== index) {
+        setIndex(i)
+      } else {
+        width.value = withTiming(layouts.current[index].width)
+        translateX.value = withSpring(layouts.current[index].x, springConfig)
+      }
+    }
   }
+
+  useEffect(() => {
+    if (dragState.current === 'settling') {
+      width.value = withTiming(layouts.current[index].width)
+      translateX.value = withSpring(layouts.current[index].x, springConfig)
+    }
+  }, [index, dragState])
 
   return (
     <>
@@ -126,14 +143,8 @@ export function TabsNavigator({ screens, seperator = true }: Props) {
           ref={refPagerView}
           initialPage={0}
           onPageScroll={handleScroll}
-          onPageScrollStateChanged={({ nativeEvent }) => {
-            setDragging(nativeEvent.pageScrollState !== 'idle')
-          }}
-          onPageSelected={({ nativeEvent }) => {
-            setIndex(nativeEvent.position)
-            width.value = withTiming(layouts.current[nativeEvent.position].width)
-            translateX.value = withSpring(layouts.current[nativeEvent.position].x, springConfig)
-          }}
+          onPageScrollStateChanged={({ nativeEvent }) => { dragState.current = nativeEvent.pageScrollState }}
+          onPageSelected={({ nativeEvent }) => setIndex(nativeEvent.position)}
         >
           {Object.keys(screens).map((key, i) => {
             const Scene = Object.values(screens)[i];

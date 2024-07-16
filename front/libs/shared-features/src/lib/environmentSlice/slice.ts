@@ -7,6 +7,7 @@ interface State {
   name?: EnvironmentName
   platform?: Platform
   sessionToken?: string
+  deviceToken?: string
   apiUrl: string
 }
 
@@ -19,7 +20,8 @@ const initialState: State = {
   name: undefined,
   apiUrl: '',
   platform: undefined,
-  sessionToken: undefined
+  sessionToken: undefined,
+  deviceToken: undefined
 }
 
 export const environmentSlice = createSlice({
@@ -33,6 +35,9 @@ export const environmentSlice = createSlice({
     },
     setSessionToken: (state, action: PayloadAction<string>) => {
       state.sessionToken = action.payload
+    },
+    setDeviceToken: (state, action: PayloadAction<string>) => {
+      state.deviceToken = action.payload
     }
   }
 })
@@ -43,5 +48,6 @@ export const selectEnvironment = (state: RootStateWithEnvironment) => state.envi
 export const selectApiUrl = (state: RootStateWithEnvironment) => state.environment.apiUrl
 export const selectPlatform = (state: RootStateWithEnvironment) => state.environment.platform
 export const selectSessionToken = (state: RootStateWithEnvironment) => state.environment.sessionToken
+export const selectDeviceToken = (state: RootStateWithEnvironment) => state.environment.deviceToken
 
 export default environmentSlice.reducer

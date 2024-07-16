@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
@@ -16,7 +16,6 @@ import { Budget, Accounts, Profile, Activity } from '@screens';
 import { useAppDispatch, useAppSelector } from '@hooks';
 import {
   useGetMeQuery,
-  useRefreshDevicesMutation,
   setSessionToken,
   selectEnvironment,
   setEnvironment
@@ -32,6 +31,7 @@ import SourceSans3SemiBold from '../../assets/fonts/SourceSans3SemiBold.ttf';
 import SourceSans3Bold from '../../assets/fonts/SourceSans3Bold.ttf';
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
+SplashScreen.preventAutoHideAsync();
 
 const navTheme = {
   ...DefaultTheme,
@@ -43,8 +43,8 @@ const navTheme = {
 
 function App() {
   const dispatch = useAppDispatch();
+  const [appIsReady, setAppIsReady] = useState(false);
 
-  const [refreshDevices, { isUninitialized }] = useRefreshDevicesMutation()
   const { data: user } = useGetMeQuery();
   const [fontsLoaded, fontError] = useFonts({
     'SourceSans3Regular': SourceSans3Regular,
@@ -54,17 +54,21 @@ function App() {
   });
 
   useEffect(() => {
-    if (fontsLoaded && !fontError && user && user.is_verified) {
-      SplashScreen.hideAsync();
+    const checks = [
+      fontsLoaded,
+      user,
+      user?.is_verified
+    ]
+    if (checks.every(Boolean)) {
+      setAppIsReady(true);
     }
   }, [fontsLoaded, fontError, user]);
 
-  // Refresh devices on user verification
-  useEffect(() => {
-    if (user && user.is_verified && isUninitialized) {
-      refreshDevices();
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
     }
-  }, [user]);
+  }, [appIsReady]);
 
   // Set the token from the secure store on app load if it exists
   useEffect(() => {
@@ -75,7 +79,7 @@ function App() {
     });
   }, []);
 
-  if (!fontsLoaded || fontError) {
+  if (!appIsReady) {
     return null;
   }
 
@@ -85,7 +89,7 @@ function App() {
       <Box
         backgroundColor={'mainBackground'}
         style={styles.main}
-        onLayout={SplashScreen.preventAutoHideAsync}
+        onLayout={onLayoutRootView}
       >
         <NavigationContainer theme={navTheme}>
           {(user && user.is_verified)

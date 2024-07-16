@@ -10,6 +10,7 @@ export * from './inputs/otc/Otc';
 
 export * from './buttons/back-button/BackButton';
 export * from './misc/form-errors/form-errors';
+export * from './misc/avatar/Avatar';
 export * from './animated/loading-indicators/Spinner';
 export * from './animated/pulse/Pulse';
 export * from './animated/views/JiggleView';

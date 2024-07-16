@@ -1,4 +1,3 @@
-import React from "react";
 import { TextProps } from "react-native";
 import { createText } from "@shopify/restyle";
 
@@ -20,6 +19,13 @@ export const Header2 = (props: TextProps) => {
   );
 }
 
+export const Header3 = (props: TextProps) => {
+  const { children, ...rest } = props;
+
+  return (
+    <Text variant="header3" {...rest}>{children}</Text>
+  );
+}
 
 export const SubHeader = (props: TextProps) => {
   const { children, ...rest } = props;

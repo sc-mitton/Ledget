@@ -59,6 +59,7 @@ export const lightTheme = createTheme({
     nestedContainer: palette.gray200,
     avatarBackground: palette.gray200,
     tabNavPill: palette.blue500,
+    avatar: palette.gray200,
 
     // Borders
     inputBorder: palette.gray250,
@@ -127,6 +128,14 @@ export const lightTheme = createTheme({
     header2: {
       fontSize: 18,
       lineHeight: 26,
+      fontFamily: 'SourceSans3Medium',
+      color: 'mainText',
+      width: '100%',
+      marginTop: 'm',
+    },
+    header3: {
+      fontSize: 16,
+      lineHeight: 20,
       fontFamily: 'SourceSans3Medium',
       color: 'mainText',
       width: '100%',
@@ -265,12 +274,12 @@ export const lightTheme = createTheme({
   },
   boxVariants: {
     header: {
-      paddingHorizontal: 'xl',
+      paddingHorizontal: 'l',
     },
     fullCentered: {
       flex: 1,
       justifyContent: 'center',
-      paddingHorizontal: 'xl',
+      paddingHorizontal: 'l',
     },
     even: {
       flex: 1,
@@ -278,20 +287,25 @@ export const lightTheme = createTheme({
     },
     screen: {
       flex: 1,
+      paddingHorizontal: 'l',
+    },
+    screenContent: {
+      flex: 1,
       paddingHorizontal: 'xl',
     },
     screenWithHeader: {
       flex: 1,
       marginTop: 'xxl',
-      paddingHorizontal: 'xl',
+      paddingHorizontal: 'l',
     },
     nestedContainer: {
       borderRadius: 12,
-      padding: 's',
+      paddingVertical: 'm',
+      paddingHorizontal: 'l',
       marginVertical: 's',
     },
     bottomNav: {
-      paddingHorizontal: 'xl',
+      paddingHorizontal: 'l',
     },
     footer: {
       position: 'absolute',

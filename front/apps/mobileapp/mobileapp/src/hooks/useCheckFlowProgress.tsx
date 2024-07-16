@@ -2,7 +2,11 @@ import { useEffect } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 
-import { useGetMeQuery, apiSlice } from '@ledget/shared-features';
+import {
+  useGetMeQuery,
+  useRefreshDevicesMutation,
+  apiSlice
+} from '@ledget/shared-features';
 import { hasErrorCode } from '@ledget/helpers';
 
 interface Props {
@@ -13,6 +17,7 @@ interface Props {
 
 export const useCheckFlowProgress = ({ navigation, route, isComplete }: Props) => {
   const { error, data: user } = useGetMeQuery();
+  const [refreshDevices, { isUninitialized }] = useRefreshDevicesMutation()
 
   // Navigate to aal2 if needed or if user is not verified
   // then navigate to verification
@@ -40,4 +45,10 @@ export const useCheckFlowProgress = ({ navigation, route, isComplete }: Props) =
     }
   }, [isComplete]);
 
+  // Refresh devices on user verification
+  useEffect(() => {
+    if (user && user.is_verified && isUninitialized) {
+      refreshDevices();
+    }
+  }, [user]);
 };

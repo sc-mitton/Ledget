@@ -1,16 +1,9 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-  header: {
-    marginBottom: 24
-  },
-  userInfoContainer: {
+  content: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'baseline',
     justifyContent: 'flex-start',
-    gap: 20
-  },
-  userInfo: {
-    flex: 1
   }
-});
+})
