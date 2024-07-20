@@ -1,10 +1,11 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  main: {
-    flex: 1,
-    position: 'relative',
-    paddingTop: 68,
+  content: {
+    marginTop: -8
+  },
+  logoutButton: {
+    marginTop: 18
   }
 });
 

@@ -1,34 +1,26 @@
-local version = 'v0.36.0-beta.4';
-local base_url = 'https://' + std.extVar('domain') + '/v' + std.extVar('version');
+local version = "v0.36.0-beta.4";
+local base_url = "https://" + std.extVar("domain") + "/v" + std.extVar("version");
 
 /* Authenticators */
 local anonymous_authenticator = {
-  handler: 'anonymous',
+  handler: "anonymous",
 };
 local cookie_session_authenticator = {
-  handler: 'cookie_session',
-  forward_http_headers: [
-    'X-Forwarded-For',
-    'Authorization',
-  ],
+  handler: "cookie_session",
 };
 local bearer_token_authenticator = {
-  handler: 'bearer_token',
-  forward_http_headers: [
-    'X-Forwarded-For',
-    'Authorization',
-  ],
+  handler: "bearer_token",
 };
 
 /* Authorizors */
-local allow_authorizer = { handler: 'allow' };
-local deny_authorizer = { handler: 'deny' };
+local allow_authorizer = { handler: "allow" };
+local deny_authorizer = { handler: "deny" };
 
 /* Mutators */
 local id_token = {
-  handler: 'id_token',
+  handler: "id_token",
 };
-local noop_mutator = { handler: 'noop' };
+local noop_mutator = { handler: "noop" };
 
 /* ---------------------------------- Rules --------------------------------- */
 
@@ -46,10 +38,10 @@ local BaseWithAuth = {
 [
   Base
   {
-    id: 'health',
+    id: "health",
     match: {
-      methods: ['GET'],
-      url: base_url + '/health',
+      methods: ["GET"],
+      url: base_url + "/health",
     },
     authenticators: [anonymous_authenticator],
     mutators: [noop_mutator],
@@ -57,10 +49,10 @@ local BaseWithAuth = {
   },
   Base
   {
-    id: 'deny',
+    id: "deny",
     match: {
-      methods: ['GET'],
-      url: base_url + '/deny',
+      methods: ["GET"],
+      url: base_url + "/deny",
     },
     authenticators: [anonymous_authenticator],
     authorizer: deny_authorizer,
@@ -68,10 +60,10 @@ local BaseWithAuth = {
   },
   Base
   {
-    id: 'get-prices',
+    id: "get-prices",
     match: {
-      methods: ['GET'],
-      url: base_url + '/prices',
+      methods: ["GET"],
+      url: base_url + "/prices",
     },
     authenticators: [anonymous_authenticator],
     mutators: [noop_mutator],
@@ -79,10 +71,10 @@ local BaseWithAuth = {
   },
   Base
   {
-    id: 'preflight',
+    id: "preflight",
     match: {
-      methods: ['OPTIONS'],
-      url: base_url + '/<.*>',
+      methods: ["OPTIONS"],
+      url: base_url + "/<.*>",
     },
     authenticators: [anonymous_authenticator],
     mutators: [noop_mutator],
@@ -90,330 +82,349 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
-    id: 'devices',
+    id: "extend-session",
     match: {
-      methods: ['GET', 'POST'],
-      url: base_url + '/devices',
+      methods: ["PATCH"],
+      url: base_url + "/user/session/extend",
+    },
+  },
+  Base
+  {
+    id: "extend-token-session",
+    match: {
+      methods: ["PATCH"],
+      url: base_url + "/user/token-session/extend",
+    },
+    authenticators: [anonymous_authenticator],
+    mutators: [noop_mutator],
+    authorizer: allow_authorizer,
+  },
+  BaseWithAuth
+  {
+    id: "devices",
+    match: {
+      methods: ["GET", "POST"],
+      url: base_url + "/devices",
     },
   },
   BaseWithAuth
   {
-    id: 'delete-device',
+    id: "delete-device",
     match: {
-      methods: ['DELETE'],
-      url: base_url + '/device/<[a-zA-Z0-9-]+>',
+      methods: ["DELETE"],
+      url: base_url + "/device/<[a-zA-Z0-9-]+>",
     },
   },
   BaseWithAuth
   {
-    id: 'user',
+    id: "user",
     match: {
-      methods: ['GET', 'PATCH'],
-      url: base_url + '/user/me',
+      methods: ["GET", "PATCH"],
+      url: base_url + "/user/me",
     },
   },
   BaseWithAuth
   {
-    id: 'user-settings',
+    id: "user-settings",
     match: {
-      methods: ['GET', 'PATCH'],
-      url: base_url + '/user/settings',
+      methods: ["GET", "PATCH"],
+      url: base_url + "/user/settings",
     },
   },
   BaseWithAuth
   {
-    id: 'co-owner',
+    id: "co-owner",
     match: {
-      methods: ['GET', 'DELETE'],
-      url: base_url + '/user/co-owner',
+      methods: ["GET", "DELETE"],
+      url: base_url + "/user/co-owner",
     },
   },
   BaseWithAuth
   {
-    id: 'account',
+    id: "account",
     match: {
-      methods: ['POST'],
-      url: base_url + '/user/account',
+      methods: ["POST"],
+      url: base_url + "/user/account",
     },
   },
   BaseWithAuth
   {
-    id: 'email-user',
+    id: "email-user",
     match: {
-      methods: ['POST'],
-      url: base_url + '/user/email',
+      methods: ["POST"],
+      url: base_url + "/user/email",
     },
   },
   BaseWithAuth
   {
-    id: 'plaid-link-token',
+    id: "plaid-link-token",
     match: {
-      methods: ['GET'],
-      url: base_url + '/plaid-link-token',
+      methods: ["GET"],
+      url: base_url + "/plaid-link-token",
     },
   },
   BaseWithAuth
   {
-    id: 'plaid-link-token',
+    id: "plaid-link-token",
     match: {
-      methods: ['GET'],
-      url: base_url + '/plaid-link-token/<[a-zA-Z0-9]+>',
+      methods: ["GET"],
+      url: base_url + "/plaid-link-token/<[a-zA-Z0-9]+>",
     },
   },
   BaseWithAuth
   {
-    id: 'plaid-token-exchange',
+    id: "plaid-token-exchange",
     match: {
-      methods: ['POST'],
-      url: base_url + '/plaid-token-exchange',
+      methods: ["POST"],
+      url: base_url + "/plaid-token-exchange",
     },
   },
   BaseWithAuth
   {
-    id: 'plaid-items',
+    id: "plaid-items",
     match: {
-      methods: ['GET'],
-      url: base_url + '/plaid-items',
+      methods: ["GET"],
+      url: base_url + "/plaid-items",
     },
   },
   BaseWithAuth
   {
-    id: 'plaid-item',
+    id: "plaid-item",
     match: {
-      methods: ['DELETE', 'PATCH'],
-      url: base_url + '/plaid-item/<[a-zA-Z0-9]+>',
+      methods: ["DELETE", "PATCH"],
+      url: base_url + "/plaid-item/<[a-zA-Z0-9]+>",
     },
   },
   BaseWithAuth
   {
-    id: 'default-payment-method',
+    id: "default-payment-method",
     match: {
-      methods: ['GET', 'POST'],
-      url: base_url + '/default-payment-method',
+      methods: ["GET", "POST"],
+      url: base_url + "/default-payment-method",
     },
   },
   BaseWithAuth
   {
-    id: 'customer',
+    id: "customer",
     match: {
-      methods: ['POST'],
-      url: base_url + '/customer',
+      methods: ["POST"],
+      url: base_url + "/customer",
     },
   },
   BaseWithAuth
   {
-    id: 'subscription',
+    id: "subscription",
     match: {
-      methods: ['POST', 'GET'],
-      url: base_url + '/subscription',
+      methods: ["POST", "GET"],
+      url: base_url + "/subscription",
     },
   },
   BaseWithAuth
   {
-    id: 'update-subscription',
+    id: "update-subscription",
     match: {
-      methods: ['POST', 'DELETE'],
-      url: base_url + '/subscription/<[a-zA-Z0-9_]+>',
+      methods: ["POST", "DELETE"],
+      url: base_url + "/subscription/<[a-zA-Z0-9_]+>",
     },
   },
   BaseWithAuth
   {
-    id: 'subscription-item',
+    id: "subscription-item",
     match: {
-      methods: ['PUT'],
-      url: base_url + '/subscription-item',
+      methods: ["PUT"],
+      url: base_url + "/subscription-item",
     },
   },
   BaseWithAuth
   {
-    id: 'categories',
+    id: "categories",
     match: {
-      methods: ['POST', 'GET', 'PATCH'],
-      url: base_url + '/<(categories|category)>',
+      methods: ["POST", "GET", "PATCH"],
+      url: base_url + "/<(categories|category)>",
     },
   },
   BaseWithAuth
   {
-    id: 'delete-categories',
+    id: "delete-categories",
     match: {
-      methods: ['DELETE'],
-      url: base_url + '/categories/items',
+      methods: ["DELETE"],
+      url: base_url + "/categories/items",
     },
   },
   BaseWithAuth
   {
-    id: 'update-category',
+    id: "update-category",
     match: {
-      methods: ['PUT', 'PATCH'],
-      url: base_url + '/categories/<[a-zA-Z0-9-]+>',
+      methods: ["PUT", "PATCH"],
+      url: base_url + "/categories/<[a-zA-Z0-9-]+>",
     },
   },
   BaseWithAuth
   {
-    id: 'spending-history',
+    id: "spending-history",
     match: {
-      methods: ['GET'],
-      url: base_url + '/categories/<[a-zA-Z0-9-]+>/spending-history',
+      methods: ["GET"],
+      url: base_url + "/categories/<[a-zA-Z0-9-]+>/spending-history",
     },
   },
   BaseWithAuth
   {
-    id: 'order',
+    id: "order",
     match: {
-      methods: ['POST'],
-      url: base_url + '/categories/order',
+      methods: ["POST"],
+      url: base_url + "/categories/order",
     },
   },
   BaseWithAuth
   {
-    id: 'bills',
+    id: "bills",
     match: {
-      methods: ['GET', 'POST'],
-      url: base_url + '/<(bills|bill)>',
+      methods: ["GET", "POST"],
+      url: base_url + "/<(bills|bill)>",
     },
   },
   BaseWithAuth
   {
-    id: 'update-bill',
+    id: "update-bill",
     match: {
-      methods: ['PUT', 'PATCH'],
-      url: base_url + '/bills/<[a-zA-Z0-9-]+>',
+      methods: ["PUT", "PATCH"],
+      url: base_url + "/bills/<[a-zA-Z0-9-]+>",
     },
   },
   BaseWithAuth
   {
-    id: 'delete_bills',
+    id: "delete-bills",
     match: {
-      methods: ['DELETE'],
-      url: base_url + '/bills/<[a-zA-Z0-9-]+>',
+      methods: ["DELETE"],
+      url: base_url + "/bills/<[a-zA-Z0-9-]+>",
     },
   },
   BaseWithAuth
   {
-    id: 'sync_transactions',
+    id: "sync-transactions",
     match: {
-      methods: ['POST'],
-      url: base_url + '/transactions/sync',
+      methods: ["POST"],
+      url: base_url + "/transactions/sync",
     },
   },
   BaseWithAuth
   {
-    id: 'transactions',
+    id: "transactions",
     match: {
-      methods: ['GET'],
-      url: base_url + '/transactions',
+      methods: ["GET"],
+      url: base_url + "/transactions",
     },
   },
   BaseWithAuth
   {
-    id: 'transactions-count',
+    id: "transactions-count",
     match: {
-      methods: ['GET'],
-      url: base_url + '/transactions/count',
+      methods: ["GET"],
+      url: base_url + "/transactions/count",
     },
   },
   BaseWithAuth
   {
-    id: 'recurring-transactions',
+    id: "recurring-transactions",
     match: {
-      methods: ['GET'],
-      url: base_url + '/transactions/recurring/get',
+      methods: ["GET"],
+      url: base_url + "/transactions/recurring/get",
     },
   },
   BaseWithAuth
   {
-    id: 'update-transaction',
+    id: "update-transaction",
     match: {
-      methods: ['PATCH'],
-      url: base_url + '/transactions/<[a-zA-Z0-9-]+>',
+      methods: ["PATCH"],
+      url: base_url + "/transactions/<[a-zA-Z0-9-]+>",
     },
   },
   BaseWithAuth
   {
-    id: 'confirm-transactions',
+    id: "confirm-transactions",
     match: {
-      methods: ['POST'],
-      url: base_url + '/transactions/confirmation',
+      methods: ["POST"],
+      url: base_url + "/transactions/confirmation",
     },
   },
   BaseWithAuth
   {
-    id: 'merchants',
+    id: "merchants",
     match: {
-      methods: ['GET'],
-      url: base_url + '/transactions/merchants',
+      methods: ["GET"],
+      url: base_url + "/transactions/merchants",
     },
   },
   BaseWithAuth
   {
-    id: 'add-note',
+    id: "add-note",
     match: {
-      methods: ['POST'],
-      url: base_url + '/transactions/<[a-zA-Z0-9-]+>/note',
+      methods: ["POST"],
+      url: base_url + "/transactions/<[a-zA-Z0-9-]+>/note",
     },
   },
   BaseWithAuth
   {
-    id: 'update-delete-note',
+    id: "update-delete-note",
     match: {
-      methods: ['PUT', 'DELETE'],
-      url: base_url + '/transactions/<[a-zA-Z0-9-]+>/note/<[a-zA-Z0-9-]+>',
+      methods: ["PUT", "DELETE"],
+      url: base_url + "/transactions/<[a-zA-Z0-9-]+>/note/<[a-zA-Z0-9-]+>",
     },
   },
   BaseWithAuth
   {
-    id: 'setup-intent',
+    id: "setup-intent",
     match: {
-      methods: ['GET'],
-      url: base_url + '/setup-intent',
+      methods: ["GET"],
+      url: base_url + "/setup-intent",
     },
   },
   BaseWithAuth
   {
-    id: 'next-invoice',
+    id: "next-invoice",
     match: {
-      methods: ['GET'],
-      url: base_url + '/next-invoice',
+      methods: ["GET"],
+      url: base_url + "/next-invoice",
     },
   },
   BaseWithAuth
   {
-    id: 'accounts',
+    id: "accounts",
     match: {
-      methods: ['GET', 'PATCH'],
-      url: base_url + '/accounts',
+      methods: ["GET", "PATCH"],
+      url: base_url + "/accounts",
     },
   },
   BaseWithAuth
   {
-    id: 'account-balance-history',
+    id: "account-balance-history",
     match: {
-      methods: ['GET'],
-      url: base_url + '/accounts/balance-history',
+      methods: ["GET"],
+      url: base_url + "/accounts/balance-history",
     },
   },
   BaseWithAuth
   {
-    id: 'account-balance-trend',
+    id: "account-balance-trend",
     match: {
-      methods: ['GET'],
-      url: base_url + '/accounts/balance-trend',
+      methods: ["GET"],
+      url: base_url + "/accounts/balance-trend",
     },
   },
   BaseWithAuth
   {
-    id: 'reminders',
+    id: "reminders",
     match: {
-      methods: ['GET'],
-      url: base_url + '/reminders',
+      methods: ["GET"],
+      url: base_url + "/reminders",
     },
   },
   BaseWithAuth
   {
-    id: 'setup-intent',
+    id: "setup-intent",
     match: {
-      methods: ['POST'],
-      url: base_url + '/setup-intent',
+      methods: ["POST"],
+      url: base_url + "/setup-intent",
     },
   },
 ]

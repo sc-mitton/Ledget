@@ -3,11 +3,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 type EnvironmentName = 'dev' | 'prod'
 type Platform = 'browser' | 'mobile'
 
+interface Session { id: string, token: string }
+
 interface State {
   name?: EnvironmentName
   platform?: Platform
-  sessionToken?: string
-  deviceToken?: string
+  session?: Session,
+  deviceToken?: string,
   apiUrl: string
 }
 
@@ -20,7 +22,7 @@ const initialState: State = {
   name: undefined,
   apiUrl: '',
   platform: undefined,
-  sessionToken: undefined,
+  session: undefined,
   deviceToken: undefined
 }
 
@@ -33,8 +35,8 @@ export const environmentSlice = createSlice({
       state.apiUrl = action.payload.apiUrl
       state.platform = action.payload.platform
     },
-    setSessionToken: (state, action: PayloadAction<string>) => {
-      state.sessionToken = action.payload
+    setSession: (state, action: PayloadAction<Session>) => {
+      state.session = action.payload
     },
     setDeviceToken: (state, action: PayloadAction<string>) => {
       state.deviceToken = action.payload
@@ -42,12 +44,14 @@ export const environmentSlice = createSlice({
   }
 })
 
-export const { setEnvironment, setSessionToken } = environmentSlice.actions
+export const { setEnvironment, setSession, setDeviceToken } = environmentSlice.actions
 
 export const selectEnvironment = (state: RootStateWithEnvironment) => state.environment.name
 export const selectApiUrl = (state: RootStateWithEnvironment) => state.environment.apiUrl
 export const selectPlatform = (state: RootStateWithEnvironment) => state.environment.platform
-export const selectSessionToken = (state: RootStateWithEnvironment) => state.environment.sessionToken
+export const selectSessionToken = (state: RootStateWithEnvironment) => state.environment.session?.token
+export const selectSessionId = (state: RootStateWithEnvironment) => state.environment.session?.id
+export const selectSession = (state: RootStateWithEnvironment) => state.environment.session
 export const selectDeviceToken = (state: RootStateWithEnvironment) => state.environment.deviceToken
 
 export default environmentSlice.reducer

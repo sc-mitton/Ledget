@@ -5,6 +5,7 @@ from core.views.user import (
      CoOwnerView,
      EmailView,
      UserSessionExtendView,
+     UserTokenSessionExtendView,
      FeedbackView,
      AddUserToAccountView,
      UserSettingsView,
@@ -25,6 +26,8 @@ urlpatterns = [
     path('user/account', AddUserToAccountView.as_view(), name='add-user-to-account'),
     path('user/session/extend', UserSessionExtendView.as_view(),
          name='session-extend'),
+    path('user/token-session/extend', UserTokenSessionExtendView.as_view(),
+         name='token-session-extend'),
     path("feedback", FeedbackView.as_view(), name="feedback"),
 
     path('device/<str:id>', DestroyDeviceView.as_view(), name='device'),

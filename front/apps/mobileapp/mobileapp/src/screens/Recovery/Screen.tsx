@@ -11,7 +11,7 @@ import { useLazyGetRecoveryFlowQuery, useCompleteRecoveryFlowMutation } from '@f
 import { Header, NestedScreenWOFeedback, SubHeader2, Button, Pulse, Otc, Icon } from '@ledget/native-ui'
 import { RecoveryScreenProps } from '@types'
 import { apiSlice } from '@ledget/shared-features';
-import { useStoreToken, useCheckFlowProgress } from '@hooks';
+import { useStoreToken, useFlowProgress } from '@hooks';
 
 const schema = z.object({
   otc: z.string().length(6, { message: 'Invalid code' })
@@ -28,17 +28,11 @@ export default function Recovery({ navigation, route }: RecoveryScreenProps) {
     'recovery'
   )
 
-  useStoreToken(result?.session_token)
-
-  useEffect(() => {
-    if (isCompleteSuccess) {
-      apiSlice.util.invalidateTags(['User']);
-    }
-  }, [isCompleteSuccess])
+  useStoreToken({ token: result?.session_token, id: result?.session.id });
 
   useEffect(() => { fetchFlow() }, [])
 
-  useCheckFlowProgress({ navigation, route, isComplete: isCompleteSuccess });
+  useFlowProgress({ navigation, route, updateProgress: isCompleteSuccess });
 
   const onSubmit = (data: z.infer<typeof schema>) => {
     console.log(data)

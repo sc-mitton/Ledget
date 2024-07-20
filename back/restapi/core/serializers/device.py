@@ -53,7 +53,7 @@ class DeviceSerializer(serializers.ModelSerializer):
         except Exception as e:
             raise ValidationError(f'Error parsing new values: {e}')
 
-        instance = Device.objects.create(token=hash_token, **kwargs)
+        instance, _ = Device.objects.update_or_create(token=hash_token, **kwargs)
         return instance
 
     def update(self, instance):

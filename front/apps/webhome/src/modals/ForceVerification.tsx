@@ -75,7 +75,7 @@ const ForceVerificationModal = withModal((props) => {
     <ForceVerification
       onSuccess={() => {
         props.closeModal();
-        apiSlice.util.invalidateTags(['User']);
+        apiSlice.util.invalidateTags(['user']);
       }}
     />
   );

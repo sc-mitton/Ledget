@@ -25,6 +25,7 @@ export default StyleSheet.create({
     gap: 12,
     position: 'relative',
     marginHorizontal: 20,
+    marginBottom: 16
   },
   tabItem: {
     width: 'auto',

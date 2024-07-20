@@ -47,6 +47,7 @@ authenticators:
       forward_http_headers:
         - Authorization
         - X-Forwarded-For
+        - X-Device-Token
       subject_from: "identity.id"
       extra_from: "@this"
 

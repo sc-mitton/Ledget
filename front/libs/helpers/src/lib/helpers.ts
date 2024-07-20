@@ -28,19 +28,20 @@ export function isErrorWithMessage(
 
 export function isErrorWithCode(
   error: unknown
-): error is { error: { code: string } } {
+): error is { error: { code: string | number } } {
   return (
     typeof error === 'object' &&
     error != null &&
     'error' in error &&
     typeof (error as any).error === 'object' &&
     'code' in (error as any).error &&
-    typeof (error as any).error.code === 'string'
+    (typeof (error as any).error.code === 'string' ||
+      typeof (error as any).error.code === 'number')
   );
 }
 
 export function hasErrorCode(
-  code: string,
+  code: string | number,
   error?: FetchBaseQueryError | SerializedError
 ): boolean {
   return (
@@ -87,8 +88,8 @@ export const makeIntCurrencyFromStr = (s: string) => {
   return s.includes('.') ? newVal : newVal * 100;
 };
 
-type Reducable = { reduce: (acc: any, curr: any) => any; [index: number]: any };
-type Lengthy = { length: number; [index: string | number]: any };
+type Reducable = { reduce: (acc: any, curr: any) => any;[index: number]: any };
+type Lengthy = { length: number;[index: string | number]: any };
 
 // For list of objects, returns the length of the longest string
 // for the given key

@@ -12,7 +12,7 @@ import {
 } from './types';
 
 const apiWithTags = apiSlice.enhanceEndpoints({
-  addTagTypes: ['devices', 'user', 'payment_method', 'invoice']
+  addTagTypes: ['Device', 'User', 'PaymentMethod', 'Invoice']
 });
 
 export const userSlice = apiWithTags.injectEndpoints({
@@ -24,9 +24,7 @@ export const userSlice = apiWithTags.injectEndpoints({
     getMe: builder.query<User, void>({
       query: () => 'user/me',
       providesTags: ['User'],
-      extraOptions: {
-        maxRetries: 1,
-      }
+      extraOptions: { maxRetries: 1 }
     }),
     getCoOwner: builder.query<User, void>({
       query: () => 'user/co-owner',
@@ -37,7 +35,7 @@ export const userSlice = apiWithTags.injectEndpoints({
     }),
     getPaymentMethod: builder.query<PaymentMethod, void>({
       query: () => 'default-payment-method',
-      providesTags: ['payment_method']
+      providesTags: ['PaymentMethod']
     }),
     getSetupIntent: builder.query<{ client_secret: string }, void>({
       query: () => ({
@@ -50,7 +48,7 @@ export const userSlice = apiWithTags.injectEndpoints({
         url: 'next-invoice',
         method: 'GET'
       }),
-      providesTags: ['invoice']
+      providesTags: ['Invoice']
     }),
     updateDefaultPaymentMethod: builder.mutation<any, UpdatePaymentMethod>({
       query: ({ paymentMethodId, oldPaymentMethodId }) => ({
@@ -61,7 +59,7 @@ export const userSlice = apiWithTags.injectEndpoints({
           old_payment_method_id: oldPaymentMethodId
         }
       }),
-      invalidatesTags: ['payment_method']
+      invalidatesTags: ['PaymentMethod']
     }),
     updateUser: builder.mutation<any, Partial<User>>({
       query: (data) => ({
@@ -96,7 +94,7 @@ export const userSlice = apiWithTags.injectEndpoints({
           feedback: feedback
         }
       }),
-      invalidatesTags: ['user']
+      invalidatesTags: ['User']
     }),
     updateSubscriptionItems: builder.mutation<any, { priceId: string }>({
       query: ({ priceId }) => ({
@@ -104,14 +102,22 @@ export const userSlice = apiWithTags.injectEndpoints({
         method: 'PUT',
         body: { price: priceId }
       }),
-      invalidatesTags: ['invoice']
+      invalidatesTags: ['Invoice']
     }),
     extendSession: builder.mutation<any, void>({
       query: () => ({
         url: 'user/session/extend',
         method: 'PATCH'
       }),
-      invalidatesTags: ['user']
+      extraOptions: { maxRetries: 3 }
+    }),
+    extendTokenSession: builder.mutation<any, { session_id: string }>({
+      query: ({ session_id }) => ({
+        url: 'user/token-session/extend',
+        data: { session_id },
+        method: 'PATCH'
+      }),
+      extraOptions: { maxRetries: 3 }
     }),
     addUserToAccount: builder.mutation<
       { recovery_link: string; recovery_link_qr: string; expires_at: string },
@@ -135,6 +141,7 @@ export const userSlice = apiWithTags.injectEndpoints({
 
 export const {
   useGetMeQuery,
+  useLazyGetMeQuery,
   useGetCoOwnerQuery,
   useGetDevicesQuery,
   useGetSubscriptionQuery,
@@ -147,6 +154,7 @@ export const {
   useUpdateSubscriptionItemsMutation,
   useEmailUserMutation,
   useExtendSessionMutation,
+  useExtendTokenSessionMutation,
   useAddUserToAccountMutation,
   useDelteCoOwnerMutation,
   useUpdateUserSettingsMutation

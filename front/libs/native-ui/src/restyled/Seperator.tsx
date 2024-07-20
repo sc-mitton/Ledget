@@ -5,8 +5,10 @@ import {
   VariantProps,
   BackgroundColorProps,
   ColorProps,
+  LayoutProps,
   backgroundColor,
   color,
+  layout,
   createBox
 } from '@shopify/restyle';
 
@@ -17,16 +19,21 @@ const Box = createBox<Theme>();
 
 const variant = createVariant({ themeKey: 'seperatorVariants' });
 
-type RestyleProps = VariantProps<Theme, 'seperatorVariants'> & BackgroundColorProps<Theme> & ColorProps<Theme>;
+type RestyleProps = VariantProps<Theme, 'seperatorVariants'> & BackgroundColorProps<Theme> & ColorProps<Theme> & LayoutProps<Theme>;
 
 type Props = RestyleProps & { label?: string, color?: string };
 
-const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([variant, backgroundColor, color]);
+const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([variant, backgroundColor, color, layout]);
 
 
 export const Seperator = ({ label, ...rest }: Props) => {
+  const {
+    variant = 's',
+    backgroundColor = 'lightSeperator',
+    flex = 1,
+  } = rest;
 
-  const restyledprops = useRestyle(restyleFunctions, rest);
+  const restyledprops = useRestyle((restyleFunctions as any), { ...rest, variant, backgroundColor, flex });
 
   return (
     <Box flexDirection='row' alignItems='center'>
@@ -39,10 +46,4 @@ export const Seperator = ({ label, ...rest }: Props) => {
       <Box {...restyledprops} />
     </Box>
   );
-}
-
-Seperator.defaultProps = {
-  variant: 's',
-  backgroundColor: 'lightSeperator',
-  flex: 1
 }

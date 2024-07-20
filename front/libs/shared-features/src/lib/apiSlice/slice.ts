@@ -7,7 +7,7 @@ import type {
 import Cookies from 'js-cookie';
 
 import { tagTypes } from './types';
-import { selectApiUrl, selectSessionToken } from '../environmentSlice/slice'
+import { selectApiUrl, selectSessionToken, selectDeviceToken } from '../environmentSlice/slice'
 import type { RootStateWithEnvironment } from '../environmentSlice/slice'
 
 const rawBaseQuery = retry(
@@ -16,9 +16,14 @@ const rawBaseQuery = retry(
     credentials: 'include',
     prepareHeaders: async (headers, { getState }) => {
       const sessionToken = selectSessionToken(getState() as RootStateWithEnvironment);
+      const deviceToken = selectDeviceToken(getState() as RootStateWithEnvironment);
 
       if (sessionToken) {
         headers.set('Authorization', `Bearer ${sessionToken}`);
+      }
+
+      if (deviceToken) {
+        headers.set('X-Device-Token', deviceToken);
       }
 
       // Set http_x_csrftoken header from the cookies

@@ -113,7 +113,7 @@ export const BottomButtons = ({ item }: { item: ItemS }) => {
 
   useEffect(() => {
     if (patchedUserSuccess) {
-      apiSlice.util.invalidateTags(['User']);
+      apiSlice.util.invalidateTags(['user']);
       navigate({ pathname: '/budget' });
     }
   }, [patchedUserSuccess]);

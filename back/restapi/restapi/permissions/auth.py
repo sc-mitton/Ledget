@@ -45,18 +45,19 @@ class IsAuthenticated(BasePermission):
             return session_aal == "aal1" or session_aal == "aal2"
 
 
-class CanExtendSession(BasePermission):
+class IsOidcSession(BasePermission):
     """
-    A user is able to extend a session if they have a session
-    which originated from a mobile device, or if the session
-    was authenticated via OIDC
+    Check if the user is authenticated with OIDC
     """
 
     def has_permission(self, request, view):
+        if not request.ory_session:
+            return False
+
         try:
             is_oidc_session = any([a['method'] == 'oidc'
                                    for a in request.ory_session.auth_methods])
-            return is_oidc_session or request.ory_session.token_based
+            return is_oidc_session
         except Exception as e:
             logger.error(f"Error checking OIDC signin: {e}")
             return False

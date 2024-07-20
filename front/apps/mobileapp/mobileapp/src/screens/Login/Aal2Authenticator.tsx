@@ -12,7 +12,7 @@ import { Aal2AuthenticatorScreenProps } from '@types'
 import { useNativeFlow } from '@ledget/ory'
 import { Authenticator } from '@ledget/media/native';
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice';
-import { useCheckFlowProgress, useStoreToken } from '@hooks';
+import { useFlowProgress, useStoreToken } from '@hooks';
 
 const schema = z.object({
   totp: z.string().length(6, { message: 'Invalid code' })
@@ -29,9 +29,9 @@ const Aal1Authentication = ({ navigation, route }: Aal2AuthenticatorScreenProps)
     useCompleteLoginFlowMutation,
     'login'
   )
-  useCheckFlowProgress({ navigation, route, isComplete: isCompleteSuccess });
+  useFlowProgress({ navigation, route, updateProgress: isCompleteSuccess });
 
-  useStoreToken(result?.session_token)
+  useStoreToken({ token: result?.session_token, id: result?.session.id });
 
   useEffect(() => fetchFlow({ aal: 'aal1' }), [])
   const theme = useTheme()

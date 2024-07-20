@@ -25,14 +25,17 @@ export default function Nav({ state, descriptors, navigation }: Props) {
         tint={mode === 'dark' ? 'dark' : 'light'}
         style={styles.navBlurView}
       >
-        <Box backgroundColor={'navBackground'} style={styles.navBack} />
         <Box
-          style={styles.nav}
-          variant='bottomNav'
+          backgroundColor={'navBackground'}
+          style={styles.navBack}
           shadowColor='navShadow'
           shadowOffset={{ width: 0, height: -5 }}
           shadowRadius={20}
           shadowOpacity={.95}
+        />
+        <Box
+          style={styles.nav}
+          variant='bottomNav'
           backgroundColor={'transparent'}
         >
           {state.routes.map((route, index) => {

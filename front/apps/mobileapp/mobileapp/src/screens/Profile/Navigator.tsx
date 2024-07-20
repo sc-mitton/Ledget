@@ -1,18 +1,18 @@
 import { View } from 'react-native';
-import { Edit2 } from 'geist-native-icons';
 
 import styles from './styles/navigator';
 import { Header, Box } from '@ledget/native-ui';
 import { useGetMeQuery } from '@ledget/shared-features';
-import { TabsNavigator, Avatar, Text, Icon } from '@ledget/native-ui';
+import { TabsNavigator, Avatar, Text } from '@ledget/native-ui';
+import { ChevronRightButton } from './Account/shared';
 import Account from './Account/Screen';
 import Security from './Security/Screen';
-import Connections from './Connections/Screen';
+import Settings from './Settings/Settings';
 
 const scenes = {
   account: Account,
-  security: Security,
-  connections: Connections,
+  settings: Settings,
+  security: Security
 };
 
 export default function Portfolio() {
@@ -24,7 +24,7 @@ export default function Portfolio() {
         <Header>Profile</Header>
         <Box
           variant='nestedContainer'
-          backgroundColor='nestedContainer'
+          paddingHorizontal='s'
           style={styles.userInfoContainer}
         >
           <Avatar size='l' name={user?.name} />
@@ -32,7 +32,7 @@ export default function Portfolio() {
             <Text>{user?.name.first} {user?.name.last}</Text>
             <Text color='secondaryText'>{user?.email}</Text>
           </View>
-          <Icon icon={Edit2} size={16} />
+          <ChevronRightButton onPress={() => console.log('press')} />
         </Box>
       </Box>
       <TabsNavigator screens={scenes} />

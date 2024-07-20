@@ -72,7 +72,7 @@ const UpdatePersonalInfo = withReAuth(
     useEffect(() => {
       let timeout: NodeJS.Timeout;
       if (isCompleteSuccess) {
-        dispatch(extendedApiSlice.util.invalidateTags(['User']));
+        dispatch(extendedApiSlice.util.invalidateTags(['user']));
         timeout = setTimeout(() => {
           props.closeModal();
         }, 1500);

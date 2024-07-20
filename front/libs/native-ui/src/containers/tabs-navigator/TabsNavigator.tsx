@@ -13,6 +13,7 @@ import styles from './styles';
 import { Seperator } from '../../restyled/Seperator';
 import { Box } from '../../restyled/Box';
 import { Button } from '../../restyled/Button';
+import { useAppearance } from '../../theme';
 
 interface Props {
   screens: { [key: string]: () => React.JSX.Element };
@@ -22,7 +23,7 @@ interface Props {
 const springConfig = {
   mass: 1,
   damping: 25,
-  stiffness: 310,
+  stiffness: 315,
   overshootClamping: false,
   restDisplacementThreshold: 0.01,
   restSpeedThreshold: 0.01,
@@ -37,6 +38,7 @@ export function TabsNavigator({ screens, seperator = true }: Props) {
   const refPagerView = useRef<PagerView>(null);
   const dragState = useRef<'idle' | 'dragging' | 'settling'>('idle');
   const layouts = useRef(Array.from({ length: Object.keys(screens).length }, () => ({ width: 0, x: 0 })));
+  const appearance = useAppearance();
 
   const animatedStyles = useAnimatedStyle(() => ({
     width: width.value,
@@ -87,7 +89,7 @@ export function TabsNavigator({ screens, seperator = true }: Props) {
 
   return (
     <>
-      <View style={styles.tabBarContainer}>
+      <Box style={styles.tabBarContainer}>
         <Box style={styles.absTabBar}>
           {Object.keys(screens).map((route, i) => (
             <Button
@@ -130,13 +132,14 @@ export function TabsNavigator({ screens, seperator = true }: Props) {
               }}
               style={styles.tabItem}
               variant={'grayPill'}
+              backgroundColor={appearance.mode === 'dark' ? 'transparent' : undefined}
               transparent={true}
               label={route}
             />
           ))}
         </Box>
-        {seperator && <Seperator variant='m' />}
-      </View>
+        {seperator && <Seperator variant='bare' />}
+      </Box>
       <View style={styles.screen}>
         <PagerView
           style={styles.pagerView}

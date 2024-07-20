@@ -9,6 +9,7 @@ from secrets import compare_digest
 logger = logging.getLogger('ledget')
 
 OATHKEEPER_AUTH_HEADER = settings.OATHKEEPER_AUTH_HEADER
+DEVICE_TOKEN_HEADER = settings.DEVICE_TOKEN_HEADER
 
 
 class OryBackend(SessionAuthentication):
@@ -38,13 +39,25 @@ class OryBackend(SessionAuthentication):
     def _get_device(self, user, request):
         """Check if the device token is valid for a given user"""
 
-        device_token_cookies = {k: v for k, v in request.COOKIES.items()
-                                if 'ledget_device' in k}
+        device_tokens = self._get_tokens(request)
 
         for device in user.device_set.all():
             if any(compare_digest(device.token.encode(), token.encode())
-                   for token in device_token_cookies.values()):
+                   for token in device_tokens):
                 return device
+
+    def _get_tokens(self, request):
+
+        result = []
+
+        for k, v in request.COOKIES.items():
+            if 'ledget_device' in k:
+                result.append(v)
+
+        if DEVICE_TOKEN_HEADER in request.META:
+            result.append(request.META[DEVICE_TOKEN_HEADER])
+
+        return result
 
     def get_user(self, request, decoded_token: dict):
         """Return the user from the decoded token."""

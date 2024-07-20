@@ -7,19 +7,25 @@ import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Provider as ReduxProvider } from 'react-redux';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import * as SecureStore from 'expo-secure-store';
 import * as SplashScreen from 'expo-splash-screen';
+import * as SecureStore from 'expo-secure-store';
 
 import styles from './styles/app';
 import { darkTheme, lightTheme, AppearanceProvider, useAppearance, Box } from '@ledget/native-ui'
 import { Budget, Accounts, Profile, Activity } from '@screens';
 import { useAppDispatch, useAppSelector } from '@hooks';
 import {
+  useRefreshDevicesMutation,
+  useExtendTokenSessionMutation,
   useGetMeQuery,
-  setSessionToken,
   selectEnvironment,
-  setEnvironment
+  setEnvironment,
+  setSession,
+  setDeviceToken,
+  selectSession,
+  apiSlice
 } from '@ledget/shared-features';
+import { hasErrorCode } from '@ledget/helpers';
 import { RootTabParamList } from '@types';
 import { ENV, LEDGET_API_URI } from '@env';
 import store from '@features/store';
@@ -44,8 +50,8 @@ const navTheme = {
 function App() {
   const dispatch = useAppDispatch();
   const [appIsReady, setAppIsReady] = useState(false);
+  const [skipGetMe, setSkipGetMe] = useState(true);
 
-  const { data: user } = useGetMeQuery();
   const [fontsLoaded, fontError] = useFonts({
     'SourceSans3Regular': SourceSans3Regular,
     'SourceSans3Medium': SourceSans3Medium,
@@ -53,16 +59,24 @@ function App() {
     'SourceSans3Bold': SourceSans3Bold,
   });
 
-  useEffect(() => {
-    const checks = [
-      fontsLoaded,
-      user,
-      user?.is_verified
-    ]
-    if (checks.every(Boolean)) {
-      setAppIsReady(true);
-    }
-  }, [fontsLoaded, fontError, user]);
+  const {
+    isSuccess: isGetMeSuccess,
+    isError: isGetMeError,
+    error: getMeError
+  } = useGetMeQuery(undefined, { skip: skipGetMe });
+  const [
+    refreshDevices, {
+      isUninitialized: isRefreshDevicesUninitialized,
+      isSuccess: isRefreshDevicesSuccess,
+      isError: isRefreshDevicesError,
+      data: deviceResult
+    }] = useRefreshDevicesMutation({ fixedCacheKey: 'refreshDevices' })
+  const session = useAppSelector(selectSession);
+  const [extendSession, {
+    isUninitialized: isUninitializedExtend,
+    isSuccess: isExtendSuccess,
+    error: extendError
+  }] = useExtendTokenSessionMutation({ fixedCacheKey: 'extendSession' });
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
@@ -70,14 +84,84 @@ function App() {
     }
   }, [appIsReady]);
 
-  // Set the token from the secure store on app load if it exists
+  //  Set the token from the secure store on app load if it exists
   useEffect(() => {
-    SecureStore.getItemAsync('session_token').then((token) => {
+    SecureStore.getItemAsync('session').then((session) => {
+      if (session) {
+        const sessionObj = JSON.parse(session);
+        dispatch(setSession(sessionObj))
+      }
+    });
+    SecureStore.getItemAsync('device_token').then((token) => {
       if (token) {
-        dispatch(setSessionToken(token))
+        dispatch(setDeviceToken(token))
       }
     });
   }, []);
+
+  // Try to refresh devices when
+  // 1. the session is available and the devices haven't been refreshed yet
+  // 2. the session is available, just extended successfully, and the devices haven't been refreshed yet
+  useEffect(() => {
+    if (session && (isRefreshDevicesUninitialized || (isExtendSuccess && !isRefreshDevicesSuccess))) {
+      refreshDevices();
+    }
+  }, [session, isExtendSuccess, isRefreshDevicesSuccess])
+
+  // Try and extend the session if fetching the user data was unsuccessful
+  useEffect(() => {
+    if (session && hasErrorCode(401, getMeError) && isUninitializedExtend) {
+      extendSession({ session_id: session.id });
+    }
+  }, [session, getMeError]);
+
+  // Fetch user data after refreshing devices
+  useEffect(() => {
+    if (isRefreshDevicesSuccess || isRefreshDevicesError) {
+      setSkipGetMe(false);
+      apiSlice.util.invalidateTags(['User']);
+    }
+  }, [isRefreshDevicesSuccess, isRefreshDevicesError]);
+
+  // Checks for when the app is ready to load
+  useEffect(() => {
+
+    // Situation 1
+    const checks = [
+      fontsLoaded,
+      !fontError,
+      (isGetMeError || isRefreshDevicesError)
+    ]
+    if (checks.every(Boolean)) {
+      setAppIsReady(true);
+    }
+
+    // Situation 2
+    if (isGetMeSuccess && isRefreshDevicesSuccess) {
+      setAppIsReady(true);
+    }
+
+    // Situation 3: No session
+    if (!SecureStore.getItem('session')) {
+      setAppIsReady(true);
+    }
+
+  }, [
+    fontsLoaded,
+    fontError,
+    isGetMeError,
+    isRefreshDevicesError,
+    isGetMeSuccess,
+    isRefreshDevicesSuccess
+  ]);
+
+  // Store device token on successful device refresh
+  useEffect(() => {
+    if (deviceResult) {
+      dispatch(setDeviceToken(deviceResult.device_token));
+      SecureStore.setItemAsync('device_token', deviceResult.device_token);
+    }
+  }, [deviceResult]);
 
   if (!appIsReady) {
     return null;
@@ -92,14 +176,13 @@ function App() {
         onLayout={onLayoutRootView}
       >
         <NavigationContainer theme={navTheme}>
-          {(user && user.is_verified)
+          {isGetMeSuccess && isRefreshDevicesSuccess && !extendError
             ? <Tab.Navigator
               initialRouteName='Budget'
               backBehavior='history'
               screenOptions={{ headerShown: false }}
               tabBar={({ state, descriptors, navigation }) =>
-                <BottomNav state={state} descriptors={descriptors} navigation={navigation} />}
-            >
+                <BottomNav state={state} descriptors={descriptors} navigation={navigation} />}>
               <Tab.Screen name="Home" component={Budget} />
               <Tab.Screen name="Budget" component={Budget} />
               <Tab.Screen name="Activity" component={Activity} />
@@ -124,8 +207,6 @@ const AppWithEnvironment = () => {
       platform: 'mobile'
     }));
   }, [dispatch]);
-
-
 
   return environment ? <App /> : null;
 }

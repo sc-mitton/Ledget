@@ -17,6 +17,7 @@ const palette = {
   successGreen: 'hsl(144, 62%, 33%)',
   successGreenFaint: 'hsl(144, 62%, 18%)',
 
+  gray1000: `hsl(${grayH}, ${grayS}%, 0%)`,
   gray900: `hsl(${grayH}, ${grayS}%, 5%)`,
   gray850: `hsl(${grayH}, ${grayS}%, 9%)`,
   gray800: `hsl(${grayH}, ${grayS}%, 13%)`,
@@ -45,6 +46,8 @@ const palette = {
   offWhite2: `hsl(${grayH}, ${grayS}%, 80%)`,
   offWhite3: `hsl(${grayH}, ${grayS}%, 70%)`,
   offWhite4: `hsl(${grayH}, ${grayS}%, 60%)`,
+  offWhite5: `hsl(${grayH}, ${grayS}%, 50%)`,
+  offWhite6: `hsl(${grayH}, ${grayS}%, 40%)`,
 }
 
 export const darkTheme = createTheme({
@@ -70,14 +73,18 @@ export const darkTheme = createTheme({
     tabNavPillBorder: palette.blue500,
 
     // Shadows
-    navShadow: palette.gray900,
+    navShadow: palette.gray1000,
+    activeSwitchShadow: palette.blue700,
+    inactiveSwitchShadow: palette.gray700,
 
+    // Icons
     activeIcon: palette.blueSat,
 
     // Text
     mainText: palette.offWhite,
     secondaryText: palette.offWhite3,
-    tertiaryText: palette.offWhite4,
+    tertiaryText: palette.offWhite5,
+    quaternaryText: palette.offWhite6,
     activeText: palette.blueSat,
     invertedText: palette.gray900,
     whiteText: palette.offWhite,
@@ -92,6 +99,12 @@ export const darkTheme = createTheme({
     grayButton: palette.gray800,
     grayButtonBorder: palette.gray750,
 
+    // Switch
+    enabledSwitchPill: palette.blue100,
+    enabledSwitchCrib: palette.blue500,
+    disabledSwitchPill: palette.gray200,
+    disabledSwitchCrib: palette.gray700,
+
     // Seperators
     seperator: palette.gray700,
     lightSeperator: palette.gray800,
@@ -103,5 +116,5 @@ export const darkTheme = createTheme({
     pulseGreen: palette.successGreenFaint,
     successIcon: palette.successGreen,
     grayIcon: palette.gray100,
-  },
+  }
 });

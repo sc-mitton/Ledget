@@ -9,9 +9,11 @@ import {
   useRestyle,
   spacing,
   layout,
+  typography,
   createVariant,
   backgroundColor,
   SpacingProps,
+  TypographyProps,
   VariantProps,
   LayoutProps,
   BackgroundColorProps,
@@ -24,6 +26,7 @@ import { Theme } from '../theme';
 type RestyleProps = SpacingProps<Theme> &
   VariantProps<Theme, 'buttonVariants'> &
   LayoutProps<Theme> &
+  TypographyProps<Theme> &
   BackgroundColorProps<Theme>;
 
 const variant = createVariant({ themeKey: 'buttonVariants' });
@@ -33,6 +36,7 @@ const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([
   variant,
   backgroundColor,
   layout,
+  typography,
 ]);
 
 export type Props = RestyleProps & {
@@ -60,6 +64,8 @@ export const Button = (props: Props) => {
   } = props;
   const restyledProps = useRestyle(restyleFunctions, rest);
   const color = (restyledProps as any).style[0]?.color;
+  const fontSize = (restyledProps as any).style[0]?.fontSize;
+  const lineHeight = (restyledProps as any).style[0]?.lineHeight;
 
   return (
     <TouchableOpacity
@@ -72,6 +78,8 @@ export const Button = (props: Props) => {
         {labelPlacement === 'right' && children}
         <Text
           color={textColor}
+          fontSize={fontSize}
+          lineHeight={lineHeight}
           style={textColor ? {} : { color: transparent ? 'transparent' : color ? color : '' }}>
           {label}
         </Text>

@@ -16,7 +16,7 @@ export const deviceSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Device']
     }),
-    refreshDevices: builder.mutation<void, void>({
+    refreshDevices: builder.mutation<{ device_token: string }, void>({
       query: () => ({
         url: 'devices',
         method: 'POST',

@@ -28,7 +28,7 @@ services:
       - "traefik.http.routers.oathkeeper.service=oathkeeper"
       - "traefik.http.services.oathkeeper.loadbalancer.server.port=4456"
       - "traefik.http.middlewares.oathkeeper.forwardauth.address=http://oathkeeper:4456/decisions"
-      - "traefik.http.middlewares.oathkeeper.forwardauth.authResponseHeaders=X-User, Authorization"
+      - "traefik.http.middlewares.oathkeeper.forwardauth.authResponseHeaders=X-User, Authorization, X-Device-Token"
     secrets:
       - jwks.json
   proxy:

@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
   },
   socialForm: {
     marginTop: 32,
+    gap: 24,
     width: '100%',
   },
   socialButtons: {

@@ -26,7 +26,7 @@ import {
   useLazyGetLoginFlowQuery,
   useCompleteLoginFlowMutation
 } from '@features/orySlice';
-import { useCheckFlowProgress, useStoreToken } from '@hooks';
+import { useFlowProgress, useStoreToken } from '@hooks';
 
 const schema = z.object({
   password: z
@@ -64,7 +64,7 @@ const Aal1Authentication = ({
   );
 
   useEffect(() => fetchFlow({ aal: 'aal1' }), []);
-  useCheckFlowProgress({ navigation, route, isComplete: isCompleteSuccess });
+  useFlowProgress({ navigation, route, updateProgress: isCompleteSuccess });
 
   // Submit the form
   const onSubmit = (data: z.infer<typeof schema>) => {
@@ -75,7 +75,7 @@ const Aal1Authentication = ({
     });
   };
 
-  useStoreToken(result?.session_token);
+  useStoreToken({ token: result?.session_token, id: result?.session.id });
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

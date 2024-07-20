@@ -11,7 +11,7 @@ import { Header, SubHeader2, Otc, SubmitButton, Pulse, NestedScreenWOFeedback, I
 import { VerificationScreenProps } from '@types'
 import { useNativeFlow, useVerificationCodeHandler } from '@ledget/ory'
 import { useLazyGetVerificationFlowQuery, useCompleteVerificationFlowMutation } from '@features/orySlice';
-import { useCheckFlowProgress } from '@/hooks/useCheckFlowProgress';
+import { useFlowProgress } from '@/hooks/useFlowProgress';
 
 const schema = z.object({
   code: z.string().length(6, { message: 'Invalid code' })
@@ -36,7 +36,7 @@ const Verification = ({ navigation, route }: VerificationScreenProps) => {
     result
   })
 
-  useCheckFlowProgress({ navigation, route, isComplete: isCompleteSuccess })
+  useFlowProgress({ navigation, route, updateProgress: isCompleteSuccess })
 
   useEffect(() => fetchFlow(), [])
 

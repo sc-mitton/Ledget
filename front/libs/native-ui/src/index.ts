@@ -7,6 +7,7 @@ export * from './restyled/SubmitButton';
 
 export * from './inputs/text-inputs/text-inputs';
 export * from './inputs/otc/Otc';
+export * from './inputs/switch/Switch';
 
 export * from './buttons/back-button/BackButton';
 export * from './misc/form-errors/form-errors';

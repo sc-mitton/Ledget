@@ -32,7 +32,7 @@ class DeviceView(ListCreateAPIView):
         session_is_aal1 = request.ory_session.aal == 'aal1'
         user_has_mfa = bool(request.user.settings.mfa_method)
 
-        # can't create new device when user has mfa set up
+        # can't create new device when user has mfa set up and the session is aal1
         if (device_is_aal1 and session_is_aal1) and user_has_mfa:
             return Response(
                 {'error': f'{request.user.settings.mfa_method}'.upper()},
@@ -43,7 +43,9 @@ class DeviceView(ListCreateAPIView):
         else:
             instance = self.update(request, *args, **kwargs)
 
-        response = Response(status=HTTP_200_OK)
+        response = Response(
+            data={'device_token': instance.token},
+            status=HTTP_200_OK)
         response = self._set_cookies(response, instance)
         return response
 

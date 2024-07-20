@@ -10,10 +10,9 @@ import styles from './styles/shared';
 import { useNativeFlow } from '@ledget/ory';
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@/features/orySlice';
 import { Header, NestedScreenWOFeedback, SubHeader2, TextInput, Button, Pulse, JiggleView } from '@ledget/native-ui';
-import { useGetMeQuery } from '@ledget/shared-features';
 import { RecoveryCode } from '@ledget/media/native';
 import { Aal2RecoveryCodeScreenProps } from '@types';
-import { useStoreToken } from '@hooks';
+import { useFlowProgress } from '@hooks';
 
 const schema = z.object({
   lookup_secret: z.string().min(1, 'Recovery code is required'),
@@ -21,7 +20,6 @@ const schema = z.object({
 
 const Aal2RecoveryCode = ({ navigation, route }: Aal2RecoveryCodeScreenProps) => {
   const theme = useTheme();
-  const { data: user } = useGetMeQuery()
   const { control, handleSubmit, formState: { errors } } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
@@ -33,16 +31,9 @@ const Aal2RecoveryCode = ({ navigation, route }: Aal2RecoveryCodeScreenProps) =>
 
   useEffect(() => fetchFlow({ aal: 'aal2' }), []);
 
-  useStoreToken(result?.session_token);
+  useFlowProgress({ navigation, route, updateProgress: isCompleteSuccess });
 
-  // Navigate to verification if user is not verified
-  useEffect(() => {
-    if (user && !user.is_verified) {
-      navigation.navigate('Verification', {
-        identifier: route.params.identifier
-      });
-    }
-  }, [user]);
+
 
   const onSubmit = (data: z.infer<typeof schema>) => {
     submitFlow({

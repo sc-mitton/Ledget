@@ -46,6 +46,8 @@ const palette = {
   offBlack2: `hsl(${grayH}, ${grayS}%, 37%)`,
   offBlack3: `hsl(${grayH}, ${grayS}%, 47%)`,
   offBlack4: `hsl(${grayH}, ${grayS}%, 57%)`,
+  offBlack5: `hsl(${grayH}, ${grayS}%, 67%)`,
+  offBlack6: `hsl(${grayH}, ${grayS}%, 77%)`,
 }
 
 export const lightTheme = createTheme({
@@ -72,11 +74,14 @@ export const lightTheme = createTheme({
     // Shadows
     navShadow: palette.gray100,
     activeIcon: palette.blueSat,
+    activeSwitch: palette.blue800,
+    inactiveSwitch: palette.gray200,
 
     // Text
     mainText: palette.offBlack,
     secondaryText: palette.offBlack3,
     tertiaryText: palette.offBlack4,
+    quaternaryText: palette.offBlack5,
     whiteText: palette.white,
     invertedText: palette.gray100,
     activeText: palette.blueSat,
@@ -89,6 +94,12 @@ export const lightTheme = createTheme({
     blueButtonBorder: palette.blue450,
     grayButton: palette.gray200,
     grayButtonBorder: palette.gray250,
+
+    // Switch
+    enabledSwitchPill: palette.blue600,
+    disabledSwitchPill: palette.gray200,
+    enabledSwitchCrib: palette.blue100,
+    disabledSwitchCrib: palette.gray200,
 
     // Seperators
     seperator: palette.gray200,
@@ -114,6 +125,7 @@ export const lightTheme = createTheme({
     xl: 24,
     xxl: 36,
     xxxl: 48,
+    navHeight: 104
   },
   textVariants: {
     header: {
@@ -122,24 +134,21 @@ export const lightTheme = createTheme({
       marginTop: 'm',
       marginBottom: 'xs',
       fontFamily: 'SourceSans3SemiBold',
-      color: 'mainText',
       width: '100%',
     },
     header2: {
       fontSize: 18,
       lineHeight: 26,
       fontFamily: 'SourceSans3Medium',
-      color: 'mainText',
       width: '100%',
       marginTop: 'm',
     },
-    header3: {
+    boxHeader: {
       fontSize: 16,
       lineHeight: 20,
-      fontFamily: 'SourceSans3Medium',
-      color: 'mainText',
+      fontFamily: 'SourceSans3Regular',
       width: '100%',
-      marginTop: 'm',
+      marginTop: 'xl',
     },
     subheader: {
       fontSize: 24,
@@ -172,6 +181,7 @@ export const lightTheme = createTheme({
       padding: 'm',
       marginVertical: 's',
       borderRadius: 12,
+      gap: 's',
       marginHorizontal: 'xxs',
       alignItems: 'center',
       justifyContent: 'center',
@@ -184,6 +194,7 @@ export const lightTheme = createTheme({
       padding: 'm',
       marginVertical: 'l',
       borderRadius: 12,
+      gap: 's',
       marginHorizontal: 'xxs',
       alignItems: 'center',
       justifyContent: 'center',
@@ -192,10 +203,23 @@ export const lightTheme = createTheme({
       borderWidth: 1.5,
       borderColor: 'grayButtonBorder',
     },
+    grayMain2: {
+      padding: 'm',
+      marginVertical: 'l',
+      borderRadius: 12,
+      gap: 's',
+      marginHorizontal: 'xxs',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'nestedContainer',
+      // borderWidth: 1.5,
+      // borderColor: 'grayButton',
+    },
     borderedGrayMain: {
       padding: 'm',
       marginVertical: 's',
       borderRadius: 12,
+      gap: 's',
       marginHorizontal: 'xxs',
       alignItems: 'center',
       justifyContent: 'center',
@@ -233,12 +257,16 @@ export const lightTheme = createTheme({
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: 'grayButton',
+      borderColor: 'grayButtonBorder',
+      borderWidth: 1.5,
     },
     transparentPill: {
       paddingVertical: 'none',
       paddingHorizontal: 'm',
       borderRadius: 40,
       alignItems: 'center',
+      borderWidth: 1.5,
+      borderColor: 'transparent',
       justifyContent: 'center',
       backgroundColor: 'transparent',
     },
@@ -246,27 +274,33 @@ export const lightTheme = createTheme({
       padding: 's',
       alignItems: 'center',
       flexDirection: 'row',
-      color: 'mainText'
+      color: 'mainText',
+      fontSize: 16,
+      letterSpacing: 2,
     }
   },
   seperatorVariants: {
+    bare: {
+      height: 1.25,
+      backgroundColor: 'seperator',
+    },
     s: {
-      height: 2,
+      height: 1.25,
       marginVertical: 's',
       backgroundColor: 'seperator',
     },
     m: {
-      height: 2,
+      height: 1.25,
       marginVertical: 'l',
       backgroundColor: 'seperator',
     },
     l: {
-      height: 2,
+      height: 1.25,
       marginVertical: 'xl',
       backgroundColor: 'seperator',
     },
     xl: {
-      height: 2,
+      height: 1.25,
       marginVertical: 'xxxl',
       backgroundColor: 'seperator',
     },
@@ -292,6 +326,8 @@ export const lightTheme = createTheme({
     screenContent: {
       flex: 1,
       paddingHorizontal: 'xl',
+      marginBottom: 'navHeight',
+      paddingTop: 'm',
     },
     screenWithHeader: {
       flex: 1,
@@ -303,6 +339,9 @@ export const lightTheme = createTheme({
       paddingVertical: 'm',
       paddingHorizontal: 'l',
       marginVertical: 's',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
     },
     bottomNav: {
       paddingHorizontal: 'l',

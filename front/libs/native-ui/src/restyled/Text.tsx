@@ -19,11 +19,11 @@ export const Header2 = (props: TextProps) => {
   );
 }
 
-export const Header3 = (props: TextProps) => {
+export const BoxHeader = (props: TextProps) => {
   const { children, ...rest } = props;
 
   return (
-    <Text variant="header3" {...rest}>{children}</Text>
+    <Text variant="boxHeader" {...rest}>{children}</Text>
   );
 }
 

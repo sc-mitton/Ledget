@@ -1,4 +1,4 @@
 export * from './stackInterpolators';
-export * from './useCheckFlowProgress';
+export * from './useFlowProgress';
 export * from './useStoreToken';
 export * from './store';
