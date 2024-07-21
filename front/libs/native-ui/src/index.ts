@@ -20,3 +20,5 @@ export * from './headers/BackHeader';
 export * from './containers/baked-boxes';
 export * from './containers/tabs-navigator/TabsNavigator';
 export * from './theme';
+
+export * from './loaders/ShimmerBox';

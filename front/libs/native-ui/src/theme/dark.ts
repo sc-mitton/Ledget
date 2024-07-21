@@ -57,8 +57,9 @@ export const darkTheme = createTheme({
 
     // Backgrounds
     mainBackground: palette.gray900,
+    headerBackground: `hsl(${grayH}, ${grayS}%, 7%)`,
     navBackground: palette.gray850,
-    nestedContainer: palette.gray850,
+    nestedContainer: palette.gray800,
     inputBackground: palette.gray800,
     avatarBackground: palette.gray800,
     tabNavPill: palette.blue700,
@@ -74,6 +75,7 @@ export const darkTheme = createTheme({
 
     // Shadows
     navShadow: palette.gray1000,
+    tabsShadow: palette.gray1000,
     activeSwitchShadow: palette.blue700,
     inactiveSwitchShadow: palette.gray700,
 
@@ -87,6 +89,7 @@ export const darkTheme = createTheme({
     quaternaryText: palette.offWhite6,
     activeText: palette.blueSat,
     invertedText: palette.gray900,
+    highContrastText: palette.offWhite,
     whiteText: palette.offWhite,
     focusedText: palette.blueSat,
     blueText: palette.blue200,
@@ -96,6 +99,8 @@ export const darkTheme = createTheme({
     // Buttons
     blueButton: palette.blue500,
     blueButtonBorder: palette.blue400,
+    blueButton2: palette.blue400,
+    blueButtonBorder2: palette.blue300,
     grayButton: palette.gray800,
     grayButtonBorder: palette.gray750,
 
@@ -103,7 +108,7 @@ export const darkTheme = createTheme({
     enabledSwitchPill: palette.blue100,
     enabledSwitchCrib: palette.blue500,
     disabledSwitchPill: palette.gray200,
-    disabledSwitchCrib: palette.gray700,
+    disabledSwitchCrib: palette.gray600,
 
     // Seperators
     seperator: palette.gray700,
@@ -116,5 +121,6 @@ export const darkTheme = createTheme({
     pulseGreen: palette.successGreenFaint,
     successIcon: palette.successGreen,
     grayIcon: palette.gray100,
+    shimmer: palette.gray850,
   }
 });

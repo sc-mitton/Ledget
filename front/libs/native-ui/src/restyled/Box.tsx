@@ -1,5 +1,6 @@
+import { forwardRef } from "react";
 import { createBox } from "@shopify/restyle";
-import { ViewProps } from "react-native";
+import { ViewProps, View } from "react-native";
 import {
   useRestyle,
   createVariant,
@@ -37,10 +38,10 @@ const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([
   shadow,
 ]);
 
-type Props = RestyleProps & ViewProps;
+export type BoxProps = RestyleProps & ViewProps;
 
-export const Box = ({ children, ...rest }: Props) => {
+export const Box = forwardRef<View, BoxProps>(({ children, ...rest }, ref) => {
   const props = useRestyle(restyleFunctions, rest);
 
-  return <BaseBox {...props}>{children}</BaseBox>;
-};
+  return <BaseBox ref={ref} {...props}>{children}</BaseBox>;
+});

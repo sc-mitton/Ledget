@@ -42,6 +42,7 @@ const palette = {
 
   blueSat: `hsl(${blueH}, ${blueS + 10}%, 50%)`,
 
+  black: 'hsl(0, 0%, 0%)',
   offBlack: `hsl(${grayH}, ${grayS}%, 27%)`,
   offBlack2: `hsl(${grayH}, ${grayS}%, 37%)`,
   offBlack3: `hsl(${grayH}, ${grayS}%, 47%)`,
@@ -57,6 +58,7 @@ export const lightTheme = createTheme({
     // Backgrounds
     mainBackground: palette.gray100,
     navBackground: palette.gray200,
+    headerBackground: `hsl(${grayH}, ${grayS}%, 97%)`,
     inputBackground: palette.gray200,
     nestedContainer: palette.gray200,
     avatarBackground: palette.gray200,
@@ -69,13 +71,14 @@ export const lightTheme = createTheme({
     inputBorderErrorMain: palette.red,
     focusedInputBorderSecondary: palette.blue100,
     focusedInputBorderMain: palette.blue300,
-    tabNavPillBorder: palette.blue400,
+    tabNavPillBorder: palette.blue500,
 
     // Shadows
-    navShadow: palette.gray100,
+    navShadow: palette.gray300,
+    tabsShadow: palette.gray200,
     activeIcon: palette.blueSat,
-    activeSwitch: palette.blue800,
-    inactiveSwitch: palette.gray200,
+    activeSwitchShadow: palette.blue300,
+    inactiveSwitchShadow: palette.gray200,
 
     // Text
     mainText: palette.offBlack,
@@ -83,6 +86,7 @@ export const lightTheme = createTheme({
     tertiaryText: palette.offBlack4,
     quaternaryText: palette.offBlack5,
     whiteText: palette.white,
+    highContrastText: palette.black,
     invertedText: palette.gray100,
     activeText: palette.blueSat,
     blueText: palette.blue500,
@@ -92,17 +96,19 @@ export const lightTheme = createTheme({
     // Buttons
     blueButton: palette.blue500,
     blueButtonBorder: palette.blue450,
+    blueButton2: palette.blue100,
+    blueButtonBorder2: palette.blue100,
     grayButton: palette.gray200,
     grayButtonBorder: palette.gray250,
 
     // Switch
-    enabledSwitchPill: palette.blue600,
+    enabledSwitchPill: palette.blue450,
+    enabledSwitchCrib: palette.blue200,
     disabledSwitchPill: palette.gray200,
-    enabledSwitchCrib: palette.blue100,
-    disabledSwitchCrib: palette.gray200,
+    disabledSwitchCrib: palette.gray400,
 
     // Seperators
-    seperator: palette.gray200,
+    seperator: palette.gray300,
     lightSeperator: palette.gray175,
     blueseperator: palette.blue100,
 
@@ -110,6 +116,7 @@ export const lightTheme = createTheme({
     alert: palette.red,
     pulseWaiting: palette.gray300,
     pulseGreen: palette.successGreenFaint,
+    shimmer: palette.gray300,
 
     // Icons
     successIcon: palette.successGreen,
@@ -128,6 +135,10 @@ export const lightTheme = createTheme({
     navHeight: 104
   },
   textVariants: {
+    bold: {
+      fontFamily: 'SourceSans3SemiBold',
+      color: 'highContrastText',
+    },
     header: {
       fontSize: 26,
       lineHeight: 30,
@@ -144,11 +155,12 @@ export const lightTheme = createTheme({
       marginTop: 'm',
     },
     boxHeader: {
-      fontSize: 16,
+      fontSize: 15,
       lineHeight: 20,
-      fontFamily: 'SourceSans3Regular',
+      fontFamily: 'SourceSans3Medium',
       width: '100%',
-      marginTop: 'xl',
+      marginTop: 'm',
+      marginLeft: 'xs',
     },
     subheader: {
       fontSize: 24,
@@ -190,6 +202,19 @@ export const lightTheme = createTheme({
       borderWidth: 1.5,
       borderColor: 'blueButtonBorder',
     },
+    blueMain2: {
+      padding: 'm',
+      marginVertical: 'l',
+      borderRadius: 12,
+      gap: 's',
+      marginHorizontal: 'xxs',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'blueButton2',
+      borderWidth: 1.5,
+      borderColor: 'blueButtonBorder2',
+      color: 'blueText',
+    },
     grayMain: {
       padding: 'm',
       marginVertical: 'l',
@@ -212,8 +237,6 @@ export const lightTheme = createTheme({
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: 'nestedContainer',
-      // borderWidth: 1.5,
-      // borderColor: 'grayButton',
     },
     borderedGrayMain: {
       padding: 'm',
@@ -327,7 +350,7 @@ export const lightTheme = createTheme({
       flex: 1,
       paddingHorizontal: 'xl',
       marginBottom: 'navHeight',
-      paddingTop: 'm',
+      paddingTop: 'l',
     },
     screenWithHeader: {
       flex: 1,

@@ -1,12 +1,30 @@
-import { Box, Text } from '@ledget/native-ui';
-import React from 'react'
+import { View } from 'react-native';
+import { Box, BoxHeader, Switch, useAppearance } from '@ledget/native-ui';
 
-const Screen = () => {
+const Preferences = () => {
+  const appearance = useAppearance();
+
   return (
-    <Box variant='screen'>
-      <Text>Settings</Text>
+    <Box variant='screenContent'>
+      <BoxHeader>Appearance</BoxHeader>
+      <Box variant='nestedContainer' backgroundColor='nestedContainer'>
+        <View style={{ flex: 1 }}>
+          <Switch
+            label={'Use Device Appearance'}
+            value={!appearance.useDeviceAppearance}
+            onValueChange={(b) => appearance.setUseDeviceApperance(b)}
+            disabled={appearance.useDeviceAppearance}
+          />
+          <Switch
+            label={appearance.customMode === 'dark' ? 'Dark Mode' : 'Light Mode'}
+            value={appearance.customMode === 'light'}
+            onValueChange={(b) => appearance.setCustomMode(b ? 'light' : 'dark')}
+            disabled={!appearance.useDeviceAppearance}
+          />
+        </View>
+      </Box>
     </Box>
   )
 }
 
-export default Screen
+export default Preferences

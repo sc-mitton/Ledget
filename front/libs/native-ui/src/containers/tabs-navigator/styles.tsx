@@ -10,6 +10,7 @@ export default StyleSheet.create({
   },
   tabBarContainer: {
     position: 'relative',
+    zIndex: 1,
   },
   absTabBar: {
     flexDirection: 'row',
@@ -17,7 +18,7 @@ export default StyleSheet.create({
     position: 'absolute',
     left: 0,
     top: 0,
-    zIndex: 2,
+    zIndex: 3,
     marginHorizontal: 20,
   },
   tabBar: {
@@ -31,11 +32,11 @@ export default StyleSheet.create({
     width: 'auto',
     alignItems: 'center',
     position: 'relative',
-    zIndex: 0,
+    zIndex: 1,
   },
   tabNavPillContainer: {
     position: 'absolute',
-    zIndex: 1,
+    zIndex: 2,
   },
   tabNavPill: {
     width: '100%',

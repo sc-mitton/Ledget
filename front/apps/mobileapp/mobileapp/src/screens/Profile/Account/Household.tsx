@@ -9,8 +9,8 @@ const Household = () => {
 
   return (
     <>
-      <BoxHeader>Household</BoxHeader>
-      <Box variant='nestedContainer' backgroundColor='nestedContainer'>
+      <BoxHeader key='household-header'>Household</BoxHeader>
+      <Box key='household-box' variant='nestedContainer' backgroundColor='nestedContainer'>
         <Text>
           {user?.co_owner
             ? coOwner && `${coOwner?.name.first} ${coOwner?.name.last}`

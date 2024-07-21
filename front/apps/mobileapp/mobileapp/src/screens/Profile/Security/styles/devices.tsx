@@ -1,11 +1,12 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  content: {
-    marginTop: -8
+  device: {
+    flexDirection: 'row',
+    gap: 12
   },
-  logoutButton: {
-    marginTop: 18
+  deviceSummary: {
+    gap: 4
   }
 });
 

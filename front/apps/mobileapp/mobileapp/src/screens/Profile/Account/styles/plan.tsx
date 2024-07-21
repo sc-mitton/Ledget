@@ -1,8 +1,11 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-  content: {
+  rows: {
+    gap: 4
+  },
+  columns: {
     flexDirection: 'row',
-    gap: 16
+    gap: 20
   }
 })

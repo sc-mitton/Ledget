@@ -20,16 +20,20 @@ export default function Portfolio() {
 
   return (
     <>
-      <Box variant='header' style={styles.header}>
+      <Box
+        backgroundColor='mainBackground'
+        variant='header'
+        style={styles.header} >
         <Header>Profile</Header>
         <Box
           variant='nestedContainer'
+          backgroundColor='mainBackground'
           paddingHorizontal='s'
           style={styles.userInfoContainer}
         >
           <Avatar size='l' name={user?.name} />
           <View style={styles.userInfo}>
-            <Text>{user?.name.first} {user?.name.last}</Text>
+            <Text color='highContrastText'>{user?.name.first} {user?.name.last}</Text>
             <Text color='secondaryText'>{user?.email}</Text>
           </View>
           <ChevronRightButton onPress={() => console.log('press')} />

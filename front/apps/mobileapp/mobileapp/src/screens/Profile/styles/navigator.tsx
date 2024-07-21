@@ -2,7 +2,9 @@ import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
   header: {
-    marginBottom: 8
+    paddingBottom: 8,
+    position: 'relative',
+    zIndex: 5
   },
   userInfoContainer: {
     gap: 20,
@@ -13,7 +15,11 @@ export default StyleSheet.create({
     marginVertical: 6
   },
   background: {
+    height: '100%',
+    width: '100%',
+    bottom: 0,
+    left: 0,
+    right: 0,
     position: 'absolute',
-
-  }
+  },
 });

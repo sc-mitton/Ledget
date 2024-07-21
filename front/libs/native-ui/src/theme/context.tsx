@@ -17,7 +17,7 @@ interface TAppearance {
   /**
    * Whether or not to use the system appearance.
    */
-  useCustomMode: boolean;
+  useDeviceAppearance: boolean;
   /**
    * Set the custom mode.
    */
@@ -25,7 +25,7 @@ interface TAppearance {
   /**
    * Set whether or not to use the system appearance.
   */
-  setUseCustomMode: (useCustom: boolean) => void;
+  setUseDeviceApperance: (useCustom: boolean) => void;
 }
 
 export const AppearanceContext = createContext<TAppearance | undefined>(undefined);
@@ -41,17 +41,17 @@ export const useAppearance = () => {
 }
 
 export const AppearanceProvider = ({ children }: { children: React.ReactNode }) => {
-  const [useCustomMode, setUseCustomMode] = useState<boolean>(false);
+  const [useDeviceAppearance, setUseDeviceApperance] = useState<boolean>(true);
   const [customMode, setCustomMode] = useState<Mode>('light');
   const [systemMode, setSystemMode] = useState<Mode>(Appearance.getColorScheme() || 'light');
-  const [mode, setMode] = useState<Mode>(useCustomMode ? customMode : Appearance.getColorScheme() || 'light');
+  const [mode, setMode] = useState<Mode>(useDeviceAppearance ? Appearance.getColorScheme() || 'light' : customMode);
 
   useEffect(() => {
     const setStoredCustomMode = async () => {
       const storedCustomMode = await AsyncStorage.getItem('customMode');
       if (storedCustomMode) {
         setCustomMode(storedCustomMode as 'light' | 'dark')
-        setUseCustomMode(false);
+        setUseDeviceApperance(false);
       }
     }
 
@@ -69,16 +69,18 @@ export const AppearanceProvider = ({ children }: { children: React.ReactNode }) 
 
   // Update the appearance with the custom mode if custom mode is enabled
   useEffect(() => {
-    useCustomMode ? setMode(customMode) : setMode(systemMode);
-  }, [useCustomMode]);
+    useDeviceAppearance ? setMode(customMode) : setMode(systemMode);
+  }, [customMode, systemMode, useDeviceAppearance]);
 
   // Store custom mode in async storage
   useEffect(() => {
-    AsyncStorage.setItem('customMode', customMode);
-  }, [customMode]);
+    if (!useDeviceAppearance) {
+      AsyncStorage.setItem('customMode', customMode);
+    }
+  }, [customMode, useDeviceAppearance]);
 
   return (
-    <AppearanceContext.Provider value={{ mode, customMode, setCustomMode, useCustomMode, setUseCustomMode }}>
+    <AppearanceContext.Provider value={{ mode, customMode, setCustomMode, useDeviceAppearance, setUseDeviceApperance }}>
       {children}
     </AppearanceContext.Provider>
   );

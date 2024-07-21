@@ -32,6 +32,8 @@ export default function Nav({ state, descriptors, navigation }: Props) {
           shadowOffset={{ width: 0, height: -5 }}
           shadowRadius={20}
           shadowOpacity={.95}
+          borderTopColor='seperator'
+          borderTopWidth={1}
         />
         <Box
           style={styles.nav}

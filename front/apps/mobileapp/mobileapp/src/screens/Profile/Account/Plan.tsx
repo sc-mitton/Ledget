@@ -24,14 +24,14 @@ const Plans = () => {
     <>
       <BoxHeader>Plan</BoxHeader>
       <Box variant='nestedContainer' backgroundColor='nestedContainer'>
-        <View style={styles.content}>
-          <View>
+        <View style={styles.columns}>
+          <View style={styles.rows}>
             <Text>Renews</Text>
             <Text>{subscription?.cancel_at_period_end ? 'Ending On' : 'Next Payment'}</Text>
             {nextInvoice?.balance! > 0 && <Text>Account Credit</Text>}
             <Text>Member Since</Text>
           </View>
-          <View>
+          <View style={styles.rows}>
             {subscription &&
               <Text color='secondaryText'>{`${subscription.plan.interval}ly`}</Text>}
             {subscription &&

@@ -8,12 +8,12 @@ import Animated, {
   withSpring,
   ReduceMotion
 } from 'react-native-reanimated';
+import { useAppearance } from '../../theme';
 
 import styles from './styles';
 import { Seperator } from '../../restyled/Seperator';
 import { Box } from '../../restyled/Box';
 import { Button } from '../../restyled/Button';
-import { useAppearance } from '../../theme';
 
 interface Props {
   screens: { [key: string]: () => React.JSX.Element };
@@ -89,7 +89,13 @@ export function TabsNavigator({ screens, seperator = true }: Props) {
 
   return (
     <>
-      <Box style={styles.tabBarContainer}>
+      <Box
+        backgroundColor='mainBackground'
+        shadowColor='tabsShadow'
+        shadowOffset={{ width: 0, height: -5 }}
+        shadowRadius={20}
+        shadowOpacity={.95}
+        style={styles.tabBarContainer}>
         <Box style={styles.absTabBar}>
           {Object.keys(screens).map((route, i) => (
             <Button
@@ -131,8 +137,8 @@ export function TabsNavigator({ screens, seperator = true }: Props) {
                 }
               }}
               style={styles.tabItem}
-              variant={'grayPill'}
-              backgroundColor={appearance.mode === 'dark' ? 'transparent' : undefined}
+              variant={i === index ? 'transparentPill' : 'grayPill'}
+              backgroundColor={appearance.mode === 'dark' ? 'transparent' : 'grayButton'}
               transparent={true}
               label={route}
             />

@@ -17,7 +17,7 @@ const apiWithTags = apiSlice.enhanceEndpoints({
 
 export const userSlice = apiWithTags.injectEndpoints({
   endpoints: (builder) => ({
-    getDevices: builder.query<Device, void>({
+    getDevices: builder.query<Device[], void>({
       query: () => 'devices',
       providesTags: ['Device']
     }),
