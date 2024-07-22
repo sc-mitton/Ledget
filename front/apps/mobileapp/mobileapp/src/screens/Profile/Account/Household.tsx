@@ -1,7 +1,7 @@
 
-import { Box, Text, BoxHeader } from '@ledget/native-ui';
+import { Box, Text, BoxHeader, ChevronTouchable, Icon } from '@ledget/native-ui';
 import { useGetCoOwnerQuery, useGetMeQuery } from '@ledget/shared-features';
-import { ChevronRightButton } from './shared';
+import { Users } from 'geist-native-icons';
 
 const Household = () => {
   const { data: coOwner } = useGetCoOwnerQuery();
@@ -11,12 +11,14 @@ const Household = () => {
     <>
       <BoxHeader key='household-header'>Household</BoxHeader>
       <Box key='household-box' variant='nestedContainer' backgroundColor='nestedContainer'>
-        <Text>
-          {user?.co_owner
-            ? coOwner && `${coOwner?.name.first} ${coOwner?.name.last}`
-            : 'No household members'}
-        </Text>
-        <ChevronRightButton onPress={() => console.log('edit')} />
+        <ChevronTouchable>
+          <Icon icon={Users} />
+          <Text>
+            {user?.co_owner
+              ? coOwner && `${coOwner?.name.first} ${coOwner?.name.last}`
+              : 'No household members'}
+          </Text>
+        </ChevronTouchable>
       </Box>
     </>
   )

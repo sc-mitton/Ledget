@@ -11,5 +11,6 @@ export default StyleSheet.create({
     flexDirection: 'row',
     gap: 14,
     alignItems: 'center',
+    marginHorizontal: 2,
   }
 })

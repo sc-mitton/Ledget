@@ -10,6 +10,7 @@ export * from './inputs/otc/Otc';
 export * from './inputs/switch/Switch';
 
 export * from './buttons/back-button/BackButton';
+export * from './buttons/chevron-touchable/ChevronTouchable';
 export * from './misc/form-errors/form-errors';
 export * from './misc/avatar/Avatar';
 export * from './animated/loading-indicators/Spinner';

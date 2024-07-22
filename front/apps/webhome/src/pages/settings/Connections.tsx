@@ -336,16 +336,6 @@ const Connections = () => {
     }
   };
 
-  const Inputs = () =>
-    deleteQue.map((val, index) => (
-      <input
-        key={index}
-        type="hidden"
-        name={val.accountId ? `accounts[${index}][id]` : `items[${index}][id]`}
-        value={val.accountId ? val.accountId : val.itemId}
-      />
-    ));
-
   return (
     <>
       {showConfirmModal && (
@@ -375,7 +365,14 @@ const Connections = () => {
             <div>
               {editing && (
                 <form onSubmit={handleFormSubmit}>
-                  <Inputs />
+                  {deleteQue.map((val, index) => (
+                    <input
+                      key={index}
+                      type="hidden"
+                      name={val.accountId ? `accounts[${index}][id]` : `items[${index}][id]`}
+                      value={val.accountId ? val.accountId : val.itemId}
+                    />
+                  ))}
                   <SubmitForm
                     submitting={false}
                     onCancel={() => {

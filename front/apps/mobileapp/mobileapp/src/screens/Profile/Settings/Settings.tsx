@@ -11,15 +11,16 @@ const Preferences = () => {
         <View style={{ flex: 1 }}>
           <Switch
             label={'Use Device Appearance'}
-            value={!appearance.useDeviceAppearance}
-            onValueChange={(b) => appearance.setUseDeviceApperance(b)}
-            disabled={appearance.useDeviceAppearance}
+            value={appearance.useDeviceAppearance}
+            onValueChange={(b) => {
+              appearance.setUseDeviceApperance(b);
+            }}
           />
           <Switch
-            label={appearance.customMode === 'dark' ? 'Dark Mode' : 'Light Mode'}
-            value={appearance.customMode === 'light'}
-            onValueChange={(b) => appearance.setCustomMode(b ? 'light' : 'dark')}
-            disabled={!appearance.useDeviceAppearance}
+            label={'Dark Mode'}
+            value={appearance.customMode === 'dark'}
+            onValueChange={(b) => appearance.setCustomMode(b ? 'dark' : 'light')}
+            disabled={appearance.useDeviceAppearance}
           />
         </View>
       </Box>

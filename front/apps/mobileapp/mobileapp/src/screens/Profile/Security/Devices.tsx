@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { groupBy as groupby } from 'lodash-es';
 
 import styles from './styles/devices';
-import { BoxHeader, Seperator, Icon, Text, ShimmerBox } from '@ledget/native-ui';
+import { BoxHeader, Seperator2, Icon, Text, ShimmerBox, ChevronTouchable } from '@ledget/native-ui';
 import { Computer, MapPin2 } from '@ledget/media/native';
 import { Smartphone } from 'geist-native-icons';
 import { useGetDevicesQuery, Device as TDevice } from '@ledget/shared-features';
@@ -15,17 +15,24 @@ const Device = ({ device, info }: { device: string; info: TDevice[] }) => {
 
   return (
     <View style={styles.device}>
-      <Icon icon={iconKey === 'is_desktop' ? Computer : Smartphone} />
+      <View style={styles.deviceIcon}>
+        <Icon
+          size={iconKey === 'is_pc' ? 30 : undefined}
+          icon={iconKey === 'is_pc' ? Computer : Smartphone}
+        />
+      </View>
       <View style={styles.deviceSummary}>
-        <View>
-          <Text>{device.split(',')[2]}&nbsp;</Text>
-          <Text>{`${info.length} session${info.length > 1 ? 's' : ''}`}</Text>
+        <View style={styles.sessionsRow}>
+          <Text>{device.split(',')[0]}&nbsp;</Text>
+          <Text>{` - ${info.length} session${info.length > 1 ? 's' : ''}`}</Text>
         </View>
-        <View>
-          <Icon icon={MapPin2} />
-          <Text>
+        <View style={styles.location}>
+          <View style={styles.locationIcon}>
+            <Icon icon={MapPin2} size={13} />
+          </View>
+          <Text fontSize={14} color='secondaryText'>
             {device.split(',')[2] === undefined
-              ? 'unknown'
+              ? device.split(',')[1] ? device.split(',')[1] : 'Unknown'
               : device.split(',')[1] + ', ' + device.split(',')[2]}
           </Text>
         </View>
@@ -51,15 +58,18 @@ const Devices = () => {
     <>
       <BoxHeader>Devices</BoxHeader>
       <ShimmerBox
-        shimmering={true}
+        shimmering={!devices}
         variant='nestedContainer'
         numberOfLines={3}
+        style={styles.devices}
         backgroundColor='nestedContainer'>
         {groupedDevices?.map(([device, info], index) => (
           <>
-            <Device key={device} device={device} info={info} />
+            <ChevronTouchable key={`device${index}`}>
+              <Device key={device} device={device} info={info} />
+            </ChevronTouchable>
             {(index !== groupedDevices.length - 1) &&
-              <Seperator key={`device-seperator${index}`} variant='s' />}
+              <Seperator2 key={`device-seperator${index}`} variant='s' />}
           </>
         ))}
       </ShimmerBox>

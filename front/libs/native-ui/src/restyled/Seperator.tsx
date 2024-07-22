@@ -47,3 +47,26 @@ export const Seperator = ({ label, ...rest }: Props) => {
     </Box>
   );
 }
+
+
+export const Seperator2 = ({ label, ...rest }: Props) => {
+  const {
+    variant = 's',
+    backgroundColor = 'seperator',
+    flex = 1,
+  } = rest;
+
+  const restyledprops = useRestyle((restyleFunctions as any), { ...rest, variant, backgroundColor, flex });
+
+  return (
+    <Box flexDirection='row' alignItems='center'>
+      <Box {...restyledprops} />
+      {label &&
+        <Text paddingHorizontal='m'>
+          {label}
+        </Text>
+      }
+      <Box {...restyledprops} />
+    </Box>
+  );
+}

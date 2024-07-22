@@ -59,7 +59,7 @@ export const darkTheme = createTheme({
     mainBackground: palette.gray900,
     headerBackground: `hsl(${grayH}, ${grayS}%, 7%)`,
     navBackground: palette.gray850,
-    nestedContainer: palette.gray800,
+    nestedContainer: `hsl(${grayH}, ${grayS}%, 12%)`,
     inputBackground: palette.gray800,
     avatarBackground: palette.gray800,
     tabNavPill: palette.blue700,
@@ -72,6 +72,7 @@ export const darkTheme = createTheme({
     focusedInputBorderMain: palette.blue400,
     focusedInputBorderSecondary: palette.blue800,
     tabNavPillBorder: palette.blue500,
+    bottomNavBorder: palette.gray750,
 
     // Shadows
     navShadow: palette.gray1000,
@@ -99,19 +100,19 @@ export const darkTheme = createTheme({
     // Buttons
     blueButton: palette.blue500,
     blueButtonBorder: palette.blue400,
-    blueButton2: palette.blue400,
-    blueButtonBorder2: palette.blue300,
+    blueButton2: palette.blue800,
+    blueButtonBorder2: palette.blue700,
     grayButton: palette.gray800,
     grayButtonBorder: palette.gray750,
 
     // Switch
-    enabledSwitchPill: palette.blue100,
-    enabledSwitchCrib: palette.blue500,
+    enabledSwitchPill: palette.blue200,
+    enabledSwitchCrib: palette.blue600,
     disabledSwitchPill: palette.gray200,
     disabledSwitchCrib: palette.gray600,
 
     // Seperators
-    seperator: palette.gray700,
+    seperator: `hsl(${grayH}, ${grayS}%, 17%)`,
     lightSeperator: palette.gray800,
     blueseperator: palette.blue400,
 

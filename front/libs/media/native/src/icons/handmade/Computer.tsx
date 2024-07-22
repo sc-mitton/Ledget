@@ -2,28 +2,30 @@ import * as React from 'react';
 import Svg, { Path, Circle } from 'react-native-svg';
 import type { SvgProps } from 'react-native-svg';
 
-function SvgComponent(props: SvgProps) {
+function SvgComponent(props: SvgProps & { size?: number }) {
   return (
     <Svg
       x="0px"
       y="0px"
-      viewBox="0 0 288 288"
-      strokeMiterlimit={10}
-      strokeWidth={5.7154}
+      viewBox="0 0 24 24"
+      width={props.size}
+      height={props.size}
+      stroke="currentColor"
+      fill="none"
       {...props}
     >
       <Path
-        d="M46.7 183.2V71.3c0-4.3 3.4-7.6 7.6-7.6h180.1c4.3 0 7.6 3.4 7.6 7.6l.1 111.8"
-        fill="none"
-        stroke="currentColor"
+        strokeWidth={0.85}
         strokeLinecap="round"
+        strokeMiterlimit={10}
+        d="M3.9 15.8V6.5c0-.4.3-.6.6-.6h15c.4 0 .6.3.6.6v9.3"
       />
       <Path
-        d="M261.3 210.8H27.5c-3.4 0-6.2-2.6-6.2-5.9v-3.8c0-3.2 2.8-5.9 4.8-5.9H260c4.8 0 7.6 2.6 7.6 5.9v3.8c-.1 3.3-2.9 5.9-6.3 5.9z"
         fill="none"
-        stroke="currentColor"
+        strokeWidth={0.8}
+        d="M21.7 18.1H2.3c-.3 0-.5-.2-.5-.5v-.3c0-.3.2-.5.4-.5h19.5c.4 0 .6.2.6.5v.3c0 .3-.3.5-.6.5z"
       />
-      <Circle cx={144.4} cy={80.7} r={4.8} fill="#242424" />
+      <Circle fill="currentColor" cx={12} cy={8.1} r={0.2} />
     </Svg>
   );
 }

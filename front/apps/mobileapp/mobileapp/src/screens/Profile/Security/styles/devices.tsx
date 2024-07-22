@@ -1,12 +1,35 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+  devices: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: 4
+  },
+  deviceIcon: {
+    minWidth: 30,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   device: {
     flexDirection: 'row',
-    gap: 12
+    alignItems: 'center',
+    gap: 16
   },
   deviceSummary: {
-    gap: 4
+    gap: 2
+  },
+  sessionsRow: {
+    flexDirection: 'row',
+  },
+  location: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+    marginLeft: -4
+  },
+  locationIcon: {
+    marginBottom: 2
   }
 });
 

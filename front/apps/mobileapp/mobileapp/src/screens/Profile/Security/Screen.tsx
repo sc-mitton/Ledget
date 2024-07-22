@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { View, ScrollView } from 'react-native';
 
 import styles from './styles/screen';
 import { Box, Button, Icon } from '@ledget/native-ui';
@@ -8,15 +8,17 @@ import Mfa from './Mfa';
 
 const Screen = () => {
   return (
-    <Box variant='screenContent'>
-      <Devices />
-      <Mfa />
-      <View style={styles.logoutButton}>
-        <Button label={'Logout'} variant='grayMain2'>
-          <Icon icon={LogOut} />
-        </Button>
-      </View>
-    </Box>
+    <ScrollView>
+      <Box variant='screenContent'>
+        <Devices />
+        <Mfa />
+        <View style={styles.logoutButton}>
+          <Button label={'Logout'} variant='blueMain2'>
+            <Icon icon={LogOut} color="blueText" />
+          </Button>
+        </View>
+      </Box>
+    </ScrollView>
   )
 }
 

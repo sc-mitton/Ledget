@@ -2,7 +2,7 @@ import { View } from 'react-native';
 
 import styles from './styles/payment-method';
 import { useGetPaymentMethodQuery } from '@ledget/shared-features';
-import { Box, Text, BoxHeader, Icon } from '@ledget/native-ui';
+import { Box, Text, BoxHeader, Icon, ChevronTouchable } from '@ledget/native-ui';
 import { CreditCard } from 'geist-native-icons';
 import { ChevronRightButton } from './shared';
 
@@ -17,7 +17,7 @@ const PaymentMethod = () => {
     <>
       <BoxHeader>Payment Method</BoxHeader>
       <Box variant='nestedContainer' backgroundColor='nestedContainer'>
-        <View style={styles.content}>
+        <ChevronTouchable >
           <Icon icon={CreditCard} />
           <View style={styles.cardInfo}>
             <Text>
@@ -33,8 +33,7 @@ const PaymentMethod = () => {
               })}`}
             </Text>
           </View>
-          <ChevronRightButton onPress={() => console.log('press')} />
-        </View>
+        </ChevronTouchable>
       </Box>
     </>
   )

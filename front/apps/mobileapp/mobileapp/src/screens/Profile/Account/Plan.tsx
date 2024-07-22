@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 
 import styles from './styles/plan';
-import { Box, BoxHeader, Text } from '@ledget/native-ui';
+import { Box, BoxHeader, Text, ChevronTouchable } from '@ledget/native-ui';
 import { useGetSubscriptionQuery, useGetNextInvoiceQuery, useGetMeQuery } from '@ledget/shared-features';
 import { ChevronRightButton } from './shared';
 
@@ -24,31 +24,32 @@ const Plans = () => {
     <>
       <BoxHeader>Plan</BoxHeader>
       <Box variant='nestedContainer' backgroundColor='nestedContainer'>
-        <View style={styles.columns}>
-          <View style={styles.rows}>
-            <Text>Renews</Text>
-            <Text>{subscription?.cancel_at_period_end ? 'Ending On' : 'Next Payment'}</Text>
-            {nextInvoice?.balance! > 0 && <Text>Account Credit</Text>}
-            <Text>Member Since</Text>
-          </View>
-          <View style={styles.rows}>
-            {subscription &&
-              <Text color='secondaryText'>{`${subscription.plan.interval}ly`}</Text>}
-            {subscription &&
+        <ChevronTouchable>
+          <View style={styles.columns}>
+            <View style={styles.rows}>
+              <Text>Renews</Text>
+              <Text>{subscription?.cancel_at_period_end ? 'Ending On' : 'Next Payment'}</Text>
+              {nextInvoice?.balance! > 0 && <Text>Account Credit</Text>}
+              <Text>Member Since</Text>
+            </View>
+            <View style={styles.rows}>
+              {subscription &&
+                <Text color='secondaryText'>{`${subscription.plan.interval}ly`}</Text>}
+              {subscription &&
+                <Text color='secondaryText'>
+                  {subscription?.cancel_at_period_end
+                    ? nextDate
+                    : `$${subscription?.plan.amount / 100} on ${nextDate}`}
+                </Text>}
+              {(nextInvoice && nextInvoice?.balance > 0) &&
+                <Text color='secondaryText'>{`$${nextInvoice.balance / -100}`}</Text>}
               <Text color='secondaryText'>
-                {subscription?.cancel_at_period_end
-                  ? nextDate
-                  : `$${subscription?.plan.amount / 100} on ${nextDate}`}
-              </Text>}
-            {(nextInvoice && nextInvoice?.balance > 0) &&
-              <Text color='secondaryText'>{`$${nextInvoice.balance / -100}`}</Text>}
-            <Text color='secondaryText'>
-              {new Date(user?.created_on || new Date()).toLocaleDateString(
-                'en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
-            </Text>
+                {new Date(user?.created_on || new Date()).toLocaleDateString(
+                  'en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+              </Text>
+            </View>
           </View>
-        </View>
-        <ChevronRightButton onPress={() => console.log('press')} />
+        </ChevronTouchable>
       </Box>
     </>
   )

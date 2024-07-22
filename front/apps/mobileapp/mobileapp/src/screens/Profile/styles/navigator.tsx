@@ -12,7 +12,8 @@ export default StyleSheet.create({
   },
   userInfo: {
     flex: 3,
-    marginVertical: 6
+    marginVertical: 6,
+    marginLeft: 8
   },
   background: {
     height: '100%',

@@ -54,9 +54,8 @@ export const AppearanceProvider = ({ children }: { children: React.ReactNode }) 
         setUseDeviceApperance(false);
       }
     }
-
     setStoredCustomMode();
-  }, [])
+  }, []);
 
   // Track the system appearance
   useEffect(() => {
@@ -69,7 +68,7 @@ export const AppearanceProvider = ({ children }: { children: React.ReactNode }) 
 
   // Update the appearance with the custom mode if custom mode is enabled
   useEffect(() => {
-    useDeviceAppearance ? setMode(customMode) : setMode(systemMode);
+    useDeviceAppearance ? setMode(systemMode) : setMode(customMode);
   }, [customMode, systemMode, useDeviceAppearance]);
 
   // Store custom mode in async storage

@@ -11,7 +11,13 @@ import * as SplashScreen from 'expo-splash-screen';
 import * as SecureStore from 'expo-secure-store';
 
 import styles from './styles/app';
-import { darkTheme, lightTheme, AppearanceProvider, useAppearance, Box } from '@ledget/native-ui'
+import {
+  darkTheme,
+  lightTheme,
+  AppearanceProvider,
+  useAppearance,
+  Box
+} from '@ledget/native-ui'
 import { Budget, Accounts, Profile, Activity } from '@screens';
 import { useAppDispatch, useAppSelector } from '@hooks';
 import {
@@ -49,6 +55,7 @@ const navTheme = {
 
 function App() {
   const dispatch = useAppDispatch();
+  const appearance = useAppearance();
   const [appIsReady, setAppIsReady] = useState(false);
   const [skipGetMe, setSkipGetMe] = useState(true);
 
@@ -169,7 +176,7 @@ function App() {
 
   return (
     <>
-      <StatusBar style="auto" />
+      <StatusBar style={appearance.mode === 'dark' ? 'light' : 'dark'} />
       <Box
         backgroundColor={'mainBackground'}
         style={styles.main}

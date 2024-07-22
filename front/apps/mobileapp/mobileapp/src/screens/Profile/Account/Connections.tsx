@@ -1,9 +1,8 @@
 import { View } from 'react-native';
 
 import styles from './styles/connections'
-import { Box, Text, Seperator, BoxHeader } from '@ledget/native-ui';
+import { Box, Text, Seperator, BoxHeader, ChevronTouchable } from '@ledget/native-ui';
 import { useGetPlaidItemsQuery } from '@ledget/shared-features';
-import { ChevronRightButton } from './shared';
 
 const Household = () => {
   const { data: plaidItems } = useGetPlaidItemsQuery()
@@ -14,10 +13,9 @@ const Household = () => {
       <Box variant='nestedContainer' backgroundColor='nestedContainer'>
         {plaidItems?.map((item, i) => (
           <View style={styles.row}>
-            <View style={styles.institution}>
+            <ChevronTouchable>
               <Text>{item.institution.name}</Text>
-              <ChevronRightButton onPress={() => console.log('edit')} />
-            </View>
+            </ChevronTouchable>
             {(i !== plaidItems.length - 1) && <Seperator variant='bare' />}
           </View>
         ))}

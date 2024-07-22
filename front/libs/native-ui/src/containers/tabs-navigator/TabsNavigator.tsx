@@ -22,7 +22,7 @@ interface Props {
 
 const springConfig = {
   mass: 1,
-  damping: 25,
+  damping: 27,
   stiffness: 315,
   overshootClamping: false,
   restDisplacementThreshold: 0.01,
@@ -38,7 +38,6 @@ export function TabsNavigator({ screens, seperator = true }: Props) {
   const refPagerView = useRef<PagerView>(null);
   const dragState = useRef<'idle' | 'dragging' | 'settling'>('idle');
   const layouts = useRef(Array.from({ length: Object.keys(screens).length }, () => ({ width: 0, x: 0 })));
-  const appearance = useAppearance();
 
   const animatedStyles = useAnimatedStyle(() => ({
     width: width.value,
@@ -138,7 +137,7 @@ export function TabsNavigator({ screens, seperator = true }: Props) {
               }}
               style={styles.tabItem}
               variant={i === index ? 'transparentPill' : 'grayPill'}
-              backgroundColor={appearance.mode === 'dark' ? 'transparent' : 'grayButton'}
+              backgroundColor={'grayButton'}
               transparent={true}
               label={route}
             />

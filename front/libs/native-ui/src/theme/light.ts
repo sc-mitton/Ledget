@@ -60,7 +60,7 @@ export const lightTheme = createTheme({
     navBackground: palette.gray200,
     headerBackground: `hsl(${grayH}, ${grayS}%, 97%)`,
     inputBackground: palette.gray200,
-    nestedContainer: palette.gray200,
+    nestedContainer: palette.gray175,
     avatarBackground: palette.gray200,
     tabNavPill: palette.blue500,
     avatar: palette.gray200,
@@ -72,13 +72,14 @@ export const lightTheme = createTheme({
     focusedInputBorderSecondary: palette.blue100,
     focusedInputBorderMain: palette.blue300,
     tabNavPillBorder: palette.blue500,
+    bottomNavBorder: palette.gray300,
 
     // Shadows
     navShadow: palette.gray300,
     tabsShadow: palette.gray200,
     activeIcon: palette.blueSat,
     activeSwitchShadow: palette.blue300,
-    inactiveSwitchShadow: palette.gray200,
+    inactiveSwitchShadow: palette.gray400,
 
     // Text
     mainText: palette.offBlack,
@@ -97,7 +98,7 @@ export const lightTheme = createTheme({
     blueButton: palette.blue500,
     blueButtonBorder: palette.blue450,
     blueButton2: palette.blue100,
-    blueButtonBorder2: palette.blue100,
+    blueButtonBorder2: `hsl(${blueH}, ${blueS}%, 89%)`,
     grayButton: palette.gray200,
     grayButtonBorder: palette.gray250,
 
@@ -105,10 +106,10 @@ export const lightTheme = createTheme({
     enabledSwitchPill: palette.blue450,
     enabledSwitchCrib: palette.blue200,
     disabledSwitchPill: palette.gray200,
-    disabledSwitchCrib: palette.gray400,
+    disabledSwitchCrib: palette.gray300,
 
     // Seperators
-    seperator: palette.gray300,
+    seperator: `hsl(${grayH}, ${grayS}%, 89%)`,
     lightSeperator: palette.gray175,
     blueseperator: palette.blue100,
 
