@@ -88,6 +88,17 @@ local BaseWithAuth = {
       url: base_url + "/user/session/extend",
     },
   },
+  Base
+  {
+    id: "extend-token-session",
+    match: {
+      methods: ["PATCH"],
+      url: base_url + "/user/token-session/extend",
+    },
+    authenticators: [anonymous_authenticator],
+    mutators: [noop_mutator],
+    authorizer: allow_authorizer,
+  },
   BaseWithAuth
   {
     id: "devices",

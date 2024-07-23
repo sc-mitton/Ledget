@@ -45,18 +45,12 @@ class IsAuthenticated(BasePermission):
             return session_aal == "aal1" or session_aal == "aal2"
 
 
-class CanExtendSession(BasePermission):
-    '''
-    Check if the user is authenticated with a mobile session
-    '''
+class IsOidcSession(BasePermission):
+    """
+    Check if the user is authenticated with OIDC
+    """
 
     def has_permission(self, request, view):
-        return self.is_mobile_session(request) or self.is_oidc_session(request)
-
-    def is_mobile_session(self, request):
-        return request.device and request.device.is_mobile
-
-    def is_oidc_session(self, request):
         if not request.ory_session:
             return False
 
