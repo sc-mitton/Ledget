@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
   devices: {
     flexDirection: 'column',
     alignItems: 'flex-start',
-    gap: 4
+    gap: 6
   },
   deviceIcon: {
     minWidth: 30,
@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
     gap: 16
   },
   deviceSummary: {
-    gap: 2
   },
   sessionsRow: {
     flexDirection: 'row',

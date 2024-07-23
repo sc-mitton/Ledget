@@ -301,6 +301,8 @@
         align-items: center;
 
         .steps {
+            margin-left: 3em;
+
             &--container {
                 width: 70%;
             }
@@ -310,7 +312,7 @@
             width: 80%;
 
             &>div img:last-child {
-                opacity: .2;
+                opacity: .7;
             }
 
             &>div:nth-last-of-type(2) {

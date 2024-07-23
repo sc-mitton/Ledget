@@ -31,7 +31,6 @@ import {
   selectSession,
   apiSlice
 } from '@ledget/shared-features';
-import { selectModal } from '@/features/modalSlice';
 import { hasErrorCode } from '@ledget/helpers';
 import { RootTabParamList } from '@types';
 import { ENV, LEDGET_API_URI } from '@env';
@@ -60,7 +59,6 @@ function App() {
   const appearance = useAppearance();
   const [appIsReady, setAppIsReady] = useState(false);
   const [skipGetMe, setSkipGetMe] = useState(true);
-  const modal = useAppSelector(selectModal);
 
   const [fontsLoaded, fontError] = useFonts({
     'SourceSans3Regular': SourceSans3Regular,

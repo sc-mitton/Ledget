@@ -103,7 +103,7 @@ $web-focused-width: 90%;
     width: 100%;
     box-sizing: border-box;
     background-color: var(--blue);
-    padding: .75em 1em;
+    padding: 1em 1em;
     color: var(--white);
     transition: background-color .3s;
     display: flex;
@@ -111,6 +111,7 @@ $web-focused-width: 90%;
     justify-content: center;
     gap: .5em;
     border: none;
+    border-radius: 2em;
 
     * {
         font-size: 1rem;
@@ -123,6 +124,9 @@ $web-focused-width: 90%;
     }
 }
 
+#coming-soon {
+    font-weight: var(--fw-bold);
+}
 
 @media (max-width: 768px) {
     .banner {

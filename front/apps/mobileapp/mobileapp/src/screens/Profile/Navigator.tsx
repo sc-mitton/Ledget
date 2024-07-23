@@ -34,7 +34,7 @@ export default function Portfolio() {
             <Avatar size='l' name={user?.name} />
             <View style={styles.userInfo}>
               <Text color='highContrastText'>{user?.name.first} {user?.name.last}</Text>
-              <Text color='secondaryText'>{user?.email}</Text>
+              <Text color='tertiaryText'>{user?.email}</Text>
             </View>
           </ChevronTouchable>
         </Box>

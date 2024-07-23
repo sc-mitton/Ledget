@@ -44,11 +44,11 @@ const palette = {
 
   black: 'hsl(0, 0%, 0%)',
   offBlack: `hsl(${grayH}, ${grayS}%, 17%)`,
-  offBlack2: `hsl(${grayH}, ${grayS}%, 27%)`,
-  offBlack3: `hsl(${grayH}, ${grayS}%, 37%)`,
-  offBlack4: `hsl(${grayH}, ${grayS}%, 47%)`,
-  offBlack5: `hsl(${grayH}, ${grayS}%, 57%)`,
-  offBlack6: `hsl(${grayH}, ${grayS}%, 67%)`,
+  offBlack2: `hsl(${grayH}, ${grayS}%, 32%)`,
+  offBlack3: `hsl(${grayH}, ${grayS}%, 42%)`,
+  offBlack4: `hsl(${grayH}, ${grayS}%, 52%)`,
+  offBlack5: `hsl(${grayH}, ${grayS}%, 62%)`,
+  offBlack6: `hsl(${grayH}, ${grayS}%, 72%)`,
 }
 
 export const lightTheme = createTheme({
@@ -57,10 +57,10 @@ export const lightTheme = createTheme({
 
     // Backgrounds
     mainBackground: palette.gray150,
-    navBackground: palette.gray200,
+    navBackground: palette.gray400,
     headerBackground: `hsl(${grayH}, ${grayS}%, 97%)`,
     inputBackground: palette.gray200,
-    nestedContainer: `hsl(${grayH}, ${grayS}%, 99%)`,
+    nestedContainer: `hsl(${grayH}, ${grayS}%, 100%)`,
     avatarBackground: palette.gray200,
     tabNavPill: palette.blue500,
     avatar: palette.gray500,
@@ -73,7 +73,7 @@ export const lightTheme = createTheme({
     focusedInputBorderSecondary: palette.blue100,
     focusedInputBorderMain: palette.blue300,
     tabNavPillBorder: palette.blue500,
-    bottomNavBorder: palette.gray300,
+    bottomNavBorder: `hsl(${grayH}, ${grayS}%, 65%)`,
     nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 95%)`,
 
     // Shadows

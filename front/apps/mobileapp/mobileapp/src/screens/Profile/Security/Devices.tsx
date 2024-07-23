@@ -71,7 +71,7 @@ const Devices = () => {
             {(index !== groupedDevices.length - 1) &&
               <Seperator key={`device-seperator${index}`} variant='s' />}
           </>
-        ))}
+        ))}d
       </ShimmerBox>
     </>
   )
