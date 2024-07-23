@@ -22,7 +22,7 @@ import { Budget, Accounts, Profile, Activity } from '@screens';
 import { useAppDispatch, useAppSelector } from '@hooks';
 import {
   useRefreshDevicesMutation,
-  useExtendTokenSessionMutation,
+  useExtendSessionMutation,
   useGetMeQuery,
   selectEnvironment,
   setEnvironment,
@@ -83,7 +83,7 @@ function App() {
     isUninitialized: isUninitializedExtend,
     isSuccess: isExtendSuccess,
     error: extendError
-  }] = useExtendTokenSessionMutation({ fixedCacheKey: 'extendSession' });
+  }] = useExtendSessionMutation({ fixedCacheKey: 'extendSession' });
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
@@ -118,7 +118,7 @@ function App() {
   // Try and extend the session if fetching the user data was unsuccessful
   useEffect(() => {
     if (session && hasErrorCode(401, getMeError) && isUninitializedExtend) {
-      extendSession({ session_id: session.id });
+      extendSession();
     }
   }, [session, getMeError]);
 

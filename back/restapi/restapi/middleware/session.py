@@ -16,13 +16,10 @@ class OrySessionMiddleware(MiddlewareMixin):
         if not decoded_token or not isinstance(decoded_token, dict):
             return None
 
-        token_based = 'session_token' in decoded_token
-
         ory_session = OrySession(
             id=decoded_token['session']['id'],
             aal=decoded_token['session']['authenticator_assurance_level'],
             auth_methods=decoded_token['session']['authentication_methods'],
-            token_based=token_based
         )
 
         if request.path.endswith('devices'):

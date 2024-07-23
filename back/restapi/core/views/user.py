@@ -30,7 +30,7 @@ from core.serializers.user import (
 )
 from restapi.permissions.auth import (
     IsAuthenticated,
-    IsOidcSession,
+    CanExtendSession,
     HighestAalFreshSession
 )
 from restapi.permissions.objects import is_account_owner
@@ -220,7 +220,7 @@ class AddUserToAccountView(GenericAPIView):
 class UserSessionExtendView(GenericAPIView):
     """Extend user session"""
 
-    permission_classes = [IsAuthenticated, IsOidcSession]
+    permission_classes = [IsAuthenticated, CanExtendSession]
 
     def patch(self, request):
         try:
@@ -230,25 +230,6 @@ class UserSessionExtendView(GenericAPIView):
         except ory_client.ApiException as e:
             logger.error(f"Failed to extend session: {e}")
             return Response({'error': 'Failed to extend session'},
-                            status=status.HTTP_400_BAD_REQUEST)
-
-        return Response(status=status.HTTP_200_OK)
-
-
-class UserTokenSessionExtendView(GenericAPIView):
-    """Extend user session"""
-
-    def patch(self, request):
-        try:
-            with ory_client.ApiClient(ory_configuration) as api_client:
-                api_instance = IdentityApi(api_client)
-                api_instance.extend_session(id=request.data['session_id'])
-        except ory_client.ApiException as e:  # pragma: no cover
-            logger.error(f"Failed to extend session: {e}")
-            return Response({'error': 'Failed to extend session'},
-                            status=status.HTTP_400_BAD_REQUEST)
-        except KeyError:
-            return Response({'error': 'session_id is required'},
                             status=status.HTTP_400_BAD_REQUEST)
 
         return Response(status=status.HTTP_200_OK)

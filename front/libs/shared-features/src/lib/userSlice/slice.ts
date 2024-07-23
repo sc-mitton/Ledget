@@ -111,14 +111,6 @@ export const userSlice = apiWithTags.injectEndpoints({
       }),
       extraOptions: { maxRetries: 3 }
     }),
-    extendTokenSession: builder.mutation<any, { session_id: string }>({
-      query: ({ session_id }) => ({
-        url: 'user/token-session/extend',
-        data: { session_id },
-        method: 'PATCH'
-      }),
-      extraOptions: { maxRetries: 3 }
-    }),
     addUserToAccount: builder.mutation<
       { recovery_link: string; recovery_link_qr: string; expires_at: string },
       { email: string }
@@ -154,7 +146,6 @@ export const {
   useUpdateSubscriptionItemsMutation,
   useEmailUserMutation,
   useExtendSessionMutation,
-  useExtendTokenSessionMutation,
   useAddUserToAccountMutation,
   useDelteCoOwnerMutation,
   useUpdateUserSettingsMutation
