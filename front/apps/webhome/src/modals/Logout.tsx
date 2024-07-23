@@ -67,9 +67,7 @@ const LogoutModal = withSmallModal((props) => {
       <div className={styles.countdown}>
         <span>You will be automatically logged out in {seconds} seconds</span>
       </div>
-      <div
-        style={{ display: 'flex', justifyContent: 'end', marginTop: '.5em' }}
-      >
+      <div style={{ display: 'flex', justifyContent: 'end', marginTop: '.5em' }}>
         <SecondaryButton onClick={() => props.closeModal()} aria-label="Cancel">
           Cancel
         </SecondaryButton>

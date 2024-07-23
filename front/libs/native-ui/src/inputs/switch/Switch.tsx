@@ -16,14 +16,14 @@ export const Switch = (props: SwitchProps & { label: string }) => {
         <NativeSwitch
           activeText=''
           inActiveText=''
-          circleSize={18}
-          barHeight={22}
-          switchRightPx={3}
-          switchLeftPx={3}
+          circleSize={22}
+          barHeight={26}
+          switchRightPx={2.5}
+          switchLeftPx={2.5}
           circleBorderWidth={0}
           switchWidthMultiplier={2.25}
           outerCircleStyle={{
-            shadowColor: rest.value ? theme.colors.activeSwitchShadow : theme.colors.inactiveSwitchShadow,
+            shadowColor: rest.value ? theme.colors.activeSwitchShadow : theme.colors.disabledSwitchShadow,
             shadowOffset: { width: 0, height: 1 },
             shadowOpacity: 1,
             shadowRadius: 2,

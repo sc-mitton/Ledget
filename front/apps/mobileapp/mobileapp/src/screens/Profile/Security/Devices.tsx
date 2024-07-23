@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { groupBy as groupby } from 'lodash-es';
 
 import styles from './styles/devices';
-import { BoxHeader, Seperator2, Icon, Text, ShimmerBox, ChevronTouchable } from '@ledget/native-ui';
+import { BoxHeader, Seperator, Icon, Text, ShimmerBox, ChevronTouchable } from '@ledget/native-ui';
 import { Computer, MapPin2 } from '@ledget/media/native';
 import { Smartphone } from 'geist-native-icons';
 import { useGetDevicesQuery, Device as TDevice } from '@ledget/shared-features';
@@ -69,7 +69,7 @@ const Devices = () => {
               <Device key={device} device={device} info={info} />
             </ChevronTouchable>
             {(index !== groupedDevices.length - 1) &&
-              <Seperator2 key={`device-seperator${index}`} variant='s' />}
+              <Seperator key={`device-seperator${index}`} variant='s' />}
           </>
         ))}
       </ShimmerBox>

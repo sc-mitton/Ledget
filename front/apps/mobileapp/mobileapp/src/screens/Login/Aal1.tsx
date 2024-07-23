@@ -106,7 +106,7 @@ const Aal1Authentication = ({
             isSubmitting={isCompletingFlow}
             onPress={handleSubmit(onSubmit)}
           />
-          <Seperator variant="l" label="Or" />
+          <Seperator variant="l" label="Or" backgroundColor='lightSeperator' />
           <Button
             label="Passkey"
             variant="grayMain"

@@ -28,6 +28,9 @@
       "@hooks": [
         "src/hooks/index.ts"
       ],
+      "@modals": [
+        "src/modals/index.ts"
+      ],
       "@types": [
         "types"
       ],

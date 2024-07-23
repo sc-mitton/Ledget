@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { modalSlice } from './modalSlice';
 import {
   apiSlice,
   toastSlice,
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
   confirmStack: confirmStack.reducer,
   filteredFetchedonfirmedTransactions:
     filteredFetchedConfirmedTransactions.reducer,
-  budgetItemMetaData: budgetItemMetaDataSlice.reducer
+  budgetItemMetaData: budgetItemMetaDataSlice.reducer,
+  modal: modalSlice.reducer,
 });
 
 export default rootReducer;

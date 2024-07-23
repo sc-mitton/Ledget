@@ -20,6 +20,8 @@ export * from './headers/BackHeader';
 
 export * from './containers/baked-boxes';
 export * from './containers/tabs-navigator/TabsNavigator';
+export * from './containers/loading-box/LoadingBox';
 export * from './theme';
 
 export * from './loaders/ShimmerBox';
+export * from './hocs/with-bottom-modal/withBottomModal';

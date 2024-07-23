@@ -26,9 +26,8 @@ export default function Portfolio() {
         style={styles.header} >
         <Header>Profile</Header>
         <Box
-          variant='nestedContainer'
-          backgroundColor='mainBackground'
           paddingHorizontal='s'
+          paddingVertical='xl'
           style={styles.userInfoContainer}
         >
           <ChevronTouchable>

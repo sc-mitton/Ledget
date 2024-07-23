@@ -9,5 +9,6 @@ export default StyleSheet.create({
   chevron: {
     flex: 1,
     alignItems: "flex-end",
+    marginRight: -4
   }
 });

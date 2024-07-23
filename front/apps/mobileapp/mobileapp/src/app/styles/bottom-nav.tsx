@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   navBlurView: {
     position: 'absolute',
-    zIndex: 100,
+    zIndex: 0,
     bottom: 0,
     paddingLeft: 40,
     paddingRight: 40,
@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
   },
   nav: {
     position: 'relative',
-    zIndex: 101,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between'

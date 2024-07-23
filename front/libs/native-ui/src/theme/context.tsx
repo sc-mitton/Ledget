@@ -49,7 +49,8 @@ export const AppearanceProvider = ({ children }: { children: React.ReactNode }) 
   useEffect(() => {
     const setStoredCustomMode = async () => {
       const storedCustomMode = await AsyncStorage.getItem('customMode');
-      if (storedCustomMode) {
+      const useDeviceAppearance = await AsyncStorage.getItem('useDeviceAppearance');
+      if (storedCustomMode && useDeviceAppearance === 'false') {
         setCustomMode(storedCustomMode as 'light' | 'dark')
         setUseDeviceApperance(false);
       }
@@ -75,6 +76,8 @@ export const AppearanceProvider = ({ children }: { children: React.ReactNode }) 
   useEffect(() => {
     if (!useDeviceAppearance) {
       AsyncStorage.setItem('customMode', customMode);
+    } else {
+      AsyncStorage.setItem('useDeviceAppearance', 'true');
     }
   }, [customMode, useDeviceAppearance]);
 

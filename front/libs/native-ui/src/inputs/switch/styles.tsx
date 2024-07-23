@@ -5,7 +5,7 @@ export default StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginVertical: 4,
+    marginVertical: 6,
   },
   disabled: {
     opacity: .4

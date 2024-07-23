@@ -5,6 +5,7 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
     paddingTop: 68,
+    zIndex: 0,
   }
 });
 

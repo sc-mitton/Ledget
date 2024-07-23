@@ -143,7 +143,7 @@ export function TabsNavigator({ screens, seperator = true }: Props) {
             />
           ))}
         </Box>
-        {seperator && <Seperator variant='bare' />}
+        {seperator && <Seperator variant='bare' backgroundColor='seperator2' />}
       </Box>
       <View style={styles.screen}>
         <PagerView

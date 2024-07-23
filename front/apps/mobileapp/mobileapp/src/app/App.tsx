@@ -31,12 +31,14 @@ import {
   selectSession,
   apiSlice
 } from '@ledget/shared-features';
+import { selectModal } from '@/features/modalSlice';
 import { hasErrorCode } from '@ledget/helpers';
 import { RootTabParamList } from '@types';
 import { ENV, LEDGET_API_URI } from '@env';
 import store from '@features/store';
 import BottomNav from './BottomNav';
 import Authentication from './Accounts';
+import Modals from './Modals';
 import SourceSans3Regular from '../../assets/fonts/SourceSans3Regular.ttf';
 import SourceSans3Medium from '../../assets/fonts/SourceSans3Medium.ttf';
 import SourceSans3SemiBold from '../../assets/fonts/SourceSans3SemiBold.ttf';
@@ -58,6 +60,7 @@ function App() {
   const appearance = useAppearance();
   const [appIsReady, setAppIsReady] = useState(false);
   const [skipGetMe, setSkipGetMe] = useState(true);
+  const modal = useAppSelector(selectModal);
 
   const [fontsLoaded, fontError] = useFonts({
     'SourceSans3Regular': SourceSans3Regular,
@@ -177,6 +180,7 @@ function App() {
   return (
     <>
       <StatusBar style={appearance.mode === 'dark' ? 'light' : 'dark'} />
+      <Modals />
       <Box
         backgroundColor={'mainBackground'}
         style={styles.main}
@@ -189,7 +193,11 @@ function App() {
               backBehavior='history'
               screenOptions={{ headerShown: false }}
               tabBar={({ state, descriptors, navigation }) =>
-                <BottomNav state={state} descriptors={descriptors} navigation={navigation} />}>
+                <BottomNav
+                  state={state}
+                  descriptors={descriptors}
+                  navigation={navigation}
+                />}>
               <Tab.Screen name="Home" component={Budget} />
               <Tab.Screen name="Budget" component={Budget} />
               <Tab.Screen name="Activity" component={Activity} />

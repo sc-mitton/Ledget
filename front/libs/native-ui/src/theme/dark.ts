@@ -48,6 +48,7 @@ const palette = {
   offWhite4: `hsl(${grayH}, ${grayS}%, 60%)`,
   offWhite5: `hsl(${grayH}, ${grayS}%, 50%)`,
   offWhite6: `hsl(${grayH}, ${grayS}%, 40%)`,
+  offWhite7: `hsl(${grayH}, ${grayS}%, 30%)`,
 }
 
 export const darkTheme = createTheme({
@@ -64,6 +65,7 @@ export const darkTheme = createTheme({
     avatarBackground: palette.gray800,
     tabNavPill: palette.blue700,
     avatar: palette.gray800,
+    modalOverlay: palette.gray900,
 
     // Borders
     inputBorder: palette.gray750,
@@ -73,12 +75,13 @@ export const darkTheme = createTheme({
     focusedInputBorderSecondary: palette.blue800,
     tabNavPillBorder: palette.blue500,
     bottomNavBorder: palette.gray750,
+    nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 14%)`,
 
     // Shadows
     navShadow: palette.gray1000,
     tabsShadow: palette.gray1000,
     activeSwitchShadow: palette.blue700,
-    inactiveSwitchShadow: palette.gray700,
+    disabledSwitchShadow: palette.gray700,
 
     // Icons
     activeIcon: palette.blueSat,
@@ -88,6 +91,7 @@ export const darkTheme = createTheme({
     secondaryText: palette.offWhite3,
     tertiaryText: palette.offWhite5,
     quaternaryText: palette.offWhite6,
+    quinaryText: palette.offWhite7,
     activeText: palette.blueSat,
     invertedText: palette.gray900,
     highContrastText: palette.offWhite,
@@ -103,6 +107,7 @@ export const darkTheme = createTheme({
     blueButton2: palette.blue800,
     blueButtonBorder2: palette.blue700,
     grayButton: palette.gray800,
+    mediumGrayButton: palette.gray700,
     grayButtonBorder: palette.gray750,
 
     // Switch
@@ -113,6 +118,7 @@ export const darkTheme = createTheme({
 
     // Seperators
     seperator: `hsl(${grayH}, ${grayS}%, 17%)`,
+    seperator2: `hsl(${grayH}, ${grayS}%, 17%)`,
     lightSeperator: palette.gray800,
     blueseperator: palette.blue400,
 

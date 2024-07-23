@@ -2,9 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import { RootState } from '@hooks/store';
 import { PayloadAction } from "@reduxjs/toolkit";
-import { Transaction } from "./transactionsSlice"
-import { Category } from "./categorySlice";
-import { TransformedBill } from "./billSlice";
+import { Transaction, Category, TransformedBill } from '@ledget/shared-features';
 
 interface InitialState {
     transactionModal: {

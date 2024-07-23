@@ -43,12 +43,12 @@ const palette = {
   blueSat: `hsl(${blueH}, ${blueS + 10}%, 50%)`,
 
   black: 'hsl(0, 0%, 0%)',
-  offBlack: `hsl(${grayH}, ${grayS}%, 27%)`,
-  offBlack2: `hsl(${grayH}, ${grayS}%, 37%)`,
-  offBlack3: `hsl(${grayH}, ${grayS}%, 47%)`,
-  offBlack4: `hsl(${grayH}, ${grayS}%, 57%)`,
-  offBlack5: `hsl(${grayH}, ${grayS}%, 67%)`,
-  offBlack6: `hsl(${grayH}, ${grayS}%, 77%)`,
+  offBlack: `hsl(${grayH}, ${grayS}%, 17%)`,
+  offBlack2: `hsl(${grayH}, ${grayS}%, 27%)`,
+  offBlack3: `hsl(${grayH}, ${grayS}%, 37%)`,
+  offBlack4: `hsl(${grayH}, ${grayS}%, 47%)`,
+  offBlack5: `hsl(${grayH}, ${grayS}%, 57%)`,
+  offBlack6: `hsl(${grayH}, ${grayS}%, 67%)`,
 }
 
 export const lightTheme = createTheme({
@@ -56,14 +56,15 @@ export const lightTheme = createTheme({
     transparent: 'transparent',
 
     // Backgrounds
-    mainBackground: palette.gray100,
+    mainBackground: palette.gray150,
     navBackground: palette.gray200,
     headerBackground: `hsl(${grayH}, ${grayS}%, 97%)`,
     inputBackground: palette.gray200,
-    nestedContainer: palette.gray175,
+    nestedContainer: `hsl(${grayH}, ${grayS}%, 99%)`,
     avatarBackground: palette.gray200,
     tabNavPill: palette.blue500,
-    avatar: palette.gray200,
+    avatar: palette.gray500,
+    modalOverlay: palette.gray400,
 
     // Borders
     inputBorder: palette.gray250,
@@ -73,19 +74,21 @@ export const lightTheme = createTheme({
     focusedInputBorderMain: palette.blue300,
     tabNavPillBorder: palette.blue500,
     bottomNavBorder: palette.gray300,
+    nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 95%)`,
 
     // Shadows
     navShadow: palette.gray300,
-    tabsShadow: palette.gray200,
+    tabsShadow: `hsl(${grayH}, ${grayS}%, 87%)`,
     activeIcon: palette.blueSat,
     activeSwitchShadow: palette.blue300,
-    inactiveSwitchShadow: palette.gray400,
+    disabledSwitchShadow: palette.gray300,
 
     // Text
     mainText: palette.offBlack,
     secondaryText: palette.offBlack3,
     tertiaryText: palette.offBlack4,
     quaternaryText: palette.offBlack5,
+    quinaryText: palette.offBlack6,
     whiteText: palette.white,
     highContrastText: palette.black,
     invertedText: palette.gray100,
@@ -99,17 +102,19 @@ export const lightTheme = createTheme({
     blueButtonBorder: palette.blue450,
     blueButton2: palette.blue100,
     blueButtonBorder2: `hsl(${blueH}, ${blueS}%, 89%)`,
-    grayButton: palette.gray200,
-    grayButtonBorder: palette.gray250,
+    grayButton: palette.gray250,
+    mediumGrayButton: palette.gray175,
+    grayButtonBorder: `hsl(${grayH}, ${grayS}%, 89%)`,
 
     // Switch
     enabledSwitchPill: palette.blue450,
     enabledSwitchCrib: palette.blue200,
-    disabledSwitchPill: palette.gray200,
-    disabledSwitchCrib: palette.gray300,
+    disabledSwitchPill: palette.gray150,
+    disabledSwitchCrib: palette.gray250,
 
     // Seperators
-    seperator: `hsl(${grayH}, ${grayS}%, 89%)`,
+    seperator: `hsl(${grayH}, ${grayS}%, 93%)`,
+    seperator2: `hsl(${grayH}, ${grayS}%, 88%)`,
     lightSeperator: palette.gray175,
     blueseperator: palette.blue100,
 
@@ -146,20 +151,17 @@ export const lightTheme = createTheme({
       marginTop: 'm',
       marginBottom: 'xs',
       fontFamily: 'SourceSans3SemiBold',
-      width: '100%',
     },
     header2: {
       fontSize: 18,
       lineHeight: 26,
       fontFamily: 'SourceSans3Medium',
-      width: '100%',
       marginTop: 'm',
     },
     boxHeader: {
       fontSize: 15,
       lineHeight: 20,
       fontFamily: 'SourceSans3Medium',
-      width: '100%',
       marginTop: 'm',
       marginLeft: 'xs',
     },
@@ -170,14 +172,12 @@ export const lightTheme = createTheme({
       marginBottom: 's',
       fontFamily: 'SourceSans3Medium',
       color: 'secondaryText',
-      width: '100%',
     },
     subheader2: {
       fontSize: 16,
       lineHeight: 22,
       fontFamily: 'SourceSans3Medium',
       color: 'secondaryText',
-      width: '100%',
     },
     label: {
       marginLeft: 'xs',
@@ -237,7 +237,7 @@ export const lightTheme = createTheme({
       marginHorizontal: 'xxs',
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: 'nestedContainer',
+      backgroundColor: 'grayButton',
     },
     borderedGrayMain: {
       padding: 'm',
@@ -259,7 +259,7 @@ export const lightTheme = createTheme({
       justifyContent: 'center',
       borderWidth: 1.5,
       borderColor: 'blueseperator',
-      color: 'blueButton',
+      color: 'blueText',
     },
     socialSignIn: {
       padding: 's',
@@ -293,6 +293,13 @@ export const lightTheme = createTheme({
       borderColor: 'transparent',
       justifyContent: 'center',
       backgroundColor: 'transparent',
+    },
+    circleButton: {
+      padding: 'xs',
+      borderRadius: 40,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'mediumGrayButton',
     },
     defaults: {
       padding: 's',
@@ -366,6 +373,14 @@ export const lightTheme = createTheme({
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'flex-start',
+      backgroundColor: 'nestedContainer',
+      borderColor: 'nestedContainerBorder',
+      borderWidth: 1.5,
+    },
+    modalBox: {
+      backgroundColor: 'nestedContainer',
+      borderTopEndRadius: 20,
+      borderTopStartRadius: 20,
     },
     bottomNav: {
       paddingHorizontal: 'l',
@@ -379,6 +394,12 @@ export const lightTheme = createTheme({
       left: 24,
       bottom: 0,
       zIndex: 100
+    },
+    modal: {
+      backgroundColor: 'nestedContainer',
+      borderRadius: 12,
+      padding: 'l',
+      gap: 'm',
     },
     defaults: {}
   },

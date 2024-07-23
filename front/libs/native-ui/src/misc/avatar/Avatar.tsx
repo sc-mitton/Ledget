@@ -20,7 +20,7 @@ export const Avatar = (props: Props) => {
       <Text
         style={[
           styles[props.size],
-          { color: theme.colors.mainText, fontFamily: 'SourceSans3Regular' },
+          { color: theme.colors.whiteText, fontFamily: 'SourceSans3Regular' },
         ]}
       >
         {`${props.name?.first[0]} ${props.name?.last[0]}`}
