@@ -9,7 +9,12 @@ import {
 import { Theme } from '../theme';
 
 const restyleFunctions = composeRestyleFunctions([color, border])
-type Props = ColorProps<Theme> & BorderProps<Theme> & { icon: React.ComponentType<any>, size?: number };
+interface ExtraProps {
+  strokeWidth?: number;
+  icon: React.ComponentType<any>;
+  size?: number;
+}
+type Props = ColorProps<Theme> & BorderProps<Theme> & ExtraProps;
 
 export const Icon = ({ icon: Icon, size = 20, color = 'mainText', ...rest }: Props) => {
   const props = useRestyle(restyleFunctions as any, { color, ...rest });

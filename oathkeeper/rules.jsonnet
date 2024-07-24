@@ -11,6 +11,9 @@ local cookie_session_authenticator = {
 local bearer_token_authenticator = {
   handler: "bearer_token",
 };
+local noop_authenticator = {
+  handler: "noop",
+};
 
 /* Authorizors */
 local allow_authorizer = { handler: "allow" };
@@ -65,7 +68,7 @@ local BaseWithAuth = {
       methods: ["GET"],
       url: base_url + "/prices",
     },
-    authenticators: [anonymous_authenticator],
+    authenticators: [noop_authenticator],
     mutators: [noop_mutator],
     authorizer: allow_authorizer,
   },
@@ -80,6 +83,17 @@ local BaseWithAuth = {
     mutators: [noop_mutator],
     authorizer: allow_authorizer,
   },
+  Base
+  {
+    id: "extend-token-session",
+    match: {
+      methods: ["PATCH"],
+      url: base_url + "/user/token-session/<[a-zA-Z0-9-]+>/extend",
+    },
+    authenticators: [noop_authenticator],
+    mutators: [noop_mutator],
+    authorizer: allow_authorizer,
+  },
   BaseWithAuth
   {
     id: "extend-session",
@@ -87,17 +101,6 @@ local BaseWithAuth = {
       methods: ["PATCH"],
       url: base_url + "/user/session/extend",
     },
-  },
-  Base
-  {
-    id: "extend-token-session",
-    match: {
-      methods: ["PATCH"],
-      url: base_url + "/user/token-session/extend",
-    },
-    authenticators: [anonymous_authenticator],
-    mutators: [noop_mutator],
-    authorizer: allow_authorizer,
   },
   BaseWithAuth
   {

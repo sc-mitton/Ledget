@@ -22,6 +22,8 @@ authorizers:
     enabled: true
 
 authenticators:
+  noop:
+    enabled: true
   anonymous:
     enabled: true
     config:

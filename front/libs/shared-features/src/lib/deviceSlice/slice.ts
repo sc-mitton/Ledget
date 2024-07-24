@@ -20,7 +20,8 @@ export const deviceSlice = apiSlice.injectEndpoints({
       query: () => ({
         url: 'devices',
         method: 'POST',
-      })
+      }),
+      extraOptions: { maxRetries: 2 },
     }),
   })
 });

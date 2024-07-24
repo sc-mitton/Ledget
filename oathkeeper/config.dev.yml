@@ -24,6 +24,8 @@ authorizers:
 # If development mode
 
 authenticators:
+  noop:
+    enabled: true
   anonymous:
     enabled: true
     config:

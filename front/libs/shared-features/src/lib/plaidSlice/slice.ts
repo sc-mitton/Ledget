@@ -37,7 +37,7 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
         body: data
       }),
       invalidatesTags: ['PlaidItem'],
-      extraOptions: { maxRetries: 5 }
+      extraOptions: { maxRetries: 3 }
     }),
     updatePlaidItem: builder.mutation<any, { itemId: string; data: PlaidItem }>(
       {
@@ -47,7 +47,7 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
           body: data
         }),
         invalidatesTags: ['PlaidItem'],
-        extraOptions: { maxRetries: 5 }
+        extraOptions: { maxRetries: 3 }
       }
     )
   })

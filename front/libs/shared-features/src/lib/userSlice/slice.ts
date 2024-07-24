@@ -113,8 +113,7 @@ export const userSlice = apiWithTags.injectEndpoints({
     }),
     extendTokenSession: builder.mutation<any, { session_id: string }>({
       query: ({ session_id }) => ({
-        url: 'user/token-session/extend',
-        data: { session_id },
+        url: `user/token-session/${session_id}/extend`,
         method: 'PATCH'
       }),
       extraOptions: { maxRetries: 3 }

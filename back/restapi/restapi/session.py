@@ -1,12 +1,11 @@
 
 class OrySession:
 
-    def __init__(self, id, aal, devices=[], auth_methods=[], token_based=False):
+    def __init__(self, id, aal, devices=[], auth_methods=[]):
         self._id = id
         self._aal = aal
         self._devices = devices
         self._auth_methods = auth_methods
-        self._token_based = token_based
 
     @property
     def devices(self):
@@ -35,7 +34,3 @@ class OrySession:
     @property
     def id(self):
         return self._id
-
-    @property
-    def token_based(self):
-        return self._token_based

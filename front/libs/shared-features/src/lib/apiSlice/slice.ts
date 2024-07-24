@@ -34,7 +34,7 @@ const rawBaseQuery = retry(
       return headers;
     }
   }),
-  { maxRetries: 5 }
+  { maxRetries: 3 }
 );
 
 const dynamicBaseQuery: BaseQueryFn<

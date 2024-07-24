@@ -65,6 +65,7 @@ export const lightTheme = createTheme({
     tabNavPill: palette.blue500,
     avatar: palette.gray500,
     modalOverlay: palette.gray400,
+    modalBox: palette.gray150,
 
     // Borders
     inputBorder: palette.gray250,
@@ -103,7 +104,7 @@ export const lightTheme = createTheme({
     blueButton2: palette.blue100,
     blueButtonBorder2: `hsl(${blueH}, ${blueS}%, 89%)`,
     grayButton: palette.gray250,
-    mediumGrayButton: palette.gray175,
+    mediumGrayButton: palette.gray250,
     grayButtonBorder: `hsl(${grayH}, ${grayS}%, 89%)`,
 
     // Switch
@@ -218,7 +219,7 @@ export const lightTheme = createTheme({
     },
     grayMain: {
       padding: 'm',
-      marginVertical: 'l',
+      marginVertical: 's',
       borderRadius: 12,
       gap: 's',
       marginHorizontal: 'xxs',
@@ -231,7 +232,7 @@ export const lightTheme = createTheme({
     },
     grayMain2: {
       padding: 'm',
-      marginVertical: 'l',
+      marginVertical: 's',
       borderRadius: 12,
       gap: 's',
       marginHorizontal: 'xxs',
@@ -378,9 +379,13 @@ export const lightTheme = createTheme({
       borderWidth: 1.5,
     },
     modalBox: {
-      backgroundColor: 'nestedContainer',
+      backgroundColor: 'modalBox',
       borderTopEndRadius: 20,
       borderTopStartRadius: 20,
+      shadowColor: 'navShadow',
+      shadowOpacity: 0.5,
+      shadowRadius: 10,
+      shadowOffset: { width: 0, height: -4 },
     },
     bottomNav: {
       paddingHorizontal: 'l',

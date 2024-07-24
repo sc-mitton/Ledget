@@ -27,7 +27,7 @@ export default function Portfolio() {
         <Header>Profile</Header>
         <Box
           paddingHorizontal='s'
-          paddingVertical='xl'
+          paddingVertical='l'
           style={styles.userInfoContainer}
         >
           <ChevronTouchable>

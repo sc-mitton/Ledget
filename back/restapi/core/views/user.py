@@ -14,6 +14,7 @@ from ory_client.api.identity_api import IdentityApi
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+from django.utils.decorators import method_decorator
 from django.core.exceptions import PermissionDenied
 import qrcode
 from qrcode.image.styledpil import StyledPilImage
@@ -35,6 +36,7 @@ from restapi.permissions.auth import (
 )
 from restapi.permissions.objects import is_account_owner
 from restapi.errors.validation import ValidationError500
+from restapi.decorators import csrf_ignore
 from core.tasks import cleanup_hanging_ory_users, remove_co_owner
 
 
@@ -235,14 +237,15 @@ class UserSessionExtendView(GenericAPIView):
         return Response(status=status.HTTP_200_OK)
 
 
+@method_decorator(csrf_ignore, name='dispatch')
 class UserTokenSessionExtendView(GenericAPIView):
     """Extend user session"""
 
-    def patch(self, request):
+    def patch(self, request, *args, **kwargs):
         try:
             with ory_client.ApiClient(ory_configuration) as api_client:
                 api_instance = IdentityApi(api_client)
-                api_instance.extend_session(id=request.data['session_id'])
+                api_instance.extend_session(id=kwargs['id'])
         except ory_client.ApiException as e:  # pragma: no cover
             logger.error(f"Failed to extend session: {e}")
             return Response({'error': 'Failed to extend session'},

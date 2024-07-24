@@ -28,8 +28,7 @@ import {
   setEnvironment,
   setSession,
   setDeviceToken,
-  selectSession,
-  apiSlice
+  selectSession
 } from '@ledget/shared-features';
 import { hasErrorCode } from '@ledget/helpers';
 import { RootTabParamList } from '@types';
@@ -70,7 +69,9 @@ function App() {
   const {
     isSuccess: isGetMeSuccess,
     isError: isGetMeError,
-    error: getMeError
+    error: getMeError,
+    isUninitialized: isGetMeUninitialized,
+    refetch: refetchGetMe
   } = useGetMeQuery(undefined, { skip: skipGetMe });
   const [
     refreshDevices, {
@@ -83,6 +84,7 @@ function App() {
   const [extendSession, {
     isUninitialized: isUninitializedExtend,
     isSuccess: isExtendSuccess,
+    isError: isExtendError,
     error: extendError
   }] = useExtendTokenSessionMutation({ fixedCacheKey: 'extendSession' });
 
@@ -116,7 +118,7 @@ function App() {
     }
   }, [session, isExtendSuccess, isRefreshDevicesSuccess])
 
-  // Try and extend the session if fetching the user data was unsuccessful
+  // Try and extend the ef if fetching the user data was unsuccessful
   useEffect(() => {
     if (session && hasErrorCode(401, getMeError) && isUninitializedExtend) {
       extendSession({ session_id: session.id });
@@ -127,33 +129,34 @@ function App() {
   useEffect(() => {
     if (isRefreshDevicesSuccess || isRefreshDevicesError) {
       setSkipGetMe(false);
-      apiSlice.util.invalidateTags(['User']);
+      !isGetMeUninitialized && refetchGetMe();
     }
   }, [isRefreshDevicesSuccess, isRefreshDevicesError]);
 
   // Checks for when the app is ready to load
   useEffect(() => {
-
     // Situation 1
-    const checks = [
+    const situation1Checks = [
       fontsLoaded,
       !fontError,
-      (isGetMeError || isRefreshDevicesError)
+      (isExtendSuccess || isGetMeSuccess)
     ]
-    if (checks.every(Boolean)) {
-      setAppIsReady(true);
-    }
-
     // Situation 2
-    if (isGetMeSuccess && isRefreshDevicesSuccess) {
+    const situation2Checks = [
+      fontsLoaded,
+      !fontError,
+      (isGetMeError && isExtendError)
+    ]
+    if (situation1Checks.every(Boolean)) {
       setAppIsReady(true);
     }
-
+    if (situation2Checks.every(Boolean)) {
+      setAppIsReady(true);
+    }
     // Situation 3: No session
     if (!SecureStore.getItem('session')) {
       setAppIsReady(true);
     }
-
   }, [
     fontsLoaded,
     fontError,

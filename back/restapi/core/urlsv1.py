@@ -26,7 +26,7 @@ urlpatterns = [
     path('user/account', AddUserToAccountView.as_view(), name='add-user-to-account'),
     path('user/session/extend', UserSessionExtendView.as_view(),
          name='session-extend'),
-    path('user/token-session/extend', UserTokenSessionExtendView.as_view(),
+    path('user/token-session/<str:id>/extend', UserTokenSessionExtendView.as_view(),
          name='token-session-extend'),
     path("feedback", FeedbackView.as_view(), name="feedback"),
 

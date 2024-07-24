@@ -100,7 +100,6 @@ export function TabsNavigator({ screens, seperator = true }: Props) {
             <Button
               key={`${route}${i}`}
               style={styles.tabItem}
-              lineHeight={21}
               onPress={() => {
                 refPagerView.current?.setPage(i)
                 setIndex(i)
@@ -137,7 +136,6 @@ export function TabsNavigator({ screens, seperator = true }: Props) {
                 }
               }}
               style={styles.tabItem}
-              lineHeight={20}
               variant={i === index ? 'transparentPill' : 'grayPill'}
               backgroundColor={'grayButton'}
               transparent={true}
