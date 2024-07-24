@@ -20,9 +20,10 @@ const Screen = () => {
           <Button
             onPress={() => dispatch(setModal('logout'))}
             label={'Logout'}
-            textColor='tertiaryText'
+            backgroundColor='nestedContainer'
+            borderColor='nestedContainerBorder'
             variant='borderedGrayMain'>
-            <Icon icon={LogOut} size={18} color={'tertiaryText'} />
+            <Icon icon={LogOut} size={18} color='secondaryText' />
           </Button>
         </View>
       </Box>

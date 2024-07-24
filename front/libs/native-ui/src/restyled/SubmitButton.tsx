@@ -48,7 +48,7 @@ export const SubmitButton = (props: Props & ExtraProps) => {
   return (
     <Button transparent={isSubmitting || showCheck} {...rest}>
       {isSubmitting && <Spinner />}
-      <Animated.View style={{ transform: [{ scale: checkScale }] }}>
+      <Animated.View style={{ transform: [{ scale: checkScale }], position: 'absolute' }}>
         {showCheck && <Box padding='xxs'><Icon icon={Check} color={'successIcon'} /></Box>}
       </Animated.View>
     </Button>

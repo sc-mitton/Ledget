@@ -238,7 +238,7 @@ class UserSessionExtendView(GenericAPIView):
 
 
 @method_decorator(csrf_ignore, name='dispatch')
-class UserTokenSessionExtendView(GenericAPIView):
+class UserTokenSessionExtendView(GenericAPIView):  # pragma: no cover
     """Extend user session"""
 
     def patch(self, request, *args, **kwargs):

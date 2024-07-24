@@ -9,6 +9,7 @@ import {
   useRestyle,
   spacing,
   layout,
+  border,
   typography,
   createVariant,
   backgroundColor,
@@ -17,6 +18,7 @@ import {
   VariantProps,
   LayoutProps,
   BackgroundColorProps,
+  BorderProps,
   composeRestyleFunctions,
 } from '@shopify/restyle';
 
@@ -27,6 +29,7 @@ type RestyleProps = SpacingProps<Theme> &
   VariantProps<Theme, 'buttonVariants'> &
   LayoutProps<Theme> &
   TypographyProps<Theme> &
+  BorderProps<Theme> &
   BackgroundColorProps<Theme>;
 
 const variant = createVariant({ themeKey: 'buttonVariants' });
@@ -37,6 +40,7 @@ const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([
   backgroundColor,
   layout,
   typography,
+  border as any,
 ]);
 
 export type Props = RestyleProps & {

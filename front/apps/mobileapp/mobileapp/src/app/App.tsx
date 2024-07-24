@@ -28,7 +28,8 @@ import {
   setEnvironment,
   setSession,
   setDeviceToken,
-  selectSession
+  selectSession,
+  apiSlice
 } from '@ledget/shared-features';
 import { hasErrorCode } from '@ledget/helpers';
 import { RootTabParamList } from '@types';
@@ -57,6 +58,7 @@ function App() {
   const dispatch = useAppDispatch();
   const appearance = useAppearance();
   const [appIsReady, setAppIsReady] = useState(false);
+  const [continueToMainApp, setContinueToMainApp] = useState(false);
   const [skipGetMe, setSkipGetMe] = useState(true);
 
   const [fontsLoaded, fontError] = useFonts({
@@ -129,7 +131,7 @@ function App() {
   useEffect(() => {
     if (isRefreshDevicesSuccess || isRefreshDevicesError) {
       setSkipGetMe(false);
-      !isGetMeUninitialized && refetchGetMe();
+      !isGetMeUninitialized ? refetchGetMe() : apiSlice.util.invalidateTags(['User']);
     }
   }, [isRefreshDevicesSuccess, isRefreshDevicesError]);
 
@@ -174,6 +176,15 @@ function App() {
     }
   }, [deviceResult]);
 
+  // When to continue to the main app
+  useEffect(() => {
+    if (!session) {
+      setContinueToMainApp(false);
+    } else if (isGetMeSuccess && isRefreshDevicesSuccess && !extendError) {
+      setContinueToMainApp(true);
+    }
+  }, [isGetMeSuccess, isRefreshDevicesSuccess, extendError, session]);
+
   if (!appIsReady) {
     return null;
   }
@@ -188,7 +199,7 @@ function App() {
         onLayout={onLayoutRootView}
       >
         <NavigationContainer theme={navTheme}>
-          {isGetMeSuccess && isRefreshDevicesSuccess && !extendError
+          {continueToMainApp
             ? <Tab.Navigator
               initialRouteName='Budget'
               backBehavior='history'

@@ -21,6 +21,7 @@ const palette = {
   gray175: `hsl(${grayH}, ${grayS}%, 93%)`,
   gray200: `hsl(${grayH}, ${grayS}%, 92%)`,
   gray250: `hsl(${grayH}, ${grayS}%, 90%)`,
+  gray275: `hsl(${grayH}, ${grayS}%, 87%)`,
   gray300: `hsl(${grayH}, ${grayS}%, 82%)`,
   gray400: `hsl(${grayH}, ${grayS}%, 72%)`,
   gray500: `hsl(${grayH}, ${grayS}%, 62%)`,
@@ -59,7 +60,7 @@ export const lightTheme = createTheme({
     mainBackground: palette.gray150,
     navBackground: palette.gray400,
     headerBackground: `hsl(${grayH}, ${grayS}%, 97%)`,
-    inputBackground: palette.gray200,
+    inputBackground: palette.gray250,
     nestedContainer: `hsl(${grayH}, ${grayS}%, 100%)`,
     avatarBackground: palette.gray200,
     tabNavPill: palette.blue500,
@@ -68,7 +69,7 @@ export const lightTheme = createTheme({
     modalBox: palette.gray150,
 
     // Borders
-    inputBorder: palette.gray250,
+    inputBorder: palette.gray275,
     inputBorderErrorSecondary: palette.mutedRed,
     inputBorderErrorMain: palette.red,
     focusedInputBorderSecondary: palette.blue100,
@@ -95,7 +96,7 @@ export const lightTheme = createTheme({
     invertedText: palette.gray100,
     activeText: palette.blueSat,
     blueText: palette.blue500,
-    placeholderText: palette.offBlack4,
+    placeholderText: palette.offBlack2,
     buttonLabel: palette.offBlack,
 
     // Buttons
@@ -164,7 +165,7 @@ export const lightTheme = createTheme({
       lineHeight: 20,
       fontFamily: 'SourceSans3Medium',
       marginTop: 'm',
-      marginLeft: 'xs',
+      marginLeft: 'xs'
     },
     subheader: {
       fontSize: 24,
@@ -178,7 +179,7 @@ export const lightTheme = createTheme({
       fontSize: 16,
       lineHeight: 22,
       fontFamily: 'SourceSans3Medium',
-      color: 'secondaryText',
+      color: 'tertiaryText',
     },
     label: {
       marginLeft: 'xs',
@@ -268,7 +269,7 @@ export const lightTheme = createTheme({
       alignItems: 'center',
       justifyContent: 'center',
       borderWidth: 1.5,
-      borderColor: 'seperator',
+      borderColor: 'seperator2',
       flexDirection: 'row',
     },
     grayLinkButton: {

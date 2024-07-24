@@ -6,8 +6,8 @@ import * as SecureStore from 'expo-secure-store';
 
 import styles from './styles/logout';
 import { Text, Header, Button, SubmitButton, withBottomModal } from '@ledget/native-ui';
-import { selectSession, apiSlice } from '@ledget/shared-features';
-import { useAppSelector } from '@hooks';
+import { selectSession, apiSlice, setSession } from '@ledget/shared-features';
+import { useAppSelector, useAppDispatch } from '@hooks';
 import { ORY_API_URI } from '@env';
 
 const Logout = withBottomModal((props) => {
@@ -15,6 +15,7 @@ const Logout = withBottomModal((props) => {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [quedLogout, setQuedLogout] = useState(false);
   const session = useAppSelector(selectSession);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -39,6 +40,7 @@ const Logout = withBottomModal((props) => {
         props.closeModal();
         SecureStore.deleteItemAsync('session');
         apiSlice.util.invalidateTags(['User']);
+        dispatch(setSession(undefined));
       }).catch(() => {
         setIsLoggingOut(false);
         props.closeModal();

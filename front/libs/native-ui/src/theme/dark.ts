@@ -60,7 +60,7 @@ export const darkTheme = createTheme({
     mainBackground: palette.gray900,
     headerBackground: `hsl(${grayH}, ${grayS}%, 7%)`,
     navBackground: palette.gray850,
-    nestedContainer: `hsl(${grayH}, ${grayS}%, 10%)`,
+    nestedContainer: `hsl(${grayH}, ${grayS}%, 9%)`,
     inputBackground: palette.gray800,
     avatarBackground: palette.gray800,
     tabNavPill: palette.blue700,
@@ -76,7 +76,7 @@ export const darkTheme = createTheme({
     focusedInputBorderSecondary: palette.blue800,
     tabNavPillBorder: palette.blue500,
     bottomNavBorder: palette.gray750,
-    nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 12%)`,
+    nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 11%)`,
 
     // Shadows
     navShadow: palette.gray1000,

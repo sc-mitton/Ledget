@@ -35,7 +35,7 @@ export const environmentSlice = createSlice({
       state.apiUrl = action.payload.apiUrl
       state.platform = action.payload.platform
     },
-    setSession: (state, action: PayloadAction<Session>) => {
+    setSession: (state, action: PayloadAction<Session | undefined>) => {
       state.session = action.payload
     },
     setDeviceToken: (state, action: PayloadAction<string>) => {
