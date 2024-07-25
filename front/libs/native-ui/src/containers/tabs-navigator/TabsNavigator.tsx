@@ -8,15 +8,20 @@ import Animated, {
   withSpring,
   ReduceMotion
 } from 'react-native-reanimated';
-import { useAppearance } from '../../theme';
 
 import styles from './styles';
 import { Seperator } from '../../restyled/Seperator';
 import { Box } from '../../restyled/Box';
 import { Button } from '../../restyled/Button';
 
+interface ScreenProps {
+  navigation: any;
+  route: any;
+}
+
 interface Props {
-  screens: { [key: string]: () => React.JSX.Element };
+  screens: { [key: string]: (props: ScreenProps) => React.JSX.Element };
+  screenProps: ScreenProps;
   seperator?: boolean;
 }
 
@@ -30,7 +35,7 @@ const springConfig = {
   reduceMotion: ReduceMotion.System,
 }
 
-export function TabsNavigator({ screens, seperator = true }: Props) {
+export function TabsNavigator({ screens, seperator = true, screenProps }: Props) {
   const [index, setIndex] = useState(0);
   const height = useSharedValue(0);
   const width = useSharedValue(0);
@@ -137,13 +142,12 @@ export function TabsNavigator({ screens, seperator = true }: Props) {
               }}
               style={styles.tabItem}
               variant={i === index ? 'transparentPill' : 'grayPill'}
-              backgroundColor={'grayButton'}
               transparent={true}
               label={route}
             />
           ))}
         </Box>
-        {seperator && <Seperator variant='bare' backgroundColor='seperator2' />}
+        {seperator && <Seperator variant='bare' backgroundColor='tabNavBorder' />}
       </Box>
       <View style={styles.screen}>
         <PagerView
@@ -156,7 +160,7 @@ export function TabsNavigator({ screens, seperator = true }: Props) {
         >
           {Object.keys(screens).map((key, i) => {
             const Scene = Object.values(screens)[i];
-            return <Scene key={i} />;
+            return <Scene key={i} {...screenProps} />
           })}
         </PagerView>
       </View>

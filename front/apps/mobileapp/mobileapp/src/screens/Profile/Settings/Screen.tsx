@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 import { Box, BoxHeader, Switch, useAppearance } from '@ledget/native-ui';
 
-const Preferences = () => {
+const Preferences = (props: any) => {
   const appearance = useAppearance();
 
   return (

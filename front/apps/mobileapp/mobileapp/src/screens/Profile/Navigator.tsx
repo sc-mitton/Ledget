@@ -1,13 +1,19 @@
 import { View } from 'react-native';
+import { createStackNavigator } from "@react-navigation/stack";
 
 import styles from './styles/navigator';
 import { Header, Box } from '@ledget/native-ui';
 import { useGetMeQuery } from '@ledget/shared-features';
 import { TabsNavigator, Avatar, Text, ChevronTouchable } from '@ledget/native-ui';
-import { ChevronRightButton } from './Account/shared';
+import { ProfileStackParamList } from '@types';
+import { BackHeader } from '@ledget/native-ui';
+import { useCardStyleInterpolator } from "@/hooks";
+import { ProfileScreenProps } from '@types';
 import Account from './Account/Screen';
 import Security from './Security/Screen';
-import Settings from './Settings/Settings';
+import Settings from './Settings/Screen';
+import Connection from './Connection/Screen';
+import Device from './Device/Screen';
 
 const scenes = {
   account: Account,
@@ -15,7 +21,9 @@ const scenes = {
   security: Security
 };
 
-export default function Portfolio() {
+const Stack = createStackNavigator<ProfileStackParamList>();
+
+function Profile(props: ProfileScreenProps) {
   const { data: user } = useGetMeQuery();
 
   return (
@@ -28,8 +36,7 @@ export default function Portfolio() {
         <Box
           paddingHorizontal='s'
           paddingVertical='l'
-          style={styles.userInfoContainer}
-        >
+          style={styles.userInfoContainer}>
           <ChevronTouchable>
             <Avatar size='l' name={user?.name} />
             <View style={styles.userInfo}>
@@ -39,7 +46,25 @@ export default function Portfolio() {
           </ChevronTouchable>
         </Box>
       </Box>
-      <TabsNavigator screens={scenes} />
+      <TabsNavigator screens={scenes} screenProps={props} />
     </>
+  );
+}
+
+export default function Navigator() {
+  const cardStyleInterpolator = useCardStyleInterpolator();
+
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        header: (props) => <BackHeader {...props} />,
+        cardStyleInterpolator,
+      }}
+      id='profile'
+    >
+      <Stack.Screen options={{ headerShown: false }} name='Profile' component={Profile} />
+      <Stack.Screen name='Connection' component={Connection} />
+      <Stack.Screen name='Device' component={Device} />
+    </Stack.Navigator>
   );
 }

@@ -3,7 +3,7 @@ import {
   View,
   StyleProp,
   ViewStyle,
-  LayoutChangeEvent
+  LayoutChangeEvent,
 } from 'react-native';
 import {
   useRestyle,
@@ -25,7 +25,7 @@ import {
 import { Text } from './Text';
 import { Theme } from '../theme';
 
-type RestyleProps = SpacingProps<Theme> &
+export type RestyleProps = SpacingProps<Theme> &
   VariantProps<Theme, 'buttonVariants'> &
   LayoutProps<Theme> &
   TypographyProps<Theme> &
@@ -43,10 +43,10 @@ const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([
   border as any,
 ]);
 
-export type Props = RestyleProps & {
+export type ButtonProps = RestyleProps & {
   onPress?: () => void;
   label?: string;
-  children?: React.ReactNode;
+  children?: React.ReactNode | ((props: { color: string }) => React.ReactNode);
   labelPlacement?: 'left' | 'right';
   textColor?: string;
   transparent?: boolean;
@@ -54,7 +54,7 @@ export type Props = RestyleProps & {
   onLayout?: (event: LayoutChangeEvent) => void;
 };
 
-export const Button = (props: Props) => {
+export const Button = (props: ButtonProps) => {
   const {
     onPress,
     label,
@@ -79,7 +79,11 @@ export const Button = (props: Props) => {
       onLayout={onLayout}
     >
       <View {...restyledProps}>
-        {labelPlacement === 'right' && children}
+        {labelPlacement === 'left'
+          ? typeof children === 'function'
+            ? children({ color })
+            : children
+          : null}
         <Text
           color={textColor}
           fontSize={fontSize}
@@ -87,8 +91,11 @@ export const Button = (props: Props) => {
           style={textColor ? {} : { color: transparent ? 'transparent' : color ? color : '' }}>
           {label}
         </Text>
-        {labelPlacement === 'left' && children}
-        {!labelPlacement && children}
+        {!labelPlacement || labelPlacement === 'right'
+          ? typeof children === 'function'
+            ? children({ color })
+            : children
+          : null}
       </View>
     </TouchableOpacity>
   );

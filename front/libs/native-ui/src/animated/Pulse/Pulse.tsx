@@ -59,8 +59,8 @@ const Circle = ({ green = false, size = 'l', position }: CircleProps) => {
           r={sizes[size] / 2}
           gradientUnits="userSpaceOnUse"
         >
-          <Stop stopColor={theme.colors.mainBackground} />
-          <Stop stopColor={theme.colors.mainBackground} offset={
+          <Stop stopColor={theme.colors.accountsMainBackground} />
+          <Stop stopColor={theme.colors.accountsMainBackground} offset={
             green
               ? position === 'inner' ? .3 : .4
               : position === 'inner' ? .85 : .9} />

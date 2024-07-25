@@ -1,7 +1,8 @@
 import { FC, useState, useEffect } from 'react'
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated'
-import { View, TouchableWithoutFeedback } from 'react-native'
+import { View } from 'react-native'
 import { X } from 'geist-native-icons';
+import OutsidePressHandler from 'react-native-outside-press';
 
 import styles from './styles';
 import { Box } from '../../restyled/Box';
@@ -65,12 +66,12 @@ export function withBottomModal<P>(WrappedComponent: FC<P & { closeModal: () => 
     return (
       <>
         {!unMount &&
-          <TouchableWithoutFeedback onPress={() => setCloseAll(true)}>
-            <View style={[styles.full, styles.container]}>
-              <Animated.View style={[overlayFade, styles.full]}>
-                <Box backgroundColor='modalOverlay' style={styles.full} />
-              </Animated.View>
-              <Animated.View style={[styles.modal, modalAnimation]}>
+          <View style={[styles.full, styles.container]}>
+            <Animated.View style={[overlayFade, styles.full]}>
+              <Box backgroundColor='modalOverlay' style={styles.full} />
+            </Animated.View>
+            <Animated.View style={[styles.modal, modalAnimation]}>
+              <OutsidePressHandler onOutsidePress={() => setCloseAll(true)}>
                 <Box variant='modalBox' style={styles.background}>
                   <View style={styles.modalContent}>
                     <WrappedComponent {...rest as P} closeModal={() => setCloseAll(true)} />
@@ -81,9 +82,9 @@ export function withBottomModal<P>(WrappedComponent: FC<P & { closeModal: () => 
                     </View>}
                   </View>
                 </Box>
-              </Animated.View>
-            </View>
-          </TouchableWithoutFeedback>}
+              </OutsidePressHandler>
+            </Animated.View>
+          </View>}
       </>
     )
   }

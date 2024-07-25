@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { View } from 'react-native';
+import { BorderProps, border, composeRestyleFunctions, useRestyle } from '@shopify/restyle';
 import Animated, {
   useSharedValue,
   withSequence,
@@ -13,16 +14,33 @@ import Animated, {
 
 import styles from './styles';
 import { Box } from '../../restyled/Box';
+import { Theme } from '../../theme';
 
 const config = { duration: 1200, easing: Easing.bezier(0.5, 0, 0.5, 1), reduceMotion: ReduceMotion.System }
+
+type RestyleProps = BorderProps<Theme>;
+const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([border as any]);
+
 const ringBoxProps = {
-  borderRightColor: 'mainText',
   borderBottomColor: 'transparent',
   borderLeftColor: 'transparent',
   borderTopColor: 'transparent',
 } as const;
 
-export const Spinner = () => {
+const Ring = ({ color, ...rest }: RestyleProps & { color?: string }) => {
+  const { borderColor } = useRestyle(restyleFunctions, rest);
+  return (
+    <Box
+      {...(color
+        ? { style: [{ borderRightColor: color }, styles.ring] }
+        : { borderRightColor: borderColor || 'mainText' })}
+      {...ringBoxProps}
+    />
+  )
+}
+
+export const Spinner = ({ color, ...rest }: RestyleProps & { color?: string }) => {
+
   const pop = useSharedValue(.95);
   const r1 = useSharedValue(0);
   const r2 = useSharedValue(0);
@@ -49,22 +67,22 @@ export const Spinner = () => {
     <Animated.View style={[styles.container, { transform: [{ scale: pop }] }]}>
       <View style={styles.ringContainer}>
         <Animated.View style={[styles.animatedRingContainer, a1]}>
-          <Box {...ringBoxProps} style={styles.ring} />
+          <Ring color={color} {...rest} />
         </Animated.View>
       </View>
       <View style={styles.ringContainer}>
         <Animated.View style={[styles.animatedRingContainer, a2]}>
-          <Box {...ringBoxProps} style={styles.ring} />
+          <Ring color={color} {...rest} />
         </Animated.View>
       </View>
       <View style={styles.ringContainer}>
         <Animated.View style={[styles.animatedRingContainer, a3]}>
-          <Box {...ringBoxProps} style={styles.ring} />
+          <Ring color={color} {...rest} />
         </Animated.View>
       </View>
       <View style={styles.ringContainer}>
         <Animated.View style={[styles.animatedRingContainer, a4]}>
-          <Box {...ringBoxProps} style={styles.ring} />
+          <Ring color={color} {...rest} />
         </Animated.View>
       </View>
     </Animated.View>

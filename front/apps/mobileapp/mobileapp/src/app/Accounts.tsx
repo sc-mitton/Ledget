@@ -8,7 +8,7 @@ import { useCardStyleInterpolator } from "@/hooks";
 const Stack = createStackNavigator<RootAccountStackParamList>();
 
 const Authentication = () => {
-  const cardStyleInterpolator = useCardStyleInterpolator();
+  const cardStyleInterpolator = useCardStyleInterpolator('accounts');
 
   return (
     <Stack.Navigator

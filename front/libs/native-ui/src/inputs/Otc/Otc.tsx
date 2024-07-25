@@ -107,7 +107,7 @@ export const Otc = (props: Props) => {
               </Box>
             </Box>
             {codeLength / 2 === (index + 1) &&
-              <Box key={`otc-dash-${index}`} backgroundColor='seperator' style={styles.dash} />}
+              <Box key={`otc-dash-${index}`} backgroundColor='darkerseperator' style={styles.dash} />}
           </>
         ))
       }

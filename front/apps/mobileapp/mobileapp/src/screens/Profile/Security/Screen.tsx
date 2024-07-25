@@ -9,7 +9,7 @@ import { useAppDispatch } from '@hooks';
 import Devices from './Devices';
 import Mfa from './Mfa';
 
-const Screen = () => {
+const Screen = (props: any) => {
   const dispatch = useAppDispatch();
   return (
     <ScrollView>
@@ -22,8 +22,9 @@ const Screen = () => {
             label={'Logout'}
             backgroundColor='nestedContainer'
             borderColor='nestedContainerBorder'
+            textColor='mainText'
             variant='borderedGrayMain'>
-            <Icon icon={LogOut} size={18} color='secondaryText' />
+            <Icon icon={LogOut} size={18} />
           </Button>
         </View>
       </Box>

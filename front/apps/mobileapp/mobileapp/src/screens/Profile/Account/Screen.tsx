@@ -2,12 +2,13 @@ import React from 'react'
 import { ScrollView } from 'react-native';
 
 import { Box } from '@ledget/native-ui';
+import { ProfileScreenProps } from '@types';
 import Household from './Household';
 import PaymentMethod from './PaymentMethod';
 import Connections from './Connections';
 import Plan from './Plan';
 
-const Screen = () => {
+const Screen = (props: ProfileScreenProps) => {
 
   return (
     <ScrollView>
@@ -15,7 +16,7 @@ const Screen = () => {
         <Plan />
         <PaymentMethod />
         <Household />
-        <Connections />
+        <Connections {...props} />
       </Box>
     </ScrollView>
   )

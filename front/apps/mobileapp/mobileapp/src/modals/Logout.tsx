@@ -56,7 +56,7 @@ const Logout = withBottomModal((props) => {
         <Text color='secondaryText'>{`You will be automatically logged out in ${seconds} seconds`}</Text>
       </View>
       <SubmitButton onPress={() => setQuedLogout(true)} isSubmitting={isLoggingOut} variant='main' label='Log Out' />
-      <Button onPress={() => props.closeModal()} variant='grayMain' label='Cancel' />
+      <Button onPress={() => props.closeModal()} variant='mediumGrayMain' label='Cancel' />
     </View>
   )
 });

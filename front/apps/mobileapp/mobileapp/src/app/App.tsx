@@ -7,6 +7,8 @@ import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Provider as ReduxProvider } from 'react-redux';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { View } from 'react-native';
+import { EventProvider } from 'react-native-outside-press';
 import * as SplashScreen from 'expo-splash-screen';
 import * as SecureStore from 'expo-secure-store';
 
@@ -194,7 +196,7 @@ function App() {
       <StatusBar style={appearance.mode === 'dark' ? 'light' : 'dark'} />
       <Modals />
       <Box
-        backgroundColor={'mainBackground'}
+        backgroundColor={continueToMainApp ? 'mainBackground' : 'accountsMainBackground'}
         style={styles.main}
         onLayout={onLayoutRootView}
       >
@@ -252,9 +254,11 @@ export default function EnrichedApp() {
   return (
     <AppearanceProvider>
       <ReduxProvider store={store}>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <ThemedApp />
-        </GestureHandlerRootView>
+        <EventProvider>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <ThemedApp />
+          </GestureHandlerRootView>
+        </EventProvider>
       </ReduxProvider>
     </AppearanceProvider>
   )

@@ -15,11 +15,15 @@ import {
 import { Text } from './Text';
 import { Theme } from '../theme/light';
 
-const Box = createBox<Theme>();
+const BaseBox = createBox<Theme>();
 
 const variant = createVariant({ themeKey: 'seperatorVariants' });
 
-type RestyleProps = VariantProps<Theme, 'seperatorVariants'> & BackgroundColorProps<Theme> & ColorProps<Theme> & LayoutProps<Theme>;
+type RestyleProps =
+  VariantProps<Theme, 'seperatorVariants'> &
+  BackgroundColorProps<Theme> &
+  ColorProps<Theme> &
+  LayoutProps<Theme>;
 
 type Props = RestyleProps & { label?: string, color?: string };
 
@@ -29,21 +33,21 @@ const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([variant, 
 export const Seperator = ({ label, ...rest }: Props) => {
   const {
     variant = 's',
-    backgroundColor = 'seperator',
+    backgroundColor = 'lightseperator',
     flex = 1,
   } = rest;
 
-  const restyledprops = useRestyle((restyleFunctions as any), { ...rest, variant, backgroundColor, flex });
+  const restyledprops = useRestyle((restyleFunctions as any), { ...rest, variant, backgroundColor, flex } as any);
 
   return (
-    <Box flexDirection='row' alignItems='center'>
-      <Box {...restyledprops} />
+    <BaseBox flexDirection='row' alignItems='center'>
+      <BaseBox {...restyledprops} />
       {label &&
         <Text paddingHorizontal='m'>
           {label}
         </Text>
       }
-      <Box {...restyledprops} />
-    </Box>
+      <BaseBox {...restyledprops} />
+    </BaseBox>
   );
 }

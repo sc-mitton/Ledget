@@ -56,7 +56,7 @@ const Aal1Authentication = ({ navigation, route }: Aal2AuthenticatorScreenProps)
         </View>
         <View style={sharedStyles.graphicContainer}>
           <Authenticator
-            fill={theme.colors.mainBackground}
+            fill={theme.colors.accountsMainBackground}
             stroke={isCompleteSuccess ? theme.colors.successIcon : theme.colors.grayIcon}
           />
           <Pulse success={isCompleteSuccess} />

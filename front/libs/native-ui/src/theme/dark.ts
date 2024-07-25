@@ -23,6 +23,7 @@ const palette = {
   gray800: `hsl(${grayH}, ${grayS}%, 13%)`,
   gray750: `hsl(${grayH}, ${grayS}%, 15%)`,
   gray700: `hsl(${grayH}, ${grayS}%, 18%)`,
+  gray650: `hsl(${grayH}, ${grayS}%, 20%)`,
   gray600: `hsl(${grayH}, ${grayS}%, 23%)`,
   gray500: `hsl(${grayH}, ${grayS}%, 28%)`,
   gray400: `hsl(${grayH}, ${grayS}%, 33%)`,
@@ -58,15 +59,14 @@ export const darkTheme = createTheme({
 
     // Backgrounds
     mainBackground: palette.gray900,
-    headerBackground: `hsl(${grayH}, ${grayS}%, 7%)`,
+    accountsMainBackground: palette.gray900,
     navBackground: palette.gray850,
-    nestedContainer: `hsl(${grayH}, ${grayS}%, 9%)`,
+    nestedContainer: `hsl(${grayH}, ${grayS}%, 11%)`,
     inputBackground: palette.gray800,
-    avatarBackground: palette.gray800,
     tabNavPill: palette.blue700,
     avatar: palette.gray800,
     modalOverlay: palette.gray900,
-    modalBox: palette.gray850,
+    modalBox: `hsl(${grayH}, ${grayS}%, 13%)`,
 
     // Borders
     inputBorder: palette.gray750,
@@ -76,7 +76,8 @@ export const darkTheme = createTheme({
     focusedInputBorderSecondary: palette.blue800,
     tabNavPillBorder: palette.blue500,
     bottomNavBorder: palette.gray750,
-    nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 11%)`,
+    nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 12%)`,
+    tabNavBorder: palette.gray800,
 
     // Shadows
     navShadow: palette.gray1000,
@@ -109,6 +110,7 @@ export const darkTheme = createTheme({
     blueButtonBorder2: palette.blue700,
     grayButton: palette.gray800,
     mediumGrayButton: palette.gray700,
+    mediumGrayButtonBorder: palette.gray650,
     grayButtonBorder: palette.gray750,
 
     // Switch
@@ -118,9 +120,8 @@ export const darkTheme = createTheme({
     disabledSwitchCrib: palette.gray600,
 
     // Seperators
-    seperator: `hsl(${grayH}, ${grayS}%, 17%)`,
-    seperator2: `hsl(${grayH}, ${grayS}%, 17%)`,
-    lightSeperator: palette.gray800,
+    darkerseperator: palette.gray800,
+    lightseperator: palette.gray750,
     blueseperator: palette.blue400,
 
     // Misc

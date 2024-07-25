@@ -9,7 +9,7 @@ import Animated, {
 import { Check } from 'geist-native-icons';
 
 import { Button } from './Button';
-import type { Props } from './Button';
+import type { ButtonProps } from './Button';
 import { Box } from './Box';
 import { Spinner } from '../animated/loading-indicators/Spinner';
 import { Icon } from './Icon';
@@ -20,7 +20,7 @@ interface ExtraProps {
   isSubmitting?: boolean;
 }
 
-export const SubmitButton = (props: Props & ExtraProps) => {
+export const SubmitButton = (props: ButtonProps & ExtraProps) => {
   const [showCheck, setShowCheck] = useState(false);
   const { isLoading, isSuccess, isSubmitting, ...rest } = props;
   const checkScale = useSharedValue(.9);
@@ -47,10 +47,14 @@ export const SubmitButton = (props: Props & ExtraProps) => {
 
   return (
     <Button transparent={isSubmitting || showCheck} {...rest}>
-      {isSubmitting && <Spinner />}
-      <Animated.View style={{ transform: [{ scale: checkScale }], position: 'absolute' }}>
-        {showCheck && <Box padding='xxs'><Icon icon={Check} color={'successIcon'} /></Box>}
-      </Animated.View>
+      {({ color }) => (
+        <>
+          {isSubmitting && <Spinner color={color} />}
+          <Animated.View style={{ transform: [{ scale: checkScale }], position: 'absolute' }}>
+            {showCheck && <Box padding='xxs'><Icon icon={Check} color={'successIcon'} /></Box>}
+          </Animated.View>
+        </>
+      )}
     </Button>
   );
 };

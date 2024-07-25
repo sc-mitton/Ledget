@@ -75,7 +75,11 @@ export default function Login({ navigation, route }: EmailScreenProps) {
           />
         </View>
         <View style={styles.socialForm}>
-          <Seperator label='Or Sign In With' variant='l' backgroundColor='seperator2' />
+          <Seperator
+            label='Or Sign In With'
+            variant='l'
+            backgroundColor='darkerseperator'
+          />
           <View style={styles.socialButtons}>
             <Button variant='socialSignIn' onPress={() => { }}>
               <FacebookLogo />
