@@ -94,7 +94,8 @@
     "@nx/react-native": "19.3.0",
     "@nx/rollup": "19.3.0",
     "@nx/vite": "19.2.2",
-    "@nx/web": "19.2.2",
+    "@nx/web": "19.3.0",
+    "@nx/webpack": "19.3.0",
     "@nx/workspace": "19.2.2",
     "@playwright/test": "^1.44.1",
     "@react-native-community/cli-platform-android": "~13.6.6",
@@ -115,7 +116,7 @@
     "@types/js-cookie": "^3.0.6",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "18.16.9",
-    "@types/react": "18.2.6",
+    "@types/react": "~18.2.45",
     "@types/react-dom": "18.3.0",
     "@types/react-native-dotenv": "^0.2.2",
     "@types/react-router-hash-link": "^2.4.9",
@@ -153,6 +154,7 @@
     "typescript": "~5.3.3",
     "vite": "^5.3.3",
     "vite-plugin-dts": "~3.8.1",
-    "vitest": "^1.6.0"
+    "vitest": "^1.6.0",
+    "webpack-cli": "^5.1.4"
   }
 }
