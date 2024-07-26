@@ -1,13 +1,12 @@
 import { View } from 'react-native';
 
 import styles from './styles/plan';
-import { Box, BoxHeader, Text, ChevronTouchable } from '@ledget/native-ui';
+import { BoxHeader, Text, ChevronTouchable, ShimmerBox } from '@ledget/native-ui';
 import { useGetSubscriptionQuery, useGetNextInvoiceQuery, useGetMeQuery } from '@ledget/shared-features';
-import { ChevronRightButton } from './shared';
 
 const Plans = () => {
-  const { data: subscription } = useGetSubscriptionQuery();
-  const { data: nextInvoice } = useGetNextInvoiceQuery();
+  const { data: subscription, isLoading: isLoadingSubscription } = useGetSubscriptionQuery();
+  const { data: nextInvoice, isLoading: isLoadingInvoice } = useGetNextInvoiceQuery();
   const { data: user } = useGetMeQuery();
   const nextTimeStamp = nextInvoice?.next_payment_date
     ? new Date(nextInvoice.next_payment_date * 1000)
@@ -23,7 +22,10 @@ const Plans = () => {
   return (
     <>
       <BoxHeader>Plan</BoxHeader>
-      <Box variant='nestedContainer' backgroundColor='nestedContainer'>
+      <ShimmerBox
+        shimmering={isLoadingSubscription || isLoadingInvoice}
+        variant='nestedContainer'
+        backgroundColor='nestedContainer'>
         <ChevronTouchable>
           <View style={styles.columns}>
             <View style={styles.rows}>
@@ -50,7 +52,7 @@ const Plans = () => {
             </View>
           </View>
         </ChevronTouchable>
-      </Box>
+      </ShimmerBox>
     </>
   )
 }

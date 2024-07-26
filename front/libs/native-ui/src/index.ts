@@ -13,6 +13,7 @@ export * from './buttons/back-button/BackButton';
 export * from './buttons/chevron-touchable/ChevronTouchable';
 export * from './misc/form-errors/form-errors';
 export * from './misc/avatar/Avatar';
+export * from './misc/base64-image/Base64Image';
 export * from './animated/loading-indicators/Spinner';
 export * from './animated/pulse/Pulse';
 export * from './animated/views/JiggleView';

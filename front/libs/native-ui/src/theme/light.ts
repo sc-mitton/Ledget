@@ -82,7 +82,7 @@ export const lightTheme = createTheme({
     tabsShadow: palette.gray300,
     activeIcon: palette.blueSat,
     activeSwitchShadow: palette.blue300,
-    disabledSwitchShadow: palette.gray500,
+    disabledSwitchShadow: palette.gray800,
 
     // Text
     mainText: palette.offBlack,
@@ -112,10 +112,10 @@ export const lightTheme = createTheme({
     tabGrayPillBorder: palette.gray900,
 
     // Switch
-    enabledSwitchPill: palette.blue450,
-    enabledSwitchCrib: palette.blue200,
+    enabledSwitchPill: palette.blue400,
+    enabledSwitchCrib: palette.blue100,
     disabledSwitchPill: palette.gray150,
-    disabledSwitchCrib: palette.gray300,
+    disabledSwitchCrib: palette.gray500,
 
     // Seperators
     lightseperator: palette.gray150,
@@ -126,7 +126,6 @@ export const lightTheme = createTheme({
     alert: palette.red,
     pulseWaiting: palette.gray300,
     pulseGreen: palette.successGreenFaint,
-    shimmer: palette.gray300,
 
     // Icons
     successIcon: palette.successGreen,

@@ -6,7 +6,7 @@ import { useAppearance } from '../theme';
 
 import styles from './styles/shimmer';
 
-export const Shimmer = ({ intensity = 4, style }: { intensity?: number, style?: StyleProp<ViewStyle> }) => {
+export const Shimmer = ({ intensity = 2, style }: { intensity?: number, style?: StyleProp<ViewStyle> }) => {
   const ref = useRef<View>(null)
   const animatedBounds = useRef<[number, number]>()
   const x = useSharedValue(0)
@@ -14,7 +14,7 @@ export const Shimmer = ({ intensity = 4, style }: { intensity?: number, style?: 
 
   const onLayout = () => {
     ref.current?.measure((x, y, width, height, pageX, pageY) => {
-      animatedBounds.current = [-width, width * .625]
+      animatedBounds.current = [-width, width * .375]
     })
   }
 
@@ -22,7 +22,7 @@ export const Shimmer = ({ intensity = 4, style }: { intensity?: number, style?: 
     if (!animatedBounds.current) return
     x.value = withRepeat(withSequence(
       withTiming(animatedBounds.current![0], { duration: 0 }),
-      withTiming(animatedBounds.current![1], { duration: 1000 }),
+      withTiming(animatedBounds.current![1], { duration: 1500 }),
       withTiming(animatedBounds.current![0], { duration: 0 })), -1)
   }, [animatedBounds.current])
 

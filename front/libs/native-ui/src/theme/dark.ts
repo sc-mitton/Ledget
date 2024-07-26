@@ -130,6 +130,5 @@ export const darkTheme = createTheme({
     pulseGreen: palette.successGreenFaint,
     successIcon: palette.successGreen,
     grayIcon: palette.gray100,
-    shimmer: palette.gray850,
   }
 });

@@ -10,11 +10,10 @@ import { useNativeFlow } from '@ledget/ory';
 import { useLazyGetRecoveryFlowQuery, useCompleteRecoveryFlowMutation } from '@features/orySlice'
 import { Header, NestedScreenWOFeedback, SubHeader2, Button, Pulse, Otc, Icon } from '@ledget/native-ui'
 import { RecoveryScreenProps } from '@types'
-import { apiSlice } from '@ledget/shared-features';
 import { useStoreToken, useFlowProgress } from '@hooks';
 
 const schema = z.object({
-  otc: z.string().length(6, { message: 'Invalid code' })
+  code: z.string().length(6, { message: 'Invalid code' })
 })
 
 export default function Recovery({ navigation, route }: RecoveryScreenProps) {
@@ -22,7 +21,7 @@ export default function Recovery({ navigation, route }: RecoveryScreenProps) {
     resolver: zodResolver(schema),
     mode: 'onSubmit',
   });
-  const { fetchFlow, flowStatus: { isCompleteSuccess }, result } = useNativeFlow(
+  const { fetchFlow, submitFlow, flowStatus: { isCompleteSuccess }, result } = useNativeFlow(
     useLazyGetRecoveryFlowQuery,
     useCompleteRecoveryFlowMutation,
     'recovery'
@@ -35,7 +34,7 @@ export default function Recovery({ navigation, route }: RecoveryScreenProps) {
   useFlowProgress({ navigation, route, updateProgress: isCompleteSuccess });
 
   const onSubmit = (data: z.infer<typeof schema>) => {
-    console.log(data)
+    submitFlow({ ...data, email: route.params.identifier, method: 'code' });
   }
 
   return (
@@ -53,13 +52,13 @@ export default function Recovery({ navigation, route }: RecoveryScreenProps) {
         <View style={styles.form}>
           <Controller
             control={control}
-            name='otc'
+            name='code'
             render={({ field: { onChange, value } }) => (
               <Otc
                 autoFocus
                 codeLength={6}
                 onCodeChange={onChange}
-                error={errors.otc?.message}
+                error={errors.code?.message}
               />
             )}
           />

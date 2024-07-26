@@ -2,12 +2,11 @@ import { View } from 'react-native';
 
 import styles from './styles/payment-method';
 import { useGetPaymentMethodQuery } from '@ledget/shared-features';
-import { Box, Text, BoxHeader, Icon, ChevronTouchable } from '@ledget/native-ui';
+import { Text, BoxHeader, Icon, ChevronTouchable, ShimmerBox } from '@ledget/native-ui';
 import { CreditCard } from 'geist-native-icons';
-import { ChevronRightButton } from './shared';
 
 const PaymentMethod = () => {
-  const { data: paymentMethod } = useGetPaymentMethodQuery();
+  const { data: paymentMethod, isLoading } = useGetPaymentMethodQuery();
 
   const expDate = paymentMethod
     ? new Date(paymentMethod?.exp_year, paymentMethod?.exp_month)
@@ -16,7 +15,11 @@ const PaymentMethod = () => {
   return (
     <>
       <BoxHeader>Payment Method</BoxHeader>
-      <Box variant='nestedContainer' backgroundColor='nestedContainer'>
+      <ShimmerBox
+        shimmering={isLoading}
+        variant='nestedContainer'
+        placeholder='paymentMethod'
+        backgroundColor='nestedContainer'>
         <ChevronTouchable >
           <Icon icon={CreditCard} />
           <View style={styles.cardInfo}>
@@ -34,7 +37,7 @@ const PaymentMethod = () => {
             </Text>
           </View>
         </ChevronTouchable>
-      </Box>
+      </ShimmerBox>
     </>
   )
 }
