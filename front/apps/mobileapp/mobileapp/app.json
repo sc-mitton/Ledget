@@ -17,13 +17,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ledget.mobileapp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.ledget.mobileapp"
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -47,6 +49,9 @@
           "faceIDPermission": "Allow $(PRODUCT_NAME) to access your Face ID biometric data.",
           "touchIDPermission": "Allow $(PRODUCT_NAME) to access your Touch ID biometric data."
         }
+      ],
+      [
+        "./withAndroidPlaid"
       ]
     ]
   }
