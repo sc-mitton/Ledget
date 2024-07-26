@@ -161,6 +161,9 @@ importers:
       react-native-pager-view:
         specifier: 6.3.0
         version: 6.3.0(react-native@0.74.3(@babel/core@7.24.8)(@babel/preset-env@7.24.8(@babel/core@7.24.8))(@types/react@18.2.6)(react@18.2.0))(react@18.2.0)
+      react-native-plaid-link-sdk:
+        specifier: ^11.11.1
+        version: 11.11.1(react-native@0.74.3(@babel/core@7.24.8)(@babel/preset-env@7.24.8(@babel/core@7.24.8))(@types/react@18.2.6)(react@18.2.0))(react@18.2.0)
       react-native-reanimated:
         specifier: ~3.10.1
         version: 3.10.1(@babel/core@7.24.8)(react-native@0.74.3(@babel/core@7.24.8)(@babel/preset-env@7.24.8(@babel/core@7.24.8))(@types/react@18.2.6)(react@18.2.0))(react@18.2.0)
@@ -8437,6 +8440,12 @@ packages:
 
   react-native-pager-view@6.3.0:
     resolution: {integrity: sha512-ufJOoVa9pFL1J/yb4hpsCqp8n1qTlcF5VvwqvCacHX//D7hSeRscsiIXg1u1pXNWwllvACb+mqxec/3Uj2mxrA==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+
+  react-native-plaid-link-sdk@11.11.1:
+    resolution: {integrity: sha512-bs5V/z24NExEo6mDAq+bmIhJ1/p6GH5auKOfaQjuxHSohCNHCn4dq2/Q7b6bkqzN0Fs9EhCs/wqyKDx4Xyw+ug==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -21306,6 +21315,11 @@ snapshots:
       react-native: 0.74.3(@babel/core@7.24.8)(@babel/preset-env@7.24.8(@babel/core@7.24.8))(@types/react@18.2.6)(react@18.2.0)
 
   react-native-pager-view@6.3.0(react-native@0.74.3(@babel/core@7.24.8)(@babel/preset-env@7.24.8(@babel/core@7.24.8))(@types/react@18.2.6)(react@18.2.0))(react@18.2.0):
+    dependencies:
+      react: 18.2.0
+      react-native: 0.74.3(@babel/core@7.24.8)(@babel/preset-env@7.24.8(@babel/core@7.24.8))(@types/react@18.2.6)(react@18.2.0)
+
+  react-native-plaid-link-sdk@11.11.1(react-native@0.74.3(@babel/core@7.24.8)(@babel/preset-env@7.24.8(@babel/core@7.24.8))(@types/react@18.2.6)(react@18.2.0))(react@18.2.0):
     dependencies:
       react: 18.2.0
       react-native: 0.74.3(@babel/core@7.24.8)(@babel/preset-env@7.24.8(@babel/core@7.24.8))(@types/react@18.2.6)(react@18.2.0)

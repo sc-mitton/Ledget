@@ -66,7 +66,7 @@ export const darkTheme = createTheme({
     tabNavPill: palette.blue700,
     avatar: palette.gray800,
     modalOverlay: palette.gray900,
-    modalBox: `hsl(${grayH}, ${grayS}%, 13%)`,
+    modalBox: palette.gray800,
 
     // Borders
     inputBorder: palette.gray750,
@@ -82,7 +82,7 @@ export const darkTheme = createTheme({
     // Shadows
     navShadow: palette.gray1000,
     tabsShadow: palette.gray1000,
-    activeSwitchShadow: palette.blue700,
+    activeSwitchShadow: `hsl(${grayH}, ${grayS}%, 30%)`,
     disabledSwitchShadow: palette.gray700,
 
     // Icons
@@ -114,8 +114,8 @@ export const darkTheme = createTheme({
     grayButtonBorder: palette.gray750,
 
     // Switch
-    enabledSwitchPill: palette.blue200,
-    enabledSwitchCrib: palette.blue600,
+    enabledSwitchPill: `hsl(${grayH}, ${grayS}%, 60%)`,
+    enabledSwitchCrib: 'hsl(144, 100%, 20%)',
     disabledSwitchPill: palette.gray200,
     disabledSwitchCrib: palette.gray600,
 

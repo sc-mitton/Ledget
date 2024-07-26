@@ -81,8 +81,8 @@ export const lightTheme = createTheme({
     navShadow: palette.gray300,
     tabsShadow: palette.gray300,
     activeIcon: palette.blueSat,
-    activeSwitchShadow: palette.blue300,
-    disabledSwitchShadow: palette.gray800,
+    activeSwitchShadow: 'hsl(144, 70%, 50%)',
+    disabledSwitchShadow: palette.gray500,
 
     // Text
     mainText: palette.offBlack,
@@ -102,7 +102,7 @@ export const lightTheme = createTheme({
     blueButton: palette.blue500,
     blueButtonBorder: palette.blue450,
     blueButton2: palette.blue100,
-    blueButtonBorder2: palette.gray275,
+    blueButtonBorder2: palette.blue100,
     grayButton: palette.gray250,
     grayButtonBorder: palette.gray275,
     mediumGrayButton: palette.gray250,
@@ -112,10 +112,10 @@ export const lightTheme = createTheme({
     tabGrayPillBorder: palette.gray900,
 
     // Switch
-    enabledSwitchPill: palette.blue400,
-    enabledSwitchCrib: palette.blue100,
+    enabledSwitchPill: palette.gray100,
+    enabledSwitchCrib: 'hsl(144, 70%, 65%)',
     disabledSwitchPill: palette.gray150,
-    disabledSwitchCrib: palette.gray500,
+    disabledSwitchCrib: palette.gray300,
 
     // Seperators
     lightseperator: palette.gray150,
@@ -212,7 +212,7 @@ export const lightTheme = createTheme({
     },
     blueMain2: {
       padding: 'm',
-      marginVertical: 'l',
+      marginVertical: 's',
       borderRadius: 12,
       gap: 's',
       marginHorizontal: 'xxs',
@@ -246,6 +246,7 @@ export const lightTheme = createTheme({
       justifyContent: 'center',
       backgroundColor: 'mediumGrayButton',
       borderWidth: 1.5,
+      color: 'mainText',
       borderColor: 'mediumGrayButtonBorder',
     },
     borderedGrayMain: {
