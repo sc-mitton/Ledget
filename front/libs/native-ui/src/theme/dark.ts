@@ -82,7 +82,7 @@ export const darkTheme = createTheme({
     // Shadows
     navShadow: palette.gray1000,
     tabsShadow: palette.gray1000,
-    activeSwitchShadow: `hsl(${grayH}, ${grayS}%, 30%)`,
+    activeSwitchShadow: 'hsl(144, 80%, 5%)',
     disabledSwitchShadow: palette.gray700,
 
     // Icons
@@ -114,8 +114,8 @@ export const darkTheme = createTheme({
     grayButtonBorder: palette.gray750,
 
     // Switch
-    enabledSwitchPill: `hsl(${grayH}, ${grayS}%, 70%)`,
-    enabledSwitchCrib: 'hsl(144, 100%, 20%)',
+    enabledSwitchPill: `hsl(${grayH}, ${grayS}%, 50%)`,
+    enabledSwitchCrib: 'hsl(144, 80%, 13%)',
     disabledSwitchPill: palette.gray200,
     disabledSwitchCrib: palette.gray600,
 

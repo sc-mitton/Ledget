@@ -2,7 +2,7 @@ import { View, TouchableOpacity } from 'react-native';
 import { Plus } from 'geist-native-icons';
 
 import styles from './styles/connections'
-import { ShimmerBox, Text, Seperator, BoxHeader, ChevronTouchable, Icon, Base64Image } from '@ledget/native-ui';
+import { ShimmerBox, Text, Seperator, BoxHeader, ChevronTouchable, Icon, InstitutionLogo } from '@ledget/native-ui';
 import { useGetPlaidItemsQuery } from '@ledget/shared-features';
 import { ProfileScreenProps } from '@types';
 import { usePlaidLink } from '@hooks';
@@ -25,7 +25,7 @@ const Connections = (props: ProfileScreenProps) => {
           <>
             <View style={styles.row} key={item.id}>
               <ChevronTouchable onPress={() => props.navigation.navigate('Connection', { item: item.id })}>
-                <Base64Image data={item.institution?.logo} />
+                <InstitutionLogo data={item.institution?.logo} />
                 <Text>{item.institution?.name}</Text>
               </ChevronTouchable>
             </View>

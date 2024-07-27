@@ -176,7 +176,7 @@ const PlaidItem = ({ item }: { item: TPlaidItem }) => {
         <div>
           <Base64Logo
             data={item.institution?.logo}
-            alt={item.institution?.name.charAt(0)}
+            alt={item.institution?.name?.charAt(0)}
             style={{ marginRight: '.75em' }}
             size={'1.4em'}
           />
