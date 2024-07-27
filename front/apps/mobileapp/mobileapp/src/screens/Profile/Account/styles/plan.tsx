@@ -2,10 +2,10 @@ import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
   rows: {
-    gap: 4
+    gap: 6
   },
   columns: {
     flexDirection: 'row',
-    gap: 20
+    gap: 28
   }
 })

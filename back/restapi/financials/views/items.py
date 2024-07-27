@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.generics import (
     CreateAPIView,
     ListAPIView,
-    RetrieveUpdateDestroyAPIView,
+    RetrieveDestroyAPIView
 )
 from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_200_OK
 from rest_framework.response import Response
@@ -61,6 +61,8 @@ class PlaidLinkTokenView(APIView):
             ),
             'webhook': PLAID_WEBHOOK_ENDPOINT,
         }
+        if kwargs.get('android_package', None):
+            request_kwargs['android_package_name'] = kwargs['android_package']
 
         if not DEVELOPMENT:
             request_kwargs['redirect_uri'] = redirect_uri
@@ -102,7 +104,7 @@ class PlaidItemsListView(ListAPIView):
                 user__in=self.request.user.account.users.all())
 
 
-class PlaidItemView(RetrieveUpdateDestroyAPIView):
+class PlaidItemView(RetrieveDestroyAPIView):
     permission_classes = [IsAuthedVerifiedSubscriber, HasObjectAccess]
     serializer_class = PlaidItemsSerializer
 

@@ -9,25 +9,27 @@ import { Box } from '../../restyled/Box';
 import { Icon } from '../../restyled/Icon';
 import { Button } from '../../restyled/Button';
 
+type Placement = 'top' | 'bottom' | 'center'
+
 interface Props {
   onClose?: () => void,
   hasExit?: boolean,
+  placement?: Placement
 }
 
-const yStart = 300
-
-export function withBottomModal<P>(WrappedComponent: FC<P & { closeModal: () => void }>) {
+export function withModal<P>(WrappedComponent: FC<P & { closeModal: () => void }>) {
   return (props: Props & P) => {
     const {
       hasExit = true,
       ...rest
     } = props
 
-    const [closeAll, setCloseAll] = useState(false)
-    const [unMount, setUnMount] = useState(false)
-    const translateY = useSharedValue(yStart)
-    const opacity = useSharedValue(0)
-    const overlayOpacity = useSharedValue(0)
+    const yStart = props.placement === 'top' ? -300 : props.placement === 'bottom' ? 300 : 0
+    const [closeAll, setCloseAll] = useState(false);
+    const [unMount, setUnMount] = useState(false);
+    const translateY = useSharedValue(yStart);
+    const opacity = useSharedValue(0);
+    const overlayOpacity = useSharedValue(0);
 
     const modalAnimation = useAnimatedStyle(() => {
       return {
@@ -70,10 +72,10 @@ export function withBottomModal<P>(WrappedComponent: FC<P & { closeModal: () => 
             <Animated.View style={[overlayFade, styles.full]}>
               <Box backgroundColor='modalOverlay' style={styles.full} />
             </Animated.View>
-            <Animated.View style={[styles.modal, modalAnimation]}>
+            <Animated.View style={[styles.modal, modalAnimation, styles[`${props.placement || 'center'}Modal`]]}>
               <OutsidePressHandler onOutsidePress={() => setCloseAll(true)}>
-                <Box variant='modalBox' style={styles.background}>
-                  <View style={styles.modalContent}>
+                <Box variant='modalBox' style={styles[`${props.placement || 'center'}ModalBackground`]}>
+                  <View style={styles[`${props.placement || 'center'}ModalContent`]}>
                     <WrappedComponent {...rest as P} closeModal={() => setCloseAll(true)} />
                     {hasExit && <View style={styles.closeButton}>
                       <Button onPress={() => setCloseAll(true)} variant='circleButton' >
@@ -90,3 +92,18 @@ export function withBottomModal<P>(WrappedComponent: FC<P & { closeModal: () => 
   }
 }
 
+export function withBottomModal<P>(WrappedComponent: React.FC<P & { closeModal: () => void }>) {
+  const ModalComponent = withModal<P>(WrappedComponent)
+
+  return (props: Omit<Props, 'placement'> & P) => {
+    return <ModalComponent placement='bottom' {...props} />
+  }
+}
+
+export function withTopModal<P>(WrappedComponent: React.FC<P & { closeModal: () => void }>) {
+  const ModalComponent = withModal<P>(WrappedComponent)
+
+  return (props: Omit<Props, 'placement'> & P) => {
+    return <ModalComponent placement='top' {...props} />
+  }
+}

@@ -114,7 +114,7 @@ export const darkTheme = createTheme({
     grayButtonBorder: palette.gray750,
 
     // Switch
-    enabledSwitchPill: `hsl(${grayH}, ${grayS}%, 60%)`,
+    enabledSwitchPill: `hsl(${grayH}, ${grayS}%, 70%)`,
     enabledSwitchCrib: 'hsl(144, 100%, 20%)',
     disabledSwitchPill: palette.gray200,
     disabledSwitchCrib: palette.gray600,

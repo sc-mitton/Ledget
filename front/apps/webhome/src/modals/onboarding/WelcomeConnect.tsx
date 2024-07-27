@@ -42,12 +42,12 @@ const InstitutionLogos = ({ plaidItems }: { plaidItems: PlaidItem[] }) => {
                     zIndex: index
                   }}
                 >
-                  <Tooltip msg={item.institution.name}>
+                  <Tooltip msg={item.institution?.name}>
                     <Base64Logo
                       size="1.5em"
-                      data={item.institution.logo}
-                      alt={item.institution.name.charAt(0).toUpperCase()}
-                      backgroundColor={item.institution.primary_color}
+                      data={item.institution?.logo}
+                      alt={item.institution?.name.charAt(0).toUpperCase()}
+                      backgroundColor={item.institution?.primary_color}
                     />
                   </Tooltip>
                 </div>

@@ -1,6 +1,6 @@
 interface Institution {
-  id: string;
-  name: string;
+  id?: string;
+  name?: string;
   logo?: string;
   primary_color?: string;
   url?: string;
@@ -9,11 +9,15 @@ interface Institution {
 
 interface Account {
   id: string;
-  name: string;
-  mask: string;
-  subtype?: string;
+  name?: string;
+  mask?: string;
+  subtype?: any;
   type: string;
   verification_status?: string;
+}
+
+export interface GetPlaidTokenResponse {
+  link_token: string;
 }
 
 export interface PlaidItem {
@@ -24,6 +28,12 @@ export interface PlaidItem {
   login_required: boolean;
   new_accounts_available: boolean;
   permission_revoked: boolean;
-  institution: Institution;
+  institution?: Institution;
   accounts: Account[];
+}
+
+export interface AddNewPlaidItemPayload {
+  public_token: string;
+  accounts: Account[];
+  institution?: Institution;
 }

@@ -1,22 +1,34 @@
 import React from 'react'
-import { ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
+import { LogOut } from 'geist-native-icons';
 
-import { Box } from '@ledget/native-ui';
+import styles from './styles/screen';
+import { Box, Button, Icon } from '@ledget/native-ui';
 import { ProfileScreenProps } from '@types';
+import { setModal } from '@features/modalSlice';
+import { useAppDispatch } from '@hooks';
 import Household from './Household';
-import PaymentMethod from './PaymentMethod';
 import Connections from './Connections';
-import Plan from './Plan';
 
 const Screen = (props: ProfileScreenProps) => {
+  const dispatch = useAppDispatch();
 
   return (
     <ScrollView>
       <Box variant='screenContent'>
-        <Plan />
-        <PaymentMethod />
         <Household />
         <Connections {...props} />
+        <View style={styles.logoutButton}>
+          <Button
+            onPress={() => dispatch(setModal('logout'))}
+            label={'Logout'}
+            backgroundColor='nestedContainer'
+            borderColor='nestedContainerBorder'
+            textColor='mainText'
+            variant='borderedGrayMain'>
+            <Icon icon={LogOut} size={18} />
+          </Button>
+        </View>
       </Box>
     </ScrollView>
   )

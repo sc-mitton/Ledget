@@ -194,7 +194,7 @@ local BaseWithAuth = {
   {
     id: "plaid-item",
     match: {
-      methods: ["DELETE", "PATCH"],
+      methods: ["DELETE", "GET"],
       url: base_url + "/plaid-item/<[a-zA-Z0-9]+>",
     },
   },

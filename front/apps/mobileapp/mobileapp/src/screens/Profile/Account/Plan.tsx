@@ -33,6 +33,7 @@ const Plans = () => {
               <Text>{subscription?.cancel_at_period_end ? 'Ending On' : 'Next Payment'}</Text>
               {nextInvoice?.balance! > 0 && <Text>Account Credit</Text>}
               <Text>Member Since</Text>
+              <Text>Status</Text>
             </View>
             <View style={styles.rows}>
               {subscription &&
@@ -48,6 +49,9 @@ const Plans = () => {
               <Text color='secondaryText'>
                 {new Date(user?.created_on || new Date()).toLocaleDateString(
                   'en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+              </Text>
+              <Text color='secondaryText'>
+                {`${subscription?.status.charAt(0).toUpperCase()}${subscription?.status.slice(1)}`}
               </Text>
             </View>
           </View>

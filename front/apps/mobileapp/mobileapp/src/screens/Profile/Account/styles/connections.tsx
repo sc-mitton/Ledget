@@ -5,6 +5,7 @@ export default StyleSheet.create({
     gap: 2,
     flex: 1,
     alignItems: 'center',
+    flexDirection: 'row',
   },
   addButton: {
     flexDirection: 'row',

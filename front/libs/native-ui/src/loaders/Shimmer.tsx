@@ -6,7 +6,7 @@ import { useAppearance } from '../theme';
 
 import styles from './styles/shimmer';
 
-export const Shimmer = ({ intensity = 2, style }: { intensity?: number, style?: StyleProp<ViewStyle> }) => {
+export const Shimmer = ({ intensity = 4, style }: { intensity?: number, style?: StyleProp<ViewStyle> }) => {
   const ref = useRef<View>(null)
   const animatedBounds = useRef<[number, number]>()
   const x = useSharedValue(0)

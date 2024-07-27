@@ -1,6 +1,6 @@
 import apiSlice from '../apiSlice/slice';
 
-import { PlaidItem } from './types';
+import { PlaidItem, AddNewPlaidItemPayload, GetPlaidTokenResponse } from './types';
 
 const apiWithTags = apiSlice.enhanceEndpoints({
   addTagTypes: ['PlaidItem', 'PlaidToken']
@@ -9,14 +9,20 @@ const apiWithTags = apiSlice.enhanceEndpoints({
 export const extendedApiSlice = apiWithTags.injectEndpoints({
   endpoints: (builder) => ({
     getPlaidToken: builder.query<
-      string,
-      { isOnboarding: boolean; itemId: string }
+      GetPlaidTokenResponse & { fulfilledTimeStamp: number },
+      { isOnboarding?: boolean; itemId?: string, androidPackage?: string }
     >({
-      query: ({ isOnboarding, itemId }) => ({
-        url: `plaid-link-token${isOnboarding ? '?is_onboarding=true' : ''}${itemId ? `/${itemId}` : ''
-          }`
+      query: ({ isOnboarding, itemId, androidPackage }) => ({
+        url: `plaid-link-token${itemId ? `/${itemId}` : ''}${isOnboarding ? '?is_onboarding=true' : ''}${androidPackage ? `?android_package=${androidPackage}` : ''}`,
       }),
-      providesTags: ['PlaidToken']
+      transformResponse: (response: GetPlaidTokenResponse) => {
+        return {
+          ...response,
+          fulfilledTimeStamp: Date.now()
+        }
+      },
+      keepUnusedDataFor: 60 * 15, // 15 minutes
+      providesTags: ['PlaidToken'],
     }),
     getPlaidItems: builder.query<PlaidItem[], { userId?: string } | void>({
       query: (data) =>
@@ -30,7 +36,7 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
       }),
       invalidatesTags: ['PlaidItem']
     }),
-    addNewPlaidItem: builder.mutation<any, { data: PlaidItem }>({
+    addNewPlaidItem: builder.mutation<any, { data: AddNewPlaidItemPayload }>({
       query: ({ data }) => ({
         url: 'plaid-token-exchange',
         method: 'POST',
@@ -39,7 +45,7 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
       invalidatesTags: ['PlaidItem'],
       extraOptions: { maxRetries: 3 }
     }),
-    updatePlaidItem: builder.mutation<any, { itemId: string; data: PlaidItem }>(
+    updatePlaidItem: builder.mutation<any, { itemId: string; data: { itemId: string, data: Partial<PlaidItem> } }>(
       {
         query: ({ itemId, data }) => ({
           url: `plaid-item/${itemId}`,
@@ -59,5 +65,4 @@ export const {
   useGetPlaidItemsQuery,
   useAddNewPlaidItemMutation,
   useDeletePlaidItemMutation,
-  useUpdatePlaidItemMutation
 } = extendedApiSlice;

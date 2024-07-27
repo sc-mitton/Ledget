@@ -3,4 +3,5 @@ declare module '@env' {
   export const LANDING_URL: string;
   export const ORY_API_URI: string;
   export const LEDGET_API_URI: string;
+  export const ANDROID_PACKAGE: string;
 }

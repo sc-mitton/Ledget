@@ -27,11 +27,11 @@ const Screen = ({ navigation, route }: ConnectionScreenProps) => {
       <TouchableOpacity
         style={styles.headerContainer}
         activeOpacity={.8}
-        onPress={() => { Linking.openURL(plaidItems?.find((item) => item.id === route.params.item)?.institution.url || '') }}>
+        onPress={() => { Linking.openURL(plaidItems?.find((item) => item.id === route.params.item)?.institution?.url || '') }}>
         <View style={styles.header}>
-          <Base64Image data={plaidItems?.find((item) => item.id === route.params.item)?.institution.logo} />
+          <Base64Image data={plaidItems?.find((item) => item.id === route.params.item)?.institution?.logo} />
           <Header>
-            {plaidItems?.find((item) => item.id === route.params.item)?.institution.name}
+            {plaidItems?.find((item) => item.id === route.params.item)?.institution?.name}
           </Header>
         </View>
       </TouchableOpacity>

@@ -53,7 +53,7 @@ accounts_router.register('accounts', AccountsViewSet, basename='accounts')
 
 urlpatterns = [
     path('plaid-items', PlaidItemsListView.as_view(), name='plaid-item'),
-    path('plaid-item/<str:id>', PlaidItemView.as_view(), name='plaid-item-destroy'), # noqa
+    path('plaid-item/<str:id>', PlaidItemView.as_view(), name='plaid-item-detail'), # noqa
     path('plaid-link-token', PlaidLinkTokenView.as_view(), name='plaid-link-token'),
     path('plaid-link-token/<str:id>', PlaidLinkTokenView.as_view(), name='plaid-update-link-token'), # noqa
     path('plaid-token-exchange', PlaidTokenExchangeView.as_view(), name='plaid-token-exchange'), # noqa

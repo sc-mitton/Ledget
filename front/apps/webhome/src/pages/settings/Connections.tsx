@@ -175,12 +175,12 @@ const PlaidItem = ({ item }: { item: TPlaidItem }) => {
       <div>
         <div>
           <Base64Logo
-            data={item.institution.logo}
-            alt={item.institution.name.charAt(0)}
+            data={item.institution?.logo}
+            alt={item.institution?.name.charAt(0)}
             style={{ marginRight: '.75em' }}
             size={'1.4em'}
           />
-          <h4>{item.institution.name}</h4>
+          <h4>{item.institution?.name}</h4>
         </div>
         <div>
           <DeleteAllButton onClick={handleRemoveAll} />

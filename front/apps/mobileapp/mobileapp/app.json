@@ -7,8 +7,7 @@
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "contain"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -23,7 +22,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#4149b0"
       },
       "package": "com.ledget.mobileapp"
     },
@@ -51,7 +50,7 @@
         }
       ],
       [
-        "./withAndroidPlaid"
+        "./withAndroidPlaid.js"
       ]
     ]
   }

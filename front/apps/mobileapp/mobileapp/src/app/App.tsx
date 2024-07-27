@@ -60,8 +60,8 @@ function App() {
   const dispatch = useAppDispatch();
   const appearance = useAppearance();
   const [appIsReady, setAppIsReady] = useState(false);
-  const [continueToMainApp, setContinueToMainApp] = useState(false);
   const [skipGetMe, setSkipGetMe] = useState(true);
+  const [continueToMainApp, setContinueToMainApp] = useState(false);
 
   const [fontsLoaded, fontError] = useFonts({
     'SourceSans3Regular': SourceSans3Regular,
@@ -73,13 +73,10 @@ function App() {
   const {
     isSuccess: isGetMeSuccess,
     isError: isGetMeError,
-    error: getMeError,
-    isUninitialized: isGetMeUninitialized,
-    refetch: refetchGetMe
+    error: getMeError
   } = useGetMeQuery(undefined, { skip: skipGetMe });
   const [
     refreshDevices, {
-      isUninitialized: isRefreshDevicesUninitialized,
       isSuccess: isRefreshDevicesSuccess,
       isError: isRefreshDevicesError,
       data: deviceResult
@@ -113,16 +110,23 @@ function App() {
     });
   }, []);
 
+  // Unskip getMe query if session is available
+  useEffect(() => {
+    if (session) {
+      setSkipGetMe(false);
+    }
+  }, [session]);
+
   // Try to refresh devices when
   // 1. the session is available and the devices haven't been refreshed yet
   // 2. the session is available, just extended successfully, and the devices haven't been refreshed yet
   useEffect(() => {
-    if (session && (isRefreshDevicesUninitialized || (isExtendSuccess && !isRefreshDevicesSuccess))) {
+    if (session && (isExtendSuccess)) {
       refreshDevices();
     }
-  }, [session, isExtendSuccess, isRefreshDevicesSuccess])
+  }, [session, isExtendSuccess])
 
-  // Try and extend the ef if fetching the user data was unsuccessful
+  // Try and extend the session if fetching the user data was unsuccessful due to an expired token
   useEffect(() => {
     if (session && hasErrorCode(401, getMeError) && isUninitializedExtend) {
       extendSession({ session_id: session.id });
@@ -131,11 +135,10 @@ function App() {
 
   // Fetch user data after refreshing devices
   useEffect(() => {
-    if (isRefreshDevicesSuccess || isRefreshDevicesError) {
-      setSkipGetMe(false);
-      !isGetMeUninitialized ? refetchGetMe() : apiSlice.util.invalidateTags(['User']);
+    if (isRefreshDevicesSuccess) {
+      apiSlice.util.invalidateTags(['User']);
     }
-  }, [isRefreshDevicesSuccess, isRefreshDevicesError]);
+  }, [isRefreshDevicesSuccess]);
 
   // Checks for when the app is ready to load
   useEffect(() => {
@@ -143,7 +146,7 @@ function App() {
     const situation1Checks = [
       fontsLoaded,
       !fontError,
-      (isExtendSuccess || isGetMeSuccess)
+      ((isExtendSuccess && isRefreshDevicesSuccess) || isGetMeSuccess)
     ]
     // Situation 2
     const situation2Checks = [
@@ -158,7 +161,7 @@ function App() {
       setAppIsReady(true);
     }
     // Situation 3: No session
-    if (!SecureStore.getItem('session')) {
+    if (!SecureStore.getItem('session') && fontsLoaded && !fontError) {
       setAppIsReady(true);
     }
   }, [
@@ -170,6 +173,16 @@ function App() {
     isRefreshDevicesSuccess
   ]);
 
+  // When to continue to the main app
+  useEffect(() => {
+    if (isGetMeSuccess && isUninitializedExtend) {
+      setContinueToMainApp(true);
+    } else if (isGetMeSuccess && isRefreshDevicesSuccess && !extendError) {
+      setContinueToMainApp(true);
+    }
+  }, [isGetMeSuccess, isRefreshDevicesSuccess, extendError, session]);
+
+
   // Store device token on successful device refresh
   useEffect(() => {
     if (deviceResult) {
@@ -177,15 +190,6 @@ function App() {
       SecureStore.setItemAsync('device_token', deviceResult.device_token);
     }
   }, [deviceResult]);
-
-  // When to continue to the main app
-  useEffect(() => {
-    if (!session) {
-      setContinueToMainApp(false);
-    } else if (isGetMeSuccess && isRefreshDevicesSuccess && !extendError) {
-      setContinueToMainApp(true);
-    }
-  }, [isGetMeSuccess, isRefreshDevicesSuccess, extendError, session]);
 
   if (!appIsReady) {
     return null;

@@ -1,10 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from './store';
 
-type Modals = 'logout'
+type Modal = 'logout'
+
+type FormatedModal<M extends Modal> = M extends { name: infer N, args?: infer A } ? { name: N, args?: A } : { name: M }
 
 interface ModalState {
-  modal?: Modals
+  modal?: FormatedModal<Modal>
 }
 
 const initialState: ModalState = {
@@ -15,8 +17,8 @@ export const modalSlice = createSlice({
   name: 'modal',
   initialState,
   reducers: {
-    setModal: (state, action) => {
-      state.modal = action.payload
+    setModal: (state, action: PayloadAction<Modal>) => {
+      state.modal = typeof action.payload === 'string' ? { name: action.payload } : action.payload
     },
     clearModal: (state) => {
       state.modal = undefined

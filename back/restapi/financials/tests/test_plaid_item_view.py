@@ -41,12 +41,12 @@ class TestPlaidItemView(ViewTestsMixin):
         self.aal2_client.defaults[settings.OATHKEEPER_AUTH_HEADER] = '{} {}'.format(
             settings.OATHKEEPER_AUTH_SCHEME, encode_jwt(session))
         response = self.aal2_client.delete(
-            reverse('plaid-item-destroy', kwargs={'id': self.item.id}))
+            reverse('plaid-item-detail', kwargs={'id': self.item.id}))
         self.assertEqual(response.status_code, 401)
 
         # Test with aal1 when it should be highest aal
         response = self.aal2_client.delete(
-            reverse('plaid-item-destroy', kwargs={'id': self.item.id}),
+            reverse('plaid-item-detail', kwargs={'id': self.item.id}),
             headers={
                 settings.OATHKEEPER_AUTH_SCHEME:
                 f'{settings.OATHKEEPER_AUTH_HEADER} {encode_jwt(self.aal1_payload)}'
@@ -57,7 +57,7 @@ class TestPlaidItemView(ViewTestsMixin):
     @patch.object(plaid_client, 'item_remove')
     def test_delete_plaid_item(self, mock_item_remove):
         response = self.aal2_client.delete(
-            reverse('plaid-item-destroy', kwargs={'id': self.item.id}))
+            reverse('plaid-item-detail', kwargs={'id': self.item.id}))
         self.assertEqual(response.status_code, 204)
 
         # Checks
