@@ -3,23 +3,23 @@ import { withMainApplication, withAppBuildGradle, withSettingsGradle } from 'exp
 
 
 function applyPackage(mainApplication: string) {
-  const plaidPackageImport = `import com.plaid.PlaidPackage;\n`
-  const plaidAddPackage = `packages.add(new PlaidPackage());`
+  const plaidPackageImport = `import com.plaid.PlaidPackage\n`
+  const plaidAddPackage = `packages.add(new PlaidPackage())`
 
   // Make sure the project does not have the settings already
   if (!mainApplication.includes(plaidPackageImport)) {
     mainApplication = mainApplication.replace(
-      /package com.ledget.mobileapp;/,
-      `package com.ledget.mobileapp;\n${plaidPackageImport}`
+      /package com.ledget.mobileapp/,
+      `package com.ledget.mobileapp\n${plaidPackageImport}`
     )
   }
 
   if (!mainApplication.includes(plaidAddPackage)) {
     mainApplication = mainApplication.replace(
-      /return packages;/,
+      /return PackageList(this).packages/,
       `
     ${plaidAddPackage}
-    return packages;
+    return packages
     `
     )
   }
@@ -30,6 +30,7 @@ function applyPackage(mainApplication: string) {
 function applyImplementation(appBuildGradle: string) {
   const plaidImplementation = `implementation project(':react-native-plaid-link-sdk')`;
 
+  console.log(appBuildGradle)
   // Make sure the project does not have the dependency already
   if (!appBuildGradle.includes(plaidImplementation)) {
     return appBuildGradle.replace(
@@ -43,8 +44,8 @@ function applyImplementation(appBuildGradle: string) {
 }
 
 function applySettings(gradleSettings: string) {
-  const plaidSettings = `include ':react-native-plaid-link-sdk'
-  project(':react-native-plaid-link-sdk').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-plaid-link-sdk/android')`
+  const plaidSettings = `include ':react-native-plaid-link-sdk'` + '\n' +
+    `project(':react-native-plaid-link-sdk').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-plaid-link-sdk/android')`
 
   // Make sure the project does not have the settings already
   if (!gradleSettings.includes(`include ':react-native-plaid-link-sdk'`)) {
