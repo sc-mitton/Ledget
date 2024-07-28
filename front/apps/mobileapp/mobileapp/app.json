@@ -19,11 +19,13 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.ledget.mobileapp"
     },
+    "userInterfaceStyle": "automatic",
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#4149b0"
       },
+      "softwareKeyboardLayoutMode": "pan",
       "package": "com.ledget.mobileapp"
     },
     "web": {
