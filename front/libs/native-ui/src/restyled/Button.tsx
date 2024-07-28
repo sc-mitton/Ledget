@@ -70,6 +70,7 @@ export const Button = (props: ButtonProps) => {
   const color = (restyledProps as any).style[0]?.color;
   const fontSize = (restyledProps as any).style[0]?.fontSize;
   const lineHeight = (restyledProps as any).style[0]?.lineHeight;
+  const fontFamily = (restyledProps as any).style[0]?.fontFamily;
 
   return (
     <TouchableOpacity
@@ -85,6 +86,7 @@ export const Button = (props: ButtonProps) => {
             : children
           : null}
         <Text
+          fontFamily={fontFamily}
           color={textColor}
           fontSize={fontSize}
           lineHeight={lineHeight}

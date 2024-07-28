@@ -46,7 +46,20 @@ export default function Recovery({ navigation, route }: RecoveryScreenProps) {
         <Header>Recover Account</Header>
         <SubHeader2>Enter the code sent to your email</SubHeader2>
         <View style={styles.graphicContainer}>
-          <Icon icon={Mail} color={isCompleteSuccess ? 'successIcon' : 'grayIcon'} size={54} />
+          <View style={styles.icon} >
+            <Icon
+              icon={Mail}
+              color={isCompleteSuccess ? 'successIcon' : 'grayIcon'}
+              size={54}
+            />
+          </View>
+          <View style={styles.iconBackgroundContainer}>
+            <Icon
+              icon={Mail}
+              borderColor={'mainBackground'}
+              size={54}
+            />
+          </View>
           <Pulse success={false} />
         </View>
         <View style={styles.form}>

@@ -44,10 +44,14 @@ export const TextInput = forwardRef<ReactNativeTextInput, TextInputProps & { lab
               onBlur && onBlur(e);
               setFocused(false);
             }}
-            style={{
-              ...styles.textInput,
-              color: theme.colors.mainText,
-            }}
+            placeholderTextColor={theme.colors.placeholderText}
+            style={[
+              {
+                ...styles.textInput,
+                color: theme.colors.mainText
+              },
+              style
+            ]}
             {...rest} />
           {children}
         </Box>
@@ -70,6 +74,7 @@ export const PasswordInput = (props: TextInputProps & { label?: boolean, error?:
         autoCorrect={false}
         returnKeyType='go'
         secureTextEntry={!showPassword}
+        style={!showPassword && props.value ? styles.passwordMask : undefined}
         {...rest}
       >
         <TouchableHighlight

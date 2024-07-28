@@ -12,6 +12,19 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
   },
+  icon: {
+    position: 'relative',
+    zIndex: 1,
+  },
+  iconBackgroundContainer: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    zIndex: 0,
+    transform: [{ translateX: -27 }, { translateY: -27 }],
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
 })
 
 export default styles;

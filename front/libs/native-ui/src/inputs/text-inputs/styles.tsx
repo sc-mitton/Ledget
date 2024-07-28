@@ -24,6 +24,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     position: 'relative',
   },
+  passwordMask: {
+    letterSpacing: 4,
+    fontSize: 18,
+  },
   visibilityButton: {
     position: 'absolute',
     right: 16,

@@ -188,6 +188,7 @@ export const lightTheme = createTheme({
     },
     label: {
       marginLeft: 'xs',
+      fontFamily: 'SourceSans3Medium',
     },
     defaults: {
       fontSize: 16,
@@ -319,6 +320,9 @@ export const lightTheme = createTheme({
       color: 'mainText',
       fontSize: 16,
       letterSpacing: 2,
+    },
+    bold: {
+      fontFamily: 'SourceSans3Medium',
     }
   },
   seperatorVariants: {
