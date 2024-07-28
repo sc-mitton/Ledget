@@ -1,10 +1,11 @@
+import { Platform } from 'react-native'
 import { apiSlice } from '@ledget/shared-features';
 import { generateEndpoints } from '@ledget/ory';
-import { ORY_API_URI } from '@env';
+import { IOS_ORY_API_URI, ANDROID_LANDING_URL } from '@env';
 
 export const orySlice = apiSlice.injectEndpoints({
   endpoints: (builder) =>
-    generateEndpoints(builder, 'mobile', ORY_API_URI)
+    generateEndpoints(builder, 'mobile', Platform.OS === 'ios' ? IOS_ORY_API_URI : ANDROID_LANDING_URL),
 });
 
 export const {

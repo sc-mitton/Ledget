@@ -1,16 +1,15 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { StatusBar } from 'expo-status-bar';
-import { useFonts } from 'expo-font';
-import { ThemeProvider as RestyleThemeProvider } from '@shopify/restyle';
+import { Platform } from 'react-native';
+import { ThemeProvider as RestyleThemeProvider, useTheme } from '@shopify/restyle';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Provider as ReduxProvider } from 'react-redux';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { View } from 'react-native';
 import { EventProvider } from 'react-native-outside-press';
 import * as SplashScreen from 'expo-splash-screen';
-import * as SecureStore from 'expo-secure-store';
+import * as NavigationBar from 'expo-navigation-bar';
 
 import styles from './styles/app';
 import {
@@ -21,29 +20,14 @@ import {
   Box
 } from '@ledget/native-ui'
 import { Budget, Accounts, Profile, Activity } from '@screens';
-import { useAppDispatch, useAppSelector } from '@hooks';
-import {
-  useRefreshDevicesMutation,
-  useExtendTokenSessionMutation,
-  useGetMeQuery,
-  selectEnvironment,
-  setEnvironment,
-  setSession,
-  setDeviceToken,
-  selectSession,
-  apiSlice
-} from '@ledget/shared-features';
-import { hasErrorCode } from '@ledget/helpers';
+import { useAppDispatch, useAppSelector, useAuthLogic } from '@hooks';
+import { selectEnvironment, setEnvironment } from '@ledget/shared-features';
 import { RootTabParamList } from '@types';
-import { ENV, LEDGET_API_URI } from '@env';
+import { ENV, IOS_LEDGET_API_URI, ANDROID_LEDGET_API_URI } from '@env';
 import store from '@features/store';
 import BottomNav from './BottomNav';
 import Authentication from './Accounts';
 import Modals from './Modals';
-import SourceSans3Regular from '../../assets/fonts/SourceSans3Regular.ttf';
-import SourceSans3Medium from '../../assets/fonts/SourceSans3Medium.ttf';
-import SourceSans3SemiBold from '../../assets/fonts/SourceSans3SemiBold.ttf';
-import SourceSans3Bold from '../../assets/fonts/SourceSans3Bold.ttf';
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
 SplashScreen.preventAutoHideAsync();
@@ -57,139 +41,20 @@ const navTheme = {
 };
 
 function App() {
-  const dispatch = useAppDispatch();
   const appearance = useAppearance();
-  const [appIsReady, setAppIsReady] = useState(false);
-  const [skipGetMe, setSkipGetMe] = useState(true);
-  const [continueToMainApp, setContinueToMainApp] = useState(false);
+  const theme = useTheme();
+  const { appIsReady, continueToMainApp } = useAuthLogic();
 
-  const [fontsLoaded, fontError] = useFonts({
-    'SourceSans3Regular': SourceSans3Regular,
-    'SourceSans3Medium': SourceSans3Medium,
-    'SourceSans3SemiBold': SourceSans3SemiBold,
-    'SourceSans3Bold': SourceSans3Bold,
-  });
-
-  const {
-    isSuccess: isGetMeSuccess,
-    isError: isGetMeError,
-    error: getMeError
-  } = useGetMeQuery(undefined, { skip: skipGetMe });
-  const [
-    refreshDevices, {
-      isSuccess: isRefreshDevicesSuccess,
-      isError: isRefreshDevicesError,
-      data: deviceResult
-    }] = useRefreshDevicesMutation({ fixedCacheKey: 'refreshDevices' })
-  const session = useAppSelector(selectSession);
-  const [extendSession, {
-    isUninitialized: isUninitializedExtend,
-    isSuccess: isExtendSuccess,
-    isError: isExtendError,
-    error: extendError
-  }] = useExtendTokenSessionMutation({ fixedCacheKey: 'extendSession' });
+  useEffect(() => {
+    if (Platform.OS !== 'android') return;
+    NavigationBar.setBackgroundColorAsync(theme.colors.mainBackground);
+  }, [appearance.mode]);
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
       await SplashScreen.hideAsync();
     }
   }, [appIsReady]);
-
-  //  Set the token from the secure store on app load if it exists
-  useEffect(() => {
-    SecureStore.getItemAsync('session').then((session) => {
-      if (session) {
-        const sessionObj = JSON.parse(session);
-        dispatch(setSession(sessionObj))
-      }
-    });
-    SecureStore.getItemAsync('device_token').then((token) => {
-      if (token) {
-        dispatch(setDeviceToken(token))
-      }
-    });
-  }, []);
-
-  // Unskip getMe query if session is available
-  useEffect(() => {
-    if (session) {
-      setSkipGetMe(false);
-    }
-  }, [session]);
-
-  // Try to refresh devices when
-  // 1. the session is available and the devices haven't been refreshed yet
-  // 2. the session is available, just extended successfully, and the devices haven't been refreshed yet
-  useEffect(() => {
-    if (session && (isExtendSuccess)) {
-      refreshDevices();
-    }
-  }, [session, isExtendSuccess])
-
-  // Try and extend the session if fetching the user data was unsuccessful due to an expired token
-  useEffect(() => {
-    if (session && hasErrorCode(401, getMeError) && isUninitializedExtend) {
-      extendSession({ session_id: session.id });
-    }
-  }, [session, getMeError]);
-
-  // Fetch user data after refreshing devices
-  useEffect(() => {
-    if (isRefreshDevicesSuccess) {
-      apiSlice.util.invalidateTags(['User']);
-    }
-  }, [isRefreshDevicesSuccess]);
-
-  // Checks for when the app is ready to load
-  useEffect(() => {
-    // Situation 1
-    const situation1Checks = [
-      fontsLoaded,
-      !fontError,
-      ((isExtendSuccess && isRefreshDevicesSuccess) || isGetMeSuccess)
-    ]
-    // Situation 2
-    const situation2Checks = [
-      fontsLoaded,
-      !fontError,
-      (isGetMeError && isExtendError)
-    ]
-    if (situation1Checks.every(Boolean)) {
-      setAppIsReady(true);
-    }
-    if (situation2Checks.every(Boolean)) {
-      setAppIsReady(true);
-    }
-    // Situation 3: No session
-    if (!SecureStore.getItem('session') && fontsLoaded && !fontError) {
-      setAppIsReady(true);
-    }
-  }, [
-    fontsLoaded,
-    fontError,
-    isGetMeError,
-    isRefreshDevicesError,
-    isGetMeSuccess,
-    isRefreshDevicesSuccess
-  ]);
-
-  // When to continue to the main app
-  useEffect(() => {
-    if (isGetMeSuccess && isUninitializedExtend) {
-      setContinueToMainApp(true);
-    } else if (isGetMeSuccess && isRefreshDevicesSuccess && !extendError) {
-      setContinueToMainApp(true);
-    }
-  }, [isGetMeSuccess, isRefreshDevicesSuccess, extendError, session]);
-
-
-  // Store device token on successful device refresh
-  useEffect(() => {
-    if (deviceResult) {
-      dispatch(setDeviceToken(deviceResult.device_token));
-      SecureStore.setItemAsync('device_token', deviceResult.device_token);
-    }
-  }, [deviceResult]);
 
   if (!appIsReady) {
     return null;
@@ -236,7 +101,7 @@ const AppWithEnvironment = () => {
   useEffect(() => {
     dispatch(setEnvironment({
       name: ENV,
-      apiUrl: LEDGET_API_URI,
+      apiUrl: Platform.OS === 'ios' ? IOS_LEDGET_API_URI : ANDROID_LEDGET_API_URI,
       platform: 'mobile'
     }));
   }, [dispatch]);

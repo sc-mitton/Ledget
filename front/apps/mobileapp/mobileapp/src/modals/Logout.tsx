@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { Alert, View } from 'react-native'
+import { Alert, View, Platform } from 'react-native'
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 
@@ -8,7 +8,7 @@ import styles from './styles/logout';
 import { Text, Header, Button, SubmitButton, withBottomModal } from '@ledget/native-ui';
 import { selectSession, apiSlice, setSession } from '@ledget/shared-features';
 import { useAppSelector, useAppDispatch } from '@hooks';
-import { ORY_API_URI } from '@env';
+import { IOS_ORY_API_URI, ANDROID_ORY_API_URI } from '@env';
 
 const Logout = withBottomModal((props) => {
   const [seconds, setSeconds] = useState(30);
@@ -34,7 +34,7 @@ const Logout = withBottomModal((props) => {
   useEffect(() => {
     if (quedLogout) {
       setIsLoggingOut(true);
-      axios.delete(`${ORY_API_URI}/self-service/logout/api`, {
+      axios.delete(`${Platform.OS === 'ios' ? IOS_ORY_API_URI : ANDROID_ORY_API_URI}/self-service/logout/api`, {
         data: { session_token: session?.token }
       }).then(() => {
         props.closeModal();
