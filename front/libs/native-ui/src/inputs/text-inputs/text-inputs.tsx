@@ -1,6 +1,7 @@
 import { useState, forwardRef } from 'react';
 import {
   TextInputProps,
+  Platform,
   TextInput as ReactNativeTextInput,
   TouchableHighlight,
   NativeSyntheticEvent,
@@ -74,7 +75,7 @@ export const PasswordInput = (props: TextInputProps & { label?: boolean, error?:
         autoCorrect={false}
         returnKeyType='go'
         secureTextEntry={!showPassword}
-        style={!showPassword && props.value ? styles.passwordMask : undefined}
+        style={!showPassword && props.value && Platform.OS === 'android' ? styles.passwordMask : undefined}
         {...rest}
       >
         <TouchableHighlight
