@@ -10,8 +10,7 @@ import {
   useGetMeQuery,
   setSession,
   setDeviceToken,
-  selectSession,
-  apiSlice
+  selectSession
 } from '@ledget/shared-features';
 import { hasErrorCode } from '@ledget/helpers';
 import SourceSans3Regular from '../../assets/fonts/SourceSans3Regular.ttf';
@@ -19,11 +18,34 @@ import SourceSans3Medium from '../../assets/fonts/SourceSans3Medium.ttf';
 import SourceSans3SemiBold from '../../assets/fonts/SourceSans3SemiBold.ttf';
 import SourceSans3Bold from '../../assets/fonts/SourceSans3Bold.ttf';
 
+/*
+
+There are a lot of effect hooks here so here is the breakdown of how it works
+
+There are a few main situations to handle
+
+1. The user has a valid session stored and loads the app.
+  - The user data will be fetched and on success, the app will be mounted and the
+    the user will pass the account screens to the main app
+2. The session is expired or otherwise invalid
+  - The session will be extended
+  - The user data will be fetched
+  - The device will be refreshed
+  - The app will be mounted and passed to the main app
+3. The user has no session stored
+  - The user will be taken to the accounts screen
+4. There is a session stored but for some reason it's not able to be refreshed
+  - First try to extend the session
+  - Upon failing, continue to the app and pass to the first accounts screen
+5. The session is removed from the store ie the user logs out
+  - The user will be taken to the accounts screen
+
+*/
+
 export const useAuthLogic = () => {
   const dispatch = useAppDispatch();
 
   const [appIsReady, setAppIsReady] = useState<boolean>(false);
-  const [skipGetMe, setSkipGetMe] = useState(true);
   const [continueToMainApp, setContinueToMainApp] = useState(false);
 
   const [fontsLoaded, fontError] = useFonts({
@@ -33,24 +55,93 @@ export const useAuthLogic = () => {
     'SourceSans3Bold': SourceSans3Bold,
   });
 
+  const session = useAppSelector(selectSession);
   const {
     isSuccess: isGetMeSuccess,
     isError: isGetMeError,
-    error: getMeError
-  } = useGetMeQuery(undefined, { skip: skipGetMe });
+    error: getMeError,
+    refetch: refetchGetMe
+  } = useGetMeQuery(undefined, { skip: !session });
   const [
     refreshDevices, {
       isSuccess: isRefreshDevicesSuccess,
       isError: isRefreshDevicesError,
-      data: deviceResult
+      data: deviceResult,
+      isUninitialized: isRefreshDevicesUninitialized
     }] = useRefreshDevicesMutation({ fixedCacheKey: 'refreshDevices' })
-  const session = useAppSelector(selectSession);
   const [extendSession, {
     isUninitialized: isUninitializedExtend,
     isSuccess: isExtendSuccess,
+    isUninitialized: isExtendUninitialized,
     isError: isExtendError,
-    error: extendError
   }] = useExtendTokenSessionMutation({ fixedCacheKey: 'extendSession' });
+
+
+  // 1. Try and extend the session if fetching the user data was unsuccessful due to an expired token
+  useEffect(() => {
+    if (session && hasErrorCode(401, getMeError) && isUninitializedExtend) {
+      extendSession({ session_id: session.id });
+    }
+  }, [session, getMeError]);
+
+  // 2. Fetch user data after extending the session
+  useEffect(() => {
+    if (isExtendSuccess) {
+      refetchGetMe();
+    }
+  }, [isExtendSuccess]);
+
+  // 3. Refresh devices after fetching user data
+  useEffect(() => {
+    if (isGetMeSuccess && isExtendSuccess && isRefreshDevicesUninitialized) {
+      refreshDevices();
+    }
+  }, [isGetMeSuccess, isRefreshDevicesUninitialized]);
+
+  //
+
+  //
+
+  // When to continue to the main app
+  // - There is no session stored (we'll need to show the login screen)
+  // - When the device refresh is successful (happens after extending the session, at the very end)
+  // - When able to fetch the user data without extending the session
+  useEffect(() => {
+    const checks = [
+      [isRefreshDevicesSuccess],
+      [isGetMeSuccess, isExtendUninitialized]
+    ]
+    if (checks.some((check) => check.every(b => Boolean(b)))) {
+      setContinueToMainApp(true);
+    }
+  }, [isRefreshDevicesSuccess, isGetMeSuccess, isExtendUninitialized]);
+
+  // When the session is removed from the store, go back to the accounts screen
+  useEffect(() => {
+    if (!session) {
+      setContinueToMainApp(false);
+    }
+  }, [session]);
+
+  // Checks for when the app (either main or accounts) is ready
+  useEffect(() => {
+    const checks = [
+      [fontsLoaded, !fontError, isRefreshDevicesSuccess],
+      [fontsLoaded, !fontError, isGetMeSuccess && isExtendUninitialized],
+      [fontsLoaded, !fontError, (isRefreshDevicesError || isExtendError)]
+    ];
+    if (checks.some((check) => check.every(b => Boolean(b)))) {
+      setAppIsReady(true);
+    }
+
+  }, [
+    fontsLoaded,
+    fontError,
+    isGetMeError,
+    isRefreshDevicesError,
+    isGetMeSuccess,
+    isRefreshDevicesSuccess
+  ]);
 
   //  Set the token from the secure store on app load if it exists
   useEffect(() => {
@@ -66,82 +157,6 @@ export const useAuthLogic = () => {
       }
     });
   }, []);
-
-  // Unskip getMe query if session is available
-  // When session becomes unavailable, go to the authentication portion of the app
-  useEffect(() => {
-    if (session) {
-      setSkipGetMe(false);
-    } else {
-      setContinueToMainApp(false);
-    }
-  }, [session]);
-
-  // Try to refresh devices when
-  // 1. the session is available and the devices haven't been refreshed yet
-  // 2. the session is available, just extended successfully, and the devices haven't been refreshed yet
-  useEffect(() => {
-    if (session && isExtendSuccess) {
-      refreshDevices();
-    }
-  }, [session, isExtendSuccess])
-
-  // Try and extend the session if fetching the user data was unsuccessful due to an expired token
-  useEffect(() => {
-    if (session && hasErrorCode(401, getMeError) && isUninitializedExtend) {
-      extendSession({ session_id: session.id });
-    }
-  }, [session, getMeError]);
-
-  // Fetch user data after refreshing devices
-  useEffect(() => {
-    if (isRefreshDevicesSuccess) {
-      apiSlice.util.invalidateTags(['User']);
-    }
-  }, [isRefreshDevicesSuccess]);
-
-  // Checks for when the app is ready to load
-  useEffect(() => {
-    // Situation 1
-    const situation1Checks = [
-      fontsLoaded,
-      !fontError,
-      ((isExtendSuccess && isRefreshDevicesSuccess) || isGetMeSuccess)
-    ]
-    // Situation 2
-    const situation2Checks = [
-      fontsLoaded,
-      !fontError,
-      (isGetMeError && isExtendError)
-    ]
-    if (situation1Checks.every(Boolean)) {
-      setAppIsReady(true);
-    }
-    if (situation2Checks.every(Boolean)) {
-      setAppIsReady(true);
-    }
-    // Situation 3: No session
-    if (!SecureStore.getItem('session') && fontsLoaded && !fontError) {
-      setAppIsReady(true);
-    }
-  }, [
-    fontsLoaded,
-    fontError,
-    isGetMeError,
-    isRefreshDevicesError,
-    isGetMeSuccess,
-    isRefreshDevicesSuccess
-  ]);
-
-  // When to continue to the main app
-  useEffect(() => {
-    if (isGetMeSuccess && isUninitializedExtend) {
-      setContinueToMainApp(true);
-    } else if (isGetMeSuccess && isRefreshDevicesSuccess && !extendError) {
-      setContinueToMainApp(true);
-    }
-  }, [isGetMeSuccess, isRefreshDevicesSuccess, extendError, session]);
-
 
   // Store device token on successful device refresh
   useEffect(() => {

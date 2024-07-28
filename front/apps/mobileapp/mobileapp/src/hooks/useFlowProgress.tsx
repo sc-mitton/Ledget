@@ -6,8 +6,7 @@ import {
   useGetMeQuery,
   useRefreshDevicesMutation,
   apiSlice,
-  selectSession,
-  setDeviceToken
+  selectSession
 } from '@ledget/shared-features';
 import { hasErrorCode } from '@ledget/helpers';
 import { useAppSelector } from './store';
@@ -41,7 +40,7 @@ export const useFlowProgress = ({ navigation, route, updateProgress }: Props) =>
           identifier: route.params?.identifier
         }
       })
-    } else if (authFlowStarted) {
+    } else if (user && authFlowStarted) {
       refreshDevices();
     }
   }, [getMeError, user, updateProgress]);
