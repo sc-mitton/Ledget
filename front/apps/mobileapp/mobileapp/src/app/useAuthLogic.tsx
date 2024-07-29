@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { useFonts } from 'expo-font';
 import * as SecureStore from 'expo-secure-store';
+import axios from 'axios';
 
 import { useAppDispatch, useAppSelector } from '@hooks';
 import {
@@ -42,6 +43,7 @@ There are a few main situations to handle
 
 */
 
+
 export const useAuthLogic = () => {
   const dispatch = useAppDispatch();
 
@@ -76,7 +78,6 @@ export const useAuthLogic = () => {
     isError: isExtendError,
   }] = useExtendTokenSessionMutation({ fixedCacheKey: 'extendSession' });
 
-
   // 1. Try and extend the session if fetching the user data was unsuccessful due to an expired token
   useEffect(() => {
     if (session && hasErrorCode(401, getMeError) && isUninitializedExtend) {
@@ -98,6 +99,12 @@ export const useAuthLogic = () => {
     }
   }, [isGetMeSuccess, isRefreshDevicesUninitialized]);
 
+  useEffect(() => {
+    axios.post('https://10.0.2.2/v1/prices').catch((error) => {
+      console.error(error.request?._response);
+    });
+  }, []);
+
   //
 
   //
@@ -106,22 +113,40 @@ export const useAuthLogic = () => {
   // - There is no session stored (we'll need to show the login screen)
   // - When the device refresh is successful (happens after extending the session, at the very end)
   // - When able to fetch the user data without extending the session
+
+  // If there is no session stored, we can continue to the main app if the fonts are loaded
   useEffect(() => {
+
+    SecureStore.getItemAsync('session').then((session) => {
+      if (!session) {
+        setContinueToMainApp(false);
+      }
+      if (!session && fontsLoaded && !fontError) {
+        setAppIsReady(true);
+      }
+    });
+
+    // When the session is removed from the store, go back to the accounts screen
+    if (!session) {
+      setContinueToMainApp(false);
+    }
+
     const checks = [
       [isRefreshDevicesSuccess],
-      [isGetMeSuccess, isExtendUninitialized]
+      [isGetMeSuccess, isExtendUninitialized],
     ]
     if (checks.some((check) => check.every(b => Boolean(b)))) {
       setContinueToMainApp(true);
     }
-  }, [isRefreshDevicesSuccess, isGetMeSuccess, isExtendUninitialized]);
 
-  // When the session is removed from the store, go back to the accounts screen
-  useEffect(() => {
-    if (!session) {
-      setContinueToMainApp(false);
-    }
-  }, [session]);
+  }, [
+    session,
+    isRefreshDevicesSuccess,
+    isGetMeSuccess,
+    isExtendUninitialized,
+    fontsLoaded,
+    fontError
+  ]);
 
   // Checks for when the app (either main or accounts) is ready
   useEffect(() => {

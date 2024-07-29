@@ -30,13 +30,13 @@ export const TextInput = forwardRef<ReactNativeTextInput, TextInputProps & { lab
       {label && <InputLabel>{label}</InputLabel>}
       <Box
         borderColor={error ? 'inputBorderErrorSecondary' : focused ? 'focusedInputBorderSecondary' : 'transparent'}
-        borderWidth={1.5}
+        borderWidth={1.75}
         style={styles.textInputContainer2}
       >
         <Box
           backgroundColor='inputBackground'
           borderColor={focused ? error ? 'inputBorderErrorMain' : 'focusedInputBorderMain' : 'inputBorder'}
-          borderWidth={1.25}
+          borderWidth={1.5}
           style={styles.textInputContainer1}
         >
           <ReactNativeTextInput
@@ -84,8 +84,8 @@ export const PasswordInput = (props: TextInputProps & { label?: boolean, error?:
           style={styles.visibilityButton}
         >
           {showPassword
-            ? <Icon icon={EyeOff} color='placeholderText' />
-            : <Icon icon={Eye} color='placeholderText' />}
+            ? <Icon icon={EyeOff} color='quaternaryText' size={26} />
+            : <Icon icon={Eye} color='quaternaryText' size={26} />}
         </TouchableHighlight>
       </TextInput>
     </Box>

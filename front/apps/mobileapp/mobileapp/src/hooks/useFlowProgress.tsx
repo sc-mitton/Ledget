@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
+import * as SecureStore from 'expo-secure-store';
 
 import {
   useGetMeQuery,
   useRefreshDevicesMutation,
   apiSlice,
-  selectSession
+  selectSession,
 } from '@ledget/shared-features';
 import { hasErrorCode } from '@ledget/helpers';
 import { useAppSelector } from './store';
@@ -40,10 +41,14 @@ export const useFlowProgress = ({ navigation, route, updateProgress }: Props) =>
           identifier: route.params?.identifier
         }
       })
-    } else if (user && authFlowStarted) {
-      refreshDevices();
     }
   }, [getMeError, user, updateProgress]);
+
+  useEffect(() => {
+    if (user && user.is_verified) {
+      refreshDevices();
+    }
+  }, [user]);
 
   useEffect(() => {
     if (updateProgress) {

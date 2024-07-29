@@ -61,6 +61,7 @@ export const darkTheme = createTheme({
     mainBackground: palette.gray900,
     accountsMainBackground: palette.gray900,
     navBackground: palette.gray850,
+    androidNavBackground: palette.gray800,
     nestedContainer: `hsl(${grayH}, ${grayS}%, 11%)`,
     inputBackground: palette.gray800,
     tabNavPill: palette.blue700,

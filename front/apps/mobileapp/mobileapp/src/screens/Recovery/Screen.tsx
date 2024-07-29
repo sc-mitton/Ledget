@@ -41,7 +41,7 @@ export default function Recovery({ navigation, route }: RecoveryScreenProps) {
     <NestedScreenWOFeedback>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{ flex: 1 }}
+        style={styles.screen}
       >
         <Header>Recover Account</Header>
         <SubHeader2>Enter the code sent to your email</SubHeader2>

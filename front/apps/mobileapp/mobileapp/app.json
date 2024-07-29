@@ -1,5 +1,6 @@
 {
   "expo": {
+    "jsEngine": "hermes",
     "name": "Ledget",
     "slug": "mobileapp",
     "version": "1.0.0",
@@ -16,11 +17,13 @@
       "**/*"
     ],
     "ios": {
+      "jsEngine": "hermes",
       "supportsTablet": true,
       "bundleIdentifier": "com.ledget.mobileapp"
     },
     "userInterfaceStyle": "automatic",
     "android": {
+      "jsEngine": "hermes",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#4149b0"
@@ -52,7 +55,10 @@
         }
       ],
       [
-        "./withAndroidPlaid.js"
+        "./plugins/withTrustLocalCerts.js"
+      ],
+      [
+        "./plugins/withAndroidPlaid.js"
       ]
     ]
   }

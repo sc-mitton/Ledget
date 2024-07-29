@@ -59,6 +59,7 @@ export const lightTheme = createTheme({
     // Backgrounds
     mainBackground: palette.gray150,
     accountsMainBackground: palette.gray100,
+    androidNavBackground: palette.gray200,
     navBackground: palette.gray500,
     inputBackground: palette.gray200,
     nestedContainer: palette.white,
@@ -100,7 +101,7 @@ export const lightTheme = createTheme({
 
     // Buttons
     blueButton: palette.blue500,
-    blueButtonBorder: palette.blue450,
+    blueButtonBorder: palette.blue400,
     blueButton2: palette.blue100,
     blueButtonBorder2: palette.blue100,
     grayButton: palette.gray250,
@@ -149,7 +150,7 @@ export const lightTheme = createTheme({
       color: 'highContrastText',
     },
     header: {
-      fontSize: 26,
+      fontSize: 28,
       lineHeight: 30,
       marginTop: 'm',
       marginLeft: 'xs',

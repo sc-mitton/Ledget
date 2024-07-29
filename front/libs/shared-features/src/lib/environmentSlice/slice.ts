@@ -10,7 +10,7 @@ interface State {
   platform?: Platform
   session?: Session,
   deviceToken?: string,
-  apiUrl: string
+  apiUrl?: string
 }
 
 export interface RootStateWithEnvironment {
@@ -20,7 +20,7 @@ export interface RootStateWithEnvironment {
 
 const initialState: State = {
   name: undefined,
-  apiUrl: '',
+  apiUrl: undefined,
   platform: undefined,
   session: undefined,
   deviceToken: undefined

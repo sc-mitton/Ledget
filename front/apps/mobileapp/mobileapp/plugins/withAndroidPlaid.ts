@@ -30,7 +30,6 @@ function applyPackage(mainApplication: string) {
 function applyImplementation(appBuildGradle: string) {
   const plaidImplementation = `implementation project(':react-native-plaid-link-sdk')`;
 
-  console.log(appBuildGradle)
   // Make sure the project does not have the dependency already
   if (!appBuildGradle.includes(plaidImplementation)) {
     return appBuildGradle.replace(

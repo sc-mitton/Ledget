@@ -125,6 +125,9 @@ nx run mobileapp:start
 
 You'll have to drag and drop the crt authority onto the ios simulator in order to get requests to go through when developing with https. You'll also need to go into the settings app on the emulator and set it to allow http.
 
+For an android emulator, go to the settings > security & privacy > more security & privacy > encryption & credentials > install a certificate
+You can then install the necessary CA authority to get the dev environment working. Drag and drop the CA pem file and it will appear in the downlaoded folder.
+
 ## Webhook Testing
 
 To test ory webhooks in the dev environment, you can use this command.

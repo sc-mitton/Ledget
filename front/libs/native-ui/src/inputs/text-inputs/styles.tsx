@@ -31,8 +31,7 @@ const styles = StyleSheet.create({
   visibilityButton: {
     position: 'absolute',
     right: 16,
-    top: '50%',
-    transform: [{ translateY: 2 }],
+    top: '50%'
   }
 });
 

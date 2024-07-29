@@ -20,10 +20,11 @@ import {
   Box
 } from '@ledget/native-ui'
 import { Budget, Accounts, Profile, Activity } from '@screens';
-import { useAppDispatch, useAppSelector, useAuthLogic } from '@hooks';
+import { useAppDispatch, useAppSelector } from '@hooks';
 import { selectEnvironment, setEnvironment } from '@ledget/shared-features';
 import { RootTabParamList } from '@types';
 import { ENV, IOS_LEDGET_API_URI, ANDROID_LEDGET_API_URI } from '@env';
+import { useAuthLogic } from './useAuthLogic';
 import store from '@features/store';
 import BottomNav from './BottomNav';
 import Authentication from './Accounts';
@@ -47,8 +48,10 @@ function App() {
 
   useEffect(() => {
     if (Platform.OS !== 'android') return;
-    NavigationBar.setBackgroundColorAsync(theme.colors.mainBackground);
-  }, [appearance.mode]);
+    NavigationBar.setBackgroundColorAsync(theme.colors.androidNavBackground);
+    NavigationBar.setButtonStyleAsync(appearance.mode === 'dark' ? 'light' : 'dark');
+
+  }, [appearance.mode, continueToMainApp]);
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
