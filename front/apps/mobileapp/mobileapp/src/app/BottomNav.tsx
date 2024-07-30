@@ -1,6 +1,5 @@
 import { BlurView } from 'expo-blur';
-import { View, TouchableOpacity } from 'react-native';
-import { useTheme } from '@shopify/restyle';
+import { TouchableOpacity } from 'react-native';
 import { ParamListBase, TabNavigationState } from '@react-navigation/native';
 import { Home, DollarSign, Activity, User } from 'geist-native-icons';
 

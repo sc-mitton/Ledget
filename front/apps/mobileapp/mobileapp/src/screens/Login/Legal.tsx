@@ -1,7 +1,6 @@
 import { Linking, Platform } from 'react-native'
 
 import { Box, Button } from '@ledget/native-ui'
-import { ANDROID_LANDING_URL, IOS_LANDING_URL } from '@env'
 
 import styles from './styles/legal-footer'
 
@@ -20,12 +19,16 @@ export default function LegalFooter() {
       <Button
         variant='bold'
         label="Terms"
-        onPress={() => openLink(`${Platform.OS === 'ios' ? IOS_LANDING_URL : ANDROID_LANDING_URL}/terms`)}
+        onPress={() => openLink(`${Platform.OS === 'ios'
+          ? process.env.IOS_LANDING_URL
+          : process.env.ANDROID_LANDING_URL}/terms`)}
       />
       <Button
         variant='bold'
         label="Privacy"
-        onPress={() => openLink(`${Platform.OS === 'ios' ? IOS_LANDING_URL : ANDROID_LANDING_URL}/privacy`)}
+        onPress={() => openLink(`${Platform.OS === 'ios'
+          ? process.env.IOS_LANDING_URL
+          : process.env.ANDROID_LANDING_URL}/privacy`)}
       />
     </Box>
   )

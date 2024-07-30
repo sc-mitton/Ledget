@@ -1,7 +1,10 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Appearance } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ThemeProvider as RestyleThemeProvider } from '@shopify/restyle';
 
+import { darkTheme } from './dark';
+import { lightTheme } from './light';
 
 type Mode = 'light' | 'dark'
 
@@ -39,8 +42,8 @@ export const useAppearance = () => {
 
   return context;
 }
-
-export const AppearanceProvider = ({ children }: { children: React.ReactNode }) => {
+// Include option of children providing a render prop
+export const AppearanceProvider = ({ children }: { children: React.ReactNode | ((props: Pick<TAppearance, 'mode'>) => React.ReactNode) }) => {
   const [useDeviceAppearance, setUseDeviceApperance] = useState<boolean>(true);
   const [customMode, setCustomMode] = useState<Mode>('light');
   const [systemMode, setSystemMode] = useState<Mode>(Appearance.getColorScheme() || 'light');
@@ -83,7 +86,17 @@ export const AppearanceProvider = ({ children }: { children: React.ReactNode }) 
 
   return (
     <AppearanceContext.Provider value={{ mode, customMode, setCustomMode, useDeviceAppearance, setUseDeviceApperance }}>
-      {children}
+      {
+        typeof children === 'function'
+          ? children({ mode })
+          : children
+      }
     </AppearanceContext.Provider>
   );
 }
+
+export const ThemeProvider = ({ children, mode }: { children: React.ReactNode, mode: 'light' | 'dark' }) => (
+  <RestyleThemeProvider theme={mode === 'dark' ? darkTheme : lightTheme}>
+    {children}
+  </RestyleThemeProvider>
+);

@@ -7,10 +7,11 @@
     "@testing-library/react-native": "*",
     "metro-config": "*",
     "react-native": "*",
-    "expo": "*",
+    "expo": "~51.0.23",
     "react-native-svg": "*",
     "react-native-web": "*",
-    "react": "18.2.0"
+    "react": "18.2.0",
+    "react-native-gesture-handler": "~2.16.1"
   },
   "scripts": {
     "eas-build-pre-install": "cd ../../../ && node tools/scripts/eas-build-pre-install.mjs . apps/mobileapp/mobileapp && cp pnpm-lock.yaml apps/mobileapp/mobileapp",

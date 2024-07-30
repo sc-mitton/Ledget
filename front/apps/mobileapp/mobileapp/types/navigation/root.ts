@@ -11,7 +11,7 @@ export type RootTabParamList = {
   Activity: undefined;
 };
 
-export type RootAccountStackParamList = {
+export type RootAuthenticationStackParamList = {
   Login: NavigatorScreenParams<LoginStackParamList>;
   Recovery: {
     identifier: string;
@@ -21,5 +21,5 @@ export type RootAccountStackParamList = {
   };
 };
 
-export type RecoveryScreenProps = StackScreenProps<RootAccountStackParamList, 'Recovery'>
-export type VerificationScreenProps = StackScreenProps<RootAccountStackParamList, 'Verification'>
+export type RecoveryScreenProps = StackScreenProps<RootAuthenticationStackParamList, 'Recovery'>
+export type VerificationScreenProps = StackScreenProps<RootAuthenticationStackParamList, 'Verification'>

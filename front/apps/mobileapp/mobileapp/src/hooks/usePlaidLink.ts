@@ -16,13 +16,12 @@ import {
   useAddNewPlaidItemMutation,
   useTransactionsSyncMutation
 } from '@ledget/shared-features'
-import { ANDROID_PACKAGE } from '@env'
 
 export const usePlaidLink = (args: { isOnboarding?: boolean, itemId?: string } | void) => {
   const { data, refetch } = useGetPlaidTokenQuery({
     isOnboarding: args?.isOnboarding,
     itemId: args?.itemId,
-    androidPackage: Platform.OS === 'android' ? ANDROID_PACKAGE : undefined
+    androidPackage: Platform.OS === 'android' ? process.env.ANDROID_PACKAGE : undefined
   })
   const [
     addNewPlaidItem,

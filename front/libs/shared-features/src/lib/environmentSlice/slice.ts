@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type EnvironmentName = 'dev' | 'prod'
+export type EnvironmentName = 'dev' | 'prod'
 type Platform = 'browser' | 'mobile'
 
 interface Session { id: string, token: string }

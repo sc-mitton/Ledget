@@ -1,14 +1,14 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { Login, Recovery, Verification } from '@screens';
-import { RootAccountStackParamList } from '@types';
+import { RootAuthenticationStackParamList } from '@types';
 import { BackHeader } from '@ledget/native-ui';
 import { useCardStyleInterpolator } from "@/hooks";
 
-const Stack = createStackNavigator<RootAccountStackParamList>();
+const Stack = createStackNavigator<RootAuthenticationStackParamList>();
 
 const Authentication = () => {
-  const cardStyleInterpolator = useCardStyleInterpolator('accounts');
+  const cardStyleInterpolator = useCardStyleInterpolator('authentication');
 
   return (
     <Stack.Navigator

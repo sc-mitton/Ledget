@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { Animated } from 'react-native';
 import { useTheme } from '@shopify/restyle';
 
-export const useCardStyleInterpolator = (app?: 'main' | 'accounts') => {
+export const useCardStyleInterpolator = (app?: 'main' | 'authentication') => {
   const theme = useTheme();
 
   const cardStyleInterpolator = useCallback(({ current, next, inverted, layouts: { screen } }: any) => {
@@ -39,7 +39,7 @@ export const useCardStyleInterpolator = (app?: 'main' | 'accounts') => {
         ],
       },
       containerStyle: {
-        backgroundColor: app === 'accounts' ? theme.colors.accountsMainBackground : theme.colors.mainBackground,
+        backgroundColor: app === 'authentication' ? theme.colors.accountsMainBackground : theme.colors.mainBackground,
         opacity: progress,
       }
     })
