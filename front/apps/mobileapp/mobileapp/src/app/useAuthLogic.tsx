@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 
 import { useFonts } from 'expo-font';
 import * as SecureStore from 'expo-secure-store';
-import axios from 'axios';
 
 import { useAppDispatch, useAppSelector } from '@hooks';
 import {
@@ -14,10 +13,6 @@ import {
   selectSession
 } from '@ledget/shared-features';
 import { hasErrorCode } from '@ledget/helpers';
-import SourceSans3Regular from '../../assets/fonts/SourceSans3Regular.ttf';
-import SourceSans3Medium from '../../assets/fonts/SourceSans3Medium.ttf';
-import SourceSans3SemiBold from '../../assets/fonts/SourceSans3SemiBold.ttf';
-import SourceSans3Bold from '../../assets/fonts/SourceSans3Bold.ttf';
 
 /*
 
@@ -50,12 +45,6 @@ export const useAuthLogic = () => {
   const [appIsReady, setAppIsReady] = useState<boolean>(false);
   const [continueToMainApp, setContinueToMainApp] = useState(false);
 
-  const [fontsLoaded, fontError] = useFonts({
-    'SourceSans3Regular': SourceSans3Regular,
-    'SourceSans3Medium': SourceSans3Medium,
-    'SourceSans3SemiBold': SourceSans3SemiBold,
-    'SourceSans3Bold': SourceSans3Bold,
-  });
 
   const session = useAppSelector(selectSession);
   const {
@@ -99,12 +88,6 @@ export const useAuthLogic = () => {
     }
   }, [isGetMeSuccess, isRefreshDevicesUninitialized]);
 
-  useEffect(() => {
-    axios.post('https://10.0.2.2/v1/prices').catch((error) => {
-      console.error(error.request?._response);
-    });
-  }, []);
-
   //
 
   //
@@ -120,8 +103,6 @@ export const useAuthLogic = () => {
     SecureStore.getItemAsync('session').then((session) => {
       if (!session) {
         setContinueToMainApp(false);
-      }
-      if (!session && fontsLoaded && !fontError) {
         setAppIsReady(true);
       }
     });
@@ -144,24 +125,20 @@ export const useAuthLogic = () => {
     isRefreshDevicesSuccess,
     isGetMeSuccess,
     isExtendUninitialized,
-    fontsLoaded,
-    fontError
   ]);
 
   // Checks for when the app (either main or accounts) is ready
   useEffect(() => {
     const checks = [
-      [fontsLoaded, !fontError, isRefreshDevicesSuccess],
-      [fontsLoaded, !fontError, isGetMeSuccess && isExtendUninitialized],
-      [fontsLoaded, !fontError, (isRefreshDevicesError || isExtendError)]
+      [isRefreshDevicesSuccess],
+      [isGetMeSuccess && isExtendUninitialized],
+      [(isRefreshDevicesError || isExtendError)]
     ];
     if (checks.some((check) => check.every(b => Boolean(b)))) {
       setAppIsReady(true);
     }
 
   }, [
-    fontsLoaded,
-    fontError,
     isGetMeError,
     isRefreshDevicesError,
     isGetMeSuccess,

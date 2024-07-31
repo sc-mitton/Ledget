@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { StatusBar } from 'expo-status-bar';
 import { Platform } from 'react-native';
@@ -8,22 +8,27 @@ import { useAppDispatch, useAppSelector } from '@hooks';
 import { selectEnvironment, setEnvironment } from '@ledget/shared-features';
 import type { EnvironmentName } from '@ledget/shared-features';
 import { useTheme } from '@shopify/restyle';
+import { useFonts } from 'expo-font';
 import * as NavigationBar from 'expo-navigation-bar';
 import * as SplashScreen from 'expo-splash-screen';
 
 import styles from './styles/app';
 import {
   useAppearance,
-  Box
+  Box,
+  Text
 } from '@ledget/native-ui'
 import { Budget, Accounts, Profile, Activity } from '@screens';
 import { RootTabParamList } from '@types';
 import { useAuthLogic } from './useAuthLogic';
 import { withProviders } from './Providers';
-import { ENV, IOS_LEDGET_API_URI, ANDROID_LEDGET_API_URI } from '@env';
 import BottomNav from './BottomNav';
 import Authentication from './Authentication';
 import Modals from './Modals';
+import SourceSans3Regular from '../../assets/fonts/SourceSans3Regular.ttf';
+import SourceSans3Medium from '../../assets/fonts/SourceSans3Medium.ttf';
+import SourceSans3SemiBold from '../../assets/fonts/SourceSans3SemiBold.ttf';
+import SourceSans3Bold from '../../assets/fonts/SourceSans3Bold.ttf';
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
 SplashScreen.preventAutoHideAsync();
@@ -37,10 +42,18 @@ const navTheme = {
 };
 
 export const App = withProviders(() => {
+  const [fontsGood, setFontsGood] = useState(false);
   const appearance = useAppearance();
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const environment = useAppSelector(selectEnvironment);
+
+  const [fontsLoaded, fontError] = useFonts({
+    'SourceSans3Regular': SourceSans3Regular,
+    'SourceSans3Medium': SourceSans3Medium,
+    'SourceSans3SemiBold': SourceSans3SemiBold,
+    'SourceSans3Bold': SourceSans3Bold,
+  });
 
   const { appIsReady, continueToMainApp } = useAuthLogic();
 
@@ -50,13 +63,19 @@ export const App = withProviders(() => {
     }
   }, [appIsReady]);
 
+  useEffect(() => {
+    if (fontsLoaded && !fontError) {
+      setFontsGood(true);
+    }
+  }, [fontsLoaded]);
+
   // Set the necessary environment variables
   useEffect(() => {
     dispatch(setEnvironment({
-      name: ENV as EnvironmentName,
+      name: process.env.ENV as EnvironmentName,
       apiUrl: Platform.OS === 'ios'
-        ? IOS_LEDGET_API_URI || ''
-        : ANDROID_LEDGET_API_URI || '',
+        ? process.env.IOS_LEDGET_API_URI || ''
+        : process.env.ANDROID_LEDGET_API_URI || '',
       platform: 'mobile'
     }));
   }, [dispatch]);
@@ -69,7 +88,7 @@ export const App = withProviders(() => {
 
   }, [appearance.mode]);
 
-  if (!appIsReady || !environment) {
+  if (!appIsReady || !environment || !fontsGood) {
     return null;
   }
 
