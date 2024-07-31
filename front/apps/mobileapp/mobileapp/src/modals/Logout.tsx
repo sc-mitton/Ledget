@@ -8,6 +8,7 @@ import styles from './styles/logout';
 import { Text, Header, Button, SubmitButton, withBottomModal } from '@ledget/native-ui';
 import { selectSession, apiSlice, setSession } from '@ledget/shared-features';
 import { useAppSelector, useAppDispatch } from '@hooks';
+import { IOS_ORY_API_URI, ANDROID_ORY_API_URI } from '@env';
 
 const Logout = withBottomModal((props) => {
   const [seconds, setSeconds] = useState(30);
@@ -34,8 +35,8 @@ const Logout = withBottomModal((props) => {
     if (quedLogout) {
       setIsLoggingOut(true);
       axios.delete(`${Platform.OS === 'ios'
-        ? process.env.IOS_ORY_API_URI
-        : process.env.ANDROID_ORY_API_URI}/self-service/logout/api`, {
+        ? IOS_ORY_API_URI
+        : ANDROID_ORY_API_URI}/self-service/logout/api`, {
         data: { session_token: session?.token }
       }).then(() => {
         props.closeModal();

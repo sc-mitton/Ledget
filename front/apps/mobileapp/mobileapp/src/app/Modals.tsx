@@ -1,4 +1,4 @@
-import { Logout, PlaidLink } from '@modals';
+import { Logout } from '@modals';
 import { useAppDispatch, useAppSelector } from '@hooks';
 import { clearModal, selectModal } from '@features/modalSlice';
 

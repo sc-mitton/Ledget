@@ -20,6 +20,7 @@ import { Budget, Accounts, Profile, Activity } from '@screens';
 import { RootTabParamList } from '@types';
 import { useAuthLogic } from './useAuthLogic';
 import { withProviders } from './Providers';
+import { ENV, IOS_LEDGET_API_URI, ANDROID_LEDGET_API_URI } from '@env';
 import BottomNav from './BottomNav';
 import Authentication from './Authentication';
 import Modals from './Modals';
@@ -52,10 +53,10 @@ export const App = withProviders(() => {
   // Set the necessary environment variables
   useEffect(() => {
     dispatch(setEnvironment({
-      name: process.env.ENV as EnvironmentName,
+      name: ENV as EnvironmentName,
       apiUrl: Platform.OS === 'ios'
-        ? process.env.IOS_LEDGET_API_URI || ''
-        : process.env.ANDROID_LEDGET_API_URI || '',
+        ? IOS_LEDGET_API_URI || ''
+        : ANDROID_LEDGET_API_URI || '',
       platform: 'mobile'
     }));
   }, [dispatch]);
