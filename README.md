@@ -82,10 +82,10 @@ Needed:
 8. Install the front end dependencies
 
 ```
-brew install pnpm
-brew install nx
+curl -fsSL https://bun.sh/install | bash
+exec /bin/zsh
 cd front
-pnpm i
+bun install
 ```
 
 8. Run the Environment
