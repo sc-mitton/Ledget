@@ -2,14 +2,17 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin'
-import path from 'path';
-import fs from 'fs';
+import path from 'path'
+import fs from 'fs'
 import { visualizer } from "rollup-plugin-visualizer";
 
+// root dir of nx monorepo
 const certsDir = __dirname + '/../../certs/';
 
+
+
 export default defineConfig({
-  cacheDir: '../../node_modules/.vite/webportal',
+  cacheDir: '../../node_modules/.vite/webhome',
 
   ...(process.env.NODE_ENV === 'development'
     ? {
@@ -18,7 +21,7 @@ export default defineConfig({
           usePolling: true,
           interval: 100,
         },
-        port: 3001,
+        port: 3000,
         host: 'localhost',
         strictPort: true,
         https: {
@@ -34,7 +37,7 @@ export default defineConfig({
   ...(process.env.NODE_ENV === 'development'
     ? {
       preview: {
-        port: 3301,
+        port: 3300,
         host: 'localhost',
         strictPort: true,
         https: {
@@ -52,14 +55,16 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@pages': path.resolve(__dirname, './src/pages'),
       '@components': path.resolve(__dirname, './src/components'),
-      '@api': path.resolve(__dirname, './src/api'),
+      '@utils': path.resolve(__dirname, './src/utils'),
       '@context': path.resolve(__dirname, './src/context'),
-      '@modals': path.resolve(__dirname, './src/modals'),
+      '@flow': path.resolve(__dirname, './src/flow'),
       '@features': path.resolve(__dirname, './src/features'),
-      '@styles': path.resolve(__dirname, './src/styles'),
+      '@api': path.resolve(__dirname, './src/api'),
+      '@pages': path.resolve(__dirname, './src/pages'),
+      '@modals': path.resolve(__dirname, './src/modals'),
       '@hooks': path.resolve(__dirname, './src/hooks'),
+      '@styles': path.resolve(__dirname, './src/styles'),
     }
   },
 

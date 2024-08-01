@@ -1,9 +1,12 @@
 {
   "name": "@ledget/shared-features",
   "version": "0.0.1",
-  "dependencies": {},
   "main": "./index.js",
-  "module": "./index.mjs",
-  "typings": "./index.d.ts",
-  "private": true
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./index.mjs",
+      "require": "./index.js"
+    }
+  }
 }

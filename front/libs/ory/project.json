@@ -4,5 +4,6 @@
   "sourceRoot": "libs/ory/src",
   "projectType": "library",
   "tags": [],
+  "// targets": "to see all targets run: nx show project ory --web",
   "targets": {}
 }

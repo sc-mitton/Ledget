@@ -6,8 +6,7 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "types": [
-      "vite/client",
-      "vitest"
+      "vite/client"
     ],
     "baseUrl": ".",
     "paths": {
@@ -25,6 +24,9 @@
       ],
       "@hooks/*": [
         "src/hooks/*"
+      ],
+      "@hooks": [
+        "src/hooks/index.ts"
       ],
       "@modals/*": [
         "src/modals/*"
@@ -50,7 +52,7 @@
       "@ledget/shared-features": [
         "../../libs/shared-features/src"
       ]
-    }
+    },
   },
   "files": [],
   "include": [],
@@ -58,6 +60,9 @@
     {
       "path": "./tsconfig.app.json"
     },
+    {
+      "path": "./tsconfig.spec.json"
+    }
   ],
   "extends": "../../tsconfig.base.json"
 }

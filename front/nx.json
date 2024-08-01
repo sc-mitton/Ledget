@@ -1,16 +1,13 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "namedInputs": {
-    "default": [
-      "{projectRoot}/**/*",
-      "sharedGlobals"
-    ],
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
       "default",
-      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
-      "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/.eslintrc.json",
       "!{projectRoot}/eslint.config.js",
+      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/jest.config.[jt]s",
       "!{projectRoot}/src/test-setup.[jt]s",
       "!{projectRoot}/test-setup.[jt]s"
@@ -19,13 +16,17 @@
   },
   "plugins": [
     {
-      "plugin": "@nx/vite/plugin",
+      "plugin": "@nx/expo/plugin",
       "options": {
+        "startTargetName": "start",
         "buildTargetName": "build",
-        "previewTargetName": "preview",
-        "testTargetName": "test",
+        "prebuildTargetName": "prebuild",
         "serveTargetName": "serve",
-        "serveStaticTargetName": "serve-static"
+        "installTargetName": "install",
+        "exportTargetName": "export",
+        "submitTargetName": "submit",
+        "runIosTargetName": "run-ios",
+        "runAndroidTargetName": "run-android"
       }
     },
     {
@@ -35,49 +36,33 @@
       }
     },
     {
-      "plugin": "@nx/react-native/plugin",
-      "options": {
-        "startTargetName": "start",
-        "podInstallTargetName": "pod-install",
-        "bundleTargetName": "bundle",
-        "runIosTargetName": "run-ios",
-        "runAndroidTargetName": "run-android",
-        "buildIosTargetName": "build-ios",
-        "buildAndroidTargetName": "build-android",
-        "syncDepsTargetName": "sync-deps",
-        "upgradeTargetname": "upgrade"
-      }
-    },
-    {
       "plugin": "@nx/jest/plugin",
       "options": {
         "targetName": "test"
       }
     },
     {
-      "plugin": "@nx/expo/plugin",
+      "plugin": "@nx/detox/plugin",
       "options": {
-        "startTargetName": "start",
-        "serveTargetName": "serve",
-        "runIosTargetName": "run-ios",
-        "runAndroidTargetName": "run-android",
-        "exportTargetName": "export",
-        "prebuildTargetName": "prebuild",
-        "installTargetName": "install",
         "buildTargetName": "build",
-        "submitTargetName": "submit"
+        "startTargetName": "start",
+        "testTargetName": "test"
       }
     },
     {
-      "plugin": "@nx/rollup/plugin",
+      "plugin": "@nx/vite/plugin",
       "options": {
-        "buildTargetName": "build"
+        "buildTargetName": "build",
+        "testTargetName": "test",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview",
+        "serveStaticTargetName": "serve-static"
       }
     },
     {
       "plugin": "@nx/playwright/plugin",
       "options": {
-        "targetName": "playwright:e2e"
+        "targetName": "e2e"
       }
     }
   ],
@@ -95,47 +80,15 @@
       "library": {
         "style": "scss",
         "linter": "eslint",
-        "unitTestRunner": "none"
+        "unitTestRunner": "jest"
       }
     }
   },
   "targetDefaults": {
-    "@nx/vite:build": {
-      "cache": true,
-      "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        "production",
-        "^production"
-      ]
-    },
-    "e2e": {
-      "cache": true,
-      "inputs": [
-        "default",
-        "^production"
-      ]
-    },
-    "@nx/rollup:rollup": {
-      "cache": true,
-      "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        "production",
-        "^production"
-      ]
-    },
     "@nx/js:tsc": {
       "cache": true,
-      "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        "production",
-        "^production"
-      ]
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     }
   }
 }

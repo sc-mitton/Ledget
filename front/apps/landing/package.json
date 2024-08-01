@@ -14,8 +14,6 @@
     "@astrojs/react": "^3.0.10",
     "@geist-ui/icons": "^1.0.2",
     "@headlessui/react": "^1.7.14",
-    "@ledget/media": "workspace:^",
-    "@ledget/ui": "workspace:^",
     "@types/gsap": "^3.0.0",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",

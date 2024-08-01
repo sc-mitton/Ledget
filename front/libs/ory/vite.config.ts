@@ -14,8 +14,7 @@ export default defineConfig({
     nxViteTsPaths(),
     dts({
       entryRoot: 'src',
-      tsConfigFilePath: path.join(__dirname, 'tsconfig.lib.json'),
-      skipDiagnostics: true,
+      tsconfigPath: path.join(__dirname, 'tsconfig.lib.json'),
     }),
   ],
 
@@ -28,6 +27,7 @@ export default defineConfig({
   // See: https://vitejs.dev/guide/build.html#library-mode
   build: {
     outDir: '../../dist/libs/ory',
+    emptyOutDir: true,
     reportCompressedSize: true,
     commonjsOptions: {
       transformMixedEsModules: true,

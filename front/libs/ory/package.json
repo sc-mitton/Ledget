@@ -8,10 +8,5 @@
       "import": "./index.mjs",
       "require": "./index.js"
     }
-  },
-  "dependencies": {
-    "@ory/client": "^1.5.1",
-    "@reduxjs/toolkit": "^1.9.5",
-    "axios": "^1.6.2"
   }
 }

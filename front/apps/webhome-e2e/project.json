@@ -1,0 +1,9 @@
+{
+  "name": "webhome-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/webhome-e2e/src",
+  "implicitDependencies": ["webhome"],
+  "// targets": "to see all targets run: nx show project webhome-e2e --web",
+  "targets": {}
+}
