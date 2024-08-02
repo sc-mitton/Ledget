@@ -12,7 +12,7 @@ import {
 } from './types'
 
 const axiosBaseQuery = async ({ url, headers, ...rest }: AxiosBaseQueryConfig) => {
-
+  console.log('url', url);
   try {
     const result = await axios({
       url,

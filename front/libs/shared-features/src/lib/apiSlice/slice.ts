@@ -57,7 +57,7 @@ const dynamicBaseQuery: BaseQueryFn<
 
   const urlEnd = typeof args === 'string' ? args : args.url
   // construct a dynamically generated portion of the url
-  const adjustedUrl = `${apiUrl}${urlEnd}`
+  const adjustedUrl = `${apiUrl}/${urlEnd}`
   const adjustedArgs = typeof args === 'string' ? adjustedUrl : { ...args, url: adjustedUrl }
 
   // provide the amended url and other params to the raw base query

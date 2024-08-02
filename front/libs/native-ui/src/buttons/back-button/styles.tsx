@@ -6,7 +6,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 10,
-    marginLeft: 5,
+    marginLeft: 2,
   },
   chevronContainer: {
     flexDirection: 'row',

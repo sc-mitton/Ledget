@@ -12,10 +12,7 @@ import * as NavigationBar from 'expo-navigation-bar';
 import * as SplashScreen from 'expo-splash-screen';
 
 import styles from './styles/app';
-import {
-  useAppearance,
-  Box,
-} from '@ledget/native-ui'
+import { useAppearance, Box } from '@ledget/native-ui'
 import { Budget, Accounts, Profile, Activity } from '@screens';
 import { RootTabParamList } from '@types';
 import { useAuthLogic } from './useAuthLogic';

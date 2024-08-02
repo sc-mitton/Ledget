@@ -1,5 +1,7 @@
+import { View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 
+import styles from './styles/authentication';
 import { Login, Recovery, Verification } from '@screens';
 import { RootAuthenticationStackParamList } from '@types';
 import { BackHeader } from '@ledget/native-ui';
@@ -11,28 +13,30 @@ const Authentication = () => {
   const cardStyleInterpolator = useCardStyleInterpolator('authentication');
 
   return (
-    <Stack.Navigator
-      screenOptions={{
-        header: (props) => <BackHeader {...props} />,
-        cardStyleInterpolator,
-      }}
-    >
-      <Stack.Screen
-        name="Login"
-        component={Login}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Recovery"
-        component={Recovery}
-        options={{ headerShown: true }}
-      />
-      <Stack.Screen
-        name="Verification"
-        component={Verification}
-        options={{ headerShown: true }}
-      />
-    </Stack.Navigator>
+    <View style={styles.container}>
+      <Stack.Navigator
+        screenOptions={{
+          header: (props) => <BackHeader {...props} />,
+          cardStyleInterpolator,
+        }}
+      >
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Recovery"
+          component={Recovery}
+          options={{ headerShown: true }}
+        />
+        <Stack.Screen
+          name="Verification"
+          component={Verification}
+          options={{ headerShown: true }}
+        />
+      </Stack.Navigator>
+    </View>
   );
 };
 

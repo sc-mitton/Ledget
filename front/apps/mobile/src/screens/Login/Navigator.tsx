@@ -11,7 +11,7 @@ import { useCardStyleInterpolator } from "@/hooks";
 const Stack = createStackNavigator<LoginStackParamList>();
 
 export default function () {
-  const cardStyleInterpolator = useCardStyleInterpolator('accounts');
+  const cardStyleInterpolator = useCardStyleInterpolator('authentication');
 
   return (
     <Stack.Navigator
