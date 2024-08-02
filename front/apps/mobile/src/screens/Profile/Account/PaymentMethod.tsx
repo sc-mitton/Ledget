@@ -1,0 +1,45 @@
+import { View } from 'react-native';
+
+import styles from './styles/payment-method';
+import { useGetPaymentMethodQuery } from '@ledget/shared-features';
+import { Text, BoxHeader, Icon, ChevronTouchable, ShimmerBox } from '@ledget/native-ui';
+import { CreditCard } from 'geist-native-icons';
+
+const PaymentMethod = () => {
+  const { data: paymentMethod, isLoading } = useGetPaymentMethodQuery();
+
+  const expDate = paymentMethod
+    ? new Date(paymentMethod?.exp_year, paymentMethod?.exp_month)
+    : new Date();
+
+  return (
+    <>
+      <BoxHeader>Payment Method</BoxHeader>
+      <ShimmerBox
+        shimmering={isLoading}
+        variant='nestedContainer'
+        placeholder='paymentMethod'
+        backgroundColor='nestedContainer'>
+        <ChevronTouchable >
+          <Icon icon={CreditCard} />
+          <View style={styles.cardInfo}>
+            <Text>
+              {paymentMethod?.brand.charAt(0).toUpperCase()}
+              {paymentMethod?.brand.slice(1)}
+              &nbsp;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;
+              {paymentMethod?.last4}
+            </Text>
+            <Text color='secondaryText'>
+              {`Exp. ${expDate.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short'
+              })}`}
+            </Text>
+          </View>
+        </ChevronTouchable>
+      </ShimmerBox>
+    </>
+  )
+}
+
+export default PaymentMethod

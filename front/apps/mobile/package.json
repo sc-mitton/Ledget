@@ -2,20 +2,33 @@
   "name": "mobile",
   "version": "0.0.1",
   "private": true,
+  "scripts": {
+    "android": "expo run:android",
+    "eas-build-post-install": "cd ../../ && node tools/scripts/eas-build-post-install.mjs . apps/mobile",
+    "eas-build-pre-install": "cd ../../ && node tools/scripts/eas-build-pre-install.mjs . apps/mobile && cp bun.lockb apps/mobile",
+    "ios": "expo run:ios"
+  },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "*",
     "@testing-library/jest-native": "*",
     "@testing-library/react-native": "*",
-    "metro-config": "*",
-    "react-native": "*",
     "expo": "*",
+    "expo-asset": "*",
+    "expo-blur": "*",
+    "expo-build-properties": "*",
+    "expo-dev-client": "^4.0.15",
+    "expo-linear-gradient": "*",
+    "expo-navigation-bar": "*",
+    "expo-secure-store": "*",
+    "metro-config": "*",
+    "react": "18.2.0",
+    "react-native": "*",
+    "react-native-gesture-handler": "*",
+    "react-native-outside-press": "*",
+    "react-native-reanimated": "*",
+    "react-native-safe-area-context": "*",
+    "react-native-screens": "*",
     "react-native-svg": "*",
-    "react-native-web": "*",
-    "react": "18.2.0"
-  },
-  "scripts": {
-    "eas-build-pre-install": "cd ../../ && node tools/scripts/eas-build-pre-install.mjs . apps/mobile && cp bun.lockb apps/mobile",
-    "eas-build-post-install": "cd ../../ && node tools/scripts/eas-build-post-install.mjs . apps/mobile",
-    "android": "expo run:android",
-    "ios": "expo run:ios"
+    "react-native-web": "*"
   }
 }

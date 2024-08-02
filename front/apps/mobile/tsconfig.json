@@ -3,12 +3,51 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "jsx": "react-native",
-    "lib": ["dom", "esnext"],
+    "lib": [
+      "dom",
+      "esnext"
+    ],
     "moduleResolution": "node",
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "strict": true,
-    "declaration": true
+    "declaration": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "@screens": [
+        "src/screens",
+      ],
+      "@features/*": [
+        "src/features/*"
+      ],
+      "@hooks": [
+        "src/hooks/index.ts"
+      ],
+      "@modals": [
+        "src/modals/index.ts"
+      ],
+      "@types": [
+        "types"
+      ],
+      "@ledget/ory": [
+        "../../libs/ory/src"
+      ],
+      "@ledget/media/native": [
+        "../../libs/media/native/src/index.ts"
+      ],
+      "@ledget/shared-features": [
+        "../../libs/shared-features/src/index.ts"
+      ],
+      "@ledget/native-ui": [
+        "../../libs/native-ui/src/index.ts"
+      ],
+      "@ledget/helpers": [
+        "../../libs/helpers/src"
+      ],
+    },
   },
   "files": [],
   "include": [],

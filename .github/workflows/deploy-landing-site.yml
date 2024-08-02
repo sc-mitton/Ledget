@@ -33,27 +33,27 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: pnpm setup
-        uses: pnpm/action-setup@v4
+      - name: bun setup
+        uses: oven-sh/setup-bun@v2
         with:
-          version: 9.2
-      - name: Get pnpm store directory
+          bun-version: 1.1.21
+      - name: Get bun store directory
         shell: bash
         run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-      - name: Setup pnpm cache
+          echo "STORE_PATH=$(bun store path --silent)" >> $GITHUB_ENV
+      - name: Setup bun cache
         uses: actions/cache@v3
         env:
           STORE_PATH: ${{ env.STORE_PATH }}
         with:
           path: ${{env.STORE_PATH}}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-bun-store-${{ hashFiles('**/bun.lockb') }}
           restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+            ${{ runner.os }}-bun-store-
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: bun install --frozen-lockfile
       - name: Build
-        run: pnpm run build --mode ${{ inputs.environment }}
+        run: bun run build --mode ${{ inputs.environment }}
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:

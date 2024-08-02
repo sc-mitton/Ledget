@@ -1,0 +1,49 @@
+import { StyleSheet } from "react-native";
+
+export default StyleSheet.create({
+  buttons: {
+    marginTop: 6,
+    flexDirection: 'row',
+    gap: 8,
+    flex: 2,
+  },
+  button: {
+    flex: 1,
+  },
+  header: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 4,
+  },
+  headerContainer: {
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    flexDirection: 'row',
+    gap: 4,
+    flex: 1,
+  },
+  accountsBox: {
+    marginTop: 12,
+  },
+  accounts: {
+    paddingHorizontal: 8,
+    flexDirection: 'row',
+  },
+  maskColumn: {
+    flex: 1,
+  },
+  cell: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+  },
+  typeCell: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    paddingRight: 4,
+  },
+  maskCell: {
+    paddingHorizontal: 24,
+  }
+});

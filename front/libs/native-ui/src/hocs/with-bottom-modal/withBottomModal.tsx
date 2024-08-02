@@ -11,7 +11,7 @@ import { Button } from '../../restyled/Button';
 
 type Placement = 'top' | 'bottom' | 'center'
 
-interface Props {
+type Props = {
   onClose?: () => void,
   hasExit?: boolean,
   placement?: Placement

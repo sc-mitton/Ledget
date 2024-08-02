@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "Mobile",
+    "jsEngine": "hermes",
+    "name": "Ledget",
     "slug": "mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "contain"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -17,14 +17,18 @@
       "**/*"
     ],
     "ios": {
+      "jsEngine": "hermes",
       "supportsTablet": true,
       "bundleIdentifier": "com.ledget.mobile"
     },
+    "userInterfaceStyle": "automatic",
     "android": {
+      "jsEngine": "hermes",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#4149b0"
       },
+      "softwareKeyboardLayoutMode": "pan",
       "package": "com.ledget.mobile"
     },
     "web": {
@@ -33,14 +37,16 @@
     },
     "plugins": [
       [
-        "@config-plugins/detox",
+        "expo-secure-store",
         {
-          "skipProguard": false,
-          "subdomains": [
-            "10.0.2.2",
-            "localhost"
-          ]
+          "faceIDPermission": "Allow $(PRODUCT_NAME) to access your Face ID biometric data."
         }
+      ],
+      [
+        "./plugins/withTrustLocalCerts.js"
+      ],
+      [
+        "./plugins/withAndroidPlaid.js"
       ]
     ]
   }
