@@ -123,6 +123,8 @@ export NODE_ENV='development'
 nx run mobileapp:start
 ```
 
+Install XCode and Android Studio if you haven't already. For Android studio, add the Android sdk path to your $PATH variable.
+
 You'll have to drag and drop the crt authority onto the ios simulator in order to get requests to go through when developing with https. You'll also need to go into the settings app on the emulator and set it to allow http.
 
 For an android emulator, go to the settings > security & privacy > more security & privacy > encryption & credentials > install a certificate

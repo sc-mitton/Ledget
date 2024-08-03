@@ -12,6 +12,10 @@ export default StyleSheet.create({
     position: 'relative',
     zIndex: 1,
   },
+  seperatorContainer: {
+    width: '95%',
+    alignSelf: 'center',
+  },
   absTabBar: {
     flexDirection: 'row',
     gap: 12,

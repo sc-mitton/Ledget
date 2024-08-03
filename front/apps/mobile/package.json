@@ -25,6 +25,8 @@
     "react-native": "*",
     "react-native-gesture-handler": "*",
     "react-native-outside-press": "*",
+    "react-native-pager-view": "*",
+    "react-native-plaid-link-sdk": "*",
     "react-native-reanimated": "*",
     "react-native-safe-area-context": "*",
     "react-native-screens": "*",
