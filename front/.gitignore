@@ -58,5 +58,5 @@ cache/
 
 
 apps/mobile-e2e/artifacts
-ios
-android
+**/ios
+**/android
