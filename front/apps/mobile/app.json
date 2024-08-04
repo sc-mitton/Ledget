@@ -7,8 +7,14 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain"
+      "android": {
+        "image": "./assets/splash-android.png",
+        "resizeMode": "contain"
+      },
+      "ios": {
+        "image": "./assets/splash-ios.png",
+        "resizeMode": "contain"
+      }
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -47,6 +53,20 @@
       ],
       [
         "./plugins/withAndroidPlaid.js"
+      ],
+      [
+        "./plugins/withIOSPlaid.js"
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/SourceSans3Bold.ttf",
+            "./assets/fonts/SourceSans3Regular.ttf",
+            "./assets/fonts/SourceSans3Medium.ttf",
+            "./assets/fonts/SourceSans3SemiBold.ttf"
+          ]
+        }
       ]
     ]
   }
