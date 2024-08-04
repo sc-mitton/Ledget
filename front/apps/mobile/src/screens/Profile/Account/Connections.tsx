@@ -4,10 +4,10 @@ import { Plus } from 'geist-native-icons';
 import styles from './styles/connections'
 import { ShimmerBox, Text, Seperator, BoxHeader, ChevronTouchable, Icon, InstitutionLogo } from '@ledget/native-ui';
 import { useGetPlaidItemsQuery } from '@ledget/shared-features';
-import { ProfileScreenProps } from '@types';
+import { AccountScreenProps } from '@types';
 import { usePlaidLink } from '@hooks';
 
-const Connections = (props: ProfileScreenProps) => {
+const Connections = (props: AccountScreenProps) => {
   const { data: plaidItems, isLoading } = useGetPlaidItemsQuery()
   const { openLink } = usePlaidLink()
 

@@ -3,9 +3,9 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export type EnvironmentName = 'dev' | 'prod'
 type Platform = 'browser' | 'mobile'
 
-interface Session { id: string, token: string }
+type Session = { id: string, token: string }
 
-interface State {
+type State = {
   name?: EnvironmentName
   platform?: Platform
   session?: Session,
@@ -13,7 +13,7 @@ interface State {
   apiUrl?: string
 }
 
-export interface RootStateWithEnvironment {
+export type RootStateWithEnvironment = {
   environment: State
   [key: string]: any
 }

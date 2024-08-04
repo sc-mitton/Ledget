@@ -5,11 +5,9 @@ type Modal = 'logout'
 
 type FormatedModal<M extends Modal> = M extends { name: infer N, args?: infer A } ? { name: N, args?: A } : { name: M }
 
-interface ModalState {
+const initialState: {
   modal?: FormatedModal<Modal>
-}
-
-const initialState: ModalState = {
+} = {
   modal: undefined
 }
 

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 
-import { useFonts } from 'expo-font';
 import * as SecureStore from 'expo-secure-store';
 
 import { useAppDispatch, useAppSelector } from '@hooks';

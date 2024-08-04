@@ -50,6 +50,10 @@ export const usePlaidLink = (args: { isOnboarding?: boolean, itemId?: string } |
     }
   }, [data]);
 
+  const onModalClose = useCallback(() => {
+    refetch();
+  }, []);
+
   const openLink = useCallback(() => {
     const openProps = {
       onSuccess: async (success: LinkSuccess) => {
@@ -66,8 +70,8 @@ export const usePlaidLink = (args: { isOnboarding?: boolean, itemId?: string } |
         });
       },
       onExit: (linkExit: LinkExit) => {
-        console.log('Exit: ', linkExit);
         dismissLink();
+        onModalClose();
       },
       iOSPresentationStyle: LinkIOSPresentationStyle.MODAL,
       logLevel: LinkLogLevel.ERROR,

@@ -40,7 +40,7 @@ authenticators:
   bearer_token:
     enabled: true
     config:
-      check_session_url: https://reverent-lewin-bqqp1o2zws.projects.oryapis.com/sessions/whoami
+      check_session_url: https://auth.ledget.app/sessions/whoami
       preserve_path: true
       token_from:
         header: Authorization

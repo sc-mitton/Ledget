@@ -8,7 +8,7 @@ import { TabsNavigator, Avatar, Text, ChevronTouchable } from '@ledget/native-ui
 import { ProfileStackParamList } from '@types';
 import { BackHeader } from '@ledget/native-ui';
 import { useCardStyleInterpolator } from "@/hooks";
-import { ProfileScreenProps } from '@types';
+import { AccountScreenProps } from '@types';
 import Account from './Account/Screen';
 import Security from './Security/Screen';
 import Settings from './Settings/Screen';
@@ -23,7 +23,7 @@ const scenes = {
 
 const Stack = createStackNavigator<ProfileStackParamList>();
 
-function Profile(props: ProfileScreenProps) {
+function Profile(props: AccountScreenProps) {
   const { data: user } = useGetMeQuery();
 
   return (
