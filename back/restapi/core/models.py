@@ -19,7 +19,7 @@ class Settings(models.Model):
 
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     user = models.OneToOneField('User', on_delete=models.CASCADE)
-    automatic_logout = models.BooleanField(default=False)
+    automatic_logout = models.BooleanField(default=True)
     mfa_method = models.CharField(
         choices=MfaMethod.choices, null=True, default=None, max_length=4
     )

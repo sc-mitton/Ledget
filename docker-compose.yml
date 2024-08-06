@@ -28,7 +28,8 @@ services:
       - "traefik.http.routers.oathkeeper.service=oathkeeper"
       - "traefik.http.services.oathkeeper.loadbalancer.server.port=4456"
       - "traefik.http.middlewares.oathkeeper.forwardauth.address=http://oathkeeper:4456/decisions"
-      - "traefik.http.middlewares.oathkeeper.forwardauth.authResponseHeaders=X-User, Authorization, X-Device-Token"
+      - "traefik.http.middlewares.oathkeeper.forwardauth.authResponseHeaders=X-Device-Token, Authorization, X-Session-Token"
+      - "traefik.http.middlewares.oathkeeper.forwardauth.authRequestHeaders=X-Device-Token, Authorization"
     secrets:
       - jwks.json
   proxy:
@@ -38,6 +39,7 @@ services:
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       - "--entryPoints.websecure.forwardedHeaders.insecure"
+      # - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
       # ^^ needed so that we can check ip address of the ory webhook response in the django middleware
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
@@ -141,7 +143,7 @@ services:
       - postgres_password
       - plaid_client_id
   ory:
-    image: oryd/ory
+    image: oryd/ory:v0.3
     ports:
       - 4000:4000
     secrets:
