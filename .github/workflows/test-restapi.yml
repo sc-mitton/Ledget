@@ -45,13 +45,11 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Check Docker Compose
-        run: docker-compose --version
       - name: Test
         run: >
-          docker-compose -f docker-compose.test.yml run --rm restapi sh -c "
+          docker compose -f docker-compose.test.yml run --rm restapi sh -c "
             python manage.py migrate &&
             coverage run manage.py test &&
             coverage report"
       - name: Lint
-        run: docker-compose -f docker-compose.test.yml run --rm restapi sh -c "flake8 --config=.flake8"
+        run: docker compose -f docker-compose.test.yml run --rm restapi sh -c "flake8 --config=.flake8"
