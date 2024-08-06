@@ -12,7 +12,7 @@ RUN jsonnet rules.jsonnet --ext-str domain=localhost --ext-str version=$API_VERS
 
 # Copy artifacts to a clean image
 # Stage 2: Oathkeeper setup
-FROM oryd/oathkeeper:v0.40.3
+FROM oryd/oathkeeper:v0.40.7
 
 COPY ./config.dev.yml /etc/config/oathkeeper/config.yml
 COPY --from=builder /rules.json /etc/config/oathkeeper/rules.json

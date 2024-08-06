@@ -25,7 +25,7 @@ import {
   useLazyGetLoginFlowQuery,
   useCompleteLoginFlowMutation
 } from '@features/orySlice';
-import { useFlowProgress, useStoreToken } from '@hooks';
+import { useFlowProgress } from '@hooks';
 
 const schema = z.object({
   password: z
@@ -63,7 +63,13 @@ const Aal1Authentication = ({
   );
 
   useEffect(() => fetchFlow({ aal: 'aal1' }), []);
-  useFlowProgress({ navigation, route, updateProgress: isCompleteSuccess });
+  useFlowProgress({
+    navigation,
+    route,
+    updateProgress: isCompleteSuccess,
+    token: result?.session_token,
+    id: result?.session.id
+  });
 
   // Submit the form
   const onSubmit = (data: z.infer<typeof schema>) => {
@@ -73,8 +79,6 @@ const Aal1Authentication = ({
       method: 'password'
     });
   };
-
-  useStoreToken({ token: result?.session_token, id: result?.session.id });
 
   return (
     <NestedScreenWOFeedback>

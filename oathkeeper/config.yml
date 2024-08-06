@@ -44,10 +44,6 @@ authenticators:
       preserve_path: true
       token_from:
         header: Authorization
-      forward_http_headers:
-        - Authorization
-        - X-Forwarded-For
-        - X-Device-Token
       subject_from: "identity.id"
       extra_from: "@this"
 
@@ -77,3 +73,9 @@ mutators:
         {
           "session": {{ .Extra | toJson }}
         }
+  header:
+    enabled: true
+    config:
+      headers:
+        X-Session-Token: '{{ .MatchContext.Header.Get "authorization" }}'
+        X-Device-Token: '{{ .MatchContext.Header.Get "x-device-token" }}'

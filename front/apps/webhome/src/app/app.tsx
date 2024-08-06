@@ -37,6 +37,7 @@ import {
 } from '@modals/index';
 import {
   useGetMeQuery,
+  useDisableSessionMutation,
   toastStackSelector,
   tossToast,
   setEnvironment,
@@ -73,6 +74,7 @@ const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const [disableSession] = useDisableSessionMutation();
 
   const ref = useRef<HTMLDivElement>(null);
   const { screenSize } = useScreenContext();
@@ -81,6 +83,21 @@ const App = () => {
 
   const toastStack = useAppSelector(toastStackSelector);
   const logoutModal = useAppSelector(selectLogoutModal);
+
+  // Automatically disable session on tab close
+  useEffect(() => {
+    if (!user?.settings.automatic_logout) return;
+
+    window.addEventListener('beforeunload', async () => {
+      await disableSession();
+    });
+
+    return () => {
+      window.removeEventListener('beforeunload', async () => {
+        await disableSession();
+      });
+    };
+  }, []);
 
   // Handle automatic logout
   useEffect(() => {

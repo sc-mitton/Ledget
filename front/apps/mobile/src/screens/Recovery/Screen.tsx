@@ -10,7 +10,7 @@ import { useNativeFlow } from '@ledget/ory';
 import { useLazyGetRecoveryFlowQuery, useCompleteRecoveryFlowMutation } from '@features/orySlice'
 import { Header, NestedScreenWOFeedback, SubHeader2, Button, Pulse, Otc, Icon } from '@ledget/native-ui'
 import { RecoveryScreenProps } from '@types'
-import { useStoreToken, useFlowProgress } from '@hooks';
+import { useFlowProgress } from '@hooks';
 
 const schema = z.object({
   code: z.string().length(6, { message: 'Invalid code' })
@@ -27,11 +27,15 @@ export default function Recovery({ navigation, route }: RecoveryScreenProps) {
     'recovery'
   )
 
-  useStoreToken({ token: result?.session_token, id: result?.session.id });
-
   useEffect(() => { fetchFlow() }, [])
 
-  useFlowProgress({ navigation, route, updateProgress: isCompleteSuccess });
+  useFlowProgress({
+    navigation,
+    route,
+    updateProgress: isCompleteSuccess,
+    token: result?.session_token,
+    id: result?.session.id
+  });
 
   const onSubmit = (data: z.infer<typeof schema>) => {
     submitFlow({ ...data, email: route.params.identifier, method: 'code' });

@@ -8,20 +8,31 @@ import {
   useRefreshDevicesMutation,
   apiSlice,
   selectSession,
+  setDeviceToken,
+  setSession
 } from '@ledget/shared-features';
 import { hasErrorCode } from '@ledget/helpers';
-import { useAppSelector } from './store';
+import { useAppSelector, useAppDispatch } from './store';
 
 interface Props {
   navigation?: StackNavigationProp<any>
   route?: RouteProp<any, any>
-  updateProgress?: boolean
+  updateProgress?: boolean,
+  token?: string,
+  id?: string,
 }
 
-export const useFlowProgress = ({ navigation, route, updateProgress }: Props) => {
+export const useFlowProgress = ({ navigation, route, updateProgress, token, id }: Props) => {
+  const dispatch = useAppDispatch();
   const [authFlowStarted, setAuthFlowStarted] = useState(false);
   const { error: getMeError, data: user } = useGetMeQuery(undefined, { skip: !authFlowStarted });
-  const [refreshDevices] = useRefreshDevicesMutation({ fixedCacheKey: 'refreshDevices' })
+  const [
+    refreshDevices,
+    {
+      isSuccess: isRefreshSuccess,
+      data: device
+    }
+  ] = useRefreshDevicesMutation({ fixedCacheKey: 'refreshDevices' })
 
   const session = useAppSelector(selectSession);
 
@@ -49,6 +60,20 @@ export const useFlowProgress = ({ navigation, route, updateProgress }: Props) =>
       refreshDevices();
     }
   }, [user]);
+
+  useEffect(() => {
+    if (isRefreshSuccess) {
+      SecureStore.setItemAsync('device_token', device.device_token);
+      dispatch(setDeviceToken(device.device_token));
+    }
+  }, [isRefreshSuccess]);
+
+  useEffect(() => {
+    if (token && id) {
+      SecureStore.setItemAsync('session', JSON.stringify({ token, id }))
+      dispatch(setSession({ token, id }))
+    }
+  }, [token])
 
   useEffect(() => {
     if (updateProgress) {

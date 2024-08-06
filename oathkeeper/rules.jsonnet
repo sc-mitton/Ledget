@@ -20,9 +20,8 @@ local allow_authorizer = { handler: "allow" };
 local deny_authorizer = { handler: "deny" };
 
 /* Mutators */
-local id_token = {
-  handler: "id_token",
-};
+local id_token = { handler: "id_token" };
+local token_header = { handler: "header" };
 local noop_mutator = { handler: "noop" };
 
 /* ---------------------------------- Rules --------------------------------- */
@@ -34,7 +33,7 @@ local Base = {
 local BaseWithAuth = {
   version: version,
   authenticators: [cookie_session_authenticator, bearer_token_authenticator],
-  mutators: [id_token],
+  mutators: [id_token, token_header],
   authorizer: allow_authorizer,
 };
 
@@ -90,8 +89,8 @@ local BaseWithAuth = {
       methods: ["PATCH"],
       url: base_url + "/user/token-session/<[a-zA-Z0-9-]+>/extend",
     },
-    authenticators: [noop_authenticator],
-    mutators: [noop_mutator],
+    authenticators: [bearer_token_authenticator],
+    mutators: [id_token],
     authorizer: allow_authorizer,
   },
   BaseWithAuth
@@ -100,6 +99,14 @@ local BaseWithAuth = {
     match: {
       methods: ["PATCH"],
       url: base_url + "/user/session/extend",
+    },
+  },
+  BaseWithAuth
+  {
+    id: "disabled-session",
+    match: {
+      methods: ["DELETE"],
+      url: base_url + "/user/session",
     },
   },
   BaseWithAuth
