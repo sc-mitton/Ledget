@@ -1,4 +1,7 @@
 import time
+import json
+from unittest.mock import patch
+from django.conf import settings
 
 from restapi.utils import reverse
 from restapi.tests.mixins import ViewTestsMixin
@@ -6,6 +9,7 @@ from django.utils import timezone
 
 from financials.models import Transaction, PlaidItem, Note
 from budget.models import Category, Bill
+from financials.views.transactions import plaid_client
 
 
 class TestTransactionViewSet(ViewTestsMixin):
@@ -19,6 +23,13 @@ class TestTransactionViewSet(ViewTestsMixin):
         self.transaction = Transaction.objects \
             .filter(account__useraccount__user=self.user) \
             .first()
+
+        self.sync_response = None
+
+        response_file = \
+            settings.TEST_DATA_DIR / 'responses' / 'plaid_sync_response.json'
+        with open(response_file, 'r') as f:
+            self.sync_response = json.load(f)
 
     def test_get_merchants(self):
         response = self.client.get(reverse('transactions-merchants'))
@@ -82,7 +93,10 @@ class TestTransactionViewSet(ViewTestsMixin):
     def test_get_recurring_transactions(self):
         pass
 
-    def test_sync_transactions(self):
+    @patch.object(plaid_client, 'transactions_sync')
+    def test_sync_transactions(self, mock_sync):
+        mock_response = mock_sync.return_value
+        mock_response.to_dict.return_value = self.sync_response
 
         # Delete all transactions and reset all account cursors
         Transaction.objects.all().delete()
@@ -92,7 +106,6 @@ class TestTransactionViewSet(ViewTestsMixin):
             item.save()
 
         response = self.client.post(reverse('transactions-sync'))
-
         self.assertEqual(response.status_code, 200)
         self.assertIsNotNone(response.data['added'])
 

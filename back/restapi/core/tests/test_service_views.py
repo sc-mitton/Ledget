@@ -1,8 +1,9 @@
 from unittest.mock import patch, Mock, MagicMock
 import json
-from pathlib import Path
+
 
 from django.urls import reverse
+from django.conf import settings
 
 from restapi.tests.mixins import ViewTestsMixin
 from core.models import Feedback
@@ -96,7 +97,7 @@ class TestServiceViews(ViewTestsMixin):
         mock_subscription_modify.assert_called_once()
 
     def _get_stripe_response_data(self):
-        path = Path(__file__).resolve().parents[0] / 'mock_stripe_response.json'
+        path = settings.TEST_DATA_DIR / 'responses' / 'mock_stripe_response.json'
         with open(path, 'r') as f:
             data = json.loads(f.read())
 

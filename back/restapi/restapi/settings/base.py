@@ -47,9 +47,12 @@ WSGI_APPLICATION = 'restapi.wsgi.application'
 
 # ----------------------------------- Misc ----------------------------------- #
 
-FIXTURE_DIRS = [
-    Path(BASE_DIR, 'restapi', 'fixtures').as_posix(),
-]
+FIXTURE_DIRS = [ Path(BASE_DIR, 'restapi', 'test_data') ]
+
+TEST_DATA_DIR = FIXTURE_DIRS[0]
+
+FIXTURE_DIRS = [ d.as_posix() for d in FIXTURE_DIRS ]
+
 
 # --------------------------------- Debugging -------------------------------- #
 

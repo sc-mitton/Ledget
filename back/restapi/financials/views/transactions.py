@@ -148,13 +148,12 @@ def sync_transactions(plaid_item: PlaidItem, default_category: Category) -> dict
 
     try:
         while has_more:
-            response = plaid_client.transactions_sync(
-                TransactionsSyncRequest(
-                    access_token=plaid_item.access_token,
-                    cursor=cursor,
-                    options=plaid_options
-                )
-            ).to_dict()
+            request = TransactionsSyncRequest(
+                access_token=plaid_item.access_token,
+                cursor=cursor,
+                options=plaid_options
+            )
+            response = plaid_client.transactions_sync(request).to_dict()
 
             has_more = response['has_more']
             cursor = response['next_cursor']

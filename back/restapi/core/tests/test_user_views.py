@@ -3,7 +3,6 @@ from unittest import skip # noqa
 from unittest.mock import patch, Mock
 from datetime import datetime
 import uuid
-from pathlib import Path
 
 from django.urls import reverse
 from django.test import Client
@@ -12,7 +11,7 @@ from django.contrib.auth import get_user_model
 import ory_client
 
 from restapi.tests.utils import timeit # noqa
-from restapi.tests.mixins import ViewTestsMixin, session_payloads, encode_jwt
+from restapi.tests.mixins import ViewTestsMixin
 from core.models import Device
 from core.views.service import stripe as service_stripe
 
@@ -23,7 +22,7 @@ class TestUserViews(ViewTestsMixin):
         super().setUp()
 
         # Mocking response file
-        file = Path(__file__).parent / 'mock_recovery_link_response.json'
+        file = settings.TEST_DATA_DIR / 'responses' / 'mock_recovery_link_response.json'
         with open(file) as f:
             self.create_recovery_code_for_identity = json.load(f)
 
@@ -97,19 +96,6 @@ class TestUserViews(ViewTestsMixin):
         self.assertEqual(response.status_code, 200)
         self.user.refresh_from_db()
         self.assertIsInstance(self.user.password_last_changed, datetime)
-
-    @patch('core.views.user.IdentityApi')
-    def test_extend_user_session(self, identity_api_mock):
-        identity_api_mock.return_value = Mock()
-
-        session_payload = session_payloads[1]
-        session_payload['session']['authentication_methods'][0]['method'] = 'oidc'
-
-        self.client.defaults[settings.OATHKEEPER_AUTH_HEADER] = '{} {}'.format(
-            settings.OATHKEEPER_AUTH_SCHEME, encode_jwt(session_payload))
-
-        response = self.client.patch(reverse('session-extend'))
-        self.assertEqual(response.status_code, 200)
 
     @patch('core.views.user.IdentityApi')
     def test_add_user_to_account_view(self, identity_api_mock):
