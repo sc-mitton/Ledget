@@ -213,12 +213,12 @@ class ViewTestsMixin(TestCase):
 
     def create_clients(self):
         self.client = APIClient()
-        self.client.defaults[settings.OATHKEEPER_AUTH_HEADER] = '{} {}'.format(
-            settings.OATHKEEPER_AUTH_SCHEME, tokens[1])
+        self.client.defaults[settings.OATHKEEPER_JWT_HEADER] = '{} {}'.format(
+            settings.OATHKEEPER_JWT_AUTH_SCHEME, tokens[1])
 
         self.aal2_client = APIClient()
-        self.aal2_client.defaults[settings.OATHKEEPER_AUTH_HEADER] = '{} {}'.format(
-            settings.OATHKEEPER_AUTH_SCHEME, tokens[0])
+        self.aal2_client.defaults[settings.OATHKEEPER_JWT_HEADER] = '{} {}'.format(
+            settings.OATHKEEPER_JWT_AUTH_SCHEME, tokens[0])
 
         self.unauthed_client = APIClient()
 

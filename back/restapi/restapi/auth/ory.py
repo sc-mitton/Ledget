@@ -8,7 +8,7 @@ from secrets import compare_digest
 
 logger = logging.getLogger('ledget')
 
-OATHKEEPER_AUTH_HEADER = settings.OATHKEEPER_AUTH_HEADER
+OATHKEEPER_JWT_HEADER = settings.OATHKEEPER_JWT_HEADER
 DEVICE_TOKEN_HEADER = settings.DEVICE_TOKEN_HEADER
 
 
@@ -23,7 +23,7 @@ class OryBackend(SessionAuthentication):
 
         # header should already be decoded by middleware
 
-        decoded_jwt = request.META.get(OATHKEEPER_AUTH_HEADER)
+        decoded_jwt = request.META.get(OATHKEEPER_JWT_HEADER)
         if not decoded_jwt:
             return
 

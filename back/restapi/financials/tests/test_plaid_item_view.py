@@ -38,8 +38,8 @@ class TestPlaidItemView(ViewTestsMixin):
         # Test with stale session
         session = copy.deepcopy(self.aal2_payload)
         session['session']['authentication_methods'][0]['completed_at'] = 0
-        self.aal2_client.defaults[settings.OATHKEEPER_AUTH_HEADER] = '{} {}'.format(
-            settings.OATHKEEPER_AUTH_SCHEME, encode_jwt(session))
+        self.aal2_client.defaults[settings.OATHKEEPER_JWT_HEADER] = '{} {}'.format(
+            settings.OATHKEEPER_JWT_AUTH_SCHEME, encode_jwt(session))
         response = self.aal2_client.delete(
             reverse('plaid-item-detail', kwargs={'id': self.item.id}))
         self.assertEqual(response.status_code, 401)
@@ -48,8 +48,8 @@ class TestPlaidItemView(ViewTestsMixin):
         response = self.aal2_client.delete(
             reverse('plaid-item-detail', kwargs={'id': self.item.id}),
             headers={
-                settings.OATHKEEPER_AUTH_SCHEME:
-                f'{settings.OATHKEEPER_AUTH_HEADER} {encode_jwt(self.aal1_payload)}'
+                settings.OATHKEEPER_JWT_AUTH_SCHEME:
+                f'{settings.OATHKEEPER_JWT_HEADER} {encode_jwt(self.aal1_payload)}'
             }
         )
         self.assertEqual(response.status_code, 401)

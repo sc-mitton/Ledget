@@ -21,8 +21,8 @@ plaid_client = create_plaid_client()
 
 
 ORY_HOOK_API_KEY = settings.ORY_HOOK_API_KEY
-ORY_HEADER = settings.ORY_AUTH_HEADER
-ORY_SCHEME = settings.ORY_AUTH_SCHEME.lower()
+ORY_HEADER = settings.ORY_HOOK_AUTH_HEADER
+ORY_SCHEME = settings.ORY_HOOK_AUTH_SCHEME.lower()
 
 logger = logging.getLogger('ledget')
 

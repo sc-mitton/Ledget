@@ -17,7 +17,7 @@ stripe_logger = logging.getLogger("stripe")
 logger = logging.getLogger("ledget")
 
 AAL_FRESHNESS_ERROR_MESSAGE = "Required session aal or freshness is not met"
-OATHKEEPER_HEADER = settings.OATHKEEPER_AUTH_HEADER.upper()
+OATHKEEPER_HEADER = settings.OATHKEEPER_JWT_HEADER.upper()
 
 
 class IsAuthenticated(BasePermission):
@@ -43,6 +43,18 @@ class IsAuthenticated(BasePermission):
                 )
         else:
             return session_aal == "aal1" or session_aal == "aal2"
+
+
+class IsTokenBased(BasePermission):
+    """
+    Check if the user is authenticated with a token
+    """
+
+    def has_permission(self, request, view):
+        if not request.ory_session:
+            return False
+
+        return request.ory_session.token_based
 
 
 class IsOidcSession(BasePermission):

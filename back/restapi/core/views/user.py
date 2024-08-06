@@ -32,7 +32,8 @@ from core.serializers.user import (
 from restapi.permissions.auth import (
     IsAuthenticated,
     IsOidcSession,
-    HighestAalFreshSession
+    HighestAalFreshSession,
+    IsTokenBased
 )
 from restapi.permissions.objects import is_account_owner
 from restapi.errors.validation import ValidationError500
@@ -241,6 +242,8 @@ class UserSessionExtendView(GenericAPIView):
 class UserTokenSessionExtendView(GenericAPIView):  # pragma: no cover
     """Extend user session"""
 
+    permission_classes = [IsAuthenticated, IsTokenBased]
+
     def patch(self, request, *args, **kwargs):
         try:
             with ory_client.ApiClient(ory_configuration) as api_client:
@@ -255,6 +258,23 @@ class UserTokenSessionExtendView(GenericAPIView):  # pragma: no cover
                             status=status.HTTP_400_BAD_REQUEST)
 
         return Response(status=status.HTTP_200_OK)
+
+
+class DisabledSessionView(GenericAPIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request):
+        try:
+            with ory_client.ApiClient(ory_configuration) as api_client:
+                api_instance = IdentityApi(api_client)
+                api_instance.disable_session(id=request.ory_session.id)
+        except ory_client.ApiException as e:  # pragma: no cover
+            logger.error(f"Failed to disable session: {e}")
+            return Response({'error': 'Failed to disable session'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class EmailView(GenericAPIView):

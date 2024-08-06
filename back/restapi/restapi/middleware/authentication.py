@@ -13,8 +13,8 @@ from django.conf import settings
 logger = logging.getLogger('ledget')
 
 OATHKEEPER_PUBLIC_KEY = settings.OATHKEEPER_PUBLIC_KEY
-OATHKEEPER_SCHEME = settings.OATHKEEPER_AUTH_SCHEME.lower()
-OATHKEEPER_HEADER = settings.OATHKEEPER_AUTH_HEADER.upper()
+OATHKEEPER_SCHEME = settings.OATHKEEPER_JWT_AUTH_SCHEME.lower()
+OATHKEEPER_HEADER = settings.OATHKEEPER_JWT_HEADER.upper()
 
 
 class OryAuthenticationMiddleware(MiddlewareMixin):

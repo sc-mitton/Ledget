@@ -10,8 +10,8 @@ class TestOryWebhooks(TestCase):
 
     def setUp(self):
         self.client = Client()
-        self.client.defaults[settings.ORY_AUTH_HEADER] = '{} {}'.format(
-            settings.ORY_AUTH_SCHEME,
+        self.client.defaults[settings.ORY_HOOK_AUTH_HEADER] = '{} {}'.format(
+            settings.ORY_HOOK_AUTH_SCHEME,
             settings.ORY_HOOK_API_KEY
         )
         self.webhook_payload = None
