@@ -20,6 +20,7 @@
     "expo-linear-gradient": "*",
     "expo-navigation-bar": "*",
     "expo-secure-store": "*",
+    "expo-splash-screen": "*",
     "metro-config": "*",
     "react": "18.2.0",
     "react-native": "*",

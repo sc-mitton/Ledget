@@ -49,7 +49,7 @@
         }
       ],
       [
-        "./plugins/withTrustLocalCerts.js"
+        "./plugins/withAndroidNetworkSecurity.js"
       ],
       [
         "./plugins/withAndroidPlaid.js"

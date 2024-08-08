@@ -1,6 +1,6 @@
 export * from './icons';
-export * from './brand/LogoIcon';
 
+export { default as LogoIcon } from './brand/LogoIcon';
 export { default as Key } from './images/Key';
 export { default as Envelope } from './images/Envelope';
 export { default as Person } from './images/Person';
