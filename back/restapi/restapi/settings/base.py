@@ -1,7 +1,6 @@
 from pathlib import Path
 import os
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 DEVELOPMENT = False
@@ -20,7 +19,6 @@ DEFAULT_APPS = [
     'django.contrib.sites',
 ]
 THIRD_PARTY_APPS = [
-    'sslserver',
     'rest_framework'
 ]
 LOCAL_APPS = [

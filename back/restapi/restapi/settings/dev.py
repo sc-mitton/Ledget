@@ -5,6 +5,7 @@ import requests
 import jwt
 import json
 import sys
+from pathlib import Path
 
 
 # IMPORTANT FLAGS
@@ -12,16 +13,11 @@ DEVELOPMENT = True
 
 DOMAIN_URL = "https://localhost:8000/"
 DOMAIN = 'localhost'
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'localhost:3000', 'localhost:3001']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '10.0.2.2']
 ACCOUNTS_APP_DOMAIN = 'localhost:3001'
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_BROWSER_XSS_FILTER = True
-
-if DEBUG:
-    SECURE_SSL_REDIRECT = False
-else:
-    SECURE_SSL_REDIRECT = True
 
 MEDIA_ROOT = '/restapi/media'
 
