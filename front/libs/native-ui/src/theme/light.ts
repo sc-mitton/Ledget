@@ -75,7 +75,7 @@ export const lightTheme = createTheme({
     focusedInputBorderSecondary: palette.blue100,
     focusedInputBorderMain: palette.blue300,
     tabNavPillBorder: palette.blue500,
-    bottomNavBorder: palette.gray600,
+    bottomNavBorder: palette.gray500,
     nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 95%)`,
     tabNavBorder: palette.gray250,
 
@@ -113,6 +113,7 @@ export const lightTheme = createTheme({
     tabNavPill: palette.blue500,
     tabGrayPill: palette.gray1000,
     tabGrayPillBorder: 'transparent',
+    borderedGrayButton: palette.gray250,
 
     // Switch
     enabledSwitchPill: palette.gray100,
@@ -262,7 +263,7 @@ export const lightTheme = createTheme({
       alignItems: 'center',
       justifyContent: 'center',
       borderWidth: 1.5,
-      borderColor: 'grayButtonBorder',
+      borderColor: 'borderedGrayButton',
       color: 'secondaryText',
     },
     blueBorderedMain: {

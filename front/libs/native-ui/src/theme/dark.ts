@@ -84,7 +84,7 @@ export const darkTheme = createTheme({
     // Shadows
     navShadow: palette.gray1000,
     tabsShadow: palette.gray1000,
-    activeSwitchShadow: 'hsl(144, 80%, 5%)',
+    activeSwitchShadow: 'hsl(144, 80%, 8%)',
     disabledSwitchShadow: palette.gray700,
     logoShadow: palette.gray100,
 
@@ -115,6 +115,7 @@ export const darkTheme = createTheme({
     mediumGrayButton: palette.gray700,
     mediumGrayButtonBorder: palette.gray650,
     grayButtonBorder: palette.gray750,
+    borderedGrayButton: palette.gray850,
 
     // Switch
     enabledSwitchPill: `hsl(${grayH}, ${grayS}%, 55%)`,

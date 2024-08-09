@@ -2,7 +2,6 @@ import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
   row: {
-    gap: 2,
     flex: 1,
     alignItems: 'center',
     flexDirection: 'row',
@@ -17,7 +16,7 @@ export default StyleSheet.create({
     justifyContent: 'flex-end',
   },
   container: {
-    gap: 10,
+    gap: 12,
     flexDirection: 'column',
     alignItems: 'flex-start',
   }
