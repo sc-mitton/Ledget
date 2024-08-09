@@ -1,13 +1,96 @@
 import { useEffect } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Platform } from 'react-native';
 import Animated, {
   useSharedValue,
   withSequence,
   withTiming,
+  withRepeat,
+  withDelay,
+  Easing,
+  ReduceMotion,
+  useAnimatedStyle
 } from 'react-native-reanimated';
 import { useTheme } from '@shopify/restyle';
+import { View } from 'react-native';
+import { BorderProps, border, composeRestyleFunctions, useRestyle } from '@shopify/restyle';
 
 import styles from './styles';
+import { Box } from '../../restyled/Box';
+import { Theme } from '../../theme';
+
+
+const config = { duration: 1200, easing: Easing.bezier(0.5, 0, 0.5, 1), reduceMotion: ReduceMotion.System }
+
+type RestyleProps = BorderProps<Theme>;
+const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([border as any]);
+
+const ringBoxProps = {
+  borderBottomColor: 'transparent',
+  borderLeftColor: 'transparent',
+  borderTopColor: 'transparent',
+} as const;
+
+const Ring = ({ color, ...rest }: RestyleProps & { color?: string }) => {
+  const { borderColor } = useRestyle(restyleFunctions, rest);
+  return (
+    <Box
+      {...(color
+        ? { style: [{ borderRightColor: color }, styles.ring] }
+        : { borderRightColor: borderColor || 'mainText' })}
+      {...ringBoxProps}
+    />
+  )
+}
+
+export const IosSpinner = ({ color, ...rest }: RestyleProps & { color?: string }) => {
+
+  const pop = useSharedValue(.95);
+  const r1 = useSharedValue(0);
+  const r2 = useSharedValue(0);
+  const r3 = useSharedValue(0);
+  const r4 = useSharedValue(0);
+
+  useEffect(() => {
+    pop.value = withSequence(
+      withTiming(1.1, { duration: 200 }),
+      withTiming(1, { duration: 200 }),
+    )
+    r1.value = withRepeat(withTiming(360, config), -1);
+    r2.value = withDelay(150, withRepeat(withTiming(360, config), -1));
+    r3.value = withDelay(300, withRepeat(withTiming(360, config), -1));
+    r4.value = withDelay(450, withRepeat(withTiming(360, config), -1));
+  }, [])
+
+  const a1 = useAnimatedStyle(() => ({ transform: [{ rotate: `${r1.value}deg` }] }))
+  const a2 = useAnimatedStyle(() => ({ transform: [{ rotate: `${r2.value}deg` }] }))
+  const a3 = useAnimatedStyle(() => ({ transform: [{ rotate: `${r3.value}deg` }] }))
+  const a4 = useAnimatedStyle(() => ({ transform: [{ rotate: `${r4.value}deg` }] }))
+
+  return (
+    <Animated.View style={[styles.container, { transform: [{ scale: pop }] }]}>
+      <View style={styles.ringContainer}>
+        <Animated.View style={[styles.animatedRingContainer, a1]}>
+          <Ring color={color} {...rest} />
+        </Animated.View>
+      </View>
+      <View style={styles.ringContainer}>
+        <Animated.View style={[styles.animatedRingContainer, a2]}>
+          <Ring color={color} {...rest} />
+        </Animated.View>
+      </View>
+      <View style={styles.ringContainer}>
+        <Animated.View style={[styles.animatedRingContainer, a3]}>
+          <Ring color={color} {...rest} />
+        </Animated.View>
+      </View>
+      <View style={styles.ringContainer}>
+        <Animated.View style={[styles.animatedRingContainer, a4]}>
+          <Ring color={color} {...rest} />
+        </Animated.View>
+      </View>
+    </Animated.View>
+  )
+}
 
 export const Spinner = ({ color }: { color?: string }) => {
   const theme = useTheme();
@@ -21,8 +104,14 @@ export const Spinner = ({ color }: { color?: string }) => {
   }, [])
 
   return (
-    <Animated.View style={[styles.container, { transform: [{ scale: pop }] }]}>
-      <ActivityIndicator color={color || theme.colors['mainText']} />
+    <Animated.View style={[
+      styles.container,
+      { transform: [{ scale: pop }] },
+      Platform.OS === 'ios' ? styles.iosContainer : styles.androidContainer
+    ]}>
+      {Platform.OS === 'ios'
+        ? <IosSpinner color={color} />
+        : <ActivityIndicator color={color || theme.colors['mainText']} />}
     </Animated.View>
   )
 }

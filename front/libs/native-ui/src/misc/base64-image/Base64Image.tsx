@@ -1,23 +1,33 @@
 import { Image, StyleProp, ViewStyle } from 'react-native';
 import { Box } from '../../restyled/Box';
-import { View } from 'react-native-reanimated/lib/typescript/Animated';
+import {
+  BorderProps,
+  ShadowProps,
+  composeRestyleFunctions,
+  border,
+  shadow,
+  useRestyle
+} from '@shopify/restyle';
+import { Theme } from '../../theme';
 
-export interface Props {
+const restyleFunctions = composeRestyleFunctions([border, shadow])
+
+export type Props = {
   data?: string;
   alt?: string;
   size?: number;
-  border?: number;
   style?: StyleProp<ViewStyle>;
-}
+} & BorderProps<Theme> & ShadowProps<Theme>
 
-export const Base64Image = (props: Props) => {
-  const { data, alt, size = 20, border = 1.5 } = props
+export const Base64Image = ({ data, alt, style, size = 20, ...rest }: Props) => {
+  const props = useRestyle(restyleFunctions as any, rest);
+
   return (
     <Box
       borderColor='quinaryText'
-      borderWidth={border}
       borderRadius={20}
-      style={props.style}
+      style={style}
+      {...props}
     >
       <Image
         style={{ width: size, height: size }}
