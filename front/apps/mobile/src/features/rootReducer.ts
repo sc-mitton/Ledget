@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import { modalSlice } from './modalSlice';
+import { appearanceslice } from './appearanceSlice';
 import {
   apiSlice,
   toastSlice,
@@ -8,6 +9,15 @@ import {
   budgetItemMetaDataSlice,
   environmentSlice,
 } from '@ledget/shared-features';
+import { persistReducer } from "redux-persist";
+import reduxStorage from "./storage";
+
+const persistConfig = {
+  key: "root",
+  version: 1,
+  storage: reduxStorage,
+  timeout: 0,
+};
 
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
@@ -18,6 +28,9 @@ const rootReducer = combineReducers({
     filteredFetchedConfirmedTransactions.reducer,
   budgetItemMetaData: budgetItemMetaDataSlice.reducer,
   modal: modalSlice.reducer,
+  appearance: appearanceslice.reducer,
 });
 
-export default rootReducer;
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export default persistedReducer;

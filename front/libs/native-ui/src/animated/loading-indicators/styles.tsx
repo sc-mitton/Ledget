@@ -2,11 +2,16 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    top: '52%',
     left: '50%',
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'absolute',
+  },
+  androidContainer: {
+    top: '52%',
+  },
+  iosContainer: {
+    top: '100%'
   },
   ringContainer: {
     alignItems: 'center',

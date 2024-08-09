@@ -55,6 +55,7 @@ const palette = {
 export const lightTheme = createTheme({
   colors: {
     transparent: 'transparent',
+    mode: 'light',
 
     // Backgrounds
     mainBackground: palette.gray150,
@@ -84,6 +85,7 @@ export const lightTheme = createTheme({
     activeIcon: palette.blueSat,
     activeSwitchShadow: 'hsl(144, 70%, 50%)',
     disabledSwitchShadow: palette.gray500,
+    logoShadow: palette.gray600,
 
     // Text
     mainText: palette.offBlack,
@@ -110,7 +112,7 @@ export const lightTheme = createTheme({
     mediumGrayButtonBorder: palette.gray300,
     tabNavPill: palette.blue500,
     tabGrayPill: palette.gray1000,
-    tabGrayPillBorder: palette.gray900,
+    tabGrayPillBorder: 'transparent',
 
     // Switch
     enabledSwitchPill: palette.gray100,
@@ -151,7 +153,7 @@ export const lightTheme = createTheme({
     },
     header: {
       fontSize: 28,
-      lineHeight: 30,
+      lineHeight: 32,
       marginTop: 'm',
       marginLeft: 'xs',
       marginBottom: 'xs',
@@ -294,7 +296,7 @@ export const lightTheme = createTheme({
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: 'grayButton',
-      borderColor: 'grayButtonBorder',
+      borderColor: 'transparent',
       borderWidth: 1.5,
     },
     transparentPill: {

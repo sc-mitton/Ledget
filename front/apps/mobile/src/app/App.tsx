@@ -8,16 +8,18 @@ import { useAppDispatch, useAppSelector } from '@hooks';
 import { selectEnvironment, setEnvironment } from '@ledget/shared-features';
 import { useTheme } from '@shopify/restyle';
 import { useFonts } from 'expo-font';
+import { MMKV } from 'react-native-mmkv'
 import * as NavigationBar from 'expo-navigation-bar';
 import * as SplashScreen from 'expo-splash-screen';
 
 import styles from './styles/app';
-import { useAppearance, Box } from '@ledget/native-ui'
+import { Box } from '@ledget/native-ui'
 import { Budget, Accounts, Profile, Activity } from '@screens';
 import { RootTabParamList } from '@types';
 import { useAuthLogic } from './useAuthLogic';
 import { withProviders } from './Providers';
 import { ENV, IOS_LEDGET_API_URI, ANDROID_LEDGET_API_URI } from '@env';
+import { useAppearance } from '@features/appearanceSlice';
 import BottomNav from './BottomNav';
 import Authentication from './Authentication';
 import Modals from './Modals';
@@ -25,6 +27,11 @@ import SourceSans3Regular from '../../assets/fonts/SourceSans3Regular.ttf';
 import SourceSans3Medium from '../../assets/fonts/SourceSans3Medium.ttf';
 import SourceSans3SemiBold from '../../assets/fonts/SourceSans3SemiBold.ttf';
 import SourceSans3Bold from '../../assets/fonts/SourceSans3Bold.ttf';
+
+export const storage = new MMKV({
+  id: `user-storage`,
+  path: `ledget/storage`
+})
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
 SplashScreen.preventAutoHideAsync();

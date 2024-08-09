@@ -56,6 +56,7 @@ export const darkTheme = createTheme({
   ...lightTheme,
   colors: {
     ...lightTheme.colors,
+    mode: 'dark',
 
     // Backgrounds
     mainBackground: palette.gray900,
@@ -75,7 +76,7 @@ export const darkTheme = createTheme({
     inputBorderErrorSecondary: palette.mutedRed,
     focusedInputBorderMain: palette.blue400,
     focusedInputBorderSecondary: palette.blue800,
-    tabNavPillBorder: palette.blue500,
+    tabNavPillBorder: 'transparent',
     bottomNavBorder: palette.gray750,
     nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 12%)`,
     tabNavBorder: palette.gray800,
@@ -85,6 +86,7 @@ export const darkTheme = createTheme({
     tabsShadow: palette.gray1000,
     activeSwitchShadow: 'hsl(144, 80%, 5%)',
     disabledSwitchShadow: palette.gray700,
+    logoShadow: palette.gray100,
 
     // Icons
     activeIcon: palette.blueSat,

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { View, ActivityIndicator } from 'react-native';
 import Animated, {
   useSharedValue,
   withSequence,

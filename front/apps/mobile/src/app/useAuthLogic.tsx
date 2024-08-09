@@ -15,7 +15,6 @@ export const useAuthLogic = () => {
   const dispatch = useAppDispatch();
   const [appIsReady, setAppIsReady] = useState<boolean>(false);
   const [continueToMainApp, setContinueToMainApp] = useState(false);
-
   const session = useAppSelector(selectSession);
   const deviceToken = useAppSelector(selectDeviceToken);
   const {

@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import Animated, { withRepeat, withTiming, withSequence, useSharedValue, useAnimatedStyle } from 'react-native-reanimated';
 import { View, StyleProp, ViewStyle } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useAppearance } from '../theme';
+import { useTheme } from '@shopify/restyle';
 
 import styles from './styles/shimmer';
 
@@ -10,7 +10,7 @@ export const Shimmer = ({ intensity = 4, style }: { intensity?: number, style?: 
   const ref = useRef<View>(null)
   const animatedBounds = useRef<[number, number]>()
   const x = useSharedValue(0)
-  const appearance = useAppearance()
+  const theme = useTheme()
 
   const onLayout = () => {
     ref.current?.measure((x, y, width, height, pageX, pageY) => {
@@ -35,7 +35,7 @@ export const Shimmer = ({ intensity = 4, style }: { intensity?: number, style?: 
           style={[styles.filled, styles.rotated]}
           colors={[
             'transparent',
-            appearance.mode === 'dark'
+            theme.colors.mode === 'dark'
               ? `hsla(0, 0%, 60%, ${intensity / 100})`
               : `hsla(0, 0%, 50%, ${intensity / 100})`,
             'transparent'

@@ -7,7 +7,7 @@ import { Text } from 'react-native';
 interface Props extends BoxProps {
   shimmering?: boolean,
   placeholder?: string,
-  numberOfLines?: number,
+  numberOfLines?: number
 }
 
 export const ShimmerBox = (props: Props) => {
