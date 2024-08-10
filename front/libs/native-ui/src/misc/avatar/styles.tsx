@@ -34,8 +34,8 @@ export default StyleSheet.create({
     height: 48,
   },
   lCircle: {
-    width: 58,
-    height: 58,
+    width: 54,
+    height: 54,
   },
   s: {
     fontSize: 16,

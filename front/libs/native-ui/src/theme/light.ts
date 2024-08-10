@@ -60,8 +60,8 @@ export const lightTheme = createTheme({
     // Backgrounds
     mainBackground: palette.gray150,
     accountsMainBackground: palette.gray100,
-    androidNavBackground: palette.gray200,
-    navBackground: palette.gray500,
+    androidbottomNavBackground: palette.gray200,
+    bottomNavBackground: palette.gray400,
     inputBackground: palette.gray200,
     nestedContainer: palette.white,
     avatar: palette.gray800,
@@ -89,10 +89,10 @@ export const lightTheme = createTheme({
 
     // Text
     mainText: palette.offBlack,
-    secondaryText: palette.offBlack3,
-    tertiaryText: palette.offBlack4,
-    quaternaryText: palette.offBlack5,
-    quinaryText: palette.offBlack6,
+    secondaryText: palette.offBlack2,
+    tertiaryText: palette.offBlack3,
+    quaternaryText: palette.offBlack4,
+    quinaryText: palette.offBlack5,
     whiteText: palette.white,
     highContrastText: palette.black,
     invertedText: palette.gray100,
@@ -103,7 +103,7 @@ export const lightTheme = createTheme({
 
     // Buttons
     blueButton: palette.blue500,
-    blueButtonBorder: palette.blue400,
+    blueButtonBorder: palette.blue450,
     blueButton2: palette.blue100,
     blueButtonBorder2: palette.blue100,
     grayButton: palette.gray250,
@@ -161,11 +161,12 @@ export const lightTheme = createTheme({
       fontFamily: 'SourceSans3SemiBold',
     },
     header2: {
-      fontSize: 18,
+      fontSize: 22,
       marginLeft: 'xs',
       lineHeight: 26,
       fontFamily: 'SourceSans3Medium',
       marginTop: 'm',
+      marginBottom: 's',
     },
     boxHeader: {
       fontSize: 15,

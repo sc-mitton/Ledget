@@ -33,7 +33,7 @@ class PlaidItem(BasePrivateModel):
             on_delete=models.SET_NULL,
             null=True
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, editable=False)
     id = models.CharField(max_length=40, primary_key=True, editable=False)
     access_token = models.CharField(max_length=100, null=True)
     cursor = models.CharField(max_length=256, null=True, blank=True)

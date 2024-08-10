@@ -130,4 +130,4 @@ class PlaidItemsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PlaidItem
-        exclude = ('access_token', 'user')
+        exclude = ('access_token',)

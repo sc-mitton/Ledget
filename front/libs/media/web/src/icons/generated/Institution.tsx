@@ -18,14 +18,15 @@ function SvgInstitution({
       fill="currentColor"
       {...props}
     >
-      <path
+      <g
         fill="none"
         stroke="currentColor"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={1.5}
-        d="M12.5 11.9v11M21.2 11.9v11M3.9 11.9v11M12.1 2.2 2.3 6.4c-1 .4-.8 2.1.4 2.1h19.7c1.1 0 1.4-1.6.4-2.1L13 2.2c-.4-.1-.6-.1-.9 0"
-      />
+        strokeWidth={1.398}
+      >
+        <path d="M9.8 11.9v10.3M20.6 11.9v10.3M4.4 11.9v10.3M12.2 2.9 3 6.8c-1 .3-.8 1.9.3 1.9h18.4c1.1 0 1.3-1.5.3-1.9L12.9 3c-.3-.3-.5-.3-.7-.1M2.3 22.2h20.4M15.2 11.9v10.3" />
+      </g>
     </svg>
   );
 }

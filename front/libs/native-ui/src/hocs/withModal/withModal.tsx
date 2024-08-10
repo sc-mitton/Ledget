@@ -9,7 +9,7 @@ import { Box } from '../../restyled/Box';
 import { Icon } from '../../restyled/Icon';
 import { Button } from '../../restyled/Button';
 
-type Placement = 'top' | 'bottom' | 'center'
+type Placement = 'top' | 'bottom' | 'float'
 
 type Props = {
   onClose?: () => void,
@@ -24,7 +24,7 @@ export function withModal<P>(WrappedComponent: FC<P & { closeModal: () => void }
       ...rest
     } = props
 
-    const yStart = props.placement === 'top' ? -300 : props.placement === 'bottom' ? 300 : 0
+    const yStart = props.placement === 'top' ? -300 : props.placement === 'bottom' ? 300 : 50
     const [closeAll, setCloseAll] = useState(false);
     const [unMount, setUnMount] = useState(false);
     const translateY = useSharedValue(yStart);
@@ -33,14 +33,14 @@ export function withModal<P>(WrappedComponent: FC<P & { closeModal: () => void }
 
     const modalAnimation = useAnimatedStyle(() => {
       return {
-        transform: [{ translateY: withTiming(translateY.value, { duration: 300 }) }],
-        opacity: withTiming(opacity.value, { duration: 300 })
+        transform: [{ translateY: withTiming(translateY.value, { duration: 200 }) }],
+        opacity: withTiming(opacity.value, { duration: 200 })
       }
     });
 
     const overlayFade = useAnimatedStyle(() => {
       return {
-        opacity: withTiming(overlayOpacity.value, { duration: 500 })
+        opacity: withTiming(overlayOpacity.value, { duration: 300 })
       }
     });
 
@@ -51,15 +51,15 @@ export function withModal<P>(WrappedComponent: FC<P & { closeModal: () => void }
         overlayOpacity.value = withTiming(0, { duration: 300 })
         setTimeout(() => {
           setUnMount(true)
-        }, 500)
+        }, 400)
       }
     }, [closeAll])
 
     useEffect(() => {
       if (!unMount) {
-        translateY.value = withTiming(0, { duration: 300 })
-        opacity.value = withTiming(1, { duration: 300 })
-        overlayOpacity.value = withTiming(.5, { duration: 300 })
+        translateY.value = withTiming(0, { duration: 200 })
+        opacity.value = withTiming(1, { duration: 200 })
+        overlayOpacity.value = withTiming(.8, { duration: 200 })
       } else {
         props.onClose && props.onClose()
       }
@@ -68,14 +68,14 @@ export function withModal<P>(WrappedComponent: FC<P & { closeModal: () => void }
     return (
       <>
         {!unMount &&
-          <View style={[styles.full, styles.container]}>
+          <View style={[styles.full, styles.container, styles.floatedContentContainer]}>
             <Animated.View style={[overlayFade, styles.full]}>
               <Box backgroundColor='modalOverlay' style={styles.full} />
             </Animated.View>
-            <Animated.View style={[styles.modal, modalAnimation, styles[`${props.placement || 'center'}Modal`]]}>
+            <Animated.View style={[styles.modal, styles.floatModal, modalAnimation, styles[`${props.placement || 'float'}Modal`]]}>
               <OutsidePressHandler onOutsidePress={() => setCloseAll(true)}>
-                <Box variant='modalBox' style={styles[`${props.placement || 'center'}ModalBackground`]}>
-                  <View style={styles[`${props.placement || 'center'}ModalContent`]}>
+                <Box variant='modalBox' style={styles[`${props.placement || 'float'}ModalBackground`]}>
+                  <View style={styles[`${props.placement || 'float'}ModalContent`]}>
                     <WrappedComponent {...rest as P} closeModal={() => setCloseAll(true)} />
                     {hasExit && <View style={styles.closeButton}>
                       <Button onPress={() => setCloseAll(true)} variant='circleButton' >

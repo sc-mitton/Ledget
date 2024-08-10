@@ -26,7 +26,7 @@ export default function Nav({ state, descriptors, navigation }: Props) {
         style={styles.navBlurView}
       >
         <Box
-          backgroundColor={'navBackground'}
+          backgroundColor={'bottomNavBackground'}
           style={styles.navBack}
           shadowColor='navShadow'
           shadowOffset={{ width: 0, height: -5 }}

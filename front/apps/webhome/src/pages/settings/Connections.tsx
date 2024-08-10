@@ -224,7 +224,7 @@ const ConfirmModal = withReAuth(
 
     const finalSubmit = () => {
       for (const que of deleteQue) {
-        deletePlaidItem({ itemId: que.itemId });
+        deletePlaidItem(que.itemId);
       }
     };
 

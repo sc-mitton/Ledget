@@ -1,16 +1,17 @@
 import { StackScreenProps } from '@react-navigation/stack';
 
 export type ProfileStackParamList = {
-  Account: undefined,
+  Profile: undefined,
   Connection: {
     item: string
   },
   Device: {
     id: string
-  }
+  },
+  PersonalInfo: undefined,
 };
 
-// Profile
-export type AccountScreenProps = StackScreenProps<ProfileStackParamList, 'Account'>
+export type AccountScreenProps = StackScreenProps<ProfileStackParamList, 'Profile'>
 export type ConnectionScreenProps = StackScreenProps<ProfileStackParamList, 'Connection'>
 export type DeviceScreenProps = StackScreenProps<ProfileStackParamList, 'Device'>
+export type PersonalInfoScreenProps = StackScreenProps<ProfileStackParamList, 'PersonalInfo'>

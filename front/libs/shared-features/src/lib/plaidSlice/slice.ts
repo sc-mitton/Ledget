@@ -29,8 +29,8 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
         data ? `plaid-items?user=${data.userId}` : 'plaid-items',
       providesTags: ['PlaidItem']
     }),
-    deletePlaidItem: builder.mutation<void, { itemId: string }>({
-      query: ({ itemId }) => ({
+    deletePlaidItem: builder.mutation<void, string>({
+      query: (itemId) => ({
         url: `plaid_item/${itemId}`,
         method: 'DELETE'
       }),

@@ -4,6 +4,11 @@ export default StyleSheet.create({
   container: {
     zIndex: 100,
   },
+  floatedContentContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
   full: {
     position: 'absolute',
     top: 0,
@@ -21,25 +26,26 @@ export default StyleSheet.create({
     left: 0,
     right: 0,
   },
-  centerModal: {
-    top: '50%',
-    left: '50%',
-  },
   topModal: {
     top: 0,
     left: 0,
     right: 0,
+  },
+  floatModal: {
+    left: 24,
+    right: 24,
+    bottom: 64
   },
   bottomModalContent: {
     paddingHorizontal: 16,
     paddingBottom: 64
   },
   topModalContent: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 12,
     paddingTop: 64,
   },
-  centerModalContent: {
-    paddingHorizontal: 32,
+  floatModalContent: {
+    padding: 24,
   },
   closeButton: {
     position: 'absolute',
@@ -54,7 +60,7 @@ export default StyleSheet.create({
     borderBottomEndRadius: 24,
     borderBottomStartRadius: 24,
   },
-  centerModalBackground: {
+  floatModalBackground: {
     borderRadius: 24,
   },
 });

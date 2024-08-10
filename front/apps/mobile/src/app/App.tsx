@@ -86,7 +86,7 @@ export const App = withProviders(() => {
   // Set the navigation bar color and button style based on the theme
   useEffect(() => {
     if (Platform.OS !== 'android') return;
-    NavigationBar.setBackgroundColorAsync(theme.colors.androidNavBackground);
+    NavigationBar.setBackgroundColorAsync(theme.colors.androidbottomNavBackground);
     NavigationBar.setButtonStyleAsync(appearance.mode === 'dark' ? 'light' : 'dark');
   }, [appearance.mode]);
 

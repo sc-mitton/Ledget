@@ -26,4 +26,4 @@ export * from './containers/loading-box/LoadingBox';
 export * from './theme';
 
 export * from './loaders/ShimmerBox';
-export * from './hocs/with-bottom-modal/withBottomModal';
+export * from './hocs/withModal/withModal';

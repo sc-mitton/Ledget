@@ -13,7 +13,7 @@ function SvgMapPin2({
       height={size}
       strokeLinecap="round"
       strokeLinejoin="round"
-      strokeWidth={2.25}
+      strokeWidth={1.5}
       stroke="currentColor"
       fill="none"
       {...props}
@@ -21,8 +21,14 @@ function SvgMapPin2({
       <Path
         strokeLinecap="round"
         strokeMiterlimit={10}
+        strokeWidth={1.75}
+        d="M12 10.9c-2.3 0-4.2-1.9-4.2-4.2S9.7 2.5 12 2.5s4.2 1.9 4.2 4.2-1.9 4.2-4.2 4.2Z"
+      />
+      <Path
+        strokeLinecap="round"
+        strokeMiterlimit={10}
         strokeWidth={2.25}
-        d="M12 10.9c-2.3 0-4.2-1.9-4.2-4.2S9.7 2.5 12 2.5s4.2 1.9 4.2 4.2-1.9 4.2-4.2 4.2ZM12 11.3v10.2"
+        d="M12 11.3v10.2"
       />
     </Svg>
   );

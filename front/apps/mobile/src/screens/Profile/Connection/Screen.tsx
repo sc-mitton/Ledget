@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { View, TouchableOpacity, Linking, ScrollView } from 'react-native';
 
 import {
@@ -11,12 +11,16 @@ import {
 } from '@ledget/native-ui';
 import { Trash2 } from 'geist-native-icons';
 import { ConnectionScreenProps } from '@types';
-import { useGetPlaidItemsQuery } from '@ledget/shared-features';
+import { setModal } from '@features/modalSlice';
+import { useAppDispatch } from '@/hooks';
+import { useGetPlaidItemsQuery, useGetMeQuery, apiSlice } from '@ledget/shared-features';
 
 import styles from './styles';
 
 const Screen = ({ navigation, route }: ConnectionScreenProps) => {
   const { data: plaidItems } = useGetPlaidItemsQuery();
+  const { data: user } = useGetMeQuery();
+  const dispatch = useAppDispatch();
 
   const accounts = useMemo(() => {
     return plaidItems?.find((item) => item.id === route.params.item)?.accounts;
@@ -71,16 +75,22 @@ const Screen = ({ navigation, route }: ConnectionScreenProps) => {
             </View>
           </View>
         </Box>
-        <View style={styles.buttons}>
-          <Button
-            style={styles.button}
-            variant='grayMain'
-            label='Disconnect'
-            labelPlacement='left'
-          >
-            <Icon icon={Trash2} size={18} />
-          </Button>
-        </View>
+        {plaidItems?.find((item) => item.id === route.params.item)?.user === user?.id &&
+          <View style={styles.buttons}>
+            <Button
+              style={styles.button}
+              variant='grayMain'
+              label='Disconnect'
+              labelPlacement='left'
+              onPress={() => dispatch(setModal({
+                name: 'confirmDeletePlaidItem',
+                args: { id: route.params.item }
+              }))}
+            >
+              <Icon icon={Trash2} size={18} />
+            </Button>
+          </View>
+        }
       </ScrollView>
     </Box>
   )

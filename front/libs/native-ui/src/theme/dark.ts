@@ -61,9 +61,9 @@ export const darkTheme = createTheme({
     // Backgrounds
     mainBackground: palette.gray900,
     accountsMainBackground: palette.gray900,
-    navBackground: palette.gray850,
-    androidNavBackground: palette.gray850,
-    nestedContainer: `hsl(${grayH}, ${grayS}%, 11%)`,
+    bottomNavBackground: palette.gray850,
+    androidbottomNavBackground: palette.gray850,
+    nestedContainer: `hsl(${grayH}, ${grayS}%, 9%)`,
     inputBackground: palette.gray800,
     tabNavPill: palette.blue700,
     avatar: palette.gray800,
@@ -78,13 +78,13 @@ export const darkTheme = createTheme({
     focusedInputBorderSecondary: palette.blue800,
     tabNavPillBorder: 'transparent',
     bottomNavBorder: palette.gray750,
-    nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 12%)`,
+    nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 10%)`,
     tabNavBorder: palette.gray800,
 
     // Shadows
     navShadow: palette.gray1000,
     tabsShadow: palette.gray1000,
-    activeSwitchShadow: 'hsl(144, 80%, 8%)',
+    activeSwitchShadow: 'hsl(144, 80%, 12%)',
     disabledSwitchShadow: palette.gray700,
     logoShadow: palette.gray100,
 
@@ -124,8 +124,8 @@ export const darkTheme = createTheme({
     disabledSwitchCrib: palette.gray600,
 
     // Seperators
-    darkerseperator: palette.gray800,
-    lightseperator: palette.gray750,
+    darkerseperator: palette.gray900,
+    lightseperator: palette.gray800,
     blueseperator: palette.blue400,
 
     // Misc

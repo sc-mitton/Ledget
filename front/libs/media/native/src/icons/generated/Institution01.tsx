@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Svg, { SvgProps, G, Path } from 'react-native-svg';
-function SvgInstitution({
+function SvgInstitution01({
   size = 24,
   ...props
 }: SvgProps & {
@@ -30,4 +30,4 @@ function SvgInstitution({
     </Svg>
   );
 }
-export default SvgInstitution;
+export default SvgInstitution01;
