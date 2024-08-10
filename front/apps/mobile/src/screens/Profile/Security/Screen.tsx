@@ -8,8 +8,8 @@ const Screen = (props: any) => {
   return (
     <ScrollView>
       <Box variant='screenContent'>
-        <Devices />
         <Mfa />
+        <Devices />
       </Box>
     </ScrollView>
   )

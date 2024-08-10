@@ -3,7 +3,7 @@ import { lightTheme } from "./light";
 import basePalette from './base-palette';
 
 const grayH = 240;
-const grayS = 7;
+const grayS = 5;
 
 const blueH = 226;
 const blueS = 50;

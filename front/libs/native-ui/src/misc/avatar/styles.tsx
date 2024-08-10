@@ -38,8 +38,8 @@ export default StyleSheet.create({
     height: 54,
   },
   s: {
-    fontSize: 16,
-    padding: 0
+    fontSize: 14,
+    padding: 2
   },
   m: {
     fontSize: 20,

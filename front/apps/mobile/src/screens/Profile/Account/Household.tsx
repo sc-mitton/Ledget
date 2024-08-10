@@ -1,7 +1,6 @@
 
-import { Box, Text, BoxHeader, ChevronTouchable, Icon, ShimmerBox } from '@ledget/native-ui';
+import { Text, BoxHeader, ChevronTouchable, ShimmerBox, Avatar } from '@ledget/native-ui';
 import { useGetCoOwnerQuery, useGetMeQuery } from '@ledget/shared-features';
-import { Users } from 'geist-native-icons';
 
 const Household = () => {
   const { data: coOwner, isLoading } = useGetCoOwnerQuery();
@@ -17,7 +16,7 @@ const Household = () => {
         variant='nestedContainer'
         backgroundColor='nestedContainer'>
         <ChevronTouchable>
-          <Icon icon={Users} />
+          <Avatar name={coOwner?.name} size='s' />
           <Text>
             {user?.co_owner
               ? coOwner && `${coOwner?.name.first} ${coOwner?.name.last}`

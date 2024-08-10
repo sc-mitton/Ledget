@@ -45,6 +45,7 @@ const Screen = ({ navigation, route }: ConnectionScreenProps) => {
             <View>
               {accounts?.map((account, i) => (
                 <Box
+                  key={`${account.id}name`}
                   style={styles.cell}
                   borderBottomWidth={1}
                   borderBottomColor={i !== accounts?.length - 1 ? 'lightseperator' : 'transparent'}
@@ -55,6 +56,7 @@ const Screen = ({ navigation, route }: ConnectionScreenProps) => {
             <View style={styles.maskColumn}>
               {accounts?.map((account, i) => (
                 <Box
+                  key={`${account.id}mask`}
                   borderBottomColor={i !== accounts?.length - 1 ? 'lightseperator' : 'transparent'}
                   borderBottomWidth={1}
                   style={[styles.cell, styles.maskCell]}
@@ -66,6 +68,7 @@ const Screen = ({ navigation, route }: ConnectionScreenProps) => {
             <View>
               {accounts?.map((account, i) => (
                 <Box
+                  key={`${account.id}type`}
                   style={[styles.cell, styles.typeCell]}
                   borderBottomWidth={1}
                   borderBottomColor={i !== accounts?.length - 1 ? 'lightseperator' : 'transparent'}
