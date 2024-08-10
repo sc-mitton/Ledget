@@ -19,6 +19,7 @@ import {
   TabNavList,
   NestedWindow2
 } from '@ledget/ui';
+import { useAppDispatch } from '@hooks/store';
 
 export const TabView = ({
   children,
@@ -50,6 +51,7 @@ export const TabView = ({
 };
 
 export const BottomButtons = ({ item }: { item: ItemS }) => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const [addNewBill, { isLoading: isBillLoading, isSuccess: isBillSuccess }] =
@@ -113,7 +115,7 @@ export const BottomButtons = ({ item }: { item: ItemS }) => {
 
   useEffect(() => {
     if (patchedUserSuccess) {
-      apiSlice.util.invalidateTags(['user']);
+      dispatch(apiSlice.util.invalidateTags(['user']));
       navigate({ pathname: '/budget' });
     }
   }, [patchedUserSuccess]);

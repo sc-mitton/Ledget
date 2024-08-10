@@ -1,9 +1,41 @@
+import { View, TouchableOpacity } from 'react-native';
+import { Plus } from 'geist-native-icons';
+import { Trash2 } from 'geist-native-icons';
+import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 
-import { Text, BoxHeader, ChevronTouchable, ShimmerBox, Avatar } from '@ledget/native-ui';
-import { useGetCoOwnerQuery, useGetMeQuery } from '@ledget/shared-features';
+import styles from './styles/household';
+import { Text, BoxHeader, ChevronTouchable, ShimmerBox, Avatar, Icon, Box } from '@ledget/native-ui';
+import { useGetCoOwnerQuery, useGetMeQuery, useDeleteCoOwnerMutation } from '@ledget/shared-features';
+
+const Swipeable = () => {
+  const { data: coOwner } = useGetCoOwnerQuery();
+  const [deleteCoOwner] = useDeleteCoOwnerMutation();
+
+  return (
+    <ReanimatedSwipeable
+      renderRightActions={() => (
+        <TouchableOpacity onPress={() => deleteCoOwner()}>
+          <Box
+            backgroundColor='alert'
+            padding='s'
+            borderRadius={8}
+            style={styles.rightAction}
+          >
+            <Icon icon={Trash2} />
+          </Box>
+        </TouchableOpacity>
+      )}
+    >
+      <View style={styles.row}>
+        <Avatar name={coOwner?.name} size='s' />
+        <Text>{coOwner && `${coOwner?.name.first} ${coOwner?.name.last}`}</Text>
+      </View>
+    </ReanimatedSwipeable>
+  )
+}
 
 const Household = () => {
-  const { data: coOwner, isLoading } = useGetCoOwnerQuery();
+  const { isLoading } = useGetCoOwnerQuery();
   const { data: user } = useGetMeQuery();
 
   return (
@@ -15,14 +47,11 @@ const Household = () => {
         key='household-box'
         variant='nestedContainer'
         backgroundColor='nestedContainer'>
-        <ChevronTouchable>
-          <Avatar name={coOwner?.name} size='s' />
-          <Text>
-            {user?.co_owner
-              ? coOwner && `${coOwner?.name.first} ${coOwner?.name.last}`
-              : 'No household members'}
-          </Text>
-        </ChevronTouchable>
+        {user?.co_owner
+          ? <Swipeable />
+          : <ChevronTouchable iconOverride={Plus}>
+            <Text>Acount Member</Text>
+          </ChevronTouchable>}
       </ShimmerBox>
     </>
   )

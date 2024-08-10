@@ -1,16 +1,17 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-  text: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 8,
-    marginBottom: 16,
-    marginTop: 32,
-  },
-  header: {
+  headerContainer: {
+    marginTop: 20,
+    marginBottom: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
-
+  splitInputs: {
+    flexDirection: 'row',
+    gap: 8
+  },
+  splitInput: {
+    flex: 1
+  }
 });

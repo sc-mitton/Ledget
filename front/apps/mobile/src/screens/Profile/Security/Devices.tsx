@@ -7,6 +7,7 @@ import { BoxHeader, Seperator, Icon, Text, ShimmerBox, ChevronTouchable } from '
 import { Computer, MapPin2 } from '@ledget/media/native';
 import { Smartphone } from 'geist-native-icons';
 import { useGetDevicesQuery, Device as TDevice } from '@ledget/shared-features';
+import { AccountScreenProps } from '@types';
 
 const Device = ({ device, info }: { device: string; info: TDevice[] }) => {
   const iconKey = Object.keys(info[0]).find(
@@ -41,7 +42,7 @@ const Device = ({ device, info }: { device: string; info: TDevice[] }) => {
   )
 }
 
-const Devices = () => {
+const Devices = (props: AccountScreenProps) => {
   const { data: devices } = useGetDevicesQuery();
   const [groupedDevices, setGroupedDevices] = useState<[string, TDevice[]][]>();
 
@@ -65,7 +66,7 @@ const Devices = () => {
         backgroundColor='nestedContainer'>
         {groupedDevices?.map(([device, info], index) => (
           <>
-            <ChevronTouchable key={`device${index}`}>
+            <ChevronTouchable key={`device${index}`} onPress={() => props.navigation.navigate('Device', { id: device })}>
               <Device key={device} device={device} info={info} />
             </ChevronTouchable>
             {(index !== groupedDevices.length - 1) &&

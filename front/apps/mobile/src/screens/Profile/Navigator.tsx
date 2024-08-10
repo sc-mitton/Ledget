@@ -7,7 +7,8 @@ import { useGetMeQuery } from '@ledget/shared-features';
 import { TabsNavigator, Avatar, Text, ChevronTouchable } from '@ledget/native-ui';
 import { ProfileStackParamList } from '@types';
 import { BackHeader } from '@ledget/native-ui';
-import { useCardStyleInterpolator } from "@/hooks";
+import { setModal } from '@/features/modalSlice';
+import { useAppDispatch, useCardStyleInterpolator } from "@/hooks";
 import { AccountScreenProps } from '@types';
 import Account from './Account/Screen';
 import Security from './Security/Screen';
@@ -25,6 +26,7 @@ const Stack = createStackNavigator<ProfileStackParamList>();
 
 function Profile(props: AccountScreenProps) {
   const { data: user } = useGetMeQuery();
+  const dispatch = useAppDispatch();
 
   return (
     <>
@@ -37,7 +39,7 @@ function Profile(props: AccountScreenProps) {
           paddingHorizontal='s'
           paddingVertical='l'
           style={styles.userInfoContainer}>
-          <ChevronTouchable>
+          <ChevronTouchable onPress={() => dispatch(setModal('editPersonalInfo'))}>
             <Avatar size='l' name={user?.name} />
             <View style={styles.userInfo}>
               <Text color='highContrastText'>{user?.name.first} {user?.name.last}</Text>

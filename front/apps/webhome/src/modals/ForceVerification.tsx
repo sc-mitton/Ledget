@@ -14,6 +14,7 @@ import {
   useLazyGetVerificationFlowQuery,
   useCompleteVerificationFlowMutation
 } from '@features/orySlice';
+import { useAppDispatch } from '@hooks/store';
 
 export const ForceVerification = ({ onSuccess }: { onSuccess: () => void }) => {
   const { data: user } = useGetMeQuery();
@@ -71,11 +72,13 @@ export const ForceVerification = ({ onSuccess }: { onSuccess: () => void }) => {
 };
 
 const ForceVerificationModal = withModal((props) => {
+  const dispatch = useAppDispatch();
+
   return (
     <ForceVerification
       onSuccess={() => {
         props.closeModal();
-        apiSlice.util.invalidateTags(['user']);
+        dispatch(apiSlice.util.invalidateTags(['user']));
       }}
     />
   );

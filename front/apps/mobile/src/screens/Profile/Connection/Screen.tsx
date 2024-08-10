@@ -1,5 +1,5 @@
-import { useEffect, useMemo } from 'react';
-import { View, TouchableOpacity, Linking, ScrollView } from 'react-native';
+import { useMemo } from 'react';
+import { View, ScrollView, TouchableOpacity, Linking } from 'react-native';
 
 import {
   Header,
@@ -13,7 +13,7 @@ import { Trash2 } from 'geist-native-icons';
 import { ConnectionScreenProps } from '@types';
 import { setModal } from '@features/modalSlice';
 import { useAppDispatch } from '@/hooks';
-import { useGetPlaidItemsQuery, useGetMeQuery, apiSlice } from '@ledget/shared-features';
+import { useGetPlaidItemsQuery, useGetMeQuery } from '@ledget/shared-features';
 
 import styles from './styles';
 
@@ -28,19 +28,19 @@ const Screen = ({ navigation, route }: ConnectionScreenProps) => {
 
   return (
     <Box variant='screenWithHeader'>
-      <ScrollView style={styles.screen}>
-        <TouchableOpacity
-          style={styles.headerContainer}
-          activeOpacity={.8}
-          onPress={() => { Linking.openURL(plaidItems?.find((item) => item.id === route.params.item)?.institution?.url || '') }}>
-          <View style={styles.header}>
-            <InstitutionLogo data={plaidItems?.find((item) => item.id === route.params.item)?.institution?.logo} />
-            <Header>
-              {plaidItems?.find((item) => item.id === route.params.item)?.institution?.name}
-            </Header>
-          </View>
-        </TouchableOpacity>
-        <Box variant='nestedContainer' style={styles.accountsBox}>
+      <TouchableOpacity
+        style={styles.headerContainer}
+        activeOpacity={.8}
+        onPress={() => { Linking.openURL(plaidItems?.find((item) => item.id === route.params.item)?.institution?.url || '') }}>
+        <View style={styles.header}>
+          <InstitutionLogo data={plaidItems?.find((item) => item.id === route.params.item)?.institution?.logo} />
+          <Header>
+            {plaidItems?.find((item) => item.id === route.params.item)?.institution?.name}
+          </Header>
+        </View>
+      </TouchableOpacity>
+      <Box variant='nestedContainer' style={styles.accountsBox}>
+        <ScrollView>
           <View style={styles.accounts}>
             <View>
               {accounts?.map((account, i) => (
@@ -77,24 +77,27 @@ const Screen = ({ navigation, route }: ConnectionScreenProps) => {
                 </Box>))}
             </View>
           </View>
-        </Box>
-        {plaidItems?.find((item) => item.id === route.params.item)?.user === user?.id &&
-          <View style={styles.buttons}>
-            <Button
-              style={styles.button}
-              variant='grayMain'
-              label='Disconnect'
-              labelPlacement='left'
-              onPress={() => dispatch(setModal({
-                name: 'confirmDeletePlaidItem',
-                args: { id: route.params.item }
-              }))}
-            >
-              <Icon icon={Trash2} size={18} />
-            </Button>
-          </View>
-        }
-      </ScrollView>
+        </ScrollView>
+      </Box>
+      {plaidItems?.find((item) => item.id === route.params.item)?.user === user?.id &&
+        <View style={styles.buttons}>
+          <Button
+            style={styles.button}
+            backgroundColor='nestedContainer'
+            borderColor='nestedContainerBorder'
+            textColor='mainText'
+            variant='borderedGrayMain'
+            label='Disconnect'
+            labelPlacement='left'
+            onPress={() => dispatch(setModal({
+              name: 'confirmDeletePlaidItem',
+              args: { id: route.params.item }
+            }))}
+          >
+            <Icon icon={Trash2} size={18} />
+          </Button>
+        </View>
+      }
     </Box>
   )
 }

@@ -3,9 +3,11 @@ import { RootState } from './store';
 
 type Modal =
   'logout' |
+  'editPersonalInfo' |
+  'confirmRemoveCoOwner' |
   { name: 'confirmDeletePlaidItem', args: { id: string } }
 
-type FormatedModal<M extends Modal> = M extends { name: infer N, args?: infer A } ? { name: N, args?: A } : { name: M }
+type FormatedModal<M extends Modal> = M extends { name: infer N, args?: infer A } ? { name: N, args: A } : { name: M }
 
 const initialState: {
   modal?: FormatedModal<Modal>

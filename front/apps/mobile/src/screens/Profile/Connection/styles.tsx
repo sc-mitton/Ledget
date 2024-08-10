@@ -32,6 +32,7 @@ export default StyleSheet.create({
   accounts: {
     paddingHorizontal: 8,
     flexDirection: 'row',
+    maxHeight: '60%'
   },
   maskColumn: {
     flex: 1,

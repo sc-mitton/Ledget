@@ -1,3 +1,4 @@
+export * from './hooks/useKeyboardHeight/keyboard-height';
 export * from './restyled/Box';
 export * from './restyled/Text';
 export * from './restyled/Icon';
@@ -18,6 +19,7 @@ export * from './misc/institution-logo/InstitutionLogo';
 export * from './animated/loading-indicators/Spinner';
 export * from './animated/pulse/Pulse';
 export * from './animated/views/JiggleView';
+export * from './animated/configs/configs';
 export * from './headers/BackHeader';
 
 export * from './containers/baked-boxes';

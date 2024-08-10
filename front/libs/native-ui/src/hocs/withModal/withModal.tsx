@@ -1,6 +1,6 @@
 import { FC, useState, useEffect } from 'react'
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated'
-import { View } from 'react-native'
+import Animated, { useSharedValue, useAnimatedStyle, withTiming, withSpring } from 'react-native-reanimated'
+import { View, Keyboard } from 'react-native'
 import { X } from 'geist-native-icons';
 import OutsidePressHandler from 'react-native-outside-press';
 
@@ -8,6 +8,8 @@ import styles from './styles';
 import { Box } from '../../restyled/Box';
 import { Icon } from '../../restyled/Icon';
 import { Button } from '../../restyled/Button';
+import { defaultSpringConfig } from '../../animated/configs/configs';
+import { useKeyboardHeight } from '../../hooks/useKeyboardHeight/keyboard-height';
 
 type Placement = 'top' | 'bottom' | 'float'
 
@@ -19,15 +21,15 @@ type Props = {
 
 export function withModal<P>(WrappedComponent: FC<P & { closeModal: () => void }>) {
   return (props: Props & P) => {
-    const {
-      hasExit = true,
-      ...rest
-    } = props
+    const { hasExit = true, ...rest } = props
+    const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+    const keyboardHeight = useKeyboardHeight()
 
     const yStart = props.placement === 'top' ? -300 : props.placement === 'bottom' ? 300 : 50
     const [closeAll, setCloseAll] = useState(false);
     const [unMount, setUnMount] = useState(false);
     const translateY = useSharedValue(yStart);
+    const keyboardPaddingY = useSharedValue(props.placement === 'bottom' ? 64 : 24);
     const opacity = useSharedValue(0);
     const overlayOpacity = useSharedValue(0);
 
@@ -38,11 +40,48 @@ export function withModal<P>(WrappedComponent: FC<P & { closeModal: () => void }
       }
     });
 
+    const avoidKeyboardAnimation = useAnimatedStyle(() => {
+      return {
+        paddingBottom: withSpring(keyboardPaddingY.value, defaultSpringConfig)
+      }
+    });
+
     const overlayFade = useAnimatedStyle(() => {
       return {
         opacity: withTiming(overlayOpacity.value, { duration: 300 })
       }
     });
+
+    useEffect(() => {
+      const keyboardDidShowListener = Keyboard.addListener(
+        'keyboardDidShow',
+        () => {
+          setKeyboardVisible(true);
+        }
+      );
+      const keyboardDidHideListener = Keyboard.addListener(
+        'keyboardDidHide',
+        () => {
+          setKeyboardVisible(false);
+        }
+      );
+
+      return () => {
+        keyboardDidHideListener.remove();
+        keyboardDidShowListener.remove();
+      };
+    }, []);
+
+    // Translate the modal content up when the keyboard is visible
+    useEffect(() => {
+      if (props.placement === 'top') return
+
+      if (isKeyboardVisible) {
+        keyboardPaddingY.value = withSpring(keyboardHeight, defaultSpringConfig)
+      } else {
+        keyboardPaddingY.value = withSpring(props.placement === 'bottom' ? 64 : 24, defaultSpringConfig)
+      }
+    }, [isKeyboardVisible]);
 
     useEffect(() => {
       if (closeAll) {
@@ -72,17 +111,22 @@ export function withModal<P>(WrappedComponent: FC<P & { closeModal: () => void }
             <Animated.View style={[overlayFade, styles.full]}>
               <Box backgroundColor='modalOverlay' style={styles.full} />
             </Animated.View>
-            <Animated.View style={[styles.modal, styles.floatModal, modalAnimation, styles[`${props.placement || 'float'}Modal`]]}>
+            <Animated.View
+              style={[
+                styles.modal,
+                modalAnimation,
+                styles[`${props.placement || 'float'}Modal`]
+              ]}>
               <OutsidePressHandler onOutsidePress={() => setCloseAll(true)}>
                 <Box variant='modalBox' style={styles[`${props.placement || 'float'}ModalBackground`]}>
-                  <View style={styles[`${props.placement || 'float'}ModalContent`]}>
+                  <Animated.View style={[styles[`${props.placement || 'float'}ModalContent`], avoidKeyboardAnimation]}>
                     <WrappedComponent {...rest as P} closeModal={() => setCloseAll(true)} />
                     {hasExit && <View style={styles.closeButton}>
                       <Button onPress={() => setCloseAll(true)} variant='circleButton' >
                         <Icon icon={X} size={20} color='secondaryText' />
                       </Button>
                     </View>}
-                  </View>
+                  </Animated.View>
                 </Box>
               </OutsidePressHandler>
             </Animated.View>

@@ -3,16 +3,17 @@ import { View } from 'react-native'
 
 import sharedStyles from './styles/shared';
 import { Text, Header2, withModal, Button, SubmitButton, Box } from '@ledget/native-ui'
-import { useDeletePlaidItemMutation } from '@ledget/shared-features';
+import { useGetCoOwnerQuery, useDeleteCoOwnerMutation } from '@ledget/shared-features';
 
-const ConfirmDeletePlaidItem = withModal<{ id: string }>((props) => {
+const ConfirmRemoveCoOwner = withModal((props) => {
   const [
-    deletePlaidItem,
+    deleteCoOwner,
     {
       isLoading: isDeletingItem,
       isSuccess: isDeleteSuccess
     }
-  ] = useDeletePlaidItemMutation();
+  ] = useDeleteCoOwnerMutation();
+  const { data: coOwner } = useGetCoOwnerQuery();
 
   useEffect(() => {
     if (isDeleteSuccess) {
@@ -27,7 +28,7 @@ const ConfirmDeletePlaidItem = withModal<{ id: string }>((props) => {
     <View>
       <Header2>Are you sure?</Header2>
       <Box marginBottom='l'>
-        <Text color='secondaryText'>This will remove the connection to your bank account and all of the data associated with this bank.
+        <Text color='secondaryText'>This will remove {coOwner?.name.first} from your account.
           <Text variant='bold'> This action cannot be undone.</Text>
         </Text>
       </Box>
@@ -41,11 +42,11 @@ const ConfirmDeletePlaidItem = withModal<{ id: string }>((props) => {
             label='Ok'
             isSubmitting={isDeletingItem}
             isSuccess={isDeleteSuccess}
-            onPress={() => deletePlaidItem(props.id)} />
+            onPress={() => deleteCoOwner()} />
         </View>
       </View>
     </View>
   )
 });
 
-export default ConfirmDeletePlaidItem
+export default ConfirmRemoveCoOwner

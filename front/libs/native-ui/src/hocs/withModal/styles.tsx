@@ -37,8 +37,7 @@ export default StyleSheet.create({
     bottom: 64
   },
   bottomModalContent: {
-    paddingHorizontal: 16,
-    paddingBottom: 64
+    paddingHorizontal: 16
   },
   topModalContent: {
     paddingHorizontal: 12,

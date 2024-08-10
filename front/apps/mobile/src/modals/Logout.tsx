@@ -5,6 +5,7 @@ import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 
 import styles from './styles/logout';
+import sharedStyles from './styles/shared';
 import { Text, Header, Button, SubmitButton, withBottomModal } from '@ledget/native-ui';
 import { selectSession, apiSlice, setSession } from '@ledget/shared-features';
 import { useAppSelector, useAppDispatch } from '@hooks';
@@ -41,7 +42,7 @@ const Logout = withBottomModal((props) => {
       }).then(() => {
         props.closeModal();
         SecureStore.deleteItemAsync('session');
-        apiSlice.util.invalidateTags(['User']);
+        dispatch(apiSlice.util.invalidateTags(['User']));
         dispatch(setSession(undefined));
       }).catch(() => {
         setIsLoggingOut(false);
@@ -57,8 +58,14 @@ const Logout = withBottomModal((props) => {
         <Header>Sign Out</Header>
         <Text color='secondaryText'>{`You will be automatically logged out in ${seconds} seconds`}</Text>
       </View>
-      <SubmitButton onPress={() => setQuedLogout(true)} isSubmitting={isLoggingOut} variant='main' label='Log Out' />
-      <Button onPress={() => props.closeModal()} variant='mediumGrayMain' label='Cancel' />
+      <View style={sharedStyles.splitButtons}>
+        <View style={sharedStyles.splitButton}>
+          <Button onPress={() => props.closeModal()} variant='mediumGrayMain' label='Cancel' />
+        </View>
+        <View style={sharedStyles.splitButton}>
+          <SubmitButton onPress={() => setQuedLogout(true)} isSubmitting={isLoggingOut} variant='main' label='Log Out' />
+        </View>
+      </View>
     </View>
   )
 });

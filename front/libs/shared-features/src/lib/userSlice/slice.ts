@@ -135,7 +135,7 @@ export const userSlice = apiWithTags.injectEndpoints({
         body: { email }
       })
     }),
-    delteCoOwner: builder.mutation<any, void>({
+    deleteCoOwner: builder.mutation<any, void>({
       query: () => ({
         url: 'user/co-owner',
         method: 'DELETE'
@@ -162,7 +162,7 @@ export const {
   useExtendSessionMutation,
   useExtendTokenSessionMutation,
   useAddUserToAccountMutation,
-  useDelteCoOwnerMutation,
+  useDeleteCoOwnerMutation,
   useUpdateUserSettingsMutation,
   useDisableSessionMutation
 } = userSlice;

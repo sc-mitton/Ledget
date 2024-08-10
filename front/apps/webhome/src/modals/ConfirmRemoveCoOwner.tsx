@@ -1,6 +1,6 @@
 import {
   useGetCoOwnerQuery,
-  useDelteCoOwnerMutation
+  useDeleteCoOwnerMutation
 } from '@ledget/shared-features';
 import { withSmallModal, SecondaryButton, BlueSubmitButton } from '@ledget/ui';
 import { withReAuth } from '@utils/withReAuth';
@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 export const ConfirmRemoveCoOwner = withReAuth(
   withSmallModal((props) => {
     const { data } = useGetCoOwnerQuery();
-    const [deleteCoOwner, { isLoading, isSuccess }] = useDelteCoOwnerMutation();
+    const [deleteCoOwner, { isLoading, isSuccess }] = useDeleteCoOwnerMutation();
 
     useEffect(() => {
       if (isSuccess) {

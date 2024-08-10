@@ -78,7 +78,7 @@ export const useFlowProgress = ({ navigation, route, updateProgress, token, id }
   useEffect(() => {
     if (updateProgress) {
       setAuthFlowStarted(true);
-      apiSlice.util.invalidateTags(['User']);
+      dispatch(apiSlice.util.invalidateTags(['User']));
     }
   }, [updateProgress, session]);
 

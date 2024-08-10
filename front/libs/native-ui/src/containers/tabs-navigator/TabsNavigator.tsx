@@ -13,6 +13,7 @@ import styles from './styles';
 import { Seperator } from '../../restyled/Seperator';
 import { Box } from '../../restyled/Box';
 import { Button } from '../../restyled/Button';
+import { defaultSpringConfig } from '../../animated/configs/configs';
 
 interface ScreenProps {
   navigation: any;
@@ -23,16 +24,6 @@ interface Props {
   screens: { [key: string]: (props: ScreenProps) => React.JSX.Element };
   screenProps: ScreenProps;
   seperator?: boolean;
-}
-
-const springConfig = {
-  mass: 1,
-  damping: 27,
-  stiffness: 315,
-  overshootClamping: false,
-  restDisplacementThreshold: 0.01,
-  restSpeedThreshold: 0.01,
-  reduceMotion: ReduceMotion.System,
 }
 
 export function TabsNavigator({ screens, seperator = true, screenProps }: Props) {
@@ -79,7 +70,7 @@ export function TabsNavigator({ screens, seperator = true, screenProps }: Props)
         setIndex(i)
       } else {
         width.value = withTiming(layouts.current[index].width)
-        translateX.value = withSpring(layouts.current[index].x, springConfig)
+        translateX.value = withSpring(layouts.current[index].x, defaultSpringConfig)
       }
     }
   }
@@ -87,7 +78,7 @@ export function TabsNavigator({ screens, seperator = true, screenProps }: Props)
   useEffect(() => {
     if (dragState.current === 'settling') {
       width.value = withTiming(layouts.current[index].width)
-      translateX.value = withSpring(layouts.current[index].x, springConfig)
+      translateX.value = withSpring(layouts.current[index].x, defaultSpringConfig)
     }
   }, [index, dragState])
 
@@ -109,7 +100,7 @@ export function TabsNavigator({ screens, seperator = true, screenProps }: Props)
                 refPagerView.current?.setPage(i)
                 setIndex(i)
                 width.value = withTiming(layouts.current[i].width)
-                translateX.value = withSpring(layouts.current[i].x, springConfig)
+                translateX.value = withSpring(layouts.current[i].x, defaultSpringConfig)
               }}
               variant={'transparentPill'}
               textColor={i === index ? 'whiteText' : 'mainText'}

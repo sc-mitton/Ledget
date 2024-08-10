@@ -1,4 +1,9 @@
-import { Logout, ConfirmDeletePlaidItem } from '@modals';
+import {
+  Logout,
+  ConfirmDeletePlaidItem,
+  EditPersonalInfo,
+  ConfirmRemoveCoowner
+} from '@modals';
 import { useAppDispatch, useAppSelector } from '@hooks';
 import { clearModal, selectModal } from '@features/modalSlice';
 
@@ -13,7 +18,9 @@ const Modals = () => {
   return (
     <>
       {modal?.name === 'logout' && <Logout onClose={onClose} />}
-      {modal?.name === 'confirmDeletePlaidItem' && <ConfirmDeletePlaidItem onClose={onClose} />}
+      {modal?.name === 'confirmDeletePlaidItem' && <ConfirmDeletePlaidItem id={modal.args.id} onClose={onClose} />}
+      {modal?.name === 'editPersonalInfo' && <EditPersonalInfo onClose={onClose} />}
+      {modal?.name === 'confirmRemoveCoOwner' && <ConfirmRemoveCoowner onClose={onClose} />}
     </>
   )
 }

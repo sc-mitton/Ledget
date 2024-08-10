@@ -33,8 +33,6 @@ const Aal2RecoveryCode = ({ navigation, route }: Aal2RecoveryCodeScreenProps) =>
 
   useFlowProgress({ navigation, route, updateProgress: isCompleteSuccess });
 
-
-
   const onSubmit = (data: z.infer<typeof schema>) => {
     submitFlow({
       ...data,

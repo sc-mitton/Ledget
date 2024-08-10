@@ -68,7 +68,7 @@ export const darkTheme = createTheme({
     tabNavPill: palette.blue700,
     avatar: palette.gray800,
     modalOverlay: palette.gray900,
-    modalBox: palette.gray800,
+    modalBox: palette.gray850,
 
     // Borders
     inputBorder: palette.gray750,

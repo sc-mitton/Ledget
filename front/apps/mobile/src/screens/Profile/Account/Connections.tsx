@@ -23,7 +23,7 @@ const Connections = (props: AccountScreenProps) => {
       >
         {plaidItems?.map((item, i) => (
           <>
-            <View style={styles.row} key={item.id}>
+            <View style={styles.row} key={`connection-${i}`}>
               <ChevronTouchable onPress={() => props.navigation.navigate('Connection', { item: item.id })}>
                 <InstitutionLogo data={item.institution?.logo} />
                 <Text>{item.institution?.name}</Text>
