@@ -6,7 +6,6 @@ import {
   InstitutionLogo,
   Box,
   Text,
-  Button,
   Icon,
 } from '@ledget/native-ui';
 import { Trash2 } from 'geist-native-icons';
@@ -81,21 +80,16 @@ const Screen = ({ navigation, route }: ConnectionScreenProps) => {
       </Box>
       {plaidItems?.find((item) => item.id === route.params.item)?.user === user?.id &&
         <View style={styles.buttons}>
-          <Button
+          <TouchableOpacity
             style={styles.button}
-            backgroundColor='nestedContainer'
-            borderColor='nestedContainerBorder'
-            textColor='mainText'
-            variant='borderedGrayMain'
-            label='Disconnect'
-            labelPlacement='left'
             onPress={() => dispatch(setModal({
               name: 'confirmDeletePlaidItem',
               args: { id: route.params.item }
             }))}
           >
-            <Icon icon={Trash2} size={18} />
-          </Button>
+            <Icon color='blueText' icon={Trash2} size={18} />
+            <Text color='blueText'>Remove Connection</Text>
+          </TouchableOpacity>
         </View>
       }
     </Box>

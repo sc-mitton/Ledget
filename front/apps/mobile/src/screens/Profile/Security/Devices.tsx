@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { groupBy as groupby } from 'lodash-es';
 
 import styles from './styles/devices';
-import { BoxHeader, Seperator, Icon, Text, ShimmerBox, ChevronTouchable } from '@ledget/native-ui';
+import { Box, BoxHeader, Seperator, Icon, Text, ShimmerBox, ChevronTouchable } from '@ledget/native-ui';
 import { Computer, MapPin2 } from '@ledget/media/native';
 import { Smartphone } from 'geist-native-icons';
 import { useGetDevicesQuery, Device as TDevice } from '@ledget/shared-features';
@@ -18,7 +18,7 @@ const Device = ({ device, info }: { device: string; info: TDevice[] }) => {
     <View style={styles.device}>
       <View style={styles.deviceIcon}>
         <Icon
-          size={iconKey === 'is_pc' ? 30 : undefined}
+          size={iconKey === 'is_pc' ? 28 : undefined}
           icon={iconKey === 'is_pc' ? Computer : Smartphone}
         />
       </View>
@@ -29,9 +29,9 @@ const Device = ({ device, info }: { device: string; info: TDevice[] }) => {
         </View>
         <View style={styles.location}>
           <View style={styles.locationIcon}>
-            <Icon icon={MapPin2} size={12} strokeWidth={40} color='secondaryText' />
+            <Icon icon={MapPin2} size={12} strokeWidth={40} color='tertiaryText' />
           </View>
-          <Text fontSize={14} color='secondaryText' >
+          <Text fontSize={14} color='tertiaryText' >
             {device.split(',')[2] === undefined
               ? device.split(',')[1] ? device.split(',')[1] : 'Unknown'
               : device.split(',')[1] + ', ' + device.split(',')[2]}

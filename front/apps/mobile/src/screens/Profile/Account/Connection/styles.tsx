@@ -7,11 +7,16 @@ export default StyleSheet.create({
   buttons: {
     marginTop: 6,
     flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
     gap: 8,
+    marginLeft: 8,
     flex: 2,
   },
   button: {
-    flex: 1,
+    gap: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   header: {
     justifyContent: 'center',

@@ -28,8 +28,8 @@ const ConfirmRemoveCoOwner = withModal((props) => {
     <View>
       <Header2>Are you sure?</Header2>
       <Box marginBottom='l'>
-        <Text color='secondaryText'>This will remove {coOwner?.name.first} from your account.
-          <Text variant='bold'> This action cannot be undone.</Text>
+        <Text color='tertiaryText'>This will remove {coOwner?.name.first} from your account.
+          <Text variant='bold' color='secondaryText'> This action cannot be undone.</Text>
         </Text>
       </Box>
       <View style={sharedStyles.splitButtons}>

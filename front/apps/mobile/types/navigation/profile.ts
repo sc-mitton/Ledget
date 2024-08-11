@@ -9,6 +9,7 @@ export type ProfileStackParamList = {
     id: string
   },
   PersonalInfo: undefined,
+  CoOwner: undefined,
 };
 
 export type AccountScreenProps = StackScreenProps<ProfileStackParamList, 'Profile'>

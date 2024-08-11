@@ -44,12 +44,12 @@ const palette = {
   blueSat: `hsl(${blueH}, ${blueS + 10}%, 50%)`,
 
   black: 'hsl(0, 0%, 0%)',
-  offBlack: `hsl(${grayH}, ${grayS}%, 17%)`,
-  offBlack2: `hsl(${grayH}, ${grayS}%, 32%)`,
-  offBlack3: `hsl(${grayH}, ${grayS}%, 42%)`,
-  offBlack4: `hsl(${grayH}, ${grayS}%, 52%)`,
-  offBlack5: `hsl(${grayH}, ${grayS}%, 62%)`,
-  offBlack6: `hsl(${grayH}, ${grayS}%, 72%)`,
+  offBlack: `hsl(${grayH}, ${grayS}%, 25%)`,
+  offBlack2: `hsl(${grayH}, ${grayS}%, 42%)`,
+  offBlack3: `hsl(${grayH}, ${grayS}%, 60%)`,
+  offBlack4: `hsl(${grayH}, ${grayS}%, 70%)`,
+  offBlack5: `hsl(${grayH}, ${grayS}%, 80%)`,
+  offBlack6: `hsl(${grayH}, ${grayS}%, 90%)`,
 }
 
 export const lightTheme = createTheme({
@@ -61,10 +61,10 @@ export const lightTheme = createTheme({
     mainBackground: palette.gray150,
     accountsMainBackground: palette.gray100,
     androidbottomNavBackground: palette.gray200,
-    bottomNavBackground: palette.gray400,
+    bottomNavBackground: palette.gray500,
     inputBackground: palette.gray200,
     nestedContainer: palette.white,
-    avatar: palette.gray800,
+    avatar: palette.gray500,
     modalOverlay: palette.gray400,
     modalBox: palette.gray100,
 
@@ -85,7 +85,7 @@ export const lightTheme = createTheme({
     activeIcon: palette.blueSat,
     activeSwitchShadow: 'hsl(144, 70%, 50%)',
     disabledSwitchShadow: palette.gray500,
-    logoShadow: palette.gray600,
+    logoShadow: palette.gray500,
 
     // Text
     mainText: palette.offBlack,
@@ -200,6 +200,13 @@ export const lightTheme = createTheme({
       lineHeight: 24,
       fontFamily: 'SourceSans3Regular',
       color: 'mainText',
+    },
+    footer: {
+      fontSize: 14,
+      lineHeight: 16,
+      marginVertical: 's',
+      fontFamily: 'SourceSans3Regular',
+      color: 'quaternaryText',
     }
   },
   buttonVariants: {

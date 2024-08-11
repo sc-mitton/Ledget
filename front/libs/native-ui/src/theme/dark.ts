@@ -86,7 +86,7 @@ export const darkTheme = createTheme({
     tabsShadow: palette.gray1000,
     activeSwitchShadow: 'hsl(144, 80%, 12%)',
     disabledSwitchShadow: palette.gray700,
-    logoShadow: palette.gray100,
+    logoShadow: palette.red,
 
     // Icons
     activeIcon: palette.blueSat,

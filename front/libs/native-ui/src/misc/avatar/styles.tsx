@@ -6,7 +6,10 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
+    flexDirection: 'row',
+    gap: 2,
   },
+
   backgroundContainer: {
     position: 'absolute',
     top: 0,
@@ -37,16 +40,32 @@ export default StyleSheet.create({
     width: 54,
     height: 54,
   },
+  xlCircle: {
+    width: 64,
+    height: 64,
+  },
   s: {
     fontSize: 14,
-    padding: 2
   },
   m: {
     fontSize: 20,
-    padding: 4
   },
   l: {
     fontSize: 24,
-    padding: 8
-  }
+  },
+  xl: {
+    fontSize: 32,
+  },
+  sContainer: {
+    padding: 2,
+  },
+  mContainer: {
+    padding: 4,
+  },
+  lContainer: {
+    padding: 8,
+  },
+  xlContainer: {
+    padding: 12,
+  },
 });

@@ -9,7 +9,7 @@ import Connections from './Connections';
 const Screen = (props: AccountScreenProps) => {
   return (
     <Box variant='screenContent'>
-      <Household />
+      <Household {...props} />
       <Connections {...props} />
     </Box>
   )

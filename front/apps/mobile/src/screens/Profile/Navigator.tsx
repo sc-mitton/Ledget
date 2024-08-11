@@ -13,8 +13,9 @@ import { AccountScreenProps } from '@types';
 import Account from './Account/Screen';
 import Security from './Security/Screen';
 import Settings from './Settings/Screen';
-import Connection from './Connection/Screen';
-import Device from './Device/Screen';
+import Connection from './Account/Connection/Screen';
+import Device from './Security/Device/Screen';
+import CoOwner from './Account/CoOwner/Screen';
 
 const scenes = {
   account: Account,
@@ -67,6 +68,7 @@ export default function Navigator() {
       <Stack.Screen options={{ headerShown: false }} name='Profile' component={Profile} />
       <Stack.Screen name='Connection' component={Connection} />
       <Stack.Screen name='Device' component={Device} />
+      <Stack.Screen name='CoOwner' component={CoOwner} />
     </Stack.Navigator>
   );
 }
