@@ -1,10 +1,22 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
+  full: {
+    flex: 1
+  },
   header: {
     paddingBottom: 8,
+  },
+  scrollView: {
     position: 'relative',
-    zIndex: 5
+  },
+  animatedHeader: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    width: "100%",
+    overflow: "hidden",
   },
   userInfoContainer: {
     gap: 20,
@@ -14,13 +26,5 @@ export default StyleSheet.create({
     flex: 3,
     marginVertical: 6,
     marginLeft: 8
-  },
-  background: {
-    height: '100%',
-    width: '100%',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    position: 'absolute',
-  },
+  }
 });

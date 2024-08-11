@@ -1,5 +1,4 @@
 import React from 'react'
-import { ScrollView } from 'react-native';
 
 import { Box } from '@ledget/native-ui';
 import { AccountScreenProps } from '@types';

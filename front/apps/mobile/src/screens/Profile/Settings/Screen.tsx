@@ -1,9 +1,11 @@
 import { View } from 'react-native';
-import { useAppearance, setCustomMode, setUseDeviceApperance, selectCustomMode, selectUseDeviceAppearance } from '@features/appearanceSlice';
+
+import { setCustomMode, setUseDeviceApperance, selectCustomMode, selectUseDeviceAppearance } from '@features/appearanceSlice';
 import { Box, BoxHeader, Switch } from '@ledget/native-ui';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import { AccountScreenProps } from '@types';
 
-const Preferences = (props: any) => {
+const Screen = (props: AccountScreenProps) => {
   const dispatch = useAppDispatch();
 
   const customMode = useAppSelector(selectCustomMode);
@@ -31,4 +33,4 @@ const Preferences = (props: any) => {
   )
 }
 
-export default Preferences
+export default Screen

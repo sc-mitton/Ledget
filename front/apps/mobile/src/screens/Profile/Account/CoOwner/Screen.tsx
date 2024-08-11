@@ -5,8 +5,7 @@ import styles from './styles';
 import {
   useGetCoOwnerQuery,
   useGetMeQuery,
-  useGetPlaidItemsQuery,
-  useDeleteCoOwnerMutation
+  useGetPlaidItemsQuery
 } from '@ledget/shared-features';
 import { setModal } from '@/features/modalSlice';
 import {
@@ -24,7 +23,6 @@ const Screen = () => {
   const { data: coOwner } = useGetCoOwnerQuery();
   const { data: user } = useGetMeQuery();
   const { data: plaidItems } = useGetPlaidItemsQuery();
-  const [deleteCoOwner] = useDeleteCoOwnerMutation();
   const dispatch = useAppDispatch();
 
   return (

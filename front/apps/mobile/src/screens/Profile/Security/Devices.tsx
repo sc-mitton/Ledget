@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { groupBy as groupby } from 'lodash-es';
 
 import styles from './styles/devices';
@@ -65,13 +65,13 @@ const Devices = (props: AccountScreenProps) => {
         style={styles.devices}
         backgroundColor='nestedContainer'>
         {groupedDevices?.map(([device, info], index) => (
-          <>
-            <ChevronTouchable key={`device${index}`} onPress={() => props.navigation.navigate('Device', { id: device })}>
+          <Fragment key={`device${index}`}>
+            <ChevronTouchable onPress={() => props.navigation.navigate('Device', { id: device })}>
               <Device key={device} device={device} info={info} />
             </ChevronTouchable>
             {(index !== groupedDevices.length - 1) &&
               <Seperator key={`device-seperator${index}`} variant='s' />}
-          </>
+          </Fragment>
         ))}
       </ShimmerBox>
     </>

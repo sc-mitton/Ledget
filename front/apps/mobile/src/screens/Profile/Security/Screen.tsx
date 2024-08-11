@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import { LogOut } from 'geist-native-icons';
 
 import styles from './styles/screen';
@@ -10,11 +10,12 @@ import { Button, Icon } from '@ledget/native-ui';
 import { setModal } from '@/features/modalSlice';
 import { useAppDispatch } from '@/hooks';
 
+
 const Screen = (props: AccountScreenProps) => {
   const dispatch = useAppDispatch();
 
   return (
-    <Box variant='screenContent'>
+    <Box variant='screenContent' style={{ height: Dimensions.get('window').height - 200 }}>
       <Mfa />
       <Devices {...props} />
       <View style={styles.logoutButton}>

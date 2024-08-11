@@ -1,12 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
-import { View } from 'react-native';
+import { Dimensions, View } from 'react-native';
 import PagerView from 'react-native-pager-view';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
-  withSpring,
-  ReduceMotion
+  withSpring
 } from 'react-native-reanimated';
 
 import styles from './styles';
@@ -15,18 +14,13 @@ import { Box } from '../../restyled/Box';
 import { Button } from '../../restyled/Button';
 import { defaultSpringConfig } from '../../animated/configs/configs';
 
-interface ScreenProps {
-  navigation: any;
-  route: any;
+type Props<T> = {
+  screens: { [key: string]: (props: T) => React.JSX.Element };
+  screenProps: T;
+  seperator?: boolean
 }
 
-interface Props {
-  screens: { [key: string]: (props: ScreenProps) => React.JSX.Element };
-  screenProps: ScreenProps;
-  seperator?: boolean;
-}
-
-export function TabsNavigator({ screens, seperator = true, screenProps }: Props) {
+export function TabsNavigator<T>({ screens, seperator = true, screenProps }: Props<T>) {
   const [index, setIndex] = useState(0);
   const height = useSharedValue(0);
   const width = useSharedValue(0);
@@ -83,82 +77,84 @@ export function TabsNavigator({ screens, seperator = true, screenProps }: Props)
   }, [index, dragState])
 
   return (
-    <>
-      <Box
-        backgroundColor='mainBackground'
-        shadowColor='tabsShadow'
-        shadowOffset={{ width: 0, height: -5 }}
-        shadowRadius={20}
-        shadowOpacity={.95}
-        style={styles.tabBarContainer}>
-        <Box style={styles.absTabBar}>
-          {Object.keys(screens).map((route, i) => (
-            <Button
-              key={`${route}${i}`}
-              style={styles.tabItem}
-              onPress={() => {
-                refPagerView.current?.setPage(i)
-                setIndex(i)
-                width.value = withTiming(layouts.current[i].width)
-                translateX.value = withSpring(layouts.current[i].x, defaultSpringConfig)
-              }}
-              variant={'transparentPill'}
-              textColor={i === index ? 'whiteText' : 'mainText'}
-              label={route}
+    <View style={{ height: Dimensions.get('window').height }}>
+      <View style={styles.tabBarContainer}>
+        <Box
+          backgroundColor='mainBackground'
+          shadowColor='tabsShadow'
+          shadowOffset={{ width: 0, height: -5 }}
+          shadowRadius={20}
+          shadowOpacity={.95}>
+          {/* Text Only */}
+          <Box style={styles.absTabBar}>
+            {Object.keys(screens).map((route, i) => (
+              <Button
+                key={`${route}${i}`}
+                style={styles.tabItem}
+                onPress={() => {
+                  refPagerView.current?.setPage(i)
+                  setIndex(i)
+                  width.value = withTiming(layouts.current[i].width)
+                  translateX.value = withSpring(layouts.current[i].x, defaultSpringConfig)
+                }}
+                variant={'transparentPill'}
+                textColor={i === index ? 'whiteText' : 'mainText'}
+                label={route}
+              />
+            ))}
+          </Box>
+          {/* Active Indicator */}
+          <Animated.View style={[animatedStyles, styles.tabNavPillContainer]}>
+            <Box
+              style={styles.tabNavPill}
+              backgroundColor='tabNavPill'
+              borderColor='tabNavPillBorder'
+              borderWidth={1.5}
             />
-          ))}
+            {/* Backgrounds */}
+          </Animated.View>
+          <Box style={styles.tabBar}>
+            {Object.keys(screens).map((route, i) => (
+              <Button
+                key={`${route}${i}`}
+                onLayout={({ nativeEvent }) => {
+                  layouts.current[i] = {
+                    width: nativeEvent.layout.width,
+                    x: nativeEvent.layout.x + 20,
+                  }
+                  if (i === 0) {
+                    width.value = nativeEvent.layout.width;
+                    translateX.value = nativeEvent.layout.x + 20;
+                    height.value = nativeEvent.layout.height;
+                  }
+                }}
+                style={styles.tabItem}
+                variant={i === index ? 'transparentPill' : 'grayPill'}
+                transparent={true}
+                label={route}
+              />
+            ))}
+          </Box>
+          {seperator &&
+            <View style={styles.seperatorContainer}>
+              <Seperator variant='bare' backgroundColor='tabNavBorder' />
+            </View>}
         </Box>
-        <Animated.View style={[animatedStyles, styles.tabNavPillContainer]}>
-          <Box
-            style={styles.tabNavPill}
-            backgroundColor='tabNavPill'
-            borderColor='tabNavPillBorder'
-            borderWidth={1.5}
-          />
-        </Animated.View>
-        <Box style={styles.tabBar}>
-          {Object.keys(screens).map((route, i) => (
-            <Button
-              key={`${route}${i}`}
-              onLayout={({ nativeEvent }) => {
-                layouts.current[i] = {
-                  width: nativeEvent.layout.width,
-                  x: nativeEvent.layout.x + 20,
-                }
-                if (i === 0) {
-                  width.value = nativeEvent.layout.width;
-                  translateX.value = nativeEvent.layout.x + 20;
-                  height.value = nativeEvent.layout.height;
-                }
-              }}
-              style={styles.tabItem}
-              variant={i === index ? 'transparentPill' : 'grayPill'}
-              transparent={true}
-              label={route}
-            />
-          ))}
-        </Box>
-        {seperator &&
-          <View style={styles.seperatorContainer}>
-            <Seperator variant='bare' backgroundColor='tabNavBorder' />
-          </View>}
-      </Box>
-      <View style={styles.screen}>
-        <PagerView
-          style={styles.pagerView}
-          ref={refPagerView}
-          initialPage={0}
-          onPageScroll={handleScroll}
-          onPageScrollStateChanged={({ nativeEvent }) => { dragState.current = nativeEvent.pageScrollState }}
-          onPageSelected={({ nativeEvent }) => setIndex(nativeEvent.position)}
-        >
-          {Object.keys(screens).map((key, i) => {
-            const Scene = Object.values(screens)[i];
-            return <Scene key={i} {...screenProps} />
-          })}
-        </PagerView>
       </View>
-    </>
+      <PagerView
+        style={[styles.pagerView, { height: Dimensions.get('window').height - 100 }]}
+        ref={refPagerView}
+        initialPage={0}
+        onPageScroll={handleScroll}
+        onPageScrollStateChanged={({ nativeEvent }) => { dragState.current = nativeEvent.pageScrollState }}
+        onPageSelected={({ nativeEvent }) => setIndex(nativeEvent.position)}
+      >
+        {Object.keys(screens).map((key, i) => {
+          const Scene = Object.values(screens)[i];
+          return <Scene key={i} {...screenProps} />
+        })}
+      </PagerView>
+    </View>
   );
 }
 

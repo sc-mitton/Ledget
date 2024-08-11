@@ -3,14 +3,16 @@ import { StyleSheet } from "react-native";
 export default StyleSheet.create({
   screen: {
     flex: 1,
+    position: 'relative',
+    zIndex: 1,
   },
   pagerView: {
     width: '100%',
-    height: '100%',
   },
   tabBarContainer: {
     position: 'relative',
     zIndex: 1,
+    overflow: 'hidden',
   },
   seperatorContainer: {
     width: '95%',
@@ -21,7 +23,7 @@ export default StyleSheet.create({
     gap: 12,
     position: 'absolute',
     left: 0,
-    top: 0,
+    top: 16,
     zIndex: 3,
     marginHorizontal: 20,
   },
@@ -30,7 +32,7 @@ export default StyleSheet.create({
     gap: 12,
     position: 'relative',
     marginHorizontal: 20,
-    marginBottom: 16
+    marginVertical: 16
   },
   tabItem: {
     width: 'auto',
@@ -46,6 +48,7 @@ export default StyleSheet.create({
     width: '100%',
     height: '100%',
     borderRadius: 20,
+    top: 16,
     position: 'relative',
   }
 });
