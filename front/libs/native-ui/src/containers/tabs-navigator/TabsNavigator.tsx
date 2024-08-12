@@ -1,12 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 import { Dimensions, View } from 'react-native';
-import PagerView from 'react-native-pager-view';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
   withSpring
 } from 'react-native-reanimated';
+import PagerView from 'react-native-pager-view';
 
 import styles from './styles';
 import { Seperator } from '../../restyled/Seperator';
@@ -79,12 +79,7 @@ export function TabsNavigator<T>({ screens, seperator = true, screenProps }: Pro
   return (
     <View style={{ height: Dimensions.get('window').height }}>
       <View style={styles.tabBarContainer}>
-        <Box
-          backgroundColor='mainBackground'
-          shadowColor='tabsShadow'
-          shadowOffset={{ width: 0, height: -5 }}
-          shadowRadius={20}
-          shadowOpacity={.95}>
+        <Box backgroundColor='mainBackground'>
           {/* Text Only */}
           <Box style={styles.absTabBar}>
             {Object.keys(screens).map((route, i) => (
@@ -140,6 +135,14 @@ export function TabsNavigator<T>({ screens, seperator = true, screenProps }: Pro
               <Seperator variant='bare' backgroundColor='tabNavBorder' />
             </View>}
         </Box>
+        <Box
+          style={styles.shadow}
+          shadowColor='tabsShadow'
+          backgroundColor='mainBackground'
+          shadowOffset={{ width: 0, height: -5 }}
+          shadowRadius={20}
+          shadowOpacity={.95}
+        />
       </View>
       <PagerView
         style={[styles.pagerView, { height: Dimensions.get('window').height - 100 }]}

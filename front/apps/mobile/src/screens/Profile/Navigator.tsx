@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { View, ScrollView } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -36,13 +36,13 @@ const H_MAX_HEIGHT = 125;
 const H_MIN_SCALE = .7;
 const H_SCROLL_DISTANCE = H_MAX_HEIGHT - H_MIN_HEIGHT;
 
-
 const Stack = createStackNavigator<ProfileStackParamList>();
 
 function Profile(props: AccountScreenProps) {
   const { data: user } = useGetMeQuery();
   const dispatch = useAppDispatch();
   const headerHeight = useSharedValue(0);
+  const scrollViewRef = useRef<ScrollView>(null);
 
   const onScroll = useCallback((event: { nativeEvent: { contentOffset: { y: number } } }) => {
     const { y } = event.nativeEvent.contentOffset;
@@ -51,8 +51,9 @@ function Profile(props: AccountScreenProps) {
 
   const onEndScroll = useCallback((event: { nativeEvent: { contentOffset: { y: number } } }) => {
     const { y } = event.nativeEvent.contentOffset;
-    if (y < H_SCROLL_DISTANCE / 2) {
+    if (y < H_SCROLL_DISTANCE / 1.5) {
       headerHeight.value = withSpring(0, defaultSpringConfig);
+      scrollViewRef.current?.scrollTo({ y: 0, animated: true });
     } else {
       headerHeight.value = withSpring(H_MAX_HEIGHT, defaultSpringConfig);
     }
@@ -75,6 +76,7 @@ function Profile(props: AccountScreenProps) {
     <View style={styles.full}>
       <Animated.View style={[animatedPadding]}>
         <ScrollView
+          ref={scrollViewRef}
           style={styles.scrollView}
           showsVerticalScrollIndicator={false}
           onScroll={onScroll}

@@ -11,8 +11,7 @@ export default StyleSheet.create({
   },
   tabBarContainer: {
     position: 'relative',
-    zIndex: 1,
-    overflow: 'hidden',
+    zIndex: 1
   },
   seperatorContainer: {
     width: '95%',
@@ -50,5 +49,11 @@ export default StyleSheet.create({
     borderRadius: 20,
     top: 16,
     position: 'relative',
+  },
+  shadow: {
+    marginTop: -10,
+    height: 10,
+    position: 'relative',
+    zIndex: -1
   }
 });
