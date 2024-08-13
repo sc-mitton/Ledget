@@ -2,9 +2,12 @@ import { Plus } from 'geist-native-icons';
 
 import { Text, BoxHeader, ChevronTouchable, ShimmerBox, Avatar } from '@ledget/native-ui';
 import { useGetCoOwnerQuery, useGetMeQuery } from '@ledget/shared-features';
+import { setModal } from '@features/modalSlice';
 import { AccountScreenProps } from '@types';
+import { useAppDispatch } from '@hooks';
 
 const Household = (props: AccountScreenProps) => {
+  const dispatch = useAppDispatch();
   const { data: coOwner, isLoading } = useGetCoOwnerQuery();
   const { data: user } = useGetMeQuery();
 
@@ -24,8 +27,8 @@ const Household = (props: AccountScreenProps) => {
             <Text>{coOwner && `${coOwner?.name.first} ${coOwner?.name.last}`}</Text>
           </ChevronTouchable>
           :
-          <ChevronTouchable iconOverride={Plus}>
-            <Text>Acount Member</Text>
+          <ChevronTouchable iconOverride={Plus} onPress={() => dispatch(setModal('addCoOwner'))}>
+            <Text>Add Acount Member</Text>
           </ChevronTouchable>}
       </ShimmerBox>
     </>

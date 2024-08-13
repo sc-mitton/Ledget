@@ -17,10 +17,10 @@ import {
   LoadingRing,
   BlackPrimaryButtonWithArrow,
   Base64Logo,
-  useLoaded,
   BluePrimaryButton,
   Tooltip
 } from '@ledget/ui';
+import { useLoaded } from '@ledget/helpers';
 
 const InstitutionLogos = ({ plaidItems }: { plaidItems: PlaidItem[] }) => {
   const { data: user } = useGetMeQuery();
@@ -46,7 +46,7 @@ const InstitutionLogos = ({ plaidItems }: { plaidItems: PlaidItem[] }) => {
                     <Base64Logo
                       size="1.5em"
                       data={item.institution?.logo}
-                      alt={item.institution?.name.charAt(0).toUpperCase()}
+                      alt={item.institution?.name?.charAt(0).toUpperCase()}
                       backgroundColor={item.institution?.primary_color}
                     />
                   </Tooltip>
@@ -64,7 +64,7 @@ const InstitutionLogos = ({ plaidItems }: { plaidItems: PlaidItem[] }) => {
 };
 
 const BottomButtons = ({ continueDisabled }: { continueDisabled: boolean }) => {
-  const { open } = useBakedPlaidLink({ onBoarding: true });
+  const { open } = useBakedPlaidLink(true);
   const navigate = useNavigate();
 
   return (

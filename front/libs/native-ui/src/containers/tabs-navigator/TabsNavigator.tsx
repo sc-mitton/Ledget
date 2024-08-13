@@ -1,163 +1,43 @@
-import { useState, useRef, useEffect } from 'react';
-import { Dimensions, View } from 'react-native';
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-  withSpring
-} from 'react-native-reanimated';
+import { useState, useRef } from 'react';
+import { useSharedValue } from 'react-native-reanimated';
 import PagerView from 'react-native-pager-view';
 
-import styles from './styles';
-import { Seperator } from '../../restyled/Seperator';
-import { Box } from '../../restyled/Box';
-import { Button } from '../../restyled/Button';
-import { defaultSpringConfig } from '../../animated/configs/configs';
+import Panels from './Panels';
+import Tabs from './Tabs';
+import TabsNavigatorContext from './context';
+import { TPanels } from './types';
 
-type Props<T> = {
-  screens: { [key: string]: (props: T) => React.JSX.Element };
-  screenProps: T;
-  seperator?: boolean
-}
 
-export function TabsNavigator<T>({ screens, seperator = true, screenProps }: Props<T>) {
+function TabsNavigator<T>(props: TPanels<T>) {
+  const { children, tabs, props: tabProps } = props;
+
   const [index, setIndex] = useState(0);
   const height = useSharedValue(0);
   const width = useSharedValue(0);
   const translateX = useSharedValue(0);
   const refPagerView = useRef<PagerView>(null);
   const dragState = useRef<'idle' | 'dragging' | 'settling'>('idle');
-  const layouts = useRef(Array.from({ length: Object.keys(screens).length }, () => ({ width: 0, x: 0 })));
-
-  const animatedStyles = useAnimatedStyle(() => ({
-    width: width.value,
-    height: height.value,
-    transform: [{ translateX: translateX.value }]
-  }));
-
-  const handleScroll = ({ nativeEvent }: { nativeEvent: { position: number, offset: number } }) => {
-    const isLeftSwipe = nativeEvent.position < index;
-
-    if (dragState.current === 'dragging') {
-      if (isLeftSwipe) {
-        // Left swipe
-        const delta = (-1 * nativeEvent.offset + 1) / (-4 * nativeEvent.offset + 5)
-        width.value = layouts.current[index].width + delta * layouts.current[index].width
-
-        if (translateX.value <= layouts.current[index].x && dragState.current === 'dragging') {
-          translateX.value = layouts.current[index].x - delta * layouts.current[index].width
-        } else {
-          translateX.value = withTiming(layouts.current[index].x - delta, { duration: 200 })
-        }
-      } else {
-        // Right swipe
-        const delta = (nativeEvent.offset / (4 * nativeEvent.offset + 1)) * layouts.current[index].width;
-        width.value = layouts.current[index].width + delta
-      }
-    }
-
-    if (dragState.current === 'settling') {
-      const i = isLeftSwipe ?
-        nativeEvent.offset < .5 ? index - 1 : index :
-        nativeEvent.offset > .5 ? index + 1 : index;
-      if (i !== index) {
-        setIndex(i)
-      } else {
-        width.value = withTiming(layouts.current[index].width)
-        translateX.value = withSpring(layouts.current[index].x, defaultSpringConfig)
-      }
-    }
-  }
-
-  useEffect(() => {
-    if (dragState.current === 'settling') {
-      width.value = withTiming(layouts.current[index].width)
-      translateX.value = withSpring(layouts.current[index].x, defaultSpringConfig)
-    }
-  }, [index, dragState])
+  const layouts = useRef(Array.from({ length: Object.keys(tabs).length }, () => ({ width: 0, x: 0 })));
 
   return (
-    <View style={{ height: Dimensions.get('window').height }}>
-      <View style={styles.tabBarContainer}>
-        <Box backgroundColor='mainBackground'>
-          {/* Text Only */}
-          <Box style={styles.absTabBar}>
-            {Object.keys(screens).map((route, i) => (
-              <Button
-                key={`${route}${i}`}
-                style={styles.tabItem}
-                onPress={() => {
-                  refPagerView.current?.setPage(i)
-                  setIndex(i)
-                  width.value = withTiming(layouts.current[i].width)
-                  translateX.value = withSpring(layouts.current[i].x, defaultSpringConfig)
-                }}
-                variant={'transparentPill'}
-                textColor={i === index ? 'whiteText' : 'mainText'}
-                label={route}
-              />
-            ))}
-          </Box>
-          {/* Active Indicator */}
-          <Animated.View style={[animatedStyles, styles.tabNavPillContainer]}>
-            <Box
-              style={styles.tabNavPill}
-              backgroundColor='tabNavPill'
-              borderColor='tabNavPillBorder'
-              borderWidth={1.5}
-            />
-            {/* Backgrounds */}
-          </Animated.View>
-          <Box style={styles.tabBar}>
-            {Object.keys(screens).map((route, i) => (
-              <Button
-                key={`${route}${i}`}
-                onLayout={({ nativeEvent }) => {
-                  layouts.current[i] = {
-                    width: nativeEvent.layout.width,
-                    x: nativeEvent.layout.x + 20,
-                  }
-                  if (i === 0) {
-                    width.value = nativeEvent.layout.width;
-                    translateX.value = nativeEvent.layout.x + 20;
-                    height.value = nativeEvent.layout.height;
-                  }
-                }}
-                style={styles.tabItem}
-                variant={i === index ? 'transparentPill' : 'grayPill'}
-                transparent={true}
-                label={route}
-              />
-            ))}
-          </Box>
-          {seperator &&
-            <View style={styles.seperatorContainer}>
-              <Seperator variant='bare' backgroundColor='tabNavBorder' />
-            </View>}
-        </Box>
-        <Box
-          style={styles.shadow}
-          shadowColor='tabsShadow'
-          backgroundColor='mainBackground'
-          shadowOffset={{ width: 0, height: -5 }}
-          shadowRadius={20}
-          shadowOpacity={.95}
-        />
-      </View>
-      <PagerView
-        style={[styles.pagerView, { height: Dimensions.get('window').height - 100 }]}
-        ref={refPagerView}
-        initialPage={0}
-        onPageScroll={handleScroll}
-        onPageScrollStateChanged={({ nativeEvent }) => { dragState.current = nativeEvent.pageScrollState }}
-        onPageSelected={({ nativeEvent }) => setIndex(nativeEvent.position)}
-      >
-        {Object.keys(screens).map((key, i) => {
-          const Scene = Object.values(screens)[i];
-          return <Scene key={i} {...screenProps} />
-        })}
-      </PagerView>
-    </View>
-  );
+    <TabsNavigatorContext.Provider value={{
+      index,
+      setIndex,
+      x: translateX,
+      width,
+      height,
+      ref: refPagerView,
+      dragState,
+      layouts,
+      props: tabProps,
+      tabs
+    }}>
+      {children}
+    </TabsNavigatorContext.Provider>
+  )
 }
 
+TabsNavigator.Tabs = Tabs;
+TabsNavigator.Panels = Panels;
+
+export { TabsNavigator };

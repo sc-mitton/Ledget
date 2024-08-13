@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useTransition, animated, useSpringRef } from '@react-spring/web';
 
 import styles from './misc.module.scss';
-import { useLoaded } from '../../utils/hooks';
+import { useLoaded } from '@ledget/helpers';
 import { formatCurrency } from '@ledget/helpers';
 
 interface Base64LogoProps {
@@ -265,9 +265,8 @@ export const StaticProgressCircle = ({
           fill="transparent"
           transform="rotate(-90 18 18)"
           strokeLinecap="round"
-          strokeDasharray={`${
-            value ? parseFloat(Math.min(1, value).toFixed(2)) * 88 : 0
-          }, 88`}
+          strokeDasharray={`${value ? parseFloat(Math.min(1, value).toFixed(2)) * 88 : 0
+            }, 88`}
         />
       </svg>
     </div>

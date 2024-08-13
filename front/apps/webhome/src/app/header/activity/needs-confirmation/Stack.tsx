@@ -19,10 +19,10 @@ import {
   ExpandableContainer,
   ExpandButton,
   AbsPosMenu,
-  useLoaded,
   useColorScheme,
   LoadingRingDiv
 } from '@ledget/ui';
+import { useLoaded } from '@ledget/helpers';
 import { setTransactionModal } from '@features/modalSlice';
 import {
   useLazyGetUnconfirmedTransactionsQuery,
@@ -122,17 +122,17 @@ export const NeedsConfirmationStack = () => {
 
   const [containerProps, containerApi] = useSpring(
     () =>
-      ({
-        position: 'relative',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        height: _getContainerHeight(
-          unconfirmedTransactions?.length || 0,
-          unconfirmedStackExpanded
-        ),
-        overflowX: 'hidden',
-        overflowY: 'hidden'
-      } as React.CSSProperties)
+    ({
+      position: 'relative',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      height: _getContainerHeight(
+        unconfirmedTransactions?.length || 0,
+        unconfirmedStackExpanded
+      ),
+      overflowX: 'hidden',
+      overflowY: 'hidden'
+    } as React.CSSProperties)
   );
 
   const itemsApi = useSpringRef();
@@ -222,15 +222,15 @@ export const NeedsConfirmationStack = () => {
           ...transactionUpdates,
           [focusedItem.transaction_id]: isCategory(billCatSelectVal)
             ? {
-                categories: [
-                  {
-                    id: billCatSelectVal.id,
-                    name: billCatSelectVal.name,
-                    period: billCatSelectVal.period,
-                    fraction: 1
-                  }
-                ]
-              }
+              categories: [
+                {
+                  id: billCatSelectVal.id,
+                  name: billCatSelectVal.name,
+                  period: billCatSelectVal.period,
+                  fraction: 1
+                }
+              ]
+            }
             : { bill: billCatSelectVal }
         })
       );
@@ -267,14 +267,14 @@ export const NeedsConfirmationStack = () => {
                   updatedCategories && !updatedBillId
                     ? updatedCategories
                     : !updatedBillId
-                    ? (predictedCategories as SplitCategory[])
-                    : undefined,
+                      ? (predictedCategories as SplitCategory[])
+                      : undefined,
                 bill:
                   updatedBillId && !updatedCategories
                     ? updatedBillId
                     : !updatedCategories
-                    ? predictedBillId
-                    : undefined
+                      ? predictedBillId
+                      : undefined
               })
             );
           }
@@ -348,9 +348,9 @@ export const NeedsConfirmationStack = () => {
             transaction_id: item.transaction.transaction_id,
             splits: item.categories
               ? item.categories.map((cat) => ({
-                  category: cat.id,
-                  fraction: cat.fraction
-                }))
+                category: cat.id,
+                fraction: cat.fraction
+              }))
               : undefined,
             bill: item.bill
           }))
@@ -369,9 +369,9 @@ export const NeedsConfirmationStack = () => {
           transaction_id: item.transaction.transaction_id,
           splits: item.categories
             ? item.categories.map((cat) => ({
-                category: cat.id,
-                fraction: cat.fraction
-              }))
+              category: cat.id,
+              fraction: cat.fraction
+            }))
             : undefined,
           bill: item.bill
         }))
@@ -384,8 +384,8 @@ export const NeedsConfirmationStack = () => {
     setMenuPos({
       x:
         buttonRect.right -
-          newItemsRef.current!.getBoundingClientRect().left +
-          14 || 0,
+        newItemsRef.current!.getBoundingClientRect().left +
+        14 || 0,
       y:
         buttonRect.top - newItemsRef.current!.getBoundingClientRect().top - 4 ||
         0
@@ -402,8 +402,8 @@ export const NeedsConfirmationStack = () => {
         0,
       y:
         buttonRect.top -
-          newItemsRef.current!.getBoundingClientRect().top -
-          12 || 0
+        newItemsRef.current!.getBoundingClientRect().top -
+        12 || 0
     });
     setFocusedItem(item);
     setShowMenu(false);

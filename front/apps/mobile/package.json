@@ -73,7 +73,12 @@
     "@hookform/resolvers": "*",
     "zod": "*",
     "react-native-mmkv": "*",
-    "redux-persist": "*"
+    "redux-persist": "*",
+    "@testing-library/react": "*",
+    "redux": "*",
+    "redux-devtools-expo-dev-plugin": "*",
+    "lodash-es": "*",
+    "expo-clipboard": "*"
   },
   "devDependencies": {}
 }

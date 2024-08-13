@@ -6,7 +6,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     gap: 8,
     marginBottom: 16,
-    marginTop: 32,
+    marginTop: 12,
   },
   header: {
     justifyContent: 'center',

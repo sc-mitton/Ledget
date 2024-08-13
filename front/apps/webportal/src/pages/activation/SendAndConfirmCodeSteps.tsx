@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
 import { useFlow } from '@ledget/ory'
-import { useLoaded } from '@ledget/ui'
+import { useLoaded } from '@ledget/helpers';
 import { useLazyGetRecoveryFlowQuery, useCompleteRecoveryFlowMutation } from '@features/orySlice'
 import { SlideMotionDiv, WindowLoadingBar } from '@ledget/ui'
 import ConfirmCodeForm from "./ConfirmCodeForm"

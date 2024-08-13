@@ -7,7 +7,7 @@ export default StyleSheet.create({
     zIndex: 1,
   },
   pagerView: {
-    width: '100%',
+    width: '100%'
   },
   tabBarContainer: {
     position: 'relative',

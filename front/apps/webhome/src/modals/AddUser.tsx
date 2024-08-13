@@ -17,7 +17,7 @@ import {
 import { useAddUserToAccountMutation } from '@ledget/shared-features';
 import { withReAuth } from '@utils/index';
 import { hasErrorCode } from '@ledget/helpers';
-import { useLoaded } from '@utils/hooks';
+import { useLoaded } from '@ledget/helpers';
 import { Person } from '@ledget/media';
 
 const schema = z.object({
@@ -69,7 +69,7 @@ const Slide1 = () => {
         />
       )}
       <MainButton type="submit" submitting={isLoading} disabled={isLoading}>
-        Send
+        Get Invite Link
       </MainButton>
     </form>
   );
@@ -116,7 +116,8 @@ const Slide2 = () => {
           <div>
             <CopyButton target={data.recovery_link} />
           </div>
-          <h4>To finish, scan the qr code or follow the link</h4>
+          <h4>To finish, have your new account member
+            scan the qr code or follow the link</h4>
           <p>
             If the new household member has not completed the process within{' '}
             {expiresIn} minutes, you will need to start the process over.

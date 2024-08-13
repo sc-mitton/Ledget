@@ -33,9 +33,9 @@ import {
   TotpAppGraphic,
   RecoveryCodeGraphic,
   BackButton,
-  useLoaded,
   TextButtonHalfBlue
 } from '@ledget/ui';
+import { useLoaded } from '@ledget/helpers';
 
 const ErrorFetchingFlow = () => (
   <FormError msg={'Something went wrong, please try again later.'} />

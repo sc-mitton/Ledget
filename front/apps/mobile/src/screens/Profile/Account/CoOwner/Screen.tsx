@@ -45,7 +45,7 @@ const Screen = () => {
             :
             <View style={styles.accounts}>
               {plaidItems?.filter((item) => item.user === coOwner?.id).map((item) => (
-                <View style={styles.logo}>
+                <View style={styles.logo} key={`logo-${item.id}`}>
                   <InstitutionLogo
                     size={26}
                     key={item.id}
@@ -69,7 +69,7 @@ const Screen = () => {
             :
             <View style={styles.accounts}>
               {plaidItems?.filter((item) => item.user === user?.id).map((item) => (
-                <View style={styles.logo}>
+                <View style={styles.logo} key={`logo-${item.id}`}>
                   <InstitutionLogo
                     size={26}
                     key={item.id}

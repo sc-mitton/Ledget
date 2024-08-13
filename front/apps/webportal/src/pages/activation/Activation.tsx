@@ -5,9 +5,9 @@ import { AnimatePresence } from "framer-motion"
 import styles from './styles/activation.module.scss'
 import {
     SlideMotionDiv,
-    useLoaded,
     PortalWindow,
 } from '@ledget/ui'
+import { useLoaded } from '@ledget/helpers';
 import { Animation } from './Animation'
 
 import { EmailContextProvider } from './context'

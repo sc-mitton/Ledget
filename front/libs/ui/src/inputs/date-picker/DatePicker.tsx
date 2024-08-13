@@ -10,7 +10,7 @@ import { TextInputWrapper } from '../text/text';
 import { Tooltip } from '../../pieces/tooltip/Tooltip';
 import { IconButtonBlue, IconButtonHalfBlue, CircleIconButton } from '../../buttons';
 import { useCloseDropdown } from '../../utils/hooks';
-import { useLoaded } from '../../utils/hooks';
+import { useLoaded } from '@ledget/helpers';
 
 // Types
 type TPicker = 'date' | 'range';

@@ -155,7 +155,7 @@ export const lightTheme = createTheme({
     header: {
       fontSize: 28,
       lineHeight: 32,
-      marginTop: 'xs',
+      marginVertical: 's',
       marginLeft: 's',
       marginBottom: 'xs',
       fontFamily: 'SourceSans3SemiBold',

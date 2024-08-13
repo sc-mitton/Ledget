@@ -30,10 +30,10 @@ import {
   ZoomMotionDiv,
   SlideMotionDiv,
   TotpAppGraphic,
-  useLoaded,
   useColorScheme,
   SpacedHeader
 } from '@ledget/ui';
+import { useLoaded } from '@ledget/helpers';
 
 interface SetupAppProps {
   flow: any;

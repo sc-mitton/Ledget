@@ -34,7 +34,6 @@ import {
   DollarCents,
   DropdownDiv,
   SlideMotionDiv,
-  useLoaded,
   Checkbox,
   IconButtonHalfGray,
   DropdownItem,
@@ -42,6 +41,7 @@ import {
   NestedWindow2,
   WindowCorner
 } from '@ledget/ui';
+import { useLoaded } from '@ledget/helpers';
 import { extractReminders } from '@modals/CreateBill';
 import {
   EmojiComboText,
@@ -244,17 +244,17 @@ const BillInfo = ({ bill }: { bill: TransformedBill }) => {
         <div>
           {bill?.is_paid
             ? `${getNextBillDate({
-                day: bill?.day,
-                week: bill?.week,
-                week_day: bill?.week_day,
-                month: bill?.month,
-                year: bill?.year
-              })}`
+              day: bill?.day,
+              week: bill?.week,
+              week_day: bill?.week_day,
+              month: bill?.month,
+              year: bill?.year
+            })}`
             : `${new Date(bill.date).toLocaleDateString('en-US', {
-                month: 'short',
-                day: 'numeric',
-                year: 'numeric'
-              })}`}
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric'
+            })}`}
         </div>
         {bill?.expires && (
           <>
@@ -325,9 +325,8 @@ const DeleteBill = ({
         <RadioGroup.Label className={bill?.period}>
           <h3>
             Delete{' '}
-            {`${bill?.name.charAt(0).toUpperCase()}${
-              bill?.name.slice(1) || ''
-            }`}{' '}
+            {`${bill?.name.charAt(0).toUpperCase()}${bill?.name.slice(1) || ''
+              }`}{' '}
             Bill
           </h3>
         </RadioGroup.Label>

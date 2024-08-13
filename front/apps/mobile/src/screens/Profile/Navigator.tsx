@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import { View, ScrollView } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -42,6 +42,8 @@ function Profile(props: AccountScreenProps) {
   const { data: user } = useGetMeQuery();
   const dispatch = useAppDispatch();
   const headerHeight = useSharedValue(0);
+
+  const panelRef = useRef<View>(null);
   const scrollViewRef = useRef<ScrollView>(null);
 
   const onScroll = useCallback((event: { nativeEvent: { contentOffset: { y: number } } }) => {
@@ -51,6 +53,8 @@ function Profile(props: AccountScreenProps) {
 
   const onEndScroll = useCallback((event: { nativeEvent: { contentOffset: { y: number } } }) => {
     const { y } = event.nativeEvent.contentOffset;
+    if (y < 4) return;
+
     if (y < H_SCROLL_DISTANCE / 1.5) {
       headerHeight.value = withSpring(0, defaultSpringConfig);
       scrollViewRef.current?.scrollTo({ y: 0, animated: true });
@@ -72,23 +76,29 @@ function Profile(props: AccountScreenProps) {
     paddingTop: interpolate(headerHeight.value, [0, H_SCROLL_DISTANCE], [H_MAX_HEIGHT, H_MIN_HEIGHT], Extrapolation.CLAMP),
   }));
 
+  const invertedAnimatedPadding = useAnimatedStyle(() => ({
+    paddingTop: interpolate(headerHeight.value, [0, H_SCROLL_DISTANCE], [0, H_SCROLL_DISTANCE], Extrapolation.CLAMP),
+  }));
+
   return (
     <View style={styles.full}>
       <Animated.View style={[animatedPadding]}>
-        <ScrollView
-          ref={scrollViewRef}
-          style={styles.scrollView}
-          showsVerticalScrollIndicator={false}
-          onScroll={onScroll}
-          onScrollEndDrag={onEndScroll}
-          scrollEventThrottle={16}
-          stickyHeaderIndices={[0]}
-        >
-          <TabsNavigator
-            screens={scenes}
-            screenProps={props}
-          />
-        </ScrollView >
+        <TabsNavigator tabs={scenes} props={props} >
+          <ScrollView
+            ref={scrollViewRef}
+            style={styles.scrollView}
+            showsVerticalScrollIndicator={false}
+            onScroll={onScroll}
+            onScrollEndDrag={onEndScroll}
+            scrollEventThrottle={16}
+            stickyHeaderIndices={[0]}
+          >
+            <TabsNavigator.Tabs />
+            <Animated.View style={invertedAnimatedPadding} ref={panelRef}>
+              <TabsNavigator.Panels />
+            </Animated.View>
+          </ScrollView >
+        </TabsNavigator>
       </Animated.View>
       <Animated.View style={[styles.animatedHeader, styles.header, animatedHeight]}>
         <Box variant='header'>

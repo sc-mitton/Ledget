@@ -14,7 +14,7 @@ const Screen = (props: AccountScreenProps) => {
   const dispatch = useAppDispatch();
 
   return (
-    <Box variant='screenContent' style={{ height: Dimensions.get('window').height - 200 }}>
+    <Box variant='screenContent'>
       <Mfa />
       <Devices {...props} />
       <Button
