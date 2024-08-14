@@ -31,5 +31,4 @@ export interface PagerViewProps extends ViewProps {
 
 export type TPagerViewRef = {
   setPage: (page: number) => void;
-  setPageWithoutAnimation: (page: number) => void;
 };

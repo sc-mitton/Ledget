@@ -6,7 +6,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 
-import styles from './styles/styles';
+import styles from './styles/shared';
 import { Seperator } from '../../restyled/Seperator';
 import { Box } from '../../restyled/Box';
 import { Button } from '../../restyled/Button';

@@ -4,7 +4,7 @@ import {
   withSpring
 } from 'react-native-reanimated';
 
-import styles from './styles/styles';
+import styles from './styles/shared';
 import PagerView from './PagerView';
 import { defaultSpringConfig } from '../../animated/configs/configs';
 import { useTabsNavigatorContext } from './context';
@@ -25,7 +25,9 @@ function Panels() {
   const handleScroll: PagerViewProps['onPageScroll'] = ({ nativeEvent: { position, offset, direction } }) => {
 
     if (dragState.current === 'dragging') {
-      if (direction === -1) {
+      if ((direction === -1 && position === 0) || (direction === 1 && position === Object.keys(tabs).length - 1)) {
+        return;
+      } else if (direction === -1) {
         // Left swipe
         const delta = (-1 * offset + 1) / (-4 * offset + 5)
         pillWidth.value = layouts.current[position].width + delta * layouts.current[position].width

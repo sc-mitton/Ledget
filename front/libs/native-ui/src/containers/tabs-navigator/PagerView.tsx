@@ -2,8 +2,6 @@ import { forwardRef, useImperativeHandle, useRef, useEffect, Children } from 're
 import { Animated, PanResponder, Dimensions } from 'react-native';
 import { interpolate } from 'react-native-reanimated';
 
-import styles from './styles/pager-view'
-import { SlideView } from '../slide-view/slide-view';
 import type { PagerViewProps, TPagerViewRef, DragState } from './types';
 import { useLoaded } from '@ledget/helpers';
 
@@ -22,8 +20,9 @@ const PagerView = forwardRef<TPagerViewRef, PagerViewProps>((props, ref) => {
 
   const dragState = useRef<DragState>('idle');
   const page = useRef(initialPage ?? 0);
-  const x = useRef(new Animated.Value(Dimensions.get('window').width * (initialPage ?? 0) * -1)).current
-  const loaded = useLoaded();
+  const swipeDirection = useRef<'left' | 'right'>('left');
+  const x = useRef(new Animated.Value(0)).current
+  const pageX = useRef(new Animated.Value(0)).current
 
   const panResponder = useRef(
     PanResponder.create({
@@ -47,27 +46,23 @@ const PagerView = forwardRef<TPagerViewRef, PagerViewProps>((props, ref) => {
       onPanResponderMove: (evt, gs) => {
         if (dragState.current !== 'dragging') return;
 
-        x.setValue(Dimensions.get('window').width * page.current * -1 + gs.dx / 2);
+        swipeDirection.current = gs.dx > 0 ? 'right' : 'left';
+        x.setValue(gs.dx / 2);
 
-        if (Math.abs(gs.vx) > 1 || Math.abs(gs.dx) > Dimensions.get('window').width / 3) {
-          const newPage = gs.dx > 0
-            ? Math.max(page.current - 1, 0)
-            : Math.min(page.current + 1, (children as any).length - 1);
+        const newPage = gs.dx > 0
+          ? Math.max(page.current - 1, 0)
+          : Math.min(page.current + 1, (children as any).length - 1);
+
+        if (newPage === page.current) {
+          x.setValue(Math.pow(Math.abs(gs.dx), .5) * Math.sign(gs.dx));
+        } else if (Math.abs(gs.vx) > 1.5 || Math.abs(gs.dx) > Dimensions.get('window').width / 3) {
 
           dragState.current = 'settling';
           page.current = newPage;
 
           onPageScrollStateChanged?.({ nativeEvent: { pageScrollState: 'settling' } });
           onPageSelected?.({ nativeEvent: { position: newPage } });
-
-          Animated.timing(x, {
-            toValue: Dimensions.get('window').width * newPage * -1,
-            duration: DURATION,
-            useNativeDriver: true
-          }).start(() => {
-            dragState.current = 'idle';
-            onPageScrollStateChanged?.({ nativeEvent: { pageScrollState: 'idle' } });
-          })
+          x.setValue(0);
         }
       },
       onPanResponderTerminationRequest: (evt, gestureState) => {
@@ -75,7 +70,7 @@ const PagerView = forwardRef<TPagerViewRef, PagerViewProps>((props, ref) => {
         if (dragState.current === 'dragging') {
           dragState.current = 'settling';
           Animated.timing(x, {
-            toValue: Dimensions.get('window').width * page.current * -1,
+            toValue: 0,
             duration: DURATION,
             useNativeDriver: true
           }).start(() => {
@@ -90,7 +85,7 @@ const PagerView = forwardRef<TPagerViewRef, PagerViewProps>((props, ref) => {
         if (dragState.current === 'dragging') {
           dragState.current = 'settling';
           Animated.timing(x, {
-            toValue: Dimensions.get('window').width * page.current * -1,
+            toValue: 0,
             duration: DURATION,
             useNativeDriver: true
           }).start(() => {
@@ -106,17 +101,9 @@ const PagerView = forwardRef<TPagerViewRef, PagerViewProps>((props, ref) => {
   useImperativeHandle(ref, () => {
     return {
       setPage: (p: number) => {
+        swipeDirection.current = p > page.current ? 'left' : 'right';
         page.current = p;
         onPageSelected?.({ nativeEvent: { position: p } });
-        Animated.timing(x, {
-          toValue: Dimensions.get('window').width * p * -1,
-          duration: DURATION,
-          useNativeDriver: true
-        }).start();
-      },
-      setPageWithoutAnimation: (p: number) => {
-        page.current = p;
-        x.setValue(Dimensions.get('window').width * p * -1);
       }
     };
   });
@@ -126,21 +113,14 @@ const PagerView = forwardRef<TPagerViewRef, PagerViewProps>((props, ref) => {
     const listener = x.addListener(({ value }) => {
       if (dragState.current === 'idle') return;
 
-      const direction = value < Dimensions.get('window').width * page.current * -1 ? 1 : -1;
-      const inputRange = direction > 0
-        ? [
-          Dimensions.get('window').width * page.current * -1,
-          Dimensions.get('window').width * (page.current + 1) * -1
-        ]
-        : [
-          Dimensions.get('window').width * (page.current - 1) * -1,
-          Dimensions.get('window').width * page.current * -1
-        ]
+      const inputRange = value < 0
+        ? [0, Dimensions.get('window').width * -1]
+        : [Dimensions.get('window').width, 0]
 
       onPageScroll?.({
         nativeEvent: {
           position: page.current,
-          direction,
+          direction: value < 0 ? 1 : -1,
           offset: interpolate(value, inputRange, [0, 1])
         }
       });
@@ -155,13 +135,7 @@ const PagerView = forwardRef<TPagerViewRef, PagerViewProps>((props, ref) => {
     <Animated.View
       style={[
         style,
-        {
-          transform: [{
-            translateX: x
-          }]
-        },
-        styles.pages,
-        { width: Dimensions.get('window').width * (children as any).length }
+        { transform: [{ translateX: x }] }
       ]}
       {...rest}
       {...panResponder.panHandlers}
@@ -169,13 +143,18 @@ const PagerView = forwardRef<TPagerViewRef, PagerViewProps>((props, ref) => {
       {Children.map(children, (child, index) => {
         return (
           index === page.current &&
-          <SlideView
-            key={index}
-            skipEnter={!loaded}
-            config={{ duration: DURATION }}
-            style={{ width: Dimensions.get('window').width }}>
-            {child}
-          </SlideView>)
+          (
+            <Animated.View
+              key={`page-${index}`}
+              style={{
+                minHeight: Dimensions.get('window').height / 2,
+
+              }}
+            >
+              {child}
+            </Animated.View>
+          )
+        )
       })}
     </Animated.View>
   )
