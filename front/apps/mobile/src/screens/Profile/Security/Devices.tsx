@@ -3,7 +3,7 @@ import { useState, useEffect, Fragment } from 'react';
 import { groupBy as groupby } from 'lodash-es';
 
 import styles from './styles/devices';
-import { Box, BoxHeader, Seperator, Icon, Text, ShimmerBox, ChevronTouchable } from '@ledget/native-ui';
+import { BoxHeader, Seperator, Icon, Text, ShimmerBox, ChevronTouchable } from '@ledget/native-ui';
 import { Computer, MapPin2 } from '@ledget/media/native';
 import { Smartphone } from 'geist-native-icons';
 import { useGetDevicesQuery, Device as TDevice } from '@ledget/shared-features';
@@ -64,24 +64,6 @@ const Devices = (props: AccountScreenProps) => {
         numberOfLines={3}
         style={styles.devices}
         backgroundColor='nestedContainer'>
-        {groupedDevices?.map(([device, info], index) => (
-          <Fragment key={`device${index}`}>
-            <ChevronTouchable onPress={() => props.navigation.navigate('Device', { id: device })}>
-              <Device key={device} device={device} info={info} />
-            </ChevronTouchable>
-            {(index !== groupedDevices.length - 1) &&
-              <Seperator key={`device-seperator${index}`} variant='s' />}
-          </Fragment>
-        ))}
-        {groupedDevices?.map(([device, info], index) => (
-          <Fragment key={`device${index}`}>
-            <ChevronTouchable onPress={() => props.navigation.navigate('Device', { id: device })}>
-              <Device key={device} device={device} info={info} />
-            </ChevronTouchable>
-            {(index !== groupedDevices.length - 1) &&
-              <Seperator key={`device-seperator${index}`} variant='s' />}
-          </Fragment>
-        ))}
         {groupedDevices?.map(([device, info], index) => (
           <Fragment key={`device${index}`}>
             <ChevronTouchable onPress={() => props.navigation.navigate('Device', { id: device })}>

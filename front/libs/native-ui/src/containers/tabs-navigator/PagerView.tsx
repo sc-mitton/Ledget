@@ -9,8 +9,6 @@ import { View, Animated, PanResponder, Dimensions } from 'react-native';
 import Reanimated, {
   interpolate,
   useSharedValue,
-  withTiming,
-  withDelay
 } from 'react-native-reanimated';
 
 import styles from './styles/pager-view';
@@ -82,7 +80,10 @@ const PagerView = forwardRef<TPagerViewRef, PagerViewProps>((props, ref) => {
           }).start(() => {
             dragState.current = 'idle';
             onPageScrollStateChanged?.({ nativeEvent: { pageScrollState: 'idle' } });
-            height.value = tabHeights.current[page.current];
+            height.value = Math.max(
+              tabHeights.current[page.current],
+              Dimensions.get('screen').height / 2
+            );
           })
         }
       },
@@ -97,7 +98,10 @@ const PagerView = forwardRef<TPagerViewRef, PagerViewProps>((props, ref) => {
           }).start(() => {
             dragState.current = 'idle';
             onPageScrollStateChanged?.({ nativeEvent: { pageScrollState: 'idle' } });
-            height.value = tabHeights.current[page.current];
+            height.value = Math.max(
+              tabHeights.current[page.current],
+              Dimensions.get('screen').height / 2
+            );
           })
         }
         return true;
@@ -113,7 +117,10 @@ const PagerView = forwardRef<TPagerViewRef, PagerViewProps>((props, ref) => {
           }).start(() => {
             dragState.current = 'idle';
             onPageScrollStateChanged?.({ nativeEvent: { pageScrollState: 'idle' } });
-            height.value = tabHeights.current[page.current];
+            height.value = Math.max(
+              tabHeights.current[page.current],
+              Dimensions.get('screen').height / 2,
+            );
           })
         }
       },
@@ -132,7 +139,10 @@ const PagerView = forwardRef<TPagerViewRef, PagerViewProps>((props, ref) => {
           duration: DURATION,
           useNativeDriver: true
         }).start(() => {
-          height.value = tabHeights.current[page.current];
+          height.value = Math.max(
+            tabHeights.current[page.current],
+            Dimensions.get('screen').height / 1.5,
+          );
         });
       }
     };

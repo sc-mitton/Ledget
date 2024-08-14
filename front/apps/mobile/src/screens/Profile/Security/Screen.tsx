@@ -1,4 +1,3 @@
-import { Dimensions } from 'react-native';
 import { LogOut } from 'geist-native-icons';
 
 import { Box } from '@ledget/native-ui';

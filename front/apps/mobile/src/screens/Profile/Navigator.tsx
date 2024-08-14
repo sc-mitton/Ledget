@@ -1,5 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { View, ScrollView, NativeSyntheticEvent, NativeScrollEvent, LayoutChangeEvent } from 'react-native';
+import { useRef } from 'react';
+import {
+  View,
+  ScrollView,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+  Dimensions
+} from 'react-native';
 import Animated, {
   useSharedValue,
   interpolate,
@@ -42,8 +48,8 @@ function Profile(props: AccountScreenProps) {
   const { data: user } = useGetMeQuery();
   const dispatch = useAppDispatch();
   const headerHeight = useSharedValue(0);
+  const panelsHeight = useSharedValue(0);
 
-  const panelRef = useRef<View>(null);
   const scrollViewRef = useRef<ScrollView>(null);
 
   const contentHeight = useRef(0);
@@ -62,8 +68,9 @@ function Profile(props: AccountScreenProps) {
     paddingTop: interpolate(headerHeight.value, [0, H_SCROLL_DISTANCE], [H_MAX_HEIGHT, H_MIN_HEIGHT], Extrapolation.CLAMP),
   }));
 
-  const invertedAnimatedPadding = useAnimatedStyle(() => ({
+  const panelsAnimation = useAnimatedStyle(() => ({
     paddingTop: interpolate(headerHeight.value, [0, H_SCROLL_DISTANCE], [0, H_SCROLL_DISTANCE], Extrapolation.CLAMP),
+    minHeight: panelsHeight.value,
   }));
 
   return (
@@ -96,9 +103,10 @@ function Profile(props: AccountScreenProps) {
             onLayout={(event) => { containerHeight.current = event.nativeEvent.layout.height }}
           >
             <TabsNavigator.Tabs />
-            <Animated.View style={invertedAnimatedPadding} ref={panelRef}>
+            <Animated.View style={[panelsAnimation]}>
               <TabsNavigator.Panels />
             </Animated.View>
+            {containerHeight.current >= containerHeight.current && <View style={{ height: 50 }} />}
           </ScrollView >
         </TabsNavigator>
       </Animated.View>
