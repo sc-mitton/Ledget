@@ -1,5 +1,5 @@
-import { useCallback, useRef } from 'react';
-import { View, ScrollView } from 'react-native';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { View, ScrollView, NativeSyntheticEvent, NativeScrollEvent, LayoutChangeEvent } from 'react-native';
 import Animated, {
   useSharedValue,
   interpolate,
@@ -46,22 +46,8 @@ function Profile(props: AccountScreenProps) {
   const panelRef = useRef<View>(null);
   const scrollViewRef = useRef<ScrollView>(null);
 
-  const onScroll = useCallback((event: { nativeEvent: { contentOffset: { y: number } } }) => {
-    const { y } = event.nativeEvent.contentOffset;
-    headerHeight.value = y;
-  }, []);
-
-  const onEndScroll = useCallback((event: { nativeEvent: { contentOffset: { y: number } } }) => {
-    const { y } = event.nativeEvent.contentOffset;
-    if (y < 4) return;
-
-    if (y < H_SCROLL_DISTANCE / 1.5) {
-      headerHeight.value = withSpring(0, defaultSpringConfig);
-      scrollViewRef.current?.scrollTo({ y: 0, animated: true });
-    } else {
-      headerHeight.value = withSpring(H_MAX_HEIGHT, defaultSpringConfig);
-    }
-  }, []);
+  const contentHeight = useRef(0);
+  const containerHeight = useRef(0);
 
   const animatedHeight = useAnimatedStyle(() => ({
     height: interpolate(headerHeight.value, [0, H_SCROLL_DISTANCE], [H_MAX_HEIGHT, H_MIN_HEIGHT], Extrapolation.CLAMP),
@@ -88,10 +74,26 @@ function Profile(props: AccountScreenProps) {
             ref={scrollViewRef}
             style={styles.scrollView}
             showsVerticalScrollIndicator={false}
-            onScroll={onScroll}
-            onScrollEndDrag={onEndScroll}
+            onScroll={(event: NativeSyntheticEvent<NativeScrollEvent>) => {
+              if (containerHeight.current >= contentHeight.current) return;
+              headerHeight.value = event.nativeEvent.contentOffset.y;
+            }
+            }
+            onScrollEndDrag={(event: { nativeEvent: { contentOffset: { y: number } } }) => {
+              if (containerHeight.current >= contentHeight.current) return;
+              const { y } = event.nativeEvent.contentOffset;
+
+              if (y < H_SCROLL_DISTANCE / 1.5) {
+                headerHeight.value = withSpring(0, defaultSpringConfig);
+                scrollViewRef.current?.scrollTo({ y: 0, animated: true });
+              } else {
+                headerHeight.value = withSpring(H_MAX_HEIGHT, defaultSpringConfig);
+              }
+            }}
             scrollEventThrottle={16}
             stickyHeaderIndices={[0]}
+            onContentSizeChange={(w, h) => { contentHeight.current = h }}
+            onLayout={(event) => { containerHeight.current = event.nativeEvent.layout.height }}
           >
             <TabsNavigator.Tabs />
             <Animated.View style={invertedAnimatedPadding} ref={panelRef}>
