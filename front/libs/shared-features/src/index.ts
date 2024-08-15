@@ -16,6 +16,7 @@ export * from './lib/pricesSlice/slice';
 export * from './lib/accountsSlice/types';
 export * from './lib/billSlice/types';
 export * from './lib/categorySlice/types';
+export * from './lib/deviceSlice/types';
 export * from './lib/plaidSlice/types';
 export * from './lib/remindersSlice/types';
 export * from './lib/transactionSlice/types';

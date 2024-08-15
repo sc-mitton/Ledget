@@ -87,8 +87,9 @@ const Device = (props: { device: string; info: DeviceType[] }) => {
               {info.map((session) => (
                 <div key={session.id}>
                   <div>
-                    <div>Browser</div>
-                    <div>{session.browser_family}</div>
+                    {session.is_pc &&
+                      <><div>Browser</div>
+                        <div>{session.browser_family}</div></>}
                     <div>Last Login </div>
                     <div>{formatDateTime(session.last_login)}</div>
                   </div>

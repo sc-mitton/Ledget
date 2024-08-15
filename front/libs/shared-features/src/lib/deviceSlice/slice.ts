@@ -1,7 +1,12 @@
 import apiSlice from '../apiSlice/slice';
+import type { Device } from './types';
 
 export const deviceSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    getDevices: builder.query<Device[], void>({
+      query: () => 'devices',
+      providesTags: ['Device']
+    }),
     addRememberedDevice: builder.mutation<any, void>({
       query: () => ({
         url: 'devices',
@@ -27,6 +32,7 @@ export const deviceSlice = apiSlice.injectEndpoints({
 });
 
 export const {
+  useGetDevicesQuery,
   useAddRememberedDeviceMutation,
   useDeleteRememberedDeviceMutation,
   useRefreshDevicesMutation

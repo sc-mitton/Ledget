@@ -1,7 +1,6 @@
 import apiSlice from '../apiSlice/slice';
 
 import {
-  Device,
   PaymentMethod,
   Subscription,
   UpdatePaymentMethod,
@@ -12,15 +11,11 @@ import {
 } from './types';
 
 const apiWithTags = apiSlice.enhanceEndpoints({
-  addTagTypes: ['Device', 'User', 'PaymentMethod', 'Invoice']
+  addTagTypes: ['User', 'PaymentMethod', 'Invoice']
 });
 
 export const userSlice = apiWithTags.injectEndpoints({
   endpoints: (builder) => ({
-    getDevices: builder.query<Device[], void>({
-      query: () => 'devices',
-      providesTags: ['Device']
-    }),
     getMe: builder.query<User, void>({
       query: () => 'user/me',
       providesTags: ['User'],
@@ -149,7 +144,6 @@ export const {
   useGetMeQuery,
   useLazyGetMeQuery,
   useGetCoOwnerQuery,
-  useGetDevicesQuery,
   useGetSubscriptionQuery,
   useGetPaymentMethodQuery,
   useGetNextInvoiceQuery,

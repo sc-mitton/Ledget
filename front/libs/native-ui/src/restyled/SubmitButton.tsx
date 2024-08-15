@@ -17,11 +17,12 @@ interface ExtraProps {
   isLoading?: boolean;
   isSuccess?: boolean;
   isSubmitting?: boolean;
+  children?: React.ReactNode | ((props: { isSuccess?: boolean, isLoading?: boolean, isSubmitting?: boolean }) => React.ReactNode);
 }
 
-export const SubmitButton = (props: ButtonProps & ExtraProps) => {
+export const SubmitButton = (props: Omit<ButtonProps, 'children'> & ExtraProps) => {
   const [showCheck, setShowCheck] = useState(false);
-  const { isLoading, isSuccess, isSubmitting, ...rest } = props;
+  const { isLoading, isSuccess, isSubmitting, children, ...rest } = props;
   const checkScale = useSharedValue(.9);
 
   useEffect(() => {
@@ -52,6 +53,7 @@ export const SubmitButton = (props: ButtonProps & ExtraProps) => {
           <Animated.View style={{ transform: [{ scale: checkScale }], position: 'absolute' }}>
             {showCheck && <Box padding='xxs'><Icon icon={Check} color={'successIcon'} /></Box>}
           </Animated.View>
+          {typeof children === 'function' ? children({ isSubmitting, isSuccess, isLoading }) : children}
         </>
       )}
     </Button>

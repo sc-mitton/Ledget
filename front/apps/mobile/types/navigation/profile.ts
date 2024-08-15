@@ -1,4 +1,5 @@
 import { StackScreenProps } from '@react-navigation/stack';
+import type { Device } from '@ledget/shared-features';
 
 export type ProfileStackParamList = {
   Profile: undefined,
@@ -6,7 +7,8 @@ export type ProfileStackParamList = {
     item: string
   },
   Device: {
-    id: string
+    device: string,
+    sessions: Device[]
   },
   PersonalInfo: undefined,
   CoOwner: undefined,

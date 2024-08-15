@@ -66,7 +66,7 @@ const Devices = (props: AccountScreenProps) => {
         backgroundColor='nestedContainer'>
         {groupedDevices?.map(([device, info], index) => (
           <Fragment key={`device${index}`}>
-            <ChevronTouchable onPress={() => props.navigation.navigate('Device', { id: device })}>
+            <ChevronTouchable onPress={() => props.navigation.navigate('Device', { device: device, sessions: info })}>
               <Device key={device} device={device} info={info} />
             </ChevronTouchable>
             {(index !== groupedDevices.length - 1) &&
