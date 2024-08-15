@@ -103,7 +103,7 @@ class CoOwnerView(GenericAPIView):
             api_instance = IdentityApi(api_client)
             id = str(self.request.user.co_owner.id)
             response = api_instance.get_identity(id=id)
-            serializer = self.get_serializer(response['traits'])
+            serializer = self.get_serializer(response.traits)
             return serializer.data
 
 
