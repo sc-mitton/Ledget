@@ -100,7 +100,7 @@ export const GenerateViewRecoveryCodes = (props: { onFinish: () => void }) => {
   }, [flowStatus.isGetFlowSuccess, mutationCacheKey]);
 
   // Extract recovery codes from flow
-  // and save the codes if we're in the autenticator setup
+  // and save the codes if we're in the authenticator setup
   useEffect(() => {
     if (isCompleteSettingsFlowSuccess) {
       flow?.ui.nodes.find((node: any) => {

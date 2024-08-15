@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
-import { View, ScrollView, TouchableOpacity, Linking } from 'react-native';
+import { View, ScrollView, TouchableOpacity } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
 
 import {
   Header,
@@ -30,7 +31,7 @@ const Screen = ({ navigation, route }: ConnectionScreenProps) => {
       <TouchableOpacity
         style={styles.headerContainer}
         activeOpacity={.8}
-        onPress={() => { Linking.openURL(plaidItems?.find((item) => item.id === route.params.item)?.institution?.url || '') }}>
+        onPress={() => { WebBrowser.openBrowserAsync(plaidItems?.find((item) => item.id === route.params.item)?.institution?.url || '') }}>
         <View style={styles.header}>
           <InstitutionLogo data={plaidItems?.find((item) => item.id === route.params.item)?.institution?.logo} />
           <Header>

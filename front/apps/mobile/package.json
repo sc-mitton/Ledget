@@ -79,7 +79,9 @@
     "redux-devtools-expo-dev-plugin": "*",
     "lodash-es": "*",
     "expo-clipboard": "*",
-    "expo-local-authentication": "*"
+    "expo-local-authentication": "*",
+    "expo-web-browser": "*",
+    "expo-linking": "*"
   },
   "devDependencies": {}
 }
