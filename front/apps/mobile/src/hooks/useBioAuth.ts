@@ -16,6 +16,7 @@ export const useBioAuth = (args?: TUseBioAuth) => {
   const bioAuth = async (callback?: () => void) => {
     const now = Date.now()
     if (now - lastAuthed < LAST_AUTHED_THRESHOLD) {
+      callback && callback()
       return true
     }
 

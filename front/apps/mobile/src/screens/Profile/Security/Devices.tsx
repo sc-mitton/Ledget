@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 import { useState, useEffect, Fragment } from 'react';
-import { groupBy as groupby } from 'lodash-es';
+import { groupBy } from 'lodash-es';
 
 import styles from './styles/devices';
 import { BoxHeader, Seperator, Icon, Text, ShimmerBox, ChevronTouchable } from '@ledget/native-ui';
@@ -49,7 +49,7 @@ const Devices = (props: AccountScreenProps) => {
   useEffect(() => {
     if (devices) {
       const groupedDevices = Object.entries(
-        groupby(devices, (device) => [device.device_family, device.location])
+        groupBy(devices, (device) => [device.device_family, device.location])
       );
       setGroupedDevices(groupedDevices);
     }
@@ -66,7 +66,8 @@ const Devices = (props: AccountScreenProps) => {
         backgroundColor='nestedContainer'>
         {groupedDevices?.map(([device, info], index) => (
           <Fragment key={`device${index}`}>
-            <ChevronTouchable onPress={() => props.navigation.navigate('Device', { device: device, sessions: info })}>
+            <ChevronTouchable onPress={() =>
+              props.navigation.navigate('Device', { key: [info[0].device_family || '', info[0].location] })}>
               <Device key={device} device={device} info={info} />
             </ChevronTouchable>
             {(index !== groupedDevices.length - 1) &&

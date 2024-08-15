@@ -1,39 +1,73 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { View, ScrollView } from 'react-native'
 import React from 'react'
 import { LogOut, Smartphone } from 'geist-native-icons'
 import { Computer, MapPin2 } from '@ledget/media/native';
 import dayjs from 'dayjs';
+import { groupBy } from 'lodash-es';
 
 import styles from './styles';
 import { DeviceScreenProps } from '@types'
-import { useRemoveRememberedDeviceMutation } from '@ledget/shared-features';
+import {
+  useGetDevicesQuery,
+  useRemoveRememberedDeviceMutation,
+  Device as TDevice
+} from '@ledget/shared-features';
 import { Box, Text, Icon, SubmitButton, Seperator } from '@ledget/native-ui'
 import { useBioAuth } from '@hooks';
 
 const Device = ({ navigation, route }: DeviceScreenProps) => {
+  const { data: devices } = useGetDevicesQuery();
+  const [groupedDevices, setGroupedDevices] = useState<[string, TDevice[]][]>();
+  const [device, setDevice] = useState<[string, TDevice[]]>();
+  const [iconKey, setIconKey] = useState<string | undefined>(undefined);
   const [removeDevice, { isLoading: processingDelete, isSuccess: successfulDelete }] =
     useRemoveRememberedDeviceMutation();
   const [removedDevice, setRemovedDevice] = useState('');
   const { bioAuth } = useBioAuth();
 
-  const iconKey = Object.keys(route.params.sessions[0]).find(
-    (key) => key.includes('is_') && (route.params.sessions as any)[0][key]
-  );
+  useEffect(() => {
+    if (devices) {
+      const groupedDevices = Object.entries(
+        groupBy(devices, (device) => [device.device_family, device.location])
+      );
+      setGroupedDevices(groupedDevices);
+    }
+  }, [devices]);
+
+  useEffect(() => {
+    if (groupedDevices) {
+      setDevice(
+        groupedDevices.find((device) => device[0] === route.params.key.join(','))
+      );
+    }
+  }, [groupedDevices]);
+
+  useEffect(() => {
+    if (device) {
+      setIconKey(device[1][0].is_mobile ? 'is_mobile' : 'is_pc');
+    }
+  }, [device]);
+
+  useEffect(() => {
+    if (!device && successfulDelete) {
+      navigation.goBack()
+    }
+  }, [device]);
 
   return (
     <Box variant='screen' style={styles.container}>
       <View style={styles.content}>
         <View style={styles.header}>
           <Text variant='header'>
-            {route.params.device.split(',')[0]}&nbsp;
+            {device?.[0].split(',')[0]}&nbsp;
           </Text>
           <View style={iconKey === 'is_pc' ? styles.pcLocation : styles.mobileLocation}>
             <Icon icon={MapPin2} color='tertiaryText' size={16} />
             <Text color='tertiaryText' >
-              {route.params.device.split(',')[2] === undefined
-                ? route.params.device.split(',')[1] ? route.params.device.split(',')[1] : 'Unknown'
-                : route.params.device.split(',')[1] + ', ' + route.params.device.split(',')[2]}
+              {device?.[0].split(',')[2] === undefined
+                ? device?.[0].split(',')[1] ? device?.[0].split(',')[1] : 'Unknown'
+                : device?.[0].split(',')[1] + ', ' + device?.[0].split(',')[2]}
             </Text>
           </View>
           <Icon
@@ -44,7 +78,7 @@ const Device = ({ navigation, route }: DeviceScreenProps) => {
         <Box variant='nestedContainer' style={styles.sessions}>
           <ScrollView
             style={styles.sessionsScroll}>
-            {route.params.sessions
+            {device?.[1]
               .sort((a, b) => dayjs(a.last_login).isAfter(b.last_login) ? -1 : 1)
               .map((session, index) => (
                 <>
@@ -80,7 +114,7 @@ const Device = ({ navigation, route }: DeviceScreenProps) => {
                         )}
                       </SubmitButton>}
                   </View>
-                  {index !== route.params.sessions.length - 1 && <Seperator />}
+                  {index !== device[1].length - 1 && <Seperator />}
                 </>
               ))}
           </ScrollView>

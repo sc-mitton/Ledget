@@ -7,8 +7,7 @@ export type ProfileStackParamList = {
     item: string
   },
   Device: {
-    device: string,
-    sessions: Device[]
+    key: string[],
   },
   PersonalInfo: undefined,
   CoOwner: undefined,

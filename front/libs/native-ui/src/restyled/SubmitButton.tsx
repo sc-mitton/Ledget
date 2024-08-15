@@ -4,13 +4,13 @@ import Animated, {
   withSequence,
   withTiming,
   withDelay,
+  useAnimatedStyle
 } from 'react-native-reanimated';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Check } from 'geist-native-icons';
 
 import { Button } from './Button';
 import type { ButtonProps } from './Button';
-import { Box } from './Box';
 import { Spinner } from '../animated/loading-indicators/Spinner';
 import { Icon } from './Icon';
 
@@ -46,16 +46,20 @@ export const SubmitButton = (props: Omit<ButtonProps, 'children'> & ExtraProps) 
 
   }, [isSuccess]);
 
+  const animation = useAnimatedStyle(() => {
+    return { transform: [{ scale: checkScale.value }] };
+  });
+
   return (
     <Button transparent={isSubmitting || showCheck} style={[style, styles.button]} {...rest}>
       {({ color }) => (
         <>
           {isSubmitting && <Spinner color={color} />}
-          <Animated.View style={[{ transform: [{ scale: checkScale }] }, styles.checkContainer]}>
+          <Animated.View style={[animation, styles.checkContainer]}>
             {isSuccess &&
-              <Box padding='xxs'>
+              <View style={styles.check}>
                 <Icon icon={Check} color={'successIcon'} />
-              </Box>}
+              </View>}
           </Animated.View>
           {typeof children === 'function' ? children({ isSubmitting, isSuccess, isLoading }) : children}
         </>
@@ -67,13 +71,16 @@ export const SubmitButton = (props: Omit<ButtonProps, 'children'> & ExtraProps) 
 const styles = StyleSheet.create({
   checkContainer: {
     position: 'absolute',
-    width: '100%',
-    height: '100%',
+    transformOrigin: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    left: '50%',
-    top: '50%',
-    transform: [{ translateX: -1 }, { translateY: -1 }],
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  check: {
+    position: 'absolute'
   },
   button: {
     position: 'relative',
