@@ -90,7 +90,7 @@ local BaseWithAuth = {
       url: base_url + "/user/token-session/<[a-zA-Z0-9-]+>/extend",
     },
     authenticators: [bearer_token_authenticator],
-    mutators: [id_token],
+    mutators: [id_token, token_header],
     authorizer: allow_authorizer,
   },
   BaseWithAuth
