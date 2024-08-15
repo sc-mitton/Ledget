@@ -19,6 +19,7 @@ type AuthMethod =
 
 interface Session {
   aal: 'aal1' | 'aal15' | 'aal2';
+  auth_completed_at: string;
   auth_methods: AuthMethod[];
 }
 

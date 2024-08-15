@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '@hooks/store';
 import { userSlice, User } from '@ledget/shared-features';
@@ -39,8 +41,8 @@ export const authSlice = createSlice({
           1000 * 60 * 9
         ) {
           state.reAuthed.level = action.payload?.session?.aal || 'none';
-          state.reAuthed.at = Date.now();
-        }
+          state.reAuthed.at = dayjs(action.payload?.session?.auth_completed_at).valueOf();
+        };
       }
     );
   }
