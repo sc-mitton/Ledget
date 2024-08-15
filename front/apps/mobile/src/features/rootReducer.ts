@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { modalSlice } from './modalSlice';
 import { appearanceslice } from './appearanceSlice';
+import { bioSlice } from './bioSlice';
 import {
   apiSlice,
   toastSlice,
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
   budgetItemMetaData: budgetItemMetaDataSlice.reducer,
   modal: modalSlice.reducer,
   appearance: appearanceslice.reducer,
+  bio: bioSlice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

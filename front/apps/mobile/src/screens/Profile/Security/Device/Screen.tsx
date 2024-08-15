@@ -9,11 +9,13 @@ import styles from './styles';
 import { DeviceScreenProps } from '@types'
 import { useRemoveRememberedDeviceMutation } from '@ledget/shared-features';
 import { Box, Text, Icon, SubmitButton, Seperator } from '@ledget/native-ui'
+import { useBioAuth } from '@hooks';
 
 const Device = ({ navigation, route }: DeviceScreenProps) => {
   const [removeDevice, { isLoading: processingDelete, isSuccess: successfulDelete }] =
     useRemoveRememberedDeviceMutation();
   const [removedDevice, setRemovedDevice] = useState('');
+  const { bioAuth } = useBioAuth();
 
   const iconKey = Object.keys(route.params.sessions[0]).find(
     (key) => key.includes('is_') && (route.params.sessions as any)[0][key]
@@ -59,21 +61,24 @@ const Device = ({ navigation, route }: DeviceScreenProps) => {
                       {session.current_device &&
                         <Text color='greenText' marginTop='xs'>Current Session</Text>}
                     </View>
-                    {!session.current_device && <SubmitButton
-                      style={styles.logoutButton}
-                      backgroundColor={processingDelete && removedDevice === session.id ? 'transparent' : 'grayButton'}
-                      borderRadius={8}
-                      onPress={() => {
-                        setRemovedDevice(session.id)
-                        removeDevice({ deviceId: session.id })
-                      }}
-                      isSubmitting={processingDelete && removedDevice === session.id}
-                      isSuccess={successfulDelete && removedDevice === session.id}
-                    >
-                      {({ isSubmitting, isSuccess }) => (
-                        <Icon icon={LogOut} color={isSubmitting || isSuccess ? 'transparent' : 'mainText'} />
-                      )}
-                    </SubmitButton>}
+                    {!session.current_device &&
+                      <SubmitButton
+                        style={styles.logoutButton}
+                        backgroundColor={processingDelete && removedDevice === session.id ? 'transparent' : 'grayButton'}
+                        borderRadius={8}
+                        onPress={() => {
+                          bioAuth(() => {
+                            setRemovedDevice(session.id)
+                            removeDevice({ deviceId: session.id })
+                          })
+                        }}
+                        isSubmitting={processingDelete && removedDevice === session.id}
+                        isSuccess={successfulDelete && removedDevice === session.id}
+                      >
+                        {({ isSubmitting, isSuccess }) => (
+                          <Icon icon={LogOut} color={isSubmitting || isSuccess ? 'transparent' : 'mainText'} />
+                        )}
+                      </SubmitButton>}
                   </View>
                   {index !== route.params.sessions.length - 1 && <Seperator />}
                 </>
