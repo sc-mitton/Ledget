@@ -92,6 +92,14 @@ class BaseFreshSessionClass(BasePermission):
     message = AAL_FRESHNESS_ERROR_MESSAGE
 
     def check_session_is_fresh(self, request, aal):
+        '''
+        Check if the session is fresh enough for the given aal.
+        (Note: only applies to non-token based sessions)
+        '''
+
+        if request.ory_session.token_based:
+            return True
+
         try:
             seconds_since_last_login = self.get_last_ory_login_delta(request, aal)
         except Exception as e:
