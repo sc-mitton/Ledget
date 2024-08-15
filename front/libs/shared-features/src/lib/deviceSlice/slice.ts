@@ -14,7 +14,7 @@ export const deviceSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Device']
     }),
-    deleteRememberedDevice: builder.mutation<any, { deviceId: string }>({
+    removeRememberedDevice: builder.mutation<any, { deviceId: string }>({
       query: ({ deviceId }) => ({
         url: `device/${deviceId}`,
         method: 'DELETE'
@@ -34,6 +34,6 @@ export const deviceSlice = apiSlice.injectEndpoints({
 export const {
   useGetDevicesQuery,
   useAddRememberedDeviceMutation,
-  useDeleteRememberedDeviceMutation,
+  useRemoveRememberedDeviceMutation,
   useRefreshDevicesMutation
 } = deviceSlice;

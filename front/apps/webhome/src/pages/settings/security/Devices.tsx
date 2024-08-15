@@ -5,7 +5,7 @@ import { groupBy as groupby } from 'lodash-es';
 import styles from './styles/devices.module.scss';
 import { Disclosure } from '@headlessui/react';
 import {
-  useDeleteRememberedDeviceMutation,
+  useRemoveRememberedDeviceMutation,
   Device as DeviceType
 } from '@ledget/shared-features';
 import { IconButtonSubmit, Tooltip, NestedWindowSlimmer } from '@ledget/ui';
@@ -27,7 +27,7 @@ const formatDateTime = (date: string | number) => {
 
 const Device = (props: { device: string; info: DeviceType[] }) => {
   const [deleteDevice, { isLoading: processingDelete }] =
-    useDeleteRememberedDeviceMutation();
+    useRemoveRememberedDeviceMutation();
 
   const { device, info } = props;
   const buttonRef = useRef<HTMLButtonElement>(null);

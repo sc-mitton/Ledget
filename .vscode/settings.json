@@ -3,5 +3,23 @@
     "python.linting.enabled": true,
     "flake8.args": [
         "--config=./back/restapi/.flake8",
-    ]
+    ],
+    "LineCount.excludes": [
+        "**/.vscode/**",
+        "**/node_modules/**",
+        "**/env/**",
+        "**/venv/**",
+        "**.bundle/**",
+        "**.git/**",
+        "**/package-lock.json",
+        "**/pnpm-lock.yaml",
+        "**__pycache__/**",
+        "**/finicity.yaml",
+        "**/*.ai",
+        "**/*_logs",
+        "**/.nx/*",
+        "**/ios/*",
+        "**/android/*",
+        "**/*.log"
+    ],
 }

@@ -7,13 +7,13 @@ import dayjs from 'dayjs';
 
 import styles from './styles';
 import { DeviceScreenProps } from '@types'
-import { useDeleteRememberedDeviceMutation } from '@ledget/shared-features';
-import { Box, Text, Icon, SubmitButton, Header2, Seperator } from '@ledget/native-ui'
+import { useRemoveRememberedDeviceMutation } from '@ledget/shared-features';
+import { Box, Text, Icon, SubmitButton, Seperator } from '@ledget/native-ui'
 
 const Device = ({ navigation, route }: DeviceScreenProps) => {
-  const [deleteDevice, { isLoading: processingDelete, isSuccess: successfulDelete }] =
-    useDeleteRememberedDeviceMutation();
-  const [deletingDevice, setDeletingDevice] = useState('');
+  const [removeDevice, { isLoading: processingDelete, isSuccess: successfulDelete }] =
+    useRemoveRememberedDeviceMutation();
+  const [removedDevice, setRemovedDevice] = useState('');
 
   const iconKey = Object.keys(route.params.sessions[0]).find(
     (key) => key.includes('is_') && (route.params.sessions as any)[0][key]
@@ -61,14 +61,14 @@ const Device = ({ navigation, route }: DeviceScreenProps) => {
                     </View>
                     {!session.current_device && <SubmitButton
                       style={styles.logoutButton}
-                      backgroundColor={processingDelete && deletingDevice === session.id ? 'transparent' : 'grayButton'}
+                      backgroundColor={processingDelete && removedDevice === session.id ? 'transparent' : 'grayButton'}
                       borderRadius={8}
                       onPress={() => {
-                        setDeletingDevice(session.id)
-                        deleteDevice({ deviceId: session.id })
+                        setRemovedDevice(session.id)
+                        removeDevice({ deviceId: session.id })
                       }}
-                      isSubmitting={processingDelete && deletingDevice === session.id}
-                      isSuccess={successfulDelete && deletingDevice === session.id}
+                      isSubmitting={processingDelete && removedDevice === session.id}
+                      isSuccess={successfulDelete && removedDevice === session.id}
                     >
                       {({ isSubmitting, isSuccess }) => (
                         <Icon icon={LogOut} color={isSubmitting || isSuccess ? 'transparent' : 'mainText'} />
