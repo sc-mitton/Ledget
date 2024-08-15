@@ -11,7 +11,7 @@ import {
 import { IconButtonSubmit, Tooltip, NestedWindowSlimmer } from '@ledget/ui';
 
 import { MapPin2, Computer } from '@ledget/media';
-import { ChevronDown, LogOut, Smartphone } from '@geist-ui/icons';
+import { ChevronDown, Trash2, Smartphone } from '@geist-ui/icons';
 import { ReAuthProtected } from '@utils/withReAuth';
 
 const formatDateTime = (date: string | number) => {
@@ -110,7 +110,7 @@ const Device = (props: { device: string; info: DeviceType[] }) => {
                               submitting={processingDelete && current}
                               onClick={() => reAuth()}
                             >
-                              <LogOut className="icon" />
+                              <Trash2 className="icon" />
                             </IconButtonSubmit>
                           </Tooltip>
                         )}

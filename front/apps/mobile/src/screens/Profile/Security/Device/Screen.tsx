@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { View, ScrollView } from 'react-native'
 import React from 'react'
-import { LogOut, Smartphone } from 'geist-native-icons'
+import { Smartphone, Trash2 } from 'geist-native-icons'
 import { Computer, MapPin2 } from '@ledget/media/native';
 import dayjs from 'dayjs';
 import { groupBy } from 'lodash-es';
@@ -76,6 +76,8 @@ const Device = ({ navigation, route }: DeviceScreenProps) => {
           />
         </View>
         <Box variant='nestedContainer' style={styles.sessions}>
+          <Text style={styles.boxHeader}>Sessions</Text>
+          <Seperator />
           <ScrollView
             style={styles.sessionsScroll}>
             {device?.[1]
@@ -110,7 +112,7 @@ const Device = ({ navigation, route }: DeviceScreenProps) => {
                         isSuccess={successfulDelete && removedDevice === session.id}
                       >
                         {({ isSubmitting, isSuccess }) => (
-                          <Icon icon={LogOut} color={isSubmitting || isSuccess ? 'transparent' : 'mainText'} />
+                          <Icon icon={Trash2} color={isSubmitting || isSuccess ? 'transparent' : 'mainText'} />
                         )}
                       </SubmitButton>}
                   </View>

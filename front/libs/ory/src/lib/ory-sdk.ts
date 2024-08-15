@@ -1,5 +1,5 @@
-import axios, { AxiosError } from 'axios'
-import { EndpointBuilder } from '@reduxjs/toolkit/dist/query/endpointDefinitions'
+import axios, { AxiosError } from 'axios';
+import { EndpointBuilder } from '@reduxjs/toolkit/dist/query/endpointDefinitions';
 import {
   AxiosBaseQueryConfig,
   endpointRootNames,
@@ -9,7 +9,13 @@ import {
   CompleteEndpointName,
   Platform,
   OryAxiosQueryConfig
-} from './types'
+} from './types';
+import {
+  selectApiUrl,
+  selectSessionToken,
+  selectDeviceToken
+} from '@ledget/shared-features';
+
 
 const axiosBaseQuery = async ({ url, headers, ...rest }: AxiosBaseQueryConfig) => {
   try {
@@ -42,19 +48,21 @@ const createFlow = async (args: OryAxiosQueryConfig) => {
   return data.error ? { error: data.error } : { data: data.data }
 }
 
-const getFlow = async ({ url, params = {}, transformResponse, platform }: OryAxiosQueryConfig & { platform: Platform }) => {
+const getFlow = async ({ url, params = {}, transformResponse, platform, headers }: OryAxiosQueryConfig & { platform: Platform }) => {
   const { id, ...rest } = params
   if (id) {
     const data = await axiosBaseQuery({
       url: `${url}/flows`,
       method: 'GET',
       params,
+      headers,
       transformResponse,
     })
     if (data.error?.status === 410) {
       return createFlow({
         url: `${url}/${platform === 'browser' ? 'browser' : 'api'}`,
         transformResponse,
+        headers,
         params: { ...rest },
       })
     } else {
@@ -64,6 +72,7 @@ const getFlow = async ({ url, params = {}, transformResponse, platform }: OryAxi
     return createFlow({
       url: `${url}/${platform === 'browser' ? 'browser' : 'api'}`,
       transformResponse,
+      headers,
       params: { ...rest }
     })
   }
@@ -87,46 +96,75 @@ const generateOryEndpoints = (builder: EndpointBuilder<any, any, any>, platform:
     const completeEndpointNameName = `complete${baseEndpointName}Flow` as CompleteEndpointName<typeof endpoint>
 
     endpoints[getEndpointName] = builder.query<any, any>({
-      queryFn: (arg) => getFlow({
-        url: `${baseUrl}/self-service/${endpoint}`,
-        params: arg?.params,
-        transformResponse: (data: any) => {
-          const json = JSON.parse(data)
-          let filteredData: any = {}
+      queryFn: (arg, api) => {
+        const sessionToken = selectSessionToken(api.getState() as any);
+        const deviceToken = selectDeviceToken(api.getState() as any);
 
-          const csrf_token = json.ui?.nodes.find((node: any) => node.attributes.name === 'csrf_token')?.attributes.value
-          const keys = ['logout_token', 'ui', 'id', 'expires_at']
+        const headers: any = {}
+        if (sessionToken) headers['Authorization'] = `Bearer ${sessionToken}`
+        if (deviceToken) headers['X-Device-Token'] = deviceToken
 
-          keys.forEach((key) => {
-            if (json[key]) filteredData[key] = json[key]
-          })
+        return getFlow({
+          url: `${baseUrl}/self-service/${endpoint}`,
+          params: arg?.params,
+          headers,
+          transformResponse: (data: any) => {
+            const json = JSON.parse(data)
+            let filteredData: any = {}
+            const csrf_token = json.ui?.nodes.find((node: any) => node.attributes.name === 'csrf_token')?.attributes.value
+            const keys = ['logout_token', 'ui', 'id', 'expires_at']
 
-          if (csrf_token) filteredData['csrf_token'] = csrf_token
+            keys.forEach((key) => {
+              if (json[key]) filteredData[key] = json[key]
+            })
 
-          return json.error ? json.error : filteredData
-        },
-        platform
-      })
+            if (csrf_token) filteredData['csrf_token'] = csrf_token
+
+            return json.error ? json.error : filteredData
+          },
+          platform
+        })
+      }
     })
 
     if (endpoint === 'logout') {
       endpoints['getUpdatedLogoutFlow'] = builder.query<any, any>({
-        queryFn: (arg: any) => axiosBaseQuery({
-          url: `${baseUrl}/self-service/logout`,
-          method: 'GET',
-          params: { token: arg.token },
-        })
+        queryFn: (arg, api) => {
+          const sessionToken = selectSessionToken(api.getState() as any);
+          const deviceToken = selectDeviceToken(api.getState() as any);
+
+          const headers: any = {}
+          if (sessionToken) headers['Authorization'] = `Bearer ${sessionToken}`
+          if (deviceToken) headers['X-Device-Token'] = deviceToken
+
+          return axiosBaseQuery({
+            url: `${baseUrl}/self-service/logout`,
+            method: 'GET',
+            headers,
+            params: { token: arg.token },
+          })
+        }
       })
       return
     }
 
     endpoints[completeEndpointNameName] = builder.mutation<any, any>({
-      queryFn: (arg) => completeFlow({
-        url: `${baseUrl}/self-service/${endpoint}`,
-        params: arg?.params,
-        data: arg?.data,
-        withCredentials: platform === 'browser',
-      }),
+      queryFn: (arg, api) => {
+        const sessionToken = selectSessionToken(api.getState() as any);
+        const deviceToken = selectDeviceToken(api.getState() as any);
+
+        const headers: any = {}
+        if (sessionToken) headers['Authorization'] = `Bearer ${sessionToken}`
+        if (deviceToken) headers['X-Device-Token'] = deviceToken
+
+        return completeFlow({
+          url: `${baseUrl}/self-service/${endpoint}`,
+          headers,
+          params: arg?.params,
+          data: arg?.data,
+          withCredentials: platform === 'browser',
+        })
+      }
     })
   }
   )

@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface TState {
+interface TBioSliceState {
   last_authed: number;
 }
 
-const initialState: TState = {
+const initialState: TBioSliceState = {
   last_authed: 0,
 };
 
@@ -20,4 +20,4 @@ export const bioSlice = createSlice({
 
 export const { setLastAuthed } = bioSlice.actions;
 
-export const selectLastAuthed = (state: { bio: TState, [key: string]: any }) => state.bio.last_authed;
+export const selectLastAuthed = (state: { bio: TBioSliceState, [key: string]: any }) => state.bio.last_authed;

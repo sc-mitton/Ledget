@@ -16,6 +16,11 @@ export default StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
   },
+  boxHeader: {
+    flexDirection: 'row',
+    paddingLeft: 2,
+    justifyContent: 'flex-start',
+  },
   mobileLocation: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -32,11 +37,12 @@ export default StyleSheet.create({
   },
   sessions: {
     flexDirection: 'column',
+    alignItems: 'flex-start',
     maxHeight: '60%'
   },
   sessionsScroll: {
     width: '107%',
-    paddingHorizontal: 16,
+    paddingRight: 20,
     flexDirection: 'column',
   },
   headers: {

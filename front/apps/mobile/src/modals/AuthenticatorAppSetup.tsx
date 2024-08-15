@@ -146,14 +146,12 @@ const AuthenticatorApp = withBottomModal((props) => {
 
   useEffect(() => {
     if (flowStatus.isGetFlowSuccess) {
-
       const totpNode = flow?.ui.nodes.find(
         (node: any) => node.group === 'totp' && node.type === 'text'
       )
-      console.log('totpNode', totpNode)
       setTotpSecret((totpNode as any)?.attributes.text.context.secret);
     }
-  }, []);
+  }, [flowStatus.isGetFlowSuccess]);
 
   useEffect(() => {
     if (flowStatus.isCompleteSuccess) {
