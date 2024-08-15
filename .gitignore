@@ -8,8 +8,8 @@ inspiration
 secrets
 scratch.py
 **/jwks.json
-project-configuration.*.yaml
-project-configuration.yaml
+./project-configuration.*.yaml
+./project-configuration.yaml
 
 # System Files
 .DS_Store

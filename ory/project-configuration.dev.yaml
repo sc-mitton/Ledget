@@ -1,0 +1,370 @@
+cookies:
+  domain: reverent-lewin-bqqp1o2zws.projects.oryapis.com
+  path: /
+  same_site: Strict
+courier:
+  smtp:
+    from_name: ledget-dev via Ory
+  templates:
+    login_code:
+      valid:
+        email:
+          body: {}
+        sms:
+          body: {}
+    recovery:
+      invalid:
+        email:
+          body: {}
+      valid:
+        email:
+          body: {}
+    recovery_code:
+      invalid:
+        email:
+          body: {}
+      valid:
+        email:
+          body: {}
+    registration_code:
+      valid:
+        email:
+          body: {}
+    verification:
+      invalid:
+        email:
+          body: {}
+      valid:
+        email:
+          body: {}
+    verification_code:
+      invalid:
+        email:
+          body: {}
+      valid:
+        email:
+          body:
+            plaintext: https://storage.googleapis.com/bac-gcs-production/ca1970c2e03a988fb1b8cde87d8c310d2df4adc06873af0741bb41ec7f42b804dd12a5e44526a9f93947aa55614312ca9066e1869a6ab9a74fc0575fc11e7072.bin
+        sms:
+          body: {}
+feature_flags:
+  cacheable_sessions: false
+  cacheable_sessions_max_age: 2m30s
+  use_continue_with_transitions: false
+identity:
+  default_schema_id: 0a6ec3dda66dbf64a8274fd8da74139243ad7e3004949f535b72d62754858d98ddbe057d886ab602e0d2555e2e8ac78d8f3cb7a9c6294e40fb5983762a855651
+  schemas:
+    - id: preset://username
+      url: base64://ewogICIkaWQiOiAiaHR0cHM6Ly9zY2hlbWFzLm9yeS5zaC9wcmVzZXRzL2tyYXRvcy9pZGVudGl0eS51c2VybmFtZS5zY2hlbWEuanNvbiIsCiAgIiRzY2hlbWEiOiAiaHR0cDovL2pzb24tc2NoZW1hLm9yZy9kcmFmdC0wNy9zY2hlbWEjIiwKICAidGl0bGUiOiAiUGVyc29uIiwKICAidHlwZSI6ICJvYmplY3QiLAogICJwcm9wZXJ0aWVzIjogewogICAgInRyYWl0cyI6IHsKICAgICAgInR5cGUiOiAib2JqZWN0IiwKICAgICAgInByb3BlcnRpZXMiOiB7CiAgICAgICAgInVzZXJuYW1lIjogewogICAgICAgICAgInR5cGUiOiAic3RyaW5nIiwKICAgICAgICAgICJ0aXRsZSI6ICJVc2VybmFtZSIsCiAgICAgICAgICAibWF4TGVuZ3RoIjogMTAwLAogICAgICAgICAgIm9yeS5zaC9rcmF0b3MiOiB7CiAgICAgICAgICAgICJjcmVkZW50aWFscyI6IHsKICAgICAgICAgICAgICAicGFzc3dvcmQiOiB7CiAgICAgICAgICAgICAgICAiaWRlbnRpZmllciI6IHRydWUKICAgICAgICAgICAgICB9LAogICAgICAgICAgICAgICJ3ZWJhdXRobiI6IHsKICAgICAgICAgICAgICAgICJpZGVudGlmaWVyIjogdHJ1ZQogICAgICAgICAgICAgIH0sCiAgICAgICAgICAgICAgInRvdHAiOiB7CiAgICAgICAgICAgICAgICAiYWNjb3VudF9uYW1lIjogdHJ1ZQogICAgICAgICAgICAgIH0KICAgICAgICAgICAgfQogICAgICAgICAgfQogICAgICAgIH0KICAgICAgfSwKICAgICAgInJlcXVpcmVkIjogWwogICAgICAgICJ1c2VybmFtZSIKICAgICAgXSwKICAgICAgImFkZGl0aW9uYWxQcm9wZXJ0aWVzIjogZmFsc2UKICAgIH0KICB9Cn0K
+    - id: preset://email
+      url: base64://ewogICIkaWQiOiAiaHR0cHM6Ly9zY2hlbWFzLm9yeS5zaC9wcmVzZXRzL2tyYXRvcy9pZGVudGl0eS5lbWFpbC5zY2hlbWEuanNvbiIsCiAgIiRzY2hlbWEiOiAiaHR0cDovL2pzb24tc2NoZW1hLm9yZy9kcmFmdC0wNy9zY2hlbWEjIiwKICAidGl0bGUiOiAiUGVyc29uIiwKICAidHlwZSI6ICJvYmplY3QiLAogICJwcm9wZXJ0aWVzIjogewogICAgInRyYWl0cyI6IHsKICAgICAgInR5cGUiOiAib2JqZWN0IiwKICAgICAgInByb3BlcnRpZXMiOiB7CiAgICAgICAgImVtYWlsIjogewogICAgICAgICAgInR5cGUiOiAic3RyaW5nIiwKICAgICAgICAgICJmb3JtYXQiOiAiZW1haWwiLAogICAgICAgICAgInRpdGxlIjogIkUtTWFpbCIsCiAgICAgICAgICAib3J5LnNoL2tyYXRvcyI6IHsKICAgICAgICAgICAgImNyZWRlbnRpYWxzIjogewogICAgICAgICAgICAgICJwYXNzd29yZCI6IHsKICAgICAgICAgICAgICAgICJpZGVudGlmaWVyIjogdHJ1ZQogICAgICAgICAgICAgIH0sCiAgICAgICAgICAgICAgIndlYmF1dGhuIjogewogICAgICAgICAgICAgICAgImlkZW50aWZpZXIiOiB0cnVlCiAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICAidG90cCI6IHsKICAgICAgICAgICAgICAgICJhY2NvdW50X25hbWUiOiB0cnVlCiAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICAiY29kZSI6IHsKICAgICAgICAgICAgICAgICJpZGVudGlmaWVyIjogdHJ1ZSwKICAgICAgICAgICAgICAgICJ2aWEiOiAiZW1haWwiCiAgICAgICAgICAgICAgfQogICAgICAgICAgICB9LAogICAgICAgICAgICAicmVjb3ZlcnkiOiB7CiAgICAgICAgICAgICAgInZpYSI6ICJlbWFpbCIKICAgICAgICAgICAgfSwKICAgICAgICAgICAgInZlcmlmaWNhdGlvbiI6IHsKICAgICAgICAgICAgICAidmlhIjogImVtYWlsIgogICAgICAgICAgICB9CiAgICAgICAgICB9LAogICAgICAgICAgIm1heExlbmd0aCI6IDMyMAogICAgICAgIH0KICAgICAgfSwKICAgICAgInJlcXVpcmVkIjogWwogICAgICAgICJlbWFpbCIKICAgICAgXSwKICAgICAgImFkZGl0aW9uYWxQcm9wZXJ0aWVzIjogZmFsc2UKICAgIH0KICB9Cn0K
+    - id: 3a9ac2f96923c4096f3a68702516b1836a189d87a7256256aac1f31b2e9f0179bf9f097d29028c2e88ba7cb29ff66c7f218f9a48a69883a5b637e672a5de2590
+      url: https://storage.googleapis.com/bac-gcs-production/3a9ac2f96923c4096f3a68702516b1836a189d87a7256256aac1f31b2e9f0179bf9f097d29028c2e88ba7cb29ff66c7f218f9a48a69883a5b637e672a5de2590.json
+    - id: 269b5cf35ab7230cba1bb89380eca75b257e55b664887fae12dafbcbc5d3bee67711707e9975c544671d7295bf73db017efed0c445a1c57cf5ea5899556b183e
+      url: https://storage.googleapis.com/bac-gcs-production/269b5cf35ab7230cba1bb89380eca75b257e55b664887fae12dafbcbc5d3bee67711707e9975c544671d7295bf73db017efed0c445a1c57cf5ea5899556b183e.json
+    - id: 7e67a027eb682fcd96c0d5f65973ccdbce9cb39327d454a0e136ed491d404e2a7172f52d2cb5be4d40a97e468d916b800394c7ba8e6bb5be46cfcb87c805e33b
+      url: https://storage.googleapis.com/bac-gcs-production/7e67a027eb682fcd96c0d5f65973ccdbce9cb39327d454a0e136ed491d404e2a7172f52d2cb5be4d40a97e468d916b800394c7ba8e6bb5be46cfcb87c805e33b.json
+    - id: 0a6ec3dda66dbf64a8274fd8da74139243ad7e3004949f535b72d62754858d98ddbe057d886ab602e0d2555e2e8ac78d8f3cb7a9c6294e40fb5983762a855651
+      url: https://storage.googleapis.com/bac-gcs-production/0a6ec3dda66dbf64a8274fd8da74139243ad7e3004949f535b72d62754858d98ddbe057d886ab602e0d2555e2e8ac78d8f3cb7a9c6294e40fb5983762a855651.json
+oauth2_provider:
+  override_return_to: false
+preview:
+  default_read_consistency_level: strong
+security:
+  account_enumeration:
+    mitigate: true
+selfservice:
+  allowed_return_urls:
+    - https://reverent-lewin-bqqp1o2zws.projects.oryapis.com
+    - /ui/logout
+    - /ui/consent
+    - /ui/welcome
+    - /ui/sessions
+    - https://localhost:3000/
+    - https://ledget.app/error
+    - https://ledget.app/profile
+    - https://localhost:3000/error
+    - https://localhost:3001/login
+    - https://localhost:3000/profile
+    - https://localhost:3001/recovery
+    - https://localhost:3001/register
+    - https://accounts.ledget.app/login
+    - https://localhost:3001/verification
+    - https://accounts.ledget.app/recovery
+    - https://accounts.ledget.app/register
+    - https://accounts.ledget.app/verification
+  default_browser_return_url: /login
+  flows:
+    error:
+      ui_url: https://localhost:3000/error
+    login:
+      after:
+        code:
+          hooks: []
+        default_browser_return_url: https://localhost:3000/spending
+        hooks: []
+        lookup_secret:
+          hooks: []
+        oidc:
+          hooks: []
+        passkey:
+          hooks: []
+        password:
+          hooks: []
+        totp:
+          hooks: []
+        webauthn:
+          hooks: []
+      before:
+        hooks: []
+      lifespan: 30m0s
+      style: unified
+      ui_url: https://localhost:3001/login
+    logout:
+      after:
+        default_browser_return_url: https://localhost:3001/login
+    recovery:
+      after:
+        hooks: []
+      before:
+        hooks: []
+      enabled: true
+      lifespan: 10m0s
+      notify_unknown_recipients: true
+      ui_url: https://localhost:3001/recovery
+      use: code
+    registration:
+      after:
+        code:
+          hooks: []
+        hooks: []
+        oidc:
+          default_browser_return_url: https://localhost:3000/checkout
+          hooks:
+            - config:
+                auth:
+                  config:
+                    in: header
+                    name: Authorization
+                    value: api-key SfX0weqJ0KkK1BhEhwjgET2PYYMf/IulJjkM91QSZ0c=
+                  type: api_key
+                body: https://storage.googleapis.com/bac-gcs-production/a6a99bd14c0a126231120667929fb56674809c903a711e2f032eabd73dd08d8cc5e0f9448c1c90d17f57a36235d4971202e858ecc31c2ee9ad68da582e9c929a.jsonnet
+                can_interrupt: false
+                method: POST
+                response:
+                  ignore: true
+                  parse: false
+                url: https://e752-2601-681-77e-21e0-8515-45b6-4606-c3e5.ngrok-free.app/hooks/ory/registration
+              hook: web_hook
+            - hook: session
+        passkey:
+          hooks:
+            - hook: session
+        password:
+          hooks:
+            - hook: show_verification_ui
+            - config:
+                auth:
+                  config:
+                    in: header
+                    name: Authorization
+                    value: api-key SfX0weqJ0KkK1BhEhwjgET2PYYMf/IulJjkM91QSZ0c=
+                  type: api_key
+                body: https://storage.googleapis.com/bac-gcs-production/20e5c8ac40a7abc29df6b1cd897959c46178c241e74cb6d49ffc149bbc0cd21ddd9d822c08034c986e4c50661915288bf0f3cdb25ebb87c03c419cc19b1a99ed.jsonnet
+                can_interrupt: false
+                method: POST
+                response:
+                  ignore: false
+                  parse: false
+                url: https://e752-2601-681-77e-21e0-8515-45b6-4606-c3e5.ngrok-free.app/hooks/ory/registration
+              hook: web_hook
+            - hook: session
+        webauthn:
+          default_browser_return_url: https://localhost:3000/checkout
+          hooks:
+            - hook: show_verification_ui
+            - config:
+                auth:
+                  config:
+                    in: header
+                    name: Authorization
+                    value: api-key SfX0weqJ0KkK1BhEhwjgET2PYYMf/IulJjkM91QSZ0c=
+                  type: api_key
+                body: https://storage.googleapis.com/bac-gcs-production/20e5c8ac40a7abc29df6b1cd897959c46178c241e74cb6d49ffc149bbc0cd21ddd9d822c08034c986e4c50661915288bf0f3cdb25ebb87c03c419cc19b1a99ed.jsonnet
+                can_interrupt: false
+                method: POST
+                response:
+                  ignore: false
+                  parse: false
+                url: https://e752-2601-681-77e-21e0-8515-45b6-4606-c3e5.ngrok-free.app/hooks/ory/registration
+              hook: web_hook
+            - hook: session
+      before:
+        hooks: []
+      enable_legacy_one_step: true
+      enabled: true
+      lifespan: 30m0s
+      login_hints: false
+      ui_url: https://localhost:3001/register
+    settings:
+      after:
+        default_browser_return_url: https://localhost:3000/profile
+        hooks: []
+        lookup_secret:
+          hooks: []
+        oidc:
+          hooks: []
+        passkey:
+          hooks: []
+        password:
+          hooks:
+            - config:
+                auth:
+                  config:
+                    in: header
+                    name: Authorization
+                    value: api-key SfX0weqJ0KkK1BhEhwjgET2PYYMf/IulJjkM91QSZ0c=
+                  type: api_key
+                body: https://storage.googleapis.com/bac-gcs-production/20e5c8ac40a7abc29df6b1cd897959c46178c241e74cb6d49ffc149bbc0cd21ddd9d822c08034c986e4c50661915288bf0f3cdb25ebb87c03c419cc19b1a99ed.jsonnet
+                can_interrupt: false
+                method: POST
+                response:
+                  ignore: true
+                  parse: false
+                url: https://e752-2601-681-77e-21e0-8515-45b6-4606-c3e5.ngrok-free.app/hooks/ory/settings/password
+              hook: web_hook
+            - hook: revoke_active_sessions
+        profile:
+          hooks: []
+        totp:
+          hooks: []
+        webauthn:
+          hooks: []
+      before:
+        hooks: []
+      lifespan: 10m0s
+      privileged_session_max_age: 10m0s
+      required_aal: highest_available
+      ui_url: https://localhost:3000/profile
+    verification:
+      after:
+        default_browser_return_url: https://localhost:3000/spending
+        hooks:
+          - config:
+              auth:
+                config:
+                  in: header
+                  name: Authorization
+                  value: api-key SfX0weqJ0KkK1BhEhwjgET2PYYMf/IulJjkM91QSZ0c=
+                type: api_key
+              body: https://storage.googleapis.com/bac-gcs-production/20e5c8ac40a7abc29df6b1cd897959c46178c241e74cb6d49ffc149bbc0cd21ddd9d822c08034c986e4c50661915288bf0f3cdb25ebb87c03c419cc19b1a99ed.jsonnet
+              can_interrupt: false
+              method: POST
+              response:
+                ignore: true
+                parse: false
+              url: https://e752-2601-681-77e-21e0-8515-45b6-4606-c3e5.ngrok-free.app/hooks/ory/verification
+            hook: web_hook
+      before:
+        hooks: []
+      enabled: true
+      lifespan: 15m0s
+      notify_unknown_recipients: false
+      ui_url: https://localhost:3001/verification
+      use: code
+  methods:
+    b2b:
+      config:
+        organizations: []
+    code:
+      config:
+        lifespan: 15m0s
+      enabled: true
+      mfa_enabled: false
+      passwordless_enabled: false
+      passwordless_login_fallback_enabled: false
+    link:
+      config:
+        base_url: ""
+        lifespan: 15m0s
+      enabled: false
+    lookup_secret:
+      enabled: true
+    oidc:
+      config:
+        base_redirect_uri: https://reverent-lewin-bqqp1o2zws.projects.oryapis.com
+        providers:
+          - client_id: 845168344908-te17c2gpkq5qbajvmjamehhh75ejg4mq.apps.googleusercontent.com
+            client_secret: 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
+            id: google
+            label: Google
+            mapper_url: https://storage.googleapis.com/bac-gcs-production/866a34ee4059349624aec5d5020efcc2cde75fe437e58f212bcec959e91feeff178542bff0d7befb6d7de3272e6a562d26e9fac16969d6d6da807ab9091bd7af.jsonnet
+            provider: google
+            scope:
+              - email
+              - profile
+          - client_id: "589779369930436"
+            client_secret: bf247a4d0f50247d6ce3cbd9095fef3e
+            id: facebook
+            label: Facebook
+            mapper_url: https://storage.googleapis.com/bac-gcs-production/ff0a19c107394301d3073b8d0f1e1881e5ce9f756ba9048d8636e1d5552c24869a970760b9d4889c6df86c3ead91013bb617a3682af9a6391ffba9f6b3a66bdb.jsonnet
+            provider: facebook
+            scope:
+              - email
+              - public_profile
+      enabled: true
+    passkey:
+      config:
+        rp:
+          display_name: ledget-dev
+          id: reverent-lewin-bqqp1o2zws.projects.oryapis.com
+          origins:
+            - https://reverent-lewin-bqqp1o2zws.projects.oryapis.com
+      enabled: false
+    password:
+      config:
+        haveibeenpwned_enabled: true
+        identifier_similarity_check_enabled: true
+        ignore_network_errors: true
+        max_breaches: 1
+        min_password_length: 8
+      enabled: true
+    profile:
+      enabled: true
+    totp:
+      config:
+        issuer: Ledget
+      enabled: true
+    webauthn:
+      config:
+        passwordless: true
+        rp:
+          display_name: Ledget
+          id: localhost
+          origins:
+            - https://localhost:3001/login
+            - https://localhost:3001/register
+      enabled: true
+serve:
+  admin:
+    base_url: https://reverent-lewin-bqqp1o2zws.projects.oryapis.com/
+    request_log:
+      disable_for_health: true
+  public:
+    base_url: https://reverent-lewin-bqqp1o2zws.projects.oryapis.com/
+    cors:
+      enabled: false
+    request_log:
+      disable_for_health: true
+session:
+  cookie:
+    domain: reverent-lewin-bqqp1o2zws.projects.oryapis.com
+    name: ory_session_reverentlewinbqqp1o2zws
+    path: /
+    persistent: false
+    same_site: Strict
+  lifespan: 720h0m0s
+  whoami:
+    required_aal: aal1
+    tokenizer:
+      templates: {}
