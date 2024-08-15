@@ -15,6 +15,7 @@ class OrySessionMiddleware(MiddlewareMixin):
     def get_ory_session(self, request):
         decoded_token = request.META.get(OATHKEEPER_JWT_HEADER, None)
         is_token_based = request.META.get(ORY_SESSION_TOKEN_HEADER, None)
+
         if not decoded_token or not isinstance(decoded_token, dict):
             return None
 
@@ -22,7 +23,7 @@ class OrySessionMiddleware(MiddlewareMixin):
             id=decoded_token['session']['id'],
             aal=decoded_token['session']['authenticator_assurance_level'],
             auth_methods=decoded_token['session']['authentication_methods'],
-            token_based=is_token_based
+            token_based=bool(is_token_based)
         )
 
         if request.path.endswith('devices'):
