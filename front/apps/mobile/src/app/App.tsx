@@ -11,12 +11,19 @@ import { useFonts } from 'expo-font';
 import { MMKV } from 'react-native-mmkv'
 import * as NavigationBar from 'expo-navigation-bar';
 import * as SplashScreen from 'expo-splash-screen';
+import * as SecureStore from 'expo-secure-store';
 
+import {
+  useGetMeQuery,
+  setSession,
+  setDeviceToken,
+  selectSession,
+  selectDeviceToken
+} from '@ledget/shared-features';
 import styles from './styles/app';
 import { Box } from '@ledget/native-ui'
 import { Budget, Accounts, Profile, Activity } from '@screens';
 import { RootTabParamList } from '@types';
-import { useAuthLogic } from './useAuthLogic';
 import { withProviders } from './Providers';
 import { ENV, IOS_LEDGET_API_URI, ANDROID_LEDGET_API_URI } from '@env';
 import { useAppearance } from '@features/appearanceSlice';
@@ -43,6 +50,61 @@ const navTheme = {
     background: 'transparent'
   }
 };
+
+const useAuthLogic = () => {
+  const dispatch = useAppDispatch();
+  const [appIsReady, setAppIsReady] = useState<boolean>(false);
+  const [continueToMainApp, setContinueToMainApp] = useState(false);
+  const session = useAppSelector(selectSession);
+  const deviceToken = useAppSelector(selectDeviceToken);
+  const {
+    data: user,
+    isError: isGetMeError
+  } = useGetMeQuery(undefined, { skip: !session || !deviceToken });
+
+  useEffect(() => {
+    SecureStore.getItemAsync('session').then((session) => {
+      if (!session) {
+        setContinueToMainApp(false);
+        setAppIsReady(true);
+      } else {
+        SecureStore.getItemAsync('device_token').then((token) => {
+          if (!token) {
+            setContinueToMainApp(false);
+            setAppIsReady(true);
+          } else {
+            const sessionObj = JSON.parse(session);
+            dispatch(setSession(sessionObj));
+            dispatch(setDeviceToken(token));
+          }
+        });
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    // When the session is removed from the store, go back to the accounts screen
+    if (!session) {
+      setContinueToMainApp(false);
+    }
+  }, [session]);
+
+  useEffect(() => {
+    if (user && user.is_verified && session && deviceToken) {
+      setContinueToMainApp(true);
+      setAppIsReady(true);
+    }
+  }, [user, session, deviceToken]);
+
+  useEffect(() => {
+    if (isGetMeError) {
+      setAppIsReady(true);
+      setContinueToMainApp(false);
+    }
+  }, [isGetMeError]);
+
+  return { continueToMainApp, appIsReady };
+}
 
 export const App = withProviders(() => {
   const [fontsGood, setFontsGood] = useState(false);
