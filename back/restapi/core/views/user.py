@@ -253,6 +253,11 @@ class UserTokenSessionExtendView(GenericAPIView):  # pragma: no cover
             logger.error(f"Failed to extend session: {e}")
             return Response({'error': 'Failed to extend session'},
                             status=status.HTTP_400_BAD_REQUEST)
+        except ory_client.ApiTypeError as e:  # pragma: no cover
+            logger.error(f"Failed to extend session: {e}")
+            return Response({'error': 'Failed to extend session'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
         except KeyError:
             return Response({'error': 'session_id is required'},
                             status=status.HTTP_400_BAD_REQUEST)
