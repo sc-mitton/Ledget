@@ -82,6 +82,7 @@
     "redux-persist": "^6.0.0",
     "styled-components": "^6.1.11",
     "tslib": "^2.3.0",
+    "type-fest": "^4.24.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
