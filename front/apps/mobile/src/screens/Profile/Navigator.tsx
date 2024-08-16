@@ -4,7 +4,6 @@ import {
   ScrollView,
   NativeSyntheticEvent,
   NativeScrollEvent,
-  Dimensions
 } from 'react-native';
 import Animated, {
   useSharedValue,

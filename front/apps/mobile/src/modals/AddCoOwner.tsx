@@ -4,7 +4,6 @@ import { UserPlus, Copy } from 'geist-native-icons';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { createStackNavigator } from "@react-navigation/stack";
 
 import * as Clipboard from 'expo-clipboard';
 import PagerView from 'react-native-pager-view';
@@ -24,8 +23,6 @@ import {
   SlideView
 } from '@ledget/native-ui';
 import { hasErrorCode } from '@ledget/helpers';
-
-const Stack = createStackNavigator();
 
 const Slide2 = () => {
   const [, { data, reset }] = useAddUserToAccountMutation({
