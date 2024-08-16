@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface TBioSliceState {
+type TBioSliceState = {
   last_authed: number;
 }
 

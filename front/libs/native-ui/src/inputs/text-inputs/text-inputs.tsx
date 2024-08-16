@@ -1,4 +1,4 @@
-import { useState, forwardRef } from 'react';
+import { useState, forwardRef, useEffect } from 'react';
 import {
   TextInputProps,
   Platform,
@@ -61,13 +61,37 @@ export const TextInput = forwardRef<ReactNativeTextInput, TextInputProps & { lab
   )
 })
 
-export const PasswordInput = (props: TextInputProps & { label?: boolean, error?: Error }) => {
+type PasswordInputProps = TextInputProps & {
+  label?: boolean | string,
+  error?: Error,
+  showPassword?: boolean,
+  confirmer?: boolean,
+  setShowPassword?: (showPassword: boolean) => void
+}
+
+export const PasswordInput = (props: PasswordInputProps) => {
   const [showPassword, setShowPassword] = useState(false)
-  const { label, ...rest } = props
+  const {
+    label,
+    setShowPassword: setShowPasswordProp,
+    showPassword: showPasswordProp,
+    confirmer,
+    ...rest
+  } = props
+
+  useEffect(() => {
+    if (setShowPasswordProp) setShowPasswordProp(showPassword)
+  }, [showPassword])
+
+  useEffect(() => {
+    if (showPasswordProp) setShowPassword(showPasswordProp)
+  }, [showPasswordProp])
 
   return (
     <Box style={styles.textInputLabelContainer}>
-      {label && <InputLabel>Password</InputLabel>}
+      {typeof label === 'string'
+        ? <InputLabel>{label}</InputLabel>
+        : label && <InputLabel>Password</InputLabel>}
       <TextInput
         textContentType='password'
         placeholder='Password'
@@ -78,7 +102,7 @@ export const PasswordInput = (props: TextInputProps & { label?: boolean, error?:
         style={!showPassword && props.value && Platform.OS === 'android' ? styles.passwordMask : undefined}
         {...rest}
       >
-        <TouchableHighlight
+        {!confirmer && <TouchableHighlight
           onPress={() => setShowPassword(!showPassword)}
           underlayColor='transparent'
           style={styles.visibilityButton}
@@ -86,7 +110,7 @@ export const PasswordInput = (props: TextInputProps & { label?: boolean, error?:
           {showPassword
             ? <Icon icon={EyeOff} color='quaternaryText' size={26} />
             : <Icon icon={Eye} color='quaternaryText' size={26} />}
-        </TouchableHighlight>
+        </TouchableHighlight>}
       </TextInput>
     </Box>
   )

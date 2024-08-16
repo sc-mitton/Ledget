@@ -6,7 +6,8 @@ import {
   AddCoOwner,
   AuthenticatorAppSetup,
   LogoutAllDevices,
-  RemoveAuthenticator
+  RemoveAuthenticator,
+  ChangePassword
 } from '@modals';
 import { useAppDispatch, useAppSelector } from '@hooks';
 import { clearModal, selectModal } from '@features/modalSlice';
@@ -29,6 +30,7 @@ const Modals = () => {
       {modal?.name === 'authenticatorAppSetup' && <AuthenticatorAppSetup onClose={onClose} />}
       {modal?.name === 'logoutAllDevices' && <LogoutAllDevices onClose={onClose} />}
       {modal?.name === 'removeAuthenticator' && <RemoveAuthenticator onClose={onClose} />}
+      {modal?.name === 'changePassword' && <ChangePassword onClose={onClose} />}
     </>
   )
 }

@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import styles from './styles/screen';
 import { Box } from '@ledget/native-ui';
 import Devices from './Devices';
-import Mfa from './Mfa';
+import Mfa from './Auth';
 import { AccountScreenProps } from '@types';
 import { Button, Icon } from '@ledget/native-ui';
 import { setModal } from '@/features/modalSlice';

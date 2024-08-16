@@ -1,9 +1,11 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-  header: {
+  content: {
     width: '100%',
     alignItems: 'center',
+    marginBottom: 60,
+    marginTop: 40,
   },
   copyButtonContainer: {
     width: '100%',

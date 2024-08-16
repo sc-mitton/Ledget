@@ -1,8 +1,9 @@
 import { View } from 'react-native';
 import dayjs from 'dayjs';
+import { Lock } from 'geist-native-icons';
 
-import styles from './styles/mfa';
-import { Box, Text, BoxHeader, Icon, ChevronTouchable } from '@ledget/native-ui';
+import styles from './styles/auth';
+import { Box, Text, BoxHeader, Icon, ChevronTouchable, Seperator } from '@ledget/native-ui';
 import { Qr } from '@ledget/media/native';
 import { setModal } from '@features/modalSlice';
 import { useGetMeQuery } from '@ledget/shared-features';
@@ -15,7 +16,7 @@ const MultiFactor = () => {
   return (
     <>
       <BoxHeader>Authentication</BoxHeader>
-      <Box variant='nestedContainer' backgroundColor='nestedContainer'>
+      <Box variant='nestedContainer' backgroundColor='nestedContainer' style={styles.box}>
         {user?.settings.mfa_method === 'totp'
           ?
           <ChevronTouchable >
@@ -34,6 +35,11 @@ const MultiFactor = () => {
             <Icon icon={Qr} size={24} />
             <Text>Authenticator App</Text>
           </ChevronTouchable>}
+        <Seperator variant='m' />
+        <ChevronTouchable onPress={() => dispatch(setModal('changePassword'))}>
+          <Icon icon={Lock} />
+          <Text>Change Password</Text>
+        </ChevronTouchable>
       </Box>
     </>
   )
