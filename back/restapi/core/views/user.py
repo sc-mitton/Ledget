@@ -282,6 +282,22 @@ class DisabledSessionView(GenericAPIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+class DisableAllSessionsView(GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request):
+        try:
+            with ory_client.ApiClient(ory_configuration) as api_client:
+                api_instance = IdentityApi(api_client)
+                api_instance.delete_identity_sessions(id=request.user.id)
+        except ory_client.ApiException as e:  # pragma: no cover
+            logger.error(f"Failed to disable all session: {e}")
+            return Response({'error': 'Failed to disable all session'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 class EmailView(GenericAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = EmailSerializer

@@ -113,6 +113,13 @@ export const userSlice = apiWithTags.injectEndpoints({
       }),
       extraOptions: { maxRetries: 3 }
     }),
+    disableAllSessions: builder.mutation<any, void>({
+      query: () => ({
+        url: 'user/sessions',
+        method: 'DELETE'
+      }),
+      extraOptions: { maxRetries: 3 }
+    }),
     extendTokenSession: builder.mutation<any, { session_id: string }>({
       query: ({ session_id }) => ({
         url: `user/token-session/${session_id}/extend`,
@@ -158,5 +165,6 @@ export const {
   useAddUserToAccountMutation,
   useDeleteCoOwnerMutation,
   useUpdateUserSettingsMutation,
-  useDisableSessionMutation
+  useDisableSessionMutation,
+  useDisableAllSessionsMutation
 } = userSlice;

@@ -111,6 +111,14 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
+    id: "logout-all-sessions",
+    match: {
+      methods: ["DELETE"],
+      url: base_url + "/user/sessions",
+    },
+  },
+  BaseWithAuth
+  {
     id: "devices",
     match: {
       methods: ["GET", "POST"],

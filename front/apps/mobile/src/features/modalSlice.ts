@@ -7,6 +7,7 @@ type Modal =
   'confirmRemoveCoOwner' |
   'addCoOwner' |
   'authenticatorAppSetup' |
+  'logoutAllDevices' |
   { name: 'confirmDeletePlaidItem', args: { id: string } }
 
 type FormatedModal<M extends Modal> = M extends { name: infer N, args?: infer A } ? { name: N, args: A } : { name: M }

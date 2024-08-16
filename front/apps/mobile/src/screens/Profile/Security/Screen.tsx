@@ -1,5 +1,7 @@
 import { LogOut } from 'geist-native-icons';
+import { View } from 'react-native';
 
+import styles from './styles/screen';
 import { Box } from '@ledget/native-ui';
 import Devices from './Devices';
 import Mfa from './Mfa';
@@ -16,15 +18,17 @@ const Screen = (props: AccountScreenProps) => {
     <Box variant='screenContent'>
       <Mfa />
       <Devices {...props} />
-      <Button
-        onPress={() => dispatch(setModal('logout'))}
-        label={'Logout'}
-        backgroundColor='transparent'
-        borderColor='transparent'
-        textColor='blueText'
-        variant='borderedGrayMain'>
-        <Icon icon={LogOut} size={18} color='blueText' />
-      </Button>
+      <View style={styles.logoutButton}>
+        <Button
+          onPress={() => dispatch(setModal('logoutAllDevices'))}
+          label={'Logout All Devices'}
+          backgroundColor='transparent'
+          borderColor='transparent'
+          textColor='blueText'
+          variant='borderedGrayMain'>
+          <Icon icon={LogOut} size={18} color='blueText' />
+        </Button>
+      </View>
     </Box>
   );
 }

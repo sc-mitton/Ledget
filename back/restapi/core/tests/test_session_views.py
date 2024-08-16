@@ -31,3 +31,14 @@ class TestSessionViews(ViewTestsMixin):
         # Make sure mock was called with session id
         identity_api_mock.return_value.disable_session.assert_called_once_with(
             id=self.aal1_payload['session']['id'])
+
+    @patch('core.views.user.IdentityApi')
+    def test_disable_all_user_sessions(self, identity_api_mock):
+        identity_api_mock.return_value = Mock()
+
+        response = self.client.delete(reverse('disable-all-sessions'))
+        self.assertEqual(response.status_code, 204)
+
+        # Make sure mock was called with user id
+        identity_api_mock.return_value.disable_session.assert_called_once_with(
+            id=self.user.id)
