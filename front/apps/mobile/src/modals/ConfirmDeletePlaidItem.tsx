@@ -2,10 +2,11 @@ import { useEffect } from 'react';
 import { View } from 'react-native'
 
 import sharedStyles from './styles/shared';
-import { Text, Header2, withModal, Button, SubmitButton, Box } from '@ledget/native-ui'
+import { Text, Header2, Button, SubmitButton, Box, Modal } from '@ledget/native-ui'
 import { useDeletePlaidItemMutation } from '@ledget/shared-features';
+import { ModalScreenProps } from '@types';
 
-const ConfirmDeletePlaidItem = withModal<{ id: string }>((props) => {
+const ConfirmDeletePlaidItem = (props: ModalScreenProps<'ConfirmDeletePlaidItem'>) => {
   const [
     deletePlaidItem,
     {
@@ -17,14 +18,14 @@ const ConfirmDeletePlaidItem = withModal<{ id: string }>((props) => {
   useEffect(() => {
     if (isDeleteSuccess) {
       const timeout = setTimeout(() => {
-        props.closeModal();
+        props.navigation.goBack();
       }, 500);
       return () => clearTimeout(timeout);
     }
   }, [isDeleteSuccess]);
 
   return (
-    <View>
+    <Modal>
       <Header2>Are you sure?</Header2>
       <Box marginBottom='l'>
         <Text color='secondaryText'>This will remove the connection to your bank account and all of the data associated with this bank.
@@ -33,7 +34,7 @@ const ConfirmDeletePlaidItem = withModal<{ id: string }>((props) => {
       </Box>
       <View style={sharedStyles.splitButtons}>
         <View style={sharedStyles.splitButton}>
-          <Button variant='mediumGrayMain' onPress={props.closeModal} label='Cancel' />
+          <Button variant='mediumGrayMain' onPress={() => props.navigation.goBack()} label='Cancel' />
         </View>
         <View style={sharedStyles.splitButton}>
           <SubmitButton
@@ -41,11 +42,11 @@ const ConfirmDeletePlaidItem = withModal<{ id: string }>((props) => {
             label='Ok'
             isSubmitting={isDeletingItem}
             isSuccess={isDeleteSuccess}
-            onPress={() => deletePlaidItem(props.id)} />
+            onPress={() => deletePlaidItem(props.route.params.id)} />
         </View>
       </View>
-    </View>
+    </Modal>
   )
-});
+};
 
 export default ConfirmDeletePlaidItem

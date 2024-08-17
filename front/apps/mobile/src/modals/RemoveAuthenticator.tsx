@@ -2,11 +2,12 @@ import { useEffect } from 'react';
 import { View } from 'react-native'
 
 import sharedStyles from './styles/shared';
-import { Text, Header2, withModal, Button, SubmitButton, Box } from '@ledget/native-ui'
+import { Text, Header2, Modal, Button, SubmitButton, Box } from '@ledget/native-ui'
 import { useNativeFlow } from '@ledget/ory';
 import { useLazyGetSettingsFlowQuery, useCompleteSettingsFlowMutation } from '@/features/orySlice';
+import { ModalScreenProps } from '@types';
 
-const RemoveAuthenticator = withModal((props) => {
+const RemoveAuthenticator = (props: ModalScreenProps<'RemoveAuthenticator'>) => {
   const { flow, fetchFlow, flowStatus, submitFlow, } = useNativeFlow(
     useLazyGetSettingsFlowQuery,
     useCompleteSettingsFlowMutation,
@@ -27,14 +28,14 @@ const RemoveAuthenticator = withModal((props) => {
   useEffect(() => {
     if (flowStatus.isCompleteSuccess) {
       const timeout = setTimeout(() => {
-        props.closeModal();
+        props.navigation.goBack();
       }, 1500);
       return () => clearTimeout(timeout);
     }
   }, [flowStatus.isCompleteSuccess]);
 
   return (
-    <View>
+    <Modal>
       <Header2>Remove Authenticator App</Header2>
       <Box marginBottom='l'>
         <Text color='secondaryText'>
@@ -43,7 +44,7 @@ const RemoveAuthenticator = withModal((props) => {
       </Box>
       <View style={sharedStyles.splitButtons}>
         <View style={sharedStyles.splitButton}>
-          <Button variant='mediumGrayMain' onPress={props.closeModal} label='Cancel' />
+          <Button variant='mediumGrayMain' onPress={props.navigation.goBack} label='Cancel' />
         </View>
         <View style={sharedStyles.splitButton}>
           <SubmitButton
@@ -55,8 +56,8 @@ const RemoveAuthenticator = withModal((props) => {
           />
         </View>
       </View>
-    </View>
+    </Modal>
   )
-});
+};
 
 export default RemoveAuthenticator

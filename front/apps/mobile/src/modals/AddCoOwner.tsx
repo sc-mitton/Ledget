@@ -11,7 +11,7 @@ import PagerView from 'react-native-pager-view';
 import styles from './styles/add-coowner';
 import { useAddUserToAccountMutation } from '@ledget/shared-features';
 import {
-  withBottomModal,
+  Modal,
   Header2,
   Button,
   Text,
@@ -23,6 +23,7 @@ import {
   SlideView
 } from '@ledget/native-ui';
 import { hasErrorCode } from '@ledget/helpers';
+import { ModalScreenProps } from '@types';
 
 const Slide2 = () => {
   const [, { data, reset }] = useAddUserToAccountMutation({
@@ -135,7 +136,7 @@ const Slide1 = () => {
 
 
 
-const AddCoOwner = withBottomModal((props) => {
+const AddCoOwner = (props: ModalScreenProps<'AddCoOwner'>) => {
   const [, { isSuccess }] = useAddUserToAccountMutation({
     fixedCacheKey: 'addUserToAccount'
   });
@@ -148,7 +149,7 @@ const AddCoOwner = withBottomModal((props) => {
   }, [isSuccess]);
 
   return (
-    <View>
+    <Modal>
       <View style={styles.header}>
         <Header2>Add Account Member</Header2>
       </View>
@@ -158,8 +159,8 @@ const AddCoOwner = withBottomModal((props) => {
       {isSuccess
         ? <SlideView position={1} skipExit={true} ><Slide2 /></SlideView>
         : <SlideView position={0} skipEnter={true} skipExit={!isSuccess}><Slide1 /></SlideView>}
-    </View>
+    </Modal>
   )
-});
+};
 
 export default AddCoOwner

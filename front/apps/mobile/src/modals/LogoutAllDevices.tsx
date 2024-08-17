@@ -5,12 +5,13 @@ import * as SecureStore from 'expo-secure-store';
 
 import styles from './styles/logout';
 import sharedStyles from './styles/shared';
-import { Text, Header, Button, SubmitButton, withBottomModal } from '@ledget/native-ui';
+import { Text, Header, Button, SubmitButton, Modal } from '@ledget/native-ui';
 import { useDisableAllSessionsMutation, apiSlice } from '@ledget/shared-features';
 import { setSession } from '@ledget/shared-features';
 import { useAppDispatch } from '@hooks';
+import { ModalScreenProps } from '@types';
 
-const LogoutAllDevices = withBottomModal((props) => {
+const LogoutAllDevices = (props: ModalScreenProps<'LogoutAllDevices'>) => {
   const dispatch = useAppDispatch();
   const [disableAllSessions, { isSuccess, isLoading, isError }] = useDisableAllSessionsMutation();
 
@@ -19,19 +20,19 @@ const LogoutAllDevices = withBottomModal((props) => {
       SecureStore.deleteItemAsync('session');
       dispatch(apiSlice.util.invalidateTags(['User']));
       dispatch(setSession(undefined));
-      props.closeModal();
+      props.navigation.goBack();
     }
   }, [isSuccess]);
 
   useEffect(() => {
     if (isError) {
-      props.closeModal();
+      props.navigation.goBack();
       Alert.alert('Error', 'An error occurred while trying to log you out. Please try again.');
     }
   }, [isError]);
 
   return (
-    <View>
+    <Modal>
       <View style={styles.text}>
         <Header>Are you sure?</Header>
         <Text color='secondaryText'>
@@ -40,7 +41,7 @@ const LogoutAllDevices = withBottomModal((props) => {
       </View>
       <View style={sharedStyles.splitButtons}>
         <View style={sharedStyles.splitButton}>
-          <Button onPress={() => props.closeModal()} variant='mediumGrayMain' label='Cancel' />
+          <Button onPress={() => props.navigation.goBack()} variant='mediumGrayMain' label='Cancel' />
         </View>
         <View style={sharedStyles.splitButton}>
           <SubmitButton
@@ -52,8 +53,8 @@ const LogoutAllDevices = withBottomModal((props) => {
           />
         </View>
       </View>
-    </View>
+    </Modal>
   )
-});
+};
 
 export default LogoutAllDevices

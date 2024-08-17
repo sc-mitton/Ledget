@@ -20,8 +20,7 @@ import { useGetMeQuery } from '@ledget/shared-features';
 import { TabsNavigator, Avatar, Text, ChevronTouchable, defaultSpringConfig } from '@ledget/native-ui';
 import { ProfileStackParamList } from '@types';
 import { BackHeader } from '@ledget/native-ui';
-import { setModal } from '@/features/modalSlice';
-import { useAppDispatch, useCardStyleInterpolator } from "@/hooks";
+import { useCardStyleInterpolator } from "@/hooks";
 import { ProfileScreenProps } from '@types';
 import Account from './Account/Screen';
 import Security from './Security/Screen';
@@ -45,7 +44,6 @@ const Stack = createStackNavigator<ProfileStackParamList>();
 
 function Profile(props: ProfileScreenProps<'Main'>) {
   const { data: user } = useGetMeQuery();
-  const dispatch = useAppDispatch();
   const headerHeight = useSharedValue(0);
   const panelsHeight = useSharedValue(0);
 
@@ -117,7 +115,7 @@ function Profile(props: ProfileScreenProps<'Main'>) {
               paddingHorizontal='s'
               paddingVertical='l'
               style={styles.userInfoContainer}>
-              <ChevronTouchable onPress={() => dispatch(setModal('editPersonalInfo'))}>
+              <ChevronTouchable onPress={() => props.navigation.navigate('Modals', { screen: 'EditPersonalInfo' })}>
                 <Avatar size='l' name={user?.name} />
                 <View style={styles.userInfo}>
                   <Text color='highContrastText'>{user?.name.first} {user?.name.last}</Text>

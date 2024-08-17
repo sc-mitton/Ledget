@@ -6,6 +6,17 @@ import type { BottomTabNavParamList } from './root';
 
 export type ModalStackParamList = {
   Activity: undefined;
+  Logout: undefined;
+  ConfirmDeletePlaidItem: {
+    id: string;
+  };
+  EditPersonalInfo: undefined;
+  ConfirmRemoveCoowner: undefined;
+  AddCoOwner: undefined;
+  AuthenticatorAppSetup: undefined;
+  LogoutAllDevices: undefined;
+  RemoveAuthenticator: undefined;
+  ChangePassword: undefined;
 };
 
 export type ModalScreenProps<T extends keyof ModalStackParamList> =

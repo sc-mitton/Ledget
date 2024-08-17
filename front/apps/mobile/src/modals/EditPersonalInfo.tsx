@@ -9,14 +9,15 @@ import {
   Header,
   SubHeader2,
   SubmitButton,
-  withBottomModal,
+  Modal,
   TextInput,
   Box,
-  Seperator
+  Seperator,
 } from '@ledget/native-ui'
 import { useLazyGetSettingsFlowQuery, useCompleteSettingsFlowMutation } from '@/features/orySlice';
 import { useUpdateUserMutation, useGetMeQuery } from '@ledget/shared-features'
 import { useNativeFlow } from '@ledget/ory';
+import { ModalScreenProps } from '@types';
 
 const schema = z.object({
   first: z.string().min(1, { message: 'First name is required' }),
@@ -24,7 +25,7 @@ const schema = z.object({
   email: z.string().email().min(1, { message: 'Email is required' }),
 })
 
-const EditPersonalInfo = withBottomModal((props) => {
+const EditPersonalInfo = (props: ModalScreenProps<'EditPersonalInfo'>) => {
   const [updateUser, { isSuccess, isLoading }] = useUpdateUserMutation()
   const { data: user } = useGetMeQuery()
   const { fetchFlow, flowStatus, submitFlow } = useNativeFlow(
@@ -55,7 +56,7 @@ const EditPersonalInfo = withBottomModal((props) => {
   }
 
   return (
-    <View>
+    <Modal>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View>
           <View style={styles.headerContainer}>
@@ -118,8 +119,8 @@ const EditPersonalInfo = withBottomModal((props) => {
           />
         </View>
       </TouchableWithoutFeedback>
-    </View>
+    </Modal>
   )
-});
+};
 
 export default EditPersonalInfo

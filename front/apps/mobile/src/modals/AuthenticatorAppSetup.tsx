@@ -11,7 +11,7 @@ import styles from './styles/authenticator-app-setup';
 import {
   Text,
   Header2,
-  withBottomModal,
+  Modal,
   Button,
   SlideView,
   Otc,
@@ -27,6 +27,7 @@ import {
 import { useGetMeQuery } from '@ledget/shared-features';
 import { useNativeFlow } from '@ledget/ory';
 import { useEffect } from 'react';
+import { ModalScreenProps } from '@types';
 
 const schema = z.object({
   totp_code: z.string().length(6, { message: 'Invalid code' })
@@ -126,8 +127,8 @@ const RecoveryCodes = ({ closeModal }: { closeModal: () => void }) => {
   )
 }
 
-const AuthenticatorApp = withBottomModal((props) => {
-  useBioAuth({ onFail: props.closeModal });
+const AuthenticatorApp = (props: ModalScreenProps<'AuthenticatorAppSetup'>) => {
+  useBioAuth({ onFail: props.navigation.goBack });
   const { data: user } = useGetMeQuery();
   const [totpSecret, setTotpSecret] = useState('');
   const [step, setStep] = useState(0);
@@ -164,56 +165,58 @@ const AuthenticatorApp = withBottomModal((props) => {
   }
 
   return (
-    <View style={styles.content}>
-      <Header2>Authenticator App Setup</Header2>
-      {step === 0 &&
-        <SlideView
-          style={styles.slide}
-          position={0}
-          skipEnter={true}
-        >
-          <Text color='secondaryText'>
-            First get a 6-digit code from your authenticator app
-          </Text>
-          <Seperator variant='m' />
-          <Button
-            style={styles.button}
-            variant='main'
-            onPress={() => {
-              Linking.openURL(`otpauth://totp/LEDGET:${user?.email}?secret=${totpSecret}&issuer=Ledget`)
-              setStep(1);
-            }}
-            label='Get Code'
+    <Modal >
+      <View style={styles.content}>
+        <Header2>Authenticator App Setup</Header2>
+        {step === 0 &&
+          <SlideView
+            style={styles.slide}
+            position={0}
+            skipEnter={true}
           >
-            <Icon icon={ChevronRight} />
-          </Button>
-        </SlideView>}
-      {step === 1 &&
-        <SlideView position={1} style={styles.slide}>
-          <Text color='secondaryText'>
-            Enter the 6-digit code
-          </Text>
-          <Seperator variant='m' />
-          <Controller
-            control={control}
-            name='totp_code'
-            render={({ field: { onChange } }) => (
-              <Otc
-                autoFocus
-                codeLength={6}
-                onCodeChange={onChange}
-                error={errors.totp_code?.message}
-              />
-            )}
-          />
-          <Button label='Submit' onPress={handleSubmit(onSubmit)} />
-        </SlideView>}
-      {step === 2 &&
-        <SlideView position={2} style={styles.slide}>
-          <RecoveryCodes {...props} />
-        </SlideView>}
-    </View>
+            <Text color='secondaryText'>
+              First get a 6-digit code from your authenticator app
+            </Text>
+            <Seperator variant='m' />
+            <Button
+              style={styles.button}
+              variant='main'
+              onPress={() => {
+                Linking.openURL(`otpauth://totp/LEDGET:${user?.email}?secret=${totpSecret}&issuer=Ledget`)
+                setStep(1);
+              }}
+              label='Get Code'
+            >
+              <Icon icon={ChevronRight} />
+            </Button>
+          </SlideView>}
+        {step === 1 &&
+          <SlideView position={1} style={styles.slide}>
+            <Text color='secondaryText'>
+              Enter the 6-digit code
+            </Text>
+            <Seperator variant='m' />
+            <Controller
+              control={control}
+              name='totp_code'
+              render={({ field: { onChange } }) => (
+                <Otc
+                  autoFocus
+                  codeLength={6}
+                  onCodeChange={onChange}
+                  error={errors.totp_code?.message}
+                />
+              )}
+            />
+            <Button label='Submit' onPress={handleSubmit(onSubmit)} />
+          </SlideView>}
+        {step === 2 &&
+          <SlideView position={2} style={styles.slide}>
+            <RecoveryCodes closeModal={props.navigation.goBack} />
+          </SlideView>}
+      </View>
+    </Modal>
   )
-});
+};
 
 export default AuthenticatorApp

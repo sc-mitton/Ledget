@@ -2,16 +2,18 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { Alert, View, Platform } from 'react-native'
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
 
 import styles from './styles/logout';
 import sharedStyles from './styles/shared';
-import { Text, Header, Button, SubmitButton, withBottomModal } from '@ledget/native-ui';
+import { Text, Header, Button, SubmitButton, Modal } from '@ledget/native-ui';
 import { selectSession, apiSlice, setSession } from '@ledget/shared-features';
 import { useAppSelector, useAppDispatch } from '@hooks';
 import { IOS_ORY_API_URI, ANDROID_ORY_API_URI } from '@env';
+import { ModalScreenProps } from '@types';
 
-const Logout = withBottomModal((props) => {
+const Logout = (props: ModalScreenProps<'Logout'>) => {
   const [seconds, setSeconds] = useState(30);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [quedLogout, setQuedLogout] = useState(false);
@@ -40,34 +42,34 @@ const Logout = withBottomModal((props) => {
         : ANDROID_ORY_API_URI}/self-service/logout/api`, {
         data: { session_token: session?.token }
       }).then(() => {
-        props.closeModal();
+        props.navigation.goBack();
         SecureStore.deleteItemAsync('session');
         dispatch(apiSlice.util.invalidateTags(['User']));
         dispatch(setSession(undefined));
       }).catch(() => {
         setIsLoggingOut(false);
-        props.closeModal();
+        props.navigation.goBack();
         Alert.alert('Error', 'An error occurred while trying to log you out. Please try again.');
       });
     }
   }, [quedLogout]);
 
   return (
-    <View>
+    <Modal>
       <View style={styles.text}>
         <Header>Sign Out</Header>
         <Text color='secondaryText'>{`You will be automatically logged out in ${seconds} seconds`}</Text>
       </View>
       <View style={sharedStyles.splitButtons}>
         <View style={sharedStyles.splitButton}>
-          <Button onPress={() => props.closeModal()} variant='mediumGrayMain' label='Cancel' />
+          <Button onPress={() => props.navigation.goBack()} variant='mediumGrayMain' label='Cancel' />
         </View>
         <View style={sharedStyles.splitButton}>
           <SubmitButton onPress={() => setQuedLogout(true)} isSubmitting={isLoggingOut} variant='main' label='Log Out' />
         </View>
       </View>
-    </View>
+    </Modal>
   )
-});
+};
 
 export default Logout

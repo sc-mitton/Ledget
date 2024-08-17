@@ -7,7 +7,7 @@ import { Lock } from 'geist-native-icons';
 
 import styles from './styles/change-password';
 import {
-  withBottomModal,
+  Modal,
   Header2,
   Text,
   JiggleView,
@@ -28,6 +28,7 @@ import { useNativeFlow } from '@ledget/ory';
 import { useGetMeQuery } from '@ledget/shared-features';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectAuthIsFresh, updateIsAuthed, selectLastAuthedAt } from '@/features/authSlice';
+import { ModalScreenProps } from '@types';
 
 const changeSchema = z
   .object({
@@ -212,22 +213,26 @@ const ConfirmPassword = ({ setPasswordConfirmed }: { setPasswordConfirmed: (valu
   )
 }
 
-const Modal = withBottomModal((props) => {
+const ChangePasswordModal = (props: ModalScreenProps<'ChangePassword'>) => {
   const [passwordConfirmed, setPasswordConfirmed] = React.useState(false);
   const authIsFresh = useAppSelector(selectAuthIsFresh);
   const lastAuthedAt = useAppSelector(selectLastAuthedAt);
 
-  return passwordConfirmed || authIsFresh
-    ? <SlideView
-      position={1}
-      skipExit={true}
-      skipEnter={(Date.now() - lastAuthedAt > 3000) && authIsFresh}
-    >
-      <ChangePassword closeModal={props.closeModal} />
-    </SlideView>
-    : <SlideView position={0} skipEnter={true}>
-      <ConfirmPassword setPasswordConfirmed={setPasswordConfirmed} />
-    </SlideView>
-});
+  return (
+    <Modal>
+      {passwordConfirmed || authIsFresh
+        ? <SlideView
+          position={1}
+          skipExit={true}
+          skipEnter={(Date.now() - lastAuthedAt > 3000) && authIsFresh}
+        >
+          <ChangePassword closeModal={props.navigation.goBack} />
+        </SlideView>
+        : <SlideView position={0} skipEnter={true}>
+          <ConfirmPassword setPasswordConfirmed={setPasswordConfirmed} />
+        </SlideView>}
+    </Modal>
+  )
+};
 
-export default Modal
+export default ChangePasswordModal

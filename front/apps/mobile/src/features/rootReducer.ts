@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import { modalSlice } from './modalSlice';
 import { appearanceslice } from './appearanceSlice';
 import { bioSlice } from './bioSlice';
 import { authSlice } from './authSlice';
@@ -30,7 +29,6 @@ const rootReducer = combineReducers({
   filteredFetchedonfirmedTransactions:
     filteredFetchedConfirmedTransactions.reducer,
   budgetItemMetaData: budgetItemMetaDataSlice.reducer,
-  modal: modalSlice.reducer,
   appearance: appearanceslice.reducer,
   bio: bioSlice.reducer,
   auth: authSlice.reducer,

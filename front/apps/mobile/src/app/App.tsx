@@ -28,7 +28,6 @@ import { useAppearance } from '@features/appearanceSlice';
 import { RootStackParamList } from '@types';
 import { useModalStyleInterpolator } from '@hooks';
 import Authentication from './Authentication';
-import Modals from './Modals';
 import BottomTabScreens from './BottomTabScreens';
 import SourceSans3Regular from '../../assets/fonts/SourceSans3Regular.ttf';
 import SourceSans3Medium from '../../assets/fonts/SourceSans3Medium.ttf';
@@ -163,7 +162,6 @@ export const App = withProviders(() => {
       onLayout={onLayoutRootView}
       style={styles.root}>
       <StatusBar style={appearance.mode === 'dark' ? 'light' : 'dark'} />
-      <Modals />
       <NavigationContainer theme={navTheme}>
         {continueToMainApp
           ?

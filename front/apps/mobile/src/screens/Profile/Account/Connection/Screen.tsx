@@ -11,8 +11,6 @@ import {
 } from '@ledget/native-ui';
 import { Trash2 } from 'geist-native-icons';
 import { ProfileScreenProps } from '@types';
-import { setModal } from '@features/modalSlice';
-import { useAppDispatch } from '@/hooks';
 import { useGetPlaidItemsQuery, useGetMeQuery } from '@ledget/shared-features';
 
 import styles from './styles';
@@ -20,7 +18,6 @@ import styles from './styles';
 const Screen = ({ navigation, route }: ProfileScreenProps<'Connection'>) => {
   const { data: plaidItems } = useGetPlaidItemsQuery();
   const { data: user } = useGetMeQuery();
-  const dispatch = useAppDispatch();
 
   const accounts = useMemo(() => {
     return plaidItems?.find((item) => item.id === route.params.item)?.accounts;
@@ -83,10 +80,14 @@ const Screen = ({ navigation, route }: ProfileScreenProps<'Connection'>) => {
         <View style={styles.buttons}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => dispatch(setModal({
-              name: 'confirmDeletePlaidItem',
-              args: { id: route.params.item }
-            }))}
+            onPress={() => {
+              navigation.navigate('Modals', {
+                screen: 'ConfirmDeletePlaidItem',
+                params: {
+                  id: route.params.item
+                }
+              })
+            }}
           >
             <Icon color='blueText' icon={Trash2} size={18} />
             <Text color='blueText'>Remove Connection</Text>

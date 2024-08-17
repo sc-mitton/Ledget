@@ -3,20 +3,17 @@ import { LogOut } from 'geist-native-icons';
 
 import { Box, Button, Icon } from '@ledget/native-ui';
 import { ProfileScreenProps } from '@types';
-import { useAppDispatch } from '@/hooks';
-import { setModal } from '@features/modalSlice';
 import Household from './Household';
 import Connections from './Connections';
 
 const Screen = (props: ProfileScreenProps<'Main'>) => {
-  const dispatch = useAppDispatch();
 
   return (
     <Box variant='screenContent'>
       <Household {...props} />
       <Connections {...props} />
       <Button
-        onPress={() => dispatch(setModal('logout'))}
+        onPress={() => props.navigation.navigate('Modals', { screen: 'Logout' })}
         label={'Logout'}
         backgroundColor='transparent'
         borderColor='transparent'

@@ -7,7 +7,6 @@ import {
   useGetMeQuery,
   useGetPlaidItemsQuery
 } from '@ledget/shared-features';
-import { setModal } from '@/features/modalSlice';
 import {
   Text,
   Header2,
@@ -17,13 +16,12 @@ import {
   InstitutionLogo,
   Icon
 } from '@ledget/native-ui'
-import { useAppDispatch } from '@/hooks';
+import { ProfileScreenProps } from '@types';
 
-const Screen = () => {
+const Screen = (props: ProfileScreenProps<'CoOwner'>) => {
   const { data: coOwner } = useGetCoOwnerQuery();
   const { data: user } = useGetMeQuery();
   const { data: plaidItems } = useGetPlaidItemsQuery();
-  const dispatch = useAppDispatch();
 
   return (
     <Box style={styles.screen} variant='screenWithHeader'>
@@ -89,7 +87,7 @@ const Screen = () => {
         <TouchableOpacity
           style={styles.removeButton}
           activeOpacity={0.7}
-          onPress={() => { dispatch(setModal('confirmRemoveCoOwner')) }}
+          onPress={() => { props.navigation.navigate('Modals', { screen: 'ConfirmRemoveCoowner' }) }}
         >
           <Icon icon={Trash2} color='blueText' />
           <Text color='blueText'>Remove</Text>

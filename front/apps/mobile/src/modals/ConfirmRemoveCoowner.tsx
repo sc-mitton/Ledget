@@ -2,10 +2,11 @@ import { useEffect } from 'react';
 import { View } from 'react-native'
 
 import sharedStyles from './styles/shared';
-import { Text, Header2, withModal, Button, SubmitButton, Box } from '@ledget/native-ui'
+import { Text, Header2, Modal, Button, SubmitButton, Box } from '@ledget/native-ui'
 import { useGetCoOwnerQuery, useDeleteCoOwnerMutation } from '@ledget/shared-features';
+import { ModalScreenProps } from '@types';
 
-const ConfirmRemoveCoOwner = withModal((props) => {
+const ConfirmRemoveCoOwner = (props: ModalScreenProps<'ConfirmRemoveCoowner'>) => {
   const [
     deleteCoOwner,
     {
@@ -18,14 +19,14 @@ const ConfirmRemoveCoOwner = withModal((props) => {
   useEffect(() => {
     if (isDeleteSuccess) {
       const timeout = setTimeout(() => {
-        props.closeModal();
+        props.navigation.goBack();
       }, 500);
       return () => clearTimeout(timeout);
     }
   }, [isDeleteSuccess]);
 
   return (
-    <View>
+    <Modal>
       <Header2>Are you sure?</Header2>
       <Box marginBottom='l'>
         <Text color='tertiaryText'>
@@ -36,7 +37,7 @@ const ConfirmRemoveCoOwner = withModal((props) => {
       </Box>
       <View style={sharedStyles.splitButtons}>
         <View style={sharedStyles.splitButton}>
-          <Button variant='mediumGrayMain' onPress={props.closeModal} label='Cancel' />
+          <Button variant='mediumGrayMain' onPress={props.navigation.goBack} label='Cancel' />
         </View>
         <View style={sharedStyles.splitButton}>
           <SubmitButton
@@ -47,8 +48,8 @@ const ConfirmRemoveCoOwner = withModal((props) => {
             onPress={() => deleteCoOwner()} />
         </View>
       </View>
-    </View>
+    </Modal>
   )
-});
+};
 
 export default ConfirmRemoveCoOwner

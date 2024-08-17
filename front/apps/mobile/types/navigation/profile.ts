@@ -2,7 +2,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import type { CompositeScreenProps } from '@react-navigation/native';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
-import type { BottomTabNavParamList } from './root';
+import type { BottomTabNavParamList, RootStackParamList } from './root';
 
 export type ProfileStackParamList = {
   Main: undefined,
@@ -19,5 +19,5 @@ export type ProfileStackParamList = {
 export type ProfileScreenProps<T extends keyof ProfileStackParamList> =
   CompositeScreenProps<
     StackScreenProps<ProfileStackParamList, T>,
-    BottomTabScreenProps<BottomTabNavParamList>
+    CompositeScreenProps<BottomTabScreenProps<BottomTabNavParamList>, StackScreenProps<RootStackParamList>>
   >;

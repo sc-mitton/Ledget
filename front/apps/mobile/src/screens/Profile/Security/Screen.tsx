@@ -7,20 +7,16 @@ import Devices from './Devices';
 import Mfa from './Auth';
 import { ProfileScreenProps } from '@types';
 import { Button, Icon } from '@ledget/native-ui';
-import { setModal } from '@/features/modalSlice';
-import { useAppDispatch } from '@/hooks';
-
 
 const Screen = (props: ProfileScreenProps<'Main'>) => {
-  const dispatch = useAppDispatch();
 
   return (
     <Box variant='screenContent'>
-      <Mfa />
+      <Mfa {...props} />
       <Devices {...props} />
       <View style={styles.logoutButton}>
         <Button
-          onPress={() => dispatch(setModal('logoutAllDevices'))}
+          onPress={() => props.navigation.navigate('Modals', { screen: "LogoutAllDevices" })}
           label={'Logout All Devices'}
           backgroundColor='transparent'
           borderColor='transparent'

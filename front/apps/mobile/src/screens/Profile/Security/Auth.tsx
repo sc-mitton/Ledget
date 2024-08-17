@@ -5,12 +5,10 @@ import { Lock } from 'geist-native-icons';
 import styles from './styles/auth';
 import { Box, Text, BoxHeader, Icon, ChevronTouchable, Seperator } from '@ledget/native-ui';
 import { Qr } from '@ledget/media/native';
-import { setModal } from '@features/modalSlice';
 import { useGetMeQuery } from '@ledget/shared-features';
-import { useAppDispatch } from '@hooks';
+import { ProfileScreenProps } from '@types';
 
-const MultiFactor = () => {
-  const dispatch = useAppDispatch();
+const MultiFactor = (props: ProfileScreenProps<'Main'>) => {
   const { data: user } = useGetMeQuery();
 
   return (
@@ -31,12 +29,12 @@ const MultiFactor = () => {
             </View>
           </ChevronTouchable>
           :
-          <ChevronTouchable onPress={() => dispatch(setModal('authenticatorAppSetup'))}>
+          <ChevronTouchable onPress={() => props.navigation.navigate('Modals', { screen: 'AuthenticatorAppSetup' })}>
             <Icon icon={Qr} size={24} />
             <Text>Authenticator App</Text>
           </ChevronTouchable>}
         <Seperator variant='m' />
-        <ChevronTouchable onPress={() => dispatch(setModal('changePassword'))}>
+        <ChevronTouchable onPress={() => props.navigation.navigate('Modals', { screen: 'ChangePassword' })}>
           <Icon icon={Lock} />
           <Text>Change Password</Text>
         </ChevronTouchable>
