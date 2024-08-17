@@ -1,13 +1,15 @@
 import { BlurView } from 'expo-blur';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { ParamListBase, TabNavigationState } from '@react-navigation/native';
 import { Home, DollarSign, Activity, User } from 'geist-native-icons';
+import { useGetTransactionsCountQuery } from '@ledget/shared-features';
 
 import styles from './styles/bottom-nav';
 import { Box, Icon } from '@ledget/native-ui';
 import { useAppearance } from '@features/appearanceSlice';
 import { Institution } from '@ledget/media/native';
-
+import { useAppSelector } from '@hooks';
+import { selectBudgetMonthYear } from '@ledget/shared-features';
 
 interface Props {
   state: TabNavigationState<ParamListBase>;
@@ -69,6 +71,11 @@ const Button = ({ route, index, state, descriptors, navigation }: ButtonProps) =
 
 export default function Nav({ state, descriptors, navigation }: Props) {
   const { mode } = useAppearance();
+  const { month, year } = useAppSelector(selectBudgetMonthYear);
+  const { data } = useGetTransactionsCountQuery(
+    { confirmed: false, month, year },
+    { skip: !month || !year }
+  );
 
   return (
     <>
@@ -102,12 +109,15 @@ export default function Nav({ state, descriptors, navigation }: Props) {
               navigation={navigation}
             />
           ))}
-          <Button
-            route={{ key: 'Activity', name: 'Modals', params: { screen: 'Activity' } }}
-            state={state}
-            descriptors={descriptors}
-            navigation={navigation}
-          />
+          <View style={styles.activityButtonContainer}>
+            {true && <Box style={styles.indicator} backgroundColor='blueText' />}
+            <Button
+              route={{ key: 'Activity', name: 'Modals', params: { screen: 'Activity' } }}
+              state={state}
+              descriptors={descriptors}
+              navigation={navigation}
+            />
+          </View>
           {state.routes.slice(state.routes.length / 2, state.routes.length).map((route, index) => (
             <Button
               key={route.key}

@@ -29,6 +29,17 @@ const styles = StyleSheet.create({
   navItem: {
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  activityButtonContainer: {
+    position: 'relative',
+  },
+  indicator: {
+    width: 5,
+    height: 5,
+    position: 'absolute',
+    top: -2,
+    right: -2,
+    borderRadius: 4
   }
 });
 

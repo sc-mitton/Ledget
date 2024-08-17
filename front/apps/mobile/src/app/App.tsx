@@ -158,36 +158,33 @@ export const App = withProviders(() => {
   }
 
   return (
-    <>
+    <Box
+      backgroundColor={continueToMainApp ? 'mainBackground' : 'accountsMainBackground'}
+      onLayout={onLayoutRootView}
+      style={styles.root}>
       <StatusBar style={appearance.mode === 'dark' ? 'light' : 'dark'} />
       <Modals />
-      <Box
-        backgroundColor={continueToMainApp ? 'mainBackground' : 'accountsMainBackground'}
-        style={styles.main}
-        onLayout={onLayoutRootView}
-      >
-        <NavigationContainer theme={navTheme}>
-          {continueToMainApp
-            ?
-            <RootStack.Navigator>
-              <RootStack.Group screenOptions={{ headerShown: false }}>
-                <RootStack.Screen name='BottomTabs' component={BottomTabScreens} />
-              </RootStack.Group>
-              <RootStack.Group
-                screenOptions={{
-                  presentation: 'transparentModal',
-                  cardStyleInterpolator: modalStyleInterpolator,
-                  headerShown: false,
-                  cardOverlayEnabled: true,
-                }}>
-                <RootStack.Screen name='Modals' component={ModalScreens} />
-              </RootStack.Group>
-            </RootStack.Navigator>
-            :
-            <Authentication />}
-        </NavigationContainer>
-      </Box>
-    </>
+      <NavigationContainer theme={navTheme}>
+        {continueToMainApp
+          ?
+          <RootStack.Navigator>
+            <RootStack.Group screenOptions={{ headerShown: false }}>
+              <RootStack.Screen name='BottomTabs' component={BottomTabScreens} />
+            </RootStack.Group>
+            <RootStack.Group
+              screenOptions={{
+                presentation: 'transparentModal',
+                cardStyleInterpolator: modalStyleInterpolator,
+                headerShown: false,
+                cardOverlayEnabled: true,
+              }}>
+              <RootStack.Screen name='Modals' component={ModalScreens} />
+            </RootStack.Group>
+          </RootStack.Navigator>
+          :
+          <Authentication />}
+      </NavigationContainer>
+    </Box>
   );
 });
 
