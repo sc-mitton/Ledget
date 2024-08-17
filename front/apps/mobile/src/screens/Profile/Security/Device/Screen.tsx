@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import { groupBy } from 'lodash-es';
 
 import styles from './styles';
-import { DeviceScreenProps } from '@types'
+import { ProfileScreenProps } from '@types'
 import {
   useGetDevicesQuery,
   useRemoveRememberedDeviceMutation,
@@ -16,7 +16,7 @@ import {
 import { Box, Text, Icon, SubmitButton, Seperator } from '@ledget/native-ui'
 import { useBioAuth } from '@hooks';
 
-const Device = ({ navigation, route }: DeviceScreenProps) => {
+const Device = ({ navigation, route }: ProfileScreenProps<'Device'>) => {
   const { data: devices } = useGetDevicesQuery();
   const [groupedDevices, setGroupedDevices] = useState<[string, TDevice[]][]>();
   const [device, setDevice] = useState<[string, TDevice[]]>();

@@ -19,7 +19,7 @@ import {
   FormError,
   NestedScreenWOFeedback
 } from '@ledget/native-ui';
-import { Aal1AuthenticatorScreenProps } from '@types';
+import { LoginScreenProps } from '@types';
 import { useNativeFlow } from '@ledget/ory';
 import {
   useLazyGetLoginFlowQuery,
@@ -37,7 +37,7 @@ const schema = z.object({
 const Aal1Authentication = ({
   navigation,
   route
-}: Aal1AuthenticatorScreenProps) => {
+}: LoginScreenProps<'Aal1'>) => {
   const {
     control,
     handleSubmit,

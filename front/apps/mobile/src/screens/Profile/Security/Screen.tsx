@@ -5,13 +5,13 @@ import styles from './styles/screen';
 import { Box } from '@ledget/native-ui';
 import Devices from './Devices';
 import Mfa from './Auth';
-import { AccountScreenProps } from '@types';
+import { ProfileScreenProps } from '@types';
 import { Button, Icon } from '@ledget/native-ui';
 import { setModal } from '@/features/modalSlice';
 import { useAppDispatch } from '@/hooks';
 
 
-const Screen = (props: AccountScreenProps) => {
+const Screen = (props: ProfileScreenProps<'Main'>) => {
   const dispatch = useAppDispatch();
 
   return (

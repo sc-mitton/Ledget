@@ -10,14 +10,14 @@ import {
   Icon,
 } from '@ledget/native-ui';
 import { Trash2 } from 'geist-native-icons';
-import { ConnectionScreenProps } from '@types';
+import { ProfileScreenProps } from '@types';
 import { setModal } from '@features/modalSlice';
 import { useAppDispatch } from '@/hooks';
 import { useGetPlaidItemsQuery, useGetMeQuery } from '@ledget/shared-features';
 
 import styles from './styles';
 
-const Screen = ({ navigation, route }: ConnectionScreenProps) => {
+const Screen = ({ navigation, route }: ProfileScreenProps<'Connection'>) => {
   const { data: plaidItems } = useGetPlaidItemsQuery();
   const { data: user } = useGetMeQuery();
   const dispatch = useAppDispatch();

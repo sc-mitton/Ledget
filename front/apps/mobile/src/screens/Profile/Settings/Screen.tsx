@@ -3,9 +3,9 @@ import { View } from 'react-native';
 import { setCustomMode, setUseDeviceApperance, selectCustomMode, selectUseDeviceAppearance } from '@features/appearanceSlice';
 import { Box, BoxHeader, Switch } from '@ledget/native-ui';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { AccountScreenProps } from '@types';
+import { ProfileScreenProps } from '@types';
 
-const Screen = (props: AccountScreenProps) => {
+const Screen = (props: ProfileScreenProps<'Main'>) => {
   const dispatch = useAppDispatch();
 
   const customMode = useAppSelector(selectCustomMode);

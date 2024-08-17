@@ -1,7 +1,6 @@
-import { PersonalInfoScreenProps } from '@types';
 import { Box } from '@ledget/native-ui';
 
-const Screen = ({ navigation, route }: PersonalInfoScreenProps) => {
+const Screen = () => {
 
   return (
     <Box variant='screenWithHeader'>

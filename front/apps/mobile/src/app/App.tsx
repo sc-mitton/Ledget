@@ -23,7 +23,7 @@ import {
 import styles from './styles/app';
 import { Box } from '@ledget/native-ui'
 import { Budget, Accounts, Profile, Activity } from '@screens';
-import { RootTabParamList } from '@types';
+import { BottomTabNavParamList } from '@types';
 import { withProviders } from './Providers';
 import { ENV, IOS_LEDGET_API_URI, ANDROID_LEDGET_API_URI } from '@env';
 import { useAppearance } from '@features/appearanceSlice';
@@ -40,7 +40,7 @@ export const storage = new MMKV({
   path: `ledget/storage`
 })
 
-const Tab = createBottomTabNavigator<RootTabParamList>();
+const Tab = createBottomTabNavigator<BottomTabNavParamList>();
 SplashScreen.preventAutoHideAsync();
 
 const navTheme = {
@@ -129,9 +129,7 @@ export const App = withProviders(() => {
   }, [appIsReady]);
 
   useEffect(() => {
-    if (fontsLoaded && !fontError) {
-      setFontsGood(true);
-    }
+    if (fontsLoaded && !fontError) { setFontsGood(true) }
   }, [fontsLoaded]);
 
   // Set the necessary environment variables

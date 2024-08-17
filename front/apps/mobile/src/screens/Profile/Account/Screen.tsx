@@ -2,13 +2,13 @@ import React from 'react'
 import { LogOut } from 'geist-native-icons';
 
 import { Box, Button, Icon } from '@ledget/native-ui';
-import { AccountScreenProps } from '@types';
+import { ProfileScreenProps } from '@types';
 import { useAppDispatch } from '@/hooks';
 import { setModal } from '@features/modalSlice';
 import Household from './Household';
 import Connections from './Connections';
 
-const Screen = (props: AccountScreenProps) => {
+const Screen = (props: ProfileScreenProps<'Main'>) => {
   const dispatch = useAppDispatch();
 
   return (

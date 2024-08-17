@@ -11,14 +11,14 @@ import { useNativeFlow } from '@ledget/ory';
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@/features/orySlice';
 import { Header, NestedScreenWOFeedback, SubHeader2, TextInput, Button, Pulse, JiggleView } from '@ledget/native-ui';
 import { RecoveryCode } from '@ledget/media/native';
-import { Aal2RecoveryCodeScreenProps } from '@types';
+import { LoginScreenProps } from '@types';
 import { useFlowProgress } from '@hooks';
 
 const schema = z.object({
   lookup_secret: z.string().min(1, 'Recovery code is required'),
 });
 
-const Aal2RecoveryCode = ({ navigation, route }: Aal2RecoveryCodeScreenProps) => {
+const Aal2RecoveryCode = ({ navigation, route }: LoginScreenProps<'Aal2RecoveryCode'>) => {
   const theme = useTheme();
   const { control, handleSubmit, formState: { errors } } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),

@@ -18,7 +18,7 @@ import {
   FacebookLogo,
   GoogleLogo,
 } from '@ledget/media/native';
-import { EmailScreenProps } from '@types';
+import { LoginScreenProps } from '@types';
 import { LogoIcon } from '@ledget/media/native';
 import Legal from './Legal';
 
@@ -29,7 +29,7 @@ const schema = z.object({
     .transform(value => value.trim())
 });
 
-export default function Login({ navigation, route }: EmailScreenProps) {
+export default function Email({ navigation, route }: LoginScreenProps<'Email'>) {
   const { control, handleSubmit, formState: { errors } } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: 'onSubmit',

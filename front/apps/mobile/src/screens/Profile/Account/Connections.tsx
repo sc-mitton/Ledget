@@ -4,10 +4,13 @@ import { Plus } from 'geist-native-icons';
 import styles from './styles/connections'
 import { ShimmerBox, Text, Seperator, BoxHeader, ChevronTouchable, Icon, InstitutionLogo } from '@ledget/native-ui';
 import { useGetPlaidItemsQuery } from '@ledget/shared-features';
-import { AccountScreenProps } from '@types';
+import { ProfileScreenProps } from '@types';
 import { usePlaidLink } from '@hooks';
 
-const Connections = (props: AccountScreenProps) => {
+const Connections = ({
+  navigation,
+  route
+}: ProfileScreenProps<'Main'>) => {
   const { data: plaidItems, isLoading } = useGetPlaidItemsQuery()
   const { openLink } = usePlaidLink()
 
@@ -24,7 +27,7 @@ const Connections = (props: AccountScreenProps) => {
         {plaidItems?.map((item, i) => (
           <>
             <View style={styles.row} key={`connection-${i}`}>
-              <ChevronTouchable onPress={() => props.navigation.navigate('Connection', { item: item.id })}>
+              <ChevronTouchable onPress={() => navigation.navigate('Connection', { item: item.id })}>
                 <InstitutionLogo data={item.institution?.logo} />
                 <Text>{item.institution?.name}</Text>
               </ChevronTouchable>

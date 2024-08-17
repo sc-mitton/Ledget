@@ -3,10 +3,10 @@ import { Plus } from 'geist-native-icons';
 import { Text, BoxHeader, ChevronTouchable, ShimmerBox, Avatar } from '@ledget/native-ui';
 import { useGetCoOwnerQuery, useGetMeQuery } from '@ledget/shared-features';
 import { setModal } from '@features/modalSlice';
-import { AccountScreenProps } from '@types';
+import { ProfileScreenProps } from '@types';
 import { useAppDispatch } from '@hooks';
 
-const Household = (props: AccountScreenProps) => {
+const Household = (props: ProfileScreenProps<'Main'>) => {
   const dispatch = useAppDispatch();
   const { data: coOwner, isLoading } = useGetCoOwnerQuery();
   const { data: user } = useGetMeQuery();

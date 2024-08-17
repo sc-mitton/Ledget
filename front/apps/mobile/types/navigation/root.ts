@@ -3,7 +3,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import type { ProfileStackParamList } from './profile';
 import type { LoginStackParamList } from './login';
 
-export type RootTabParamList = {
+export type BottomTabNavParamList = {
   Home: undefined;
   Budget: undefined;
   Accounts: undefined;

@@ -8,7 +8,7 @@ import { useTheme } from '@shopify/restyle';
 
 import sharedStyles from './styles/shared';
 import { Header, SubHeader2, Otc, Button, Pulse, NestedScreenWOFeedback, JiggleView } from '@ledget/native-ui'
-import { Aal2AuthenticatorScreenProps } from '@types'
+import { LoginScreenProps } from '@types'
 import { useNativeFlow } from '@ledget/ory'
 import { Authenticator } from '@ledget/media/native';
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@features/orySlice';
@@ -18,7 +18,7 @@ const schema = z.object({
   totp: z.string().length(6, { message: 'Invalid code' })
 })
 
-const Aal1Authentication = ({ navigation, route }: Aal2AuthenticatorScreenProps) => {
+const Aal2Authenticator = ({ navigation, route }: LoginScreenProps<'Aal2Authenticator'>) => {
   const { control, handleSubmit, formState: { errors } } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: 'onSubmit',
@@ -94,4 +94,4 @@ const Aal1Authentication = ({ navigation, route }: Aal2AuthenticatorScreenProps)
   )
 }
 
-export default Aal1Authentication
+export default Aal2Authenticator

@@ -1,7 +1,11 @@
 import { StackScreenProps } from '@react-navigation/stack';
+import type { CompositeScreenProps } from '@react-navigation/native';
+import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+
+import type { BottomTabNavParamList } from './root';
 
 export type ProfileStackParamList = {
-  Profile: undefined,
+  Main: undefined,
   Connection: {
     item: string
   },
@@ -12,7 +16,8 @@ export type ProfileStackParamList = {
   CoOwner: undefined
 };
 
-export type AccountScreenProps = StackScreenProps<ProfileStackParamList, 'Profile'>
-export type ConnectionScreenProps = StackScreenProps<ProfileStackParamList, 'Connection'>
-export type DeviceScreenProps = StackScreenProps<ProfileStackParamList, 'Device'>
-export type PersonalInfoScreenProps = StackScreenProps<ProfileStackParamList, 'PersonalInfo'>
+export type ProfileScreenProps<T extends keyof ProfileStackParamList> =
+  CompositeScreenProps<
+    StackScreenProps<ProfileStackParamList, T>,
+    BottomTabScreenProps<BottomTabNavParamList>
+  >;

@@ -22,7 +22,7 @@ import { ProfileStackParamList } from '@types';
 import { BackHeader } from '@ledget/native-ui';
 import { setModal } from '@/features/modalSlice';
 import { useAppDispatch, useCardStyleInterpolator } from "@/hooks";
-import { AccountScreenProps } from '@types';
+import { ProfileScreenProps } from '@types';
 import Account from './Account/Screen';
 import Security from './Security/Screen';
 import Settings from './Settings/Screen';
@@ -43,7 +43,7 @@ const H_SCROLL_DISTANCE = H_MAX_HEIGHT - H_MIN_HEIGHT;
 
 const Stack = createStackNavigator<ProfileStackParamList>();
 
-function Profile(props: AccountScreenProps) {
+function Profile(props: ProfileScreenProps<'Main'>) {
   const { data: user } = useGetMeQuery();
   const dispatch = useAppDispatch();
   const headerHeight = useSharedValue(0);
@@ -143,7 +143,7 @@ export default function Navigator() {
       }}
       id='profile'
     >
-      <Stack.Screen options={{ headerShown: false }} name='Profile' component={Profile} />
+      <Stack.Screen options={{ headerShown: false }} name='Main' component={Profile} />
       <Stack.Screen name='Connection' component={Connection} />
       <Stack.Screen name='Device' component={Device} />
       <Stack.Screen name='CoOwner' component={CoOwner} />

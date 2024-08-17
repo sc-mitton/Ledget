@@ -1,6 +1,6 @@
 import { CompositeScreenProps } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootAccountStackParamList } from './root';
+import { RootAuthenticationStackParamList } from './root';
 
 export type LoginStackParamList = {
   Email: undefined;
@@ -15,8 +15,8 @@ export type LoginStackParamList = {
   };
 };
 
-// Login
-export type EmailScreenProps = CompositeScreenProps<StackScreenProps<LoginStackParamList, 'Email'>, StackScreenProps<RootAccountStackParamList>>
-export type Aal1AuthenticatorScreenProps = CompositeScreenProps<StackScreenProps<LoginStackParamList, 'Aal1'>, StackScreenProps<RootAccountStackParamList>>
-export type Aal2AuthenticatorScreenProps = CompositeScreenProps<StackScreenProps<LoginStackParamList, 'Aal2Authenticator'>, StackScreenProps<RootAccountStackParamList>>
-export type Aal2RecoveryCodeScreenProps = CompositeScreenProps<StackScreenProps<LoginStackParamList, 'Aal2RecoveryCode'>, StackScreenProps<RootAccountStackParamList>>
+export type LoginScreenProps<T extends keyof LoginStackParamList> =
+  CompositeScreenProps<
+    StackScreenProps<LoginStackParamList, T>,
+    StackScreenProps<RootAuthenticationStackParamList>
+  >
