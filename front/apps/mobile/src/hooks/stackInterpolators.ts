@@ -47,3 +47,56 @@ export const useCardStyleInterpolator = (app?: 'main' | 'authentication') => {
 
   return cardStyleInterpolator;
 }
+
+export const useModalStyleInterpolator = () => {
+  const theme = useTheme();
+
+  const modalStyleInterpolator = useCallback(({ current, next, inverted, layouts: { screen } }: any) => {
+
+    const progress = Animated.add(
+      current.progress.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, 1],
+        extrapolate: 'clamp',
+      }),
+      next
+        ? next.progress.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, 1],
+          extrapolate: 'clamp',
+        })
+        : 0
+    );
+
+    return ({
+      cardStyle: {
+        opacity: progress,
+        shadowColor: theme.colors.navShadow,
+        shadowOpacity: 0.5,
+        shadowRadius: 10,
+        shadowOffset: { width: 0, height: -4 },
+        transform: [
+          {
+            translateY: Animated.multiply(
+              progress.interpolate({
+                inputRange: [0, 1, 2],
+                outputRange: [screen.height, 0, screen.height * -0.1],
+                extrapolate: 'clamp',
+              }),
+              inverted
+            ),
+          },
+        ],
+      },
+      overlayStyle: {
+        opacity: progress.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, .7],
+          extrapolate: 'clamp',
+        }),
+      },
+    })
+  }, [theme]);
+
+  return modalStyleInterpolator;
+}

@@ -1,3 +1,5 @@
+
+export * from './containers/modal/Modal';
 export * from './containers/slide-view/slide-view';
 export * from './hooks/useKeyboardHeight/keyboard-height';
 export * from './restyled/Box';

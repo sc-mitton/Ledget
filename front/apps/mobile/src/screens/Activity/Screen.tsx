@@ -1,11 +1,21 @@
+import { View } from 'react-native';
+
+import styles from './styles';
 import { Box, Header } from '@ledget/native-ui';
-import React from 'react'
 
 const Screen = () => {
   return (
-    <Box variant='screen'>
-      <Header>Activity</Header>
-    </Box>
+    <View style={styles.bottomModal}>
+      <Box
+        backgroundColor='modalBox'
+        shadowColor='navShadow'
+        shadowOpacity={0.5}
+        shadowRadius={10}
+        shadowOffset={{ width: 0, height: -4 }}
+      >
+        <Header>Activity</Header>
+      </Box>
+    </View>
   )
 }
 

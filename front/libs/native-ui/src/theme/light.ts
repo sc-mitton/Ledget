@@ -406,15 +406,6 @@ export const lightTheme = createTheme({
       borderColor: 'nestedContainerBorder',
       borderWidth: 1.5,
     },
-    modalBox: {
-      backgroundColor: 'modalBox',
-      borderTopEndRadius: 20,
-      borderTopStartRadius: 20,
-      shadowColor: 'navShadow',
-      shadowOpacity: 0.5,
-      shadowRadius: 10,
-      shadowOffset: { width: 0, height: -4 },
-    },
     bottomNav: {
       paddingHorizontal: 'l',
     },
@@ -427,12 +418,6 @@ export const lightTheme = createTheme({
       left: 24,
       bottom: 0,
       zIndex: 100
-    },
-    modal: {
-      backgroundColor: 'nestedContainer',
-      borderRadius: 12,
-      padding: 'l',
-      gap: 'm',
     },
     defaults: {}
   },

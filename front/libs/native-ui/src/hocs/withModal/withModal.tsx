@@ -118,7 +118,14 @@ export function withModal<P>(WrappedComponent: FC<P & { closeModal: () => void }
                 styles[`${props.placement || 'float'}Modal`]
               ]}>
               <OutsidePressHandler onOutsidePress={() => setCloseAll(true)}>
-                <Box variant='modalBox' style={styles[`${props.placement || 'float'}ModalBackground`]}>
+                <Box
+                  backgroundColor='modalBox'
+                  shadowColor='navShadow'
+                  shadowOpacity={0.5}
+                  shadowRadius={10}
+                  shadowOffset={{ width: 0, height: -4 }}
+                  style={styles[`${props.placement || 'float'}ModalBackground`]}
+                >
                   <Animated.View style={[styles[`${props.placement || 'float'}ModalContent`], avoidKeyboardAnimation]}>
                     <WrappedComponent {...rest as P} closeModal={() => setCloseAll(true)} />
                     {hasExit && <View style={styles.closeButton}>

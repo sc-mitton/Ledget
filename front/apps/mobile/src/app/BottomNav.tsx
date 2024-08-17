@@ -15,6 +15,58 @@ interface Props {
   navigation: any;
 }
 
+interface ButtonProps extends Props {
+  index?: number,
+  route: { key: string, name: string, params?: any }
+}
+
+const Button = ({ route, index, state, descriptors, navigation }: ButtonProps) => {
+  const isFocused = state.index === index;
+  const des = descriptors[route.key];
+
+  const onPress = () => {
+    const event = navigation.emit({
+      type: 'tabPress',
+      target: route.key,
+      canPreventDefault: true,
+    });
+
+    if (!isFocused && !event.defaultPrevented) {
+      navigation.navigate(route.name, route.params);
+    }
+  };
+
+  const onLongPress = () => {
+    navigation.emit({
+      type: 'tabLongPress',
+      target: route.key,
+    });
+  };
+
+  return (
+    <TouchableOpacity
+      key={route.key}
+      accessibilityRole="button"
+      accessibilityState={isFocused ? { selected: true } : {}}
+      accessibilityLabel={des?.options?.tabBarAccessibilityLabel}
+      testID={des?.options?.tabBarTestID}
+      onPress={onPress}
+      onLongPress={onLongPress}
+    >
+      {route.key.includes('Home')
+        ? <Icon icon={Home} color={isFocused ? 'activeIcon' : 'mainText'} />
+        : route.key.includes('Budget')
+          ? <Icon icon={DollarSign} color={isFocused ? 'activeIcon' : 'mainText'} />
+          : route.key.includes('Accounts')
+            ? <Icon icon={Institution} color={isFocused ? 'activeIcon' : 'mainText'} />
+            : route.key.includes('Activity')
+              ? <Icon icon={Activity} color={isFocused ? 'activeIcon' : 'mainText'} />
+              : <Icon icon={User} color={isFocused ? 'activeIcon' : 'mainText'} />
+      }
+    </TouchableOpacity>
+  )
+}
+
 export default function Nav({ state, descriptors, navigation }: Props) {
   const { mode } = useAppearance();
 
@@ -40,52 +92,32 @@ export default function Nav({ state, descriptors, navigation }: Props) {
           variant='bottomNav'
           backgroundColor={'transparent'}
         >
-          {state.routes.map((route, index) => {
-            const isFocused = state.index === index;
-            const { options } = descriptors[route.key];
-
-            const onPress = () => {
-              const event = navigation.emit({
-                type: 'tabPress',
-                target: route.key,
-                canPreventDefault: true,
-              });
-
-              if (!isFocused && !event.defaultPrevented) {
-                navigation.navigate(route.name, route.params);
-              }
-            };
-
-            const onLongPress = () => {
-              navigation.emit({
-                type: 'tabLongPress',
-                target: route.key,
-              });
-            };
-
-            return (
-              <TouchableOpacity
-                key={route.key}
-                accessibilityRole="button"
-                accessibilityState={isFocused ? { selected: true } : {}}
-                accessibilityLabel={options.tabBarAccessibilityLabel}
-                testID={options.tabBarTestID}
-                onPress={onPress}
-                onLongPress={onLongPress}
-              >
-                {route.name === 'Home'
-                  ? <Icon icon={Home} color={isFocused ? 'activeIcon' : 'mainText'} />
-                  : route.name === 'Budget'
-                    ? <Icon icon={DollarSign} color={isFocused ? 'activeIcon' : 'mainText'} />
-                    : route.name === 'Accounts'
-                      ? <Icon icon={Institution} color={isFocused ? 'activeIcon' : 'mainText'} />
-                      : route.name === 'Activity'
-                        ? <Icon icon={Activity} color={isFocused ? 'activeIcon' : 'mainText'} />
-                        : <Icon icon={User} color={isFocused ? 'activeIcon' : 'mainText'} />
-                }
-              </TouchableOpacity>
-            );
-          })}
+          {state.routes.slice(0, state.routes.length / 2).map((route, index) => (
+            <Button
+              key={route.key}
+              route={route}
+              index={index}
+              state={state}
+              descriptors={descriptors}
+              navigation={navigation}
+            />
+          ))}
+          <Button
+            route={{ key: 'Activity', name: 'Modals', params: { screen: 'Activity' } }}
+            state={state}
+            descriptors={descriptors}
+            navigation={navigation}
+          />
+          {state.routes.slice(state.routes.length / 2, state.routes.length).map((route, index) => (
+            <Button
+              key={route.key}
+              route={route}
+              index={index + state.routes.length / 2}
+              state={state}
+              descriptors={descriptors}
+              navigation={navigation}
+            />
+          ))}
         </Box>
       </BlurView>
     </>
