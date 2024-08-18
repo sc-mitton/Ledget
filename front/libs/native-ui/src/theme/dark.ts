@@ -70,6 +70,7 @@ export const darkTheme = createTheme({
     avatar: palette.gray800,
     modalOverlay: palette.gray900,
     modalBox: palette.gray850,
+    newTransaction: palette.gray800,
 
     // Borders
     inputBorder: palette.gray750,
@@ -88,6 +89,7 @@ export const darkTheme = createTheme({
     activeSwitchShadow: 'hsl(144, 80%, 12%)',
     disabledSwitchShadow: palette.gray700,
     logoShadow: palette.gray900,
+    newTransactionShadow: palette.gray900,
 
     // Icons
     activeIcon: palette.blueSat,

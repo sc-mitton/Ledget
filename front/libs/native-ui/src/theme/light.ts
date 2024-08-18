@@ -68,6 +68,7 @@ export const lightTheme = createTheme({
     avatar: palette.gray500,
     modalOverlay: palette.gray400,
     modalBox: palette.gray100,
+    newTransaction: palette.gray200,
 
     // Borders
     inputBorder: palette.gray250,
@@ -87,6 +88,7 @@ export const lightTheme = createTheme({
     activeSwitchShadow: 'hsl(144, 70%, 50%)',
     disabledSwitchShadow: palette.gray500,
     logoShadow: palette.gray500,
+    newTransactionShadow: palette.gray300,
 
     // Text
     mainText: palette.offBlack,

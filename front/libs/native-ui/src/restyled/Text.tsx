@@ -1,5 +1,20 @@
-import { TextProps } from "react-native";
+import { TextProps, View } from "react-native";
 import { createText } from "@shopify/restyle";
+import { formatCurrency } from '@ledget/helpers';
+import {
+  ColorProps,
+  color,
+  composeRestyleFunctions,
+  useRestyle
+} from '@shopify/restyle';
+
+import { Box } from './Box';
+import { Theme } from "../theme";
+
+type RestyledColorProps = ColorProps<Theme>;
+
+const restyledFunctions = composeRestyleFunctions<Theme, RestyledColorProps>([color]);
+
 
 export const Text = createText();
 
@@ -48,5 +63,35 @@ export const InputLabel = (props: TextProps) => {
 
   return (
     <Text variant="label" {...rest}>{children}</Text>
+  );
+}
+
+export const DollarCents = ({
+  value = 0,
+  withCents = true,
+  ...rest
+}: {
+  value: string | number;
+  withCents?: boolean;
+} & RestyledColorProps) => {
+  const str = formatCurrency(
+    typeof value === 'string' ? value.replace(/^-/, '') : Math.abs(value)
+  );
+  const isDebit = Number(value) < 0;
+  const props = useRestyle(restyledFunctions, rest);
+
+  return (
+    <Box flexDirection="row" alignItems="flex-end">
+      <Text {...props} >
+        {`${isDebit ? '+' : ''}${str.split('.')[0]}`}
+      </Text>
+      <View style={{ marginBottom: -1 }}>
+        {withCents && (
+          <Text fontSize={12} {...props} >
+            {`.${str.split('.')[1]}`}
+          </Text>
+        )}
+      </View>
+    </Box>
   );
 }

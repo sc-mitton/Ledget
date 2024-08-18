@@ -17,7 +17,7 @@ export const InsitutionLogo = ({
   const args = {
     size,
     data: item?.institution?.logo,
-    alt: item ? `${item.institution?.name.charAt(0).toUpperCase()}` : ' ',
+    alt: item ? `${item.institution?.name?.charAt(0).toUpperCase()}` : ' ',
     ...(!item ? { backgroundColor: '#e0e0e0' } : {})
   };
 

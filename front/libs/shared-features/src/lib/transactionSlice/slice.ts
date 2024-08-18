@@ -4,6 +4,7 @@ import {
   PayloadAction,
   createSelector
 } from '@reduxjs/toolkit';
+import { PartialDeep } from 'type-fest';
 
 import apiSlice from '../apiSlice/slice';
 import {
@@ -22,7 +23,6 @@ import {
   addTransaction2Cat,
   addTransaction2Bill
 } from '../budgetItemMetaDataSlice/slice';
-import type { DeepPartial } from '@ledget/helpers';
 
 export const transactionSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -201,7 +201,7 @@ export const transactionSlice = apiSlice.injectEndpoints({
     }),
     updateTransaction: builder.mutation<
       any,
-      { transactionId: string; data: DeepPartial<Transaction> }
+      { transactionId: string; data: PartialDeep<Transaction> }
     >({
       query: ({ transactionId, data }) => ({
         url: `transactions/${transactionId}`,
