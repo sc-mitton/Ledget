@@ -118,6 +118,7 @@ export const lightTheme = createTheme({
     tabGrayPill: palette.gray1000,
     tabGrayPillBorder: 'transparent',
     borderedGrayButton: palette.gray250,
+    dragBar: palette.gray500,
 
     // Switch
     enabledSwitchPill: palette.gray100,

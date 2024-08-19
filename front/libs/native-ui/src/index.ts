@@ -1,6 +1,11 @@
 
 export * from './containers/modal/Modal';
 export * from './containers/slide-view/slide-view';
+export * from './containers/baked-boxes';
+export * from './containers/tabs-navigator/TabsNavigator';
+export * from './containers/loading-box/LoadingBox';
+export * from './containers/bottom-drawer-modal/BottomDrawerModal';
+
 export * from './hooks/useKeyboardHeight/keyboard-height';
 export * from './restyled/Box';
 export * from './restyled/Text';
@@ -25,9 +30,6 @@ export * from './animated/views/JiggleView';
 export * from './animated/configs/configs';
 export * from './headers/BackHeader';
 
-export * from './containers/baked-boxes';
-export * from './containers/tabs-navigator/TabsNavigator';
-export * from './containers/loading-box/LoadingBox';
 export * from './theme';
 
 export * from './loaders/ShimmerBox';

@@ -120,6 +120,7 @@ export const darkTheme = createTheme({
     mediumGrayButtonBorder: palette.gray650,
     grayButtonBorder: palette.gray750,
     borderedGrayButton: palette.gray850,
+    dragBar: palette.gray600,
 
     // Switch
     enabledSwitchPill: `hsl(${grayH}, ${grayS}%, 55%)`,

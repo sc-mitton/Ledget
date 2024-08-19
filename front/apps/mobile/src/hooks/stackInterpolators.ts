@@ -48,7 +48,7 @@ export const useCardStyleInterpolator = (app?: 'main' | 'authentication') => {
   return cardStyleInterpolator;
 }
 
-export const useModalStyleInterpolator = () => {
+export const useModalStyleInterpolator = (args?: { slideOut?: boolean }) => {
   const theme = useTheme();
 
   const modalStyleInterpolator = useCallback(({ current, next, inverted, layouts: { screen } }: any) => {
@@ -80,7 +80,11 @@ export const useModalStyleInterpolator = () => {
             translateY: Animated.multiply(
               progress.interpolate({
                 inputRange: [0, 1, 2],
-                outputRange: [screen.height, 0, screen.height * -0.1],
+                outputRange: [
+                  100,
+                  0,
+                  args?.slideOut === false ? 0 : -100
+                ],
                 extrapolate: 'clamp',
               }),
               inverted

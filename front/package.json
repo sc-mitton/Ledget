@@ -21,6 +21,7 @@
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
     "@react-navigation/stack": "^6.3.29",
+    "@react-spring/native": "^9.7.4",
     "@react-spring/web": "^9.7.3",
     "@reduxjs/toolkit": "^1.9.7",
     "@shopify/restyle": "^2.4.4",

@@ -35,10 +35,7 @@ import SourceSans3SemiBold from '../../assets/fonts/SourceSans3SemiBold.ttf';
 import SourceSans3Bold from '../../assets/fonts/SourceSans3Bold.ttf';
 import ModalScreens from './ModalScreens';
 
-export const storage = new MMKV({
-  id: `user-storage`,
-  path: `ledget/storage`
-})
+export const storage = new MMKV();
 
 const RootStack = createStackNavigator<RootStackParamList>();
 

@@ -15,12 +15,17 @@ import { useKeyboardHeight } from '../../hooks/useKeyboardHeight/keyboard-height
 export interface ModalProps {
   children: React.ReactNode;
   position?: 'bottom' | 'top' | 'float',
-  hasExit?: boolean
+  hasExitButton?: boolean
+  hasOverlayExit?: boolean
 }
 
 
 export function Modal(props: ModalProps) {
-  const { position = 'bottom', hasExit = true } = props;
+  const {
+    position = 'bottom',
+    hasExitButton = true,
+    hasOverlayExit = true
+  } = props;
   const navigation = useNavigation();
   const keyboardHeight = useKeyboardHeight()
 
@@ -67,7 +72,7 @@ export function Modal(props: ModalProps) {
   return (
     <>
       <Pressable
-        onPress={() => navigation.goBack()}
+        onPress={() => hasOverlayExit && navigation.goBack()}
         style={StyleSheet.absoluteFillObject}
       />
       <Box
@@ -78,7 +83,7 @@ export function Modal(props: ModalProps) {
         shadowRadius={10}
         shadowOffset={{ width: 0, height: -4 }}
       >
-        {hasExit && <View style={styles.closeButton}>
+        {hasExitButton && <View style={styles.closeButton}>
           <Button onPress={() => navigation.goBack()} variant='circleButton' >
             <Icon icon={X} size={20} color='secondaryText' />
           </Button>

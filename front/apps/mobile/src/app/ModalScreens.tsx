@@ -13,14 +13,16 @@ import {
   ChangePassword
 } from '@modals';
 import { Activity } from '@screens';
+import { useModalStyleInterpolator } from '@/hooks';
 
 const RootStack = createStackNavigator<ModalStackParamList>();
 
 const ModalScreens = () => {
+  const cardInterpolator = useModalStyleInterpolator({ slideOut: false });
 
   return (
     <RootStack.Navigator screenOptions={{ headerShown: false }}>
-      <RootStack.Screen name="Activity" component={Activity} />
+      <RootStack.Screen name="Activity" component={Activity} options={{ cardStyleInterpolator: cardInterpolator }} />
       <RootStack.Screen name='Logout' component={Logout} />
       <RootStack.Screen name='ConfirmDeletePlaidItem' component={ConfirmDeletePlaidItem} />
       <RootStack.Screen name='EditPersonalInfo' component={EditPersonalInfo} />
