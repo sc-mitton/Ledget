@@ -82,6 +82,7 @@ export const darkTheme = createTheme({
     bottomNavBorder: palette.gray750,
     nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 10%)`,
     tabNavBorder: palette.gray800,
+    newTransactionBorder: palette.gray750,
 
     // Shadows
     navShadow: palette.gray1000,
@@ -89,7 +90,7 @@ export const darkTheme = createTheme({
     activeSwitchShadow: 'hsl(144, 80%, 12%)',
     disabledSwitchShadow: palette.gray700,
     logoShadow: palette.gray900,
-    newTransactionShadow: palette.gray900,
+    newTransactionShadow: palette.gray850,
 
     // Icons
     activeIcon: palette.blueSat,

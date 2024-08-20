@@ -6,36 +6,40 @@ import { animated, useTransition, useSpringRef } from '@react-spring/native';
 import dayjs from 'dayjs';
 
 import styles from './styles/screen';
-import TransactionItem from './TransactionItem'
-import { useAppSelector } from '@hooks'
+import TransactionItem from './TransactionItem';
+import { useAppSelector } from '@hooks';
 import {
   selectUnconfirmedTransactions,
   selectBudgetMonthYear,
   useLazyGetUnconfirmedTransactionsQuery
 } from "@ledget/shared-features";
-import { BottomDrawerModal, Button } from '@ledget/native-ui'
-import { useAppearance } from '@features/appearanceSlice';
+import { BottomDrawerModal } from '@ledget/native-ui';
 import { useLoaded } from '@ledget/helpers';
 import {
   _getY,
   _getScale,
-  _getOpacity,
-  _getBackGroundColor
+  _getOpacity
 } from './helpers';
 
-const AnimatedTransaction = animated(View);
+const AnimatedTransactionContainer = animated(View);
 
-const ITEM_HEIGHT = 72;
+const springConfig = {
+  tension: 180,
+  friction: 22,
+  mass: 1
+};
 
 const Screen = () => {
   const loaded = useLoaded(1000);
-  const { mode } = useAppearance();
   const [expanded, setExpanded] = useState(false);
   const navigation = useNavigation();
   const { month, year } = useAppSelector(selectBudgetMonthYear);
   const [
     getUnconfirmedTransactions,
-    { isLoading: isLoadingTransactions }
+    {
+      isLoading: isLoadingTransactions,
+      isSuccess: isTransactionsSuccess
+    }
   ] = useLazyGetUnconfirmedTransactionsQuery();
 
   const unconfirmedTransactions = useAppSelector(
@@ -60,56 +64,38 @@ const Screen = () => {
   const itemsApi = useSpringRef();
   const itemTransitions = useTransition(unconfirmedTransactions, {
     from: (item, index) => ({
-      // top: getTop(index, false),
-      y: _getY(index, expanded, false),
-      transform: `scale(${_getScale(index, expanded, false)})`,
-      backgroundColor: _getBackGroundColor(
-        index,
-        expanded,
-        mode === 'dark'
-      )
+      top: _getY(index, expanded, false)
     }),
     enter: (item, index) => ({
-      y: _getY(index, expanded, true),
-      transform: `scale(${_getScale(index, expanded)})`,
-      zIndex: `${unconfirmedTransactions!.length - index}`,
-      opacity: _getOpacity(index, expanded),
-      x: 0,
-      left: 0,
-      right: 0
+      top: _getY(index, expanded, true),
+      zIndex: unconfirmedTransactions!.length - index,
+      opacity: _getOpacity(index, expanded)
     }),
     update: (item, index) => ({
-      y: _getY(index, expanded),
-      transform: `scale(${_getScale(index, expanded)})`,
-      zIndex: `${unconfirmedTransactions!.length - index}`,
-      opacity: _getOpacity(index, expanded),
-      backgroundColor: _getBackGroundColor(
-        index,
-        expanded,
-        mode === 'dark'
-      )
+      top: _getY(index, expanded, true),
+      zIndex: unconfirmedTransactions!.length - index,
+      opacity: _getOpacity(index, expanded)
     }),
-    onRest: () => {
-      // expanded
-      //   ? containerApi.start({ overflowY: 'scroll', overflowX: 'hidden' })
-      //   : containerApi.start({ overflowY: 'hidden', overflowX: 'hidden' });
-    },
-    config: {
-      tension: 180,
-      friction: loaded ? 22 : 40,
-      mass: 1
-    },
+    config: springConfig,
     immediate: !loaded && expanded,
     ref: itemsApi
   });
 
+  useEffect(() => {
+    itemsApi.start();
+  }, [expanded, isTransactionsSuccess]);
+
   return (
-    <BottomDrawerModal onClose={() => navigation.goBack()}>
+    <BottomDrawerModal
+      onExpand={() => setExpanded(true)}
+      onCollapse={() => setExpanded(false)}
+      onClose={() => navigation.goBack()}>
       <View style={styles.transactionsContainer}>
-        <Button
-          label={expanded ? 'Close' : 'Open'}
-          onPress={() => setExpanded(!expanded)}
-        />
+        {itemTransitions((style, item) => (
+          <AnimatedTransactionContainer style={[styles.transactionItem, style]}>
+            <TransactionItem item={item} />
+          </AnimatedTransactionContainer>
+        ))}
       </View>
     </BottomDrawerModal>
   )

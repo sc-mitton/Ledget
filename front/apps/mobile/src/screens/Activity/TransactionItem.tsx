@@ -12,12 +12,15 @@ const Item = ({ item }: { item: Transaction }) => {
 
   return (
     <Box
-      padding='m'
+      paddingHorizontal='l'
+      paddingVertical="m"
       borderRadius={14}
       backgroundColor='newTransaction'
       shadowColor='newTransactionShadow'
-      shadowOpacity={0.5}
-      shadowRadius={10}
+      borderColor='newTransactionBorder'
+      borderWidth={1}
+      shadowOpacity={1}
+      shadowRadius={16}
       shadowOffset={{ width: 0, height: 4 }}
     >
       <View style={styles.container}>

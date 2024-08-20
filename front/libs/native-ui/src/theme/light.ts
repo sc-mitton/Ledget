@@ -80,6 +80,7 @@ export const lightTheme = createTheme({
     bottomNavBorder: palette.gray500,
     nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 95%)`,
     tabNavBorder: palette.gray250,
+    newTransactionBorder: palette.gray250,
 
     // Shadows
     navShadow: palette.gray300,

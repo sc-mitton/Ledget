@@ -47,14 +47,14 @@ export const BottomDrawerModal = (props: Props) => {
           } else if (gs.vy < 0) {
             scrollViewHeight.value = withSpring(
               expandedHeight,
-              defaultSpringConfig,
-              () => { props.onExpand && props.onExpand() });
+              defaultSpringConfig);
+            props.onExpand && props.onExpand();
             state.current = 'expanded';
           } else {
             scrollViewHeight.value = withSpring(
               collapsedHeight,
-              defaultSpringConfig,
-              () => { props.onCollapse && props.onCollapse() });
+              defaultSpringConfig);
+            props.onCollapse && props.onCollapse();
             setTimeout(() => {
               state.current = 'collapsed';
             }, 500);
@@ -96,7 +96,9 @@ export const BottomDrawerModal = (props: Props) => {
       <View style={styles.buttonContainer} {...panResponder.panHandlers} >
         <Box style={styles.button} backgroundColor='dragBar' />
       </View>
-      <Animated.ScrollView style={[scrollViewAnimation, styles.scrollView]}>
+      <Animated.ScrollView
+        scrollIndicatorInsets={{ right: -4 }}
+        style={[scrollViewAnimation, styles.scrollView]}>
         {props.children}
       </Animated.ScrollView>
     </Modal>
