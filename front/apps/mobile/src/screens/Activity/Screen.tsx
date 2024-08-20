@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { shallowEqual } from 'react-redux';
 import { View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { animated, useTransition, useSpringRef } from '@react-spring/native';
 import dayjs from 'dayjs';
 
@@ -11,7 +10,8 @@ import { useAppSelector } from '@hooks';
 import {
   selectUnconfirmedTransactions,
   selectBudgetMonthYear,
-  useLazyGetUnconfirmedTransactionsQuery
+  useLazyGetUnconfirmedTransactionsQuery,
+  Transaction
 } from "@ledget/shared-features";
 import { BottomDrawerModal } from '@ledget/native-ui';
 import { useLoaded } from '@ledget/helpers';
@@ -20,6 +20,7 @@ import {
   _getScale,
   _getOpacity
 } from './helpers';
+import { ModalScreenProps } from '@types';
 
 const AnimatedTransactionContainer = animated(View);
 
@@ -29,10 +30,9 @@ const springConfig = {
   mass: 1
 };
 
-const Screen = () => {
+const Screen = (props: ModalScreenProps<'Activity'>) => {
   const loaded = useLoaded(1000);
-  const [expanded, setExpanded] = useState(false);
-  const navigation = useNavigation();
+  const [expanded, setExpanded] = useState(props.route.params?.expanded || false);
   const { month, year } = useAppSelector(selectBudgetMonthYear);
   const [
     getUnconfirmedTransactions,
@@ -87,9 +87,21 @@ const Screen = () => {
 
   return (
     <BottomDrawerModal
+      onDrag={(dy) => {
+        if (Math.abs(dy) > 100) return;
+        if (dy < 0) {
+          itemsApi.start((index: any, item: any) => {
+            return { top: _getY(index, false, true) + Math.pow(Math.abs(dy) * index, .8) };
+          });
+        } else {
+          itemsApi.start((index: any, item: any) => {
+            return { top: _getY(index, true, true) - Math.pow(Math.abs(dy) * index, .6) };
+          });
+        }
+      }}
       onExpand={() => setExpanded(true)}
       onCollapse={() => setExpanded(false)}
-      onClose={() => navigation.goBack()}>
+      onClose={() => props.navigation.goBack()}>
       <View style={styles.transactionsContainer}>
         {itemTransitions((style, item) => (
           <AnimatedTransactionContainer style={[styles.transactionItem, style]}>

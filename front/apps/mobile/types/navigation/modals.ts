@@ -5,7 +5,9 @@ import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import type { BottomTabNavParamList } from './root';
 
 export type ModalStackParamList = {
-  Activity: undefined;
+  Activity: {
+    expanded?: boolean;
+  };
   Logout: undefined;
   ConfirmDeletePlaidItem: {
     id: string;
