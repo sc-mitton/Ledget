@@ -1,8 +1,7 @@
 // Sizing (in ems)
-const translate = 16
 const height = 80;
 const expandedGap = 16
-const scale = .1
+const scale = .07
 const stackMax = 2
 
 const _getOpacity = (index: number, expanded: boolean) => {
@@ -41,7 +40,7 @@ const _getY = (index: number, expanded: boolean, loaded = true) => {
     if (index > stackMax) {
       return -1 * expandedGap * stackMax
     } else {
-      return -1 * (height - expandedGap) * index
+      return -1 * (height - expandedGap * 1.25) * index
     }
   }
 }

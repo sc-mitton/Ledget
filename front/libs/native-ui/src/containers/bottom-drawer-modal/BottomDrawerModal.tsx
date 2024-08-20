@@ -126,5 +126,6 @@ const styles = StyleSheet.create({
   scrollView: {
     position: 'relative',
     width: '100%',
+    minHeight: '100%'
   }
 })

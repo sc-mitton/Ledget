@@ -1,18 +1,16 @@
 
 import styles from './styles';
-import { Box, BoxProps } from "../../restyled/Box";
+import { BoxProps } from "../../restyled/Box";
 import { Spinner } from "../../animated/loading-indicators/Spinner";
+import { View } from 'react-native';
 
-export const LoadingBox = ({ loading, style, children, ...rest }: BoxProps & { loading?: boolean }) => {
+export const LoadingBox = ({ loading, children, style, ...rest }: BoxProps & { loading?: boolean }) => {
 
   return (
-    <Box {...rest} style={[styles.loadingBox, style]}>
-      {loading &&
-        <>
-          <Spinner />
-          <Box style={styles.overlay} backgroundColor='mainBackground' />
-        </>}
-      {children}
-    </Box>
+    <View {...rest} style={[style, styles.outerContainer]}>
+      {loading ?
+        <Spinner />
+        : children}
+    </View>
   );
 };

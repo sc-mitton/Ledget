@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { View, ViewStyle } from "react-native";
 import dayjs from "dayjs";
 
 import styles from './styles/item'
@@ -6,8 +6,12 @@ import { Box, InstitutionLogo, Text, DollarCents } from "@ledget/native-ui";
 import { Transaction, useGetPlaidItemsQuery } from "@ledget/shared-features";
 import { formatDateOrRelativeDate } from '@ledget/helpers';
 
+interface Props {
+  item: Transaction
+  style?: ViewStyle
+}
 
-const Item = ({ item }: { item: Transaction }) => {
+const Item = ({ item, style }: Props) => {
   const { data: plaidItemsData } = useGetPlaidItemsQuery();
 
   return (
@@ -22,6 +26,7 @@ const Item = ({ item }: { item: Transaction }) => {
       shadowOpacity={1}
       shadowRadius={16}
       shadowOffset={{ width: 0, height: 4 }}
+      style={style}
     >
       <View style={styles.container}>
         <View style={styles.leftColumn}>

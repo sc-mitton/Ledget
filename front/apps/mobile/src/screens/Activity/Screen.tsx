@@ -13,7 +13,7 @@ import {
   useLazyGetUnconfirmedTransactionsQuery,
   Transaction
 } from "@ledget/shared-features";
-import { BottomDrawerModal } from '@ledget/native-ui';
+import { BottomDrawerModal, LoadingBox } from '@ledget/native-ui';
 import { useLoaded } from '@ledget/helpers';
 import {
   _getY,
@@ -103,9 +103,9 @@ const Screen = (props: ModalScreenProps<'Activity'>) => {
       onCollapse={() => setExpanded(false)}
       onClose={() => props.navigation.goBack()}>
       <View style={styles.transactionsContainer}>
-        {itemTransitions((style, item) => (
+        {itemTransitions((style, item, _, index) => (
           <AnimatedTransactionContainer style={[styles.transactionItem, style]}>
-            <TransactionItem item={item} />
+            <TransactionItem item={item} style={{ transform: [{ scale: _getScale(index, expanded, true) }] }} />
           </AnimatedTransactionContainer>
         ))}
       </View>

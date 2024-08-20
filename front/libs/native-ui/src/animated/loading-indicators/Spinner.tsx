@@ -110,7 +110,7 @@ export const Spinner = ({ color }: { color?: string }) => {
       Platform.OS === 'ios' ? styles.iosContainer : styles.androidContainer
     ]}>
       {Platform.OS === 'ios'
-        ? <IosSpinner color={color} />
+        ? <IosSpinner color={color || theme.colors['mainText']} />
         : <ActivityIndicator color={color || theme.colors['mainText']} />}
     </Animated.View>
   )
