@@ -3,6 +3,12 @@ import { View, Pressable, StyleSheet, Keyboard } from 'react-native';
 import Animated, { useSharedValue, withSpring, useAnimatedStyle } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 import { X } from 'geist-native-icons';
+import {
+  backgroundColor,
+  BackgroundColorProps,
+  composeRestyleFunctions,
+  useRestyle
+} from '@shopify/restyle';
 
 import styles from './styles';
 import { Box } from '../../restyled/Box';
@@ -10,22 +16,30 @@ import { Icon } from '../../restyled/Icon';
 import { Button } from '../../restyled/Button';
 import { defaultSpringConfig } from '../../animated/configs/configs';
 import { useKeyboardHeight } from '../../hooks/useKeyboardHeight/keyboard-height';
+import { Theme } from '../../theme';
 
-/* eslint-disable-next-line */
-export interface ModalProps {
+type RestyleProps = BackgroundColorProps<Theme>
+
+const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([backgroundColor]);
+
+export interface ModalProps extends RestyleProps {
   children: React.ReactNode;
   position?: 'bottom' | 'top' | 'float',
   hasExitButton?: boolean
   hasOverlayExit?: boolean
 }
 
-
 export function Modal(props: ModalProps) {
   const {
     position = 'bottom',
     hasExitButton = true,
-    hasOverlayExit = true
+    hasOverlayExit = true,
+    children,
+    ...rest
   } = props;
+
+  const restyleProps = useRestyle(restyleFunctions, rest);
+
   const navigation = useNavigation();
   const keyboardHeight = useKeyboardHeight()
 
@@ -76,12 +90,8 @@ export function Modal(props: ModalProps) {
         style={StyleSheet.absoluteFillObject}
       />
       <Box
-        style={[styles[`${position}Modal`]]}
-        backgroundColor='modalBox'
-      // shadowColor='modalShadow'
-      // shadowOpacity={0.5}
-      // shadowRadius={10}
-      // shadowOffset={{ width: 0, height: -4 }}
+        style={[styles[`${position}Modal`], (restyleProps as any).style[0]]}
+        backgroundColor={'modalBox'}
       >
         {hasExitButton && <View style={styles.closeButton}>
           <Button onPress={() => navigation.goBack()} variant='circleButton' >
@@ -89,7 +99,7 @@ export function Modal(props: ModalProps) {
           </Button>
         </View>}
         <Animated.View style={[avoidKeyboardAnimation]}>
-          {props.children}
+          {children}
         </Animated.View>
       </Box>
     </>

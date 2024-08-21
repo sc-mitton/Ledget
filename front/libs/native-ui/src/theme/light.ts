@@ -7,6 +7,8 @@ const grayS = 7;
 const blueH = 230;
 const blueS = 50;
 
+const greenH = 130;
+
 const palette = {
   ...basePalette,
 
@@ -47,12 +49,12 @@ const palette = {
   blueSat: `hsl(${blueH}, ${blueS + 10}%, 50%)`,
 
   black: 'hsl(0, 0%, 0%)',
-  offBlack: `hsl(${grayH}, ${grayS}%, 25%)`,
+  offBlack: `hsl(${grayH}, ${grayS}%, 35%)`,
   offBlack2: `hsl(${grayH}, ${grayS}%, 42%)`,
   offBlack3: `hsl(${grayH}, ${grayS}%, 60%)`,
   offBlack4: `hsl(${grayH}, ${grayS}%, 70%)`,
   offBlack5: `hsl(${grayH}, ${grayS}%, 80%)`,
-  offBlack6: `hsl(${grayH}, ${grayS}%, 90%)`,
+  offBlack6: `hsl(${grayH}, ${grayS}%, 900%)`,
 }
 
 export const lightTheme = createTheme({
@@ -68,8 +70,9 @@ export const lightTheme = createTheme({
     inputBackground: palette.gray200,
     nestedContainer: palette.white,
     avatar: palette.gray500,
-    modalOverlay: palette.gray100,
+    modalOverlay: palette.gray800,
     modalBox: palette.gray150,
+    modalBox100: palette.gray100,
     newTransaction: palette.gray200,
 
     // Borders
@@ -86,7 +89,7 @@ export const lightTheme = createTheme({
 
     // Shadows
     navShadow: palette.gray300,
-    modalShadow: palette.gray2000,
+    modalShadow: 'transparent',
     tabsShadow: palette.gray300,
     activeIcon: palette.blueSat,
     activeSwitchShadow: 'hsl(144, 70%, 50%)',
@@ -123,6 +126,12 @@ export const lightTheme = createTheme({
     tabGrayPillBorder: 'transparent',
     borderedGrayButton: palette.gray250,
     dragBar: palette.gray500,
+
+    // Category and Bill Colors
+    monthBackground: `hsl(${blueH}, 80%, 87%)`,
+    monthColor: `hsl(${blueH}, 50%, 40%)`,
+    yearBackground: `hsl(${greenH}, 50%, 88%)`,
+    yearColor: `hsl(${greenH}, 50%, 40%)`,
 
     // Switch
     enabledSwitchPill: palette.gray100,

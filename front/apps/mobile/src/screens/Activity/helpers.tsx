@@ -1,6 +1,5 @@
 // Sizing (in ems)
-const HEIGHT = 80;
-const EXPANDED_GAP = 8;
+const EXPANDED_GAP = 14;
 const SCALE = .07;
 const STACK_MAX = 2;
 
@@ -29,18 +28,18 @@ const _getScale = (index: number, expanded: boolean, loaded = true,) => {
   }
 }
 
-const _getY = (index: number, expanded: boolean, loaded = true) => {
+const _getY = (index: number, expanded: boolean, loaded = true, height: number) => {
   if (!loaded) {
     return (EXPANDED_GAP * 12) * index + 13
   }
 
   if (index === 0 || expanded) {
-    return (EXPANDED_GAP + HEIGHT) * index
+    return (EXPANDED_GAP + height) * index
   } else {
     if (index > STACK_MAX) {
       return (EXPANDED_GAP) * STACK_MAX
     } else {
-      return (EXPANDED_GAP * 1.75) * index
+      return (EXPANDED_GAP) * index
     }
   }
 }
@@ -49,7 +48,6 @@ export {
   _getOpacity,
   _getScale,
   _getY,
-  HEIGHT,
   EXPANDED_GAP,
   SCALE,
   STACK_MAX

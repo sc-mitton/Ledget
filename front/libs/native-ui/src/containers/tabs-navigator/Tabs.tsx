@@ -53,7 +53,7 @@ const Tabs = ({ seperator = true }: { seperator?: boolean }) => {
                 translateX.value = withSpring(layouts.current[i].x, defaultSpringConfig)
               }}
               variant={'transparentPill'}
-              textColor={i === index ? 'whiteText' : 'secondaryText'}
+              textColor={i === index ? 'whiteText' : 'mainText'}
               label={tab}
             />
           ))}

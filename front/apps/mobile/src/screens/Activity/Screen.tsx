@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { shallowEqual } from 'react-redux';
 import { View, TouchableOpacity } from 'react-native';
 import { animated, useTransition, useSpringRef } from '@react-spring/native';
@@ -6,22 +6,22 @@ import dayjs from 'dayjs';
 
 import styles from './styles/screen';
 import TransactionItem from './TransactionItem';
-import { useAppSelector } from '@hooks';
+import { useAppDispatch, useAppSelector } from '@hooks';
 import { CheckAll } from '@ledget/media/native';
 import {
   selectUnconfirmedTransactions,
   selectBudgetMonthYear,
   useLazyGetUnconfirmedTransactionsQuery,
   selectConfirmedTransactions,
-  useConfirmTransactionsMutation
+  useConfirmTransactionsMutation,
   // These are for flushing the queue
-  // ConfirmedQueue,
-  // QueueItemWithCategory,
-  // QueueItemWithBill,
-  // removeUnconfirmedTransaction,
-  // addTransaction2Cat,
-  // addTransaction2Bill,
-  // isCategory,
+  ConfirmedQueue,
+  QueueItemWithCategory,
+  QueueItemWithBill,
+  removeUnconfirmedTransaction,
+  addTransaction2Cat,
+  addTransaction2Bill,
+  SplitCategory
 } from "@ledget/shared-features";
 import { BottomDrawerModal, Icon, Text } from '@ledget/native-ui';
 import { useLoaded } from '@ledget/helpers';
@@ -29,7 +29,6 @@ import {
   _getY,
   _getScale,
   _getOpacity,
-  HEIGHT,
   EXPANDED_GAP,
 } from './helpers';
 import { ModalScreenProps } from '@types';
@@ -43,6 +42,8 @@ const springConfig = {
 };
 
 const Screen = (props: ModalScreenProps<'Activity'>) => {
+  const itemHeight = useRef(0);
+  const dispatch = useAppDispatch();
   const loaded = useLoaded(1000);
   const [expanded, setExpanded] = useState(props.route.params?.expanded || false);
   const { month, year } = useAppSelector(selectBudgetMonthYear);
@@ -85,15 +86,15 @@ const Screen = (props: ModalScreenProps<'Activity'>) => {
   const itemsApi = useSpringRef();
   const itemTransitions = useTransition(unconfirmedTransactions, {
     from: (item, index) => ({
-      top: _getY(index, expanded, false)
+      top: _getY(index, expanded, false, itemHeight.current)
     }),
     enter: (item, index) => ({
-      top: _getY(index, expanded, true),
+      top: _getY(index, expanded, true, itemHeight.current),
       zIndex: unconfirmedTransactions!.length - index,
       opacity: _getOpacity(index, expanded)
     }),
     update: (item, index) => ({
-      top: _getY(index, expanded, true),
+      top: _getY(index, expanded, true, itemHeight.current),
       zIndex: unconfirmedTransactions!.length - index,
       opacity: _getOpacity(index, expanded)
     }),
@@ -127,21 +128,73 @@ const Screen = (props: ModalScreenProps<'Activity'>) => {
   }, []);
 
   const confirmAll = useCallback(() => {
+    itemsApi.start((index: any, item: any) => ({
+      x: 100,
+      opacity: 0,
+      delay: index * 50,
+      config: { duration: 130 }
+    }));
+
+    // Dispatch confirm for all items
+    setTimeout(() => {
+      const confirmed: ConfirmedQueue = [];
+      for (let transaction of unconfirmedTransactions) {
+
+        const ready2ConfirmItem: (QueueItemWithCategory | QueueItemWithBill) = {
+          transaction: transaction,
+          bill: transaction.predicted_bill?.id
+        };
+
+        // Update meta data for immediate ui updates
+        if (ready2ConfirmItem.bill) {
+          dispatch(
+            addTransaction2Bill({
+              billId: ready2ConfirmItem.bill,
+              amount: ready2ConfirmItem.transaction.amount
+            })
+          );
+        } else if (ready2ConfirmItem.categories) {
+          for (let category of ready2ConfirmItem.categories) {
+            dispatch(
+              addTransaction2Cat({
+                categoryId: category.id,
+                amount: ready2ConfirmItem.transaction.amount,
+                period: category.period
+              })
+            );
+          }
+        }
+        dispatch(removeUnconfirmedTransaction(transaction.transaction_id));
+        confirmed.push(ready2ConfirmItem);
+      }
+      confirmTransactions(
+        confirmed.map((item) => ({
+          transaction_id: item.transaction.transaction_id,
+          splits: item.categories
+            ? item.categories.map((cat) => ({
+              category: cat.id,
+              fraction: cat.fraction
+            }))
+            : undefined,
+          bill: item.bill
+        }))
+      );
+    }, 130 + unconfirmedTransactions.length * 50);
   }, []);
 
   const onDrag = useCallback((dy: number, expanded: boolean) => {
     if (Math.abs(dy) > 100 || (!expanded && dy > 0)) return;
     else if (dy === 0) {
       itemsApi.start((index: any, item: any) => {
-        return { top: _getY(index, expanded, true) };
+        return { top: _getY(index, expanded, true, itemHeight.current) };
       });
     } else if (dy < 0) {
       itemsApi.start((index: any, item: any) => {
-        return { top: _getY(index, false, true) + Math.pow(Math.abs(dy) * index, .8) };
+        return { top: _getY(index, false, true, itemHeight.current) + Math.pow(Math.abs(dy) * index, .8) };
       });
     } else {
       itemsApi.start((index: any, item: any) => {
-        return { top: _getY(index, true, true) - Math.pow(Math.abs(dy) * index, .6) };
+        return { top: _getY(index, true, true, itemHeight.current) - Math.pow(Math.abs(dy) * index, .6) };
       });
     }
   }, [expanded]);
@@ -157,10 +210,12 @@ const Screen = (props: ModalScreenProps<'Activity'>) => {
       renderContent={() => (
         <View style={[
           styles.transactionsContainer,
-          { height: expanded ? (HEIGHT + EXPANDED_GAP) * unconfirmedTransactions.length + 32 : HEIGHT * 2 }
+          { height: expanded ? (itemHeight.current + EXPANDED_GAP) * unconfirmedTransactions.length + 32 : itemHeight.current * 2 }
         ]}>
           {itemTransitions((style, item, _, index) => (
-            <AnimatedTransactionContainer style={[styles.transactionItem, style]}>
+            <AnimatedTransactionContainer
+              onLayout={(e) => itemHeight.current = e.nativeEvent.layout.height}
+              style={[styles.transactionItem, style]}>
               <TransactionItem
                 item={item}
                 style={{ transform: [{ scale: _getScale(index, expanded, true) }] }}

@@ -65,7 +65,7 @@ const EditPersonalInfo = (props: ModalScreenProps<'EditPersonalInfo'>) => {
               Edit your personal information
             </SubHeader2>
           </View>
-          <Seperator />
+          <Seperator backgroundColor='darkerseperator' />
           <Box marginVertical='l'>
             <View style={styles.splitInputs}>
               <View style={styles.splitInput}>

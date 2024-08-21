@@ -1,4 +1,6 @@
 
+export * from './buttons/bill-cat-label/BillCatLabel';
+
 export * from './containers/custom-scroll-view/CustomScrollView';
 
 export * from './containers/modal/Modal';
@@ -35,4 +37,3 @@ export * from './headers/BackHeader';
 export * from './theme';
 
 export * from './loaders/ShimmerBox';
-export * from './hocs/withModal/withModal';

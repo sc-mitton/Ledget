@@ -91,7 +91,7 @@ const ChangePassword = ({ closeModal }: { closeModal: () => void }) => {
           Choose a new password for your account
         </Text>
       </View>
-      <Seperator variant='l' />
+      <Seperator backgroundColor='darkerseperator' variant='l' />
       <Controller
         control={control}
         name='password'
@@ -128,7 +128,7 @@ const ChangePassword = ({ closeModal }: { closeModal: () => void }) => {
         isLoading={flowStatus.isCompletingFlow}
         isSuccess={flowStatus.isCompleteSuccess}
       />
-      <Seperator variant='s' />
+      <Seperator backgroundColor='darkerseperator' variant='s' />
       <Text variant='footer' marginHorizontal='m'>
         Once your password is updated, all other devices will be logged out.
       </Text>
@@ -187,7 +187,7 @@ const ConfirmPassword = ({ setPasswordConfirmed }: { setPasswordConfirmed: (valu
           First, confirm your current password to continue.
         </Text>
       </View>
-      <Seperator variant='l' />
+      <Seperator backgroundColor='darkerseperator' variant='l' />
       <JiggleView jiggle={flowStatus.isCompleteError}>
         <Controller
           control={control}

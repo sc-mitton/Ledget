@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import { createBox } from "@shopify/restyle";
-import { ViewProps, View, ScrollView } from "react-native";
+import { ViewProps, View } from "react-native";
 import {
   useRestyle,
   createVariant,

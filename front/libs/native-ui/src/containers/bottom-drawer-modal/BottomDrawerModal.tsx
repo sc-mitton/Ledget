@@ -98,7 +98,11 @@ export const BottomDrawerModal = (props: Props) => {
   }));
 
   return (
-    <Modal hasExitButton={false} hasOverlayExit={false}>
+    <Modal
+      hasExitButton={false}
+      hasOverlayExit={false}
+      backgroundColor='modalBox100'
+    >
       <View style={styles.buttonContainer} {...panResponder.panHandlers} >
         <Box style={styles.button} backgroundColor='dragBar' />
       </View>

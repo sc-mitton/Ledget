@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { View, ViewStyle, PanResponder, Dimensions } from "react-native";
 import dayjs from "dayjs";
 import Animated, { useSharedValue, withSpring, withTiming } from "react-native-reanimated";
@@ -12,14 +11,14 @@ import {
   Text,
   DollarCents,
   defaultSpringConfig,
-  Icon
+  Icon,
+  BillCatLabel
 } from "@ledget/native-ui";
 import { formatDateOrRelativeDate } from '@ledget/helpers';
 import { useAppDispatch } from "@/hooks";
 import {
   Transaction,
   useGetPlaidItemsQuery,
-  SplitCategory,
   confirmAndUpdateMetaData
 } from "@ledget/shared-features";
 import { useAppearance } from "@/features/appearanceSlice";
@@ -38,8 +37,6 @@ const Item = ({ item, style, contentStyle }: Props) => {
   const { data: plaidItemsData } = useGetPlaidItemsQuery();
 
   const { mode } = useAppearance();
-  const [updatedCategories, setUpdatedCategories] = useState<SplitCategory[]>([]);
-  const [updatedBill, setUpdatedBill] = useState<string | undefined>(undefined);
   const x = useSharedValue(0);
   const leftCheckX = useSharedValue(-36);
   const rightCheckX = useSharedValue(-36);
@@ -64,13 +61,7 @@ const Item = ({ item, style, contentStyle }: Props) => {
         x.value = withSpring(Dimensions.get('window').width * Math.sign(gs.dx), defaultSpringConfig);
         opacity.value = withSpring(0, defaultSpringConfig);
         setTimeout(() => {
-          dispatch(confirmAndUpdateMetaData({
-            transaction: item,
-            categories: updatedCategories
-              ? updatedCategories
-              : item?.predicted_category ? [{ ...item.predicted_category, fraction: 1 }] : undefined,
-            bill: updatedBill ? updatedBill : item.predicted_bill?.id
-          }));
+          dispatch(confirmAndUpdateMetaData(item));
         }, 100);
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       } else {
@@ -85,11 +76,16 @@ const Item = ({ item, style, contentStyle }: Props) => {
     <View {...panResponder.panHandlers}>
       <Animated.View style={[{ transform: [{ translateX: x }], opacity }, styles.container]}>
         <Animated.View style={[styles.leftCheckContainer, { left: leftCheckX }]}>
-          <Icon icon={Check} size={24} strokeWidth={2} color='tertiaryText' />
+          <Icon
+            icon={Check}
+            size={24}
+            strokeWidth={2}
+            color={mode === 'light' ? 'tertiaryText' : 'mainText'}
+          />
         </Animated.View>
         <Box
           paddingHorizontal='l'
-          paddingVertical="m"
+          paddingVertical="l"
           borderRadius={14}
           backgroundColor='newTransaction'
           shadowColor='newTransactionShadow'
@@ -107,24 +103,53 @@ const Item = ({ item, style, contentStyle }: Props) => {
                   p.accounts.find((account) => account.id === item.account)
                 )?.institution?.logo
               } />
-              <View>
-                <Text>
-                  {item.name.length > 20
-                    ? `${item.name.slice(0, 20)} ...`
+              <View style={styles.transactionInfo}>
+                <Text style={styles.transactionName}>
+                  {item.name.length > 17
+                    ? `${item.name.slice(0, 17)} ...`
                     : item.name}
                 </Text>
                 <View style={styles.bottomRow}>
-                  <DollarCents value={item.amount} color='secondaryText' />
+                  <DollarCents value={item.amount} color='secondaryText' fontSize={15} />
                   <Text color='secondaryText' fontSize={14}>
                     {formatDateOrRelativeDate(dayjs(item.datetime! || item.date).valueOf())}
                   </Text>
                 </View>
               </View>
             </View>
+            <View style={styles.rightColumn}>
+              <BillCatLabel
+                name={
+                  item.categories?.[0]?.name ||
+                  item.bill?.name ||
+                  item?.predicted_category?.name ||
+                  item.predicted_bill?.name ||
+                  'Uncategorized'
+                }
+                emoji={
+                  item.categories?.[0]?.emoji ||
+                  item.bill?.emoji ||
+                  item?.predicted_category?.emoji ||
+                  item.predicted_bill?.emoji ||
+                  null
+                }
+                period={
+                  item.categories?.[0]?.period ||
+                  item.bill?.period ||
+                  item?.predicted_category?.period ||
+                  item.predicted_bill?.period ||
+                  'month'
+                } />
+            </View>
           </View>
         </Box>
         <Animated.View style={[styles.rightCheckContainer, { right: rightCheckX }]}>
-          <Icon icon={Check} size={24} strokeWidth={2} color='tertiaryText' />
+          <Icon
+            icon={Check}
+            size={24}
+            strokeWidth={2}
+            color={mode === 'light' ? 'tertiaryText' : 'mainText'}
+          />
         </Animated.View>
       </Animated.View>
     </View>

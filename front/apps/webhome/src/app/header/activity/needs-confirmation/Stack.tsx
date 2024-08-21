@@ -39,7 +39,8 @@ import {
   addTransaction2Bill,
   selectBudgetMonthYear,
   isCategory,
-  SplitCategory
+  SplitCategory,
+  updateTransaction
 } from '@ledget/shared-features';
 import type { Transaction, Bill, Category } from '@ledget/shared-features';
 import { useFilterFormContext } from '../context';
@@ -56,21 +57,10 @@ export const NeedsConfirmationStack = () => {
   const loaded = useLoaded(1000);
   const [showMenu, setShowMenu] = useState(false);
   const [showBillCatSelect, setShowBillCatSelect] = useState(false);
-  const [billCatSelectVal, setBillCatSelectVal] = useState<
-    Category | Bill | undefined
-  >();
-  const [focusedItem, setFocusedItem] = useState<Transaction | undefined>(
-    undefined
-  );
-  const [menuPos, setMenuPos] = useState<
-    { x: number; y: number } | undefined
-  >();
-  const [billCatSelectPos, setBillCatSelectPos] = useState<
-    { x: number; y: number } | undefined
-  >();
-  const [transactionUpdates, setTransactionUpdates] = useState<{
-    [key: string]: { categories?: SplitCategory[]; bill?: Bill };
-  }>(JSON.parse(sessionStorage.getItem('transactionUpdates') || '{}'));
+  const [billCatSelectVal, setBillCatSelectVal] = useState<Category | Bill | undefined>();
+  const [focusedItem, setFocusedItem] = useState<Transaction | undefined>();
+  const [menuPos, setMenuPos] = useState<{ x: number; y: number } | undefined>();
+  const [billCatSelectPos, setBillCatSelectPos] = useState<{ x: number; y: number } | undefined>();
   const { month, year } = useAppSelector(selectBudgetMonthYear);
   const {
     setShowFilterForm,
@@ -210,30 +200,11 @@ export const NeedsConfirmationStack = () => {
   // the focused item and selected value
   useEffect(() => {
     if (focusedItem && billCatSelectVal) {
-      setTransactionUpdates((prev) => ({
-        ...prev,
-        [focusedItem.transaction_id]: isCategory(billCatSelectVal)
-          ? { categories: [{ ...billCatSelectVal, fraction: 1 }] }
-          : { bill: billCatSelectVal }
+      dispatch(updateTransaction({
+        transaction: focusedItem,
+        categories: isCategory(billCatSelectVal) ? [{ ...billCatSelectVal, fraction: 1 }] : undefined,
+        bill: isCategory(billCatSelectVal) ? undefined : billCatSelectVal
       }));
-      sessionStorage.setItem(
-        'transactionUpdates',
-        JSON.stringify({
-          ...transactionUpdates,
-          [focusedItem.transaction_id]: isCategory(billCatSelectVal)
-            ? {
-              categories: [
-                {
-                  id: billCatSelectVal.id,
-                  name: billCatSelectVal.name,
-                  period: billCatSelectVal.period,
-                  fraction: 1
-                }
-              ]
-            }
-            : { bill: billCatSelectVal }
-        })
-      );
       setFocusedItem(undefined);
       setBillCatSelectVal(undefined);
     }
@@ -246,37 +217,12 @@ export const NeedsConfirmationStack = () => {
   const handleItemConfirm = useCallback((transaction: Transaction) => {
     itemsApi.start((index: any, item: any) => {
       if (item._item.transaction_id === transaction.transaction_id) {
-        const updatedCategories =
-          transactionUpdates[transaction.transaction_id]?.categories;
-        const updatedBillId =
-          transactionUpdates[transaction.transaction_id]?.bill?.id;
-        const predictedCategories = [
-          { ...transaction.predicted_category, fraction: 1 }
-        ];
-        const predictedBillId = transaction.predicted_bill?.id;
-
         return {
           x: 100,
           opacity: 0,
           config: { duration: 130 },
           onStart: () => {
-            dispatch(
-              confirmAndUpdateMetaData({
-                transaction: transaction,
-                categories:
-                  updatedCategories && !updatedBillId
-                    ? updatedCategories
-                    : !updatedBillId
-                      ? (predictedCategories as SplitCategory[])
-                      : undefined,
-                bill:
-                  updatedBillId && !updatedCategories
-                    ? updatedBillId
-                    : !updatedCategories
-                      ? predictedBillId
-                      : undefined
-              })
-            );
+            dispatch(confirmAndUpdateMetaData(transaction));
           }
         };
       }
@@ -299,29 +245,12 @@ export const NeedsConfirmationStack = () => {
       setTimeout(() => {
         const confirmed: ConfirmedQueue = [];
         for (let transaction of unconfirmedTransactions) {
-          const updatedCategories =
-            transactionUpdates[transaction.transaction_id]?.categories;
-          const updatedBillId =
-            transactionUpdates[transaction.transaction_id]?.bill?.id;
-          const predictedCategories = [
-            { ...transaction.predicted_category, fraction: 1 }
-          ];
-          const predictedBillId = transaction.predicted_bill?.id;
+          const ready2ConfirmItem: (QueueItemWithCategory | QueueItemWithBill) = {
+            transaction: transaction,
+            bill: transaction.predicted_bill?.id
+          };
 
-          let ready2ConfirmItem: QueueItemWithCategory | QueueItemWithBill;
-          if ((updatedCategories && !updatedBillId) || predictedCategories) {
-            ready2ConfirmItem = {
-              transaction: transaction,
-              categories:
-                updatedCategories || (predictedCategories as SplitCategory[])
-            };
-          } else {
-            ready2ConfirmItem = {
-              transaction: transaction,
-              bill: updatedBillId || predictedBillId
-            };
-          }
-
+          // Update meta data for immediate ui updates
           if (ready2ConfirmItem.bill) {
             dispatch(
               addTransaction2Bill({
@@ -444,11 +373,6 @@ export const NeedsConfirmationStack = () => {
                         <NewItem
                           item={item}
                           style={style}
-                          updatedBillCat={
-                            transactionUpdates[item.transaction_id]
-                              ?.categories ||
-                            transactionUpdates[item.transaction_id]?.bill
-                          }
                           onBillCat={(e, item) => handleBillCatClick(e, item)}
                           onEllipsis={(e, item) => handleEllipsis(e, item)}
                           handleConfirm={handleItemConfirm}

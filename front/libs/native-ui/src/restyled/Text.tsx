@@ -3,7 +3,9 @@ import { createText } from "@shopify/restyle";
 import { formatCurrency } from '@ledget/helpers';
 import {
   ColorProps,
+  TextProps as RestyledTextProps,
   color,
+  typography,
   composeRestyleFunctions,
   useRestyle
 } from '@shopify/restyle';
@@ -11,9 +13,9 @@ import {
 import { Box } from './Box';
 import { Theme } from "../theme";
 
-type RestyledColorProps = ColorProps<Theme>;
+type RestyledColorProps = ColorProps<Theme> & RestyledTextProps<Theme>;
 
-const restyledFunctions = composeRestyleFunctions<Theme, RestyledColorProps>([color]);
+const restyledFunctions = composeRestyleFunctions<Theme, RestyledColorProps>([color, typography]);
 
 
 export const Text = createText();
@@ -81,17 +83,17 @@ export const DollarCents = ({
   const props = useRestyle(restyledFunctions, rest);
 
   return (
-    <Box flexDirection="row" alignItems="flex-end">
-      <Text {...props} >
-        {`${isDebit ? '+' : ''}${str.split('.')[0]}`}
-      </Text>
-      <View style={{ marginBottom: -1 }}>
+    <Box flexDirection="row">
+      <Text>
+        <Text {...props} >
+          {`${isDebit ? '+' : ''}${str.split('.')[0]}`}
+        </Text>
         {withCents && (
-          <Text fontSize={12} {...props} >
+          <Text fontSize={((props as any).style[0]?.fontSize || 16) * .75}>
             {`.${str.split('.')[1]}`}
           </Text>
         )}
-      </View>
+      </Text>
     </Box>
   );
 }

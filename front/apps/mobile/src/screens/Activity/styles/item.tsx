@@ -11,7 +11,12 @@ export default StyleSheet.create({
   leftColumn: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12
+    gap: 12,
+    flexShrink: 1
+  },
+  rightColumn: {
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   bottomRow: {
     flexDirection: 'row',
@@ -27,4 +32,13 @@ export default StyleSheet.create({
     top: '50%',
     transform: [{ translateY: -10 }]
   },
+  transactionInfo: {
+    flexShrink: 1,
+    flexWrap: 'wrap',
+  },
+  transactionName: {
+    flexWrap: 'wrap',
+    flexShrink: 1,
+    fontSize: 14
+  }
 });

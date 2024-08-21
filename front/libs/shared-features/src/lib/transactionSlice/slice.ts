@@ -19,6 +19,7 @@ import {
   RootStateWithTransactions
 } from './types';
 import { SplitCategory } from '../categorySlice/types';
+import { Bill } from '../billSlice/types';
 import {
   addTransaction2Cat,
   addTransaction2Bill
@@ -249,31 +250,24 @@ export const confirmStack = createSlice({
   reducers: {
     confirmTransaction: (
       state,
-      action: PayloadAction<{
-        transaction: Transaction;
-        categories?: SplitCategory[];
-        bill?: string;
-      }>
+      action: PayloadAction<Transaction['transaction_id']>
     ) => {
-      // const index = state.unconfirmed.findIndex(item => item.transaction_id === action.payload)
-      const index = state.unconfirmed.findIndex(
-        (item) =>
-          item.transaction_id === action.payload.transaction.transaction_id
-      );
+      const index = state.unconfirmed.findIndex((item) => item.transaction_id === action.payload);
 
       if (index > -1) {
-        if (action.payload.categories) {
-          state.confirmedQue.push({
-            transaction: state.unconfirmed[index],
-            categories: action.payload.categories
-          });
-        } else if (action.payload.bill) {
-          state.confirmedQue.push({
-            transaction: state.unconfirmed[index],
-            bill: action.payload.bill
-          });
-        }
+        state.confirmedQue.push({ transaction: state.unconfirmed[index] });
         state.unconfirmed.splice(index, 1);
+      }
+    },
+    updateTransaction: (state, action: PayloadAction<{ transaction: Transaction, categories?: SplitCategory[], bill?: Bill }>) => {
+      if (action.payload.categories) {
+        state.unconfirmed.find(
+          (item) => item.transaction_id === action.payload.transaction.transaction_id
+        )!.categories = action.payload.categories;
+      } else if (action.payload.bill) {
+        state.unconfirmed.find(
+          (item) => item.transaction_id === action.payload.transaction.transaction_id
+        )!.bill = action.payload.bill;
       }
     },
     removeUnconfirmedTransaction: (state, action: PayloadAction<string>) => {
@@ -350,23 +344,15 @@ export const filteredFetchedConfirmedTransactions = createSlice({
 export const confirmAndUpdateMetaData = createAsyncThunk(
   'confirmStack/confirmAndDispatch',
   async (
-    {
-      transaction,
-      categories,
-      bill
-    }: {
-      transaction: Transaction;
-      categories?: SplitCategory[] | undefined;
-      bill?: string;
-    },
+    transaction: Transaction,
     { dispatch }
   ) => {
     dispatch(
-      confirmStack.actions.confirmTransaction({ transaction, categories, bill })
+      confirmStack.actions.confirmTransaction(transaction.transaction_id)
     );
 
-    if (categories && categories.length > 0) {
-      for (const { id, fraction, period } of categories) {
+    if (transaction.categories && transaction.categories.length > 0) {
+      for (const { id, fraction, period } of transaction.categories) {
         dispatch(
           addTransaction2Cat({
             categoryId: id,
@@ -375,21 +361,20 @@ export const confirmAndUpdateMetaData = createAsyncThunk(
           })
         );
       }
-    } else if (bill) {
+    } else if (transaction.bill) {
       dispatch(
-        addTransaction2Bill({ billId: bill, amount: transaction.amount })
+        addTransaction2Bill({
+          billId: transaction.bill.id,
+          amount: transaction.amount
+        })
       );
     }
   }
 );
 
 // Actions and hooks
-export const { confirmTransaction, removeUnconfirmedTransaction } =
-  confirmStack.actions;
-export const {
-  setConfirmedTransactionFilter,
-  clearConfirmedTransactionFilter
-} = filteredFetchedConfirmedTransactions.actions;
+export const { removeUnconfirmedTransaction, updateTransaction } = confirmStack.actions;
+export const { setConfirmedTransactionFilter, clearConfirmedTransactionFilter } = filteredFetchedConfirmedTransactions.actions;
 
 export const {
   useTransactionsSyncMutation,
@@ -404,8 +389,7 @@ export const {
   useGetTransactionsCountQuery
 } = transactionSlice;
 
-export const useGetTransactionQueryState =
-  transactionSlice.endpoints.getTransactions.useQueryState;
+export const useGetTransactionQueryState = transactionSlice.endpoints.getTransactions.useQueryState;
 
 // Selectors
 const selectUnconfirmed = (state: RootStateWithTransactions) =>

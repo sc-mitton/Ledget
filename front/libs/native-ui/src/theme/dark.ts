@@ -8,6 +8,8 @@ const grayS = 5;
 const blueH = 226;
 const blueS = 50;
 
+const greenH = 170;
+
 const palette = {
   ...basePalette,
 
@@ -70,6 +72,7 @@ export const darkTheme = createTheme({
     avatar: palette.gray800,
     modalOverlay: palette.gray900,
     modalBox: palette.gray850,
+    modalBox100: palette.gray850,
     newTransaction: palette.gray750,
 
     // Borders
@@ -123,6 +126,12 @@ export const darkTheme = createTheme({
     grayButtonBorder: palette.gray750,
     borderedGrayButton: palette.gray850,
     dragBar: palette.gray600,
+
+    // Category and Bill Colors
+    monthBackground: `hsl(${blueH}, 55%, 30%)`,
+    monthColor1: `hsl(${blueH}, 45%, 100%)`,
+    yearBackground: `hsl(${greenH}, 40%, 27%)`,
+    yearColor1: `hsl(${greenH}, 30%, 100%)`,
 
     // Switch
     enabledSwitchPill: `hsl(${grayH}, ${grayS}%, 70%)`,
