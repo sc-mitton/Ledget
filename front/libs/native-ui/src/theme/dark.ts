@@ -70,7 +70,7 @@ export const darkTheme = createTheme({
     avatar: palette.gray800,
     modalOverlay: palette.gray900,
     modalBox: palette.gray850,
-    newTransaction: palette.gray800,
+    newTransaction: palette.gray750,
 
     // Borders
     inputBorder: palette.gray750,
@@ -82,12 +82,13 @@ export const darkTheme = createTheme({
     bottomNavBorder: palette.gray750,
     nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 10%)`,
     tabNavBorder: palette.gray800,
-    newTransactionBorder: palette.gray750,
+    newTransactionBorder: palette.gray700,
 
     // Shadows
     navShadow: palette.gray1000,
+    modalShadow: palette.gray1000,
     tabsShadow: palette.gray1000,
-    activeSwitchShadow: 'hsl(144, 80%, 12%)',
+    activeSwitchShadow: 'hsl(144, 80%, 22%)',
     disabledSwitchShadow: palette.gray700,
     logoShadow: palette.gray900,
     newTransactionShadow: palette.gray850,
@@ -124,8 +125,8 @@ export const darkTheme = createTheme({
     dragBar: palette.gray600,
 
     // Switch
-    enabledSwitchPill: `hsl(${grayH}, ${grayS}%, 55%)`,
-    enabledSwitchCrib: 'hsl(144, 85%, 13%)',
+    enabledSwitchPill: `hsl(${grayH}, ${grayS}%, 70%)`,
+    enabledSwitchCrib: 'hsl(144, 85%, 23%)',
     disabledSwitchPill: palette.gray200,
     disabledSwitchCrib: palette.gray600,
 

@@ -71,7 +71,7 @@ export const useModalStyleInterpolator = (args?: { slideOut?: boolean }) => {
     return ({
       cardStyle: {
         opacity: progress,
-        shadowColor: theme.colors.navShadow,
+        shadowColor: theme.colors.modalShadow,
         shadowOpacity: 0.5,
         shadowRadius: 10,
         shadowOffset: { width: 0, height: -4 },

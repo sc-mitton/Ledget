@@ -78,10 +78,10 @@ export function Modal(props: ModalProps) {
       <Box
         style={[styles[`${position}Modal`]]}
         backgroundColor='modalBox'
-        shadowColor='navShadow'
-        shadowOpacity={0.5}
-        shadowRadius={10}
-        shadowOffset={{ width: 0, height: -4 }}
+      // shadowColor='modalShadow'
+      // shadowOpacity={0.5}
+      // shadowRadius={10}
+      // shadowOffset={{ width: 0, height: -4 }}
       >
         {hasExitButton && <View style={styles.closeButton}>
           <Button onPress={() => navigation.goBack()} variant='circleButton' >

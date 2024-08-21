@@ -23,6 +23,7 @@ const palette = {
   gray250: `hsl(${grayH}, ${grayS}%, 90%)`,
   gray275: `hsl(${grayH}, ${grayS}%, 89%)`,
   gray300: `hsl(${grayH}, ${grayS}%, 87%)`,
+  gray350: `hsl(${grayH}, ${grayS}%, 85%)`,
   gray400: `hsl(${grayH}, ${grayS}%, 82%)`,
   gray500: `hsl(${grayH}, ${grayS}%, 77%)`,
   gray600: `hsl(${grayH}, ${grayS}%, 72%)`,
@@ -30,6 +31,7 @@ const palette = {
   gray800: `hsl(${grayH}, ${grayS}%, 62%)`,
   gray900: `hsl(${grayH}, ${grayS}%, 57%)`,
   gray1000: `hsl(${grayH}, ${grayS}%, 52%)`,
+  gray2000: `hsl(${grayH}, ${grayS}%, 17%)`,
 
   blue900: `hsl(${blueH}, ${blueS}%, 10%)`,
   blue800: `hsl(${blueH}, ${blueS}%, 20%)`,
@@ -66,8 +68,8 @@ export const lightTheme = createTheme({
     inputBackground: palette.gray200,
     nestedContainer: palette.white,
     avatar: palette.gray500,
-    modalOverlay: palette.gray400,
-    modalBox: palette.gray100,
+    modalOverlay: palette.gray100,
+    modalBox: palette.gray150,
     newTransaction: palette.gray200,
 
     // Borders
@@ -80,16 +82,17 @@ export const lightTheme = createTheme({
     bottomNavBorder: palette.gray500,
     nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 95%)`,
     tabNavBorder: palette.gray250,
-    newTransactionBorder: palette.gray250,
+    newTransactionBorder: palette.gray275,
 
     // Shadows
     navShadow: palette.gray300,
+    modalShadow: palette.gray2000,
     tabsShadow: palette.gray300,
     activeIcon: palette.blueSat,
     activeSwitchShadow: 'hsl(144, 70%, 50%)',
     disabledSwitchShadow: palette.gray500,
     logoShadow: palette.gray500,
-    newTransactionShadow: palette.gray300,
+    newTransactionShadow: palette.gray100,
 
     // Text
     mainText: palette.offBlack,
@@ -101,7 +104,7 @@ export const lightTheme = createTheme({
     highContrastText: palette.black,
     invertedText: palette.gray100,
     activeText: palette.blueSat,
-    blueText: palette.blue500,
+    blueText: palette.blue400,
     greenText: palette.greenText,
     placeholderText: palette.offBlack2,
     buttonLabel: palette.offBlack,

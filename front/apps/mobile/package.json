@@ -81,7 +81,10 @@
     "expo-clipboard": "*",
     "expo-local-authentication": "*",
     "expo-web-browser": "*",
-    "expo-linking": "*"
+    "expo-linking": "*",
+    "type-fest": "*",
+    "@react-spring/native": "*",
+    "expo-haptics": "*"
   },
   "devDependencies": {}
 }

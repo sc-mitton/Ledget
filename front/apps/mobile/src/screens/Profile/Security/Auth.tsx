@@ -30,12 +30,16 @@ const MultiFactor = (props: ProfileScreenProps<'Main'>) => {
           </ChevronTouchable>
           :
           <ChevronTouchable onPress={() => props.navigation.navigate('Modals', { screen: 'AuthenticatorAppSetup' })}>
-            <Icon icon={Qr} size={24} />
+            <View style={styles.qrIcon}>
+              <Icon icon={Qr} size={24} />
+            </View>
             <Text>Authenticator App</Text>
           </ChevronTouchable>}
         <Seperator variant='m' />
         <ChevronTouchable onPress={() => props.navigation.navigate('Modals', { screen: 'ChangePassword' })}>
-          <Icon icon={Lock} />
+          <View style={styles.lockIcon}>
+            <Icon icon={Lock} />
+          </View>
           <Text>Change Password</Text>
         </ChevronTouchable>
       </Box>

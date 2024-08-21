@@ -53,7 +53,7 @@ const Tabs = ({ seperator = true }: { seperator?: boolean }) => {
                 translateX.value = withSpring(layouts.current[i].x, defaultSpringConfig)
               }}
               variant={'transparentPill'}
-              textColor={i === index ? 'whiteText' : 'mainText'}
+              textColor={i === index ? 'whiteText' : 'secondaryText'}
               label={tab}
             />
           ))}
@@ -97,14 +97,11 @@ const Tabs = ({ seperator = true }: { seperator?: boolean }) => {
       </Box>
       <Box
         style={styles.shadow}
-        shadowColor='tabsShadow'
         backgroundColor='mainBackground'
-        shadowOffset={{ width: 0, height: -5 }}
-        shadowRadius={20}
-        shadowOpacity={.95}
       />
     </View>
   )
 }
 
 export default Tabs;
+

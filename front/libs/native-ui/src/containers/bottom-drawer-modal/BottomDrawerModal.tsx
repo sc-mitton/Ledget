@@ -6,19 +6,25 @@ import Animated, { useSharedValue, withSpring, useAnimatedStyle } from 'react-na
 import { Box } from '../../restyled/Box'
 import { defaultSpringConfig } from '../../animated/configs/configs'
 import { Modal } from '../modal/Modal'
+import { CustomScrollView } from '../custom-scroll-view/CustomScrollView'
 
 interface Props {
   collapsedHeight?: number
   expandedHeight?: number
   children?: React.ReactNode
-  onDrag?: (dy: number) => void
+  onDrag?: (dy: number, expanded: boolean) => void
   onExpand?: () => void
   onCollapse?: () => void
   onClose?: () => void
+  renderContent: () => React.ReactNode
+  showsVerticalScrollIndicator?: boolean
+  scrollEnabled?: boolean
 }
 
 const ESCAPE_VELOCITY = 1.5
 const DRAG_THRESHOLD = 100
+
+const AnimatedCustomScrollView = Animated.createAnimatedComponent(CustomScrollView)
 
 export const BottomDrawerModal = (props: Props) => {
   const {
@@ -36,7 +42,7 @@ export const BottomDrawerModal = (props: Props) => {
       onMoveShouldSetPanResponder: () => true,
       onPanResponderMove: (e, gs) => {
 
-        props.onDrag && props.onDrag(gs.dy);
+        props.onDrag && props.onDrag(gs.dy, state.current === 'expanded');
         if (state.current === 'closed') return;
 
         if ((Math.abs(gs.dy) > DRAG_THRESHOLD) || (Math.abs(gs.vy) > ESCAPE_VELOCITY)) {
@@ -72,7 +78,7 @@ export const BottomDrawerModal = (props: Props) => {
           scrollViewHeight.value = state.current === 'expanded'
             ? withSpring(expandedHeight, defaultSpringConfig)
             : withSpring(collapsedHeight, defaultSpringConfig)
-          props.onDrag && props.onDrag(0);
+          props.onDrag && props.onDrag(0, state.current === 'expanded');
         }
       },
       onPanResponderTerminationRequest: (e, gs) => {
@@ -80,7 +86,7 @@ export const BottomDrawerModal = (props: Props) => {
           scrollViewHeight.value = state.current === 'expanded'
             ? withSpring(expandedHeight, defaultSpringConfig)
             : withSpring(collapsedHeight, defaultSpringConfig)
-          props.onDrag && props.onDrag(0);
+          props.onDrag && props.onDrag(0, state.current === 'expanded');
         }
         return true
       },
@@ -96,11 +102,13 @@ export const BottomDrawerModal = (props: Props) => {
       <View style={styles.buttonContainer} {...panResponder.panHandlers} >
         <Box style={styles.button} backgroundColor='dragBar' />
       </View>
-      <Animated.ScrollView
+      <AnimatedCustomScrollView
+        scrollEnabled={props.scrollEnabled}
         scrollIndicatorInsets={{ right: -4 }}
+        showsVerticalScrollIndicator={props.showsVerticalScrollIndicator}
         style={[scrollViewAnimation, styles.scrollView]}>
-        {props.children}
-      </Animated.ScrollView>
+        {props.renderContent()}
+      </AnimatedCustomScrollView>
     </Modal>
   )
 }

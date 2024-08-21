@@ -7,6 +7,21 @@ export default StyleSheet.create({
   },
   transactionItem: {
     width: '100%',
-    paddingHorizontal: 8
+    paddingHorizontal: 8,
+    position: 'absolute',
+  },
+  checkAllButtonContainer: {
+    position: 'absolute',
+    bottom: 16,
+    left: '50%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  checkAllButton: {
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 8
   }
 });

@@ -1,4 +1,6 @@
 
+export * from './containers/custom-scroll-view/CustomScrollView';
+
 export * from './containers/modal/Modal';
 export * from './containers/slide-view/slide-view';
 export * from './containers/baked-boxes';
