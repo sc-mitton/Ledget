@@ -20,8 +20,7 @@ import {
   QueueItemWithBill,
   removeUnconfirmedTransaction,
   addTransaction2Cat,
-  addTransaction2Bill,
-  SplitCategory
+  addTransaction2Bill
 } from "@ledget/shared-features";
 import { BottomDrawerModal, Icon, Text, CustomScrollView } from '@ledget/native-ui';
 import { useLoaded } from '@ledget/helpers';
@@ -109,6 +108,7 @@ const Screen = (props: ModalScreenProps<'Activity'>) => {
   }, [expanded, isTransactionsSuccess, unconfirmedTransactions]);
 
   useEffect(() => {
+    if (!expanded) return;
     if (focused) {
       itemsApi.start((index: number, item: any) => {
         return {
@@ -242,7 +242,6 @@ const Screen = (props: ModalScreenProps<'Activity'>) => {
               style={[styles.transactionItem, style]}>
               <TransactionItem
                 setFocused={setFocused}
-                expandable={expanded}
                 item={item}
                 style={{ transform: [{ scale: _getScale(index, expanded, true) }] }}
                 contentStyle={{ opacity: expanded || index == 0 ? 1 : .2 }}

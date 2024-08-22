@@ -17,6 +17,7 @@
     "@nivo/line": "^0.83.1",
     "@ory/client": "^1.9.0",
     "@ory/integrations": "^1.2.1",
+    "@react-native-menu/menu": "^1.1.2",
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
@@ -63,6 +64,8 @@
     "react-native": "0.74.1",
     "react-native-dotenv": "^3.4.11",
     "react-native-gesture-handler": "^2.18.1",
+    "react-native-ios-context-menu": "^2.5.1",
+    "react-native-ios-utilities": "^4.5.0",
     "react-native-mmkv": "^2.12.2",
     "react-native-outside-press": "^1.2.2",
     "react-native-pager-view": "6.1.4",
@@ -85,6 +88,7 @@
     "styled-components": "^6.1.11",
     "tslib": "^2.3.0",
     "type-fest": "^4.24.0",
+    "zeego": "^1.10.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {

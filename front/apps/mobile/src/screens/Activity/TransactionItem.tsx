@@ -36,7 +36,6 @@ interface Props {
   item: Transaction
   style?: ViewStyle
   contentStyle?: ViewStyle
-  expandable?: boolean
   focused?: boolean
   setFocused?: React.Dispatch<React.SetStateAction<string | undefined>>
 }
@@ -49,8 +48,6 @@ const Item = (props: Props) => {
     item,
     style,
     contentStyle,
-    expandable,
-    focused: propsFocused,
     setFocused: propsSetFocused
   } = props;
 
@@ -60,7 +57,7 @@ const Item = (props: Props) => {
   const [focused, setFocused] = useState(false);
 
   const { mode } = useAppearance();
-  const opacity = useSharedValue(1);
+  const checkOpacity = useSharedValue(0);
   const scale = useSharedValue(1);
   const x = useSharedValue(0);
   const y = useSharedValue(0);
@@ -76,45 +73,45 @@ const Item = (props: Props) => {
     onShouldBlockNativeResponder: () => false,
     onPanResponderMove: (event, gs) => {
       x.value = gs.dx;
+      checkOpacity.value = 1;
       if (gs.dx > 0) {
-        leftCheckX.value = Math.pow(gs.dx, 0.75) * -1.5;
+        leftCheckX.value = gs.dx * -1.5;
       } else {
         rightCheckX.value = Math.pow(Math.abs(gs.dx), 0.75) * -1.5;
       }
     },
     onPanResponderTerminate: (evt, gs) => {
+      checkOpacity.value = withTiming(0, { duration: 200 });
       if (Math.abs(gs.dx) > SWIPE_THRESHOLD || Math.abs(gs.vx) > SWIPE_VELOCITY_THRESHOLD) {
         x.value = withSpring(Dimensions.get('window').width * Math.sign(gs.dx), defaultSpringConfig);
-        opacity.value = withSpring(0, defaultSpringConfig);
         setTimeout(() => {
           dispatch(confirmAndUpdateMetaData(item));
         }, 100);
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       } else {
-        x.value = withTiming(0, defaultSpringConfig);
-        leftCheckX.value = withTiming(0, defaultSpringConfig);
-        rightCheckX.value = withTiming(0, defaultSpringConfig);
+        x.value = withTiming(0, { duration: 200 });
+        leftCheckX.value = withTiming(0, { duration: 200 });
+        rightCheckX.value = withTiming(0, { duration: 200 });
       }
     },
     onPanResponderRelease: (evt, gs) => {
+      checkOpacity.value = withTiming(0, { duration: 200 });
       if (Math.abs(gs.dx) > SWIPE_THRESHOLD || Math.abs(gs.vx) > SWIPE_VELOCITY_THRESHOLD) {
         x.value = withSpring(Dimensions.get('window').width * Math.sign(gs.dx), defaultSpringConfig);
-        opacity.value = withSpring(0, defaultSpringConfig);
         setTimeout(() => {
           dispatch(confirmAndUpdateMetaData(item));
         }, 100);
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       } else {
-        x.value = withTiming(0, defaultSpringConfig);
-        leftCheckX.value = withTiming(24, defaultSpringConfig);
-        rightCheckX.value = withTiming(24, defaultSpringConfig);
+        x.value = withTiming(0, { duration: 200 });
+        leftCheckX.value = withTiming(24, { duration: 200 });
+        rightCheckX.value = withTiming(24, { duration: 200 });
       }
     }
   });
 
   const buttonAnimation = useAnimatedStyle(() => {
     return {
-      opacity: opacity.value,
       transform: [{ translateX: x.value }, { translateY: y.value }, { scale: scale.value }],
     }
   });
@@ -124,7 +121,7 @@ const Item = (props: Props) => {
       propsSetFocused && propsSetFocused(item.transaction_id);
       paddingVertical.value = withTiming(16, { duration: 200 });
       y.value = withTiming(-2, { duration: 200 });
-      scale.value = withTiming(1.05, { duration: 200 });
+      scale.value = withTiming(1.04, { duration: 200 });
     } else {
       propsSetFocused && propsSetFocused(undefined);
       paddingVertical.value = withTiming(0, { duration: 200 });
@@ -137,7 +134,7 @@ const Item = (props: Props) => {
     <OutsidePressHandler onOutsidePress={() => setFocused(false)}>
       <View {...panResponder.panHandlers}>
         <Animated.View style={[buttonAnimation, styles.container]}>
-          <Animated.View style={[styles.leftCheckContainer, { left: leftCheckX }]}>
+          <Animated.View style={[styles.leftCheckContainer, { left: leftCheckX, opacity: checkOpacity }]}>
             <Icon
               icon={Check}
               size={24}
@@ -159,9 +156,7 @@ const Item = (props: Props) => {
             <TouchableHighlight
               underlayColor={theme.colors.newTransactionBorder}
               activeOpacity={.98}
-              disabled={!expandable}
               onLongPress={() => {
-                if (!expandable) return;
                 setFocused(true);
                 Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
               }}
@@ -217,7 +212,7 @@ const Item = (props: Props) => {
               </Animated.View>
             </TouchableHighlight>
           </Box>
-          <Animated.View style={[styles.rightCheckContainer, { right: rightCheckX }]}>
+          <Animated.View style={[styles.rightCheckContainer, { right: rightCheckX, opacity: checkOpacity }]}>
             <Icon
               icon={Check}
               size={24}

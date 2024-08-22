@@ -84,7 +84,10 @@
     "expo-linking": "*",
     "type-fest": "*",
     "@react-spring/native": "*",
-    "expo-haptics": "*"
+    "expo-haptics": "*",
+    "react-native-ios-context-menu": "*",
+    "react-native-ios-utilities": "*",
+    "@react-native-menu/menu": "*"
   },
   "devDependencies": {}
 }
