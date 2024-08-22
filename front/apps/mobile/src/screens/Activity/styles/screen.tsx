@@ -23,5 +23,10 @@ export default StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     gap: 8
+  },
+  scrollView: {
+    position: 'relative',
+    width: '100%',
+    minHeight: '100%'
   }
 });

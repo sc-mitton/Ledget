@@ -23,7 +23,7 @@ import {
   addTransaction2Bill,
   SplitCategory
 } from "@ledget/shared-features";
-import { BottomDrawerModal, Icon, Text } from '@ledget/native-ui';
+import { BottomDrawerModal, Icon, Text, CustomScrollView } from '@ledget/native-ui';
 import { useLoaded } from '@ledget/helpers';
 import {
   _getY,
@@ -45,6 +45,7 @@ const Screen = (props: ModalScreenProps<'Activity'>) => {
   const itemHeight = useRef(0);
   const dispatch = useAppDispatch();
   const loaded = useLoaded(1000);
+  const [focused, setFocused] = useState<string>();
   const [expanded, setExpanded] = useState(props.route.params?.expanded || false);
   const { month, year } = useAppSelector(selectBudgetMonthYear);
   const [
@@ -107,23 +108,43 @@ const Screen = (props: ModalScreenProps<'Activity'>) => {
     itemsApi.start();
   }, [expanded, isTransactionsSuccess, unconfirmedTransactions]);
 
+  useEffect(() => {
+    if (focused) {
+      itemsApi.start((index: number, item: any) => {
+        return {
+          zIndex: focused === item._item.transaction_id
+            ? 100
+            : unconfirmedTransactions!.length - index,
+          opacity: focused === item._item.transaction_id ? 1 : .45
+        };
+      });
+    } else {
+      itemsApi.start((index: number) => {
+        return {
+          zIndex: unconfirmedTransactions!.length - index,
+          opacity: 1
+        };
+      });
+    }
+  }, [focused]);
+
   const onClose = useCallback(() => {
     props.navigation.goBack();
     // Flush the queue
 
     if (confirmedTransactions.length > 0) {
-      // confirmTransactions(
-      //   confirmedTransactions.map((item) => ({
-      //     transaction_id: item.transaction.transaction_id,
-      //     splits: item.categories
-      //       ? item.categories.map((cat) => ({
-      //         category: cat.id,
-      //         fraction: cat.fraction
-      //       }))
-      //       : undefined,
-      //     bill: item.bill
-      //   }))
-      // );
+      confirmTransactions(
+        confirmedTransactions.map((item) => ({
+          transaction_id: item.transaction.transaction_id,
+          splits: item.categories
+            ? item.categories.map((cat) => ({
+              category: cat.id,
+              fraction: cat.fraction
+            }))
+            : undefined,
+          bill: item.bill
+        }))
+      );
     }
   }, []);
 
@@ -201,13 +222,16 @@ const Screen = (props: ModalScreenProps<'Activity'>) => {
 
   return (
     <BottomDrawerModal
-      showsVerticalScrollIndicator={expanded}
       onDrag={onDrag}
       onExpand={() => setExpanded(true)}
       onCollapse={() => setExpanded(false)}
-      scrollEnabled={expanded}
       onClose={onClose}
-      renderContent={() => (
+    >
+      <CustomScrollView
+        scrollEnabled={expanded}
+        scrollIndicatorInsets={{ right: -4 }}
+        showsVerticalScrollIndicator={expanded}
+        style={[styles.scrollView]}>
         <View style={[
           styles.transactionsContainer,
           { height: expanded ? (itemHeight.current + EXPANDED_GAP) * unconfirmedTransactions.length + 32 : itemHeight.current * 2 }
@@ -217,6 +241,8 @@ const Screen = (props: ModalScreenProps<'Activity'>) => {
               onLayout={(e) => itemHeight.current = e.nativeEvent.layout.height}
               style={[styles.transactionItem, style]}>
               <TransactionItem
+                setFocused={setFocused}
+                expandable={expanded}
                 item={item}
                 style={{ transform: [{ scale: _getScale(index, expanded, true) }] }}
                 contentStyle={{ opacity: expanded || index == 0 ? 1 : .2 }}
@@ -234,8 +260,8 @@ const Screen = (props: ModalScreenProps<'Activity'>) => {
               </TouchableOpacity>
             </View>}
         </View>
-      )}
-    />
+      </CustomScrollView>
+    </BottomDrawerModal>
   )
 }
 

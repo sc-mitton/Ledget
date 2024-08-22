@@ -1,30 +1,24 @@
 import { useRef } from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import { PanResponder } from 'react-native';
-import Animated, { useSharedValue, withSpring, useAnimatedStyle } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 import { Box } from '../../restyled/Box'
 import { defaultSpringConfig } from '../../animated/configs/configs'
 import { Modal } from '../modal/Modal'
-import { CustomScrollView } from '../custom-scroll-view/CustomScrollView'
 
 interface Props {
   collapsedHeight?: number
   expandedHeight?: number
-  children?: React.ReactNode
   onDrag?: (dy: number, expanded: boolean) => void
   onExpand?: () => void
   onCollapse?: () => void
   onClose?: () => void
-  renderContent: () => React.ReactNode
-  showsVerticalScrollIndicator?: boolean
-  scrollEnabled?: boolean
+  children?: React.ReactNode
 }
 
 const ESCAPE_VELOCITY = 1.5
 const DRAG_THRESHOLD = 100
-
-const AnimatedCustomScrollView = Animated.createAnimatedComponent(CustomScrollView)
 
 export const BottomDrawerModal = (props: Props) => {
   const {
@@ -35,13 +29,15 @@ export const BottomDrawerModal = (props: Props) => {
   const state = useRef<'collapsed' | 'expanded' | 'closed'>('collapsed')
   const scrollViewHeight = useSharedValue(collapsedHeight)
 
-  const panResponder = useRef(
+  const scrollViewAnimation = useAnimatedStyle(() => ({
+    height: scrollViewHeight.value
+  }));
 
+  const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponder: () => true,
       onPanResponderMove: (e, gs) => {
-
         props.onDrag && props.onDrag(gs.dy, state.current === 'expanded');
         if (state.current === 'closed') return;
 
@@ -93,10 +89,6 @@ export const BottomDrawerModal = (props: Props) => {
     })
   ).current
 
-  const scrollViewAnimation = useAnimatedStyle(() => ({
-    height: scrollViewHeight.value
-  }));
-
   return (
     <Modal
       hasExitButton={false}
@@ -106,13 +98,9 @@ export const BottomDrawerModal = (props: Props) => {
       <View style={styles.buttonContainer} {...panResponder.panHandlers} >
         <Box style={styles.button} backgroundColor='dragBar' />
       </View>
-      <AnimatedCustomScrollView
-        scrollEnabled={props.scrollEnabled}
-        scrollIndicatorInsets={{ right: -4 }}
-        showsVerticalScrollIndicator={props.showsVerticalScrollIndicator}
-        style={[scrollViewAnimation, styles.scrollView]}>
-        {props.renderContent()}
-      </AnimatedCustomScrollView>
+      <Animated.View style={[scrollViewAnimation]}>
+        {props.children}
+      </Animated.View>
     </Modal>
   )
 }
@@ -134,10 +122,5 @@ const styles = StyleSheet.create({
     marginVertical: -12,
     paddingBottom: 18,
     position: 'relative',
-  },
-  scrollView: {
-    position: 'relative',
-    width: '100%',
-    minHeight: '100%'
   }
 })

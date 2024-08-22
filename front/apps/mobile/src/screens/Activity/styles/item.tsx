@@ -16,6 +16,14 @@ export default StyleSheet.create({
   },
   rightColumn: {
     flexDirection: 'row',
+    position: 'absolute',
+    right: 0,
+    top: '50%',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  billCatLabelContainer: {
+    position: 'absolute',
     alignItems: 'center'
   },
   bottomRow: {
@@ -25,12 +33,14 @@ export default StyleSheet.create({
   leftCheckContainer: {
     position: 'absolute',
     top: '50%',
-    transform: [{ translateY: -10 }]
+    transform: [{ translateY: -10 }],
+    zIndex: -1
   },
   rightCheckContainer: {
     position: 'absolute',
     top: '50%',
-    transform: [{ translateY: -10 }]
+    transform: [{ translateY: -10 }],
+    zIndex: -1
   },
   transactionInfo: {
     flexShrink: 1,
@@ -40,5 +50,9 @@ export default StyleSheet.create({
     flexWrap: 'wrap',
     flexShrink: 1,
     fontSize: 14
+  },
+  touchable: {
+    borderRadius: 14,
+    padding: 16,
   }
 });

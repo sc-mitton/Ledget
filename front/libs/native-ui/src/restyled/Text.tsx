@@ -81,6 +81,7 @@ export const DollarCents = ({
   );
   const isDebit = Number(value) < 0;
   const props = useRestyle(restyledFunctions, rest);
+  const { fontSize, ...restStyle } = (props as any).style[0] || {};
 
   return (
     <Box flexDirection="row">
@@ -89,7 +90,7 @@ export const DollarCents = ({
           {`${isDebit ? '+' : ''}${str.split('.')[0]}`}
         </Text>
         {withCents && (
-          <Text fontSize={((props as any).style[0]?.fontSize || 16) * .75}>
+          <Text style={{ ...restStyle }} fontSize={((props as any).style[0]?.fontSize || 16) * .75}>
             {`.${str.split('.')[1]}`}
           </Text>
         )}
