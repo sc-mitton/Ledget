@@ -14,6 +14,19 @@ export type BottomTabNavParamList = {
 export type RootStackParamList = {
   BottomTabs: NavigatorScreenParams<BottomTabNavParamList>;
   Modals: NavigatorScreenParams<ModalStackParamList>;
+  TransactionDetails: {
+    transaction: string;
+  };
+  SplitTransaction: {
+    transaction: string;
+  };
+  NewBill: {
+    transaction: string;
+    period: 'monthly' | 'yearly';
+  };
+  NewCategory: {
+    period: 'monthly' | 'yearly';
+  }
 }
 
 export type RootAuthenticationStackParamList = {
