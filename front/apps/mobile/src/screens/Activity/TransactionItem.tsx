@@ -9,8 +9,8 @@ import {
 import { Check } from "geist-native-icons";
 import dayjs from "dayjs";
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from "react-native-reanimated";
+import OutsidePressHandler from 'react-native-outside-press';
 import * as Haptics from 'expo-haptics';
-import OutsidePressHandler from "react-native-outside-press";
 
 import styles from './styles/item'
 import {
@@ -31,12 +31,13 @@ import {
 } from "@ledget/shared-features";
 import { useAppearance } from "@/features/appearanceSlice";
 import { useTheme } from "@shopify/restyle";
+import { ModalScreenProps } from "@types";
+// import TransactionMenu from "./TransactionMenu";
 
-interface Props {
+interface Props extends ModalScreenProps<'Activity'> {
   item: Transaction
   style?: ViewStyle
   contentStyle?: ViewStyle
-  focused?: boolean
   setFocused?: React.Dispatch<React.SetStateAction<string | undefined>>
 }
 
@@ -48,7 +49,8 @@ const Item = (props: Props) => {
     item,
     style,
     contentStyle,
-    setFocused: propsSetFocused
+    setFocused: setFocusedProp,
+    ...rest
   } = props;
 
   const dispatch = useAppDispatch();
@@ -118,12 +120,12 @@ const Item = (props: Props) => {
 
   useEffect(() => {
     if (focused) {
-      propsSetFocused && propsSetFocused(item.transaction_id);
+      setFocusedProp && setFocusedProp(item.transaction_id);
       paddingVertical.value = withTiming(16, { duration: 200 });
       y.value = withTiming(-2, { duration: 200 });
       scale.value = withTiming(1.04, { duration: 200 });
     } else {
-      propsSetFocused && propsSetFocused(undefined);
+      setFocusedProp && setFocusedProp(undefined);
       paddingVertical.value = withTiming(0, { duration: 200 });
       y.value = withTiming(0, { duration: 200 });
       scale.value = withTiming(1, { duration: 200 });
@@ -131,6 +133,7 @@ const Item = (props: Props) => {
   }, [focused]);
 
   return (
+    // <TransactionMenu {...props} transaction={item.transaction_id}>
     <OutsidePressHandler onOutsidePress={() => setFocused(false)}>
       <View {...panResponder.panHandlers}>
         <Animated.View style={[buttonAnimation, styles.container]}>
@@ -223,6 +226,7 @@ const Item = (props: Props) => {
         </Animated.View>
       </View>
     </OutsidePressHandler>
+    // </TransactionMenu>
   )
 }
 

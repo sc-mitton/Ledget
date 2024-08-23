@@ -44,7 +44,7 @@ const Screen = (props: ModalScreenProps<'Activity'>) => {
   const itemHeight = useRef(0);
   const dispatch = useAppDispatch();
   const loaded = useLoaded(1000);
-  const [focused, setFocused] = useState<string>();
+  const [focusedItem, setFocusedItem] = useState<string | undefined>(undefined);
   const [expanded, setExpanded] = useState(props.route.params?.expanded || false);
   const { month, year } = useAppSelector(selectBudgetMonthYear);
   const [
@@ -108,25 +108,15 @@ const Screen = (props: ModalScreenProps<'Activity'>) => {
   }, [expanded, isTransactionsSuccess, unconfirmedTransactions]);
 
   useEffect(() => {
-    if (!expanded) return;
-    if (focused) {
-      itemsApi.start((index: number, item: any) => {
-        return {
-          zIndex: focused === item._item.transaction_id
-            ? 100
-            : unconfirmedTransactions!.length - index,
-          opacity: focused === item._item.transaction_id ? 1 : .45
-        };
-      });
+    if (focusedItem) {
+      console.log('focusedItem', focusedItem);
+      itemsApi.start((index: any, item: any) => ({
+        opacity: item._item.transaction_id === focusedItem ? 1 : .45
+      }))
     } else {
-      itemsApi.start((index: number) => {
-        return {
-          zIndex: unconfirmedTransactions!.length - index,
-          opacity: 1
-        };
-      });
+      itemsApi.start((index: any, item: any) => ({ opacity: 1 }))
     }
-  }, [focused]);
+  }, [focusedItem]);
 
   const onClose = useCallback(() => {
     props.navigation.goBack();
@@ -241,10 +231,11 @@ const Screen = (props: ModalScreenProps<'Activity'>) => {
               onLayout={(e) => itemHeight.current = e.nativeEvent.layout.height}
               style={[styles.transactionItem, style]}>
               <TransactionItem
-                setFocused={setFocused}
                 item={item}
+                setFocused={setFocusedItem}
                 style={{ transform: [{ scale: _getScale(index, expanded, true) }] }}
                 contentStyle={{ opacity: expanded || index == 0 ? 1 : .2 }}
+                {...props}
               />
             </AnimatedTransactionContainer>
           ))}

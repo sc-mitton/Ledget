@@ -2,16 +2,17 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { EventProvider } from 'react-native-outside-press';
 import { PersistGate } from "redux-persist/integration/react";
+// import { HoldMenuProvider } from 'react-native-hold-menu';
 
 import { ThemeProvider as RestyleThemeProvider } from '@ledget/native-ui';
 import { useAppearance } from '@features/appearanceSlice';
 import store, { persistor } from '@features/store';
 
-const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
+const ThemeProvider = ({ children }: { children: ({ mode }: { mode: 'light' | 'dark' }) => React.ReactNode }) => {
   const { mode } = useAppearance();
   return (
     <RestyleThemeProvider mode={mode}>
-      {children}
+      {children({ mode })}
     </RestyleThemeProvider>
   )
 }
@@ -21,9 +22,15 @@ export const withProviders = (App: React.FC) => () => (
     <PersistGate persistor={persistor}>
       <EventProvider>
         <ThemeProvider>
-          <GestureHandlerRootView>
-            <App />
-          </GestureHandlerRootView>
+          {({ mode }) => (
+            <GestureHandlerRootView>
+              {/* <HoldMenuProvider
+                safeAreaInsets={{ top: 0, bottom: 0, left: 0, right: 0 }}
+                theme={mode}> */}
+              <App />
+              {/* </HoldMenuProvider> */}
+            </GestureHandlerRootView>
+          )}
         </ThemeProvider>
       </EventProvider>
     </PersistGate>
