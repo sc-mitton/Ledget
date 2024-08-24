@@ -1,12 +1,11 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-  container: {
-    position: 'relative',
-  },
   content: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16
   },
   leftColumn: {
     flexDirection: 'row',
@@ -17,8 +16,8 @@ export default StyleSheet.create({
   rightColumn: {
     flexDirection: 'row',
     position: 'absolute',
-    right: 0,
-    top: '50%',
+    right: 16,
+    top: '75%',
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
@@ -51,8 +50,7 @@ export default StyleSheet.create({
     flexShrink: 1,
     fontSize: 14
   },
-  touchable: {
-    borderRadius: 14,
-    padding: 16,
+  newTransaction: {
+    borderRadius: 16
   }
 });

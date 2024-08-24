@@ -4,12 +4,10 @@ import {
   ViewStyle,
   PanResponder,
   Dimensions,
-  TouchableHighlight
 } from "react-native";
 import { Check } from "geist-native-icons";
 import dayjs from "dayjs";
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from "react-native-reanimated";
-import OutsidePressHandler from 'react-native-outside-press';
 import * as Haptics from 'expo-haptics';
 
 import styles from './styles/item'
@@ -29,10 +27,9 @@ import {
   useGetPlaidItemsQuery,
   confirmAndUpdateMetaData
 } from "@ledget/shared-features";
-import { useAppearance } from "@/features/appearanceSlice";
-import { useTheme } from "@shopify/restyle";
+import { useAppearance } from "@features/appearanceSlice";
 import { ModalScreenProps } from "@types";
-// import TransactionMenu from "./TransactionMenu";
+import TransactionMenu from "./TransactionMenu";
 
 interface Props extends ModalScreenProps<'Activity'> {
   item: Transaction
@@ -49,12 +46,10 @@ const Item = (props: Props) => {
     item,
     style,
     contentStyle,
-    setFocused: setFocusedProp,
-    ...rest
+    setFocused: setFocusedProp
   } = props;
 
   const dispatch = useAppDispatch();
-  const theme = useTheme();
   const { data: plaidItemsData } = useGetPlaidItemsQuery();
   const [focused, setFocused] = useState(false);
 
@@ -62,7 +57,6 @@ const Item = (props: Props) => {
   const checkOpacity = useSharedValue(0);
   const scale = useSharedValue(1);
   const x = useSharedValue(0);
-  const y = useSharedValue(0);
   const paddingVertical = useSharedValue(0);
   const leftCheckX = useSharedValue(24);
   const rightCheckX = useSharedValue(24);
@@ -77,7 +71,7 @@ const Item = (props: Props) => {
       x.value = gs.dx;
       checkOpacity.value = 1;
       if (gs.dx > 0) {
-        leftCheckX.value = gs.dx * -1.5;
+        leftCheckX.value = gs.dx * -.625;
       } else {
         rightCheckX.value = Math.pow(Math.abs(gs.dx), 0.75) * -1.5;
       }
@@ -114,7 +108,7 @@ const Item = (props: Props) => {
 
   const buttonAnimation = useAnimatedStyle(() => {
     return {
-      transform: [{ translateX: x.value }, { translateY: y.value }, { scale: scale.value }],
+      transform: [{ translateX: x.value }, { scale: scale.value }],
     }
   });
 
@@ -122,31 +116,33 @@ const Item = (props: Props) => {
     if (focused) {
       setFocusedProp && setFocusedProp(item.transaction_id);
       paddingVertical.value = withTiming(16, { duration: 200 });
-      y.value = withTiming(-2, { duration: 200 });
-      scale.value = withTiming(1.04, { duration: 200 });
+      scale.value = withSpring(1.04, defaultSpringConfig);
     } else {
       setFocusedProp && setFocusedProp(undefined);
       paddingVertical.value = withTiming(0, { duration: 200 });
-      y.value = withTiming(0, { duration: 200 });
-      scale.value = withTiming(1, { duration: 200 });
+      scale.value = withSpring(1, defaultSpringConfig);
     }
   }, [focused]);
 
   return (
-    // <TransactionMenu {...props} transaction={item.transaction_id}>
-    <OutsidePressHandler onOutsidePress={() => setFocused(false)}>
-      <View {...panResponder.panHandlers}>
-        <Animated.View style={[buttonAnimation, styles.container]}>
+    <View {...panResponder.panHandlers}>
+      <TransactionMenu
+        {...props}
+        onShowChange={(show) => setFocused(show)}
+        transaction={item.transaction_id}
+        touchableStyle={styles.newTransaction}
+        disabled={focused}
+      >
+        <Animated.View style={buttonAnimation}>
           <Animated.View style={[styles.leftCheckContainer, { left: leftCheckX, opacity: checkOpacity }]}>
             <Icon
               icon={Check}
               size={24}
               strokeWidth={2}
-              color={mode === 'light' ? 'tertiaryText' : 'mainText'}
+              color={'mainText'}
             />
           </Animated.View>
           <Box
-            borderRadius={14}
             backgroundColor='newTransaction'
             shadowColor='newTransactionShadow'
             borderColor='newTransactionBorder'
@@ -154,79 +150,67 @@ const Item = (props: Props) => {
             shadowOpacity={mode === 'dark' ? 1 : 0.5}
             shadowRadius={32}
             shadowOffset={{ width: 0, height: 4 }}
-            style={style}
+            style={[styles.newTransaction, style]}
           >
-            <TouchableHighlight
-              underlayColor={theme.colors.newTransactionBorder}
-              activeOpacity={.98}
-              onLongPress={() => {
-                setFocused(true);
-                Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
-              }}
-              style={styles.touchable}>
-              <Animated.View style={[styles.content, contentStyle]}>
-                <View style={styles.leftColumn}>
-                  <InstitutionLogo data={
-                    plaidItemsData?.find((p) =>
-                      p.accounts.find((account) => account.id === item.account)
-                    )?.institution?.logo
-                  } />
-                  <View style={styles.transactionInfo}>
-                    <Text style={styles.transactionName}>
-                      {focused
-                        ? item.name.length > 32 ? `${item.name.slice(0, 32)} ...` : item.name
-                        : item.name.length > 17 ? `${item.name.slice(0, 17)} ...` : item.name
-                      }
+            <View style={[styles.content, contentStyle]}>
+              <View style={styles.leftColumn}>
+                <InstitutionLogo data={
+                  plaidItemsData?.find((p) =>
+                    p.accounts.find((account) => account.id === item.account))?.institution?.logo
+                } />
+                <View style={styles.transactionInfo}>
+                  <Text style={styles.transactionName}>
+                    {focused
+                      ? item.name.length > 32 ? `${item.name.slice(0, 32)} ...` : item.name
+                      : item.name.length > 17 ? `${item.name.slice(0, 17)} ...` : item.name}
+                  </Text>
+                  <View style={styles.bottomRow}>
+                    <DollarCents value={item.amount} color='secondaryText' fontSize={15} />
+                    <Text color='secondaryText' fontSize={14}>
+                      {formatDateOrRelativeDate(dayjs(item.datetime! || item.date).valueOf())}
                     </Text>
-                    <View style={styles.bottomRow}>
-                      <DollarCents value={item.amount} color='secondaryText' fontSize={15} />
-                      <Text color='secondaryText' fontSize={14}>
-                        {formatDateOrRelativeDate(dayjs(item.datetime! || item.date).valueOf())}
-                      </Text>
-                    </View>
                   </View>
                 </View>
-                <View style={styles.rightColumn}>
-                  <View style={[styles.billCatLabelContainer, { opacity: focused ? .2 : 1 }]}>
-                    <BillCatLabel
-                      name={
-                        item.categories?.[0]?.name ||
-                        item.bill?.name ||
-                        item?.predicted_category?.name ||
-                        item.predicted_bill?.name ||
-                        'Uncategorized'
-                      }
-                      emoji={
-                        item.categories?.[0]?.emoji ||
-                        item.bill?.emoji ||
-                        item?.predicted_category?.emoji ||
-                        item.predicted_bill?.emoji ||
-                        null
-                      }
-                      period={
-                        item.categories?.[0]?.period ||
-                        item.bill?.period ||
-                        item?.predicted_category?.period ||
-                        item.predicted_bill?.period ||
-                        'month'
-                      } />
-                  </View>
+              </View>
+              <View style={styles.rightColumn}>
+                <View style={[styles.billCatLabelContainer, { opacity: focused ? .2 : 1 }]}>
+                  <BillCatLabel
+                    name={
+                      item.categories?.[0]?.name ||
+                      item.bill?.name ||
+                      item?.predicted_category?.name ||
+                      item.predicted_bill?.name ||
+                      'Uncategorized'
+                    }
+                    emoji={
+                      item.categories?.[0]?.emoji ||
+                      item.bill?.emoji ||
+                      item?.predicted_category?.emoji ||
+                      item.predicted_bill?.emoji ||
+                      null
+                    }
+                    period={
+                      item.categories?.[0]?.period ||
+                      item.bill?.period ||
+                      item?.predicted_category?.period ||
+                      item.predicted_bill?.period ||
+                      'month'
+                    } />
                 </View>
-              </Animated.View>
-            </TouchableHighlight>
+              </View>
+            </View>
           </Box>
           <Animated.View style={[styles.rightCheckContainer, { right: rightCheckX, opacity: checkOpacity }]}>
             <Icon
               icon={Check}
               size={24}
               strokeWidth={2}
-              color={mode === 'light' ? 'tertiaryText' : 'mainText'}
+              color={'mainText'}
             />
           </Animated.View>
         </Animated.View>
-      </View>
-    </OutsidePressHandler>
-    // </TransactionMenu>
+      </TransactionMenu>
+    </View>
   )
 }
 

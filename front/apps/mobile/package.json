@@ -86,7 +86,8 @@
     "@react-spring/native": "*",
     "expo-haptics": "*",
     "react-native-ios-context-menu": "*",
-    "react-native-ios-utilities": "*"
+    "react-native-ios-utilities": "*",
+    "@react-native-menu/menu": "*"
   },
   "devDependencies": {}
 }

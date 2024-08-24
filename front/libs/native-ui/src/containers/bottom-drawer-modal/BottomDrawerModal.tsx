@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, createContext, useContext } from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import { PanResponder } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
@@ -7,9 +7,7 @@ import { Box } from '../../restyled/Box'
 import { defaultSpringConfig } from '../../animated/configs/configs'
 import { Modal } from '../modal/Modal'
 
-interface Props {
-  collapsedHeight?: number
-  expandedHeight?: number
+interface ContentProps {
   onDrag?: (dy: number, expanded: boolean) => void
   onExpand?: () => void
   onCollapse?: () => void
@@ -17,14 +15,49 @@ interface Props {
   children?: React.ReactNode
 }
 
+interface ContextProps {
+  collapsedHeight: number
+  expandedHeight: number
+}
+
+interface BottomDrawerModalProps extends Partial<ContextProps> {
+  children: React.ReactNode
+}
+
+const BottomDrawerModalContext = createContext<ContextProps | undefined>(undefined)
+
+const useBottomDrawerModal = () => {
+  const context = useContext(BottomDrawerModalContext)
+  if (!context) {
+    throw new Error('useBottomDrawerModal must be used within a BottomDrawerModalProvider')
+  }
+  return context
+}
+
 const ESCAPE_VELOCITY = 1.5
 const DRAG_THRESHOLD = 100
 
-export const BottomDrawerModal = (props: Props) => {
+const BottomDrawerModal = (props: BottomDrawerModalProps) => {
   const {
+    children,
     collapsedHeight = 200,
     expandedHeight = Dimensions.get('window').height - 225,
   } = props
+
+  return (
+    <BottomDrawerModalContext.Provider value={{ collapsedHeight, expandedHeight }}>
+      <Modal
+        hasOverlayExit={false}
+        hasExitButton={false}
+      >
+        {children}
+      </Modal>
+    </BottomDrawerModalContext.Provider>
+  )
+}
+
+const Content = (props: ContentProps) => {
+  const { collapsedHeight, expandedHeight } = useBottomDrawerModal()
 
   const state = useRef<'collapsed' | 'expanded' | 'closed'>('collapsed')
   const scrollViewHeight = useSharedValue(collapsedHeight)
@@ -90,20 +123,20 @@ export const BottomDrawerModal = (props: Props) => {
   ).current
 
   return (
-    <Modal
-      hasExitButton={false}
-      hasOverlayExit={false}
-      backgroundColor='modalBox100'
-    >
+    <>
       <View style={styles.buttonContainer} {...panResponder.panHandlers} >
         <Box style={styles.button} backgroundColor='dragBar' />
       </View>
       <Animated.View style={[scrollViewAnimation]}>
         {props.children}
       </Animated.View>
-    </Modal>
+    </>
   )
 }
+
+BottomDrawerModal.Content = Content
+
+export { BottomDrawerModal }
 
 const styles = StyleSheet.create({
   button: {

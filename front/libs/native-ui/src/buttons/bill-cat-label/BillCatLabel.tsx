@@ -22,12 +22,14 @@ export function BillCatLabel(props: BillCatLabelProps) {
       <Box
         style={styles.billCatLabel}
         backgroundColor={period === 'year' ? 'yearBackground' : 'monthBackground'}>
+        <Text fontSize={14}>
+          {emoji}
+        </Text>
         <Text
           color={period === 'year' ? 'yearColor' : 'monthColor'}
           fontSize={14}>
-          {emoji}
+          {`${name.charAt(0).toUpperCase()}${name.slice(1)}`}
         </Text>
-        <Text fontSize={14}>{`${name.charAt(0).toUpperCase()}${name.slice(1)}`}</Text>
       </Box>
     </TouchableOpacity>
   );

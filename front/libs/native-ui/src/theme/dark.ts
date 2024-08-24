@@ -74,6 +74,7 @@ export const darkTheme = createTheme({
     modalBox: palette.gray850,
     modalBox100: palette.gray850,
     newTransaction: palette.gray750,
+    contextMenu: palette.gray700,
 
     // Borders
     inputBorder: palette.gray750,
@@ -86,6 +87,7 @@ export const darkTheme = createTheme({
     nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 10%)`,
     tabNavBorder: palette.gray800,
     newTransactionBorder: palette.gray700,
+    contextMenuBorder: palette.gray650,
 
     // Shadows
     navShadow: palette.gray1000,
@@ -95,6 +97,7 @@ export const darkTheme = createTheme({
     disabledSwitchShadow: palette.gray700,
     logoShadow: palette.gray900,
     newTransactionShadow: palette.gray850,
+    menuShadowColor: palette.gray900,
 
     // Icons
     activeIcon: palette.blueSat,
@@ -129,9 +132,9 @@ export const darkTheme = createTheme({
 
     // Category and Bill Colors
     monthBackground: `hsl(${blueH}, 55%, 30%)`,
-    monthColor1: `hsl(${blueH}, 45%, 100%)`,
+    monthColor: `hsl(${blueH}, 45%, 95%)`,
     yearBackground: `hsl(${greenH}, 40%, 27%)`,
-    yearColor1: `hsl(${greenH}, 30%, 100%)`,
+    yearColor: `hsl(${greenH}, 30%, 95%)`,
 
     // Switch
     enabledSwitchPill: `hsl(${grayH}, ${grayS}%, 70%)`,
@@ -142,6 +145,7 @@ export const darkTheme = createTheme({
     // Seperators
     darkerseperator: palette.gray750,
     lightseperator: palette.gray800,
+    menuSeperator: palette.gray650,
     blueseperator: palette.blue400,
 
     // Misc

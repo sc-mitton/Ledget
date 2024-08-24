@@ -27,6 +27,7 @@ export default StyleSheet.create({
   scrollView: {
     position: 'relative',
     width: '100%',
-    minHeight: '100%'
+    minHeight: '100%',
+    marginBottom: -32
   }
 });

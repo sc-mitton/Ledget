@@ -49,7 +49,7 @@ const palette = {
   blueSat: `hsl(${blueH}, ${blueS + 10}%, 50%)`,
 
   black: 'hsl(0, 0%, 0%)',
-  offBlack: `hsl(${grayH}, ${grayS}%, 35%)`,
+  offBlack: `hsl(${grayH}, ${grayS}%, 25%)`,
   offBlack2: `hsl(${grayH}, ${grayS}%, 42%)`,
   offBlack3: `hsl(${grayH}, ${grayS}%, 60%)`,
   offBlack4: `hsl(${grayH}, ${grayS}%, 70%)`,
@@ -74,6 +74,7 @@ export const lightTheme = createTheme({
     modalBox: palette.gray150,
     modalBox100: palette.gray100,
     newTransaction: palette.gray200,
+    contextMenu: palette.gray100,
 
     // Borders
     inputBorder: palette.gray250,
@@ -86,6 +87,7 @@ export const lightTheme = createTheme({
     nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 95%)`,
     tabNavBorder: palette.gray250,
     newTransactionBorder: palette.gray275,
+    contextMenuBorder: palette.gray200,
 
     // Shadows
     navShadow: palette.gray300,
@@ -96,6 +98,7 @@ export const lightTheme = createTheme({
     disabledSwitchShadow: palette.gray500,
     logoShadow: palette.gray500,
     newTransactionShadow: palette.gray100,
+    menuShadowColor: palette.gray400,
 
     // Text
     mainText: palette.offBlack,
@@ -142,6 +145,7 @@ export const lightTheme = createTheme({
     // Seperators
     lightseperator: palette.gray150,
     darkerseperator: palette.gray200,
+    menuSeperator: palette.gray200,
     blueseperator: palette.blue100,
 
     // Misc

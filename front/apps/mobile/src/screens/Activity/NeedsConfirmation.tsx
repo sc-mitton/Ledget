@@ -14,6 +14,7 @@ import {
   useLazyGetUnconfirmedTransactionsQuery,
   selectConfirmedTransactions,
   useConfirmTransactionsMutation,
+  // These are for flushing the queue
   ConfirmedQueue,
   QueueItemWithCategory,
   QueueItemWithBill,
@@ -21,7 +22,7 @@ import {
   addTransaction2Cat,
   addTransaction2Bill
 } from "@ledget/shared-features";
-import { Icon, Text, CustomScrollView } from '@ledget/native-ui';
+import { BottomDrawerModal, Icon, Text, CustomScrollView } from '@ledget/native-ui';
 import { useLoaded } from '@ledget/helpers';
 import {
   _getY,
@@ -38,11 +39,12 @@ const springConfig = {
   friction: 22,
   mass: 1
 };
+
 const NeedsConfirmation = (props: ModalScreenProps<'Activity'>) => {
   const itemHeight = useRef(0);
   const dispatch = useAppDispatch();
   const loaded = useLoaded(1000);
-  const [focused, setFocused] = useState<string>();
+  const [focusedItem, setFocusedItem] = useState<string | undefined>(undefined);
   const [expanded, setExpanded] = useState(props.route.params?.expanded || false);
   const { month, year } = useAppSelector(selectBudgetMonthYear);
   const [
@@ -106,24 +108,15 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'>) => {
   }, [expanded, isTransactionsSuccess, unconfirmedTransactions]);
 
   useEffect(() => {
-    if (focused) {
-      itemsApi.start((index: number, item: any) => {
-        return {
-          zIndex: focused === item._item.transaction_id
-            ? 100
-            : unconfirmedTransactions!.length - index,
-          opacity: focused === item._item.transaction_id ? 1 : .45
-        };
-      });
+    if (!expanded) return;
+    if (focusedItem) {
+      itemsApi.start((index: any, item: any) => ({
+        opacity: item._item.transaction_id === focusedItem ? 1 : .4
+      }))
     } else {
-      itemsApi.start((index: number) => {
-        return {
-          zIndex: unconfirmedTransactions!.length - index,
-          opacity: 1
-        };
-      });
+      itemsApi.start((index: any, item: any) => ({ opacity: 1 }))
     }
-  }, [focused]);
+  }, [focusedItem]);
 
   const onClose = useCallback(() => {
     props.navigation.goBack();
@@ -218,40 +211,51 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'>) => {
   }, [expanded]);
 
   return (
-    <CustomScrollView
-      scrollEnabled={expanded}
-      scrollIndicatorInsets={{ right: -4 }}
-      showsVerticalScrollIndicator={expanded}
-      style={[styles.scrollView]}>
-      <View style={[
-        styles.transactionsContainer,
-        { height: expanded ? (itemHeight.current + EXPANDED_GAP) * unconfirmedTransactions.length + 32 : itemHeight.current * 2 }
-      ]}>
-        {itemTransitions((style, item, _, index) => (
-          <AnimatedTransactionContainer
-            onLayout={(e) => itemHeight.current = e.nativeEvent.layout.height}
-            style={[styles.transactionItem, style]}>
-            <TransactionItem
-              setFocused={setFocused}
-              expandable={expanded}
-              item={item}
-              style={{ transform: [{ scale: _getScale(index, expanded, true) }] }}
-              contentStyle={{ opacity: expanded || index == 0 ? 1 : .2 }}
-            />
-          </AnimatedTransactionContainer>
-        ))}
-        {expanded &&
-          <View style={styles.checkAllButtonContainer}>
-            <TouchableOpacity
-              style={styles.checkAllButton}
-              activeOpacity={0.7}
-              onPress={confirmAll}>
-              <Text color='tertiaryText'>Confirm All</Text>
-              <Icon color='tertiaryText' icon={CheckAll} size={24} />
-            </TouchableOpacity>
-          </View>}
-      </View>
-    </CustomScrollView>
+    <BottomDrawerModal.Content
+      onDrag={onDrag}
+      onExpand={() => setExpanded(true)}
+      onCollapse={() => setExpanded(false)}
+      onClose={onClose}
+    >
+      <CustomScrollView
+        scrollEnabled={expanded}
+        scrollIndicatorInsets={{ right: -4 }}
+        showsVerticalScrollIndicator={expanded}
+        style={[styles.scrollView]}>
+        <View style={[
+          styles.transactionsContainer,
+          {
+            height: expanded
+              ? (itemHeight.current + EXPANDED_GAP) * unconfirmedTransactions.length + 32
+              : itemHeight.current * 2
+          }
+        ]}>
+          {itemTransitions((style, item, _, index) => (
+            <AnimatedTransactionContainer
+              onLayout={(e) => itemHeight.current = e.nativeEvent.layout.height}
+              style={[styles.transactionItem, style]}>
+              <TransactionItem
+                item={item}
+                setFocused={setFocusedItem}
+                style={{ transform: [{ scale: _getScale(index, expanded, true) }] }}
+                contentStyle={{ opacity: expanded || index == 0 ? 1 : .2 }}
+                {...props}
+              />
+            </AnimatedTransactionContainer>
+          ))}
+          {expanded &&
+            <View style={styles.checkAllButtonContainer}>
+              <TouchableOpacity
+                style={styles.checkAllButton}
+                activeOpacity={0.7}
+                onPress={confirmAll}>
+                <Text color='tertiaryText'>Confirm All</Text>
+                <Icon color='tertiaryText' icon={CheckAll} size={24} />
+              </TouchableOpacity>
+            </View>}
+        </View>
+      </CustomScrollView>
+    </BottomDrawerModal.Content>
   )
 }
 
