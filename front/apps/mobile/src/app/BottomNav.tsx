@@ -110,7 +110,7 @@ export default function Nav({ state, descriptors, navigation }: Props) {
             />
           ))}
           <View style={styles.activityButtonContainer}>
-            {true && <Box style={styles.indicator} backgroundColor='blueText' />}
+            {(data?.count || 0) > 0 && <Box style={styles.indicator} backgroundColor='blueText' />}
             <Button
               route={{ key: 'Activity', name: 'Modals', params: { screen: 'Activity' } }}
               state={state}

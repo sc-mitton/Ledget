@@ -40,8 +40,8 @@ const DRAG_THRESHOLD = 100
 const BottomDrawerModal = (props: BottomDrawerModalProps) => {
   const {
     children,
-    collapsedHeight = 200,
-    expandedHeight = Dimensions.get('window').height - 225,
+    collapsedHeight = 150,
+    expandedHeight = Dimensions.get('window').height - 275,
   } = props
 
   return (
@@ -144,16 +144,15 @@ const styles = StyleSheet.create({
     height: 5,
     borderRadius: 5,
     maxWidth: 70,
-    top: 6,
-    position: 'absolute'
   },
   buttonContainer: {
+    top: 6,
+    position: 'absolute',
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
     height: 32,
     marginVertical: -12,
-    paddingBottom: 18,
-    position: 'relative',
+    paddingBottom: 18
   }
 })
