@@ -5,9 +5,10 @@ import { Icon, ContextMenu } from '@ledget/native-ui';
 import type { ContextMenuProps } from '@ledget/native-ui';
 import { ModalScreenProps } from '@types';
 import { View } from 'react-native';
+import { Transaction } from '@ledget/shared-features';
 
 interface Props extends Omit<ContextMenuProps, 'items'>, ModalScreenProps<'Activity'> {
-  transaction: string;
+  transaction: Transaction;
 }
 
 const TransactionMenu = (props: Props) => {

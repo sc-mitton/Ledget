@@ -7,6 +7,7 @@ import type { BottomTabNavParamList, RootStackParamList } from './root';
 export type ModalStackParamList = {
   Activity: {
     expanded?: boolean;
+    tab?: number;
   };
   Logout: undefined;
   ConfirmDeletePlaidItem: {

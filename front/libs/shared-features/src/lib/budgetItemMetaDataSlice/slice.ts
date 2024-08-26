@@ -1,5 +1,6 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import Big from 'big.js';
+import daysjs from 'dayjs';
 
 import { PayloadAction } from '@reduxjs/toolkit';
 
@@ -137,7 +138,7 @@ export const budgetItemMetaDataSlice = createSlice({
               if (
                 oldestYearlyCategoryCreated === '' ||
                 new Date(oldestYearlyCategoryCreated) >
-                  new Date(category.created)
+                new Date(category.created)
               ) {
                 oldestYearlyCategoryCreated = category.created;
               }
@@ -202,26 +203,26 @@ export const budgetItemMetaDataSlice = createSlice({
               : numberOfYearlyBills++;
             bill.period === 'month'
               ? (totalMonthlyBillsAmount = totalMonthlyBillsAmount.plus(
-                  bill.upper_amount
-                ))
+                bill.upper_amount
+              ))
               : (totalYearlyBillsAmount = totalYearlyBillsAmount.plus(
-                  bill.upper_amount
-                ));
+                bill.upper_amount
+              ));
           });
 
           state.billsMetaData[`${originalArgs?.month}-${originalArgs?.year}`] =
-            {
-              monthly_bills_paid: paidMonthlyBills,
-              yearly_bills_paid: paidYearlyBills,
-              number_of_monthly_bills: numberOfMonthlyBills,
-              number_of_yearly_bills: numberOfYearlyBills,
-              monthly_bills_amount_remaining:
-                monthlyBillsAmountRemaining.toNumber(),
-              yearly_bills_amount_remaining:
-                yearlyBillsAmountRemaining.toNumber(),
-              total_monthly_bills_amount: totalMonthlyBillsAmount.toNumber(),
-              total_yearly_bills_amount: totalYearlyBillsAmount.toNumber()
-            };
+          {
+            monthly_bills_paid: paidMonthlyBills,
+            yearly_bills_paid: paidYearlyBills,
+            number_of_monthly_bills: numberOfMonthlyBills,
+            number_of_yearly_bills: numberOfYearlyBills,
+            monthly_bills_amount_remaining:
+              monthlyBillsAmountRemaining.toNumber(),
+            yearly_bills_amount_remaining:
+              yearlyBillsAmountRemaining.toNumber(),
+            total_monthly_bills_amount: totalMonthlyBillsAmount.toNumber(),
+            total_yearly_bills_amount: totalYearlyBillsAmount.toNumber()
+          };
 
           // Clear unsynced
           state.unsyncedConfirmedBills = [];
@@ -279,4 +280,13 @@ export const selectBillMetaData = createSelector(
 export const selectBudgetMonthYear = createSelector(
   [selectMonth, selectYear],
   (month, year) => ({ month, year })
+);
+
+export const selectCurrentBudgetWindow = createSelector(
+  [selectMonth, selectYear],
+  (month, year) => {
+    const start = daysjs(`${year}-${month}-01`).startOf('month').unix();
+    const end = daysjs(`${year}-${month}-01`).endOf('month').unix();
+    return { start, end };
+  }
 );

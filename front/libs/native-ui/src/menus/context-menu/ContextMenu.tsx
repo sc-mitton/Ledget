@@ -72,7 +72,7 @@ export function ContextMenu(props: ContextMenuProps) {
                       style={styles.row}
                       activeOpacity={0.6}
                       onPress={item.onSelect}
-                      key={`context-menu-item-${index}`}>
+                      key={`context-menu-item-${item.label.replace(' ', '-')}`}>
                       <>
                         <Text fontSize={15}>{item.label}</Text>
                         <View style={styles.icon}><item.icon /></View>

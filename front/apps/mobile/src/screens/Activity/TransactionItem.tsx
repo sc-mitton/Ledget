@@ -114,11 +114,9 @@ const Item = (props: Props) => {
 
   useEffect(() => {
     if (focused) {
-      setFocusedProp && setFocusedProp(item.transaction_id);
       paddingVertical.value = withTiming(16, { duration: 200 });
       scale.value = withSpring(1.04, defaultSpringConfig);
     } else {
-      setFocusedProp && setFocusedProp(undefined);
       paddingVertical.value = withTiming(0, { duration: 200 });
       scale.value = withSpring(1, defaultSpringConfig);
     }
@@ -128,8 +126,11 @@ const Item = (props: Props) => {
     <View {...panResponder.panHandlers}>
       <TransactionMenu
         {...props}
-        onShowChange={(show) => setFocused(show)}
-        transaction={item.transaction_id}
+        onShowChange={(show) => {
+          setFocused(show)
+          setFocusedProp && setFocusedProp(show ? item.transaction_id : undefined);
+        }}
+        transaction={item}
         touchableStyle={styles.newTransaction}
         disabled={focused}
       >

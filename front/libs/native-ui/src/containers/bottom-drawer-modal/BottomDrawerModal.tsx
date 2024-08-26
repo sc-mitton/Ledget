@@ -1,4 +1,4 @@
-import { useRef, createContext, useContext } from 'react';
+import { useRef, createContext, useContext, useState } from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import { PanResponder } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
@@ -18,10 +18,13 @@ interface ContentProps {
 interface ContextProps {
   collapsedHeight: number
   expandedHeight: number
+  state: React.MutableRefObject<"collapsed" | "expanded" | "closed">
+  setExpanded: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 interface BottomDrawerModalProps extends Partial<ContextProps> {
-  children: React.ReactNode
+  children?: React.ReactNode | ((props: { expanded: boolean }) => React.ReactNode);
+  defaultExpanded?: boolean
 }
 
 const BottomDrawerModalContext = createContext<ContextProps | undefined>(undefined)
@@ -43,28 +46,33 @@ const BottomDrawerModal = (props: BottomDrawerModalProps) => {
     collapsedHeight = 150,
     expandedHeight = Dimensions.get('window').height - 250,
   } = props
+  const state = useRef<'collapsed' | 'expanded' | 'closed'>(props.defaultExpanded ? 'expanded' : 'collapsed')
+  const [expanded, setExpanded] = useState<boolean>(props.defaultExpanded || false)
 
   return (
-    <BottomDrawerModalContext.Provider value={{ collapsedHeight, expandedHeight }}>
+    <BottomDrawerModalContext.Provider value={{ collapsedHeight, expandedHeight, state, setExpanded }}>
       <Modal
         hasOverlayExit={false}
         hasExitButton={false}
       >
-        {children}
+        {typeof children === 'function' ? children({ expanded }) : children}
       </Modal>
     </BottomDrawerModalContext.Provider>
   )
 }
 
 const Content = (props: ContentProps) => {
-  const { collapsedHeight, expandedHeight } = useBottomDrawerModal()
+  const { collapsedHeight, expandedHeight, state, setExpanded } = useBottomDrawerModal()
 
-  const state = useRef<'collapsed' | 'expanded' | 'closed'>('collapsed')
-  const scrollViewHeight = useSharedValue(collapsedHeight)
+  const scrollViewHeight = useSharedValue(state.current === 'expanded' ? expandedHeight : collapsedHeight)
 
   const scrollViewAnimation = useAnimatedStyle(() => ({
     height: scrollViewHeight.value
   }));
+
+  const updateExpanded = (expanded: boolean) => {
+    setExpanded(expanded)
+  }
 
   const panResponder = useRef(
     PanResponder.create({
@@ -84,12 +92,14 @@ const Content = (props: ContentProps) => {
               expandedHeight,
               defaultSpringConfig);
             props.onExpand && props.onExpand();
+            updateExpanded(true)
             state.current = 'expanded';
           } else {
             scrollViewHeight.value = withSpring(
               collapsedHeight,
               defaultSpringConfig);
             props.onCollapse && props.onCollapse();
+            updateExpanded(false)
             setTimeout(() => {
               state.current = 'collapsed';
             }, 500);

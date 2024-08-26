@@ -3,15 +3,23 @@ import { BottomDrawerModal } from '@ledget/native-ui';
 
 import { ModalScreenProps } from '@types';
 import NeedsConfirmation from './NeedsConfirmation';
+import History from './History';
 import Header from './Header';
 
 const Screen = (props: ModalScreenProps<'Activity'>) => {
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(props.route.params?.tab || 0);
 
   return (
-    <BottomDrawerModal>
-      <Header setIndex={setIndex} index={index} />
-      <NeedsConfirmation {...props} />
+    <BottomDrawerModal defaultExpanded={props.route.params?.expanded} >
+      {({ expanded }) => (
+        <>
+          <Header setIndex={setIndex} index={index} />
+          {index === 0
+            ? <NeedsConfirmation {...props} expanded={expanded} />
+            : <History {...props} />
+          }
+        </>
+      )}
     </BottomDrawerModal>
   )
 }

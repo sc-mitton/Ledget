@@ -40,12 +40,13 @@ const springConfig = {
   mass: 1
 };
 
-const NeedsConfirmation = (props: ModalScreenProps<'Activity'>) => {
+const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: boolean }) => {
   const itemHeight = useRef(0);
   const dispatch = useAppDispatch();
   const loaded = useLoaded(1000);
+  const [itemHeightSet, setItemHeightSet] = useState(false);
   const [focusedItem, setFocusedItem] = useState<string | undefined>(undefined);
-  const [expanded, setExpanded] = useState(props.route.params?.expanded || false);
+  const [expanded, setExpanded] = useState(props.expanded || false);
   const { month, year } = useAppSelector(selectBudgetMonthYear);
   const [
     getUnconfirmedTransactions,
@@ -91,12 +92,12 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'>) => {
     enter: (item, index) => ({
       top: _getY(index, expanded, true, itemHeight.current),
       zIndex: unconfirmedTransactions!.length - index,
-      opacity: _getOpacity(index, expanded)
+      opacity: itemHeightSet ? _getOpacity(index, expanded) : 0
     }),
     update: (item, index) => ({
       top: _getY(index, expanded, true, itemHeight.current),
       zIndex: unconfirmedTransactions!.length - index,
-      opacity: _getOpacity(index, expanded)
+      opacity: itemHeightSet ? _getOpacity(index, expanded) : 0
     }),
     config: springConfig,
     immediate: !loaded && expanded,
@@ -104,8 +105,9 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'>) => {
   });
 
   useEffect(() => {
+    if (!itemHeightSet) return;
     itemsApi.start();
-  }, [expanded, isTransactionsSuccess, unconfirmedTransactions]);
+  }, [loaded, itemHeightSet, expanded, isTransactionsSuccess, unconfirmedTransactions]);
 
   useEffect(() => {
     if (!expanded) return;
@@ -232,18 +234,20 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'>) => {
         ]}>
           {itemTransitions((style, item, _, index) => (
             <AnimatedTransactionContainer
-              onLayout={(e) => itemHeight.current = e.nativeEvent.layout.height}
-              style={[styles.transactionItem, style]}>
+              onLayout={(e) => {
+                itemHeight.current = e.nativeEvent.layout.height
+                setItemHeightSet(true)
+              }}
+              style={[styles.transactionItem, { transform: [{ scale: _getScale(index, expanded, true) }] }, style]}>
               <TransactionItem
                 item={item}
                 setFocused={setFocusedItem}
-                style={{ transform: [{ scale: _getScale(index, expanded, true) }] }}
                 contentStyle={{ opacity: expanded || index == 0 ? 1 : .2 }}
                 {...props}
               />
             </AnimatedTransactionContainer>
           ))}
-          {expanded &&
+          {expanded && itemHeightSet &&
             <View style={styles.checkAllButtonContainer}>
               <TouchableOpacity
                 style={styles.checkAllButton}

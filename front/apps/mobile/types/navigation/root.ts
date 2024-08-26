@@ -3,6 +3,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import type { ProfileStackParamList } from './profile';
 import type { LoginStackParamList } from './login';
 import type { ModalStackParamList } from './modals';
+import { Transaction } from '@ledget/shared-features';
 
 export type BottomTabNavParamList = {
   Home: undefined;
@@ -15,13 +16,13 @@ export type RootStackParamList = {
   BottomTabs: NavigatorScreenParams<BottomTabNavParamList>;
   Modals: NavigatorScreenParams<ModalStackParamList>;
   TransactionDetails: {
-    transaction: string;
+    transaction: Transaction;
   };
   SplitTransaction: {
-    transaction: string;
+    transaction: Transaction;
   };
   NewBill: {
-    transaction: string;
+    transaction: Transaction;
     period: 'monthly' | 'yearly';
   };
   NewCategory: {
