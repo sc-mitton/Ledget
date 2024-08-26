@@ -4,6 +4,7 @@ export default StyleSheet.create({
   transactionsContainer: {
     padding: 0,
     marginTop: 8,
+    paddingBottom: 16,
   },
   transactionItem: {
     width: '100%',
@@ -15,19 +16,21 @@ export default StyleSheet.create({
     bottom: 16,
     left: '50%',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   checkAllButton: {
     position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
+    bottom: 24,
     gap: 8
   },
   scrollView: {
     position: 'relative',
     width: '100%',
     minHeight: '100%',
-    marginBottom: -32
+    marginBottom: -32,
+    paddingTop: 16,
   }
 });

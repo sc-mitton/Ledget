@@ -194,7 +194,7 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'>) => {
   }, []);
 
   const onDrag = useCallback((dy: number, expanded: boolean) => {
-    if (Math.abs(dy) > 100 || (!expanded && dy > 0)) return;
+    if (Math.abs(dy) > 100 || (!expanded && dy > 0) || (expanded && dy < 0)) return;
     else if (dy === 0) {
       itemsApi.start((index: any, item: any) => {
         return { top: _getY(index, expanded, true, itemHeight.current) };
@@ -226,7 +226,7 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'>) => {
           styles.transactionsContainer,
           {
             height: expanded
-              ? (itemHeight.current + EXPANDED_GAP) * unconfirmedTransactions.length + 32
+              ? (itemHeight.current + EXPANDED_GAP) * unconfirmedTransactions.length + itemHeight.current
               : itemHeight.current * 2
           }
         ]}>

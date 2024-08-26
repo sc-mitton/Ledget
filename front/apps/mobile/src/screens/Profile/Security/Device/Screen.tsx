@@ -59,21 +59,23 @@ const Device = ({ navigation, route }: ProfileScreenProps<'Device'>) => {
     <Box variant='screen' style={styles.container}>
       <View style={styles.content}>
         <View style={styles.header}>
-          <Text variant='header'>
+          <Text variant='header2'>
             {device?.[0].split(',')[0]}&nbsp;
           </Text>
+          <View style={iconKey === 'is_mobile' ? styles.mobileIcon : styles.pcIcon}>
+            <Icon
+              size={iconKey === 'is_pc' ? 52 : 32}
+              icon={iconKey === 'is_pc' ? Computer : Smartphone}
+            />
+          </View>
           <View style={iconKey === 'is_pc' ? styles.pcLocation : styles.mobileLocation}>
-            <Icon icon={MapPin2} color='tertiaryText' size={16} />
+            <Icon icon={MapPin2} color='tertiaryText' size={14} />
             <Text color='tertiaryText' >
               {device?.[0].split(',')[2] === undefined
                 ? device?.[0].split(',')[1] ? device?.[0].split(',')[1] : 'Unknown'
                 : device?.[0].split(',')[1] + ', ' + device?.[0].split(',')[2]}
             </Text>
           </View>
-          <Icon
-            size={iconKey === 'is_pc' ? 52 : 32}
-            icon={iconKey === 'is_pc' ? Computer : Smartphone}
-          />
         </View>
         <Box variant='nestedContainer' style={styles.sessions}>
           <Text style={styles.boxHeader}>Sessions</Text>
@@ -87,11 +89,11 @@ const Device = ({ navigation, route }: ProfileScreenProps<'Device'>) => {
                   <View style={styles.session}>
                     <View style={styles.row}>
                       <Text style={styles.family}>
-                        <Text color='tertiaryText' style={styles.familyHeader}>Family:  </Text>
+                        <Text color='tertiaryText' style={styles.familyHeader}>Family           </Text>
                         {session.is_mobile ? session.os_family : session.browser_family}
                       </Text>
                       <Text style={styles.lastLogin}>
-                        <Text color='tertiaryText' style={styles.lastLoginHeader}>Last Login:   </Text>
+                        <Text color='tertiaryText' style={styles.lastLoginHeader}>Last Login    </Text>
                         {dayjs(session.last_login).format('MMM D, YYYY h:mm A')}
                       </Text>
                       {session.current_device &&
@@ -100,7 +102,7 @@ const Device = ({ navigation, route }: ProfileScreenProps<'Device'>) => {
                     {!session.current_device &&
                       <SubmitButton
                         style={styles.logoutButton}
-                        backgroundColor={processingDelete && removedDevice === session.id ? 'transparent' : 'grayButton'}
+                        backgroundColor={processingDelete && removedDevice === session.id ? 'transparent' : 'lightGrayButton'}
                         borderRadius={8}
                         onPress={() => {
                           bioAuth(() => {

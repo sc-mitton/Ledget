@@ -93,7 +93,7 @@ export const useModalStyleInterpolator = (args?: { slideOut?: boolean }) => {
         ],
       },
       overlayStyle: {
-        ...(theme.mode === 'light' ? { backgroundColor: theme.colors.modalOverlay } : {}),
+        backgroundColor: theme.colors.modalOverlay,
         opacity: progress.interpolate({
           inputRange: [0, 1],
           outputRange: [0, .7],

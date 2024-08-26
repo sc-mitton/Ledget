@@ -41,7 +41,7 @@ const BottomDrawerModal = (props: BottomDrawerModalProps) => {
   const {
     children,
     collapsedHeight = 150,
-    expandedHeight = Dimensions.get('window').height - 275,
+    expandedHeight = Dimensions.get('window').height - 250,
   } = props
 
   return (
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 32,
-    marginVertical: -12,
+    marginVertical: -18,
     paddingBottom: 18
   }
 })

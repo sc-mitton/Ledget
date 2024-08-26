@@ -12,6 +12,13 @@ export default StyleSheet.create({
     width: '100%',
     marginTop: 60,
   },
+  pcIcon: {
+    marginTop: -8
+  },
+  mobileIcon: {
+    marginTop: 4,
+    marginBottom: 8
+  },
   header: {
     alignItems: 'center',
     marginBottom: 20,
@@ -23,13 +30,13 @@ export default StyleSheet.create({
   },
   mobileLocation: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 8,
+    alignItems: 'center'
   },
   pcLocation: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 2,
   },
   logoutButton: {
     alignItems: 'center',

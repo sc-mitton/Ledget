@@ -2,18 +2,20 @@ import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
   headerContainer: {
-    marginBottom: 12,
-    marginTop: 18
+    marginBottom: 0,
+    marginTop: 12
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 16
+    gap: 12,
+    marginRight: 4,
+    marginBottom: 12
   },
   countCountainer: {
     position: 'relative',
-    marginRight: 16,
+    marginRight: 12,
   },
   countBackgroundOuterContainer: {
     position: 'relative'
@@ -30,6 +32,6 @@ export default StyleSheet.create({
     height: 24,
     width: 24,
     position: 'absolute',
-    opacity: 0.3
+    opacity: 0.2
   }
 });
