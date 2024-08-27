@@ -45,6 +45,7 @@ const palette = {
   blue300: `hsl(${blueH}, ${blueS}%, 70%)`,
   blue200: `hsl(${blueH}, ${blueS}%, 80%)`,
   blue100: `hsl(${blueH}, ${blueS}%, 90%)`,
+  blue50: `hsl(${blueH}, ${blueS}%, 92%)`,
 
   blueSat: `hsl(${blueH}, ${blueS + 10}%, 50%)`,
 
@@ -82,11 +83,11 @@ export const lightTheme = createTheme({
     inputBorderErrorMain: palette.red,
     focusedInputBorderSecondary: palette.blue100,
     focusedInputBorderMain: palette.blue300,
-    tabNavPillBorder: palette.blue500,
+    tabNavPillBorder: palette.blue100,
     bottomNavBorder: palette.gray500,
     nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 95%)`,
     tabNavBorder: palette.gray250,
-    newTransactionBorder: palette.gray275,
+    newTransactionBorder: palette.gray250,
     contextMenuBorder: palette.gray200,
 
     // Shadows
@@ -116,9 +117,10 @@ export const lightTheme = createTheme({
     buttonLabel: palette.offBlack,
 
     // Buttons
+    lightBlueButton: palette.blue50,
+    lightBlueButtonBorder: palette.blue100,
     blueButton: palette.blue500,
     blueButtonBorder: palette.blue450,
-    blueButton2: palette.blue100,
     blueButtonBorder2: palette.blue100,
     lightGrayButton: palette.gray150,
     lightGrayButtonBorder: palette.gray200,
@@ -126,7 +128,7 @@ export const lightTheme = createTheme({
     grayButtonBorder: palette.gray275,
     mediumGrayButton: palette.gray250,
     mediumGrayButtonBorder: palette.gray300,
-    tabNavPill: palette.blue500,
+    tabNavPill: palette.blue100,
     tabGrayPill: palette.gray1000,
     tabGrayPillBorder: 'transparent',
     borderedGrayButton: palette.gray250,
@@ -197,7 +199,8 @@ export const lightTheme = createTheme({
       lineHeight: 20,
       fontFamily: 'SourceSans3Medium',
       marginTop: 'l',
-      marginLeft: 'xs'
+      marginLeft: 'xs',
+      color: 'tertiaryText',
     },
     subheader: {
       fontSize: 24,
@@ -322,8 +325,8 @@ export const lightTheme = createTheme({
       paddingVertical: 'xxs',
     },
     grayPill: {
-      paddingVertical: 'none',
       color: 'invertedText',
+      paddingVertical: 'xxs',
       paddingHorizontal: 'm',
       borderRadius: 40,
       alignItems: 'center',
@@ -333,7 +336,7 @@ export const lightTheme = createTheme({
       // borderColor: 'transparent',
     },
     transparentPill: {
-      paddingVertical: 'none',
+      paddingVertical: 'xxs',
       paddingHorizontal: 'm',
       borderRadius: 40,
       alignItems: 'center',

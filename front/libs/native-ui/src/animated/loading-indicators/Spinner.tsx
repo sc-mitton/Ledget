@@ -12,7 +12,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useTheme } from '@shopify/restyle';
 import { View } from 'react-native';
-import { BorderProps, border, composeRestyleFunctions, useRestyle } from '@shopify/restyle';
+import { ColorProps, color, composeRestyleFunctions, useRestyle } from '@shopify/restyle';
 
 import styles from './styles';
 import { Box } from '../../restyled/Box';
@@ -21,8 +21,8 @@ import { Theme } from '../../theme';
 
 const config = { duration: 1200, easing: Easing.bezier(0.5, 0, 0.5, 1), reduceMotion: ReduceMotion.System }
 
-type RestyleProps = BorderProps<Theme>;
-const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([border as any]);
+type RestyleProps = ColorProps<Theme>;
+const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([color]);
 
 const ringBoxProps = {
   borderBottomColor: 'transparent',
@@ -30,13 +30,14 @@ const ringBoxProps = {
   borderTopColor: 'transparent',
 } as const;
 
-const Ring = ({ color, ...rest }: RestyleProps & { color?: string }) => {
-  const { borderColor } = useRestyle(restyleFunctions, rest);
+const Ring = (props: RestyleProps) => {
+  const restyleProps = useRestyle(restyleFunctions, props);
+
   return (
     <Box
-      {...(color
-        ? { style: [{ borderRightColor: color }, styles.ring] }
-        : { borderRightColor: borderColor || 'mainText' })}
+      {...(restyleProps as any).style[0]?.color
+        ? { style: [{ borderRightColor: (restyleProps as any).style[0]?.color }, styles.ring] }
+        : { borderRightColor: 'mainText' }}
       {...ringBoxProps}
     />
   )
@@ -67,7 +68,7 @@ export const IosSpinner = ({ color, ...rest }: RestyleProps & { color?: string }
   const a4 = useAnimatedStyle(() => ({ transform: [{ rotate: `${r4.value}deg` }] }))
 
   return (
-    <Animated.View style={[styles.container, { transform: [{ scale: pop }] }]}>
+    <Animated.View style={[styles.iosContainer, { transform: [{ scale: pop }] }]}>
       <View style={styles.ringContainer}>
         <Animated.View style={[styles.animatedRingContainer, a1]}>
           <Ring color={color} {...rest} />
@@ -105,13 +106,16 @@ export const Spinner = ({ color }: { color?: string }) => {
 
   return (
     <Animated.View style={[
-      styles.container,
-      { transform: [{ scale: pop }] },
-      Platform.OS === 'ios' ? styles.iosContainer : styles.androidContainer
+      styles.mainContainer,
+      { transform: [{ scale: pop }] }
     ]}>
       {Platform.OS === 'ios'
-        ? <IosSpinner color={color || theme.colors['mainText']} />
-        : <ActivityIndicator color={color || theme.colors['mainText']} />}
+        ?
+        <IosSpinner color={color || theme.colors['mainText']} />
+        :
+        <View style={styles.androidContainer}>
+          <ActivityIndicator color={color || theme.colors['mainText']} />
+        </View>}
     </Animated.View>
   )
 }

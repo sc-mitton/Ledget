@@ -22,7 +22,8 @@ import {
   addTransaction2Cat,
   addTransaction2Bill
 } from "@ledget/shared-features";
-import { BottomDrawerModal, Icon, Text, CustomScrollView } from '@ledget/native-ui';
+import { useAppearance } from '@features/appearanceSlice';
+import { BottomDrawerModal, Icon, Text, CustomScrollView, Spinner } from '@ledget/native-ui';
 import { useLoaded } from '@ledget/helpers';
 import {
   _getY,
@@ -31,6 +32,7 @@ import {
   EXPANDED_GAP,
 } from './helpers';
 import { ModalScreenProps } from '@types';
+import { EmptyBox } from '@ledget/media/native';
 
 const AnimatedTransactionContainer = animated(View);
 
@@ -48,14 +50,12 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
   const [focusedItem, setFocusedItem] = useState<string | undefined>(undefined);
   const [expanded, setExpanded] = useState(props.expanded || false);
   const { month, year } = useAppSelector(selectBudgetMonthYear);
-  const [
-    getUnconfirmedTransactions,
-    {
-      isLoading: isLoadingTransactions,
-      isSuccess: isTransactionsSuccess
-    }
-  ] = useLazyGetUnconfirmedTransactionsQuery();
   const [confirmTransactions] = useConfirmTransactionsMutation();
+  const { mode } = useAppearance();
+  const [getUnconfirmedTransactions, {
+    isLoading: isLoadingTransactions,
+    isSuccess: isTransactionsSuccess
+  }] = useLazyGetUnconfirmedTransactionsQuery();
 
   const unconfirmedTransactions = useAppSelector(
     (state) =>
@@ -73,16 +73,6 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
       }),
     shallowEqual
   );
-
-  useEffect(() => {
-    if (month && year) {
-      getUnconfirmedTransactions({
-        confirmed: false,
-        start: dayjs(`${year}-${month}-01`).startOf('month').unix(),
-        end: dayjs(`${year}-${month}-01`).endOf('month').unix()
-      })
-    }
-  }, [month, year, getUnconfirmedTransactions]);
 
   const itemsApi = useSpringRef();
   const itemTransitions = useTransition(unconfirmedTransactions, {
@@ -105,9 +95,19 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
   });
 
   useEffect(() => {
+    if (month && year) {
+      getUnconfirmedTransactions({
+        confirmed: false,
+        start: dayjs(`${year}-${month}-01`).startOf('month').unix(),
+        end: dayjs(`${year}-${month}-01`).endOf('month').unix()
+      }, true);
+    }
+  }, [month, year, getUnconfirmedTransactions]);
+
+  useEffect(() => {
     if (!itemHeightSet) return;
     itemsApi.start();
-  }, [loaded, itemHeightSet, expanded, isTransactionsSuccess, unconfirmedTransactions]);
+  }, [loaded, itemHeightSet, expanded, unconfirmedTransactions]);
 
   useEffect(() => {
     if (!expanded) return;
@@ -219,48 +219,54 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
       onCollapse={() => setExpanded(false)}
       onClose={onClose}
     >
-      <CustomScrollView
-        scrollEnabled={expanded}
-        scrollIndicatorInsets={{ right: -4 }}
-        showsVerticalScrollIndicator={expanded}
-        style={[styles.scrollView]}>
-        <View style={[
-          styles.transactionsContainer,
-          {
-            height: expanded
-              ? (itemHeight.current + EXPANDED_GAP) * unconfirmedTransactions.length + itemHeight.current
-              : itemHeight.current * 2
-          }
-        ]}>
-          {itemTransitions((style, item, _, index) => (
-            <AnimatedTransactionContainer
-              onLayout={(e) => {
-                itemHeight.current = e.nativeEvent.layout.height
-                setItemHeightSet(true)
-              }}
-              style={[styles.transactionItem, { transform: [{ scale: _getScale(index, expanded, true) }] }, style]}>
-              <TransactionItem
-                item={item}
-                setFocused={setFocusedItem}
-                contentStyle={{ opacity: expanded || index == 0 ? 1 : .2 }}
-                {...props}
-              />
-            </AnimatedTransactionContainer>
-          ))}
-          {expanded && itemHeightSet &&
-            <View style={styles.checkAllButtonContainer}>
-              <TouchableOpacity
-                style={styles.checkAllButton}
-                activeOpacity={0.7}
-                onPress={confirmAll}>
-                <Text color='tertiaryText'>Confirm All</Text>
-                <Icon color='tertiaryText' icon={CheckAll} size={24} />
-              </TouchableOpacity>
-            </View>}
+      {unconfirmedTransactions.length === 0
+        ? <View style={styles.emptyBoxGraphic}>
+          {isLoadingTransactions ? <Spinner color='blueText' /> : isTransactionsSuccess
+            ? <EmptyBox dark={mode === 'dark'} />
+            : null}
         </View>
-      </CustomScrollView>
+        : <CustomScrollView
+          scrollEnabled={expanded}
+          scrollIndicatorInsets={{ right: -4 }}
+          showsVerticalScrollIndicator={expanded}
+          style={[styles.scrollView]}>
+          <View style={[
+            styles.transactionsContainer,
+            {
+              height: expanded
+                ? (itemHeight.current + EXPANDED_GAP) * unconfirmedTransactions.length + itemHeight.current
+                : itemHeight.current * 2
+            }
+          ]}>
+            {itemTransitions((style, item, _, index) => (
+              <AnimatedTransactionContainer
+                onLayout={(e) => {
+                  itemHeight.current = e.nativeEvent.layout.height
+                  setItemHeightSet(true)
+                }}
+                style={[styles.transactionItem, { transform: [{ scale: _getScale(index, expanded, true) }] }, style]}>
+                <TransactionItem
+                  item={item}
+                  setFocused={setFocusedItem}
+                  contentStyle={{ opacity: expanded || index == 0 ? 1 : .2 }}
+                  {...props}
+                />
+              </AnimatedTransactionContainer>
+            ))}
+            {expanded && itemHeightSet &&
+              <View style={styles.checkAllButtonContainer}>
+                <TouchableOpacity
+                  style={styles.checkAllButton}
+                  activeOpacity={0.7}
+                  onPress={confirmAll}>
+                  <Text color='tertiaryText'>Confirm All</Text>
+                  <Icon color='tertiaryText' icon={CheckAll} size={24} />
+                </TouchableOpacity>
+              </View>}
+          </View>
+        </CustomScrollView>}
     </BottomDrawerModal.Content>
   )
 }
 
-export default NeedsConfirmation
+export default NeedsConfirmation;

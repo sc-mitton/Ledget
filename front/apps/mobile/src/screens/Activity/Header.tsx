@@ -46,7 +46,7 @@ const Header = ({ index, setIndex }: { index: number, setIndex: (index: number) 
       </View>
       <Seperator
         variant='bare'
-        backgroundColor={mode === 'light' ? 'menuSeperator' : 'darkerseperator'} />
+        backgroundColor={mode === 'light' ? 'menuSeperator' : 'lightseperator'} />
     </View>
   )
 }

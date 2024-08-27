@@ -30,7 +30,7 @@ const _getScale = (index: number, expanded: boolean, loaded = true,) => {
 
 const _getY = (index: number, expanded: boolean, loaded = true, height: number) => {
   if (!loaded) {
-    return (EXPANDED_GAP * 12) * index + 13
+    return (EXPANDED_GAP * 10) * index + 26
   }
 
   if (index === 0 || expanded) {

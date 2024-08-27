@@ -3,7 +3,8 @@ import { StyleSheet } from "react-native";
 export default StyleSheet.create({
   scrollView: {
     paddingTop: 16,
-    paddingRight: 8
+    paddingRight: 8,
+    marginBottom: -32
   },
   row: {
     alignItems: 'center',
@@ -14,7 +15,7 @@ export default StyleSheet.create({
   transaction: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 12,
+    paddingVertical: 8,
   },
   logoContainer: {
     marginLeft: 8,
@@ -43,5 +44,31 @@ export default StyleSheet.create({
   seperatorContainer: {
     width: '100%',
     paddingLeft: 44
+  },
+  emptyBoxGraphic: {
+    flex: 1,
+    marginTop: 48,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  filterButtonContainer: {
+    width: 'auto',
+    flexDirection: 'row',
+    paddingLeft: 6,
+    marginBottom: 8,
+    marginRight: 4,
+    justifyContent: 'flex-end'
+  },
+  filterIcon: {
+    marginRight: 8
+  },
+  filtersHeader: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  splitInputs: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    gap: 8,
   }
 });

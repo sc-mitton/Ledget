@@ -1,4 +1,4 @@
-import { useRef, createContext, useContext, useState } from 'react';
+import { useRef, createContext, useContext, useState, useEffect } from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import { PanResponder } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
@@ -8,6 +8,7 @@ import { defaultSpringConfig } from '../../animated/configs/configs'
 import { Modal } from '../modal/Modal'
 
 interface ContentProps {
+  defaultExpanded?: boolean
   onDrag?: (dy: number, expanded: boolean) => void
   onExpand?: () => void
   onCollapse?: () => void
@@ -73,6 +74,14 @@ const Content = (props: ContentProps) => {
   const updateExpanded = (expanded: boolean) => {
     setExpanded(expanded)
   }
+
+  useEffect(() => {
+    if (props.defaultExpanded) {
+      scrollViewHeight.value = withSpring(expandedHeight, defaultSpringConfig)
+      state.current = 'expanded'
+      setExpanded(true)
+    }
+  }, [])
 
   const panResponder = useRef(
     PanResponder.create({

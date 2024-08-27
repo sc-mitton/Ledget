@@ -1,4 +1,6 @@
 
+export * from './inputs/date-picker/DatePicker';
+
 export * from './menus/context-menu/ContextMenu';
 
 export * from './buttons/bill-cat-label/BillCatLabel';

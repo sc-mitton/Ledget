@@ -1,8 +1,13 @@
 import { useEffect, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { ChevronRight } from 'geist-native-icons';
+import { useForm, Control, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import dayjs from 'dayjs';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
+import { Filter2 } from '@ledget/media/native';
 import styles from './styles/history';
 import {
   BottomDrawerModal,
@@ -11,22 +16,79 @@ import {
   Text,
   DollarCents,
   Icon,
-  Seperator
+  Seperator,
+  Spinner,
+  Button,
+  Header2,
+  TextInput,
+  DatePicker
 } from '@ledget/native-ui';
 import {
   selectFilteredFetchedConfirmedTransactions,
   Transaction,
-  useGetTransactionsQuery,
   useLazyGetTransactionsQuery,
   selectCurrentBudgetWindow,
 } from '@ledget/shared-features';
+import { useAppearance } from '@features/appearanceSlice';
 import { formatDateOrRelativeDate } from '@ledget/helpers';
 import { useAppSelector, useAppDispatch } from '@hooks';
 import { ModalScreenProps } from '@types';
+import { EmptyBox } from '@ledget/media/native';
 
-const Filter = () => {
+const schema = z.object({
+  date: z.array(z.number()),
+  amount: z.object({
+    min: z.number(),
+    max: z.number()
+  }),
+  category: z.array(z.string()),
+  bill: z.string(),
+  account: z.string(),
+  merchant: z.string()
+});
+
+const Filter = ({ showFilters }: { showFilters: React.Dispatch<React.SetStateAction<boolean>> }) => {
+  const { control, handleSubmit, setValue } = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema)
+  });
+
+  const onSubmit = () => {
+    handleSubmit(data => {
+      console.log(data);
+    })();
+  }
+
   return (
-    <View></View>
+    <View>
+      <View style={styles.filtersHeader}>
+        <Header2>Filters</Header2>
+        {/* 1. Date
+        2. Amount
+        3. Category
+        5. Bill
+        6. Account
+        7. Merchant */}
+        <Controller
+          control={control}
+          name='date'
+          render={({ field: { onChange, value } }) => (
+            <DatePicker
+              pickerType='range'
+              mode='date'
+              format='MM/DD/YYYY'
+              label='Date'
+              placeholder={['Start Date', 'End Date']}
+              onChange={(value) => {
+                const v = value?.map(i => i?.valueOf());
+                onChange(v);
+              }}
+            />
+          )}
+        />
+      </View>
+      <Button variant='main' label='Save' onPress={onSubmit} />
+      <Button variant='borderedGrayMain' label='Cancel' onPress={() => showFilters(false)} />
+    </View>
   )
 }
 
@@ -37,9 +99,11 @@ const TransactionRow = ({ transaction }: { transaction: Transaction }) => {
         <InstitutionLogo account={transaction.account} />
       </View>
       <View style={styles.leftColumn}>
-        <Text>{transaction.name.length > 20 ? `${transaction.name.slice(0, 20)} ...` : transaction.name}</Text>
+        <Text>
+          {transaction.name.length > 20 ? `${transaction.name.slice(0, 20)} ...` : transaction.name}
+        </Text>
         <View style={styles.leftColumnBottomRow}>
-          <Text color='secondaryText'>
+          <Text color='tertiaryText'>
             {formatDateOrRelativeDate(dayjs(transaction.datetime! || transaction.date).valueOf())}
           </Text>
           <View style={styles.emojis}>
@@ -58,21 +122,15 @@ const TransactionRow = ({ transaction }: { transaction: Transaction }) => {
   )
 }
 
-const History = (props: ModalScreenProps<'Activity'>) => {
-  const [isFetchingMore, setFetchingMore] = useState(false);
+const Transactions = (props: ModalScreenProps<'Activity'> & { showFilters: React.Dispatch<React.SetStateAction<boolean>> }) => {
+  const { mode } = useAppearance();
   const { start, end } = useAppSelector(selectCurrentBudgetWindow);
-  const { isError } = useGetTransactionsQuery(
-    { confirmed: true, start, end },
-    { skip: !start || !end }
-  );
-  const transactionsData = useAppSelector(
-    selectFilteredFetchedConfirmedTransactions
-  );
-  const dispatch = useAppDispatch();
-  const [getTransactions, { data: fetchedTransactionData, isLoading }] =
-    useLazyGetTransactionsQuery();
-  let monthholder: number | undefined;
-  let newMonth = false;
+
+  const transactionsData = useAppSelector(selectFilteredFetchedConfirmedTransactions);
+  const [getTransactions, {
+    isLoading: isLoadingTransactions,
+    isSuccess: isTransactionsSuccess
+  }] = useLazyGetTransactionsQuery();
 
   // Initial transaction fetch
   useEffect(() => {
@@ -80,42 +138,88 @@ const History = (props: ModalScreenProps<'Activity'>) => {
     getTransactions({ confirmed: true, start, end }, true);
   }, [start, end]);
 
-  // Refetches for pagination
-  const handleScroll = (e: any) => {
-    setFetchingMore(true);
-    const bottom = e.target.scrollTop === e.target.scrollTopMax;
-    // Update cursors to add new transactions node to the end
-    if (bottom && fetchedTransactionData?.next) {
-      getTransactions({
-        confirmed: true,
-        offset: fetchedTransactionData.next,
-        limit: fetchedTransactionData.limit,
-        start,
-        end
-      });
-    }
-    setFetchingMore(false);
-  };
-
   return (
-    <BottomDrawerModal.Content>
-      <CustomScrollView scrollIndicatorInsets={{ right: -8 }} style={styles.scrollView}>
-        {transactionsData.map((transaction, index) =>
-          <View style={styles.row}>
-            <TouchableOpacity
-              style={styles.touchableTransacton}
-              onPress={() => props.navigation.navigate('TransactionDetails', { transaction })}
-              activeOpacity={.7}>
-              <TransactionRow
-                key={transaction.transaction_id}
-                transaction={transaction} />
-            </TouchableOpacity>
-            <View style={styles.seperatorContainer}>
-              {index !== transactionsData.length - 1 && <Seperator />}
+    <>
+      {transactionsData.length === 0
+        ? <View style={styles.emptyBoxGraphic}>
+          {isLoadingTransactions ? <Spinner color='blueButton' /> : isTransactionsSuccess
+            ? <EmptyBox dark={mode === 'dark'} />
+            : null}
+        </View>
+        : <CustomScrollView
+          stickyHeaderIndices={[0]}
+          scrollIndicatorInsets={{ right: -8 }} style={styles.scrollView}>
+          <View>
+            <View style={styles.filterButtonContainer}>
+              <Button
+                shadowColor='modalBox'
+                shadowOffset={{ width: 0, height: 0 }}
+                shadowOpacity={1}
+                shadowRadius={12}
+                padding='s'
+                labelPlacement='left'
+                fontSize={14}
+                borderRadius={8}
+                backgroundColor='grayButton'
+                textColor='secondaryText'>
+                <Icon icon={Filter2} color='secondaryText' size={18} />
+              </Button>
             </View>
           </View>
-        )}
-      </CustomScrollView>
+          {transactionsData.map((transaction, index) =>
+            <View style={styles.row}>
+              <TouchableOpacity
+                style={styles.touchableTransacton}
+                onPress={() => props.navigation.navigate('TransactionDetails', { transaction })}
+                activeOpacity={.7}>
+                <TransactionRow
+                  key={transaction.transaction_id}
+                  transaction={transaction} />
+              </TouchableOpacity>
+              <View style={styles.seperatorContainer}>
+                <Seperator
+                  backgroundColor={
+                    index === transactionsData.length - 1 ? 'transparent' :
+                      mode === 'light' ? 'menuSeperator' : 'lightseperator'} />
+              </View>
+            </View>
+          )}
+        </CustomScrollView>}
+    </>
+  )
+}
+
+const History = (props: ModalScreenProps<'Activity'>) => {
+  const { start, end } = useAppSelector(selectCurrentBudgetWindow);
+  const [showFilters, setShowFilters] = useState(false);
+
+  const transactionsData = useAppSelector(selectFilteredFetchedConfirmedTransactions);
+  const [getTransactions, {
+    isLoading: isTransactionsLoading,
+    isSuccess: isTransactionsSuccess
+  }] =
+    useLazyGetTransactionsQuery();
+
+  // Initial transaction fetch
+  useEffect(() => {
+    if (!start || !end) return;
+    getTransactions({ confirmed: true, start, end }, true);
+  }, [start, end]);
+
+  return (
+    <BottomDrawerModal.Content
+      // defaultExpanded={isTransactionsSuccess && transactionsData.length > 0}
+      defaultExpanded={true}
+      onCollapse={() => props.navigation.goBack()}
+      onClose={() => props.navigation.goBack()}>
+      {/* {showFilters */}
+      {true
+        ? <Animated.View exiting={FadeOut} entering={FadeIn}>
+          <Filter showFilters={setShowFilters} />
+        </Animated.View>
+        : <Animated.View exiting={FadeOut} entering={FadeIn}>
+          <Transactions {...props} showFilters={setShowFilters} />
+        </Animated.View>}
     </BottomDrawerModal.Content>
   )
 }

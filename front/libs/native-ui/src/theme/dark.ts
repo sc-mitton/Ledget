@@ -43,6 +43,7 @@ const palette = {
   blue300: `hsl(${blueH}, ${blueS}%, 40%)`,
   blue200: `hsl(${blueH}, ${blueS}%, 45%)`,
   blue100: `hsl(${blueH}, ${blueS}%, 50%)`,
+  blue50: `hsl(${blueH}, ${blueS}%, 55%)`,
 
   blueSat: `hsl(${blueH}, ${blueS + 10}%, 50%)`,
 
@@ -119,10 +120,9 @@ export const darkTheme = createTheme({
     greenText: palette.greenText,
 
     // Buttons
+    lightBlueButton: palette.blue200,
     blueButton: palette.blue500,
     blueButtonBorder: palette.blue400,
-    blueButton2: palette.blue800,
-    blueButtonBorder2: palette.blue700,
     lightGrayButton: palette.gray800,
     darkGrayButton: palette.gray800,
     grayButton: palette.gray800,

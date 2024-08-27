@@ -31,6 +31,12 @@ export default StyleSheet.create({
     width: '100%',
     minHeight: '100%',
     marginBottom: -32,
-    paddingTop: 16,
+    paddingTop: 16
+  },
+  emptyBoxGraphic: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative'
   }
 });
