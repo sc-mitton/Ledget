@@ -21,7 +21,6 @@ function SvgHamburger({
       <Path
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={1.5}
         d="M20.2 8.2H3.3M20.2 16.1H3.3"
       />
     </Svg>

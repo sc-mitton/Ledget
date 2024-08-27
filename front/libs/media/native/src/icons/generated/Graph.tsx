@@ -21,13 +21,11 @@ function SvgGraph({
       <Path
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={1.5}
         d="M21.7 20.2H3.3V4.8"
       />
       <Path
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={1.5}
         d="m6.1 15.8 5.3-5.3 3.1 3.1 5.9-5.9"
       />
     </Svg>

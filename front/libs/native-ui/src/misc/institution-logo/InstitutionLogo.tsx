@@ -20,6 +20,7 @@ export const InstitutionLogo = (props: Props & { account?: string }) => {
       shadowOpacity={.8}
       shadowRadius={1}
       borderColor='lightseperator'
+      backgroundColor='lightseperator'
       borderWidth={.5}
       size={22}
       data={logoData}

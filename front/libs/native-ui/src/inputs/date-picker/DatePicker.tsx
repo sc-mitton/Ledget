@@ -1,49 +1,18 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import NativeDatePicker from 'react-native-date-picker'
 import { View, TextInput as ReactNativeTextInput, NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
 import { useTheme } from '@shopify/restyle';
 import dayjs, { Dayjs } from 'dayjs';
+import Animated, { withSpring, useSharedValue, useAnimatedStyle } from 'react-native-reanimated';
 
 import styles from './styles';
-import { HalfArrow } from '@ledget/media';
+import { HalfArrow } from '@ledget/media/native';
 import { InputLabel } from '../../restyled/Text';
 import { Box } from '../../restyled/Box';
 import { Icon } from '../../restyled/Icon';
-
-// Types
-type Error = {
-  message?: string,
-  type?: string
-}
-
-type TPicker = 'date' | 'range';
-
-type BaseDatePickerProps<T extends TPicker> = {
-  name?: string
-  mode: 'datetime' | 'date' | 'time'
-  format?: 'MM/DD/YYYY' | 'M/D/YYYY' | 'MM/DD/YY' | 'DD/MM/YYYY' | 'DD/MM/YY'
-  disabled?: [Dayjs | undefined, Dayjs | undefined][]
-  hidden?: [Dayjs | undefined, Dayjs | undefined][]
-  theme?: 'light' | 'dark'
-  label?: string
-  error?: Error
-}
-
-type DatePickerProps<T extends TPicker> =
-  T extends 'range'
-  ? {
-    placeholder?: [string, string]
-    pickerType: T
-    defaultValue?: [Dayjs | undefined, Dayjs | undefined]
-    onChange?: (value?: [Dayjs, Dayjs]) => void
-  } & BaseDatePickerProps<T>
-  : {
-    placeholder?: string
-    pickerType: T
-    defaultValue?: Dayjs
-    onChange?: (value?: Dayjs) => void
-  } & BaseDatePickerProps<T>
+import { TPicker, DatePickerProps } from './types';
+import { defaultSpringConfig } from '../../animated/configs/configs';
 
 export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<PT>) {
   const [value, setValue] = React.useState<typeof props.defaultValue>(
@@ -51,8 +20,20 @@ export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<P
       props.defaultValue || [undefined, undefined] :
       props.defaultValue || undefined
   );
+  const [pickerWidth, setPickerWidth] = React.useState(0);
   const [index, setIndex] = React.useState<number>();
   const theme = useTheme();
+  const input1 = useRef<ReactNativeTextInput>(null);
+  const input2 = useRef<ReactNativeTextInput>(null);
+  const bottomIndicatorOpacity = useSharedValue(0);
+  const bottomIndicatorX = useSharedValue(0);
+
+  const bottomIndicatorStyle = useAnimatedStyle(() => {
+    return {
+      opacity: bottomIndicatorOpacity.value,
+      transform: [{ translateX: bottomIndicatorX.value }]
+    }
+  });
 
   useEffect(() => {
     if (props.pickerType === 'range') {
@@ -62,72 +43,151 @@ export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<P
     }
   }, [value]);
 
+  useEffect(() => {
+    if (index === 0) {
+      bottomIndicatorOpacity.value = withSpring(1, defaultSpringConfig);
+      bottomIndicatorX.value = withSpring(12, defaultSpringConfig);
+    } else if (index === 1) {
+      bottomIndicatorOpacity.value = withSpring(1, defaultSpringConfig);
+      bottomIndicatorX.value = withSpring(pickerWidth / 2, defaultSpringConfig);
+    } else {
+      bottomIndicatorOpacity.value = withSpring(0, defaultSpringConfig);
+    }
+  }, [index]);
+
   return (
-    <View>
-      {props.label && <InputLabel>{props.label}</InputLabel>}
-      <View>
+    <>
+      {props.label &&
+        <InputLabel>{props.label}</InputLabel>}
+      <View
+        style={styles.mainContainer}
+        onLayout={(e) => setPickerWidth(e.nativeEvent.layout.width)}
+      >
         <Box
           borderColor={props.error
-            ? 'inputBorderErrorSecondary' : index === 0 ? 'focusedInputBorderSecondary'
+            ? 'inputBorderErrorSecondary' : index !== undefined ? 'focusedInputBorderSecondary'
               : 'transparent'}
           borderWidth={1.75}
           style={styles.textInputContainer2}
         >
           <Box
             backgroundColor='inputBackground'
-            borderColor={index === 0
+            borderColor={index !== undefined
               ? props.error ? 'inputBorderErrorMain' : 'focusedInputBorderMain'
               : 'inputBorder'}
             borderWidth={1.5}
             style={styles.textInputContainer1}
           >
             <ReactNativeTextInput
+              ref={input1}
               onFocus={() => setIndex(0)}
-              onBlur={(e: NativeSyntheticEvent<TextInputFocusEventData>) => {
-                setIndex(undefined);
-              }}
+              value={Array.isArray(value) ? value[0]?.format(props.format) : value?.format(props.format)}
               placeholder={props.pickerType === 'range' ? props.placeholder?.[0] : props.placeholder}
               placeholderTextColor={theme.colors.placeholderText}
               style={[{ ...styles.textInput, color: theme.colors.mainText }]}
             />
             {props.pickerType === 'range' &&
               <>
-                <Icon icon={HalfArrow} />
+                <View style={styles.middleIconContainer}>
+                  <View style={styles.middleIcon}>
+                    <Icon
+                      icon={HalfArrow}
+                      size={14}
+                      strokeWidth={2}
+                      color={
+                        Array.isArray(value)
+                          ? value.every(i => i === undefined) ? 'placeholderText' : 'mainText'
+                          : value === undefined ? 'placeholderText' : 'mainText'
+                      }
+                    />
+                  </View>
+                </View>
                 <ReactNativeTextInput
+                  ref={input2}
                   onFocus={() => setIndex(1)}
-                  onBlur={(e: NativeSyntheticEvent<TextInputFocusEventData>) => {
-                    setIndex(undefined);
-                  }}
+                  value={Array.isArray(value) ? value[1]?.format(props.format) : ''}
                   placeholder={props.placeholder?.[1]}
                   placeholderTextColor={theme.colors.placeholderText}
-                  style={[{ ...styles.textInput, color: theme.colors.mainText }]}
+                  style={[{ color: theme.colors.mainText }, styles.rightTextInput, styles.textInput]}
                 />
               </>
             }
+            <Animated.View style={[bottomIndicatorStyle, styles.bottomBorderIndicator]}>
+              <Box
+                backgroundColor='focusedInputBorderMain'
+                width={(pickerWidth / 2) - 24}
+                style={styles.bottomBorderIndicatorBar}
+              />
+            </Animated.View>
           </Box>
         </Box>
       </View>
       <NativeDatePicker
         modal
         theme={props.theme}
-        open={index !== undefined}
+        open={index === 0}
         mode={props.mode}
+        minimumDate={
+          props.pickerType === 'range'
+            ? props.disabled?.[index || 0]?.[0]?.toDate() || undefined
+            : props.disabled?.[0]?.toDate() || undefined
+        }
+        maximumDate={
+          props.pickerType === 'range'
+            ? props.disabled?.[0]?.[1]?.toDate() || undefined
+            : props.disabled?.[1]?.toDate() || undefined
+        }
         date={
           Array.isArray(value)
-            ? value[index || 0]?.toDate() || new Date()
+            ? value[0]?.toDate() || new Date()
             : value?.toDate() || new Date()
         }
         onConfirm={(date) => {
           const d = dayjs(date.toISOString());
           if (Array.isArray(value)) {
-            index === 0 ? setValue([d, value[1]]) : setValue([value[0], d]);
+            setValue([d, value[0]]);
+            value?.[1] ? input1.current?.blur() : input2.current?.focus();
+            value?.[0] ? setIndex(undefined) : setIndex(1);
           } else {
             setValue(d);
           }
         }}
-        onCancel={() => setIndex(undefined)}
+        onCancel={() => {
+          input1.current?.blur();
+          setIndex(undefined);
+        }}
       />
-    </View>
+      {Array.isArray(value) &&
+        <NativeDatePicker
+          modal
+          theme={props.theme}
+          open={index === 1}
+          mode={props.mode}
+          minimumDate={
+            props.pickerType === 'range'
+              ? props.disabled?.[index || 0]?.[0]?.toDate() || undefined
+              : props.disabled?.[0]?.toDate() || undefined
+          }
+          maximumDate={
+            props.pickerType === 'range'
+              ? props.disabled?.[1]?.[1]?.toDate() || undefined
+              : props.disabled?.[1]?.toDate() || undefined
+          }
+          date={value[index || 0]?.toDate() || new Date()}
+          onConfirm={(date) => {
+            const d = dayjs(date.toISOString());
+            setValue([value[0], d]);
+            value?.[0] ? input2.current?.blur() : input1.current?.focus();
+            value?.[0] ? setIndex(undefined) : setIndex(0);
+          }}
+          onCancel={() => {
+            input1.current?.blur();
+            setIndex(undefined);
+          }}
+        />
+
+      }
+    </>
   );
 }
 

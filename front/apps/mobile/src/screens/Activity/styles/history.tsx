@@ -64,11 +64,20 @@ export default StyleSheet.create({
   },
   filtersHeader: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   splitInputs: {
     justifyContent: 'space-between',
     flexDirection: 'row',
     gap: 8,
+  },
+  filtersForm: {
+    marginTop: 16,
+  },
+  formHeader: {
+    marginLeft: 4,
+    maxWidth: '66%',
+    marginBottom: 16,
+    marginTop: 12
   }
 });

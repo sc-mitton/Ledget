@@ -21,7 +21,6 @@ function SvgCheckAll({
       <Path
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={1.5}
         d="m7.6 15.9-1.3 1.3-4.7-4.7M16.7 6.8 10.5 13M22.1 6.8 11.6 17.2l-4.7-4.7"
       />
     </Svg>

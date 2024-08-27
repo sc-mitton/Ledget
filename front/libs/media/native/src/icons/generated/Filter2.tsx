@@ -21,7 +21,6 @@ function SvgFilter2({
       <Path
         strokeLinecap="round"
         strokeMiterlimit={10}
-        strokeWidth={1.5}
         d="M6 12.7h13M2.9 7h19.2M9.2 18.5h6.6"
       />
     </Svg>

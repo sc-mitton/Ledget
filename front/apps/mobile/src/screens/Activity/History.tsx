@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { ChevronRight } from 'geist-native-icons';
-import { useForm, Control, Controller } from 'react-hook-form';
+import { useForm, Controller, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import dayjs from 'dayjs';
@@ -36,7 +36,7 @@ import { ModalScreenProps } from '@types';
 import { EmptyBox } from '@ledget/media/native';
 
 const schema = z.object({
-  date: z.array(z.number()),
+  date: z.array(z.number()).transform(value => value.map(i => i / 1000)),
   amount: z.object({
     min: z.number(),
     max: z.number()
@@ -45,10 +45,10 @@ const schema = z.object({
   bill: z.string(),
   account: z.string(),
   merchant: z.string()
-});
+})
 
 const Filter = ({ showFilters }: { showFilters: React.Dispatch<React.SetStateAction<boolean>> }) => {
-  const { control, handleSubmit, setValue } = useForm<z.infer<typeof schema>>({
+  const { control, handleSubmit } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema)
   });
 
@@ -59,35 +59,38 @@ const Filter = ({ showFilters }: { showFilters: React.Dispatch<React.SetStateAct
   }
 
   return (
-    <View>
-      <View style={styles.filtersHeader}>
-        <Header2>Filters</Header2>
-        {/* 1. Date
+    <View style={styles.filtersForm}>
+      {/*
         2. Amount
         3. Category
         5. Bill
         6. Account
         7. Merchant */}
-        <Controller
-          control={control}
-          name='date'
-          render={({ field: { onChange, value } }) => (
-            <DatePicker
-              pickerType='range'
-              mode='date'
-              format='MM/DD/YYYY'
-              label='Date'
-              placeholder={['Start Date', 'End Date']}
-              onChange={(value) => {
-                const v = value?.map(i => i?.valueOf());
-                onChange(v);
-              }}
-            />
-          )}
-        />
+      <View style={styles.formHeader}>
+        <Text variant='semiBold' fontSize={17}>Filters</Text>
       </View>
+      <Controller
+        control={control}
+        name='date'
+        render={({ field: { onChange, value } }) => (
+          <DatePicker
+            pickerType='range'
+            mode='date'
+            format='MM/DD/YYYY'
+            label='Date'
+            disabled={[
+              [undefined, dayjs()],
+              [undefined, dayjs()]
+            ]}
+            placeholder={['Start Date', 'End Date']}
+            onChange={(value) => {
+              const v = value?.map(i => i?.valueOf());
+              onChange(v);
+            }}
+          />
+        )}
+      />
       <Button variant='main' label='Save' onPress={onSubmit} />
-      <Button variant='borderedGrayMain' label='Cancel' onPress={() => showFilters(false)} />
     </View>
   )
 }

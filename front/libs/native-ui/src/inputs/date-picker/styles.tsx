@@ -1,10 +1,20 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    width: '100%',
+    flexDirection: 'column',
+    marginTop: 4
+  },
   textInput: {
     fontFamily: 'SourceSans3Regular',
     fontSize: 16,
     width: '100%',
+    flex: 1,
+    flexGrow: 1,
+  },
+  rightTextInput: {
+    paddingLeft: 32,
   },
   textInputLabelContainer: {
     gap: 4,
@@ -24,6 +34,29 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     position: 'relative',
     gap: 4,
+    overflow: 'hidden',
+  },
+  bottomBorderIndicator: {
+    position: 'absolute',
+    bottom: -2,
+    left: 0
+  },
+  bottomBorderIndicatorBar: {
+    height: 5,
+    borderRadius: 4,
+  },
+  middleIconContainer: {
+    position: 'absolute',
+    left: '52%',
+    top: '65%',
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  middleIcon: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
   }
 });
 

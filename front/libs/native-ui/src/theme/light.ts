@@ -113,7 +113,7 @@ export const lightTheme = createTheme({
     activeText: palette.blueSat,
     blueText: palette.blueSat,
     greenText: palette.greenText,
-    placeholderText: palette.offBlack2,
+    placeholderText: palette.offBlack3,
     buttonLabel: palette.offBlack,
 
     // Buttons
@@ -178,6 +178,10 @@ export const lightTheme = createTheme({
       fontFamily: 'SourceSans3SemiBold',
       color: 'highContrastText',
     },
+    semiBold: {
+      fontFamily: 'SourceSans3SemiBold',
+      color: 'mainText',
+    },
     header: {
       fontSize: 28,
       lineHeight: 32,
@@ -221,6 +225,7 @@ export const lightTheme = createTheme({
     label: {
       marginLeft: 'xs',
       fontFamily: 'SourceSans3Medium',
+      color: 'secondaryText',
     },
     defaults: {
       fontSize: 16,
@@ -297,8 +302,8 @@ export const lightTheme = createTheme({
       marginHorizontal: 'xxs',
       alignItems: 'center',
       justifyContent: 'center',
-      // borderWidth: 1.5,
-      // borderColor: 'borderedGrayButton',
+      borderWidth: 1.5,
+      borderColor: 'borderedGrayButton',
       color: 'secondaryText',
     },
     blueBorderedMain: {
