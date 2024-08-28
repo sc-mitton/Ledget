@@ -2,21 +2,17 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   mainContainer: {
-    left: '50%',
-    top: '50%',
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'absolute',
-    width: 20,
-    height: 20,
+    position: 'absolute'
   },
   androidContainer: {
-    position: 'absolute',
-    left: '-50%',
+    position: 'absolute'
   },
   iosContainer: {
     position: 'absolute',
-    left: '-50%',
+    left: '50%',
+    top: '50%',
   },
   ringContainer: {
     alignItems: 'center',

@@ -1,4 +1,5 @@
 import { createTheme } from '@shopify/restyle';
+import { Platform } from 'react-native';
 import basePalette from './base-palette';
 
 const grayH = 240;
@@ -186,7 +187,7 @@ export const lightTheme = createTheme({
       fontSize: 28,
       lineHeight: 32,
       marginVertical: 's',
-      marginLeft: 's',
+      marginLeft: 'xs',
       marginBottom: 'xs',
       fontFamily: 'SourceSans3SemiBold',
     },
@@ -243,7 +244,8 @@ export const lightTheme = createTheme({
   },
   buttonVariants: {
     main: {
-      padding: 'm',
+      paddingHorizontal: 'm',
+      paddingVertical: Platform.OS === 'ios' ? 'm' : 'l',
       marginVertical: 's',
       borderRadius: 12,
       gap: 's',
@@ -256,7 +258,8 @@ export const lightTheme = createTheme({
       // borderColor: 'blueButtonBorder',
     },
     blueMain2: {
-      padding: 'm',
+      paddingHorizontal: 'm',
+      paddingVertical: Platform.OS === 'ios' ? 'm' : 'l',
       marginVertical: 's',
       borderRadius: 12,
       gap: 's',
@@ -269,7 +272,8 @@ export const lightTheme = createTheme({
       color: 'blueText',
     },
     grayMain: {
-      padding: 'm',
+      paddingHorizontal: 'm',
+      paddingVertical: Platform.OS === 'ios' ? 'm' : 'l',
       marginVertical: 's',
       borderRadius: 12,
       gap: 's',
@@ -282,7 +286,8 @@ export const lightTheme = createTheme({
       // borderColor: 'grayButtonBorder',
     },
     mediumGrayMain: {
-      padding: 'm',
+      paddingHorizontal: 'm',
+      paddingVertical: Platform.OS === 'ios' ? 'm' : 'l',
       marginVertical: 's',
       borderRadius: 12,
       gap: 's',
@@ -295,7 +300,8 @@ export const lightTheme = createTheme({
       borderColor: 'mediumGrayButtonBorder',
     },
     borderedGrayMain: {
-      padding: 'm',
+      paddingHorizontal: 'm',
+      paddingVertical: Platform.OS === 'ios' ? 'm' : 'l',
       marginVertical: 's',
       borderRadius: 12,
       gap: 's',
@@ -307,7 +313,8 @@ export const lightTheme = createTheme({
       color: 'secondaryText',
     },
     blueBorderedMain: {
-      padding: 'm',
+      paddingHorizontal: 'm',
+      paddingVertical: Platform.OS === 'ios' ? 'm' : 'l',
       borderRadius: 12,
       marginHorizontal: 'xxs',
       alignItems: 'center',
@@ -321,8 +328,8 @@ export const lightTheme = createTheme({
       borderRadius: 16,
       alignItems: 'center',
       justifyContent: 'center',
-      // borderWidth: 1.5,
-      // borderColor: 'darkerseperator',
+      borderWidth: 1.5,
+      borderColor: 'darkerseperator',
       flexDirection: 'row',
     },
     grayLinkButton: {
