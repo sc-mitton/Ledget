@@ -1,17 +1,37 @@
 import { Provider as ReduxProvider } from 'react-redux';
+import { Appearance } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { EventProvider } from 'react-native-outside-press';
 import { PersistGate } from "redux-persist/integration/react";
 
-import { ThemeProvider as RestyleThemeProvider } from '@ledget/native-ui';
-import { useAppearance } from '@features/appearanceSlice';
+import { ThemeProvider as RestyleThemeProvider, ModalPickerContextProvider } from '@ledget/native-ui';
+import { useAppearance, setDeviceMode } from '@features/appearanceSlice';
 import store, { persistor } from '@features/store';
+import { useAppDispatch } from '@/hooks';
+import { useEffect } from 'react';
 
-const ThemeProvider = ({ children }: { children: ({ mode }: { mode: 'light' | 'dark' }) => React.ReactNode }) => {
+const ThemeProvider = ({ children }: { children: (({ mode }: { mode: 'light' | 'dark' }) => React.ReactNode) | React.ReactNode }) => {
   const { mode } = useAppearance();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    Appearance.setColorScheme(mode);
+  }, [mode]);
+
+  useEffect(() => {
+    const appearanceListener = () => {
+      const newDeviceMode = Appearance.getColorScheme() || "light";
+      dispatch(setDeviceMode(newDeviceMode));
+    };
+    dispatch(setDeviceMode(Appearance.getColorScheme() || "light"));
+
+    const listener = Appearance.addChangeListener(appearanceListener);
+    return () => listener.remove();
+  }, []);
+
   return (
     <RestyleThemeProvider mode={mode}>
-      {children({ mode })}
+      {typeof children === 'function' ? children({ mode }) : children}
     </RestyleThemeProvider>
   )
 }
@@ -21,11 +41,11 @@ export const withProviders = (App: React.FC) => () => (
     <PersistGate persistor={persistor}>
       <EventProvider>
         <ThemeProvider>
-          {({ mode }) => (
-            <GestureHandlerRootView>
+          <GestureHandlerRootView>
+            <ModalPickerContextProvider>
               <App />
-            </GestureHandlerRootView>
-          )}
+            </ModalPickerContextProvider>
+          </GestureHandlerRootView>
         </ThemeProvider>
       </EventProvider>
     </PersistGate>

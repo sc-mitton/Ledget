@@ -71,8 +71,14 @@ export default StyleSheet.create({
     flexDirection: 'row',
     gap: 8,
   },
+  scrollFilterFormWrapper: {
+    flexGrow: 1,
+    minHeight: '100%',
+  },
   filtersForm: {
     marginTop: 16,
+    flexGrow: 1,
+    minHeight: '100%',
   },
   formHeader: {
     marginLeft: 4,

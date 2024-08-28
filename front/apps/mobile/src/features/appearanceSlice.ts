@@ -1,6 +1,9 @@
+import { useEffect } from 'react';
 import { Appearance } from "react-native";
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { useAppSelector } from "@/hooks";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ThemeProvider as RestyleThemeProvider } from '@ledget/native-ui';
+
+import { useAppSelector, useAppDispatch } from "@/hooks";
 
 type Mode = "light" | "dark";
 
@@ -27,35 +30,27 @@ export const appearanceslice = createSlice({
     },
     setCustomMode: (state, action: PayloadAction<Mode>) => {
       state.customMode = action.payload
+      if (!state.useDeviceAppearance) {
+        state.mode = action.payload
+      }
     },
     setUseDeviceApperance: (state, action: PayloadAction<boolean>) => {
       state.useDeviceAppearance = action.payload
     },
     setDeviceMode: (state, action: PayloadAction<Mode>) => {
       state.deviceMode = action.payload
+      if (state.useDeviceAppearance) {
+        state.mode = action.payload
+      }
     }
   },
 });
 
 export const { setMode, setCustomMode, setDeviceMode, setUseDeviceApperance } = appearanceslice.actions;
 
-export const monitorAppearanceChanges = createAsyncThunk(
-  "appearance/monitorAppearanceChanges",
-  async (_, { dispatch }) => {
-    const appearanceListener = () => {
-      const newDeviceMode = Appearance.getColorScheme() || "light";
-      dispatch(setDeviceMode(newDeviceMode));
-    };
-
-    const listener = Appearance.addChangeListener(appearanceListener);
-
-    return () => listener.remove();
-  }
-);
-
 const selectMode = (state: { appearance: ThemeState, [key: string]: any }) => {
   if (state.appearance.useDeviceAppearance) {
-    return state.appearance.mode;
+    return state.appearance.deviceMode;
   } else {
     return state.appearance.customMode;
   }

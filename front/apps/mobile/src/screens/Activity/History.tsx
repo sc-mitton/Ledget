@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { ChevronRight } from 'geist-native-icons';
-import { useForm, Controller, useWatch } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import dayjs from 'dayjs';
@@ -19,8 +19,7 @@ import {
   Seperator,
   Spinner,
   Button,
-  Header2,
-  TextInput,
+  MoneyInput,
   DatePicker
 } from '@ledget/native-ui';
 import {
@@ -31,9 +30,10 @@ import {
 } from '@ledget/shared-features';
 import { useAppearance } from '@features/appearanceSlice';
 import { formatDateOrRelativeDate } from '@ledget/helpers';
-import { useAppSelector, useAppDispatch } from '@hooks';
+import { useAppSelector } from '@hooks';
 import { ModalScreenProps } from '@types';
 import { EmptyBox } from '@ledget/media/native';
+import { BillCatSelect } from '@components';
 
 const schema = z.object({
   date: z.array(z.number()).transform(value => value.map(i => i / 1000)),
@@ -41,8 +41,7 @@ const schema = z.object({
     min: z.number(),
     max: z.number()
   }),
-  category: z.array(z.string()),
-  bill: z.string(),
+  billCategories: z.array(z.string()),
   account: z.string(),
   merchant: z.string()
 })
@@ -51,6 +50,7 @@ const Filter = ({ showFilters }: { showFilters: React.Dispatch<React.SetStateAct
   const { control, handleSubmit } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema)
   });
+  const { mode } = useAppearance();
 
   const onSubmit = () => {
     handleSubmit(data => {
@@ -61,9 +61,6 @@ const Filter = ({ showFilters }: { showFilters: React.Dispatch<React.SetStateAct
   return (
     <View style={styles.filtersForm}>
       {/*
-        2. Amount
-        3. Category
-        5. Bill
         6. Account
         7. Merchant */}
       <View style={styles.formHeader}>
@@ -78,6 +75,7 @@ const Filter = ({ showFilters }: { showFilters: React.Dispatch<React.SetStateAct
             mode='date'
             format='MM/DD/YYYY'
             label='Date'
+            theme={mode === 'dark' ? 'dark' : 'light'}
             disabled={[
               [undefined, dayjs()],
               [undefined, dayjs()]
@@ -88,6 +86,25 @@ const Filter = ({ showFilters }: { showFilters: React.Dispatch<React.SetStateAct
               onChange(v);
             }}
           />
+        )}
+      />
+      <Controller
+        control={control}
+        name='amount'
+        render={({ field: { onChange, value } }) => (
+          <MoneyInput
+            inputType='range'
+            label='Amount'
+            onChange={onChange}
+            accuracy={2}
+          />
+        )}
+      />
+      <Controller
+        control={control}
+        name='billCategories'
+        render={({ field: { onChange, value } }) => (
+          <BillCatSelect multiple onChange={onChange} />
         )}
       />
       <Button variant='main' label='Save' onPress={onSubmit} />

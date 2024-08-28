@@ -8,7 +8,7 @@ import { Text } from '../../restyled/Text';
 /* eslint-disable-next-line */
 export interface BillCatLabelProps extends TouchableOpacityProps {
   name: string;
-  emoji: string | null
+  emoji?: string | null;
   period: 'month' | 'year' | 'once';
 }
 

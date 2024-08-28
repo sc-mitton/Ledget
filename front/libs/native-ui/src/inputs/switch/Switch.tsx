@@ -23,7 +23,9 @@ export const Switch = (props: SwitchProps & { label: string }) => {
           circleBorderWidth={0}
           switchWidthMultiplier={2.25}
           outerCircleStyle={{
-            shadowColor: rest.value ? theme.colors.activeSwitchShadow : theme.colors.disabledSwitchShadow,
+            shadowColor: rest.value
+              ? rest.disabled ? theme.colors.disabledSwitchShadow : theme.colors.activeSwitchShadow
+              : theme.colors.disabledSwitchShadow,
             shadowOffset: { width: 0, height: 1 },
             shadowOpacity: 1,
             shadowRadius: 2,

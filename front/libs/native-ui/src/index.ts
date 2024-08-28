@@ -1,4 +1,8 @@
 
+export * from './inputs/modal-picker/ModalPicker';
+
+export * from './inputs/money-input/MoneyInput';
+
 export * from './inputs/date-picker/DatePicker';
 
 export * from './menus/context-menu/ContextMenu';

@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import NativeDatePicker from 'react-native-date-picker'
-import { View, TextInput as ReactNativeTextInput, NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
+import { View, NativeSyntheticEvent, TextInputFocusEventData, TouchableOpacity } from 'react-native';
 import { useTheme } from '@shopify/restyle';
 import dayjs, { Dayjs } from 'dayjs';
 import Animated, { withSpring, useSharedValue, useAnimatedStyle } from 'react-native-reanimated';
@@ -11,6 +11,7 @@ import { HalfArrow } from '@ledget/media/native';
 import { InputLabel } from '../../restyled/Text';
 import { Box } from '../../restyled/Box';
 import { Icon } from '../../restyled/Icon';
+import { Text } from '../../restyled/Text';
 import { TPicker, DatePickerProps } from './types';
 import { defaultSpringConfig } from '../../animated/configs/configs';
 
@@ -22,9 +23,6 @@ export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<P
   );
   const [pickerWidth, setPickerWidth] = React.useState(0);
   const [index, setIndex] = React.useState<number>();
-  const theme = useTheme();
-  const input1 = useRef<ReactNativeTextInput>(null);
-  const input2 = useRef<ReactNativeTextInput>(null);
   const bottomIndicatorOpacity = useSharedValue(0);
   const bottomIndicatorX = useSharedValue(0);
 
@@ -78,14 +76,20 @@ export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<P
             borderWidth={1.5}
             style={styles.textInputContainer1}
           >
-            <ReactNativeTextInput
-              ref={input1}
-              onFocus={() => setIndex(0)}
-              value={Array.isArray(value) ? value[0]?.format(props.format) : value?.format(props.format)}
-              placeholder={props.pickerType === 'range' ? props.placeholder?.[0] : props.placeholder}
-              placeholderTextColor={theme.colors.placeholderText}
-              style={[{ ...styles.textInput, color: theme.colors.mainText }]}
-            />
+            <TouchableOpacity
+              onPress={() => setIndex(0)}
+              style={styles.textInput}
+              activeOpacity={.7}
+            >
+              <Text
+                selectable={false}
+                color={Array.isArray(value) ? value[0] ? 'mainText' : 'placeholderText' : value ? 'mainText' : 'placeholderText'}
+              >
+                {Array.isArray(value)
+                  ? value[0]?.format(props.format) || `${props.placeholder?.[0]}`
+                  : value?.format(props.format) || `${props.placeholder}`}
+              </Text>
+            </TouchableOpacity>
             {props.pickerType === 'range' &&
               <>
                 <View style={styles.middleIconContainer}>
@@ -102,14 +106,20 @@ export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<P
                     />
                   </View>
                 </View>
-                <ReactNativeTextInput
-                  ref={input2}
-                  onFocus={() => setIndex(1)}
-                  value={Array.isArray(value) ? value[1]?.format(props.format) : ''}
-                  placeholder={props.placeholder?.[1]}
-                  placeholderTextColor={theme.colors.placeholderText}
-                  style={[{ color: theme.colors.mainText }, styles.rightTextInput, styles.textInput]}
-                />
+                <TouchableOpacity
+                  onPress={() => setIndex(1)}
+                  style={styles.textInput}
+                  activeOpacity={.7}
+                >
+                  <Text
+                    selectable={false}
+                    color={Array.isArray(value) ? value[1] ? 'mainText' : 'placeholderText' : value ? 'mainText' : 'placeholderText'}
+                  >
+                    {Array.isArray(value)
+                      ? value[1]?.format(props.format) || `${props.placeholder?.[1]}`
+                      : value?.format(props.format) || `${props.placeholder}`}
+                  </Text>
+                </TouchableOpacity>
               </>
             }
             <Animated.View style={[bottomIndicatorStyle, styles.bottomBorderIndicator]}>
@@ -146,14 +156,12 @@ export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<P
           const d = dayjs(date.toISOString());
           if (Array.isArray(value)) {
             setValue([d, value[0]]);
-            value?.[1] ? input1.current?.blur() : input2.current?.focus();
-            value?.[0] ? setIndex(undefined) : setIndex(1);
+            value?.[1] ? setIndex(undefined) : setIndex(1);
           } else {
             setValue(d);
           }
         }}
         onCancel={() => {
-          input1.current?.blur();
           setIndex(undefined);
         }}
       />
@@ -177,11 +185,9 @@ export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<P
           onConfirm={(date) => {
             const d = dayjs(date.toISOString());
             setValue([value[0], d]);
-            value?.[0] ? input2.current?.blur() : input1.current?.focus();
             value?.[0] ? setIndex(undefined) : setIndex(0);
           }}
           onCancel={() => {
-            input1.current?.blur();
             setIndex(undefined);
           }}
         />

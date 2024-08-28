@@ -26,6 +26,9 @@
       "@hooks": [
         "src/hooks/index.ts"
       ],
+      "@components": [
+        "src/components/index.ts"
+      ],
       "@modals": [
         "src/modals/index.ts"
       ],

@@ -20,10 +20,15 @@ type Error = {
   type?: string
 }
 
-export const TextInput = forwardRef<ReactNativeTextInput, TextInputProps & { label?: string, error?: Error }>((props, ref) => {
-  const { children, style, label, onBlur, error, ...rest } = props
-  const [focused, setFocused] = useState(false)
-  const theme = useTheme()
+interface TextInputBaseProps {
+  label?: string,
+  error?: Error,
+  focused?: boolean,
+  children: React.ReactNode,
+}
+
+export const TextInputbase = (props: TextInputBaseProps) => {
+  const { label, error, focused, children } = props
 
   return (
     <Box style={styles.textInputLabelContainer}>
@@ -39,25 +44,37 @@ export const TextInput = forwardRef<ReactNativeTextInput, TextInputProps & { lab
           borderWidth={1.5}
           style={styles.textInputContainer1}
         >
-          <ReactNativeTextInput
-            onFocus={() => setFocused(true)}
-            onBlur={(e: NativeSyntheticEvent<TextInputFocusEventData>) => {
-              onBlur && onBlur(e);
-              setFocused(false);
-            }}
-            placeholderTextColor={theme.colors.placeholderText}
-            style={[
-              {
-                ...styles.textInput,
-                color: theme.colors.mainText
-              },
-              style
-            ]}
-            {...rest} />
           {children}
         </Box>
       </Box>
     </Box>
+  )
+}
+
+export const TextInput = forwardRef<ReactNativeTextInput, TextInputProps & { label?: string, error?: Error }>((props, ref) => {
+  const { children, style, label, onBlur, error, ...rest } = props
+  const [focused, setFocused] = useState(false)
+  const theme = useTheme()
+
+  return (
+    <TextInputbase label={label} error={error} focused={focused}>
+      <ReactNativeTextInput
+        onFocus={() => setFocused(true)}
+        onBlur={(e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+          onBlur && onBlur(e);
+          setFocused(false);
+        }}
+        placeholderTextColor={theme.colors.placeholderText}
+        style={[
+          {
+            ...styles.textInput,
+            color: theme.colors.mainText
+          },
+          style
+        ]}
+        {...rest} />
+      {children}
+    </TextInputbase>
   )
 })
 
