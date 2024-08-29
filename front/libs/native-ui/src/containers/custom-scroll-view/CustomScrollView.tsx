@@ -23,6 +23,7 @@ export const CustomScrollView = forwardRef<ScrollView, ScrollViewProps>((props, 
     onScroll,
     showsVerticalScrollIndicator = true
   } = props;
+  const { style, ...rest } = props;
 
   const theme = useTheme();
 
@@ -41,9 +42,9 @@ export const CustomScrollView = forwardRef<ScrollView, ScrollViewProps>((props, 
   const difference = state.visibleHeight > indicatorSize ? state.visibleHeight - indicatorSize : 1
 
   return (
-    <View >
+    <View style={[styles.container, style]}>
       <ScrollView
-        {...props}
+        {...rest}
         showsVerticalScrollIndicator={false}
         onContentSizeChange={(width, height) => {
           onContentSizeChange && onContentSizeChange(width, height);
@@ -81,7 +82,7 @@ export const CustomScrollView = forwardRef<ScrollView, ScrollViewProps>((props, 
             {
               height: indicatorSize,
               opacity,
-              backgroundColor: theme.colors.darkerseperator,
+              backgroundColor: theme.colors.scrollbar,
               transform: [{ translateY: y }]
             }]}
         />}

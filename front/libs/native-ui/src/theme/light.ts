@@ -69,17 +69,17 @@ export const lightTheme = createTheme({
     accountsMainBackground: palette.gray100,
     androidbottomNavBackground: palette.gray200,
     bottomNavBackground: palette.gray400,
-    inputBackground: palette.gray200,
+    inputBackground: palette.gray250,
     nestedContainer: palette.white,
     avatar: palette.gray500,
     modalOverlay: palette.gray900.replace(`${grayS}`, '0'),
     modalBox: palette.gray150,
     modalBox100: palette.gray100,
-    newTransaction: palette.gray200,
+    newTransaction: palette.gray250,
     contextMenu: palette.gray100,
 
     // Borders
-    inputBorder: palette.gray250,
+    inputBorder: palette.gray300,
     inputBorderErrorSecondary: palette.mutedRed,
     inputBorderErrorMain: palette.red,
     focusedInputBorderSecondary: palette.blue100,
@@ -88,12 +88,12 @@ export const lightTheme = createTheme({
     bottomNavBorder: palette.gray500,
     nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 95%)`,
     tabNavBorder: palette.gray250,
-    newTransactionBorder: palette.gray250,
+    newTransactionBorder: palette.gray300,
     contextMenuBorder: palette.gray200,
 
     // Shadows
     navShadow: palette.gray300,
-    modalShadow: 'transparent',
+    modalShadow: palette.gray800.replace(`${grayS}`, '0'),
     tabsShadow: palette.gray300,
     activeIcon: palette.blueSat,
     activeSwitchShadow: 'hsl(144, 70%, 50%)',
@@ -136,10 +136,10 @@ export const lightTheme = createTheme({
     dragBar: palette.gray500,
 
     // Category and Bill Colors
-    monthBackground: `hsl(${blueH}, 50%, 90%)`,
-    monthColor: `hsl(${blueH}, 80%, 60%)`,
-    yearBackground: `hsl(${greenH}, 50%, 90%)`,
-    yearColor: `hsl(${greenH}, 80%, 60%)`,
+    monthBackground: `hsl(${blueH}, 50%, 88%)`,
+    monthColor: `hsl(${blueH}, 80%, 58%)`,
+    yearBackground: `hsl(${greenH}, 50%, 88%)`,
+    yearColor: `hsl(${greenH}, 80%, 58%)`,
 
     // Switch
     enabledSwitchPill: palette.gray100,
@@ -157,6 +157,7 @@ export const lightTheme = createTheme({
     alert: palette.red,
     pulseWaiting: palette.gray300,
     pulseGreen: palette.successGreenFaint,
+    scrollbar: palette.gray250,
 
     // Icons
     successIcon: palette.successGreen,

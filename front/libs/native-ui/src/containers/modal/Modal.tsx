@@ -24,9 +24,11 @@ const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([backgroun
 
 export interface ModalProps extends RestyleProps {
   children: React.ReactNode;
-  position?: 'bottom' | 'top' | 'float',
+  position?: 'bottom' | 'top' | 'bottomFloat';
   hasExitButton?: boolean
   hasOverlayExit?: boolean
+  onClose?: () => void
+  hasOverlay?: boolean
 }
 
 export function Modal(props: ModalProps) {
@@ -34,7 +36,9 @@ export function Modal(props: ModalProps) {
     position = 'bottom',
     hasExitButton = true,
     hasOverlayExit = true,
+    hasOverlay = false,
     children,
+    onClose,
     ...rest
   } = props;
 
@@ -86,15 +90,31 @@ export function Modal(props: ModalProps) {
   return (
     <>
       <Pressable
-        onPress={() => hasOverlayExit && navigation.goBack()}
+        onPress={() => hasOverlayExit && onClose ? onClose() : navigation.goBack()}
         style={StyleSheet.absoluteFillObject}
       />
+      {hasOverlay &&
+        <Pressable
+          onPress={() => hasOverlayExit && onClose ? onClose() : navigation.goBack()}
+          style={StyleSheet.absoluteFillObject}
+        >
+          <Box
+            backgroundColor='modalOverlay'
+            style={[StyleSheet.absoluteFillObject, styles.overlay]}
+          />
+        </Pressable>}
       <Box
         style={[styles[`${position}Modal`], (restyleProps as any).style[0]]}
         backgroundColor={'modalBox'}
+        {...(hasOverlay ? {
+          shadowColor: 'modalShadow',
+          shadowOffset: { width: 0, height: 4 },
+          shadowOpacity: 1,
+          shadowRadius: 12,
+        } : {})}
       >
         {hasExitButton && <View style={styles.closeButton}>
-          <Button onPress={() => navigation.goBack()} variant='circleButton' >
+          <Button onPress={() => onClose ? onClose() : navigation.goBack()} variant='circleButton' >
             <Icon icon={X} size={20} color='secondaryText' />
           </Button>
         </View>}

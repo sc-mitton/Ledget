@@ -3,12 +3,21 @@ import { Appearance } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { EventProvider } from 'react-native-outside-press';
 import { PersistGate } from "redux-persist/integration/react";
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 
 import { ThemeProvider as RestyleThemeProvider, ModalPickerContextProvider } from '@ledget/native-ui';
 import { useAppearance, setDeviceMode } from '@features/appearanceSlice';
 import store, { persistor } from '@features/store';
 import { useAppDispatch } from '@/hooks';
 import { useEffect } from 'react';
+
+const navTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: 'transparent'
+  }
+};
 
 const ThemeProvider = ({ children }: { children: (({ mode }: { mode: 'light' | 'dark' }) => React.ReactNode) | React.ReactNode }) => {
   const { mode } = useAppearance();
@@ -46,9 +55,11 @@ export const withProviders = (App: React.FC) => () => (
       <EventProvider>
         <ThemeProvider>
           <GestureHandlerRootView>
-            <ModalPickerContextProvider>
-              <App />
-            </ModalPickerContextProvider>
+            <NavigationContainer theme={navTheme}>
+              <ModalPickerContextProvider>
+                <App />
+              </ModalPickerContextProvider>
+            </NavigationContainer>
           </GestureHandlerRootView>
         </ThemeProvider>
       </EventProvider>

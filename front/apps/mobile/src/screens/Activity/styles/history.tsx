@@ -1,6 +1,9 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
+  animatedView: {
+    flex: 1,
+  },
   scrollView: {
     paddingTop: 16,
     paddingRight: 8,
@@ -47,7 +50,6 @@ export default StyleSheet.create({
   },
   emptyBoxGraphic: {
     flex: 1,
-    marginTop: 48,
     justifyContent: 'center',
     alignItems: 'center',
   },

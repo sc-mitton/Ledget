@@ -29,7 +29,7 @@ const Device = ({ device, info }: { device: string; info: TDevice[] }) => {
         </View>
         <View style={styles.location}>
           <View style={styles.locationIcon}>
-            <Icon icon={MapPin2} size={12} strokeWidth={40} color='secondaryText' />
+            <Icon icon={MapPin2} size={12} strokeWidth={3} color='secondaryText' />
           </View>
           <Text fontSize={14} color='secondaryText' >
             {device.split(',')[2] === undefined

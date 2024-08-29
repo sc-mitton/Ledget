@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { StatusBar } from 'expo-status-bar';
 import { Platform } from 'react-native';
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from '@hooks';
 import { selectEnvironment, setEnvironment } from '@ledget/shared-features';
 import { useTheme } from '@shopify/restyle';
@@ -40,14 +39,6 @@ export const storage = new MMKV();
 const RootStack = createStackNavigator<RootStackParamList>();
 
 SplashScreen.preventAutoHideAsync();
-
-const navTheme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    background: 'transparent'
-  }
-};
 
 const useAuthLogic = () => {
   const dispatch = useAppDispatch();
@@ -159,26 +150,24 @@ export const App = withProviders(() => {
       onLayout={onLayoutRootView}
       style={styles.root}>
       <StatusBar style={appearance.mode === 'dark' ? 'light' : 'dark'} />
-      <NavigationContainer theme={navTheme}>
-        {continueToMainApp
-          ?
-          <RootStack.Navigator>
-            <RootStack.Group screenOptions={{ headerShown: false }}>
-              <RootStack.Screen name='BottomTabs' component={BottomTabScreens} />
-            </RootStack.Group>
-            <RootStack.Group
-              screenOptions={{
-                presentation: 'transparentModal',
-                cardStyleInterpolator: modalStyleInterpolator,
-                headerShown: false,
-                cardOverlayEnabled: true,
-              }}>
-              <RootStack.Screen name='Modals' component={ModalScreens} />
-            </RootStack.Group>
-          </RootStack.Navigator>
-          :
-          <Authentication />}
-      </NavigationContainer>
+      {continueToMainApp
+        ?
+        <RootStack.Navigator>
+          <RootStack.Group screenOptions={{ headerShown: false }}>
+            <RootStack.Screen name='BottomTabs' component={BottomTabScreens} />
+          </RootStack.Group>
+          <RootStack.Group
+            screenOptions={{
+              presentation: 'transparentModal',
+              cardStyleInterpolator: modalStyleInterpolator,
+              headerShown: false,
+              cardOverlayEnabled: true,
+            }}>
+            <RootStack.Screen name='Modals' component={ModalScreens} />
+          </RootStack.Group>
+        </RootStack.Navigator>
+        :
+        <Authentication />}
     </Box>
   );
 });

@@ -234,10 +234,10 @@ const History = (props: ModalScreenProps<'Activity'>) => {
       onClose={() => props.navigation.goBack()}>
       {/* {showFilters */}
       {true
-        ? <Animated.View exiting={FadeOut} entering={FadeIn}>
+        ? <Animated.View exiting={FadeOut} entering={FadeIn} style={styles.animatedView}>
           <Filter showFilters={setShowFilters} />
         </Animated.View>
-        : <Animated.View exiting={FadeOut} entering={FadeIn}>
+        : <Animated.View exiting={FadeOut} entering={FadeIn} style={styles.animatedView}>
           <Transactions {...props} showFilters={setShowFilters} />
         </Animated.View>}
     </BottomDrawerModal.Content>

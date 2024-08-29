@@ -16,11 +16,11 @@ export default StyleSheet.create({
     borderTopRightRadius: 16,
     padding: 16,
   },
-  floatModal: {
+  bottomFloatModal: {
     position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
+    left: 16,
+    right: 16,
+    bottom: 48,
     borderRadius: 16,
     padding: 16,
   },
@@ -33,4 +33,7 @@ export default StyleSheet.create({
     borderBottomRightRadius: 16,
     padding: 16,
   },
+  overlay: {
+    opacity: 0.7,
+  }
 });

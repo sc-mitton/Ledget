@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
   textInput: {
     fontFamily: 'SourceSans3Regular',
     fontSize: 16,
-    width: '100%',
+    width: '100%'
   },
   textInputLabelContainer: {
     gap: 4,

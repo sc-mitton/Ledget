@@ -59,6 +59,7 @@ export const TextInput = forwardRef<ReactNativeTextInput, TextInputProps & { lab
   return (
     <TextInputbase label={label} error={error} focused={focused}>
       <ReactNativeTextInput
+        ref={ref}
         onFocus={() => setFocused(true)}
         onBlur={(e: NativeSyntheticEvent<TextInputFocusEventData>) => {
           onBlur && onBlur(e);

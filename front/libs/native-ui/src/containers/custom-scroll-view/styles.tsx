@@ -6,5 +6,8 @@ export default StyleSheet.create({
     width: 4,
     borderRadius: 12,
     right: 0,
+  },
+  container: {
+    flex: 1
   }
 });

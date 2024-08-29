@@ -120,8 +120,10 @@ export const UnstyledSpinner = ({ color }: { color?: string }) => {
 
 export const Spinner = (props: RestyleProps) => {
   const restyledProps = useRestyle(restyleFunctions, props);
-  const rawColor = (restyledProps as any).color
+  const rawColor = (restyledProps as any).style[0].color
   const theme = useTheme();
+
+  console.log('restyledProps', restyledProps);
 
   return <UnstyledSpinner color={rawColor || theme.colors['mainText']} />
 }

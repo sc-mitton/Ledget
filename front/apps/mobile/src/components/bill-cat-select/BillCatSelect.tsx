@@ -78,8 +78,12 @@ export const BillCatSelect = (props: BillCatSelectProps) => {
 
   return (
     <ModalPicker
+      searchable
       options={billCats}
       multiple={props.multiple}
+      header={items === 'all'
+        ? props.multiple ? 'Categories and Bills' : 'Category or Bill'
+        : items === 'bills' ? 'Bills' : 'Categories'}
       label={items === 'all'
         ? props.multiple ? 'Categories and Bills' : 'Category or Bill'
         : items === 'bills' ? 'Bills' : 'Categories'}

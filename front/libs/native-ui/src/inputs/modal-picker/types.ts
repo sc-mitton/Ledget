@@ -5,21 +5,7 @@ type Error = {
 
 export type PickerOption = {
   [key: string]: any;
-} | string | number;
-
-type TContextBase = {
-  options: PickerOption[];
-  setOptions: (options: PickerOption[]) => void;
-  multiple: boolean;
-  setMultiple: (value: boolean) => void;
-  openModal: boolean;
-  setOpenModal: (value: boolean) => void;
-}
-
-export type TContext<O extends PickerOption, TMultiple extends boolean> =
-  TMultiple extends true
-  ? { value?: O[]; setValue: (value: O[]) => void } & TContextBase
-  : { value?: O; setValue: (value: O) => void } & TContextBase;
+} | string;
 
 type BaseModalPickerProps<O extends PickerOption, TMultiple extends boolean> = {
   multiple?: TMultiple;
@@ -28,6 +14,9 @@ type BaseModalPickerProps<O extends PickerOption, TMultiple extends boolean> = {
   labelKey?: O extends { [key: string]: any } ? keyof O : never;
   error?: Error;
   label?: string;
+  searchable?: boolean;
+  header?: string
+  renderOption?: (option: O) => React.ReactNode;
 }
 
 export type ModalPickerProps<O extends PickerOption, TMultiple extends boolean> =
@@ -42,3 +31,27 @@ export type ModalPickerProps<O extends PickerOption, TMultiple extends boolean> 
     onChange?: (value: O) => void
     renderSelected?: (value?: O) => React.ReactNode;
   } & BaseModalPickerProps<O, TMultiple>;
+
+
+type TContextBase = {
+  options: PickerOption[];
+  setOptions: (options: PickerOption[]) => void;
+  multiple: boolean;
+  setMultiple: (value: boolean) => void;
+  openModal: boolean;
+  setOpenModal: (value: boolean) => void;
+  searchable: boolean;
+  setSearchable: (value: boolean) => void;
+  header?: string;
+  setHeader: (value?: string) => void;
+  labelKey?: string | number;
+  setLabelKey: (value: string | number) => void;
+  renderOption?: (option: PickerOption) => React.ReactNode;
+  setRenderOption: (value?: (option: PickerOption) => React.ReactNode) => void;
+}
+
+
+export type TContext<O extends PickerOption, TMultiple extends boolean> =
+  TMultiple extends true
+  ? { value?: O[]; setValue: (value: O[]) => void } & TContextBase
+  : { value?: O; setValue: (value: O) => void } & TContextBase;
