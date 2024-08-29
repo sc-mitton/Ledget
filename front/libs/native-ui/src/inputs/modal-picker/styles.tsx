@@ -47,15 +47,50 @@ export default StyleSheet.create({
   },
   option: {
     paddingVertical: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  selectedIcon: {
+    flexGrow: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingRight: 8,
+    opacity: .9
+  },
+  emptyScrollView: {
+    height: 250,
+    maxHeight: '80%',
+    paddingHorizontal: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   scrollView: {
     height: 250,
     maxHeight: '80%',
-    paddingHorizontal: 12,
+    paddingHorizontal: 6,
   },
   chevronIconContainer: {
     position: 'absolute',
-    right: -2,
+    right: -10,
     top: 2,
   },
+  modalOverlayContainer: {
+    zIndex: 1000,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+  },
+  modalOverlay: {
+    opacity: .7,
+    zIndex: 1000,
+  },
+  clearButton: {
+    marginTop: 8,
+    marginBottom: -16,
+    width: '100%',
+    flexDirection: 'row'
+  }
 });

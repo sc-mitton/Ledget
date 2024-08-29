@@ -1,24 +1,42 @@
+import { View } from 'react-native';
 
 import styles from './styles';
 import { Box } from '../../restyled/Box';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { TouchableOpacityProps } from 'react-native';
+import { TouchableOpacity, TouchableOpacityProps } from 'react-native';
 import { Text } from '../../restyled/Text';
 
 /* eslint-disable-next-line */
-export interface BillCatLabelProps extends TouchableOpacityProps {
-  name: string;
+
+interface BillCatEmojiProps {
   emoji?: string | null;
   period: 'month' | 'year' | 'once';
 }
+export interface BillCatLabelProps extends TouchableOpacityProps, BillCatEmojiProps {
+  name: string;
+}
 
+export function BillCatEmoji(props: BillCatEmojiProps) {
 
+  return (
+    <View style={styles.billCatEmojiContainer}>
+      <View style={styles.billCatEmoji}>
+        <Box
+          backgroundColor={props.period === 'year' ? 'yearBackground' : 'monthBackground'}
+          borderColor={props.period === 'year' ? 'yearBorder' : 'monthBorder'}
+          borderWidth={1.5}
+          style={styles.background}
+        />
+      </View>
+      <Text>{props.emoji}</Text>
+    </View>
+  )
+}
 
 export function BillCatLabel(props: BillCatLabelProps) {
   const { name, emoji, period, ...rest } = props;
 
   return (
-    <TouchableOpacity>
+    <TouchableOpacity {...rest}>
       <Box
         style={styles.billCatLabel}
         backgroundColor={period === 'year' ? 'yearBackground' : 'monthBackground'}>
@@ -34,6 +52,5 @@ export function BillCatLabel(props: BillCatLabelProps) {
     </TouchableOpacity>
   );
 }
-
 
 export default BillCatLabel;

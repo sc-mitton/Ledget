@@ -5,6 +5,7 @@ import {
   createSelector
 } from '@reduxjs/toolkit';
 import { PartialDeep } from 'type-fest';
+import dayjs from 'dayjs';
 
 import apiSlice from '../apiSlice/slice';
 import {
@@ -16,13 +17,16 @@ import {
   ConfirmTransactionParams,
   ConfirmedQueue,
   ConfirmStackInitialState,
-  RootStateWithTransactions
+  RootStateWithTransactions,
+  TransactionsFilter,
+  TransactionsFilterState
 } from './types';
 import { SplitCategory } from '../categorySlice/types';
 import { Bill } from '../billSlice/types';
 import {
   addTransaction2Cat,
-  addTransaction2Bill
+  addTransaction2Bill,
+  budgetItemMetaDataSlice
 } from '../budgetItemMetaDataSlice/slice';
 
 export const transactionSlice = apiSlice.injectEndpoints({
@@ -313,10 +317,18 @@ export const filteredFetchedConfirmedTransactions = createSlice({
   name: 'filteredFetchedonfirmedTransactions',
   initialState: {
     filtered: [],
-    filter: {}
-  } as { filtered: Transaction[]; filter: any },
+    unfiltered: [],
+    filter: {
+      date_range: [
+        // The app starts out with the current month and year being the focus.
+        // If the user moves through different months, the filter will be updated or over written.
+        dayjs().startOf('month').unix(),
+        dayjs().endOf('month').unix()
+      ]
+    }
+  } as TransactionsFilterState,
   reducers: {
-    setConfirmedTransactionFilter: (state, action: PayloadAction<any>) => {
+    setConfirmedTransactionFilter: (state, action: PayloadAction<TransactionsFilter>) => {
       state.filter = action.payload;
     },
     clearConfirmedTransactionFilter: (state) => {
@@ -324,17 +336,31 @@ export const filteredFetchedConfirmedTransactions = createSlice({
     }
   },
   extraReducers: (builder) => {
-    builder.addMatcher(
-      transactionSlice.endpoints.getTransactions.matchFulfilled,
-      (state, action) => {
-        if (
-          action.meta.arg.originalArgs.confirmed &&
-          !action.meta.arg.originalArgs.category
-        ) {
-          state.filtered = action.payload.results;
+    builder
+      .addCase(
+        budgetItemMetaDataSlice.actions.setBudgetMonthYear,
+        (state, action) => {
+          state.filter = {
+            ...state.filter,
+            date_range: [
+              dayjs(`${action.payload.year}-${action.payload.month}-01`).startOf('month').unix(),
+              dayjs(`${action.payload.year}-${action.payload.month}-01`).endOf('month').unix()
+            ]
+          };
         }
-      }
-    );
+      )
+      .addMatcher(
+        transactionSlice.endpoints.getTransactions.matchFulfilled,
+        (state, action) => {
+          if (
+            action.meta.arg.originalArgs.confirmed &&
+            !action.meta.arg.originalArgs.category
+          ) {
+            state.filtered = action.payload.results;
+            state.unfiltered = action.payload.results;
+          }
+        }
+      )
   }
 });
 
@@ -396,22 +422,11 @@ const selectUnconfirmed = (state: RootStateWithTransactions) =>
   state.confirmStack.unconfirmed;
 const selectConfirmedQue = (state: RootStateWithTransactions) =>
   state.confirmStack.confirmedQue;
-const selectDateYear = (
-  state: RootStateWithTransactions,
-  date: { year: number; month: number }
-) => date;
-const selectMonthYear = (
-  state: RootStateWithTransactions,
-  date: { year: number; month: number }
-) => date;
-export const selectFilteredFetchedConfirmedTransactions = (
-  state: RootStateWithTransactions
-) => state.filteredFetchedonfirmedTransactions.filtered;
-export const selectConfirmedTransactionFilter = (
-  state: RootStateWithTransactions
-) => state.filteredFetchedonfirmedTransactions.filter;
-export const selectConfirmedLength = (state: RootStateWithTransactions) =>
-  state.confirmStack.confirmedQue.length;
+const selectDateYear = (state: RootStateWithTransactions, date: { year: number; month: number }) => date;
+const selectMonthYear = (state: RootStateWithTransactions, date: { year: number; month: number }) => date;
+export const selectFilteredFetchedConfirmedTransactions = (state: RootStateWithTransactions) => state.filteredFetchedonfirmedTransactions.filtered;
+export const selectConfirmedTransactionFilter = (state: RootStateWithTransactions) => state.filteredFetchedonfirmedTransactions.filter;
+export const selectConfirmedLength = (state: RootStateWithTransactions) => state.confirmStack.confirmedQue.length;
 
 export const selectUnconfirmedTransactions = createSelector(
   [selectUnconfirmed, selectMonthYear],

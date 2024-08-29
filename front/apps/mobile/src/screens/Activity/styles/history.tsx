@@ -61,9 +61,6 @@ export default StyleSheet.create({
     marginRight: 4,
     justifyContent: 'flex-end'
   },
-  filterIcon: {
-    marginRight: 8
-  },
   filtersHeader: {
     flexDirection: 'row',
     justifyContent: 'center'
@@ -78,14 +75,28 @@ export default StyleSheet.create({
     minHeight: '100%',
   },
   filtersForm: {
-    marginTop: 16,
+    marginTop: 32,
     flexGrow: 1,
     minHeight: '100%',
+    position: 'relative'
   },
   formHeader: {
-    marginLeft: 4,
-    maxWidth: '66%',
-    marginBottom: 16,
-    marginTop: 12
+    marginTop: 12,
+    position: 'absolute',
+    left: '50%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  filterIcon: {
+    position: 'absolute',
+  },
+  accountOption: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  bottomButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    gap: 8,
   }
 });

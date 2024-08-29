@@ -113,9 +113,21 @@ export type ConfirmTransactionParams = {
 
 export type RootStateWithTransactions = {
   confirmStack: ConfirmStackInitialState;
-  filteredFetchedonfirmedTransactions: {
-    filtered: Transaction[];
-    filter: any;
-  };
+  filteredFetchedonfirmedTransactions: TransactionsFilterState;
   [key: string]: any;
+};
+
+export type TransactionsFilter = {
+  date_range?: number[];
+  limit_amount_lower?: number;
+  limit_amount_upper?: number;
+  items?: string[];
+  accounts?: string[];
+  merchants?: string[];
+}
+
+export type TransactionsFilterState = {
+  filter: TransactionsFilter;
+  filtered: Transaction[];
+  unfiltered: Transaction[];
 };

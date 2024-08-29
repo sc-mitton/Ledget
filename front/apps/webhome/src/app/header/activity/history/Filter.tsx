@@ -32,7 +32,7 @@ import { useAppDispatch, useAppSelector } from '@hooks/store';
 import { useGetStartEndQueryParams } from '@hooks/index';
 
 const filterSchema = z.object({
-  date_range: z.array(z.number()).optional(),
+  date_range: z.array(z.number().max(2)).optional(),
   limit_amount_lower: z.number().optional(),
   limit_amount_upper: z.number().optional(),
   items: z.array(z.string()).optional(),
@@ -107,9 +107,9 @@ export const FilterForm = () => {
             defaultValue={
               filter?.date_range
                 ? [
-                    dayjs.unix(filter.date_range[0]),
-                    dayjs.unix(filter.date_range[1])
-                  ]
+                  dayjs.unix(filter.date_range[0]),
+                  dayjs.unix(filter.date_range[1])
+                ]
                 : [dayjs.unix(start), dayjs.unix(end)]
             }
             onChange={(v) => {
@@ -203,9 +203,8 @@ export const FilterForm = () => {
           </div>
           <div>
             {merchantsFieldValue?.map((merchant, index) => (
-              <span>{`${merchant}${
-                index !== merchantsFieldValue?.length - 1 ? ', ' : ''
-              }`}</span>
+              <span>{`${merchant}${index !== merchantsFieldValue?.length - 1 ? ', ' : ''
+                }`}</span>
             ))}
             {merchantsFieldValue && (
               <DeleteButton

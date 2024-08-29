@@ -22,5 +22,15 @@ export default StyleSheet.create({
     position: 'absolute',
     top: '100%',
     left: '50%'
+  },
+  option: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 8,
+    gap: 16,
+    marginVertical: 2
+  },
+  selectedOption: {
+    marginVertical: 1,
   }
 });

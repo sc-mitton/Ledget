@@ -137,9 +137,11 @@ export const lightTheme = createTheme({
 
     // Category and Bill Colors
     monthBackground: `hsl(${blueH}, 50%, 88%)`,
+    monthBorder: `hsl(${blueH}, 50%, 86%)`,
     monthColor: `hsl(${blueH}, 80%, 58%)`,
-    yearBackground: `hsl(${greenH}, 50%, 88%)`,
-    yearColor: `hsl(${greenH}, 80%, 58%)`,
+    yearBackground: `hsl(${greenH}, 40%, 84%)`,
+    yearBorder: `hsl(${greenH}, 40%, 82%)`,
+    yearColor: `hsl(${greenH}, 50%, 38%)`,
 
     // Switch
     enabledSwitchPill: palette.gray100,

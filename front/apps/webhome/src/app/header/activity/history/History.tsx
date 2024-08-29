@@ -36,8 +36,7 @@ export function History() {
     selectFilteredFetchedConfirmedTransactions
   );
   const dispatch = useAppDispatch();
-  const [getTransactions, { data: fetchedTransactionData, isLoading }] =
-    useLazyGetTransactionsQuery();
+  const [getTransactions, { data: fetchedTransactionData, isLoading }] = useLazyGetTransactionsQuery();
   let monthholder: number | undefined;
   let newMonth = false;
 
@@ -115,13 +114,12 @@ export function History() {
                         <div>
                           {transaction.preferred_name?.slice(0, 20) ||
                             transaction.name.slice(0, 20)}
-                          {`${
-                            (transaction.preferred_name &&
-                              transaction.preferred_name?.length > 20) ||
+                          {`${(transaction.preferred_name &&
+                            transaction.preferred_name?.length > 20) ||
                             transaction.name.length > 20
-                              ? '...'
-                              : ''
-                          }`}
+                            ? '...'
+                            : ''
+                            }`}
                         </div>
                         <div>
                           {dayjs(

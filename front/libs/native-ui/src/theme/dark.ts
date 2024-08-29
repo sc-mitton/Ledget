@@ -134,8 +134,10 @@ export const darkTheme = createTheme({
 
     // Category and Bill Colors
     monthBackground: `hsl(${blueH}, 38%, 24%)`,
-    monthColor: `hsl(${blueH}, 90%, 65%)`,
-    yearBackground: `hsl(${greenH}, 38%, 24%)`,
+    monthBorder: `hsl(${blueH}, 38%, 26%)`,
+    monthColor: `hsl(${blueH}, 90%, 75%)`,
+    yearBackground: `hsl(${greenH}, 38%, 20%)`,
+    yearBorder: `hsl(${greenH}, 38%, 22%)`,
     yearColor: `hsl(${greenH}, 90%, 65%)`,
 
     // Switch
@@ -147,7 +149,7 @@ export const darkTheme = createTheme({
     // Seperators
     darkerseperator: palette.gray750,
     lightseperator: palette.gray800,
-    menuSeperator: palette.gray650,
+    menuSeperator: palette.gray800,
     blueseperator: palette.blue400,
 
     // Misc

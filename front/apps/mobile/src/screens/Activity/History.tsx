@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { ChevronRight } from 'geist-native-icons';
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import dayjs from 'dayjs';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
@@ -18,99 +15,21 @@ import {
   Icon,
   Seperator,
   Spinner,
-  Button,
-  MoneyInput,
-  DatePicker
+  Button
 } from '@ledget/native-ui';
 import {
   selectFilteredFetchedConfirmedTransactions,
   Transaction,
   useLazyGetTransactionsQuery,
   selectCurrentBudgetWindow,
+  selectConfirmedTransactionFilter
 } from '@ledget/shared-features';
 import { useAppearance } from '@features/appearanceSlice';
 import { formatDateOrRelativeDate } from '@ledget/helpers';
 import { useAppSelector } from '@hooks';
 import { ModalScreenProps } from '@types';
 import { EmptyBox } from '@ledget/media/native';
-import { BillCatSelect } from '@components';
-
-const schema = z.object({
-  date: z.array(z.number()).transform(value => value.map(i => i / 1000)),
-  amount: z.object({
-    min: z.number(),
-    max: z.number()
-  }),
-  billCategories: z.array(z.string()),
-  account: z.string(),
-  merchant: z.string()
-})
-
-const Filter = ({ showFilters }: { showFilters: React.Dispatch<React.SetStateAction<boolean>> }) => {
-  const { control, handleSubmit } = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema)
-  });
-  const { mode } = useAppearance();
-
-  const onSubmit = () => {
-    handleSubmit(data => {
-      console.log(data);
-    })();
-  }
-
-  return (
-    <View style={styles.filtersForm}>
-      {/*
-        6. Account
-        7. Merchant */}
-      <View style={styles.formHeader}>
-        <Text variant='semiBold' fontSize={17}>Filters</Text>
-      </View>
-      <Controller
-        control={control}
-        name='date'
-        render={({ field: { onChange, value } }) => (
-          <DatePicker
-            pickerType='range'
-            mode='date'
-            format='MM/DD/YYYY'
-            label='Date'
-            theme={mode === 'dark' ? 'dark' : 'light'}
-            disabled={[
-              [undefined, dayjs()],
-              [undefined, dayjs()]
-            ]}
-            placeholder={['Start Date', 'End Date']}
-            onChange={(value) => {
-              const v = value?.map(i => i?.valueOf());
-              onChange(v);
-            }}
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        name='amount'
-        render={({ field: { onChange, value } }) => (
-          <MoneyInput
-            inputType='range'
-            label='Amount'
-            onChange={onChange}
-            accuracy={2}
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        name='billCategories'
-        render={({ field: { onChange, value } }) => (
-          <BillCatSelect multiple onChange={onChange} />
-        )}
-      />
-      <Button variant='main' label='Save' onPress={onSubmit} />
-    </View>
-  )
-}
+import HistoryFilters from './HistoryFilters';
 
 const TransactionRow = ({ transaction }: { transaction: Transaction }) => {
   return (
@@ -210,32 +129,29 @@ const Transactions = (props: ModalScreenProps<'Activity'> & { showFilters: React
 }
 
 const History = (props: ModalScreenProps<'Activity'>) => {
-  const { start, end } = useAppSelector(selectCurrentBudgetWindow);
   const [showFilters, setShowFilters] = useState(false);
 
+  const filter = useAppSelector(selectConfirmedTransactionFilter);
   const transactionsData = useAppSelector(selectFilteredFetchedConfirmedTransactions);
   const [getTransactions, {
     isLoading: isTransactionsLoading,
     isSuccess: isTransactionsSuccess
-  }] =
-    useLazyGetTransactionsQuery();
+  }] = useLazyGetTransactionsQuery();
 
   // Initial transaction fetch
   useEffect(() => {
-    if (!start || !end) return;
-    getTransactions({ confirmed: true, start, end }, true);
-  }, [start, end]);
+    if (!filter) return;
+    getTransactions(filter, true);
+  }, [filter]);
 
   return (
     <BottomDrawerModal.Content
-      // defaultExpanded={isTransactionsSuccess && transactionsData.length > 0}
-      defaultExpanded={true}
+      defaultExpanded={isTransactionsSuccess && transactionsData.length > 0}
       onCollapse={() => props.navigation.goBack()}
       onClose={() => props.navigation.goBack()}>
-      {/* {showFilters */}
-      {true
+      {showFilters
         ? <Animated.View exiting={FadeOut} entering={FadeIn} style={styles.animatedView}>
-          <Filter showFilters={setShowFilters} />
+          <HistoryFilters showFilters={setShowFilters} />
         </Animated.View>
         : <Animated.View exiting={FadeOut} entering={FadeIn} style={styles.animatedView}>
           <Transactions {...props} showFilters={setShowFilters} />
