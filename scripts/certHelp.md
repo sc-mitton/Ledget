@@ -5,5 +5,5 @@
     you'll have to add it manually.
     `becomeCA.sh ledget`
 2. Create certificates using this certificate authority using genCRT.sh
-    `genCRT.sh -d localhost -k ledgetCA.sh -p ledgetCA.pem`
+    `genCRT.sh -d localhost -k ledgetca.sh -p ledgetca.pem`
 3. Add the authority to Firefox. settings > privacy & security > certificates > view certificates > authorities > import

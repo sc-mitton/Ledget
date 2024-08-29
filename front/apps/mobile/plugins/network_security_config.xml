@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <debug-overrides>
-        <trust-anchors>
-            <!-- Trust user added CAs while debuggable only -->
-            <certificates src="user" />
-            <certificates src="system" />
-        </trust-anchors>
-    </debug-overrides>
-
     <base-config cleartextTrafficPermitted="true">
         <trust-anchors>
             <certificates src="system" />
+            <certificates src="user" />
         </trust-anchors>
     </base-config>
 
@@ -18,9 +11,11 @@
         <!-- Make sure your URL Server here -->
         <domain includeSubdomains="true">ledget.app</domain>
         <domain includeSubdomains="true">localhost</domain>
+        <domain includeSubdomains="true">192.168.0.10</domain>
+        <domain includeSubdomains="true">10.0.2.2</domain>
         <trust-anchors>
-            <certificates src="user"/>
             <certificates src="system"/>
+            <certificates src="@raw/ledgetca" />
         </trust-anchors>
     </domain-config>
 </network-security-config>

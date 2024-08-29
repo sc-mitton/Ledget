@@ -30,20 +30,20 @@ const ringBoxProps = {
   borderTopColor: 'transparent',
 } as const;
 
-const Ring = (props: RestyleProps) => {
-  const restyleProps = useRestyle(restyleFunctions, props);
+const Ring = ({ color }: { color: string }) => {
+  const theme = useTheme();
 
   return (
-    <Box
-      {...(restyleProps as any).style[0]?.color
-        ? { style: [{ borderRightColor: (restyleProps as any).style[0]?.color }, styles.ring] }
-        : { borderRightColor: 'mainText' }}
-      {...ringBoxProps}
+    <View
+      style={[{
+        borderRightColor: color || theme.colors['mainText'],
+        ...ringBoxProps,
+      }, styles.ring]}
     />
   )
 }
 
-export const IosSpinner = ({ color, ...rest }: RestyleProps & { color?: string }) => {
+export const IosSpinner = ({ color }: { color: string }) => {
 
   const pop = useSharedValue(.95);
   const r1 = useSharedValue(0);
@@ -68,32 +68,32 @@ export const IosSpinner = ({ color, ...rest }: RestyleProps & { color?: string }
   const a4 = useAnimatedStyle(() => ({ transform: [{ rotate: `${r4.value}deg` }] }))
 
   return (
-    <Animated.View style={[styles.iosContainer, { transform: [{ scale: pop }] }]}>
+    <Animated.View style={[styles.outerRingContainer, { transform: [{ scale: pop }] }]}>
       <View style={styles.ringContainer}>
         <Animated.View style={[styles.animatedRingContainer, a1]}>
-          <Ring color={color} {...rest} />
+          <Ring color={color} />
         </Animated.View>
       </View>
       <View style={styles.ringContainer}>
         <Animated.View style={[styles.animatedRingContainer, a2]}>
-          <Ring color={color} {...rest} />
+          <Ring color={color} />
         </Animated.View>
       </View>
       <View style={styles.ringContainer}>
         <Animated.View style={[styles.animatedRingContainer, a3]}>
-          <Ring color={color} {...rest} />
+          <Ring color={color} />
         </Animated.View>
       </View>
       <View style={styles.ringContainer}>
         <Animated.View style={[styles.animatedRingContainer, a4]}>
-          <Ring color={color} {...rest} />
+          <Ring color={color} />
         </Animated.View>
       </View>
     </Animated.View>
   )
 }
 
-export const Spinner = ({ color }: { color?: string }) => {
+export const UnstyledSpinner = ({ color }: { color?: string }) => {
   const theme = useTheme();
   const pop = useSharedValue(.95);
 
@@ -109,13 +109,19 @@ export const Spinner = ({ color }: { color?: string }) => {
       styles.mainContainer,
       { transform: [{ scale: pop }] }
     ]}>
-      {Platform.OS === 'ios'
-        ?
-        <IosSpinner color={color || theme.colors['mainText']} />
-        :
-        <View style={styles.androidContainer}>
-          <ActivityIndicator color={color || theme.colors['mainText']} />
-        </View>}
+      <View style={styles.spinnerContainer}>
+        {Platform.OS === 'ios'
+          ? <IosSpinner color={color || theme.colors['mainText']} />
+          : <ActivityIndicator color={color || theme.colors['mainText']} />}
+      </View>
     </Animated.View>
   )
+}
+
+export const Spinner = (props: RestyleProps) => {
+  const restyledProps = useRestyle(restyleFunctions, props);
+  const rawColor = (restyledProps as any).color
+  const theme = useTheme();
+
+  return <UnstyledSpinner color={rawColor || theme.colors['mainText']} />
 }

@@ -27,7 +27,7 @@ export default defineConfig({
         https: {
           key: fs.existsSync(certsDir + 'localhost.key') ? fs.readFileSync(certsDir + 'localhost.key') : '',
           cert: fs.existsSync(certsDir + 'localhost.crt') ? fs.readFileSync(certsDir + 'localhost.crt') : '',
-          ca: fs.existsSync(certsDir + 'ledgetCA.pem') ? fs.readFileSync(certsDir + 'ledgetCA.pem') : '',
+          ca: fs.existsSync(certsDir + 'ledgetca.pem') ? fs.readFileSync(certsDir + 'ledgetca.pem') : '',
         }
       }
     }
@@ -43,7 +43,7 @@ export default defineConfig({
         https: {
           key: fs.existsSync(certsDir + 'localhost.key') ? fs.readFileSync(certsDir + 'localhost.key') : '',
           cert: fs.existsSync(certsDir + 'localhost.crt') ? fs.readFileSync(certsDir + 'localhost.crt') : '',
-          ca: fs.existsSync(certsDir + 'ledgetCA.pem') ? fs.readFileSync(certsDir + 'ledgetCA.pem') : '',
+          ca: fs.existsSync(certsDir + 'ledgetca.pem') ? fs.readFileSync(certsDir + 'ledgetca.pem') : '',
         }
       }
     }

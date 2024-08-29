@@ -15,7 +15,11 @@ const ThemeProvider = ({ children }: { children: (({ mode }: { mode: 'light' | '
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    Appearance.setColorScheme(mode);
+    const timeout = setTimeout(() => {
+      Appearance.setColorScheme(mode);
+    }, 2000);
+
+    return () => clearTimeout(timeout);
   }, [mode]);
 
   useEffect(() => {

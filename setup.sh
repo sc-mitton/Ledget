@@ -22,7 +22,7 @@ get_random_secret_key() {
 
 # Create the self signed ssl certs
 cd ./scripts && ./becomeCA.sh ledget
-./genCRT.sh -d localhost -k ledgetCA.key -p ledgetCA.pem
+./genCRT.sh -d localhost -k ledgetca.key -p ledgetca.pem
 mkdir ../front/certs
 find . -type f '(' -name '*.key' -o -name '*.pem' -o -name '*.crt' ')' -exec mv {} ../front/certs/ ';'
 

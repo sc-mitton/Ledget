@@ -4,26 +4,29 @@ const styles = StyleSheet.create({
   mainContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'absolute'
-  },
-  androidContainer: {
-    position: 'absolute'
-  },
-  iosContainer: {
     position: 'absolute',
-    left: '50%',
-    top: '50%',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+  },
+  spinnerContainer: {
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  outerRingContainer: {
+    position: 'absolute',
+    width: 20,
+    height: 20,
   },
   ringContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     transformOrigin: 'center',
-    width: 20,
-    height: 20,
     position: 'absolute',
-    left: '50%',
-    top: '50%',
-    transform: [{ translateY: -12 }],
+    width: 20,
+    height: 20
   },
   animatedRingContainer: {
     width: '100%',

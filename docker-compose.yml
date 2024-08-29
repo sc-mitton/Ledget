@@ -77,19 +77,16 @@ services:
       - "traefik.http.routers.silk.entrypoints=web"
 
       # Health router
-      - "traefik.http.routers.health.rule=(Host(`10.0.2.2`) && PathPrefix(`/health`))"
-      - "traefik.http.routers.health.rule=(Host(`localhost`) && PathPrefix(`/health`))"
+      - "traefik.http.routers.health.rule=((Host(`10.0.2.2`) || Host(`localhost`))  && PathPrefix(`/health`))"
       - "traefik.http.routers.health.entrypoints=websecure"
       - "traefik.http.routers.health.tls=true"
       - "traefik.http.routers.health.middlewares=cors@docker, oathkeeper"
       # API router
-      - "traefik.http.routers.api.rule=(HostRegexp(`10.0.2.2`) && PathPrefix(`/v{version:[0-9]+}/`))"
-      - "traefik.http.routers.api.rule=(HostRegexp(`localhost`) && PathPrefix(`/v{version:[0-9]+}/`))"
+      - "traefik.http.routers.api.rule=((Host(`10.0.2.2`) || Host(`localhost`)) && PathPrefix(`/v{version:[0-9]+}/`))"
       - "traefik.http.routers.api.entrypoints=websecure"
       - "traefik.http.routers.api.tls=true"
       - "traefik.http.routers.api.middlewares=cors@docker, oathkeeper"
       # Hooks router
-      - "traefik.http.routers.hooks.rule=(HostRegexp(`10.0.2.2`) && PathPrefix(`/hooks`))"
       - "traefik.http.routers.hooks.rule=(HostRegexp(`localhost`) && PathPrefix(`/hooks`))"
       - "traefik.http.routers.hooks.entrypoints=websecure"
       - "traefik.http.routers.hooks.tls=true"
