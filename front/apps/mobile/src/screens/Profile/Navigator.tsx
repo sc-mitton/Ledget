@@ -1,130 +1,83 @@
-import { useEffect, useRef } from 'react';
-import {
-  View,
-  ScrollView,
-  NativeSyntheticEvent,
-  NativeScrollEvent,
-} from 'react-native';
-import Animated, {
-  useSharedValue,
-  interpolate,
-  Extrapolation,
-  useAnimatedStyle,
-  withSpring
-} from 'react-native-reanimated';
+import { View } from 'react-native';
 import { createStackNavigator } from "@react-navigation/stack";
+import { Users, Settings as SettingsIcon, Shield, LogOut, Link } from 'geist-native-icons';
 
 import styles from './styles/navigator';
-import { Header, Box } from '@ledget/native-ui';
-import { useGetMeQuery } from '@ledget/shared-features';
-import { TabsNavigator, Avatar, Text, ChevronTouchable, defaultSpringConfig } from '@ledget/native-ui';
+import { Header, Box, Seperator } from '@ledget/native-ui';
+import { useGetCoOwnerQuery, useGetDevicesQuery, useGetMeQuery, useGetPlaidItemsQuery } from '@ledget/shared-features';
+import { Avatar, Text, ChevronTouchable, Button } from '@ledget/native-ui';
 import { ProfileStackParamList } from '@types';
-import { BackHeader } from '@ledget/native-ui';
+import { BackHeader, Icon } from '@ledget/native-ui';
 import { useCardStyleInterpolator } from "@/hooks";
 import { ProfileScreenProps } from '@types';
-import Account from './Account/Screen';
 import Security from './Security/Screen';
 import Settings from './Settings/Screen';
-import Connection from './Account/Connection/Screen';
-import Device from './Security/Device/Screen';
-import CoOwner from './Account/CoOwner/Screen';
+import Connections from './Connections/Screen';
+import CoOwner from './CoOwner/Screen';
 
-const scenes = {
-  account: Account,
-  settings: Settings,
-  security: Security
-};
-
-const H_MIN_HEIGHT = 35;
-const H_MAX_HEIGHT = 125;
-const H_MIN_SCALE = .7;
-const H_SCROLL_DISTANCE = H_MAX_HEIGHT - H_MIN_HEIGHT;
 
 const Stack = createStackNavigator<ProfileStackParamList>();
 
 function Profile(props: ProfileScreenProps<'Main'>) {
   const { data: user } = useGetMeQuery();
-  const headerHeight = useSharedValue(0);
-  const panelsHeight = useSharedValue(0);
-
-  const scrollViewRef = useRef<ScrollView>(null);
-
-  const contentHeight = useRef(0);
-  const containerHeight = useRef(0);
-
-  const animatedHeight = useAnimatedStyle(() => ({
-    height: interpolate(headerHeight.value, [0, H_SCROLL_DISTANCE], [H_MAX_HEIGHT, H_MIN_HEIGHT], Extrapolation.CLAMP),
-  }));
-
-  const animatedScaleOpacity = useAnimatedStyle(() => ({
-    transform: [{ scale: interpolate(headerHeight.value, [0, H_SCROLL_DISTANCE], [1, H_MIN_SCALE], Extrapolation.CLAMP) }],
-    opacity: interpolate(headerHeight.value, [0, H_SCROLL_DISTANCE], [1, 0], Extrapolation.CLAMP),
-  }));
-
-  const animatedPadding = useAnimatedStyle(() => ({
-    paddingTop: interpolate(headerHeight.value, [0, H_SCROLL_DISTANCE], [H_MAX_HEIGHT, H_MIN_HEIGHT], Extrapolation.CLAMP),
-  }));
-
-  const panelsAnimation = useAnimatedStyle(() => ({
-    paddingTop: interpolate(headerHeight.value, [0, H_SCROLL_DISTANCE], [0, H_SCROLL_DISTANCE], Extrapolation.CLAMP),
-    minHeight: panelsHeight.value,
-  }));
 
   return (
     <View style={styles.full}>
-      <Animated.View style={[animatedPadding]}>
-        <TabsNavigator tabs={scenes} props={props} >
-          <ScrollView
-            ref={scrollViewRef}
-            style={styles.scrollView}
-            showsVerticalScrollIndicator={false}
-            onScroll={(event: NativeSyntheticEvent<NativeScrollEvent>) => {
-              if ((containerHeight.current + 30) >= contentHeight.current) return;
-              headerHeight.value = event.nativeEvent.contentOffset.y;
-            }
-            }
-            onScrollEndDrag={(event: { nativeEvent: { contentOffset: { y: number } } }) => {
-              if ((containerHeight.current + 30) >= contentHeight.current) return;
-              const { y } = event.nativeEvent.contentOffset;
-
-              if (y < H_SCROLL_DISTANCE / 1.5) {
-                headerHeight.value = withSpring(0, defaultSpringConfig);
-                scrollViewRef.current?.scrollTo({ y: 0, animated: true });
-              } else {
-                headerHeight.value = withSpring(H_MAX_HEIGHT, defaultSpringConfig);
-              }
-            }}
-            scrollEventThrottle={16}
-            stickyHeaderIndices={[0]}
-            onContentSizeChange={(w, h) => { contentHeight.current = h }}
-            onLayout={(event) => { containerHeight.current = event.nativeEvent.layout.height }}
-          >
-            <TabsNavigator.Tabs />
-            <Animated.View style={[panelsAnimation]}>
-              <TabsNavigator.Panels />
-            </Animated.View>
-          </ScrollView >
-        </TabsNavigator>
-      </Animated.View>
-      <Animated.View style={[styles.animatedHeader, styles.header, animatedHeight]}>
-        <Box variant='header'>
-          <Header>Profile</Header>
-          <Animated.View style={animatedScaleOpacity}>
-            <Box
-              paddingHorizontal='s'
-              paddingVertical='l'
-              style={styles.userInfoContainer}>
-              <ChevronTouchable onPress={() => props.navigation.navigate('Modals', { screen: 'EditPersonalInfo' })}>
-                <Avatar size='l' name={user?.name} />
-                <View style={styles.userInfo}>
-                  <Text color='highContrastText'>{user?.name.first} {user?.name.last}</Text>
-                  <Text color='tertiaryText'>{user?.email}</Text>
-                </View>
-              </ChevronTouchable>
-            </Box>
-          </Animated.View>
-        </Box>
-      </Animated.View>
+      <Box variant='header'>
+        <Header>Profile</Header>
+        <View>
+          <Box
+            paddingHorizontal='s'
+            paddingVertical='l'
+            style={styles.userInfoContainer}>
+            <ChevronTouchable onPress={() => props.navigation.navigate('Modals', { screen: 'EditPersonalInfo' })}>
+              <Avatar size='l' name={user?.name} />
+              <View style={styles.userInfo}>
+                <Text color='highContrastText'>{user?.name.first} {user?.name.last}</Text>
+                <Text color='tertiaryText'>{user?.email}</Text>
+              </View>
+            </ChevronTouchable>
+          </Box>
+        </View>
+      </Box>
+      <Box
+        backgroundColor='nestedContainer'
+        variant='nestedContainer'
+        style={styles.optionsContainer}
+      >
+        <ChevronTouchable onPress={() =>
+          user?.co_owner
+            ? props.navigation.navigate('CoOwner')
+            : props.navigation.navigate('Modals', { screen: 'AddCoOwner' })
+        }>
+          <Icon icon={Users} />
+          <Text>Account Member</Text>
+        </ChevronTouchable>
+        <Seperator />
+        <ChevronTouchable onPress={() => props.navigation.navigate('Connections', { screen: 'All' })}>
+          <Icon icon={Link} />
+          <Text>Connections</Text>
+        </ChevronTouchable>
+        <Seperator />
+        <ChevronTouchable onPress={() => props.navigation.navigate('Security', { screen: 'Main' })}>
+          <Icon icon={Shield} />
+          <Text>Security</Text>
+        </ChevronTouchable>
+        <Seperator />
+        <ChevronTouchable onPress={() => props.navigation.navigate('Settings')}>
+          <Icon icon={SettingsIcon} />
+          <Text>Settings</Text>
+        </ChevronTouchable>
+      </Box>
+      <Button
+        onPress={() => props.navigation.navigate('Modals', { screen: 'Logout' })}
+        label={'Logout'}
+        backgroundColor='transparent'
+        borderColor='transparent'
+        textColor='blueText'
+        variant='borderedGrayMain'>
+        <Icon icon={LogOut} size={18} color='blueText' />
+      </Button>
     </View>
   );
 }
@@ -132,18 +85,29 @@ function Profile(props: ProfileScreenProps<'Main'>) {
 export default function Navigator() {
   const cardStyleInterpolator = useCardStyleInterpolator();
 
+  // Get coowner, connections, devices so that it's preloaded
+  useGetDevicesQuery();
+  useGetCoOwnerQuery();
+  useGetPlaidItemsQuery();
+
   return (
     <Stack.Navigator
       screenOptions={{
-        header: (props) => <BackHeader {...props} />,
-        cardStyleInterpolator,
+        header: (props) => {
+          return (
+            <BackHeader  {...props} pagesWithTitle={['Security', 'Settings', 'Connections']} />
+          );
+        },
+        cardStyleInterpolator
       }}
       id='profile'
+      initialRouteName='Main'
     >
       <Stack.Screen options={{ headerShown: false }} name='Main' component={Profile} />
-      <Stack.Screen name='Connection' component={Connection} />
-      <Stack.Screen name='Device' component={Device} />
+      <Stack.Screen name='Security' component={Security} />
+      <Stack.Screen name='Settings' component={Settings} />
       <Stack.Screen name='CoOwner' component={CoOwner} />
+      <Stack.Screen name='Connections' component={Connections} />
     </Stack.Navigator>
   );
 }

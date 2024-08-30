@@ -10,12 +10,12 @@ import {
   Icon,
 } from '@ledget/native-ui';
 import { Trash2 } from 'geist-native-icons';
-import { ProfileScreenProps } from '@types';
+import { ConnectionsScreenProps } from '@types';
 import { useGetPlaidItemsQuery, useGetMeQuery } from '@ledget/shared-features';
 
 import styles from './styles';
 
-const Screen = ({ navigation, route }: ProfileScreenProps<'Connection'>) => {
+const Screen = ({ navigation, route }: ConnectionsScreenProps<'Connection'>) => {
   const { data: plaidItems } = useGetPlaidItemsQuery();
   const { data: user } = useGetMeQuery();
 

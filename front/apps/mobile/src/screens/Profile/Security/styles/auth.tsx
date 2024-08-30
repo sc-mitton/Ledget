@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
   },
   box: {
     flexDirection: 'column',
+    gap: 13,
   }
 });
 

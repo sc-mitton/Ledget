@@ -1,14 +1,29 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  backHeader: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
+  headerContainer: {
+    justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    top: 0,
-    left: -16,
+    height: 54,
+    top: -16,
+    left: 0,
+    right: 0
   },
+  title: {
+    position: 'absolute'
+  },
+  backButton: {
+    left: 16,
+    position: 'absolute'
+  },
+  seperator: {
+    position: 'absolute',
+    bottom: 0,
+    left: 16,
+    right: 16,
+    opacity: 0.03
+  }
 });
 
 export default styles;

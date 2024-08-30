@@ -5,8 +5,8 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 10,
-    marginLeft: 2,
+    padding: 0,
+    marginLeft: -4,
   },
   chevronContainer: {
     flexDirection: 'row',

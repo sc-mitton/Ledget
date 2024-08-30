@@ -1,18 +1,18 @@
 import { View } from 'react-native';
 
 import { setCustomMode, setUseDeviceApperance, selectCustomMode, selectUseDeviceAppearance } from '@features/appearanceSlice';
-import { Box, BoxHeader, Switch } from '@ledget/native-ui';
+import { Box, BoxHeader, Switch, Header } from '@ledget/native-ui';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { ProfileScreenProps } from '@types';
 
-const Screen = (props: ProfileScreenProps<'Main'>) => {
+const Screen = (props: ProfileScreenProps<'Settings'>) => {
   const dispatch = useAppDispatch();
 
   const customMode = useAppSelector(selectCustomMode);
   const useDeviceAppearance = useAppSelector(selectUseDeviceAppearance)
 
   return (
-    <Box variant='screenContent'>
+    <Box variant='screenWithHeader' marginTop='xxxl'>
       <BoxHeader>Appearance</BoxHeader>
       <Box variant='nestedContainer' backgroundColor='nestedContainer'>
         <View style={{ flex: 1 }}>

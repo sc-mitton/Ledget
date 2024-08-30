@@ -6,9 +6,9 @@ import styles from './styles/auth';
 import { Box, Text, BoxHeader, Icon, ChevronTouchable, Seperator } from '@ledget/native-ui';
 import { Qr } from '@ledget/media/native';
 import { useGetMeQuery } from '@ledget/shared-features';
-import { ProfileScreenProps } from '@types';
+import { SecurityScreenProps } from '@types';
 
-const MultiFactor = (props: ProfileScreenProps<'Main'>) => {
+const MultiFactor = (props: SecurityScreenProps<'Main'>) => {
   const { data: user } = useGetMeQuery();
 
   return (
@@ -35,7 +35,7 @@ const MultiFactor = (props: ProfileScreenProps<'Main'>) => {
             </View>
             <Text>Authenticator App</Text>
           </ChevronTouchable>}
-        <Seperator variant='m' />
+        <Seperator variant='bare' />
         <ChevronTouchable onPress={() => props.navigation.navigate('Modals', { screen: 'ChangePassword' })}>
           <View style={styles.lockIcon}>
             <Icon icon={Lock} />

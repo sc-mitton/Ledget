@@ -26,5 +26,13 @@ export default StyleSheet.create({
     flex: 3,
     marginVertical: 6,
     marginLeft: 8
+  },
+  optionsContainer: {
+    flexDirection: 'column',
+    marginLeft: 20,
+    marginRight: 24,
+    marginVertical: 20,
+    gap: 8,
+    paddingVertical: 16,
   }
 });

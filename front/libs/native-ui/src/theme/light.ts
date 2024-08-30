@@ -175,6 +175,7 @@ export const lightTheme = createTheme({
     xl: 24,
     xxl: 36,
     xxxl: 48,
+    xxxxl: 54,
     navHeight: 104
   },
   textVariants: {
@@ -408,7 +409,7 @@ export const lightTheme = createTheme({
   },
   boxVariants: {
     header: {
-      paddingHorizontal: 'l',
+      paddingHorizontal: 'l'
     },
     fullCentered: {
       flex: 1,
