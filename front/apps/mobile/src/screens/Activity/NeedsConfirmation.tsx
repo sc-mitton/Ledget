@@ -218,6 +218,7 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
       onExpand={() => setExpanded(true)}
       onCollapse={() => setExpanded(false)}
       onClose={onClose}
+      height={focusedItem ? 250 : undefined}
     >
       {unconfirmedTransactions.length === 0
         ? <View style={styles.emptyBoxGraphic}>

@@ -5,12 +5,12 @@ export interface ToastItem {
   message: string;
   type: ToastType;
   timer?: number;
-  actionLink?: string;
+  actionLink?: string | [string, { screen: string }];
   actionMessage?: string;
   hasLoadingBar?: boolean;
 }
 
-export interface NewToast extends Omit<ToastItem, 'id'> {}
+export interface NewToast extends Omit<ToastItem, 'id'> { }
 
 export interface RootStateWithToast {
   toast: {

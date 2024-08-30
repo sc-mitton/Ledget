@@ -9,6 +9,7 @@ import { Modal } from '../modal/Modal'
 
 interface ContentProps {
   defaultExpanded?: boolean
+  height?: number
   onDrag?: (dy: number, expanded: boolean) => void
   onExpand?: () => void
   onCollapse?: () => void
@@ -82,6 +83,16 @@ const Content = (props: ContentProps) => {
       setExpanded(true)
     }
   }, [])
+
+  useEffect(() => {
+    if (props.height) {
+      scrollViewHeight.value = withSpring(props.height, defaultSpringConfig)
+    } else {
+      scrollViewHeight.value = state.current === 'expanded'
+        ? withSpring(expandedHeight, defaultSpringConfig)
+        : withSpring(collapsedHeight, defaultSpringConfig)
+    }
+  }, [props.height])
 
   const panResponder = useRef(
     PanResponder.create({

@@ -33,6 +33,7 @@ import SourceSans3Medium from '../../assets/fonts/SourceSans3Medium.ttf';
 import SourceSans3SemiBold from '../../assets/fonts/SourceSans3SemiBold.ttf';
 import SourceSans3Bold from '../../assets/fonts/SourceSans3Bold.ttf';
 import ModalScreens from './ModalScreens';
+import Toast from './Toast';
 
 export const storage = new MMKV();
 
@@ -150,6 +151,7 @@ export const App = withProviders(() => {
       onLayout={onLayoutRootView}
       style={styles.root}>
       <StatusBar style={appearance.mode === 'dark' ? 'light' : 'dark'} />
+      <Toast />
       {continueToMainApp
         ?
         <RootStack.Navigator>

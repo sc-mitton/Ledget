@@ -10,7 +10,7 @@ import dayjs from "dayjs";
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from "react-native-reanimated";
 import * as Haptics from 'expo-haptics';
 
-import styles from './styles/item'
+import styles from './styles/transaction-item'
 import {
   Box,
   InstitutionLogo,

@@ -1,6 +1,6 @@
 import { Plus, Info, ArrowLeft, ArrowRight } from 'geist-native-icons';
 
-import styles from './styles/menu';
+import styles from './styles/transaction-menu';
 import { Icon, ContextMenu } from '@ledget/native-ui';
 import type { ContextMenuProps } from '@ledget/native-ui';
 import { ModalScreenProps } from '@types';

@@ -77,6 +77,7 @@ export const lightTheme = createTheme({
     modalBox100: palette.gray100,
     newTransaction: palette.gray250,
     contextMenu: palette.gray100,
+    toast: palette.white,
 
     // Borders
     inputBorder: palette.gray300,
@@ -90,6 +91,7 @@ export const lightTheme = createTheme({
     tabNavBorder: palette.gray250,
     newTransactionBorder: palette.gray300,
     contextMenuBorder: palette.gray200,
+    toastBorder: palette.gray100,
 
     // Shadows
     navShadow: palette.gray300,
@@ -160,6 +162,7 @@ export const lightTheme = createTheme({
     pulseWaiting: palette.gray300,
     pulseGreen: palette.successGreenFaint,
     scrollbar: palette.gray250,
+    transactionShimmer: palette.gray200,
 
     // Icons
     successIcon: palette.successGreen,

@@ -67,7 +67,7 @@ export const darkTheme = createTheme({
     accountsMainBackground: palette.gray900,
     bottomNavBackground: palette.gray850,
     androidbottomNavBackground: palette.gray850,
-    nestedContainer: `hsl(${grayH}, ${grayS}%, 11%)`,
+    nestedContainer: palette.gray850,
     inputBackground: palette.gray800,
     tabNavPill: palette.blue800,
     avatar: palette.gray800,
@@ -76,6 +76,7 @@ export const darkTheme = createTheme({
     modalBox100: palette.gray850,
     newTransaction: palette.gray750,
     contextMenu: palette.gray700,
+    toast: palette.gray850,
 
     // Borders
     inputBorder: palette.gray750,
@@ -89,6 +90,7 @@ export const darkTheme = createTheme({
     tabNavBorder: palette.gray800,
     newTransactionBorder: palette.gray700,
     contextMenuBorder: palette.gray650,
+    toastBorder: palette.gray800,
 
     // Shadows
     navShadow: palette.gray900,
@@ -159,5 +161,6 @@ export const darkTheme = createTheme({
     successIcon: palette.successGreen,
     grayIcon: palette.gray100,
     scrollbar: palette.gray750,
+    transactionShimmer: palette.gray800,
   }
 });

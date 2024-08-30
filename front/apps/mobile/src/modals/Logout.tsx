@@ -2,7 +2,6 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { Alert, View, Platform } from 'react-native'
 import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
 
 import styles from './styles/logout';
