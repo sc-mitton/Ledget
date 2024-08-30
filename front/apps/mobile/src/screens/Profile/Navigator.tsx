@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import {
   View,
   ScrollView,
@@ -79,12 +79,12 @@ function Profile(props: ProfileScreenProps<'Main'>) {
             style={styles.scrollView}
             showsVerticalScrollIndicator={false}
             onScroll={(event: NativeSyntheticEvent<NativeScrollEvent>) => {
-              if (containerHeight.current >= contentHeight.current) return;
+              if ((containerHeight.current + 30) >= contentHeight.current) return;
               headerHeight.value = event.nativeEvent.contentOffset.y;
             }
             }
             onScrollEndDrag={(event: { nativeEvent: { contentOffset: { y: number } } }) => {
-              if (containerHeight.current >= contentHeight.current) return;
+              if ((containerHeight.current + 30) >= contentHeight.current) return;
               const { y } = event.nativeEvent.contentOffset;
 
               if (y < H_SCROLL_DISTANCE / 1.5) {
@@ -103,7 +103,6 @@ function Profile(props: ProfileScreenProps<'Main'>) {
             <Animated.View style={[panelsAnimation]}>
               <TabsNavigator.Panels />
             </Animated.View>
-            {containerHeight.current >= containerHeight.current && <View style={{ height: 50 }} />}
           </ScrollView >
         </TabsNavigator>
       </Animated.View>

@@ -29,9 +29,9 @@ const Device = ({ device, info }: { device: string; info: TDevice[] }) => {
         </View>
         <View style={styles.location}>
           <View style={styles.locationIcon}>
-            <Icon icon={MapPin2} size={12} strokeWidth={3} color='secondaryText' />
+            <Icon icon={MapPin2} size={11} strokeWidth={2} color='tertiaryText' />
           </View>
-          <Text fontSize={14} color='secondaryText' >
+          <Text fontSize={14} color='tertiaryText' >
             {device.split(',')[2] === undefined
               ? device.split(',')[1] ? device.split(',')[1] : 'Unknown'
               : device.split(',')[1] + ', ' + device.split(',')[2]}

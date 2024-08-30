@@ -289,7 +289,7 @@ class DisableAllSessionsView(GenericAPIView):
         try:
             with ory_client.ApiClient(ory_configuration) as api_client:
                 api_instance = IdentityApi(api_client)
-                api_instance.delete_identity_sessions(id=request.user.id)
+                api_instance.delete_identity_sessions(id=str(request.user.id))
         except ory_client.ApiException as e:  # pragma: no cover
             logger.error(f"Failed to disable all session: {e}")
             return Response({'error': 'Failed to disable all session'},

@@ -50,6 +50,7 @@ export default StyleSheet.create({
   },
   emptyBoxGraphic: {
     flex: 1,
+    marginTop: 32,
     justifyContent: 'center',
     alignItems: 'center',
   },
