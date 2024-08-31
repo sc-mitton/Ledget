@@ -19,7 +19,7 @@ import {
   popToast
 } from '@ledget/shared-features'
 import { ANDROID_PACKAGE } from '@env'
-import { useAppDispatch } from '@hooks'
+import { useAppDispatch } from './store'
 
 export const usePlaidLink = (args: { isOnboarding?: boolean, itemId?: string, skip?: boolean } | void) => {
 

@@ -123,7 +123,5 @@ export const Spinner = (props: RestyleProps) => {
   const rawColor = (restyledProps as any).style[0].color
   const theme = useTheme();
 
-  console.log('restyledProps', restyledProps);
-
   return <UnstyledSpinner color={rawColor || theme.colors['mainText']} />
 }
