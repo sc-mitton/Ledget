@@ -31,8 +31,64 @@ export default StyleSheet.create({
     width: '100%',
     height: 34,
   },
-  scrollView: {
+  table: {
+    flexDirection: 'row',
+    gap: 8
+  },
+  skeletonContainer: {
+    overflow: 'hidden',
+    flexGrow: 1,
+    paddingHorizontal: 20,
+    marginHorizontal: 4,
+  },
+  transactionsScrollView: {
     flex: 1,
-    paddingHorizontal: 16,
+    flexGrow: 1,
+    flexShrink: 0,
+    paddingRight: 20,
+    marginRight: 4,
+  },
+  dateScrollView: {
+    flex: 0,
+    flexShrink: 1,
+    paddingLeft: 12,
+    marginLeft: 1,
+    marginRight: 4
+  },
+  dateScrollViewRow: {
+    alignItems: 'flex-start',
+    marginVertical: 1,
+    width: '100%'
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 2,
+    alignItems: 'center',
+  },
+  hiddenRow: {
+    width: 0,
+    opacity: 0,
+  },
+  nameContainer: {
+    gap: 4,
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  leftColumn: {
+    gap: 2,
+  },
+  dateContentContainer: {
+    position: 'relative',
+    width: 30
+  },
+  dateContent: {
+    position: 'absolute',
+    top: 0,
+    left: 0
+  },
+  rightColumn: {
+    flexGrow: 1,
+    alignItems: 'flex-end',
   }
 });

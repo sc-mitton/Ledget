@@ -32,6 +32,7 @@ const Screen = () => {
       </View>
       <Transactions
         top={bottomOfContentPos}
+        accountType='depository'
         account={accountsData?.accounts[0].account_id}
       />
     </Box>

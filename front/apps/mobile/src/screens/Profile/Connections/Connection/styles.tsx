@@ -9,7 +9,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'center',
-    gap: 8,
+    gap: 32,
     marginLeft: 8,
     flex: 2,
   },

@@ -14,21 +14,23 @@ import { Platform } from 'react-native'
 import {
   useGetPlaidTokenQuery,
   useAddNewPlaidItemMutation,
-  useTransactionsSyncMutation
+  useTransactionsSyncMutation,
+  useUpdateAccountsMutation,
+  popToast
 } from '@ledget/shared-features'
 import { ANDROID_PACKAGE } from '@env'
+import { useAppDispatch } from '@hooks'
 
-export const usePlaidLink = (args: { isOnboarding?: boolean, itemId?: string } | void) => {
+export const usePlaidLink = (args: { isOnboarding?: boolean, itemId?: string, skip?: boolean } | void) => {
+
   const { data, refetch } = useGetPlaidTokenQuery({
     isOnboarding: args?.isOnboarding,
     itemId: args?.itemId,
     androidPackage: Platform.OS === 'android' ? ANDROID_PACKAGE : undefined
-  })
-  const [
-    addNewPlaidItem,
-    { data: newPlaidItem, isSuccess: newItemAddSuccess }
-  ] = useAddNewPlaidItemMutation();
+  }, { skip: args?.skip });
+  const [addNewPlaidItem, { data: newPlaidItem, isSuccess: newItemAddSuccess }] = useAddNewPlaidItemMutation();
   const [syncTransactions] = useTransactionsSyncMutation();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     newItemAddSuccess && syncTransactions({ item: newPlaidItem?.id });
@@ -61,13 +63,17 @@ export const usePlaidLink = (args: { isOnboarding?: boolean, itemId?: string } |
           id: success.metadata.institution?.id,
           name: success.metadata.institution?.name
         };
-        addNewPlaidItem({
-          data: {
-            public_token: success.publicToken,
-            accounts: success.metadata.accounts,
-            institution: institution
-          }
-        });
+        if (args && args.itemId) {
+          dispatch(popToast({ type: 'success', message: 'Connection updated successfully' }));
+        } else {
+          addNewPlaidItem({
+            data: {
+              public_token: success.publicToken,
+              accounts: success.metadata.accounts,
+              institution: institution
+            }
+          });
+        }
       },
       onExit: (linkExit: LinkExit) => {
         dismissLink();

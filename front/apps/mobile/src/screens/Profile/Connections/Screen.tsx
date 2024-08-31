@@ -1,13 +1,13 @@
 import { View, TouchableOpacity, ScrollView } from 'react-native';
-import { Plus } from 'geist-native-icons';
+import { Plus, AlertCircleFill } from 'geist-native-icons';
 import { createStackNavigator } from "@react-navigation/stack";
 
-import styles from './styles/connections'
+import styles from './styles/screen'
 import { ShimmerBox, Text, Seperator, ChevronTouchable, Icon, InstitutionLogo } from '@ledget/native-ui';
 import { useGetCoOwnerQuery, useGetMeQuery, useGetPlaidItemsQuery } from '@ledget/shared-features';
 import { ConnectionsScreenProps, ConnectionsStackParamList } from '@types';
 import { usePlaidLink } from '@hooks';
-import { BackHeader, Header2, Box } from '@ledget/native-ui';
+import { BackHeader, Box } from '@ledget/native-ui';
 import { useCardStyleInterpolator } from "@/hooks";
 import Connection from './Connection/Screen';
 
@@ -38,8 +38,12 @@ const Connections = ({
             <>
               <View style={styles.row} key={`connection-${i}`}>
                 <ChevronTouchable onPress={() => navigation.navigate('Connection', { item: item.id })}>
-                  <InstitutionLogo data={item.institution?.logo} />
-                  <Text>{item.institution?.name}</Text>
+                  {item.login_required
+                    ? <Icon icon={AlertCircleFill} color='alert' borderColor='mainText' />
+                    : <InstitutionLogo data={item.institution?.logo} />}
+                  <Text color={item.login_required ? 'alert' : 'mainText'}>
+                    {item.institution?.name}
+                  </Text>
                 </ChevronTouchable>
               </View>
               {i < plaidItems?.filter((item) => item.user === user?.id).length - 1 &&
