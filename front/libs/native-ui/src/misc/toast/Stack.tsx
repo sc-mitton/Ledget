@@ -1,13 +1,13 @@
 import { useEffect, useRef } from 'react';
 import { View, NativeModules } from 'react-native';
-import { useTransition, animated, useSpringRef } from '@react-spring/web';
+import { useTransition, useSpringRef } from '@react-spring/web';
 
 import styles from './styles/stack';
 import { ToastItem as TToastItem } from "@ledget/shared-features";
 import ToastItem from "./Item";
+import { AnimatedView } from '../../animated/views/AnimatedView';
 
 const { StatusBarManager } = NativeModules;
-const AnimatedView = animated(View)
 
 export const ToastStack = ({ stack }: { stack: TToastItem[] }) => {
   const itemDimensions = useRef({ width: 0, height: 0 })

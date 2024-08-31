@@ -23,7 +23,14 @@ import {
   addTransaction2Bill
 } from "@ledget/shared-features";
 import { useAppearance } from '@features/appearanceSlice';
-import { BottomDrawerModal, Icon, Text, CustomScrollView, Spinner } from '@ledget/native-ui';
+import {
+  BottomDrawerModal,
+  Icon,
+  Text,
+  CustomScrollView,
+  Spinner,
+  AnimatedView
+} from '@ledget/native-ui';
 import { useLoaded } from '@ledget/helpers';
 import {
   _getY,
@@ -33,8 +40,6 @@ import {
 } from './helpers';
 import { ModalScreenProps } from '@types';
 import { EmptyBox } from '@ledget/media/native';
-
-const AnimatedTransactionContainer = animated(View);
 
 const springConfig = {
   tension: 180,
@@ -240,7 +245,7 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
             }
           ]}>
             {itemTransitions((style, item, _, index) => (
-              <AnimatedTransactionContainer
+              <AnimatedView
                 onLayout={(e) => {
                   itemHeight.current = e.nativeEvent.layout.height
                   setItemHeightSet(true)
@@ -252,7 +257,7 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
                   contentStyle={{ opacity: expanded || index == 0 ? 1 : .2 }}
                   {...props}
                 />
-              </AnimatedTransactionContainer>
+              </AnimatedView>
             ))}
             {expanded && itemHeightSet &&
               <View style={styles.checkAllButtonContainer}>

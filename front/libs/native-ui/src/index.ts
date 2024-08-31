@@ -41,6 +41,7 @@ export * from './misc/toast/Stack';
 export * from './animated/loading-indicators/Spinner';
 export * from './animated/pulse/Pulse';
 export * from './animated/views/JiggleView';
+export * from './animated/views/AnimatedView';
 export * from './animated/configs/configs';
 export * from './headers/BackHeader';
 
