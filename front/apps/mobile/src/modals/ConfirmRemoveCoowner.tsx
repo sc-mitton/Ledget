@@ -26,7 +26,7 @@ const ConfirmRemoveCoOwner = (props: ModalScreenProps<'ConfirmRemoveCoowner'>) =
   }, [isDeleteSuccess]);
 
   return (
-    <Modal>
+    <Modal position='bottomFloat'>
       <Header2>Are you sure?</Header2>
       <Box marginBottom='l'>
         <Text color='tertiaryText'>

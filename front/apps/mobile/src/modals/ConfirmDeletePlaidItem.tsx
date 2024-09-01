@@ -25,7 +25,7 @@ const ConfirmDeletePlaidItem = (props: ModalScreenProps<'ConfirmDeletePlaidItem'
   }, [isDeleteSuccess]);
 
   return (
-    <Modal>
+    <Modal position='bottomFloat'>
       <Header2>Are you sure?</Header2>
       <Box marginBottom='l'>
         <Text color='secondaryText'>This will remove the connection to your bank account and all of the data associated with this bank.

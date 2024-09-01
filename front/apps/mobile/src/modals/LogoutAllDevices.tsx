@@ -32,7 +32,7 @@ const LogoutAllDevices = (props: ModalScreenProps<'LogoutAllDevices'>) => {
   }, [isError]);
 
   return (
-    <Modal>
+    <Modal position='bottomFloat'>
       <View style={styles.text}>
         <Header>Are you sure?</Header>
         <Text color='secondaryText'>

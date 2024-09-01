@@ -54,7 +54,7 @@ const Logout = (props: ModalScreenProps<'Logout'>) => {
   }, [quedLogout]);
 
   return (
-    <Modal>
+    <Modal position='bottomFloat'>
       <View style={styles.text}>
         <Header>Sign Out</Header>
         <Text color='secondaryText'>{`You will be automatically logged out in ${seconds} seconds`}</Text>
