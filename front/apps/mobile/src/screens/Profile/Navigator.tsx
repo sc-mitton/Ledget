@@ -71,12 +71,12 @@ function Profile(props: ProfileScreenProps<'Main'>) {
       </Box>
       <Button
         onPress={() => props.navigation.navigate('Modals', { screen: 'Logout' })}
+        style={styles.logoutButton}
         label={'Logout'}
         backgroundColor='transparent'
         borderColor='transparent'
-        textColor='blueText'
-        variant='borderedGrayMain'>
-        <Icon icon={LogOut} size={18} color='blueText' />
+        textColor='blueText'>
+        <View style={styles.logoutIcon}><Icon icon={LogOut} size={18} color='blueText' /></View>
       </Button>
     </View>
   );

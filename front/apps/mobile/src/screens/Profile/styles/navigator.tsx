@@ -31,8 +31,15 @@ export default StyleSheet.create({
     flexDirection: 'column',
     marginLeft: 20,
     marginRight: 24,
-    marginVertical: 20,
+    marginTop: 20,
     gap: 8,
     paddingVertical: 16,
+  },
+  logoutButton: {
+    marginLeft: 24,
+    gap: 8,
+  },
+  logoutIcon: {
+    marginLeft: 8,
   }
 });
