@@ -1,4 +1,4 @@
-export { default as Accounts } from './Accounts/Screen';
+export { default as Accounts } from './Accounts/Navigator';
 export { default as Budget } from './Budget/Screen';
 export { default as Profile } from './Profile/Navigator';
 export { default as Activity } from './Activity/Screen';

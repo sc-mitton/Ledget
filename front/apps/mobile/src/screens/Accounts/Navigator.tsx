@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import { Box, Header } from '@ledget/native-ui';
-import Transactions from './Transactions';
 import { hasErrorCode } from '@ledget/helpers';
 import { useGetAccountsQuery, popToast } from '@ledget/shared-features';
 import { useAppDispatch } from '@/hooks';
+import { AccountsScreenProps, AccountsStackParamList } from '@types';
+import { useCardStyleInterpolator } from '@/hooks';
+import Transactions from './Transactions';
+import Transaction from './Transaction';
 
-const Screen = () => {
+const Stack = createStackNavigator<AccountsStackParamList>()
+
+const Main = (props: AccountsScreenProps<'Main'>) => {
   const [bottomOfContentPos, setBottomOfContentPos] = useState(0)
   const { data: accountsData, error } = useGetAccountsQuery()
   const dispatch = useAppDispatch()
@@ -34,8 +40,24 @@ const Screen = () => {
         top={bottomOfContentPos}
         accountType='depository'
         account={accountsData?.accounts[0].account_id}
+        {...props}
       />
     </Box>
+  )
+}
+
+const Screen = () => {
+  const cardStyleInterpolator = useCardStyleInterpolator()
+
+  return (
+    <Stack.Navigator
+      screenOptions={{ headerShown: false, cardStyleInterpolator }}
+      id='accounts'
+      initialRouteName='Main'
+    >
+      <Stack.Screen name='Main' component={Main} />
+      <Stack.Screen name='Transaction' component={Transaction} />
+    </Stack.Navigator>
   )
 }
 

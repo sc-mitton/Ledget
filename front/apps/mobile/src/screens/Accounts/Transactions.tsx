@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { View, PanResponder, NativeSyntheticEvent, NativeScrollEvent, ScrollView } from 'react-native';
+import { View, PanResponder, NativeSyntheticEvent, NativeScrollEvent, ScrollView, TouchableOpacity } from 'react-native';
 import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
 import dayjs from 'dayjs';
 
@@ -17,8 +17,9 @@ import {
   Icon
 } from '@ledget/native-ui';
 import SkeletonTransactions from './SkeletonTransactions';
+import { AccountsScreenProps } from '@types';
 
-interface PTransactions {
+interface PTransactions extends AccountsScreenProps<'Main'> {
   top: number
   account?: string
   accountType: AccountType
@@ -183,11 +184,11 @@ const Transactions = (props: PTransactions) => {
               style={styles.transactionsScrollView}
             >
               {transactionsData.results.map((transaction, i) => (
-                <Row
-                  key={transaction.transaction_id}
-                  {...transaction}
-                  index={i}
-                />
+                <TouchableOpacity
+                  onPress={() => props.navigation.navigate('Transaction', { id: transaction.transaction_id })}
+                  activeOpacity={.7} key={transaction.transaction_id}>
+                  <Row {...transaction} index={i} />
+                </TouchableOpacity>
               ))}
               {/* Spacer */}
               <View style={{ height: 200, width: '100%' }} />

@@ -4,11 +4,12 @@ import type { ProfileStackParamList } from './profile';
 import type { LoginStackParamList } from './login';
 import type { ModalStackParamList } from './modals';
 import { Transaction } from '@ledget/shared-features';
+import { AccountsStackParamList } from './accounts';
 
 export type BottomTabNavParamList = {
   Home: undefined;
   Budget: undefined;
-  Accounts: undefined;
+  Accounts: NavigatorScreenParams<AccountsStackParamList>;
   Profile: NavigatorScreenParams<ProfileStackParamList>;
 };
 
