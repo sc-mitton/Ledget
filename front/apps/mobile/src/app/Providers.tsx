@@ -24,11 +24,18 @@ const ThemeProvider = ({ children }: { children: (({ mode }: { mode: 'light' | '
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      Appearance.setColorScheme(mode);
-    }, 2000);
+    // Add listener to change the appearance of the app
+    const appearanceListener = () => {
+      setTimeout(() => {
+        Appearance.setColorScheme(mode);
+      }, 2000);
+    }
 
-    return () => clearTimeout(timeout);
+    const listener = Appearance.addChangeListener(appearanceListener);
+
+    return () => {
+      listener.remove();
+    };
   }, [mode]);
 
   useEffect(() => {

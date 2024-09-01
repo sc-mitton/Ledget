@@ -1,9 +1,67 @@
-import { View } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
+import { CheckInCircle } from 'geist-native-icons';
 
-import { setCustomMode, setUseDeviceApperance, selectCustomMode, selectUseDeviceAppearance } from '@features/appearanceSlice';
-import { Box, BoxHeader, Switch, Header } from '@ledget/native-ui';
+import styles from './styles';
+import {
+  setCustomMode,
+  setUseDeviceApperance,
+  selectCustomMode,
+  selectUseDeviceAppearance,
+  useAppearance
+} from '@features/appearanceSlice';
+import { Box, BoxHeader, Icon, Text } from '@ledget/native-ui';
+import { PhoneAppearance } from '@ledget/media/native';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { ProfileScreenProps } from '@types';
+
+interface OptionP {
+  onPress: () => void
+  selected: boolean
+  imageMode: 'dark' | 'light' | 'default'
+}
+
+const Option = ({ onPress, selected, imageMode }: OptionP) => {
+  const { mode } = useAppearance();
+
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      style={styles.option}
+      activeOpacity={.7}>
+      {selected &&
+        <Box
+          borderColor='focusedInputBorderMain'
+          style={[styles.optionBorder, styles.optionBorderMain]}
+        />}
+      {selected &&
+        <Box
+          borderColor='focusedInputBorderSecondary'
+          style={[styles.optionBorder, styles.optionBorderSecondary]}
+        />}
+      <PhoneAppearance
+        appearance={
+          DeviceInfo.hasDynamicIsland()
+            ? 'dynamic'
+            : DeviceInfo.hasNotch() ? 'notch' : 'punch-hole'}
+        mode={mode}
+        imageMode={imageMode}
+      />
+      <View style={styles.optionText}>
+        {selected &&
+          <Icon
+            icon={CheckInCircle}
+            strokeWidth={2.25}
+            size={16}
+            color='blueText'
+          />}
+        <Text color={selected ? 'blueText' : 'secondaryText'}>
+          {imageMode.charAt(0).toUpperCase() + imageMode.slice(1)}
+        </Text>
+      </View>
+    </TouchableOpacity>
+  )
+}
 
 const Screen = (props: ProfileScreenProps<'Settings'>) => {
   const dispatch = useAppDispatch();
@@ -14,20 +72,28 @@ const Screen = (props: ProfileScreenProps<'Settings'>) => {
   return (
     <Box variant='screenWithHeader' marginTop='xxxl'>
       <BoxHeader>Appearance</BoxHeader>
-      <Box variant='nestedContainer' backgroundColor='nestedContainer'>
-        <View style={{ flex: 1 }}>
-          <Switch
-            label={'Use Device Appearance'}
-            value={useDeviceAppearance}
-            onValueChange={(b) => dispatch(setUseDeviceApperance(b))}
-          />
-          <Switch
-            label={'Dark Mode'}
-            value={customMode === 'dark'}
-            onValueChange={(b) => dispatch(setCustomMode(b ? 'dark' : 'light'))}
-            disabled={useDeviceAppearance}
-          />
-        </View>
+      <Box backgroundColor='nestedContainer' variant='nestedContainer' style={styles.radios}>
+        <Option
+          onPress={() => dispatch(setUseDeviceApperance(true))}
+          selected={useDeviceAppearance}
+          imageMode='default'
+        />
+        <Option
+          onPress={() => {
+            dispatch(setCustomMode('light'))
+            dispatch(setUseDeviceApperance(false))
+          }}
+          selected={!useDeviceAppearance && customMode === 'light'}
+          imageMode='light'
+        />
+        <Option
+          onPress={() => {
+            dispatch(setCustomMode('dark'))
+            dispatch(setUseDeviceApperance(false))
+          }}
+          selected={!useDeviceAppearance && customMode === 'dark'}
+          imageMode='dark'
+        />
       </Box>
     </Box>
   )

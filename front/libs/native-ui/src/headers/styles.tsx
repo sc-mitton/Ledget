@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 16,
     right: 16,
-    opacity: 0.03
+    opacity: 0.9
   }
 });
 

@@ -1,4 +1,4 @@
-import { Image, View } from 'react-native';
+import { Image } from 'react-native';
 
 import emptyBoxLight from '../../../shared/images/empty-box-light.png';
 import emptyBoxDark from '../../../shared/images/empty-box-dark.png';

@@ -85,10 +85,15 @@ export default StyleSheet.create({
   dateContent: {
     position: 'absolute',
     top: 0,
-    left: 0
+    left: 0,
+    right: 0,
+    paddingRight: 2
   },
   rightColumn: {
     flexGrow: 1,
     alignItems: 'flex-end',
+  },
+  seperator: {
+    opacity: .7
   }
 });

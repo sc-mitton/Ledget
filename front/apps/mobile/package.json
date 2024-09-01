@@ -89,7 +89,9 @@
     "react-native-ios-utilities": "*",
     "@react-native-menu/menu": "*",
     "@react-native-picker/picker": "*",
-    "react-native-date-picker": "*"
+    "react-native-date-picker": "*",
+    "@react-spring/web": "*",
+    "react-native-device-info": "*"
   },
   "devDependencies": {}
 }

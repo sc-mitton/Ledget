@@ -22,7 +22,9 @@ export function BackHeader({ navigation, route, options, back, pagesWithTitle }:
           <Text fontSize={19} style={styles.title}>
             {route.name}
           </Text>
-          <View style={styles.seperator}><Seperator backgroundColor='mainText' variant='bare' /></View>
+          <View style={styles.seperator}>
+            <Seperator backgroundColor='darkerseperator' variant='bare' />
+          </View>
         </>}
     </Box>
   )

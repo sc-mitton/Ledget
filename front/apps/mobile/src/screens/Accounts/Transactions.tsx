@@ -31,7 +31,7 @@ const Row = (props: Transaction & { index: number }) => {
 
   return (
     <View>
-      {props.index !== 0 && <Seperator />}
+      {props.index !== 0 && <View style={styles.seperator}><Seperator /></View>}
       <View style={styles.row}>
         <View style={styles.leftColumn}>
           <View style={styles.nameContainer}>
@@ -131,6 +131,8 @@ const Transactions = (props: PTransactions) => {
     <Animated.View style={[styles.boxContainer, { top: top }]}>
       <Box
         style={styles.box}
+        borderColor='nestedContainerBorder'
+        borderWidth={1.5}
         backgroundColor='nestedContainer'>
         <View style={styles.dragBarContainer} {...panResponder.panHandlers}>
           <Box style={styles.dragBar} backgroundColor='dragBar' />
@@ -143,6 +145,7 @@ const Transactions = (props: PTransactions) => {
           :
           <View style={styles.table}>
             <CustomScrollView
+              bounces={false}
               ref={dateScrollRef}
               showsVerticalScrollIndicator={false}
               scrollEnabled={false}
@@ -171,8 +174,11 @@ const Transactions = (props: PTransactions) => {
                   </View>
                 )
               })}
+              {/* Spacer */}
+              <View style={{ height: 200, width: '100%' }} />
             </CustomScrollView>
             <CustomScrollView
+              bounces={false}
               onScroll={handleScroll}
               style={styles.transactionsScrollView}
             >
@@ -183,6 +189,8 @@ const Transactions = (props: PTransactions) => {
                   index={i}
                 />
               ))}
+              {/* Spacer */}
+              <View style={{ height: 200, width: '100%' }} />
             </CustomScrollView>
           </View>}
       </Box>

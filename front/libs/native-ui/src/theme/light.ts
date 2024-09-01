@@ -186,10 +186,6 @@ export const lightTheme = createTheme({
       fontFamily: 'SourceSans3SemiBold',
       color: 'highContrastText',
     },
-    semiBold: {
-      fontFamily: 'SourceSans3SemiBold',
-      color: 'mainText',
-    },
     header: {
       fontSize: 28,
       lineHeight: 32,
