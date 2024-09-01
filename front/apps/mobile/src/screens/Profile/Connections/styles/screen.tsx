@@ -1,12 +1,12 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-  content: {
-    gap: 12,
-  },
   row: {
     alignItems: 'center',
     flexDirection: 'row',
+  },
+  addButtonContainer: {
+    marginTop: 24
   },
   addButton: {
     flexDirection: 'row',

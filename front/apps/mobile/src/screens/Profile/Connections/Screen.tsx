@@ -3,7 +3,7 @@ import { Plus, AlertCircleFill } from 'geist-native-icons';
 import { createStackNavigator } from "@react-navigation/stack";
 
 import styles from './styles/screen'
-import { ShimmerBox, Text, Seperator, ChevronTouchable, Icon, InstitutionLogo } from '@ledget/native-ui';
+import { ShimmerBox, Text, Seperator, ChevronTouchable, Icon, InstitutionLogo, BoxHeader } from '@ledget/native-ui';
 import { useGetCoOwnerQuery, useGetMeQuery, useGetPlaidItemsQuery } from '@ledget/shared-features';
 import { ConnectionsScreenProps, ConnectionsStackParamList } from '@types';
 import { usePlaidLink } from '@hooks';
@@ -24,7 +24,8 @@ const Connections = ({
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <Box variant='screenWithHeader' marginTop='xxxl' style={styles.content}>
+      <Box variant='screenWithHeader' marginTop='xxxl'>
+        <BoxHeader>Your Connections</BoxHeader>
         <ShimmerBox
           shimmering={isLoading}
           numberOfLines={4}
@@ -32,8 +33,6 @@ const Connections = ({
           backgroundColor='nestedContainer'
           style={styles.container}
         >
-          <Text>Your Connections</Text>
-          <Seperator variant='bare' />
           {plaidItems?.filter((item) => item.user === user?.id).map((item, i) => (
             <>
               <View style={styles.row} key={`connection-${i}`}>
@@ -52,36 +51,37 @@ const Connections = ({
           ))}
         </ShimmerBox>
         {user?.co_owner && (
-          <ShimmerBox
-            shimmering={isLoading}
-            numberOfLines={4}
-            variant='nestedContainer'
-            backgroundColor='nestedContainer'
-            style={styles.container}
-          >
-            <Box width='100%'>
-              <Text>{coOwner?.name.first}'s Connections</Text>
-              <Seperator />
-              {plaidItems?.filter((item) => item.user === coOwner?.id).map((item, i) => (
-                <>
-                  <View style={styles.row} key={`connection-${i}`}>
-                    <ChevronTouchable onPress={() => navigation.navigate('Connection', { item: item.id })}>
-                      <InstitutionLogo data={item.institution?.logo} />
-                      <Text>{item.institution?.name}</Text>
-                    </ChevronTouchable>
-                  </View>
-                  <Seperator variant='bare' />
-                </>
-              ))}
-              {plaidItems?.filter((item) => item.user === coOwner?.id).length === 0 && (
-                <Text variant='footer'>
-                  {coOwner?.name.first} has not added any connections yet.
-                </Text>
-              )}
-            </Box>
-          </ShimmerBox>
+          <>
+            <BoxHeader>{coOwner?.name.first}'s Connections</BoxHeader>
+            <ShimmerBox
+              shimmering={isLoading}
+              numberOfLines={4}
+              variant='nestedContainer'
+              backgroundColor='nestedContainer'
+              style={styles.container}
+            >
+              <Box width='100%'>
+                {plaidItems?.filter((item) => item.user === coOwner?.id).map((item, i) => (
+                  <>
+                    <View style={styles.row} key={`connection-${i}`}>
+                      <ChevronTouchable onPress={() => navigation.navigate('Connection', { item: item.id })}>
+                        <InstitutionLogo data={item.institution?.logo} />
+                        <Text>{item.institution?.name}</Text>
+                      </ChevronTouchable>
+                    </View>
+                    <Seperator variant='bare' />
+                  </>
+                ))}
+                {plaidItems?.filter((item) => item.user === coOwner?.id).length === 0 && (
+                  <Text variant='footer'>
+                    {coOwner?.name.first} has not added any connections yet.
+                  </Text>
+                )}
+              </Box>
+            </ShimmerBox>
+          </>
         )}
-        <Box variant='nestedContainer' backgroundColor='nestedContainer'>
+        <Box variant='nestedContainer' backgroundColor='nestedContainer' style={styles.addButtonContainer}>
           <View style={[styles.row]}>
             <TouchableOpacity
               onPress={openLink}
