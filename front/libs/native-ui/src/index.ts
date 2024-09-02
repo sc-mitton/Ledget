@@ -1,4 +1,6 @@
 
+export * from './containers/custom-flat-list/CustomFlatList';
+
 export * from './inputs/modal-picker/ModalPicker';
 
 export * from './inputs/money-input/MoneyInput';

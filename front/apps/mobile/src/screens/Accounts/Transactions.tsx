@@ -1,16 +1,31 @@
-import { useEffect, useRef, useState } from 'react';
-import { View, PanResponder, NativeSyntheticEvent, NativeScrollEvent, ScrollView, TouchableOpacity } from 'react-native';
-import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
+import { useEffect, useRef } from 'react';
+import {
+  View,
+  PanResponder,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+  TouchableOpacity,
+  StyleSheet,
+  FlatList,
+  Dimensions,
+  NativeModules
+} from 'react-native';
+import Animated, {
+  useSharedValue,
+  withSpring,
+  interpolate,
+  useAnimatedStyle
+} from 'react-native-reanimated';
 import dayjs from 'dayjs';
+import { useTheme } from '@shopify/restyle';
 
 import styles from './styles/transactions';
 import { Hourglass } from '@ledget/media/native';
 import { Transaction, useLazyGetTransactionsQuery } from '@ledget/shared-features';
-import type { AccountType } from '@ledget/shared-features';
+import type { Account } from '@ledget/shared-features';
 import {
   Box,
   defaultSpringConfig,
-  CustomScrollView,
   DollarCents,
   Text,
   Seperator,
@@ -19,21 +34,22 @@ import {
 import SkeletonTransactions from './SkeletonTransactions';
 import { AccountsScreenProps } from '@types';
 
+const { StatusBarManager } = NativeModules;
+
 interface PTransactions extends AccountsScreenProps<'Main'> {
   top: number
-  account?: string
-  accountType: AccountType
+  account?: Account
 }
 
-const EXPANDED_TOP = 16
+const EXPANDED_TOP = StatusBarManager.HEIGHT + 20
 const SKELETON_HEIGHT = 740
 
 const Row = (props: Transaction & { index: number }) => {
 
   return (
     <View>
-      {props.index !== 0 && <View style={styles.seperator}><Seperator /></View>}
-      <View style={styles.row}>
+      {props.index !== 0 && <Seperator />}
+      <View style={styles.transactionRow}>
         <View style={styles.leftColumn}>
           <View style={styles.nameContainer}>
             {props.pending && <Icon icon={Hourglass} size={16} />}
@@ -41,7 +57,7 @@ const Row = (props: Transaction & { index: number }) => {
               {props.name.length > 20 ? props.name.slice(0, 20) + '...' : props.name}
             </Text>
           </View>
-          <Text color='tertiaryText' fontSize={15}>
+          <Text color='quaternaryText' fontSize={15}>
             {dayjs(props.date).format('M/D/YYYY')}
           </Text>
         </View>
@@ -58,18 +74,25 @@ const Row = (props: Transaction & { index: number }) => {
 }
 
 const Transactions = (props: PTransactions) => {
+  const theme = useTheme()
   const state = useRef<'neutral' | 'expanded'>('neutral')
   const propTop = useRef(props.top)
-  const dateScrollRef = useRef<ScrollView>(null)
+  const dateScrollRef = useRef<FlatList>(null)
   const top = useSharedValue(0)
+  const overlayHeight = useSharedValue(0)
   const [getTransactions, { data: transactionsData }] = useLazyGetTransactionsQuery()
+
+  const overlayAnimation = useAnimatedStyle(() => ({
+    opacity: interpolate(top.value, [props.top, EXPANDED_TOP], [0, .9]),
+    height: overlayHeight.value
+  }));
 
   useEffect(() => {
     if (props.account) {
       getTransactions(
         {
-          account: props.account,
-          type: props.accountType,
+          account: props.account.account_id,
+          type: props.account.type,
           limit: 25,
           offset: 0
         },
@@ -86,13 +109,15 @@ const Transactions = (props: PTransactions) => {
 
     // Track the date scroll view with the transactions scroll view
     if (dateScrollRef.current) {
-      dateScrollRef.current.scrollTo({ y: contentOffset.y, animated: false })
+      setTimeout(() => {
+        dateScrollRef.current?.scrollToOffset({ offset: -1 * contentOffset.y, animated: false })
+      }, 0);
     }
 
     if (bottom && transactionsData?.next !== null && transactionsData) {
       getTransactions({
-        account: props.account!,
-        type: props.accountType,
+        account: props.account?.account_id,
+        type: props.account?.type,
         offset: transactionsData.next,
         limit: transactionsData.limit
       });
@@ -103,6 +128,7 @@ const Transactions = (props: PTransactions) => {
     onStartShouldSetPanResponder: () => true,
     onPanResponderMove: (_, gs) => {
       if (state.current === 'neutral' && gs.dy < 0) {
+        overlayHeight.value = Dimensions.get('window').height
         top.value = propTop.current + gs.dy
       } else if (state.current === 'expanded' && gs.dy > 0) {
         top.value = EXPANDED_TOP + gs.dy
@@ -110,15 +136,21 @@ const Transactions = (props: PTransactions) => {
     },
     onPanResponderRelease: (_, gs) => {
       if (state.current === 'neutral' && (gs.dy < -100 || gs.vy < -1.5)) {
+        overlayHeight.value = Dimensions.get('window').height
         top.value = withSpring(EXPANDED_TOP, defaultSpringConfig)
         state.current = 'expanded'
       } else if (state.current === 'expanded' && (gs.dy > 100 || gs.vy > 1.5)) {
+        overlayHeight.value = 0
         top.value = withSpring(propTop.current, defaultSpringConfig)
         state.current = 'neutral'
       } else {
-        state.current === 'expanded'
-          ? top.value = withSpring(EXPANDED_TOP, defaultSpringConfig)
-          : top.value = withSpring(propTop.current, defaultSpringConfig)
+        if (state.current === 'expanded') {
+          top.value = withSpring(EXPANDED_TOP, defaultSpringConfig)
+          overlayHeight.value = Dimensions.get('window').height
+        } else {
+          top.value = withSpring(propTop.current, defaultSpringConfig)
+          overlayHeight.value = 0
+        }
       }
     }
   })).current
@@ -129,73 +161,77 @@ const Transactions = (props: PTransactions) => {
   }, [props.top])
 
   return (
-    <Animated.View style={[styles.boxContainer, { top: top }]}>
-      <Box
-        style={styles.box}
-        borderColor='nestedContainerBorder'
-        borderWidth={1.5}
-        backgroundColor='nestedContainer'>
-        <View style={styles.dragBarContainer} {...panResponder.panHandlers}>
-          <Box style={styles.dragBar} backgroundColor='dragBar' />
-        </View>
-        {!transactionsData
-          ?
-          <View style={styles.skeletonContainer}>
-            <SkeletonTransactions height={SKELETON_HEIGHT} />
+    <>
+      <Animated.View style={[
+        StyleSheet.absoluteFill,
+        overlayAnimation,
+        { backgroundColor: theme.colors.modalOverlay }]}
+      />
+      <Animated.View style={[styles.boxContainer, { top: top }]}>
+        <Box
+          style={styles.box}
+          borderColor='nestedContainerBorder'
+          borderWidth={1.5}
+          backgroundColor='nestedContainer'>
+          <View style={styles.dragBarContainer} {...panResponder.panHandlers}>
+            <Box style={styles.dragBar} backgroundColor='dragBar' />
           </View>
-          :
-          <View style={styles.table}>
-            <CustomScrollView
-              bounces={false}
-              ref={dateScrollRef}
-              showsVerticalScrollIndicator={false}
-              scrollEnabled={false}
-              stickyHeaderIndices={transactionsData.results.map((_, i) => i).reverse()}
-              style={styles.dateScrollView}>
-              {transactionsData.results.map((transaction, i) => {
-                const date = dayjs(transaction.date)
-                const previousDate = i > 0 ? dayjs(transactionsData.results[i - 1].date) : null
-                return (
-                  <View style={[styles.dateScrollViewRow]}>
-                    <View style={styles.dateContentContainer}>
-                      <Box style={styles.dateContent} backgroundColor='nestedContainer'>
-                        {(!previousDate || date.month() !== previousDate.month())
-                          && <Text fontSize={14} color='tertiaryText'>{date.format('MMM')}</Text>}
-                        {(!previousDate || date.year() !== previousDate.year())
-                          && <Text fontSize={14} color='tertiaryText'>{date.format('YYYY')}</Text>}
-                      </Box>
-                      <View style={styles.hiddenRow}>
-                        <Row
-                          key={transaction.transaction_id}
-                          {...transaction}
-                          index={i}
-                        />
+          {!transactionsData
+            ?
+            <View style={styles.skeletonContainer}>
+              <SkeletonTransactions height={SKELETON_HEIGHT} />
+            </View>
+            :
+            <View style={styles.table}>
+              <FlatList
+                data={transactionsData.results}
+                renderItem={({ item: transaction, index: i }) => {
+                  const date = dayjs(transaction.date)
+                  const previousDate = i > 0 ? dayjs(transactionsData.results[i - 1].date) : null
+                  return (
+                    <View style={[styles.dateScrollViewRow]}>
+                      <View style={styles.dateContentContainer}>
+                        <Box style={styles.dateContent} backgroundColor='nestedContainer'>
+                          {(!previousDate || date.month() !== previousDate.month())
+                            && <Text fontSize={14} color='tertiaryText'>{date.format('MMM')}</Text>}
+                          {(!previousDate || date.year() !== previousDate.year())
+                            && <Text fontSize={14} color='tertiaryText'>{date.format('YYYY')}</Text>}
+                        </Box>
+                        <View style={styles.hiddenRow}>
+                          <Row
+                            key={transaction.transaction_id}
+                            {...transaction}
+                            index={i}
+                          />
+                        </View>
                       </View>
                     </View>
-                  </View>
-                )
-              })}
-              {/* Spacer */}
-              <View style={{ height: 200, width: '100%' }} />
-            </CustomScrollView>
-            <CustomScrollView
-              bounces={false}
-              onScroll={handleScroll}
-              style={styles.transactionsScrollView}
-            >
-              {transactionsData.results.map((transaction, i) => (
-                <TouchableOpacity
-                  onPress={() => props.navigation.navigate('Transaction', { id: transaction.transaction_id })}
-                  activeOpacity={.7} key={transaction.transaction_id}>
-                  <Row {...transaction} index={i} />
-                </TouchableOpacity>
-              ))}
-              {/* Spacer */}
-              <View style={{ height: 200, width: '100%' }} />
-            </CustomScrollView>
-          </View>}
-      </Box>
-    </Animated.View>
+                  )
+                }}
+                bounces={false}
+                ref={dateScrollRef}
+                showsVerticalScrollIndicator={false}
+                scrollEnabled={false}
+                stickyHeaderIndices={transactionsData.results.map((_, i) => i).reverse()}
+                style={styles.dateScrollView}
+              />
+              <FlatList
+                data={transactionsData.results}
+                renderItem={({ item: transaction, index: i }) => (
+                  <TouchableOpacity
+                    onPress={() => props.navigation.navigate('Transaction', { id: transaction.transaction_id })}
+                    activeOpacity={.7} key={transaction.transaction_id}>
+                    <Row {...transaction} index={i} />
+                  </TouchableOpacity>
+                )}
+                bounces={false}
+                onScroll={handleScroll}
+                style={styles.transactionsScrollView}
+              />
+            </View>}
+        </Box>
+      </Animated.View>
+    </>
   )
 }
 

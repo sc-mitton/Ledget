@@ -33,7 +33,7 @@ const Screen = ({ navigation, route }: ConnectionsScreenProps<'Connection'>) => 
   }, [plaidItem]);
 
   return (
-    <Box variant='screenWithHeader'>
+    <Box variant='nestedScreen'>
       <TouchableOpacity
         style={styles.headerContainer}
         activeOpacity={.8}

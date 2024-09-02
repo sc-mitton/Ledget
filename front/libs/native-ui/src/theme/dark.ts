@@ -91,6 +91,7 @@ export const darkTheme = createTheme({
     newTransactionBorder: palette.gray700,
     contextMenuBorder: palette.gray650,
     toastBorder: palette.gray800,
+    modalBorder: palette.gray800,
 
     // Shadows
     navShadow: palette.gray900,
@@ -132,7 +133,7 @@ export const darkTheme = createTheme({
     mediumGrayButtonBorder: palette.gray650,
     grayButtonBorder: palette.gray750,
     borderedGrayButton: palette.gray850,
-    dragBar: palette.gray600,
+    dragBar: palette.gray700,
 
     // Category and Bill Colors
     monthBackground: `hsl(${blueH}, 38%, 24%)`,

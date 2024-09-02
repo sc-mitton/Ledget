@@ -57,7 +57,7 @@ export const formatCurrency = (
   val: number | string | undefined,
   withCents = true
 ) => {
-  if (!val) return withCents ? '$0.00' : '$0';
+  if (!val || (typeof val === 'string' && !parseInt(val))) return withCents ? '$0.00' : '$0';
 
   const currencyAmount =
     typeof val === 'string' ? makeIntCurrencyFromStr(val) : val;

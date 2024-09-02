@@ -4,7 +4,7 @@ import Appearance from './Appearance';
 // import Notifications from './Notifications';
 
 const Screen = (props: ProfileScreenProps<'Settings'>) => (
-  <Box variant='screenWithHeader' marginTop='xxxl'>
+  <Box variant='nestedScreen'>
     <Appearance />
     {/* <Notifications /> */}
   </Box>

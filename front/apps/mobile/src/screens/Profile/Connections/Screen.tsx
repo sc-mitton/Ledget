@@ -24,7 +24,7 @@ const Connections = ({
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <Box variant='screenWithHeader' marginTop='xxxl'>
+      <Box variant='nestedScreen'>
         <BoxHeader>Your Connections</BoxHeader>
         <ShimmerBox
           shimmering={isLoading}

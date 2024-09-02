@@ -1,6 +1,8 @@
 import { createTheme } from '@shopify/restyle';
-import { Platform } from 'react-native';
+import { Platform, NativeModules } from 'react-native';
 import basePalette from './base-palette';
+
+const { StatusBarManager } = NativeModules;
 
 const grayH = 240;
 const grayS = 7;
@@ -72,7 +74,7 @@ export const lightTheme = createTheme({
     inputBackground: palette.gray250,
     nestedContainer: palette.white,
     avatar: palette.gray500,
-    modalOverlay: palette.gray900.replace(`${grayS}`, '0'),
+    modalOverlay: palette.gray800.replace(`${grayS}`, '0'),
     modalBox: palette.gray150,
     modalBox100: palette.gray100,
     newTransaction: palette.gray250,
@@ -91,6 +93,7 @@ export const lightTheme = createTheme({
     tabNavBorder: palette.gray250,
     newTransactionBorder: palette.gray300,
     contextMenuBorder: palette.gray200,
+    modalBorder: palette.gray200,
     toastBorder: palette.gray100,
 
     // Shadows
@@ -135,7 +138,7 @@ export const lightTheme = createTheme({
     tabGrayPill: palette.gray1000,
     tabGrayPillBorder: 'transparent',
     borderedGrayButton: palette.gray250,
-    dragBar: palette.gray500,
+    dragBar: palette.gray300,
 
     // Category and Bill Colors
     monthBackground: `hsl(${blueH}, 50%, 88%)`,
@@ -179,7 +182,8 @@ export const lightTheme = createTheme({
     xxl: 36,
     xxxl: 48,
     xxxxl: 54,
-    navHeight: 104
+    navHeight: 104,
+    statusBar: StatusBarManager.HEIGHT,
   },
   textVariants: {
     bold: {
@@ -422,6 +426,13 @@ export const lightTheme = createTheme({
     screen: {
       flex: 1,
       paddingHorizontal: 'l',
+      paddingTop: 'statusBar',
+    },
+    nestedScreen: {
+      flex: 1,
+      paddingHorizontal: 'l',
+      paddingTop: 'statusBar',
+      marginTop: 'xxxl'
     },
     screenContent: {
       flex: 1,
@@ -458,6 +469,20 @@ export const lightTheme = createTheme({
       left: 24,
       bottom: 0,
       zIndex: 100
+    },
+    dragBar: {
+      backgroundColor: 'dragBar',
+      width: 54,
+      height: 6,
+      borderRadius: 5,
+      position: 'absolute',
+      top: 6
+    },
+    dragBarContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      height: 24
     },
     defaults: {}
   },

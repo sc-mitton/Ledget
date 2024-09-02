@@ -1,5 +1,4 @@
 import { Box, Header } from '@ledget/native-ui';
-import React from 'react'
 
 const Screen = () => {
     return (

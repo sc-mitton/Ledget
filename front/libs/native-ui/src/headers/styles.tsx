@@ -5,8 +5,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    height: 54,
-    top: -16,
+    height: 40,
     left: 0,
     right: 0
   },
@@ -20,8 +19,8 @@ const styles = StyleSheet.create({
   seperator: {
     position: 'absolute',
     bottom: 0,
-    left: 16,
-    right: 16,
+    left: 0,
+    right: 0,
     opacity: 0.9
   }
 });

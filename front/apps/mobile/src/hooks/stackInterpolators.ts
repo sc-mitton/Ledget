@@ -1,6 +1,9 @@
 import { useCallback } from 'react';
-import { Animated } from 'react-native';
+import { Animated, NativeModules } from 'react-native';
 import { useTheme } from '@shopify/restyle';
+
+const { StatusBarManager } = NativeModules;
+const TOP_OF_MODAL = StatusBarManager.HEIGHT + 16;
 
 export const useCardStyleInterpolator = (app?: 'main' | 'authentication') => {
   const theme = useTheme();
@@ -48,6 +51,74 @@ export const useCardStyleInterpolator = (app?: 'main' | 'authentication') => {
   return cardStyleInterpolator;
 }
 
+export const useModifiedDefaultModalStyleInterpolator = () => {
+  const theme = useTheme();
+
+  const modalStyleInterpolator = useCallback(({ current, next, inverted, layouts: { screen } }: any) => {
+
+    const progress = Animated.add(
+      current.progress.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, 1],
+        extrapolate: 'clamp',
+      }),
+      next
+        ? next.progress.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, 1],
+          extrapolate: 'clamp',
+        })
+        : 0
+    );
+
+    return ({
+      cardStyle: {
+        opacity: Animated.multiply(
+          progress.interpolate({
+            inputRange: [0, 1, 2],
+            outputRange: [0, 1, .2],
+            extrapolate: 'clamp',
+          }),
+          inverted
+        ),
+        shadowColor: theme.colors.modalShadow,
+        shadowOpacity: progress.interpolate({
+          inputRange: [0, 1, 2],
+          outputRange: [0, 0.3, 0],
+          extrapolate: 'clamp',
+        }),
+        shadowRadius: !next ? 10 : 0,
+        shadowOffset: { width: 0, height: !next ? -4 : 0, },
+        transform: [
+          {
+            translateY: Animated.multiply(
+              progress.interpolate({
+                inputRange: [0, 1, 2],
+                outputRange: [screen.height, !next ? TOP_OF_MODAL : 0, 0],
+                extrapolate: 'clamp',
+              }),
+              inverted
+            ),
+          },
+          {
+            scale: Animated.multiply(
+              progress.interpolate({
+                inputRange: [0, 1, 2],
+                outputRange: [1, 1, .9],
+                extrapolate: 'clamp',
+              }),
+              inverted
+            ),
+          }
+        ],
+      }
+    })
+
+  }, [theme]);
+
+  return modalStyleInterpolator;
+}
+
 export const useModalStyleInterpolator = (args?: { slideOut?: boolean }) => {
   const theme = useTheme();
 
@@ -72,7 +143,7 @@ export const useModalStyleInterpolator = (args?: { slideOut?: boolean }) => {
       cardStyle: {
         opacity: progress,
         shadowColor: theme.colors.modalShadow,
-        shadowOpacity: 0.5,
+        shadowOpacity: 0.4,
         shadowRadius: 10,
         shadowOffset: { width: 0, height: -4 },
         transform: [

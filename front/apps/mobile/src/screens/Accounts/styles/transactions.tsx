@@ -8,8 +8,8 @@ export default StyleSheet.create({
     bottom: 0
   },
   box: {
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     width: '100%',
     height: '100%',
   },
@@ -33,7 +33,6 @@ export default StyleSheet.create({
   },
   table: {
     flexDirection: 'row',
-    gap: 8
   },
   skeletonContainer: {
     overflow: 'hidden',
@@ -42,25 +41,21 @@ export default StyleSheet.create({
     marginHorizontal: 4,
   },
   transactionsScrollView: {
-    flex: 1,
-    flexGrow: 1,
-    flexShrink: 0,
+    width: '75%',
     paddingRight: 20,
     marginRight: 4,
   },
   dateScrollView: {
-    flex: 0,
-    flexShrink: 1,
+    width: 30,
     paddingLeft: 12,
     marginLeft: 1,
-    marginRight: 4
+    marginRight: 0
   },
   dateScrollViewRow: {
     alignItems: 'flex-start',
     marginVertical: 1,
-    width: '100%'
   },
-  row: {
+  transactionRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginVertical: 2,
@@ -92,8 +87,5 @@ export default StyleSheet.create({
   rightColumn: {
     flexGrow: 1,
     alignItems: 'flex-end',
-  },
-  seperator: {
-    opacity: .7
   }
 });

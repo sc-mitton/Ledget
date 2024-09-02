@@ -24,7 +24,7 @@ const Screen = (props: ProfileScreenProps<'CoOwner'>) => {
   const { data: plaidItems } = useGetPlaidItemsQuery();
 
   return (
-    <Box style={styles.screen} variant='screenWithHeader'>
+    <Box style={styles.screen} variant='nestedScreen'>
       <View style={styles.avatarContainer}>
         <Avatar name={coOwner?.name} size='xl' />
         <Header2 style={styles.header}>

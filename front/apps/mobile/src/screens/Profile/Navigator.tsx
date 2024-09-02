@@ -22,8 +22,8 @@ function Profile(props: ProfileScreenProps<'Main'>) {
   const { data: user } = useGetMeQuery();
 
   return (
-    <View style={styles.full}>
-      <Box variant='header'>
+    <Box variant='screen'>
+      <View>
         <Header>Profile</Header>
         <View>
           <Box
@@ -39,7 +39,7 @@ function Profile(props: ProfileScreenProps<'Main'>) {
             </ChevronTouchable>
           </Box>
         </View>
-      </Box>
+      </View>
       <Box
         backgroundColor='nestedContainer'
         variant='nestedContainer'
@@ -78,7 +78,7 @@ function Profile(props: ProfileScreenProps<'Main'>) {
         textColor='blueText'>
         <View style={styles.logoutIcon}><Icon icon={LogOut} size={18} color='blueText' /></View>
       </Button>
-    </View>
+    </Box>
   );
 }
 

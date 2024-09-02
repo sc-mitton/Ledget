@@ -76,9 +76,7 @@ export const DollarCents = ({
   value: string | number;
   withCents?: boolean;
 } & RestyledColorProps) => {
-  const str = formatCurrency(
-    typeof value === 'string' ? value.replace(/^-/, '') : Math.abs(value)
-  );
+  let str = formatCurrency(typeof value === 'string' ? value.replace(/^-/, '') : Math.abs(value));
   const isDebit = Number(value) < 0;
   const props = useRestyle(restyledFunctions, rest);
   const { fontSize, ...restStyle } = (props as any).style[0] || {};
@@ -90,7 +88,7 @@ export const DollarCents = ({
           {`${isDebit ? '+' : ''}${str.split('.')[0]}`}
         </Text>
         {withCents && (
-          <Text style={{ ...restStyle }} fontSize={((props as any).style[0]?.fontSize || 16) * .75}>
+          <Text {...props} style={{ ...restStyle }} fontSize={((props as any).style[0]?.fontSize || 16) * .75}>
             {`.${str.split('.')[1]}`}
           </Text>
         )}

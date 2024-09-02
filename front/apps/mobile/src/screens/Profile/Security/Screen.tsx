@@ -17,7 +17,7 @@ const Screen = (props: SecurityScreenProps<'Main'>) => {
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <Box variant='screenWithHeader' marginTop='xxxxl'>
+      <Box variant='nestedScreen'>
         <Mfa {...props} />
         <Devices {...props} />
         <View style={styles.logoutButton}>

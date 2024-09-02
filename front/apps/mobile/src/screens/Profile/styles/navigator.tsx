@@ -29,14 +29,12 @@ export default StyleSheet.create({
   },
   optionsContainer: {
     flexDirection: 'column',
-    marginLeft: 20,
-    marginRight: 24,
     marginTop: 20,
     gap: 8,
     paddingVertical: 16,
   },
   logoutButton: {
-    marginLeft: 24,
+    marginLeft: 4,
     gap: 8,
   },
   logoutIcon: {

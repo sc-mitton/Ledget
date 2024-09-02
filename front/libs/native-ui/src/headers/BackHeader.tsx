@@ -1,5 +1,5 @@
 import { StackHeaderProps } from '@react-navigation/stack';
-import { View } from 'react-native';
+import { View, NativeModules } from 'react-native';
 
 import styles from './styles';
 import { Box } from '../restyled/Box';
@@ -7,10 +7,18 @@ import { BackButton } from '../buttons/back-button/BackButton';
 import { Text } from '../restyled/Text';
 import { Seperator } from '../restyled/Seperator';
 
+const { StatusBarManager } = NativeModules;
+
 export function BackHeader({ navigation, route, options, back, pagesWithTitle }: StackHeaderProps & { pagesWithTitle?: string[] }) {
 
   return (
-    <Box style={[styles.headerContainer]} backgroundColor='mainBackground' >
+    <Box
+      style={[
+        styles.headerContainer,
+        { top: StatusBarManager.HEIGHT }
+      ]}
+      backgroundColor='mainBackground'
+    >
       <Box style={styles.backButton}>
         <BackButton onPress={(e) => {
           e.preventDefault();

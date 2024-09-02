@@ -105,6 +105,8 @@ export function Modal(props: ModalProps) {
         </Pressable>}
       <Box
         style={[styles[`${position}Modal`], (restyleProps as any).style[0]]}
+        borderColor='modalBorder'
+        borderWidth={1}
         backgroundColor={'modalBox'}
         {...(hasOverlay ? {
           shadowColor: 'modalShadow',
