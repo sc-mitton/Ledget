@@ -8,7 +8,8 @@ import {
   StyleSheet,
   FlatList,
   Dimensions,
-  NativeModules
+  NativeModules,
+  ScrollView
 } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -44,7 +45,7 @@ interface PTransactions extends AccountsScreenProps<'Main'> {
 const EXPANDED_TOP = StatusBarManager.HEIGHT + 20
 const SKELETON_HEIGHT = 740
 
-const Row = (props: Transaction & { index: number }) => {
+const Row = (props: Partial<Transaction> & { index?: number }) => {
 
   return (
     <View>
@@ -54,7 +55,7 @@ const Row = (props: Transaction & { index: number }) => {
           <View style={styles.nameContainer}>
             {props.pending && <Icon icon={Hourglass} size={16} />}
             <Text fontSize={15}>
-              {props.name.length > 20 ? props.name.slice(0, 20) + '...' : props.name}
+              {(props.name?.length || 0) > 20 ? props.name?.slice(0, 20) + '...' : props.name}
             </Text>
           </View>
           <Text color='quaternaryText' fontSize={15}>
@@ -64,8 +65,8 @@ const Row = (props: Transaction & { index: number }) => {
         <View style={styles.rightColumn}>
           <DollarCents
             fontSize={15}
-            value={props.amount}
-            color={props.amount < 0 ? 'greenText' : 'mainText'}
+            value={props.amount || 0}
+            color={(props.amount || 0) < 0 ? 'greenText' : 'mainText'}
           />
         </View>
       </View>
@@ -77,7 +78,7 @@ const Transactions = (props: PTransactions) => {
   const theme = useTheme()
   const state = useRef<'neutral' | 'expanded'>('neutral')
   const propTop = useRef(props.top)
-  const dateScrollRef = useRef<FlatList>(null)
+  const dateScrollRef = useRef<ScrollView>(null)
   const top = useSharedValue(0)
   const overlayHeight = useSharedValue(0)
   const [getTransactions, { data: transactionsData }] = useLazyGetTransactionsQuery()
@@ -109,9 +110,7 @@ const Transactions = (props: PTransactions) => {
 
     // Track the date scroll view with the transactions scroll view
     if (dateScrollRef.current) {
-      setTimeout(() => {
-        dateScrollRef.current?.scrollToOffset({ offset: -1 * contentOffset.y, animated: false })
-      }, 0);
+      dateScrollRef.current.scrollTo({ y: contentOffset.y, animated: false })
     }
 
     if (bottom && transactionsData?.next !== null && transactionsData) {
@@ -183,9 +182,14 @@ const Transactions = (props: PTransactions) => {
             </View>
             :
             <View style={styles.table}>
-              <FlatList
-                data={transactionsData.results}
-                renderItem={({ item: transaction, index: i }) => {
+              <ScrollView
+                bounces={false}
+                ref={dateScrollRef}
+                showsVerticalScrollIndicator={false}
+                scrollEnabled={false}
+                stickyHeaderIndices={transactionsData.results.map((_, i) => i).reverse()}
+                style={styles.dateScrollView}>
+                {transactionsData.results.map((transaction, i) => {
                   const date = dayjs(transaction.date)
                   const previousDate = i > 0 ? dayjs(transactionsData.results[i - 1].date) : null
                   return (
@@ -197,24 +201,20 @@ const Transactions = (props: PTransactions) => {
                           {(!previousDate || date.year() !== previousDate.year())
                             && <Text fontSize={14} color='tertiaryText'>{date.format('YYYY')}</Text>}
                         </Box>
-                        <View style={styles.hiddenRow}>
-                          <Row
-                            key={transaction.transaction_id}
-                            {...transaction}
-                            index={i}
-                          />
+                        <View style={styles.hiddenRowContainer}>
+                          <View style={styles.hiddenRow}>
+                            {i !== 0 && <Seperator />}
+                            <Text fontSize={15}>H</Text>
+                            <Text fontSize={15}>6</Text>
+                          </View>
                         </View>
                       </View>
                     </View>
                   )
-                }}
-                bounces={false}
-                ref={dateScrollRef}
-                showsVerticalScrollIndicator={false}
-                scrollEnabled={false}
-                stickyHeaderIndices={transactionsData.results.map((_, i) => i).reverse()}
-                style={styles.dateScrollView}
-              />
+                })}
+                {/* Spacer */}
+                <View style={{ height: 200, width: '100%' }} />
+              </ScrollView>
               <FlatList
                 data={transactionsData.results}
                 renderItem={({ item: transaction, index: i }) => (

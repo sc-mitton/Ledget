@@ -52,8 +52,7 @@ export default StyleSheet.create({
     marginRight: 0
   },
   dateScrollViewRow: {
-    alignItems: 'flex-start',
-    marginVertical: 1,
+    alignItems: 'flex-start'
   },
   transactionRow: {
     flexDirection: 'row',
@@ -61,9 +60,14 @@ export default StyleSheet.create({
     marginVertical: 2,
     alignItems: 'center',
   },
-  hiddenRow: {
-    width: 0,
+  hiddenRowContainer: {
     opacity: 0,
+    width: 0,
+  },
+  hiddenRow: {
+    marginVertical: 2,
+    height: 'auto',
+    gap: 2,
   },
   nameContainer: {
     gap: 4,
@@ -79,7 +83,7 @@ export default StyleSheet.create({
   },
   dateContent: {
     position: 'absolute',
-    top: 0,
+    top: 2,
     left: 0,
     right: 0,
     paddingRight: 2

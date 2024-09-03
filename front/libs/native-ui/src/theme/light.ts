@@ -23,7 +23,7 @@ const palette = {
   greenText: 'hsl(144, 62%, 53%)',
 
   gray100: `hsl(${grayH}, ${grayS}%, 98%)`,
-  gray150: `hsl(${grayH}, ${grayS}%, 96%)`,
+  gray150: `hsl(${grayH}, ${grayS}%, 95%)`,
   gray200: `hsl(${grayH}, ${grayS}%, 92%)`,
   gray250: `hsl(${grayH}, ${grayS}%, 90%)`,
   gray275: `hsl(${grayH}, ${grayS}%, 89%)`,
@@ -89,7 +89,7 @@ export const lightTheme = createTheme({
     focusedInputBorderMain: palette.blue300,
     tabNavPillBorder: palette.blue100,
     bottomNavBorder: palette.gray500,
-    nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 95%)`,
+    nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 94%)`,
     tabNavBorder: palette.gray250,
     newTransactionBorder: palette.gray300,
     contextMenuBorder: palette.gray200,

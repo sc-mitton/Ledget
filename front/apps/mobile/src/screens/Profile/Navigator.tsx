@@ -50,22 +50,22 @@ function Profile(props: ProfileScreenProps<'Main'>) {
             ? props.navigation.navigate('CoOwner')
             : props.navigation.navigate('Modals', { screen: 'AddCoOwner' })
         }>
-          <Icon icon={Users} />
+          <Icon strokeWidth={2} color='secondaryText' icon={Users} />
           <Text>Account Member</Text>
         </ChevronTouchable>
         <Seperator />
         <ChevronTouchable onPress={() => props.navigation.navigate('Connections', { screen: 'All' })}>
-          <Icon icon={Link} />
+          <Icon strokeWidth={2} color='secondaryText' icon={Link} />
           <Text>Connections</Text>
         </ChevronTouchable>
         <Seperator />
         <ChevronTouchable onPress={() => props.navigation.navigate('Security', { screen: 'Main' })}>
-          <Icon icon={Shield} />
+          <Icon strokeWidth={2} color='secondaryText' icon={Shield} />
           <Text>Security</Text>
         </ChevronTouchable>
         <Seperator />
         <ChevronTouchable onPress={() => props.navigation.navigate('Settings')}>
-          <Icon icon={SettingsIcon} />
+          <Icon strokeWidth={2} color='secondaryText' icon={SettingsIcon} />
           <Text>Settings</Text>
         </ChevronTouchable>
       </Box>
@@ -76,7 +76,7 @@ function Profile(props: ProfileScreenProps<'Main'>) {
         backgroundColor='transparent'
         borderColor='transparent'
         textColor='blueText'>
-        <View style={styles.logoutIcon}><Icon icon={LogOut} size={18} color='blueText' /></View>
+        <View style={styles.logoutIcon}><Icon strokeWidth={2} icon={LogOut} size={18} color='blueText' /></View>
       </Button>
     </Box>
   );

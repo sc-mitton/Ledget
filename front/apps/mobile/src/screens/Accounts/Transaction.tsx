@@ -1,13 +1,11 @@
-import { View } from 'react-native'
-
-import { Text } from '@ledget/native-ui'
+import { Text, Box } from '@ledget/native-ui'
 import type { AccountsScreenProps } from '@types'
 
 const Transaction = (props: AccountsScreenProps<'Transaction'>) => {
   return (
-    <View>
+    <Box variant='screen'>
       <Text>Transaction</Text>
-    </View>
+    </Box>
   )
 }
 

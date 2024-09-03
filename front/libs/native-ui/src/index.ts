@@ -1,6 +1,3 @@
-
-export * from './containers/custom-flat-list/CustomFlatList';
-
 export * from './inputs/modal-picker/ModalPicker';
 
 export * from './inputs/money-input/MoneyInput';
@@ -11,14 +8,13 @@ export * from './menus/context-menu/ContextMenu';
 
 export * from './buttons/bill-cat-label/BillCatLabel';
 
-export * from './containers/custom-scroll-view/CustomScrollView';
-
 export * from './containers/modal/Modal';
 export * from './containers/slide-view/slide-view';
 export * from './containers/baked-boxes';
 export * from './containers/tabs-navigator/TabsNavigator';
 export * from './containers/loading-box/LoadingBox';
 export * from './containers/bottom-drawer-modal/BottomDrawerModal';
+export * from './containers/custom-scroll-view/CustomScrollView';
 
 export * from './hooks/useKeyboardHeight/keyboard-height';
 export * from './restyled/Box';
