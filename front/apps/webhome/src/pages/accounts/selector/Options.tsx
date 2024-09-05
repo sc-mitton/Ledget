@@ -8,7 +8,7 @@ import {
 } from '@react-spring/web';
 
 import styles from './styles/options.module.scss';
-import { useScreenContext, useSpringDrag, CloseButton } from '@ledget/ui';
+import { useSpringDrag, CloseButton } from '@ledget/ui';
 import { useAccountsContext } from '../context';
 import { useUpdateAccountsMutation } from '@ledget/shared-features';
 import SelectOption from './SelectOption';
@@ -22,7 +22,6 @@ const optionHeight = 69;
 const optionPadding = 16;
 
 const Options = (props: Props) => {
-  const { screenSize } = useScreenContext();
   const { open, setOpen, children, ...rest } = props;
   const [updateOrder] = useUpdateAccountsMutation();
   const { accounts, setAccounts } = useAccountsContext();
