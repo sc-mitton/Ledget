@@ -40,5 +40,5 @@ class TestSessionViews(ViewTestsMixin):
         self.assertEqual(response.status_code, 204)
 
         # Make sure mock was called with user id
-        identity_api_mock.return_value.disable_session.assert_called_once_with(
+        identity_api_mock.return_value.delete_identity_sessions.assert_called_once_with(
             id=self.user.id)

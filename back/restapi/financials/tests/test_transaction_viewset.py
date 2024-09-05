@@ -75,6 +75,25 @@ class TestTransactionViewSet(ViewTestsMixin):
         transaction.refresh_from_db()
         self.assertEqual(transaction.bill, bill)
 
+    def test_clear_transaction_budget_associations(self):
+        '''
+        Test updating a transaction to not being labeled as spend
+        '''
+
+        transaction = Transaction.objects.filter(
+            account__useraccount__user=self.user,
+            is_spend=True).first()
+
+        response = self.client.patch(
+            reverse('transactions-detail', args=[transaction.transaction_id]),
+            {'is_spend': False},
+            format='json'
+        )
+
+        self.assertEqual(response.status_code, 200)
+        transaction.refresh_from_db()
+        self.assertEqual(transaction.categories.count(), 0)
+
     def test_get_transaction(self):
         transaction = Transaction.objects.all().first()
         response = self.client.get(

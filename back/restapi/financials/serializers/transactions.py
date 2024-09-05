@@ -102,6 +102,11 @@ class UpdateTransactionsConfirmationSerializer(serializers.Serializer):
                ['category', 'category_id', 'bill', 'bill_id']):
             validated_data['confirmed_date'] = datetime.now()
             validated_data['confirmed_datetime'] = datetime.now()
+        if all(key not in validated_data for key in
+               ['category', 'category_id', 'bill', 'bill_id']):
+            nullified_fields = ['predicted_category', 'predicted_bill']
+            validated_data.update({field: None for field in nullified_fields})
+
         return super().update(instance, validated_data)
 
 
@@ -115,3 +120,12 @@ class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
         fields = '__all__'
+
+    def update(sef, instance, validated_data):
+
+        if (validated_data.get('is_spend') is False):
+            TransactionCategory.objects.filter(transaction=instance).delete()
+            nullified_fields = ['predicted_category', 'predicted_bill', 'bill']
+            validated_data.update({field: None for field in nullified_fields})
+
+        return super().update(instance, validated_data)
