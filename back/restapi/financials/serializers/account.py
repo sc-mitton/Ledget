@@ -67,7 +67,7 @@ class AccountBalanceSerializer(serializers.Serializer):
 class AccountBalanceResponseSerializer(serializers.Serializer):
     account_id = serializers.CharField()
     balances = AccountBalanceSerializer()
-    mask = serializers.CharField()
+    mask = serializers.CharField(required=False)
     name = serializers.CharField(required=False)
     official_name = serializers.CharField(required=False)
     type = serializers.CharField()
