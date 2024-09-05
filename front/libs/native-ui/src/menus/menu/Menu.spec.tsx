@@ -1,11 +1,11 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
 
-import ContextMenu from './ContextMenu';
+import Menu from './';
 
-describe('ContextMenu', () => {
+describe('Menu', () => {
   it('should render successfully', () => {
-    const { root } = render(< ContextMenu />);
+    const { root } = render(< Menu />);
     expect(root).toBeTruthy();
   });
 });

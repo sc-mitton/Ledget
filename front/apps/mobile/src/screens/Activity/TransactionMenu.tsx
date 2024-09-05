@@ -1,13 +1,13 @@
 import { Plus, Info, ArrowLeft, ArrowRight } from 'geist-native-icons';
 
 import styles from './styles/transaction-menu';
-import { Icon, ContextMenu } from '@ledget/native-ui';
-import type { ContextMenuProps } from '@ledget/native-ui';
+import { Icon, Menu } from '@ledget/native-ui';
+import type { MenuProps } from '@ledget/native-ui';
 import { ModalScreenProps } from '@types';
 import { View } from 'react-native';
 import { Transaction } from '@ledget/shared-features';
 
-interface Props extends Omit<ContextMenuProps, 'items'>, ModalScreenProps<'Activity'> {
+interface Props extends Omit<MenuProps, 'items'>, ModalScreenProps<'Activity'> {
   transaction: Transaction;
 }
 
@@ -19,7 +19,7 @@ const TransactionMenu = (props: Props) => {
   } = props;
 
   return (
-    <ContextMenu
+    <Menu
       onShowChange={props.onShowChange}
       items={[
         {
@@ -50,7 +50,7 @@ const TransactionMenu = (props: Props) => {
       {...rest}
     >
       {children}
-    </ContextMenu>
+    </Menu>
   );
 }
 

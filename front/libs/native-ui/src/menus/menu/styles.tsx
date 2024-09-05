@@ -1,26 +1,52 @@
 import { StyleSheet } from "react-native";
 
+export const placementStyles = StyleSheet.create({
+  center: {
+    justifyContent: 'center',
+    flexDirection: 'row'
+  },
+  left: {
+    justifyContent: 'flex-start',
+    flexDirection: 'row'
+  },
+  right: {
+    justifyContent: 'flex-end',
+    flexDirection: 'row'
+  }
+});
+
+export const menuPlacementStyles = StyleSheet.create({
+  center: {
+    transformOrigin: 'top center',
+  },
+  left: {
+    transformOrigin: 'top left',
+  },
+  right: {
+    transformOrigin: 'top right',
+  }
+})
+
 export default StyleSheet.create({
   container: {
     position: 'relative'
   },
   menuContainer: {
     position: 'absolute',
-    bottom: '-105%',
+    bottom: -8,
     width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   menu: {
     position: 'absolute',
     borderRadius: 12,
-    transformOrigin: 'top center',
+  },
+  menuClipper: {
+    overflow: 'hidden',
+    borderRadius: 12,
   },
   menuOptions: {
     flexDirection: 'column',
     justifyContent: 'space-evenly',
-    gap: 6,
-    paddingVertical: 8,
     borderRadius: 12,
     position: 'relative',
   },
@@ -30,15 +56,19 @@ export default StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
-    opacity: 0.9,
+    opacity: 0,
     borderRadius: 12,
   },
-  row: {
+  rowContainer: {
     flex: 1,
+  },
+  row: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 20,
+    paddingVertical: 8,
     paddingHorizontal: 16,
+    gap: 16,
+    opacity: .85
   },
   icon: {
     minWidth: 28,
