@@ -70,8 +70,8 @@ class AccountBalanceResponseSerializer(serializers.Serializer):
     mask = serializers.CharField(required=False)
     name = serializers.CharField(required=False)
     official_name = serializers.CharField(required=False)
-    type = serializers.CharField()
-    subtype = serializers.CharField()
+    type = serializers.CharField(required=False)
+    subtype = serializers.CharField(required=False)
     persistent_account_id = serializers.CharField(required=False)
     institution_id = serializers.CharField(required=False)
 
