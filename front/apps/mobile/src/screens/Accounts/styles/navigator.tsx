@@ -1,16 +1,16 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-  accountPickerButton: {
+  accountsPickerButton: {
     width: '100%',
     alignItems: 'center',
     gap: 6,
     marginTop: 16,
     marginBottom: 28
   },
-  accountPickerButtonTop: {
+  accountsPickerButtonTop: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8
-  },
+  }
 });

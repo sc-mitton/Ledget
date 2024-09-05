@@ -6,7 +6,6 @@ import {
   NativeScrollEvent,
   TouchableOpacity,
   StyleSheet,
-  FlatList,
   Dimensions,
   NativeModules,
   ScrollView
@@ -30,7 +29,8 @@ import {
   DollarCents,
   Text,
   Seperator,
-  Icon
+  Icon,
+  CustomFlatList
 } from '@ledget/native-ui';
 import SkeletonTransactions from './SkeletonTransactions';
 import { AccountsScreenProps } from '@types';
@@ -197,9 +197,9 @@ const Transactions = (props: PTransactions) => {
                       <View style={styles.dateContentContainer}>
                         <Box style={styles.dateContent} backgroundColor='nestedContainer'>
                           {(!previousDate || date.month() !== previousDate.month())
-                            && <Text fontSize={14} color='tertiaryText'>{date.format('MMM')}</Text>}
+                            && <Text fontSize={14} color='quaternaryText'>{date.format('MMM')}</Text>}
                           {(!previousDate || date.year() !== previousDate.year())
-                            && <Text fontSize={14} color='tertiaryText'>{date.format('YYYY')}</Text>}
+                            && <Text fontSize={14} color='quaternaryText'>{date.format('YYYY')}</Text>}
                         </Box>
                         <View style={styles.hiddenRowContainer}>
                           <View style={styles.hiddenRow}>
@@ -215,11 +215,11 @@ const Transactions = (props: PTransactions) => {
                 {/* Spacer */}
                 <View style={{ height: 200, width: '100%' }} />
               </ScrollView>
-              <FlatList
+              <CustomFlatList
                 data={transactionsData.results}
                 renderItem={({ item: transaction, index: i }) => (
                   <TouchableOpacity
-                    onPress={() => props.navigation.navigate('Transaction', { id: transaction.transaction_id })}
+                    onPress={() => props.navigation.navigate('Transaction', { transaction })}
                     activeOpacity={.7} key={transaction.transaction_id}>
                     <Row {...transaction} index={i} />
                   </TouchableOpacity>

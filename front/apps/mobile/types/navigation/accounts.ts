@@ -3,17 +3,29 @@ import type { CompositeScreenProps } from '@react-navigation/native';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
 import type { BottomTabNavParamList, RootStackParamList } from './root';
-import { Account, AccountType } from '@ledget/shared-features';
+import { Account, AccountType, Transaction } from '@ledget/shared-features';
 
 export type AccountsStackParamList = {
   Main: {
     account?: Account
+    options?: {
+      title: string
+    }
   } | undefined,
   Transaction: {
-    id: string
+    transaction: Transaction
+  },
+  SplitTransaction: {
+    transaction: Transaction
   },
   PickAccount: {
     accountType: AccountType
+    currentAccount?: string
+    options?: {
+      title?: string,
+      reorder?: boolean,
+      order?: 'balance-asc' | 'balance-desc' | 'name-asc' | 'name-desc'
+    }
   }
 };
 

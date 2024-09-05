@@ -41,7 +41,7 @@ export default StyleSheet.create({
     marginHorizontal: 4,
   },
   transactionsScrollView: {
-    width: '75%',
+    width: '82%',
     paddingRight: 20,
     marginRight: 4,
   },
@@ -57,7 +57,7 @@ export default StyleSheet.create({
   transactionRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 2,
+    marginVertical: 3,
     alignItems: 'center',
   },
   hiddenRowContainer: {

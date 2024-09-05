@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Check } from 'geist-native-icons';
 
 import styles from './styles';
 import { View } from 'react-native';
@@ -8,13 +7,13 @@ import {
   selectBudgetMonthYear,
   useLazyGetBillsQuery,
   useLazyGetCategoriesQuery,
+  isCategory
 } from '@ledget/shared-features';
 import {
   BillCatEmoji,
   BillCatLabel,
   Text,
-  ModalPicker,
-  Icon,
+  ModalPicker
 } from '@ledget/native-ui';
 
 type Error = {
@@ -22,30 +21,54 @@ type Error = {
   type?: string
 }
 
-interface BillCatSelectProps {
-  items?: 'bills' | 'categories' | 'all';
-  onChange: (value: string[] | string) => void
-  multiple?: boolean;
-  error?: Error;
-  label?: boolean;
-};
-
 interface Option {
   label: string;
   value: string;
   emoji?: string | null;
   period: 'month' | 'year' | 'once';
+  group: 'category' | 'bill';
 }
 
-export const BillCatSelect = (props: BillCatSelectProps) => {
-  const { items = 'all', label = true } = props;
+interface BillCatSelectPropsBase {
+  isFormInput?: boolean;
+  items?: 'bills' | 'categories' | 'all';
+  error?: Error;
+  label?: string;
+  modalPickerHeader?: string;
+};
+
+type BillCatSelectProps<M extends boolean = false> =
+  M extends true
+  ? {
+    multiple?: M;
+    onChange?: (value?: Option[]) => void
+    defaultValue?: Option[]
+    onClose?: (value?: Option[]) => void
+  } & BillCatSelectPropsBase
+  : {
+    multiple?: M;
+    onChange?: (value?: Option) => void
+    defaultValue?: Option
+    onClose?: (value?: Option) => void
+  } & BillCatSelectPropsBase;
+
+
+export const BillCatSelect = <TMultiple extends boolean>(props: BillCatSelectProps<TMultiple>) => {
+  const {
+    modalPickerHeader,
+    onClose,
+    items = 'all',
+    label = '',
+    isFormInput = true,
+    multiple = false,
+    defaultValue
+  } = props;
 
   const { month, year } = useAppSelector(selectBudgetMonthYear);
   const [getCategories, { data: categoryData }] = useLazyGetCategoriesQuery();
   const [getBills, { data: billData }] = useLazyGetBillsQuery();
 
-  const [value, setValue] = useState<string[] | string>(
-    [] as string[] | string);
+  const [value, setValue] = useState(props.defaultValue);
   const [billCats, setBillCats] = useState<Option[]>([] as Option[]);
 
   useEffect(() => {
@@ -64,21 +87,25 @@ export const BillCatSelect = (props: BillCatSelectProps) => {
         label: item.name,
         value: item.id,
         emoji: item.emoji,
-        period: item.period
+        period: item.period,
+        group: isCategory(item) ? 'category' : 'bill'
       })));
     }
   }, [categoryData, billData]);
 
   useEffect(() => {
     if (!value) return;
-    props.onChange && props.onChange(value);
+    props.onChange && props.onChange(value as any);
   }, [value]);
 
   return (
     <ModalPicker
       searchable
+      isFormInput={isFormInput}
       options={billCats}
-      multiple={props.multiple ? true : false}
+      onClose={onClose as any}
+      defaultValue={defaultValue as any}
+      multiple={multiple}
       onChange={setValue}
       renderSelected={(option) => (
         <View style={styles.selectedOption}>
@@ -98,12 +125,16 @@ export const BillCatSelect = (props: BillCatSelectProps) => {
           <Text>{option.label}</Text>
         </View>
       )}
-      header={items === 'all'
-        ? props.multiple ? 'Categories and Bills' : 'Category or Bill'
-        : items === 'bills' ? 'Bills' : 'Categories'}
-      label={items === 'all'
-        ? props.multiple ? 'Categories and Bills' : 'Category or Bill'
-        : items === 'bills' ? 'Bills' : 'Categories'}
+      header={modalPickerHeader
+        ? modalPickerHeader
+        : items === 'all'
+          ? props.multiple ? 'Categories and Bills' : 'Category or Bill'
+          : items === 'bills' ? 'Bills' : 'Categories'}
+      label={label
+        ? label
+        : items === 'all'
+          ? props.multiple ? 'Categories and Bills' : 'Category or Bill'
+          : items === 'bills' ? 'Bills' : 'Categories'}
       error={props.error}
     />
   )

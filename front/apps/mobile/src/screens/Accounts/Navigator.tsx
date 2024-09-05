@@ -4,16 +4,16 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { ChevronDown } from 'geist-native-icons';
 
 import styles from './styles/navigator';
-import { Box, Header, Text, Icon, InstitutionLogo, DollarCents } from '@ledget/native-ui';
+import { Box, Header, Text, Icon, InstitutionLogo, DollarCents, BackHeader } from '@ledget/native-ui';
 import { hasErrorCode } from '@ledget/helpers';
 import { useGetAccountsQuery, popToast, Account } from '@ledget/shared-features';
 import { useAppDispatch } from '@/hooks';
 import { AccountsScreenProps, AccountsStackParamList } from '@types';
 import { useCardStyleInterpolator, useModifiedDefaultModalStyleInterpolator } from '@/hooks';
-import Transactions from './Transactions';
-import AccountPicker from './AccountPicker';
-import Transaction from './Transaction';
 import { useAppearance } from '@/features/appearanceSlice';
+import Transactions from './Transactions';
+import AccountsPicker from './AccountsPicker/Screen';
+import Transaction from './Transaction/Screen';
 
 const Stack = createStackNavigator<AccountsStackParamList>()
 
@@ -50,22 +50,31 @@ const Main = (props: AccountsScreenProps<'Main'>) => {
       <View onLayout={(e) => {
         setBottomOfContentPos(e.nativeEvent.layout.height + 48)
       }}>
-        <Header>Accounts</Header>
+        <Header>
+          {`Your ${props.route.params?.options?.title || 'Accounts'}`}
+        </Header>
         <TouchableOpacity
           activeOpacity={.7}
-          style={styles.accountPickerButton}
-          onPress={() => account && props.navigation.navigate('PickAccount', { accountType: account?.type })}>
-          <View style={styles.accountPickerButtonTop}>
+          style={styles.accountsPickerButton}
+          onPress={() => {
+            account && props.navigation.navigate(
+              'PickAccount',
+              { accountType: account?.type, currentAccount: account.account_id })
+          }}>
+          <View style={styles.accountsPickerButtonTop}>
             <InstitutionLogo account={account?.account_id} />
-            <Text fontSize={18} variant='bold' color={mode === 'dark' ? 'secondaryText' : 'mainText'}>
-              {account?.name}
-            </Text>
-            <Icon icon={ChevronDown} strokeWidth={3} color={mode === 'dark' ? 'secondaryText' : 'mainText'} />
+            {account
+              ?
+              <Text fontSize={18} variant='bold'>
+                {account?.name}
+              </Text>
+              :
+              <Box backgroundColor='transactionShimmer' height={18} width={100} borderRadius={40} />}
+            <Icon icon={ChevronDown} strokeWidth={2.5} />
           </View>
           <DollarCents
             value={`${account?.balances.current || 0}`}
             variant='bold'
-            color={mode === 'dark' ? 'secondaryText' : 'mainText'}
             fontSize={20}
           />
         </TouchableOpacity>
@@ -85,8 +94,13 @@ const Screen = () => {
 
   return (
     <Stack.Navigator id='accounts' initialRouteName='Main'>
-      <Stack.Group screenOptions={{ headerShown: false, cardStyleInterpolator }}>
-        <Stack.Screen name='Main' component={Main} />
+      <Stack.Group
+        screenOptions={{
+          header: (props) => <BackHeader {...props} />,
+          cardStyleInterpolator
+        }}
+      >
+        <Stack.Screen options={{ headerShown: false }} name='Main' component={Main} />
         <Stack.Screen name='Transaction' component={Transaction} />
       </Stack.Group>
       <Stack.Group
@@ -95,7 +109,7 @@ const Screen = () => {
           headerShown: false,
           cardStyleInterpolator: modalStyleInterpolator
         }}>
-        <Stack.Screen name='PickAccount' component={AccountPicker} />
+        <Stack.Screen name='PickAccount' component={AccountsPicker} />
       </Stack.Group>
     </Stack.Navigator>
   )

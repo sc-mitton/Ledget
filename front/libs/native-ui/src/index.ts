@@ -1,10 +1,11 @@
 export * from './inputs/modal-picker/ModalPicker';
+export { default as ModalPickerProvider } from './inputs/modal-picker/context';
 
 export * from './inputs/money-input/MoneyInput';
 
 export * from './inputs/date-picker/DatePicker';
 
-export * from './menus/context-menu/ContextMenu';
+export * from './menus/menu/Menu';
 
 export * from './buttons/bill-cat-label/BillCatLabel';
 
@@ -15,6 +16,7 @@ export * from './containers/tabs-navigator/TabsNavigator';
 export * from './containers/loading-box/LoadingBox';
 export * from './containers/bottom-drawer-modal/BottomDrawerModal';
 export * from './containers/custom-scroll-view/CustomScrollView';
+export * from './containers/custom-flat-list/CustomFlatList';
 
 export * from './hooks/useKeyboardHeight/keyboard-height';
 export * from './restyled/Box';

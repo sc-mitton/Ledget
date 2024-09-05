@@ -2,7 +2,6 @@ import { View } from 'react-native';
 
 import styles from './styles';
 import { Box } from '../../restyled/Box';
-import { TouchableOpacity, TouchableOpacityProps } from 'react-native';
 import { Text } from '../../restyled/Text';
 
 /* eslint-disable-next-line */
@@ -11,7 +10,8 @@ interface BillCatEmojiProps {
   emoji?: string | null;
   period: 'month' | 'year' | 'once';
 }
-export interface BillCatLabelProps extends TouchableOpacityProps, BillCatEmojiProps {
+
+interface BillCatLabelProps extends BillCatEmojiProps {
   name: string;
 }
 
@@ -33,23 +33,21 @@ export function BillCatEmoji(props: BillCatEmojiProps) {
 }
 
 export function BillCatLabel(props: BillCatLabelProps) {
-  const { name, emoji, period, ...rest } = props;
+  const { name, emoji, period } = props;
 
   return (
-    <TouchableOpacity {...rest}>
-      <Box
-        style={styles.billCatLabel}
-        backgroundColor={period === 'year' ? 'yearBackground' : 'monthBackground'}>
-        <Text fontSize={14}>
-          {emoji}
-        </Text>
-        <Text
-          color={period === 'year' ? 'yearColor' : 'monthColor'}
-          fontSize={14}>
-          {`${name.charAt(0).toUpperCase()}${name.slice(1)}`}
-        </Text>
-      </Box>
-    </TouchableOpacity>
+    <Box
+      style={styles.billCatLabel}
+      backgroundColor={period === 'year' ? 'yearBackground' : 'monthBackground'}>
+      <Text fontSize={14}>
+        {emoji}
+      </Text>
+      <Text
+        color={period === 'year' ? 'yearColor' : 'monthColor'}
+        fontSize={14}>
+        {`${name.charAt(0).toUpperCase()}${name.slice(1)}`}
+      </Text>
+    </Box>
   );
 }
 
