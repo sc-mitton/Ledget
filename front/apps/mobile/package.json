@@ -91,7 +91,8 @@
     "@react-native-picker/picker": "*",
     "react-native-date-picker": "*",
     "@react-spring/web": "*",
-    "react-native-device-info": "*"
+    "react-native-device-info": "*",
+    "react-native-draggable-flatlist": "*"
   },
   "devDependencies": {}
 }
