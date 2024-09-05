@@ -45,7 +45,7 @@ class IsAuthenticated(BasePermission):
             return session_aal == "aal1" or session_aal == "aal2"
 
 
-class IsTokenBased(BasePermission):
+class IsAuthenticatedTokenBased(BasePermission):
     """
     Check if the user is authenticated with a token
     """
@@ -54,7 +54,7 @@ class IsTokenBased(BasePermission):
         if not request.ory_session:
             return False
 
-        return request.ory_session.token_based
+        return request.ory_session.token_based and request.user.is_authenticated
 
 
 class IsOidcSession(BasePermission):

@@ -33,7 +33,7 @@ from restapi.permissions.auth import (
     IsAuthenticated,
     IsOidcSession,
     HighestAalFreshSession,
-    IsTokenBased
+    IsAuthenticatedTokenBased
 )
 from restapi.permissions.objects import is_account_owner
 from restapi.errors.validation import ValidationError500
@@ -103,7 +103,7 @@ class CoOwnerView(GenericAPIView):
             api_instance = IdentityApi(api_client)
             id = str(self.request.user.co_owner.id)
             response = api_instance.get_identity(id=id)
-            serializer = self.get_serializer(response.traits)
+            serializer = self.get_serializer(response.get('traits'))
             return serializer.data
 
 
@@ -242,7 +242,7 @@ class UserSessionExtendView(GenericAPIView):
 class UserTokenSessionExtendView(GenericAPIView):  # pragma: no cover
     """Extend user session"""
 
-    permission_classes = [IsAuthenticated, IsTokenBased]
+    permission_classes = [IsAuthenticatedTokenBased]
 
     def patch(self, request, *args, **kwargs):
         try:
@@ -283,7 +283,7 @@ class DisabledSessionView(GenericAPIView):
 
 
 class DisableAllSessionsView(GenericAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedTokenBased | HighestAalFreshSession]
 
     def delete(self, request):
         try:
