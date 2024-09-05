@@ -79,7 +79,7 @@ export const Button = (props: ButtonProps) => {
   return (
     <TouchableOpacity
       onPress={onPress}
-      activeOpacity={.8}
+      activeOpacity={.6}
       style={style}
       onLayout={onLayout}
     >

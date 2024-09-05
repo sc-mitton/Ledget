@@ -145,9 +145,9 @@ const Item = (props: Props) => {
           </Animated.View>
           <Box
             backgroundColor='newTransaction'
-            shadowColor='newTransactionShadow'
             borderColor='newTransactionBorder'
             borderWidth={1}
+            shadowColor='newTransactionShadow'
             shadowOpacity={mode === 'dark' ? 1 : 0.5}
             shadowRadius={32}
             shadowOffset={{ width: 0, height: 4 }}

@@ -22,7 +22,7 @@ export const InstitutionLogo = (props: Props & { account?: string }) => {
       borderColor='lightseperator'
       backgroundColor='lightseperator'
       borderWidth={.5}
-      size={22}
+      size={props.size || 22}
       data={logoData}
       {...props}
     />

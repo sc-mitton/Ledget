@@ -84,7 +84,7 @@ export const useModifiedDefaultModalStyleInterpolator = () => {
         shadowColor: theme.colors.modalShadow,
         shadowOpacity: progress.interpolate({
           inputRange: [0, 1, 2],
-          outputRange: [0, 0.3, 0],
+          outputRange: [0, 0.5, 0],
           extrapolate: 'clamp',
         }),
         shadowRadius: !next ? 10 : 0,
@@ -113,7 +113,6 @@ export const useModifiedDefaultModalStyleInterpolator = () => {
         ],
       }
     })
-
   }, [theme]);
 
   return modalStyleInterpolator;

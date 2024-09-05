@@ -55,8 +55,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    paddingRight: 8,
-    opacity: .9
+    paddingRight: 8
   },
   emptyScrollView: {
     height: 250,

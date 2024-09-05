@@ -35,13 +35,13 @@ export const TextInputbase = (props: TextInputBaseProps) => {
       {label && <InputLabel>{label}</InputLabel>}
       <Box
         borderColor={error ? 'inputBorderErrorSecondary' : focused ? 'focusedInputBorderSecondary' : 'transparent'}
-        borderWidth={1.75}
+        borderWidth={2}
         style={styles.textInputContainer2}
       >
         <Box
           backgroundColor='inputBackground'
           borderColor={focused ? error ? 'inputBorderErrorMain' : 'focusedInputBorderMain' : 'inputBorder'}
-          borderWidth={1.5}
+          borderWidth={1.75}
           style={styles.textInputContainer1}
         >
           {children}
