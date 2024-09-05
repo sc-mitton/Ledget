@@ -74,6 +74,7 @@ export const darkTheme = createTheme({
     modalOverlay: palette.gray1000,
     modalBox: palette.gray850,
     modalBox100: palette.gray850,
+    nestedModalContainer: palette.gray800,
     newTransaction: palette.gray750,
     contextMenu: palette.gray700,
     toast: palette.gray850,
@@ -118,6 +119,7 @@ export const darkTheme = createTheme({
     whiteText: palette.offWhite,
     focusedText: palette.blueSat,
     blueText: palette.blue100,
+    blueTextSecondary: palette.blue50.replace(`${blueS}%)`, `${blueS - 10}%)`),
     placeholderText: palette.offWhite4,
     buttonLabel: palette.white,
     greenText: palette.greenText,
@@ -132,7 +134,7 @@ export const darkTheme = createTheme({
     mediumGrayButton: palette.gray700,
     mediumGrayButtonBorder: palette.gray650,
     grayButtonBorder: palette.gray750,
-    borderedGrayButton: palette.gray850,
+    borderedGrayButton: palette.gray700,
     dragBar: palette.gray700,
 
     // Category and Bill Colors
