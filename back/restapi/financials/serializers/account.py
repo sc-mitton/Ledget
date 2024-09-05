@@ -55,6 +55,27 @@ class AccountSerializer(serializers.ModelSerializer):
         list_serializer_class = AccountLS
 
 
+class AccountBalanceSerializer(serializers.Serializer):
+    available = serializers.DecimalField(max_digits=10, decimal_places=2,
+                                         required=False)
+    current = serializers.DecimalField(max_digits=10, decimal_places=2, required=False)
+    limit = serializers.DecimalField(max_digits=10, decimal_places=2, required=False)
+    iso_currency_code = serializers.CharField(required=False)
+    unofficial_currency_code = serializers.CharField(required=False)
+
+
+class AccountBalanceResponseSerializer(serializers.Serializer):
+    account_id = serializers.CharField()
+    balances = AccountBalanceSerializer()
+    mask = serializers.CharField()
+    name = serializers.CharField(required=False)
+    official_name = serializers.CharField(required=False)
+    type = serializers.CharField()
+    subtype = serializers.CharField()
+    persistent_account_id = serializers.CharField(required=False)
+    institution_id = serializers.CharField(required=False)
+
+
 class UserAccountSerializer(serializers.ModelSerializer):
 
     class Meta:

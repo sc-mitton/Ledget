@@ -24,6 +24,7 @@ from financials.serializers.account import (
     InstitutionSerializer,
     AccountSerializer,
     UserAccountSerializer,
+    AccountBalanceResponseSerializer
 )
 
 plaid_client = create_plaid_client()
@@ -44,12 +45,10 @@ class AccountsViewSet(ViewSet):
     def get_queryset(self, serializer):
         if isinstance(serializer.child, UserAccountSerializer):
             return UserAccount.objects.filter(
-                user__in=self.request.user.account.users.all()
-            )
+                user__in=self.request.user.account.users.all())
         else:
             return Account.objects.filter(
-                useraccount__user__in=self.request.user.account.users.all()
-            )
+                useraccount__user__in=self.request.user.account.users.all())
 
     def get_object(self, request):
         account = Account.objects.get(id=self.request.query_params.get('id'))
@@ -114,13 +113,15 @@ class AccountsViewSet(ViewSet):
 
         accounts = self._get_users_accounts(include_institutions=True)
         account_balances = self._fetch_plaid_account_data(accounts)
+        account_balances = AccountBalanceResponseSerializer(
+            account_balances.values(), many=True)
 
         institution_data = {
             account.institution.id: InstitutionSerializer(account.institution).data
             for account in accounts}
 
         return Response({
-            'accounts': account_balances.values(),
+            'accounts': account_balances.data,
             'institutions': institution_data.values(),
         }, HTTP_200_OK)
 
