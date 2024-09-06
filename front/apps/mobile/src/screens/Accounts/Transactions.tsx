@@ -46,7 +46,6 @@ const EXPANDED_TOP = StatusBarManager.HEIGHT + 20
 const SKELETON_HEIGHT = 740
 
 const Row = (props: Partial<Transaction> & { index?: number }) => {
-
   return (
     <View>
       {props.index !== 0 && <Seperator />}

@@ -84,11 +84,18 @@ export const DollarCents = ({
   return (
     <Box flexDirection="row">
       <Text>
-        <Text {...props} >
+        <Text
+          {...props}
+          lineHeight={((props as any).style[0]?.fontSize || 16) * 1.5}
+        >
           {`${isDebit ? '+' : ''}${str.split('.')[0]}`}
         </Text>
         {withCents && (
-          <Text {...props} style={{ ...restStyle }} fontSize={((props as any).style[0]?.fontSize || 16) * .75}>
+          <Text {...props}
+            style={{ ...restStyle }}
+            lineHeight={((props as any).style[0]?.fontSize || 16) * 1.5}
+            fontSize={((props as any).style[0]?.fontSize || 16) * .75}
+          >
             {`.${str.split('.')[1]}`}
           </Text>
         )}

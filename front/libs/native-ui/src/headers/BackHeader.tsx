@@ -9,7 +9,8 @@ import { Seperator } from '../restyled/Seperator';
 
 const { StatusBarManager } = NativeModules;
 
-export function BackHeader({ navigation, route, options, back, pagesWithTitle }: StackHeaderProps & { pagesWithTitle?: string[] }) {
+export function BackHeader(props: StackHeaderProps & { pagesWithTitle?: string[] }) {
+  const { navigation, route, options, pagesWithTitle } = props;
 
   return (
     <Box
@@ -26,14 +27,15 @@ export function BackHeader({ navigation, route, options, back, pagesWithTitle }:
         }} />
       </Box>
       {pagesWithTitle?.includes(route.name) &&
-        <>
-          <Text fontSize={19} style={styles.title}>
-            {route.name}
-          </Text>
-          <View style={styles.seperator}>
-            <Seperator backgroundColor='darkerseperator' variant='bare' />
-          </View>
-        </>}
+        <Text fontSize={19} style={styles.title}>
+          {route.name}
+        </Text>}
+      <View style={styles.seperator}>
+        <Seperator variant='bare' height={2} />
+      </View>
+      <View style={styles.menuContainer}>
+        {options.headerRight && options.headerRight({})}
+      </View>
     </Box>
   )
 }

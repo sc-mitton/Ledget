@@ -14,6 +14,9 @@ export type AccountsStackParamList = {
   } | undefined,
   Transaction: {
     transaction: Transaction
+    options?: {
+      editMode?: boolean
+    }
   },
   SplitTransaction: {
     transaction: Transaction

@@ -3,6 +3,10 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
+    marginTop: 20,
+  },
+  scrollView: {
+    flex: 1
   },
   tableLabels: {
     marginRight: 24

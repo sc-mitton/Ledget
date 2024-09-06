@@ -5,7 +5,7 @@ export default StyleSheet.create({
     position: 'absolute',
     width: 4,
     borderRadius: 12,
-    right: 0,
+    right: -8,
   },
   container: {
     flex: 1

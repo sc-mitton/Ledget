@@ -38,16 +38,16 @@ export default StyleSheet.create({
   },
   menu: {
     position: 'absolute',
-    borderRadius: 12,
+    borderRadius: 10,
   },
   menuClipper: {
     overflow: 'hidden',
-    borderRadius: 12,
+    borderRadius: 10,
   },
   menuOptions: {
     flexDirection: 'column',
     justifyContent: 'space-evenly',
-    borderRadius: 12,
+    borderRadius: 10,
     position: 'relative',
   },
   menuBackground: {
@@ -57,7 +57,7 @@ export default StyleSheet.create({
     bottom: 0,
     right: 0,
     opacity: 0,
-    borderRadius: 12,
+    borderRadius: 10,
   },
   rowContainer: {
     flex: 1,
@@ -67,8 +67,8 @@ export default StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 8,
     paddingHorizontal: 16,
-    gap: 16,
-    opacity: .85
+    gap: 20,
+    opacity: .9
   },
   icon: {
     minWidth: 28,

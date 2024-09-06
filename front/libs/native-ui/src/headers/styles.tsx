@@ -5,9 +5,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    height: 40,
+    height: 44,
     left: 0,
-    right: 0
+    right: 0,
   },
   title: {
     position: 'absolute'
@@ -22,6 +22,10 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     opacity: 0.9
+  },
+  menuContainer: {
+    position: 'absolute',
+    right: 26
   }
 });
 

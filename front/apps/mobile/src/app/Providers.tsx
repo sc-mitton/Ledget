@@ -5,6 +5,7 @@ import { EventProvider } from 'react-native-outside-press';
 import { PersistGate } from "redux-persist/integration/react";
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 
+import styles from './styles/providers';
 import { ThemeProvider as RestyleThemeProvider, ModalPickerProvider } from '@ledget/native-ui';
 import { useAppearance, setDeviceMode } from '@features/appearanceSlice';
 import store, { persistor } from '@features/store';
@@ -59,7 +60,7 @@ const ThemeProvider = ({ children }: { children: (({ mode }: { mode: 'light' | '
 export const withProviders = (App: React.FC) => () => (
   <ReduxProvider store={store}>
     <PersistGate persistor={persistor}>
-      <EventProvider>
+      <EventProvider style={styles.fullWidth}>
         <ThemeProvider>
           <GestureHandlerRootView>
             <NavigationContainer theme={navTheme}>
