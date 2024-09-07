@@ -56,4 +56,4 @@ htmlcov
 **/stats.html
 .envrc
 
-note*
+note*.txt

@@ -4,6 +4,7 @@ import { Search } from 'geist-native-icons';
 import { Check } from 'geist-native-icons';
 import { EmptyBox } from '@ledget/media/native';
 import { dequal } from 'dequal';
+import { useTheme } from '@shopify/restyle';
 
 import styles from './styles';
 import { TextInput } from '../text-inputs/text-inputs';
@@ -37,6 +38,7 @@ function ModalPopUp<O extends PickerOption, TMultiple extends boolean>(
   const [scrollHeight, setScrollHeight] = useState(0);
   const [searchValue, setSearchValue] = useState('');
   const [localOptions, setLocalOptions] = useState(options);
+  const theme = useTheme();
 
   useEffect(() => {
     if (!searchValue) {
@@ -111,7 +113,7 @@ function ModalPopUp<O extends PickerOption, TMultiple extends boolean>(
           {!localOptions?.length
             ?
             <View style={styles.emptyScrollView}>
-              <EmptyBox size={64} />
+              <EmptyBox size={64} dark={theme.colors.mode === 'dark'} />
             </View>
             :
             <CustomScrollView

@@ -1,4 +1,4 @@
-import { useState, forwardRef, useRef } from 'react';
+import { useState, forwardRef, useRef, useEffect } from 'react';
 import {
   ScrollViewProps,
   ScrollView,
@@ -41,6 +41,10 @@ export const CustomScrollView = forwardRef<ScrollView, ScrollViewProps>((props, 
     : state.visibleHeight
 
   const difference = state.visibleHeight > indicatorSize ? state.visibleHeight - indicatorSize : 1
+
+  useEffect(() => {
+    opacity.value = withTiming(0, { duration: 200 });
+  }, []);
 
   return (
     <View style={[styles.container, style]}>

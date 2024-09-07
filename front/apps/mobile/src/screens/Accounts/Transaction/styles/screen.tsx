@@ -23,6 +23,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 8
+  },
+  scrollContent: {
+    flex: 1
   }
 });
 

@@ -20,18 +20,18 @@ export const Avatar = (props: Props) => {
       <Text
         style={[
           styles[props.size],
-          { color: theme.colors.whiteText, fontFamily: 'SourceSans3Regular' },
+          { color: props.name?.first[0] ? theme.colors.whiteText : 'transparent', fontFamily: 'SourceSans3Regular' },
         ]}
       >
-        {`${props.name?.first[0]}`}
+        {`${props.name?.first[0] || 'A'}`}
       </Text>
       <Text
         style={[
           styles[props.size],
-          { color: theme.colors.whiteText, fontFamily: 'SourceSans3Regular' },
+          { color: props.name?.last[0] ? theme.colors.whiteText : 'transparent', fontFamily: 'SourceSans3Regular' },
         ]}
       >
-        {`${props.name?.last[0]}`}
+        {`${props.name?.last[0] || 'B'}`}
       </Text>
       <View style={styles.backgroundContainer}>
         <Box backgroundColor='avatar' style={[styles.background, styles[`${props.size}Circle`]]} />

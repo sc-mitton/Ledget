@@ -1,5 +1,5 @@
 import { useMemo, useLayoutEffect } from 'react';
-import { View } from 'react-native'
+import { View, ScrollView } from 'react-native'
 
 import styles from './styles/screen';
 import { Box, Text, DollarCents } from '@ledget/native-ui'
@@ -27,7 +27,7 @@ const Transaction = (props: AccountsScreenProps<'Transaction'>) => {
     <>
       <Box variant='nestedScreen'>
         {account &&
-          <>
+          <ScrollView contentContainerStyle={styles.scrollContent}>
             <View style={styles.header}>
               <DollarCents
                 value={props.route.params.transaction.amount}
@@ -41,7 +41,7 @@ const Transaction = (props: AccountsScreenProps<'Transaction'>) => {
               <BudgetItemsBox item={props.route.params.transaction} {...props} />}
             <InfoBox item={props.route.params.transaction} account={account} />
             <Notes transaction={props.route.params.transaction} />
-          </>
+          </ScrollView>
         }
       </Box>
     </>
