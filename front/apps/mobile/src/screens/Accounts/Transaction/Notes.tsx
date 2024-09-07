@@ -54,7 +54,7 @@ const FocusedNote = ({ note, onSubmit, onClose }: {
 }) => {
   const theme = useTheme();
   const [value, setValue] = useState(note?.text || '');
-  const overlayOpacity = useSharedValue(0);
+
   return (
     <>
       <Modal
@@ -131,7 +131,6 @@ const NoteRow = ({ note, onPress, onDelete, disabled }: { note: Note, onPress: (
         translateX.value = gs.dx;
       }
       if (Math.abs(gs.dx) > itemDimensions.current.width / 2 || Math.abs(gs.vx) > 1.5) {
-        console.log(Dimensions.get('window').width * -1)
         translateX.value = withSpring(Dimensions.get('window').width * -1, defaultSpringConfig);
         opacity.value = 0;
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
@@ -140,15 +139,15 @@ const NoteRow = ({ note, onPress, onDelete, disabled }: { note: Note, onPress: (
     },
     onPanResponderTerminate: (evt, gs) => {
       if (Math.abs(gs.dx) < itemDimensions.current.width / 2 && Math.abs(gs.vx) < 1.5) {
-        translateX.value = withSpring(1, defaultSpringConfig);
+        translateX.value = withSpring(0, defaultSpringConfig);
       }
     },
     onPanResponderRelease: (evt, gs) => {
       if (Math.abs(gs.dx) < itemDimensions.current.width / 2 && Math.abs(gs.vx) < 1.5) {
-        translateX.value = withSpring(1, defaultSpringConfig);
+        translateX.value = withSpring(0, defaultSpringConfig);
       }
     }
-  });
+  })
 
   const animation = useAnimatedStyle(() => ({
     transform: [{ translateX: translateX.value }],
@@ -161,26 +160,31 @@ const NoteRow = ({ note, onPress, onDelete, disabled }: { note: Note, onPress: (
 
   return (
     <>
-      <View {...panResponder.panHandlers} style={styles.noteRowContainer}>
-        <Animated.View style={[animation]}>
-          <View style={styles.noteSeperator}><Seperator /></View>
-          <Box backgroundColor='nestedContainer' marginVertical='s'>
-            <TouchableOpacity
-              onLayout={(e) => {
-                itemDimensions.current = { width: e.nativeEvent.layout.width, height: e.nativeEvent.layout.height };
-              }}
-              style={styles.noteRow}
-              activeOpacity={.6}
-              disabled={disabled}
-              onPress={onPress}
-            >
-              {note.is_current_users
-                ? <Avatar size='s' name={coowner?.name} />
-                : <Avatar name={user?.name} size='s' />}
-              <Text>{note.text}</Text>
-            </TouchableOpacity>
-          </Box>
-        </Animated.View>
+      <View {...panResponder.panHandlers}>
+        <View style={styles.noteRowContainer}>
+          <Animated.View style={animation}>
+            <View style={styles.noteSeperator}><Seperator /></View>
+            <Box backgroundColor='nestedContainer' marginVertical='s'>
+              <TouchableOpacity
+                onLayout={(e) => {
+                  itemDimensions.current = {
+                    width: e.nativeEvent.layout.width,
+                    height: e.nativeEvent.layout.height
+                  }
+                }}
+                style={styles.noteRow}
+                activeOpacity={.6}
+                disabled={disabled}
+                onPress={onPress}
+              >
+                {note.is_current_users
+                  ? <Avatar size='s' name={coowner?.name} />
+                  : <Avatar name={user?.name} size='s' />}
+                <Text>{note.text}</Text>
+              </TouchableOpacity>
+            </Box>
+          </Animated.View>
+        </View>
         <Animated.View style={[styles.trashIcon, iconAnimation]}>
           <Icon icon={ArrowLeft} color='alert' size={18} />
           <Text color='alert' fontSize={14}>Delete</Text>
