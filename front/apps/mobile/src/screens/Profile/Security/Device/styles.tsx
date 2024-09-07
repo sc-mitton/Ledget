@@ -10,7 +10,7 @@ export default StyleSheet.create({
     flexShrink: 0,
     justifyContent: 'flex-start',
     width: '100%',
-    marginTop: 60,
+    marginTop: 74,
   },
   pcIcon: {
     marginTop: -8

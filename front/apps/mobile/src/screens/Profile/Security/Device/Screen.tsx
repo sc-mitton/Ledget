@@ -66,6 +66,7 @@ const Device = ({ navigation, route }: SecurityScreenProps<'Device'>) => {
             </Text>
             <View style={iconKey === 'is_mobile' ? styles.mobileIcon : styles.pcIcon}>
               <Icon
+                color='secondaryText'
                 size={iconKey === 'is_pc' ? 52 : 32}
                 icon={iconKey === 'is_pc' ? Computer : Smartphone}
               />

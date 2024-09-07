@@ -27,11 +27,11 @@ export function BackHeader(props: StackHeaderProps & { pagesWithTitle?: string[]
         }} />
       </Box>
       {pagesWithTitle?.includes(route.name) &&
-        <Text fontSize={19} style={styles.title}>
+        <Text fontSize={19} style={styles.title} color='highContrastText'>
           {route.name}
         </Text>}
       <View style={styles.seperator}>
-        <Seperator variant='bare' height={2} />
+        <Seperator variant='bare' height={2} backgroundColor='menuSeperator' />
       </View>
       <View style={styles.menuContainer}>
         {options.headerRight && options.headerRight({})}

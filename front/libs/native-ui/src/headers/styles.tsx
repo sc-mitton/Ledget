@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
   menuContainer: {
     position: 'absolute',
-    right: 26
+    right: 20
   }
 });
 

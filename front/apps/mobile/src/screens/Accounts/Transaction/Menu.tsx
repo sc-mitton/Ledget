@@ -28,7 +28,7 @@ const BakedMenu = (props: AccountsScreenProps<'Transaction'>) => {
       ]}
     >
       <Box padding='xxs'>
-        <Icon icon={MoreHorizontal} size={24} strokeWidth={2} color='blueText' />
+        <Icon icon={MoreHorizontal} size={24} strokeWidth={2} color='secondaryText' />
       </Box>
     </Menu>
   )
