@@ -6,7 +6,7 @@ type Error = {
   type?: string
 }
 
-export type TInput = 'date' | 'range';
+export type TInput = 'single' | 'range';
 
 type BaseMoneyInputProps<T extends TInput> = {
   name?: string

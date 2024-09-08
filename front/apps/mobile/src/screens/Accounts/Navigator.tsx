@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TouchableOpacity, View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ChevronDown } from 'geist-native-icons';
@@ -10,15 +10,14 @@ import { useGetAccountsQuery, popToast, Account } from '@ledget/shared-features'
 import { useAppDispatch } from '@/hooks';
 import { AccountsScreenProps, AccountsStackParamList } from '@types';
 import { useCardStyleInterpolator, useModifiedDefaultModalStyleInterpolator } from '@/hooks';
-import { useAppearance } from '@/features/appearanceSlice';
 import Transactions from './Transactions';
 import AccountsPicker from './AccountsPicker/Screen';
 import Transaction from './Transaction/Screen';
+import SplitTransaction from './SplitTransaction/Screen';
 
 const Stack = createStackNavigator<AccountsStackParamList>()
 
 const Main = (props: AccountsScreenProps<'Main'>) => {
-  const { mode } = useAppearance()
   const [bottomOfContentPos, setBottomOfContentPos] = useState(0)
   const { data: accountsData, error } = useGetAccountsQuery()
   const [account, setAccount] = useState<Account>()
@@ -96,12 +95,13 @@ const Screen = () => {
     <Stack.Navigator id='accounts' initialRouteName='Main'>
       <Stack.Group
         screenOptions={{
-          header: (props) => <BackHeader {...props} />,
+          header: (props) => <BackHeader {...props} pagesWithTitle={['Split']} />,
           cardStyleInterpolator
         }}
       >
         <Stack.Screen options={{ headerShown: false }} name='Main' component={Main} />
         <Stack.Screen name='Transaction' component={Transaction} />
+        <Stack.Screen name='Split' component={SplitTransaction} />
       </Stack.Group>
       <Stack.Group
         screenOptions={{

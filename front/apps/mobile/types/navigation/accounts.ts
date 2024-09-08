@@ -15,10 +15,10 @@ export type AccountsStackParamList = {
   Transaction: {
     transaction: Transaction
     options?: {
-      editMode?: boolean
+      rename?: boolean
     }
   },
-  SplitTransaction: {
+  Split: {
     transaction: Transaction
   },
   PickAccount: {

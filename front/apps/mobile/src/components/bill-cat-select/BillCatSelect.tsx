@@ -32,6 +32,7 @@ interface Option {
 interface BillCatSelectPropsBase {
   isFormInput?: boolean;
   items?: 'bills' | 'categories' | 'all';
+  chevronDirection?: 'down' | 'right';
   error?: Error;
   label?: string;
   modalPickerHeader?: string;
@@ -61,7 +62,8 @@ export const BillCatSelect = <TMultiple extends boolean>(props: BillCatSelectPro
     label = '',
     isFormInput = true,
     multiple = false,
-    defaultValue
+    defaultValue,
+    chevronDirection = 'right'
   } = props;
 
   const { month, year } = useAppSelector(selectBudgetMonthYear);
@@ -102,6 +104,7 @@ export const BillCatSelect = <TMultiple extends boolean>(props: BillCatSelectPro
     <ModalPicker
       searchable
       isFormInput={isFormInput}
+      chevronDirection={chevronDirection}
       options={billCats}
       onClose={onClose as any}
       defaultValue={defaultValue as any}
@@ -130,7 +133,7 @@ export const BillCatSelect = <TMultiple extends boolean>(props: BillCatSelectPro
         : items === 'all'
           ? props.multiple ? 'Categories and Bills' : 'Category or Bill'
           : items === 'bills' ? 'Bills' : 'Categories'}
-      label={label
+      label={label !== undefined
         ? label
         : items === 'all'
           ? props.multiple ? 'Categories and Bills' : 'Category or Bill'

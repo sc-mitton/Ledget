@@ -6,7 +6,8 @@ import {
   Dimensions,
   PanResponder,
   Modal,
-  Pressable
+  Pressable,
+  Keyboard
 } from "react-native";
 import { useTheme } from "@shopify/restyle";
 import Animated, {
@@ -47,13 +48,23 @@ interface Note extends NoteT {
   localId: string;
 }
 
-const FocusedNote = ({ note, onSubmit, onClose }: {
+const NoteModal = ({ note, onSubmit, onClose }: {
   note: Note | null;
   onSubmit: (text: string) => void;
   onClose: () => void
 }) => {
   const theme = useTheme();
   const [value, setValue] = useState(note?.text || '');
+
+  // Hide on Keyboard dismiss
+  useEffect(() => {
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+      onClose();
+    });
+    return () => {
+      keyboardDidHideListener.remove();
+    }
+  }, []);
 
   return (
     <>
@@ -272,7 +283,7 @@ const Notes = ({ transaction }: { transaction: Transaction }) => {
         onLayout={(e) => setMaxHeight(e.nativeEvent.layout.height - theme.spacing.navHeight - 4)}
       >
         {(focusedNote !== undefined) &&
-          <FocusedNote note={focusedNote} onSubmit={handleSubmit} onClose={() => setFocusedNote(undefined)} />}
+          <NoteModal note={focusedNote} onSubmit={handleSubmit} onClose={() => setFocusedNote(undefined)} />}
         <Box variant='nestedContainer' style={[styles.notesBox, { maxHeight }]}>
           <CustomScrollView style={styles.notesContainer}>
             <TouchableOpacity style={styles.addNoteButton} activeOpacity={.6} onPress={() => setFocusedNote(null)}>

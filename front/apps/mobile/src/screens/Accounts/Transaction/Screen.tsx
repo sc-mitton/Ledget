@@ -2,13 +2,14 @@ import { useMemo, useLayoutEffect } from 'react';
 import { View, ScrollView } from 'react-native'
 
 import styles from './styles/screen';
-import { Box, Text, DollarCents } from '@ledget/native-ui'
+import { Box, DollarCents } from '@ledget/native-ui'
 import { useGetAccountsQuery } from '@ledget/shared-features';
 import type { AccountsScreenProps } from '@types'
 import InfoBox from './InfoBox';
 import BudgetItemsBox from './BudgetItemsBox';
 import Notes from './Notes';
 import Menu from './Menu';
+import TransactionName from './TransactionName';
 
 const Transaction = (props: AccountsScreenProps<'Transaction'>) => {
   const { data: accountsData } = useGetAccountsQuery();
@@ -32,7 +33,7 @@ const Transaction = (props: AccountsScreenProps<'Transaction'>) => {
               <DollarCents
                 value={props.route.params.transaction.amount}
                 fontSize={36} />
-              <Text>{props.route.params.transaction.name}</Text>
+              <TransactionName {...props} />
             </View>
             {(props.route.params.transaction.categories ||
               props.route.params.transaction.bill ||

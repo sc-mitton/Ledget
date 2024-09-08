@@ -15,7 +15,7 @@ const BakedMenu = (props: AccountsScreenProps<'Transaction'>) => {
         {
           label: 'Rename',
           icon: () => <Icon icon={Edit2} size={16} strokeWidth={2} />,
-          onSelect: () => props.navigation.setParams({ options: { editMode: true } })
+          onSelect: () => props.navigation.setParams({ options: { rename: true } })
         },
         {
           label: 'Split',
@@ -23,7 +23,7 @@ const BakedMenu = (props: AccountsScreenProps<'Transaction'>) => {
             <View style={{ transform: [{ rotate: '45deg' }] }}>
               <Icon icon={Maximize2} size={16} strokeWidth={2} />
             </View>,
-          onSelect: () => props.navigation.navigate('SplitTransaction', { transaction: props.route.params.transaction })
+          onSelect: () => props.navigation.navigate('Split', { transaction: props.route.params.transaction })
         },
       ]}
     >

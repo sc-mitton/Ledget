@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ChevronRight } from 'geist-native-icons';
+import { ChevronRight, ChevronDown } from 'geist-native-icons';
 import { TouchableOpacity, View } from 'react-native';
 
 import styles from './styles';
@@ -46,7 +46,7 @@ export function ModalPicker<O extends PickerOption, TMultiple extends boolean>(p
             <Selected value={value} renderSelected={props.renderSelected} labelKey={props.labelKey} />
             <View style={styles.chevronIconContainer}>
               <Icon
-                icon={ChevronRight}
+                icon={props.chevronDirection === 'down' ? ChevronDown : ChevronRight}
                 strokeWidth={2}
                 color={Array.isArray(value)
                   ? value.length > 0 ? 'mainText' : 'placeholderText'

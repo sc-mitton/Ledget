@@ -54,7 +54,14 @@ const Row = (props: Partial<Transaction> & { index?: number }) => {
           <View style={styles.nameContainer}>
             {props.pending && <Icon icon={Hourglass} size={16} />}
             <Text fontSize={15}>
-              {(props.name?.length || 0) > 20 ? props.name?.slice(0, 20) + '...' : props.name}
+              {props.preferred_name
+                ? props.preferred_name.length > 20
+                  ? props.preferred_name.slice(0, 20) + '...'
+                  : props.preferred_name
+                : (props.name?.length || 0) > 20
+                  ? props.name?.slice(0, 20) + '...'
+                  : props.name
+              }
             </Text>
           </View>
           <Text color='quaternaryText' fontSize={15}>

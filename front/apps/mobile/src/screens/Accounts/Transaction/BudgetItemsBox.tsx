@@ -31,7 +31,7 @@ const BudgetItemsBox = (props: { item: TransactionT } & AccountsScreenProps<'Tra
           {Array.isArray(items)
             ?
             items.map((c, index) => (
-              <TouchableOpacity onPress={() => props.navigation.navigate('SplitTransaction', { transaction: props.item })}>
+              <TouchableOpacity onPress={() => props.navigation.navigate('Split', { transaction: props.item })}>
                 <BillCatLabel
                   key={index}
                   name={c.name}
