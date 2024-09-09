@@ -124,6 +124,53 @@ aws apigateway create-deployment \
     --stage-name prod
 ```
 
+### Resource Policies
+
+Set up a resources policy for the hooks endpoint to restrict it to the IP's from Plaid, Stripe, and Ory
+
+```
+{
+  "Version": "2012-10-17",
+  "Statement": [{
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "execute-api:Invoke",
+      "Resource": "hooks/*"
+    },
+    {
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "execute-api:Invoke",
+      "Resource": "hooks/*",
+      "Condition": {
+        "NotIpAddress": {
+          "aws:SourceIp": [
+            "3.18.12.63",
+            "3.130.192.231",
+            "13.235.14.237",
+            "13.235.122.149",
+            "18.211.135.69",
+            "35.154.171.200",
+            "52.15.183.38",
+            "54.88.130.119",
+            "54.88.130.237",
+            "54.187.174.169",
+            "54.187.205.235",
+            "54.187.216.72",
+            "34.22.170.75",
+            "35.242.228.133",
+            "52.21.26.131",
+            "52.21.47.157",
+            "52.41.247.19",
+            "52.88.82.239"
+            ]
+        }
+      }
+    }
+  ]
+}
+```
+
 ### Authorizer
 
 oathkeeper - no role
