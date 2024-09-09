@@ -18,11 +18,8 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  header: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-    gap: 4,
+  logo: {
+    marginRight: 12,
   },
   headerContainer: {
     justifyContent: 'center',
@@ -54,5 +51,8 @@ export default StyleSheet.create({
   },
   maskCell: {
     paddingHorizontal: 24,
+  },
+  icon: {
+    marginRight: 8
   }
 });

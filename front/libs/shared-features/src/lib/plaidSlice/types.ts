@@ -26,6 +26,7 @@ export interface PlaidItem {
   access_token?: string;
   cursor?: string;
   login_required: boolean;
+  pending_expiration: boolean;
   new_accounts_available: boolean;
   permission_revoked: boolean;
   institution?: Institution;
