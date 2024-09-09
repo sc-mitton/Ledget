@@ -15,7 +15,6 @@ import {
   useGetPlaidTokenQuery,
   useAddNewPlaidItemMutation,
   useTransactionsSyncMutation,
-  useUpdateAccountsMutation,
   popToast
 } from '@ledget/shared-features'
 import { ANDROID_PACKAGE } from '@env'
@@ -64,7 +63,7 @@ export const usePlaidLink = (args: { isOnboarding?: boolean, itemId?: string, sk
           name: success.metadata.institution?.name
         };
         if (args && args.itemId) {
-          dispatch(popToast({ type: 'success', message: 'Connection updated successfully' }));
+          dispatch(popToast({ type: 'success', message: 'Connection updated successfully', timer: 3000 }));
         } else {
           addNewPlaidItem({
             data: {
