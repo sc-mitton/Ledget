@@ -306,7 +306,7 @@ export const lightTheme = createTheme({
       backgroundColor: 'transparent',
       borderWidth: 1.5,
       borderColor: 'borderedGrayButton',
-      color: 'tertiaryText',
+      color: 'quaternaryText',
       borderStyle: 'dashed',
     },
     mediumGrayMain: {

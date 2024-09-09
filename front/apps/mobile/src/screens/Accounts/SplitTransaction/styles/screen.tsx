@@ -3,7 +3,8 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 28,
+    marginBottom: 16
   },
   formLabel: {
     marginBottom: 8,
@@ -15,12 +16,14 @@ const styles = StyleSheet.create({
   field: {
     flexDirection: 'row',
     gap: 12,
+    marginTop: 2,
+    marginBottom: -8
   },
   categoryInput: {
-    flex: 1
+    flex: 1,
   },
   amountInput: {
-    flex: 1
+    flex: 1,
   },
   submitButtonContainer: {
     flex: 1,

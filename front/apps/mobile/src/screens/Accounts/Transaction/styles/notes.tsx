@@ -8,16 +8,17 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
   },
-  noteRowContainer: {
-    position: 'relative',
-  },
   noteRow: {
     flexDirection: 'row',
     gap: 20,
-    marginLeft: 6
+    paddingVertical: 4,
+    marginLeft: 6,
+    position: 'relative',
   },
   noteSeperator: {
-    width: '300%'
+    width: '300%',
+    position: 'absolute',
+    top: -12,
   },
   notesBox: {
     position: 'relative',
@@ -56,7 +57,8 @@ const styles = StyleSheet.create({
   },
   addNoteButton: {
     paddingVertical: 4,
-    marginLeft: 2
+    marginLeft: 2,
+    marginBottom: 8,
   },
   trashIcon: {
     position: 'absolute',

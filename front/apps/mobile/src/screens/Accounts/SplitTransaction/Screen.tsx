@@ -9,7 +9,7 @@ import styles from './styles/screen';
 import { AccountsScreenProps } from '@types';
 import { useAppSelector } from '@hooks';
 import { selectBudgetMonthYear, useConfirmTransactionsMutation, useGetCategoriesQuery } from '@ledget/shared-features';
-import { Box, Text, DollarCents, MoneyInput, Button, Icon, InputLabel } from '@ledget/native-ui';
+import { Box, Text, DollarCents, MoneyInput, Button, Icon, InputLabel, SwipeDelete } from '@ledget/native-ui';
 import { BillCatSelect } from '@/components';
 import { Plus } from 'geist-native-icons';
 
@@ -101,36 +101,38 @@ const Screen = (props: AccountsScreenProps<'Split'>) => {
       <InputLabel style={styles.formLabel}>Splits</InputLabel>
       <View style={styles.form}>
         {fields.map((field, index) => (
-          <View key={field.id} style={styles.field}>
-            <View style={styles.categoryInput}>
-              <Controller
-                control={control}
-                name={`splits.${index}.category`}
-                render={({ field }) => (
-                  <BillCatSelect
-                    onChange={field.onChange}
-                    label={''}
-                    error={errors.splits?.[index]?.category}
-                    items='categories'
-                    chevronDirection='down'
-                  />
-                )}
-              />
+          <SwipeDelete onDeleted={() => remove(index)} key={field.id}>
+            <View key={field.id} style={styles.field}>
+              <View style={styles.categoryInput}>
+                <Controller
+                  control={control}
+                  name={`splits.${index}.category`}
+                  render={({ field }) => (
+                    <BillCatSelect
+                      onChange={field.onChange}
+                      label={''}
+                      error={errors.splits?.[index]?.category}
+                      items='categories'
+                      chevronDirection='down'
+                    />
+                  )}
+                />
+              </View>
+              <View style={styles.amountInput}>
+                <Controller
+                  control={control}
+                  name={`splits.${index}.amount`}
+                  render={({ field }) => (
+                    <MoneyInput
+                      onChange={(v) => field.onChange(v)}
+                      inputType='single'
+                      error={errors.splits?.[index]?.amount}
+                    />
+                  )}
+                />
+              </View>
             </View>
-            <View style={styles.amountInput}>
-              <Controller
-                control={control}
-                name={`splits.${index}.amount`}
-                render={({ field }) => (
-                  <MoneyInput
-                    onChange={(v) => field.onChange(v)}
-                    inputType='single'
-                    error={errors.splits?.[index]?.amount}
-                  />
-                )}
-              />
-            </View>
-          </View>
+          </SwipeDelete>
         ))}
         <Button
           label='Add Split'
@@ -138,7 +140,7 @@ const Screen = (props: AccountsScreenProps<'Split'>) => {
           labelPlacement='left'
           onPress={() => append({ category: '', amount: 0 })}
         >
-          <Icon icon={Plus} color='tertiaryText' />
+          <Icon icon={Plus} color='quaternaryText' />
         </Button>
         <View style={styles.submitButtonContainer}>
           <Button

@@ -1,26 +1,19 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import {
   TextInput,
   View,
   TouchableOpacity,
-  Dimensions,
-  PanResponder,
   Modal,
   Pressable,
   Keyboard
 } from "react-native";
 import { useTheme } from "@shopify/restyle";
 import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withSpring,
   SlideOutDown,
   SlideInDown
 } from 'react-native-reanimated';
-import { ArrowLeft } from 'geist-native-icons';
 import { useTransition } from '@react-spring/web';
 import dayjs from 'dayjs';
-import * as Haptics from 'expo-haptics';
 
 import styles from "./styles/notes";
 import {
@@ -29,11 +22,10 @@ import {
   Avatar,
   Text,
   CustomScrollView,
-  defaultSpringConfig,
   Seperator,
   Button,
-  Icon,
-  AnimatedView
+  AnimatedView,
+  SwipeDelete
 } from "@ledget/native-ui";
 import {
   Transaction,
@@ -57,6 +49,9 @@ const NoteModal = ({ note, onSubmit, onClose }: {
   const [value, setValue] = useState(note?.text || '');
 
   // Hide on Keyboard dismiss
+  // In development mode on the emulators, this will cause the modal to close prematurely
+  // unlesss io > software > keyboard > toggle software keyboard is enabled. If you use your
+  // laptop's keyboard, then the modal will still close. Use the emulator's keyboard to test.
   useEffect(() => {
     const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
       onClose();
@@ -127,81 +122,24 @@ const NoteModal = ({ note, onSubmit, onClose }: {
 const NoteRow = ({ note, onPress, onDelete, disabled }: { note: Note, onPress: () => void, onDelete: () => void, disabled: boolean }) => {
   const { data: coowner } = useGetCoOwnerQuery();
   const { data: user } = useGetMeQuery();
-  const itemDimensions = useRef({ height: 0, width: 0 });
-  const translateX = useSharedValue(0);
-  const opacity = useSharedValue(1);
-
-  const panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: (evt, gs) => false,
-    onStartShouldSetPanResponderCapture: (evt, gs) => false,
-    onMoveShouldSetPanResponder: (evt, gs) => Math.abs(gs.vx) > Math.abs(gs.vy),
-    onMoveShouldSetPanResponderCapture: (evt, gs) => false,
-    onShouldBlockNativeResponder: () => false,
-    onPanResponderMove: (event, gs) => {
-      if (translateX.value <= 0) {
-        translateX.value = gs.dx;
-      }
-      if (Math.abs(gs.dx) > itemDimensions.current.width / 2 || Math.abs(gs.vx) > 1.5) {
-        translateX.value = withSpring(Dimensions.get('window').width * -1, defaultSpringConfig);
-        opacity.value = 0;
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-        onDelete();
-      }
-    },
-    onPanResponderTerminate: (evt, gs) => {
-      if (Math.abs(gs.dx) < itemDimensions.current.width / 2 && Math.abs(gs.vx) < 1.5) {
-        translateX.value = withSpring(0, defaultSpringConfig);
-      }
-    },
-    onPanResponderRelease: (evt, gs) => {
-      if (Math.abs(gs.dx) < itemDimensions.current.width / 2 && Math.abs(gs.vx) < 1.5) {
-        translateX.value = withSpring(0, defaultSpringConfig);
-      }
-    }
-  })
-
-  const animation = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateX.value }],
-    opacity: opacity.value,
-  }));
-
-  const iconAnimation = useAnimatedStyle(() => ({
-    opacity: opacity.value,
-  }));
 
   return (
-    <>
-      <View {...panResponder.panHandlers}>
-        <View style={styles.noteRowContainer}>
-          <Animated.View style={animation}>
-            <View style={styles.noteSeperator}><Seperator /></View>
-            <Box backgroundColor='nestedContainer' marginVertical='s'>
-              <TouchableOpacity
-                onLayout={(e) => {
-                  itemDimensions.current = {
-                    width: e.nativeEvent.layout.width,
-                    height: e.nativeEvent.layout.height
-                  }
-                }}
-                style={styles.noteRow}
-                activeOpacity={.6}
-                disabled={disabled}
-                onPress={onPress}
-              >
-                {note.is_current_users
-                  ? <Avatar size='s' name={coowner?.name} />
-                  : <Avatar name={user?.name} size='s' />}
-                <Text>{note.text}</Text>
-              </TouchableOpacity>
-            </Box>
-          </Animated.View>
-        </View>
-        <Animated.View style={[styles.trashIcon, iconAnimation]}>
-          <Icon icon={ArrowLeft} color='alert' size={18} />
-          <Text color='alert' fontSize={14}>Delete</Text>
-        </Animated.View>
-      </View>
-    </>
+    <SwipeDelete onDeleted={onDelete}>
+      <Box backgroundColor='nestedContainer' marginVertical='s'>
+        <View style={styles.noteSeperator}><Seperator variant='bare' /></View>
+        <TouchableOpacity
+          style={styles.noteRow}
+          activeOpacity={.6}
+          disabled={disabled}
+          onPress={onPress}
+        >
+          {note.is_current_users
+            ? <Avatar size='s' name={coowner?.name} />
+            : <Avatar name={user?.name} size='s' />}
+          <Text>{note.text}</Text>
+        </TouchableOpacity>
+      </Box>
+    </SwipeDelete>
   );
 };
 
