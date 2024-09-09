@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { View, ScrollView, TouchableOpacity } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { usePlaidLink } from '@hooks';
 import * as WebBrowser from 'expo-web-browser';
 
@@ -9,6 +9,7 @@ import {
   Box,
   Text,
   Icon,
+  Button
 } from '@ledget/native-ui';
 import { Trash2, Repeat } from 'geist-native-icons';
 import { ConnectionsScreenProps } from '@types';
@@ -27,24 +28,26 @@ const Screen = ({ navigation, route }: ConnectionsScreenProps<'Connection'>) => 
   }, [plaidItems, route.params.item]);
 
   useEffect(() => {
-    if (plaidItem?.login_required) {
+    if (plaidItem?.login_required || plaidItem?.pending_expiration) {
       setSkip(false);
     }
   }, [plaidItem]);
 
   return (
     <Box variant='nestedScreen'>
-      <TouchableOpacity
+      <Button
         style={styles.headerContainer}
-        activeOpacity={.8}
-        onPress={() => { WebBrowser.openBrowserAsync(plaidItems?.find((item) => item.id === route.params.item)?.institution?.url || '') }}>
-        <View style={styles.header}>
+        labelPlacement='left'
+        fontSize={26}
+        lineHeight={36}
+        variant='bold'
+        label={plaidItems?.find((item) => item.id === route.params.item)?.institution?.name}
+        onPress={() => { WebBrowser.openBrowserAsync(plaidItems?.find((item) => item.id === route.params.item)?.institution?.url || '') }}
+      >
+        <View style={styles.logo}>
           <InstitutionLogo data={plaidItems?.find((item) => item.id === route.params.item)?.institution?.logo} />
-          <Header>
-            {plaidItems?.find((item) => item.id === route.params.item)?.institution?.name}
-          </Header>
         </View>
-      </TouchableOpacity>
+      </Button>
       <Box variant='nestedContainer' style={styles.accountsBox}>
         <ScrollView>
           <View style={styles.accounts}>
@@ -87,7 +90,7 @@ const Screen = ({ navigation, route }: ConnectionsScreenProps<'Connection'>) => 
       </Box>
       {plaidItem?.user === user?.id &&
         <View style={styles.buttons}>
-          <TouchableOpacity
+          <Button
             style={styles.button}
             onPress={() => {
               navigation.navigate('Modals', {
@@ -97,15 +100,26 @@ const Screen = ({ navigation, route }: ConnectionsScreenProps<'Connection'>) => 
                 }
               })
             }}
+            textColor='blueText'
+            label='Disconnect'
+            labelPlacement='left'
           >
-            <Icon color='blueText' icon={Trash2} size={18} />
-            <Text color='blueText'>Disconnect</Text>
-          </TouchableOpacity>
-          {plaidItem?.login_required &&
-            <TouchableOpacity style={styles.button} onPress={openLink}>
-              <Icon color='blueText' icon={Repeat} size={18} />
-              <Text color='blueText'>Reconnect</Text>
-            </TouchableOpacity>}
+            <View style={styles.icon}>
+              <Icon color='blueText' icon={Trash2} size={18} />
+            </View>
+          </Button>
+          {(plaidItem?.login_required || plaidItem?.pending_expiration) &&
+            <Button
+              style={styles.button}
+              textColor='blueText'
+              onPress={openLink}
+              label='Reconnect'
+              labelPlacement='left'
+            >
+              <View style={styles.icon}>
+                <Icon color='blueText' icon={Repeat} size={18} />
+              </View>
+            </Button>}
         </View>
       }
     </Box>
