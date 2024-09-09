@@ -64,12 +64,14 @@ const Main = (props: AccountsScreenProps<'Main'>) => {
             <InstitutionLogo account={account?.account_id} />
             {account
               ?
-              <Text fontSize={18} variant='bold'>
-                {account?.name}
-              </Text>
+              <>
+                <Text fontSize={18} variant='bold'>
+                  {account?.name}
+                </Text>
+                <Icon icon={ChevronDown} strokeWidth={2.5} />
+              </>
               :
               <Box backgroundColor='transactionShimmer' height={18} width={100} borderRadius={40} />}
-            <Icon icon={ChevronDown} strokeWidth={2.5} />
           </View>
           <DollarCents
             value={`${account?.balances.current || 0}`}
