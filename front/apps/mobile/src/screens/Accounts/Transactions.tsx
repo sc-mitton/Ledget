@@ -64,9 +64,18 @@ const Row = (props: Partial<Transaction> & { index?: number }) => {
               }
             </Text>
           </View>
-          <Text color='quaternaryText' fontSize={15}>
-            {dayjs(props.date).format('M/D/YYYY')}
-          </Text>
+          <View style={styles.bottomRow}>
+            <Text color='quaternaryText' fontSize={15}>
+              {dayjs(props.date).format('M/D/YYYY')}
+            </Text>
+            {/* {(props.categories?.length || props.bill) &&
+              <Box style={styles.emojis} backgroundColor='darkerseperator'>
+                {(props.categories?.length || 0) > 0
+                  ? props.categories?.map((c, index) =>
+                    <Text key={`emoji-${index}`} fontSize={12}>{c.emoji || ''}</Text>)
+                  : <Text fontSize={12}>{props.bill?.emoji || ''}</Text>}
+              </Box>} */}
+          </View>
         </View>
         <View style={styles.rightColumn}>
           <DollarCents

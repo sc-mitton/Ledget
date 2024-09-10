@@ -47,7 +47,7 @@ function Selected({
             ? value.length > 0 ? 'mainText' : 'placeholderText'
             : value ? 'mainText' : 'placeholderText'}
         >
-          {`${placeholder || 'Select...'}`}
+          {`${placeholder !== undefined ? placeholder : 'Select...'}`}
         </Text>}
     </>
   )

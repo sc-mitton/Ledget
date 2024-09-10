@@ -179,7 +179,7 @@ function ModalPopUp<O extends PickerOption, TMultiple extends boolean>(
               })}
             </CustomScrollView>
           }
-          {((Array.isArray(value) && value.length > 0) || value) &&
+          {((Array.isArray(value) && value.length > 0) || value) && multiple &&
             <View style={styles.clearButton}>
               <Button
                 onPress={() => { setValue(undefined) }}

@@ -4,7 +4,6 @@ import { usePlaidLink } from '@hooks';
 import * as WebBrowser from 'expo-web-browser';
 
 import {
-  Header,
   InstitutionLogo,
   Box,
   Text,

@@ -22,7 +22,8 @@ const styles = StyleSheet.create({
   budgetItemsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8
+    gap: 12,
+    flex: 1
   },
   scrollContent: {
     flex: 1

@@ -146,7 +146,7 @@ export const lightTheme = createTheme({
     monthBackground: `hsl(${blueH}, 67%, 93%)`,
     monthBorder: `hsl(${blueH}, 50%, 86%)`,
     monthColor: `hsl(${blueH}, 80%, 58%)`,
-    yearBackground: `hsl(${greenH}, 40%, 84%)`,
+    yearBackground: `hsl(${greenH}, 55%, 91%)`,
     yearBorder: `hsl(${greenH}, 40%, 82%)`,
     yearColor: `hsl(${greenH}, 50%, 38%)`,
 
@@ -305,7 +305,7 @@ export const lightTheme = createTheme({
       justifyContent: 'center',
       backgroundColor: 'transparent',
       borderWidth: 1.5,
-      borderColor: 'borderedGrayButton',
+      borderColor: 'grayButtonBorder',
       color: 'quaternaryText',
       borderStyle: 'dashed',
     },

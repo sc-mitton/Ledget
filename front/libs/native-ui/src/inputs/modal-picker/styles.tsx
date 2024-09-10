@@ -71,8 +71,13 @@ export default StyleSheet.create({
   },
   chevronIconContainer: {
     position: 'absolute',
-    right: -10,
-    top: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: 0,
+    top: '50%',
+  },
+  chevronIcon: {
+    position: 'absolute',
   },
   modalOverlayContainer: {
     zIndex: 1000,

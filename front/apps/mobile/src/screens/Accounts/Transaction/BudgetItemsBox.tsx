@@ -18,20 +18,20 @@ const BudgetItemsBox = (props: { item: TransactionT } & AccountsScreenProps<'Tra
 
   return (
     <>
-      <BoxHeader>Budget</BoxHeader>
+
+      <View style={[styles.tableLabels, styles.tableColumn]}>
+        {Array.isArray(items)
+          ? <BoxHeader>Categories</BoxHeader>
+          : isCategory(items)
+            ? <BoxHeader>Category</BoxHeader>
+            : <BoxHeader>Bill</BoxHeader>}
+      </View>
       <Box variant='nestedContainer'>
-        <View style={[styles.tableLabels, styles.tableColumn]}>
-          {Array.isArray(items)
-            ? <Text color='tertiaryText'>Categories</Text>
-            : isCategory(items)
-              ? <Text color='tertiaryText'>Category</Text>
-              : <Text color='tertiaryText'>Bill</Text>}
-        </View>
         <View style={[styles.budgetItemsContainer]}>
           {Array.isArray(items)
             ?
             items.map((c, index) => (
-              <TouchableOpacity onPress={() => props.navigation.navigate('Split', { transaction: props.item })}>
+              <TouchableOpacity onPress={() => props.navigation.navigate('Modals', { screen: 'Split', params: { transaction: props.item } })}>
                 <BillCatLabel
                   key={index}
                   name={c.name}
@@ -60,13 +60,7 @@ const BudgetItemsBox = (props: { item: TransactionT } & AccountsScreenProps<'Tra
                   })
                 }
               }}
-              defaultValue={{
-                label: items?.name || '',
-                value: items?.id || '',
-                emoji: items?.emoji || '',
-                period: items?.period || 'month',
-                group: isCategory(items) ? 'category' : 'bill'
-              }}
+              defaultValue={items?.id}
               isFormInput={false}
               {...(isCategory(items) || isBill(items) ? {
                 value: items.id,

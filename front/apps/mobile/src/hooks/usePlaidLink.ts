@@ -62,13 +62,6 @@ export const usePlaidLink = (args: { isOnboarding?: boolean, itemId?: string, sk
           id: success.metadata.institution?.id,
           name: success.metadata.institution?.name
         };
-        console.log({
-          data: {
-            public_token: success.publicToken,
-            accounts: success.metadata.accounts,
-            institution: institution
-          }
-        })
         exchangePlaidToken({
           data: {
             public_token: success.publicToken,

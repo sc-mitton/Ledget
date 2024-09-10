@@ -39,9 +39,7 @@ export function BillCatLabel(props: BillCatLabelProps) {
     <Box
       style={styles.billCatLabel}
       backgroundColor={period === 'year' ? 'yearBackground' : 'monthBackground'}>
-      <Text fontSize={14}>
-        {emoji}
-      </Text>
+      <Text fontSize={14}>{emoji}</Text>
       <Text
         color={period === 'year' ? 'yearColor' : 'monthColor'}
         fontSize={14}>

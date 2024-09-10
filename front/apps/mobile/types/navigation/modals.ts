@@ -3,6 +3,7 @@ import type { CompositeScreenProps } from '@react-navigation/native';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
 import type { BottomTabNavParamList, RootStackParamList } from './root';
+import type { Transaction } from '@ledget/shared-features';
 
 export type ModalStackParamList = {
   Activity: {
@@ -20,6 +21,9 @@ export type ModalStackParamList = {
   LogoutAllDevices: undefined;
   RemoveAuthenticator: undefined;
   ChangePassword: undefined;
+  Split: {
+    transaction: Transaction
+  },
 };
 
 export type ModalScreenProps<T extends keyof ModalStackParamList> =

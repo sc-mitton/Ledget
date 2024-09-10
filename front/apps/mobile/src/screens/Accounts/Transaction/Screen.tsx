@@ -24,6 +24,8 @@ const Transaction = (props: AccountsScreenProps<'Transaction'>) => {
     })
   }, [account])
 
+  console.log(props.route.params.transaction.transaction_id);
+
   return (
     <>
       <Box variant='nestedScreen'>
@@ -35,12 +37,12 @@ const Transaction = (props: AccountsScreenProps<'Transaction'>) => {
                 fontSize={36} />
               <TransactionName {...props} />
             </View>
+            <InfoBox item={props.route.params.transaction} account={account} />
             {(props.route.params.transaction.categories ||
               props.route.params.transaction.bill ||
               props.route.params.transaction.predicted_bill ||
               props.route.params.transaction.predicted_category) &&
               <BudgetItemsBox item={props.route.params.transaction} {...props} />}
-            <InfoBox item={props.route.params.transaction} account={account} />
             <Notes transaction={props.route.params.transaction} />
           </ScrollView>
         }

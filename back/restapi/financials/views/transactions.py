@@ -386,7 +386,7 @@ class TransactionViewSet(ModelViewSet):
         result.update(self._extract_date_boundaries())
 
         # If querying for unconfirmed transactions
-        if query_params.get('confirmed') != 'true':
+        if query_params.get('confirmed') == 'false':
             result['bill__isnull'] = True
             result['categories'] = None
 

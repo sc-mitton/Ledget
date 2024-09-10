@@ -34,7 +34,7 @@ const TransactionMenu = (props: Props) => {
               <Icon icon={ArrowLeft} size={12} strokeWidth={2.5} />
               <Icon icon={ArrowRight} size={12} strokeWidth={2.5} />
             </View>,
-          onSelect: () => props.navigation.navigate('Split', { transaction })
+          onSelect: () => props.navigation.navigate('Modals', { screen: 'Split', params: { transaction } })
         },
         {
           label: 'New Monthly Bill',

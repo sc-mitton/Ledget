@@ -23,7 +23,9 @@ const BakedMenu = (props: AccountsScreenProps<'Transaction'>) => {
             <View style={{ transform: [{ rotate: '45deg' }] }}>
               <Icon icon={Maximize2} size={16} strokeWidth={2} />
             </View>,
-          onSelect: () => props.navigation.navigate('Split', { transaction: props.route.params.transaction })
+          onSelect: () => props.navigation.navigate(
+            'Modals',
+            { screen: "Split", params: { transaction: props.route.params.transaction } })
         },
       ]}
     >

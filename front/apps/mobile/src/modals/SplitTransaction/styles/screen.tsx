@@ -2,16 +2,17 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   header: {
-    alignItems: 'center',
-    marginTop: 28,
-    marginBottom: 16
+    marginVertical: 12,
+    marginLeft: 12,
+    gap: 4
   },
   formLabel: {
     marginBottom: 8,
     marginTop: 16
   },
   form: {
-    flex: 1,
+    justifyContent: 'space-between',
+    marginBottom: 96
   },
   field: {
     flexDirection: 'row',
@@ -20,14 +21,20 @@ const styles = StyleSheet.create({
     marginBottom: -8
   },
   categoryInput: {
-    flex: 1,
+    flex: 3,
   },
   amountInput: {
-    flex: 1,
+    flex: 2,
   },
-  submitButtonContainer: {
-    flex: 1,
-    justifyContent: 'center',
+  plusIcon: {
+    marginLeft: 4
+  },
+  addSplitButton: {
+    marginTop: -8,
+    justifyContent: 'flex-start',
+  },
+  saveButton: {
+    marginTop: 4
   }
 });
 

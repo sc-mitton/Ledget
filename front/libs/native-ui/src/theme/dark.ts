@@ -140,10 +140,10 @@ export const darkTheme = createTheme({
     // Category and Bill Colors
     monthBackground: `hsl(${blueH}, 38%, 24%)`,
     monthBorder: `hsl(${blueH}, 38%, 26%)`,
-    monthColor: `hsl(${blueH}, 90%, 75%)`,
-    yearBackground: `hsl(${greenH}, 38%, 20%)`,
-    yearBorder: `hsl(${greenH}, 38%, 22%)`,
-    yearColor: `hsl(${greenH}, 90%, 65%)`,
+    monthColor: `hsl(${blueH}, 100%, 75%)`,
+    yearBackground: `hsl(${greenH}, 38%, 17%)`,
+    yearBorder: `hsl(${greenH}, 38%, 20%)`,
+    yearColor: `hsl(${greenH}, 90%, 50%)`,
 
     // Switch
     enabledSwitchPill: `hsl(${grayH}, ${grayS}%, 70%)`,

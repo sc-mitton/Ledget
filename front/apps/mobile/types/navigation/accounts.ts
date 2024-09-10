@@ -18,9 +18,6 @@ export type AccountsStackParamList = {
       rename?: boolean
     }
   },
-  Split: {
-    transaction: Transaction
-  },
   PickAccount: {
     accountType: AccountType
     currentAccount?: string

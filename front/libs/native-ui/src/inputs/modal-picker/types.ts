@@ -24,6 +24,7 @@ type BaseModalPickerProps<O extends PickerOption, TMultiple extends boolean> = {
   searchable?: boolean;
   header?: string
   isFormInput?: boolean;
+  closeOnSelect?: boolean;
   chevronDirection?: 'down' | 'right';
   renderOption?: (option: O, index: number, selected: boolean) => React.ReactNode;
   renderSelected?: (option: O, index: number) => React.ReactNode;

@@ -36,6 +36,7 @@ interface BillCatSelectPropsBase {
   error?: Error;
   label?: string;
   modalPickerHeader?: string;
+  closeOnSelect?: boolean;
 };
 
 type BillCatSelectProps<M extends boolean = false> =
@@ -43,13 +44,13 @@ type BillCatSelectProps<M extends boolean = false> =
   ? {
     multiple?: M;
     onChange?: (value?: Option[]) => void
-    defaultValue?: Option[]
+    defaultValue?: string[]
     onClose?: (value?: Option[]) => void
   } & BillCatSelectPropsBase
   : {
     multiple?: M;
     onChange?: (value?: Option) => void
-    defaultValue?: Option
+    defaultValue?: string
     onClose?: (value?: Option) => void
   } & BillCatSelectPropsBase;
 
@@ -70,8 +71,8 @@ export const BillCatSelect = <TMultiple extends boolean>(props: BillCatSelectPro
   const [getCategories, { data: categoryData }] = useLazyGetCategoriesQuery();
   const [getBills, { data: billData }] = useLazyGetBillsQuery();
 
-  const [value, setValue] = useState(props.defaultValue);
   const [billCats, setBillCats] = useState<Option[]>([] as Option[]);
+  const [value, setValue] = useState<Option | Option[] | undefined>();
 
   useEffect(() => {
     getCategories({ month, year, spending: false }, true);
@@ -103,28 +104,31 @@ export const BillCatSelect = <TMultiple extends boolean>(props: BillCatSelectPro
   return (
     <ModalPicker
       searchable
+      closeOnSelect={props.closeOnSelect}
       isFormInput={isFormInput}
+      placeholder={''}
       chevronDirection={chevronDirection}
       options={billCats}
       onClose={onClose as any}
-      defaultValue={defaultValue as any}
+      defaultValue={props.multiple
+        ? billCats.filter(b => defaultValue?.includes(b.value))
+        : billCats.find(b => b.value === defaultValue) as any}
       multiple={multiple}
       onChange={setValue}
-      renderSelected={(option) => (
-        <View style={styles.selectedOption}>
-          <BillCatLabel
-            name={option.label}
-            emoji={option.emoji}
-            period={option.period}
-          />
-        </View>
-      )}
+      renderSelected={(option) => {
+        return (
+          <View style={styles.selectedOption}>
+            <BillCatLabel
+              name={option.label}
+              emoji={option.emoji}
+              period={option.period}
+            />
+          </View>
+        )
+      }}
       renderOption={(option, _, selected) => (
         <View style={styles.option}>
-          <BillCatEmoji
-            emoji={option.emoji}
-            period={option.period}
-          />
+          <BillCatEmoji emoji={option.emoji} period={option.period} />
           <Text>{option.label}</Text>
         </View>
       )}

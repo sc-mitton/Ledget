@@ -13,7 +13,6 @@ import { useCardStyleInterpolator, useModifiedDefaultModalStyleInterpolator } fr
 import Transactions from './Transactions';
 import AccountsPicker from './AccountsPicker/Screen';
 import Transaction from './Transaction/Screen';
-import SplitTransaction from './SplitTransaction/Screen';
 
 const Stack = createStackNavigator<AccountsStackParamList>()
 
@@ -104,7 +103,6 @@ const Screen = () => {
       >
         <Stack.Screen options={{ headerShown: false }} name='Main' component={Main} />
         <Stack.Screen name='Transaction' component={Transaction} />
-        <Stack.Screen name='Split' component={SplitTransaction} />
       </Stack.Group>
       <Stack.Group
         screenOptions={{

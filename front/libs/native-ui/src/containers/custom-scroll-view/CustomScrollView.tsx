@@ -70,7 +70,9 @@ export const CustomScrollView = forwardRef<ScrollView, ScrollViewProps>((props, 
         }}
         onScrollBeginDrag={(e) => {
           cancelAnimation(opacity);
-          opacity.value = withTiming(1, { duration: 200 });
+          if (e.nativeEvent.contentOffset.y > 0) {
+            opacity.value = withTiming(1, { duration: 200 });
+          }
         }}
         onScrollEndDrag={(e) => {
           setTimeout(() => {

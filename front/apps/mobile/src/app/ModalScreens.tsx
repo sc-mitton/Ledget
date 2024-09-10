@@ -10,7 +10,8 @@ import {
   AuthenticatorAppSetup,
   LogoutAllDevices,
   RemoveAuthenticator,
-  ChangePassword
+  ChangePassword,
+  SplitTransaction
 } from '@modals';
 import { Activity } from '@screens';
 import { useModalStyleInterpolator } from '@/hooks';
@@ -32,6 +33,7 @@ const ModalScreens = () => {
       <RootStack.Screen name='LogoutAllDevices' component={LogoutAllDevices} />
       <RootStack.Screen name='RemoveAuthenticator' component={RemoveAuthenticator} />
       <RootStack.Screen name='ChangePassword' component={ChangePassword} />
+      <RootStack.Screen name='Split' component={SplitTransaction} />
     </RootStack.Navigator>
   )
 }

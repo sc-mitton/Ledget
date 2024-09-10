@@ -74,19 +74,31 @@ export default StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
+  bottomRow: {
+    flexDirection: 'row',
+  },
+  emojis: {
+    gap: 6,
+    marginLeft: 8,
+    opacity: .7,
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 12,
+    borderRadius: 12,
+  },
   leftColumn: {
     gap: 2,
   },
   dateContentContainer: {
     position: 'relative',
-    width: 30
+    width: 34,
   },
   dateContent: {
     position: 'absolute',
     top: 2,
-    left: 0,
+    left: 2,
     right: 0,
-    paddingRight: 2
+    paddingRight: 2,
   },
   rightColumn: {
     flexGrow: 1,
