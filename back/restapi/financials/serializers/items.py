@@ -71,29 +71,31 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
 
     @transaction.atomic
     def _add_objects(self, validated_data):
-        plaid_item = self._create_plaid_item(validated_data)
-        self._create_accounts(plaid_item, validated_data)
+        plaid_item = self._update_or_create_plaid_item(validated_data)
+        self._update_or_create_accounts(plaid_item, validated_data)
 
         return plaid_item
 
-    def _create_plaid_item(self, validated_data):
+    def _update_or_create_plaid_item(self, validated_data):
 
         exchange_request = ItemPublicTokenExchangeRequest(
-            validated_data['public_token']
-        )
+            validated_data['public_token'])
         response = plaid_client.item_public_token_exchange(exchange_request)
 
         # Create plaid item
-        plaid_item = PlaidItem.objects.create(
+        plaid_item, _ = PlaidItem.objects.update_or_create(
             institution_id=validated_data['institution']['id'],
             user_id=self.context['request'].user.id,
             id=response['item_id'],
-            access_token=response['access_token']
+            defaults={
+                'access_token': response['access_token'],
+                'login_required': False
+            }
         )
 
         return plaid_item
 
-    def _create_accounts(self, plaid_item, validated_data):
+    def _update_or_create_accounts(self, plaid_item, validated_data):
         accounts_data = validated_data['accounts']
         institution_id = validated_data['institution']['id']
         new_accounts = [
@@ -104,11 +106,19 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
             )
             for account in accounts_data
         ]
-        Account.objects.bulk_create(new_accounts)
+        Account.objects.bulk_create(
+            new_accounts,
+            ignore_conflicts=True,
+            unique_fields=['id'])
 
-        bulkconnect = [UserAccount(user=self.context['request'].user, account=account)
-                       for account in new_accounts]
-        UserAccount.objects.bulk_create(bulkconnect)
+        bulkconnect = [
+            UserAccount(user=self.context['request'].user, account=account)
+            for account in new_accounts
+        ]
+        UserAccount.objects.bulk_create(
+            bulkconnect,
+            ignore_conflicts=True,
+            unique_fields=['user', 'account'])
 
     def _get_plaid_institution(self, institution_id):
 

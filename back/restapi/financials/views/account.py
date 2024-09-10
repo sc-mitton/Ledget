@@ -145,14 +145,13 @@ class AccountsViewSet(ViewSet):
         already_fetched_tokens = []
 
         account_balances = {}
-        try:
-            for account in accounts:
-                if account.plaid_item.access_token in already_fetched_tokens:
-                    continue
+        for account in accounts:
+            if account.plaid_item.access_token in already_fetched_tokens:
+                continue
+            request = AccountsGetRequest(
+                access_token=account.plaid_item.access_token)
 
-                request = AccountsGetRequest(
-                    access_token=account.plaid_item.access_token)
-
+            try:
                 response = plaid_client.accounts_get(request).to_dict()
                 for a in response['accounts']:
                     account_balances.update({a['account_id']: {
@@ -160,18 +159,15 @@ class AccountsViewSet(ViewSet):
                     }})
                 already_fetched_tokens.append(account.plaid_item.access_token)
 
-        except plaid.exceptions.ApiException as e:  # pragma: no cover
-            error = json.loads(e.body)
-
-            if error['error_code'] == 'ITEM_LOGIN_REQUIRED':
-                account = accounts[len(account_balances)]
-                account.plaid_item.login_required = True
-                account.plaid_item.save()
-
-            raise ValidationError({'error': {
-                'code': error['error_code'],
-                'message': error['error_message'],
-            }})
+            except plaid.exceptions.ApiException as e:  # pragma: no cover
+                error = json.loads(e.body)
+                if error.get('error_code') == 'ITEM_LOGIN_REQUIRED':
+                    account.plaid_item.login_required = True
+                    account.plaid_item.save()
+                raise ValidationError({'error': {
+                    'code': error['error_code'],
+                    'message': error['error_message'],
+                }})
 
         return account_balances
 

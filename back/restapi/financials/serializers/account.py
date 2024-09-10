@@ -48,6 +48,7 @@ class AccountLS(serializers.ListSerializer):
 
 class AccountSerializer(serializers.ModelSerializer):
     institution = InstitutionSerializer(read_only=True)
+    id = serializers.CharField()
 
     class Meta:
         model = Account

@@ -8,5 +8,7 @@ export default StyleSheet.create({
   },
   splitButton: {
     flex: 1,
+    marginTop: 12,
+    marginBottom: -24
   }
 });

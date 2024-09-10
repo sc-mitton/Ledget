@@ -48,7 +48,7 @@ class Account(BasePrivateModel):
 
     users = models.ManyToManyField(User, through='UserAccount',
                                    related_name='accounts')
-    plaid_item = models.ForeignKey(PlaidItem, on_delete=models.SET_NULL,
+    plaid_item = models.ForeignKey(PlaidItem, on_delete=models.CASCADE,
                                    null=True, related_name='accounts')
     institution = models.ForeignKey(Institution,
                                     on_delete=models.SET_NULL,

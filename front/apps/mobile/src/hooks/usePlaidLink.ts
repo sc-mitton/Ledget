@@ -13,7 +13,7 @@ import {
 import { Platform } from 'react-native'
 import {
   useGetPlaidTokenQuery,
-  useAddNewPlaidItemMutation,
+  useExchangePlaidTokenMutation,
   useTransactionsSyncMutation,
   popToast
 } from '@ledget/shared-features'
@@ -27,7 +27,7 @@ export const usePlaidLink = (args: { isOnboarding?: boolean, itemId?: string, sk
     itemId: args?.itemId,
     androidPackage: Platform.OS === 'android' ? ANDROID_PACKAGE : undefined
   }, { skip: args?.skip });
-  const [addNewPlaidItem, { data: newPlaidItem, isSuccess: newItemAddSuccess }] = useAddNewPlaidItemMutation();
+  const [exchangePlaidToken, { data: newPlaidItem, isSuccess: newItemAddSuccess }] = useExchangePlaidTokenMutation();
   const [syncTransactions] = useTransactionsSyncMutation();
   const dispatch = useAppDispatch();
 
@@ -62,16 +62,22 @@ export const usePlaidLink = (args: { isOnboarding?: boolean, itemId?: string, sk
           id: success.metadata.institution?.id,
           name: success.metadata.institution?.name
         };
+        console.log({
+          data: {
+            public_token: success.publicToken,
+            accounts: success.metadata.accounts,
+            institution: institution
+          }
+        })
+        exchangePlaidToken({
+          data: {
+            public_token: success.publicToken,
+            accounts: success.metadata.accounts,
+            institution: institution
+          }
+        });
         if (args && args.itemId) {
           dispatch(popToast({ type: 'success', message: 'Connection updated successfully', timer: 3000 }));
-        } else {
-          addNewPlaidItem({
-            data: {
-              public_token: success.publicToken,
-              accounts: success.metadata.accounts,
-              institution: institution
-            }
-          });
         }
       },
       onExit: (linkExit: LinkExit) => {

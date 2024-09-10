@@ -6,7 +6,7 @@ import { ChevronDown } from 'geist-native-icons';
 import styles from './styles/navigator';
 import { Box, Header, Text, Icon, InstitutionLogo, DollarCents, BackHeader } from '@ledget/native-ui';
 import { hasErrorCode } from '@ledget/helpers';
-import { useGetAccountsQuery, popToast, Account } from '@ledget/shared-features';
+import { useGetAccountsQuery, popToast, Account, apiSlice } from '@ledget/shared-features';
 import { useAppDispatch } from '@/hooks';
 import { AccountsScreenProps, AccountsStackParamList } from '@types';
 import { useCardStyleInterpolator, useModifiedDefaultModalStyleInterpolator } from '@/hooks';
@@ -33,6 +33,7 @@ const Main = (props: AccountsScreenProps<'Main'>) => {
         type: 'error',
         timer: 7000
       }))
+      apiSlice.util.invalidateTags(['PlaidItem'])
     }
   }, [error])
 

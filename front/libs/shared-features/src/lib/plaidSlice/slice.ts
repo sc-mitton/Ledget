@@ -31,12 +31,12 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
     }),
     deletePlaidItem: builder.mutation<void, string>({
       query: (itemId) => ({
-        url: `plaid_item/${itemId}`,
+        url: `plaid-item/${itemId}`,
         method: 'DELETE'
       }),
       invalidatesTags: ['PlaidItem']
     }),
-    addNewPlaidItem: builder.mutation<any, { data: AddNewPlaidItemPayload }>({
+    exchangePlaidToken: builder.mutation<any, { data: AddNewPlaidItemPayload }>({
       query: ({ data }) => ({
         url: 'plaid-token-exchange',
         method: 'POST',
@@ -63,6 +63,6 @@ export const {
   useGetPlaidTokenQuery,
   useLazyGetPlaidTokenQuery,
   useGetPlaidItemsQuery,
-  useAddNewPlaidItemMutation,
+  useExchangePlaidTokenMutation,
   useDeletePlaidItemMutation,
 } = extendedApiSlice;
