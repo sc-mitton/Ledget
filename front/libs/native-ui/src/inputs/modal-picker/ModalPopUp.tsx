@@ -61,19 +61,21 @@ function ModalPopUp<O extends PickerOption, TMultiple extends boolean>(
 
   // Scroll to position of first selected option if any
   useEffect(() => {
+    let t: NodeJS.Timeout;
     if (value && scrollViewRef.current) {
-      const index = localOptions?.findIndex(option => dequal(option, value)) || 0;
-      const totalOptions = localOptions?.length || 0;
-      console.log('index', index)
-      if (index !== -1) {
-        console.log((index / totalOptions) * scrollHeight)
-        scrollViewRef.current?.scrollTo({
-          y: (index / totalOptions) * scrollHeight,
-          animated: false
-        });
-      }
+      t = setTimeout(() => {
+        const index = localOptions?.findIndex(option => dequal(option, value)) || 0;
+        const totalOptions = localOptions?.length || 0;
+        if (index !== -1) {
+          scrollViewRef.current?.scrollTo({
+            y: (index / totalOptions) * scrollHeight,
+            animated: false
+          });
+        }
+      }, 100);
     }
-  }, [value, localOptions, scrollHeight]);
+    return () => clearTimeout(t)
+  }, [value, localOptions, scrollHeight, open]);
 
 
   return (
