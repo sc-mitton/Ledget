@@ -38,15 +38,17 @@ class TestUserViews(ViewTestsMixin):
         mock = Mock()
         identity_api_mock.return_value = mock
         fake_email = 'foobar@test.com'
-        mock.get_identity.return_value = {
-            'traits': {
-                'email': fake_email,
-                'name': {
-                    'first': 'Foo',
-                    'last': 'Bar'
-                }
+
+        return_mock = Mock()
+        return_mock.traits = {
+            'email': fake_email,
+            'name': {
+                'first': 'Foo',
+                'last': 'Bar'
             }
         }
+        mock.get_identity.return_value = return_mock
+
         response = self.client.get(reverse('user-co-owner'))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['email'], fake_email)
