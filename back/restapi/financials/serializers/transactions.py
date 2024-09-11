@@ -3,8 +3,8 @@ from django.db import transaction
 from datetime import datetime
 
 from financials.models import Transaction, Note
-from budget.serializers import CategorySerializer, BillSerializer
-from budget.models import Bill, TransactionCategory
+from budget.models import Bill, TransactionCategory, Category
+from budget.serializers import BillSerializer
 
 
 class NoteSerializer(serializers.ModelSerializer):
@@ -75,6 +75,13 @@ class UpdateTransactionListSerializer(serializers.ListSerializer):
         self.update(self.instance, self.validated_data)
 
 
+class CategorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
+        fields = '__all__'
+
+
 class TransactionCategorySerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -110,9 +117,24 @@ class UpdateTransactionsConfirmationSerializer(serializers.Serializer):
         return super().update(instance, validated_data)
 
 
+class SplitsSerializer(serializers.Serializer):
+    category = CategorySerializer()
+
+    class Meta:
+        model = TransactionCategory
+        fields = ('category', 'fraction',)
+
+    def to_representation(self, instance):
+        repr = {
+            **super().to_representation(instance).get('category'),
+            'fraction': instance.fraction
+        }
+        return repr
+
+
 class TransactionSerializer(serializers.ModelSerializer):
-    categories = CategorySerializer(many=True, required=False)
-    bill = BillSerializer()
+    splits = SplitsSerializer(many=True, required=False)
+    bill = BillSerializer(required=False)
     predicted_category = CategorySerializer()
     predicted_bill = BillSerializer()
     notes = NoteSerializer(many=True)
@@ -129,3 +151,10 @@ class TransactionSerializer(serializers.ModelSerializer):
             validated_data.update({field: None for field in nullified_fields})
 
         return super().update(instance, validated_data)
+
+    def to_representation(self, instance):
+        # Rename splits to categories
+        repr = super().to_representation(instance)
+        if 'splits' in repr:
+            repr['categories'] = repr.pop('splits')
+        return repr

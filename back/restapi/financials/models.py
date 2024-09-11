@@ -111,7 +111,7 @@ class Transaction(BaseSharedModel):
     categories = models.ManyToManyField(
         Category,
         blank=True,
-        related_name='transactions',
+        related_name='categories',
         through=TransactionCategory)
     bill = models.ForeignKey(Bill, on_delete=models.SET_NULL,
                              null=True, blank=True)

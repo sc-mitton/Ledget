@@ -5,7 +5,7 @@ from collections import OrderedDict
 import pytz
 
 from django.db import transaction, models
-from django.db.models import Q, Prefetch, F
+from django.db.models import Q, Prefetch
 from django.utils import timezone
 
 from rest_framework.viewsets import ModelViewSet
@@ -40,7 +40,7 @@ from financials.serializers.transactions import (
     MerchantSerializer
 )
 from financials.models import PlaidItem, Note
-from budget.models import Category
+from budget.models import Category, TransactionCategory
 
 
 plaid_client = create_plaid_client()
@@ -260,28 +260,23 @@ class TransactionViewSet(ModelViewSet):
 
     def get_queryset(self):
         filter_args = self._exract_filter_args()
-        base_qset = Transaction.objects.filter(**filter_args) \
-                                       .select_related(
-                                           'predicted_category',
-                                           'predicted_bill') \
-                                       .prefetch_related('notes')
 
-        # Get prefetched data for confirmed transactions query
-        # , or if unspecified, assume the data should be prefetched
+        splits_prefetch = Prefetch(
+            'transactioncategory_set',
+            queryset=TransactionCategory.objects.all().select_related('category'),
+            to_attr='splits')
+        base_qset = Transaction.objects \
+            .filter(**filter_args) \
+            .prefetch_related('notes') \
+            .prefetch_related(splits_prefetch) \
+            .select_related('predicted_category', 'predicted_bill', 'bill')
+
+        # Get prefetched data for confirmed transactions query.
         if self.request.query_params.get('confirmed') == 'true':
-            prefetch_categories = Prefetch(
-                'categories',
-                queryset=Category.objects.all().annotate(
-                    fraction=F('transactioncategory__fraction')).distinct())
-
             base_qset = base_qset.filter(
-                    Q(bill__isnull=False) | Q(transactioncategory__isnull=False)
-                ).select_related('bill') \
-                 .prefetch_related(prefetch_categories)
+                    Q(bill__isnull=False) | Q(transactioncategory__isnull=False))
 
-        return base_qset.prefetch_related('notes') \
-                        .order_by('-date') \
-                        .distinct()
+        return base_qset.order_by('-date')
 
     @action(detail=False, methods=['get'], url_path='merchants',
             url_name='merchants', permission_classes=[IsAuthedVerifiedSubscriber])
