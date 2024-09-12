@@ -6,7 +6,7 @@ export type DragState = 'idle' | 'dragging' | 'settling';
 
 export type TPanels<T> = {
   tabs: { [key: string]: (props: T) => React.JSX.Element };
-  props: T;
+  props?: T;
   children?: React.ReactNode;
 }
 

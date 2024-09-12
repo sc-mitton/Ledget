@@ -59,7 +59,7 @@ const TransactionName = (props: AccountsScreenProps<'Transaction'>) => {
           </OutsidePressHandler>
         </Animated.View>
         :
-        <Text>
+        <Text fontSize={18}>
           {props.route.params.transaction.preferred_name || props.route.params.transaction.name}
         </Text>
       }

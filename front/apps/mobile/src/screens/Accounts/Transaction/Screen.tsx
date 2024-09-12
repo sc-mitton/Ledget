@@ -24,8 +24,6 @@ const Transaction = (props: AccountsScreenProps<'Transaction'>) => {
     })
   }, [account])
 
-  console.log(props.route.params.transaction.transaction_id);
-
   return (
     <>
       <Box variant='nestedScreen'>
@@ -34,7 +32,8 @@ const Transaction = (props: AccountsScreenProps<'Transaction'>) => {
             <View style={styles.header}>
               <DollarCents
                 value={props.route.params.transaction.amount}
-                fontSize={36} />
+                fontSize={44}
+              />
               <TransactionName {...props} />
             </View>
             <InfoBox item={props.route.params.transaction} account={account} />

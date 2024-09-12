@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, Fragment } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import { View, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { UserPlus, Copy } from 'geist-native-icons';
 import { useForm, Controller } from 'react-hook-form';
@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 import * as Clipboard from 'expo-clipboard';
-import PagerView from 'react-native-pager-view';
 
 import styles from './styles/add-coowner';
 import { useAddUserToAccountMutation } from '@ledget/shared-features';
@@ -140,13 +139,6 @@ const AddCoOwner = (props: ModalScreenProps<'AddCoOwner'>) => {
   const [, { isSuccess }] = useAddUserToAccountMutation({
     fixedCacheKey: 'addUserToAccount'
   });
-  const ref = useRef<PagerView>(null);
-
-  useEffect(() => {
-    if (isSuccess) {
-      ref.current?.setPage(1);
-    }
-  }, [isSuccess]);
 
   return (
     <Modal>
