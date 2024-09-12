@@ -3,7 +3,7 @@ import type { CompositeScreenProps } from '@react-navigation/native';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
 import type { BottomTabNavParamList, RootStackParamList } from './root';
-import type { Transaction } from '@ledget/shared-features';
+import type { Transaction, AccountType } from '@ledget/shared-features';
 
 export type ModalStackParamList = {
   Activity: {
@@ -24,6 +24,15 @@ export type ModalStackParamList = {
   Split: {
     transaction: Transaction
   },
+  PickAccount: {
+    accountType: AccountType
+    currentAccount?: string
+    options?: {
+      title?: string,
+      reorder?: boolean,
+      order?: 'balance-asc' | 'balance-desc' | 'name-asc' | 'name-desc'
+    }
+  }
 };
 
 export type ModalScreenProps<T extends keyof ModalStackParamList> =

@@ -1,6 +1,6 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
-export default StyleSheet.create({
+const styles = StyleSheet.create({
   accountsPickerButton: {
     width: '100%',
     alignItems: 'center',
@@ -14,3 +14,5 @@ export default StyleSheet.create({
     gap: 8
   }
 });
+
+export default styles;

@@ -5,3 +5,4 @@ export { default as Activity } from './Activity/Screen';
 export { default as Login } from './Login/Navigator';
 export { default as Recovery } from './Recovery/Screen';
 export { default as Verification } from './Verification/Screen';
+export { default as Transaction } from './Transaction/Screen';

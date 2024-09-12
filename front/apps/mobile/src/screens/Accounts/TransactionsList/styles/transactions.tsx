@@ -29,7 +29,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    height: 34,
+    height: 24,
   },
   table: {
     flexDirection: 'row',

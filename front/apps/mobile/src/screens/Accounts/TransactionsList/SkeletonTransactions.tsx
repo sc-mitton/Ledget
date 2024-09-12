@@ -13,7 +13,6 @@ const Skeleton = ({ setSkeletonHeight }: { setSkeletonHeight?: (height: number) 
   const opacity = useSharedValue(1)
 
   useEffect(() => {
-
     opacity.value = withDelay(Math.random() * 1500, withRepeat(withTiming(.5, { duration: 1000 }), -1, true))
   }, [])
 

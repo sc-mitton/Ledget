@@ -11,15 +11,17 @@ import {
   LogoutAllDevices,
   RemoveAuthenticator,
   ChangePassword,
-  SplitTransaction
+  SplitTransaction,
+  AccountsPicker
 } from '@modals';
 import { Activity } from '@screens';
-import { useModalStyleInterpolator } from '@/hooks';
+import { useModalStyleInterpolator, useModifiedDefaultModalStyleInterpolator } from '@/hooks';
 
 const RootStack = createStackNavigator<ModalStackParamList>();
 
 const ModalScreens = () => {
   const cardInterpolator = useModalStyleInterpolator({ slideOut: false });
+  const defaultModalStyleInterpolator = useModifiedDefaultModalStyleInterpolator();
 
   return (
     <RootStack.Navigator screenOptions={{ headerShown: false }}>
@@ -34,6 +36,14 @@ const ModalScreens = () => {
       <RootStack.Screen name='RemoveAuthenticator' component={RemoveAuthenticator} />
       <RootStack.Screen name='ChangePassword' component={ChangePassword} />
       <RootStack.Screen name='Split' component={SplitTransaction} />
+      <RootStack.Group
+        screenOptions={{
+          presentation: 'modal',
+          headerShown: false,
+          cardStyleInterpolator: defaultModalStyleInterpolator
+        }}>
+        <RootStack.Screen name='PickAccount' component={AccountsPicker} />
+      </RootStack.Group>
     </RootStack.Navigator>
   )
 }

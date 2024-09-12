@@ -11,20 +11,12 @@ export type AccountsStackParamList = {
     options?: {
       title: string
     }
+    tab?: 'deposits' | 'credit' | 'investment' | 'loan'
   } | undefined,
   Transaction: {
     transaction: Transaction
     options?: {
       rename?: boolean
-    }
-  },
-  PickAccount: {
-    accountType: AccountType
-    currentAccount?: string
-    options?: {
-      title?: string,
-      reorder?: boolean,
-      order?: 'balance-asc' | 'balance-desc' | 'name-asc' | 'name-desc'
     }
   }
 };
