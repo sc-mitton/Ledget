@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { BottomDrawerModal } from '@ledget/native-ui';
 
 import { ModalScreenProps } from '@types';
-import NeedsConfirmation from './NeedsConfirmation';
-import History from './History';
+import NeedsConfirmation from './New/NeedsConfirmation';
+import History from './History/History';
 import Header from './Header';
 
 const Screen = (props: ModalScreenProps<'Activity'>) => {

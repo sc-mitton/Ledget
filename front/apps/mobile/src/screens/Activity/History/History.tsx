@@ -117,7 +117,9 @@ const Transactions = (props: ModalScreenProps<'Activity'> & { showFilters: React
             <View style={styles.row}>
               <TouchableOpacity
                 style={styles.touchableTransacton}
-                onPress={() => props.navigation.navigate('Accounts', { screen: 'Transaction', params: { transaction } })}
+                onPress={() =>
+                  props.navigation.navigate('Accounts', { screen: 'Transaction', params: { transaction } })
+                }
                 activeOpacity={.7}>
                 <TransactionRow
                   key={transaction.transaction_id}

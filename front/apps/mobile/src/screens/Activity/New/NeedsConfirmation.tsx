@@ -4,7 +4,7 @@ import { View, TouchableOpacity } from 'react-native';
 import { animated, useTransition, useSpringRef } from '@react-spring/native';
 import dayjs from 'dayjs';
 
-import styles from './styles/screen';
+import styles from '../styles/screen';
 import TransactionItem from './TransactionItem';
 import { useAppDispatch, useAppSelector } from '@hooks';
 import { CheckAll } from '@ledget/media/native';

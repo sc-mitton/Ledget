@@ -26,7 +26,8 @@ export type AccountsStackParamList = {
     transaction: Transaction
     options?: {
       rename?: boolean
-    }
+    },
+    from?: 'History' | 'NeedsConfirmation' | 'Accounts'
   },
   PickAccount: {
     accountType: AccountType

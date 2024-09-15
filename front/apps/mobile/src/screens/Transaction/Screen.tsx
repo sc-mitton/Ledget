@@ -1,4 +1,4 @@
-import { useMemo, useLayoutEffect } from 'react';
+import { useMemo, useLayoutEffect, useEffect } from 'react';
 import { View, ScrollView } from 'react-native'
 
 import styles from './styles/screen';
