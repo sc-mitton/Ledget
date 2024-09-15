@@ -15,7 +15,8 @@ import {
   Icon,
   Seperator,
   Spinner,
-  Button
+  Button,
+  Box
 } from '@ledget/native-ui';
 import {
   selectFilteredFetchedConfirmedTransactions,
@@ -35,20 +36,24 @@ const TransactionRow = ({ transaction }: { transaction: Transaction }) => {
   return (
     <View style={styles.transaction}>
       <View style={styles.logoContainer}>
-        <InstitutionLogo account={transaction.account} />
+        <InstitutionLogo account={transaction.account} size={30} />
       </View>
       <View style={styles.leftColumn}>
         <Text>
           {transaction.name.length > 20 ? `${transaction.name.slice(0, 20)} ...` : transaction.name}
         </Text>
         <View style={styles.leftColumnBottomRow}>
+          <Box style={styles.emojis}>
+            {[...(transaction.categories || []), transaction.bill].map(i =>
+              i &&
+              <Box
+                style={styles.emojiContainer}>
+                <Text style={styles.emoji}>{i.emoji}</Text>
+              </Box>)}
+          </Box>
           <Text color='tertiaryText'>
             {formatDateOrRelativeDate(dayjs(transaction.datetime! || transaction.date).valueOf())}
           </Text>
-          <View style={styles.emojis}>
-            {[...(transaction.categories || []), transaction.bill].map(i =>
-              i && <Text>{i.emoji}</Text>)}
-          </View>
         </View>
       </View>
       <View style={styles.dateColumn}>
@@ -80,12 +85,14 @@ const Transactions = (props: ModalScreenProps<'Activity'> & { showFilters: React
   return (
     <>
       {transactionsData.length === 0
-        ? <View style={styles.emptyBoxGraphic}>
+        ?
+        <View style={styles.emptyBoxGraphic}>
           {isLoadingTransactions ? <Spinner color='blueButton' /> : isTransactionsSuccess
             ? <EmptyBox dark={mode === 'dark'} />
             : null}
         </View>
-        : <CustomScrollView
+        :
+        <CustomScrollView
           stickyHeaderIndices={[0]}
           scrollIndicatorInsets={{ right: -8 }} style={styles.scrollView}>
           <View>
@@ -102,7 +109,7 @@ const Transactions = (props: ModalScreenProps<'Activity'> & { showFilters: React
                 borderRadius={8}
                 backgroundColor='grayButtonBorder'
                 textColor='secondaryText'>
-                <Icon icon={Filter2} color='secondaryText' size={18} />
+                <Icon icon={Filter2} color='secondaryText' size={18} strokeWidth={2} />
               </Button>
             </View>
           </View>
@@ -110,7 +117,7 @@ const Transactions = (props: ModalScreenProps<'Activity'> & { showFilters: React
             <View style={styles.row}>
               <TouchableOpacity
                 style={styles.touchableTransacton}
-                onPress={() => props.navigation.navigate('TransactionDetails', { transaction })}
+                onPress={() => props.navigation.navigate('Accounts', { screen: 'Transaction', params: { transaction } })}
                 activeOpacity={.7}>
                 <TransactionRow
                   key={transaction.transaction_id}

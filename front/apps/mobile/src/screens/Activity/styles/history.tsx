@@ -31,11 +31,24 @@ export default StyleSheet.create({
   },
   leftColumnBottomRow: {
     flexDirection: 'row',
+    alignItems: 'center',
     gap: 4
   },
   emojis: {
     flexDirection: 'row',
-    gap: 2
+    marginLeft: 4,
+    marginRight: 4,
+  },
+  emojiContainer: {
+    marginLeft: -4,
+    borderRadius: 24,
+    width: 32,
+    height: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emoji: {
+    margin: 0
   },
   dateColumn: {
     flex: 1,

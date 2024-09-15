@@ -4,7 +4,6 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import dayjs from 'dayjs';
-import { ScrollView } from 'react-native';
 
 import styles from './styles/history';
 import {
@@ -61,7 +60,7 @@ const HistoryFilters = ({ showFilters }: { showFilters: React.Dispatch<React.Set
   }
 
   return (
-    <ScrollView style={styles.filtersForm} showsVerticalScrollIndicator={false}>
+    <View style={styles.filtersForm} >
       <Controller
         control={control}
         name='date_range'
@@ -96,7 +95,7 @@ const HistoryFilters = ({ showFilters }: { showFilters: React.Dispatch<React.Set
           />
         )}
       />
-      <Controller
+      {/* <Controller
         control={control}
         name='items'
         render={({ field: { onChange, value } }) => (
@@ -129,7 +128,7 @@ const HistoryFilters = ({ showFilters }: { showFilters: React.Dispatch<React.Set
             searchable
           />
         )}
-      />
+      /> */}
       <Button
         variant='main'
         marginTop='l'
@@ -149,7 +148,7 @@ const HistoryFilters = ({ showFilters }: { showFilters: React.Dispatch<React.Set
           onPress={() => showFilters(false)}
         />
       </View>
-    </ScrollView>
+    </View>
   )
 }
 

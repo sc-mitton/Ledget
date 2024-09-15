@@ -155,7 +155,7 @@ const Content = (props: ContentProps) => {
   return (
     <>
       <View style={styles.buttonContainer} {...panResponder.panHandlers} >
-        <Box style={styles.button} backgroundColor='dragBar' />
+        <Box variant='dragBar' />
       </View>
       <Animated.View style={[scrollViewAnimation]}>
         {props.children}
@@ -169,12 +169,6 @@ BottomDrawerModal.Content = Content
 export { BottomDrawerModal }
 
 const styles = StyleSheet.create({
-  button: {
-    width: '30%',
-    height: 5,
-    borderRadius: 5,
-    maxWidth: 70,
-  },
   buttonContainer: {
     top: 6,
     position: 'absolute',
