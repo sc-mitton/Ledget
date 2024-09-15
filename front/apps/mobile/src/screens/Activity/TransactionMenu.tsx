@@ -20,12 +20,13 @@ const TransactionMenu = (props: Props) => {
 
   return (
     <Menu
+      as='context-menu'
       onShowChange={props.onShowChange}
       items={[
         {
           label: 'Details',
           icon: () => <Icon icon={Info} size={16} strokeWidth={2} />,
-          onSelect: () => props.navigation.navigate('TransactionDetails', { transaction })
+          onSelect: () => props.navigation.navigate('Accounts', { screen: 'Transaction', params: { transaction } })
         },
         {
           label: 'Split',

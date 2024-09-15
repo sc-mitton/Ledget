@@ -78,7 +78,7 @@ export const lightTheme = createTheme({
     modalBox: palette.gray150,
     modalBox100: palette.gray100,
     nestedModalContainer: palette.gray200,
-    newTransaction: palette.gray250,
+    newTransaction: palette.gray200,
     contextMenu: palette.gray100,
     toast: palette.white,
 
@@ -92,7 +92,7 @@ export const lightTheme = createTheme({
     bottomNavBorder: palette.gray600,
     nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 93%)`,
     tabNavBorder: palette.gray250,
-    newTransactionBorder: palette.gray300,
+    newTransactionBorder: palette.gray250,
     contextMenuBorder: palette.gray200,
     modalBorder: palette.gray200,
     toastBorder: palette.gray100,
@@ -379,7 +379,7 @@ export const lightTheme = createTheme({
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: 'transparent',
-      borderWidth: 1.5,
+      borderWidth: 1.25,
       borderColor: 'borderedGrayButton',
     },
     blueBorderedPill: {
@@ -390,7 +390,7 @@ export const lightTheme = createTheme({
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: 'transparent',
-      borderWidth: 1.5,
+      borderWidth: 1.25,
       borderColor: 'focusedInputBorderMain',
     },
     transparentPill: {

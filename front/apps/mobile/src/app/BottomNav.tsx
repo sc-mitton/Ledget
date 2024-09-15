@@ -20,7 +20,6 @@ interface Props {
 interface ButtonProps extends Props {
   index?: number,
   route: { key: string, name: string, params?: any }
-  onPress?: () => void
 }
 
 const Button = (props: ButtonProps) => {
@@ -29,7 +28,6 @@ const Button = (props: ButtonProps) => {
   const des = descriptors[route.key];
 
   const onPress = () => {
-    props.onPress && props.onPress();
     const event = navigation.emit({
       type: 'tabPress',
       target: route.key,
@@ -115,9 +113,6 @@ export default function Nav({ state, descriptors, navigation }: Props) {
           <View style={styles.activityButtonContainer}>
             {(data?.count || 0) > 0 && <Box style={styles.indicator} backgroundColor='activeText' />}
             <Button
-              onPress={() => {
-                navigation.push('Activity', { screen: 'Activity' });
-              }}
               route={{ key: 'Activity', name: 'Modals', params: { screen: 'Activity' } }}
               state={state}
               descriptors={descriptors}
