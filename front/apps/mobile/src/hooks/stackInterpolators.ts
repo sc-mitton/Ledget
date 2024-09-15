@@ -175,3 +175,46 @@ export const useModalStyleInterpolator = (args?: { slideOut?: boolean }) => {
 
   return modalStyleInterpolator;
 }
+
+export const useZoomCardStyleInterpolator = () => {
+  const theme = useTheme();
+
+  const cardStyleInterpolator = useCallback(({ current, next, inverted, layouts: { screen } }: any) => {
+
+    const progress = Animated.add(
+      current.progress.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, 1],
+        extrapolate: 'clamp',
+      }),
+      next
+        ? next.progress.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, 1],
+          extrapolate: 'clamp',
+        })
+        : 0
+    );
+
+    return ({
+      cardStyle: {
+        opacity: progress,
+        transform: [
+          {
+            scale: progress.interpolate({
+              inputRange: [0, 1, 2],
+              outputRange: [0.8, 1, 1.1],
+              extrapolate: 'clamp',
+            }),
+          },
+        ],
+      },
+      containerStyle: {
+        backgroundColor: theme.colors.mainBackground,
+        opacity: progress,
+      }
+    })
+  }, [theme]);
+
+  return cardStyleInterpolator;
+}

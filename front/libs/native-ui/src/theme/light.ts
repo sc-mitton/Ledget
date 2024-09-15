@@ -523,6 +523,12 @@ export const lightTheme = createTheme({
       width: '100%',
       height: 24
     },
+    divider: {
+      width: 2,
+      height: 16,
+      borderRadius: 4,
+      marginHorizontal: 'l',
+    },
     defaults: {}
   },
 });

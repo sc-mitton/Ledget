@@ -97,7 +97,9 @@ export default StyleSheet.create({
   },
   bottomButtons: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    gap: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 20,
+    marginTop: 12
   }
 });

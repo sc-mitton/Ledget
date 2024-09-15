@@ -3,18 +3,22 @@ import { ChevronDown } from 'geist-native-icons';
 
 import styles from './styles/accounts-picker-button';
 import { Box, Text, Icon, InstitutionLogo, DollarCents } from '@ledget/native-ui';
-import { AccountsScreenProps } from '@types';
+import { AccountsTabsScreenProps } from '@types';
 import { Account } from '@ledget/shared-features';
 
-const Button = (props: AccountsScreenProps<'Main'> & { account?: Account }) => {
+const Button = (props: AccountsTabsScreenProps<'Deposits'> & { account?: Account }) => {
   return (
     <TouchableOpacity
       activeOpacity={.7}
       style={styles.accountsPickerButton}
       onPress={() => {
         props.account && props.navigation.navigate(
-          'PickAccount',
-          { accountType: props.account?.type, currentAccount: props.account.account_id })
+          'Accounts',
+          {
+            screen: 'PickAccount',
+            params: { accountType: props.account?.type, currentAccount: props.account.account_id }
+          }
+        )
       }}>
       <View style={styles.accountsPickerButtonTop}>
         <InstitutionLogo account={props.account?.account_id} />

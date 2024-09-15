@@ -23,15 +23,6 @@ export type ModalStackParamList = {
   ChangePassword: undefined;
   Split: {
     transaction: Transaction
-  },
-  PickAccount: {
-    accountType: AccountType
-    currentAccount?: string
-    options?: {
-      title?: string,
-      reorder?: boolean,
-      order?: 'balance-asc' | 'balance-desc' | 'name-asc' | 'name-desc'
-    }
   }
 };
 

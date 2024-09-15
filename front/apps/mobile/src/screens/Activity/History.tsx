@@ -92,6 +92,7 @@ const Transactions = (props: ModalScreenProps<'Activity'> & { showFilters: React
             <View style={styles.filterButtonContainer}>
               <Button
                 shadowColor='modalBox'
+                onPress={() => props.showFilters(true)}
                 shadowOffset={{ width: 0, height: 0 }}
                 shadowOpacity={1}
                 shadowRadius={12}
@@ -99,7 +100,7 @@ const Transactions = (props: ModalScreenProps<'Activity'> & { showFilters: React
                 labelPlacement='left'
                 fontSize={14}
                 borderRadius={8}
-                backgroundColor='grayButton'
+                backgroundColor='grayButtonBorder'
                 textColor='secondaryText'>
                 <Icon icon={Filter2} color='secondaryText' size={18} />
               </Button>

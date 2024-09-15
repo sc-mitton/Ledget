@@ -14,6 +14,7 @@ import {
   DatePicker,
   ModalPicker,
   InstitutionLogo,
+  Box
 } from '@ledget/native-ui';
 import {
   useGetAccountsQuery,
@@ -99,7 +100,7 @@ const HistoryFilters = ({ showFilters }: { showFilters: React.Dispatch<React.Set
         control={control}
         name='items'
         render={({ field: { onChange, value } }) => (
-          <BillCatSelect multiple onChange={onChange} />
+          <BillCatSelect multiple onChange={onChange} label={'Categories and Bills'} />
         )}
       />
       <Controller
@@ -108,6 +109,7 @@ const HistoryFilters = ({ showFilters }: { showFilters: React.Dispatch<React.Set
         render={({ field: { onChange, value } }) => (
           <ModalPicker
             header='Accounts'
+            isFormInput={true}
             options={accountsData?.accounts}
             label='Accounts'
             onChange={onChange}
@@ -130,20 +132,18 @@ const HistoryFilters = ({ showFilters }: { showFilters: React.Dispatch<React.Set
       />
       <Button
         variant='main'
+        marginTop='l'
         label='Save'
         onPress={onSubmit}
       />
       <View style={styles.bottomButtons}>
         <Button
-          variant='main'
-          backgroundColor='transparent'
           label='Clear'
           textColor='blueText'
           onPress={() => dispatch(clearConfirmedTransactionFilter())}
         />
+        <Box backgroundColor='menuSeperator' variant='divider' />
         <Button
-          variant='main'
-          backgroundColor='transparent'
           label='Cancel'
           textColor='blueText'
           onPress={() => showFilters(false)}

@@ -5,7 +5,8 @@ import { BackHeader } from '@ledget/native-ui';
 import { AccountsStackParamList } from '@types';
 import { useCardStyleInterpolator, useModifiedDefaultModalStyleInterpolator } from '@/hooks';
 import { Transaction } from '@screens';
-import AccountTabs from './AccountTabs';
+import { AccountsPicker } from '@/modals';
+import AccountTabs from './AccountScreens';
 
 const Stack = createStackNavigator<AccountsStackParamList>()
 
@@ -14,15 +15,23 @@ const Screen = () => {
   const modalStyleInterpolator = useModifiedDefaultModalStyleInterpolator()
 
   return (
-    <Stack.Navigator id='accounts' initialRouteName='Main'>
+    <Stack.Navigator id='accounts' initialRouteName='AccountsTabs'>
       <Stack.Group
         screenOptions={{
           header: (props) => <BackHeader {...props} pagesWithTitle={['Split']} />,
           cardStyleInterpolator
         }}
       >
-        <Stack.Screen options={{ headerShown: false }} name='Main' component={AccountTabs} />
+        <Stack.Screen options={{ headerShown: false }} name='AccountsTabs' component={AccountTabs} />
         <Stack.Screen name='Transaction' component={Transaction} />
+      </Stack.Group>
+      <Stack.Group
+        screenOptions={{
+          presentation: 'modal',
+          headerShown: false,
+          cardStyleInterpolator: modalStyleInterpolator
+        }}>
+        <Stack.Screen name='PickAccount' component={AccountsPicker} />
       </Stack.Group>
     </Stack.Navigator>
   )

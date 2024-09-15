@@ -68,7 +68,7 @@ const AccountPicker = (props: AccountsScreenProps<'PickAccount'>) => {
                       args.drag();
                     }}
                     onPress={() => {
-                      props.navigation.navigate('Main', { account: args.item })
+                      props.navigation.navigate('Accounts', { screen: 'Main', params: { account: args.item } })
                     }}
                     last={args.getIndex() === accounts.length - 1}
                     account={args.item}

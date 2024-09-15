@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 6,
     marginTop: 16,
-    marginBottom: 28
+    marginBottom: 16
   },
   accountsPickerButtonTop: {
     flexDirection: 'row',

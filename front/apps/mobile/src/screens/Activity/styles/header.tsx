@@ -15,7 +15,7 @@ export default StyleSheet.create({
   },
   countCountainer: {
     position: 'relative',
-    marginRight: 12,
+    marginRight: 18,
   },
   countBackgroundOuterContainer: {
     position: 'relative'
@@ -33,11 +33,5 @@ export default StyleSheet.create({
     width: 24,
     position: 'absolute',
     opacity: 0.2
-  },
-  divider: {
-    width: 2,
-    height: 16,
-    borderRadius: 4,
-    marginHorizontal: 12
   }
 });

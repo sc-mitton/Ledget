@@ -5,18 +5,36 @@ import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import type { BottomTabNavParamList, RootStackParamList } from './root';
 import { Account, AccountType, Transaction } from '@ledget/shared-features';
 
+
+type AccountScreenBase = {
+  account?: Account
+  options?: {
+    title: string
+  }
+}
+
+export type AccountsTabsParamList = {
+  Deposits: AccountScreenBase,
+  Credit: AccountScreenBase,
+  Investment: AccountScreenBase,
+  Loan: AccountScreenBase
+};
+
 export type AccountsStackParamList = {
-  Main: {
-    account?: Account
-    options?: {
-      title: string
-    }
-    tab?: 'deposits' | 'credit' | 'investment' | 'loan'
-  } | undefined,
+  AccountsTabs: AccountsTabsParamList,
   Transaction: {
     transaction: Transaction
     options?: {
       rename?: boolean
+    }
+  },
+  PickAccount: {
+    accountType: AccountType
+    currentAccount?: string
+    options?: {
+      title?: string,
+      reorder?: boolean,
+      order?: 'balance-asc' | 'balance-desc' | 'name-asc' | 'name-desc'
     }
   }
 };
@@ -26,3 +44,11 @@ export type AccountsScreenProps<T extends keyof AccountsStackParamList> =
     StackScreenProps<AccountsStackParamList, T>,
     CompositeScreenProps<BottomTabScreenProps<BottomTabNavParamList>, StackScreenProps<RootStackParamList>>
   >;
+
+
+export type AccountsTabsScreenProps<T extends keyof AccountsTabsParamList> =
+  CompositeScreenProps<
+    StackScreenProps<AccountsTabsParamList, T>,
+    CompositeScreenProps<StackScreenProps<AccountsStackParamList>, StackScreenProps<RootStackParamList>>
+  >;
+

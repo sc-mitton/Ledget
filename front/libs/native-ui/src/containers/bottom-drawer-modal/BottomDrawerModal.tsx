@@ -82,7 +82,7 @@ const Content = (props: ContentProps) => {
       state.current = 'expanded'
       setExpanded(true)
     }
-  }, [])
+  }, [props.defaultExpanded])
 
   useEffect(() => {
     if (props.height) {

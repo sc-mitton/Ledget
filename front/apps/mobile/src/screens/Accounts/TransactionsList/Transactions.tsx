@@ -33,11 +33,11 @@ import {
   CustomFlatList
 } from '@ledget/native-ui';
 import SkeletonTransactions from './SkeletonTransactions';
-import { AccountsScreenProps } from '@types';
+import { AccountsTabsScreenProps } from '@types';
 
 const { StatusBarManager } = NativeModules;
 
-interface PTransactions extends AccountsScreenProps<'Main'> {
+interface PTransactions extends AccountsTabsScreenProps<'Deposits' | 'Credit'> {
   top: number
   account?: Account
 }
@@ -234,7 +234,10 @@ const Transactions = (props: PTransactions) => {
                 data={transactionsData.results}
                 renderItem={({ item: transaction, index: i }) => (
                   <TouchableOpacity
-                    onPress={() => props.navigation.navigate('Transaction', { transaction })}
+                    onPress={() => props.navigation.navigate(
+                      'Transaction',
+                      { transaction: transaction }
+                    )}
                     activeOpacity={.7} key={transaction.transaction_id}>
                     <Row {...transaction} index={i} />
                   </TouchableOpacity>
