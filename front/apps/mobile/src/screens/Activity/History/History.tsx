@@ -87,7 +87,7 @@ const Transactions = (props: ModalScreenProps<'Activity'> & { showFilters: React
       {transactionsData.length === 0
         ?
         <View style={styles.emptyBoxGraphic}>
-          {isLoadingTransactions ? <Spinner color='blueButton' /> : isTransactionsSuccess
+          {isLoadingTransactions ? <Spinner color='blueText' /> : isTransactionsSuccess
             ? <EmptyBox dark={mode === 'dark'} />
             : null}
         </View>
@@ -118,7 +118,7 @@ const Transactions = (props: ModalScreenProps<'Activity'> & { showFilters: React
               <TouchableOpacity
                 style={styles.touchableTransacton}
                 onPress={() =>
-                  props.navigation.navigate('Accounts', { screen: 'Transaction', params: { transaction } })
+                  props.navigation.navigate('Accounts', { screen: 'Transaction', params: { transaction }, initial: false })
                 }
                 activeOpacity={.7}>
                 <TransactionRow
