@@ -1,5 +1,5 @@
 import { useRef, createContext, useContext, useState, useEffect } from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet, View, Dimensions, Platform } from 'react-native';
 import { PanResponder } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
@@ -46,7 +46,7 @@ const BottomDrawerModal = (props: BottomDrawerModalProps) => {
   const {
     children,
     collapsedHeight = 150,
-    expandedHeight = Dimensions.get('window').height - 250,
+    expandedHeight = Platform.OS === 'ios' ? Dimensions.get('window').height - 250 : Dimensions.get('window').height - 225,
   } = props
   const state = useRef<'collapsed' | 'expanded' | 'closed'>(props.defaultExpanded ? 'expanded' : 'collapsed')
   const [expanded, setExpanded] = useState<boolean>(props.defaultExpanded || false)

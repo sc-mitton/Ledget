@@ -69,9 +69,9 @@ export const lightTheme = createTheme({
     // Backgrounds
     mainBackground: palette.gray150,
     accountsMainBackground: palette.gray100,
-    bottomNavCover: palette.gray300,
+    bottomNavCover: palette.gray250,
     androidNavBar: palette.gray200,
-    bottomNavBackground: Platform.OS === 'ios' ? palette.gray500 : palette.gray400,
+    bottomNavBackground: Platform.OS === 'ios' ? palette.gray500 : palette.gray300,
     inputBackground: palette.gray250,
     nestedContainer: palette.white,
     avatar: palette.gray500,
@@ -79,7 +79,7 @@ export const lightTheme = createTheme({
     modalBox: palette.gray150,
     modalBox100: palette.gray100,
     nestedModalContainer: palette.gray200,
-    newTransaction: palette.gray200,
+    newTransaction: palette.gray100,
     contextMenu: palette.gray100,
     toast: palette.white,
 
@@ -90,10 +90,10 @@ export const lightTheme = createTheme({
     focusedInputBorderSecondary: palette.blue100,
     focusedInputBorderMain: palette.blue300,
     tabNavPillBorder: palette.blue100,
-    bottomNavBorder: Platform.OS === 'ios' ? palette.gray600 : palette.gray500,
+    bottomNavBorder: Platform.OS === 'ios' ? palette.gray600 : palette.gray350,
     nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 93%)`,
     tabNavBorder: palette.gray250,
-    newTransactionBorder: palette.gray250,
+    newTransactionBorder: palette.gray200,
     contextMenuBorder: palette.gray200,
     modalBorder: palette.gray200,
     toastBorder: palette.gray100,
@@ -107,7 +107,7 @@ export const lightTheme = createTheme({
     activeSwitchShadow: 'hsl(144, 70%, 50%)',
     disabledSwitchShadow: palette.gray500,
     logoShadow: palette.gray500,
-    newTransactionShadow: palette.gray300,
+    newTransactionShadow: Platform.OS === 'ios' ? palette.gray200 : palette.gray300,
     menuShadowColor: palette.gray400,
 
     // Text
@@ -163,6 +163,7 @@ export const lightTheme = createTheme({
     darkerseperator: palette.gray250,
     menuSeperator: palette.gray200,
     blueseperator: palette.blue100,
+    screenHeader: palette.gray300,
 
     // Misc
     alert: palette.red,
@@ -240,7 +241,7 @@ export const lightTheme = createTheme({
       color: 'secondaryText',
     },
     defaults: {
-      fontSize: 16,
+      fontSize: Platform.OS === 'ios' ? 16 : 17,
       lineHeight: 24,
       fontFamily: 'SourceSans3Regular',
       color: 'mainText',

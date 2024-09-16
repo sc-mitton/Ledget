@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { Platform } from "react-native";
 
 import { Base64Image } from "../base64-image/Base64Image"
 import type { Props } from "../base64-image/Base64Image"
@@ -19,10 +20,11 @@ export const InstitutionLogo = (props: Props & { account?: string }) => {
       shadowOffset={{ width: 0, height: 1 }}
       shadowOpacity={.8}
       shadowRadius={1}
+      elevation={2}
       borderColor='lightseperator'
       backgroundColor='lightseperator'
       borderWidth={.5}
-      size={props.size || 22}
+      size={props.size || Platform.OS === 'ios' ? 22 : 24}
       data={logoData}
       {...props}
     />

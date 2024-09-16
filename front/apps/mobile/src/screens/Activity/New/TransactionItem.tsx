@@ -4,6 +4,7 @@ import {
   ViewStyle,
   PanResponder,
   Dimensions,
+  Platform
 } from "react-native";
 import { Check } from "geist-native-icons";
 import dayjs from "dayjs";
@@ -148,13 +149,13 @@ const Item = (props: Props) => {
             borderColor='newTransactionBorder'
             borderWidth={1}
             shadowColor='newTransactionShadow'
-            shadowOpacity={mode === 'dark' ? 1 : 1}
-            shadowRadius={mode === 'dark' ? 32 : 16}
+            shadowOpacity={1}
+            shadowRadius={mode === 'dark' ? 32 : 8}
             shadowOffset={{ width: 0, height: 8 }}
             elevation={7}
             style={[styles.newTransaction, style]}
           >
-            <View style={[styles.content, contentStyle]}>
+            <View style={[Platform.OS === 'ios' ? styles.iosContentSpacing : styles.androidContentSpacing, contentStyle]}>
               <View style={styles.leftColumn}>
                 <InstitutionLogo data={
                   plaidItemsData?.find((p) =>
@@ -167,8 +168,8 @@ const Item = (props: Props) => {
                       : item.name.length > 17 ? `${item.name.slice(0, 17)} ...` : item.name}
                   </Text>
                   <View style={styles.bottomRow}>
-                    <DollarCents value={item.amount} color='secondaryText' fontSize={15} />
-                    <Text color='secondaryText' fontSize={14}>
+                    <DollarCents value={item.amount} color='secondaryText' fontSize={16} />
+                    <Text color='secondaryText' fontSize={15}>
                       {formatDateOrRelativeDate(dayjs(item.datetime! || item.date).valueOf())}
                     </Text>
                   </View>

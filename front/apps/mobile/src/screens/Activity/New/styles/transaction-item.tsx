@@ -7,6 +7,12 @@ export default StyleSheet.create({
     alignItems: 'center',
     padding: 16
   },
+  androidContentSpacing: {
+    padding: 18
+  },
+  iosContentSpacing: {
+    padding: 16
+  },
   leftColumn: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -32,7 +32,7 @@ export function BackHeader(props: StackHeaderProps & { pagesWithTitle?: string[]
           {route.name}
         </Text>}
       <View style={styles.seperator}>
-        <Seperator variant='bare' height={2} backgroundColor='menuSeperator' />
+        <Seperator variant='bare' height={2} backgroundColor='screenHeader' />
       </View>
       <View style={styles.menuContainer}>
         {options.headerRight && options.headerRight({})}

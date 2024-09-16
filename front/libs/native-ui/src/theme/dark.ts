@@ -169,5 +169,6 @@ export const darkTheme = createTheme({
     grayIcon: palette.gray100,
     scrollbar: palette.gray750,
     transactionShimmer: palette.gray800,
+    screenHeader: palette.gray750,
   }
 });
