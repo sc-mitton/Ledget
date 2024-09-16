@@ -58,12 +58,13 @@ const AccountRow = (props: AccountP) => {
         <Seperator variant='bare' />}
       <Box
         backgroundColor='modalBox100'
-        shadowColor='navShadow'
         borderColor={props.detailedView ? 'modalBorder' : 'transparent'}
         borderWidth={1.5}
+        shadowColor='navShadow'
         shadowOpacity={props.detailedView ? mode === 'dark' ? 1 : 0.5 : 0}
         shadowRadius={props.detailedView ? 16 : 0}
         shadowOffset={{ width: 0, height: 4 }}
+        elevation={props.detailedView ? 10 : 0}
         style={styles.accountCard}
       >
         <ChevronTouchable
