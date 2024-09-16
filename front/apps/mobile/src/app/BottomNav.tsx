@@ -1,6 +1,6 @@
 import { BlurView } from 'expo-blur';
-import { TouchableOpacity, View } from 'react-native';
-import { ParamListBase, TabNavigationState } from '@react-navigation/native';
+import { TouchableOpacity, View, Platform } from 'react-native';
+import { ParamListBase, TabNavigationState, CommonActions } from '@react-navigation/native';
 import { Home, DollarSign, Activity, User } from 'geist-native-icons';
 import { useGetTransactionsCountQuery } from '@ledget/shared-features';
 
@@ -35,7 +35,11 @@ const Button = (props: ButtonProps) => {
     });
 
     if (!isFocused && !event.defaultPrevented) {
-      navigation.navigate(route.name, route.params);
+      navigation.dispatch((state: any) => {
+        return CommonActions.navigate({
+          name: route.name
+        });
+      });
     }
   };
 
@@ -81,10 +85,21 @@ export default function Nav({ state, descriptors, navigation }: Props) {
   return (
     <>
       <BlurView
-        intensity={mode === 'dark' ? 40 : 20}
+        intensity={
+          mode === 'dark'
+            ? Platform.OS === 'ios' ? 40 : 20
+            : 20
+        }
+        experimentalBlurMethod={'dimezisBlurView'}
         tint={mode === 'dark' ? 'dark' : 'light'}
-        style={styles.navBlurView}
+        style={[
+          styles.navBlurView,
+          Platform.OS === 'ios' ? styles.iosNavBlurViewSpacing : styles.androidNavBlurViewSpacing,
+        ]}
       >
+        {Platform.OS === 'android' &&
+          <><Box backgroundColor='mainAppAndroidNavBarBack' style={[styles.androidCover, { left: 0 }]} />
+            <Box backgroundColor='mainAppAndroidNavBarBack' style={[styles.androidCover, { right: 0 }]} /></>}
         <Box
           backgroundColor={'bottomNavBackground'}
           style={styles.navBack}
