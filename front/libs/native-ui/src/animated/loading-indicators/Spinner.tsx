@@ -15,7 +15,6 @@ import { View } from 'react-native';
 import { ColorProps, color, composeRestyleFunctions, useRestyle } from '@shopify/restyle';
 
 import styles from './styles';
-import { Box } from '../../restyled/Box';
 import { Theme } from '../../theme';
 
 
@@ -112,7 +111,7 @@ export const UnstyledSpinner = ({ color }: { color?: string }) => {
       <View style={styles.spinnerContainer}>
         {Platform.OS === 'ios'
           ? <IosSpinner color={color || theme.colors['mainText']} />
-          : <ActivityIndicator color={color || theme.colors['mainText']} />}
+          : <ActivityIndicator color={color || theme.colors['mainText']} size={28} />}
       </View>
     </Animated.View>
   )
