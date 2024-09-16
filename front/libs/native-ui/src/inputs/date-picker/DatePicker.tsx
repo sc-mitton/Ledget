@@ -1,9 +1,10 @@
 
 import React, { useEffect } from 'react';
 import NativeDatePicker from 'react-native-date-picker'
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Platform } from 'react-native';
 import dayjs, { Dayjs } from 'dayjs';
 import Animated, { withSpring, useSharedValue, useAnimatedStyle } from 'react-native-reanimated';
+import { useTheme } from '@shopify/restyle';
 
 import styles from './styles';
 import { HalfArrow } from '@ledget/media/native';
@@ -24,6 +25,7 @@ export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<P
   const [index, setIndex] = React.useState<number>();
   const bottomIndicatorOpacity = useSharedValue(0);
   const bottomIndicatorX = useSharedValue(0);
+  const theme = useTheme();
 
   const bottomIndicatorStyle = useAnimatedStyle(() => {
     return {
@@ -133,7 +135,10 @@ export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<P
       </View>
       <NativeDatePicker
         modal
+        title={Platform.OS === 'ios' ? 'Start Date' : null}
         theme={props.theme}
+        dividerColor={theme.colors.tertiaryText}
+        buttonColor={theme.mode === 'dark' ? '#000000' : '#FFFFFF'}
         open={index === 0}
         mode={props.mode}
         minimumDate={
@@ -167,6 +172,9 @@ export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<P
       {Array.isArray(value) &&
         <NativeDatePicker
           modal
+          title={Platform.OS === 'ios' ? 'End Date' : null}
+          dividerColor={theme.colors.tertiaryText}
+          buttonColor={theme.mode === 'dark' ? '#000000' : '#FFFFFF'}
           theme={props.theme}
           open={index === 1}
           mode={props.mode}
