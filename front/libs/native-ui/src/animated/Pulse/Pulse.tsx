@@ -60,11 +60,18 @@ const Circle = ({ green = false, size = 'l', position }: CircleProps) => {
           gradientUnits="userSpaceOnUse"
         >
           <Stop stopColor={theme.colors.accountsMainBackground} />
-          <Stop stopColor={theme.colors.accountsMainBackground} offset={
-            green
-              ? position === 'inner' ? .3 : .4
-              : position === 'inner' ? .85 : .9} />
-          <Stop stopColor={green ? theme.colors.pulseGreen : theme.colors.pulseWaiting} offset={1} />
+          <Stop
+            stopColor={theme.colors.accountsMainBackground}
+            offset={
+              green
+                ? position === 'inner' ? .3 : .4
+                : position === 'inner' ? .85 : .9
+            }
+          />
+          <Stop
+            stopColor={green ? theme.colors.pulseGreen : theme.colors.pulseWaiting}
+            offset={1.5}
+          />
         </SVGRadialGradient>
       </Defs>
     </Svg>
@@ -78,8 +85,8 @@ export const Pulse = ({ size = 'm', success }: PulseProps) => {
   const inactiveOuterPulse = useSharedValue(1.3);
   const activeInnerPulse = useSharedValue(0);
   const activeOuterPulse = useSharedValue(0);
-  const opacityOuter = useSharedValue(.2);
-  const opacityInner = useSharedValue(.45);
+  const opacityOuter = useSharedValue(.1);
+  const opacityInner = useSharedValue(.2);
 
   const successOpacity = useSharedValue(1);
 
