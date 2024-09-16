@@ -98,15 +98,15 @@ export default function Nav({ state, descriptors, navigation }: Props) {
         ]}
       >
         {Platform.OS === 'android' &&
-          <><Box backgroundColor='mainAppAndroidNavBarBack' style={[styles.androidCover, { left: 0 }]} />
-            <Box backgroundColor='mainAppAndroidNavBarBack' style={[styles.androidCover, { right: 0 }]} /></>}
+          <><Box backgroundColor='bottomNavCover' style={[styles.androidCover, { left: 0 }]} />
+            <Box backgroundColor='bottomNavCover' style={[styles.androidCover, { right: 0 }]} /></>}
         <Box
           backgroundColor={'bottomNavBackground'}
           style={styles.navBack}
           shadowColor='navShadow'
           shadowOffset={{ width: 0, height: -5 }}
           shadowRadius={20}
-          shadowOpacity={1}
+          shadowOpacity={Platform.OS === 'ios' ? 1 : 0}
           borderTopColor='bottomNavBorder'
           borderTopWidth={1}
         />

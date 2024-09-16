@@ -69,8 +69,8 @@ export const lightTheme = createTheme({
     // Backgrounds
     mainBackground: palette.gray150,
     accountsMainBackground: palette.gray100,
-    accountsAndroidNavBarBack: palette.gray200,
-    mainAppAndroidNavBarBack: palette.gray300,
+    bottomNavCover: palette.gray300,
+    androidNavBar: palette.gray200,
     bottomNavBackground: Platform.OS === 'ios' ? palette.gray500 : palette.gray400,
     inputBackground: palette.gray250,
     nestedContainer: palette.white,
@@ -107,7 +107,7 @@ export const lightTheme = createTheme({
     activeSwitchShadow: 'hsl(144, 70%, 50%)',
     disabledSwitchShadow: palette.gray500,
     logoShadow: palette.gray500,
-    newTransactionShadow: palette.gray100,
+    newTransactionShadow: palette.gray300,
     menuShadowColor: palette.gray400,
 
     // Text

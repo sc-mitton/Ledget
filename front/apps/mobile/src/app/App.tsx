@@ -137,9 +137,13 @@ export const App = withProviders(() => {
   // Set the navigation bar color and button style based on the theme
   useEffect(() => {
     if (Platform.OS !== 'android') return;
-    NavigationBar.setBackgroundColorAsync(theme.colors.androidbottomNavBackground);
+    NavigationBar.setBackgroundColorAsync(
+      continueToMainApp
+        ? theme.colors.bottomNavCover
+        : theme.colors.androidNavBar
+    );
     NavigationBar.setButtonStyleAsync(appearance.mode === 'dark' ? 'light' : 'dark');
-  }, [appearance.mode]);
+  }, [appearance.mode, continueToMainApp]);
 
   if (!appIsReady || !environment || !fontsGood) {
     return null;
@@ -150,7 +154,11 @@ export const App = withProviders(() => {
       backgroundColor={continueToMainApp ? 'mainBackground' : 'accountsMainBackground'}
       onLayout={onLayoutRootView}
       style={styles.root}>
-      <StatusBar style={appearance.mode === 'dark' ? 'light' : 'dark'} />
+      <StatusBar
+        backgroundColor={'transparent'}
+        translucent
+        style={appearance.mode === 'dark' ? 'light' : 'dark'}
+      />
       <Toast />
       {continueToMainApp
         ?
