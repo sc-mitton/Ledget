@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState, useRef } from 'react';
 import { shallowEqual } from 'react-redux';
-import { View, TouchableOpacity } from 'react-native';
-import { animated, useTransition, useSpringRef } from '@react-spring/native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { useTransition, useSpringRef } from '@react-spring/native';
 import dayjs from 'dayjs';
 
 import styles from '../styles/screen';
@@ -29,7 +29,8 @@ import {
   Text,
   CustomScrollView,
   Spinner,
-  AnimatedView
+  AnimatedView,
+  Box
 } from '@ledget/native-ui';
 import { useLoaded } from '@ledget/helpers';
 import {
@@ -40,6 +41,7 @@ import {
 } from './helpers';
 import { ModalScreenProps } from '@types';
 import { EmptyBox } from '@ledget/media/native';
+import { z } from 'zod';
 
 const springConfig = {
   tension: 180,
@@ -82,7 +84,7 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
   const itemsApi = useSpringRef();
   const itemTransitions = useTransition(unconfirmedTransactions, {
     from: (item, index) => ({
-      top: _getY(index, expanded, false, itemHeight.current)
+      top: _getY(index, expanded, false, itemHeight.current),
     }),
     enter: (item, index) => ({
       top: _getY(index, expanded, true, itemHeight.current),
@@ -118,10 +120,14 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
     if (!expanded) return;
     if (focusedItem) {
       itemsApi.start((index: any, item: any) => ({
-        opacity: item._item.transaction_id === focusedItem ? 1 : .4
+        zIndex: item._item.transaction_id === focusedItem ? 200 : 0,
+        immediate: true
       }))
     } else {
-      itemsApi.start((index: any, item: any) => ({ opacity: 1 }))
+      itemsApi.start((index: any, item: any) => ({
+        zIndex: unconfirmedTransactions.length - index,
+        immediate: true
+      }))
     }
   }, [focusedItem]);
 
@@ -235,6 +241,7 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
           scrollEnabled={expanded}
           scrollIndicatorInsets={{ right: -4 }}
           showsVerticalScrollIndicator={expanded}
+          contentContainerStyle={[styles.scrollViewContent]}
           style={[styles.scrollView]}>
           <View style={[
             styles.transactionsContainer,
@@ -244,6 +251,7 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
                 : itemHeight.current * 2
             }
           ]}>
+            <Box style={[StyleSheet.absoluteFillObject, styles.overlay]} backgroundColor='modalBox' />
             {itemTransitions((style, item, _, index) => (
               <AnimatedView
                 onLayout={(e) => {
