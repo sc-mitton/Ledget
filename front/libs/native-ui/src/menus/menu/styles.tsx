@@ -33,7 +33,7 @@ export default StyleSheet.create({
   },
   menuContainer: {
     position: 'absolute',
-    bottom: -8,
+    bottom: -12,
     width: '100%',
   },
   menu: {
@@ -68,7 +68,7 @@ export default StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 16,
     gap: 20,
-    opacity: .9
+    opacity: .95
   },
   icon: {
     minWidth: 28,
