@@ -54,7 +54,7 @@ const Aal2Authenticator = ({ navigation, route }: LoginScreenProps<'Aal2Authenti
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}
       >
-        <View>
+        <View style={sharedStyles.header}>
           <Header>One Time Code</Header>
           <SubHeader2>Enter the code from your authenticator app or use a saved recovery code</SubHeader2>
         </View>

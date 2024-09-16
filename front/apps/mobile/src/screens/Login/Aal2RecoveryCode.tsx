@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { useTheme } from '@shopify/restyle';
 
 import styles from './styles/shared';
+import sharedStyles from './styles/shared';
 import { useNativeFlow } from '@ledget/ory';
 import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@/features/orySlice';
 import { Header, NestedScreenWOFeedback, SubHeader2, TextInput, Button, Pulse, JiggleView } from '@ledget/native-ui';
@@ -47,7 +48,9 @@ const Aal2RecoveryCode = ({ navigation, route }: LoginScreenProps<'Aal2RecoveryC
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}
       >
-        <Header>Recovery Code</Header>
+        <View style={sharedStyles.header}>
+          <Header>Recovery Code</Header>
+        </View>
         <SubHeader2>Enter one of your saved recovery codes to login</SubHeader2>
         <View style={styles.graphicContainer}>
           <RecoveryCode fill={theme.colors.accountsMainBackground} stroke={theme.colors.grayIcon} />

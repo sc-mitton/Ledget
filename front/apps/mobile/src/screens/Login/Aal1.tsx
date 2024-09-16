@@ -7,6 +7,7 @@ import { Key, Lock } from 'geist-native-icons';
 import { z } from 'zod';
 
 import styles from './styles/aal1';
+import sharedStyles from './styles/shared';
 import {
   Header,
   SubHeader2,
@@ -82,7 +83,7 @@ const Aal1Authentication = ({
 
   return (
     <NestedScreenWOFeedback>
-      <View>
+      <View style={sharedStyles.header}>
         <Header>Finish Logging In</Header>
         <SubHeader2>Enter your password or use a pass-key login</SubHeader2>
       </View>
