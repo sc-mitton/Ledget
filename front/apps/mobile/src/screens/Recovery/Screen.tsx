@@ -1,22 +1,24 @@
 import React, { useEffect } from 'react'
-import { View, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, KeyboardAvoidingView, Platform, Keyboard } from 'react-native';
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Mail } from 'geist-native-icons';
 import { z } from 'zod';
+import { Lock, Unlock } from 'geist-native-icons';
 
 import styles from './styles';
 import { useNativeFlow } from '@ledget/ory';
 import { useLazyGetRecoveryFlowQuery, useCompleteRecoveryFlowMutation } from '@features/orySlice'
-import { Header, NestedScreenWOFeedback, SubHeader2, Button, Pulse, Otc, Icon } from '@ledget/native-ui'
+import { Header, NestedScreenWOFeedback, SubHeader2, Button, Pulse, Otc, Box, Icon } from '@ledget/native-ui'
 import { RecoveryScreenProps } from '@types'
 import { useFlowProgress } from '@hooks';
+import { useAppearance } from '@/features/appearanceSlice';
 
 const schema = z.object({
   code: z.string().length(6, { message: 'Invalid code' })
 })
 
 export default function Recovery({ navigation, route }: RecoveryScreenProps) {
+  const [keyboardVisible, setKeyboardVisible] = React.useState(false);
   const { control, handleSubmit, formState: { errors } } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: 'onSubmit',
@@ -28,6 +30,16 @@ export default function Recovery({ navigation, route }: RecoveryScreenProps) {
   )
 
   useEffect(() => { fetchFlow() }, [])
+
+  // Add a listener to the keyboard
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => setKeyboardVisible(true));
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => setKeyboardVisible(false));
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
 
   useFlowProgress({
     navigation,
@@ -47,24 +59,21 @@ export default function Recovery({ navigation, route }: RecoveryScreenProps) {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.screen}
       >
-        <Header>Recover Account</Header>
-        <SubHeader2>Enter the code sent to your email</SubHeader2>
+        <View style={styles.header}>
+          <Header>Recover Account</Header>
+          <SubHeader2>Enter the code sent to your email</SubHeader2>
+        </View>
         <View style={styles.graphicContainer}>
-          <View style={styles.icon} >
+          <View style={styles.icon}>
             <Icon
-              icon={Mail}
-              color={isCompleteSuccess ? 'successIcon' : 'grayIcon'}
-              size={54}
+              icon={isCompleteSuccess ? Unlock : Lock}
+              size={keyboardVisible ? 48 : 54}
+              strokeWidth={1.25}
+              color={isCompleteSuccess ? 'successIcon' : 'tertiaryText'}
             />
+            <Box style={styles.iconBackgroundContainer} backgroundColor='mainBackground' />
           </View>
-          <View style={styles.iconBackgroundContainer}>
-            <Icon
-              icon={Mail}
-              borderColor={'mainBackground'}
-              size={54}
-            />
-          </View>
-          <Pulse success={false} />
+          <Pulse success={isCompleteSuccess} size={keyboardVisible ? 'm' : 'l'} />
         </View>
         <View style={styles.form}>
           <Controller
