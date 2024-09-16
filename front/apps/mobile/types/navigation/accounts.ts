@@ -1,4 +1,5 @@
 import { StackScreenProps } from '@react-navigation/stack';
+import { NavigatorScreenParams } from '@react-navigation/native';
 import type { CompositeScreenProps } from '@react-navigation/native';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
@@ -21,7 +22,7 @@ export type AccountsTabsParamList = {
 };
 
 export type AccountsStackParamList = {
-  AccountsTabs: AccountsTabsParamList,
+  AccountsTabs: NavigatorScreenParams<AccountsTabsParamList>,
   Transaction: {
     transaction: Transaction
     options?: {

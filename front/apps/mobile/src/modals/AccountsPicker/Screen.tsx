@@ -47,7 +47,7 @@ const AccountPicker = (props: AccountsScreenProps<'PickAccount'>) => {
       <Filters onChange={setAccounts} onFiltered={setIsFiltered} {...props} />
       <TableHeaders {...props} />
       <View style={styles.accountsListContainer}>
-        <Box style={[styles.accountsList, { bottom: theme.spacing.navHeight }]}>
+        <Box style={[styles.accountsList, { bottom: theme.spacing.navHeight + 24 }]}>
           {accounts &&
             <DraggableFlatList
               showsVerticalScrollIndicator={false}
@@ -57,24 +57,34 @@ const AccountPicker = (props: AccountsScreenProps<'PickAccount'>) => {
               keyExtractor={item => item.account_id}
               data={accounts.filter(a => a.type === props.route.params.accountType)}
               renderItem={(args: RenderItemParams<Account>) => (
-                <ScaleDecorator activeScale={1.03}>
-                  <AccountRow
-                    index={args.getIndex() || 0}
-                    draggable={!isFiltered}
-                    isSelected={args.item.account_id === props.route.params.currentAccount}
-                    detailedView={args.isActive}
-                    onLongPress={() => {
-                      Haptics.selectionAsync();
-                      args.drag();
-                    }}
-                    onPress={() => {
-                      props.navigation.navigate('Accounts', { screen: 'Main', params: { account: args.item } })
-                    }}
-                    last={args.getIndex() === accounts.length - 1}
-                    account={args.item}
-                    selected={args.item.account_id === props.route.params.currentAccount}
-                  />
-                </ScaleDecorator>
+                <>
+                  <ScaleDecorator activeScale={1.03}>
+                    <AccountRow
+                      index={args.getIndex() || 0}
+                      draggable={!isFiltered}
+                      isSelected={args.item.account_id === props.route.params.currentAccount}
+                      detailedView={args.isActive}
+                      onLongPress={() => {
+                        Haptics.selectionAsync();
+                        args.drag();
+                      }}
+                      onPress={() => {
+                        props.navigation.navigate(
+                          'Accounts', {
+                          screen: 'AccountsTabs',
+                          params: {
+                            screen: 'Deposits',
+                            params: { account: args.item }
+                          }
+                        }
+                        )
+                      }}
+                      last={args.getIndex() === accounts.length - 1}
+                      account={args.item}
+                      selected={args.item.account_id === props.route.params.currentAccount}
+                    />
+                  </ScaleDecorator>
+                </>
               )}
             />
           }
