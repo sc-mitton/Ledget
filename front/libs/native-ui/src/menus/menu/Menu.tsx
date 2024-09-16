@@ -82,6 +82,7 @@ export function Menu(props: MenuProps) {
                 shadowColor='menuShadowColor'
                 shadowOpacity={1}
                 shadowRadius={12}
+                elevation={15}
                 shadowOffset={{ width: 0, height: 4 }}
                 style={styles.menuOptions}
               >
@@ -92,7 +93,7 @@ export function Menu(props: MenuProps) {
                       {index !== 0 &&
                         <Seperator
                           variant='bare'
-                          backgroundColor={Platform.OS === 'ios' ? 'menuSeperator' : 'transparent'}
+                          backgroundColor={'contextMenuDivider'}
                         />}
                       <TouchableHighlight
                         style={styles.rowContainer}
