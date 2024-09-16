@@ -16,7 +16,7 @@ export default function () {
   return (
     <Stack.Navigator
       screenOptions={{
-        header: (props) => <BackHeader {...props} />,
+        header: (props) => <BackHeader {...props} authenticationScreens={true} />,
         cardStyleInterpolator,
       }}
       id='LoginStack'

@@ -6,10 +6,11 @@ import { Box } from '../restyled/Box';
 import { BackButton } from '../buttons/back-button/BackButton';
 import { Text } from '../restyled/Text';
 import { Seperator } from '../restyled/Seperator';
+import { useEffect } from 'react';
 
 const { StatusBarManager } = NativeModules;
 
-export function BackHeader(props: StackHeaderProps & { pagesWithTitle?: string[] }) {
+export function BackHeader(props: StackHeaderProps & { pagesWithTitle?: string[], authenticationScreens?: boolean }) {
   const { navigation, route, options, pagesWithTitle } = props;
 
   return (
@@ -18,7 +19,7 @@ export function BackHeader(props: StackHeaderProps & { pagesWithTitle?: string[]
         styles.headerContainer,
         { top: StatusBarManager.HEIGHT }
       ]}
-      backgroundColor='mainBackground'
+      backgroundColor={props.authenticationScreens ? 'accountsMainBackground' : 'mainBackground'}
     >
       <Box style={styles.backButton}>
         <BackButton onPress={(e) => {
