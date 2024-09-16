@@ -13,6 +13,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: '50%',
     top: '50%',
+  },
+  circleContainer: {
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  circle: {
+    borderRadius: 100,
   }
 });
 

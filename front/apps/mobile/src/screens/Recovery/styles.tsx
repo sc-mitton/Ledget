@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   form: {
     flex: 1,
     justifyContent: 'flex-end',
-    marginBottom: 80,
+    marginBottom: 40,
   },
   graphicContainer: {
     alignItems: 'center',
@@ -21,13 +21,18 @@ const styles = StyleSheet.create({
   },
   iconBackgroundContainer: {
     position: 'absolute',
-    top: '50%',
-    left: '50%',
-    zIndex: 0,
-    transform: [{ translateX: -27 }, { translateY: -27 }],
+    left: 2,
+    top: 6,
+    right: 2,
+    bottom: 6,
+    zIndex: -1,
+    borderRadius: 12,
     justifyContent: 'center',
     alignContent: 'center',
   },
+  header: {
+    marginTop: 16
+  }
 })
 
 export default styles;

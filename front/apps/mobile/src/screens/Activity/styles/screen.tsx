@@ -5,6 +5,7 @@ export default StyleSheet.create({
     padding: 0,
     marginTop: 8,
     paddingBottom: 16,
+    position: 'relative',
   },
   transactionItem: {
     width: '100%',
@@ -16,7 +17,8 @@ export default StyleSheet.create({
     bottom: 16,
     left: '50%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    zIndex: 1,
   },
   checkAllButton: {
     position: 'absolute',
@@ -33,10 +35,18 @@ export default StyleSheet.create({
     marginBottom: -32,
     paddingTop: 16
   },
+  scrollViewContent: {
+    zIndex: 1,
+    position: 'relative',
+  },
   emptyBoxGraphic: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative'
+  },
+  overlay: {
+    zIndex: 1,
+    opacity: 0.8
   }
 });

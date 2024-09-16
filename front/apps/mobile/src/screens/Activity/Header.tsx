@@ -22,27 +22,27 @@ const Header = ({ index, setIndex }: { index: number, setIndex: (index: number) 
           label="New"
           labelPlacement='left'
           onPress={() => setIndex(0)}
-          textColor={index === 0 ? 'blueText' : 'tertiaryText'}
+          textColor={index === 0 ? 'blueText' : 'secondaryText'}
         >
           <View style={styles.countCountainer}>
             <View style={styles.countBackgroundOuterContainer}>
               <View style={styles.countBackgroundContainer}>
                 <Box
-                  backgroundColor={index === 0 ? 'blueText' : 'quinaryText'}
+                  backgroundColor={index === 0 ? 'blueText' : 'tertiaryText'}
                   style={styles.countBackground} />
               </View>
-              <Text fontSize={14} color={index === 0 ? 'blueText' : 'quinaryText'}>
+              <Text fontSize={14} color={index === 0 ? 'blueText' : 'secondaryText'}>
                 {data?.count}
               </Text>
             </View>
           </View>
         </Button>
-        <Box backgroundColor='menuSeperator' variant='divider' />
+        <Box backgroundColor='darkerseperator' variant='divider' />
         <Button
           label="History"
           labelPlacement='left'
           onPress={() => setIndex(1)}
-          textColor={index === 1 ? 'blueText' : 'tertiaryText'}
+          textColor={index === 1 ? 'blueText' : 'secondaryText'}
         />
       </View>
       <Seperator
