@@ -69,8 +69,9 @@ export const lightTheme = createTheme({
     // Backgrounds
     mainBackground: palette.gray150,
     accountsMainBackground: palette.gray100,
-    androidbottomNavBackground: palette.gray200,
-    bottomNavBackground: palette.gray500,
+    accountsAndroidNavBarBack: palette.gray200,
+    mainAppAndroidNavBarBack: palette.gray300,
+    bottomNavBackground: Platform.OS === 'ios' ? palette.gray500 : palette.gray400,
     inputBackground: palette.gray250,
     nestedContainer: palette.white,
     avatar: palette.gray500,
@@ -89,13 +90,14 @@ export const lightTheme = createTheme({
     focusedInputBorderSecondary: palette.blue100,
     focusedInputBorderMain: palette.blue300,
     tabNavPillBorder: palette.blue100,
-    bottomNavBorder: palette.gray600,
+    bottomNavBorder: Platform.OS === 'ios' ? palette.gray600 : palette.gray500,
     nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 93%)`,
     tabNavBorder: palette.gray250,
     newTransactionBorder: palette.gray250,
     contextMenuBorder: palette.gray200,
     modalBorder: palette.gray200,
     toastBorder: palette.gray100,
+    contextMenuDivider: palette.gray200,
 
     // Shadows
     navShadow: palette.gray200,
@@ -195,7 +197,7 @@ export const lightTheme = createTheme({
     header: {
       fontSize: 26,
       lineHeight: 30,
-      marginVertical: 's',
+      marginVertical: 'm',
       marginLeft: 'xs',
       marginBottom: 'xs',
       fontFamily: 'SourceSans3SemiBold',
@@ -479,11 +481,6 @@ export const lightTheme = createTheme({
       marginBottom: 'navHeight',
       paddingTop: 'm',
     },
-    screenWithHeader: {
-      flex: 1,
-      marginTop: 'xxl',
-      paddingHorizontal: 'l',
-    },
     nestedContainer: {
       borderRadius: 12,
       paddingVertical: 'm',
@@ -525,7 +522,7 @@ export const lightTheme = createTheme({
     },
     divider: {
       width: 2,
-      height: 16,
+      height: 20,
       borderRadius: 4,
       marginHorizontal: 'l',
     },

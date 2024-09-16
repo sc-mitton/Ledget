@@ -1,4 +1,6 @@
 import { createTheme } from '@shopify/restyle';
+import { Platform } from 'react-native';
+
 import { lightTheme } from "./light";
 import basePalette from './base-palette';
 
@@ -42,8 +44,8 @@ const palette = {
   blue400: `hsl(${blueH}, ${blueS}%, 35%)`,
   blue300: `hsl(${blueH}, ${blueS}%, 40%)`,
   blue200: `hsl(${blueH}, ${blueS}%, 45%)`,
-  blue100: `hsl(${blueH}, ${blueS}%, 50%)`,
-  blue50: `hsl(${blueH}, ${blueS}%, 55%)`,
+  blue100: `hsl(${blueH}, ${blueS + 20}%, 60%)`,
+  blue50: `hsl(${blueH}, ${blueS + 20}%, 65%)`,
 
   blueSat: `hsl(${blueH}, ${blueS + 10}%, 50%)`,
 
@@ -66,7 +68,8 @@ export const darkTheme = createTheme({
     mainBackground: palette.gray900,
     accountsMainBackground: palette.gray900,
     bottomNavBackground: palette.gray850,
-    androidbottomNavBackground: palette.gray850,
+    accountsAndroidNavBarBack: palette.gray850,
+    mainAppAndroidNavBarBack: `hsl(${grayH}, ${grayS}%, 10%)`,
     nestedContainer: palette.gray850,
     inputBackground: palette.gray800,
     tabNavPill: palette.blue800,
@@ -93,6 +96,7 @@ export const darkTheme = createTheme({
     contextMenuBorder: palette.gray650,
     toastBorder: palette.gray800,
     modalBorder: palette.gray800,
+    contextMenuDivider: palette.gray600,
 
     // Shadows
     navShadow: palette.gray900,
@@ -101,7 +105,7 @@ export const darkTheme = createTheme({
     activeSwitchShadow: 'hsl(144, 80%, 17%)',
     disabledSwitchShadow: palette.gray700,
     logoShadow: palette.gray900,
-    newTransactionShadow: palette.gray850,
+    newTransactionShadow: Platform.OS === 'android' ? palette.gray900 : palette.gray850,
     menuShadowColor: palette.gray900,
 
     // Icons
