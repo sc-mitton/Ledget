@@ -4,9 +4,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { BackHeader } from '@ledget/native-ui';
 import { AccountsStackParamList } from '@types';
 import { useCardStyleInterpolator, useModifiedDefaultModalStyleInterpolator } from '@/hooks';
-import { Transaction } from '@screens';
 import { AccountsPicker } from '@/modals';
 import AccountTabs from './AccountScreens';
+import Transaction from '../Transaction/Screen';
 
 const Stack = createStackNavigator<AccountsStackParamList>()
 
@@ -29,6 +29,9 @@ const Screen = () => {
         screenOptions={{
           presentation: 'modal',
           headerShown: false,
+          gestureDirection: 'vertical',
+          gestureEnabled: true,
+          gestureResponseDistance: 30,
           cardStyleInterpolator: modalStyleInterpolator
         }}>
         <Stack.Screen name='PickAccount' component={AccountsPicker} />
