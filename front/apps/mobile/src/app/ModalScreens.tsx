@@ -14,13 +14,12 @@ import {
   SplitTransaction,
 } from '@modals';
 import { Activity } from '@screens';
-import { useModalStyleInterpolator, useModifiedDefaultModalStyleInterpolator } from '@/hooks';
+import { useModalStyleInterpolator } from '@/hooks';
 
 const RootStack = createStackNavigator<ModalStackParamList>();
 
 const ModalScreens = () => {
   const cardInterpolator = useModalStyleInterpolator({ slideOut: false });
-  const defaultModalStyleInterpolator = useModifiedDefaultModalStyleInterpolator();
 
   return (
     <RootStack.Navigator screenOptions={{ headerShown: false }}>
