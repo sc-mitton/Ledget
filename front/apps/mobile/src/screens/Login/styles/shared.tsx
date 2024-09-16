@@ -17,6 +17,9 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
   },
+  header: {
+    marginTop: 16
+  }
 })
 
 export default styles;
