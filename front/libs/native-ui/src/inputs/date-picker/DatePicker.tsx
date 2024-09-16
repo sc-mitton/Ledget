@@ -1,8 +1,7 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import NativeDatePicker from 'react-native-date-picker'
-import { View, NativeSyntheticEvent, TextInputFocusEventData, TouchableOpacity } from 'react-native';
-import { useTheme } from '@shopify/restyle';
+import { View, TouchableOpacity } from 'react-native';
 import dayjs, { Dayjs } from 'dayjs';
 import Animated, { withSpring, useSharedValue, useAnimatedStyle } from 'react-native-reanimated';
 
