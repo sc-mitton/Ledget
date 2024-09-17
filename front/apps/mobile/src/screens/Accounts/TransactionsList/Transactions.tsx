@@ -6,7 +6,9 @@ import {
   StyleSheet,
   Dimensions,
   NativeModules,
-  SectionListData
+  SectionListData,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
 } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -29,7 +31,8 @@ import {
   Text,
   Seperator,
   Icon,
-  CustomSectionList
+  CustomSectionList,
+  Spinner
 } from '@ledget/native-ui';
 import SkeletonTransactions from './SkeletonTransactions';
 import { AccountsTabsScreenProps } from '@types';
@@ -176,6 +179,22 @@ const Transactions = (props: PTransactions) => {
     setStuckTitle(sections[0]?.title || null)
   }, [sections])
 
+  // Fetch more transactions
+  const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    // If at the bottom of the scroll view, fetch more transactions
+    const { contentOffset, layoutMeasurement, contentSize } = e.nativeEvent
+    const bottom = contentOffset.y + layoutMeasurement.height >= contentSize.height
+
+    if (bottom && transactionsData?.next !== null && transactionsData) {
+      getTransactions({
+        account: props.account?.account_id,
+        type: props.account?.type,
+        offset: transactionsData.next,
+        limit: transactionsData.limit
+      });
+    }
+  };
+
   return (
     <>
       <Animated.View style={[
@@ -200,6 +219,7 @@ const Transactions = (props: PTransactions) => {
             :
             <CustomSectionList
               bounces={true}
+              onScroll={handleScroll}
               sections={sections}
               stickySectionHeadersEnabled={true}
               renderSectionHeader={({ section }) => (
