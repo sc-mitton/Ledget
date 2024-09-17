@@ -21,8 +21,8 @@ const styles = StyleSheet.create({
     paddingRight: 40,
   },
   androidNavBlurViewSpacing: {
-    paddingBottom: 12,
-    paddingTop: 24,
+    paddingBottom: 34,
+    paddingTop: 26,
     left: -64,
     right: -64,
     paddingLeft: 84,

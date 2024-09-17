@@ -132,16 +132,13 @@ export const App = withProviders(() => {
         : ANDROID_LEDGET_API_URI,
       platform: 'mobile'
     }));
-  }, [dispatch, ANDROID_LEDGET_API_URI, IOS_LEDGET_API_URI]);
+  }, [dispatch, ANDROID_LEDGET_API_URI]);
 
   // Set the navigation bar color and button style based on the theme
   useEffect(() => {
     if (Platform.OS !== 'android') return;
-    NavigationBar.setBackgroundColorAsync(
-      continueToMainApp
-        ? theme.colors.bottomNavCover
-        : theme.colors.androidNavBar
-    );
+    NavigationBar.setPositionAsync("absolute");
+    NavigationBar.setBackgroundColorAsync("#ffffff01");
     NavigationBar.setButtonStyleAsync(appearance.mode === 'dark' ? 'light' : 'dark');
   }, [appearance.mode, continueToMainApp]);
 
