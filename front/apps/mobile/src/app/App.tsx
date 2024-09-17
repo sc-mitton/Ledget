@@ -132,7 +132,7 @@ export const App = withProviders(() => {
         : ANDROID_LEDGET_API_URI,
       platform: 'mobile'
     }));
-  }, [dispatch]);
+  }, [dispatch, ANDROID_LEDGET_API_URI, IOS_LEDGET_API_URI]);
 
   // Set the navigation bar color and button style based on the theme
   useEffect(() => {

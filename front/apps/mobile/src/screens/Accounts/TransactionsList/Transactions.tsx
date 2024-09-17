@@ -219,6 +219,7 @@ const Transactions = (props: PTransactions) => {
             :
             <CustomSectionList
               bounces={true}
+              overScrollMode='always'
               onScroll={handleScroll}
               sections={sections}
               stickySectionHeadersEnabled={true}
