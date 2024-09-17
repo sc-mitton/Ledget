@@ -1,7 +1,7 @@
-import { forwardRef, useRef } from 'react';
+import { useRef } from 'react';
 import {
-  FlatListProps,
-  FlatList,
+  SectionListProps,
+  SectionList,
   View
 } from 'react-native';
 import { useTheme } from '@shopify/restyle';
@@ -16,21 +16,17 @@ import Animated, {
 
 import styles from './styles';
 
-type CustomFlatListProps<T> = FlatListProps<T> & {
+type CustomSectionListProps<ItemT, SectionT> = SectionListProps<ItemT, SectionT> & {
   showsVerticalScrollIndicator?: boolean;
 };
 
-export const CustomFlatList = forwardRef<FlatList, CustomFlatListProps<any>>((props, ref) => {
+export const CustomSectionList = <ItemT, SectionT>(props: CustomSectionListProps<ItemT, SectionT>) => {
   const {
     onContentSizeChange,
     onLayout,
     onScroll,
-    showsVerticalScrollIndicator = true,
-    data,
-    renderItem
+    showsVerticalScrollIndicator = true
   } = props;
-  const { style, ...rest } = props;
-
   const theme = useTheme();
 
   const state = useRef({
@@ -49,12 +45,9 @@ export const CustomFlatList = forwardRef<FlatList, CustomFlatListProps<any>>((pr
   const difference = state.current.visibleHeight > indicatorSize ? state.current.visibleHeight - indicatorSize : 1;
 
   return (
-    <View style={[style]}>
-      <FlatList
-        {...rest}
-        ref={ref}
-        data={data}
-        renderItem={renderItem}
+    <View>
+      <SectionList
+        {...props}
         showsVerticalScrollIndicator={false}
         onContentSizeChange={(width, height) => {
           onContentSizeChange && onContentSizeChange(width, height);
@@ -99,6 +92,6 @@ export const CustomFlatList = forwardRef<FlatList, CustomFlatListProps<any>>((pr
       )}
     </View>
   );
-});
+};
 
-export default CustomFlatList;
+export default CustomSectionList;

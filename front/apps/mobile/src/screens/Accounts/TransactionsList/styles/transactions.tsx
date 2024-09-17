@@ -31,9 +31,6 @@ export default StyleSheet.create({
     width: '100%',
     height: 24,
   },
-  table: {
-    flexDirection: 'row',
-  },
   skeletonContainer: {
     overflow: 'hidden',
     flexGrow: 1,
@@ -41,18 +38,21 @@ export default StyleSheet.create({
     marginHorizontal: 4,
   },
   transactionsScrollView: {
-    width: '82%',
     paddingRight: 20,
-    marginRight: 4,
+    paddingLeft: 64,
   },
-  dateScrollView: {
-    width: 30,
-    paddingLeft: 12,
-    marginLeft: 1,
-    marginRight: 0
+  sectionHeader: {
+    left: -48,
+    width: 40
   },
-  dateScrollViewRow: {
-    alignItems: 'flex-start'
+  sectionFooter: {
+    marginBottom: -120
+  },
+  sectionFirstRow: {
+    marginTop: -54,
+  },
+  firstSectionFirstRow: {
+    marginTop: -68,
   },
   transactionRow: {
     flexDirection: 'row',
@@ -88,17 +88,6 @@ export default StyleSheet.create({
   },
   leftColumn: {
     gap: 2,
-  },
-  dateContentContainer: {
-    position: 'relative',
-    width: 34,
-  },
-  dateContent: {
-    position: 'absolute',
-    top: 2,
-    left: 2,
-    right: 0,
-    paddingRight: 2,
   },
   rightColumn: {
     flexGrow: 1,

@@ -19,6 +19,7 @@ export * from './containers/loading-box/LoadingBox';
 export * from './containers/bottom-drawer-modal/BottomDrawerModal';
 export * from './containers/custom-scroll-view/CustomScrollView';
 export * from './containers/custom-flat-list/CustomFlatList';
+export * from './containers/custom-section-list/CustomSectionList';
 
 
 export * from './hooks/useKeyboardHeight/keyboard-height';
