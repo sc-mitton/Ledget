@@ -125,13 +125,27 @@ export const App = withProviders(() => {
 
   // Set the necessary environment variables
   useEffect(() => {
-    dispatch(setEnvironment({
-      name: ENV,
-      apiUrl: Platform.OS === 'ios'
-        ? IOS_LEDGET_API_URI
-        : ANDROID_LEDGET_API_URI,
-      platform: 'mobile'
-    }));
+    let timeout: NodeJS.Timeout;
+    if (Platform.OS === 'android' && ENV === 'dev') {
+      timeout = setTimeout(() => {
+        dispatch(setEnvironment({
+          name: ENV,
+          apiUrl: Platform.OS === 'ios'
+            ? IOS_LEDGET_API_URI
+            : ANDROID_LEDGET_API_URI,
+          platform: 'mobile'
+        }));
+      }, 1000);
+    } else {
+      dispatch(setEnvironment({
+        name: ENV,
+        apiUrl: Platform.OS === 'ios'
+          ? IOS_LEDGET_API_URI
+          : ANDROID_LEDGET_API_URI,
+        platform: 'mobile'
+      }));
+    }
+    return () => clearTimeout(timeout);
   }, [dispatch, ANDROID_LEDGET_API_URI]);
 
   // Set the navigation bar color and button style based on the theme
