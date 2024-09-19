@@ -55,6 +55,9 @@ class AccountSerializer(serializers.ModelSerializer):
         exclude = ('plaid_item',)
         list_serializer_class = AccountLS
 
+    def get_order(self, obj):
+        return getattr(obj, 'order', None)
+
 
 class AccountBalanceSerializer(serializers.Serializer):
     available = serializers.DecimalField(max_digits=10, decimal_places=2,

@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
 from rest_framework.serializers import ListSerializer
 from rest_framework.exceptions import ValidationError
-from django.db.models import Sum
+from django.db.models import Sum, F
 from django.utils import timezone
 from django.db.models.functions import TruncMonth, TruncYear
 from plaid.model.accounts_get_request import AccountsGetRequest
@@ -129,7 +129,8 @@ class AccountsViewSet(ViewSet):
         account_ids = self.request.query_params.getlist('accounts')
 
         qset = Account.objects.filter(
-            useraccount__user__in=self.request.user.account.users.all())
+            useraccount__user__in=self.request.user.account.users.all()) \
+            .annotate(order=F('useraccount__order'))
 
         if account_ids:
             qset = qset.filter(id__in=account_ids)
@@ -144,7 +145,7 @@ class AccountsViewSet(ViewSet):
     def _fetch_plaid_account_data(self, accounts: List[Account]) -> dict:
         already_fetched_tokens = []
 
-        account_balances = {}
+        account_balances = {a.id: None for a in accounts}
         for account in accounts:
             if account.plaid_item.access_token in already_fetched_tokens:
                 continue
@@ -154,9 +155,9 @@ class AccountsViewSet(ViewSet):
             try:
                 response = plaid_client.accounts_get(request).to_dict()
                 for a in response['accounts']:
-                    account_balances.update({a['account_id']: {
+                    account_balances[a['account_id']] = {
                         **a, 'institution_id': account.institution.id,
-                    }})
+                    }
                 already_fetched_tokens.append(account.plaid_item.access_token)
 
             except plaid.exceptions.ApiException as e:  # pragma: no cover
