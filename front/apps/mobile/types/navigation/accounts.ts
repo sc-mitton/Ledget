@@ -10,7 +10,7 @@ import { Account, AccountType, Transaction } from '@ledget/shared-features';
 type AccountScreenBase = {
   account?: Account
   options?: {
-    title: string
+    title: React.ReactNode
   }
 }
 

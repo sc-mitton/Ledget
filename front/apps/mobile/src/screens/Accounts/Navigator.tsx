@@ -22,7 +22,11 @@ const Screen = () => {
           cardStyleInterpolator
         }}
       >
-        <Stack.Screen options={{ headerShown: false }} name='AccountsTabs' component={AccountTabs} />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name='AccountsTabs'
+          component={AccountTabs}
+        />
         <Stack.Screen name='Transaction' component={Transaction} />
       </Stack.Group>
       <Stack.Group
