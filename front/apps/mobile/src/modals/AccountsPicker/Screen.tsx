@@ -27,6 +27,7 @@ const AccountPicker = (props: AccountsScreenProps<'PickAccount'>) => {
         account: item.account_id,
         order: index
       })));
+      setAccounts(args.data);
     }
   }
 
