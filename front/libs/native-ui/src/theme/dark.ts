@@ -129,7 +129,8 @@ export const darkTheme = createTheme({
     greenText: palette.greenText,
 
     // Buttons
-    lightBlueButton: palette.blue200,
+    lightBlueButton: palette.blue700,
+    lightBlueButtonBorder: palette.blue600,
     blueButton: palette.blue500,
     blueButtonBorder: palette.blue400,
     lightGrayButton: palette.gray800,

@@ -11,7 +11,7 @@ import { useAppDispatch } from '@hooks';
 import Transactions from '../TransactionsList/Transactions';
 import { DefaultHeader, AccountHeader } from '../Header';
 
-const Panel = (props: AccountsTabsScreenProps<'Deposits'> & { account?: Account }) => {
+const Panel = (props: AccountsTabsScreenProps<'Depository'> & { account?: Account }) => {
   const [bottomOfContentPos, setBottomOfContentPos] = useState(0)
   const { data: accountsData, error } = useGetAccountsQuery()
   const [account, setAccount] = useState<Account>()
@@ -27,7 +27,7 @@ const Panel = (props: AccountsTabsScreenProps<'Deposits'> & { account?: Account 
       })
     } else {
       props.navigation.setOptions({
-        header: () => <DefaultHeader {...props} />
+        header: () => <DefaultHeader routeName={props.route.name} />
       })
     }
   }, [transactionsListExpanded, account])
@@ -55,22 +55,16 @@ const Panel = (props: AccountsTabsScreenProps<'Deposits'> & { account?: Account 
   }, [accountsData, props.route.params])
 
   return (
-    <View style={[styles.main, { paddingTop: theme.spacing.statusBar * 2 }]}>
+    <View style={[styles.main]}>
       <View
         ref={ref}
-        onLayout={() => {
-          if (ref.current) {
-            ref.current?.measure((x, y, width, height, pageX, pageY) => {
-              setBottomOfContentPos(pageY + height)
-            })
-          }
-        }}>
+        onLayout={(event) => { setBottomOfContentPos(event.nativeEvent.layout.height) }}>
         <AccountPickerButton {...props} account={account} />
       </View>
       <Transactions
         onStateChange={(state) => { setTransactionsListExpanded(state === 'expanded' ? true : false) }}
         collapsedTop={bottomOfContentPos}
-        expandedTop={theme.spacing.statusBar + theme.textVariants.header.lineHeight * 1.75}
+        expandedTop={12}
         account={account}
         {...props}
       />

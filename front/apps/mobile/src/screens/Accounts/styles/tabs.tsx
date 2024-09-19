@@ -3,9 +3,18 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   tabs: {
     flexDirection: 'row',
-    marginVertical: 20,
-    marginHorizontal: 6,
-    gap: 8,
+    height: 36,
+    position: 'relative',
+    zIndex: 10,
+  },
+  tabsContent: {
+    alignItems: 'center',
+  },
+  tabButton: {
+    marginHorizontal: 8,
+  },
+  buttonIcon: {
+    marginRight: 8
   }
 });
 

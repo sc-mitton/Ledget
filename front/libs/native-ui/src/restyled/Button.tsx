@@ -4,6 +4,7 @@ import {
   StyleProp,
   ViewStyle,
   LayoutChangeEvent,
+  PressableProps
 } from 'react-native';
 import {
   useRestyle,
@@ -47,7 +48,7 @@ const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([
   shadow,
 ]);
 
-export type ButtonProps = RestyleProps & {
+export type ButtonProps = RestyleProps & Omit<PressableProps, 'children'> & {
   onPress?: () => void;
   label?: string;
   children?: React.ReactNode | ((props: { color: string }) => React.ReactNode);
@@ -55,7 +56,6 @@ export type ButtonProps = RestyleProps & {
   textColor?: string;
   transparent?: boolean;
   style?: StyleProp<ViewStyle>;
-  onLayout?: (event: LayoutChangeEvent) => void;
 };
 
 export const Button = (props: ButtonProps) => {

@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: '50%',
     top: '70%',
-    backgroundColor: 'red',
     justifyContent: 'center',
     alignItems: 'center',
   },

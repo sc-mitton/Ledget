@@ -385,6 +385,17 @@ export const lightTheme = createTheme({
       borderWidth: 1.25,
       borderColor: 'borderedGrayButton',
     },
+    bluePill: {
+      color: 'whiteText',
+      paddingVertical: 'xxs',
+      paddingHorizontal: 'm',
+      borderRadius: 40,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'lightBlueButton',
+      borderWidth: 1.5,
+      borderColor: 'blueButtonBorder',
+    },
     blueBorderedPill: {
       color: 'blueText',
       paddingVertical: 'xxs',

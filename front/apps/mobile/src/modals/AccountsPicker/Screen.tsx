@@ -73,7 +73,7 @@ const AccountPicker = (props: AccountsScreenProps<'PickAccount'>) => {
                           'Accounts', {
                           screen: 'AccountsTabs',
                           params: {
-                            screen: 'Deposits',
+                            screen: 'Depository',
                             params: { account: args.item }
                           }
                         }

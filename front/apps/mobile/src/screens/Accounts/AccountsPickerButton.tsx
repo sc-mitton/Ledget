@@ -6,7 +6,7 @@ import { Box, Text, Icon, InstitutionLogo, DollarCents } from '@ledget/native-ui
 import { AccountsTabsScreenProps } from '@types';
 import { Account } from '@ledget/shared-features';
 
-const Button = (props: AccountsTabsScreenProps<'Deposits'> & { account?: Account }) => {
+const Button = (props: AccountsTabsScreenProps<'Depository'> & { account?: Account }) => {
   return (
     <TouchableOpacity
       activeOpacity={.7}
