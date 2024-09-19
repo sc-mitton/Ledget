@@ -38,11 +38,14 @@ const Filters = (props: FiltersP) => {
           group: 'institution',
           dotColor: i.primary_color
         }))
-      const subTypeFilters = accounts.map(a => ({
+      let subTypeFilters = accounts.map(a => ({
         label: a.subtype,
         value: a.subtype,
         group: 'subType'
       }))
+      subTypeFilters = subTypeFilters.filter((filter, i) =>
+        subTypeFilters.findIndex(f => f.value === filter.value) === i);
+
       const filters = [
         ...(institutionFilters.length > 1 ? institutionFilters : []),
         ...(subTypeFilters.length > 1 ? subTypeFilters : [])
