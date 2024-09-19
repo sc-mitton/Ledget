@@ -12,10 +12,10 @@ import {
   Icon
 } from '@ledget/native-ui';
 
-const Row = (props: Partial<Transaction> & { section: Section }) => {
+const Row = (props: Partial<Transaction> & { section: Section, index: number }) => {
   return (
     <>
-      <Seperator backgroundColor={props.section.index !== 0 ? 'lightseperator' : 'transparent'} />
+      <Seperator backgroundColor={(props.section.index === 0 && props.index === 0) ? 'transparent' : 'lightseperator'} />
       <View style={styles.transactionRow}>
         <View style={styles.leftColumn}>
           <View style={styles.nameContainer}>

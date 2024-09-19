@@ -188,7 +188,7 @@ const Transactions = (props: PTransactions) => {
                     ? -1 * (sectionHeaderHeight + 18)
                     : i === 0 ? -1 * sectionHeaderHeight : 0
                 }}>
-                  <Row {...transaction} section={section} />
+                  <Row {...transaction} section={section} index={i} />
                 </View>
               </TouchableOpacity>
             )}

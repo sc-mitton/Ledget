@@ -50,7 +50,7 @@ const Panel = (props: AccountsTabsScreenProps<'Depository'> & { account?: Accoun
     if (props.route.params?.account) {
       setAccount(props.route.params.account)
     } else if (accountsData) {
-      setAccount(accountsData.accounts[0])
+      setAccount(accountsData.accounts.find(a => a.type === props.route.name.toLowerCase()))
     }
   }, [accountsData, props.route.params])
 

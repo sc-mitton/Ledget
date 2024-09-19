@@ -13,6 +13,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginLeft: 4
   },
+  accountHeaderContainer: {
+    marginBottom: 47
+  },
   defaultHeaderContainer: {
     marginBottom: 44
   }

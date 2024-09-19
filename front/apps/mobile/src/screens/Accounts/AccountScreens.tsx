@@ -22,6 +22,7 @@ const AccountTabs = (props: AccountsScreenProps<'AccountsTabs'>) => {
       screenOptions={{
         header: (props) => <DefaultHeader routeName={props.route.name} />,
       }}
+      sceneContainerStyle={styles.scene}
       backBehavior='history'
       tabBar={({ state, descriptors, navigation }) =>
         <View style={[

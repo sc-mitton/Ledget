@@ -6,18 +6,15 @@ import { Box, Text, Icon, InstitutionLogo, DollarCents } from '@ledget/native-ui
 import { AccountsTabsScreenProps } from '@types';
 import { Account } from '@ledget/shared-features';
 
-const Button = (props: AccountsTabsScreenProps<'Depository'> & { account?: Account }) => {
+const Button = (props: AccountsTabsScreenProps<any> & { account?: Account }) => {
   return (
     <TouchableOpacity
       activeOpacity={.7}
       style={styles.accountsPickerButton}
       onPress={() => {
         props.account && props.navigation.navigate(
-          'Accounts',
-          {
-            screen: 'PickAccount',
-            params: { accountType: props.account?.type, currentAccount: props.account.account_id }
-          }
+          'PickAccount',
+          { accountType: props.account?.type, currentAccount: props.account.account_id }
         )
       }}>
       <View style={styles.accountsPickerButtonTop}>

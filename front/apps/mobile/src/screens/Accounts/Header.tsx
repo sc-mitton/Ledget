@@ -21,7 +21,7 @@ export const AccountHeader = (props: { account: Account }) => {
     <Animated.View
       entering={FadeIn}
       exiting={FadeOut}
-      style={[styles.headerContainer, { paddingTop: theme.spacing.statusBar }]}
+      style={[styles.headerContainer, styles.accountHeaderContainer, { paddingTop: theme.spacing.statusBar }]}
     >
       <InstitutionLogo account={props.account.account_id} />
       <Header2>{props.account.name}</Header2>
