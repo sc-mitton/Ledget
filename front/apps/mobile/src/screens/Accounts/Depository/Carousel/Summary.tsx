@@ -4,7 +4,6 @@ import { ArrowUpRight, ArrowDownRight } from 'geist-native-icons';
 import Big from 'big.js';
 
 import styles from './styles/summary';
-import sharedStyles from './styles/shared';
 import { Text, DollarCents, Icon } from '@ledget/native-ui';
 import { useGetAccountsQuery, useLazyGetAccountBalanceTrendQuery } from '@ledget/shared-features';
 import { AccountsTabsScreenProps } from '@types';
