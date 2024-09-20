@@ -6,6 +6,7 @@ import {
   Dimensions,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  Pressable
 } from 'react-native';
 import Animated, {
   useAnimatedStyle,
@@ -17,18 +18,20 @@ import { groupBy } from 'lodash-es';
 
 import styles from './styles/transactions';
 import { useLazyGetTransactionsQuery } from '@ledget/shared-features';
-import { Box, defaultSpringConfig, Text, CustomSectionList } from '@ledget/native-ui';
+import { Box, defaultSpringConfig, Text, CustomSectionList, Seperator } from '@ledget/native-ui';
 import SkeletonTransactions from './SkeletonTransactions';
 import type { PTransactions, Section, ListState } from './types';
 import Row from './Row';
 
 const SKELETON_HEIGHT = 740
 
+const DRAG_THRESHOLD = Dimensions.get('window').height * 0.1
+const ESCAPE_VELOCITY = 1.5
+
 const Transactions = (props: PTransactions) => {
   const state = useRef<ListState>('neutral')
   const propTop = useRef(props.collapsedTop)
   const top = useSharedValue(props.collapsedTop)
-  const overlayHeight = useSharedValue(0)
   const [sectionHeaderHeight, setSectionHeaderHeight] = useState(0)
   const [getTransactions, { data: transactionsData }] = useLazyGetTransactionsQuery()
   const [stuckTitle, setStuckTitle] = useState<string | null>(null)
@@ -60,39 +63,56 @@ const Transactions = (props: PTransactions) => {
     propTop.current = props.collapsedTop
   }, [props.collapsedTop])
 
-  const panResponder = useRef(PanResponder.create({
-    onStartShouldSetPanResponder: () => true,
-    onPanResponderMove: (_, gs) => {
-      if (propTop.current === 0) return;
-      if (state.current === 'neutral' && gs.dy < 0) {
-        overlayHeight.value = Dimensions.get('window').height
-        top.value = propTop.current + gs.dy
-      } else if (state.current === 'expanded' && gs.dy > 0) {
-        top.value = props.expandedTop + gs.dy
-      }
-    },
-    onPanResponderRelease: (_, gs) => {
-      if (state.current === 'neutral' && (gs.dy < -100 || gs.vy < -1.5)) {
-        overlayHeight.value = Dimensions.get('window').height
-        top.value = withSpring(props.expandedTop, defaultSpringConfig)
-        state.current = 'expanded'
-        props.onStateChange?.('expanded')
-      } else if (state.current === 'expanded' && (gs.dy > 100 || gs.vy > 1.5)) {
-        overlayHeight.value = 0
-        top.value = withSpring(propTop.current, defaultSpringConfig)
-        state.current = 'neutral'
-        props.onStateChange?.('neutral')
-      } else {
-        if (state.current === 'expanded') {
-          top.value = withSpring(props.expandedTop, defaultSpringConfig)
-          overlayHeight.value = Dimensions.get('window').height
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderMove: (e, gs) => {
+
+        if ((Math.abs(gs.dy) > DRAG_THRESHOLD) || (Math.abs(gs.vy) > ESCAPE_VELOCITY)) {
+          if (gs.vy < 0) {
+            top.value = withSpring(
+              props.expandedTop,
+              defaultSpringConfig);
+            state.current = 'expanded';
+            props.onStateChange?.('expanded');
+          } else {
+            top.value = withSpring(
+              propTop.current,
+              defaultSpringConfig);
+            state.current = 'neutral';
+            props.onStateChange?.('neutral');
+          }
         } else {
-          top.value = withSpring(propTop.current, defaultSpringConfig)
-          overlayHeight.value = 0
+          if (state.current === 'neutral' && gs.dy < 0) {
+            top.value = propTop.current + gs.dy
+          } else {
+            top.value = props.expandedTop + gs.dy
+          }
         }
+      },
+      onPanResponderRelease: (e, gs) => {
+        // if (Math.abs(gs.dy) < DRAG_THRESHOLD) {
+        //   scrollViewHeight.value = state.current === 'expanded'
+        //     ? withSpring(expandedHeight, defaultSpringConfig)
+        //     : withSpring(collapsedHeight, defaultSpringConfig)
+        //   props.onDrag && props.onDrag(0, state.current === 'expanded');
+        // }
+        if (Math.abs(gs.dy) < DRAG_THRESHOLD) {
+          top.value = state.current === 'expanded'
+            ? withSpring(props.expandedTop, defaultSpringConfig)
+            : withSpring(propTop.current, defaultSpringConfig)
+        }
+      },
+      onPanResponderTerminationRequest: (e, gs) => {
+        if (Math.abs(gs.dy) < DRAG_THRESHOLD) {
+          top.value = state.current === 'expanded'
+            ? withSpring(props.expandedTop, defaultSpringConfig)
+            : withSpring(propTop.current, defaultSpringConfig)
+        }
+        return true
       }
-    }
-  })).current
+    })).current
 
   // Set the sections once the transactions data is fetched
   useEffect(() => {
@@ -151,19 +171,22 @@ const Transactions = (props: PTransactions) => {
             sections={sections}
             stickySectionHeadersEnabled={true}
             renderSectionHeader={({ section }) => (
-              <>
-                <Box
-                  onLayout={(e) => setSectionHeaderHeight(e.nativeEvent.layout.height)}
-                  style={[styles.sectionHeader]}
-                  backgroundColor='nestedContainer'>
-                  <Text fontSize={15} color='quaternaryText'>
-                    {dayjs(section.title).format('MMM')}
-                  </Text>
-                  <Text fontSize={15} color='quaternaryText' style={{ opacity: section.title === stuckTitle ? 1 : 0 }}>
-                    {dayjs(section.title).format('YYYY')}
-                  </Text>
-                </Box>
-              </>
+              <Pressable
+                onPress={() =>
+                  props.navigation.navigate('Transaction', { transaction: section.data[0] })
+                }
+                aria-role='button'
+                aria-label='View transaction'
+                onLayout={(e) => setSectionHeaderHeight(e.nativeEvent.layout.height)}
+                style={styles.sectionHeader}
+              >
+                <Text fontSize={15} color='quaternaryText'>
+                  {dayjs(section.title).format('MMM')}
+                </Text>
+                <Text fontSize={15} color='quaternaryText' style={{ opacity: section.title === stuckTitle ? 1 : 0 }}>
+                  {dayjs(section.title).format('YYYY')}
+                </Text>
+              </Pressable>
             )}
             viewabilityConfig={{
               waitForInteraction: false,
@@ -177,20 +200,26 @@ const Transactions = (props: PTransactions) => {
             }}
             keyExtractor={(item, index) => item.transaction_id}
             renderItem={({ item: transaction, index: i, section }) => (
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate(
-                  'Transaction',
-                  { transaction: transaction }
-                )}
-                activeOpacity={.7} key={transaction.transaction_id}>
-                <View style={{
-                  marginTop: i === 0 && section.index === 0
-                    ? -1 * (sectionHeaderHeight + 18)
-                    : i === 0 ? -1 * sectionHeaderHeight : 0
-                }}>
+              <View style={{
+                marginTop: i === 0 && section.index === 0
+                  ? -1 * (sectionHeaderHeight + 18)
+                  : i === 0 ? -1 * sectionHeaderHeight : 0
+              }}
+              >
+                <Seperator backgroundColor={(section.index === 0 && i === 0) ? 'transparent' : 'lightseperator'} />
+                <TouchableOpacity
+                  onPress={() => {
+                    props.navigation.navigate(
+                      'Transaction',
+                      { transaction: transaction }
+                    )
+                  }}
+                  activeOpacity={.7}
+                  key={transaction.transaction_id}
+                >
                   <Row {...transaction} section={section} index={i} />
-                </View>
-              </TouchableOpacity>
+                </TouchableOpacity>
+              </View>
             )}
             style={styles.transactionsScrollView}
           />}

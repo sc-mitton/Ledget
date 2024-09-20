@@ -35,7 +35,7 @@ const Screen = () => {
           headerShown: false,
           gestureDirection: 'vertical',
           gestureEnabled: true,
-          gestureResponseDistance: 30,
+          gestureResponseDistance: 70,
           cardStyleInterpolator: modalStyleInterpolator
         }}>
         <Stack.Screen name='PickAccount' component={AccountsPicker} />

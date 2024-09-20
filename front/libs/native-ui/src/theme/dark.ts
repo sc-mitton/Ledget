@@ -25,7 +25,7 @@ const palette = {
   gray1000: `hsl(${grayH}, ${grayS}%, 0%)`,
   gray900: `hsl(${grayH}, ${grayS}%, 7%)`,
   gray850: `hsl(${grayH}, ${grayS}%, 11%)`,
-  gray800: `hsl(${grayH}, ${grayS}%, 15%)`,
+  gray800: `hsl(${grayH}, ${grayS}%, 14%)`,
   gray750: `hsl(${grayH}, ${grayS}%, 17%)`,
   gray700: `hsl(${grayH}, ${grayS}%, 20%)`,
   gray650: `hsl(${grayH}, ${grayS}%, 22%)`,
@@ -39,6 +39,7 @@ const palette = {
   blue900: `hsl(${blueH}, ${blueS}%, 10%)`,
   blue800: `hsl(${blueH}, ${blueS}%, 15%)`,
   blue700: `hsl(${blueH}, ${blueS}%, 20%)`,
+  blue650: `hsl(${blueH}, ${blueS}%, 22%)`,
   blue600: `hsl(${blueH}, ${blueS}%, 25%)`,
   blue500: `hsl(${blueH}, ${blueS}%, 30%)`,
   blue400: `hsl(${blueH}, ${blueS}%, 35%)`,
@@ -81,6 +82,7 @@ export const darkTheme = createTheme({
     newTransaction: palette.gray750,
     contextMenu: palette.gray700,
     toast: palette.gray850,
+    blueNestedContainer: palette.gray850.replace(`${grayS}`, `${grayS + 10}`),
 
     // Borders
     inputBorder: palette.gray750,
@@ -97,6 +99,7 @@ export const darkTheme = createTheme({
     toastBorder: palette.gray800,
     modalBorder: palette.gray800,
     contextMenuDivider: palette.gray600,
+    blueNestedContainerBorder: palette.gray800.replace(`${grayS}`, `${grayS + 10}`),
 
     // Shadows
     navShadow: palette.gray900,
@@ -138,7 +141,7 @@ export const darkTheme = createTheme({
     grayButton: palette.gray850,
     mediumGrayButton: palette.gray700,
     mediumGrayButtonBorder: palette.gray650,
-    grayButtonBorder: palette.gray750,
+    grayButtonBorder: palette.gray800,
     borderedGrayButton: palette.gray700,
     dragBar: palette.gray700,
 

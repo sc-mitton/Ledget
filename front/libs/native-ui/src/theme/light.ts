@@ -46,6 +46,7 @@ const palette = {
   blue450: `hsl(${blueH}, ${blueS}%, 55%)`,
   blue400: `hsl(${blueH}, ${blueS}%, 60%)`,
   blue300: `hsl(${blueH}, ${blueS}%, 70%)`,
+  blue250: `hsl(${blueH}, ${blueS}%, 75%)`,
   blue200: `hsl(${blueH}, ${blueS}%, 80%)`,
   blue100: `hsl(${blueH}, ${blueS}%, 90%)`,
   blue50: `hsl(${blueH}, ${blueS}%, 92%)`,
@@ -82,6 +83,7 @@ export const lightTheme = createTheme({
     newTransaction: palette.gray100,
     contextMenu: palette.gray100,
     toast: palette.white,
+    blueNestedContainer: palette.blue200.replace(`${blueS}`, '20'),
 
     // Borders
     inputBorder: palette.gray300,
@@ -98,6 +100,7 @@ export const lightTheme = createTheme({
     modalBorder: palette.gray200,
     toastBorder: palette.gray100,
     contextMenuDivider: palette.gray200,
+    blueNestedContainerBorder: palette.blue250.replace(`${blueS}`, '20'),
 
     // Shadows
     navShadow: palette.gray200,
@@ -139,8 +142,6 @@ export const lightTheme = createTheme({
     mediumGrayButton: palette.gray250,
     mediumGrayButtonBorder: palette.gray300,
     tabNavPill: palette.blue100,
-    tabGrayPill: palette.gray1000,
-    tabGrayPillBorder: 'transparent',
     borderedGrayButton: palette.gray200,
     dragBar: palette.gray300,
 
@@ -178,6 +179,7 @@ export const lightTheme = createTheme({
   },
   spacing: {
     none: 0,
+    xxxs: 1,
     xxs: 2,
     xs: 4,
     s: 8,
@@ -188,7 +190,7 @@ export const lightTheme = createTheme({
     xxxl: 48,
     xxxxl: 54,
     navHeight: 104,
-    statusBar: StatusBarManager.HEIGHT,
+    statusBar: StatusBarManager.HEIGHT + 4,
   },
   textVariants: {
     bold: {
@@ -365,14 +367,14 @@ export const lightTheme = createTheme({
     },
     grayPill: {
       color: 'tertiaryText',
-      paddingVertical: 'xxs',
+      paddingVertical: 'xxxs',
       paddingHorizontal: 'm',
       borderRadius: 40,
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: 'grayButton',
       borderWidth: 1.5,
-      borderColor: 'grayButtonBorder',
+      borderColor: 'grayButtonBorder'
     },
     borderedPill: {
       color: 'secondaryText',
@@ -387,14 +389,14 @@ export const lightTheme = createTheme({
     },
     bluePill: {
       color: 'whiteText',
-      paddingVertical: 'xxs',
+      paddingVertical: 'xxxs',
       paddingHorizontal: 'm',
       borderRadius: 40,
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: 'lightBlueButton',
       borderWidth: 1.5,
-      borderColor: 'blueButtonBorder',
+      borderColor: 'lightBlueButtonBorder'
     },
     blueBorderedPill: {
       color: 'blueText',
@@ -504,6 +506,16 @@ export const lightTheme = createTheme({
       backgroundColor: 'nestedContainer',
       borderColor: 'nestedContainerBorder',
       borderWidth: 1.5,
+    },
+    blueNestedContainer: {
+      borderRadius: 12,
+      paddingVertical: 'm',
+      paddingHorizontal: 'l',
+      marginVertical: 's',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      backgroundColor: 'blueNestedContainer'
     },
     bottomNav: {
       paddingHorizontal: 'l',

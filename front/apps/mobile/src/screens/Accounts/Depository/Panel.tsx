@@ -1,15 +1,15 @@
 import { useEffect, useState, useRef } from 'react'
 import { View } from 'react-native';
-import { useTheme } from '@shopify/restyle';
 
 import styles from './styles/panel';
-import AccountPickerButton from '../AccountsPickerButton';
 import { AccountsTabsScreenProps } from '@types';
 import { hasErrorCode } from '@ledget/helpers';
 import { popToast, Account, useGetAccountsQuery, apiSlice } from '@ledget/shared-features';
 import { useAppDispatch } from '@hooks';
-import Transactions from '../TransactionsList/Transactions';
 import { DefaultHeader, AccountHeader } from '../Header';
+import AccountPickerButton from '../AccountsPickerButton';
+import Transactions from '../TransactionsList/Transactions';
+import AggregatesCarousel from './Carousel/AggregatesCarousel';
 
 const Panel = (props: AccountsTabsScreenProps<'Depository'> & { account?: Account }) => {
   const [bottomOfContentPos, setBottomOfContentPos] = useState(0)
@@ -17,7 +17,6 @@ const Panel = (props: AccountsTabsScreenProps<'Depository'> & { account?: Accoun
   const [account, setAccount] = useState<Account>()
   const [transactionsListExpanded, setTransactionsListExpanded] = useState(false)
   const dispatch = useAppDispatch()
-  const theme = useTheme()
   const ref = useRef<View>(null);
 
   useEffect(() => {
@@ -59,12 +58,13 @@ const Panel = (props: AccountsTabsScreenProps<'Depository'> & { account?: Accoun
       <View
         ref={ref}
         onLayout={(event) => { setBottomOfContentPos(event.nativeEvent.layout.height) }}>
+        <AggregatesCarousel {...props} />
         <AccountPickerButton {...props} account={account} />
       </View>
       <Transactions
         onStateChange={(state) => { setTransactionsListExpanded(state === 'expanded' ? true : false) }}
         collapsedTop={bottomOfContentPos}
-        expandedTop={12}
+        expandedTop={24}
         account={account}
         {...props}
       />

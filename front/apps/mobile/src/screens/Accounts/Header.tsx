@@ -3,8 +3,7 @@ import { useTheme } from '@shopify/restyle';
 import { View } from 'react-native';
 
 import styles from './styles/header';
-import { AccountsScreenProps, AccountsTabsScreenProps } from '@types';
-import { Header, Header2, InstitutionLogo, DollarCents } from '@ledget/native-ui';
+import { Header2, Header, InstitutionLogo, DollarCents } from '@ledget/native-ui';
 import { Account } from '@ledget/shared-features';
 
 const headerMap = {

@@ -1,4 +1,3 @@
-import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View } from 'react-native';
 
@@ -11,6 +10,7 @@ import DepositsPanel from './Depository/Panel';
 import CreditPanel from './Credit/Panel';
 import InvestmentPanel from './Investment/Panel';
 import LoanPanel from './Loan/Panel';
+import Menu from './Menu';
 
 const Tab = createBottomTabNavigator<AccountsTabsParamList>()
 
@@ -20,6 +20,7 @@ const AccountTabs = (props: AccountsScreenProps<'AccountsTabs'>) => {
   return (
     <Tab.Navigator
       screenOptions={{
+        headerRight: () => <Menu {...props} />,
         header: (props) => <DefaultHeader routeName={props.route.name} />,
       }}
       sceneContainerStyle={styles.scene}

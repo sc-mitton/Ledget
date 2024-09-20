@@ -42,32 +42,18 @@ export default StyleSheet.create({
     paddingLeft: 64,
   },
   sectionHeader: {
-    left: -48,
-    width: 40
-  },
-  sectionFooter: {
-    marginBottom: -120
-  },
-  sectionFirstRow: {
-    marginTop: -54,
-  },
-  firstSectionFirstRow: {
-    marginTop: -68,
+    marginLeft: -48,
+    justifyContent: 'center',
+    left: 0,
+    right: 0,
+    position: 'relative',
+    zIndex: -1,
   },
   transactionRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginVertical: 3,
-    alignItems: 'center',
-  },
-  hiddenRowContainer: {
-    opacity: 0,
-    width: 0,
-  },
-  hiddenRow: {
-    marginVertical: 2,
-    height: 'auto',
-    gap: 2,
+    alignItems: 'center'
   },
   nameContainer: {
     gap: 4,

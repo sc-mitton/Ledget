@@ -3,9 +3,16 @@ import Animated, { useSharedValue, useAnimatedStyle, withSpring, interpolate } f
 import { ParamListBase, TabNavigationState, CommonActions } from '@react-navigation/native';
 import { Clock, CreditCard, TrendingUp } from 'geist-native-icons';
 
-import styles from './styles/tabs';
+import styles from './styles/tab-bar';
 import { CurrencyNote } from '@ledget/media/native';
-import { Icon, Button } from '@ledget/native-ui';
+import { Icon, Button, Seperator } from '@ledget/native-ui';
+
+const labelMap = {
+  'Depository': 'Accounts',
+  'Credit': 'Cards',
+  'Investment': 'Investments',
+  'Loan': 'Loans'
+}
 
 interface Props {
   state: TabNavigationState<ParamListBase>;
@@ -49,9 +56,10 @@ const TabButton = (props: ButtonProps) => {
   return (
     <Button
       style={styles.tabButton}
-      label={route.name}
+      label={(labelMap as any)[route.name]}
       variant={isFocused ? 'bluePill' : 'grayPill'}
       key={route.key}
+      fontSize={15}
       labelPlacement='left'
       accessibilityRole="button"
       accessibilityState={isFocused ? { selected: true } : {}}
@@ -62,13 +70,13 @@ const TabButton = (props: ButtonProps) => {
     >
       <View style={styles.buttonIcon} >
         {route.name.toLowerCase() === 'depository'
-          ? <Icon icon={CurrencyNote} />
+          ? <Icon size={16} icon={CurrencyNote} />
           : route.name.toLowerCase() === 'credit'
-            ? <Icon icon={CreditCard} />
+            ? <Icon size={16} icon={CreditCard} />
             : route.name.toLowerCase() === 'investment'
-              ? <Icon icon={TrendingUp} />
+              ? <Icon size={16} icon={TrendingUp} />
               : route.name.toLowerCase() === 'loan'
-                ? <Icon icon={Clock} />
+                ? <Icon size={16} icon={Clock} />
                 : null
         }
       </View>
@@ -79,23 +87,28 @@ const TabButton = (props: ButtonProps) => {
 const Tabs = ({ state, descriptors, navigation }: Props) => {
 
   return (
-    <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      style={styles.tabs}
-      contentContainerStyle={styles.tabsContent}
-    >
-      {state.routes.map((route, index) => (
-        <TabButton
-          key={route.key}
-          route={route}
-          index={index}
-          state={state}
-          descriptors={descriptors}
-          navigation={navigation}
-        />
-      ))}
-    </ScrollView>
+    <>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.tabs}
+        contentContainerStyle={styles.tabsContent}
+      >
+        {state.routes.map((route, index) => (
+          <TabButton
+            key={route.key}
+            route={route}
+            index={index}
+            state={state}
+            descriptors={descriptors}
+            navigation={navigation}
+          />
+        ))}
+      </ScrollView>
+      <View style={styles.seperator}>
+        <Seperator />
+      </View>
+    </>
   )
 }
 
