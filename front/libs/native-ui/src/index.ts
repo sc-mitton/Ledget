@@ -14,7 +14,6 @@ export * from './buttons/bill-cat-label/BillCatLabel';
 export * from './containers/modal/Modal';
 export * from './containers/slide-view/slide-view';
 export * from './containers/baked-boxes';
-export * from './containers/tabs-navigator/TabsNavigator';
 export * from './containers/loading-box/LoadingBox';
 export * from './containers/bottom-drawer-modal/BottomDrawerModal';
 export * from './containers/custom-scroll-view/CustomScrollView';
