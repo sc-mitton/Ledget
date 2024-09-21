@@ -3,10 +3,11 @@ import { useEffect, useState } from 'react';
 import { Alert, View, Platform } from 'react-native'
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
+import { LogOut } from 'geist-native-icons';
 
 import styles from './styles/logout';
 import sharedStyles from './styles/shared';
-import { Text, Header, Button, SubmitButton, Modal } from '@ledget/native-ui';
+import { Text, Header, Button, SubmitButton, Modal, Icon } from '@ledget/native-ui';
 import { selectSession, apiSlice, setSession } from '@ledget/shared-features';
 import { useAppSelector, useAppDispatch } from '@hooks';
 import { IOS_ORY_API_URI, ANDROID_ORY_API_URI } from '@env';
@@ -61,10 +62,24 @@ const Logout = (props: ModalScreenProps<'Logout'>) => {
       </View>
       <View style={sharedStyles.splitButtons}>
         <View style={sharedStyles.splitButton}>
-          <Button onPress={() => props.navigation.goBack()} variant='mediumGrayMain' label='Cancel' />
+          <Button
+            onPress={() => props.navigation.goBack()}
+            variant='mediumGrayMain'
+            label='Cancel'
+            textColor='secondaryText'
+          />
         </View>
         <View style={sharedStyles.splitButton}>
-          <SubmitButton onPress={() => setQuedLogout(true)} isSubmitting={isLoggingOut} variant='main' label='Log Out' />
+          <SubmitButton
+            onPress={() => setQuedLogout(true)}
+            isSubmitting={isLoggingOut}
+            variant='mediumGrayMain'
+            textColor='alert'
+            label='Log Out'
+            labelPlacement='right'
+          >
+            <Icon icon={LogOut} color='alert' />
+          </SubmitButton>
         </View>
       </View>
     </Modal>

@@ -41,14 +41,20 @@ const LogoutAllDevices = (props: ModalScreenProps<'LogoutAllDevices'>) => {
       </View>
       <View style={sharedStyles.splitButtons}>
         <View style={sharedStyles.splitButton}>
-          <Button onPress={() => props.navigation.goBack()} variant='mediumGrayMain' label='Cancel' />
+          <Button
+            onPress={() => props.navigation.goBack()}
+            variant='mediumGrayMain'
+            label='Cancel'
+            textColor='secondaryText'
+          />
         </View>
         <View style={sharedStyles.splitButton}>
           <SubmitButton
             onPress={() => disableAllSessions()}
             isSubmitting={isLoading}
             isSuccess={isSuccess}
-            variant='main'
+            variant='mediumGrayMain'
+            textColor='alert'
             label="Yes, I'm sure"
           />
         </View>
