@@ -140,13 +140,11 @@ const Transactions = (props: ModalScreenProps<'Activity'> & { showFilters: React
 
 const History = (props: ModalScreenProps<'Activity'>) => {
   const [showFilters, setShowFilters] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
 
   const filter = useAppSelector(selectConfirmedTransactionFilter);
   const transactionsData = useAppSelector(selectFilteredFetchedConfirmedTransactions);
-  const [getTransactions, {
-    isLoading: isTransactionsLoading,
-    isSuccess: isTransactionsSuccess
-  }] = useLazyGetTransactionsQuery();
+  const [getTransactions, { isSuccess: isTransactionsSuccess }] = useLazyGetTransactionsQuery();
 
   // Initial transaction fetch
   useEffect(() => {
@@ -154,11 +152,18 @@ const History = (props: ModalScreenProps<'Activity'>) => {
     getTransactions(filter, true);
   }, [filter]);
 
+  useEffect(() => {
+    if (collapsed) {
+      props.navigation.goBack();
+    }
+  }, [collapsed]);
+
   return (
     <BottomDrawerModal.Content
       defaultExpanded={isTransactionsSuccess && transactionsData.length > 0}
-      onCollapse={() => props.navigation.goBack()}
-      onClose={() => props.navigation.goBack()}>
+      onExpand={() => setCollapsed(false)}
+      onCollapse={() => setCollapsed(true)}
+    >
       {showFilters
         ? <Animated.View exiting={FadeOut} entering={FadeIn} style={styles.animatedView}>
           <HistoryFilters showFilters={setShowFilters} />
