@@ -100,7 +100,7 @@ export const lightTheme = createTheme({
     modalBorder: palette.gray200,
     toastBorder: palette.gray100,
     contextMenuDivider: palette.gray200,
-    blueNestedContainerBorder: palette.blue250.replace(`${blueS}`, '20'),
+    blueNestedContainerBorder: palette.blue300.replace(`${blueS}`, '20'),
 
     // Shadows
     navShadow: palette.gray200,
@@ -128,6 +128,7 @@ export const lightTheme = createTheme({
     greenText: palette.greenText,
     placeholderText: palette.offBlack3,
     buttonLabel: palette.offBlack,
+    faintBlueText: palette.blue300,
 
     // Buttons
     lightBlueButton: palette.blue50,
@@ -515,7 +516,12 @@ export const lightTheme = createTheme({
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'flex-start',
-      backgroundColor: 'blueNestedContainer'
+      backgroundColor: 'blueNestedContainer',
+      shadowColor: 'blueNestedContainerBorder',
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 1,
+      shadowRadius: 0,
+      elevation: 1,
     },
     bottomNav: {
       paddingHorizontal: 'l',

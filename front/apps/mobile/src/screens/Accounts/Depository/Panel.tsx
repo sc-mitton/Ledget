@@ -9,7 +9,7 @@ import { useAppDispatch } from '@hooks';
 import { DefaultHeader, AccountHeader } from '../Header';
 import AccountPickerButton from '../AccountsPickerButton';
 import Transactions from '../TransactionsList/Transactions';
-import AggregatesCarousel from './Carousel/AggregatesCarousel';
+import Summary from './Summary/Summary';
 
 const Panel = (props: AccountsTabsScreenProps<'Depository'> & { account?: Account }) => {
   const [bottomOfContentPos, setBottomOfContentPos] = useState(0)
@@ -58,7 +58,7 @@ const Panel = (props: AccountsTabsScreenProps<'Depository'> & { account?: Accoun
       <View
         ref={ref}
         onLayout={(event) => { setBottomOfContentPos(event.nativeEvent.layout.height) }}>
-        <AggregatesCarousel {...props} />
+        <Summary {...props} />
         <AccountPickerButton {...props} account={account} />
       </View>
       <Transactions

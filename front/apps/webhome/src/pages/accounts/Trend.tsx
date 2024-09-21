@@ -20,9 +20,7 @@ const Trend = () => {
     if (accounts?.length) {
       getBalanceTrend(
         {
-          type: pathMappings.getAccountType(location) as
-            | 'depository'
-            | 'investment',
+          type: pathMappings.getAccountType(location) as any,
           accounts: accounts?.map((account) => account.account_id)
         },
         true

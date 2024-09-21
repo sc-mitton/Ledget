@@ -79,7 +79,9 @@ class AccountsViewSet(ViewSet):
         account_balances = {ab['account_id']: ab for ab in account_balances.values()
                             if ab['type'] == account_type}
 
-        balance_histories = self._get_balance_history(account_balances)
+        start = int(self.request.query_params.get('start')) or None
+        end = int(self.request.query_params.get('end')) or None
+        balance_histories = self._get_balance_history(account_balances, start, end)
         response_data = [
             {
                 'account_id': account_id,
@@ -105,6 +107,7 @@ class AccountsViewSet(ViewSet):
 
         trends = self._get_balance_trend(accounts, days)
         response_data = {'days': days, 'trends': trends}
+        print('trends', response_data)
 
         return Response(response_data, HTTP_200_OK)
 

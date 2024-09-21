@@ -95,7 +95,8 @@
     "react-native-draggable-flatlist": "*",
     "dequal": "*",
     "react-native-shimmer": "*",
-    "victory-native": "*"
+    "victory-native": "*",
+    "@shopify/react-native-skia": "*"
   },
   "devDependencies": {}
 }

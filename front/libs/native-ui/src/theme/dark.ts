@@ -71,7 +71,7 @@ export const darkTheme = createTheme({
     bottomNavBackground: palette.gray850,
     androidNavBar: palette.gray850,
     bottomNavCover: `hsl(${grayH}, ${grayS}%, 10%)`,
-    nestedContainer: palette.gray850,
+    nestedContainer: `hsl(${grayH}, ${grayS}%, 9%)`,
     inputBackground: palette.gray800,
     tabNavPill: palette.blue800,
     avatar: palette.gray800,
@@ -92,14 +92,14 @@ export const darkTheme = createTheme({
     focusedInputBorderSecondary: palette.blue800,
     tabNavPillBorder: 'transparent',
     bottomNavBorder: palette.gray750,
-    nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 12%)`,
+    nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 10%)`,
     tabNavBorder: palette.gray800,
     newTransactionBorder: palette.gray700,
     contextMenuBorder: palette.gray650,
     toastBorder: palette.gray800,
     modalBorder: palette.gray800,
     contextMenuDivider: palette.gray600,
-    blueNestedContainerBorder: palette.gray800.replace(`${grayS}`, `${grayS + 10}`),
+    blueNestedContainerBorder: palette.gray750.replace(`${grayS}`, `${grayS + 10}`),
 
     // Shadows
     navShadow: palette.gray900,
@@ -126,7 +126,8 @@ export const darkTheme = createTheme({
     whiteText: palette.offWhite,
     focusedText: palette.blueSat,
     blueText: palette.blue100,
-    blueTextSecondary: palette.blue50.replace(`${blueS}%)`, `${blueS - 10}%)`),
+    blueTextSecondary: palette.blue50.replace(`${blueS}`, `${blueS - 10}`),
+    faintBlueText: palette.blue200.replace(`${blueS}`, `${blueS - 20}`),
     placeholderText: palette.offWhite4,
     buttonLabel: palette.white,
     greenText: palette.greenText,
@@ -143,7 +144,7 @@ export const darkTheme = createTheme({
     mediumGrayButtonBorder: palette.gray650,
     grayButtonBorder: palette.gray800,
     borderedGrayButton: palette.gray700,
-    dragBar: palette.gray700,
+    dragBar: palette.gray750,
 
     // Category and Bill Colors
     monthBackground: `hsl(${blueH}, 38%, 24%)`,
@@ -161,7 +162,7 @@ export const darkTheme = createTheme({
 
     // Seperators
     darkerseperator: palette.gray750,
-    lightseperator: palette.gray800,
+    lightseperator: palette.gray850,
     menuSeperator: palette.gray800,
     blueseperator: palette.blue400,
 
@@ -173,6 +174,6 @@ export const darkTheme = createTheme({
     grayIcon: palette.gray100,
     scrollbar: palette.gray750,
     transactionShimmer: palette.gray800,
-    screenHeader: palette.gray750,
+    screenHeader: palette.gray750
   }
 });
