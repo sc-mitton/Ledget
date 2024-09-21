@@ -21,7 +21,7 @@ const AccountTabs = (props: AccountsScreenProps<'AccountsTabs'>) => {
     <Tab.Navigator
       screenOptions={{
         headerRight: () => <Menu {...props} />,
-        header: (props) => <DefaultHeader routeName={props.route.name} />,
+        header: (props) => <DefaultHeader routeName={props.route.name} />
       }}
       sceneContainerStyle={styles.scene}
       backBehavior='history'

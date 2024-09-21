@@ -48,7 +48,7 @@ export default StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-evenly',
     borderRadius: 10,
-    position: 'relative',
+    position: 'relative'
   },
   menuBackground: {
     position: 'absolute',
@@ -68,7 +68,7 @@ export default StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 16,
     gap: 20,
-    opacity: .95
+    opacity: .9
   },
   icon: {
     minWidth: 28,

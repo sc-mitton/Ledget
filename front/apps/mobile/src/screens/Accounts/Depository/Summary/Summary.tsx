@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { View } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { CartesianChart, Area, Line, useChartPressState } from 'victory-native';
 import {
   Text as SkText,
@@ -8,15 +8,16 @@ import {
   vec,
   Circle
 } from '@shopify/react-native-skia';
-import { ArrowDownRight, ArrowUpRight } from 'geist-native-icons';
+import { ArrowDownRight, ArrowUpRight, Check } from 'geist-native-icons';
 import { useTheme } from '@shopify/restyle';
 import Big from 'big.js';
 import dayjs from 'dayjs';
-import { useDerivedValue } from 'react-native-reanimated';
+import Animated, { useDerivedValue, FadeIn, FadeOut } from 'react-native-reanimated';
+import { BlurView } from 'expo-blur';
 
 import styles from './styles/summary';
 import { AccountsTabsScreenProps } from '@types';
-import { Box, DollarCents, Icon, Text, Menu, Button } from '@ledget/native-ui';
+import { Box, DollarCents, Icon, Text, Menu } from '@ledget/native-ui';
 import { useGetAccountsQuery, useLazyGetAccountBalanceHistoryQuery, useLazyGetAccountBalanceTrendQuery } from '@ledget/shared-features';
 
 import SourceSans3Regular from '../../../../../assets/fonts/SourceSans3Regular.ttf';
@@ -29,10 +30,18 @@ const windows = [
   { key: 'ALL', label: 'All' }
 ]
 
+const tempChartData = [
+  { date: dayjs().startOf('month').subtract(3, 'month').format('YYYY-MM-DD'), balance: 1200 },
+  { date: dayjs().startOf('month').subtract(2, 'month').format('YYYY-MM-DD'), balance: 2700 },
+  { date: dayjs().startOf('month').subtract(1, 'month').format('YYYY-MM-DD'), balance: 2000 },
+  { date: dayjs().startOf('month').format('YYYY-MM-DD'), balance: 4000 },
+  { date: dayjs().format('YYYY-MM-DD'), balance: 5000 },
+]
+
 export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
   const { data: accountsData } = useGetAccountsQuery()
   const [getBalanceTrend, { data: balanceTrend }] = useLazyGetAccountBalanceTrendQuery()
-  const [getBalanceHistory, { data: balanceHistory }] = useLazyGetAccountBalanceHistoryQuery()
+  const [getBalanceHistory, { data: balanceHistory, isSuccess: isBalanceHistoryLoaded }] = useLazyGetAccountBalanceHistoryQuery()
   const { mode } = useAppearance();
   const theme = useTheme();
   const font = useFont(SourceSans3Regular, 14)
@@ -40,7 +49,8 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
   const [window, setWindow] = useState<typeof windows[number]['key']>(windows[0].key)
   const [dateWindow, setDateWindow] = useState<{ start: number, end: number }>({ start: 0, end: 0 })
   const [calculatedTrend, setCalculatedTrend] = useState(0)
-  const [balanceHistoryChartData, setBalanceHistoryChartData] = useState<{ date: string, balance: number }[]>([])
+  const [balanceHistoryChartData, setBalanceHistoryChartData] = useState(tempChartData)
+  const [showMenu, setShowMenu] = useState(false)
   const { state, isActive } = useChartPressState({ x: '0', y: { balance: 0 } })
 
   const totalBalance = useMemo(
@@ -152,11 +162,17 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
 
   return (
     <Box variant='blueNestedContainer' style={styles.container}>
-      <View style={styles.windowMenu}>
+      {showMenu &&
+        <Animated.View entering={FadeIn} exiting={FadeOut} style={[StyleSheet.absoluteFill, styles.blurViewContainer]}>
+          <BlurView intensity={8} style={[StyleSheet.absoluteFill]} />
+        </Animated.View>}
+      <View style={styles.menuButtonContainer}>
         <Menu
           as='menu'
+          onShowChange={setShowMenu}
           items={windows.map(w => ({
             label: w.label,
+            icon: () => <Icon icon={Check} color={window === w.key ? 'blueText' : 'transparent'} />,
             onSelect: () => setWindow(w.key)
           }))}
           placement='right'
@@ -191,7 +207,10 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
             font,
             lineWidth: 0,
             tickCount: window.endsWith('M') ? 3 : 5,
-            labelColor: theme.colors.faintBlueText,
+            labelColor:
+              isBalanceHistoryLoaded
+                ? theme.colors.faintBlueText
+                : theme.colors.quaternaryText,
             formatXLabel: (date) => window.endsWith('M')
               ? `     ${dayjs(date).format('MMM')}`
               : `        ${dayjs(date).format('MMM YY')}`,
@@ -220,8 +239,9 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
           {({ points, chartBounds }) => (
             <>
               <Line
+                animate={{ type: 'spring', duration: 300 }}
                 points={points.balance}
-                color={theme.colors.blueButton}
+                color={isBalanceHistoryLoaded ? theme.colors.blueButton : theme.colors.quinaryText}
                 strokeWidth={3}
                 curveType='natural'
               />
@@ -232,7 +252,10 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
                 curveType='natural'
               >
                 <LinearGradient
-                  colors={[theme.colors.lightBlueButton, theme.colors.blueNestedContainer]}
+                  colors={isBalanceHistoryLoaded
+                    ? [theme.colors.lightBlueButton, theme.colors.blueNestedContainer]
+                    : [theme.colors.mediumGrayButton, theme.colors.blueNestedContainer]
+                  }
                   start={vec(chartBounds.bottom, 0)}
                   end={vec(chartBounds.bottom, chartBounds.bottom)}
                 />

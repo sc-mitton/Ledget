@@ -41,18 +41,22 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -8
   },
-  windowMenu: {
+  menuButtonContainer: {
     position: 'absolute',
     top: 16,
     right: 16,
-    zIndex: 10
+    zIndex: 10,
   },
   menuButton: {
     paddingHorizontal: 8,
     borderRadius: 6,
     alignItems: 'center',
-    justifyContent: 'center'
-
+    justifyContent: 'center',
+  },
+  blurViewContainer: {
+    zIndex: 10,
+    borderRadius: 12,
+    overflow: 'hidden',
   }
 });
 
