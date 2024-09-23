@@ -6,22 +6,30 @@ import {
   Dimensions,
   NativeSyntheticEvent,
   NativeScrollEvent,
-  Pressable
+  Pressable,
+  RefreshControl,
+  ScrollView
 } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
+  withRepeat,
+  withSequence,
   withSpring
 } from 'react-native-reanimated';
 import dayjs from 'dayjs';
 import { groupBy } from 'lodash-es';
+import { useTheme } from '@shopify/restyle';
+import { ArrowDown } from 'geist-native-icons';
 
 import styles from './styles/transactions';
-import { useLazyGetTransactionsQuery } from '@ledget/shared-features';
-import { Box, defaultSpringConfig, Text, CustomSectionList, Seperator } from '@ledget/native-ui';
+import { useLazyGetTransactionsQuery, useTransactionsSyncMutation } from '@ledget/shared-features';
+import { Box, defaultSpringConfig, Text, CustomSectionList, Seperator, Icon } from '@ledget/native-ui';
+import { EmptyBox } from '@ledget/media/native';
 import SkeletonTransactions from './SkeletonTransactions';
 import type { PTransactions, Section, ListState } from './types';
 import Row from './Row';
+import { useAppearance } from '@/features/appearanceSlice';
 
 const SKELETON_HEIGHT = 740
 
@@ -32,10 +40,15 @@ const Transactions = (props: PTransactions) => {
   const state = useRef<ListState>('neutral')
   const propTop = useRef(props.collapsedTop)
   const top = useSharedValue(props.collapsedTop)
+  const arrowIconY = useSharedValue(0)
   const [sectionHeaderHeight, setSectionHeaderHeight] = useState(0)
-  const [getTransactions, { data: transactionsData }] = useLazyGetTransactionsQuery()
   const [stuckTitle, setStuckTitle] = useState<string | null>(null)
   const [sections, setSections] = useState<Section[]>([])
+  const theme = useTheme()
+  const { mode } = useAppearance()
+
+  const [getTransactions, { data: transactionsData, isLoading: isLoadingTransactions }] = useLazyGetTransactionsQuery()
+  const [syncTransactions, { isLoading: isSyncing }] = useTransactionsSyncMutation()
 
   const animation = useAnimatedStyle(() => {
     return {
@@ -57,6 +70,16 @@ const Transactions = (props: PTransactions) => {
       );
     }
   }, [props.account])
+
+  useEffect(() => {
+    arrowIconY.value = withRepeat(
+      withSequence(
+        withSpring(-5, defaultSpringConfig),
+        withSpring(0, defaultSpringConfig)
+      ),
+      -1, true
+    );
+  }, [])
 
   useEffect(() => {
     top.value = props.collapsedTop
@@ -150,79 +173,110 @@ const Transactions = (props: PTransactions) => {
 
   return (
     <Animated.View style={[styles.boxContainer, animation]}>
-      <Box
-        style={styles.box}
-        borderColor='nestedContainerBorder'
-        borderWidth={1.5}
-        backgroundColor='nestedContainer'>
-        <View style={styles.dragBarContainer} {...panResponder.panHandlers}>
-          <Box style={styles.dragBar} backgroundColor='dragBar' />
-        </View>
-        {!transactionsData
-          ?
-          <View style={styles.skeletonContainer}>
-            <SkeletonTransactions height={SKELETON_HEIGHT} />
-          </View>
-          :
-          <CustomSectionList
-            bounces={true}
-            overScrollMode='always'
-            onScroll={handleScroll}
-            sections={sections}
-            stickySectionHeadersEnabled={true}
-            renderSectionHeader={({ section }) => (
-              <Pressable
-                onPress={() =>
-                  props.navigation.navigate('Transaction', { transaction: section.data[0] })
-                }
-                aria-role='button'
-                aria-label='View transaction'
-                onLayout={(e) => setSectionHeaderHeight(e.nativeEvent.layout.height)}
-                style={styles.sectionHeader}
-              >
-                <Text fontSize={15} color='quaternaryText'>
-                  {dayjs(section.title).format('MMM')}
-                </Text>
-                <Text fontSize={15} color='quaternaryText' style={{ opacity: section.title === stuckTitle ? 1 : 0 }}>
-                  {dayjs(section.title).format('YYYY')}
-                </Text>
-              </Pressable>
-            )}
-            viewabilityConfig={{
-              waitForInteraction: false,
-              minimumViewTime: 10,
-              viewAreaCoveragePercentThreshold: 0
-            }}
-            onViewableItemsChanged={({ changed, viewableItems }) => {
-              if (changed.length > 1 && viewableItems.length > 0) {
-                setStuckTitle(viewableItems[1]?.section.title)
-              }
-            }}
-            keyExtractor={(item, index) => item.transaction_id}
-            renderItem={({ item: transaction, index: i, section }) => (
-              <View style={{
-                marginTop: i === 0 && section.index === 0
-                  ? -1 * (sectionHeaderHeight + 18)
-                  : i === 0 ? -1 * sectionHeaderHeight : 0
-              }}
-              >
-                <Seperator backgroundColor={(section.index === 0 && i === 0) ? 'transparent' : 'lightseperator'} />
-                <TouchableOpacity
-                  onPress={() => {
-                    props.navigation.navigate(
-                      'Transaction',
-                      { transaction: transaction }
-                    )
-                  }}
-                  activeOpacity={.7}
-                  key={transaction.transaction_id}
-                >
-                  <Row {...transaction} section={section} index={i} />
-                </TouchableOpacity>
+      <Box backgroundColor='mainBackground' style={styles.mainBackgroundBox}>
+        <Box
+          style={styles.box}
+          borderColor='nestedContainerBorder'
+          borderWidth={1.5}
+          backgroundColor='nestedContainer'>
+          {(transactionsData?.results.length || 0) > 0 &&
+            <View style={styles.dragBarContainer} {...panResponder.panHandlers}>
+              <Box style={styles.dragBar} backgroundColor='dragBar' />
+            </View>}
+          {(transactionsData?.results.length || 0) <= 0 || isLoadingTransactions
+            ?
+            transactionsData?.results.length === 0 && !isLoadingTransactions
+              ?
+              <ScrollView
+                refreshControl={
+                  <RefreshControl
+                    onRefresh={() => syncTransactions({ account: props.account?.account_id })}
+                    refreshing={isSyncing}
+                    style={{ transform: [{ scaleY: .7 }, { scaleX: .7 }] }}
+                    colors={[theme.colors.blueText]}
+                    progressBackgroundColor={theme.colors.modalBox}
+                    tintColor={theme.colors.secondaryText}
+                  />}
+                contentContainerStyle={styles.emptyBoxContainer}>
+                <EmptyBox dark={mode === 'dark'} />
+                <Animated.View style={{ transform: [{ translateY: arrowIconY }] }}>
+                  <Icon icon={ArrowDown} color='quinaryText' strokeWidth={2} />
+                </Animated.View>
+              </ScrollView>
+              :
+              <View style={styles.skeletonContainer}>
+                <SkeletonTransactions height={SKELETON_HEIGHT} />
               </View>
-            )}
-            style={styles.transactionsScrollView}
-          />}
+            :
+            <CustomSectionList
+              refreshControl={
+                <RefreshControl
+                  onRefresh={() => syncTransactions({ account: props.account?.account_id })}
+                  refreshing={isSyncing}
+                  style={{ transform: [{ scaleY: .7 }, { scaleX: .7 }] }}
+                  colors={[theme.colors.blueText]}
+                  progressBackgroundColor={theme.colors.modalBox}
+                  tintColor={theme.colors.secondaryText}
+                />}
+              bounces={true}
+              overScrollMode='always'
+              onScroll={handleScroll}
+              sections={sections}
+              stickySectionHeadersEnabled={true}
+              renderSectionHeader={({ section }) => (
+                <Pressable
+                  onPress={() =>
+                    props.navigation.navigate('Transaction', { transaction: section.data[0] })
+                  }
+                  aria-role='button'
+                  aria-label='View transaction'
+                  onLayout={(e) => setSectionHeaderHeight(e.nativeEvent.layout.height)}
+                  style={styles.sectionHeader}
+                >
+                  <Text fontSize={15} color='quaternaryText'>
+                    {dayjs(section.title).format('MMM')}
+                  </Text>
+                  <Text fontSize={15} color='quaternaryText' style={{ opacity: section.title === stuckTitle ? 1 : 0 }}>
+                    {dayjs(section.title).format('YYYY')}
+                  </Text>
+                </Pressable>
+              )}
+              viewabilityConfig={{
+                waitForInteraction: false,
+                minimumViewTime: 10,
+                viewAreaCoveragePercentThreshold: 0
+              }}
+              onViewableItemsChanged={({ changed, viewableItems }) => {
+                if (changed.length > 1 && viewableItems.length > 0) {
+                  setStuckTitle(viewableItems[1]?.section.title)
+                }
+              }}
+              keyExtractor={(item, index) => item.transaction_id}
+              renderItem={({ item: transaction, index: i, section }) => (
+                <View style={{
+                  marginTop: i === 0 && section.index === 0
+                    ? -1 * (sectionHeaderHeight + 22)
+                    : i === 0 ? -1 * sectionHeaderHeight : 0
+                }}
+                >
+                  <Seperator backgroundColor={(section.index === 0 && i === 0) ? 'transparent' : 'nestedContainerSeperator'} />
+                  <TouchableOpacity
+                    onPress={() => {
+                      props.navigation.navigate(
+                        'Transaction',
+                        { transaction: transaction }
+                      )
+                    }}
+                    activeOpacity={.7}
+                    key={transaction.transaction_id}
+                  >
+                    <Row {...transaction} section={section} index={i} />
+                  </TouchableOpacity>
+                </View>
+              )}
+              style={styles.transactionsScrollView}
+            />}
+        </Box>
       </Box>
     </Animated.View>
   )

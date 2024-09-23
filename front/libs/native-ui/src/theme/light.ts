@@ -5,7 +5,7 @@ import basePalette from './base-palette';
 const { StatusBarManager } = NativeModules;
 
 const grayH = 240;
-const grayS = 7;
+const grayS = 5;
 
 const blueH = 230;
 const blueS = 50;
@@ -47,15 +47,15 @@ const palette = {
   blue400: `hsl(${blueH}, ${blueS}%, 60%)`,
   blue300: `hsl(${blueH}, ${blueS}%, 70%)`,
   blue250: `hsl(${blueH}, ${blueS}%, 75%)`,
-  blue200: `hsl(${blueH}, ${blueS}%, 80%)`,
+  blue200: `hsl(${blueH}, ${blueS}%, 85%)`,
   blue100: `hsl(${blueH}, ${blueS}%, 90%)`,
   blue50: `hsl(${blueH}, ${blueS}%, 92%)`,
 
   blueSat: `hsl(${blueH}, ${blueS + 10}%, 50%)`,
 
   black: 'hsl(0, 0%, 0%)',
-  offBlack: `hsl(${grayH}, ${grayS}%, 25%)`,
-  offBlack2: `hsl(${grayH}, ${grayS}%, 42%)`,
+  offBlack: `hsl(${grayH}, ${grayS}%, 10%)`,
+  offBlack2: `hsl(${grayH}, ${grayS}%, 30%)`,
   offBlack3: `hsl(${grayH}, ${grayS}%, 60%)`,
   offBlack4: `hsl(${grayH}, ${grayS}%, 70%)`,
   offBlack5: `hsl(${grayH}, ${grayS}%, 80%)`,
@@ -72,7 +72,7 @@ export const lightTheme = createTheme({
     accountsMainBackground: palette.gray100,
     bottomNavCover: palette.gray250,
     androidNavBar: palette.gray200,
-    bottomNavBackground: Platform.OS === 'ios' ? palette.gray500 : palette.gray300,
+    bottomNavBackground: Platform.OS === 'ios' ? palette.gray700 : palette.gray600,
     inputBackground: palette.gray250,
     nestedContainer: palette.white,
     avatar: palette.gray500,
@@ -83,7 +83,8 @@ export const lightTheme = createTheme({
     newTransaction: palette.gray100,
     contextMenu: palette.gray100,
     toast: palette.white,
-    blueNestedContainer: palette.blue200.replace(`${blueS}`, '20'),
+    creditCardGradientStart: `hsl(${blueH}, 20%, 35%)`,
+    creditCardGradientEnd: `hsl(${blueH}, 20%, 30%)`,
 
     // Borders
     inputBorder: palette.gray300,
@@ -92,18 +93,19 @@ export const lightTheme = createTheme({
     focusedInputBorderSecondary: palette.blue100,
     focusedInputBorderMain: palette.blue300,
     tabNavPillBorder: palette.blue100,
-    bottomNavBorder: Platform.OS === 'ios' ? palette.gray600 : palette.gray350,
-    nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 93%)`,
+    bottomNavBorder: Platform.OS === 'ios' ? palette.gray350 : palette.gray350,
+    nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 94%)`,
     tabNavBorder: palette.gray250,
     newTransactionBorder: palette.gray200,
-    contextMenuBorder: palette.gray200,
+    contextMenuBorder: palette.gray250,
     modalBorder: palette.gray200,
     toastBorder: palette.gray100,
     contextMenuDivider: palette.gray200,
-    blueNestedContainerBorder: palette.blue300.replace(`${blueS}`, '20'),
+    creditCardBorderStart: `hsl(${blueH}, 20%, 35%)`,
+    creditCardBorderStop: `hsl(${blueH}, 20%, 50%)`,
 
     // Shadows
-    navShadow: palette.gray200,
+    navShadow: palette.gray700,
     modalShadow: palette.gray800.replace(`${grayS}`, '0'),
     tabsShadow: palette.gray300,
     activeIcon: palette.blueSat,
@@ -112,6 +114,7 @@ export const lightTheme = createTheme({
     logoShadow: palette.gray500,
     newTransactionShadow: Platform.OS === 'ios' ? palette.gray200 : palette.gray300,
     menuShadowColor: palette.gray400,
+    creditCardShadow: palette.gray300,
 
     // Text
     mainText: palette.offBlack,
@@ -144,7 +147,7 @@ export const lightTheme = createTheme({
     mediumGrayButtonBorder: palette.gray300,
     tabNavPill: palette.blue100,
     borderedGrayButton: palette.gray200,
-    dragBar: palette.gray300,
+    dragBar: palette.gray200,
 
     // Category and Bill Colors
     monthBackground: `hsl(${blueH}, 67%, 93%)`,
@@ -161,11 +164,12 @@ export const lightTheme = createTheme({
     disabledSwitchCrib: palette.gray300,
 
     // Seperators
-    lightseperator: palette.gray150,
-    darkerseperator: palette.gray250,
+    seperator: palette.gray200,
+    modalSeperator: palette.gray200,
     menuSeperator: palette.gray200,
-    blueseperator: palette.blue100,
-    screenHeader: palette.gray300,
+    mainScreenSeperator: palette.gray200,
+    nestedContainerSeperator: palette.gray150,
+    authScreenSeperator: palette.gray250,
 
     // Misc
     alert: palette.red,
@@ -173,6 +177,9 @@ export const lightTheme = createTheme({
     pulseGreen: palette.successGreenFaint,
     scrollbar: palette.gray250,
     transactionShimmer: palette.gray200,
+
+    blueChartGradientStart: palette.blue100,
+    blueChartColor: palette.blue300,
 
     // Icons
     successIcon: palette.successGreen,
@@ -359,7 +366,7 @@ export const lightTheme = createTheme({
       alignItems: 'center',
       justifyContent: 'center',
       borderWidth: 1.5,
-      borderColor: 'darkerseperator',
+      borderColor: 'authScreenSeperator',
       flexDirection: 'row',
     },
     grayLinkButton: {
@@ -367,7 +374,6 @@ export const lightTheme = createTheme({
       paddingVertical: 'xxs',
     },
     grayPill: {
-      color: 'tertiaryText',
       paddingVertical: 'xxxs',
       paddingHorizontal: 'm',
       borderRadius: 40,
@@ -375,7 +381,7 @@ export const lightTheme = createTheme({
       justifyContent: 'center',
       backgroundColor: 'grayButton',
       borderWidth: 1.5,
-      borderColor: 'grayButtonBorder'
+      borderColor: 'grayButtonBorder',
     },
     borderedPill: {
       color: 'secondaryText',
@@ -389,15 +395,15 @@ export const lightTheme = createTheme({
       borderColor: 'borderedGrayButton',
     },
     bluePill: {
-      color: 'whiteText',
       paddingVertical: 'xxxs',
       paddingHorizontal: 'm',
       borderRadius: 40,
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: 'lightBlueButton',
+      color: 'blueText',
       borderWidth: 1.5,
-      borderColor: 'lightBlueButtonBorder'
+      borderColor: 'lightBlueButtonBorder',
     },
     blueBorderedPill: {
       color: 'blueText',
@@ -442,27 +448,27 @@ export const lightTheme = createTheme({
   seperatorVariants: {
     bare: {
       height: 1.25,
-      backgroundColor: 'lightseperator',
+      backgroundColor: 'seperator',
     },
     s: {
       height: 1.25,
       marginVertical: 's',
-      backgroundColor: 'lightseperator',
+      backgroundColor: 'seperator',
     },
     m: {
       height: 1.25,
       marginVertical: 'l',
-      backgroundColor: 'lightseperator',
+      backgroundColor: 'seperator',
     },
     l: {
       height: 1.25,
       marginVertical: 'xl',
-      backgroundColor: 'lightseperator',
+      backgroundColor: 'seperator',
     },
     xl: {
       height: 1.25,
       marginVertical: 'xxxl',
-      backgroundColor: 'lightseperator',
+      backgroundColor: 'seperator',
     },
     defaults: {}
   },
@@ -508,21 +514,6 @@ export const lightTheme = createTheme({
       borderColor: 'nestedContainerBorder',
       borderWidth: 1.5,
     },
-    blueNestedContainer: {
-      borderRadius: 12,
-      paddingVertical: 'm',
-      paddingHorizontal: 'l',
-      marginVertical: 's',
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'flex-start',
-      backgroundColor: 'blueNestedContainer',
-      shadowColor: 'blueNestedContainerBorder',
-      shadowOffset: { width: 0, height: 1 },
-      shadowOpacity: 1,
-      shadowRadius: 0,
-      elevation: 1,
-    },
     bottomNav: {
       paddingHorizontal: 'l',
     },
@@ -539,8 +530,8 @@ export const lightTheme = createTheme({
     dragBar: {
       backgroundColor: 'dragBar',
       width: 54,
-      height: 6,
-      borderRadius: 5,
+      height: 4,
+      borderRadius: 4,
       position: 'absolute',
       top: 6
     },

@@ -33,7 +33,7 @@ const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([variant, 
 export const Seperator = ({ label, ...rest }: Props) => {
   const {
     variant = 's',
-    backgroundColor = 'lightseperator',
+    backgroundColor = 'seperator',
     flex = 1,
   } = rest;
 

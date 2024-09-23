@@ -71,7 +71,9 @@ const Devices = (props: SecurityScreenProps<'Main'>) => {
               <Device key={device} device={device} info={info} />
             </ChevronTouchable>
             {(index !== groupedDevices.length - 1) &&
-              <Seperator key={`device-seperator${index}`} variant='s' />}
+              <Seperator
+                backgroundColor='nestedContainerSeperator'
+                key={`device-seperator${index}`} variant='s' />}
           </Fragment>
         ))}
       </ShimmerBox>

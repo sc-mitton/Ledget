@@ -7,7 +7,7 @@ import { hasErrorCode } from '@ledget/helpers';
 import { popToast, Account, useGetAccountsQuery, apiSlice } from '@ledget/shared-features';
 import { useAppDispatch } from '@hooks';
 import { DefaultHeader, AccountHeader } from '../Header';
-import AccountPickerButton from '../AccountsPickerButton';
+import AccountPickerButton from './AccountsPickerButton';
 import Transactions from '../TransactionsList/Transactions';
 import Summary from './Summary/Summary';
 

@@ -126,7 +126,9 @@ const NoteRow = ({ note, onPress, onDelete, disabled }: { note: Note, onPress: (
   return (
     <SwipeDelete onDeleted={onDelete}>
       <Box backgroundColor='nestedContainer' marginVertical='s'>
-        <View style={styles.noteSeperator}><Seperator variant='bare' /></View>
+        <View style={styles.noteSeperator}>
+          <Seperator variant='bare' backgroundColor='nestedContainerSeperator' />
+        </View>
         <TouchableOpacity
           style={styles.noteRow}
           activeOpacity={.6}

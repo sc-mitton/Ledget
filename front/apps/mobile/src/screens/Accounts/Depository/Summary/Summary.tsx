@@ -161,10 +161,14 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
   }, [window]);
 
   return (
-    <Box variant='blueNestedContainer' style={styles.container}>
+    <Box style={styles.container}>
       {showMenu &&
         <Animated.View entering={FadeIn} exiting={FadeOut} style={[StyleSheet.absoluteFill, styles.blurViewContainer]}>
-          <BlurView intensity={8} style={[StyleSheet.absoluteFill]} />
+          <BlurView
+            intensity={8}
+            style={[StyleSheet.absoluteFill]}
+            tint={mode === 'dark' ? 'dark' : 'light'}
+          />
         </Animated.View>}
       <View style={styles.menuButtonContainer}>
         <Menu
@@ -183,11 +187,11 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
           </Box>
         </Menu>
       </View>
-      <View>
+      <View style={styles.chartHeader}>
         <View style={styles.headerTitle}>
           <Text color='tertiaryText'>Total Balance</Text>
           <View style={styles.trendContainer}>
-            <DollarCents color='tertiaryText' value={calculatedTrend} withCents={false} />
+            <DollarCents showSign={false} color='tertiaryText' value={calculatedTrend} withCents={false} />
             <View style={styles.trendIcon}>
               <Icon
                 color={calculatedTrend < 0 ? 'alert' : 'greenText'}
@@ -212,8 +216,8 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
                 ? theme.colors.faintBlueText
                 : theme.colors.quaternaryText,
             formatXLabel: (date) => window.endsWith('M')
-              ? `     ${dayjs(date).format('MMM')}`
-              : `        ${dayjs(date).format('MMM YY')}`,
+              ? `      ${dayjs(date).format('MMM')}`
+              : `         ${dayjs(date).format('MMM YY')}`,
           }}
           yAxis={[{
             font,
@@ -221,7 +225,9 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
             formatYLabel: () => '',
           }]}
           padding={{
-            bottom: 8
+            left: -12,
+            bottom: 8,
+            right: 6
           }}
           domainPadding={{
             left: 3,
@@ -241,7 +247,7 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
               <Line
                 animate={{ type: 'spring', duration: 300 }}
                 points={points.balance}
-                color={isBalanceHistoryLoaded ? theme.colors.blueButton : theme.colors.quinaryText}
+                color={isBalanceHistoryLoaded ? theme.colors.blueChartColor : theme.colors.quinaryText}
                 strokeWidth={3}
                 curveType='natural'
               />
@@ -253,44 +259,29 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
               >
                 <LinearGradient
                   colors={isBalanceHistoryLoaded
-                    ? [theme.colors.lightBlueButton, theme.colors.blueNestedContainer]
-                    : [theme.colors.mediumGrayButton, theme.colors.blueNestedContainer]
+                    ? [theme.colors.blueChartGradientStart, theme.colors.mainBackground]
+                    : [theme.colors.mediumGrayButton, theme.colors.mainBackground]
                   }
                   start={vec(chartBounds.bottom, 0)}
                   end={vec(chartBounds.bottom, chartBounds.bottom)}
                 />
               </Area>
               {isActive && (
-                mode === 'dark'
-                  ? <SkText
-                    x={textXPosition}
-                    y={textYPosition}
-                    font={font}
-                    color={'#fff'}
-                    text={value}
-                  />
-                  : <SkText
-                    x={textXPosition}
-                    y={textYPosition}
-                    font={font}
-                    color={'#000'}
-                    text={value}
-                  />
+                <SkText
+                  x={textXPosition}
+                  y={textYPosition}
+                  font={font}
+                  color={theme.colors.faintBlueText}
+                  text={value}
+                />
               )}
               {isActive && (
-                mode === 'dark'
-                  ? <Circle
-                    cx={state.x.position}
-                    cy={state.y.balance.position}
-                    r={3}
-                    color={'#fff'}
-                  />
-                  : <Circle
-                    cx={state.x.position}
-                    cy={state.y.balance.position}
-                    r={3}
-                    color={'#000'}
-                  />
+                <Circle
+                  cx={state.x.position}
+                  cy={state.y.balance.position}
+                  r={3}
+                  color={theme.colors.faintBlueText}
+                />
               )}
             </>
           )}

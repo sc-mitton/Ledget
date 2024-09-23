@@ -95,7 +95,7 @@ export function Menu(props: MenuProps) {
                         {index !== 0 &&
                           <Seperator
                             variant='bare'
-                            backgroundColor={'contextMenuDivider'}
+                            backgroundColor={'menuSeperator'}
                           />}
                         <TouchableHighlight
                           style={styles.rowContainer}

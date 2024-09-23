@@ -55,7 +55,12 @@ const AccountRow = (props: AccountP) => {
   return (
     <View style={{ marginBottom: props.last ? 40 : 0 }}>
       {props.index !== 0 && !props.detailedView &&
-        <Seperator variant='bare' />}
+        <View style={styles.seperator}>
+          <Seperator
+            variant='bare'
+            backgroundColor={'modalSeperator'}
+          />
+        </View>}
       <Box
         backgroundColor='modalBox100'
         borderColor={props.detailedView ? 'modalBorder' : 'transparent'}

@@ -13,9 +13,9 @@ const styles = StyleSheet.create({
   },
   graphContainer: {
     position: 'absolute',
-    top: 72,
+    top: 54,
     left: -28,
-    right: 12,
+    right: 0,
     bottom: 0
   },
   nestedContainerBox: {
@@ -30,12 +30,14 @@ const styles = StyleSheet.create({
     marginLeft: 2
   },
   trendIcon: {
-    marginLeft: 4,
-    opacity: .7
+    marginLeft: 4
+  },
+  chartHeader: {
+    paddingLeft: 8,
   },
   headerTitle: {
     flexDirection: 'row',
-    gap: 8
+    gap: 8,
   },
   tooltipText: {
     position: 'absolute',
@@ -43,8 +45,8 @@ const styles = StyleSheet.create({
   },
   menuButtonContainer: {
     position: 'absolute',
-    top: 16,
-    right: 16,
+    top: 4,
+    right: 4,
     zIndex: 10,
   },
   menuButton: {

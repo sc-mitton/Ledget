@@ -20,8 +20,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     left: 0,
-    right: 0,
-    opacity: 0.4
+    right: 0
   },
   menuContainer: {
     position: 'absolute',

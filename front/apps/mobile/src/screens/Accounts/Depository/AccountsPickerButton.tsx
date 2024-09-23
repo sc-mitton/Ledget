@@ -18,19 +18,17 @@ const Button = (props: AccountsTabsScreenProps<any> & { account?: Account }) => 
         )
       }}>
       <View style={styles.accountsPickerButtonTop}>
-        <InstitutionLogo account={props.account?.account_id} />
+        <InstitutionLogo account={props.account?.account_id} size={18} />
         {props.account
           ?
           <View style={styles.nameContainer}>
-            <Text variant='bold'>
-              {props.account?.name}
-            </Text>
+            <Text>{props.account?.name}</Text>
             <Icon icon={ChevronDown} strokeWidth={2.5} size={16} color='tertiaryText' />
           </View>
           :
-          <Box backgroundColor='transactionShimmer' height={18} width={100} borderRadius={40} />}
+          <Box backgroundColor='modalSeperator' height={18} width={100} borderRadius={40} />}
       </View>
-      <Box style={styles.balanceContainer} borderColor='grayButtonBorder' borderWidth={1.5}>
+      <Box style={styles.balanceContainer} >
         <DollarCents color='secondaryText' value={`${props.account?.balances.current || 0}`} />
       </Box>
     </TouchableOpacity>

@@ -177,7 +177,7 @@ const AuthenticatorApp = (props: ModalScreenProps<'AuthenticatorAppSetup'>) => {
             <Text color='secondaryText'>
               First get a 6-digit code from your authenticator app
             </Text>
-            <Seperator backgroundColor='darkerseperator' variant='m' />
+            <Seperator backgroundColor='modalSeperator' variant='m' />
             <Button
               style={styles.button}
               variant='main'
@@ -195,7 +195,7 @@ const AuthenticatorApp = (props: ModalScreenProps<'AuthenticatorAppSetup'>) => {
             <Text color='secondaryText'>
               Enter the 6-digit code
             </Text>
-            <Seperator backgroundColor='darkerseperator' variant='m' />
+            <Seperator backgroundColor='modalSeperator' variant='m' />
             <Controller
               control={control}
               name='totp_code'

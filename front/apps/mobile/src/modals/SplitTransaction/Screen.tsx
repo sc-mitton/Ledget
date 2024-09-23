@@ -164,7 +164,7 @@ const Screen = (props: ModalScreenProps<'Split'>) => {
             />
           </Text>
         )}
-        <Seperator variant='m' backgroundColor='menuSeperator' />
+        <Seperator variant='m' backgroundColor='modalSeperator' />
       </Box>
       <FormError error={(errors as any).totalSum?.message} />
       <View>

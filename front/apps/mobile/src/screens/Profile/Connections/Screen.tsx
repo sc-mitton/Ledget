@@ -46,7 +46,7 @@ const Connections = ({
                 </ChevronTouchable>
               </View>
               {i < plaidItems?.filter((item) => item.user === user?.id).length - 1 &&
-                <Seperator variant='bare' />}
+                <Seperator variant='bare' backgroundColor='nestedContainerSeperator' />}
             </>
           ))}
         </ShimmerBox>
@@ -69,7 +69,7 @@ const Connections = ({
                         <Text>{item.institution?.name}</Text>
                       </ChevronTouchable>
                     </View>
-                    <Seperator variant='bare' />
+                    <Seperator variant='bare' backgroundColor='nestedContainerSeperator' />
                   </>
                 ))}
                 {plaidItems?.filter((item) => item.user === coOwner?.id).length === 0 && (

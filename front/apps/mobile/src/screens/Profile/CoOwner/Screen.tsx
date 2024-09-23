@@ -54,7 +54,7 @@ const Screen = (props: ProfileScreenProps<'CoOwner'>) => {
             </View>
           }
         </View>
-        <Seperator />
+        <Seperator backgroundColor='nestedContainerSeperator' />
         <View style={styles.accountsContainer}>
           <Text>Your Accounts</Text>
           {plaidItems?.filter((item) => item.user === user?.id).length === 0
@@ -78,7 +78,7 @@ const Screen = (props: ProfileScreenProps<'CoOwner'>) => {
             </View>
           }
         </View>
-        <Seperator />
+        <Seperator backgroundColor='nestedContainerSeperator' />
         <Text variant='footer'>
           Only you can add or remove your accounts. Another account member can only view the accounts you have connected.
         </Text>

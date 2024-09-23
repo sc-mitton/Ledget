@@ -35,7 +35,7 @@ const MultiFactor = (props: SecurityScreenProps<'Main'>) => {
             </View>
             <Text>Authenticator App</Text>
           </ChevronTouchable>}
-        <Seperator variant='bare' />
+        <Seperator variant='bare' backgroundColor='authScreenSeperator' />
         <ChevronTouchable onPress={() => props.navigation.navigate('Modals', { screen: 'ChangePassword' })}>
           <View style={styles.lockIcon}>
             <Icon icon={Lock} />

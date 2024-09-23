@@ -70,15 +70,14 @@ const TabButton = (props: ButtonProps) => {
     >
       <View style={styles.buttonIcon} >
         {route.name.toLowerCase() === 'depository'
-          ? <Icon size={16} icon={CurrencyNote} />
+          ? <Icon size={16} icon={CurrencyNote} color={isFocused ? 'blueText' : 'secondaryText'} />
           : route.name.toLowerCase() === 'credit'
-            ? <Icon size={16} icon={CreditCard} />
+            ? <Icon size={16} icon={CreditCard} color={isFocused ? 'blueText' : 'secondaryText'} />
             : route.name.toLowerCase() === 'investment'
-              ? <Icon size={16} icon={TrendingUp} />
+              ? <Icon size={16} icon={TrendingUp} color={isFocused ? 'blueText' : 'secondaryText'} />
               : route.name.toLowerCase() === 'loan'
-                ? <Icon size={16} icon={Clock} />
-                : null
-        }
+                ? <Icon size={16} icon={Clock} color={isFocused ? 'blueText' : 'secondaryText'} />
+                : null}
       </View>
     </Button>
   )
@@ -106,7 +105,7 @@ const Tabs = ({ state, descriptors, navigation }: Props) => {
         ))}
       </ScrollView>
       <View style={styles.seperator}>
-        <Seperator />
+        <Seperator backgroundColor='mainScreenSeperator' />
       </View>
     </>
   )

@@ -69,7 +69,7 @@ const Slide2 = () => {
       >
         <Icon icon={Copy} />
       </Button>
-      <Seperator backgroundColor='darkerseperator' />
+      <Seperator backgroundColor='modalSeperator' />
       <Text variant='footer' style={styles.footer}>
         The link expires in {expiresIn} minutes. If the link expires, you can
         generate a new one.
@@ -121,7 +121,7 @@ const Slide1 = () => {
             />
           )}
           <Button label='Get Invite Link' variant='main' onPress={submitForm} />
-          <Seperator backgroundColor='darkerseperator' />
+          <Seperator backgroundColor='modalSeperator' />
           <Text variant='footer' style={styles.footer}>
             Members on your account will be able to see all of your data including
             account information, transactions, bills, and budget categories. Only

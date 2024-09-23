@@ -29,6 +29,9 @@
       "@components": [
         "src/components/index.ts"
       ],
+      "@components/*": [
+        "src/components/*"
+      ],
       "@modals": [
         "src/modals/index.ts"
       ],

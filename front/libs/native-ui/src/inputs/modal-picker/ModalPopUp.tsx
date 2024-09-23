@@ -91,7 +91,7 @@ function ModalPopUp<O extends PickerOption, TMultiple extends boolean>(
           {header &&
             <>
               <Text variant='bold' fontSize={18} style={styles.header}>{header}</Text>
-              <Seperator variant='s' backgroundColor='menuSeperator' />
+              <Seperator variant='s' backgroundColor='modalSeperator' />
             </>
           }
           {searchable &&
@@ -149,7 +149,7 @@ function ModalPopUp<O extends PickerOption, TMultiple extends boolean>(
                         </View>
                       </View>
                       {index !== (options?.length || 0) - 1 &&
-                        <Seperator variant='bare' backgroundColor='menuSeperator' />}
+                        <Seperator variant='bare' backgroundColor='modalSeperator' />}
                     </TouchableOpacity>
                   )
                 }
@@ -175,7 +175,7 @@ function ModalPopUp<O extends PickerOption, TMultiple extends boolean>(
                         {selected && <Icon icon={Check} color='blueButton' strokeWidth={2} />}
                       </View>
                     </TouchableOpacity>
-                    {index !== (options?.length || 0) - 1 && <Seperator variant='bare' backgroundColor='menuSeperator' />}
+                    {index !== (options?.length || 0) - 1 && <Seperator variant='bare' backgroundColor='modalSeperator' />}
                   </>
                 );
               })}

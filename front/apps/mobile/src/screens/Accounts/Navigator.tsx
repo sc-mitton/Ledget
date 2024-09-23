@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { BackHeader } from '@ledget/native-ui';
 import { AccountsStackParamList } from '@types';
 import { useCardStyleInterpolator, useModifiedDefaultModalStyleInterpolator } from '@/hooks';
-import { AccountsPicker } from '@/modals';
+import { AccountsPicker, CardPicker } from '@/modals';
 import AccountTabs from './AccountScreens';
 import Transaction from '../Transaction/Screen';
 
@@ -38,6 +38,7 @@ const Screen = () => {
           gestureResponseDistance: 70,
           cardStyleInterpolator: modalStyleInterpolator
         }}>
+        <Stack.Screen name='PickerCard' component={CardPicker} />
         <Stack.Screen name='PickAccount' component={AccountsPicker} />
       </Stack.Group>
     </Stack.Navigator>

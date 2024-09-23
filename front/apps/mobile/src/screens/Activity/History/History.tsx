@@ -128,8 +128,7 @@ const Transactions = (props: ModalScreenProps<'Activity'> & { showFilters: React
               <View style={styles.seperatorContainer}>
                 <Seperator
                   backgroundColor={
-                    index === transactionsData.length - 1 ? 'transparent' :
-                      mode === 'light' ? 'menuSeperator' : 'lightseperator'} />
+                    index === transactionsData.length - 1 ? 'transparent' : 'modalSeperator'} />
               </View>
             </View>
           )}

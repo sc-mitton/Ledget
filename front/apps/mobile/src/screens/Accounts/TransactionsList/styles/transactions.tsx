@@ -3,25 +3,29 @@ import { StyleSheet } from "react-native";
 export default StyleSheet.create({
   boxContainer: {
     position: 'absolute',
-    left: 16,
-    right: 16,
+    left: 0,
+    right: 0,
     bottom: 0
+  },
+  mainBackgroundBox: {
+    paddingHorizontal: 16
   },
   box: {
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     width: '100%',
     height: '100%',
+    position: 'relative',
   },
   dragBar: {
-    width: 64,
-    height: 5,
+    width: 54,
+    height: 4.5,
     borderRadius: 5,
     position: 'absolute',
-    top: 10,
+    top: 8,
     left: '50%',
     transform: [
-      { translateX: -32 },
+      { translateX: -27 },
       { translateY: -1.5 }
     ]
   },
@@ -36,10 +40,12 @@ export default StyleSheet.create({
     flexGrow: 1,
     paddingHorizontal: 20,
     marginHorizontal: 4,
+    marginVertical: 8,
   },
   transactionsScrollView: {
     paddingRight: 20,
     paddingLeft: 64,
+    paddingTop: 4,
   },
   sectionHeader: {
     marginLeft: -48,
@@ -52,7 +58,7 @@ export default StyleSheet.create({
   transactionRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 3,
+    marginVertical: 5,
     alignItems: 'center'
   },
   nameContainer: {
@@ -78,5 +84,11 @@ export default StyleSheet.create({
   rightColumn: {
     flexGrow: 1,
     alignItems: 'flex-end',
+  },
+  emptyBoxContainer: {
+    top: 24,
+    height: '80%',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });

@@ -23,6 +23,7 @@
     "metro-config": "*",
     "react": "18.2.0",
     "react-native": "*",
+    "react-native-color-matrix-image-filters": "*",
     "react-native-gesture-handler": "*",
     "react-native-outside-press": "*",
     "react-native-pager-view": "*",
@@ -96,7 +97,9 @@
     "dequal": "*",
     "react-native-shimmer": "*",
     "victory-native": "*",
-    "@shopify/react-native-skia": "*"
+    "@shopify/react-native-skia": "*",
+    "react-native-reanimated-carousel": "*",
+    "react-native-draggable-grid": "*"
   },
   "devDependencies": {}
 }

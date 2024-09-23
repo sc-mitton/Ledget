@@ -124,7 +124,7 @@ const Filters = (props: FiltersP) => {
           ))}
         </ScrollView>
       </View>
-      <Seperator variant='bare' backgroundColor='menuSeperator' />
+      <Seperator variant='bare' backgroundColor='modalSeperator' />
     </>
   )
 }

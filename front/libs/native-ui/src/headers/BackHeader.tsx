@@ -6,7 +6,6 @@ import { Box } from '../restyled/Box';
 import { BackButton } from '../buttons/back-button/BackButton';
 import { Text } from '../restyled/Text';
 import { Seperator } from '../restyled/Seperator';
-import { useEffect } from 'react';
 
 const { StatusBarManager } = NativeModules;
 
@@ -32,7 +31,7 @@ export function BackHeader(props: StackHeaderProps & { pagesWithTitle?: string[]
           {route.name}
         </Text>}
       <View style={styles.seperator}>
-        <Seperator variant='bare' height={2} backgroundColor='screenHeader' />
+        <Seperator variant='bare' height={2} backgroundColor='mainScreenSeperator' />
       </View>
       <View style={styles.menuContainer}>
         {options.headerRight && options.headerRight({})}

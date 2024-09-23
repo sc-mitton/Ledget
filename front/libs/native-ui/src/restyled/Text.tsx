@@ -71,9 +71,11 @@ export const InputLabel = (props: TextProps) => {
 export const DollarCents = ({
   value = 0,
   withCents = true,
+  showSign = true,
   ...rest
 }: {
   value: string | number;
+  showSign?: boolean;
   withCents?: boolean;
 } & RestyledColorProps) => {
   let str = formatCurrency(typeof value === 'string' ? value.replace(/^-/, '') : Math.abs(value));
@@ -88,7 +90,7 @@ export const DollarCents = ({
           {...props}
           lineHeight={((props as any).style[0]?.fontSize || 16) * 1.5}
         >
-          {`${isDebit ? '+' : ''}${str.split('.')[0]}`}
+          {`${isDebit && showSign ? '+' : ''}${str.split('.')[0]}`}
         </Text>
         {withCents && (
           <Text {...props}

@@ -78,7 +78,7 @@ export default function Email({ navigation, route }: LoginScreenProps<'Email'>) 
           <Seperator
             label='Or Sign In With'
             variant='l'
-            backgroundColor='darkerseperator'
+            backgroundColor='authScreenSeperator'
           />
           <View style={styles.socialButtons}>
             <Button variant='socialSignIn' onPress={() => { }}>

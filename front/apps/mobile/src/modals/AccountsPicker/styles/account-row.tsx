@@ -48,6 +48,9 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     opacity: .6
   },
+  seperator: {
+    paddingLeft: 40,
+  }
 });
 
 export default styles;

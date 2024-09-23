@@ -56,7 +56,7 @@ const Screen = ({ navigation, route }: ConnectionsScreenProps<'Connection'>) => 
                   key={`${account.id}name`}
                   style={styles.cell}
                   borderBottomWidth={1}
-                  borderBottomColor={i !== plaidItem?.accounts?.length - 1 ? 'lightseperator' : 'transparent'}
+                  borderBottomColor={i !== plaidItem?.accounts?.length - 1 ? 'nestedContainerSeperator' : 'transparent'}
                 >
                   <Text>{account.name?.length || 0 > 20 ? `${account.name?.slice(0, 20)}...` : account.name}</Text>
                 </Box>))}
@@ -65,7 +65,7 @@ const Screen = ({ navigation, route }: ConnectionsScreenProps<'Connection'>) => 
               {plaidItem?.accounts?.map((account, i) => (
                 <Box
                   key={`${account.id}mask`}
-                  borderBottomColor={i !== plaidItem?.accounts?.length - 1 ? 'lightseperator' : 'transparent'}
+                  borderBottomColor={i !== plaidItem?.accounts?.length - 1 ? 'nestedContainerSeperator' : 'transparent'}
                   borderBottomWidth={1}
                   style={[styles.cell, styles.maskCell]}
                 >
@@ -79,7 +79,7 @@ const Screen = ({ navigation, route }: ConnectionsScreenProps<'Connection'>) => 
                   key={`${account.id}type`}
                   style={[styles.cell, styles.typeCell]}
                   borderBottomWidth={1}
-                  borderBottomColor={i !== plaidItem?.accounts?.length - 1 ? 'lightseperator' : 'transparent'}
+                  borderBottomColor={i !== plaidItem?.accounts?.length - 1 ? 'nestedContainerSeperator' : 'transparent'}
                 >
                   <Text color='secondaryText' fontSize={14}>{account.type}</Text>
                 </Box>))}

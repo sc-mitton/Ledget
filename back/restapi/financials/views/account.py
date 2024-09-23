@@ -107,7 +107,6 @@ class AccountsViewSet(ViewSet):
 
         trends = self._get_balance_trend(accounts, days)
         response_data = {'days': days, 'trends': trends}
-        print('trends', response_data)
 
         return Response(response_data, HTTP_200_OK)
 

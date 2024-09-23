@@ -71,7 +71,7 @@ export const darkTheme = createTheme({
     bottomNavBackground: palette.gray850,
     androidNavBar: palette.gray850,
     bottomNavCover: `hsl(${grayH}, ${grayS}%, 10%)`,
-    nestedContainer: `hsl(${grayH}, ${grayS}%, 9%)`,
+    nestedContainer: `hsl(${grayH}, ${grayS}%, 10%)`,
     inputBackground: palette.gray800,
     tabNavPill: palette.blue800,
     avatar: palette.gray800,
@@ -82,7 +82,8 @@ export const darkTheme = createTheme({
     newTransaction: palette.gray750,
     contextMenu: palette.gray700,
     toast: palette.gray850,
-    blueNestedContainer: palette.gray850.replace(`${grayS}`, `${grayS + 10}`),
+    creditCardGradientStart: palette.gray700.replace(`${grayS}`, `${grayS + 15}`),
+    creditCardGradientEnd: palette.gray750.replace(`${grayS}`, `${grayS + 15}`),
 
     // Borders
     inputBorder: palette.gray750,
@@ -92,14 +93,15 @@ export const darkTheme = createTheme({
     focusedInputBorderSecondary: palette.blue800,
     tabNavPillBorder: 'transparent',
     bottomNavBorder: palette.gray750,
-    nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 10%)`,
+    nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 11%)`,
     tabNavBorder: palette.gray800,
     newTransactionBorder: palette.gray700,
     contextMenuBorder: palette.gray650,
     toastBorder: palette.gray800,
     modalBorder: palette.gray800,
     contextMenuDivider: palette.gray600,
-    blueNestedContainerBorder: palette.gray750.replace(`${grayS}`, `${grayS + 10}`),
+    creditCardBorderStart: palette.gray700.replace(`${grayS}`, `${grayS + 15}`),
+    creditCardBorderStop: palette.gray600.replace(`${grayS}`, `${grayS + 15}`),
 
     // Shadows
     navShadow: palette.gray900,
@@ -110,6 +112,7 @@ export const darkTheme = createTheme({
     logoShadow: palette.gray900,
     newTransactionShadow: Platform.OS === 'android' ? palette.gray900 : palette.gray850,
     menuShadowColor: palette.gray900,
+    creditCardShadow: palette.gray900,
 
     // Icons
     activeIcon: palette.blueSat,
@@ -127,22 +130,22 @@ export const darkTheme = createTheme({
     focusedText: palette.blueSat,
     blueText: palette.blue100,
     blueTextSecondary: palette.blue50.replace(`${blueS}`, `${blueS - 10}`),
-    faintBlueText: palette.blue200.replace(`${blueS}`, `${blueS - 20}`),
+    faintBlueText: palette.blue400.replace(`${blueS}`, `${blueS - 20}`),
     placeholderText: palette.offWhite4,
     buttonLabel: palette.white,
     greenText: palette.greenText,
 
     // Buttons
-    lightBlueButton: palette.blue700,
-    lightBlueButtonBorder: palette.blue600,
+    lightBlueButton: palette.blue800,
+    lightBlueButtonBorder: palette.blue700,
     blueButton: palette.blue500,
     blueButtonBorder: palette.blue400,
     lightGrayButton: palette.gray800,
     darkGrayButton: palette.gray800,
     grayButton: palette.gray850,
+    grayButtonBorder: palette.gray800,
     mediumGrayButton: palette.gray700,
     mediumGrayButtonBorder: palette.gray650,
-    grayButtonBorder: palette.gray800,
     borderedGrayButton: palette.gray700,
     dragBar: palette.gray750,
 
@@ -161,10 +164,12 @@ export const darkTheme = createTheme({
     disabledSwitchCrib: palette.gray600,
 
     // Seperators
-    darkerseperator: palette.gray750,
-    lightseperator: palette.gray850,
-    menuSeperator: palette.gray800,
-    blueseperator: palette.blue400,
+    seperator: palette.gray800,
+    modalSeperator: palette.gray800,
+    menuSeperator: palette.gray650,
+    mainScreenSeperator: palette.gray850,
+    nestedContainerSeperator: palette.gray800,
+    authScreenSeperator: palette.gray750,
 
     // Misc
     alert: palette.red,
@@ -174,6 +179,9 @@ export const darkTheme = createTheme({
     grayIcon: palette.gray100,
     scrollbar: palette.gray750,
     transactionShimmer: palette.gray800,
-    screenHeader: palette.gray750
+    screenHeader: palette.gray800,
+
+    blueChartGradientStart: palette.blue900.replace(`${blueS}`, `${blueS - 10}`),
+    blueChartColor: palette.blue500
   }
 });

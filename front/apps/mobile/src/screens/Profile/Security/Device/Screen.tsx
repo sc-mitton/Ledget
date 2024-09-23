@@ -82,7 +82,7 @@ const Device = ({ navigation, route }: SecurityScreenProps<'Device'>) => {
           </View>
           <Box variant='nestedContainer' style={styles.sessions}>
             <Text style={styles.boxHeader}>Sessions</Text>
-            <Seperator />
+            <Seperator backgroundColor='nestedContainerSeperator' />
             <ScrollView
               style={styles.sessionsScroll}>
               {device?.[1]

@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
   accountsPickerButton: {
     width: '100%',
     marginTop: 16,
-    marginBottom: 16,
+    marginBottom: 10,
     paddingLeft: 24,
     paddingRight: 24,
     flexDirection: 'row',

@@ -88,7 +88,7 @@ export default function Nav({ state, descriptors, navigation }: Props) {
         intensity={
           mode === 'dark'
             ? Platform.OS === 'ios' ? 40 : 20
-            : 20
+            : 40
         }
         experimentalBlurMethod={'dimezisBlurView'}
         tint={mode === 'dark' ? 'dark' : 'light'}

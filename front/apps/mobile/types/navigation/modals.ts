@@ -3,7 +3,7 @@ import type { CompositeScreenProps } from '@react-navigation/native';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
 import type { BottomTabNavParamList, RootStackParamList } from './root';
-import type { Transaction, AccountType } from '@ledget/shared-features';
+import type { Transaction, Account } from '@ledget/shared-features';
 
 export type ModalStackParamList = {
   Activity: {
@@ -23,6 +23,9 @@ export type ModalStackParamList = {
   ChangePassword: undefined;
   Split: {
     transaction: Transaction
+  };
+  CardPicker: {
+    selectedCard: Account;
   }
 };
 
