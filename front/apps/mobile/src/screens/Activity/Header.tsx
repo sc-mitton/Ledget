@@ -35,7 +35,7 @@ const Header = ({ index, setIndex }: { index: number, setIndex: (index: number) 
             </View>
           </View>
         </Button>
-        <Box backgroundColor='modalSeperator' variant='divider' />
+        <Box backgroundColor='menuSeperator' variant='divider' />
         <Button
           label="History"
           labelPlacement='left'
