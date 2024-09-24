@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { View } from 'react-native';
 import { createStackNavigator } from "@react-navigation/stack";
 import { Users, Settings as SettingsIcon, Shield, LogOut, Link } from 'geist-native-icons';
@@ -20,6 +21,10 @@ const Stack = createStackNavigator<ProfileStackParamList>();
 
 function Profile(props: ProfileScreenProps<'Main'>) {
   const { data: user } = useGetMeQuery();
+
+  useEffect(() => {
+    props.navigation.navigate('Modals', { screen: 'ConfirmDeletePlaidItem', params: { id: '1' } });
+  }, []);
 
   return (
     <Box variant='screen'>

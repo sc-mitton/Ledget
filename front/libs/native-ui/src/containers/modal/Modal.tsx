@@ -24,7 +24,7 @@ const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([backgroun
 
 export interface ModalProps extends RestyleProps {
   children: React.ReactNode;
-  position?: 'bottom' | 'top' | 'bottomFloat';
+  position?: 'bottom' | 'top' | 'bottomFloat' | 'centerFloat';
   hasExitButton?: boolean
   hasOverlayExit?: boolean
   onClose?: () => void

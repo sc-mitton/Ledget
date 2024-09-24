@@ -3,12 +3,17 @@ import { StyleSheet } from "react-native";
 export default StyleSheet.create({
   splitButtons: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
     gap: 10,
+    marginTop: -12,
+    marginBottom: -32
   },
   splitButton: {
     flex: 1,
-    marginTop: 12,
-    marginBottom: -24
+  },
+  header: {
+    gap: 8,
+    marginTop: 8,
   }
 });

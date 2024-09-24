@@ -7,7 +7,7 @@ import { LogOut } from 'geist-native-icons';
 
 import styles from './styles/logout';
 import sharedStyles from './styles/shared';
-import { Text, Header, Button, SubmitButton, Modal, Icon } from '@ledget/native-ui';
+import { Text, Header2, Button, SubmitButton, Modal, Icon, Seperator, Box } from '@ledget/native-ui';
 import { selectSession, apiSlice, setSession } from '@ledget/shared-features';
 import { useAppSelector, useAppDispatch } from '@hooks';
 import { IOS_ORY_API_URI, ANDROID_ORY_API_URI } from '@env';
@@ -30,9 +30,9 @@ const Logout = (props: ModalScreenProps<'Logout'>) => {
     }
   }, []);
 
-  useEffect(() => {
-    seconds <= 0 && setQuedLogout(true);
-  }, [seconds]);
+  // useEffect(() => {
+  //   seconds <= 0 && setQuedLogout(true);
+  // }, [seconds]);
 
   useEffect(() => {
     if (quedLogout) {
@@ -55,22 +55,26 @@ const Logout = (props: ModalScreenProps<'Logout'>) => {
   }, [quedLogout]);
 
   return (
-    <Modal position='bottomFloat'>
-      <View style={styles.text}>
-        <Header>Sign Out</Header>
+    <Modal position='centerFloat'>
+      <View style={sharedStyles.header}>
+        <Text variant='bold' fontSize={20}>Sign Out</Text>
         <Text color='secondaryText'>{`You will be automatically logged out in ${seconds} seconds`}</Text>
       </View>
+      <Seperator backgroundColor='modalSeperator' variant='m' />
       <View style={sharedStyles.splitButtons}>
         <View style={sharedStyles.splitButton}>
           <Button
+            backgroundColor='transparent'
             onPress={() => props.navigation.goBack()}
             variant='mediumGrayMain'
             label='Cancel'
             textColor='secondaryText'
           />
         </View>
+        <Box backgroundColor='quinaryText' variant='divider' />
         <View style={sharedStyles.splitButton}>
           <SubmitButton
+            backgroundColor='transparent'
             onPress={() => setQuedLogout(true)}
             isSubmitting={isLoggingOut}
             variant='mediumGrayMain'

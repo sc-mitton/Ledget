@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { View } from 'react-native'
 
 import sharedStyles from './styles/shared';
-import { Text, Header2, Button, SubmitButton, Box, Modal } from '@ledget/native-ui'
+import { Text, Seperator, Button, SubmitButton, Box, Modal } from '@ledget/native-ui'
 import { useDeletePlaidItemMutation } from '@ledget/shared-features';
 import { ModalScreenProps } from '@types';
 
@@ -25,21 +25,31 @@ const ConfirmDeletePlaidItem = (props: ModalScreenProps<'ConfirmDeletePlaidItem'
   }, [isDeleteSuccess]);
 
   return (
-    <Modal position='bottomFloat'>
-      <Header2>Are you sure?</Header2>
-      <Box marginBottom='l'>
+    <Modal position='centerFloat'>
+      <View style={sharedStyles.header}>
+        <Text fontSize={20} variant='bold'>Disconnect</Text>
         <Text color='secondaryText'>This will remove the connection to your bank account and all of the data associated with this bank.
           <Text variant='bold'> This action cannot be undone.</Text>
         </Text>
-      </Box>
+      </View>
+      <Seperator variant='m' backgroundColor='modalSeperator' />
       <View style={sharedStyles.splitButtons}>
         <View style={sharedStyles.splitButton}>
-          <Button variant='mediumGrayMain' onPress={() => props.navigation.goBack()} label='Cancel' />
+          <Button
+            variant='mediumGrayMain'
+            onPress={() => props.navigation.goBack()}
+            label='Cancel'
+            textColor='secondaryText'
+            backgroundColor='transparent'
+          />
         </View>
+        <Box variant='divider' backgroundColor='quinaryText' />
         <View style={sharedStyles.splitButton}>
           <SubmitButton
             variant='main'
-            label='Ok'
+            label='Disconnect'
+            textColor='alert'
+            backgroundColor='transparent'
             isSubmitting={isDeletingItem}
             isSuccess={isDeleteSuccess}
             onPress={() => deletePlaidItem(props.route.params.id)} />

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { View } from 'react-native'
 
 import sharedStyles from './styles/shared';
-import { Text, Header2, Modal, Button, SubmitButton, Box } from '@ledget/native-ui'
+import { Text, Modal, Button, SubmitButton, Box, Seperator } from '@ledget/native-ui'
 import { useGetCoOwnerQuery, useDeleteCoOwnerMutation } from '@ledget/shared-features';
 import { ModalScreenProps } from '@types';
 
@@ -26,23 +26,34 @@ const ConfirmRemoveCoOwner = (props: ModalScreenProps<'ConfirmRemoveCoowner'>) =
   }, [isDeleteSuccess]);
 
   return (
-    <Modal position='bottomFloat'>
-      <Header2>Are you sure?</Header2>
-      <Box marginBottom='l'>
+    <Modal position='centerFloat'>
+      <View style={sharedStyles.header}>
+        <Text variant='bold' fontSize={20}>
+          Remove From Account
+        </Text>
         <Text color='tertiaryText'>
           This action will remove {coOwner?.name.first} from your account. All of their data
           will be deleted.
           <Text variant='bold' color='secondaryText'> This action cannot be undone.</Text>
         </Text>
-      </Box>
+      </View>
+      <Seperator variant='m' backgroundColor='modalSeperator' />
       <View style={sharedStyles.splitButtons}>
         <View style={sharedStyles.splitButton}>
-          <Button variant='mediumGrayMain' onPress={props.navigation.goBack} label='Cancel' />
+          <Button
+            variant='mediumGrayMain'
+            onPress={props.navigation.goBack}
+            backgroundColor='transparent'
+            label='Cancel'
+          />
         </View>
+        <Box variant='divider' backgroundColor='quinaryText' />
         <View style={sharedStyles.splitButton}>
           <SubmitButton
             variant='main'
-            label='Ok'
+            label='Remove'
+            textColor='alert'
+            backgroundColor='transparent'
             isSubmitting={isDeletingItem}
             isSuccess={isDeleteSuccess}
             onPress={() => deleteCoOwner()} />

@@ -24,6 +24,15 @@ export default StyleSheet.create({
     borderRadius: 16,
     padding: 16,
   },
+  centerFloatModal: {
+    position: 'absolute',
+    left: 16,
+    right: 16,
+    top: '50%',
+    transform: [{ translateY: '-50%' }],
+    borderRadius: 16,
+    padding: 16,
+  },
   topModal: {
     position: 'absolute',
     top: 0,
