@@ -99,11 +99,10 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
             <DollarCents
               fontSize={22}
               variant='bold'
-              color='secondaryText'
               value={accounts?.reduce((acc, account) =>
                 Big(acc).plus(account.balances.current), Big(0)).times(100).toNumber() || 0}
             />
-            <Text color='tertiaryText' fontSize={15} style={styles.totalBalanceText}>
+            <Text color='secondaryText' fontSize={15} style={styles.totalBalanceText}>
               total card balance
             </Text>
           </View>
@@ -142,7 +141,7 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
                 modeConfig={{
                   parallaxAdjacentItemScale: 0.8,
                   parallaxScrollingScale: 1,
-                  parallaxScrollingOffset: 0,
+                  parallaxScrollingOffset: 3,
                 }}
               />
             </View>

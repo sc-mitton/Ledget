@@ -189,9 +189,9 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
       </View>
       <View style={styles.chartHeader}>
         <View style={styles.headerTitle}>
-          <Text color='tertiaryText'>Total Balance</Text>
+          <Text color='secondaryText'>Total Balance</Text>
           <View style={styles.trendContainer}>
-            <DollarCents showSign={false} color='tertiaryText' value={calculatedTrend} withCents={false} />
+            <DollarCents showSign={false} color='secondaryText' value={calculatedTrend} withCents={false} />
             <View style={styles.trendIcon}>
               <Icon
                 color={calculatedTrend < 0 ? 'alert' : 'greenText'}
@@ -199,7 +199,7 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
             </View>
           </View>
         </View>
-        <DollarCents value={totalBalance} fontSize={22} variant='bold' color='secondaryText' />
+        <DollarCents value={totalBalance} fontSize={22} variant='bold' />
       </View>
       <View style={styles.graphContainer}>
         <CartesianChart

@@ -7,6 +7,7 @@ import {
   TwoPointConicalGradient,
   vec
 } from "@shopify/react-native-skia";
+import { Grayscale } from 'react-native-color-matrix-image-filters';
 
 import styles from './styles';
 import { Account } from "@ledget/shared-features";
@@ -29,7 +30,7 @@ export const Card = (props: Props) => {
   const { data: plaidItemsData } = useGetPlaidItemsQuery();
   const { size = 'regular', hasShadow = true } = props;
 
-  const width = size === 'regular' ? CARD_WIDTH : 150
+  const width = size === 'regular' ? CARD_WIDTH : 155
   const height = size === 'regular'
     ? CARD_HEIGHT
     : width * (CARD_HEIGHT / CARD_WIDTH)
@@ -77,20 +78,22 @@ export const Card = (props: Props) => {
           />
           <Box borderRadius={12} style={[styles.card, (styles as any)[size + 'CardPadding']]}>
             <Box
-              shadowColor={'creditCardShadow'}
+              shadowColor={'logoShadow'}
               shadowOffset={{ width: 0, height: 1 }}
-              shadowOpacity={.3}
+              shadowOpacity={.1}
               shadowRadius={1}
               style={styles.logo}>
-              <Image
-                style={{ width: 20, height: 20 }}
-                resizeMode='contain'
-                source={{
-                  uri: `data:image/png;base64,${plaidItemsData?.find((p) =>
-                    p.accounts.find((account) => account.id === props.account?.account_id))?.institution?.logo
-                    }`
-                }}
-              />
+              <Grayscale>
+                <Image
+                  style={{ width: 20, height: 20 }}
+                  resizeMode='contain'
+                  source={{
+                    uri: `data:image/png;base64,${plaidItemsData?.find((p) =>
+                      p.accounts.find((account) => account.id === props.account?.account_id))?.institution?.logo
+                      }`
+                  }}
+                />
+              </Grayscale>
             </Box>
             <View>
               <Text

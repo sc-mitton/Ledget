@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   cardsContainer: {
     flex: 1,
     position: 'relative',
-    paddingHorizontal: 8,
+    padding: 8
   },
   gridContainer: {
     paddingVertical: 0,
