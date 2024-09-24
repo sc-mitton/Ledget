@@ -29,7 +29,7 @@ const Row = (props: Partial<Transaction> & { section: Section, index: number }) 
           </Text>
         </View>
         <View style={styles.bottomRow}>
-          <Text color='quaternaryText' fontSize={15}>
+          <Text color='tertiaryText' fontSize={15}>
             {dayjs(props.date).format('M/D/YYYY')}
           </Text>
         </View>

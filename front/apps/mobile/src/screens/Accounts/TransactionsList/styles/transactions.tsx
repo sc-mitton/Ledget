@@ -58,8 +58,7 @@ export default StyleSheet.create({
   transactionRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 5,
-    alignItems: 'center'
+    marginVertical: 12,
   },
   nameContainer: {
     gap: 4,
@@ -79,10 +78,11 @@ export default StyleSheet.create({
     borderRadius: 12,
   },
   leftColumn: {
-    gap: 2,
+    gap: 0,
   },
   rightColumn: {
     flexGrow: 1,
+    marginTop: 2,
     alignItems: 'flex-end',
   },
   emptyBoxContainer: {

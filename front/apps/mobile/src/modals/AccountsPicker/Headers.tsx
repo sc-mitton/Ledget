@@ -3,9 +3,9 @@ import { ArrowDown, ArrowUp } from "geist-native-icons";
 
 import styles from "./styles/table-headers";
 import { Button, Icon } from "@ledget/native-ui";
-import { AccountsScreenProps } from "@types";
+import { ModalScreenProps } from "@types";
 
-const Headers = (props: AccountsScreenProps<'PickAccount'>) => {
+const Headers = (props: ModalScreenProps<'PickAccount'>) => {
   return (
     <View style={styles.tableHeaders}>
       <Button

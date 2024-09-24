@@ -29,23 +29,6 @@ export type AccountsStackParamList = {
       rename?: boolean
     },
     from?: 'History' | 'NeedsConfirmation' | 'Accounts'
-  },
-  PickAccount: {
-    accountType: AccountType
-    currentAccount?: string
-    options?: {
-      title?: string,
-      reorder?: boolean,
-      order?: 'balance-asc' | 'balance-desc' | 'name-asc' | 'name-desc'
-    }
-  },
-  PickerCard: {
-    currentAccount?: string
-    options?: {
-      title?: string,
-      reorder?: boolean,
-      order?: 'balance-asc' | 'balance-desc' | 'name-asc' | 'name-desc'
-    }
   }
 };
 

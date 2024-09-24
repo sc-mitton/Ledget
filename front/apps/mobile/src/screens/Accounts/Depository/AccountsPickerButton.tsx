@@ -13,8 +13,11 @@ const Button = (props: AccountsTabsScreenProps<any> & { account?: Account }) => 
       style={styles.accountsPickerButton}
       onPress={() => {
         props.account && props.navigation.navigate(
-          'PickAccount',
-          { accountType: props.account?.type, currentAccount: props.account.account_id }
+          'Modals',
+          {
+            screen: 'PickAccount',
+            params: { accountType: props.account?.type, currentAccount: props.account.account_id }
+          }
         )
       }}>
       <View style={styles.accountsPickerButtonTop}>

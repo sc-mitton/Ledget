@@ -15,38 +15,52 @@ import { useGetPlaidItemsQuery } from "@ledget/shared-features";
 import { useAppearance } from '@/features/appearanceSlice';
 import { CARD_WIDTH, CARD_HEIGHT } from './constants';
 
-export const Card = (props: { account?: Account, onPress?: () => void, skeleton?: boolean }) => {
+interface Props {
+  account?: Account;
+  onPress?: () => void;
+  skeleton?: boolean;
+  size?: 'small' | 'regular'
+  hasShadow?: boolean
+}
+
+export const Card = (props: Props) => {
   const theme = useTheme();
   const { mode } = useAppearance();
   const { data: plaidItemsData } = useGetPlaidItemsQuery();
+  const { size = 'regular', hasShadow = true } = props;
+
+  const width = size === 'regular' ? CARD_WIDTH : 150
+  const height = size === 'regular'
+    ? CARD_HEIGHT
+    : width * (CARD_HEIGHT / CARD_WIDTH)
 
   return (
     <Box
-      shadowColor='creditCardShadow'
+      shadowColor={hasShadow ? 'creditCardShadow' : 'transparent'}
       shadowOpacity={mode === 'dark' ? 1 : .7}
       shadowRadius={mode === 'dark' ? 12 : 7}
       shadowOffset={{ width: 0, height: 12 }}
       elevation={7}
       style={props.skeleton ? styles.skeletonCardTouchableContainer : styles.touchableContanier}
     >
-      <View style={styles.cardBorder}>
+      <View style={[styles.cardBorder, (styles as any)[size + 'CardBorder']]}>
         <Canvas style={{ flex: 1 }}>
           <Rect x={0} y={0} width={256} height={256}>
             <TwoPointConicalGradient
-              start={vec(CARD_WIDTH / 2, CARD_HEIGHT / 2)}
+              start={vec(width / 2, height / 7)}
               startR={120}
-              end={vec(0, CARD_HEIGHT / 5)}
+              end={vec(0, 0)}
               endR={30}
               colors={[
-                theme.colors.creditCardBorderStart,
                 theme.colors.creditCardBorderStop,
+                theme.colors.creditCardBorderStart
               ]}
             />
           </Rect>
         </Canvas>
       </View>
       <TouchableHighlight
-        style={styles.touchable}
+        style={[styles.touchable, { width, height }]}
         activeOpacity={.97}
         underlayColor={theme.colors?.mainText}
         onPress={props.onPress}
@@ -61,9 +75,9 @@ export const Card = (props: { account?: Account, onPress?: () => void, skeleton?
             start={[0, 0]}
             end={[1, 1]}
           />
-          <Box borderRadius={12} style={styles.card}>
+          <Box borderRadius={12} style={[styles.card, (styles as any)[size + 'CardPadding']]}>
             <Box
-              shadowColor="mainText"
+              shadowColor={'creditCardShadow'}
               shadowOffset={{ width: 0, height: 1 }}
               shadowOpacity={.3}
               shadowRadius={1}
@@ -79,14 +93,16 @@ export const Card = (props: { account?: Account, onPress?: () => void, skeleton?
               />
             </Box>
             <View>
-              <Text color='whiteText'>
+              <Text
+                fontSize={size === 'regular' ? 16 : 14}
+                color='whiteText'>
                 {(props.account?.name.length || 0) > 16
                   ? props.account?.name.slice(0, 16) + '...'
                   : props.account?.name}
               </Text>
               <DollarCents
                 color='whiteText'
-                fontSize={18}
+                fontSize={size === 'regular' ? 18 : 16}
                 value={props.account?.balances.current || 0} />
             </View>
             <View style={styles.mask}>

@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import { CARD_HEIGHT, CARD_WIDTH } from './constants';
 
 const styles = StyleSheet.create({
   touchableContanier: {
@@ -14,40 +13,53 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardBorder: {
-    top: 0,
-    left: -2,
-    bottom: 0,
-    right: -2,
     borderRadius: 13,
     zIndex: -1,
     position: 'absolute',
     overflow: 'hidden',
     opacity: .8
   },
+  smallCardBorder: {
+    top: -.5,
+    left: -.5,
+    bottom: -.5,
+    right: -.5,
+  },
+  regularCardBorder: {
+    top: 0,
+    left: -2,
+    bottom: 0,
+    right: -2,
+  },
   touchable: {
-    width: CARD_WIDTH,
-    height: CARD_HEIGHT,
     borderRadius: 12,
     position: 'relative',
     overflow: 'hidden',
   },
   cardContainer: {
-    flex: 1,
-    overflow: 'hidden'
+    flex: 1
   },
   card: {
     justifyContent: 'space-between',
+    flex: 1,
+    overflow: 'hidden'
+  },
+  smallCardPadding: {
+    paddingTop: 6,
+    paddingBottom: 5,
+    paddingRight: 10,
+    paddingLeft: 10,
+  },
+  regularCardPadding: {
     paddingTop: 8,
     paddingBottom: 6,
     paddingRight: 16,
     paddingLeft: 16,
-    flex: 1,
-    overflow: 'hidden'
   },
   logo: {
     position: 'absolute',
-    top: 12,
-    right: 12
+    top: 8,
+    right: 6
   },
   logoTint: {
     opacity: .9,

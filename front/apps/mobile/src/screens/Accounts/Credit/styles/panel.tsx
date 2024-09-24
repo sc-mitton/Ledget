@@ -32,16 +32,24 @@ const styles = StyleSheet.create({
     marginTop: 2,
     marginBottom: 12
   },
-  carousel: {
+  cardContainer: {
+    marginTop: 4
+  },
+  carouselContainer: {
     flexDirection: 'row',
-    marginTop: 8,
+    marginTop: 8
+  },
+  carousel: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%'
   },
   pageDots: {
     flexDirection: 'row',
     justifyContent: 'center',
     width: '100%',
     gap: 7,
-    transform: [{ translateY: -10 }]
+    transform: [{ translateY: -20 }]
   },
   dotContainer: {
     width: 5,

@@ -5,7 +5,7 @@ import DraggableFlatList, { ScaleDecorator, RenderItemParams, DragEndParams } fr
 import * as Haptics from 'expo-haptics';
 
 import styles from './styles/screen';
-import { AccountsScreenProps } from '@types';
+import { ModalScreenProps } from '@types';
 import { Box, Header2 } from '@ledget/native-ui';
 import { useUpdateAccountsMutation } from '@ledget/shared-features';
 import type { Account } from '@ledget/shared-features';
@@ -13,7 +13,7 @@ import Filters from './Filters';
 import AccountRow from './AccountRow';
 import TableHeaders from './Headers';
 
-const AccountPicker = (props: AccountsScreenProps<'PickAccount'>) => {
+const AccountPicker = (props: ModalScreenProps<'PickAccount'>) => {
   const [updateOrder] = useUpdateAccountsMutation();
   const theme = useTheme();
   const [isFiltered, setIsFiltered] = useState(false);

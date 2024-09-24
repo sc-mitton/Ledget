@@ -101,8 +101,8 @@ export const lightTheme = createTheme({
     modalBorder: palette.gray200,
     toastBorder: palette.gray100,
     contextMenuDivider: palette.gray200,
-    creditCardBorderStart: `hsl(${blueH}, 20%, 35%)`,
-    creditCardBorderStop: `hsl(${blueH}, 20%, 50%)`,
+    creditCardBorderStart: `hsl(${blueH}, 20%, 55%)`,
+    creditCardBorderStop: `hsl(${blueH}, 20%, 35%)`,
 
     // Shadows
     navShadow: palette.gray700,

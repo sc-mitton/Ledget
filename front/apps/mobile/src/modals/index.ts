@@ -9,4 +9,4 @@ export { default as RemoveAuthenticator } from './RemoveAuthenticator';
 export { default as ChangePassword } from './ChangePassword';
 export { default as SplitTransaction } from './SplitTransaction/Screen';
 export { default as AccountsPicker } from './AccountsPicker/Screen';
-export { default as CardPicker } from './CardPicker';
+export { default as CardPicker } from './CardPicker/CardPicker';

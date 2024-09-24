@@ -24,7 +24,7 @@ import { ArrowDown } from 'geist-native-icons';
 
 import styles from './styles/transactions';
 import { useLazyGetTransactionsQuery, useTransactionsSyncMutation } from '@ledget/shared-features';
-import { Box, defaultSpringConfig, Text, CustomSectionList, Seperator, Icon } from '@ledget/native-ui';
+import { Box, defaultSpringConfig, Text, CustomSectionList, Icon } from '@ledget/native-ui';
 import { EmptyBox } from '@ledget/media/native';
 import SkeletonTransactions from './SkeletonTransactions';
 import type { PTransactions, Section, ListState } from './types';
@@ -115,12 +115,6 @@ const Transactions = (props: PTransactions) => {
         }
       },
       onPanResponderRelease: (e, gs) => {
-        // if (Math.abs(gs.dy) < DRAG_THRESHOLD) {
-        //   scrollViewHeight.value = state.current === 'expanded'
-        //     ? withSpring(expandedHeight, defaultSpringConfig)
-        //     : withSpring(collapsedHeight, defaultSpringConfig)
-        //   props.onDrag && props.onDrag(0, state.current === 'expanded');
-        // }
         if (Math.abs(gs.dy) < DRAG_THRESHOLD) {
           top.value = state.current === 'expanded'
             ? withSpring(props.expandedTop, defaultSpringConfig)
@@ -255,11 +249,10 @@ const Transactions = (props: PTransactions) => {
               renderItem={({ item: transaction, index: i, section }) => (
                 <View style={{
                   marginTop: i === 0 && section.index === 0
-                    ? -1 * (sectionHeaderHeight + 22)
+                    ? -1 * (sectionHeaderHeight + 12)
                     : i === 0 ? -1 * sectionHeaderHeight : 0
                 }}
                 >
-                  <Seperator backgroundColor={(section.index === 0 && i === 0) ? 'transparent' : 'nestedContainerSeperator'} />
                   <TouchableOpacity
                     onPress={() => {
                       props.navigation.navigate(

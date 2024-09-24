@@ -100,8 +100,8 @@ export const darkTheme = createTheme({
     toastBorder: palette.gray800,
     modalBorder: palette.gray800,
     contextMenuDivider: palette.gray600,
-    creditCardBorderStart: palette.gray700.replace(`${grayS}`, `${grayS + 15}`),
-    creditCardBorderStop: palette.gray600.replace(`${grayS}`, `${grayS + 15}`),
+    creditCardBorderStart: palette.gray600.replace(`${grayS}`, `${grayS + 15}`),
+    creditCardBorderStop: palette.gray700.replace(`${grayS}`, `${grayS + 15}`),
 
     // Shadows
     navShadow: palette.gray900,

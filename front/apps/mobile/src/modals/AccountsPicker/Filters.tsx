@@ -4,7 +4,7 @@ import { ScrollView, View } from 'react-native';
 import styles from './styles/filters';
 import { Button, Seperator, Box } from '@ledget/native-ui';
 import { Account, useGetAccountsQuery } from '@ledget/shared-features';
-import { AccountsScreenProps } from '@types';
+import { ModalScreenProps } from '@types';
 
 interface Filter {
   label?: string,
@@ -13,7 +13,7 @@ interface Filter {
   group: string
 }
 
-interface FiltersP extends AccountsScreenProps<'PickAccount'> {
+interface FiltersP extends ModalScreenProps<'PickAccount'> {
   onChange: (selected?: Account[]) => void;
   onFiltered: (filtered: boolean) => void;
 }

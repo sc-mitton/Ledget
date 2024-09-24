@@ -13,11 +13,13 @@ import { AccountsTabsScreenProps } from '@types'
 import Transactions from '../TransactionsList/Transactions'
 import { Card } from '@components'
 import { CARD_WIDTH, CARD_HEIGHT } from '@components/card/constants'
+import { DefaultHeader, AccountHeader } from '../Header';
 
 export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
   const [bottomOfContentPos, setBottomOfContentPos] = useState(0)
   const [accounts, setAccounts] = useState<Account[]>()
   const [account, setAccount] = useState<Account>()
+  const [transactionsListExpanded, setTransactionsListExpanded] = useState(false)
 
   const ref = useRef<View>(null)
   const progress = useSharedValue<number>(0);
@@ -71,6 +73,18 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
     }
   }, [props.route.params?.account, accounts])
 
+  useEffect(() => {
+    if (transactionsListExpanded && account) {
+      props.navigation.setOptions({
+        header: () => <AccountHeader account={account} />
+      })
+    } else {
+      props.navigation.setOptions({
+        header: () => <DefaultHeader routeName={props.route.name} />
+      })
+    }
+  }, [transactionsListExpanded, account])
+
   return (
     <View style={styles.main}>
       <View
@@ -83,7 +97,9 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
         <View style={styles.totalBalanceContainer}>
           <View style={styles.totalBalance}>
             <DollarCents
-              fontSize={26}
+              fontSize={22}
+              variant='bold'
+              color='secondaryText'
               value={accounts?.reduce((acc, account) =>
                 Big(acc).plus(account.balances.current), Big(0)).times(100).toNumber() || 0}
             />
@@ -93,8 +109,11 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
           </View>
           <Button
             onPress={() => props.navigation.navigate(
-              'PickerCard',
-              { options: { title: 'Cards' }, currentAccount: account?.account_id })
+              'Modals',
+              {
+                screen: 'PickerCard',
+                params: { options: { title: 'Cards' }, currentAccount: account?.account_id }
+              })
             }
           >
             <Icon icon={Grid} strokeWidth={1.6} size={22} color='tertiaryText' />
@@ -103,23 +122,23 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
         {accounts
           ?
           <>
-            <View style={styles.carousel}>
+            <View style={styles.carouselContainer}>
               <Carousel
                 ref={carouselRef}
                 vertical={false}
                 snapEnabled={true}
                 mode='parallax'
                 data={accounts}
-                onProgressChange={(p) => {
-                  progress.value = p
-                }}
+                onProgressChange={(p) => { progress.value = p }}
                 renderItem={({ item }) => (
-                  <Card account={item} onPress={() =>
-                    props.navigation.navigate('AccountsTabs', { screen: 'Credit', params: { account: item } })} />
+                  <View style={styles.cardContainer}>
+                    <Card account={item} onPress={() =>
+                      props.navigation.navigate('AccountsTabs', { screen: 'Credit', params: { account: item } })} />
+                  </View>
                 )}
                 width={CARD_WIDTH}
                 onSnapToItem={(index) => { setCarouselIndex(index) }}
-                style={{ width: '100%', height: CARD_HEIGHT * 1.2, alignItems: 'center', justifyContent: 'center' }}
+                style={[{ height: CARD_HEIGHT * 1.3 }, styles.carousel]}
                 modeConfig={{
                   parallaxAdjacentItemScale: 0.8,
                   parallaxScrollingScale: 1,
@@ -140,6 +159,7 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
       </View>
       <Transactions
         collapsedTop={bottomOfContentPos}
+        onStateChange={(state) => { setTransactionsListExpanded(state === 'expanded' ? true : false) }}
         expandedTop={24}
         account={account}
         {...props}

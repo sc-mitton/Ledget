@@ -3,8 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import { BackHeader } from '@ledget/native-ui';
 import { AccountsStackParamList } from '@types';
-import { useCardStyleInterpolator, useModifiedDefaultModalStyleInterpolator } from '@/hooks';
-import { AccountsPicker, CardPicker } from '@/modals';
+import { useCardStyleInterpolator } from '@/hooks';
 import AccountTabs from './AccountScreens';
 import Transaction from '../Transaction/Screen';
 
@@ -12,7 +11,6 @@ const Stack = createStackNavigator<AccountsStackParamList>()
 
 const Screen = () => {
   const cardStyleInterpolator = useCardStyleInterpolator()
-  const modalStyleInterpolator = useModifiedDefaultModalStyleInterpolator()
 
   return (
     <Stack.Navigator id='accounts' initialRouteName='AccountsTabs'>
@@ -28,18 +26,6 @@ const Screen = () => {
           component={AccountTabs}
         />
         <Stack.Screen name='Transaction' component={Transaction} />
-      </Stack.Group>
-      <Stack.Group
-        screenOptions={{
-          presentation: 'modal',
-          headerShown: false,
-          gestureDirection: 'vertical',
-          gestureEnabled: true,
-          gestureResponseDistance: 70,
-          cardStyleInterpolator: modalStyleInterpolator
-        }}>
-        <Stack.Screen name='PickerCard' component={CardPicker} />
-        <Stack.Screen name='PickAccount' component={AccountsPicker} />
       </Stack.Group>
     </Stack.Navigator>
   )

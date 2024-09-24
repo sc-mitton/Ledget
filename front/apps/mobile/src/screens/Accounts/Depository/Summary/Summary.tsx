@@ -199,7 +199,7 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
             </View>
           </View>
         </View>
-        <DollarCents value={totalBalance} fontSize={26} />
+        <DollarCents value={totalBalance} fontSize={22} variant='bold' color='secondaryText' />
       </View>
       <View style={styles.graphContainer}>
         <CartesianChart
