@@ -435,7 +435,7 @@ const InfoTableInnerWindow = ({ item }: { item: Transaction }) => {
   useEffect(() => {
     if (accountsFetched) {
       const account = accountsData.accounts.find(
-        (acnt: any) => acnt.account_id === item?.account
+        (acnt: any) => acnt.id === item?.account
       );
       setInstitution(
         accountsData.institutions.find(

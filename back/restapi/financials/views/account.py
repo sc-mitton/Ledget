@@ -22,9 +22,9 @@ from core.clients import create_plaid_client
 from financials.models import Account, UserAccount, Transaction
 from financials.serializers.account import (
     InstitutionSerializer,
-    AccountSerializer,
     UserAccountSerializer,
-    AccountBalanceResponseSerializer
+    AccountSerializer,
+    PlaidBalanceSerializer
 )
 
 plaid_client = create_plaid_client()
@@ -114,16 +114,20 @@ class AccountsViewSet(ViewSet):
         '''Get all the account data belonging to a specific user'''
 
         accounts = self._get_users_accounts(include_institutions=True)
-        account_balances = self._fetch_plaid_account_data(accounts)
-        account_balances = AccountBalanceResponseSerializer(
-            account_balances.values(), many=True)
+        balance_data = self._fetch_plaid_account_data(accounts)
+        accounts_data = AccountSerializer(accounts, many=True).data
+        accounts_data = [
+            {**a, **balance_data.get(a['id'], {})}
+            for a in accounts_data
+        ]
 
         institution_data = {
             account.institution.id: InstitutionSerializer(account.institution).data
-            for account in accounts}
+            for account in accounts
+        }
 
         return Response({
-            'accounts': account_balances.data,
+            'accounts': accounts_data,
             'institutions': institution_data.values(),
         }, HTTP_200_OK)
 
@@ -132,7 +136,8 @@ class AccountsViewSet(ViewSet):
 
         qset = Account.objects.filter(
             useraccount__user__in=self.request.user.account.users.all()) \
-            .annotate(order=F('useraccount__order'))
+            .annotate(order=F('useraccount__order')) \
+            .annotate(cardHue=F('useraccount__cardHue'))
 
         if account_ids:
             qset = qset.filter(id__in=account_ids)
@@ -147,7 +152,7 @@ class AccountsViewSet(ViewSet):
     def _fetch_plaid_account_data(self, accounts: List[Account]) -> dict:
         already_fetched_tokens = []
 
-        account_balances = {a.id: None for a in accounts}
+        accounts_data = {a.id: None for a in accounts}
         for account in accounts:
             if account.plaid_item.access_token in already_fetched_tokens:
                 continue
@@ -157,8 +162,11 @@ class AccountsViewSet(ViewSet):
             try:
                 response = plaid_client.accounts_get(request).to_dict()
                 for a in response['accounts']:
-                    account_balances[a['account_id']] = {
-                        **a, 'institution_id': account.institution.id,
+                    balance_data_serializer = PlaidBalanceSerializer(data=a)
+                    balance_data_serializer.is_valid(raise_exception=True)
+                    accounts_data[a['account_id']] = {
+                        **balance_data_serializer.validated_data,
+                        'institution_id': account.institution.id
                     }
                 already_fetched_tokens.append(account.plaid_item.access_token)
 
@@ -172,7 +180,7 @@ class AccountsViewSet(ViewSet):
                     'message': error['error_message'],
                 }})
 
-        return account_balances
+        return accounts_data
 
     def _get_balance_history(self, accounts_balance: dict,
                              start: int = None, end: int = None) -> dict:

@@ -182,7 +182,7 @@ export const FilterForm = () => {
             <div key={resetAccountMerchantKeys[1]}>
               <BakedListBox
                 defaultValue={accountsData?.accounts.filter((acc) =>
-                  accountsFieldValue?.includes(acc.account_id)
+                  accountsFieldValue?.includes(acc.id)
                 )}
                 as={FormInputButton2}
                 name="accounts"
@@ -225,7 +225,7 @@ export const FilterForm = () => {
               <span>
                 {
                   accountsData?.accounts?.find(
-                    (acc: any) => acc.account_id === account
+                    (acc: any) => acc.id === account
                   )?.name
                 }
                 {index !== accountsFieldValue?.length - 1 ? ', ' : ''}

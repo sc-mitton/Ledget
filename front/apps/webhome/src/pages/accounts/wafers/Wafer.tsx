@@ -11,7 +11,7 @@ const Wafer = ({ account, onClick, styling }: WaferProps) => {
     const nameLength = account.official_name?.length || 0
     const [searchParams] = useSearchParams()
 
-    const active = searchParams.get('account') === account.account_id
+    const active = searchParams.get('account') === account.id
 
     return (
         <div
@@ -21,15 +21,15 @@ const Wafer = ({ account, onClick, styling }: WaferProps) => {
             data-active={active}
         >
             <CornerGripButton
-                id={`${account.account_id}`}
+                id={`${account.id}`}
                 tabIndex={-1}
             />
             <div
                 role="button"
                 tabIndex={-1}
-                onClick={() => { onClick(account.account_id) }}
+                onClick={() => { onClick(account.id) }}
             >
-                <InsitutionLogo accountId={account.account_id} />
+                <InsitutionLogo accountId={account.id} />
                 {/* <div className={`wafer-name ${nameIsLong ? 'marquee' : ''}`}> */}
                 <div className={[styles.name, nameIsLong ? styles.marquee : ''].join(' ')}>
                     {nameIsLong && <div>{account.official_name?.slice(0, 18)}...</div>}

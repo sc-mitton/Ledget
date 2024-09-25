@@ -61,7 +61,7 @@ const Transactions = (props: PTransactions) => {
     if (props.account) {
       getTransactions(
         {
-          account: props.account.account_id,
+          account: props.account.id,
           type: props.account.type,
           limit: 25,
           offset: 0
@@ -157,7 +157,7 @@ const Transactions = (props: PTransactions) => {
 
     if (bottom && transactionsData?.next !== null && transactionsData) {
       getTransactions({
-        account: props.account?.account_id,
+        account: props.account?.id,
         type: props.account?.type,
         offset: transactionsData.next,
         limit: transactionsData.limit
@@ -184,7 +184,7 @@ const Transactions = (props: PTransactions) => {
               <ScrollView
                 refreshControl={
                   <RefreshControl
-                    onRefresh={() => syncTransactions({ account: props.account?.account_id })}
+                    onRefresh={() => syncTransactions({ account: props.account?.id })}
                     refreshing={isSyncing}
                     style={{ transform: [{ scaleY: .7 }, { scaleX: .7 }] }}
                     colors={[theme.colors.blueText]}
@@ -205,7 +205,7 @@ const Transactions = (props: PTransactions) => {
             <CustomSectionList
               refreshControl={
                 <RefreshControl
-                  onRefresh={() => syncTransactions({ account: props.account?.account_id })}
+                  onRefresh={() => syncTransactions({ account: props.account?.id })}
                   refreshing={isSyncing}
                   style={{ transform: [{ scaleY: .7 }, { scaleX: .7 }] }}
                   colors={[theme.colors.blueText]}

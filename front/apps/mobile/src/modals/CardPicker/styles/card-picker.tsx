@@ -21,15 +21,27 @@ const styles = StyleSheet.create({
     gap: 8,
     marginTop: -4
   },
-  cardWrapper: {
+  cardWrapperBorderOuter: {
+    position: 'absolute',
+    top: -11.5,
+    left: -11,
+    right: -11,
+    bottom: -11.5
+  },
+  cardWrapperBorderInner: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
   },
   cardsContainer: {
     flex: 1,
     position: 'relative',
-    padding: 8
+  },
+  gridContainerViewStyle: {
+    paddingVertical: 32,
   },
   gridContainer: {
-    paddingVertical: 0,
+    paddingVertical: 0
   },
   spacer: {
     height: 0

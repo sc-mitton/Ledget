@@ -49,8 +49,8 @@ export const BalanceChart = () => {
       window === '6M'
         ? dayjs().subtract(6, 'months').startOf('month').unix()
         : window === '1Y'
-        ? dayjs().subtract(1, 'year').startOf('month').unix()
-        : dayjs().subtract(5, 'years').startOf('month').unix();
+          ? dayjs().subtract(1, 'year').startOf('month').unix()
+          : dayjs().subtract(5, 'years').startOf('month').unix();
 
     if (accounts?.length) {
       getAccountBalance({
@@ -59,7 +59,7 @@ export const BalanceChart = () => {
         type: pathMappings.getAccountType(location) as
           | 'depository'
           | 'investment',
-        accounts: accounts.map((account) => account.account_id)
+        accounts: accounts.map((account) => account.id)
       });
     }
   }, [location.pathname, window]);
@@ -150,8 +150,8 @@ export const BalanceChart = () => {
                     window === '6M'
                       ? 'every 1 month'
                       : window === '1Y'
-                      ? 'every 2 months'
-                      : 'every 4 months'
+                        ? 'every 2 months'
+                        : 'every 4 months'
                 }}
               />
             )}

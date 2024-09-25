@@ -48,7 +48,7 @@ const WaferList = () => {
                 <animated.div
                     style={style}
                     className={styles.accountWaferContainer}
-                    {...bind(account.account_id)}
+                    {...bind(account.id)}
                 >
                     <Wafer
                         account={account}

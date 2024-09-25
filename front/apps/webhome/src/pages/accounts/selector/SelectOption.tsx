@@ -9,8 +9,8 @@ import { DollarCents, GripButton } from '@ledget/ui';
 const SelectOption = ({ account }: { account: Account }) => (
   <div className={styles.option}>
     <GripButton />
-    <Listbox.Option key={account.account_id} value={account} as="div">
-      <InsitutionLogo accountId={account.account_id} />
+    <Listbox.Option key={account.id} value={account} as="div">
+      <InsitutionLogo accountId={account.id} />
       <div>
         <span>{account.name}</span>
         <span>

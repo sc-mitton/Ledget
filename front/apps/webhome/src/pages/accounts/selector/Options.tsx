@@ -31,7 +31,7 @@ const Options = (props: Props) => {
 
   // Update order on accounts change
   useEffect(() => {
-    const newOrder = accounts?.map((item) => item.account_id);
+    const newOrder = accounts?.map((item) => item.id);
     if (newOrder) {
       order.current = newOrder;
     }
@@ -78,7 +78,7 @@ const Options = (props: Props) => {
       setAccounts((prev) =>
         prev?.sort(
           (a, b) =>
-            newOrder.indexOf(a.account_id) - newOrder.indexOf(b.account_id)
+            newOrder.indexOf(a.id) - newOrder.indexOf(b.id)
         )
       );
     },
@@ -116,7 +116,7 @@ const Options = (props: Props) => {
           {optionTransitions(
             (s, item) =>
               item && (
-                <animated.li style={s} {...bind(item?.account_id)}>
+                <animated.li style={s} {...bind(item?.id)}>
                   <SelectOption account={item} />
                 </animated.li>
               )

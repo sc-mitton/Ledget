@@ -15,7 +15,7 @@ const Transaction = (props: AccountsScreenProps<'Transaction'>) => {
   const { data: accountsData } = useGetAccountsQuery();
 
   const account = useMemo(() => {
-    return accountsData?.accounts.find(account => account.account_id === props.route.params.transaction.account)
+    return accountsData?.accounts.find(account => account.id === props.route.params.transaction.account)
   }, [accountsData, props.route.params.transaction.account])
 
   useLayoutEffect(() => {

@@ -19,7 +19,10 @@ export type ItemProps = {
   id: string;
   children: Child,
   positions: SharedValue<Positions>;
-  containerHeight: number;
+  containerSize: {
+    width: number;
+    height: number;
+  };
   size: {
     width: number;
     height: number;

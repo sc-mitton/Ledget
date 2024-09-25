@@ -16,12 +16,12 @@ const Button = (props: AccountsTabsScreenProps<any> & { account?: Account }) => 
           'Modals',
           {
             screen: 'PickAccount',
-            params: { accountType: props.account?.type, currentAccount: props.account.account_id }
+            params: { accountType: props.account?.type, currentAccount: props.account.id }
           }
         )
       }}>
       <View style={styles.accountsPickerButtonTop}>
-        <InstitutionLogo account={props.account?.account_id} size={18} />
+        <InstitutionLogo account={props.account?.id} size={18} />
         {props.account
           ?
           <View style={styles.nameContainer}>

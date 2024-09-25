@@ -103,7 +103,7 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
     if (balanceTrend && (accountsData?.accounts.length || 0 > 0)) {
       setCalculatedTrend(
         balanceTrend.trends
-          .filter((t) => accountsData?.accounts.some((a) => a.account_id === t.account))
+          .filter((t) => accountsData?.accounts.some((a) => a.id === t.account))
           .reduce((acc, trend) => acc.plus(trend.trend), Big(0))
           .times(100)
           .toNumber() || 0
@@ -117,7 +117,7 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
         start: dateWindow.start,
         end: dateWindow.end,
         type: props.route.name.toLowerCase() as any,
-        accounts: accountsData?.accounts.map(a => a.account_id) || [],
+        accounts: accountsData?.accounts.map(a => a.id) || [],
       });
     }
   }, [accountsData, dateWindow]);
@@ -126,7 +126,7 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
     if (accountsData?.accounts.length) {
       getBalanceTrend({
         type: props.route.name.toLowerCase() as any,
-        accounts: accountsData.accounts.map(a => a.account_id),
+        accounts: accountsData.accounts.map(a => a.id),
       })
     }
   }, [accountsData])

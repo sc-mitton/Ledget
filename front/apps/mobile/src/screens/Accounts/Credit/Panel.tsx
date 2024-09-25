@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native'
 import Big from 'big.js';
-import { useSharedValue } from 'react-native-reanimated';
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
 import { useSprings } from '@react-spring/native';
 import { Grid } from 'geist-native-icons';
+import Animated, { useSharedValue, withTiming } from 'react-native-reanimated';
 
 import styles from './styles/panel';
 import { DollarCents, Text, Box, Button, AnimatedView, Icon } from '@ledget/native-ui';
@@ -14,6 +14,7 @@ import Transactions from '../TransactionsList/Transactions'
 import { Card } from '@components'
 import { CARD_WIDTH, CARD_HEIGHT } from '@components/card/constants'
 import { DefaultHeader, AccountHeader } from '../Header';
+import CarouselItem from './Carouseltem';
 
 export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
   const [bottomOfContentPos, setBottomOfContentPos] = useState(0)
@@ -37,7 +38,7 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
   useEffect(() => {
     if (props.route.params?.account && accounts) {
       carouselRef.current?.scrollTo({
-        count: accounts?.findIndex(account => account.account_id === props.route.params.account?.account_id) || 0,
+        count: accounts?.findIndex(account => account.id === props.route.params.account?.id) || 0,
         animated: true
       })
     }
@@ -49,9 +50,19 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
     config: { duration: 200 }
   }));
 
+  const [cardTransparencies, cardsApi] = useSprings(accounts?.length || 0, (i) => ({
+    from: { opacity: 1 },
+    to: { opacity: i === carouselIndex ? 1 : 0.65 },
+    config: { duration: 200 }
+  }));
+
   useEffect(() => {
     springsApi.start((i) => ({
       to: { opacity: i === carouselIndex ? 1 : 0.3 }
+    }))
+    cardsApi.start((i) => ({
+      to: { opacity: i === carouselIndex ? 1 : 0.65 },
+      config: { duration: 200 }
     }))
   }, [carouselIndex])
 
@@ -111,11 +122,11 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
               'Modals',
               {
                 screen: 'PickerCard',
-                params: { options: { title: 'Cards' }, currentAccount: account?.account_id }
+                params: { options: { title: 'Cards' }, currentAccount: account?.id }
               })
             }
           >
-            <Icon icon={Grid} strokeWidth={1.6} size={22} color='tertiaryText' />
+            <Icon icon={Grid} strokeWidth={1.6} size={25} color='tertiaryText' />
           </Button>
         </View>
         {accounts
@@ -128,12 +139,17 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
                 snapEnabled={true}
                 mode='parallax'
                 data={accounts}
-                onProgressChange={(p) => { progress.value = p }}
-                renderItem={({ item }) => (
-                  <View style={styles.cardContainer}>
-                    <Card account={item} onPress={() =>
-                      props.navigation.navigate('AccountsTabs', { screen: 'Credit', params: { account: item } })} />
-                  </View>
+                renderItem={({ item, index }) => (
+                  <AnimatedView style={[cardTransparencies[index]]}>
+                    <CarouselItem
+                      account={item}
+                      onPress={() =>
+                        props.navigation.navigate(
+                          'AccountsTabs',
+                          { screen: 'Credit', params: { account: item } })
+                      }
+                    />
+                  </AnimatedView>
                 )}
                 width={CARD_WIDTH}
                 onSnapToItem={(index) => { setCarouselIndex(index) }}
@@ -141,7 +157,7 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
                 modeConfig={{
                   parallaxAdjacentItemScale: 0.8,
                   parallaxScrollingScale: 1,
-                  parallaxScrollingOffset: 3,
+                  parallaxScrollingOffset: 0,
                 }}
               />
             </View>

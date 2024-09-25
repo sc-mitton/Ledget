@@ -23,7 +23,6 @@ interface CardWrapperProps {
   card: Account;
   position: { x: number, y: number };
   isSelected: boolean;
-  onPress: () => void;
   children: React.ReactNode;
 }
 
@@ -35,27 +34,28 @@ const CardWrapper = forwardRef<Animated.View, CardWrapperProps>((props, ref) => 
   }, [props.position])
 
   return (
-    <Button
-      onPress={props.onPress}
-      borderColor={props.isSelected
-        ? 'focusedInputBorderSecondary'
-        : 'transparent'
-      }
-      borderRadius={22}
-      borderWidth={3}
-      padding='none'>
+    <View>
       <Box
-        padding='none'
-        style={{ paddingHorizontal: 8, paddingVertical: 7.5 }}
-        borderRadius={20}
-        borderWidth={2.5}
+        style={styles.cardWrapperBorderOuter}
         borderColor={props.isSelected
-          ? 'focusedInputBorderMain'
-          : 'transparent'}
-      >
-        {props.children}
+          ? 'focusedInputBorderSecondary'
+          : 'transparent'
+        }
+        borderRadius={22}
+        borderWidth={2}
+        padding='none'>
+        <Box
+          style={styles.cardWrapperBorderInner}
+          padding='none'
+          borderRadius={19}
+          borderWidth={2.5}
+          borderColor={props.isSelected
+            ? 'focusedInputBorderMain'
+            : 'transparent'}
+        />
       </Box>
-    </Button>
+      {props.children}
+    </View>
   )
 });
 
@@ -93,42 +93,49 @@ const AccountPicker = (props: ModalScreenProps<'PickerCard'>) => {
           </Text>
         </View>
       </View>
-      <Seperator backgroundColor='modalSeperator' />
+      <Seperator backgroundColor='modalSeperator' variant='bare' />
       <View style={styles.cardsContainer}>
         {accounts &&
           <GridSortableList
             data={accounts}
             columns={2}
-            rowPadding={8}
-            containerViewStyle={{ paddingBottom: theme.spacing.navHeight * 1.5 }}
+            rowPadding={32}
+            containerViewStyle={{
+              paddingBottom: theme.spacing.navHeight * 1.5,
+              ...styles.gridContainerViewStyle
+            }}
             idField='account_id'
             onDragEnd={(positions) => {
-              updateOrder(Object.keys(positions).map((account_id, index) => ({
-                account: account_id,
-                order: positions[account_id]
-              })))
+              // const payload = Object.keys(positions).map((account_id, index) => ({
+              //   account: account_id,
+              //   order: positions[account_id]
+              // })).sort((a, b) => a.order - b.order)
+              // if (payload.map((v, i) => accounts[i].id !== v.account).includes(true)) {
+              //   updateOrder(payload)
+              // }
             }}
             renderItem={({ item: account, index }) => (
               <>
                 <CardWrapper
                   card={account}
                   position={{ x: 0, y: 0 }}
-                  isSelected={account.account_id === props.route.params.currentAccount}
-                  onPress={() => { }}
+                  isSelected={account.id === props.route.params.currentAccount}
                 >
                   <Card
                     account={account}
                     size='small'
                     hasShadow={false}
-                    onPress={() =>
-                      props.navigation.navigate('Accounts', {
-                        screen: 'AccountsTabs',
-                        params: {
-                          screen: 'Credit',
-                          params: { account: account }
-                        }
-                      })
-                    }
+                    onPress={() => {
+                      if (account.id !== props.route.params.currentAccount) {
+                        props.navigation.navigate('Accounts', {
+                          screen: 'AccountsTabs',
+                          params: {
+                            screen: 'Credit',
+                            params: { account: account }
+                          }
+                        })
+                      }
+                    }}
                   />
                 </CardWrapper>
               </>

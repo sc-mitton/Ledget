@@ -93,7 +93,7 @@ const AccountRow = (props: AccountP) => {
                   borderColor='blueText'
                 />}
               <InstitutionLogo
-                account={props.account.account_id}
+                account={props.account.id}
                 size={22}
               />
             </View>

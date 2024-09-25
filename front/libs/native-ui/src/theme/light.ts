@@ -66,6 +66,7 @@ export const lightTheme = createTheme({
   colors: {
     transparent: 'transparent',
     mode: 'light',
+    blueHue: `${blueH}`,
 
     // Backgrounds
     mainBackground: palette.gray150,
@@ -90,7 +91,7 @@ export const lightTheme = createTheme({
     inputBorder: palette.gray300,
     inputBorderErrorSecondary: palette.mutedRed,
     inputBorderErrorMain: palette.red,
-    focusedInputBorderSecondary: palette.blue100,
+    focusedInputBorderSecondary: palette.blue50,
     focusedInputBorderMain: palette.blue300,
     tabNavPillBorder: palette.blue100,
     bottomNavBorder: Platform.OS === 'ios' ? palette.gray350 : palette.gray350,
@@ -381,7 +382,7 @@ export const lightTheme = createTheme({
       justifyContent: 'center',
       backgroundColor: 'grayButton',
       borderWidth: 1.5,
-      borderColor: 'grayButtonBorder',
+      borderColor: 'transparent',
     },
     borderedPill: {
       color: 'secondaryText',
@@ -403,7 +404,7 @@ export const lightTheme = createTheme({
       backgroundColor: 'lightBlueButton',
       color: 'blueText',
       borderWidth: 1.5,
-      borderColor: 'lightBlueButtonBorder',
+      borderColor: 'transparent',
     },
     blueBorderedPill: {
       color: 'blueText',

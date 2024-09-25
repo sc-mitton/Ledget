@@ -121,7 +121,7 @@ const HistoryFilters = ({ showFilters }: { showFilters: React.Dispatch<React.Set
             )}
             renderOption={(option) => (
               <View style={styles.accountOption}>
-                <InstitutionLogo account={option.account_id} />
+                <InstitutionLogo account={option.id} />
                 <Text>{option.name}</Text>
               </View>
             )}

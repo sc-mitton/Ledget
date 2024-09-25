@@ -1,5 +1,5 @@
-const CARD_HEIGHT = 120;
-const CARD_WIDTH = 192;
+const CARD_HEIGHT = 130;
+const CARD_WIDTH = 208;
 
 export {
   CARD_HEIGHT,

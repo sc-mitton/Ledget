@@ -1,48 +1,69 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  touchableContanier: {
+  regularTouchableContainer: {
     position: 'relative',
     padding: 2,
     justifyContent: 'center',
     alignItems: 'center',
+    overflow: 'hidden',
+    borderRadius: 13
+  },
+  smallTouchableContainer: {
+    position: 'relative',
+    padding: 1.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+    borderRadius: 13
   },
   skeletonCardTouchableContainer: {
     position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 2,
+    overflow: 'hidden',
+    borderRadius: 13
   },
   cardBorder: {
     borderRadius: 13,
     zIndex: -1,
     position: 'absolute',
-    overflow: 'hidden',
     opacity: .8
   },
   smallCardBorder: {
-    top: -.5,
-    left: -.5,
-    bottom: -.5,
-    right: -.5,
+    top: -1,
+    left: -1,
+    bottom: -1,
+    right: -1,
   },
   regularCardBorder: {
-    top: 0,
-    left: -2,
-    bottom: 0,
-    right: -2,
+    top: -1,
+    left: -1,
+    bottom: -1,
+    right: -1,
   },
-  touchable: {
+  pressable: {
     borderRadius: 12,
     position: 'relative',
     overflow: 'hidden',
   },
   cardContainer: {
-    flex: 1
+    width: '100%',
+    height: '100%',
+  },
+  cardBack: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0
   },
   card: {
     justifyContent: 'space-between',
-    flex: 1,
-    overflow: 'hidden'
+    flex: 1
   },
   smallCardPadding: {
     paddingTop: 6,

@@ -27,7 +27,7 @@ function useAnimate<A>({
   const location = useLocation();
 
   const order = useRef(
-    _filterAccounts(accounts || [], location).map((item) => item.account_id)
+    _filterAccounts(accounts || [], location).map((item) => item.id)
   );
 
   const [transitions, waferApi] = useTransition(accounts, () => ({
@@ -42,7 +42,7 @@ function useAnimate<A>({
       x: index * (waferWidth + waferPadding),
       opacity: 1
     }),
-    key: (item: any) => item.account_id,
+    key: (item: any) => item.id,
     immediate: freezeWaferAnimation
   }));
 
@@ -66,7 +66,7 @@ function useAnimate<A>({
   const click = useCallback(
     (id: string) => {
       waferApi.start((index: any, item: any) => {
-        if (item._item.account_id === id) {
+        if (item._item.id === id) {
           return {
             to: async (next: any) => {
               await next({ scale: 0.95 });
@@ -82,7 +82,7 @@ function useAnimate<A>({
 
   useEffect(() => {
     order.current = _filterAccounts(accounts || [], location).map(
-      (item) => item.account_id
+      (item) => item.id
     );
   }, [accounts, location.pathname]);
 

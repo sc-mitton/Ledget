@@ -21,7 +21,7 @@ const Trend = () => {
       getBalanceTrend(
         {
           type: pathMappings.getAccountType(location) as any,
-          accounts: accounts?.map((account) => account.account_id)
+          accounts: accounts?.map((account) => account.id)
         },
         true
       );
@@ -31,7 +31,7 @@ const Trend = () => {
   const total = useMemo(
     () =>
       accountBalanceTrend?.trends
-        .filter((t) => accounts?.some((a) => a.account_id === t.account))
+        .filter((t) => accounts?.some((a) => a.id === t.account))
         .reduce((acc, trend) => acc.plus(trend.trend), Big(0))
         .times(100)
         .toNumber() || 0,

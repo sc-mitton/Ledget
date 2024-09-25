@@ -22,9 +22,9 @@ const AccountPicker = (props: ModalScreenProps<'PickAccount'>) => {
   const handleEndDrag = (args: DragEndParams<Account>) => {
     // If order of accounts has changed, update the order in the database
 
-    if (args.data.map((item, index) => item.account_id !== accounts?.[index].account_id).includes(true)) {
+    if (args.data.map((item, index) => item.id !== accounts?.[index].id).includes(true)) {
       updateOrder(args.data.map((item, index) => ({
-        account: item.account_id,
+        account: item.id,
         order: index
       })));
       setAccounts(args.data);
@@ -55,7 +55,7 @@ const AccountPicker = (props: ModalScreenProps<'PickAccount'>) => {
               contentContainerStyle={styles.draggableListContent}
               debug={false}
               onDragEnd={handleEndDrag}
-              keyExtractor={item => item.account_id}
+              keyExtractor={item => item.id}
               data={accounts.filter(a => a.type === props.route.params.accountType)}
               renderItem={(args: RenderItemParams<Account>) => (
                 <>
@@ -63,7 +63,7 @@ const AccountPicker = (props: ModalScreenProps<'PickAccount'>) => {
                     <AccountRow
                       index={args.getIndex() || 0}
                       draggable={!isFiltered}
-                      isSelected={args.item.account_id === props.route.params.currentAccount}
+                      isSelected={args.item.id === props.route.params.currentAccount}
                       detailedView={args.isActive}
                       onLongPress={() => {
                         Haptics.selectionAsync();
@@ -82,7 +82,7 @@ const AccountPicker = (props: ModalScreenProps<'PickAccount'>) => {
                       }}
                       last={args.getIndex() === accounts.length - 1}
                       account={args.item}
-                      selected={args.item.account_id === props.route.params.currentAccount}
+                      selected={args.item.id === props.route.params.currentAccount}
                     />
                   </ScaleDecorator>
                 </>

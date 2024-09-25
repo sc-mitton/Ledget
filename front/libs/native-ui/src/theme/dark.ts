@@ -64,6 +64,7 @@ export const darkTheme = createTheme({
   colors: {
     ...lightTheme.colors,
     mode: 'dark',
+    blueHue: `${blueH}`,
 
     // Backgrounds
     mainBackground: palette.gray900,
@@ -82,8 +83,8 @@ export const darkTheme = createTheme({
     newTransaction: palette.gray750,
     contextMenu: palette.gray700,
     toast: palette.gray850,
-    creditCardGradientStart: palette.gray700.replace(`${grayS}`, `${grayS + 15}`),
-    creditCardGradientEnd: palette.gray750.replace(`${grayS}`, `${grayS + 15}`),
+    creditCardGradientStart: `hsl(${blueH}, ${blueS - 10}%, 30%)`,
+    creditCardGradientEnd: `hsl(${blueH}, ${blueS - 10}%, 27%)`,
 
     // Borders
     inputBorder: palette.gray750,
@@ -93,15 +94,15 @@ export const darkTheme = createTheme({
     focusedInputBorderSecondary: palette.blue800,
     tabNavPillBorder: 'transparent',
     bottomNavBorder: palette.gray750,
-    nestedContainerBorder: palette.gray850,
+    nestedContainerBorder: 'transparent',
     tabNavBorder: palette.gray800,
     newTransactionBorder: palette.gray700,
     contextMenuBorder: palette.gray650,
     toastBorder: palette.gray800,
     modalBorder: palette.gray800,
     contextMenuDivider: palette.gray600,
-    creditCardBorderStart: palette.gray600.replace(`${grayS}`, `${grayS + 15}`),
-    creditCardBorderStop: palette.gray700.replace(`${grayS}`, `${grayS + 15}`),
+    creditCardBorderStart: `hsl(${blueH}, ${blueS - 10}%, 40%)`,
+    creditCardBorderStop: `hsl(${blueH}, ${blueS - 10}%, 30%)`,
 
     // Shadows
     navShadow: palette.gray900,
@@ -129,7 +130,7 @@ export const darkTheme = createTheme({
     whiteText: palette.offWhite,
     focusedText: palette.blueSat,
     blueText: palette.blue100,
-    blueTextSecondary: palette.blue50.replace(`${blueS}`, `${blueS - 10}`),
+    blueTextSecondary: palette.blue50.replace(`${blueS}`, `${blueS}`),
     faintBlueText: palette.blue400.replace(`${blueS}`, `${blueS - 20}`),
     placeholderText: palette.offWhite4,
     buttonLabel: palette.white,
@@ -181,7 +182,7 @@ export const darkTheme = createTheme({
     transactionShimmer: palette.gray800,
     screenHeader: palette.gray800,
 
-    blueChartGradientStart: palette.blue900.replace(`${blueS}`, `${blueS - 10}`),
+    blueChartGradientStart: palette.blue900.replace(`${blueS}`, `${blueS}`),
     blueChartColor: palette.blue500
   }
 });

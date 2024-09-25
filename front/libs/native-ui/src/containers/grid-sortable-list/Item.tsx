@@ -16,7 +16,7 @@ import {
 import styles from './styles/item';
 import { Box } from "../../restyled/Box";
 import { ItemProps } from "./types";
-import { getPosition, animationConfig, getIndex } from "./config";
+import { getPosition, animationConfig, getUpdatedIndex } from "./config";
 import { useLayoutEffect } from "react";
 
 const Item = (props: ItemProps) => {
@@ -25,13 +25,17 @@ const Item = (props: ItemProps) => {
     props.positions.value[props.id]!,
     props.size.width,
     (props.size.height + props.rowPadding),
-    props.columns
+    props.columns,
+    props.containerSize.width
   );
 
+  const shadowOpacity = useSharedValue(0);
   const translateX = useSharedValue(position.x);
   const translateY = useSharedValue(position.y);
   const isGestureActive = useSharedValue(false);
-  const contentHeight = (Object.keys(props.positions.value).length / props.columns) * (props.size.height + props.rowPadding);
+  const contentHeight = (
+    Object.keys(props.positions.value).length / props.columns) *
+    (props.size.height + props.rowPadding);
 
   const style = useAnimatedStyle(() => {
     const zIndex = isGestureActive.value ? 100 : 0;
@@ -43,6 +47,13 @@ const Item = (props: ItemProps) => {
       width: props.size.width,
       height: props.size.height,
       zIndex,
+      shadowColor: "#000",
+      shadowOpacity: shadowOpacity.value,
+      shadowRadius: 10,
+      shadowOffset: {
+        width: 0,
+        height: 0,
+      },
       transform: [
         { translateX: translateX.value },
         { translateY: translateY.value },
@@ -56,7 +67,8 @@ const Item = (props: ItemProps) => {
       props.positions.value[props.id]!,
       props.size.width,
       props.size.height + props.rowPadding,
-      props.columns
+      props.columns,
+      props.containerSize.width
     );
     translateX.value = pos.x;
     translateY.value = pos.y;
@@ -69,7 +81,8 @@ const Item = (props: ItemProps) => {
           newOrder,
           props.size.width,
           props.size.height + props.rowPadding,
-          props.columns
+          props.columns,
+          props.containerSize.width
         );
         translateX.value = withTiming(pos.x, animationConfig);
         translateY.value = withTiming(pos.y, animationConfig);
@@ -79,40 +92,32 @@ const Item = (props: ItemProps) => {
 
   const pan = Gesture.Pan()
     .activateAfterLongPress(500)
+    .failOffsetY(50)
+    .failOffsetX(-50)
     .onStart((ctx) => {
+      shadowOpacity.value = withTiming(0.3);
       ctx.x = translateX.value;
       ctx.y = translateY.value;
       isGestureActive.value = true;
     })
     .onChange(({ translationX, translationY, changeX, changeY }) => {
 
-      // Don't allow dragging outside the container vertically
-      if (translateY.value < 0 || translateY.value > props.containerHeight) {
-        const newPosition = getPosition(
-          props.positions.value[props.id]!,
-          props.size.width,
-          props.size.height + props.rowPadding,
-          props.columns
-        );
-        translateY.value = withTiming(newPosition.y, animationConfig);
-        return;
-      }
-
       translateX.value += changeX;
       translateY.value += changeY;
 
       // 1. We calculate where the item should be
-      const newIndex = getIndex(
-        translateX.value,
-        translateY.value,
-        Object.keys(props.positions.value).length - 1,
-        props.size.width,
-        props.size.height + props.rowPadding,
-        props.columns
-      );
+      const newIndex = getUpdatedIndex({
+        td: { tx: translateX.value, ty: translateY.value },
+        index: props.positions.value[props.id]!,
+        max: Object.keys(props.positions.value).length - 1,
+        size: { width: props.size.width, height: props.size.height + props.rowPadding },
+        column: props.columns,
+        containerWidth: props.containerSize.width
+      });
 
       // 2. We swap the positions
       const oldIndex = props.positions.value[props.id];
+
       if (newIndex !== oldIndex) {
         const idToSwap = Object.keys(props.positions.value).find(
           (key) => props.positions.value[key] === newIndex
@@ -129,8 +134,8 @@ const Item = (props: ItemProps) => {
 
       // 3. Scroll up and down if necessary
       const lowerBound = props.scrollY.value;
-      const upperBound = lowerBound + props.containerHeight - props.size.height;
-      const maxScroll = contentHeight - props.containerHeight;
+      const upperBound = lowerBound + props.containerSize.height - props.size.height;
+      const maxScroll = contentHeight - props.containerSize.height;
       const leftToScrollDown = maxScroll - props.scrollY.value;
       if (translateY.value < lowerBound) {
         const diff = Math.min(lowerBound - translateY.value, lowerBound);
@@ -152,11 +157,14 @@ const Item = (props: ItemProps) => {
 
     })
     .onEnd(() => {
+      shadowOpacity.value = withTiming(0);
+
       const newPosition = getPosition(
         props.positions.value[props.id]!,
         props.size.width,
         props.size.height + props.rowPadding,
-        props.columns
+        props.columns,
+        props.containerSize.width
       );
       translateX.value = withTiming(newPosition.x, animationConfig, () => {
         isGestureActive.value = false;
@@ -175,14 +183,7 @@ const Item = (props: ItemProps) => {
     >
       <GestureDetector gesture={pan}>
         <Animated.View style={StyleSheet.absoluteFill}>
-          <Box
-            style={styles.itemContainer}
-            shadowColor='mainBackground'
-            shadowOffset={{ width: 0, height: 4 }}
-            shadowOpacity={isGestureActive.value ? 1 : 0}
-            shadowRadius={12}
-            elevation={4}
-          >
+          <Box style={styles.itemContainer}>
             {props.children}
           </Box>
         </Animated.View>

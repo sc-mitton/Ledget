@@ -6,7 +6,7 @@ export type AccountType =
   | 'other';
 
 export interface Account {
-  account_id: string;
+  id: string;
   balances: {
     available: number;
     current: number;
@@ -20,6 +20,7 @@ export interface Account {
   type: AccountType;
   subtype: string;
   institution_id: string;
+  cardHue?: number;
 }
 
 export interface Institution {
@@ -31,11 +32,10 @@ export interface Institution {
   oath: boolean;
 }
 
-export interface UpdateAccount {
-  account: string;
-  order: number;
-  [key: string]: any;
-}
+export type UpdateAccount =
+  { order: number } & { account: string } |
+  { hue: number } & { account: string }
+
 
 export interface GetAccountsResponse {
   institutions: Institution[];

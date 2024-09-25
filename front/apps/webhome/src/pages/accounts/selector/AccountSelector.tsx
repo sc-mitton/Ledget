@@ -44,7 +44,7 @@ const AccountSelector = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedAccount, setSelectedAccount] = useState<Account | undefined>(
     accounts?.find(
-      (account) => account.account_id === searchParams.get('account')
+      (account) => account.id === searchParams.get('account')
     ) || accounts?.[0]
   );
   const [open, setOpen] = useState(false);
@@ -54,7 +54,7 @@ const AccountSelector = () => {
 
   useEffect(() => {
     if (selectedAccount) {
-      searchParams.set('account', selectedAccount.account_id);
+      searchParams.set('account', selectedAccount.id);
       setSearchParams(searchParams);
     }
   }, [selectedAccount]);
@@ -62,7 +62,7 @@ const AccountSelector = () => {
   useEffect(() => {
     setSelectedAccount(
       accounts?.find(
-        (account) => account.account_id === searchParams.get('account')
+        (account) => account.id === searchParams.get('account')
       )
     );
   }, [location.pathname, accounts]);
@@ -106,7 +106,7 @@ const AccountSelector = () => {
         <Listbox.Button ref={buttonRef} onClick={() => setOpen(!open)}>
           <div>
             {selectedAccount && (
-              <InsitutionLogo accountId={selectedAccount.account_id} />
+              <InsitutionLogo accountId={selectedAccount.id} />
             )}
             <span>{`${selectedAccount?.name || ''}`}</span>
             <ChevronDown className="icon" />

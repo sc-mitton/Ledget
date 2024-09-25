@@ -44,7 +44,7 @@ export const AccountsProvider = ({
     const account = data?.accounts?.filter(
       (account: any) => account.type === pathMappings.getAccountType(location)
     )[0];
-    searchParams.set('account', account?.account_id || '');
+    searchParams.set('account', account?.id || '');
     setSearchParams(searchParams);
   }, [location.pathname.split('/')[2], data]);
 

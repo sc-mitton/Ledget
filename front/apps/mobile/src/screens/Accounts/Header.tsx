@@ -22,7 +22,7 @@ export const AccountHeader = (props: { account: Account }) => {
       exiting={FadeOut}
       style={[styles.headerContainer, styles.accountHeaderContainer, { paddingTop: theme.spacing.statusBar }]}
     >
-      <InstitutionLogo account={props.account.account_id} />
+      <InstitutionLogo account={props.account.id} />
       <Header2>{props.account.name}</Header2>
       <View style={styles.balanceContainer}>
         <DollarCents value={props.account.balances.current} fontSize={20} />

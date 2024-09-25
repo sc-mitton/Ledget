@@ -47,37 +47,57 @@ class AccountLS(serializers.ListSerializer):
 
 
 class AccountSerializer(serializers.ModelSerializer):
-    institution = InstitutionSerializer(read_only=True)
-    id = serializers.CharField()
+    institution = InstitutionSerializer()
+    cardHue = serializers.SerializerMethodField(required=False, read_only=True)
 
     class Meta:
         model = Account
         exclude = ('plaid_item',)
         list_serializer_class = AccountLS
 
-    def get_order(self, obj):
-        return getattr(obj, 'order', None)
+    def get_cardHue(self, obj):
+        return getattr(obj, 'cardHue', None)
+
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        print('rep', rep)
+        rep['institution_id'] = rep.pop('institution', None)
+        return rep
 
 
-class AccountBalanceSerializer(serializers.Serializer):
-    available = serializers.DecimalField(max_digits=10, decimal_places=2,
-                                         required=False)
-    current = serializers.DecimalField(max_digits=10, decimal_places=2, required=False)
-    limit = serializers.DecimalField(max_digits=10, decimal_places=2, required=False)
-    iso_currency_code = serializers.CharField(required=False)
-    unofficial_currency_code = serializers.CharField(required=False)
+class BalanceSerializer(serializers.Serializer):
+    available = serializers.DecimalField(
+        max_digits=30,
+        decimal_places=10,
+        required=False,
+        allow_null=True)
+    current = serializers.DecimalField(
+        max_digits=30,
+        decimal_places=10,
+        required=False,
+        allow_null=True)
+    limit = serializers.DecimalField(
+        max_digits=30,
+        decimal_places=10,
+        required=False,
+        allow_null=True)
+
+    def validate(self, data):
+        # Round everything to 2 decimal places
+        for key in data:
+            data[key] = round(data[key], 2) if data[key] else None
+
+        return data
 
 
-class AccountBalanceResponseSerializer(serializers.Serializer):
+class PlaidBalanceSerializer(serializers.Serializer):
+    iso_currency_code = serializers.CharField(required=False, allow_null=True)
+    unofficial_currency_code = serializers.CharField(required=False, allow_null=True)
+    official_name = serializers.CharField(required=False, allow_null=True)
+    balances = BalanceSerializer()
     account_id = serializers.CharField()
-    balances = AccountBalanceSerializer()
-    mask = serializers.CharField(required=False)
-    name = serializers.CharField(required=False)
-    official_name = serializers.CharField(required=False)
-    type = serializers.CharField(required=False)
-    subtype = serializers.CharField(required=False)
-    persistent_account_id = serializers.CharField(required=False)
-    institution_id = serializers.CharField(required=False)
+    type = serializers.CharField()
+    subtype = serializers.CharField()
 
 
 class UserAccountSerializer(serializers.ModelSerializer):

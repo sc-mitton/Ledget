@@ -32,9 +32,6 @@ const styles = StyleSheet.create({
     marginTop: 2,
     marginBottom: 12
   },
-  cardContainer: {
-    marginTop: 4
-  },
   carouselContainer: {
     flexDirection: 'row',
     marginTop: 8
