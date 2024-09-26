@@ -182,7 +182,7 @@ export const darkTheme = createTheme({
     transactionShimmer: palette.gray800,
     screenHeader: palette.gray800,
 
-    blueChartGradientStart: palette.blue900.replace(`${blueS}`, `${blueS}`),
-    blueChartColor: palette.blue500
+    blueChartGradientStart: palette.blue800.replace(`${blueS}`, `${blueS}`),
+    blueChartColor: palette.blue400
   }
 });

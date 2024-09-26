@@ -8,7 +8,6 @@ import { useGetPlaidItemsQuery } from '@ledget/shared-features';
 export const InstitutionLogo = (props: Props & { account?: string }) => {
   const { data: plaidItemsData } = useGetPlaidItemsQuery();
 
-  console.log('props.account', props.account);
   const logoData = useMemo(() => {
     return plaidItemsData?.find((p) =>
       p.accounts.find((account) => account.id === props.account))?.institution?.logo
