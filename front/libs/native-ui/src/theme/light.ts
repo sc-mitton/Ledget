@@ -84,8 +84,8 @@ export const lightTheme = createTheme({
     newTransaction: palette.gray100,
     contextMenu: palette.gray100,
     toast: palette.white,
-    creditCardGradientStart: `hsl(${blueH}, 40%, 35%)`,
-    creditCardGradientEnd: `hsl(${blueH}, 40%, 30%)`,
+    creditCardGradientStart: `hsl(${blueH}, 35%, 45%)`,
+    creditCardGradientEnd: `hsl(${blueH}, 35%, 40%)`,
 
     // Borders
     inputBorder: palette.gray300,
@@ -102,8 +102,8 @@ export const lightTheme = createTheme({
     modalBorder: palette.gray200,
     toastBorder: palette.gray100,
     contextMenuDivider: palette.gray200,
-    creditCardBorderStart: `hsl(${blueH}, 40%, 37%)`,
-    creditCardBorderStop: `hsl(${blueH}, 40%, 27%)`,
+    creditCardBorderStart: `hsl(${blueH}, 35%, 47%)`,
+    creditCardBorderStop: `hsl(${blueH}, 35%, 37%)`,
 
     // Shadows
     navShadow: palette.gray700,
@@ -124,6 +124,7 @@ export const lightTheme = createTheme({
     quaternaryText: palette.offBlack4,
     quinaryText: palette.offBlack5,
     whiteText: palette.white,
+    blackText: palette.black,
     highContrastText: palette.black,
     invertedText: palette.gray100,
     activeText: palette.blueSat,
@@ -142,8 +143,8 @@ export const lightTheme = createTheme({
     blueButtonBorder2: palette.blue100,
     lightGrayButton: palette.gray150,
     lightGrayButtonBorder: palette.gray200,
-    grayButton: palette.gray250,
-    grayButtonBorder: palette.gray275,
+    grayButton: palette.gray200,
+    grayButtonBorder: palette.gray250,
     mediumGrayButton: palette.gray250,
     mediumGrayButtonBorder: palette.gray300,
     tabNavPill: palette.blue100,
@@ -202,6 +203,10 @@ export const lightTheme = createTheme({
     statusBar: StatusBarManager.HEIGHT + 4,
   },
   textVariants: {
+    regular: {
+      fontFamily: 'SourceSans3Regular',
+      color: 'mainText',
+    },
     bold: {
       fontFamily: 'SourceSans3SemiBold',
       color: 'highContrastText',
@@ -442,6 +447,10 @@ export const lightTheme = createTheme({
       fontSize: 16,
       letterSpacing: 2,
     },
+    square: {
+      padding: 's',
+      borderRadius: 8,
+    },
     bold: {
       fontFamily: 'SourceSans3Medium',
     }
@@ -512,7 +521,7 @@ export const lightTheme = createTheme({
       alignItems: 'center',
       justifyContent: 'flex-start',
       backgroundColor: 'nestedContainer',
-      borderColor: 'nestedContainerBorder',
+      borderColor: 'transparent',
       borderWidth: 1.5,
     },
     bottomNav: {
@@ -547,6 +556,12 @@ export const lightTheme = createTheme({
       height: 20,
       borderRadius: 4,
       marginHorizontal: 'l',
+    },
+    carouselDot: {
+      width: 5,
+      height: 5,
+      borderRadius: 5,
+      backgroundColor: 'mainText',
     },
     defaults: {}
   },

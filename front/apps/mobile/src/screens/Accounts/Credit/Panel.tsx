@@ -4,10 +4,10 @@ import Big from 'big.js';
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
 import { useSprings } from '@react-spring/native';
 import { Grid } from 'geist-native-icons';
-import Animated, { useSharedValue, withTiming } from 'react-native-reanimated';
+import { useSharedValue } from 'react-native-reanimated';
 
 import styles from './styles/panel';
-import { DollarCents, Text, Box, Button, AnimatedView, Icon } from '@ledget/native-ui';
+import { DollarCents, Text, Box, Button, AnimatedView, Icon, CarouselDots } from '@ledget/native-ui';
 import { useGetAccountsQuery, Account } from '@ledget/shared-features'
 import { AccountsTabsScreenProps } from '@types'
 import Transactions from '../TransactionsList/Transactions'
@@ -44,12 +44,6 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
     }
   }, [accounts, props.route.params])
 
-  const [springs, springsApi] = useSprings(accounts?.length || 0, (i) => ({
-    from: { opacity: 1 },
-    to: { opacity: i === carouselIndex ? 1 : 0.5 },
-    config: { duration: 200 }
-  }));
-
   const [cardTransparencies, cardsApi] = useSprings(accounts?.length || 0, (i) => ({
     from: { opacity: 1 },
     to: { opacity: i === carouselIndex ? 1 : 0.65 },
@@ -57,9 +51,6 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
   }));
 
   useEffect(() => {
-    springsApi.start((i) => ({
-      to: { opacity: i === carouselIndex ? 1 : 0.3 }
-    }))
     cardsApi.start((i) => ({
       to: { opacity: i === carouselIndex ? 1 : 0.65 },
       config: { duration: 200 }
@@ -162,11 +153,7 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
               />
             </View>
             <View style={styles.pageDots}>
-              {springs.map((style, index) => (
-                <AnimatedView key={index} style={[styles.dotContainer, style]} >
-                  <Box backgroundColor='mainText' style={styles.dot} />
-                </AnimatedView>
-              ))}
+              <CarouselDots currentIndex={carouselIndex} length={accounts.length} />
             </View>
           </>
           :

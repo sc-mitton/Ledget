@@ -4,19 +4,14 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: 20,
     marginTop: 32,
-    height: 190,
     position: 'relative',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    paddingBottom: 32,
     marginHorizontal: 16
   },
   graphContainer: {
-    position: 'absolute',
-    top: 54,
-    left: -28,
-    right: 0,
-    bottom: 0
+    width: '100%',
+    height: 130
   },
   nestedContainerBox: {
     padding: 0
@@ -37,7 +32,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     flexDirection: 'row',
-    gap: 8,
+    gap: 6,
   },
   tooltipText: {
     position: 'absolute',

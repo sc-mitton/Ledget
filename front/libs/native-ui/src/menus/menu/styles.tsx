@@ -75,5 +75,8 @@ export default StyleSheet.create({
     justifyContent: 'flex-end',
     flexDirection: 'row',
     flexGrow: 1,
+  },
+  seperator: {
+    width: '120%'
   }
 });

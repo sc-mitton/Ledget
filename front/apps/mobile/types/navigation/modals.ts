@@ -43,7 +43,14 @@ export type ModalStackParamList = {
       reorder?: boolean,
       order?: 'balance-asc' | 'balance-desc' | 'name-asc' | 'name-desc'
     }
-  }
+  },
+  NewBill: {
+    transaction?: Transaction;
+    period: 'monthly' | 'yearly';
+  } | undefined;
+  NewCategory: {
+    period: 'monthly' | 'yearly';
+  } | undefined;
 };
 
 export type ModalScreenProps<T extends keyof ModalStackParamList> =

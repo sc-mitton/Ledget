@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
     paddingRight: 24,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    zIndex: -1
   },
   accountsPickerButtonTop: {
     flexDirection: 'row',
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     gap: 8,
-    paddingHorizontal: 12,
+    paddingHorizontal: 4,
     borderRadius: 16,
   }
 });

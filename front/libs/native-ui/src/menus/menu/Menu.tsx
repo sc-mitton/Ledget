@@ -17,6 +17,7 @@ export interface MenuProps {
     label: string;
     icon?: () => JSX.Element;
     onSelect: () => void;
+    newSection?: boolean;
   }[];
   touchableStyle?: ViewStyle;
   children?: React.ReactNode;
@@ -79,8 +80,6 @@ export function Menu(props: MenuProps) {
                 entering={ZoomIn.withInitialValues({ transform: [{ scale: .5 }], opacity: 0 }).duration(300).easing(Easing.elastic(.9))}
                 exiting={ZoomOut.duration(150).easing(Easing.ease)}>
                 <Box
-                  borderColor='contextMenuBorder'
-                  borderWidth={1}
                   shadowColor='menuShadowColor'
                   shadowOpacity={1}
                   shadowRadius={8}
@@ -93,10 +92,13 @@ export function Menu(props: MenuProps) {
                     {props.items.map((item, index) => (
                       <>
                         {index !== 0 &&
-                          <Seperator
-                            variant='bare'
-                            backgroundColor={'menuSeperator'}
-                          />}
+                          <View style={styles.seperator}>
+                            <Seperator
+                              variant='bare'
+                              height={item.newSection ? 4 : undefined}
+                              backgroundColor={item.newSection ? 'mainBackground' : 'menuSeperator'}
+                            />
+                          </View>}
                         <TouchableHighlight
                           style={styles.rowContainer}
                           activeOpacity={0.9}

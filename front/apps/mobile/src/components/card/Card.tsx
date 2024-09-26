@@ -7,6 +7,7 @@ import {
   LinearGradient,
   vec
 } from "@shopify/react-native-skia";
+import { Grayscale } from 'react-native-color-matrix-image-filters'
 import Animated, { SharedValue, useDerivedValue, useSharedValue, withSpring } from 'react-native-reanimated';
 
 import styles from './styles/card';
@@ -119,15 +120,17 @@ export const Card = (props: Props) => {
                     shadowOpacity={.1}
                     shadowRadius={1}
                     style={styles.logo}>
-                    <Image
-                      style={{ width: 20, height: 20 }}
-                      resizeMode='contain'
-                      source={{
-                        uri: `data:image/png;base64,${plaidItemsData?.find((p) =>
-                          p.accounts.find((account) => account.id === props.account?.id))?.institution?.logo
-                          }`
-                      }}
-                    />
+                    <Grayscale>
+                      <Image
+                        style={{ width: 20, height: 20 }}
+                        resizeMode='contain'
+                        source={{
+                          uri: `data:image/png;base64,${plaidItemsData?.find((p) =>
+                            p.accounts.find((account) => account.id === props.account?.id))?.institution?.logo
+                            }`
+                        }}
+                      />
+                    </Grayscale>
                   </Box>
                   <View>
                     <Text

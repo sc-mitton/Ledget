@@ -218,4 +218,3 @@ export const useZoomCardStyleInterpolator = () => {
 
   return cardStyleInterpolator;
 }
-

@@ -8,16 +8,17 @@ import {
   vec,
   Circle
 } from '@shopify/react-native-skia';
-import { ArrowDownRight, ArrowUpRight, Check } from 'geist-native-icons';
+import { ArrowDownRight, ArrowUpRight, Check, CornerDownLeft } from 'geist-native-icons';
 import { useTheme } from '@shopify/restyle';
 import Big from 'big.js';
 import dayjs from 'dayjs';
-import Animated, { useDerivedValue, FadeIn, FadeOut } from 'react-native-reanimated';
+import Animated, { useDerivedValue, FadeIn, FadeOut, StretchInY, StretchOutY } from 'react-native-reanimated';
 import { BlurView } from 'expo-blur';
 
 import styles from './styles/summary';
 import { AccountsTabsScreenProps } from '@types';
-import { Box, DollarCents, Icon, Text, Menu } from '@ledget/native-ui';
+import { Graph } from '@ledget/media/native';
+import { Box, DollarCents, Icon, Text, Menu, Button } from '@ledget/native-ui';
 import { useGetAccountsQuery, useLazyGetAccountBalanceHistoryQuery, useLazyGetAccountBalanceTrendQuery } from '@ledget/shared-features';
 
 import SourceSans3Regular from '../../../../../assets/fonts/SourceSans3Regular.ttf';
@@ -51,6 +52,7 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
   const [calculatedTrend, setCalculatedTrend] = useState(0)
   const [balanceHistoryChartData, setBalanceHistoryChartData] = useState(tempChartData)
   const [showMenu, setShowMenu] = useState(false)
+  const [showChart, setShowChart] = useState(false)
   const { state, isActive } = useChartPressState({ x: '0', y: { balance: 0 } })
 
   const totalBalance = useMemo(
@@ -171,25 +173,43 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
           />
         </Animated.View>}
       <View style={styles.menuButtonContainer}>
-        <Menu
-          as='menu'
-          onShowChange={setShowMenu}
-          items={windows.map(w => ({
-            label: w.label,
-            icon: () => <Icon icon={Check} color={window === w.key ? 'blueText' : 'transparent'} />,
-            onSelect: () => setWindow(w.key)
-          }))}
-          placement='right'
-          closeOnSelect={true}
-        >
-          <Box backgroundColor='lightBlueButton' style={styles.menuButton}>
-            <Text color='blueText'>{window}</Text>
-          </Box>
-        </Menu>
+        {showChart
+          ?
+          <Menu
+            as='menu'
+            onShowChange={setShowMenu}
+            items={[
+              ...windows.map(w => ({
+                label: w.label,
+                icon: () => <Icon icon={Check} color={window === w.key ? 'blueText' : 'transparent'} />,
+                onSelect: () => setWindow(w.key)
+              })),
+              {
+                label: 'Close',
+                icon: () => <Icon icon={CornerDownLeft} size={16} color='secondaryText' />,
+                onSelect: () => setShowChart(false), newSection: true
+              }
+            ]}
+            placement='right'
+            closeOnSelect={true}
+          >
+            <Box backgroundColor='lightBlueButton' style={styles.menuButton}>
+              <Text color='blueText'>{window}</Text>
+            </Box>
+          </Menu>
+          :
+          <Button
+            onPress={() => { setShowChart(true) }}
+            backgroundColor='grayButton'
+            variant='square'>
+            <Icon icon={Graph} color='tertiaryText' />
+          </Button>
+        }
       </View>
       <View style={styles.chartHeader}>
+        <DollarCents value={totalBalance} fontSize={28} variant='bold' />
         <View style={styles.headerTitle}>
-          <Text color='secondaryText'>Total Balance</Text>
+          <Text color='secondaryText'>total balance</Text>
           <View style={styles.trendContainer}>
             <DollarCents showSign={false} color='secondaryText' value={calculatedTrend} withCents={false} />
             <View style={styles.trendIcon}>
@@ -199,94 +219,95 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
             </View>
           </View>
         </View>
-        <DollarCents value={totalBalance} fontSize={22} variant='bold' />
       </View>
-      <View style={styles.graphContainer}>
-        <CartesianChart
-          chartPressState={state}
-          data={balanceHistoryChartData}
-          xKey={'date'}
-          yKeys={['balance']}
-          xAxis={{
-            font,
-            lineWidth: 0,
-            tickCount: window.endsWith('M') ? 3 : 5,
-            labelColor:
-              isBalanceHistoryLoaded
-                ? theme.colors.faintBlueText
-                : theme.colors.quaternaryText,
-            formatXLabel: (date) => window.endsWith('M')
-              ? `      ${dayjs(date).format('MMM')}`
-              : `         ${dayjs(date).format('MMM YY')}`,
-          }}
-          yAxis={[{
-            font,
-            lineWidth: 0,
-            formatYLabel: () => '',
-          }]}
-          padding={{
-            left: -12,
-            bottom: 8,
-            right: 6
-          }}
-          domainPadding={{
-            left: 3,
-            right: 3,
-          }}
-          domain={{
-            y: [
-              balanceHistoryChartData.reduce((acc, h) => Math.min(acc, h.balance), 0) * 1.5 -
-              (balanceHistoryChartData.reduce((acc, h) => Math.max(acc, h.balance), 0) * 1.5
-                - balanceHistoryChartData.reduce((acc, h) => Math.min(acc, h.balance), 0) * 1.5) * .2,
-              balanceHistoryChartData.reduce((acc, h) => Math.max(acc, h.balance), 0) * 1.5
-            ]
-          }}
-        >
-          {({ points, chartBounds }) => (
-            <>
-              <Line
-                animate={{ type: 'spring', duration: 300 }}
-                points={points.balance}
-                color={isBalanceHistoryLoaded ? theme.colors.blueChartColor : theme.colors.quinaryText}
-                strokeWidth={3}
-                curveType='natural'
-              />
-              <Area
-                y0={chartBounds.bottom}
-                points={points.balance}
-                animate={{ type: 'spring', duration: 300 }}
-                curveType='natural'
-              >
-                <LinearGradient
-                  colors={isBalanceHistoryLoaded
-                    ? [theme.colors.blueChartGradientStart, theme.colors.mainBackground]
-                    : [theme.colors.mediumGrayButton, theme.colors.mainBackground]
-                  }
-                  start={vec(chartBounds.bottom, 0)}
-                  end={vec(chartBounds.bottom, chartBounds.bottom)}
+      {showChart &&
+        <Animated.View style={[styles.graphContainer]} entering={StretchInY} exiting={StretchOutY}>
+          <CartesianChart
+            chartPressState={state}
+            data={balanceHistoryChartData}
+            xKey={'date'}
+            yKeys={['balance']}
+            xAxis={{
+              font,
+              lineWidth: 0,
+              tickCount: window.endsWith('M') ? 3 : 5,
+              labelColor:
+                isBalanceHistoryLoaded
+                  ? theme.colors.faintBlueText
+                  : theme.colors.quaternaryText,
+              formatXLabel: (date) => window.endsWith('M')
+                ? `      ${dayjs(date).format('MMM')}`
+                : `         ${dayjs(date).format('MMM YY')}`,
+            }}
+            yAxis={[{
+              font,
+              lineWidth: 0,
+              tickCount: 0,
+              formatYLabel: () => '',
+            }]}
+            padding={{
+              left: 8,
+              bottom: 24,
+              right: 6
+            }}
+            domainPadding={{
+              left: 3,
+              right: 3,
+            }}
+            domain={{
+              y: [
+                balanceHistoryChartData.reduce((acc, h) => Math.min(acc, h.balance), 0) * 1.5 -
+                (balanceHistoryChartData.reduce((acc, h) => Math.max(acc, h.balance), 0) * 1.5
+                  - balanceHistoryChartData.reduce((acc, h) => Math.min(acc, h.balance), 0) * 1.5) * .2,
+                balanceHistoryChartData.reduce((acc, h) => Math.max(acc, h.balance), 0) * 1.5
+              ]
+            }}
+          >
+            {({ points, chartBounds }) => (
+              <>
+                <Line
+                  animate={{ type: 'spring', duration: 300 }}
+                  points={points.balance}
+                  color={isBalanceHistoryLoaded ? theme.colors.blueChartColor : theme.colors.quinaryText}
+                  strokeWidth={3}
+                  curveType='natural'
                 />
-              </Area>
-              {isActive && (
-                <SkText
-                  x={textXPosition}
-                  y={textYPosition}
-                  font={font}
-                  color={theme.colors.faintBlueText}
-                  text={value}
-                />
-              )}
-              {isActive && (
-                <Circle
-                  cx={state.x.position}
-                  cy={state.y.balance.position}
-                  r={3}
-                  color={theme.colors.faintBlueText}
-                />
-              )}
-            </>
-          )}
-        </CartesianChart>
-      </View>
+                <Area
+                  y0={chartBounds.bottom}
+                  points={points.balance}
+                  animate={{ type: 'spring', duration: 300 }}
+                  curveType='natural'
+                >
+                  <LinearGradient
+                    colors={isBalanceHistoryLoaded
+                      ? [theme.colors.blueChartGradientStart, theme.colors.mainBackground]
+                      : [theme.colors.mediumGrayButton, theme.colors.mainBackground]
+                    }
+                    start={vec(chartBounds.bottom, 0)}
+                    end={vec(chartBounds.bottom, chartBounds.bottom)}
+                  />
+                </Area>
+                {isActive && (
+                  <SkText
+                    x={textXPosition}
+                    y={textYPosition}
+                    font={font}
+                    color={theme.colors.faintBlueText}
+                    text={value}
+                  />
+                )}
+                {isActive && (
+                  <Circle
+                    cx={state.x.position}
+                    cy={state.y.balance.position}
+                    r={3}
+                    color={theme.colors.faintBlueText}
+                  />
+                )}
+              </>
+            )}
+          </CartesianChart>
+        </Animated.View>}
     </Box>
   )
 }

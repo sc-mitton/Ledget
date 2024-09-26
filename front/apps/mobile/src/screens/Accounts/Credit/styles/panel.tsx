@@ -48,16 +48,6 @@ const styles = StyleSheet.create({
     gap: 7,
     transform: [{ translateY: -20 }]
   },
-  dotContainer: {
-    width: 5,
-    height: 5,
-    borderRadius: 5,
-    overflow: 'hidden'
-  },
-  dot: {
-    width: '100%',
-    height: '100%',
-  },
   accountName: {
     flexDirection: 'row',
     gap: 8,
