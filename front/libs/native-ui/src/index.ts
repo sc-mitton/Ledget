@@ -1,4 +1,6 @@
 
+export * from './animated/pager-view/PagerView';
+
 export * from './buttons/swipe-delete/SwipeDelete';
 export * from './inputs/modal-picker/ModalPicker';
 export { default as ModalPickerProvider } from './inputs/modal-picker/context';

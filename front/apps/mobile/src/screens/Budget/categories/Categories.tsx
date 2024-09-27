@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { View } from 'react-native';
-import PagerView from 'react-native-pager-view';
 
 import styles from './styles/categories';
 import sharedStyles from '../styles/shared-styles';
 import { useAppSelector } from '@/hooks';
 import { selectCategoryMetaData, Category } from '@ledget/shared-features';
-import { Box, BoxHeader, CarouselDots, DollarCents, Text } from '@ledget/native-ui';
+import { Box, BoxHeader, CarouselDots, DollarCents, Text, PagerView } from '@ledget/native-ui';
 import List from './List';
 
 const Progress = ({ period }: { period: Category['period'] }) => {
@@ -69,7 +68,6 @@ const Categories = () => {
           pageMargin={24}
           style={sharedStyles.pagerView}
           initialPage={index}
-          orientation={'horizontal'}
           onPageSelected={(e) => setIndex(e.nativeEvent.position)}
         >
           <View style={sharedStyles.page} key='1'>

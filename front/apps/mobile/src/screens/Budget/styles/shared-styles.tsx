@@ -2,17 +2,21 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   section: {
-    height: '100%'
   },
   page: {
-    flex: 1,
+    paddingHorizontal: 16,
+    width: '100%'
   },
   pagerView: {
     width: '100%',
-    height: '100%'
+    height: '100%',
+    justifyContent: 'flex-start',
   },
   box: {
-    flex: 1
+    paddingHorizontal: 0,
+    justifyContent: 'flex-start',
+    paddingBottom: 20,
+    gap: 12
   },
   carouselDots: {
     alignItems: 'center',

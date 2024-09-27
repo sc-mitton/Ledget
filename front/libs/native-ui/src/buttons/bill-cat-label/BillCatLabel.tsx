@@ -13,6 +13,7 @@ interface BillCatEmojiProps {
 
 interface BillCatLabelProps extends BillCatEmojiProps {
   name: string;
+  children?: React.ReactNode;
 }
 
 export function BillCatEmoji(props: BillCatEmojiProps) {
@@ -45,6 +46,7 @@ export function BillCatLabel(props: BillCatLabelProps) {
         fontSize={14}>
         {`${name.charAt(0).toUpperCase()}${name.slice(1)}`}
       </Text>
+      {props.children}
     </Box>
   );
 }

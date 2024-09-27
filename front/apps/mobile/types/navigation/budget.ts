@@ -6,7 +6,12 @@ import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import type { BottomTabNavParamList, RootStackParamList } from './root';
 
 export type BudgetStackParamList = {
-  Main: undefined
+  Main: {
+    day: number
+  }
+  Category: {
+    id: string
+  }
 };
 
 export type BudgetScreenProps<T extends keyof BudgetStackParamList> =

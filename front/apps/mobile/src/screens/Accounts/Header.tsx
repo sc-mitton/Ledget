@@ -1,6 +1,7 @@
 import Animated, { FadeOut, FadeIn } from 'react-native-reanimated';
 import { useTheme } from '@shopify/restyle';
 import { View } from 'react-native';
+import Big from 'big.js';
 
 import styles from './styles/header';
 import { Header2, Header, InstitutionLogo, DollarCents } from '@ledget/native-ui';
@@ -25,7 +26,7 @@ export const AccountHeader = (props: { account: Account }) => {
       <InstitutionLogo account={props.account.id} />
       <Header2>{props.account.name}</Header2>
       <View style={styles.balanceContainer}>
-        <DollarCents value={props.account.balances.current} fontSize={20} />
+        <DollarCents value={Big(props.account.balances.current).times(100).toNumber()} fontSize={20} />
       </View>
     </Animated.View>
   )

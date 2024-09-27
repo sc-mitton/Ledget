@@ -12,13 +12,13 @@ const styles = StyleSheet.create({
   rowsWithOverflow: {
     marginBottom: 24,
   },
-  name: {
+  amount: {
+    flexDirection: 'row',
     flexGrow: 1,
-    marginLeft: 8
+    justifyContent: 'flex-end',
   },
   row: {
     flexDirection: 'row',
-    paddingLeft: 8,
     gap: 12,
     paddingRight: 4,
     alignItems: 'center',

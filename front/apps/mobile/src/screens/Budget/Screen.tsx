@@ -3,7 +3,6 @@ import { ScrollView } from 'react-native';
 import { useTheme } from '@shopify/restyle';
 
 import Menu from './Menu';
-import styles from './styles/screen';
 import { Box } from '@ledget/native-ui';
 import { BottomTabScreenProps, BudgetScreenProps, BudgetStackParamList } from '@types';
 import Categories from './categories/Categories';
@@ -19,11 +18,7 @@ const MainScreen = (props: BudgetScreenProps<'Main'>) => {
     <Box variant='screen' paddingTop='none'>
       <Carousel />
       <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={[
-          styles.scrollView,
-          { marginBottom: theme.spacing.navHeight * 1.25 }
-        ]}
+        contentContainerStyle={{ paddingBottom: theme.spacing.navHeight * 1 }}
         showsVerticalScrollIndicator={false}
       >
         <Categories />

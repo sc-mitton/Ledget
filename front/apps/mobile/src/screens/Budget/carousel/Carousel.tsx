@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import Animated, { useSharedValue } from 'react-native-reanimated';
-import PagerView from 'react-native-pager-view';
 import Big from 'big.js';
 
 import styles from './styles';
 import sharedStyles from '../styles/shared-styles';
-import { CarouselDots, Text, DollarCents } from '@ledget/native-ui';
+import { CarouselDots, Text, DollarCents, PagerView } from '@ledget/native-ui';
 import {
   selectCategoryMetaData,
   selectBillMetaData,
@@ -52,7 +51,6 @@ const Carousel = () => {
         style={sharedStyles.pagerView}
         initialPage={page}
         onPageSelected={(e) => setPage(e.nativeEvent.position)}
-        orientation={'horizontal'}
       >
         <View style={styles.page} key='1'>
           <View

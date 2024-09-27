@@ -32,7 +32,7 @@ const Button = (props: AccountsTabsScreenProps<any> & { account?: Account }) => 
           <Box backgroundColor='modalSeperator' height={18} width={100} borderRadius={40} />}
       </View>
       <Box style={styles.balanceContainer} >
-        <DollarCents color='secondaryText' value={`${props.account?.balances.current || 0}`} />
+        <DollarCents value={`${props.account?.balances.current || 0}`} />
       </Box>
     </TouchableOpacity>
   )
