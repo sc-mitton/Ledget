@@ -13,7 +13,7 @@ import { BudgetScreenProps } from '@types'
 
 const COLLAPSED_MAX = 5;
 
-export default function List() {
+export default function List(props: BudgetScreenProps<'Main'>) {
   const [expanded, setExpanded] = useState(false)
   const [bills, setBills] = useState<TransformedBill[]>()
   const { month, year } = useAppSelector(selectBudgetMonthYear)
@@ -21,7 +21,6 @@ export default function List() {
     { month, year },
     { skip: !month || !year }
   );
-  const { navigation, route } = useNavigation<BudgetScreenProps<'Main'>>();
 
   const hasOverflow = useMemo(() => {
     return (bills?.length || 0) > COLLAPSED_MAX
@@ -43,7 +42,7 @@ export default function List() {
 
   useEffect(() => {
     setBills(data?.filter(c =>
-      !route?.params?.day || dayjs(c.date).isSame(dayjs().day(route.params.day))));
+      !props.route.params?.day || dayjs(c.date).isSame(dayjs().day(props.route.params?.day))));
   }, [data])
 
   useEffect(() => { api.start() }, [])
@@ -75,13 +74,9 @@ export default function List() {
           item && (
             <>
               <AnimatedView key={item.id} style={style}>
-                {i !== 0 &&
-                  <View style={styles.seperator}>
-                    <Seperator backgroundColor='nestedContainerSeperator' variant='bare' />
-                  </View>}
                 <TouchableOpacity
                   style={styles.row}
-                  onPress={() => navigation.navigate('Category', { id: item.id })}
+                  onPress={() => props.navigation.navigate('Category', { id: item.id })}
                 >
                   <View>
                     <BillCatLabel emoji={item.emoji} period={item.period} name={item.name} >

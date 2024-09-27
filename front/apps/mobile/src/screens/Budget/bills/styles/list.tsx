@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     gap: 12,
     paddingRight: 4,
     alignItems: 'center',
-    marginVertical: 16
+    marginVertical: 12
   },
   seperator: {
     paddingLeft: 48

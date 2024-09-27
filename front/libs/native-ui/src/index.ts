@@ -1,6 +1,3 @@
-
-export * from './animated/pager-view/PagerView';
-
 export * from './buttons/swipe-delete/SwipeDelete';
 export * from './inputs/modal-picker/ModalPicker';
 export { default as ModalPickerProvider } from './inputs/modal-picker/context';
@@ -50,6 +47,8 @@ export * from './animated/loading-indicators/Spinner';
 export * from './animated/pulse/Pulse';
 export * from './animated/views/JiggleView';
 export * from './animated/views/AnimatedView';
+export * from './animated/pager-view/PagerView';
+export * from './animated/pager-view/types';
 export * from './animated/configs/configs';
 export * from './headers/BackHeader';
 

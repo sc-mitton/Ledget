@@ -62,7 +62,7 @@ const Carousel = () => {
           >
             <DollarCents
               variant={mode === 'light' ? 'bold' : 'regular'}
-              fontSize={32}
+              fontSize={36}
               value={loadingCategories || loadingBills
                 ? 0
                 : Big(yearly_spent).add(monthly_spent).toNumber()}

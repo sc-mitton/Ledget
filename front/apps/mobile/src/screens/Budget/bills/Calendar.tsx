@@ -11,7 +11,7 @@ import { Box, Icon } from '@ledget/native-ui'
 import { Text } from '@ledget/native-ui'
 import { BudgetScreenProps } from '@types'
 
-const Calendar = () => {
+const Calendar = (props: BudgetScreenProps<'Main'> & { onPress: () => void }) => {
   const [bills, setBills] = useState<TransformedBill[]>()
   const { month, year } = useAppSelector(selectBudgetMonthYear)
   const { data } = useGetBillsQuery(
@@ -19,7 +19,6 @@ const Calendar = () => {
     { skip: !month || !year }
   );
   const [days, setDays] = useState<Array<number[]>>([]);
-  const { navigation, route } = useNavigation<BudgetScreenProps<'Main'>>();
 
   const billsPerDay = useMemo(() => {
     if (!days) return;
@@ -53,13 +52,11 @@ const Calendar = () => {
     }
   }, [month, year]);
 
-  useEffect(() => {
-    setBills(data?.filter(c =>
-      !route?.params?.day || dayjs(c.date).isSame(dayjs().day(route?.params.day))));
-  }, [data])
+  useEffect(() => { setBills(data) }, [data])
 
   const handlePress = (day: number) => {
-    navigation.setParams({ day });
+    props.navigation.setParams({ day });
+    props.onPress();
   }
 
   return (
@@ -74,9 +71,15 @@ const Calendar = () => {
                   <Text color='tertiaryText'>
                     {dayjs(`${year}-${month}-${day}`).format('ddd')}
                   </Text>}
-                <TouchableOpacity onPress={() => handlePress(day)} style={styles.day}>
-                  <Box backgroundColor={day === route?.params?.day ? 'blueButton' : 'transparent'}>
-                    <Text color={day === -1 ? 'transparent' : 'mainText'}>{day}</Text>
+                <TouchableOpacity
+                  disabled={day === -1 || !billsPerDay?.[day - 1]}
+                  onPress={() => handlePress(day)} style={styles.day}>
+                  <Box
+                    style={styles.calendarCell}
+                    backgroundColor={day === props.route?.params?.day ? 'blueButton' : 'transparent'}>
+                    <Text color={day === -1 ? 'transparent' : 'mainText'}>
+                      {day}
+                    </Text>
                   </Box>
                   {/* Show dots for the number of bills on each day. Max 4 dots total. */}
                   {<View style={styles.markersWrapper}>

@@ -72,10 +72,6 @@ export default function List(props: Props) {
           item && (
             <>
               <AnimatedView key={item.id} style={style}>
-                {i !== 0 &&
-                  <View style={styles.seperator}>
-                    <Seperator backgroundColor='nestedContainerSeperator' variant='bare' />
-                  </View>}
                 <TouchableOpacity
                   style={styles.row}
                   onPress={() => navigation.navigate('Category', { id: item.id })}

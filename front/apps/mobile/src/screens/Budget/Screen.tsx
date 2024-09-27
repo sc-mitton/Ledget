@@ -15,14 +15,14 @@ const MainScreen = (props: BudgetScreenProps<'Main'>) => {
   const theme = useTheme()
 
   return (
-    <Box variant='screen' paddingTop='none'>
+    <Box variant='screen'>
       <Carousel />
       <ScrollView
         contentContainerStyle={{ paddingBottom: theme.spacing.navHeight * 1 }}
         showsVerticalScrollIndicator={false}
       >
         <Categories />
-        <Bills />
+        <Bills {...props} />
       </ScrollView>
     </Box>
   )
@@ -32,7 +32,7 @@ const Screen = (props: BottomTabScreenProps<'Budget'>) => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerBackground: () => <></>,
+        headerTransparent: true,
         headerTitle: () => '',
         headerRight: () => <Menu />
       }}

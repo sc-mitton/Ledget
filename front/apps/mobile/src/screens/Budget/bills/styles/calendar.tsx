@@ -5,6 +5,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingBottom: 24,
+    marginHorizontal: -6
   },
   column: {
     height: '100%',
@@ -17,6 +18,11 @@ const styles = StyleSheet.create({
     gap: 12,
     height: Dimensions.get('window').width * .75,
   },
+  calendarCell: {
+    paddingHorizontal: 10,
+    paddingVertical: 2,
+    borderRadius: 6,
+  },
   day: {
     position: 'relative',
     alignItems: 'center',
@@ -28,7 +34,7 @@ const styles = StyleSheet.create({
   markersContainer: {
     position: 'absolute',
     left: '50%',
-    bottom: -4,
+    bottom: -6,
     justifyContent: 'center',
     alignItems: 'center',
   },
