@@ -53,6 +53,9 @@
       "@ledget/helpers": [
         "../../libs/helpers/src"
       ],
+      "@ledget/form-schemas": [
+        "../../libs/form-schemas/src"
+      ],
     },
   },
   "files": [],

@@ -111,6 +111,7 @@ export function MoneyInput<T extends TInput>(props: MoneyInputProps<T>) {
                 {...rest}
                 ref={input1Ref}
                 inputMode={'numeric'}
+                keyboardAppearance={theme.colors.mode === 'dark' ? 'dark' : 'light'}
                 value={Array.isArray(formatedValue) ? formatedValue?.[0] : formatedValue}
                 onFocus={() => setIndex(0)}
                 onBlur={(e: NativeSyntheticEvent<TextInputFocusEventData>) => {

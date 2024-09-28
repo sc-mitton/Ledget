@@ -51,7 +51,10 @@
       ],
       "@ledget/shared-features": [
         "../../libs/shared-features/src"
-      ]
+      ],
+      "@ledget/form-schemas": [
+        "../../libs/form-schemas/src"
+      ],
     },
   },
   "files": [],

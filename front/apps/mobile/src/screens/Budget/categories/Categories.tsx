@@ -7,6 +7,7 @@ import { useAppSelector } from '@/hooks';
 import { selectCategoryMetaData, Category } from '@ledget/shared-features';
 import { Box, BoxHeader, CarouselDots, DollarCents, Text, PagerView } from '@ledget/native-ui';
 import List from './List';
+import { BudgetScreenProps } from '@types';
 
 const Progress = ({ period }: { period: Category['period'] }) => {
   const {
@@ -54,7 +55,7 @@ const Progress = ({ period }: { period: Category['period'] }) => {
   )
 }
 
-const Categories = () => {
+const Categories = (props: BudgetScreenProps<'Main'>) => {
   const [index, setIndex] = useState(0);
 
   return (
@@ -73,12 +74,12 @@ const Categories = () => {
           <View style={sharedStyles.page} key='1'>
             <Text>Monthly</Text>
             <Progress period='month' />
-            <List period='month' />
+            <List period='month' {...props} />
           </View>
           <View style={sharedStyles.page} key='2'>
             <Text>Yearly</Text>
             <Progress period='year' />
-            <List period='year' />
+            <List period='year' {...props} />
           </View>
         </PagerView>
       </Box>

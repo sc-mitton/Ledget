@@ -23,8 +23,8 @@ const styles = StyleSheet.create({
     zIndex: 100,
     justifyContent: 'center',
     position: 'absolute',
-    top: 14,
-    right: -4,
+    top: 10,
+    right: -6,
     height: 20,
     paddingHorizontal: 24
   }

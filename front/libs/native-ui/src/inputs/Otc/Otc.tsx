@@ -88,6 +88,7 @@ export const Otc = (props: Props) => {
                 style={styles.otcInputContainer1}
               >
                 <TextInput
+                  keyboardAppearance={theme.colors.mode === 'dark' ? 'dark' : 'light'}
                   keyboardType='numeric'
                   style={{
                     ...styles.otcInput,

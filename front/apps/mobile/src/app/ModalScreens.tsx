@@ -13,7 +13,9 @@ import {
   ChangePassword,
   SplitTransaction,
   CardPicker,
-  AccountsPicker
+  AccountsPicker,
+  NewCategory,
+  NewBill
 } from '@modals';
 import { Activity } from '@screens';
 import { useModalStyleInterpolator, useModifiedDefaultModalStyleInterpolator } from '@/hooks';
@@ -46,6 +48,8 @@ const ModalScreens = () => {
           gestureResponseDistance: 70,
           cardStyleInterpolator: defaultModalStyleInterpolator
         }}>
+        <RootStack.Screen name='NewCategory' component={NewCategory} />
+        <RootStack.Screen name='NewBill' component={NewBill} />
         <RootStack.Screen name='PickerCard' component={CardPicker} />
         <RootStack.Screen name='PickAccount' component={AccountsPicker} />
       </RootStack.Group>

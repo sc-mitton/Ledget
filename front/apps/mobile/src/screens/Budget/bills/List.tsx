@@ -1,33 +1,27 @@
 import { useState, useMemo, useEffect } from 'react'
 import { View, TouchableOpacity } from 'react-native'
 import { useSpringRef, useTransition } from '@react-spring/web'
-import { useNavigation } from '@react-navigation/native'
 import { ChevronRight, CheckInCircle } from 'geist-native-icons'
 import dayjs from 'dayjs'
 
 import styles from './styles/list';
 import { useGetBillsQuery, selectBudgetMonthYear, TransformedBill } from '@ledget/shared-features'
-import { DollarCents, AnimatedView, Button, Seperator, BillCatLabel, Icon, Text } from '@ledget/native-ui'
+import { DollarCents, AnimatedView, Button, BillCatLabel, Icon, Text } from '@ledget/native-ui'
 import { useAppSelector } from '@/hooks'
 import { BudgetScreenProps } from '@types'
+import SkeletonList from '../SkeletonList/SkeletonList'
 
 const COLLAPSED_MAX = 5;
 
-export default function List(props: BudgetScreenProps<'Main'>) {
+function FilledList(props: BudgetScreenProps<'Main'> & { bills: TransformedBill[] }) {
   const [expanded, setExpanded] = useState(false)
-  const [bills, setBills] = useState<TransformedBill[]>()
-  const { month, year } = useAppSelector(selectBudgetMonthYear)
-  const { data } = useGetBillsQuery(
-    { month, year },
-    { skip: !month || !year }
-  );
 
   const hasOverflow = useMemo(() => {
-    return (bills?.length || 0) > COLLAPSED_MAX
-  }, [bills,])
+    return (props.bills?.length || 0) > COLLAPSED_MAX
+  }, [props.bills,])
 
   const api = useSpringRef();
-  const transitions = useTransition(bills, {
+  const transitions = useTransition(props.bills, {
     from: (item, index) => ({
       opacity: expanded ? 1 : index > COLLAPSED_MAX - 1 ? 0 : 1,
       maxHeight: expanded ? 100 : index > COLLAPSED_MAX - 1 ? 0 : 100,
@@ -39,11 +33,6 @@ export default function List(props: BudgetScreenProps<'Main'>) {
     config: { duration: 200 },
     ref: api,
   });
-
-  useEffect(() => {
-    setBills(data?.filter(c =>
-      !props.route.params?.day || dayjs(c.date).isSame(dayjs().day(props.route.params?.day))));
-  }, [data])
 
   useEffect(() => { api.start() }, [])
 
@@ -103,11 +92,34 @@ export default function List(props: BudgetScreenProps<'Main'>) {
             label={
               expanded
                 ? 'View Less'
-                : `+${(bills?.length || 0) - COLLAPSED_MAX}  View All`
+                : `+${(props.bills?.length || 0) - COLLAPSED_MAX}  View All`
             }
             textColor='quinaryText'
           />
         </View>}
     </View>
+  )
+}
+
+export default function (props: BudgetScreenProps<'Main'>) {
+  const [bills, setBills] = useState<TransformedBill[]>()
+  const { month, year } = useAppSelector(selectBudgetMonthYear)
+  const { data } = useGetBillsQuery(
+    { month, year },
+    { skip: !month || !year }
+  );
+
+  useEffect(() => {
+    setBills(data?.filter(c =>
+      !props.route.params?.day || dayjs(c.date).isSame(dayjs().day(props.route.params?.day))));
+  }, [data])
+
+  return (
+    <>
+      {bills
+        ? <FilledList {...props} bills={bills} />
+        : <SkeletonList />
+      }
+    </>
   )
 }

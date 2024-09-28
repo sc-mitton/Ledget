@@ -209,9 +209,9 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
       <View style={styles.chartHeader}>
         <DollarCents value={totalBalance} fontSize={28} variant='bold' />
         <View style={styles.headerTitle}>
-          <Text color='secondaryText'>total balance</Text>
+          <Text color='tertiaryText'>total balance</Text>
           <View style={styles.trendContainer}>
-            <DollarCents showSign={false} color='secondaryText' value={calculatedTrend} withCents={false} />
+            <DollarCents showSign={false} color='tertiaryText' value={calculatedTrend} withCents={false} />
             <View style={styles.trendIcon}>
               <Icon
                 color={calculatedTrend < 0 ? 'alert' : 'greenText'}
@@ -250,10 +250,7 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
               bottom: 24,
               right: 6
             }}
-            domainPadding={{
-              left: 3,
-              right: 3,
-            }}
+            domainPadding={{ left: 3, right: 3 }}
             domain={{
               y: [
                 balanceHistoryChartData.reduce((acc, h) => Math.min(acc, h.balance), 0) * 1.5 -

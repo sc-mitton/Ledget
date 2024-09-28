@@ -4,8 +4,8 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     width: '100%',
-    marginBottom: 36,
-    marginTop: 12
+    marginBottom: 24,
+    marginTop: 20
   },
   carouselDotsContainer: {
     flexDirection: 'row',

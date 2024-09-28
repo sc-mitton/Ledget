@@ -6,6 +6,7 @@ import { useForm, useWatch } from 'react-hook-form';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import styles from './styles/forms.module.scss';
+import { categorySchema } from '@ledget/form-schemas';
 import { useAddNewCategoryMutation } from '@ledget/shared-features';
 import {
   AddAlert,
@@ -18,13 +19,6 @@ import { withModal } from '@ledget/ui';
 import SubmitForm from '@components/pieces/SubmitForm';
 import { FormErrorTip } from '@ledget/ui';
 
-export const schema = z.object({
-  name: z.string().min(1, { message: 'required' }).toLowerCase(),
-  limit_amount: z.number().min(1, { message: 'required' }),
-  period: z.enum(['month', 'year']),
-  alerts: z.array(z.object({ percent_amount: z.number() })).optional()
-});
-
 const CreateCategoryModal = withModal((props) => {
   const location = useLocation();
   const [emoji, setEmoji] = useState<emoji>();
@@ -36,8 +30,8 @@ const CreateCategoryModal = withModal((props) => {
     control,
     handleSubmit,
     formState: { errors }
-  } = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema),
+  } = useForm<z.infer<typeof categorySchema>>({
+    resolver: zodResolver(categorySchema),
     mode: 'onSubmit',
     reValidateMode: 'onBlur'
   });

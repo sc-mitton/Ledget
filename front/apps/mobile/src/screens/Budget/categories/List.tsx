@@ -2,35 +2,30 @@ import { useEffect, useMemo, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native'
 import { ChevronRight } from 'geist-native-icons'
 import { useSpringRef, useTransition } from '@react-spring/web';
-import { useNavigation } from '@react-navigation/native';
+import Big from 'big.js';
 
 import styles from './styles/list';
 import { useAppSelector } from '@/hooks'
-import { DollarCents, BillCatEmoji, Seperator, Icon, Text, AnimatedView, Button } from '@ledget/native-ui'
+import { DollarCents, BillCatEmoji, Icon, Text, AnimatedView, Button } from '@ledget/native-ui'
+import SkeletonList from '../SkeletonList/SkeletonList';
 import { Category, useGetCategoriesQuery, selectBudgetMonthYear } from '@ledget/shared-features'
 import { BudgetScreenProps } from '@types';
 
-interface Props {
+type Props = {
   period: Category['period']
-}
+} & BudgetScreenProps<'Main'>
 
 const COLLAPSED_MAX = 5;
 
-export default function List(props: Props) {
-  const { month, year } = useAppSelector(selectBudgetMonthYear)
+const FilledList = (props: Props & { categories?: Category[] }) => {
   const [expanded, setExpanded] = useState(false)
-  const { data: categories, isLoading } = useGetCategoriesQuery(
-    { month, year },
-    { skip: !month || !year }
-  );
-  const { navigation } = useNavigation<BudgetScreenProps<'Main'>>();
 
   const hasOverflow = useMemo(() => {
-    return (categories?.filter(c => c.period === props.period).length || 0) > COLLAPSED_MAX
-  }, [categories, props.period])
+    return (props.categories?.filter(c => c.period === props.period).length || 0) > COLLAPSED_MAX
+  }, [props.categories, props.period])
 
   const api = useSpringRef();
-  const transitions = useTransition(categories?.filter(c => c.period === props.period), {
+  const transitions = useTransition(props.categories?.filter(c => c.period === props.period), {
     from: (item, index) => ({
       opacity: expanded ? 1 : index > COLLAPSED_MAX - 1 ? 0 : 1,
       maxHeight: expanded ? 100 : index > COLLAPSED_MAX - 1 ? 0 : 100,
@@ -74,7 +69,7 @@ export default function List(props: Props) {
               <AnimatedView key={item.id} style={style}>
                 <TouchableOpacity
                   style={styles.row}
-                  onPress={() => navigation.navigate('Category', { id: item.id })}
+                  onPress={() => props.navigation.navigate('Category', { category: item })}
                 >
                   <View>
                     <BillCatEmoji emoji={item.emoji} period={item.period} />
@@ -83,11 +78,11 @@ export default function List(props: Props) {
                     <Text>{item.name.charAt(0).toUpperCase() + item.name.slice(1)}</Text>
                   </View>
                   <View>
-                    <DollarCents value={item.amount_spent} withCents={false} />
+                    <DollarCents value={Big(item.amount_spent || 0).times(100).toNumber()} withCents={false} />
                   </View>
                   <Text>/</Text>
                   <View>
-                    <DollarCents value={item.limit_amount} withCents={false} />
+                    <DollarCents value={Big(item.limit_amount || 0).toNumber()} withCents={false} />
                   </View>
                   <Icon icon={ChevronRight} color='quinaryText' />
                 </TouchableOpacity>
@@ -103,11 +98,28 @@ export default function List(props: Props) {
             label={
               expanded
                 ? 'View Less'
-                : `+${(categories?.filter(c => c.period === props.period).length || 0) - COLLAPSED_MAX}  View All`
+                : `+${(props.categories?.filter(c => c.period === props.period).length || 0) - COLLAPSED_MAX}  View All`
             }
             textColor='quinaryText'
           />
         </View>}
     </View>
+  )
+}
+
+export default function List(props: Props) {
+  const { month, year } = useAppSelector(selectBudgetMonthYear)
+  const { data: categories } = useGetCategoriesQuery(
+    { month, year },
+    { skip: !month || !year }
+  );
+
+  return (
+    <>
+      {categories
+        ? <FilledList {...props} categories={categories} />
+        : <SkeletonList />
+      }
+    </>
   )
 }

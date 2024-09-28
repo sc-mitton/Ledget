@@ -3,7 +3,7 @@ import type { CompositeScreenProps } from '@react-navigation/native';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
 import type { BottomTabNavParamList, RootStackParamList } from './root';
-import type { Transaction, Account, AccountType } from '@ledget/shared-features';
+import type { Transaction, Account, AccountType, Bill, Category } from '@ledget/shared-features';
 
 export type ModalStackParamList = {
   Activity: {
@@ -47,9 +47,11 @@ export type ModalStackParamList = {
   NewBill: {
     transaction?: Transaction;
     period: 'monthly' | 'yearly';
+    edit?: Bill
   } | undefined;
   NewCategory: {
     period: 'monthly' | 'yearly';
+    edit?: Category
   } | undefined;
 };
 

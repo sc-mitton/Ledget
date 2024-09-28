@@ -1,4 +1,4 @@
-import { MoreHorizontal, Maximize2, Plus } from "geist-native-icons";
+import { MoreHorizontal, Plus } from "geist-native-icons";
 import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -6,8 +6,7 @@ import styles from "./styles/menu";
 import { Menu, Box, Icon } from "@ledget/native-ui";
 import { BottomTabScreenProps } from "@types";
 
-const TopRightMenu = () => {
-  const { navigation } = useNavigation<BottomTabScreenProps<any>>();
+const TopRightMenu = ({ navigation }: { navigation: BottomTabScreenProps<any>['navigation'] }) => {
 
   return (
     <View style={styles.menu}>

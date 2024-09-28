@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
-import dayjs from 'dayjs';
 
+import styles from './styles/bills';
 import sharedStyles from '../styles/shared-styles';
 import { Box, BoxHeader, Seperator, Text, CarouselDots, TPagerViewRef, PagerView } from '@ledget/native-ui';
 import { useAppSelector } from '@/hooks';
@@ -33,9 +33,9 @@ const Bills = (props: BudgetScreenProps<'Main'>) => {
           onPageSelected={(e) => setIndex(e.nativeEvent.position)}
         >
           <View style={sharedStyles.page} key='1'>
-            <Text>{dayjs(`${year}-${month}-01`).format('MMM YYYY')}</Text>
-            <Seperator backgroundColor='nestedContainerSeperator' />
-            <List {...props} />
+            <View style={styles.billsList}>
+              <List {...props} />
+            </View>
           </View>
           <View style={sharedStyles.page} key='2'>
             <Calendar {...props} onPress={() => setIndex(0)} />

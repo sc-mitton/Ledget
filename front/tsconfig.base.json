@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@ledget/form-schemas": ["libs/form-schemas/src/index.ts"],
       "@ledget/helpers": ["libs/helpers/src/index.ts"],
       "@ledget/media": ["libs/media/web/src/index.ts"],
       "@ledget/media/native": ["libs/media/native/src/index.ts"],

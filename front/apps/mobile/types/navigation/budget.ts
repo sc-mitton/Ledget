@@ -4,13 +4,17 @@ import type { CompositeScreenProps } from '@react-navigation/native';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
 import type { BottomTabNavParamList, RootStackParamList } from './root';
+import { Category, Transaction } from '@ledget/shared-features';
 
 export type BudgetStackParamList = {
   Main: {
     day: number
   }
   Category: {
-    id: string
+    category: Category
+  }
+  Transaction: {
+    transaction: Transaction
   }
 };
 

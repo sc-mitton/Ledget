@@ -131,7 +131,7 @@ export const darkTheme = createTheme({
     focusedText: palette.blueSat,
     blueText: palette.blue100,
     blueTextSecondary: palette.blue50.replace(`${blueS}`, `${blueS}`),
-    faintBlueText: palette.blue400.replace(`${blueS}`, `${blueS - 20}`),
+    faintBlueText: palette.blue300.replace(`${blueS}`, `${blueS - 10}`),
     placeholderText: palette.offWhite4,
     buttonLabel: palette.white,
     greenText: palette.greenText,
