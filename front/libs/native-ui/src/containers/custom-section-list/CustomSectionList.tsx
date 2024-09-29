@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, forwardRef } from 'react';
 import {
   SectionListProps,
   SectionList,
@@ -20,7 +20,7 @@ type CustomSectionListProps<ItemT, SectionT> = SectionListProps<ItemT, SectionT>
   showsVerticalScrollIndicator?: boolean;
 };
 
-export const CustomSectionList = <ItemT, SectionT>(props: CustomSectionListProps<ItemT, SectionT>) => {
+export const CustomSectionList = forwardRef<SectionList, CustomSectionListProps<any, any>>((props, ref) => {
   const {
     onContentSizeChange,
     onLayout,
@@ -47,6 +47,7 @@ export const CustomSectionList = <ItemT, SectionT>(props: CustomSectionListProps
   return (
     <View>
       <SectionList
+        ref={ref}
         {...props}
         showsVerticalScrollIndicator={false}
         onContentSizeChange={(width, height) => {
@@ -92,6 +93,6 @@ export const CustomSectionList = <ItemT, SectionT>(props: CustomSectionListProps
       )}
     </View>
   );
-};
+});
 
 export default CustomSectionList;

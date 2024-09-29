@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View } from 'react-native';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeOut, useSharedValue } from 'react-native-reanimated';
 import OutsidePressHandler from "react-native-outside-press";
 
 import styles from './styles/carousel-item';
@@ -14,6 +14,7 @@ interface Props {
 
 const CarouselItem = (props: Props) => {
   const [showSlider, setShowSlider] = useState(false);
+  const hue = useSharedValue(props.account.cardHue);
 
   return (
     <OutsidePressHandler onOutsidePress={() => setShowSlider(false)} >
@@ -21,11 +22,15 @@ const CarouselItem = (props: Props) => {
         {showSlider
           ?
           <Animated.View entering={FadeIn} exiting={FadeOut}>
-            <HueSliderCard account={props.account.id} />
+            <HueSliderCard
+              account={props.account.id}
+              onChange={(newHue) => { hue.value = newHue }}
+              hue={props.account.cardHue}
+            />
           </Animated.View>
           :
           <Animated.View entering={FadeIn} exiting={FadeOut}>
-            <Card {...props} onLongPress={() => setShowSlider(true)} />
+            <Card {...props} onLongPress={() => setShowSlider(true)} hue={hue} />
           </Animated.View>
         }
       </View>

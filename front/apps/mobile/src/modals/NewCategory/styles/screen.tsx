@@ -17,6 +17,19 @@ const styles = StyleSheet.create({
   },
   form: {
     paddingHorizontal: 16
+  },
+  row: {
+    flexDirection: 'row',
+    gap: 8
+  },
+  nameInput: {
+    marginLeft: 72,
+    marginTop: 8
+  },
+  emojiButton: {
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
   }
 });
 

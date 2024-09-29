@@ -218,3 +218,50 @@ export const useZoomCardStyleInterpolator = () => {
 
   return cardStyleInterpolator;
 }
+
+export const useFullScreenModalStyleInterpolator = () => {
+  // A modal interpolator that covers the whole screen and fades in from the bottom
+  const theme = useTheme();
+
+  const cardStyleInterpolator = useCallback(({ current, next, inverted, layouts: { screen } }: any) => {
+
+    const progress = Animated.add(
+      current.progress.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, 1],
+        extrapolate: 'clamp',
+      }),
+      next
+        ? next.progress.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, 1],
+          extrapolate: 'clamp',
+        })
+        : 0
+    );
+
+    return ({
+      cardStyle: {
+        opacity: progress,
+        transform: [
+          {
+            translateY: Animated.multiply(
+              progress.interpolate({
+                inputRange: [0, 1, 2],
+                outputRange: [screen.height, 0, 0],
+                extrapolate: 'clamp',
+              }),
+              inverted
+            ),
+          },
+        ],
+      },
+      containerStyle: {
+        backgroundColor: theme.colors.mainBackground,
+        opacity: progress,
+      }
+    })
+  }, [theme]);
+
+  return cardStyleInterpolator;
+}

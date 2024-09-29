@@ -35,6 +35,7 @@ export const billSchema = z
 
 export const categorySchema = z.object({
   name: z.string().min(1, { message: 'required' }).toLowerCase(),
+  emoji: z.string().optional(),
   limit_amount: z.number().min(1, { message: 'required' }),
   period: z.enum(['month', 'year']),
   alerts: z.array(z.object({ percent_amount: z.number() })).optional()

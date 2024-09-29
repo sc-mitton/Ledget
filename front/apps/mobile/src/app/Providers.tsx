@@ -6,7 +6,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 
 import styles from './styles/providers';
-import { ThemeProvider as RestyleThemeProvider, ModalPickerProvider } from '@ledget/native-ui';
+import { ThemeProvider as RestyleThemeProvider, ModalPickerProvider, EmojiPickerProvider } from '@ledget/native-ui';
 import { useAppearance, setDeviceMode, selectUseDeviceAppearance } from '@features/appearanceSlice';
 import store, { persistor } from '@features/store';
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -78,7 +78,9 @@ export const withProviders = (App: React.FC) => () => (
           <GestureHandlerRootView>
             <NavigationContainer theme={navTheme}>
               <ModalPickerProvider>
-                <App />
+                <EmojiPickerProvider>
+                  <App />
+                </EmojiPickerProvider>
               </ModalPickerProvider>
             </NavigationContainer>
           </GestureHandlerRootView>

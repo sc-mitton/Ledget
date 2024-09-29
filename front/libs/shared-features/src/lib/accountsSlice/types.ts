@@ -34,7 +34,7 @@ export interface Institution {
 
 export type UpdateAccount =
   { order: number } & { account: string } |
-  { hue: number } & { account: string }
+  { cardHue: number } & { account: string }
 
 
 export interface GetAccountsResponse {

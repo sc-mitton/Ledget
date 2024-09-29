@@ -107,7 +107,7 @@ const Transactions = (props: ModalScreenProps<'Activity'> & { showFilters: React
                 labelPlacement='left'
                 fontSize={14}
                 borderRadius={8}
-                backgroundColor='grayButtonBorder'
+                backgroundColor='mediumGrayButton'
                 textColor='secondaryText'>
                 <Icon icon={Filter2} color='secondaryText' size={18} strokeWidth={2} />
               </Button>

@@ -1,8 +1,3 @@
-export interface NativeEmojiPickerProps {
-  value: string;
-  onChange: (value: string) => void;
-}
-
 export type Key =
   | "Smileys & Emotion"
   | "People & Body"

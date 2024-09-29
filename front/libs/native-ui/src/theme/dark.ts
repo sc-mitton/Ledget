@@ -83,8 +83,8 @@ export const darkTheme = createTheme({
     newTransaction: palette.gray750,
     contextMenu: palette.gray700,
     toast: palette.gray850,
-    creditCardGradientStart: `hsl(${blueH}, ${blueS - 10}%, 30%)`,
-    creditCardGradientEnd: `hsl(${blueH}, ${blueS - 10}%, 27%)`,
+    creditCardGradientStart: `hsl(${blueH}, ${blueS}%, 35%)`,
+    creditCardGradientEnd: `hsl(${blueH}, ${blueS}%, 32%)`,
 
     // Borders
     inputBorder: palette.gray750,
@@ -101,8 +101,8 @@ export const darkTheme = createTheme({
     toastBorder: palette.gray800,
     modalBorder: palette.gray800,
     contextMenuDivider: palette.gray600,
-    creditCardBorderStart: `hsl(${blueH}, ${blueS - 10}%, 40%)`,
-    creditCardBorderStop: `hsl(${blueH}, ${blueS - 10}%, 30%)`,
+    creditCardBorderStart: `hsl(${blueH}, ${blueS}%, 45%)`,
+    creditCardBorderStop: `hsl(${blueH}, ${blueS}%, 35%)`,
 
     // Shadows
     navShadow: palette.gray900,

@@ -104,15 +104,14 @@ const AccountPicker = (props: ModalScreenProps<'PickerCard'>) => {
               paddingBottom: theme.spacing.navHeight * 1.5,
               ...styles.gridContainerViewStyle
             }}
-            idField='account_id'
             onDragEnd={(positions) => {
-              // const payload = Object.keys(positions).map((account_id, index) => ({
-              //   account: account_id,
-              //   order: positions[account_id]
-              // })).sort((a, b) => a.order - b.order)
-              // if (payload.map((v, i) => accounts[i].id !== v.account).includes(true)) {
-              //   updateOrder(payload)
-              // }
+              const payload = Object.keys(positions).map((account_id, index) => ({
+                account: account_id,
+                order: positions[account_id]
+              })).sort((a, b) => a.order - b.order)
+              if (payload.map((v, i) => accounts[i].id !== v.account).includes(true)) {
+                updateOrder(payload)
+              }
             }}
             renderItem={({ item: account, index }) => (
               <>
@@ -124,6 +123,7 @@ const AccountPicker = (props: ModalScreenProps<'PickerCard'>) => {
                   <Card
                     account={account}
                     size='small'
+                    hue={account.cardHue}
                     hasShadow={false}
                     onPress={() => {
                       if (account.id !== props.route.params.currentAccount) {

@@ -1,3 +1,12 @@
 export { default as Computer } from './Computer';
 export { default as FacebookLogo } from './FacebookLogo';
 export { default as GoogleLogo } from './GoogleLogo';
+export { default as EmTravel } from './EmTravel';
+export { default as EmFlag } from './EmFlag';
+export { default as EmClock } from './EmClock';
+export { default as EmFood } from './EmFood';
+export { default as EmObject } from './EmObject';
+export { default as EmSymbols } from './EmSymbols';
+export { default as EmSmileys } from './EmSmileys';
+export { default as EmNature } from './EmNature';
+export { default as EmActivities } from './EmActivities';

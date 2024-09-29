@@ -15,16 +15,18 @@ import {
   CardPicker,
   AccountsPicker,
   NewCategory,
-  NewBill
+  NewBill,
+  EmojiPicker
 } from '@modals';
 import { Activity } from '@screens';
-import { useModalStyleInterpolator, useModifiedDefaultModalStyleInterpolator } from '@/hooks';
+import { useModalStyleInterpolator, useModifiedDefaultModalStyleInterpolator, useFullScreenModalStyleInterpolator } from '@/hooks';
 
 const RootStack = createStackNavigator<ModalStackParamList>();
 
 const ModalScreens = () => {
   const modalStyleInterpolator = useModalStyleInterpolator({ slideOut: false });
   const defaultModalStyleInterpolator = useModifiedDefaultModalStyleInterpolator()
+  const fullScreenModalStyleInterpolator = useFullScreenModalStyleInterpolator()
 
   return (
     <RootStack.Navigator screenOptions={{ headerShown: false }}>

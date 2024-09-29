@@ -201,6 +201,7 @@ export const lightTheme = createTheme({
     xxxxl: 54,
     navHeight: 104,
     statusBar: StatusBarManager.HEIGHT + 4,
+    pagePadding: 16,
   },
   textVariants: {
     regular: {

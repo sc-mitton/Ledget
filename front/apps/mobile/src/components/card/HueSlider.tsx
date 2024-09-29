@@ -17,18 +17,24 @@ import { Box, Icon } from "@ledget/native-ui";
 import { Card } from "./Card";
 import { useUpdateAccountsMutation } from "@ledget/shared-features";
 
-const Slider = ({ hue, width }: { hue: SharedValue<number>, width: number }) => {
+interface SliderProps { hue: SharedValue<number>, width: number, onChange: (val: number) => void }
+
+const Slider = (props: SliderProps) => {
   const gradientColors = useDerivedValue(() => {
     return Array.from({ length: 180 }, (_, i) => {
-      const intHue = Number(hue.value);
+      const intHue = Number(props.hue.value);
       const iHue = interpolate(i, [0, 180], [intHue - 90, intHue + 90]);
       return `hsl(${iHue}, 50%, 50%)`;
     })
   });
 
-  const pan = Gesture.Pan().onChange(({ translationX, changeX }) => {
-    hue.value = Math.round(hue.value - changeX) % 360;
-  });
+  const pan = Gesture.Pan()
+    .onChange(({ translationX, changeX }) => {
+      props.hue.value = Math.round(props.hue.value - changeX) % 360;
+    })
+    .onEnd(() => {
+      runOnJS(props.onChange)(props.hue.value);
+    });
 
   return (
     <GestureDetector gesture={pan}>
@@ -55,7 +61,7 @@ const Slider = ({ hue, width }: { hue: SharedValue<number>, width: number }) => 
               <LinearGradient
                 colors={gradientColors}
                 start={vec(0, 0)}
-                end={vec(width, 0)}
+                end={vec(props.width, 0)}
               />
             </Rect>
           </Canvas>
@@ -65,13 +71,12 @@ const Slider = ({ hue, width }: { hue: SharedValue<number>, width: number }) => 
   )
 }
 
-export const HueSliderCard = ({ account, onTimeout }: { account: string; onTimeout?: () => void }) => {
+export const HueSliderCard = (props: { account: string, onChange: (val: number) => void, hue?: number }) => {
   const [size, setSize] = useState<{ width: number; height: number }>();
   const ref = useRef<View>(null);
   const [updateAccount] = useUpdateAccountsMutation();
   const theme = useTheme();
-  const hue = useSharedValue(theme.colors.blueHue);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const hue = useSharedValue(props.hue || theme.colors.blueHue);
 
   useEffect(() => {
     ref.current?.measure((x, y, width, height) => {
@@ -86,25 +91,14 @@ export const HueSliderCard = ({ account, onTimeout }: { account: string; onTimeo
   }, []);
 
   const handleChangedHue = (newValue: number) => {
-    // Clear the previous timeout if hue.value changes
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-
-    // Set a new timeout to trigger the updateAccount request after 3 seconds
-    timeoutRef.current = setTimeout(() => {
-      updateAccount([{ account: account, hue: newValue }]);
-    }, 3000);
+    props.onChange(newValue);
+    updateAccount([{ account: props.account, cardHue: newValue }]);
   }
-
-  useAnimatedReaction(
-    () => hue.value,
-    (newValue) => { runOnJS(handleChangedHue)(newValue) }
-  );
 
   return (
     <Box style={[styles.container, { height: size?.height }]}>
-      {size?.width && <Slider hue={hue} width={size.width} />}
+      {size?.width &&
+        <Slider hue={hue} width={size.width} onChange={handleChangedHue} />}
       <View ref={ref}>
         <Card empty hue={hue} />
       </View>

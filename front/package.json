@@ -11,6 +11,7 @@
     "@expo/metro-config": "~0.18.11",
     "@expo/metro-runtime": "~3.2.3",
     "@geist-ui/icons": "^1.0.2",
+    "@gorhom/portal": "^1.0.14",
     "@headlessui/react": "^1.7.19",
     "@hookform/resolvers": "^3.9.0",
     "@nivo/core": "^0.83.1",

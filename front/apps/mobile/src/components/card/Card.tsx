@@ -24,7 +24,7 @@ interface Props {
   skeleton?: boolean;
   size?: 'small' | 'regular'
   hasShadow?: boolean
-  hue?: SharedValue<number>
+  hue?: SharedValue<number | undefined> | number
   empty?: boolean
 }
 
@@ -34,22 +34,23 @@ export const Card = (props: Props) => {
   const { data: plaidItemsData } = useGetPlaidItemsQuery();
   const { size = 'regular', hasShadow = true } = props;
   const buttonScale = useSharedValue(1);
+  const cardHue = typeof props.hue === 'number' ? useSharedValue(props.hue) : props.hue;
 
   const gradientColors = useDerivedValue(() => [
     theme.colors.creditCardGradientStart.replace(theme.colors.blueHue,
-      props.hue?.value || props.account?.cardHue || theme.colors.blueHue
+      cardHue?.value || props.account?.cardHue || theme.colors.blueHue
     ),
     theme.colors.creditCardGradientEnd.replace(theme.colors.blueHue,
-      props.hue?.value || props.account?.cardHue || theme.colors.blueHue
+      cardHue?.value || props.account?.cardHue || theme.colors.blueHue
     )
   ]);
 
   const gradientEdgeColors = useDerivedValue(() => [
     theme.colors.creditCardBorderStop.replace(theme.colors.blueHue,
-      props.hue?.value || props.account?.cardHue || theme.colors.blueHue
+      cardHue?.value || props.account?.cardHue || theme.colors.blueHue
     ),
     theme.colors.creditCardBorderStart.replace(theme.colors.blueHue,
-      props.hue?.value || props.account?.cardHue || theme.colors.blueHue
+      cardHue?.value || props.account?.cardHue || theme.colors.blueHue
     )
   ]);
 
