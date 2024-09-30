@@ -50,7 +50,7 @@ export type ModalStackParamList = {
     edit?: Bill
   } | undefined;
   NewCategory: {
-    period: 'monthly' | 'yearly';
+    period?: 'monthly' | 'yearly';
     edit?: Category
   } | undefined;
 };

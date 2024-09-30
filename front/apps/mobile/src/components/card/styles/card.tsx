@@ -77,6 +77,11 @@ const styles = StyleSheet.create({
     paddingRight: 16,
     paddingLeft: 16,
   },
+  cardTopHalf: {
+    justifyContent: 'space-between',
+    flex: 1,
+    paddingBottom: 8
+  },
   logo: {
     position: 'absolute',
     top: 8,
@@ -86,16 +91,19 @@ const styles = StyleSheet.create({
     opacity: .9,
     zIndex: 1
   },
+  accountName: {
+    opacity: .7
+  },
   mask: {
     marginLeft: 6,
-    opacity: .2
+    opacity: .35
   },
   bottomStripe: {
     height: '30%',
     width: '200%',
     position: 'absolute',
     bottom: 0,
-    opacity: .03
+    opacity: .05
   }
 });
 

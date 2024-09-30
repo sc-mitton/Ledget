@@ -3,6 +3,7 @@ import { View, TouchableHighlight, TouchableOpacity, ViewStyle } from 'react-nat
 import Animated, { ZoomOut, ZoomIn, Easing } from 'react-native-reanimated';
 import OutsidePressHandler from 'react-native-outside-press';
 import { useTheme } from '@shopify/restyle';
+import { BlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
 
 import styles, { placementStyles, menuPlacementStyles } from './styles';
@@ -87,8 +88,11 @@ export function Menu(props: MenuProps) {
                   shadowOffset={{ width: 0, height: 4 }}
                   style={styles.menuOptions}
                 >
-                  <View style={styles.menuClipper}>
-                    <Box backgroundColor='contextMenu' style={styles.menuBackground} />
+                  <BlurView
+                    style={styles.menuClipper} intensity={40}
+                    tint={theme.colors.mode === 'dark' ? 'dark' : 'light'}
+                  >
+                    <Box style={styles.menuBackground} />
                     {props.items.map((item, index) => (
                       <>
                         {index !== 0 &&
@@ -96,7 +100,9 @@ export function Menu(props: MenuProps) {
                             <Seperator
                               variant='bare'
                               height={item.newSection ? 4 : undefined}
-                              backgroundColor={item.newSection ? 'mainBackground' : 'menuSeperator'}
+                              backgroundColor={item.newSection
+                                ? theme.colors.mode === 'dark' ? 'mainBackground' : 'menuSeperator'
+                                : 'menuSeperator'}
                             />
                           </View>}
                         <TouchableHighlight
@@ -117,7 +123,7 @@ export function Menu(props: MenuProps) {
                         </TouchableHighlight>
                       </>
                     ))}
-                  </View>
+                  </BlurView>
                 </Box>
               </Animated.View>
             </View>}

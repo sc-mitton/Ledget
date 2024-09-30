@@ -35,15 +35,14 @@ export default StyleSheet.create({
   },
   searchIconContainer: {
     position: 'absolute',
-    left: 20,
-    top: '100%',
+    left: 0,
+    top: '50%',
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 1
   },
   searchIcon: {
     position: 'absolute',
-    top: -10
   },
   option: {
     paddingVertical: 10,
@@ -65,8 +64,7 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   scrollView: {
-    height: 250,
-    maxHeight: '80%',
+    maxHeight: 250,
     paddingHorizontal: 6,
   },
   chevronIconContainer: {

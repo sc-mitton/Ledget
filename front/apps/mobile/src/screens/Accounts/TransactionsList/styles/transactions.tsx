@@ -35,16 +35,9 @@ export default StyleSheet.create({
     width: '100%',
     height: 24,
   },
-  skeletonContainer: {
-    overflow: 'hidden',
-    flexGrow: 1,
-    paddingHorizontal: 20,
-    marginHorizontal: 4,
-    marginVertical: 8,
-  },
   transactionsScrollView: {
     paddingRight: 20,
-    paddingLeft: 64,
+    paddingLeft: 60,
     paddingTop: 4,
   },
   sectionHeader: {
@@ -58,7 +51,7 @@ export default StyleSheet.create({
   transactionRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 12,
+    marginVertical: 10,
   },
   nameContainer: {
     gap: 4,
@@ -84,11 +77,5 @@ export default StyleSheet.create({
     flexGrow: 1,
     marginTop: 2,
     alignItems: 'flex-end',
-  },
-  emptyBoxContainer: {
-    top: 24,
-    height: '80%',
-    justifyContent: 'center',
-    alignItems: 'center'
   }
 });

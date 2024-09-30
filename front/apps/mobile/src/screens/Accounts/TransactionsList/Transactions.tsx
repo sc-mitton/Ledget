@@ -8,28 +8,23 @@ import {
   NativeScrollEvent,
   Pressable,
   RefreshControl,
-  ScrollView
 } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
-  withRepeat,
-  withSequence,
   withSpring
 } from 'react-native-reanimated';
 import dayjs from 'dayjs';
 import { groupBy } from 'lodash-es';
 import { useTheme } from '@shopify/restyle';
-import { ArrowDown } from 'geist-native-icons';
 
 import styles from './styles/transactions';
 import { useLazyGetTransactionsQuery, useTransactionsSyncMutation } from '@ledget/shared-features';
-import { Box, defaultSpringConfig, Text, CustomSectionList, Icon } from '@ledget/native-ui';
-import { EmptyBox } from '@ledget/media/native';
-import SkeletonTransactions from './SkeletonTransactions';
+import { Box, defaultSpringConfig, Text, CustomSectionList } from '@ledget/native-ui';
 import type { PTransactions, Section, ListState } from './types';
+import SkeletonTransactions from './SkeletonTransactions';
 import Row from './Row';
-import { useAppearance } from '@/features/appearanceSlice';
+import EmptyList from './EmptyList';
 
 const SKELETON_HEIGHT = 740
 
@@ -40,12 +35,10 @@ const Transactions = (props: PTransactions) => {
   const state = useRef<ListState>('neutral')
   const propTop = useRef(props.collapsedTop)
   const top = useSharedValue(props.collapsedTop)
-  const arrowIconY = useSharedValue(0)
   const [sectionHeaderHeight, setSectionHeaderHeight] = useState(0)
   const [stuckTitle, setStuckTitle] = useState<string | null>(null)
   const [sections, setSections] = useState<Section[]>([])
   const theme = useTheme()
-  const { mode } = useAppearance()
 
   const [getTransactions, { data: transactionsData, isLoading: isLoadingTransactions }] = useLazyGetTransactionsQuery()
   const [syncTransactions, { isLoading: isSyncing }] = useTransactionsSyncMutation()
@@ -70,17 +63,6 @@ const Transactions = (props: PTransactions) => {
       );
     }
   }, [props.account])
-
-  useEffect(() => {
-    arrowIconY.value = withRepeat(
-      withSequence(
-        withSpring(-5, defaultSpringConfig),
-        withSpring(0, defaultSpringConfig)
-      ),
-      -1, true
-    );
-  }, [])
-
   useEffect(() => {
     top.value = props.collapsedTop
     propTop.current = props.collapsedTop
@@ -91,7 +73,6 @@ const Transactions = (props: PTransactions) => {
       onStartShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponder: () => true,
       onPanResponderMove: (e, gs) => {
-
         if ((Math.abs(gs.dy) > DRAG_THRESHOLD) || (Math.abs(gs.vy) > ESCAPE_VELOCITY)) {
           if (gs.vy < 0) {
             top.value = withSpring(
@@ -179,28 +160,9 @@ const Transactions = (props: PTransactions) => {
             </View>}
           {(transactionsData?.results.length || 0) <= 0 || isLoadingTransactions
             ?
-            transactionsData?.results.length === 0 && !isLoadingTransactions
-              ?
-              <ScrollView
-                refreshControl={
-                  <RefreshControl
-                    onRefresh={() => syncTransactions({ account: props.account?.id })}
-                    refreshing={isSyncing}
-                    style={{ transform: [{ scaleY: .7 }, { scaleX: .7 }] }}
-                    colors={[theme.colors.blueText]}
-                    progressBackgroundColor={theme.colors.modalBox}
-                    tintColor={theme.colors.secondaryText}
-                  />}
-                contentContainerStyle={styles.emptyBoxContainer}>
-                <EmptyBox dark={mode === 'dark'} />
-                <Animated.View style={{ transform: [{ translateY: arrowIconY }] }}>
-                  <Icon icon={ArrowDown} color='quinaryText' strokeWidth={2} />
-                </Animated.View>
-              </ScrollView>
-              :
-              <View style={styles.skeletonContainer}>
-                <SkeletonTransactions height={SKELETON_HEIGHT} />
-              </View>
+            transactionsData?.results.length === 0 && !isLoadingTransactions && props.account
+              ? <EmptyList account={props.account.id} />
+              : <SkeletonTransactions height={SKELETON_HEIGHT} />
             :
             <CustomSectionList
               refreshControl={
@@ -249,7 +211,7 @@ const Transactions = (props: PTransactions) => {
               renderItem={({ item: transaction, index: i, section }) => (
                 <View style={{
                   marginTop: i === 0 && section.index === 0
-                    ? -1 * (sectionHeaderHeight + 12)
+                    ? -1 * (sectionHeaderHeight + 10)
                     : i === 0 ? -1 * sectionHeaderHeight : 0
                 }}
                 >

@@ -20,51 +20,40 @@ import OutsidePressHandler from 'react-native-outside-press';
 function ModalPopUp<O extends PickerOption, TMultiple extends boolean>(
   props: ModalPopUpProps<O, TMultiple>) {
 
-  const {
-    options,
-    multiple,
-    searchable,
-    header,
-    labelKey,
-    value,
-    setValue,
-    onClose,
-    open,
-    renderOption
-  } = props;
+  const { showVerticalScrollIndicator = false } = props;
 
   const searchRef = useRef<NativeTextInput>(null);
   const scrollViewRef = useRef<ScrollView>(null);
   const [scrollHeight, setScrollHeight] = useState(0);
   const [searchValue, setSearchValue] = useState('');
-  const [localOptions, setLocalOptions] = useState(options);
+  const [localOptions, setLocalOptions] = useState(props.options);
   const theme = useTheme();
 
   useEffect(() => {
     if (!searchValue) {
-      setLocalOptions(options);
+      setLocalOptions(props.options);
       return;
     };
 
-    setLocalOptions(options?.filter(option => {
+    setLocalOptions(props.options?.filter(option => {
       if (typeof option === 'string') {
         return option.toLowerCase().includes(searchValue.toLowerCase());
       } else {
-        return option[(labelKey as string) || 'label'].toLowerCase().includes(searchValue.toLowerCase());
+        return option[(props.labelKey as string) || 'label'].toLowerCase().includes(searchValue.toLowerCase());
       }
     }));
-  }, [searchValue, options]);
+  }, [searchValue, props.options]);
 
   const handleClose = () => {
-    onClose && value && onClose(value as any);
+    props.onClose && props.value && props.onClose(props.value as any);
   }
 
   // Scroll to position of first selected option if any
   useEffect(() => {
     let t: NodeJS.Timeout;
-    if (value && scrollViewRef.current) {
+    if (props.value && scrollViewRef.current) {
       t = setTimeout(() => {
-        const index = localOptions?.findIndex(option => dequal(option, value)) || 0;
+        const index = localOptions?.findIndex(option => dequal(option, props.value)) || 0;
         const totalOptions = localOptions?.length || 0;
         if (index !== -1) {
           scrollViewRef.current?.scrollTo({
@@ -75,26 +64,26 @@ function ModalPopUp<O extends PickerOption, TMultiple extends boolean>(
       }, 100);
     }
     return () => clearTimeout(t)
-  }, [value, localOptions, scrollHeight, open]);
+  }, [props.value, localOptions, scrollHeight, props.open]);
 
 
   return (
     <>
       <NativeModal
         presentationStyle='overFullScreen'
-        visible={open}
+        visible={props.open}
         transparent={true}
         animationType='slide'
       >
-        <Modal onClose={handleClose} position='bottomFloat'>
+        <Modal onClose={handleClose} position='centerFloat'>
           <></>
-          {header &&
+          {props.header &&
             <>
-              <Text variant='bold' fontSize={18} style={styles.header}>{header}</Text>
+              <Text variant='bold' fontSize={18} style={styles.header}>{props.header}</Text>
               <Seperator variant='s' backgroundColor='modalSeperator' />
             </>
           }
-          {searchable &&
+          {props.searchable &&
             <OutsidePressHandler onOutsidePress={() => searchRef.current?.blur()}>
               <View style={styles.searchContainer}>
                 <TextInput
@@ -120,35 +109,36 @@ function ModalPopUp<O extends PickerOption, TMultiple extends boolean>(
             :
             <CustomScrollView
               ref={scrollViewRef}
+              showsVerticalScrollIndicator={showVerticalScrollIndicator}
               onContentSizeChange={(_, height) => setScrollHeight(height)}
               style={styles.scrollView}>
               {localOptions?.map((option, index) => {
-                const label = typeof option === 'object' ? option['label' || labelKey] : option;
-                const selected = Array.isArray(value) ? value.some(v => dequal(v, option)) : dequal(value, option);
+                const label = typeof option === 'object' ? option['label' || props.labelKey] : option;
+                const selected = Array.isArray(props.value) ? props.value.some(v => dequal(v, option)) : dequal(props.value, option);
 
-                if (renderOption) {
+                if (props.renderOption) {
                   return (
                     <TouchableOpacity
                       key={`${label}-${Math.random().toString().slice(2, 6)}`}
                       activeOpacity={.6}
                       onPress={() => {
-                        const inCluded = Array.isArray(value) ? value.includes(option) : value === option;
+                        const inCluded = Array.isArray(props.value) ? props.value.includes(option) : props.value === option;
                         if (inCluded) {
-                          setValue(Array.isArray(value) ? value.filter(item => item !== option) : undefined);
+                          props.setValue(Array.isArray(props.value) ? props.value.filter(item => item !== option) : undefined);
                         } else {
-                          multiple
-                            ? Array.isArray(value) ? setValue([...value, option]) : setValue([option])
-                            : setValue(option as any);
+                          props.multiple
+                            ? Array.isArray(props.value) ? props.setValue([...props.value, option]) : props.setValue([option])
+                            : props.setValue(option as any);
                         }
                       }}
                     >
                       <View style={styles.option}>
-                        {renderOption(option, index, selected)}
+                        {props.renderOption(option, index, selected)}
                         <View style={styles.selectedIcon}>
                           {selected && <Icon icon={Check} color='blueText' strokeWidth={2} />}
                         </View>
                       </View>
-                      {index !== (options?.length || 0) - 1 &&
+                      {index !== (props.options?.length || 0) - 1 &&
                         <Seperator variant='bare' backgroundColor='modalSeperator' />}
                     </TouchableOpacity>
                   )
@@ -160,13 +150,13 @@ function ModalPopUp<O extends PickerOption, TMultiple extends boolean>(
                       key={`${label}-${Math.random().toString().slice(2, 6)}`}
                       style={styles.option}
                       onPress={() => {
-                        const inCluded = Array.isArray(value) ? value.includes(option) : value === option;
+                        const inCluded = Array.isArray(props.value) ? props.value.includes(option) : props.value === option;
                         if (inCluded) {
-                          setValue(Array.isArray(value) ? value.filter(item => item !== option) : undefined);
+                          props.setValue(Array.isArray(props.value) ? props.value.filter(item => item !== option) : undefined);
                         } else {
-                          multiple
-                            ? Array.isArray(value) ? setValue([...value, option]) : setValue([option])
-                            : setValue(option as any);
+                          props.multiple
+                            ? Array.isArray(props.value) ? props.setValue([...props.value, option]) : props.setValue([option])
+                            : props.setValue(option as any);
                         }
                       }}
                     >
@@ -175,16 +165,16 @@ function ModalPopUp<O extends PickerOption, TMultiple extends boolean>(
                         {selected && <Icon icon={Check} color='blueButton' strokeWidth={2} />}
                       </View>
                     </TouchableOpacity>
-                    {index !== (options?.length || 0) - 1 && <Seperator variant='bare' backgroundColor='modalSeperator' />}
+                    {index !== (props.options?.length || 0) - 1 && <Seperator variant='bare' backgroundColor='modalSeperator' />}
                   </>
                 );
               })}
             </CustomScrollView>
           }
-          {((Array.isArray(value) && value.length > 0) || value) && multiple &&
+          {((Array.isArray(props.value) && props.value.length > 0) || props.value) && props.multiple &&
             <View style={styles.clearButton}>
               <Button
-                onPress={() => { setValue(undefined) }}
+                onPress={() => { props.setValue(undefined) }}
                 textColor='blueText'
                 label='Clear'
               />

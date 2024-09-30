@@ -3,12 +3,11 @@ import { useTheme } from '@shopify/restyle';
 import {
   Canvas,
   Rect,
-  TwoPointConicalGradient,
   LinearGradient,
   vec
 } from "@shopify/react-native-skia";
-import { Grayscale } from 'react-native-color-matrix-image-filters'
 import Animated, { SharedValue, useDerivedValue, useSharedValue, withSpring } from 'react-native-reanimated';
+import Big from 'big.js';
 
 import styles from './styles/card';
 import { Account } from "@ledget/shared-features";
@@ -45,15 +44,6 @@ export const Card = (props: Props) => {
     )
   ]);
 
-  const gradientEdgeColors = useDerivedValue(() => [
-    theme.colors.creditCardBorderStop.replace(theme.colors.blueHue,
-      cardHue?.value || props.account?.cardHue || theme.colors.blueHue
-    ),
-    theme.colors.creditCardBorderStart.replace(theme.colors.blueHue,
-      cardHue?.value || props.account?.cardHue || theme.colors.blueHue
-    )
-  ]);
-
   const width = size === 'regular' ? CARD_WIDTH : 155
   const height = size === 'regular'
     ? CARD_HEIGHT
@@ -72,24 +62,6 @@ export const Card = (props: Props) => {
           : styles[`${size}TouchableContainer`]
         }
       >
-        <Canvas style={[styles.cardBorder, (styles as any)[size + 'CardBorder']]}>
-          <Rect x={0} y={0} width={width * 1.3} height={height * 1.3}>
-            <TwoPointConicalGradient
-              start={vec(
-                props.size === 'regular'
-                  ? width / 2
-                  : (width / 2) / (CARD_WIDTH / CARD_HEIGHT),
-                props.size === 'regular'
-                  ? height / 2
-                  : (height / 10) / (CARD_WIDTH / CARD_HEIGHT),
-              )}
-              startR={props.size === 'regular' ? width : width / 2}
-              end={vec(0, 0)}
-              endR={30}
-              colors={gradientEdgeColors}
-            />
-          </Rect>
-        </Canvas>
         <Pressable
           style={[styles.pressable, { width, height }]}
           disabled={props.skeleton || props.empty}
@@ -108,7 +80,7 @@ export const Card = (props: Props) => {
                 <LinearGradient
                   colors={gradientColors}
                   start={vec(0, 0)}
-                  end={vec(0, height)}
+                  end={vec(width / 1.5, height / 1.5)}
                 />
               </Rect>
             </Canvas>
@@ -121,33 +93,34 @@ export const Card = (props: Props) => {
                     shadowOpacity={.1}
                     shadowRadius={1}
                     style={styles.logo}>
-                    <Grayscale>
-                      <Image
-                        style={{ width: 20, height: 20 }}
-                        resizeMode='contain'
-                        source={{
-                          uri: `data:image/png;base64,${plaidItemsData?.find((p) =>
-                            p.accounts.find((account) => account.id === props.account?.id))?.institution?.logo
-                            }`
-                        }}
-                      />
-                    </Grayscale>
+                    <Image
+                      style={{ width: 20, height: 20 }}
+                      resizeMode='contain'
+                      source={{
+                        uri: `data:image/png;base64,${plaidItemsData?.find((p) =>
+                          p.accounts.find((account) => account.id === props.account?.id))?.institution?.logo
+                          }`
+                      }}
+                    />
                   </Box>
-                  <View>
-                    <Text
-                      fontSize={size === 'regular' ? 16 : 14}
-                      color='whiteText'>
-                      {(props.account?.name.length || 0) > 16
-                        ? props.account?.name.slice(0, 16) + '...'
-                        : props.account?.name}
-                    </Text>
+                  <View style={styles.cardTopHalf}>
                     <DollarCents
                       color='whiteText'
-                      fontSize={size === 'regular' ? 18 : 16}
-                      value={props.account?.balances.current || 0} />
+                      fontSize={size === 'regular' ? 22 : 16}
+                      value={Big(props.account?.balances.current || 0).times(100).toNumber()} />
+                    <Text
+                      style={styles.accountName}
+                      fontSize={size === 'regular' ? 16 : 14}
+                      color='whiteText'>
+                      {(props.account?.name.length || 0) > 20
+                        ? props.account?.name.slice(0, 20) + '...'
+                        : props.account?.name}
+                    </Text>
                   </View>
                   <View style={styles.mask}>
                     <Text fontSize={13} color='whiteText' variant='bold'>
+                      &bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;
+                      &nbsp;&nbsp;
                       &bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;
                       &nbsp;&nbsp;
                       {props.account?.mask.split('').slice(-4).join(' ')}

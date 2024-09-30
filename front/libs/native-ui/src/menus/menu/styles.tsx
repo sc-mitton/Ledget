@@ -68,7 +68,7 @@ export default StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 16,
     gap: 20,
-    opacity: .9
+    opacity: .8
   },
   icon: {
     minWidth: 28,

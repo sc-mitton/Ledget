@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
 import { X } from 'geist-native-icons';
-import { ScrollView, TouchableOpacity, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { useForm, Controller, useController, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Smile } from 'geist-native-icons';
+import Big from 'big.js';
 
 import styles from './styles/screen';
 import {
@@ -17,16 +19,21 @@ import {
   Text,
   TextInputbase,
   InputLabel,
-  EmojiPicker
+  EmojiPicker,
+  MoneyInput,
+  ModalPicker
 } from "@ledget/native-ui"
 import { useAddNewCategoryMutation } from '@ledget/shared-features';
 import { ModalScreenProps } from '@types';
 import { categorySchema } from '@ledget/form-schemas';
-import { useEffect } from 'react';
+import AlertInput from './AlertInput';
 
 const Screen = (props: ModalScreenProps<'NewCategory'>) => {
   const { control, handleSubmit } = useForm<z.infer<typeof categorySchema>>({
     resolver: zodResolver(categorySchema),
+    defaultValues: {
+      period: 'month'
+    }
   });
   const [addNewCategory, { isLoading, isSuccess }] = useAddNewCategoryMutation();
 
@@ -42,7 +49,7 @@ const Screen = (props: ModalScreenProps<'NewCategory'>) => {
     }
   }, [isSuccess])
 
-  const { field: { onChange: onEmojiChange } } = useController({ control, name: 'emoji' });
+  const { field: { onChange: onEmojiChange }, formState: { errors } } = useController({ control, name: 'emoji' });
 
   return (
     <Box backgroundColor='modalBox100' style={styles.modalContent}>
@@ -82,6 +89,7 @@ const Screen = (props: ModalScreenProps<'NewCategory'>) => {
                   value={value}
                   onChangeText={onChange}
                   onBlur={onBlur}
+                  error={errors.name}
                 />
               )}
               name='name'
@@ -89,13 +97,60 @@ const Screen = (props: ModalScreenProps<'NewCategory'>) => {
             />
           </View>
         </View>
-        <SubmitButton
-          variant='main'
-          label='Save'
-          isSubmitting={isLoading}
-          isSuccess={isSuccess}
-          onPress={() => handleSubmit(onSubmit)()}
+        <Controller
+          name='period'
+          render={({ field }) => (
+            <ModalPicker
+              label='Period'
+              chevronDirection='down'
+              isFormInput={true}
+              header='Period'
+              valueKey={'value'}
+              defaultValue={{ value: field.value, label: field.value === 'month' ? 'Monthly' : 'Yearly' }}
+              onChange={field.onChange}
+              options={[
+                { label: 'Monthly', value: 'month' },
+                { label: 'Yearly', value: 'year' }
+              ]}
+            />
+          )}
+          control={control}
         />
+        <Controller
+          name='limit_amount'
+          render={({ field }) => (
+            <MoneyInput
+              label='Limit'
+              defaultValue={field.value}
+              onChange={(v) => {
+                field.onChange(Big(v || 0).times(100).toNumber())
+              }}
+              inputType='single'
+              error={errors.limit_amount}
+              accuracy={2}
+            />
+          )}
+          control={control}
+        />
+        <Controller
+          name='alerts'
+          render={({ field }) => (
+            <AlertInput
+              onChange={(value) => field.onChange(value.map(v => ({ percent_amount: value })))}
+              defaultValue={field.value?.map(v => v.percent_amount)}
+            />
+          )}
+          control={control}
+        />
+        <View style={styles.saveButton}>
+          <SubmitButton
+            variant='main'
+            label='Save'
+            isSubmitting={isLoading}
+            isSuccess={isSuccess}
+            onPress={() => handleSubmit(onSubmit)()}
+          />
+        </View>
       </ScrollView>
     </Box>
   )

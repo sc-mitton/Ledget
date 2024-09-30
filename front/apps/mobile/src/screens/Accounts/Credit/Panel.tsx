@@ -93,7 +93,7 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
         ref={ref}
         style={styles.topContainer}
         onLayout={(event) => {
-          setBottomOfContentPos(event.nativeEvent.layout.height + 40)
+          setBottomOfContentPos(event.nativeEvent.layout.height + 28)
         }}
       >
         <View style={styles.totalBalanceContainer}>

@@ -48,7 +48,7 @@ export function Modal(props: ModalProps) {
   const keyboardHeight = useKeyboardHeight()
 
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-  const keyboardPaddingY = useSharedValue(position === 'bottom' ? 64 : 24);
+  const keyboardPaddingY = useSharedValue(position.includes('bottom') ? 64 : 0);
 
   const avoidKeyboardAnimation = useAnimatedStyle(() => {
     return {
@@ -100,30 +100,32 @@ export function Modal(props: ModalProps) {
         >
           <Box
             backgroundColor='modalOverlay'
-            style={[StyleSheet.absoluteFillObject, styles.overlay]}
+            style={styles.overlay}
           />
         </Pressable>}
-      <Box
-        style={[styles[`${position}Modal`], (restyleProps as any).style[0]]}
-        borderColor='modalBorder'
-        borderWidth={1}
-        backgroundColor={'modalBox'}
-        {...(hasOverlay ? {
-          shadowColor: 'modalShadow',
-          shadowOffset: { width: 0, height: 4 },
-          shadowOpacity: 1,
-          shadowRadius: 12,
-        } : {})}
-      >
-        {hasExitButton && <View style={styles.closeButton}>
-          <Button onPress={() => onClose ? onClose() : navigation.goBack()} variant='circleButton' >
-            <Icon icon={X} size={20} color='secondaryText' />
-          </Button>
-        </View>}
-        <Animated.View style={[avoidKeyboardAnimation]}>
-          {children}
-        </Animated.View>
-      </Box>
+      <View style={[styles[`${position}ModalContainer`]]}>
+        <Box
+          style={[styles[`${position}Modal`], (restyleProps as any).style[0]]}
+          borderColor='modalBorder'
+          borderWidth={1}
+          backgroundColor={'modalBox'}
+          {...(hasOverlay ? {
+            shadowColor: 'modalShadow',
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 1,
+            shadowRadius: 12,
+          } : {})}
+        >
+          {hasExitButton && <View style={styles.closeButton}>
+            <Button onPress={() => onClose ? onClose() : navigation.goBack()} variant='circleButton' >
+              <Icon icon={X} size={20} color='secondaryText' />
+            </Button>
+          </View>}
+          <Animated.View style={[avoidKeyboardAnimation]}>
+            {children}
+          </Animated.View>
+        </Box>
+      </View>
     </>
   );
 }

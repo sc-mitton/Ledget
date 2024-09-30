@@ -72,7 +72,7 @@ export const darkTheme = createTheme({
     bottomNavBackground: palette.gray850,
     androidNavBar: palette.gray850,
     bottomNavCover: `hsl(${grayH}, ${grayS}%, 10%)`,
-    nestedContainer: `hsl(${grayH}, ${grayS}%, 10%)`,
+    nestedContainer: `hsl(${grayH}, ${grayS}%, 11%)`,
     inputBackground: palette.gray800,
     tabNavPill: palette.blue800,
     avatar: palette.gray800,
@@ -83,8 +83,8 @@ export const darkTheme = createTheme({
     newTransaction: palette.gray750,
     contextMenu: palette.gray700,
     toast: palette.gray850,
-    creditCardGradientStart: `hsl(${blueH}, ${blueS}%, 35%)`,
-    creditCardGradientEnd: `hsl(${blueH}, ${blueS}%, 32%)`,
+    creditCardGradientStart: `hsl(${blueH}, ${blueS + 20}%, 62%)`,
+    creditCardGradientEnd: `hsl(${blueH}, ${blueS}%, 35%)`,
 
     // Borders
     inputBorder: palette.gray750,
@@ -101,8 +101,8 @@ export const darkTheme = createTheme({
     toastBorder: palette.gray800,
     modalBorder: palette.gray800,
     contextMenuDivider: palette.gray600,
-    creditCardBorderStart: `hsl(${blueH}, ${blueS}%, 45%)`,
-    creditCardBorderStop: `hsl(${blueH}, ${blueS}%, 35%)`,
+    creditCardBorderStart: `hsl(${blueH}, ${blueS}%, 72%)`,
+    creditCardBorderStop: `hsl(${blueH}, ${blueS}%, 38%)`,
 
     // Shadows
     navShadow: palette.gray900,
@@ -151,11 +151,11 @@ export const darkTheme = createTheme({
     dragBar: palette.gray750,
 
     // Category and Bill Colors
-    monthBackground: `hsl(${blueH}, 38%, 24%)`,
-    monthBorder: `hsl(${blueH}, 38%, 26%)`,
+    monthBackground: `hsl(${blueH}, 48%, 24%)`,
+    monthBorder: `hsl(${blueH}, 48%, 26%)`,
     monthColor: `hsl(${blueH}, 100%, 75%)`,
-    yearBackground: `hsl(${greenH}, 38%, 17%)`,
-    yearBorder: `hsl(${greenH}, 38%, 20%)`,
+    yearBackground: `hsl(${greenH}, 48%, 17%)`,
+    yearBorder: `hsl(${greenH}, 48%, 20%)`,
     yearColor: `hsl(${greenH}, 90%, 50%)`,
 
     // Switch

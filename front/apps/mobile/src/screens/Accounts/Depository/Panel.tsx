@@ -7,8 +7,8 @@ import { hasErrorCode } from '@ledget/helpers';
 import { popToast, Account, useGetAccountsQuery, apiSlice } from '@ledget/shared-features';
 import { useAppDispatch } from '@hooks';
 import { DefaultHeader, AccountHeader } from '../Header';
-import AccountPickerButton from './AccountsPickerButton';
 import Transactions from '../TransactionsList/Transactions';
+import AccountsPickerButton from '../AccountsPickerButton';
 import Summary from './Summary/Summary';
 
 const Panel = (props: AccountsTabsScreenProps<'Depository'> & { account?: Account }) => {
@@ -59,7 +59,7 @@ const Panel = (props: AccountsTabsScreenProps<'Depository'> & { account?: Accoun
         ref={ref}
         onLayout={(event) => { setBottomOfContentPos(event.nativeEvent.layout.height) }}>
         <Summary {...props} />
-        <AccountPickerButton {...props} account={account} />
+        <AccountsPickerButton {...props} account={account} />
       </View>
       <Transactions
         onStateChange={(state) => { setTransactionsListExpanded(state === 'expanded' ? true : false) }}

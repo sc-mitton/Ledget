@@ -16,10 +16,6 @@ const CategoryPicker = (props: CategoryPickerProps) => {
       style={styles.categoryPicker}
       borderBottomWidth={2}
       borderBottomColor='seperator'
-      shadowColor='navShadow'
-      shadowOffset={{ width: 0, height: 2 }}
-      shadowOpacity={1}
-      shadowRadius={4}
     >
       <View>
         <FontAwesome6 name="face-smile" size={20} style={{ color: props.selectedCategory === 'Smileys & Emotion' ? theme.colors.faintBlueText : theme.colors.quinaryText }} />

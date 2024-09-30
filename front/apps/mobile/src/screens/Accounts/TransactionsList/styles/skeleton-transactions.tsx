@@ -1,6 +1,13 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
+  skeletonWrapper: {
+    overflow: 'hidden',
+    flexGrow: 1,
+    paddingHorizontal: 20,
+    marginHorizontal: 4,
+    marginVertical: 8,
+  },
   skeletonContainer: {
     flexDirection: 'row',
     width: '100%',

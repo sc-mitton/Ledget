@@ -38,13 +38,13 @@ const SkeletonTransactions = (props: SkeletonTransactionsP) => {
   const [skeletonHeight, setSkeletonHeight] = useState(0)
 
   return (
-    <>
+    <View style={styles.skeletonWrapper}>
       <Skeleton setSkeletonHeight={setSkeletonHeight} />
       {skeletonHeight > 0 &&
         Array.from({ length: Math.floor(props.height / skeletonHeight) - 1 }).map((_, i) => (
           <Skeleton key={i} />
         ))}
-    </>
+    </View>
   )
 }
 

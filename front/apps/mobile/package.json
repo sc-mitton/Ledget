@@ -99,7 +99,11 @@
     "victory-native": "*",
     "@shopify/react-native-skia": "*",
     "react-native-reanimated-carousel": "*",
-    "react-native-draggable-grid": "*"
+    "react-native-draggable-grid": "*",
+    "emoji-datasource": "*",
+    "@expo/vector-icons": "*",
+    "@gorhom/portal": "*",
+    "@miblanchard/react-native-slider": "*"
   },
   "devDependencies": {}
 }

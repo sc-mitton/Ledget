@@ -30,6 +30,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     bottom: 0,
+  },
+  splitInputs: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  splitInput: {
+    flex: 1
+  },
+  saveButton: {
+    marginTop: 12
   }
 });
 

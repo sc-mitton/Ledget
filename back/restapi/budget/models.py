@@ -108,7 +108,14 @@ class Alert (Notification):
     category = models.ForeignKey(Category,
                                  on_delete=models.CASCADE,
                                  related_name='alerts')
-    percent_amount = models.IntegerField(null=False, blank=False)
+    percent_amount = models.IntegerField(
+        null=False,
+        blank=False,
+        validators=[
+            MinValueValidator(0, message="Percent amount must be greater than 0."),
+            MaxValueValidator(100, message="Percent amount must be less than 100.")
+        ]
+    )
 
 
 class Reminder(Notification):

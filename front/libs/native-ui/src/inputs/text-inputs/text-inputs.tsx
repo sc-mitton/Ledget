@@ -6,9 +6,11 @@ import {
   TouchableHighlight,
   NativeSyntheticEvent,
   TextInputFocusEventData,
+  Keyboard
 } from "react-native";
 import { Eye, EyeOff } from 'geist-native-icons';
 import { useTheme } from '@shopify/restyle';
+import OutsidePressHandler from 'react-native-outside-press';
 
 import { Box } from '../../restyled/Box';
 import { Icon } from '../../restyled/Icon';
@@ -31,7 +33,7 @@ export const TextInputbase = (props: TextInputBaseProps) => {
   const { label, error, focused, children } = props
 
   return (
-    <Box style={styles.textInputLabelContainer}>
+    <OutsidePressHandler onOutsidePress={() => Keyboard.dismiss()} style={styles.textInputLabelContainer}>
       {label && <InputLabel>{label}</InputLabel>}
       <Box
         borderColor={error ? 'inputBorderErrorSecondary' : focused ? 'focusedInputBorderSecondary' : 'transparent'}
@@ -47,7 +49,7 @@ export const TextInputbase = (props: TextInputBaseProps) => {
           {children}
         </Box>
       </Box>
-    </Box>
+    </OutsidePressHandler>
   )
 }
 
