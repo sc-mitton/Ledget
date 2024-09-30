@@ -93,7 +93,7 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
         ref={ref}
         style={styles.topContainer}
         onLayout={(event) => {
-          setBottomOfContentPos(event.nativeEvent.layout.height + 28)
+          setBottomOfContentPos(event.nativeEvent.layout.height + 24)
         }}
       >
         <View style={styles.totalBalanceContainer}>
@@ -153,7 +153,9 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
               />
             </View>
             <View style={styles.pageDots}>
-              <CarouselDots currentIndex={carouselIndex} length={accounts.length} />
+              <Box backgroundColor='grayButton' style={styles.pageDotsBack}>
+                <CarouselDots currentIndex={carouselIndex} length={accounts.length} />
+              </Box>
             </View>
           </>
           :

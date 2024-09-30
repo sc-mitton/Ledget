@@ -10,6 +10,7 @@ import { Modal, Button, Icon, Header2, Seperator, DollarCents } from '@ledget/na
 interface Props {
   onChange: (value: number[]) => void;
   defaultValue?: number[];
+  amount: number;
 }
 
 const AlertInput = (props: Props) => {
@@ -46,7 +47,7 @@ const AlertInput = (props: Props) => {
                 value={value}
                 onValueChange={setValue}
                 minimumValue={0}
-                maximumValue={100}
+                maximumValue={props.amount}
                 step={1}
                 maximumTrackTintColor={theme.colors.quinaryText}
                 minimumTrackTintColor={theme.colors.blueText}

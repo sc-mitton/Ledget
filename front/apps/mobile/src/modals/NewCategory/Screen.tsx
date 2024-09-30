@@ -38,6 +38,7 @@ const Screen = (props: ModalScreenProps<'NewCategory'>) => {
   const [addNewCategory, { isLoading, isSuccess }] = useAddNewCategoryMutation();
 
   const emoji = useWatch({ control, name: 'emoji' });
+  const limit_amount = useWatch({ control, name: 'limit_amount' });
 
   const onSubmit = (data: z.infer<typeof categorySchema>) => {
     addNewCategory(data);
@@ -136,6 +137,7 @@ const Screen = (props: ModalScreenProps<'NewCategory'>) => {
           name='alerts'
           render={({ field }) => (
             <AlertInput
+              amount={limit_amount || 100}
               onChange={(value) => field.onChange(value.map(v => ({ percent_amount: value })))}
               defaultValue={field.value?.map(v => v.percent_amount)}
             />

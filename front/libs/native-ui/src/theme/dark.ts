@@ -87,7 +87,7 @@ export const darkTheme = createTheme({
     creditCardGradientEnd: `hsl(${blueH}, ${blueS}%, 35%)`,
 
     // Borders
-    inputBorder: palette.gray750,
+    inputBorder: 'transparent',
     inputBorderErrorMain: palette.red,
     inputBorderErrorSecondary: palette.mutedRed,
     focusedInputBorderMain: palette.blue400,

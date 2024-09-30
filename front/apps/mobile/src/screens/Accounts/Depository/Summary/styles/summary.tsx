@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    marginHorizontal: 24
+    marginHorizontal: 20
   },
   graphContainer: {
     width: '100%',

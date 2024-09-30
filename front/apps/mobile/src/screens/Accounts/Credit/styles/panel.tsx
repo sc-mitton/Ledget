@@ -48,6 +48,11 @@ const styles = StyleSheet.create({
     gap: 7,
     transform: [{ translateY: -20 }]
   },
+  pageDotsBack: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20
+  },
   accountName: {
     flexDirection: 'row',
     gap: 8,

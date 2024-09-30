@@ -207,7 +207,7 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
         }
       </View>
       <View style={styles.chartHeader}>
-        <DollarCents value={totalBalance} fontSize={28} variant='bold' />
+        <DollarCents value={totalBalance} fontSize={22} variant='bold' />
         <View style={styles.headerTitle}>
           <Text color='tertiaryText'>total balance</Text>
           <View style={styles.trendContainer}>
@@ -247,8 +247,7 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
             }]}
             padding={{
               left: 8,
-              bottom: 24,
-              right: 6
+              bottom: 24
             }}
             domainPadding={{ left: 3, right: 3 }}
             domain={{

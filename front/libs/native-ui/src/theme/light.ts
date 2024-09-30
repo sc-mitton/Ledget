@@ -88,7 +88,7 @@ export const lightTheme = createTheme({
     creditCardGradientEnd: `hsl(${blueH}, 35%, 62%)`,
 
     // Borders
-    inputBorder: palette.gray250,
+    inputBorder: 'transparent',
     inputBorderErrorSecondary: palette.mutedRed,
     inputBorderErrorMain: palette.red,
     focusedInputBorderSecondary: palette.blue50,

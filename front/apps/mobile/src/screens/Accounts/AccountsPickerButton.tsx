@@ -33,7 +33,7 @@ const AccountsPickerButton = (props: AccountsTabsScreenProps<any> & { account?: 
         </View>
       </Button>
       <View style={styles.balanceContainer}>
-        <DollarCents variant='bold' value={`${props.account?.balances.current || 0}`} />
+        <DollarCents value={`${props.account?.balances.current || 0}`} />
       </View>
     </View>
   )

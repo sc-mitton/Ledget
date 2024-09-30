@@ -22,6 +22,7 @@
       "@ledget/native-ui": ["libs/native-ui/src/index.ts"],
       "@ledget/ory": ["libs/ory/src/index.ts"],
       "@ledget/shared-features": ["libs/shared-features/src/index.ts"],
+      "@ledget/slot-text": ["libs/slot-text/src/index.ts"],
       "@ledget/ui": ["libs/ui/src/index.ts"]
     }
   },
