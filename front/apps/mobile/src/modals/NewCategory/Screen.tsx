@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { X } from 'geist-native-icons';
 import { ScrollView, View } from 'react-native';
-import { useForm, Controller, useController, useWatch } from 'react-hook-form';
+import { useForm, Controller, useController, useWatch, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Smile } from 'geist-native-icons';
@@ -133,17 +133,7 @@ const Screen = (props: ModalScreenProps<'NewCategory'>) => {
           )}
           control={control}
         />
-        <Controller
-          name='alerts'
-          render={({ field }) => (
-            <AlertInput
-              amount={limit_amount || 100}
-              onChange={(value) => field.onChange(value.map(v => ({ percent_amount: value })))}
-              defaultValue={field.value?.map(v => v.percent_amount)}
-            />
-          )}
-          control={control}
-        />
+        <AlertInput control={control} />
         <View style={styles.saveButton}>
           <SubmitButton
             variant='main'

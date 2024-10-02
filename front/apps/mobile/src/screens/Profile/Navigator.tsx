@@ -50,22 +50,22 @@ function Profile(props: ProfileScreenProps<'Main'>) {
             ? props.navigation.navigate('CoOwner')
             : props.navigation.navigate('Modals', { screen: 'AddCoOwner' })
         }>
-          <Icon strokeWidth={2} color='secondaryText' icon={Users} />
+          <Icon color='secondaryText' icon={Users} />
           <Text>Account Member</Text>
         </ChevronTouchable>
         <Seperator backgroundColor='nestedContainerSeperator' />
         <ChevronTouchable onPress={() => props.navigation.navigate('Connections', { screen: 'All' })}>
-          <Icon strokeWidth={2} color='secondaryText' icon={Link} />
+          <Icon color='secondaryText' icon={Link} />
           <Text>Connections</Text>
         </ChevronTouchable>
         <Seperator backgroundColor='nestedContainerSeperator' />
         <ChevronTouchable onPress={() => props.navigation.navigate('Security', { screen: 'Main' })}>
-          <Icon strokeWidth={2} color='secondaryText' icon={Shield} />
+          <Icon color='secondaryText' icon={Shield} />
           <Text>Security</Text>
         </ChevronTouchable>
         <Seperator backgroundColor='nestedContainerSeperator' />
         <ChevronTouchable onPress={() => props.navigation.navigate('Settings')}>
-          <Icon strokeWidth={2} color='secondaryText' icon={SettingsIcon} />
+          <Icon color='secondaryText' icon={SettingsIcon} />
           <Text>Settings</Text>
         </ChevronTouchable>
       </Box>

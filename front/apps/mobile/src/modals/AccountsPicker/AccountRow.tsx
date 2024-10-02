@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Big from 'big.js';
 
 import styles from './styles/account-row';
 import {
@@ -112,7 +113,7 @@ const AccountRow = (props: AccountP) => {
             <View style={styles.balance}>
               <DollarCents
                 color={props.isSelected ? 'blueTextSecondary' : 'mainText'}
-                value={props.account.balances.current} />
+                value={Big(props.account.balances.current).times(100).toNumber()} />
             </View>
           </View>
         </ChevronTouchable >

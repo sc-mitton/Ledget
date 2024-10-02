@@ -105,7 +105,7 @@ const Tabs = ({ state, descriptors, navigation }: Props) => {
         ))}
       </ScrollView>
       <View style={styles.seperator}>
-        <Seperator backgroundColor='mainScreenSeperator' />
+        <Seperator backgroundColor='mainScreenSeperator' height={2} />
       </View>
     </>
   )

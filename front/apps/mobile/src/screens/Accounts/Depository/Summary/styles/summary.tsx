@@ -3,15 +3,15 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     marginBottom: 20,
-    marginTop: 24,
+    marginTop: 32,
+    paddingLeft: 8,
     position: 'relative',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    marginHorizontal: 20
   },
   graphContainer: {
     width: '100%',
-    height: 130
+    height: 150,
   },
   nestedContainerBox: {
     padding: 0
@@ -19,20 +19,21 @@ const styles = StyleSheet.create({
   selectWindowButtons: {
     flexDirection: 'row',
   },
+  balanceData: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    gap: 6,
+    marginTop: -2
+  },
   trendContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 2
   },
   trendIcon: {
-    marginLeft: 4
+    marginLeft: 2
   },
   chartHeader: {
-    paddingLeft: 8,
-  },
-  headerTitle: {
-    flexDirection: 'row',
-    gap: 6,
   },
   tooltipText: {
     position: 'absolute',
@@ -40,20 +41,20 @@ const styles = StyleSheet.create({
   },
   menuButtonContainer: {
     position: 'absolute',
-    top: 8,
-    right: 2,
+    top: 12,
+    right: 8,
     zIndex: 10,
   },
   menuButton: {
-    paddingHorizontal: 8,
-    borderRadius: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 2,
+    borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
   },
   blurViewContainer: {
     zIndex: 10,
-    borderRadius: 12,
-    overflow: 'hidden',
+    borderRadius: 12
   }
 });
 

@@ -5,13 +5,12 @@ const styles = StyleSheet.create({
     flex: 1
   },
   topContainer: {
-    marginTop: 24,
+    marginTop: 36,
     alignItems: 'flex-start',
     justifyContent: 'space-between',
-    gap: 8,
+    gap: 2,
   },
   totalBalanceContainer: {
-    marginBottom: 6,
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',

@@ -1,15 +1,26 @@
-import { TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
 import { ChevronDown } from 'geist-native-icons';
 
 import styles from './styles/accounts-picker-button';
-import { Box, Text, Icon, InstitutionLogo, DollarCents, Seperator, Button } from '@ledget/native-ui';
+import { Text, Icon, InstitutionLogo, DollarCents, Button } from '@ledget/native-ui';
 import { AccountsTabsScreenProps } from '@types';
 import { Account } from '@ledget/shared-features';
+import { useAppearance } from '@/features/appearanceSlice';
 
 const AccountsPickerButton = (props: AccountsTabsScreenProps<any> & { account?: Account }) => {
+  const { mode } = useAppearance()
+
   return (
     <View style={styles.buttonBalanceContainer}>
       <Button
+        backgroundColor={'blueButton'}
+        borderRadius={40}
+        paddingHorizontal='s'
+        paddingVertical='xs'
+        shadowColor='navShadow'
+        shadowOpacity={1}
+        shadowOffset={{ width: 0, height: 2 }}
+        shadowRadius={4}
         style={styles.accountsPickerButton}
         onPress={() => {
           props.account && props.navigation.navigate(
@@ -21,20 +32,26 @@ const AccountsPickerButton = (props: AccountsTabsScreenProps<any> & { account?: 
           )
         }}>
         <View style={styles.accountsPickerbuttonContent}>
-          <View><InstitutionLogo account={props.account?.id} size={22} /></View>
-          {props.account
-            ?
+          <InstitutionLogo account={props.account?.id} size={18} />
+          {props.account &&
             <View style={styles.nameContainer}>
-              <Text>{props.account?.name}</Text>
-              <Icon icon={ChevronDown} strokeWidth={2.5} size={16} />
-            </View>
-            :
-            <Box backgroundColor='modalSeperator' height={18} width={100} borderRadius={40} />}
+              <Text
+                color={mode === 'light' ? 'whiteText' : 'mainText'}
+              >
+                {props.account?.name}
+              </Text>
+              <DollarCents
+                color={mode === 'light' ? 'whiteText' : 'mainText'}
+                value={`${props.account?.balances.current || 0}`}
+              />
+            </View>}
+          <Icon
+            color={mode === 'light' ? 'whiteText' : 'mainText'}
+            icon={ChevronDown}
+            strokeWidth={2} size={18}
+          />
         </View>
       </Button>
-      <View style={styles.balanceContainer}>
-        <DollarCents value={`${props.account?.balances.current || 0}`} />
-      </View>
     </View>
   )
 }

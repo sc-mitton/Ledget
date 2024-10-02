@@ -79,8 +79,8 @@ export const Card = (props: Props) => {
               <Rect x={0} y={0} width={width} height={height}>
                 <LinearGradient
                   colors={gradientColors}
-                  start={vec(0, 0)}
-                  end={vec(width / 1.5, height / 1.5)}
+                  start={vec(width * 1.5, 0)}
+                  end={vec(width / 2, height / 2)}
                 />
               </Rect>
             </Canvas>

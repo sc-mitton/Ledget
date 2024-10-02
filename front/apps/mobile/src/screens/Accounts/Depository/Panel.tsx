@@ -6,10 +6,12 @@ import { AccountsTabsScreenProps } from '@types';
 import { hasErrorCode } from '@ledget/helpers';
 import { popToast, Account, useGetAccountsQuery, apiSlice } from '@ledget/shared-features';
 import { useAppDispatch } from '@hooks';
+import { Box, Seperator } from '@ledget/native-ui';
 import { DefaultHeader, AccountHeader } from '../Header';
 import Transactions from '../TransactionsList/Transactions';
 import AccountsPickerButton from '../AccountsPickerButton';
 import Summary from './Summary/Summary';
+import { BoxHeader } from '@ledget/native-ui';
 
 const Panel = (props: AccountsTabsScreenProps<'Depository'> & { account?: Account }) => {
   const [bottomOfContentPos, setBottomOfContentPos] = useState(0)
@@ -54,7 +56,7 @@ const Panel = (props: AccountsTabsScreenProps<'Depository'> & { account?: Accoun
   }, [accountsData, props.route.params])
 
   return (
-    <View style={[styles.main]}>
+    <Box style={[styles.main]} paddingHorizontal='pagePadding'>
       <View
         ref={ref}
         onLayout={(event) => { setBottomOfContentPos(event.nativeEvent.layout.height) }}>
@@ -68,7 +70,7 @@ const Panel = (props: AccountsTabsScreenProps<'Depository'> & { account?: Accoun
         account={account}
         {...props}
       />
-    </View>
+    </Box>
   )
 }
 export default Panel

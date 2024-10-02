@@ -97,6 +97,7 @@
     "redux": "^4.2.1",
     "redux-devtools-expo-dev-plugin": "^0.2.1",
     "redux-persist": "^6.0.0",
+    "slot-text": "^1.0.0",
     "styled-components": "^6.1.12",
     "tslib": "^2.6.3",
     "type-fest": "^4.25.0",

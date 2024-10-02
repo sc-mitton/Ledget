@@ -2,16 +2,15 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   buttonBalanceContainer: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
-    paddingLeft: 18,
-    paddingRight: 26,
-    paddingBottom: 4,
     zIndex: -1,
+    marginTop: 8,
+    marginBottom: 20
   },
   accountsPickerButton: {
     gap: 8,
+    borderRadius: 12,
     flexDirection: 'row',
     justifyContent: 'space-between',
     zIndex: -1,
@@ -30,7 +29,7 @@ const styles = StyleSheet.create({
   nameContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 12,
     paddingHorizontal: 8,
   },
   balanceContainer: {

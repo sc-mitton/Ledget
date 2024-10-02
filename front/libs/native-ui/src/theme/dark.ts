@@ -7,8 +7,8 @@ import basePalette from './base-palette';
 const grayH = 240;
 const grayS = 5;
 
-const blueH = 226;
-const blueS = 50;
+const blueH = 230;
+const blueS = 55;
 
 const greenH = 170;
 
@@ -83,8 +83,8 @@ export const darkTheme = createTheme({
     newTransaction: palette.gray750,
     contextMenu: palette.gray700,
     toast: palette.gray850,
-    creditCardGradientStart: `hsl(${blueH}, ${blueS + 20}%, 62%)`,
-    creditCardGradientEnd: `hsl(${blueH}, ${blueS}%, 35%)`,
+    creditCardGradientStart: `hsl(${blueH}, ${blueS}%, 30%)`,
+    creditCardGradientEnd: `hsl(${blueH}, ${blueS}%, 42%)`,
 
     // Borders
     inputBorder: 'transparent',
@@ -139,7 +139,7 @@ export const darkTheme = createTheme({
     // Buttons
     lightBlueButton: palette.blue800,
     lightBlueButtonBorder: palette.blue700,
-    blueButton: palette.blue500,
+    blueButton: palette.blue400,
     blueButtonBorder: palette.blue400,
     lightGrayButton: palette.gray800,
     darkGrayButton: palette.gray800,

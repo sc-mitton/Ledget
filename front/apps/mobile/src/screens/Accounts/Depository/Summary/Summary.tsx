@@ -137,26 +137,26 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
     switch (window) {
       case '3M':
         setDateWindow({
-          start: dayjs().subtract(3, 'month').unix(),
-          end: dayjs().unix()
+          start: dayjs().startOf('day').subtract(3, 'month').unix(),
+          end: dayjs().startOf('day').unix()
         });
         break;
       case '6M':
         setDateWindow({
-          start: dayjs().subtract(6, 'month').unix(),
-          end: dayjs().unix()
+          start: dayjs().startOf('day').subtract(6, 'month').unix(),
+          end: dayjs().startOf('day').unix()
         });
         break;
       case '1Y':
         setDateWindow({
-          start: dayjs().subtract(1, 'year').unix(),
-          end: dayjs().unix()
+          start: dayjs().startOf('day').subtract(1, 'year').unix(),
+          end: dayjs().startOf('day').unix()
         });
         break;
       case 'ALL':
         setDateWindow({
-          start: dayjs().subtract(10, 'year').unix(),
-          end: dayjs().unix()
+          start: dayjs().startOf('day').subtract(10, 'year').unix(),
+          end: dayjs().startOf('day').unix()
         });
         break;
     }
@@ -202,18 +202,19 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
             onPress={() => { setShowChart(true) }}
             backgroundColor='grayButton'
             variant='square'>
-            <Icon icon={Graph} color='tertiaryText' />
+            <Icon icon={Graph} color='secondaryText' />
           </Button>
         }
       </View>
       <View style={styles.chartHeader}>
-        <DollarCents value={totalBalance} fontSize={22} variant='bold' />
-        <View style={styles.headerTitle}>
-          <Text color='tertiaryText'>total balance</Text>
+        <Text color='tertiaryText'>Total Balance</Text>
+        <View style={styles.balanceData}>
+          <DollarCents value={totalBalance} fontSize={24} variant='bold' />
           <View style={styles.trendContainer}>
             <DollarCents showSign={false} color='tertiaryText' value={calculatedTrend} withCents={false} />
             <View style={styles.trendIcon}>
               <Icon
+                size={18}
                 color={calculatedTrend < 0 ? 'alert' : 'greenText'}
                 icon={calculatedTrend < 0 ? ArrowDownRight : ArrowUpRight} />
             </View>
@@ -246,7 +247,8 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
               formatYLabel: () => '',
             }]}
             padding={{
-              left: 8,
+              left: 0,
+
               bottom: 24
             }}
             domainPadding={{ left: 3, right: 3 }}

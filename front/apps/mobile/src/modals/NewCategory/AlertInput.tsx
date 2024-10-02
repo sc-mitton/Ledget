@@ -1,26 +1,31 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Modal as NativeModal } from 'react-native';
 import { Slider } from '@miblanchard/react-native-slider';
 import { Plus } from 'geist-native-icons';
 import { useTheme } from '@shopify/restyle';
+import { Control, useFieldArray, useWatch } from 'react-hook-form';
+import { z } from 'zod';
+import { AnimatedNumbers } from 'slot-text'
 
 import styles from './styles/alert-input';
-import { Modal, Button, Icon, Header2, Seperator, DollarCents } from '@ledget/native-ui';
+import { Modal, Button, Icon, Header2, Seperator } from '@ledget/native-ui';
+import { categorySchema } from '@ledget/form-schemas';
 
 interface Props {
-  onChange: (value: number[]) => void;
-  defaultValue?: number[];
-  amount: number;
+  control: Control<z.infer<typeof categorySchema>>;
 }
 
 const AlertInput = (props: Props) => {
-  const [value, setValue] = useState(props.defaultValue || [0]);
+  const [value, setValue] = useState(0);
   const [open, setOpen] = useState(false);
   const theme = useTheme();
 
+  const { fields, append, remove } = useFieldArray({ control: props.control, name: 'alerts' });
+  const limit_amount = useWatch({ control: props.control, name: 'limit_amount' });
+
   const handleClose = () => {
     setOpen(false);
-    props.onChange(value);
+    append({ percent_amount: value });
   }
 
   return (
@@ -42,12 +47,21 @@ const AlertInput = (props: Props) => {
           <View style={styles.modalContent}>
             <Header2>Add Alert</Header2>
             <Seperator />
+            <View style={styles.animatedNumbersContainer}>
+              <AnimatedNumbers
+                fontStyle={styles.animatedNumbers}
+                value={`${value}`}
+                prefix='$'
+                animationDuration={200}
+                includeComma={true}
+              />
+            </View>
             <View style={styles.sliderContainer}>
               <Slider
                 value={value}
-                onValueChange={setValue}
+                onValueChange={(value) => setValue(value[0])}
                 minimumValue={0}
-                maximumValue={props.amount}
+                maximumValue={limit_amount || 100}
                 step={1}
                 maximumTrackTintColor={theme.colors.quinaryText}
                 minimumTrackTintColor={theme.colors.blueText}

@@ -8,7 +8,7 @@ const grayH = 240;
 const grayS = 5;
 
 const blueH = 230;
-const blueS = 50;
+const blueS = 75;
 
 const greenH = 130;
 
@@ -84,8 +84,8 @@ export const lightTheme = createTheme({
     newTransaction: palette.gray100,
     contextMenu: palette.gray100,
     toast: palette.white,
-    creditCardGradientStart: `hsl(${blueH}, 45%, 35%)`,
-    creditCardGradientEnd: `hsl(${blueH}, 35%, 62%)`,
+    creditCardGradientStart: `hsl(${blueH}, 55%, 35%)`,
+    creditCardGradientEnd: `hsl(${blueH}, 55%, 62%)`,
 
     // Borders
     inputBorder: 'transparent',
@@ -102,8 +102,6 @@ export const lightTheme = createTheme({
     modalBorder: palette.gray200,
     toastBorder: palette.gray100,
     contextMenuDivider: palette.gray200,
-    creditCardBorderStart: `hsl(${blueH}, 35%, 37%)`,
-    creditCardBorderStop: `hsl(${blueH}, 35%, 59%)`,
 
     // Shadows
     navShadow: palette.gray400,
@@ -138,7 +136,7 @@ export const lightTheme = createTheme({
     // Buttons
     lightBlueButton: palette.blue50,
     lightBlueButtonBorder: palette.blue100,
-    blueButton: palette.blue500,
+    blueButton: palette.blue400,
     blueButtonBorder: palette.blue450,
     blueButtonBorder2: palette.blue100,
     lightGrayButton: palette.gray150,

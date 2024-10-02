@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native'
 import Big from 'big.js';
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
-import { useSprings } from '@react-spring/native';
+import { useSprings } from '@react-spring/native'
 import { Grid } from 'geist-native-icons';
 import { useSharedValue } from 'react-native-reanimated';
 
@@ -23,7 +23,6 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
   const [transactionsListExpanded, setTransactionsListExpanded] = useState(false)
 
   const ref = useRef<View>(null)
-  const progress = useSharedValue<number>(0);
   const carouselRef = useRef<ICarouselInstance>(null)
   const [carouselIndex, setCarouselIndex] = useState(0)
 
@@ -46,13 +45,13 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
 
   const [cardTransparencies, cardsApi] = useSprings(accounts?.length || 0, (i) => ({
     from: { opacity: 1 },
-    to: { opacity: i === carouselIndex ? 1 : 0.65 },
+    to: { opacity: i === carouselIndex ? 1 : 0.25 },
     config: { duration: 200 }
   }));
 
   useEffect(() => {
     cardsApi.start((i) => ({
-      to: { opacity: i === carouselIndex ? 1 : 0.65 },
+      to: { opacity: i === carouselIndex ? 1 : 0.25 },
       config: { duration: 200 }
     }))
   }, [carouselIndex])
@@ -93,22 +92,24 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
         ref={ref}
         style={styles.topContainer}
         onLayout={(event) => {
-          setBottomOfContentPos(event.nativeEvent.layout.height + 24)
+          setBottomOfContentPos(event.nativeEvent.layout.height + 32)
         }}
       >
         <View style={styles.totalBalanceContainer}>
           <View style={styles.totalBalance}>
+            <Text color='tertiaryText' fontSize={15} style={styles.totalBalanceText}>
+              Total Card Balance
+            </Text>
             <DollarCents
               fontSize={22}
               variant='bold'
               value={accounts?.reduce((acc, account) =>
                 Big(acc).plus(account.balances.current), Big(0)).times(100).toNumber() || 0}
             />
-            <Text color='secondaryText' fontSize={15} style={styles.totalBalanceText}>
-              total card balance
-            </Text>
           </View>
           <Button
+            backgroundColor='grayButton'
+            variant='square'
             onPress={() => props.navigation.navigate(
               'Modals',
               {
@@ -117,7 +118,7 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
               })
             }
           >
-            <Icon icon={Grid} strokeWidth={1.6} size={25} color='tertiaryText' />
+            <Icon icon={Grid} size={20} color='secondaryText' />
           </Button>
         </View>
         {accounts
@@ -148,7 +149,7 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
                 modeConfig={{
                   parallaxAdjacentItemScale: 0.8,
                   parallaxScrollingScale: 1,
-                  parallaxScrollingOffset: 0,
+                  parallaxScrollingOffset: -10,
                 }}
               />
             </View>

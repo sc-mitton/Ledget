@@ -56,6 +56,9 @@
       "@ledget/form-schemas": [
         "../../libs/form-schemas/src"
       ],
+      "@ledget/slot-text": [
+        "../../libs/slot-text/src"
+      ],
     },
   },
   "files": [],

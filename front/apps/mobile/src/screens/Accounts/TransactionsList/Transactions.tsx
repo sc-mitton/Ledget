@@ -148,7 +148,7 @@ const Transactions = (props: PTransactions) => {
 
   return (
     <Animated.View style={[styles.boxContainer, animation]}>
-      <Box backgroundColor='mainBackground' style={styles.mainBackgroundBox}>
+      <Box style={styles.mainBackgroundBox}>
         <Box
           style={styles.box}
           borderColor='nestedContainerBorder'
