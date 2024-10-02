@@ -2,7 +2,7 @@ import { TextInput, SectionList } from 'react-native';
 import type { Emoji } from '../types';
 
 export interface NativeEmojiPickerProps {
-  value?: string;
+  value?: string | null;
   onChange?: (value: string) => void;
   onClose?: () => void;
   title?: string;

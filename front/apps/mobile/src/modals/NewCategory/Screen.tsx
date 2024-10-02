@@ -32,7 +32,8 @@ const Screen = (props: ModalScreenProps<'NewCategory'>) => {
   const { control, handleSubmit } = useForm<z.infer<typeof categorySchema>>({
     resolver: zodResolver(categorySchema),
     defaultValues: {
-      period: 'month'
+      period: props.route.params?.period || 'month',
+      ...props.route.params?.edit
     }
   });
   const [addNewCategory, { isLoading, isSuccess }] = useAddNewCategoryMutation();
@@ -61,7 +62,9 @@ const Screen = (props: ModalScreenProps<'NewCategory'>) => {
         <Icon icon={X} color='secondaryText' />
       </Button>
       <View style={styles.formHeader}>
-        <Header2>New Category</Header2>
+        <Header2>
+          {props.route.params?.edit ? 'Edit Category' : 'New Category'}
+        </Header2>
         <Seperator />
       </View>
       <ScrollView
