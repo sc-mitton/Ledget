@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { View, Modal as NativeModal } from 'react-native';
 import { Slider } from '@miblanchard/react-native-slider';
 import { Plus } from 'geist-native-icons';
@@ -6,9 +6,11 @@ import { useTheme } from '@shopify/restyle';
 import { Control, useFieldArray, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 import { SlotText } from 'react-native-slot-text';
+import { X } from 'geist-native-icons';
+import Big from 'big.js';
 
 import styles from './styles/alert-input';
-import { Modal, Button, Icon, Header2, Seperator } from '@ledget/native-ui';
+import { Modal, Button, Icon, Header2, Seperator, Text, InputLabel, Box } from '@ledget/native-ui';
 import { categorySchema } from '@ledget/form-schemas';
 
 interface Props {
@@ -25,19 +27,56 @@ const AlertInput = (props: Props) => {
 
   const handleClose = () => {
     setOpen(false);
-    append({ percent_amount: value });
+    if (
+      !fields.some(field => field.percent_amount === Big(value).div(limit_amount).times(100).toNumber()) &&
+      value > 0
+    ) {
+      append({ percent_amount: Big(value).div(limit_amount).times(100).toNumber() });
+    }
+    setValue(0);
   }
 
-
   return (
-    <>
-      <Button
-        label='Add Alert'
-        textColor='placeholderText'
-        onPress={() => setOpen(true)}
-      >
-        <View style={styles.plusIcon}><Icon icon={Plus} color='placeholderText' /></View>
-      </Button>
+    <View style={styles.container}>
+      {fields.length > 0 && <InputLabel>Alerts</InputLabel>}
+      <View style={styles.alerts}>
+        {fields
+          .sort((a, b) => a.percent_amount - b.percent_amount)
+          .map((field, index) => (
+            <View style={styles.alert}>
+              <Box backgroundColor='inputBackground' style={styles.indexCircle}>
+                <Text color='placeholderText' style={styles.indexText}>{index + 1}</Text>
+              </Box>
+              <Text fontSize={18}>
+                {`$${Big(field.percent_amount).div(100).times(limit_amount).toNumber()}`}
+              </Text>
+            </View>
+          ))}
+        {fields.length > 0 &&
+          <View style={styles.clearButton}>
+            <Button
+              variant='circleButton'
+              backgroundColor='inputBackground'
+              onPress={() => fields.forEach((_, index) => remove(index))}
+            >
+              <Icon icon={X} color='secondaryText' strokeWidth={2} />
+            </Button>
+          </View>}
+      </View>
+      {fields.length <= 4 &&
+        <View style={styles.addButton}>
+          <Button
+            label='Add Alert'
+            backgroundColor='inputBackground'
+            textColor='placeholderText'
+            variant='rectangle'
+            onPress={() => setOpen(true)}
+          >
+            <View style={styles.plusIcon}>
+              <Icon icon={Plus} color='placeholderText' />
+            </View>
+          </Button>
+        </View>}
       <NativeModal
         presentationStyle='overFullScreen'
         visible={open}
@@ -62,7 +101,7 @@ const AlertInput = (props: Props) => {
                 value={value}
                 onValueChange={(value) => setValue(value[0])}
                 minimumValue={0}
-                maximumValue={limit_amount || 100}
+                maximumValue={Big(limit_amount).div(100).toNumber()}
                 step={1}
                 maximumTrackTintColor={theme.colors.quinaryText}
                 minimumTrackTintColor={theme.colors.blueText}
@@ -85,7 +124,7 @@ const AlertInput = (props: Props) => {
           </View>
         </Modal>
       </NativeModal>
-    </>
+    </View>
   )
 }
 

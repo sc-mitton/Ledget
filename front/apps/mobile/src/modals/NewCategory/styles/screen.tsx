@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   saveButton: {
-    marginTop: 12
+    marginTop: 32
   }
 });
 

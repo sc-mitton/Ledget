@@ -133,7 +133,7 @@ const Screen = (props: ModalScreenProps<'NewCategory'>) => {
           )}
           control={control}
         />
-        <AlertInput control={control} />
+        {limit_amount && <AlertInput control={control} />}
         <View style={styles.saveButton}>
           <SubmitButton
             variant='main'

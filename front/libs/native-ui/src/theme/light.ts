@@ -450,6 +450,11 @@ export const lightTheme = createTheme({
       padding: 's',
       borderRadius: 8,
     },
+    rectangle: {
+      paddingHorizontal: 'm',
+      paddingVertical: 's',
+      borderRadius: 12,
+    },
     bold: {
       fontFamily: 'SourceSans3Medium',
     }
