@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Modal as NativeModal } from 'react-native';
 import { Slider } from '@miblanchard/react-native-slider';
 import { Plus } from 'geist-native-icons';
 import { useTheme } from '@shopify/restyle';
 import { Control, useFieldArray, useWatch } from 'react-hook-form';
 import { z } from 'zod';
-import { SlotText } from 'slot-text';
+import { SlotText } from 'react-native-slot-text';
 
 import styles from './styles/alert-input';
 import { Modal, Button, Icon, Header2, Seperator } from '@ledget/native-ui';
@@ -28,6 +28,7 @@ const AlertInput = (props: Props) => {
     append({ percent_amount: value });
   }
 
+
   return (
     <>
       <Button
@@ -45,7 +46,7 @@ const AlertInput = (props: Props) => {
       >
         <Modal position='centerFloat' onClose={handleClose} hasOverlay={true}>
           <View style={styles.modalContent}>
-            <Header2>Add Alert</Header2>
+            <Header2>Slider</Header2>
             <Seperator />
             <View style={styles.animatedNumbersContainer}>
               <SlotText
