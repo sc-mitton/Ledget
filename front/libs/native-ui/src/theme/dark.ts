@@ -139,6 +139,8 @@ export const darkTheme = createTheme({
     // Buttons
     lightBlueButton: palette.blue800,
     lightBlueButtonBorder: palette.blue700,
+    mediumBlueButton: palette.blue600,
+    mediumBlueButtonBorder: palette.blue500,
     blueButton: palette.blue400,
     blueButtonBorder: palette.blue400,
     lightGrayButton: palette.gray800,
@@ -151,11 +153,11 @@ export const darkTheme = createTheme({
     dragBar: palette.gray750,
 
     // Category and Bill Colors
-    monthBackground: `hsl(${blueH}, 48%, 24%)`,
-    monthBorder: `hsl(${blueH}, 48%, 26%)`,
-    monthColor: `hsl(${blueH}, 100%, 75%)`,
-    yearBackground: `hsl(${greenH}, 48%, 17%)`,
-    yearBorder: `hsl(${greenH}, 48%, 20%)`,
+    monthBackground: `hsl(${blueH}, 58%, 24%)`,
+    monthBorder: `hsl(${blueH}, 58%, 26%)`,
+    monthColor: `hsl(${blueH}, 90%, 70%)`,
+    yearBackground: `hsl(${greenH}, 58%, 17%)`,
+    yearBorder: `hsl(${greenH}, 58%, 20%)`,
     yearColor: `hsl(${greenH}, 90%, 50%)`,
 
     // Switch
@@ -183,6 +185,7 @@ export const darkTheme = createTheme({
     screenHeader: palette.gray800,
 
     blueChartGradientStart: palette.blue800.replace(`${blueS}`, `${blueS}`),
+    blueChartGradientEnd: `hsla(${grayH}, ${grayS}%, 10%, 0)`,
     blueChartColor: palette.blue400
   }
 });

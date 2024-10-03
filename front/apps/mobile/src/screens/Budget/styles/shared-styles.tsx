@@ -1,7 +1,16 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  section: {
+  boxHeader: {
+    paddingBottom: 12,
+    paddingTop: 0,
+    paddingLeft: 2,
+    marginBottom: -8
+  },
+  headerContainer: {
+    marginBottom: -28,
+    marginTop: 0,
+    zIndex: 10
   },
   page: {
     paddingHorizontal: 16,
@@ -13,10 +22,11 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   box: {
+    zIndex: -1,
     paddingHorizontal: 0,
     justifyContent: 'flex-start',
     paddingBottom: 20,
-    gap: 12
+    gap: 12,
   },
   carouselDots: {
     alignItems: 'center',

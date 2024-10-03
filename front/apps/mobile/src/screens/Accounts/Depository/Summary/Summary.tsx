@@ -181,12 +181,12 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
             items={[
               ...windows.map(w => ({
                 label: w.label,
-                icon: () => <Icon icon={Check} color={window === w.key ? 'blueText' : 'transparent'} />,
+                icon: () => <Icon icon={Check} color={window === w.key ? 'blueText' : 'transparent'} strokeWidth={2} />,
                 onSelect: () => setWindow(w.key)
               })),
               {
                 label: 'Close',
-                icon: () => <Icon icon={CornerDownLeft} size={16} color='secondaryText' />,
+                icon: () => <Icon icon={CornerDownLeft} size={16} color='secondaryText' strokeWidth={2} />,
                 onSelect: () => setShowChart(false), newSection: true
               }
             ]}
@@ -231,6 +231,7 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
             xAxis={{
               font,
               lineWidth: 0,
+              labelOffset: -20,
               tickCount: window.endsWith('M') ? 3 : 5,
               labelColor:
                 isBalanceHistoryLoaded
@@ -254,10 +255,10 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
             domainPadding={{ left: 3, right: 3 }}
             domain={{
               y: [
-                balanceHistoryChartData.reduce((acc, h) => Math.min(acc, h.balance), 0) * 1.5 -
-                (balanceHistoryChartData.reduce((acc, h) => Math.max(acc, h.balance), 0) * 1.5
-                  - balanceHistoryChartData.reduce((acc, h) => Math.min(acc, h.balance), 0) * 1.5) * .2,
-                balanceHistoryChartData.reduce((acc, h) => Math.max(acc, h.balance), 0) * 1.5
+                balanceHistoryChartData.reduce((acc, h) => Math.min(acc, h.balance), 0) * 1.25 -
+                (balanceHistoryChartData.reduce((acc, h) => Math.max(acc, h.balance), 0) * 1.25
+                  - balanceHistoryChartData.reduce((acc, h) => Math.min(acc, h.balance), 0) * 1.25) * .2,
+                balanceHistoryChartData.reduce((acc, h) => Math.max(acc, h.balance), 0) * 1.25
               ]
             }}
           >
@@ -278,8 +279,16 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
                 >
                   <LinearGradient
                     colors={isBalanceHistoryLoaded
-                      ? [theme.colors.blueChartGradientStart, theme.colors.mainBackground]
-                      : [theme.colors.mediumGrayButton, theme.colors.mainBackground]
+                      ? [
+                        theme.colors.blueChartGradientStart,
+                        theme.colors.blueChartGradientStart,
+                        theme.colors.blueChartGradientEnd
+                      ]
+                      : [
+                        theme.colors.mediumGrayButton,
+                        theme.colors.mediumGrayButton,
+                        mode === 'dark' ? 'hsla(0, 0%, 0%, 0)' : 'hsla(0, 0%, 100%, 0)'
+                      ]
                     }
                     start={vec(chartBounds.bottom, 0)}
                     end={vec(chartBounds.bottom, chartBounds.bottom)}

@@ -4,7 +4,6 @@ import Big from 'big.js';
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
 import { useSprings } from '@react-spring/native'
 import { Grid } from 'geist-native-icons';
-import { useSharedValue } from 'react-native-reanimated';
 
 import styles from './styles/panel';
 import { DollarCents, Text, Box, Button, AnimatedView, Icon, CarouselDots } from '@ledget/native-ui';
@@ -132,7 +131,9 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
                 mode='parallax'
                 data={accounts}
                 renderItem={({ item, index }) => (
-                  <AnimatedView style={[cardTransparencies[index]]}>
+                  <AnimatedView
+                    pointerEvents={index === carouselIndex ? 'auto' : 'none'}
+                    style={[cardTransparencies[index]]}>
                     <CarouselItem
                       account={item}
                       onPress={() =>

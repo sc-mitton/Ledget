@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   },
   carouselContainer: {
     flexDirection: 'row',
-    marginTop: 8
+    marginVertical: 8
   },
   carousel: {
     alignItems: 'center',

@@ -68,6 +68,5 @@ export default StyleSheet.create({
     bottom: '-100%',
     left: 0,
     right: 0,
-
   }
 });

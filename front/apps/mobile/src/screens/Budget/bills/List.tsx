@@ -65,7 +65,7 @@ function FilledList(props: BudgetScreenProps<'Main'> & { bills: TransformedBill[
               <AnimatedView key={item.id} style={style}>
                 <TouchableOpacity
                   style={styles.row}
-                  onPress={() => props.navigation.navigate('Category', { id: item.id })}
+                  onPress={() => props.navigation.navigate('Bill', { bill: item })}
                 >
                   <View>
                     <BillCatLabel emoji={item.emoji} period={item.period} name={item.name} >

@@ -44,8 +44,8 @@ const AlertInput = (props: Props) => {
           .sort((a, b) => a.percent_amount - b.percent_amount)
           .map((field, index) => (
             <View style={styles.alert}>
-              <Box backgroundColor='inputBackground' style={styles.indexCircle}>
-                <Text color='placeholderText' style={styles.indexText}>{index + 1}</Text>
+              <Box backgroundColor='mediumBlueButton' style={styles.indexCircle}>
+                <Text color='blueText' style={styles.indexText}>{index + 1}</Text>
               </Box>
               <Text fontSize={18}>
                 {`$${Big(field.percent_amount).div(100).times(limit_amount).toNumber()}`}
@@ -85,11 +85,11 @@ const AlertInput = (props: Props) => {
       >
         <Modal position='centerFloat' onClose={handleClose} hasOverlay={true}>
           <View style={styles.modalContent}>
-            <Header2>Slider</Header2>
+            <Header2>Add Alert</Header2>
             <Seperator />
             <View style={styles.animatedNumbersContainer}>
               <SlotText
-                fontStyle={styles.animatedNumbers}
+                fontStyle={[styles.animatedNumbers, { color: theme.colors.mainText }]}
                 value={`${value}`}
                 prefix='$'
                 animationDuration={200}

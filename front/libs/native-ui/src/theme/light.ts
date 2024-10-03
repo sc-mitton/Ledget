@@ -69,7 +69,7 @@ export const lightTheme = createTheme({
     blueHue: `${blueH}`,
 
     // Backgrounds
-    mainBackground: palette.gray150,
+    mainBackground: palette.gray200,
     accountsMainBackground: palette.gray100,
     bottomNavCover: palette.gray250,
     androidNavBar: palette.gray200,
@@ -84,8 +84,8 @@ export const lightTheme = createTheme({
     newTransaction: palette.gray100,
     contextMenu: palette.gray100,
     toast: palette.white,
-    creditCardGradientStart: `hsl(${blueH}, 55%, 35%)`,
-    creditCardGradientEnd: `hsl(${blueH}, 55%, 62%)`,
+    creditCardGradientStart: `hsl(${blueH}, 75%, 35%)`,
+    creditCardGradientEnd: `hsl(${blueH}, 75%, 62%)`,
 
     // Borders
     inputBorder: 'transparent',
@@ -94,7 +94,7 @@ export const lightTheme = createTheme({
     focusedInputBorderSecondary: palette.blue50,
     focusedInputBorderMain: palette.blue300,
     tabNavPillBorder: palette.blue100,
-    bottomNavBorder: Platform.OS === 'ios' ? palette.gray200 : palette.gray200,
+    bottomNavBorder: Platform.OS === 'ios' ? palette.gray250 : palette.gray200,
     nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 94%)`,
     tabNavBorder: palette.gray250,
     newTransactionBorder: palette.gray200,
@@ -104,7 +104,7 @@ export const lightTheme = createTheme({
     contextMenuDivider: palette.gray200,
 
     // Shadows
-    navShadow: palette.gray400,
+    navShadow: palette.gray800,
     modalShadow: palette.gray800.replace(`${grayS}`, '0'),
     tabsShadow: palette.gray300,
     activeIcon: palette.blueSat,
@@ -134,15 +134,17 @@ export const lightTheme = createTheme({
     faintBlueText: palette.blue300,
 
     // Buttons
-    lightBlueButton: palette.blue50,
-    lightBlueButtonBorder: palette.blue100,
+    lightBlueButton: palette.blue100,
+    lightBlueButtonBorder: palette.blue200,
+    mediumBlueButton: palette.blue200,
+    mediumBlueButtonBorder: palette.blue250,
     blueButton: palette.blue400,
     blueButtonBorder: palette.blue450,
     blueButtonBorder2: palette.blue100,
     lightGrayButton: palette.gray150,
-    lightGrayButtonBorder: palette.gray200,
-    grayButton: palette.gray200,
-    grayButtonBorder: palette.gray250,
+    lightGrayButtonBorder: palette.gray100,
+    grayButton: palette.gray300,
+    grayButtonBorder: palette.gray350,
     mediumGrayButton: palette.gray250,
     mediumGrayButtonBorder: palette.gray300,
     tabNavPill: palette.blue100,
@@ -150,11 +152,11 @@ export const lightTheme = createTheme({
     dragBar: palette.gray200,
 
     // Category and Bill Colors
-    monthBackground: `hsl(${blueH}, 67%, 93%)`,
-    monthBorder: `hsl(${blueH}, 50%, 86%)`,
+    monthBackground: `hsl(${blueH}, 100%, 89%)`,
+    monthBorder: `hsl(${blueH}, 100%, 80%)`,
     monthColor: `hsl(${blueH}, 80%, 58%)`,
-    yearBackground: `hsl(${greenH}, 55%, 91%)`,
-    yearBorder: `hsl(${greenH}, 40%, 82%)`,
+    yearBackground: `hsl(${greenH}, 70%, 85%)`,
+    yearBorder: `hsl(${greenH}, 70%, 77%)`,
     yearColor: `hsl(${greenH}, 50%, 38%)`,
 
     // Switch
@@ -167,7 +169,7 @@ export const lightTheme = createTheme({
     seperator: palette.gray200,
     modalSeperator: palette.gray200,
     menuSeperator: palette.gray200,
-    mainScreenSeperator: palette.gray200,
+    mainScreenSeperator: palette.gray250,
     nestedContainerSeperator: palette.gray150,
     authScreenSeperator: palette.gray250,
 
@@ -178,7 +180,8 @@ export const lightTheme = createTheme({
     scrollbar: palette.gray250,
     transactionShimmer: palette.gray200,
 
-    blueChartGradientStart: palette.blue100,
+    blueChartGradientStart: palette.blue50,
+    blueChartGradientEnd: palette.gray200.replace('hsl', 'hsla').replace(')', ', 0)'),
     blueChartColor: palette.blue300,
 
     // Icons

@@ -38,8 +38,7 @@ const styles = StyleSheet.create({
   },
   animatedNumbers: {
     fontFamily: 'SourceSans3-Regular',
-    fontSize: 36,
-    color: 'white',
+    fontSize: 36
   },
   container: {
     gap: 8,

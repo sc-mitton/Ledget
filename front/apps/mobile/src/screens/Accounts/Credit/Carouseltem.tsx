@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { View } from 'react-native';
 import Animated, { FadeIn, FadeOut, useSharedValue } from 'react-native-reanimated';
 import OutsidePressHandler from "react-native-outside-press";
 
 import styles from './styles/carousel-item';
+import { Box } from '@ledget/native-ui';
 import { Card, HueSliderCard } from "@/components";
 import { Account } from "@ledget/shared-features";
 
@@ -18,7 +18,7 @@ const CarouselItem = (props: Props) => {
 
   return (
     <OutsidePressHandler onOutsidePress={() => setShowSlider(false)} >
-      <View style={[styles.container]}>
+      <Box style={[styles.container]}>
         {showSlider
           ?
           <Animated.View entering={FadeIn} exiting={FadeOut}>
@@ -33,7 +33,7 @@ const CarouselItem = (props: Props) => {
             <Card {...props} onLongPress={() => setShowSlider(true)} hue={hue} />
           </Animated.View>
         }
-      </View>
+      </Box>
     </OutsidePressHandler>
   )
 }

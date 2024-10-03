@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, Pressable, StyleSheet, Keyboard } from 'react-native';
+import { View, Pressable, StyleSheet, Keyboard, Platform } from 'react-native';
 import Animated, { useSharedValue, withSpring, useAnimatedStyle } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 import { X } from 'geist-native-icons';
@@ -9,6 +9,8 @@ import {
   composeRestyleFunctions,
   useRestyle
 } from '@shopify/restyle';
+import { BlurView } from 'expo-blur';
+import { useTheme } from '@shopify/restyle';
 
 import styles from './styles';
 import { Box } from '../../restyled/Box';
@@ -29,6 +31,7 @@ export interface ModalProps extends RestyleProps {
   hasOverlayExit?: boolean
   onClose?: () => void
   hasOverlay?: boolean
+  blurbackground?: boolean
 }
 
 export function Modal(props: ModalProps) {
@@ -43,6 +46,7 @@ export function Modal(props: ModalProps) {
   } = props;
 
   const restyleProps = useRestyle(restyleFunctions, rest);
+  const theme = useTheme<Theme>();
 
   const navigation = useNavigation();
   const keyboardHeight = useKeyboardHeight()

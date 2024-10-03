@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 20,
+    marginBottom: 16,
     marginTop: 32,
     paddingLeft: 8,
     position: 'relative',
@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
   },
   graphContainer: {
     width: '100%',
-    height: 150,
+    height: 150
   },
   nestedContainerBox: {
     padding: 0
@@ -20,15 +20,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   balanceData: {
-    flexDirection: 'row',
     alignItems: 'baseline',
-    gap: 6,
-    marginTop: -2
+    marginTop: -2,
+    marginBottom: 8,
+    flexDirection: 'row',
+    gap: 8
   },
   trendContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 2
+    marginLeft: 2,
+    marginTop: -2
   },
   trendIcon: {
     marginLeft: 2
@@ -41,7 +43,7 @@ const styles = StyleSheet.create({
   },
   menuButtonContainer: {
     position: 'absolute',
-    top: 12,
+    top: 8,
     right: 8,
     zIndex: 10,
   },

@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   rows: {
-    width: '100%',
+    width: '103%',
   },
   rowsWithOverflow: {
     marginBottom: 24,
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     gap: 12,
     paddingRight: 4,
     alignItems: 'center',
-    marginVertical: 12
+    marginVertical: 10
   },
   seperator: {
     paddingLeft: 48

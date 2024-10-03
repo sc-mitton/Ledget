@@ -5,7 +5,7 @@ import Big from 'big.js';
 
 import styles from './styles';
 import sharedStyles from '../styles/shared-styles';
-import { CarouselDots, Text, DollarCents, PagerView } from '@ledget/native-ui';
+import { CarouselDots, Text, DollarCents, PagerView, Box } from '@ledget/native-ui';
 import {
   selectCategoryMetaData,
   selectBillMetaData,
@@ -46,67 +46,76 @@ const Carousel = () => {
   } = useAppSelector(selectBillMetaData);
 
   return (
-    <Animated.View style={[styles.container, { height }]} >
-      <PagerView
-        style={sharedStyles.pagerView}
-        initialPage={page}
-        onPageSelected={(e) => setPage(e.nativeEvent.position)}
-      >
-        <View style={styles.page} key='1'>
-          <View
-            style={styles.measuringPage}
-            onLayout={(e) => {
-              if (e.nativeEvent.layout.height > height.value)
-                height.value = e.nativeEvent.layout.height;
-            }}
-          >
+    <Box
+      style={styles.box}
+      backgroundColor='mainBackground'
+      shadowColor='mainBackground'
+      shadowOffset={{ width: 0, height: 2 }}
+      shadowOpacity={1}
+      shadowRadius={4}
+    >
+      <Animated.View style={[styles.container, { height }]} >
+        <PagerView
+          style={sharedStyles.pagerView}
+          initialPage={page}
+          onPageSelected={(e) => setPage(e.nativeEvent.position)}
+        >
+          <View style={styles.page} key='1'>
+            <View
+              style={styles.measuringPage}
+              onLayout={(e) => {
+                if (e.nativeEvent.layout.height > height.value)
+                  height.value = e.nativeEvent.layout.height;
+              }}
+            >
+              <DollarCents
+                variant={mode === 'light' ? 'bold' : 'regular'}
+                fontSize={36}
+                value={loadingCategories || loadingBills
+                  ? 0
+                  : Big(yearly_spent).add(monthly_spent).toNumber()}
+              />
+              <Text color='secondaryText'>
+                total spending
+              </Text>
+            </View>
+          </View>
+          <View style={styles.page} key='2'>
             <DollarCents
               variant={mode === 'light' ? 'bold' : 'regular'}
-              fontSize={36}
-              value={loadingCategories || loadingBills
-                ? 0
-                : Big(yearly_spent).add(monthly_spent).toNumber()}
+              fontSize={32}
+              value={Big(limit_amount_monthly).minus(monthly_spent).toNumber()}
             />
             <Text color='secondaryText'>
-              total spending
+              remaining monthly spending
             </Text>
           </View>
-        </View>
-        <View style={styles.page} key='2'>
-          <DollarCents
-            variant={mode === 'light' ? 'bold' : 'regular'}
-            fontSize={32}
-            value={Big(limit_amount_monthly).minus(monthly_spent).toNumber()}
-          />
-          <Text color='secondaryText'>
-            remaining monthly spending
-          </Text>
-        </View>
-        <View style={styles.page} key='3'>
-          <DollarCents
-            variant={mode === 'light' ? 'bold' : 'regular'}
-            fontSize={32}
-            value={Big(limit_amount_yearly).minus(yearly_spent).toNumber()}
-          />
-          <Text color='secondaryText'>
-            remaining yearly spending
-          </Text>
-        </View>
-        <View style={styles.page} key='4'>
-          <View style={styles.measuringPage}>
-            <Text fontSize={32} lineHeight={44} variant={mode === 'light' ? 'bold' : 'regular'}>
-              {monthly_bills_paid + yearly_bills_paid} / {number_of_monthly_bills + number_of_yearly_bills}
-            </Text>
+          <View style={styles.page} key='3'>
+            <DollarCents
+              variant={mode === 'light' ? 'bold' : 'regular'}
+              fontSize={32}
+              value={Big(limit_amount_yearly).minus(yearly_spent).toNumber()}
+            />
             <Text color='secondaryText'>
-              bills paid
+              remaining yearly spending
             </Text>
           </View>
+          <View style={styles.page} key='4'>
+            <View style={styles.measuringPage}>
+              <Text fontSize={32} lineHeight={44} variant={mode === 'light' ? 'bold' : 'regular'}>
+                {monthly_bills_paid + yearly_bills_paid} / {number_of_monthly_bills + number_of_yearly_bills}
+              </Text>
+              <Text color='secondaryText'>
+                bills paid
+              </Text>
+            </View>
+          </View>
+        </PagerView>
+        <View style={styles.carouselDotsContainer}>
+          <CarouselDots length={4} currentIndex={page} />
         </View>
-      </PagerView>
-      <View style={styles.carouselDotsContainer}>
-        <CarouselDots length={4} currentIndex={page} />
-      </View>
-    </Animated.View>
+      </Animated.View>
+    </Box>
   )
 }
 

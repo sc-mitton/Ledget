@@ -1,11 +1,15 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+  box: {
+    width: '100%',
+    alignItems: 'center',
+  },
   container: {
     alignItems: 'center',
     width: '100%',
-    marginBottom: 24,
-    marginTop: 20
+    marginBottom: 32,
+    marginTop: 20,
   },
   carouselDotsContainer: {
     flexDirection: 'row',

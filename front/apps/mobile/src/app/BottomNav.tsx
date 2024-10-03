@@ -87,8 +87,8 @@ export default function Nav({ state, descriptors, navigation }: Props) {
       <BlurView
         intensity={
           mode === 'dark'
-            ? Platform.OS === 'ios' ? 40 : 20
-            : 40
+            ? Platform.OS === 'ios' ? 80 : 40
+            : 80
         }
         experimentalBlurMethod={'dimezisBlurView'}
         tint={mode === 'dark' ? 'dark' : 'light'}
@@ -106,9 +106,9 @@ export default function Nav({ state, descriptors, navigation }: Props) {
           shadowColor='navShadow'
           shadowOffset={{ width: 0, height: 0 }}
           shadowRadius={24}
-          shadowOpacity={Platform.OS === 'ios' ? 1 : 0}
+          shadowOpacity={Platform.OS === 'ios' ? .5 : 0}
           borderTopColor='bottomNavBorder'
-          borderTopWidth={1}
+          borderTopWidth={2}
         />
         <Box
           style={styles.nav}

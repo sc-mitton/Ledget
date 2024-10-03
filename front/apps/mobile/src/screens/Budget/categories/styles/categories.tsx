@@ -1,15 +1,25 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+  fontStyle: {
+    fontFamily: 'SourceSans3Regular',
+    fontSize: 16
+  },
+  header: {
+    flex: 1
+  },
+  spentOf: {
+    marginLeft: -3,
+    marginRight: 6
+  },
   progressHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
-    marginVertical: 4
+    marginBottom: 4
   },
   progressBarContainer: {
     position: 'relative',
-    marginVertical: 3,
+    marginVertical: 8,
     borderRadius: 8,
     height: 4,
     overflow: 'hidden'
