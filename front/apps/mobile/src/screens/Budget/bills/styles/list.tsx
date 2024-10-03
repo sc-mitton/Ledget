@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   rows: {
-    width: '103%',
+    width: '100%',
   },
   rowsWithOverflow: {
     marginBottom: 24,
@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     gap: 12,
-    paddingRight: 4,
     alignItems: 'center',
     marginVertical: 10
   },

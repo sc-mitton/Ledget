@@ -49,10 +49,6 @@ const Carousel = () => {
     <Box
       style={styles.box}
       backgroundColor='mainBackground'
-      shadowColor='mainBackground'
-      shadowOffset={{ width: 0, height: 2 }}
-      shadowOpacity={1}
-      shadowRadius={4}
     >
       <Animated.View style={[styles.container, { height }]} >
         <PagerView
@@ -111,9 +107,11 @@ const Carousel = () => {
             </View>
           </View>
         </PagerView>
-        <View style={styles.carouselDotsContainer}>
+        <Box
+          backgroundColor='nestedContainer'
+          style={styles.carouselDotsContainer}>
           <CarouselDots length={4} currentIndex={page} />
-        </View>
+        </Box>
       </Animated.View>
     </Box>
   )

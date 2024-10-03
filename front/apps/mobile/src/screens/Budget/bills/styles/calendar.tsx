@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   calendar: {
+    marginTop: 12,
     paddingHorizontal: 4,
     paddingVertical: 8,
     gap: 12,

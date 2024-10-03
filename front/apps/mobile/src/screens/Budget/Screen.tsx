@@ -28,16 +28,14 @@ const MainScreen = (props: BudgetScreenProps<'Main'>) => {
       <Carousel />
       <ScrollView
         style={styles.scrollView}
-        contentContainerStyle={[{ paddingBottom: theme.spacing.navHeight * 1 }]}
+        contentContainerStyle={[{ paddingBottom: theme.spacing.navHeight * 1 }, styles.scrollViewContent]}
         showsVerticalScrollIndicator={false}
         stickyHeaderIndices={[0, 2, 3]}
       >
         <CategoriesHeader index={categoriesIndex} />
         <Categories {...props} setIndex={setCategoriesIndex} />
         <View style={styles.scrollViewSpacer} />
-        <View style={styles.billsContainer} >
-          <BillsHeader index={billsIndex} />
-        </View>
+        <BillsHeader index={billsIndex} />
         <Bills {...props} setIndex={setBillsIndex} />
       </ScrollView>
     </Box>

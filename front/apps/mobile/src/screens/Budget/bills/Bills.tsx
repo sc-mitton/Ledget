@@ -27,9 +27,7 @@ const Bills = (props: BudgetScreenProps<'Main'> & { setIndex: (index: number) =>
       >
         <View style={sharedStyles.page} key='1'>
           <View style={styles.billsList}>
-            {Array.from({ length: 12 }).map((_, i) => (
-              <List {...props} />
-            ))}
+            <List {...props} />
           </View>
         </View>
         <View style={sharedStyles.page} key='2'>

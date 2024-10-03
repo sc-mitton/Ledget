@@ -7,11 +7,6 @@ const styles = StyleSheet.create({
     paddingLeft: 2,
     marginBottom: -8
   },
-  headerContainer: {
-    marginBottom: -28,
-    marginTop: 0,
-    zIndex: 10
-  },
   page: {
     paddingHorizontal: 16,
     width: '100%'

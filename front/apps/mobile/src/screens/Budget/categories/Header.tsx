@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
 import { SlotText } from 'react-native-slot-text';
 import { useTheme } from '@shopify/restyle';
@@ -77,22 +77,20 @@ const Progress = ({ period }: { period: Category['period'] }) => {
 
 const Header = ({ index }: { index: number }) => {
   return (
-    <>
-      <Box backgroundColor='mainBackground' style={sharedStyles.boxHeader}>
-        <Text fontSize={15} color='tertiaryText' style={sharedStyles.boxHeader}>Spending</Text>
-      </Box>
-      <Box variant='nestedContainer' style={sharedStyles.headerContainer}>
+    <View style={styles.headerContainer}>
+      <Box backgroundColor='mainBackground' style={[StyleSheet.absoluteFill, styles.backPanel]} />
+      <Box variant='nestedContainer'>
         <Box style={sharedStyles.carouselDots} backgroundColor='nestedContainer'>
           <CarouselDots length={2} currentIndex={index} />
         </Box>
         <View style={styles.header}>
-          <Text color={index === 0 ? 'monthColor' : 'yearColor'} >
-            {index === 0 ? 'Monthly' : 'Yearly'}
+          <Text color='secondaryText'>
+            {index === 0 ? 'Monthly' : 'Yearly'} Spending
           </Text>
           <Progress period={index === 0 ? 'month' : 'year'} />
         </View>
       </Box>
-    </>
+    </View>
   )
 }
 export default Header

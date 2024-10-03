@@ -155,7 +155,7 @@ export const darkTheme = createTheme({
     // Category and Bill Colors
     monthBackground: `hsl(${blueH}, 58%, 24%)`,
     monthBorder: `hsl(${blueH}, 58%, 26%)`,
-    monthColor: `hsl(${blueH}, 90%, 70%)`,
+    monthColor: `hsl(${blueH}, 90%, 80%)`,
     yearBackground: `hsl(${greenH}, 58%, 17%)`,
     yearBorder: `hsl(${greenH}, 58%, 20%)`,
     yearColor: `hsl(${greenH}, 90%, 50%)`,

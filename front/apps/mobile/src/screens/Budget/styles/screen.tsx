@@ -5,11 +5,11 @@ const styles = StyleSheet.create({
     marginTop: 0,
     zIndex: -1,
   },
-  billsContainer: {
-    marginTop: -16
+  scrollViewContent: {
+    paddingTop: 8
   },
   scrollViewSpacer: {
-    height: 32
+    height: 30,
   }
 });
 
