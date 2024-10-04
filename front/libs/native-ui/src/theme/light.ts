@@ -74,6 +74,7 @@ export const lightTheme = createTheme({
     bottomNavCover: palette.gray250,
     androidNavBar: palette.gray200,
     bottomNavBackground: Platform.OS === 'ios' ? palette.gray100 : palette.white,
+    lightGrayCard: palette.gray250,
     inputBackground: palette.gray200,
     nestedContainer: palette.white,
     avatar: palette.gray500,
@@ -153,7 +154,7 @@ export const lightTheme = createTheme({
 
     // Category and Bill Colors
     monthBackground: `hsl(${blueH}, 100%, 93%)`,
-    monthBorder: `hsl(${blueH}, 100%, 83%)`,
+    monthBorder: `hsl(${blueH}, 100%, 87%)`,
     monthColor: `hsl(${blueH}, 80%, 58%)`,
     yearBackground: `hsl(${greenH}, 70%, 88%)`,
     yearBorder: `hsl(${greenH}, 70%, 80%)`,
@@ -542,6 +543,12 @@ export const lightTheme = createTheme({
       backgroundColor: 'nestedContainer',
       borderColor: 'transparent',
       borderWidth: 1.5,
+    },
+    lightGrayCard: {
+      paddingHorizontal: 'xl',
+      paddingVertical: 'm',
+      borderRadius: 'm',
+      backgroundColor: 'lightGrayCard',
     },
     bottomNav: {
       paddingHorizontal: 'l',

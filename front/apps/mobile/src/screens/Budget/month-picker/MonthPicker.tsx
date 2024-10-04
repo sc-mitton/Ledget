@@ -45,9 +45,9 @@ export default function DatePicker() {
           onPress={() => setShowPicker(true)}
         >
           <View style={styles.calendarIcon}>
-            <Icon icon={Calendar} color='blueText' />
+            <Icon icon={Calendar} color='secondaryText' size={22} />
           </View>
-          <Text color='blueText'>
+          <Text color='secondaryText' fontSize={18}>
             {dayjs(`${year}-${month}-01`).format('MMMM YYYY')}
           </Text>
         </Button>
@@ -67,7 +67,7 @@ export default function DatePicker() {
         >
           <Box paddingTop='statusBar'>
             <View style={styles.title}>
-              <Text variant='bold' color='secondaryText' fontSize={20}>
+              <Text variant='bold' fontSize={20}>
                 {dayjs(`${year}-${month}-01`).format('MMM YYYY')}
               </Text>
               <Seperator backgroundColor='modalSeperator' />
@@ -110,7 +110,7 @@ export default function DatePicker() {
                                 <Text
                                   color={
                                     m === month && parseInt(y) === year
-                                      ? 'mainText'
+                                      ? 'whiteText'
                                       : m === -1 ? 'quaternaryText' : 'mainText'}
                                 >
                                   {m === -1

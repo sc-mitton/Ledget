@@ -18,7 +18,7 @@ const Header = ({ index }: { index: number }) => {
           <CarouselDots length={2} currentIndex={index} />
         </View>
         <View style={styles.header}>
-          <Text color='secondaryText'>Bills</Text>
+          <Text>Bills</Text>
           <View style={styles.seperator}>
             <Seperator backgroundColor='nestedContainerSeperator' variant='bare' />
           </View>

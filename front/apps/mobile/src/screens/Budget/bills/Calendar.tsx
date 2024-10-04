@@ -121,8 +121,3 @@ const Calendar = (props: BudgetScreenProps<'Main'> & { onPress: () => void }) =>
   )
 }
 export default Calendar
-
-
-// <View style={styles.markers}>
-
-// </View>

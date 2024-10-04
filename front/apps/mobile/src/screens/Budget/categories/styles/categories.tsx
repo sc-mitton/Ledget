@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
     marginLeft: -3,
     marginRight: 6,
     fontSize: 18,
-    opacity: .8
   },
   progressHeader: {
     flexDirection: 'row',

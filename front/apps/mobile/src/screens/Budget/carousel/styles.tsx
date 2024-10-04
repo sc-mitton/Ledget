@@ -2,11 +2,17 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
+    width: '103%',
     alignItems: 'center',
+    paddingVertical: 20,
+    marginLeft: -12,
+    overflow: 'hidden',
+  },
+  scrollViewContent: {
+    gap: 20,
+    paddingHorizontal: 12,
     paddingTop: 40,
     paddingBottom: 20,
-    overflow: 'hidden',
   },
   animatedView: {
     alignItems: 'center',
@@ -23,20 +29,21 @@ const styles = StyleSheet.create({
   },
   page: {
     flex: 1,
-    alignItems: 'center'
-  },
-  measuringPage: {
-    alignItems: 'center'
   },
   row: {
     flexDirection: 'row',
-    gap: 8,
+    gap: 6,
+    marginTop: 2,
     alignItems: 'center',
   },
   dot: {
-    width: 8,
-    height: 8,
+    width: 10,
+    height: 10,
+    transform: [{ translateY: 1 }],
     borderRadius: 8,
+  },
+  overlappingDot: {
+    marginLeft: -10,
   }
 });
 
