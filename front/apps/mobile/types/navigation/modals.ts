@@ -53,6 +53,9 @@ export type ModalStackParamList = {
     period?: Category['period'];
     edit?: Category
   } | undefined;
+  ConfirmDeleteCategory: {
+    category: Category
+  }
 };
 
 export type ModalScreenProps<T extends keyof ModalStackParamList> =

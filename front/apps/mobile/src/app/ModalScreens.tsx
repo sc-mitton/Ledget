@@ -16,7 +16,7 @@ import {
   AccountsPicker,
   NewCategory,
   NewBill,
-  EmojiPicker
+  ConfirmDeleteCategory
 } from '@modals';
 import { Activity } from '@screens';
 import { useModalStyleInterpolator, useModifiedDefaultModalStyleInterpolator, useFullScreenModalStyleInterpolator } from '@/hooks';
@@ -26,7 +26,6 @@ const RootStack = createStackNavigator<ModalStackParamList>();
 const ModalScreens = () => {
   const modalStyleInterpolator = useModalStyleInterpolator({ slideOut: false });
   const defaultModalStyleInterpolator = useModifiedDefaultModalStyleInterpolator()
-  const fullScreenModalStyleInterpolator = useFullScreenModalStyleInterpolator()
 
   return (
     <RootStack.Navigator screenOptions={{ headerShown: false }}>
@@ -41,6 +40,7 @@ const ModalScreens = () => {
       <RootStack.Screen name='RemoveAuthenticator' component={RemoveAuthenticator} />
       <RootStack.Screen name='ChangePassword' component={ChangePassword} />
       <RootStack.Screen name='Split' component={SplitTransaction} />
+      <RootStack.Screen name='ConfirmDeleteCategory' component={ConfirmDeleteCategory} />
       <RootStack.Group
         screenOptions={{
           presentation: 'modal',

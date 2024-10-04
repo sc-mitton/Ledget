@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { Edit2, MoreHorizontal } from 'geist-native-icons';
+import { Edit2, MoreHorizontal, Trash } from 'geist-native-icons';
 
 import styles from './styles/menu';
 import { Menu, Box, Icon } from '@ledget/native-ui';
@@ -20,6 +20,14 @@ export default function BakedMenu(props: BudgetScreenProps<'Category'>) {
                 screen: 'NewCategory',
                 params: { edit: props.route.params.category }
               })
+          },
+          {
+            label: 'Delete',
+            icon: () => <Icon icon={Trash} size={16} strokeWidth={2} color='alert' />,
+            onSelect: () => props.navigation.navigate('Modals', {
+              screen: 'ConfirmDeleteCategory',
+              params: { category: props.route.params.category }
+            })
           }
         ]}
       >
