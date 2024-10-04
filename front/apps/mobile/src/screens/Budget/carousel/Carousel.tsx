@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { View } from 'react-native';
 import Animated, { useSharedValue } from 'react-native-reanimated';
+import { CheckCircle } from 'geist-native-icons';
 import Big from 'big.js';
 
 import styles from './styles';
 import sharedStyles from '../styles/shared-styles';
-import { CarouselDots, Text, DollarCents, PagerView, Box } from '@ledget/native-ui';
+import { CarouselDots, Text, DollarCents, PagerView, Box, Icon } from '@ledget/native-ui';
 import {
   selectCategoryMetaData,
   selectBillMetaData,
@@ -14,12 +15,11 @@ import {
   selectBudgetMonthYear
 } from '@ledget/shared-features';
 import { useAppSelector } from '@/hooks';
-import { useAppearance } from '@/features/appearanceSlice';
 
 const INITIAL_HEIGHT = 50;
+const FONT_SIZE = 40;
 
 const Carousel = () => {
-  const { mode } = useAppearance();
   const [page, setPage] = useState(0);
   const { month, year } = useAppSelector(selectBudgetMonthYear);
   const height = useSharedValue(INITIAL_HEIGHT);
@@ -47,10 +47,10 @@ const Carousel = () => {
 
   return (
     <Box
-      style={styles.box}
-      backgroundColor='mainBackground'
+      style={styles.container}
+      borderRadius='l'
     >
-      <Animated.View style={[styles.container, { height }]} >
+      <Animated.View style={[styles.animatedView, { height }]} >
         <PagerView
           style={sharedStyles.pagerView}
           initialPage={page}
@@ -65,8 +65,8 @@ const Carousel = () => {
               }}
             >
               <DollarCents
-                variant={mode === 'light' ? 'bold' : 'regular'}
-                fontSize={36}
+                variant={'bold'}
+                fontSize={FONT_SIZE}
                 value={loadingCategories || loadingBills
                   ? 0
                   : Big(yearly_spent).add(monthly_spent).toNumber()}
@@ -78,37 +78,50 @@ const Carousel = () => {
           </View>
           <View style={styles.page} key='2'>
             <DollarCents
-              variant={mode === 'light' ? 'bold' : 'regular'}
-              fontSize={32}
+              variant={'bold'}
+              fontSize={FONT_SIZE}
               value={Big(limit_amount_monthly).minus(monthly_spent).toNumber()}
             />
-            <Text color='secondaryText'>
-              remaining monthly spending
-            </Text>
+            <View style={styles.row}>
+              <Box backgroundColor='monthColor' style={styles.dot} />
+              <Text color='secondaryText'>
+                monthly spending left
+              </Text>
+            </View>
           </View>
           <View style={styles.page} key='3'>
             <DollarCents
-              variant={mode === 'light' ? 'bold' : 'regular'}
-              fontSize={32}
+              variant={'bold'}
+              fontSize={FONT_SIZE}
               value={Big(limit_amount_yearly).minus(yearly_spent).toNumber()}
             />
-            <Text color='secondaryText'>
-              remaining yearly spending
-            </Text>
+            <View style={styles.row}>
+              <Box backgroundColor='yearColor' style={styles.dot} />
+              <Text color='secondaryText'>
+                yearly spending left
+              </Text>
+            </View>
           </View>
           <View style={styles.page} key='4'>
             <View style={styles.measuringPage}>
-              <Text fontSize={32} lineHeight={44} variant={mode === 'light' ? 'bold' : 'regular'}>
+              <Text fontSize={FONT_SIZE} lineHeight={0} variant='bold'>
                 {monthly_bills_paid + yearly_bills_paid} / {number_of_monthly_bills + number_of_yearly_bills}
               </Text>
-              <Text color='secondaryText'>
-                bills paid
-              </Text>
+              <View style={styles.row}>
+                <Icon
+                  icon={CheckCircle}
+                  strokeWidth={2}
+                  color={monthly_bills_paid + yearly_bills_paid > 0 ? 'greenText' : 'secondaryText'}
+                />
+                <Text color='secondaryText'>
+                  bills paid
+                </Text>
+              </View>
             </View>
           </View>
         </PagerView>
         <Box
-          backgroundColor='nestedContainer'
+          backgroundColor='grayButton'
           style={styles.carouselDotsContainer}>
           <CarouselDots length={4} currentIndex={page} />
         </Box>

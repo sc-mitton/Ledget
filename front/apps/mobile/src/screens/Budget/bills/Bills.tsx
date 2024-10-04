@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import styles from './styles/bills';
 import sharedStyles from '../styles/shared-styles';
-import { Box, CarouselDots, TPagerViewRef, PagerView } from '@ledget/native-ui';
+import { Box, TPagerViewRef, PagerView } from '@ledget/native-ui';
 import { BudgetScreenProps } from '@types';
 import List from './List';
 import Calendar from './Calendar';
@@ -18,7 +18,12 @@ const Bills = (props: BudgetScreenProps<'Main'> & { setIndex: (index: number) =>
   }, [index]);
 
   return (
-    <Box variant='nestedContainer' style={sharedStyles.box}>
+    <Box
+      paddingBottom='nestedContainerVPadding'
+      paddingHorizontal='nestedContainerHPadding'
+      backgroundColor='nestedContainer'
+      style={sharedStyles.boxBottomHalf}
+    >
       <PagerView
         ref={ref}
         style={sharedStyles.pagerView}

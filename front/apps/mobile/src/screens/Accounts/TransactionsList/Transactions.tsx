@@ -156,7 +156,7 @@ const Transactions = (props: PTransactions) => {
           backgroundColor='nestedContainer'>
           {(transactionsData?.results.length || 0) > 0 &&
             <View style={styles.dragBarContainer} {...panResponder.panHandlers}>
-              <Box style={styles.dragBar} backgroundColor='dragBar' />
+              <Box style={styles.dragBar} borderRadius='circle' backgroundColor='dragBar' />
             </View>}
           {(transactionsData?.results.length || 0) <= 0 || isLoadingTransactions
             ?
@@ -189,10 +189,10 @@ const Transactions = (props: PTransactions) => {
                   onLayout={(e) => setSectionHeaderHeight(e.nativeEvent.layout.height)}
                   style={styles.sectionHeader}
                 >
-                  <Text fontSize={15} color='quaternaryText'>
+                  <Text fontSize={15} color='quinaryText'>
                     {dayjs(section.title).format('MMM')}
                   </Text>
-                  <Text fontSize={15} color='quaternaryText' style={{ opacity: section.title === stuckTitle ? 1 : 0 }}>
+                  <Text fontSize={15} color='quinaryText' style={{ opacity: section.title === stuckTitle ? 1 : 0 }}>
                     {dayjs(section.title).format('YYYY')}
                   </Text>
                 </Pressable>

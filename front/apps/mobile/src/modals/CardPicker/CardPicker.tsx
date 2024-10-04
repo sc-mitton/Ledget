@@ -41,13 +41,11 @@ const CardWrapper = forwardRef<Animated.View, CardWrapperProps>((props, ref) => 
           ? 'focusedInputBorderSecondary'
           : 'transparent'
         }
-        borderRadius={22}
         borderWidth={2}
         padding='none'>
         <Box
           style={styles.cardWrapperBorderInner}
           padding='none'
-          borderRadius={19}
           borderWidth={2.5}
           borderColor={props.isSelected
             ? 'focusedInputBorderMain'

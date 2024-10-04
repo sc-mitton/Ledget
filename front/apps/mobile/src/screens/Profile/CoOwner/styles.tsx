@@ -1,13 +1,10 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-  screen: {
-    flex: 1,
-    paddingTop: 64,
-  },
+  screen: { flex: 1 },
   avatarContainer: {
     alignItems: 'center',
-    marginBottom: 4
+    marginTop: 16,
   },
   header: {
     marginTop: 16,

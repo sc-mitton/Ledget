@@ -2,9 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   list: {
-    gap: 12,
-    marginTop: 6,
-    alignItems: 'center'
+    paddingBottom: 8,
   },
   rows: {
     width: '100%',

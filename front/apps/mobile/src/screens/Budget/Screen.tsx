@@ -15,6 +15,7 @@ import Bills from './bills/Bills';
 import BillsHeader from './bills/Header';
 import Carousel from './carousel/Carousel';
 import Transaction from '../Transaction/Screen';
+import DatePicker from './month-picker/MonthPicker';
 
 const Stack = createStackNavigator<BudgetStackParamList>();
 
@@ -28,7 +29,7 @@ const MainScreen = (props: BudgetScreenProps<'Main'>) => {
       <Carousel />
       <ScrollView
         style={styles.scrollView}
-        contentContainerStyle={[{ paddingBottom: theme.spacing.navHeight * 1 }, styles.scrollViewContent]}
+        contentContainerStyle={[{ paddingBottom: theme.spacing.navHeight * 1 }]}
         showsVerticalScrollIndicator={false}
         stickyHeaderIndices={[0, 2, 3]}
       >
@@ -51,6 +52,7 @@ const Screen = (props: BottomTabScreenProps<'Budget'>) => {
         headerTransparent: true,
         headerTitle: () => '',
         headerRight: () => <Menu navigation={props.navigation} />,
+        headerLeft: () => <DatePicker />,
         cardStyleInterpolator
       }}
     >

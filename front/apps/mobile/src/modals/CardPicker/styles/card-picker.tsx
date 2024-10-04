@@ -26,12 +26,14 @@ const styles = StyleSheet.create({
     top: -11.5,
     left: -11,
     right: -11,
-    bottom: -11.5
+    bottom: -11.5,
+    borderRadius: 22
   },
   cardWrapperBorderInner: {
     position: 'absolute',
     width: '100%',
     height: '100%',
+    borderRadius: 19
   },
   cardsContainer: {
     flex: 1,

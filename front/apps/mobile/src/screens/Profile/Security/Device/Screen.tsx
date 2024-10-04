@@ -106,7 +106,7 @@ const Device = ({ navigation, route }: SecurityScreenProps<'Device'>) => {
                         <SubmitButton
                           style={styles.logoutButton}
                           backgroundColor={processingDelete && removedDevice === session.id ? 'transparent' : 'lightGrayButton'}
-                          borderRadius={8}
+                          borderRadius={'m'}
                           onPress={() => {
                             bioAuth(() => {
                               setRemovedDevice(session.id)

@@ -1,12 +1,14 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  box: {
+  container: {
     width: '100%',
     alignItems: 'center',
-    paddingVertical: 12,
+    paddingTop: 40,
+    paddingBottom: 20,
+    overflow: 'hidden',
   },
-  container: {
+  animatedView: {
     alignItems: 'center',
     width: '100%',
     marginBottom: 40,
@@ -14,7 +16,7 @@ const styles = StyleSheet.create({
   },
   carouselDotsContainer: {
     flexDirection: 'row',
-    marginVertical: 12,
+    marginVertical: 10,
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 20,
@@ -25,6 +27,16 @@ const styles = StyleSheet.create({
   },
   measuringPage: {
     alignItems: 'center'
+  },
+  row: {
+    flexDirection: 'row',
+    gap: 8,
+    alignItems: 'center',
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 8,
   }
 });
 

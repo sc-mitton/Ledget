@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
   },
   calendar: {
     marginTop: 12,
+    marginBottom: 8,
     paddingHorizontal: 4,
     paddingVertical: 8,
     gap: 12,

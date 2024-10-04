@@ -38,31 +38,33 @@ const AlertInput = (props: Props) => {
 
   return (
     <View style={styles.container}>
-      {fields.length > 0 && <InputLabel>Alerts</InputLabel>}
-      <View style={styles.alerts}>
-        {fields
-          .sort((a, b) => a.percent_amount - b.percent_amount)
-          .map((field, index) => (
-            <View style={styles.alert}>
-              <Box backgroundColor='mediumBlueButton' style={styles.indexCircle}>
-                <Text color='blueText' style={styles.indexText}>{index + 1}</Text>
-              </Box>
-              <Text fontSize={18}>
-                {`$${Big(field.percent_amount).div(100).times(limit_amount).toNumber()}`}
-              </Text>
+      {fields.length > 0 &&
+        <>
+          <InputLabel>Alerts</InputLabel>
+          <View style={styles.alerts}>
+            {fields
+              .sort((a, b) => a.percent_amount - b.percent_amount)
+              .map((field, index) => (
+                <View style={styles.alert}>
+                  <Box backgroundColor='mediumBlueButton' style={styles.indexCircle}>
+                    <Text color='blueText' style={styles.indexText}>{index + 1}</Text>
+                  </Box>
+                  <Text fontSize={18}>
+                    {`$${Big(field.percent_amount).div(100).times(limit_amount).toNumber()}`}
+                  </Text>
+                </View>
+              ))}
+            <View style={styles.clearButton}>
+              <Button
+                variant='circleButton'
+                backgroundColor='inputBackground'
+                onPress={() => fields.forEach((_, index) => remove(index))}
+              >
+                <Icon icon={X} color='secondaryText' strokeWidth={2} />
+              </Button>
             </View>
-          ))}
-        {fields.length > 0 &&
-          <View style={styles.clearButton}>
-            <Button
-              variant='circleButton'
-              backgroundColor='inputBackground'
-              onPress={() => fields.forEach((_, index) => remove(index))}
-            >
-              <Icon icon={X} color='secondaryText' strokeWidth={2} />
-            </Button>
-          </View>}
-      </View>
+          </View>
+        </>}
       {fields.length <= 4 &&
         <View style={styles.addButton}>
           <Button
@@ -103,15 +105,15 @@ const AlertInput = (props: Props) => {
                 minimumValue={0}
                 maximumValue={Big(limit_amount).div(100).toNumber()}
                 step={1}
-                maximumTrackTintColor={theme.colors.quinaryText}
+                maximumTrackTintColor={theme.colors.authScreenSeperator}
                 minimumTrackTintColor={theme.colors.blueText}
                 thumbTintColor={theme.colors.whiteText}
                 thumbStyle={{
                   width: 18,
                   height: 18,
-                  shadowColor: theme.colors.navShadow,
-                  shadowOffset: { width: 0, height: 1 },
-                  shadowOpacity: 1,
+                  shadowColor: theme.colors.blackText,
+                  shadowOffset: { width: 0, height: 3 },
+                  shadowOpacity: .7,
                   shadowRadius: 1,
                 }}
               />

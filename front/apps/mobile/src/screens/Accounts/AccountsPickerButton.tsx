@@ -14,7 +14,7 @@ const AccountsPickerButton = (props: AccountsTabsScreenProps<any> & { account?: 
     <View style={styles.buttonBalanceContainer}>
       <Button
         backgroundColor={'blueButton'}
-        borderRadius={40}
+        borderRadius={'circle'}
         paddingHorizontal='s'
         paddingVertical='xs'
         shadowColor='navShadow'

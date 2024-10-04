@@ -1,6 +1,5 @@
 import { ViewProps } from 'react-native';
 import { SharedValue } from 'react-native-reanimated';
-import PagerView from 'react-native-pager-view';
 
 export type DragState = 'idle' | 'dragging' | 'settling';
 
@@ -15,7 +14,7 @@ export type TContext = {
   x: SharedValue<number>;
   width: SharedValue<number>;
   height: SharedValue<number>;
-  ref: React.RefObject<PagerView>;
+  ref: React.RefObject<TPagerViewRef>;
   dragState: React.MutableRefObject<DragState>;
   layouts: React.MutableRefObject<{ width: number, x: number }[]>;
   length?: number;

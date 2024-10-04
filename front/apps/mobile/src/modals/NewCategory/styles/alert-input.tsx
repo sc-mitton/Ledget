@@ -6,8 +6,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     alignItems: 'center',
     gap: 16,
-    paddingTop: 4,
-    paddingBottom: 12,
+    paddingTop: 4
   },
   indexCircle: {
     borderRadius: 24,
@@ -48,6 +47,7 @@ const styles = StyleSheet.create({
     marginRight: 2
   },
   addButton: {
+    marginTop: 12,
     flexDirection: 'row',
     gap: 8
   },

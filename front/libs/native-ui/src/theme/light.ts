@@ -5,7 +5,7 @@ import basePalette from './base-palette';
 const { StatusBarManager } = NativeModules;
 
 const grayH = 240;
-const grayS = 5;
+const grayS = 0;
 
 const blueH = 230;
 const blueS = 75;
@@ -69,11 +69,11 @@ export const lightTheme = createTheme({
     blueHue: `${blueH}`,
 
     // Backgrounds
-    mainBackground: palette.gray200,
+    mainBackground: palette.gray150,
     accountsMainBackground: palette.gray100,
     bottomNavCover: palette.gray250,
     androidNavBar: palette.gray200,
-    bottomNavBackground: Platform.OS === 'ios' ? palette.white : palette.white,
+    bottomNavBackground: Platform.OS === 'ios' ? palette.gray100 : palette.white,
     inputBackground: palette.gray200,
     nestedContainer: palette.white,
     avatar: palette.gray500,
@@ -88,13 +88,13 @@ export const lightTheme = createTheme({
     creditCardGradientEnd: `hsl(${blueH}, 75%, 62%)`,
 
     // Borders
-    inputBorder: 'transparent',
+    inputBorder: palette.gray250,
     inputBorderErrorSecondary: palette.mutedRed,
     inputBorderErrorMain: palette.red,
     focusedInputBorderSecondary: palette.blue50,
     focusedInputBorderMain: palette.blue300,
     tabNavPillBorder: palette.blue100,
-    bottomNavBorder: Platform.OS === 'ios' ? palette.gray250 : palette.gray200,
+    bottomNavBorder: Platform.OS === 'ios' ? palette.gray300 : palette.gray200,
     nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 94%)`,
     tabNavBorder: palette.gray250,
     newTransactionBorder: palette.gray200,
@@ -143,8 +143,8 @@ export const lightTheme = createTheme({
     blueButtonBorder2: palette.blue100,
     lightGrayButton: palette.gray150,
     lightGrayButtonBorder: palette.gray100,
-    grayButton: palette.gray300,
-    grayButtonBorder: palette.gray350,
+    grayButton: palette.gray200,
+    grayButtonBorder: palette.gray250,
     mediumGrayButton: palette.gray250,
     mediumGrayButtonBorder: palette.gray300,
     tabNavPill: palette.blue100,
@@ -152,12 +152,12 @@ export const lightTheme = createTheme({
     dragBar: palette.gray200,
 
     // Category and Bill Colors
-    monthBackground: `hsl(${blueH}, 100%, 89%)`,
-    monthBorder: `hsl(${blueH}, 100%, 80%)`,
+    monthBackground: `hsl(${blueH}, 100%, 93%)`,
+    monthBorder: `hsl(${blueH}, 100%, 83%)`,
     monthColor: `hsl(${blueH}, 80%, 58%)`,
-    yearBackground: `hsl(${greenH}, 70%, 85%)`,
-    yearBorder: `hsl(${greenH}, 70%, 77%)`,
-    yearColor: `hsl(${greenH}, 50%, 38%)`,
+    yearBackground: `hsl(${greenH}, 70%, 88%)`,
+    yearBorder: `hsl(${greenH}, 70%, 80%)`,
+    yearColor: `hsl(${greenH}, 80%, 38%)`,
 
     // Switch
     enabledSwitchPill: palette.gray100,
@@ -169,7 +169,7 @@ export const lightTheme = createTheme({
     seperator: palette.gray200,
     modalSeperator: palette.gray200,
     menuSeperator: palette.gray200,
-    mainScreenSeperator: palette.gray250,
+    mainScreenSeperator: palette.gray200,
     nestedContainerSeperator: palette.gray150,
     authScreenSeperator: palette.gray250,
 
@@ -203,6 +203,8 @@ export const lightTheme = createTheme({
     navHeight: 104,
     statusBar: StatusBarManager.HEIGHT + 4,
     pagePadding: 16,
+    nestedContainerVPadding: 12,
+    nestedContainerHPadding: 16,
   },
   textVariants: {
     regular: {
@@ -277,7 +279,7 @@ export const lightTheme = createTheme({
       paddingHorizontal: 'm',
       paddingVertical: Platform.OS === 'ios' ? 'm' : 'l',
       marginVertical: 's',
-      borderRadius: 12,
+      borderRadius: 'm',
       gap: 's',
       marginHorizontal: 'xxs',
       alignItems: 'center',
@@ -291,7 +293,7 @@ export const lightTheme = createTheme({
       paddingHorizontal: 'm',
       paddingVertical: Platform.OS === 'ios' ? 'm' : 'l',
       marginVertical: 's',
-      borderRadius: 12,
+      borderRadius: 'm',
       gap: 's',
       marginHorizontal: 'xxs',
       alignItems: 'center',
@@ -305,7 +307,7 @@ export const lightTheme = createTheme({
       paddingHorizontal: 'm',
       paddingVertical: Platform.OS === 'ios' ? 'm' : 'l',
       marginVertical: 's',
-      borderRadius: 12,
+      borderRadius: 'm',
       gap: 's',
       marginHorizontal: 'xxs',
       alignItems: 'center',
@@ -319,7 +321,7 @@ export const lightTheme = createTheme({
       paddingHorizontal: 'm',
       paddingVertical: Platform.OS === 'ios' ? 'm' : 'l',
       marginVertical: 's',
-      borderRadius: 12,
+      borderRadius: 'm',
       gap: 's',
       marginHorizontal: 'xxs',
       alignItems: 'center',
@@ -334,7 +336,7 @@ export const lightTheme = createTheme({
       paddingHorizontal: 'm',
       paddingVertical: Platform.OS === 'ios' ? 'm' : 'l',
       marginVertical: 's',
-      borderRadius: 12,
+      borderRadius: 'm',
       gap: 's',
       marginHorizontal: 'xxs',
       alignItems: 'center',
@@ -348,7 +350,7 @@ export const lightTheme = createTheme({
       paddingHorizontal: 'm',
       paddingVertical: Platform.OS === 'ios' ? 'm' : 'l',
       marginVertical: 's',
-      borderRadius: 12,
+      borderRadius: 'm',
       gap: 's',
       marginHorizontal: 'xxs',
       alignItems: 'center',
@@ -360,7 +362,7 @@ export const lightTheme = createTheme({
     blueBorderedMain: {
       paddingHorizontal: 'm',
       paddingVertical: Platform.OS === 'ios' ? 'm' : 'l',
-      borderRadius: 12,
+      borderRadius: 'm',
       marginHorizontal: 'xxs',
       alignItems: 'center',
       justifyContent: 'center',
@@ -370,7 +372,7 @@ export const lightTheme = createTheme({
     },
     socialSignIn: {
       padding: 's',
-      borderRadius: 16,
+      borderRadius: 'l',
       alignItems: 'center',
       justifyContent: 'center',
       borderWidth: 1.5,
@@ -384,7 +386,7 @@ export const lightTheme = createTheme({
     grayPill: {
       paddingVertical: 'xxxs',
       paddingHorizontal: 'm',
-      borderRadius: 40,
+      borderRadius: 'circle',
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: 'grayButton',
@@ -395,7 +397,7 @@ export const lightTheme = createTheme({
       color: 'secondaryText',
       paddingVertical: 'xxs',
       paddingHorizontal: 'm',
-      borderRadius: 40,
+      borderRadius: 'circle',
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: 'transparent',
@@ -405,7 +407,7 @@ export const lightTheme = createTheme({
     bluePill: {
       paddingVertical: 'xxxs',
       paddingHorizontal: 'm',
-      borderRadius: 40,
+      borderRadius: 'circle',
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: 'lightBlueButton',
@@ -417,7 +419,7 @@ export const lightTheme = createTheme({
       color: 'blueText',
       paddingVertical: 'xxs',
       paddingHorizontal: 'm',
-      borderRadius: 40,
+      borderRadius: 'circle',
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: 'transparent',
@@ -427,7 +429,7 @@ export const lightTheme = createTheme({
     transparentPill: {
       paddingVertical: 'xxs',
       paddingHorizontal: 'm',
-      borderRadius: 40,
+      borderRadius: 'circle',
       alignItems: 'center',
       // borderWidth: 1.5,
       // borderColor: 'transparent',
@@ -436,7 +438,7 @@ export const lightTheme = createTheme({
     },
     circleButton: {
       padding: 'xs',
-      borderRadius: 40,
+      borderRadius: 'circle',
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: 'mediumGrayButton',
@@ -451,12 +453,12 @@ export const lightTheme = createTheme({
     },
     square: {
       padding: 's',
-      borderRadius: 8,
+      borderRadius: 's',
     },
     rectangle: {
       paddingHorizontal: 'm',
       paddingVertical: 's',
-      borderRadius: 12,
+      borderRadius: 'm',
     },
     bold: {
       fontFamily: 'SourceSans3Medium',
@@ -489,6 +491,16 @@ export const lightTheme = createTheme({
     },
     defaults: {}
   },
+  borderRadii: {
+    'none': 0,
+    'xxs': 4,
+    'xs': 6,
+    's': 8,
+    'm': 12,
+    'l': 16,
+    'xl': 20,
+    'circle': 9999,
+  },
   boxVariants: {
     header: {
       paddingHorizontal: 'l'
@@ -520,9 +532,9 @@ export const lightTheme = createTheme({
       paddingTop: 'm',
     },
     nestedContainer: {
-      borderRadius: 12,
-      paddingVertical: 'm',
-      paddingHorizontal: 'l',
+      borderRadius: 'm',
+      paddingHorizontal: 'nestedContainerHPadding',
+      paddingVertical: 'nestedContainerVPadding',
       marginVertical: 's',
       flexDirection: 'row',
       alignItems: 'center',
@@ -548,7 +560,7 @@ export const lightTheme = createTheme({
       backgroundColor: 'dragBar',
       width: 54,
       height: 4,
-      borderRadius: 4,
+      borderRadius: 'circle',
       position: 'absolute',
       top: 6
     },
@@ -561,13 +573,13 @@ export const lightTheme = createTheme({
     divider: {
       width: 2,
       height: 20,
-      borderRadius: 4,
+      borderRadius: 'circle',
       marginHorizontal: 'l',
     },
     carouselDot: {
       width: 5,
       height: 5,
-      borderRadius: 5,
+      borderRadius: 'circle',
       backgroundColor: 'mainText',
     },
     defaults: {}

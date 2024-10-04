@@ -1,12 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  boxHeader: {
-    paddingBottom: 12,
-    paddingTop: 0,
-    paddingLeft: 2,
-    marginBottom: -8
-  },
   page: {
     paddingHorizontal: 16,
     width: '100%'
@@ -16,12 +10,19 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'flex-start',
   },
-  box: {
+  boxTopHalf: {
+    borderRadius: 12,
+    paddingBottom: 12
+  },
+  boxBottomHalf: {
     zIndex: -1,
     paddingHorizontal: 0,
     justifyContent: 'flex-start',
-    paddingBottom: 20,
     gap: 12,
+    transform: [{ translateY: -12 }],
+    flexDirection: 'row',
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
   },
   carouselDots: {
     alignItems: 'center',

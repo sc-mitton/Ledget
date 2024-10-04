@@ -26,6 +26,7 @@ const palette = {
   gray900: `hsl(${grayH}, ${grayS}%, 7%)`,
   gray850: `hsl(${grayH}, ${grayS}%, 11%)`,
   gray800: `hsl(${grayH}, ${grayS}%, 14%)`,
+  gray775: `hsl(${grayH}, ${grayS}%, 15%)`,
   gray750: `hsl(${grayH}, ${grayS}%, 17%)`,
   gray700: `hsl(${grayH}, ${grayS}%, 20%)`,
   gray650: `hsl(${grayH}, ${grayS}%, 22%)`,
@@ -69,7 +70,7 @@ export const darkTheme = createTheme({
     // Backgrounds
     mainBackground: palette.gray900,
     accountsMainBackground: palette.gray900,
-    bottomNavBackground: palette.gray850,
+    bottomNavBackground: palette.gray900,
     androidNavBar: palette.gray850,
     bottomNavCover: `hsl(${grayH}, ${grayS}%, 10%)`,
     nestedContainer: `hsl(${grayH}, ${grayS}%, 11%)`,
@@ -87,13 +88,13 @@ export const darkTheme = createTheme({
     creditCardGradientEnd: `hsl(${blueH}, ${blueS}%, 42%)`,
 
     // Borders
-    inputBorder: 'transparent',
+    inputBorder: palette.gray775,
     inputBorderErrorMain: palette.red,
     inputBorderErrorSecondary: palette.mutedRed,
     focusedInputBorderMain: palette.blue400,
     focusedInputBorderSecondary: palette.blue800,
     tabNavPillBorder: 'transparent',
-    bottomNavBorder: palette.gray750,
+    bottomNavBorder: palette.gray850,
     nestedContainerBorder: 'transparent',
     tabNavBorder: palette.gray800,
     newTransactionBorder: palette.gray700,
@@ -105,7 +106,7 @@ export const darkTheme = createTheme({
     creditCardBorderStop: `hsl(${blueH}, ${blueS}%, 38%)`,
 
     // Shadows
-    navShadow: palette.gray900,
+    navShadow: palette.black,
     modalShadow: palette.gray1000,
     tabsShadow: palette.gray1000,
     activeSwitchShadow: 'hsl(144, 80%, 17%)',
@@ -153,11 +154,11 @@ export const darkTheme = createTheme({
     dragBar: palette.gray750,
 
     // Category and Bill Colors
-    monthBackground: `hsl(${blueH}, 58%, 24%)`,
-    monthBorder: `hsl(${blueH}, 58%, 26%)`,
-    monthColor: `hsl(${blueH}, 90%, 80%)`,
+    monthBackground: `hsl(${blueH}, 50%, 25%)`,
+    monthBorder: `hsl(${blueH}, 50%, 31%)`,
+    monthColor: `hsl(${blueH}, 100%, 70%)`,
     yearBackground: `hsl(${greenH}, 58%, 17%)`,
-    yearBorder: `hsl(${greenH}, 58%, 20%)`,
+    yearBorder: `hsl(${greenH}, 58%, 24%)`,
     yearColor: `hsl(${greenH}, 90%, 50%)`,
 
     // Switch
@@ -184,7 +185,7 @@ export const darkTheme = createTheme({
     transactionShimmer: palette.gray800,
     screenHeader: palette.gray800,
 
-    blueChartGradientStart: palette.blue800.replace(`${blueS}`, `${blueS}`),
+    blueChartGradientStart: palette.blue900.replace(`${blueS}`, `${blueS - 20}`),
     blueChartGradientEnd: `hsla(${grayH}, ${grayS}%, 10%, 0)`,
     blueChartColor: palette.blue400
   }

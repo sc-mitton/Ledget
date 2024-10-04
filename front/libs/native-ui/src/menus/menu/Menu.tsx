@@ -26,7 +26,6 @@ export interface MenuProps {
   onShowChange?: (show: boolean) => void;
   disabled?: boolean;
   placement?: 'center' | 'left' | 'right';
-  blurStyle?: ViewStyle;
 }
 
 export function Menu(props: MenuProps) {

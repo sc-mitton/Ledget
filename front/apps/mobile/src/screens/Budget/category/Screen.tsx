@@ -13,7 +13,7 @@ import { useTheme } from '@shopify/restyle'
 import { Big } from 'big.js'
 import dayjs from 'dayjs'
 
-import styles from './styles'
+import styles from './styles/screen'
 import { BudgetScreenProps } from '@types'
 import {
   useGetCategorySpendingHistoryQuery,
@@ -25,6 +25,7 @@ import { useAppSelector } from '@hooks'
 
 import SourceSans3Regular from '../../../../assets/fonts/SourceSans3Regular.ttf';
 import { ChevronRight } from 'geist-native-icons'
+import Menu from './Menu'
 
 const tempChartData = [
   { date: dayjs().startOf('month').subtract(3, 'month').format('YYYY-MM-DD'), amount_spent: 15 },
@@ -83,6 +84,11 @@ const Category = (props: BudgetScreenProps<'Category'>) => {
     );
   }, [value, font, fetchedSpendingData]);
 
+  useEffect(() => {
+    props.navigation.setOptions({
+      headerRight: () => <Menu {...props} />,
+    })
+  }, [])
 
   // Initial fetching Transactions
   useEffect(() => {
@@ -125,7 +131,7 @@ const Category = (props: BudgetScreenProps<'Category'>) => {
   };
 
   return (
-    <Box variant='nestedScreen'>
+    <Box variant='nestedScreen' style={styles.screen}>
       <View style={styles.header}>
         <View>
           <BillCatEmoji
@@ -194,7 +200,7 @@ const Category = (props: BudgetScreenProps<'Category'>) => {
                   end={vec(chartBounds.bottom, chartBounds.bottom)}
                 />
               </Area>
-              {usingFakeData && (
+              {usingFakeData && transactionsData?.results.length === 0 && (
                 <SkText
                   x={chartBounds.right / 3}
                   y={chartBounds.bottom / 1.375}
@@ -228,30 +234,34 @@ const Category = (props: BudgetScreenProps<'Category'>) => {
         <BoxHeader>
           {dayjs(`${year}-${month}-01`).format('MMM YYYY')}
         </BoxHeader>}
-      <Box variant='nestedContainer'>
+      <Box
+        variant='nestedContainer'
+        marginBottom='navHeight'
+        style={[
+          styles.transactionsListBox,
+          (transactionsData?.results.length || 0) < 1 && styles.emptyListBox
+        ]}
+      >
         <CustomScrollView onScroll={handleScroll} contentContainerStyle={styles.transactionsList}>
-          {transactionsData && (
-            transactionsData.results.length > 0
-              ?
-              transactionsData.results.map((transaction) => (
-                <TouchableOpacity
-                  style={styles.row}
-                  onPress={() => props.navigation.navigate('Transaction', { transaction })}>
-                  <View>
-                    <Text>{transaction.name}</Text>
-                    <Text color='tertiaryText'>{dayjs(transaction.date).format('MM-DD-YYYY')}</Text>
-                  </View>
-                  <View style={styles.amountContainer}>
-                    <DollarCents value={Big(transaction.amount).times(100).toNumber()} />
-                    <Icon icon={ChevronRight} color='quinaryText' />
-                  </View>
-                </TouchableOpacity>))
-              :
-              <View style={styles.emptyListMessage}>
-                <Text color='quinaryText'>No spending yet</Text>
+          {transactionsData?.results.map((transaction) => (
+            <TouchableOpacity
+              style={styles.row}
+              onPress={() => props.navigation.navigate('Transaction', { transaction })}>
+              <View>
+                <Text>{transaction.name}</Text>
+                <Text color='tertiaryText'>{dayjs(transaction.date).format('MM-DD-YYYY')}</Text>
               </View>
-          )}
+              <View style={styles.amountContainer}>
+                <DollarCents value={Big(transaction.amount).times(100).toNumber()} />
+                <Icon icon={ChevronRight} color='quinaryText' />
+              </View>
+            </TouchableOpacity>))}
         </CustomScrollView>
+        {transactionsData?.results.length === 0 && (
+          <View style={styles.emptyListMessage}>
+            <Text color='quinaryText'>No spending yet</Text>
+          </View>
+        )}
       </Box>
     </Box>
   )

@@ -4,15 +4,12 @@ const styles = StyleSheet.create({
   backPanel: {
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
-    transform: [{ translateY: -8 }]
   },
   fontStyle: {
     fontFamily: 'SourceSans3Regular',
     fontSize: 18
   },
   headerContainer: {
-    marginBottom: -32,
-    marginTop: 0,
     zIndex: 10
   },
   header: {
@@ -22,7 +19,8 @@ const styles = StyleSheet.create({
     marginTop: 2,
     marginLeft: -3,
     marginRight: 6,
-    fontSize: 18
+    fontSize: 18,
+    opacity: .8
   },
   progressHeader: {
     flexDirection: 'row',
@@ -34,7 +32,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     marginVertical: 8,
     borderRadius: 8,
-    height: 4,
+    height: 5,
     overflow: 'hidden'
   },
   progressBar: {

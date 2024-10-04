@@ -14,7 +14,12 @@ const Categories = (props: BudgetScreenProps<'Main'> & { setIndex: (n: number) =
   }, [index])
 
   return (
-    <Box variant='nestedContainer' style={sharedStyles.box}>
+    <Box
+      paddingBottom='nestedContainerHPadding'
+      paddingHorizontal='nestedContainerHPadding'
+      backgroundColor='nestedContainer'
+      style={sharedStyles.boxBottomHalf}
+    >
       <PagerView
         pageMargin={24}
         style={sharedStyles.pagerView}

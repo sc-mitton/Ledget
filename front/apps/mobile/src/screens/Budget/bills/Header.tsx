@@ -6,15 +6,22 @@ import { Box, CarouselDots, Seperator, Text } from '@ledget/native-ui';
 
 const Header = ({ index }: { index: number }) => {
   return (
-    <View style={[styles.headerContainer]}>
+    <View>
       <Box backgroundColor='mainBackground' style={[StyleSheet.absoluteFill, styles.backPanel]} />
-      <Box variant='nestedContainer'>
-        <Box style={sharedStyles.carouselDots} backgroundColor='nestedContainer'>
+      <Box
+        paddingTop='nestedContainerVPadding'
+        paddingHorizontal='nestedContainerHPadding'
+        backgroundColor='nestedContainer'
+        style={sharedStyles.boxTopHalf}
+      >
+        <View style={sharedStyles.carouselDots}>
           <CarouselDots length={2} currentIndex={index} />
-        </Box>
+        </View>
         <View style={styles.header}>
           <Text color='secondaryText'>Bills</Text>
-          <Seperator backgroundColor='nestedContainerSeperator' />
+          <View style={styles.seperator}>
+            <Seperator backgroundColor='nestedContainerSeperator' variant='bare' />
+          </View>
         </View>
       </Box>
     </View>

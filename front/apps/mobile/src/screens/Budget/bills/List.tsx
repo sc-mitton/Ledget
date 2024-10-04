@@ -57,7 +57,7 @@ function FilledList(props: BudgetScreenProps<'Main'> & { bills: TransformedBill[
   }, [expanded])
 
   return (
-    <View>
+    <View style={styles.list}>
       <View style={[styles.rows, hasOverflow && styles.rowsWithOverflow]}>
         {transitions((style, item, _, i) => (
           item && (

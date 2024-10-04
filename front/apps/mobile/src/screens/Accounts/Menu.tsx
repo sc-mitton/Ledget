@@ -19,7 +19,7 @@ export default function BakedMenu(props: AccountsScreenProps<'AccountsTabs'>) {
           }
         ]}
       >
-        <Box padding='xxs' backgroundColor='alert' borderRadius={30}>
+        <Box padding='xxs' backgroundColor='alert' borderRadius={'circle'}>
           <Icon icon={MoreHorizontal} size={24} strokeWidth={2} color='secondaryText' />
         </Box>
       </Menu>

@@ -209,7 +209,7 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
       <View style={styles.chartHeader}>
         <Text color='tertiaryText'>Total Balance</Text>
         <View style={styles.balanceData}>
-          <DollarCents value={totalBalance} fontSize={24} variant='bold' />
+          <DollarCents value={totalBalance} fontSize={24} variant='bold' color='secondaryText' />
           <View style={styles.trendContainer}>
             <DollarCents showSign={false} color='tertiaryText' value={calculatedTrend} withCents={false} />
             <View style={styles.trendIcon}>

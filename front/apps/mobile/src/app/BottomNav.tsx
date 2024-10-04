@@ -106,7 +106,7 @@ export default function Nav({ state, descriptors, navigation }: Props) {
           shadowColor='navShadow'
           shadowOffset={{ width: 0, height: 0 }}
           shadowRadius={24}
-          shadowOpacity={Platform.OS === 'ios' ? .5 : 0}
+          shadowOpacity={Platform.OS === 'ios' ? 1 : 0}
           borderTopColor='bottomNavBorder'
           borderTopWidth={2}
         />

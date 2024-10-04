@@ -1,6 +1,10 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+  screen: {
+    gap: 12,
+    justifyContent: 'center',
+  },
   header: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -8,13 +12,22 @@ const styles = StyleSheet.create({
     gap: 12,
     marginVertical: 12
   },
+  transactionsListBox: {
+    flex: 1,
+  },
+  emptyListBox: {
+    maxHeight: '30%'
+  },
   transactionsList: {
     gap: 18,
     padding: 0
   },
   emptyListMessage: {
     width: '100%',
+    transform: [{ translateX: 16 }],
     alignItems: 'center',
+    position: 'absolute',
+    top: '50%',
   },
   chartContainer: {
     height: '20%',

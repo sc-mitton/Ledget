@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
-import { View, Pressable, StyleSheet, Keyboard, Platform } from 'react-native';
-import Animated, { useSharedValue, withSpring, useAnimatedStyle } from 'react-native-reanimated';
+import { View, Pressable, StyleSheet, Keyboard } from 'react-native';
+import Animated, {
+  useSharedValue,
+  withSpring,
+  useAnimatedStyle,
+  SlideInUp,
+  SlideInDown,
+} from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 import { X } from 'geist-native-icons';
 import {
@@ -9,8 +15,6 @@ import {
   composeRestyleFunctions,
   useRestyle
 } from '@shopify/restyle';
-import { BlurView } from 'expo-blur';
-import { useTheme } from '@shopify/restyle';
 
 import styles from './styles';
 import { Box } from '../../restyled/Box';
@@ -27,6 +31,7 @@ const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([backgroun
 export interface ModalProps extends RestyleProps {
   children: React.ReactNode;
   position?: 'bottom' | 'top' | 'bottomFloat' | 'centerFloat';
+  animation?: 'slideUp' | 'slideDown';
   hasExitButton?: boolean
   hasOverlayExit?: boolean
   onClose?: () => void
@@ -46,7 +51,6 @@ export function Modal(props: ModalProps) {
   } = props;
 
   const restyleProps = useRestyle(restyleFunctions, rest);
-  const theme = useTheme<Theme>();
 
   const navigation = useNavigation();
   const keyboardHeight = useKeyboardHeight()
@@ -102,12 +106,18 @@ export function Modal(props: ModalProps) {
           onPress={() => hasOverlayExit && onClose ? onClose() : navigation.goBack()}
           style={StyleSheet.absoluteFillObject}
         >
-          <Box
-            backgroundColor='modalOverlay'
-            style={styles.overlay}
-          />
+          <Box backgroundColor='modalOverlay' style={styles.overlay} />
         </Pressable>}
-      <View style={[styles[`${position}ModalContainer`]]}>
+      <Animated.View
+        style={[styles[`${position}ModalContainer`]]}
+        entering={
+          props.animation === 'slideDown'
+            ? SlideInUp.springify().damping(35).stiffness(315).mass(1).overshootClamping(0)
+            : props.animation === 'slideUp'
+              ? SlideInDown.springify().damping(35).stiffness(315).mass(1).overshootClamping(0)
+              : undefined
+        }
+      >
         <Box
           style={[styles[`${position}Modal`], (restyleProps as any).style[0]]}
           borderColor='modalBorder'
@@ -129,7 +139,7 @@ export function Modal(props: ModalProps) {
             {children}
           </Animated.View>
         </Box>
-      </View>
+      </Animated.View>
     </>
   );
 }

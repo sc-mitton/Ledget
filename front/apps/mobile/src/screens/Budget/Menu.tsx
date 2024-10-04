@@ -1,6 +1,5 @@
-import { MoreHorizontal, Plus } from "geist-native-icons";
+import { Plus } from "geist-native-icons";
 import { View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 
 import styles from "./styles/menu";
 import { Menu, Box, Icon } from "@ledget/native-ui";
@@ -16,7 +15,7 @@ const TopRightMenu = ({ navigation }: { navigation: BottomTabScreenProps<any>['n
         closeOnSelect={true}
         items={[
           {
-            label: 'Add Bill',
+            label: 'New Bill',
             icon: () => <Icon icon={Plus} size={16} strokeWidth={2} />,
             onSelect: () => navigation.navigate(
               'Modals',
@@ -24,7 +23,7 @@ const TopRightMenu = ({ navigation }: { navigation: BottomTabScreenProps<any>['n
             )
           },
           {
-            label: 'Add Category',
+            label: 'New Category',
             icon: () => <Icon icon={Plus} size={16} strokeWidth={2} />,
             onSelect: () => navigation.navigate(
               'Modals',
@@ -32,8 +31,8 @@ const TopRightMenu = ({ navigation }: { navigation: BottomTabScreenProps<any>['n
           },
         ]}
       >
-        <Box padding='xxs'>
-          <Icon icon={MoreHorizontal} size={28} strokeWidth={2} color='secondaryText' />
+        <Box padding='xs' backgroundColor="grayButton" borderRadius="xs">
+          <Icon icon={Plus} size={20} strokeWidth={2} color='blueText' />
         </Box>
       </Menu>
     </View>

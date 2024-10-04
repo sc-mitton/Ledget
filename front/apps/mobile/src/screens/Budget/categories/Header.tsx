@@ -79,10 +79,15 @@ const Header = ({ index }: { index: number }) => {
   return (
     <View style={styles.headerContainer}>
       <Box backgroundColor='mainBackground' style={[StyleSheet.absoluteFill, styles.backPanel]} />
-      <Box variant='nestedContainer'>
-        <Box style={sharedStyles.carouselDots} backgroundColor='nestedContainer'>
+      <Box
+        paddingTop='nestedContainerHPadding'
+        paddingHorizontal='nestedContainerHPadding'
+        backgroundColor='nestedContainer'
+        style={sharedStyles.boxTopHalf}
+      >
+        <View style={sharedStyles.carouselDots}>
           <CarouselDots length={2} currentIndex={index} />
-        </Box>
+        </View>
         <View style={styles.header}>
           <Text color='secondaryText'>
             {index === 0 ? 'Monthly' : 'Yearly'} Spending

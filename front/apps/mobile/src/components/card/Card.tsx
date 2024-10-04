@@ -86,7 +86,7 @@ export const Card = (props: Props) => {
             </Canvas>
             {!props.empty &&
               <>
-                <Box borderRadius={12} style={[styles.card, (styles as any)[size + 'CardPadding']]}>
+                <Box borderRadius={'l'} style={[styles.card, (styles as any)[size + 'CardPadding']]}>
                   <Box
                     shadowColor={'logoShadow'}
                     shadowOffset={{ width: 0, height: 1 }}
