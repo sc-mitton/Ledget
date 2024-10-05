@@ -8,7 +8,7 @@ import {
   vec,
   Circle
 } from '@shopify/react-native-skia';
-import { ArrowDownRight, ArrowUpRight, Check, CornerDownLeft } from 'geist-native-icons';
+import { ArrowDownRight, ArrowUpRight } from 'geist-native-icons';
 import { useTheme } from '@shopify/restyle';
 import Big from 'big.js';
 import dayjs from 'dayjs';
@@ -20,24 +20,10 @@ import { AccountsTabsScreenProps } from '@types';
 import { Graph } from '@ledget/media/native';
 import { Box, DollarCents, Icon, Text, Menu, Button } from '@ledget/native-ui';
 import { useGetAccountsQuery, useLazyGetAccountBalanceHistoryQuery, useLazyGetAccountBalanceTrendQuery } from '@ledget/shared-features';
-
 import SourceSans3Regular from '../../../../../assets/fonts/SourceSans3Regular.ttf';
 import { useAppearance } from '@/features/appearanceSlice';
-
-const windows = [
-  { key: '3M', label: '3 Months' },
-  { key: '6M', label: '6 Months' },
-  { key: '1Y', label: '1 Year' },
-  { key: 'ALL', label: 'All' }
-]
-
-const tempChartData = [
-  { date: dayjs().startOf('month').subtract(3, 'month').format('YYYY-MM-DD'), balance: 1200 },
-  { date: dayjs().startOf('month').subtract(2, 'month').format('YYYY-MM-DD'), balance: 2700 },
-  { date: dayjs().startOf('month').subtract(1, 'month').format('YYYY-MM-DD'), balance: 2000 },
-  { date: dayjs().startOf('month').format('YYYY-MM-DD'), balance: 4000 },
-  { date: dayjs().format('YYYY-MM-DD'), balance: 5000 },
-]
+import { ChartWindowsMenu } from '@/components';
+import { tempChartData, windows } from './constants';
 
 export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
   const { data: accountsData } = useGetAccountsQuery()
@@ -48,10 +34,10 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
   const font = useFont(SourceSans3Regular, 14)
 
   const [window, setWindow] = useState<typeof windows[number]['key']>(windows[0].key)
+  const [showMenu, setShowMenu] = useState(false)
   const [dateWindow, setDateWindow] = useState<{ start: number, end: number }>({ start: 0, end: 0 })
   const [calculatedTrend, setCalculatedTrend] = useState(0)
   const [balanceHistoryChartData, setBalanceHistoryChartData] = useState(tempChartData)
-  const [showMenu, setShowMenu] = useState(false)
   const [showChart, setShowChart] = useState(false)
   const { state, isActive } = useChartPressState({ x: '0', y: { balance: 0 } })
 
@@ -174,31 +160,15 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
         </Animated.View>}
       <View style={styles.menuButtonContainer}>
         {showChart
-          ?
-          <Menu
-            as='menu'
-            onShowChange={setShowMenu}
-            items={[
-              ...windows.map(w => ({
-                label: w.label,
-                icon: () => <Icon icon={Check} color={window === w.key ? 'blueText' : 'transparent'} strokeWidth={2} />,
-                onSelect: () => setWindow(w.key)
-              })),
-              {
-                label: 'Close',
-                icon: () => <Icon icon={CornerDownLeft} size={16} color='secondaryText' strokeWidth={2} />,
-                onSelect: () => setShowChart(false), newSection: true
-              }
-            ]}
-            placement='right'
-            closeOnSelect={true}
-          >
-            <Box backgroundColor='lightBlueButton' style={styles.menuButton}>
-              <Text color='blueText'>{window}</Text>
-            </Box>
-          </Menu>
-          :
-          <Button
+          ? <ChartWindowsMenu
+            windows={windows}
+            onSelect={(w) => {
+              setWindow(w);
+              setShowMenu(false);
+            }}
+            onShowChange={(show) => setShowMenu(show)}
+          />
+          : <Button
             onPress={() => { setShowChart(true) }}
             backgroundColor='grayButton'
             variant='square'>

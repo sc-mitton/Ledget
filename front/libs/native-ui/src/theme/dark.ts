@@ -191,6 +191,6 @@ export const darkTheme = createTheme({
     blueChartGradientStart: palette.blue900.replace(`${blueS}`, `${blueS - 20}`),
     blueChartGradientEnd: `hsla(${grayH}, ${grayS}%, 10%, 0)`,
     blueChartColor: palette.blue400,
-    emptyChartGradientStart: palette.gray800,
+    emptyChartGradientStart: palette.gray750,
   }
 });

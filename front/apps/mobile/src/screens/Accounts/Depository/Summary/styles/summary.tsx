@@ -47,13 +47,6 @@ const styles = StyleSheet.create({
     right: 8,
     zIndex: 10,
   },
-  menuButton: {
-    paddingHorizontal: 10,
-    paddingVertical: 2,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   blurViewContainer: {
     zIndex: 10,
     borderRadius: 12
