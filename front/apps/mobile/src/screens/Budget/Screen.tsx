@@ -6,7 +6,7 @@ import { useTheme } from '@shopify/restyle';
 import styles from './styles/screen';
 import { Box, BackHeader } from '@ledget/native-ui';
 import { BottomTabScreenProps, BudgetScreenProps, BudgetStackParamList } from '@types';
-import { useCardStyleInterpolator } from '@/hooks';
+import { useAppSelector, useCardStyleInterpolator } from '@/hooks';
 import Menus from './Menus';
 import Categories from './categories/Categories';
 import CategoriesHeader from './categories/Header';
@@ -19,6 +19,8 @@ import Transaction from '../Transaction/Screen';
 import EditCategories from './edit-categories/EditCategories';
 import EditBills from './edit-bills/EditBills';
 import DatePicker from './month-picker/MonthPicker';
+import { selectBudgetMonthYear } from '@ledget/shared-features';
+import dayjs from 'dayjs';
 
 const Stack = createStackNavigator<BudgetStackParamList>();
 
@@ -48,6 +50,7 @@ const MainScreen = (props: BudgetScreenProps<'Main'>) => {
 
 const Screen = (props: BottomTabScreenProps<'Budget'>) => {
   const cardStyleInterpolator = useCardStyleInterpolator()
+  const { month, year } = useAppSelector(selectBudgetMonthYear)
 
   return (
     <Stack.Navigator
@@ -81,10 +84,17 @@ const Screen = (props: BottomTabScreenProps<'Budget'>) => {
         component={EditBills}
       />
       <Stack.Screen
-        options={{ header: (props) => <BackHeader {...props} />, headerRight: () => null }}
+        options={{
+          title: dayjs(`${year}-${month}-01`).format('MMM YYYY'),
+          header: (props) => <BackHeader pagesWithTitle={['Category']} {...props} />,
+          headerRight: () => null
+        }}
         name='Category' component={Category} />
       <Stack.Screen
-        options={{ header: (props) => <BackHeader {...props} />, headerRight: () => null }}
+        options={{
+          header: (props) => <BackHeader {...props} />,
+          headerRight: () => null
+        }}
         name='Bill' component={Bill} />
       <Stack.Screen
         options={{ header: (props) => <BackHeader {...props} />, headerRight: () => null }}

@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  boxesContainer: {
-    flex: 1
+  bellIcon: {
+    marginRight: 4,
   }
 });
 

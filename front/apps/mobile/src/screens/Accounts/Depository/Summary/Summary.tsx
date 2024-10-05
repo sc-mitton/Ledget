@@ -285,8 +285,8 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
                         theme.colors.blueChartGradientEnd
                       ]
                       : [
-                        theme.colors.mediumGrayButton,
-                        theme.colors.mediumGrayButton,
+                        theme.colors.emptyChartGradientStart,
+                        theme.colors.mainBackground,
                         mode === 'dark' ? 'hsla(0, 0%, 0%, 0)' : 'hsla(0, 0%, 100%, 0)'
                       ]
                     }

@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  boxesContainer: {
-    flex: 1
+  clockIcon: {
+    marginRight: 5,
   }
 });
 

@@ -186,6 +186,7 @@ export const lightTheme = createTheme({
     blueChartGradientStart: palette.blue50,
     blueChartGradientEnd: palette.gray200.replace('hsl', 'hsla').replace(')', ', 0)'),
     blueChartColor: palette.blue300,
+    emptyChartGradientStart: palette.gray300,
 
     // Icons
     successIcon: palette.successGreen,
@@ -239,6 +240,7 @@ export const lightTheme = createTheme({
       lineHeight: 20,
       fontFamily: 'SourceSans3Medium',
       marginTop: 'l',
+      gap: 's',
       marginLeft: 'xs',
       color: 'tertiaryText',
     },

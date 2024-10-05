@@ -1,8 +1,10 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  boxesContainer: {
-    flex: 1
+  chartContainer: {
+    height: '20%',
+    width: '100%',
+    marginBottom: 24,
   }
 });
 

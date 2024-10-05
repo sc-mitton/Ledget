@@ -5,7 +5,7 @@ import styles from './styles/menu';
 import { Menu, Box, Icon } from '@ledget/native-ui';
 import { BudgetScreenProps } from '@types';
 
-export default function BakedMenu(props: BudgetScreenProps<'Category'>) {
+export default function BakedMenu(props: BudgetScreenProps<'Bill'>) {
   return (
     <View style={styles.menu}>
       <Menu
@@ -17,16 +17,16 @@ export default function BakedMenu(props: BudgetScreenProps<'Category'>) {
             icon: () => <Icon icon={Edit2} size={16} strokeWidth={2} />,
             onSelect: () =>
               props.navigation.navigate('Modals', {
-                screen: 'NewCategory',
-                params: { edit: props.route.params.category }
-              })
+                screen: 'NewBill',
+                params: { edit: props.route.params.bill }
+              } as any)
           },
           {
             label: 'Delete',
             icon: () => <Icon icon={Trash} size={16} strokeWidth={2} color='alert' />,
             onSelect: () => props.navigation.navigate('Modals', {
-              screen: 'ConfirmDeleteCategory',
-              params: { category: props.route.params.category }
+              screen: 'ConfirmDeleteBill',
+              params: { bill: props.route.params.bill }
             })
           }
         ]}

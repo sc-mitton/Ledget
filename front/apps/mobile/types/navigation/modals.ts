@@ -56,6 +56,9 @@ export type ModalStackParamList = {
   ConfirmDeleteCategory: {
     category: Category
   }
+  ConfirmDeleteBill: {
+    bill: Bill
+  }
 };
 
 export type ModalScreenProps<T extends keyof ModalStackParamList> =

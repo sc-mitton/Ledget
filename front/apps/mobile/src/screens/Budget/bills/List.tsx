@@ -77,7 +77,7 @@ function FilledList(props: BudgetScreenProps<'Main'> & { bills: TransformedBill[
                   <View style={styles.amount}>
                     <DollarCents value={item.upper_amount} withCents={false} />
                   </View>
-                  <Icon icon={CheckInCircle} color={item.is_paid ? 'blueText' : 'tertiaryText'} />
+                  <Icon icon={CheckInCircle} color={item.is_paid ? 'blueText' : 'quaternaryText'} />
                   <Icon icon={ChevronRight} color='quinaryText' />
                 </TouchableOpacity>
               </AnimatedView>

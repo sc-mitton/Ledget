@@ -40,12 +40,12 @@ const TransactionMenu = (props: Props) => {
         {
           label: 'New Monthly Bill',
           icon: () => <Icon icon={Plus} size={16} strokeWidth={2} />,
-          onSelect: () => props.navigation.navigate('NewBill', { transaction, period: 'monthly' })
+          onSelect: () => props.navigation.navigate('Modals', { screen: 'NewBill', params: { transaction, period: 'month' } })
         },
         {
           label: 'New Yearly Bill',
           icon: () => <Icon icon={Plus} size={16} strokeWidth={2} />,
-          onSelect: () => props.navigation.navigate('NewBill', { transaction, period: 'yearly' })
+          onSelect: () => props.navigation.navigate('Modals', { screen: 'NewBill', params: { transaction, period: 'year' } })
         },
       ]}
       {...rest}

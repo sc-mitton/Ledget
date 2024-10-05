@@ -23,6 +23,9 @@
       "@features/*": [
         "src/features/*"
       ],
+      "@helpers": [
+        "src/helpers/index.ts"
+      ],
       "@hooks": [
         "src/hooks/index.ts"
       ],
