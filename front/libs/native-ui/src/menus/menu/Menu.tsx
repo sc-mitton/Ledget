@@ -106,7 +106,7 @@ export function Menu(props: MenuProps) {
                           </View>}
                         <TouchableHighlight
                           style={styles.rowContainer}
-                          activeOpacity={0.9}
+                          activeOpacity={0.7}
                           onPress={() => {
                             if (props.closeOnSelect) {
                               setShow(false);

@@ -73,7 +73,7 @@ export const darkTheme = createTheme({
     bottomNavBackground: palette.gray900,
     androidNavBar: palette.gray850,
     bottomNavCover: `hsl(${grayH}, ${grayS}%, 10%)`,
-    nestedContainer: `hsl(${grayH}, ${grayS}%, 11%)`,
+    nestedContainer: palette.gray850,
     lightGrayCard: palette.gray850,
     inputBackground: palette.gray800,
     tabNavPill: palette.blue800,
@@ -153,6 +153,8 @@ export const darkTheme = createTheme({
     mediumGrayButtonBorder: palette.gray650,
     borderedGrayButton: palette.gray700,
     dragBar: palette.gray750,
+    tabsTrack: palette.gray800,
+    tabsBackground: palette.gray700,
 
     // Category and Bill Colors
     monthBackground: `hsl(${blueH}, 50%, 25%)`,

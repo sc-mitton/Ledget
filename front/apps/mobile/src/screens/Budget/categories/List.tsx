@@ -5,19 +5,18 @@ import { useSpringRef, useTransition } from '@react-spring/web';
 import Big from 'big.js';
 
 import styles from './styles/list';
-import { useAppSelector } from '@/hooks'
 import { DollarCents, BillCatEmoji, Icon, Text, AnimatedView, Button } from '@ledget/native-ui'
-import SkeletonList from '../SkeletonList/SkeletonList';
-import { Category, useGetCategoriesQuery, selectBudgetMonthYear } from '@ledget/shared-features'
+import { Category } from '@ledget/shared-features'
 import { BudgetScreenProps } from '@types';
 
 type Props = {
   period: Category['period']
+  categories: Category[]
 } & BudgetScreenProps<'Main'>
 
 const COLLAPSED_MAX = 5;
 
-const FilledList = (props: Props & { categories?: Category[] }) => {
+const List = (props: Props) => {
   const [expanded, setExpanded] = useState(false)
 
   const hasOverflow = useMemo(() => {
@@ -107,19 +106,4 @@ const FilledList = (props: Props & { categories?: Category[] }) => {
   )
 }
 
-export default function List(props: Props) {
-  const { month, year } = useAppSelector(selectBudgetMonthYear)
-  const { data: categories } = useGetCategoriesQuery(
-    { month, year },
-    { skip: !month || !year }
-  );
-
-  return (
-    <>
-      {categories
-        ? <FilledList {...props} categories={categories} />
-        : <SkeletonList />
-      }
-    </>
-  )
-}
+export default List;

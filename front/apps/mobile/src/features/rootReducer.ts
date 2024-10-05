@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import { appearanceslice } from './appearanceSlice';
 import { bioSlice } from './bioSlice';
 import { authSlice } from './authSlice';
+import { uiSlice } from './uiSlice';
 import {
   apiSlice,
   toastSlice,
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
   appearance: appearanceslice.reducer,
   bio: bioSlice.reducer,
   auth: authSlice.reducer,
+  ui: uiSlice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

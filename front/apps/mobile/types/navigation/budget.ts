@@ -18,7 +18,9 @@ export type BudgetStackParamList = {
   }
   Transaction: {
     transaction: Transaction
-  }
+  },
+  EditCategories: undefined
+  EditBills: undefined
 };
 
 export type BudgetScreenProps<T extends keyof BudgetStackParamList> =

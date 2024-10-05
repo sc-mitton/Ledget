@@ -95,7 +95,7 @@ export const lightTheme = createTheme({
     focusedInputBorderSecondary: palette.blue50,
     focusedInputBorderMain: palette.blue300,
     tabNavPillBorder: palette.blue100,
-    bottomNavBorder: Platform.OS === 'ios' ? palette.gray300 : palette.gray200,
+    bottomNavBorder: Platform.OS === 'ios' ? palette.white : palette.white,
     nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 94%)`,
     tabNavBorder: palette.gray250,
     newTransactionBorder: palette.gray200,
@@ -105,7 +105,7 @@ export const lightTheme = createTheme({
     contextMenuDivider: palette.gray200,
 
     // Shadows
-    navShadow: palette.gray800,
+    navShadow: palette.gray400,
     modalShadow: palette.gray800.replace(`${grayS}`, '0'),
     tabsShadow: palette.gray300,
     activeIcon: palette.blueSat,
@@ -151,6 +151,8 @@ export const lightTheme = createTheme({
     tabNavPill: palette.blue100,
     borderedGrayButton: palette.gray200,
     dragBar: palette.gray200,
+    tabsTrack: palette.gray250,
+    tabsBackground: palette.white,
 
     // Category and Bill Colors
     monthBackground: `hsl(${blueH}, 100%, 93%)`,
@@ -545,7 +547,7 @@ export const lightTheme = createTheme({
       borderWidth: 1.5,
     },
     lightGrayCard: {
-      paddingHorizontal: 'xl',
+      paddingHorizontal: 'l',
       paddingVertical: 'm',
       borderRadius: 'm',
       backgroundColor: 'lightGrayCard',

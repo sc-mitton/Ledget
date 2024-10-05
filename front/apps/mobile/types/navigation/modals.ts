@@ -46,7 +46,7 @@ export type ModalStackParamList = {
   },
   NewBill: {
     transaction?: Transaction;
-    period: Category['period'];
+    period: Bill['period'];
     edit?: Bill
   } | undefined;
   NewCategory: {

@@ -29,7 +29,6 @@ interface AccountP {
 
 const AccountRow = (props: AccountP) => {
   const [pressed, setPressed] = useState(false);
-  const [longPressed, setLongPressed] = useState(false);
   const maskViewHeight = useSharedValue(0);
   const { mode } = useAppearance();
 
@@ -80,7 +79,6 @@ const AccountRow = (props: AccountP) => {
           onPressIn={() => setPressed(true)}
           onPressOut={() => setPressed(false)}
           onLongPress={() => {
-            setLongPressed(true);
             if (!props.draggable) return;
             props.onLongPress();
           }}

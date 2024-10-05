@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { useTheme } from '@shopify/restyle';
-import DraggableFlatList, { ScaleDecorator, RenderItemParams, DragEndParams } from 'react-native-draggable-flatlist';
+import DraggableFlatList, { ScaleDecorator, DragEndParams } from 'react-native-draggable-flatlist';
 import * as Haptics from 'expo-haptics';
 
 import styles from './styles/screen';
@@ -57,7 +57,7 @@ const AccountPicker = (props: ModalScreenProps<'PickAccount'>) => {
               onDragEnd={handleEndDrag}
               keyExtractor={item => item.id}
               data={accounts.filter(a => a.type === props.route.params.accountType)}
-              renderItem={(args: RenderItemParams<Account>) => (
+              renderItem={(args) => (
                 <>
                   <ScaleDecorator activeScale={1.03}>
                     <AccountRow

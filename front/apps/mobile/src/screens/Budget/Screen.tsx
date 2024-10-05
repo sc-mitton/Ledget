@@ -7,14 +7,17 @@ import styles from './styles/screen';
 import { Box, BackHeader } from '@ledget/native-ui';
 import { BottomTabScreenProps, BudgetScreenProps, BudgetStackParamList } from '@types';
 import { useCardStyleInterpolator } from '@/hooks';
-import Menu from './Menu';
+import Menus from './Menus';
 import Categories from './categories/Categories';
 import CategoriesHeader from './categories/Header';
 import Category from './category/Screen';
+import Bill from './bill/Screen';
 import Bills from './bills/Bills';
 import BillsHeader from './bills/Header';
 import Carousel from './carousel/Carousel';
 import Transaction from '../Transaction/Screen';
+import EditCategories from './edit-categories/EditCategories';
+import EditBills from './edit-bills/EditBills';
 import DatePicker from './month-picker/MonthPicker';
 
 const Stack = createStackNavigator<BudgetStackParamList>();
@@ -51,15 +54,38 @@ const Screen = (props: BottomTabScreenProps<'Budget'>) => {
       screenOptions={{
         headerTransparent: true,
         headerTitle: () => '',
-        headerRight: () => <Menu navigation={props.navigation} />,
+        headerRight: () => <Menus navigation={props.navigation} />,
         headerLeft: () => <DatePicker />,
         cardStyleInterpolator
       }}
     >
       <Stack.Screen name='Main' component={MainScreen} />
       <Stack.Screen
+        options={{
+          title: 'Spending Categories',
+          header: (props) =>
+            <BackHeader pagesWithTitle={['EditCategories']} {...props} />,
+          headerRight: () => null
+        }}
+        name='EditCategories'
+        component={EditCategories}
+      />
+      <Stack.Screen
+        options={{
+          title: 'Bills',
+          header: (props) =>
+            <BackHeader pagesWithTitle={['EditBills']} {...props} />,
+          headerRight: () => null
+        }}
+        name='EditBills'
+        component={EditBills}
+      />
+      <Stack.Screen
         options={{ header: (props) => <BackHeader {...props} />, headerRight: () => null }}
         name='Category' component={Category} />
+      <Stack.Screen
+        options={{ header: (props) => <BackHeader {...props} />, headerRight: () => null }}
+        name='Bill' component={Bill} />
       <Stack.Screen
         options={{ header: (props) => <BackHeader {...props} />, headerRight: () => null }}
         name='Transaction' component={Transaction} />

@@ -56,6 +56,7 @@ const Carousel = () => {
       >
         <Box variant='lightGrayCard'>
           <DollarCents
+            withCents={false}
             variant={'bold'}
             fontSize={FONT_SIZE}
             value={loadingCategories || loadingBills
@@ -82,6 +83,7 @@ const Carousel = () => {
         </Box>
         <Box variant='lightGrayCard'>
           <DollarCents
+            withCents={false}
             variant={'bold'}
             fontSize={FONT_SIZE}
             value={Big(limit_amount_monthly).minus(monthly_spent).toNumber()}
@@ -99,6 +101,7 @@ const Carousel = () => {
         <Box variant='lightGrayCard'>
           <DollarCents
             variant={'bold'}
+            withCents={false}
             fontSize={FONT_SIZE}
             value={Big(limit_amount_yearly).minus(yearly_spent).toNumber()}
           />

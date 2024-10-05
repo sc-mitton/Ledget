@@ -1,11 +1,10 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  scrollView: {
-    zIndex: -1
-  },
-  scrollViewSpacer: {
-    height: 28,
+  menu: {
+    position: 'absolute',
+    right: 12,
+    top: -16
   }
 });
 
