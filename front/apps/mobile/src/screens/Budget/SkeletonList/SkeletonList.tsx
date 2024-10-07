@@ -25,11 +25,11 @@ const Skeleton = ({ setSkeletonHeight }: { setSkeletonHeight?: (height: number) 
   )
 }
 
-const SkeletonList = () => {
+const SkeletonList = ({ length = 5 }: { length?: number }) => {
 
   return (
     <View style={styles.skeletonContainer}>
-      {Array.from({ length: 5 }).map((_, i) => (<Skeleton key={i} />))}
+      {Array.from({ length }).map((_, i) => (<Skeleton key={i} />))}
     </View>
   )
 }

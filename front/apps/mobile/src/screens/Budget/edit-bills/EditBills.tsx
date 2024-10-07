@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { View } from 'react-native';
 
 import styles from './styles/edit-bill-cats';
 import { BudgetScreenProps } from '@types';
-import { Box } from '@ledget/native-ui';
-import TabButtons from './TabButtons';
+import { Box, TabsTrack, Text } from '@ledget/native-ui';
 import Bills from './Bills';
 
 const EditBillCats = (props: BudgetScreenProps<'EditBills'>) => {
@@ -11,7 +11,25 @@ const EditBillCats = (props: BudgetScreenProps<'EditBills'>) => {
 
   return (
     <Box variant='nestedScreen' style={styles.container}>
-      <TabButtons index={pageIndex} setIndex={setPageIndex} />
+      <View style={styles.tabsTrack}>
+        <TabsTrack onIndexChange={setPageIndex} containerStyle={styles.tabsTrackContent}>
+          <TabsTrack.Tab index={0}>
+            {({ selected }) => (
+              <Text color={selected ? 'mainText' : 'tertiaryText'}>Monthly</Text>
+            )}
+          </TabsTrack.Tab>
+          <TabsTrack.Tab index={1}>
+            {({ selected }) => (
+              <Text color={selected ? 'mainText' : 'tertiaryText'}>Yearly</Text>
+            )}
+          </TabsTrack.Tab>
+          <TabsTrack.Tab index={2}>
+            {({ selected }) => (
+              <Text color={selected ? 'mainText' : 'tertiaryText'}>Once</Text>
+            )}
+          </TabsTrack.Tab>
+        </TabsTrack>
+      </View>
       <Box
         backgroundColor='nestedContainer'
         borderRadius='l'

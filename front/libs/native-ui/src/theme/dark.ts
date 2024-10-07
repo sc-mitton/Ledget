@@ -137,6 +137,7 @@ export const darkTheme = createTheme({
     placeholderText: palette.offWhite4,
     buttonLabel: palette.white,
     greenText: palette.greenText,
+    footerText: palette.gray600,
 
     // Buttons
     lightBlueButton: palette.blue800,

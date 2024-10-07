@@ -181,10 +181,18 @@ class BillListCreateSerializer(serializers.ListSerializer):
         raise NotImplementedError('Update not implemented for lists of bills')
 
 
+class BillTransactionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Transaction
+        fields = ['date', 'id',]
+
+
 class BillSerializer(NestedCreateMixin, serializers.ModelSerializer):
     reminders = ReminderSerializer(many=True, required=False)
     is_paid = serializers.SerializerMethodField(read_only=True)
     last_paid = serializers.SerializerMethodField(read_only=True)
+    transactions = BillTransactionSerializer(many=True, read_only=True)
 
     class Meta:
         model = Bill

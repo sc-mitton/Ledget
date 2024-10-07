@@ -60,6 +60,7 @@ export interface GetTransactionsParams {
   merchants?: string[];
   accounts?: string[];
   category?: string;
+  id?: string;
 
   // Pagination query params
   limit?: number;

@@ -66,14 +66,14 @@ const Carousel = () => {
           <View style={styles.row}>
             <Box
               backgroundColor='monthColor'
-              borderColor='mainBackground'
+              borderColor='lightGrayCard'
               borderWidth={1.5}
               style={styles.dot}
             />
             <View style={styles.overlappingDot}>
               <Box
                 backgroundColor='yearColor'
-                borderColor='mainBackground'
+                borderColor='lightGrayCard'
                 borderWidth={1.5}
                 style={styles.dot}
               />
@@ -91,7 +91,7 @@ const Carousel = () => {
           <View style={styles.row}>
             <Box
               backgroundColor='monthColor'
-              borderColor='mainBackground'
+              borderColor='lightGrayCard'
               borderWidth={1.5}
               style={styles.dot}
             />
@@ -108,7 +108,7 @@ const Carousel = () => {
           <View style={styles.row}>
             <Box
               backgroundColor='yearColor'
-              borderColor='mainBackground'
+              borderColor='lightGrayCard'
               borderWidth={1.5}
               style={styles.dot}
             />
@@ -116,7 +116,7 @@ const Carousel = () => {
           </View>
         </Box>
         <Box variant='lightGrayCard'>
-          <Text fontSize={FONT_SIZE} lineHeight={0} variant='bold'>
+          <Text fontSize={FONT_SIZE} lineHeight={INITIAL_HEIGHT - 12} variant='bold'>
             {monthly_bills_paid + yearly_bills_paid} / {number_of_monthly_bills + number_of_yearly_bills}
           </Text>
           <View style={styles.row}>

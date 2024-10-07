@@ -114,8 +114,12 @@ class Transaction(BaseSharedModel):
         blank=True,
         related_name='categories',
         through=TransactionCategory)
-    bill = models.ForeignKey(Bill, on_delete=models.SET_NULL,
-                             null=True, blank=True)
+    bill = models.ForeignKey(
+        Bill,
+        on_delete=models.SET_NULL,
+        related_name='transactions',
+        null=True,
+        blank=True)
     predicted_category = models.ForeignKey(Category,
                                            on_delete=models.SET_NULL,
                                            null=True,

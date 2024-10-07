@@ -9,11 +9,11 @@ import {
 import { useTheme } from '@shopify/restyle';
 
 import styles from './styles/header';
-import { Header, BillCatEmoji, Box, Text, Seperator, DollarCents } from '@ledget/native-ui';
+import { Header, BillCatEmoji, Box, Text, Seperator } from '@ledget/native-ui';
 import { useAppearance } from '@/features/appearanceSlice';
-import { Category } from '@ledget/shared-features';
+import { Bill } from '@ledget/shared-features';
 
-const EmojiHeader = ({ category }: { category: Category }) => {
+const EmojihHeader = ({ bill }: { bill: Bill }) => {
   const { mode } = useAppearance()
   const theme = useTheme()
 
@@ -23,20 +23,13 @@ const EmojiHeader = ({ category }: { category: Category }) => {
         <View style={styles.header}>
           <View>
             <BillCatEmoji
-              emoji={category.emoji}
-              period={category.period}
+              emoji={bill.emoji}
+              period={bill.period}
             />
           </View>
-          <View>
-            <Header>
-              {category.name.charAt(0).toUpperCase() + category.name.slice(1)}
-            </Header>
-            <View style={styles.spendingData}>
-              <DollarCents withCents={false} color='secondaryText' value={category.amount_spent} />
-              <Text color='secondaryText' >spent of</Text>
-              <DollarCents withCents={false} color='secondaryText' value={category.limit_amount} />
-            </View>
-          </View>
+          <Header>
+            {bill.name.charAt(0).toUpperCase() + bill.name.slice(1)}
+          </Header>
         </View>
         <BlurView
           intensity={100}
@@ -55,7 +48,7 @@ const EmojiHeader = ({ category }: { category: Category }) => {
             />
           </Rect>
         </Canvas>
-        <Text style={styles.blurEmoji}>{category.emoji}</Text>
+        <Text style={styles.blurEmoji}>{bill.emoji}</Text>
         <View style={styles.seperator}>
           <Seperator backgroundColor='mainScreenSeperator' variant='bare' height={2} />
         </View>
@@ -64,4 +57,4 @@ const EmojiHeader = ({ category }: { category: Category }) => {
   )
 }
 
-export default EmojiHeader
+export default EmojihHeader

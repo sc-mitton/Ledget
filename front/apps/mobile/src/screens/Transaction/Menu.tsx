@@ -2,9 +2,10 @@ import { MoreHorizontal, Maximize2, Edit2 } from "geist-native-icons";
 import { View } from "react-native";
 
 import { Menu, Box, Icon } from "@ledget/native-ui";
-import { AccountsScreenProps } from "@types";
+import { RootStackScreenProps } from "@types";
+import { Transaction } from "@ledget/shared-features";
 
-const BakedMenu = (props: AccountsScreenProps<'Transaction'>) => {
+const BakedMenu = (props: RootStackScreenProps<'Transaction'> & { transaction: Transaction }) => {
 
   return (
     <Menu
@@ -25,7 +26,7 @@ const BakedMenu = (props: AccountsScreenProps<'Transaction'>) => {
             </View>,
           onSelect: () => props.navigation.navigate(
             'Modals',
-            { screen: "Split", params: { transaction: props.route.params.transaction } })
+            { screen: "Split", params: { transaction: props.transaction } })
         },
       ]}
     >

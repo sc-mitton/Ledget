@@ -150,6 +150,7 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
                                month__isnull=True,
                                year__isnull=True,
                             ) \
+                           .prefetch_related('transactions') \
                            .annotate(is_paid=is_paid_annotation) \
 
         time_slice_end = datetime(
@@ -168,6 +169,7 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
                               userbill__user__in=self.request.user.account.users.all(),
                               month__gte=yearly_category_anchor.month,
                               month__lte=time_slice_end.month) \
+                          .prefetch_related('transactions') \
                           .annotate(is_paid=is_paid_annotation) \
 
         once_qset = Bill.objects \
@@ -178,6 +180,7 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
                             month=month,
                             year=year,
                          ) \
+                        .prefetch_related('transactions') \
                         .annotate(is_paid=is_paid_annotation) \
 
         return monthly_qset.union(yearly_qset, once_qset).order_by('name')

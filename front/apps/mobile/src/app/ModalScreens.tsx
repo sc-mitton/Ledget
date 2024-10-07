@@ -16,7 +16,8 @@ import {
   AccountsPicker,
   NewCategory,
   NewBill,
-  ConfirmDeleteCategory
+  ConfirmDeleteCategory,
+  ConfirmDeleteBill
 } from '@modals';
 import { Activity } from '@screens';
 import { useModalStyleInterpolator, useModifiedDefaultModalStyleInterpolator, useFullScreenModalStyleInterpolator } from '@/hooks';
@@ -41,6 +42,7 @@ const ModalScreens = () => {
       <RootStack.Screen name='ChangePassword' component={ChangePassword} />
       <RootStack.Screen name='Split' component={SplitTransaction} />
       <RootStack.Screen name='ConfirmDeleteCategory' component={ConfirmDeleteCategory} />
+      <RootStack.Screen name='ConfirmDeleteBill' component={ConfirmDeleteBill} />
       <RootStack.Group
         screenOptions={{
           presentation: 'modal',

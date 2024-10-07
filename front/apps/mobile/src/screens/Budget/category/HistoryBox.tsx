@@ -2,12 +2,12 @@ import { useEffect } from 'react'
 import { TouchableOpacity, View, NativeSyntheticEvent, NativeScrollEvent } from 'react-native'
 import { ChevronRight } from 'geist-native-icons'
 import { Big } from 'big.js'
-import { Clock } from 'geist-native-icons'
 import dayjs from 'dayjs'
 
 import styles from './styles/history-box'
+import SkeletonList from '../SkeletonList/SkeletonList'
 import { useLazyGetTransactionsQuery } from '@ledget/shared-features'
-import { Box, DollarCents, Text, CustomScrollView, Icon, BoxHeader } from '@ledget/native-ui'
+import { Box, DollarCents, Text, CustomScrollView, Icon } from '@ledget/native-ui'
 import { useAppSelector } from '@hooks'
 import { selectBudgetMonthYear } from '@ledget/shared-features'
 import { BudgetScreenProps } from '@types'
@@ -47,39 +47,44 @@ const HistoryBox = (props: BudgetScreenProps<'Category'>) => {
   };
 
   return (
-    <View style={styles.historyBoxContainer}>
-      <BoxHeader>
-        <View style={styles.clockIcon}>
-          <Icon icon={Clock} size={16} color='tertiaryText' />
-        </View>
-        Spending History
-      </BoxHeader>
-      <Box
-        variant='nestedContainer'
-        style={styles.transactionsListBox}
-      >
-        <CustomScrollView onScroll={handleScroll} contentContainerStyle={styles.transactionsList}>
-          {transactionsData?.results.map((transaction) => (
-            <TouchableOpacity
-              style={styles.row}
-              onPress={() => props.navigation.navigate('Transaction', { transaction })}>
-              <View>
-                <Text>{transaction.name}</Text>
-                <Text color='tertiaryText'>{dayjs(transaction.date).format('MM-DD-YYYY')}</Text>
-              </View>
-              <View style={styles.amountContainer}>
-                <DollarCents value={Big(transaction.amount).times(100).toNumber()} />
-                <Icon icon={ChevronRight} color='quinaryText' />
-              </View>
-            </TouchableOpacity>))}
-        </CustomScrollView>
+    <>
+
+      <Box variant='nestedContainer' style={styles.transactionsListBox}>
+        {transactionsData?.results
+          ?
+          <CustomScrollView
+            peekabooScrollIndicator={transactionsData?.results.length === 0}
+            onScroll={handleScroll}
+            contentContainerStyle={styles.transactionsList}
+          >
+            {transactionsData?.results.map((transaction) => (
+              <TouchableOpacity
+                style={styles.row}
+                onPress={() => props.navigation.navigate('Transaction', { transaction })}>
+                <View>
+                  <Text>
+                    {transaction.name.length > 20
+                      ? `${transaction.name.slice(0, 20)}...`
+                      : transaction.name}
+                  </Text>
+                  <Text color='tertiaryText'>{dayjs(transaction.date).format('M-DD-YYYY')}</Text>
+                </View>
+                <View style={styles.amountContainer}>
+                  <DollarCents value={Big(transaction.amount).times(100).toNumber()} />
+                  <Icon icon={ChevronRight} color='quinaryText' />
+                </View>
+              </TouchableOpacity>))}
+          </CustomScrollView>
+          :
+          <SkeletonList />
+        }
         {transactionsData?.results.length === 0 && (
           <View style={styles.emptyListMessage}>
             <Text color='quinaryText'>No spending yet</Text>
           </View>
         )}
       </Box>
-    </View>
+    </>
   )
 }
 export default HistoryBox

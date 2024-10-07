@@ -3,7 +3,8 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   skeletonContainer: {
     gap: 20,
-    marginTop: 24,
+    width: '100%',
+    paddingVertical: 8,
   },
   bonesContainer: {
     flexDirection: 'row',

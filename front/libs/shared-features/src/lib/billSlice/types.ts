@@ -6,6 +6,7 @@ export interface Bill {
   last_paid?: string;
   period: 'year' | 'month' | 'once';
   name: string;
+  created: string;
   emoji?: string;
   lower_amount?: number;
   upper_amount: number;
@@ -17,10 +18,11 @@ export interface Bill {
   month?: number;
   year?: number;
   expires?: string;
+  transactions?: { date: string, id: string }[];
 }
 
 export type NewBill = Omit<
-  Bill,
+  Partial<Bill>,
   'id' | 'is_paid' | 'last_paid' | 'bill_confirmed'
 >;
 export type UpdateBill = NewBill & Pick<Bill, 'id'>;

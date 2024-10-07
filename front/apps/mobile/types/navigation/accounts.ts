@@ -23,13 +23,6 @@ export type AccountsTabsParamList = {
 
 export type AccountsStackParamList = {
   AccountsTabs: NavigatorScreenParams<AccountsTabsParamList>,
-  Transaction: {
-    transaction: Transaction
-    options?: {
-      rename?: boolean
-    },
-    from?: 'History' | 'NeedsConfirmation' | 'Accounts'
-  }
 };
 
 export type AccountsScreenProps<T extends keyof AccountsStackParamList> =

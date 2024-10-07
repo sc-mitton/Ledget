@@ -6,10 +6,10 @@ import { Text, Box, BoxHeader, BillCatLabel } from '@ledget/native-ui'
 import { useConfirmTransactionsMutation, useUpdateTransactionMutation } from '@ledget/shared-features';
 import { BillCatSelect } from '@components';
 import { isCategory, isBill } from '@ledget/shared-features';
-import type { AccountsScreenProps } from '@types'
+import type { RootStackScreenProps } from '@types'
 import type { Transaction as TransactionT } from '@ledget/shared-features';
 
-const BudgetItemsBox = (props: { item: TransactionT } & AccountsScreenProps<'Transaction'>) => {
+const BudgetItemsBox = (props: { item: TransactionT } & RootStackScreenProps<'Transaction'>) => {
   const [confirmTransactions] = useConfirmTransactionsMutation();
   const [updateTransaction] = useUpdateTransactionMutation();
   const items = useRef(

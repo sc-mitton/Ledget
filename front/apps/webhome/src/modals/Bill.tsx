@@ -17,7 +17,6 @@ import {
 import { startCase, toLower } from 'lodash-es';
 
 import styles from './styles/bill.module.scss';
-import { billSchema } from './CreateBill';
 import { withModal } from '@ledget/ui';
 import {
   TransformedBill,
@@ -51,6 +50,7 @@ import {
   emoji
 } from '@components/inputs';
 import { useAppSelector } from '@hooks/store';
+import { billSchema } from '@ledget/form-schemas';
 
 const getRepeatsDescription = ({
   day,

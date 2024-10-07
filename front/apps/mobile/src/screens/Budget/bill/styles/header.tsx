@@ -36,13 +36,6 @@ const styles = StyleSheet.create({
     right: 0,
     position: 'absolute',
     zIndex: 3
-  },
-  spendingData: {
-    marginTop: -4,
-    marginLeft: 4,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
   }
 });
 

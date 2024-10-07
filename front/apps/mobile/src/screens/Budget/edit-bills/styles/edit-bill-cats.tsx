@@ -13,6 +13,14 @@ const styles = StyleSheet.create({
   },
   panel: {
     width: '100%',
+  },
+  tabsTrack: {
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  tabsTrackContent: {
+    maxWidth: '90%',
+    marginBottom: 12
   }
 });
 

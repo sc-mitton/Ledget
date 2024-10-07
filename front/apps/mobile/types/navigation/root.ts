@@ -19,8 +19,11 @@ export type BottomTabNavParamList = {
 export type RootStackParamList = {
   BottomTabs: NavigatorScreenParams<BottomTabNavParamList>;
   Modals: NavigatorScreenParams<ModalStackParamList>;
-  TransactionDetails: {
-    transaction: Transaction;
+  Transaction: {
+    transaction: Transaction | string
+    options?: {
+      rename?: boolean
+    }
   }
 }
 
@@ -34,6 +37,7 @@ export type RootAuthenticationStackParamList = {
   };
 };
 
+export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<RootStackParamList, T>;
 export type RecoveryScreenProps = StackScreenProps<RootAuthenticationStackParamList, 'Recovery'>
 export type VerificationScreenProps = StackScreenProps<RootAuthenticationStackParamList, 'Verification'>
 export type BottomTabScreenProps<T extends keyof BottomTabNavParamList> = CompositeScreenProps<

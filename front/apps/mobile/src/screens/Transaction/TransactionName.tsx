@@ -4,20 +4,20 @@ import { Keyboard, View } from "react-native";
 import Animated, { ZoomIn, ZoomOut } from "react-native-reanimated";
 
 import styles from './styles/transaction-name';
-import { AccountsScreenProps } from "@types";
+import { RootStackScreenProps } from "@types";
 import { Box, TextInput, Text, Button } from '@ledget/native-ui';
-import { useUpdateTransactionMutation } from "@ledget/shared-features";
+import { Transaction, useUpdateTransactionMutation } from "@ledget/shared-features";
 
-const TransactionName = (props: AccountsScreenProps<'Transaction'>) => {
+const TransactionName = (props: RootStackScreenProps<'Transaction'> & { transaction: Transaction }) => {
   const [updateTransaction] = useUpdateTransactionMutation();
   const [value, onChangeText] = useState(
-    props.route.params.transaction.preferred_name || props.route.params.transaction.name
+    props.transaction.preferred_name || props.transaction.name
   );
 
   const onSave = () => {
     Keyboard.dismiss();
     updateTransaction({
-      transactionId: props.route.params.transaction.transaction_id,
+      transactionId: props.transaction.transaction_id,
       data: {
         preferred_name: value
       }
@@ -60,7 +60,7 @@ const TransactionName = (props: AccountsScreenProps<'Transaction'>) => {
         </Animated.View>
         :
         <Text fontSize={18}>
-          {props.route.params.transaction.preferred_name || props.route.params.transaction.name}
+          props.{props.transaction.preferred_name || props.transaction.name}
         </Text>
       }
     </>

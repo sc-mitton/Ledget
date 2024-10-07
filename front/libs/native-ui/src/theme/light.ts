@@ -133,6 +133,7 @@ export const lightTheme = createTheme({
     placeholderText: palette.offBlack3,
     buttonLabel: palette.offBlack,
     faintBlueText: palette.blue300,
+    footerText: palette.gray600,
 
     // Buttons
     lightBlueButton: palette.blue100,
@@ -276,7 +277,7 @@ export const lightTheme = createTheme({
       lineHeight: 16,
       marginVertical: 's',
       fontFamily: 'SourceSans3Regular',
-      color: 'quaternaryText',
+      color: 'footerText',
     }
   },
   buttonVariants: {

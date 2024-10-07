@@ -1,26 +1,45 @@
-import { useMemo, useLayoutEffect, useEffect } from 'react';
+import { useMemo, useLayoutEffect, useEffect, useState } from 'react';
 import { View, ScrollView } from 'react-native'
 
 import styles from './styles/screen';
 import { Box, DollarCents } from '@ledget/native-ui'
-import { useGetAccountsQuery } from '@ledget/shared-features';
-import type { AccountsScreenProps } from '@types'
+import { useGetAccountsQuery, useLazyGetTransactionsQuery, Transaction as TransactionT } from '@ledget/shared-features';
+import type { RootStackScreenProps } from '@types'
 import InfoBox from './InfoBox';
 import BudgetItemsBox from './BudgetItemsBox';
 import Notes from './Notes';
 import Menu from './Menu';
 import TransactionName from './TransactionName';
 
-const Transaction = (props: AccountsScreenProps<'Transaction'>) => {
+const Transaction = (props: RootStackScreenProps<'Transaction'>) => {
+  const [transaction, setTransaction] = useState<TransactionT>();
+  const [fetchTransaction, { data: transactionData }] = useLazyGetTransactionsQuery();
   const { data: accountsData } = useGetAccountsQuery();
 
+  useEffect(() => {
+    if (transactionData) {
+      setTransaction(transactionData.results[0])
+    }
+  }, [transactionData])
+
+  useEffect(() => {
+    if (typeof props.route.params.transaction === 'string') {
+      fetchTransaction({
+        id: props.route.params.transaction
+      })
+    } else {
+      setTransaction(props.route.params.transaction)
+    }
+  }, [props.route.params.transaction])
+
   const account = useMemo(() => {
-    return accountsData?.accounts.find(account => account.id === props.route.params.transaction.account)
-  }, [accountsData, props.route.params.transaction.account])
+    return accountsData?.accounts.find(account => account.id === transaction?.account)
+  }, [accountsData, transaction?.account])
 
   useLayoutEffect(() => {
+    if (!transaction) return;
     props.navigation.setOptions({
-      headerRight: () => <Menu {...props} />
+      headerRight: () => <Menu {...props} transaction={transaction} />
     })
   }, [account])
 
@@ -31,18 +50,18 @@ const Transaction = (props: AccountsScreenProps<'Transaction'>) => {
           <ScrollView contentContainerStyle={styles.scrollContent}>
             <View style={styles.header}>
               <DollarCents
-                value={props.route.params.transaction.amount}
+                value={transaction?.amount || 0}
                 fontSize={44}
               />
-              <TransactionName {...props} />
+              {transaction && <TransactionName {...props} transaction={transaction} />}
             </View>
-            <InfoBox item={props.route.params.transaction} account={account} />
-            {(props.route.params.transaction.categories ||
-              props.route.params.transaction.bill ||
-              props.route.params.transaction.predicted_bill ||
-              props.route.params.transaction.predicted_category) &&
-              <BudgetItemsBox item={props.route.params.transaction} {...props} />}
-            <Notes transaction={props.route.params.transaction} />
+            <InfoBox item={transaction} account={account} />
+            {(transaction?.categories ||
+              transaction?.bill ||
+              transaction?.predicted_bill ||
+              transaction?.predicted_category) &&
+              <BudgetItemsBox item={transaction} {...props} />}
+            {transaction && <Notes transaction={transaction} />}
           </ScrollView>
         }
       </Box>

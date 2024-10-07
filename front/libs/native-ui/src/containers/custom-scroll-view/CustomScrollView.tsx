@@ -16,11 +16,16 @@ import Animated, {
 
 import styles from './styles';
 
-export const CustomScrollView = forwardRef<ScrollView, ScrollViewProps>((props, ref) => {
+interface Props extends ScrollViewProps {
+  peekabooScrollIndicator?: boolean;
+}
+
+export const CustomScrollView = forwardRef<ScrollView, Props>((props, ref) => {
   const {
     onContentSizeChange,
     onLayout,
     onScroll,
+    peekabooScrollIndicator = true,
     showsVerticalScrollIndicator = true
   } = props;
   const { style, ...rest } = props;
@@ -33,7 +38,7 @@ export const CustomScrollView = forwardRef<ScrollView, ScrollViewProps>((props, 
     visibleHeight: 0
   });
 
-  const opacity = useSharedValue(0);
+  const opacity = useSharedValue(100);
   const y = useSharedValue(0);
 
   const indicatorSize = state.wholeHeight > state.visibleHeight
@@ -43,7 +48,9 @@ export const CustomScrollView = forwardRef<ScrollView, ScrollViewProps>((props, 
   const difference = state.visibleHeight > indicatorSize ? state.visibleHeight - indicatorSize : 1
 
   useEffect(() => {
-    opacity.value = withTiming(0, { duration: 200 });
+    if (peekabooScrollIndicator) {
+      opacity.value = withTiming(0, { duration: 200 });
+    }
   }, []);
 
   return (
@@ -76,7 +83,13 @@ export const CustomScrollView = forwardRef<ScrollView, ScrollViewProps>((props, 
         }}
         onScrollEndDrag={(e) => {
           setTimeout(() => {
-            opacity.value = withDelay(1000, withTiming(0, { duration: 200 }));
+            opacity.value = withDelay(
+              1000,
+              withTiming(
+                peekabooScrollIndicator ? 0 : 1,
+                { duration: 200 }
+              )
+            );
           }, 2000);
         }}
         ref={ref}

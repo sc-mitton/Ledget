@@ -13,3 +13,4 @@ export { default as CardPicker } from './CardPicker/CardPicker';
 export { default as NewCategory } from './NewCategory/Screen';
 export { default as NewBill } from './NewBill/Screen';
 export { default as ConfirmDeleteCategory } from './ConfirmDeleteCategory';
+export { default as ConfirmDeleteBill } from './ConfirmDeleteBill';

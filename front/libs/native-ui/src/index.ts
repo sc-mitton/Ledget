@@ -1,4 +1,8 @@
 
+export * from './buttons/tabs-track';
+
+export * from './inputs/radios/Radios';
+
 export * from './misc/native-emoji-picker/index';
 export * from './buttons/swipe-delete/SwipeDelete';
 export * from './inputs/modal-picker/ModalPicker';

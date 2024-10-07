@@ -1,16 +1,12 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  historyBoxContainer: {
-    flex: 2,
-    flexGrow: 2
-  },
   transactionsList: {
     gap: 18,
     padding: 0
   },
   transactionsListBox: {
-    flex: 1,
+    minHeight: 50,
     flexGrow: 1,
   },
   amountContainer: {
@@ -18,21 +14,17 @@ const styles = StyleSheet.create({
     gap: 6,
     alignItems: 'center',
   },
-  clockIcon: {
-    marginRight: 5,
-  },
   emptyListMessage: {
     width: '100%',
     transform: [{ translateX: 16 }],
     alignItems: 'center',
-    position: 'absolute',
-    top: '50%',
+    position: 'absolute'
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-  },
+  }
 });
 
 export default styles;

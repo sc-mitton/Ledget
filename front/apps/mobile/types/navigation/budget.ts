@@ -16,7 +16,7 @@ export type BudgetStackParamList = {
     bill: Bill
   }
   Transaction: {
-    transaction: Transaction
+    transaction: Transaction | string
   },
   EditCategories: undefined
   EditBills: undefined

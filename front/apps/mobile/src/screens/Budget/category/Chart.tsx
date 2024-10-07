@@ -138,7 +138,7 @@ const Chart = (props: Props) => {
                 x={chartBounds.right / 3}
                 y={chartBounds.bottom / 1.375}
                 font={font}
-                color={theme.colors.tertiaryText}
+                color={theme.colors.quinaryText}
                 text='Not enough data yet'
               />
             )}

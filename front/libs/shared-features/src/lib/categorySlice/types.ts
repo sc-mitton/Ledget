@@ -18,7 +18,7 @@ export interface Category {
 
 export type NewCategory = Partial<Pick<Category, 'alerts' | 'emoji' | 'id'>> &
   Pick<Category, 'name' | 'limit_amount' | 'period'>;
-export type UpdateCategory = NewCategory & Pick<Category, 'id'>;
+export type UpdateCategory = Partial<NewCategory> & Pick<Category, 'id'>;
 
 export interface SplitCategory extends Category {
   fraction: number;
