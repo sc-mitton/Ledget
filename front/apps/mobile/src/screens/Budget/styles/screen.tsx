@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     zIndex: -1
   },
   scrollViewSpacer: {
-    height: 28,
+    height: 16,
   }
 });
 

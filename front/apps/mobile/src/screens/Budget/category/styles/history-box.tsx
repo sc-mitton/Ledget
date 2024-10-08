@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
   transactionsListBox: {
     minHeight: 50,
     flexGrow: 1,
+    marginTop: 12
   },
   amountContainer: {
     flexDirection: 'row',
@@ -24,6 +25,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  clockIcon: {
+    marginRight: 5,
+    marginBottom: -2
   }
 });
 

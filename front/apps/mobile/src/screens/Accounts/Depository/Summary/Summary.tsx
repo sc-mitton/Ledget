@@ -166,7 +166,12 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
               setWindow(w);
               setShowMenu(false);
             }}
-            onShowChange={(show) => setShowMenu(show)}
+            onShowChange={(show) => {
+              setShowMenu(show)
+              if (!show) {
+                setShowChart(false)
+              }
+            }}
           />
           : <Button
             onPress={() => { setShowChart(true) }}

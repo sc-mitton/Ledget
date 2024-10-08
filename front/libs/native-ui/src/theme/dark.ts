@@ -156,6 +156,8 @@ export const darkTheme = createTheme({
     dragBar: palette.gray750,
     tabsTrack: palette.gray800,
     tabsBackground: palette.gray700,
+    radioCardSelected: palette.gray750,
+    radioCardUnselected: palette.gray800,
 
     // Category and Bill Colors
     monthBackground: `hsl(${blueH}, 50%, 25%)`,

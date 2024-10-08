@@ -10,16 +10,24 @@ export function Radios<T extends Option>(props: RadiosProps<T>) {
   const [value, setValue] = useState(props.defaultValue);
 
   return (
-    <View style={styles.radios}>
+    <View style={[styles.radios, props.horizontal ? styles.horizontalRadios : undefined]}>
       {props.options.map((radio) => (
-        <View style={styles.radio}>
+        <Box
+          borderRadius='m'
+          backgroundColor={
+            props.cardStyle
+              ? value === radio.value ? 'radioCardSelected' : 'radioCardUnselected'
+              : 'transparent'
+          }
+          style={[styles.radio, props.cardStyle ? styles.cardRadio : undefined]}>
           <Box
             borderColor={value === radio.value ? 'faintBlueText' : 'tertiaryText'}
-            style={styles.radioCircleOuter}
+            style={value === radio.value ? styles.selectedRadioCircleOuter : styles.radioCircleOuter}
+
           >
             <Box
               backgroundColor={value === radio.value ? 'blueText' : 'transparent'}
-              style={styles.radioCircleInner}
+              style={value === radio.value ? styles.selectedRadioCircleInner : styles.radioCircleInner}
             />
           </Box>
           <Button
@@ -30,7 +38,7 @@ export function Radios<T extends Option>(props: RadiosProps<T>) {
             label={radio.label}
             textColor={value === radio.value ? 'mainText' : 'secondaryText'}
           />
-        </View>
+        </Box>
       ))}
     </View>
   );

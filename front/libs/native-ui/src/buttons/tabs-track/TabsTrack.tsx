@@ -1,10 +1,8 @@
 import { useState, useEffect, useRef, createContext, useContext } from 'react';
-import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
+import { View, TouchableOpacity, Animated } from 'react-native';
 
 import styles from './styles';
-import { View, TouchableOpacity } from 'react-native';
 import { Box } from '../../restyled/Box';
-import { Text } from '../../restyled/Text';
 import type { TabsTrackProps, TabProps, TabsTrackPropsContext } from './types';
 import { defaultSpringConfig } from '../../animated/configs/configs';
 
@@ -20,23 +18,28 @@ export function useTabsTrack() {
 
 export function TabsTrack(props: TabsTrackProps) {
   const [index, setIndex] = useState(props.defaultIndex || 0);
-  const left = useSharedValue(0);
+  const left = useRef(new Animated.Value(0)).current;
   const tabsTrackWidth = useRef(0);
 
   useEffect(() => {
-    left.value = withSpring((tabsTrackWidth.current / props.children.length) * index, defaultSpringConfig);
+    Animated.spring(left, {
+      toValue: (tabsTrackWidth.current / props.children.length) * index,
+      useNativeDriver: false,
+      mass: 1,
+      stiffness: 200,
+      damping: 25,
+    }).start();
     props.onIndexChange(index);
   }, [index]);
 
   return (
 
     <View style={[styles.tabsTrackBoxContainer, styles.centeredRow, props.containerStyle]}>
-      <Box
-        backgroundColor='tabsTrack'
-        style={[styles.tabsTrackBox, styles.centeredRow]}
-      >
+      <Box backgroundColor='tabsTrack' style={[styles.tabsTrackBox, styles.centeredRow]}>
         <View
-          onLayout={(event) => { tabsTrackWidth.current = event.nativeEvent.layout.width }}
+          onLayout={(event) => {
+            tabsTrackWidth.current = event.nativeEvent.layout.width
+          }}
           style={[styles.tabsTrack, styles.centeredRow]}
         >
           <TabsTrackContext.Provider value={{ index, setIndex }}>
@@ -45,7 +48,7 @@ export function TabsTrack(props: TabsTrackProps) {
           <Animated.View style={[
             styles.indicatorContainer,
             { width: `${100 / props.children.length}%` },
-            { left }
+            { left: left }
           ]} >
             <Box backgroundColor='tabsBackground' style={styles.indicator} />
           </Animated.View>

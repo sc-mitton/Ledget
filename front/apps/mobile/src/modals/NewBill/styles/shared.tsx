@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  menu: {
-    position: 'absolute',
-    right: 0,
-    top: -16
+  modalContent: {
+    flex: 1,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
   }
 });
 

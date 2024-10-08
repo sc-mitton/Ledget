@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import { getDaySuffix } from '@ledget/helpers';
+import { getOrderSuffix } from '@ledget/helpers';
 import { Bill } from '@ledget/shared-features';
 
 export const getScheduleDescription = (bill: Bill) => {
@@ -16,9 +16,9 @@ export const getScheduleDescription = (bill: Bill) => {
       .month(bill.month - 1)
       .format('MMMM Do');
   } else if (bill.day) {
-    return `${bill.day}${getDaySuffix(bill.day)} of the month`;
+    return `${bill.day}${getOrderSuffix(bill.day)} of the month`;
   } else if (bill.week && bill.week_day) {
-    return `Every ${bill.week}${getDaySuffix(bill.week)} ${dayjs()
+    return `Every ${bill.week}${getOrderSuffix(bill.week)} ${dayjs()
       .day(bill.week_day)
       .format('dddd')}`;
   }

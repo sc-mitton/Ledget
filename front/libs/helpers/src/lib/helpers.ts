@@ -148,7 +148,7 @@ export const formatDateOrRelativeDate = (unixTimestamp: number) => {
   }
 };
 
-export const getDaySuffix = (day: number) => {
+export const getOrderSuffix = (day: number) => {
   if (day > 10 && day < 20) return 'th';
   switch (day % 10) {
     case 1:

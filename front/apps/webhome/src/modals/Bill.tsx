@@ -27,7 +27,7 @@ import {
   selectBudgetMonthYear
 } from '@ledget/shared-features';
 import { SubmitForm } from '@components/pieces';
-import { getDaySuffix } from '@ledget/helpers';
+import { getOrderSuffix } from '@ledget/helpers';
 import { mapWeekDayNumberToName } from '@ledget/helpers';
 import {
   DollarCents,
@@ -76,11 +76,11 @@ const getRepeatsDescription = ({
       day: 'numeric'
     })}`;
   } else if (week_day && week) {
-    return `The ${week_day}${getDaySuffix(week_day)} ${mapWeekDayNumberToName(
+    return `The ${week_day}${getOrderSuffix(week_day)} ${mapWeekDayNumberToName(
       week
     )} of the month`;
   } else if (day) {
-    return `The ${day}${getDaySuffix(day)} of every month`;
+    return `The ${day}${getOrderSuffix(day)} of every month`;
   } else {
     return '';
   }

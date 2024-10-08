@@ -18,13 +18,13 @@ type BaseMoneyInputProps<T extends TInput> = {
 export type MoneyInputProps<T extends TInput> =
   T extends 'range'
   ? {
-    inputType: T
+    inputType?: T
     defaultValue?: [number, number]
     limits?: [[number | undefined, number | undefined], [number | undefined, number | undefined]]
     onChange?: (value?: [number | undefined, number | undefined]) => void
   } & BaseMoneyInputProps<T>
   : {
-    inputType: T
+    inputType?: T
     defaultValue?: number
     onChange?: (value?: number) => void
     limits?: [number | undefined, number | undefined]

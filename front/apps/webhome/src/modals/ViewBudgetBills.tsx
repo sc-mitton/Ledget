@@ -12,7 +12,7 @@ import {
   selectBudgetMonthYear
 } from '@ledget/shared-features';
 import { BillModalContent } from '@modals/index';
-import { getDaySuffix } from '@ledget/helpers';
+import { getOrderSuffix } from '@ledget/helpers';
 import {
   withModal,
   TabNavList,
@@ -44,9 +44,9 @@ const getScheduleDescription = (
       .month(month - 1)
       .format('MMMM Do');
   } else if (day) {
-    return `${day}${getDaySuffix(day)} of the month`;
+    return `${day}${getOrderSuffix(day)} of the month`;
   } else if (week && weekDay) {
-    return `Every ${week}${getDaySuffix(week)} ${dayjs()
+    return `Every ${week}${getOrderSuffix(week)} ${dayjs()
       .day(weekDay)
       .format('dddd')}`;
   }
@@ -184,8 +184,8 @@ const EditBills = withModal((props) => {
                 order === 'amount-desc'
                   ? setOrder('amount-asc')
                   : order === 'amount-asc'
-                  ? setOrder(undefined)
-                  : setOrder('amount-desc');
+                    ? setOrder(undefined)
+                    : setOrder('amount-desc');
               }}
               selected={order === 'amount-desc' || order === 'amount-asc'}
             >
@@ -202,8 +202,8 @@ const EditBills = withModal((props) => {
                 order === 'alpha-desc'
                   ? setOrder(undefined)
                   : order === 'alpha-asc'
-                  ? setOrder('alpha-desc')
-                  : setOrder('alpha-asc');
+                    ? setOrder('alpha-desc')
+                    : setOrder('alpha-asc');
               }}
             >
               {order === 'alpha-desc' ? 'z-a' : 'a-z'}

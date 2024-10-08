@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-between',
     position: 'relative',
   },
   passwordMask: {

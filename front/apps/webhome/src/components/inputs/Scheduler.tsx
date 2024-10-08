@@ -17,7 +17,7 @@ import dropdownStyles from './styles/dropdowns.module.scss';
 import schedulerStyles from './styles/scheduler.module.scss';
 import type { Bill } from '@ledget/shared-features';
 import { useClickClose } from '@ledget/ui';
-import { getDaySuffix } from '@ledget/helpers';
+import { getOrderSuffix } from '@ledget/helpers';
 import {
   FormInputButton2,
   FormInputButton,
@@ -127,14 +127,14 @@ const Button: FC<
       setPlaceholder(
         `${dayjs()
           .month(month - 1)
-          .format('MMM')} ${day}${getDaySuffix(day)}`
+          .format('MMM')} ${day}${getOrderSuffix(day)}`
       );
     } else if (week && weekDay) {
       setPlaceholder(
-        `${week}${getDaySuffix(week)} ${dayjs().day(weekDay).format('ddd')}`
+        `${week}${getOrderSuffix(week)} ${dayjs().day(weekDay).format('ddd')}`
       );
     } else if (day) {
-      setPlaceholder(`The ${day}${getDaySuffix(day)}`);
+      setPlaceholder(`The ${day}${getOrderSuffix(day)}`);
     }
   }, [day, month, week, weekDay]);
 
@@ -686,7 +686,7 @@ const MonthPicker = () => {
       Escape: () => {
         setOpen(false);
       },
-      default: () => {}
+      default: () => { }
     };
     const action = actions[key as keyof typeof actions] || actions['default'];
     action();
@@ -813,12 +813,12 @@ export const BillScheduler = (props: BSP) => {
 
   return (
     <>
-      {month && <input type="hidden" value={month} {...register('month')} />}
-      {day && <input type="hidden" value={day} {...register('day')} />}
+      {month && <input type="hidden" value={month} {...register('location.month')} />}
+      {day && <input type="hidden" value={day} {...register('location.day')} />}
       {weekDay && (
-        <input type="hidden" value={weekDay} {...register('week_day')} />
+        <input type="hidden" value={weekDay} {...register('location.week_day')} />
       )}
-      {week && <input type="hidden" value={week} {...register('week')} />}
+      {week && <input type="hidden" value={week} {...register('location.week')} />}
       <Scheduler
         day={day}
         setDay={setDay}

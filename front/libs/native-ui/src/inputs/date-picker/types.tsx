@@ -8,13 +8,14 @@ type Error = {
 
 export type TPicker = 'date' | 'range';
 
-type BaseDatePickerProps= {
+type BaseDatePickerProps = {
   name?: string
   mode: 'datetime' | 'date' | 'time'
   format?: 'MM/DD/YYYY' | 'M/D/YYYY' | 'MM/DD/YY' | 'DD/MM/YYYY' | 'DD/MM/YY'
   theme?: 'light' | 'dark'
   label?: string
   error?: Error
+  icon?: boolean
 }
 
 export type DatePickerProps<T extends TPicker> =
@@ -22,6 +23,7 @@ export type DatePickerProps<T extends TPicker> =
   ? {
     placeholder?: [string, string]
     pickerType: T
+    title?: [string, string]
     defaultValue?: [dayjs.Dayjs | undefined, dayjs.Dayjs | undefined]
     disabled?: [[dayjs.Dayjs | undefined, dayjs.Dayjs | undefined], [dayjs.Dayjs | undefined, dayjs.Dayjs | undefined]]
     onChange?: (value?: [dayjs.Dayjs, dayjs.Dayjs]) => void
@@ -29,6 +31,7 @@ export type DatePickerProps<T extends TPicker> =
   : {
     placeholder?: string
     pickerType: T
+    title?: string
     defaultValue?: dayjs.Dayjs
     onChange?: (value?: dayjs.Dayjs) => void
     disabled?: [dayjs.Dayjs | undefined, dayjs.Dayjs | undefined]

@@ -46,6 +46,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  tabButton: {
+    alignItems: 'center',
+  },
   activityButtonContainer: {
     position: 'relative',
   },

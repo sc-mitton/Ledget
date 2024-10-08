@@ -52,6 +52,7 @@ const Button = (props: ButtonProps) => {
 
   return (
     <TouchableOpacity
+      style={styles.tabButton}
       key={route.key}
       accessibilityRole="button"
       accessibilityState={isFocused ? { selected: true } : {}}
@@ -61,14 +62,14 @@ const Button = (props: ButtonProps) => {
       onLongPress={onLongPress}
     >
       {route.key.includes('Home')
-        ? <Icon icon={Home} color={isFocused ? 'activeIcon' : 'mainText'} />
+        ? <Icon icon={Home} color={isFocused ? 'mainText' : 'tertiaryText'} />
         : route.key.includes('Budget')
-          ? <Icon icon={DollarSign} color={isFocused ? 'activeIcon' : 'mainText'} />
+          ? <Icon icon={DollarSign} color={isFocused ? 'mainText' : 'tertiaryText'} />
           : route.key.includes('Accounts')
-            ? <Icon icon={Institution} color={isFocused ? 'activeIcon' : 'mainText'} />
+            ? <Icon icon={Institution} color={isFocused ? 'mainText' : 'tertiaryText'} />
             : route.key.includes('Activity')
-              ? <Icon icon={Activity} color={isFocused ? 'activeIcon' : 'mainText'} />
-              : <Icon icon={User} color={isFocused ? 'activeIcon' : 'mainText'} />
+              ? <Icon icon={Activity} color={isFocused ? 'mainText' : 'tertiaryText'} />
+              : <Icon icon={User} color={isFocused ? 'mainText' : 'tertiaryText'} />
       }
     </TouchableOpacity>
   )

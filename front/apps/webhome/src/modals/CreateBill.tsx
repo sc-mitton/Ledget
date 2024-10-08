@@ -110,7 +110,7 @@ const Form = withModal((props) => {
                   month: location.state?.month
                 }}
                 billPeriod={billPeriod}
-                error={errors.day}
+                error={errors.schedule?.day}
                 register={register}
               />
             )}

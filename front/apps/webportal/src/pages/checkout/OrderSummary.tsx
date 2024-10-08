@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 
 import styles from './styles/order-summary.module.scss';
 import { DollarCents } from '@ledget/ui';
-import { getDaySuffix } from '@ledget/helpers';
+import { getOrderSuffix } from '@ledget/helpers';
 
 const OrderSummary = ({
   unit_amount,
@@ -24,7 +24,7 @@ const OrderSummary = ({
               <td>First Charge:</td>
               <td>
                 {firstCharge.format('MMM, D')}
-                {getDaySuffix(firstCharge.date())}
+                {getOrderSuffix(firstCharge.date())}
               </td>
             </tr>
             <tr>

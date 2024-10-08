@@ -7,9 +7,10 @@ import {
   vec
 } from '@shopify/react-native-skia';
 import { useTheme } from '@shopify/restyle';
+import { Bell } from 'geist-native-icons';
 
 import styles from './styles/header';
-import { Header, BillCatEmoji, Box, Text, Seperator, DollarCents } from '@ledget/native-ui';
+import { Header, BillCatEmoji, Box, Text, Seperator, DollarCents, Icon, Button } from '@ledget/native-ui';
 import { useAppearance } from '@/features/appearanceSlice';
 import { Category } from '@ledget/shared-features';
 
@@ -55,7 +56,12 @@ const EmojiHeader = ({ category }: { category: Category }) => {
             />
           </Rect>
         </Canvas>
-        <Text style={styles.blurEmoji}>{category.emoji}</Text>
+        <Text style={[
+          styles.blurEmoji,
+          { opacity: mode === 'dark' ? 0.7 : 0.5 }
+        ]}>
+          {category.emoji}
+        </Text>
         <View style={styles.seperator}>
           <Seperator backgroundColor='mainScreenSeperator' variant='bare' height={2} />
         </View>

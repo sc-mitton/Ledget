@@ -85,74 +85,75 @@ export function MoneyInput<T extends TInput>(props: MoneyInputProps<T>) {
   };
 
   return (
-    <OutsidePressHandler onOutsidePress={() => {
-      input1Ref.current?.blur();
-      input2Ref.current?.blur();
-    }}>
-      <View>
-        <Box style={styles.textInputLabelContainer}>
-          {label && <InputLabel>{label}</InputLabel>}
+    <OutsidePressHandler
+      style={styles.container}
+      onOutsidePress={() => {
+        input1Ref.current?.blur();
+        input2Ref.current?.blur();
+      }}>
+      <Box style={styles.textInputLabelContainer}>
+        {label && <InputLabel>{label}</InputLabel>}
+        <Box
+          borderColor={error
+            ? 'inputBorderErrorSecondary' : index === 0 ? 'focusedInputBorderSecondary'
+              : 'transparent'}
+          borderWidth={1.75}
+          style={styles.textInputContainer2}
+        >
           <Box
-            borderColor={error
-              ? 'inputBorderErrorSecondary' : index === 0 ? 'focusedInputBorderSecondary'
-                : 'transparent'}
-            borderWidth={1.75}
-            style={styles.textInputContainer2}
+            backgroundColor='inputBackground'
+            borderColor={index === 0
+              ? error ? 'inputBorderErrorMain' : 'focusedInputBorderMain'
+              : 'inputBorder'}
+            borderWidth={1.5}
+            style={styles.textInputContainer1}
           >
-            <Box
-              backgroundColor='inputBackground'
-              borderColor={index === 0
-                ? error ? 'inputBorderErrorMain' : 'focusedInputBorderMain'
-                : 'inputBorder'}
-              borderWidth={1.5}
-              style={styles.textInputContainer1}
-            >
+            <ReactNativeTextInput
+              {...rest}
+              ref={input1Ref}
+              inputMode={'numeric'}
+              keyboardAppearance={theme.colors.mode === 'dark' ? 'dark' : 'light'}
+              value={Array.isArray(formatedValue) ? formatedValue?.[0] : formatedValue}
+              onFocus={() => setIndex(0)}
+              onBlur={(e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+                onBlur && onBlur(e);
+                setIndex(undefined);
+              }}
+              onChangeText={(v) => handleChange(v)}
+              placeholder={`$0${accuracy ? '.' + '0'.repeat(accuracy) : ''}`}
+              placeholderTextColor={theme.colors.placeholderText}
+              style={[{ ...styles.textInput, color: theme.colors.mainText }, style]}
+            />
+            {props.inputType === 'range' &&
+              <Text
+                style={styles.dash}
+                variant='bold'
+                color={Array.isArray(formatedValue)
+                  ? formatedValue?.some(i => i) ? 'mainText' : 'placeholderText'
+                  : value ? 'mainText' : 'placeholderText'}
+              >
+                &ndash;
+              </Text>}
+            {props.inputType === 'range' && (
               <ReactNativeTextInput
                 {...rest}
-                ref={input1Ref}
+                ref={input2Ref}
+                value={Array.isArray(formatedValue) ? formatedValue?.[1] : formatedValue}
                 inputMode={'numeric'}
-                keyboardAppearance={theme.colors.mode === 'dark' ? 'dark' : 'light'}
-                value={Array.isArray(formatedValue) ? formatedValue?.[0] : formatedValue}
                 onFocus={() => setIndex(0)}
                 onBlur={(e: NativeSyntheticEvent<TextInputFocusEventData>) => {
                   onBlur && onBlur(e);
                   setIndex(undefined);
                 }}
                 onChangeText={(v) => handleChange(v)}
-                placeholder={`$0${accuracy ? '.' + '0'.repeat(accuracy) : ''}`}
+                placeholder={`$0${props.accuracy ? '.' + '0'.repeat(props.accuracy) : ''}`}
                 placeholderTextColor={theme.colors.placeholderText}
                 style={[{ ...styles.textInput, color: theme.colors.mainText }, style]}
               />
-              {props.inputType === 'range' &&
-                <Text
-                  style={styles.dash}
-                  color={Array.isArray(formatedValue)
-                    ? formatedValue?.some(i => i) ? 'mainText' : 'placeholderText'
-                    : value ? 'placeholderText' : 'mainText'}
-                >
-                  &ndash;
-                </Text>}
-              {props.inputType === 'range' && (
-                <ReactNativeTextInput
-                  {...rest}
-                  ref={input2Ref}
-                  value={Array.isArray(formatedValue) ? formatedValue?.[1] : formatedValue}
-                  inputMode={'numeric'}
-                  onFocus={() => setIndex(0)}
-                  onBlur={(e: NativeSyntheticEvent<TextInputFocusEventData>) => {
-                    onBlur && onBlur(e);
-                    setIndex(undefined);
-                  }}
-                  onChangeText={(v) => handleChange(v)}
-                  placeholder={`$0${props.accuracy ? '.' + '0'.repeat(props.accuracy) : ''}`}
-                  placeholderTextColor={theme.colors.placeholderText}
-                  style={[{ ...styles.textInput, color: theme.colors.mainText }, style]}
-                />
-              )}
-            </Box>
+            )}
           </Box>
         </Box>
-      </View>
+      </Box>
     </OutsidePressHandler>
   );
 }

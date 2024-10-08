@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 0,
-    marginTop: 12,
+    marginTop: 24,
     justifyContent: 'center'
   },
   tabPanel: {

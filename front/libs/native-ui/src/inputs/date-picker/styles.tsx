@@ -7,6 +7,9 @@ const styles = StyleSheet.create({
     marginTop: 4
   },
   textInput: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
     fontFamily: 'SourceSans3Regular',
     fontSize: 16,
     width: '100%',

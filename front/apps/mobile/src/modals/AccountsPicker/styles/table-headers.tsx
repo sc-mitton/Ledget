@@ -4,8 +4,8 @@ const styles = StyleSheet.create({
   tableHeaders: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingLeft: 28,
-    paddingRight: 22,
+    paddingLeft: 20,
+    paddingRight: 12,
     marginTop: 12,
   },
   tableHeader: {

@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
   draggableListContent: {
     paddingBottom: 16,
-    paddingHorizontal: 24,
+    paddingHorizontal: 16,
     paddingTop: 2
   },
 });

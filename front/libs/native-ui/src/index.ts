@@ -1,4 +1,6 @@
 
+export * from './inputs/checkbox/Checkbox';
+
 export * from './buttons/tabs-track';
 
 export * from './inputs/radios/Radios';

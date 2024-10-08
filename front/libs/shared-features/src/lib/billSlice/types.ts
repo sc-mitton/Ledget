@@ -22,7 +22,7 @@ export interface Bill {
 }
 
 export type NewBill = Omit<
-  Partial<Bill>,
+  Partial<Omit<Bill, 'reminders'> & { reminders: Partial<Reminder>[] }>,
   'id' | 'is_paid' | 'last_paid' | 'bill_confirmed'
 >;
 export type UpdateBill = NewBill & Pick<Bill, 'id'>;

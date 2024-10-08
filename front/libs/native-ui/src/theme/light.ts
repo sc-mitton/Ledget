@@ -152,8 +152,10 @@ export const lightTheme = createTheme({
     tabNavPill: palette.blue100,
     borderedGrayButton: palette.gray200,
     dragBar: palette.gray200,
-    tabsTrack: palette.gray250,
-    tabsBackground: palette.white,
+    tabsTrack: palette.gray200,
+    tabsBackground: palette.gray100,
+    radioCardSelected: palette.gray200,
+    radioCardUnselected: palette.gray150,
 
     // Category and Bill Colors
     monthBackground: `hsl(${blueH}, 100%, 93%)`,
@@ -240,6 +242,7 @@ export const lightTheme = createTheme({
       fontSize: 15,
       lineHeight: 20,
       fontFamily: 'SourceSans3Medium',
+      alignItems: 'center',
       marginTop: 'l',
       gap: 's',
       marginLeft: 'xs',

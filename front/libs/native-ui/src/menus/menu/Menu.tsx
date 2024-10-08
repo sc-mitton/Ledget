@@ -82,9 +82,9 @@ export function Menu(props: MenuProps) {
                 <Box
                   shadowColor='menuShadowColor'
                   shadowOpacity={1}
-                  shadowRadius={8}
+                  shadowRadius={20}
                   elevation={15}
-                  shadowOffset={{ width: 0, height: 4 }}
+                  shadowOffset={{ width: 0, height: 6 }}
                   style={styles.menuOptions}
                 >
                   <BlurView
@@ -106,7 +106,8 @@ export function Menu(props: MenuProps) {
                           </View>}
                         <TouchableHighlight
                           style={styles.rowContainer}
-                          activeOpacity={0.7}
+                          underlayColor={theme.colors.mainText}
+                          activeOpacity={0.9}
                           onPress={() => {
                             if (props.closeOnSelect) {
                               setShow(false);
