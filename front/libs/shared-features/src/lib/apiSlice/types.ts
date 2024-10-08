@@ -8,5 +8,6 @@ export const tagTypes = [
   'Device',
   'User',
   'TransactionCount',
+  'Reminder',
   'Price'
 ];

@@ -4,7 +4,7 @@ import logging
 import pytz
 
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListCreateAPIView
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework import status
@@ -20,6 +20,7 @@ from budget.serializers import (
     CategorySerializer,
     BillSerializer,
     ReminderSerializer,
+    CreateReminderSerializer,
     SpendingHistorySerializer,
 )
 from budget.models import (
@@ -34,8 +35,13 @@ from restapi.view_mixins import BulkSerializerMixin
 logger = logging.getLogger('ledget')
 
 
-class ReminderView(ListAPIView):
-    serializer_class = ReminderSerializer
+class ReminderView(ListCreateAPIView):
+
+    def get_serializer_class(self):
+        if (self.request.method == 'POST'):
+            return CreateReminderSerializer
+        else:
+            return ReminderSerializer
 
     def get_queryset(self):
         return Reminder.objects.all().order_by('period', 'offset')

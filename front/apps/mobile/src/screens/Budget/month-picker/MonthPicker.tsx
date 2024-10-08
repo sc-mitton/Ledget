@@ -133,11 +133,13 @@ export default function DatePicker() {
                 padding='none'
                 onPress={() => { pagerRef.current?.setPage(Math.min((options?.length || 1) - 1, pagerIndex + 1)) }}
               >
-                <Icon
-                  icon={ChevronsRight}
-                  strokeWidth={2}
-                  color={pagerIndex < (options?.length || 1) - 1 ? 'mainText' : 'quinaryText'}
-                />
+                <View style={styles.calendarIcon}>
+                  <Icon
+                    icon={ChevronsRight}
+                    strokeWidth={2}
+                    color={pagerIndex < (options?.length || 1) - 1 ? 'mainText' : 'quinaryText'}
+                  />
+                </View>
               </Button>
             </View>
           </Box>

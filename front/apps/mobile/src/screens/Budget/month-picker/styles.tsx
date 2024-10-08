@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   calendarIcon: {
-    marginRight: 8,
+    marginRight: 0,
     marginBottom: 2
   },
   grid: {

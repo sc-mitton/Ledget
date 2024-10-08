@@ -2,23 +2,16 @@ import { NavigatorScreenParams } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import type { CompositeScreenProps } from '@react-navigation/native';
 
-import type { ProfileStackParamList } from './profile';
 import type { LoginStackParamList } from './login';
 import type { ModalStackParamList } from './modals';
 import { Transaction } from '@ledget/shared-features';
-import { AccountsStackParamList } from './accounts';
-import { BudgetStackParamList } from './budget';
-
-export type BottomTabNavParamList = {
-  Home: undefined;
-  Budget: NavigatorScreenParams<BudgetStackParamList>;
-  Accounts: NavigatorScreenParams<AccountsStackParamList>;
-  Profile: NavigatorScreenParams<ProfileStackParamList>;
-};
+import { OnboardingStackParamList } from './onboarding';
+import { BottomTabNavParamList } from './bottomNav';
 
 export type RootStackParamList = {
   BottomTabs: NavigatorScreenParams<BottomTabNavParamList>;
   Modals: NavigatorScreenParams<ModalStackParamList>;
+  Onboarding: NavigatorScreenParams<OnboardingStackParamList>;
   Transaction: {
     transaction: Transaction | string
     options?: {

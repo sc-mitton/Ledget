@@ -160,7 +160,8 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
         </Animated.View>}
       <View style={styles.menuButtonContainer}>
         {showChart
-          ? <ChartWindowsMenu
+          ?
+          <ChartWindowsMenu
             windows={windows}
             onSelect={(w) => {
               setWindow(w);
@@ -173,12 +174,13 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
               setShowChart(false)
             }}
           />
-          : <Button
+          :
+          <Button
             onPress={() => { setShowChart(true) }}
             backgroundColor='grayButton'
-            variant='square'>
-            <Icon icon={Graph} color='secondaryText' />
-          </Button>
+            variant='square'
+            icon={<Icon icon={Graph} color='secondaryText' />}
+          />
         }
       </View>
       <View style={styles.chartHeader}>

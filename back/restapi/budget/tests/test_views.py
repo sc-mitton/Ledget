@@ -177,6 +177,24 @@ class BudgetViewTestObjectCreations(ViewTestsMixin):
             categories[len(categories) - 1] == reordered_categories[0],
             True)
 
+    def test_create_bill_reminder(self):
+        bill = Bill.objects.filter(removed_on__isnull=True).first()
+        payload = {
+            'offset': 5,
+            'period': 'day',
+            'bill': str(bill.id)
+        }
+        response = self.client.post(
+            reverse('reminders'),
+            json.dumps(payload),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 201)
+
+        bill.refresh_from_db()
+        reminder = next((r for r in bill.reminders.all() if r.offset == 5), None)
+        self.assertIsNotNone(reminder)
+
 
 class BudgetViewTestRetrevalUpdate(ViewTestsMixin):
 

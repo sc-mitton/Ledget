@@ -98,14 +98,15 @@ export const Button = (props: ButtonProps) => {
               : children
             : null}
           {labelPlacement === 'right' && icon}
-          <Text
-            fontFamily={fontFamily}
-            color={textColor}
-            fontSize={fontSize}
-            lineHeight={lineHeight}
-            style={textColor ? {} : { color: transparent ? 'transparent' : color ? color : '' }}>
-            {label}
-          </Text>
+          {label &&
+            <Text
+              fontFamily={fontFamily}
+              color={textColor}
+              fontSize={fontSize}
+              lineHeight={lineHeight}
+              style={textColor ? {} : { color: transparent ? 'transparent' : color ? color : '' }}>
+              {label}
+            </Text>}
           {!labelPlacement || labelPlacement === 'right'
             ? typeof children === 'function'
               ? children({ color })

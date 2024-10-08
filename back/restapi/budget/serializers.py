@@ -25,6 +25,21 @@ class AlertSerializer(serializers.ModelSerializer):
         exclude = ['category']
 
 
+class CreateReminderSerializer(serializers.ModelSerializer):
+    bill = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = Reminder
+        fields = ['period', 'offset', 'bill']
+
+    def create(self, validated_data):
+        bill_id = validated_data.pop('bill')
+        bill = Bill.objects.get(id=bill_id)
+        reminder = Reminder.objects.create(**validated_data)
+        bill.reminders.add(reminder)
+        return reminder
+
+
 class ReminderSerializer(serializers.ModelSerializer):
     id = serializers.CharField(required=False)
 
@@ -190,6 +205,7 @@ class BillTransactionSerializer(serializers.ModelSerializer):
 
 class BillSerializer(NestedCreateMixin, serializers.ModelSerializer):
     reminders = ReminderSerializer(many=True, required=False)
+    reminder = ReminderSerializer(required=False)
     is_paid = serializers.SerializerMethodField(read_only=True)
     last_paid = serializers.SerializerMethodField(read_only=True)
     transactions = BillTransactionSerializer(many=True, read_only=True)

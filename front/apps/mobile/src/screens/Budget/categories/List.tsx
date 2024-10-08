@@ -67,6 +67,7 @@ const List = (props: Props) => {
             <>
               <AnimatedView key={item.id} style={style}>
                 <TouchableOpacity
+                  activeOpacity={0.7}
                   style={styles.row}
                   onPress={() => props.navigation.navigate('Category', { category: item })}
                 >
