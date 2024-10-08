@@ -33,7 +33,6 @@ export function TabsTrack(props: TabsTrackProps) {
   }, [index]);
 
   return (
-
     <View style={[styles.tabsTrackBoxContainer, styles.centeredRow, props.containerStyle]}>
       <Box backgroundColor='tabsTrack' style={[styles.tabsTrackBox, styles.centeredRow]}>
         <View

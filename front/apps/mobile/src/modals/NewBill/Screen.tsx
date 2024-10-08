@@ -59,10 +59,7 @@ const Screen = (props: ModalScreenProps<'NewBill'>) => {
         </Header2>
         <Seperator />
       </View>
-      <ScrollView
-        contentContainerStyle={styles.form}
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView contentContainerStyle={styles.form} showsVerticalScrollIndicator={false}>
         <View>
           <InputLabel>Name</InputLabel>
           <EmojiPicker value={emoji} onChange={onEmojiChange} title='Emoji'>
@@ -126,10 +123,7 @@ const Screen = (props: ModalScreenProps<'NewBill'>) => {
           resetField={resetField}
           error={errors.schedule}
         />
-        <RemindersModal
-          control={control}
-          resetField={resetField}
-        />
+        <RemindersModal control={control} resetField={resetField} />
         <View style={styles.saveButton}>
           <SubmitButton
             variant='main'

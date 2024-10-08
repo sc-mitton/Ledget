@@ -44,6 +44,8 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     position: 'absolute',
+    alignItems: 'center',
+    gap: 8
   }
 });
 

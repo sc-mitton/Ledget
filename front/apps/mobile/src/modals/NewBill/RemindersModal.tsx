@@ -82,10 +82,10 @@ const SchedulerModal = (props: ModalProps) => {
             backgroundColor='inputBackground'
             borderColor='inputBorder'
             borderWidth={1.5}
-            textColor='secondaryText'
+            textColor='placeholderText'
           >
             <View style={styles.plusIcon}>
-              <Icon icon={Plus} color='secondaryText' size={16} strokeWidth={2} />
+              <Icon icon={Plus} color='placeholderText' size={16} strokeWidth={2} />
             </View>
           </Button>}
       </View>

@@ -154,8 +154,8 @@ export const darkTheme = createTheme({
     mediumGrayButtonBorder: palette.gray650,
     borderedGrayButton: palette.gray700,
     dragBar: palette.gray750,
-    tabsTrack: palette.gray800,
-    tabsBackground: palette.gray700,
+    tabsTrack: palette.gray850,
+    tabsBackground: palette.gray750,
     radioCardSelected: palette.gray750,
     radioCardUnselected: palette.gray800,
 

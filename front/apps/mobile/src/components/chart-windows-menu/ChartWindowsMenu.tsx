@@ -12,6 +12,7 @@ type Windows = readonly {
 type Props<W extends Windows> = {
   onSelect: (window: W[number]['key']) => void
   onShowChange?: (show: boolean) => void
+  onClose?: () => void
   windows: W
 }
 
@@ -35,7 +36,7 @@ export const ChartWindowsMenu = <W extends Windows>(props: Props<W>) => {
           label: 'Close',
           icon: () => <Icon icon={CornerDownLeft} size={16} color='secondaryText' strokeWidth={2} />,
           onSelect: () => {
-            props.onShowChange?.(false)
+            props.onClose?.()
           },
           newSection: true
         }

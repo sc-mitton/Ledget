@@ -5,7 +5,7 @@ import { useSpringRef, useTransition } from '@react-spring/web';
 import Big from 'big.js';
 
 import styles from './styles/list';
-import { DollarCents, BillCatEmoji, Icon, Text, AnimatedView, Button } from '@ledget/native-ui'
+import { DollarCents, ProgressEmoji, Icon, Text, AnimatedView, Button } from '@ledget/native-ui'
 import { Category } from '@ledget/shared-features'
 import { BudgetScreenProps } from '@types';
 
@@ -71,7 +71,11 @@ const List = (props: Props) => {
                   onPress={() => props.navigation.navigate('Category', { category: item })}
                 >
                   <View>
-                    <BillCatEmoji emoji={item.emoji} period={item.period} />
+                    <ProgressEmoji
+                      progress={Math.max(Big(item.amount_spent || 0).div(item.limit_amount || 1).toNumber(), .02)}
+                      emoji={item.emoji}
+                      period={item.period}
+                    />
                   </View>
                   <View style={styles.name}>
                     <Text>{item.name.charAt(0).toUpperCase() + item.name.slice(1)}</Text>

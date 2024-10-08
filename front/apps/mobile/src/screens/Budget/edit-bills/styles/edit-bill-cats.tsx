@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   tabsTrackContent: {
-    maxWidth: '90%',
+    maxWidth: '80%',
     marginBottom: 12
   }
 });

@@ -26,6 +26,7 @@ import {
 } from '@shopify/restyle';
 
 import { Text } from './Text';
+import { Box } from './Box';
 import { Theme } from '../theme';
 
 export type RestyleProps = SpacingProps<Theme> &
@@ -56,6 +57,7 @@ export type ButtonProps = RestyleProps & Omit<PressableProps, 'children'> & {
   textColor?: string;
   transparent?: boolean;
   style?: StyleProp<ViewStyle>;
+  icon?: React.ReactNode;
 };
 
 export const Button = (props: ButtonProps) => {
@@ -68,6 +70,7 @@ export const Button = (props: ButtonProps) => {
     textColor,
     labelPlacement = 'right',
     onLayout,
+    icon,
     ...rest
   } = props;
   const restyledProps = useRestyle(restyleFunctions, rest);
@@ -84,24 +87,32 @@ export const Button = (props: ButtonProps) => {
       onLayout={onLayout}
     >
       <View {...restyledProps}>
-        {labelPlacement === 'left'
-          ? typeof children === 'function'
-            ? children({ color })
-            : children
-          : null}
-        <Text
-          fontFamily={fontFamily}
-          color={textColor}
-          fontSize={fontSize}
-          lineHeight={lineHeight}
-          style={textColor ? {} : { color: transparent ? 'transparent' : color ? color : '' }}>
-          {label}
-        </Text>
-        {!labelPlacement || labelPlacement === 'right'
-          ? typeof children === 'function'
-            ? children({ color })
-            : children
-          : null}
+        <Box
+          flexDirection='row'
+          gap='s'
+          alignItems='center'
+        >
+          {labelPlacement === 'left'
+            ? typeof children === 'function'
+              ? children({ color })
+              : children
+            : null}
+          {labelPlacement === 'right' && icon}
+          <Text
+            fontFamily={fontFamily}
+            color={textColor}
+            fontSize={fontSize}
+            lineHeight={lineHeight}
+            style={textColor ? {} : { color: transparent ? 'transparent' : color ? color : '' }}>
+            {label}
+          </Text>
+          {!labelPlacement || labelPlacement === 'right'
+            ? typeof children === 'function'
+              ? children({ color })
+              : children
+            : null}
+          {labelPlacement === 'left' && icon}
+        </Box>
       </View>
     </TouchableOpacity>
   );

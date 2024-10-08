@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   tab: {
-    marginHorizontal: 24,
+    marginHorizontal: 16,
     paddingVertical: 2,
     flex: 1
   },

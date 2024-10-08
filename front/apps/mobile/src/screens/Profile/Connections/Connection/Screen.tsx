@@ -101,24 +101,18 @@ const Screen = ({ navigation, route }: ConnectionsScreenProps<'Connection'>) => 
             }}
             textColor='blueText'
             label='Disconnect'
-            labelPlacement='left'
-          >
-            <View style={styles.icon}>
-              <Icon color='blueText' icon={Trash2} size={18} />
-            </View>
-          </Button>
+            labelPlacement='right'
+            icon={<Icon color='blueText' icon={Trash2} size={18} />}
+          />
           {(plaidItem?.login_required || plaidItem?.pending_expiration) &&
             <Button
               style={styles.button}
               textColor='blueText'
               onPress={openLink}
               label='Reconnect'
-              labelPlacement='left'
-            >
-              <View style={styles.icon}>
-                <Icon color='blueText' icon={Repeat} size={18} />
-              </View>
-            </Button>}
+              labelPlacement='right'
+              icon={<Icon color='blueText' icon={Repeat} size={18} />}
+            />}
         </View>
       }
     </Box>

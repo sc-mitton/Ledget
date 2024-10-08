@@ -75,9 +75,10 @@ function Profile(props: ProfileScreenProps<'Main'>) {
         label={'Logout'}
         backgroundColor='transparent'
         borderColor='transparent'
-        textColor='blueText'>
-        <View style={styles.logoutIcon}><Icon strokeWidth={2} icon={LogOut} size={18} color='blueText' /></View>
-      </Button>
+        textColor='blueText'
+        labelPlacement='left'
+        icon={<Icon strokeWidth={2} icon={LogOut} size={18} color='blueText' />}
+      />
     </Box>
   );
 }

@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { ArrowUp, ArrowDown, Plus } from 'geist-native-icons';
+import { FileText } from 'geist-native-icons';
 
 import styles from './styles/bills';
 import { selectBudgetMonthYear, Bill, useGetBillsQuery } from '@ledget/shared-features';
-import { BillCatEmoji, Text, DollarCents, Seperator, CustomScrollView, Icon, Button } from '@ledget/native-ui';
+import { BillCatEmoji, Text, DollarCents, Seperator, CustomScrollView, Icon, Button, Box } from '@ledget/native-ui';
 import { useAppSelector } from '@/hooks';
 import { getScheduleDescription } from './helpers';
 import { BudgetScreenProps } from '@types';
@@ -114,17 +115,18 @@ const Categories = (props: BudgetScreenProps<'EditBills'> & { period: Bill['peri
       {bills.length === 0 &&
         <View style={styles.emptyTextContainer}>
           <View style={styles.emptyText}>
+            <Box backgroundColor='nestedContainerSeperator' borderRadius='circle' padding='s'>
+              <Icon icon={FileText} color='secondaryText' size={26} />
+            </Box>
             <Button
-              label='Add a bill'
-              variant='grayPill'
-              backgroundColor='nestedContainerSeperator'
+              label='Add bill'
+              labelPlacement='left'
               textColor='secondaryText'
+              icon={<Icon icon={Plus} color='secondaryText' strokeWidth={2} size={16} />}
               onPress={() => {
                 props.navigation.navigate('Modals', { screen: 'NewBill', params: { period: props.period } })
               }}
-            >
-              <Icon icon={Plus} color='secondaryText' />
-            </Button>
+            />
           </View>
         </View>}
     </>

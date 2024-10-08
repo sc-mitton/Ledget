@@ -22,7 +22,7 @@ export function Checkbox(props: CheckboxProps) {
         backgroundColor={checked ? 'blueButton' : 'inputBackground'}
         borderColor={checked ? 'transparent' : 'inputBorder'}
         borderWidth={1.5}
-        borderRadius='s'
+        borderRadius='xs'
         style={styles.checkbox}
       >
         <View style={styles.checkIconContainer} pointerEvents='none'>

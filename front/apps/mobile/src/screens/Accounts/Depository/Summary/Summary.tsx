@@ -18,7 +18,7 @@ import { BlurView } from 'expo-blur';
 import styles from './styles/summary';
 import { AccountsTabsScreenProps } from '@types';
 import { Graph } from '@ledget/media/native';
-import { Box, DollarCents, Icon, Text, Menu, Button } from '@ledget/native-ui';
+import { Box, DollarCents, Icon, Text, Button } from '@ledget/native-ui';
 import { useGetAccountsQuery, useLazyGetAccountBalanceHistoryQuery, useLazyGetAccountBalanceTrendQuery } from '@ledget/shared-features';
 import SourceSans3Regular from '../../../../../assets/fonts/SourceSans3Regular.ttf';
 import { useAppearance } from '@/features/appearanceSlice';
@@ -168,9 +168,9 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
             }}
             onShowChange={(show) => {
               setShowMenu(show)
-              if (!show) {
-                setShowChart(false)
-              }
+            }}
+            onClose={() => {
+              setShowChart(false)
             }}
           />
           : <Button

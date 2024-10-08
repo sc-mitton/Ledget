@@ -60,16 +60,15 @@ const TabButton = (props: ButtonProps) => {
       variant={isFocused ? 'bluePill' : 'grayPill'}
       key={route.key}
       fontSize={15}
-      labelPlacement='left'
+      labelPlacement='right'
       accessibilityRole="button"
       accessibilityState={isFocused ? { selected: true } : {}}
       accessibilityLabel={des?.options?.tabBarAccessibilityLabel}
       testID={des?.options?.tabBarTestID}
       onPress={onPress}
       onLongPress={onLongPress}
-    >
-      <View style={styles.buttonIcon} >
-        {route.name.toLowerCase() === 'depository'
+      icon={
+        route.name.toLowerCase() === 'depository'
           ? <Icon size={16} strokeWidth={1.75} icon={CurrencyNote} color={isFocused ? 'blueText' : 'secondaryText'} />
           : route.name.toLowerCase() === 'credit'
             ? <Icon size={16} strokeWidth={1.75} icon={CreditCard} color={isFocused ? 'blueText' : 'secondaryText'} />
@@ -77,9 +76,9 @@ const TabButton = (props: ButtonProps) => {
               ? <Icon size={16} strokeWidth={1.75} icon={TrendingUp} color={isFocused ? 'blueText' : 'secondaryText'} />
               : route.name.toLowerCase() === 'loan'
                 ? <Icon size={16} strokeWidth={1.75} icon={Clock} color={isFocused ? 'blueText' : 'secondaryText'} />
-                : null}
-      </View>
-    </Button>
+                : null
+      }
+    />
   )
 }
 
