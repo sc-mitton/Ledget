@@ -415,6 +415,14 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
+    id: "liabilities",
+    match: {
+      methods: ["GET"],
+      url: base_url + "/liabilities",
+    },
+  },
+  BaseWithAuth
+  {
     id: "account-balance-history",
     match: {
       methods: ["GET"],

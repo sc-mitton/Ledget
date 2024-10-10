@@ -1,8 +1,7 @@
-import { useState } from 'react';
 import { View, ScrollView } from 'react-native';
-import { useSharedValue } from 'react-native-reanimated';
 import { CheckCircle } from 'geist-native-icons';
 import Big from 'big.js';
+import { useTheme } from '@shopify/restyle';
 
 import styles from './styles';
 import { Text, DollarCents, Box, Icon } from '@ledget/native-ui';
@@ -19,9 +18,8 @@ const INITIAL_HEIGHT = 50;
 const FONT_SIZE = 24;
 
 const Carousel = () => {
-  const [page, setPage] = useState(0);
+  const theme = useTheme();
   const { month, year } = useAppSelector(selectBudgetMonthYear);
-  const height = useSharedValue(INITIAL_HEIGHT);
 
   const { isLoading: loadingCategories } = useGetCategoriesQuery(
     { month, year },

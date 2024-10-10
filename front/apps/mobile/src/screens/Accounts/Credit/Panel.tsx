@@ -14,16 +14,19 @@ import { Card } from '@components'
 import { CARD_WIDTH, CARD_HEIGHT } from '@components/card/constants'
 import { DefaultHeader, AccountHeader } from '../Header';
 import CarouselItem from './Carouseltem';
+import { useSharedValue } from 'react-native-reanimated';
 
 export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
   const [bottomOfContentPos, setBottomOfContentPos] = useState(0)
   const [accounts, setAccounts] = useState<Account[]>()
   const [account, setAccount] = useState<Account>()
   const [transactionsListExpanded, setTransactionsListExpanded] = useState(false)
+  const [carouselIndex, setCarouselIndex] = useState(0)
 
   const ref = useRef<View>(null)
+  const carouselIndexLock = useRef(false)
   const carouselRef = useRef<ICarouselInstance>(null)
-  const [carouselIndex, setCarouselIndex] = useState(0)
+  const progress = useSharedValue(0)
 
   const { data: accountsData } = useGetAccountsQuery()
 
@@ -145,7 +148,31 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
                   </AnimatedView>
                 )}
                 width={CARD_WIDTH}
-                onSnapToItem={(index) => { setCarouselIndex(index) }}
+                onProgressChange={(p) => {
+                  if (progress.value === 0) {
+                    progress.value = p
+                    return
+                  }
+                  if (carouselIndexLock.current) {
+                    return
+                  }
+                  if (p - progress.value > 20) {
+                    setCarouselIndex(carouselIndex - 1 >= 0 ? carouselIndex - 1 : accounts.length - 1)
+                    carouselIndexLock.current = true
+                    progress.value = p
+                  } else if (p - progress.value < -20) {
+                    setCarouselIndex(carouselIndex + 1 < accounts.length ? carouselIndex + 1 : 0)
+                    carouselIndexLock.current = true
+                    progress.value = p
+                  }
+                }}
+                onScrollEnd={(index) => {
+                  setTimeout(() => {
+                    carouselIndexLock.current = false
+                  }, 200)
+                  setCarouselIndex(index)
+                  progress.value = 0
+                }}
                 style={[{ height: CARD_HEIGHT * 1.3 }, styles.carousel]}
                 modeConfig={{
                   parallaxAdjacentItemScale: 0.8,

@@ -45,7 +45,7 @@ const EmptyList = ({ account }: { account: string }) => {
       contentContainerStyle={styles.emptyBoxContainer}>
       <Text color='quaternaryText'>No transactions</Text>
       <Animated.View style={{ transform: [{ translateY: arrowIconY }] }}>
-        <Icon icon={ArrowDown} color='quinaryText' strokeWidth={2} />
+        <Icon icon={ArrowDown} color='quaternaryText' strokeWidth={2} />
       </Animated.View>
     </ScrollView>
   )

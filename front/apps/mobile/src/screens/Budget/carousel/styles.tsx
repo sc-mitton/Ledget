@@ -4,12 +4,12 @@ const styles = StyleSheet.create({
   container: {
     width: '103%',
     alignItems: 'center',
-    paddingVertical: 20,
+    paddingVertical: 10,
     marginLeft: -12,
     overflow: 'hidden',
   },
   scrollViewContent: {
-    gap: 20,
+    gap: 16,
     paddingHorizontal: 12,
     paddingTop: 40,
     paddingBottom: 20,
