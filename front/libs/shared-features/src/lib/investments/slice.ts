@@ -5,7 +5,7 @@ const liabilitiesSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
     getInvestments: build.query<Investments, void>({
       query: () => 'investments',
-      providesTags: ['Investmen'],
+      providesTags: ['Investment'],
     }),
   }),
 
