@@ -1,5 +1,13 @@
 export type StudentLoan = {
   account_id: string;
+  type: string;
+  subtype: string;
+  institution: {
+    name: string;
+    id: string;
+    primary_color: string;
+  },
+  name: string;
   product_not_supported: boolean;
   account_number: string;
   disbursement_dates: string[];
@@ -29,6 +37,14 @@ export type StudentLoan = {
 
 export type Mortgage = {
   account_id: string;
+  type: string;
+  subtype: string;
+  institution: {
+    name: string;
+    id: string;
+    primary_color: string;
+  },
+  name: string;
   product_not_supported: boolean;
   account_number: string;
   disbursement_dates: string[];

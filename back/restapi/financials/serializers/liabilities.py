@@ -1,4 +1,7 @@
 from rest_framework import serializers
+from django.db.models import Prefetch
+
+from financials.models import Account, Institution
 
 
 class StudentLoanSerializer(serializers.Serializer):
@@ -62,3 +65,46 @@ class MortgageSerializer(serializers.Serializer):
 class LiabilitiesSerializer(serializers.Serializer):
     student = StudentLoanSerializer(many=True)
     mortgage = MortgageSerializer(many=True)
+
+    def to_representation(self, instance):
+        repr = super().to_representation(instance)
+        account_ids = [a['account_id'] for a in repr['student']] + \
+            [a['account_id'] for a in repr['mortgage']]
+
+        values = ['name', 'type', 'subtype']
+        accounts = Account.objects \
+            .filter(id__in=account_ids) \
+            .prefetch_related(
+                Prefetch(
+                    'institution',
+                    queryset=Institution.objects.only('id', 'name', 'primary_color')
+                ),
+            )
+
+        print('accounts', accounts)
+
+        for v in values:
+            for i in range(len(repr['student'])):
+                account = next(
+                    acc for acc in accounts
+                    if acc.id == repr['student'][i]['account_id']
+                )
+                repr['student'][i][v] = getattr(account, v)
+                repr['student'][i]['institution'] = {
+                    'id': account.institution.id,
+                    'name': account.institution.name,
+                    'primary_color': account.institution.primary_color
+                }
+            for i in range(len(repr['mortgage'])):
+                account = next(
+                    acc for acc in accounts
+                    if acc.id == repr['mortgage'][i]['account_id']
+                )
+                repr['mortgage'][i][v] = getattr(account, v)
+                repr['mortgage'][i]['institution'] = {
+                    'id': account.institution.id,
+                    'name': account.institution.name,
+                    'primary_color': account.institution.primary_color
+                }
+
+        return repr

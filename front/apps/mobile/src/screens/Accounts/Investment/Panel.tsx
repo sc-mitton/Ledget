@@ -1,11 +1,19 @@
-import { AccountsTabsScreenProps } from '@types'
-import { StyleSheet, Text, View } from 'react-native'
 
-export default function Panel(props: AccountsTabsScreenProps<'Investment'>) {
+import styles from './styles/panel'
+import { AccountsTabsScreenProps } from "@types"
+import { Box } from "@ledget/native-ui"
+import { useGetLiabilitiesQuery } from "@ledget/shared-features"
+
+export default function Panel(props: AccountsTabsScreenProps<'Loan'>) {
+
   return (
-    <View>
-      <Text>Panel</Text>
-    </View>
+    <Box
+      padding='pagePadding'
+      style={styles.main}
+    >
+      <Box style={styles.main}>
+
+      </Box>
+    </Box>
   )
 }
-

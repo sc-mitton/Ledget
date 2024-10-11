@@ -41,11 +41,11 @@ class LiabilitiesViewSet(viewsets.ViewSet):
             if json.loads(e.body).get('error_code') == 'PRODUCTS_NOT_SUPPORTED':
                 return {
                     'student': [
-                        {'account_id': a.account_id, 'product_not_supported': True}
-                        for a in plaid_item.accounts.all() if a.type == 'student_loan'
+                        {'account_id': a.id, 'product_not_supported': True}
+                        for a in plaid_item.accounts.all() if a.subtype == 'student'
                     ],
                     'mortgage': [
-                        {'account_id': a.account_id, 'product_not_supported': True}
-                        for a in plaid_item.accounts.all() if a.type == 'mortgage'
+                        {'account_id': a.id, 'product_not_supported': True}
+                        for a in plaid_item.accounts.all() if a.subtype == 'mortgage'
                     ]
                 }

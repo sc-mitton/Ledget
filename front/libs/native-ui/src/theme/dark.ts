@@ -17,7 +17,7 @@ const palette = {
 
   mutedRed: 'hsl(352, 30%, 30%)',
   red: 'hsl(352, 56%, 49%)',
-  darkRed: 'hsl(0, 59%, 34%)',
+  faintRed: 'hsl(352, 26%, 10%)',
   successGreen: 'hsl(144, 62%, 33%)',
   successGreenFaint: 'hsl(144, 62%, 18%)',
   greenText: 'hsl(144, 62%, 40%)',
@@ -138,6 +138,7 @@ export const darkTheme = createTheme({
     buttonLabel: palette.white,
     greenText: palette.greenText,
     footerText: palette.gray600,
+    redText: palette.red,
 
     // Buttons
     lightBlueButton: palette.blue800,
@@ -158,6 +159,7 @@ export const darkTheme = createTheme({
     tabsBackground: palette.gray700,
     radioCardSelected: palette.gray750,
     radioCardUnselected: palette.gray800,
+    redButton: palette.faintRed,
 
     // Category and Bill Colors
     monthBackground: `hsl(${blueH}, 50%, 25%)`,

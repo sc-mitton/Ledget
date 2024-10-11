@@ -64,4 +64,4 @@ export * from './theme';
 
 export * from './loaders/ShimmerBox';
 export * from './loaders/Shimmer';
-
+export * from './loaders/PulseBox';

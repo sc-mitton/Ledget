@@ -13,13 +13,14 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    zIndex: -1,
+    zIndex: -1
   },
   accountsPickerbuttonContent: {
     marginVertical: 2,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4
+    gap: 4,
+    minWidth: 100,
   },
   accountsPickerButtonTop: {
     flexDirection: 'row',

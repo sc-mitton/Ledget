@@ -34,22 +34,24 @@ const AccountsPickerButton = (props: AccountsTabsScreenProps<any> & { account?: 
         <View style={styles.accountsPickerbuttonContent}>
           <InstitutionLogo account={props.account?.id} size={18} />
           {props.account &&
-            <View style={styles.nameContainer}>
-              <Text
+            <>
+              <View style={styles.nameContainer}>
+                <Text
+                  color={mode === 'light' ? 'whiteText' : 'mainText'}
+                >
+                  {props.account?.name}
+                </Text>
+                <DollarCents
+                  color={mode === 'light' ? 'whiteText' : 'mainText'}
+                  value={`${props.account?.balances.current || 0}`}
+                />
+              </View>
+              <Icon
                 color={mode === 'light' ? 'whiteText' : 'mainText'}
-              >
-                {props.account?.name}
-              </Text>
-              <DollarCents
-                color={mode === 'light' ? 'whiteText' : 'mainText'}
-                value={`${props.account?.balances.current || 0}`}
-              />
-            </View>}
-          <Icon
-            color={mode === 'light' ? 'whiteText' : 'mainText'}
-            icon={ChevronDown}
-            strokeWidth={2} size={18}
-          />
+                icon={ChevronDown}
+                strokeWidth={2} size={18} />
+            </>
+          }
         </View>
       </Button>
     </View>
