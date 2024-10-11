@@ -1,24 +1,30 @@
-from rest_framework import viewsets
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
+from django.db.models import Prefetch
 from plaid.model.liabilities_get_request import LiabilitiesGetRequest
 import plaid
 import json
 
 from financials.serializers.liabilities import LiabilitiesSerializer
-from financials.models import PlaidItem
+from financials.models import PlaidItem, Account
 from core.clients import create_plaid_client
+from restapi.permissions.auth import IsAuthedVerifiedSubscriber
 
 plaid_client = create_plaid_client()
 
 
-class LiabilitiesViewSet(viewsets.ViewSet):
-    serializer_classe = LiabilitiesSerializer
+class LiabilitiesView(GenericAPIView):
+    permission_classes = [IsAuthedVerifiedSubscriber]
 
-    def list(self, request):
+    def get(self, request):
+
+        prefetch = Prefetch(
+            'accounts',
+            queryset=Account.objects.filter(
+                subtype__in=['student', 'mortgage']))
 
         plaid_items = PlaidItem.objects.filter(
-            user__in=request.user.account.users.all()) \
-            .prefetch_related('accounts')
+                user__in=request.user.account.users.all()).prefetch_related(prefetch)
 
         data = {'student': [], 'mortgage': []}
         for p in plaid_items:

@@ -12,9 +12,8 @@ from financials.views.transactions import (
     TransactionViewSet,
     NoteViewSet
 )
-from financials.views.liabilities import (
-    LiabilitiesViewSet
-)
+from financials.views.liabilities import LiabilitiesView
+from financials.views.investments import InvestmentsView
 from financials.views.account import AccountsViewSet
 
 
@@ -51,9 +50,6 @@ transactions_router.register(
 note_router = SimpleRouter(trailing_slash=False)
 note_router.register('note', NoteViewSet, basename='note')
 
-liabilities_router = SimpleRouter(trailing_slash=False)
-liabilities_router.register('liabilities', LiabilitiesViewSet, basename='liabilities')
-
 accounts_router = AccountsRouter(trailing_slash=False)
 accounts_router.register('accounts', AccountsViewSet, basename='accounts')
 
@@ -65,6 +61,7 @@ urlpatterns = [
     path('plaid-token-exchange', PlaidTokenExchangeView.as_view(), name='plaid-token-exchange'), # noqa
     path('', include(accounts_router.urls)),
     path('', include(transactions_router.urls)),
-    path('', include(liabilities_router.urls)),
     path('transactions/<str:id>/', include(note_router.urls)),
+    path('liabilities', LiabilitiesView.as_view(), name='liabilities'),
+    path('investments', InvestmentsView.as_view(), name='investments'),
 ]

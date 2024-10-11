@@ -13,6 +13,7 @@ export * from './lib/deviceSlice/slice';
 export * from './lib/environmentSlice/slice';
 export * from './lib/pricesSlice/slice';
 export * from './lib/liabilitiesSlice/slice';
+export * from './lib/investments/slice';
 
 export * from './lib/accountsSlice/types';
 export * from './lib/billSlice/types';
@@ -25,3 +26,4 @@ export * from './lib/userSlice/types';
 export * from './lib/budgetItemMetaDataSlice/types';
 export * from './lib/toastSlice/types';
 export * from './lib/liabilitiesSlice/types';
+export * from './lib/investments/types';

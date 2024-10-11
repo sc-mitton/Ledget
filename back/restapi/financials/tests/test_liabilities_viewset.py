@@ -16,5 +16,5 @@ class TestLiabilities(ViewTestsMixin):
             http_resp=Mock(data='{"error_code": "PRODUCTS_NOT_SUPPORTED"}')
         )
 
-        response = self.client.get(reverse('liabilities-list'))
+        response = self.client.get(reverse('liabilities'))
         self.assertEqual(response.status_code, 200)
