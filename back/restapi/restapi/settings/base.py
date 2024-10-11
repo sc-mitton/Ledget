@@ -81,7 +81,8 @@ OATHKEEPER_JWT_AUTH_SCHEME = 'Bearer'
 ORY_SESSION_TOKEN_HEADER = 'HTTP_X_SESSION_TOKEN'
 
 # Plaid
-PLAID_PRODUCTS = ['transactions', 'liabilities', 'investments']
+PLAID_PRODUCTS = ['transactions']
+OPTIONAL_PLAID_PRODUCTS = ['liabilities', 'investments']
 PLAID_COUNTRY_CODES = ['US']
 
 # ---------------------------------- Caching --------------------------------- #

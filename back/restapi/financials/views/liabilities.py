@@ -2,6 +2,7 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from django.db.models import Prefetch
 from plaid.model.liabilities_get_request import LiabilitiesGetRequest
+from plaid.model.liabilities_get_request_options import LiabilitiesGetRequestOptions
 import plaid
 import json
 
@@ -29,8 +30,8 @@ class LiabilitiesView(GenericAPIView):
         data = {'student': [], 'mortgage': []}
         for p in plaid_items:
             plaid_data = self._get_plaid_data(p)
-            data['student'].extend(plaid_data['student'])
-            data['mortgage'].extend(plaid_data['mortgage'])
+            data['student'].extend(plaid_data.get('student', []))
+            data['mortgage'].extend(plaid_data.get('mortgage', []))
 
         serializer = LiabilitiesSerializer(data=data)
         serializer.is_valid(raise_exception=True)
@@ -39,8 +40,10 @@ class LiabilitiesView(GenericAPIView):
 
     def _get_plaid_data(self, plaid_item):
         try:
+            account_ids = [a.id for a in plaid_item.accounts.all()]
             request = LiabilitiesGetRequest(
-                access_token=plaid_item.access_token)
+                access_token=plaid_item.access_token,
+                options=LiabilitiesGetRequestOptions(account_ids=account_ids))
             response = plaid_client.liabilities_get(request)
             return response.liabilities.to_dict()
         except plaid.ApiException as e:

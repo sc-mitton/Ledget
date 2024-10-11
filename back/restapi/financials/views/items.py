@@ -1,5 +1,4 @@
 import json
-import os
 
 from django.shortcuts import get_object_or_404
 from django.conf import settings
@@ -29,16 +28,17 @@ from financials.models import PlaidItem
 
 plaid_client = create_plaid_client()
 
-PLAID_PRODUCTS = os.getenv("PLAID_PRODUCTS", "transactions").split(",")
 PLAID_REDIRECT_URI_ONBOARDING = settings.PLAID_REDIRECT_URI_ONBOARDING
 PLAID_REDIRECT_URI = settings.PLAID_REDIRECT_URI
 PLAID_COUNTRY_CODES = settings.PLAID_COUNTRY_CODES
 PLAID_WEBHOOK_ENDPOINT = settings.PLAID_WEBHOOK_ENDPOINT
 DEVELOPMENT = settings.DEVELOPMENT
 
-plaid_products = []
-for product in PLAID_PRODUCTS:
+plaid_products, optional_plaid_products = [], []
+for product in settings.PLAID_PRODUCTS:
     plaid_products.append(Products(product))
+for product in settings.OPTIONAL_PLAID_PRODUCTS:
+    optional_plaid_products.append(Products(product))
 
 
 class PlaidLinkTokenView(APIView):
@@ -73,6 +73,7 @@ class PlaidLinkTokenView(APIView):
             request_kwargs['update'] = {"account_selection_enabled": True}
         else:
             request_kwargs['products'] = plaid_products
+            request_kwargs['optional_products'] = optional_plaid_products
 
         try:
             request = LinkTokenCreateRequest(**request_kwargs)
