@@ -1,21 +1,15 @@
 import { View } from "react-native";
 import { Calendar } from "geist-native-icons";
-import { useTheme } from "@shopify/restyle";
 
 import styles from './styles/loan-card';
 import { Box, Text, InstitutionLogo, Seperator, Icon, PulseBox } from "@ledget/native-ui";
 
-
-const MAX_LIGHT_MODE_OPACITY = 0.6;
-const MAX_DARK_MODE_OPACITY = 1;
-
 const LoanCard = () => {
-  const theme = useTheme();
 
   return (
     <Box variant='nestedContainer' style={styles.box}>
       <View style={styles.header}>
-        <Box gap='m' marginTop='xs'>
+        <Box gap='m' marginTop='xs' justifyContent="center">
           <PulseBox height='s' width={150} backgroundColor="menuSeperator" />
           <PulseBox height='s' width={75} backgroundColor="menuSeperator" />
         </Box>
@@ -26,39 +20,19 @@ const LoanCard = () => {
       <View style={styles.seperator}>
         <Seperator backgroundColor="nestedContainerSeperator" />
       </View>
-      <View style={styles.middleRow}>
+      <View style={[styles.middleRow, styles.skeletonMiddleRow]}>
         <View style={styles.middleRowCell}>
-          <Text color='quaternaryText' fontSize={14}>
-            Principal
-          </Text>
+          <Text color='quaternaryText' variant='bold' fontSize={14}>Principal</Text>
+          <Text color='quaternaryText' variant='bold' fontSize={14}>&mdash;</Text>
         </View>
         <View style={styles.middleRowCell}>
-          <Text color='quaternaryText' fontSize={14}>
-            Min. Payment
-          </Text>
+          <Text color='quaternaryText' variant='bold' fontSize={14}>Min. Payment</Text>
+          <Text color='quaternaryText' variant='bold' fontSize={14}>&mdash;</Text>
         </View>
         <View style={styles.middleRowCell}>
-          <Text color='quaternaryText' fontSize={14}>
-            Rate
-          </Text>
+          <Text color='quaternaryText' variant='bold' fontSize={14}>Rate</Text>
+          <Text color='quaternaryText' variant='bold' fontSize={14}>&mdash;</Text>
         </View>
-      </View>
-      <View style={styles.progressBars}>
-        {Array.from({ length: 4 }, (_, i) => {
-          return (
-            <Box
-              style={[
-                styles.progressBar,
-                {
-                  backgroundColor: theme.colors.menuSeperator,
-                  opacity: theme.colors.mode === 'light'
-                    ? MAX_LIGHT_MODE_OPACITY
-                    : MAX_DARK_MODE_OPACITY
-                }
-              ]}
-            />
-          )
-        })}
       </View>
       <View style={styles.dates}>
         <Text fontSize={15} color='secondaryText'>

@@ -9,7 +9,7 @@ type PulseBoxProps = {
 
 const heightMap = {
   s: 10,
-  reg: 16,
+  reg: 14,
   m: 24,
   l: 32
 } as { [key: string]: number }

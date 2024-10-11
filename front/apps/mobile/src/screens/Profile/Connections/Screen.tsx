@@ -33,22 +33,26 @@ const Connections = ({
           backgroundColor='nestedContainer'
           style={styles.container}
         >
-          {plaidItems?.filter((item) => item.user === user?.id).map((item, i) => (
-            <>
-              <View style={styles.row} key={`connection-${i}`}>
-                <ChevronTouchable onPress={() => navigation.navigate('Connection', { item: item.id })}>
-                  {item.login_required
-                    ? <Icon icon={AlertCircleFill} color='alert' borderColor='mainText' />
-                    : <InstitutionLogo data={item.institution?.logo} />}
-                  <Text color={item.login_required ? 'alert' : 'mainText'}>
-                    {item.institution?.name}
-                  </Text>
-                </ChevronTouchable>
-              </View>
-              {i < plaidItems?.filter((item) => item.user === user?.id).length - 1 &&
-                <Seperator variant='bare' backgroundColor='nestedContainerSeperator' />}
-            </>
-          ))}
+          {plaidItems?.length || 0 > 0
+            ?
+            plaidItems?.filter((item) => item.user === user?.id).map((item, i) => (
+              <>
+                <View style={styles.row} key={`connection-${i}`}>
+                  <ChevronTouchable onPress={() => navigation.navigate('Connection', { item: item.id })}>
+                    {item.login_required
+                      ? <Icon icon={AlertCircleFill} color='alert' borderColor='mainText' />
+                      : <InstitutionLogo data={item.institution?.logo} />}
+                    <Text color={item.login_required ? 'alert' : 'mainText'}>
+                      {item.institution?.name}
+                    </Text>
+                  </ChevronTouchable>
+                </View>
+                {i < plaidItems?.filter((item) => item.user === user?.id).length - 1 &&
+                  <Seperator variant='bare' backgroundColor='nestedContainerSeperator' />}
+              </>
+            ))
+            : <Text variant='footer'>No connections</Text>
+          }
         </ShimmerBox>
         {user?.co_owner && (
           <>
@@ -73,9 +77,7 @@ const Connections = ({
                   </>
                 ))}
                 {plaidItems?.filter((item) => item.user === coOwner?.id).length === 0 && (
-                  <Text variant='footer'>
-                    {coOwner?.name.first} has not added any connections yet.
-                  </Text>
+                  <Text variant='footer'>No connections</Text>
                 )}
               </Box>
             </ShimmerBox>

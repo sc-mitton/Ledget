@@ -9,10 +9,10 @@ const styles = StyleSheet.create({
   header: {
     width: '100%',
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   logo: {
-    marginTop: 8
+    marginVertical: 8
   },
   seperator: {
     width: '200%',
@@ -24,6 +24,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
+  },
+  skeletonMiddleRow: {
+    paddingBottom: 0,
+    marginBottom: -16
   },
   middleRowCell: {
     flex: 1,

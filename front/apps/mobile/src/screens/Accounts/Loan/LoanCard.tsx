@@ -108,11 +108,11 @@ const LoanCard = ({ liability }: { liability: Mortgage | StudentLoan }) => {
               })}
             </View>
             <View style={styles.dates}>
-              <Text fontSize={15} color='secondaryText'>
-                {dayjs(liability.origination_date).format('MMM D, YYYY')}
+              <Text fontSize={15} color='tertiaryText'>
+                {dayjs(liability.origination_date).format('M/D/YY')}
               </Text>
-              <Text fontSize={15} color='secondaryText'>
-                {dayjs(liability.expected_payoff_date || liability.last_payment_date).format('MMM D, YYYY')}
+              <Text fontSize={15} color='tertiaryText'>
+                {dayjs(liability.expected_payoff_date || liability.last_payment_date).format('M/D/YY')}
               </Text>
             </View>
             <View style={styles.seperator}>

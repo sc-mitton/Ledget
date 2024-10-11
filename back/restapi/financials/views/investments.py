@@ -29,6 +29,7 @@ class InvestmentsView(GenericAPIView):
             user__in=request.user.account.users.all()) \
             .prefetch_related(prefetch)
 
+
         return Response()
 
     def _get_plaid_data(self, plaid_item):

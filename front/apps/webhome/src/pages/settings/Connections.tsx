@@ -59,8 +59,7 @@ const useDeleteContext = () => {
 
 const ConnectionsContext = ({ children }: { children: React.ReactNode }) => {
   const [deleteQue, setDeleteQue] = useState<DeleteQueItem[]>([]);
-  const { data: plaidItems, isLoading: fetchingPlaidItems } =
-    useGetPlaidItemsQuery();
+  const { data: plaidItems, isLoading: fetchingPlaidItems } = useGetPlaidItemsQuery();
   const [editing, setEditing] = useState(false);
 
   useEffect(() => {
