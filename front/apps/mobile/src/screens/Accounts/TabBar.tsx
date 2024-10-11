@@ -66,6 +66,7 @@ const TabButton = (props: ButtonProps) => {
       accessibilityLabel={des?.options?.tabBarAccessibilityLabel}
       testID={des?.options?.tabBarTestID}
       onPress={onPress}
+      disabled={isFocused}
       onLongPress={onLongPress}
       icon={
         route.name.toLowerCase() === 'depository'

@@ -16,7 +16,6 @@ const styles = StyleSheet.create({
     zIndex: -1
   },
   accountsPickerbuttonContent: {
-    marginVertical: 2,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,

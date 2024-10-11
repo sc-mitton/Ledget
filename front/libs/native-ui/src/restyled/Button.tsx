@@ -85,6 +85,7 @@ export const Button = (props: ButtonProps) => {
       activeOpacity={.6}
       style={style}
       onLayout={onLayout}
+      disabled={props.disabled ? true : false}
     >
       <View {...restyledProps}>
         <Box

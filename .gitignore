@@ -10,6 +10,7 @@ scratch.py
 **/jwks.json
 ./project-configuration.*.yaml
 ./project-configuration.yaml
+foo*.json
 
 # System Files
 .DS_Store
