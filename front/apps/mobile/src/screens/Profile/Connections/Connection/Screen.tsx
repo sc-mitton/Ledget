@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View } from 'react-native';
 import { usePlaidLink } from '@hooks';
 import * as WebBrowser from 'expo-web-browser';
 
@@ -8,7 +8,8 @@ import {
   Box,
   Text,
   Icon,
-  Button
+  Button,
+  CustomScrollView
 } from '@ledget/native-ui';
 import { Trash2, Repeat } from 'geist-native-icons';
 import { ConnectionsScreenProps } from '@types';
@@ -48,9 +49,9 @@ const Screen = ({ navigation, route }: ConnectionsScreenProps<'Connection'>) => 
         </View>
       </Button>
       <Box variant='nestedContainer' style={styles.accountsBox}>
-        <ScrollView>
+        <CustomScrollView>
           <View style={styles.accounts}>
-            <View>
+            <View style={styles.nameColumn}>
               {plaidItem?.accounts?.map((account, i) => (
                 <Box
                   key={`${account.id}name`}
@@ -58,7 +59,11 @@ const Screen = ({ navigation, route }: ConnectionsScreenProps<'Connection'>) => 
                   borderBottomWidth={1}
                   borderBottomColor={i !== plaidItem?.accounts?.length - 1 ? 'nestedContainerSeperator' : 'transparent'}
                 >
-                  <Text>{account.name?.length || 0 > 20 ? `${account.name?.slice(0, 20)}...` : account.name}</Text>
+                  <Text fontSize={15}>
+                    {(account.name?.length || 0) > 17 ?
+                      `${account.name?.slice(0, 17)}...` :
+                      account.name}
+                  </Text>
                 </Box>))}
             </View>
             <View style={styles.maskColumn}>
@@ -69,8 +74,8 @@ const Screen = ({ navigation, route }: ConnectionsScreenProps<'Connection'>) => 
                   borderBottomWidth={1}
                   style={[styles.cell, styles.maskCell]}
                 >
-                  <Text color='secondaryText' fontSize={14}>&#8226;&nbsp;&#8226;&nbsp;</Text>
-                  <Text color='secondaryText' fontSize={14}>{account.mask}</Text>
+                  <Text textAlign='center' color='secondaryText' fontSize={13}>&#8226;&nbsp;&#8226;&nbsp;</Text>
+                  <Text textAlign='center' color='secondaryText' fontSize={13}>{account.mask}</Text>
                 </Box>))}
             </View>
             <View>
@@ -85,7 +90,7 @@ const Screen = ({ navigation, route }: ConnectionsScreenProps<'Connection'>) => 
                 </Box>))}
             </View>
           </View>
-        </ScrollView>
+        </CustomScrollView>
       </Box>
       {plaidItem?.user === user?.id &&
         <View style={styles.buttons}>

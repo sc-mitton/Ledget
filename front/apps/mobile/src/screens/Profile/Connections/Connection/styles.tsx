@@ -30,14 +30,18 @@ export default StyleSheet.create({
   },
   accountsBox: {
     marginTop: 12,
+    maxHeight: '60%'
   },
   accounts: {
     paddingHorizontal: 8,
     flexDirection: 'row',
-    maxHeight: '60%'
+    width: '100%'
+  },
+  nameColumn: {
+    flex: 1,
+    flexGrow: 1
   },
   maskColumn: {
-    flex: 1,
   },
   cell: {
     flexDirection: 'row',
@@ -45,12 +49,14 @@ export default StyleSheet.create({
     paddingVertical: 8,
   },
   typeCell: {
+    flex: 1,
+    flexGrow: 1,
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-end',
     paddingRight: 4,
   },
   maskCell: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 24
   },
   icon: {
     marginRight: 8
