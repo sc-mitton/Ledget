@@ -47,7 +47,7 @@ class AccountLS(serializers.ListSerializer):
 
 
 class AccountSerializer(serializers.ModelSerializer):
-    institution = InstitutionSerializer()
+    institution = InstitutionSerializer(required=False, read_only=True)
     cardHue = serializers.SerializerMethodField(required=False, read_only=True)
 
     class Meta:
