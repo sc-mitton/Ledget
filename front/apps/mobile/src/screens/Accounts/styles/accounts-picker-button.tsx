@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: -1,
-    marginTop: 12,
+    marginTop: 0,
     marginBottom: 20
   },
   accountsPickerButton: {

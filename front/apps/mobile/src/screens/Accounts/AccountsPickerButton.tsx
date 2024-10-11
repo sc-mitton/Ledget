@@ -13,14 +13,16 @@ const AccountsPickerButton = (props: AccountsTabsScreenProps<any> & { account?: 
   return (
     <View style={styles.buttonBalanceContainer}>
       <Button
-        backgroundColor={'blueButton'}
+        backgroundColor={'nestedContainer'}
+        borderBottomColor='nestedContainerBorder'
+        borderLeftColor='nestedContainerBorder'
+        borderRightColor='nestedContainerBorder'
+        borderLeftWidth={1}
+        borderRightWidth={1}
+        borderBottomWidth={1}
         borderRadius={'circle'}
         paddingHorizontal='s'
         paddingVertical='xs'
-        shadowColor='navShadow'
-        shadowOpacity={.2}
-        shadowOffset={{ width: 0, height: 2 }}
-        shadowRadius={4}
         style={styles.accountsPickerButton}
         onPress={() => {
           props.account && props.navigation.navigate(
@@ -36,19 +38,12 @@ const AccountsPickerButton = (props: AccountsTabsScreenProps<any> & { account?: 
           {props.account &&
             <>
               <View style={styles.nameContainer}>
-                <Text
-                  color={mode === 'light' ? 'whiteText' : 'mainText'}
-                >
-                  {props.account?.name}
-                </Text>
-                <DollarCents
-                  color={mode === 'light' ? 'whiteText' : 'mainText'}
-                  value={`${props.account?.balances.current || 0}`}
-                />
+                <Text>{props.account?.name}</Text>
+                <DollarCents color='secondaryText' value={`${props.account?.balances.current || 0}`} />
               </View>
               <Icon
-                color={mode === 'light' ? 'whiteText' : 'mainText'}
                 icon={ChevronDown}
+                color='quinaryText'
                 strokeWidth={2} size={18} />
             </>
           }

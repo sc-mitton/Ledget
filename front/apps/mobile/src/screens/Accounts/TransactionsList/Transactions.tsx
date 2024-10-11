@@ -151,8 +151,12 @@ const Transactions = (props: PTransactions) => {
       <Box style={styles.mainBackgroundBox}>
         <Box
           style={styles.box}
+          shadowColor='navShadow'
+          shadowOpacity={.1}
+          shadowRadius={10}
+          shadowOffset={{ width: 0, height: -12 }}
           borderColor='nestedContainerBorder'
-          borderWidth={1.5}
+          borderWidth={1}
           backgroundColor='nestedContainer'>
           {(transactionsData?.results.length || 0) > 0 &&
             <View style={styles.dragBarContainer} {...panResponder.panHandlers}>

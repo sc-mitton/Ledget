@@ -44,8 +44,8 @@ export const ChartWindowsMenu = <W extends Windows>(props: Props<W>) => {
       placement='right'
       closeOnSelect={true}
     >
-      <Box backgroundColor='lightBlueButton' style={styles.menuButton}>
-        <Text color='blueText'>{window}</Text>
+      <Box backgroundColor='grayButton' style={styles.menuButton}>
+        <Text color='secondaryText'>{window}</Text>
       </Box>
     </Menu>
   )

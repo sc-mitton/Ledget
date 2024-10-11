@@ -14,7 +14,7 @@ const LoanCard = () => {
           <PulseBox height='s' width={75} backgroundColor="menuSeperator" />
         </Box>
         <View style={styles.logo}>
-          <InstitutionLogo size={34} />
+          <InstitutionLogo size={28} />
         </View>
       </View>
       <View style={styles.seperator}>

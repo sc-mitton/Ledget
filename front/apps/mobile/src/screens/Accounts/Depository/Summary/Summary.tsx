@@ -38,7 +38,7 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
   const [dateWindow, setDateWindow] = useState<{ start: number, end: number }>({ start: 0, end: 0 })
   const [calculatedTrend, setCalculatedTrend] = useState(0)
   const [balanceHistoryChartData, setBalanceHistoryChartData] = useState(tempChartData)
-  const [showChart, setShowChart] = useState(false)
+  const [showChart, setShowChart] = useState(true)
   const { state, isActive } = useChartPressState({ x: '0', y: { balance: 0 } })
 
   const totalBalance = useMemo(
@@ -234,20 +234,13 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
               y: [
                 balanceHistoryChartData.reduce((acc, h) => Math.min(acc, h.balance), 0) * 1.25 -
                 (balanceHistoryChartData.reduce((acc, h) => Math.max(acc, h.balance), 0) * 1.25
-                  - balanceHistoryChartData.reduce((acc, h) => Math.min(acc, h.balance), 0) * 1.25) * .2,
-                balanceHistoryChartData.reduce((acc, h) => Math.max(acc, h.balance), 0) * 1.25
+                  - balanceHistoryChartData.reduce((acc, h) => Math.min(acc, h.balance), 0) * 1.25) * .5,
+                balanceHistoryChartData.reduce((acc, h) => Math.max(acc, h.balance), 0) * 1.5
               ]
             }}
           >
             {({ points, chartBounds }) => (
               <>
-                <Line
-                  animate={{ type: 'spring', duration: 300 }}
-                  points={points.balance}
-                  color={isBalanceHistoryLoaded ? theme.colors.blueChartColor : theme.colors.quinaryText}
-                  strokeWidth={3}
-                  curveType='natural'
-                />
                 <Area
                   y0={chartBounds.bottom}
                   points={points.balance}
@@ -263,14 +256,21 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
                       ]
                       : [
                         theme.colors.emptyChartGradientStart,
-                        theme.colors.mainBackground,
-                        mode === 'dark' ? 'hsla(0, 0%, 0%, 0)' : 'hsla(0, 0%, 100%, 0)'
+                        theme.colors.mainBackground
                       ]
                     }
                     start={vec(chartBounds.bottom, 0)}
                     end={vec(chartBounds.bottom, chartBounds.bottom)}
                   />
                 </Area>
+                <Line
+                  animate={{ type: 'spring', duration: 300 }}
+                  points={points.balance}
+                  color={isBalanceHistoryLoaded ? theme.colors.blueChartColor : theme.colors.quinaryText}
+                  strokeWidth={2}
+                  strokeCap='round'
+                  curveType='natural'
+                />
                 {isActive && (
                   <SkText
                     x={textXPosition}

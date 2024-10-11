@@ -62,14 +62,14 @@ const Button = (props: ButtonProps) => {
       onLongPress={onLongPress}
     >
       {route.key.includes('Home')
-        ? <Icon icon={Home} color={isFocused ? 'mainText' : 'tertiaryText'} />
+        ? <Icon strokeWidth={1.75} icon={Home} color={isFocused ? 'blueText' : 'tertiaryText'} />
         : route.key.includes('Budget')
-          ? <Icon icon={DollarSign} color={isFocused ? 'mainText' : 'tertiaryText'} />
+          ? <Icon strokeWidth={1.75} icon={DollarSign} color={isFocused ? 'blueText' : 'tertiaryText'} />
           : route.key.includes('Accounts')
-            ? <Icon icon={Institution} color={isFocused ? 'mainText' : 'tertiaryText'} />
+            ? <Icon strokeWidth={1.75} icon={Institution} color={isFocused ? 'blueText' : 'tertiaryText'} />
             : route.key.includes('Activity')
-              ? <Icon icon={Activity} color={isFocused ? 'mainText' : 'tertiaryText'} />
-              : <Icon icon={User} color={isFocused ? 'mainText' : 'tertiaryText'} />
+              ? <Icon strokeWidth={1.75} icon={Activity} color={isFocused ? 'blueText' : 'tertiaryText'} />
+              : <Icon strokeWidth={1.75} icon={User} color={isFocused ? 'blueText' : 'tertiaryText'} />
       }
     </TouchableOpacity>
   )

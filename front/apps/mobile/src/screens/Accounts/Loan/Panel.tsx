@@ -16,7 +16,10 @@ export default function Panel(props: AccountsTabsScreenProps<'Loan'>) {
       style={styles.main}
     >
       <Box style={styles.main}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.cardsScrollViewContainer}
+        >
           <Box height={12} width={'100%'} />
           {liabilities
             ?

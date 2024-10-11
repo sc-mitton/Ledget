@@ -141,7 +141,7 @@ export const darkTheme = createTheme({
     redText: palette.red,
 
     // Buttons
-    lightBlueButton: palette.blue800,
+    lightBlueButton: palette.blue700,
     lightBlueButtonBorder: palette.blue700,
     mediumBlueButton: palette.blue600,
     mediumBlueButtonBorder: palette.blue500,
@@ -195,7 +195,7 @@ export const darkTheme = createTheme({
 
     blueChartGradientStart: palette.blue900.replace(`${blueS}`, `${blueS - 20}`),
     blueChartGradientEnd: `hsla(${grayH}, ${grayS}%, 10%, 0)`,
-    blueChartColor: palette.blue400,
+    blueChartColor: palette.blue500,
     emptyChartGradientStart: palette.gray750,
   }
 });

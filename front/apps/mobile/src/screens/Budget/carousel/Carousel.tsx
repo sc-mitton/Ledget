@@ -120,7 +120,7 @@ const Carousel = () => {
           <View style={styles.row}>
             <Icon
               icon={CheckCircle}
-              size={16}
+              size={14}
               strokeWidth={2}
               color={monthly_bills_paid + yearly_bills_paid > 0 ? 'greenText' : 'secondaryText'}
             />

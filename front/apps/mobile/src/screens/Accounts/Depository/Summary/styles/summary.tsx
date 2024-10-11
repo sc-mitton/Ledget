@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
   balanceData: {
     alignItems: 'baseline',
     marginTop: -2,
-    marginBottom: 8,
     flexDirection: 'row',
     gap: 8
   },

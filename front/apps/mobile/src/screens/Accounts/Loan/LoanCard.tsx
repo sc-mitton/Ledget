@@ -36,7 +36,7 @@ const LoanCard = ({ liability }: { liability: Mortgage | StudentLoan }) => {
           </Text>
         </View>
         <View style={styles.logo}>
-          <InstitutionLogo account={liability.account_id} size={34} />
+          <InstitutionLogo account={liability.account_id} size={28} />
         </View>
       </View>
       <View style={styles.seperator}>
