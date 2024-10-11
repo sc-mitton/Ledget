@@ -101,7 +101,7 @@ export const Button = (props: ButtonProps) => {
           {label &&
             <Text
               fontFamily={fontFamily}
-              color={textColor}
+              color={transparent ? 'transparent' : textColor}
               fontSize={fontSize}
               lineHeight={lineHeight}
               style={textColor ? {} : { color: transparent ? 'transparent' : color ? color : '' }}>

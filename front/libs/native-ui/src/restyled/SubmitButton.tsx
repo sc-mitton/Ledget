@@ -51,7 +51,11 @@ export const SubmitButton = (props: Omit<ButtonProps, 'children'> & ExtraProps) 
   });
 
   return (
-    <Button transparent={isSubmitting || showCheck} style={[style, styles.button]} {...rest}>
+    <Button
+      transparent={isSubmitting || showCheck}
+      style={[style, styles.button]}
+      {...rest}
+    >
       {({ color }) => (
         <>
           {isSubmitting && <UnstyledSpinner color={color} />}
