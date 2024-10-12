@@ -12,8 +12,18 @@ services:
       - postgres_password
     volumes:
       - dev-db-data:/var/lib/postgresql/data
-  redis:
-    image: redis:7.2.1-alpine
+  rabbitmq:
+    image: rabbitmq:4-management-alpine
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    expose:
+      - "5672"
+    environment:
+      RABBITMQ_DEFAULT_VHOST: "/"
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
   oathkeeper:
     build:
       args:
@@ -95,8 +105,7 @@ services:
       - DB_HOST=db
       - DB_NAME=devdb
       - DB_PORT=5432
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672
       - DEBUG=true
       - SILK_DEBUG=true
       - PLAID_ENV=Sandbox
@@ -116,7 +125,7 @@ services:
       - sparkpost_api_key
     depends_on:
       - db
-      - redis
+      - rabbitmq
     ports:
       - 8000:8000
   celery:
@@ -128,13 +137,12 @@ services:
     volumes:
       - ./back/restapi:/restapi
     environment:
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672
       - DB_HOST=db
       - DB_NAME=devdb
       - DB_PORT=5432
     depends_on:
-      - redis
+      - rabbitmq
       - restapi
     secrets:
       - ory_api_key
