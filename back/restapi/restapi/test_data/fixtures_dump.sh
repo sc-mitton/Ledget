@@ -17,7 +17,8 @@ python ../../manage.py dumpdata core.Settings --indent 4 > ./settings_fixture.js
 # Use sed to replace all account ids
 old_account_id=$(sed -n 's/.*"account_id": *"\([^"]*\)".*/\1/p' ./responses/plaid_sync_response.json | head -1)
 first_account_id=$(sed -n 's/.*"pk": *"\([^"]*\)".*/\1/p' account_fixture.json | head -1)
-sed -i "s/<${old_item_id}>/${first_account_id}/g" ./responses/plaid_sync_response.json
+
+sed -i "s/<${old_account_id}>/${first_account_id}/g" ./responses/plaid_sync_response_2.json
 
 # Use sed to replace all the item ids
 
