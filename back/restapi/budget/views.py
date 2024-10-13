@@ -308,7 +308,7 @@ class CategoryViewSet(BulkSerializerMixin, ModelViewSet):
         tz_offset = self.request.data.get('tz', None)
         tz_offset = timedelta(minutes=tz_offset)
         tz = timezone(tz_offset)
-        start = datetime.utcnow().replace(tzinfo=tz).replace(
+        start = datetime.now().replace(tzinfo=tz).replace(
             day=1, hour=0, minute=0, second=0, microsecond=0)
         end = datetime.now().replace(tzinfo=tz).replace(
             minute=0, second=0, microsecond=0)
