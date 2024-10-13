@@ -1,36 +1,39 @@
+from itertools import groupby
+
 from rest_framework import serializers
+from financials.models import AccountBalance
 
 
 class SecuritySerializer(serializers.Serializer):
-    name = serializers.CharField()
-    ticker_symbol = serializers.CharField()
+    name = serializers.CharField(required=False, allow_null=True)
+    ticker_symbol = serializers.CharField(required=False, allow_null=True)
     security_id = serializers.CharField()
 
 
 class HoldingSerializer(serializers.Serializer):
-    cost_basis = serializers.FloatField()
-    institution_price = serializers.FloatField()
-    institution_value = serializers.FloatField()
-    quantity = serializers.FloatField()
-    vested_quantity = serializers.FloatField()
-    vested_value = serializers.FloatField()
-    security_id = serializers.CharField()
+    cost_basis = serializers.FloatField(required=False)
+    institution_price = serializers.FloatField(required=False)
+    institution_value = serializers.FloatField(required=False)
+    quantity = serializers.FloatField(required=False)
+    vested_quantity = serializers.FloatField(required=False, allow_null=True)
+    vested_value = serializers.FloatField(required=False, allow_null=True)
+    security_id = serializers.CharField(required=False)
 
 
 class InvestmentsTransactionSerializer(serializers.Serializer):
-    amount = serializers.FloatField()
-    price = serializers.FloatField()
-    quantity = serializers.FloatField()
-    type = serializers.CharField()
-    subtype = serializers.CharField()
-    date = serializers.DateField()
-    fees = serializers.FloatField()
-    name = serializers.CharField()
-    security_id = serializers.CharField()
+    amount = serializers.FloatField(required=False)
+    price = serializers.FloatField(required=False)
+    quantity = serializers.FloatField(required=False)
+    type = serializers.CharField(required=False)
+    subtype = serializers.CharField(required=False)
+    date = serializers.DateField(required=False)
+    fees = serializers.FloatField(required=False)
+    name = serializers.CharField(required=False, allow_null=True)
+    security_id = serializers.CharField(required=False)
 
 
 class InvestmentsSerializer(serializers.Serializer):
-    account_id = serializers.IntegerField()
+    account_id = serializers.CharField()
     holdings = HoldingSerializer(many=True)
     transactions = InvestmentsTransactionSerializer(many=True)
     securities = SecuritySerializer(many=True)
@@ -63,3 +66,33 @@ class InvestmentsSerializer(serializers.Serializer):
         ]
 
         return repr
+
+
+class InvestmenetBalanceListSerializer(serializers.ListSerializer):
+
+    def to_representation(self, instance):
+        repr = super().to_representation(instance)
+
+        grouped = groupby(repr, lambda x: x['account'])
+        final = []
+        for account_id, balances in grouped:
+            balances = list(balances)
+            final.append({
+                'account_id': account_id,
+                'balances': [
+                    {
+                        'date': b['date'],
+                        'value': b['value']
+                    }
+                    for b in balances
+                ]
+            })
+
+        return final
+
+
+class InvestmentBalanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AccountBalance
+        fields = '__all__'
+        list_serializer_class = InvestmenetBalanceListSerializer

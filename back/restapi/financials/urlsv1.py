@@ -13,7 +13,7 @@ from financials.views.transactions import (
     NoteViewSet
 )
 from financials.views.liabilities import LiabilitiesView
-from financials.views.investments import InvestmentsView
+from financials.views.investments import InvestmentsView, InvestmentsBalanceHistoryView
 from financials.views.account import AccountsViewSet
 
 
@@ -64,4 +64,6 @@ urlpatterns = [
     path('transactions/<str:id>/', include(note_router.urls)),
     path('liabilities', LiabilitiesView.as_view(), name='liabilities'),
     path('investments', InvestmentsView.as_view(), name='investments'),
+    path('investments/balance-history', InvestmentsBalanceHistoryView.as_view(),
+         name='investments-balance-history')
 ]

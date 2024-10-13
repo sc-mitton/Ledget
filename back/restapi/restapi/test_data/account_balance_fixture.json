@@ -1,0 +1,290 @@
+[
+    {
+        "model": "financials.accountbalance",
+        "pk": 1,
+        "fields": {
+            "account": "BE8vMMalW5IJN1x8w8w7FByqKgNAVwu4Vogrb",
+            "date": "2024-10-12",
+            "value": 1000.00
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 2,
+        "fields": {
+            "value": 5567.19,
+            "account": "BE8vMMalW5IJN1x8w8w7FByqKgNAVwu4Vogrb",
+            "date": "2024-10-11"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 3,
+        "fields": {
+            "value": 5537.02,
+            "account": "BE8vMMalW5IJN1x8w8w7FByqKgNAVwu4Vogrb",
+            "date": "2024-10-10"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 4,
+        "fields": {
+            "value": 5509.01,
+            "account": "BE8vMMalW5IJN1x8w8w7FByqKgNAVwu4Vogrb",
+            "date": "2024-10-09"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 5,
+        "fields": {
+            "value": 5475.09,
+            "account": "BE8vMMalW5IJN1x8w8w7FByqKgNAVwu4Vogrb",
+            "date": "2024-10-08"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 6,
+        "fields": {
+            "value": 5460.48,
+            "account": "BE8vMMalW5IJN1x8w8w7FByqKgNAVwu4Vogrb",
+            "date": "2024-10-07"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 7,
+        "fields": {
+            "value": 5482.87,
+            "account": "BE8vMMalW5IJN1x8w8w7FByqKgNAVwu4Vogrb",
+            "date": "2024-10-06"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 8,
+        "fields": {
+            "value": 5477.90,
+            "account": "BE8vMMalW5IJN1x8w8w7FByqKgNAVwu4Vogrb",
+            "date": "2024-10-05"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 9,
+        "fields": {
+            "value": 5469.30,
+            "account": "BE8vMMalW5IJN1x8w8w7FByqKgNAVwu4Vogrb",
+            "date": "2024-10-04"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 10,
+        "fields": {
+            "value": 5447.87,
+            "account": "BE8vMMalW5IJN1x8w8w7FByqKgNAVwu4Vogrb",
+            "date": "2024-10-03"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 11,
+        "fields": {
+            "value": 5464.62,
+            "account": "BE8vMMalW5IJN1x8w8w7FByqKgNAVwu4Vogrb",
+            "date": "2024-10-02"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 12,
+        "fields": {
+            "value": 5473.17,
+            "account": "BE8vMMalW5IJN1x8w8w7FByqKgNAVwu4Vogrb",
+            "date": "2024-10-01"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 13,
+        "fields": {
+            "value": 5487.03,
+            "account": "BE8vMMalW5IJN1x8w8w7FByqKgNAVwu4Vogrb",
+            "date": "2024-09-30"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 14,
+        "fields": {
+            "value": 5473.23,
+            "account": "BE8vMMalW5IJN1x8w8w7FByqKgNAVwu4Vogrb",
+            "date": "2024-09-29"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 15,
+        "fields": {
+            "value": 5431.60,
+            "account": "BE8vMMalW5IJN1x8w8w7FByqKgNAVwu4Vogrb",
+            "date": "2024-09-28"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 16,
+        "fields": {
+            "value": 5433.74,
+            "account": "BE8vMMalW5IJN1x8w8w7FByqKgNAVwu4Vogrb",
+            "date": "2024-09-27"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 17,
+        "fields": {
+            "value": 5421.03,
+            "account": "ywANgx7l7LHrKRVaA8wBUjJDDlwDezF4nJXJA",
+            "date": "2024-09-26"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 18,
+        "fields": {
+            "value": 5375.32,
+            "account": "ywANgx7l7LHrKRVaA8wBUjJDDlwDezF4nJXJA",
+            "date": "2024-09-25"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 19,
+        "fields": {
+            "value": 5360.79,
+            "account": "ywANgx7l7LHrKRVaA8wBUjJDDlwDezF4nJXJA",
+            "date": "2024-09-24"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 20,
+        "fields": {
+            "value": 5346.99,
+            "account": "ywANgx7l7LHrKRVaA8wBUjJDDlwDezF4nJXJA",
+            "date": "2024-09-23"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 21,
+        "fields": {
+            "value": 5352.96,
+            "account": "ywANgx7l7LHrKRVaA8wBUjJDDlwDezF4nJXJA",
+            "date": "2024-09-22"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 22,
+        "fields": {
+            "value": 5354.03,
+            "account": "ywANgx7l7LHrKRVaA8wBUjJDDlwDezF4nJXJA",
+            "date": "2024-09-21"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 23,
+        "fields": {
+            "value": 5291.34,
+            "account": "ywANgx7l7LHrKRVaA8wBUjJDDlwDezF4nJXJA",
+            "date": "2024-09-20"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 24,
+        "fields": {
+            "value": 5283.40,
+            "account": "ywANgx7l7LHrKRVaA8wBUjJDDlwDezF4nJXJA",
+            "date": "2024-09-19"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 25,
+        "fields": {
+            "value": 5277.51,
+            "account": "ywANgx7l7LHrKRVaA8wBUjJDDlwDezF4nJXJA",
+            "date": "2024-09-18"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 26,
+        "fields": {
+            "value": 5235.48,
+            "account": "ywANgx7l7LHrKRVaA8wBUjJDDlwDezF4nJXJA",
+            "date": "2024-09-17"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 27,
+        "fields": {
+            "value": 5266.95,
+            "account": "ywANgx7l7LHrKRVaA8wBUjJDDlwDezF4nJXJA",
+            "date": "2024-09-16"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 28,
+        "fields": {
+            "value": 5306.04,
+            "account": "ywANgx7l7LHrKRVaA8wBUjJDDlwDezF4nJXJA",
+            "date": "2024-09-15"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 29,
+        "fields": {
+            "value": 5304.72,
+            "account": "ywANgx7l7LHrKRVaA8wBUjJDDlwDezF4nJXJA",
+            "date": "2024-09-14"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 30,
+        "fields": {
+            "value": 5267.84,
+            "account": "ywANgx7l7LHrKRVaA8wBUjJDDlwDezF4nJXJA",
+            "date": "2024-09-13"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 31,
+        "fields": {
+            "value": 5307.01,
+            "account": "ywANgx7l7LHrKRVaA8wBUjJDDlwDezF4nJXJA",
+            "date": "2024-09-12"
+        }
+    },
+    {
+        "model": "financials.accountbalance",
+        "pk": 32,
+        "fields": {
+            "value": 5321.41,
+            "account": "ywANgx7l7LHrKRVaA8wBUjJDDlwDezF4nJXJA",
+            "date": "2024-09-11"
+        }
+    }
+]

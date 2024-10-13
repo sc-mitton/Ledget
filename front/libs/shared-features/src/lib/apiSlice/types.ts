@@ -11,5 +11,6 @@ export const tagTypes = [
   'Liability',
   'Reminder',
   'Price',
-  'Investment'
+  'Investment',
+  'InvestmentBalanceHistory'
 ];

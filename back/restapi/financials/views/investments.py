@@ -1,10 +1,13 @@
 from itertools import groupby
 from datetime import timedelta
+from datetime import datetime
+from dateutil import parser
 import json
 
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.response import Response
 from django.db.models import Prefetch
+from django.utils import timezone
 from plaid.model.investments_holdings_get_request import InvestmentsHoldingsGetRequest
 from plaid.model.investments_transactions_get_request_options import (
     InvestmentsTransactionsGetRequestOptions
@@ -18,8 +21,11 @@ from plaid.model.investment_holdings_get_request_options import (
 from plaid.model_utils import date
 import plaid
 
-from financials.serializers.investments import InvestmentsSerializer
-from financials.models import PlaidItem, Account
+from financials.serializers.investments import (
+    InvestmentsSerializer,
+    InvestmentBalanceSerializer
+)
+from financials.models import PlaidItem, Account, AccountBalance
 from core.clients import create_plaid_client
 from restapi.permissions.auth import IsAuthedVerifiedSubscriber
 
@@ -66,7 +72,6 @@ class InvestmentsView(GenericAPIView):
             options=InvestmentHoldingsGetRequestOptions(
                 account_ids=account_ids))
         holdings_response = plaid_client.investments_holdings_get(holdings_request)
-
         holdings = groupby(
             holdings_response.to_dict()['holdings'], lambda x: x['account_id'])
         balances = holdings_response.to_dict()['accounts']
@@ -90,7 +95,7 @@ class InvestmentsView(GenericAPIView):
 
         return serialized_data
 
-    def _get_transactions_plaid_data(plaid_item, start, end):
+    def _get_transactions_plaid_data(self, plaid_item, start, end):
         '''
         Concatenates all of the transactions for the paginated responses
         '''
@@ -104,7 +109,7 @@ class InvestmentsView(GenericAPIView):
             options=InvestmentsTransactionsGetRequestOptions(
                 account_ids=account_ids))
         response = plaid_client.investments_transactions_get(
-            transactions_request)
+            transactions_request).to_dict()
         investment_transactions = response['investment_transactions']
 
         transactions = response['investment_transactions']
@@ -117,7 +122,28 @@ class InvestmentsView(GenericAPIView):
                 options=InvestmentsTransactionsGetRequestOptions(
                     account_ids=account_ids))
             response = plaid_client.investments_transactions_get(
-                transactions_request)
+                transactions_request).to_dict()
             transactions.extend(response['investment_transactions'])
 
         return groupby(transactions, lambda x: x['account_id'])
+
+
+class InvestmentsBalanceHistoryView(ListAPIView):
+    permission_classes = [IsAuthedVerifiedSubscriber]
+    serializer_class = InvestmentBalanceSerializer
+
+    def get_queryset(self, *args, **kwargs):
+        start = self.request.query_params.get('start', None)
+        end = self.request.query_params.get('end', None)
+        start = parser.parse(start) if start else datetime.now() - timedelta(days=30)
+        end = parser.parse(end) if end else datetime.now()
+        start.replace(tzinfo=timezone.utc)
+        end.replace(tzinfo=timezone.utc)
+
+        qset = AccountBalance.objects.filter(
+            account__plaid_item__user__in=self.request.user.account.users.all(),
+            date__gte=start,
+            date__lte=end
+        )
+
+        return [] if len(qset) < 7 else qset

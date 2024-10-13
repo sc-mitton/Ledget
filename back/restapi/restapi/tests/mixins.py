@@ -100,6 +100,7 @@ class ViewTestsMixin(TestCase):
         'user_account_fixture.json',
         'user_category_fixture.json',
         'user_bill_fixture.json',
+        'account_balance_fixture.json'
     ]
 
     def setUp(self):

@@ -20,6 +20,15 @@ first_account_id=$(sed -n 's/.*"pk": *"\([^"]*\)".*/\1/p' account_fixture.json |
 
 sed -i "s/<${old_account_id}>/${first_account_id}/g" ./responses/plaid_sync_response_2.json
 
+# Update the old account ids in the balance fixture data
+old_account_id1=$(sed -n 's/.*"account": *"\([^"]*\)".*/\1/p' ./responses/account_balance_fixture.json | head -1)
+old_account_id2=$(sed -n 's/.*"account": *"\([^"]*\)".*/\1/p' ./responses/account_balance_fixture.json | tail -1)
+new_account_id1=$(sed -n 's/.*"pk": *"\([^"]*\)".*/\1/p' account_fixture.json | head -1)
+new_account_id2=$(sed -n 's/.*"pk": *"\([^"]*\)".*/\1/p' account_fixture.json | tail -1)
+
+sed -i "s/<${old_account_id1}>/${new_account_id1}/g" ./responses/account_balance_fixture.json
+sed -i "s/<${old_account_id2}>/${new_account_id2}/g" ./responses/account_balance_fixture.json
+
 # Use sed to replace all the item ids
 
 old_item_id=$(sed -n 's/.*"item_id": *"\([^"]*\)".*/\1/p' ./plaid_webhook_objects/error.json | head -1)
