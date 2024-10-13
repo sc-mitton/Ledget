@@ -51,10 +51,8 @@ services:
       - ory_hook_api_key
       - plaid_client_id
     depends_on:
-      db:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
+      - db
+      - rabbitmq
     ports:
       - 8000:8000
 volumes:
