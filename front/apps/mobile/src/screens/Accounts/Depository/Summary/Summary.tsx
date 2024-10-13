@@ -229,15 +229,7 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
 
               bottom: 24
             }}
-            domainPadding={{ left: 3, right: 3 }}
-            domain={{
-              y: [
-                balanceHistoryChartData.reduce((acc, h) => Math.min(acc, h.balance), 0) * 1.25 -
-                (balanceHistoryChartData.reduce((acc, h) => Math.max(acc, h.balance), 0) * 1.25
-                  - balanceHistoryChartData.reduce((acc, h) => Math.min(acc, h.balance), 0) * 1.25) * .5,
-                balanceHistoryChartData.reduce((acc, h) => Math.max(acc, h.balance), 0) * 1.5
-              ]
-            }}
+            domainPadding={{ left: 3, right: 3, top: 50, bottom: 100 }}
           >
             {({ points, chartBounds }) => (
               <>
@@ -276,7 +268,7 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
                     x={textXPosition}
                     y={textYPosition}
                     font={font}
-                    color={theme.colors.faintBlueText}
+                    color={theme.colors.blueText}
                     text={value}
                   />
                 )}

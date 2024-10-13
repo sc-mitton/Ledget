@@ -1,4 +1,6 @@
 
+export * from './misc/victory-tooltip/VictoryTooltip';
+
 export * from './inputs/checkbox/Checkbox';
 
 export * from './buttons/tabs-track';
