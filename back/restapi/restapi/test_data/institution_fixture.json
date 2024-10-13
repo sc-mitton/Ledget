@@ -1,6 +1,42 @@
 [
 {
     "model": "financials.institution",
+    "pk": "ins_115616",
+    "fields": {
+        "created": "2024-08-10T02:08:15.230Z",
+        "name": "Vanguard",
+        "logo": "logos/logo_ins_115616.png",
+        "primary_color": "#96151d",
+        "url": "https://www.vanguard.com/",
+        "oath": null
+    }
+},
+{
+    "model": "financials.institution",
+    "pk": "ins_14",
+    "fields": {
+        "created": "2024-08-09T03:11:34.903Z",
+        "name": "TD Bank",
+        "logo": "logos/logo_ins_14.png",
+        "primary_color": "#2bb250",
+        "url": "https://www.td.com",
+        "oath": null
+    }
+},
+{
+    "model": "financials.institution",
+    "pk": "ins_19",
+    "fields": {
+        "created": "2024-10-11T02:37:08.810Z",
+        "name": "Regions Bank",
+        "logo": "logos/logo_ins_19.png",
+        "primary_color": "#558800",
+        "url": "https://www.regions.com",
+        "oath": null
+    }
+},
+{
+    "model": "financials.institution",
     "pk": "ins_25",
     "fields": {
         "created": "2024-05-09T03:27:33.730Z",

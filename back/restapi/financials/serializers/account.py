@@ -60,7 +60,6 @@ class AccountSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         rep = super().to_representation(instance)
-        print('rep', rep)
         rep['institution_id'] = rep.pop('institution', None)
         return rep
 

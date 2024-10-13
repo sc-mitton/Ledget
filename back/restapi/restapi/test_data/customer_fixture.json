@@ -1,11 +1,11 @@
 [
-    {
-        "model": "core.customer",
-        "pk": "cus_QY4NDJFZvm0a5Y",
-        "fields": {
-            "user": "0d27b564-3be8-4153-8894-b31abb43e668",
-            "subscription_status": "trialing",
-            "period_end": 1716840803
-        }
+{
+    "model": "core.customer",
+    "pk": "cus_QY4NDJFZvm0a5Y",
+    "fields": {
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "subscription_status": "trialing",
+        "period_end": 1917161958
     }
+}
 ]

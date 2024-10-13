@@ -15,8 +15,8 @@
         "week": null,
         "week_day": null,
         "month": null,
-        "skipped": false,
         "year": null,
+        "skipped": false,
         "expires": null,
         "reminders": []
     }

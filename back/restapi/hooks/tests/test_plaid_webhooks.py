@@ -1,8 +1,8 @@
 from unittest.mock import patch
-from pathlib import Path
 import json
 
 from django.test import TestCase, Client
+from django.conf import settings
 from django.urls import reverse
 
 from financials.models import PlaidItem
@@ -97,7 +97,7 @@ class PlaidWebhookTests(TestCase):
 
     def _get_plaid_webhook_object(self, file) -> dict:
 
-        file = Path(__file__).parent / 'plaid_webhook_objects' / file
+        file = settings.TEST_DATA_DIR / 'plaid_webhook_objects' / file
         with open(file) as f:
             payload_data = f.read()
             payload_data = json.loads(payload_data)

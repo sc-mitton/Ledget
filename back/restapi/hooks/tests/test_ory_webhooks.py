@@ -1,5 +1,4 @@
 import json
-from pathlib import Path
 
 from django.test import TestCase, Client
 from django.conf import settings
@@ -15,7 +14,8 @@ class TestOryWebhooks(TestCase):
             settings.ORY_HOOK_API_KEY
         )
         self.webhook_payload = None
-        with open(Path(__file__).parent / 'ory_webook_payload.json', 'r') as f:
+        with open(settings.TEST_DATA_DIR / 'ory_webhook_objects' /
+                  'ory_webook_payload.json', 'r') as f:
             self.webhook_payload = json.load(f)
 
     def test_ory_registration_webhook(self):

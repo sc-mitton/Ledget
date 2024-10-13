@@ -152,7 +152,7 @@ class AccountsViewSet(ViewSet):
     def _fetch_plaid_account_data(self, accounts: List[Account]) -> dict:
         already_fetched_tokens = []
 
-        accounts_data = {a.id: None for a in accounts}
+        data = {a.id: None for a in accounts}
         for account in accounts:
             if account.plaid_item.access_token in already_fetched_tokens:
                 continue
@@ -164,7 +164,7 @@ class AccountsViewSet(ViewSet):
                 for a in response['accounts']:
                     balance_data_serializer = PlaidBalanceSerializer(data=a)
                     balance_data_serializer.is_valid(raise_exception=True)
-                    accounts_data[a['account_id']] = {
+                    data[a['account_id']] = {
                         **balance_data_serializer.validated_data,
                         'institution_id': account.institution.id
                     }
@@ -180,7 +180,7 @@ class AccountsViewSet(ViewSet):
                     'message': error['error_message'],
                 }})
 
-        return accounts_data
+        return data
 
     def _get_balance_history(self, accounts_balance: dict,
                              start: int = None, end: int = None) -> dict:

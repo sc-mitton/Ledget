@@ -1,18 +1,56 @@
 [
 {
     "model": "financials.plaiditem",
-    "pk": "Z7x9yKjLK6Hvxw3MeKzasBA6DXA4vLue4jBdl",
+    "pk": "EJamAxQ4QGc46odlMqaGSQrNwNREgrTXVWB9m",
     "fields": {
         "privacy": "private",
-        "institution": "ins_25",
+        "institution": "ins_115616",
         "user": "0d27b564-3be8-4153-8894-b31abb43e668",
-        "access_token": "access-sandbox-630e6822-fa43-4bce-9781-431f2a658cb3",
-        "cursor": "CAESJXpLNGd3ZDU4ZFZmVm1xUjR3azhKRkF3cnFkQUFrWmZsTnFFeUUaCwiB/8qyBhDAnasfIgsIgf/KsgYQwJ2rHyoLCIH/yrIGEMCdqx8=",
+        "access_token": "access-sandbox-a7730f9c-0161-4a28-a4be-4702e6b56326",
+        "cursor": "",
         "login_required": false,
         "new_accounts_available": false,
         "permission_revoked": false,
         "pending_expiration": false,
-        "last_synced": "2024-05-26T17:11:49.234Z"
+        "last_synced": "2024-10-11T20:23:22.420Z",
+        "investments_supported": true,
+        "liabilities_supported": true
+    }
+},
+{
+    "model": "financials.plaiditem",
+    "pk": "dvKNkkqd9JCdJbaPePeRi9Kj8adkp7IZlkdpB",
+    "fields": {
+        "privacy": "private",
+        "institution": "ins_19",
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "access_token": "access-sandbox-566a42dd-627a-4f3f-b203-985b8629ad36",
+        "cursor": "",
+        "login_required": false,
+        "new_accounts_available": false,
+        "permission_revoked": false,
+        "pending_expiration": false,
+        "last_synced": "2024-10-11T16:36:37.665Z",
+        "investments_supported": true,
+        "liabilities_supported": true
+    }
+},
+{
+    "model": "financials.plaiditem",
+    "pk": "oE3nEjvRkmcz3VxZ8kDXSbAbWorveafRpLJde",
+    "fields": {
+        "privacy": "private",
+        "institution": "ins_25",
+        "user": "0d27b564-3be8-4153-8894-b31abb43e668",
+        "access_token": "access-sandbox-033510f6-e88e-46bf-a690-651706746004",
+        "cursor": "CAESJU1xM0RxeEoxQk5GRUxQMUd3cm9sVXd2V2xtNHBMcUZMMW1xUEEaDAi0maW4BhCglYmDAyIMCLSZpbgGEKCViYMDKgwItJmluAYQoJWJgwM=",
+        "login_required": false,
+        "new_accounts_available": false,
+        "permission_revoked": false,
+        "pending_expiration": false,
+        "last_synced": "2024-10-11T16:05:44.535Z",
+        "investments_supported": true,
+        "liabilities_supported": true
     }
 }
 ]

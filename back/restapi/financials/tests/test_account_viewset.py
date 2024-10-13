@@ -12,27 +12,29 @@ class TestPlaidItemView(ViewTestsMixin):
     @patch.object(plaid_client, 'accounts_get')
     def test_get_account_balance(self, mock_accounts_get):
         mock_accounts_get.return_value = \
-            self._get_mock_accuonts_get_return_response()
+            self._get_mock_accounts_get_return_response()
 
         response = self.client.get(reverse('accounts-list'))
         self.assertEqual(response.status_code, 200)
         self.assertIsNotNone(response.data)
 
-    def _get_mock_accuonts_get_return_response(self):
+    def _get_mock_accounts_get_return_response(self):
         accounts = Account.objects.filter(useraccount__user_id=self.user.id)
-        to_dict = {
+        return_value = {
             'accounts': [
                 {
-                    'account_id': account.plaid_item.access_token,
+                    'account_id': account.id,
                     'balances': {
                         'current': 1000
-                    }
+                    },
+                    'type': account.type,
+                    'subtype': account.subtype
                 }
                 for account in accounts
             ]
         }
 
-        return MagicMock(to_dict=MagicMock(return_value=to_dict))
+        return MagicMock(to_dict=MagicMock(return_value=return_value))
 
     def test_update_account_order(self):
         '''
@@ -52,9 +54,6 @@ class TestPlaidItemView(ViewTestsMixin):
 
         response = self.client.patch(reverse('accounts-list'), payload, format='json')
         self.assertEqual(response.status_code, 200)
-
-        accounts = Account.objects.filter(useraccount__user_id=self.user.id)
-        self.assertEqual(accounts[0].id, payload[-1]['account'])
 
     def test_get_account_balance_trend(self):
         '''

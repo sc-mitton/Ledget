@@ -81,8 +81,6 @@ class LiabilitiesSerializer(serializers.Serializer):
                 ),
             )
 
-        print('accounts', accounts)
-
         for v in values:
             for i in range(len(repr['student'])):
                 account = next(

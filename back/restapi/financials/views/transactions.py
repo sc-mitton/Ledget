@@ -126,7 +126,7 @@ def sync_transactions(plaid_item: PlaidItem, default_category: Category) -> dict
             if t['is_spend']
             else Transaction(**t)
             for t in added
-        ])
+        ], ignore_conflicts=True)
 
     def _bulk_modify_transactions():
         for t in modified:
