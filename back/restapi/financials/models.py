@@ -43,6 +43,10 @@ class PlaidItem(BasePrivateModel):
     pending_expiration = models.BooleanField(default=False)
     last_synced = models.DateTimeField(null=True, blank=True)
 
+    # Assume true until proven otherwise
+    investments_supported = models.BooleanField(default=True)
+    liabilities_supported = models.BooleanField(default=True)
+
 
 class Account(BasePrivateModel):
 
@@ -65,6 +69,13 @@ class Account(BasePrivateModel):
     type = models.CharField(max_length=50, null=False, blank=False)
     verification_status = models.CharField(max_length=50, null=True,
                                            blank=True)
+
+
+class AccountBalance(models.Model):
+    value = models.DecimalField(max_digits=10, decimal_places=2, null=False)
+    date = models.DateField(null=False)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE,
+                                related_name='balances')
 
 
 class UserAccount(models.Model):

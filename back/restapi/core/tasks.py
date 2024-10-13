@@ -25,26 +25,28 @@ ory_configuration = ory_client.Configuration(
 
 
 @shared_task(auto_retry_for=(plaid.ApiException,), retry_backoff=10, retry_jitter=True,
-             retry_kwargs={'max_retries': 3})
+             retry_kwargs={'max_retries': 3}, acks_late=True)
 def delete_plaid_item(item_id: str, access_token: str):
     try:
         request = ItemRemoveRequest(access_token=access_token)
         plaid_client.item_remove(request)
     except plaid.ApiException as e:  # pragma: no cover
         response = json.loads(e.body)
+        # Idempotency
         if not response['error_code'] == 'ITEM_NOT_FOUND':
             logger.error(f'Failed to delete plaid item {item_id}: {e}')
             raise plaid.ApiException(e)
 
 
 @shared_task(auto_retry_for=(ory_client.ApiException), retry_backoff=10,
-             retry_jitter=True, retry_kwargs={'max_retries': 3})
+             retry_jitter=True, retry_kwargs={'max_retries': 3}, acks_late=True)
 def delete_ory_identity(user_id: str):
 
     with ory_client.ApiClient(ory_configuration) as api_client:
         api_instance = identity_api.IdentityApi(api_client)
         try:
             api_instance.delete_identity(user_id)
+        # Idempotency
         except ory_client.exceptions.NotFoundException as e:  # pragma: no cover
             logger.error(f"Ory user doesn't exist {user_id}: {e}")
         except ory_client.exceptions.ApiException as e:  # pragma: no cover
@@ -53,45 +55,7 @@ def delete_ory_identity(user_id: str):
 
 
 @shared_task(auto_retry_for=(OperationalError), retry_backoff=10, retry_jitter=True,
-             retry_kwargs={'max_retries': 3})
-def remove_co_owner(co_owner_id: str) -> None:
-    '''
-    Removes a co-owner from an account. This is called when the account owner
-    decides to remove the co-owner from their account.
-    '''
-    from financials.models import PlaidItem
-
-    @transaction.atomic
-    def update_db(user, plaid_items):
-        try:
-            user.account = None
-            user.save()
-            plaid_items.delete()
-        except Exception as e:
-            logger.error(
-                f'Failed to update db for user {user.id} on co-owner removal: {e}')
-
-    try:
-        user = get_user_model().objects.get(id=co_owner_id)
-    except get_user_model().DoesNotExist:
-        return
-
-    plaid_items = PlaidItem.objects.filter(user_id=co_owner_id)
-    delete_tasks = []
-    for item in plaid_items:
-        delete_task = delete_plaid_item.si(item.id, item.access_token)
-        delete_tasks.append(delete_task)
-
-    if delete_tasks:
-        grouped_delete_tasks = group(delete_tasks)
-        grouped_delete_tasks()
-
-    update_db(user, plaid_items)
-    delete_ory_identity.delay(co_owner_id)
-
-
-@shared_task(auto_retry_for=(OperationalError), retry_backoff=10, retry_jitter=True,
-             retry_kwargs={'max_retries': 3})
+             retry_kwargs={'max_retries': 3}, acks_late=True)
 def cancelation_cleanup(user_id: str) -> None:
     '''
     Deletes all third party data for a user. This is called when a user
@@ -130,7 +94,45 @@ def cancelation_cleanup(user_id: str) -> None:
 
 
 @shared_task(auto_retry_for=(OperationalError), retry_backoff=10, retry_jitter=True,
-             retry_kwargs={'max_retries': 3})
+             retry_kwargs={'max_retries': 3}, acks_late=True)
+def remove_co_owner(co_owner_id: str) -> None:
+    '''
+    Removes a co-owner from an account. This is called when the account owner
+    decides to remove the co-owner from their account.
+    '''
+    from financials.models import PlaidItem
+
+    @transaction.atomic
+    def update_db(user, plaid_items):
+        try:
+            user.account = None
+            user.save()
+            plaid_items.delete()
+        except Exception as e:
+            logger.error(
+                f'Failed to update db for user {user.id} on co-owner removal: {e}')
+
+    try:
+        user = get_user_model().objects.get(id=co_owner_id)
+    except get_user_model().DoesNotExist:
+        return
+
+    plaid_items = PlaidItem.objects.filter(user_id=co_owner_id)
+    delete_tasks = []
+    for item in plaid_items:
+        delete_task = delete_plaid_item.si(item.id, item.access_token)
+        delete_tasks.append(delete_task)
+
+    if delete_tasks:
+        grouped_delete_tasks = group(delete_tasks)
+        grouped_delete_tasks()
+
+    update_db(user, plaid_items)
+    delete_ory_identity.delay(co_owner_id)
+
+
+@shared_task(auto_retry_for=(OperationalError), retry_backoff=10, retry_jitter=True,
+             retry_kwargs={'max_retries': 3}, acks_late=True)
 def cleanup_hanging_ory_users(user_id: str) -> None:
     '''
     When a user is adding anonther user to their account, there's a possibility
@@ -144,11 +146,12 @@ def cleanup_hanging_ory_users(user_id: str) -> None:
         identity = None
         try:
             identity = api_instance.get_identity(user_id)
+        # Idempotency
         except ory_client.exceptions.NotFoundException:
             pass
 
-        # User is hanging
         try:
+            # User is hanging
             if not identity or not identity['traits']['name']['first']:
                 get_user_model().objects.filter(id=user_id).delete()
                 api_instance.delete_identity(id=user_id)
