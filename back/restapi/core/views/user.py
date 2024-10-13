@@ -203,6 +203,8 @@ class AddUserToAccountView(GenericAPIView):
                 account=self.request.user.account
             )
             if created:
+                # Add a delaid task that will cleanup the the user in both the db and
+                # on ory if the link isn't used in time
                 cleanup_hanging_ory_users.apply_async(
                     args=[user.id],
                     countdown=settings.ORY_RECOVERY_LINK_EXPIRATION
