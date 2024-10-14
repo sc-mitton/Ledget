@@ -13,11 +13,14 @@ type Props<W extends Windows> = {
   onSelect: (window: W[number]['key']) => void
   onShowChange?: (show: boolean) => void
   onClose?: () => void
+  closeOption?: boolean
   windows: W
+  defaultWindow?: W[number]['key']
 }
 
 export const ChartWindowsMenu = <W extends Windows>(props: Props<W>) => {
-  const [window, setWindow] = useState<typeof props.windows[number]['key']>(props.windows[0].key)
+  const { closeOption = true } = props
+  const [window, setWindow] = useState<typeof props.windows[number]['key']>(props.defaultWindow ?? props.windows[0].key)
 
   return (
     <Menu
@@ -32,14 +35,14 @@ export const ChartWindowsMenu = <W extends Windows>(props: Props<W>) => {
             props.onSelect(w.key)
           }
         })),
-        {
+        ...(closeOption ? [{
           label: 'Close',
           icon: () => <Icon icon={CornerDownLeft} size={16} color='secondaryText' strokeWidth={2} />,
           onSelect: () => {
             props.onClose?.()
           },
           newSection: true
-        }
+        }] : [])
       ]}
       placement='right'
       closeOnSelect={true}

@@ -19,7 +19,7 @@ const persistConfig = {
   version: 1,
   storage: reduxStorage,
   timeout: 0,
-  whitelist: ['appearance', 'budgetItemMetaData']
+  whitelist: ['appearance', 'budgetItemMetaData', 'ui']
 };
 
 const rootReducer = combineReducers({

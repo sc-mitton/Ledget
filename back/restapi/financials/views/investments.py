@@ -23,7 +23,7 @@ from plaid.model_utils import date
 import plaid
 
 from financials.serializers.investments import (
-    InvestmentsSerializer,
+    InvestmentSerializer,
     InvestmentBalanceSerializer
 )
 from financials.models import PlaidItem, Account, AccountBalance
@@ -57,7 +57,7 @@ class InvestmentsView(GenericAPIView):
                 )
             except plaid.ApiException as e:
                 if json.loads(e.body)['error_code'] == 'PRODUCTS_NOT_SUPPORTED':
-                    s = InvestmentsSerializer(data={
+                    s = InvestmentSerializer(data={
                         'account_id': item.accounts.first().id,
                         'product_not_supported': True
                     })
@@ -73,6 +73,7 @@ class InvestmentsView(GenericAPIView):
     def _get_plaid_transactions_data(self, plaid_item, start, end):
 
         account_ids = [a.id for a in plaid_item.accounts.all()]
+        account_names = [a.name for a in plaid_item.accounts.all()]
         holdings_request = InvestmentsHoldingsGetRequest(
             access_token=plaid_item.access_token,
             options=InvestmentHoldingsGetRequestOptions(
@@ -87,9 +88,10 @@ class InvestmentsView(GenericAPIView):
         for (account_id, transaction_group), (_, holding_group), balances \
                 in zip(transactions, holdings, balances):
 
-            serializer = InvestmentsSerializer(
+            serializer = InvestmentSerializer(
                 data={
                     'account_id': account_id,
+                    'account_name': account_names[account_ids.index(account_id)],
                     'holdings': list(holding_group),
                     'transactions': list(transaction_group),
                     'securities': holdings_response.to_dict()['securities'],
@@ -150,6 +152,6 @@ class InvestmentsBalanceHistoryView(ListAPIView):
             account__plaid_item__user__in=self.request.user.account.users.all(),
             date__gte=start,
             date__lte=end
-        )
+        ).prefetch_related('account')
 
         return qset

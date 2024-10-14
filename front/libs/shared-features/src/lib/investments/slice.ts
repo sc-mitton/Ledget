@@ -3,7 +3,7 @@ import { Investments, InvestmentsBalanceHistory } from './types';
 
 const liabilitiesSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
-    getInvestments: build.query<Investments, void>({
+    getInvestments: build.query<Investments, { start: string, end: string } | void>({
       query: () => 'investments',
       providesTags: ['Investment'],
     }),
@@ -13,4 +13,4 @@ const liabilitiesSlice = apiSlice.injectEndpoints({
     }),
   }),
 });
-export const { useGetInvestmentsQuery } = liabilitiesSlice;
+export const { useGetInvestmentsQuery, useGetInvestmendsBalanceHistoryQuery } = liabilitiesSlice;

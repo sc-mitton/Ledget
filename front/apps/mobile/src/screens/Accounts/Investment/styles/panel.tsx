@@ -4,15 +4,15 @@ const styles = StyleSheet.create({
   main: {
     flex: 1,
   },
-  emptyTextContainer: {
-    position: 'absolute',
-    left: '50%',
-    top: '70%',
-    justifyContent: 'center',
+  legend: {
+    flexDirection: 'row',
+    gap: 4,
     alignItems: 'center',
+    paddingHorizontal: 8,
+    marginTop: 8
   },
-  emptyText: {
-    position: 'absolute'
+  transactionsHeader: {
+    flexGrow: 1
   }
 });
 

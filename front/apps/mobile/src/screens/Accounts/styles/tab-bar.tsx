@@ -4,10 +4,14 @@ const styles = StyleSheet.create({
   tabs: {
     flexDirection: 'row',
     height: 40,
+    marginLeft: -16,
+    paddingLeft: 16,
+    marginRight: -16,
     position: 'relative',
     zIndex: 10,
   },
   tabsContent: {
+    paddingRight: 32,
     alignItems: 'flex-start',
   },
   tabButton: {

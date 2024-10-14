@@ -1,23 +1,53 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+// Null indicates all accounts
 type State = {
   billCatSort?: 'amountDesc' | 'amountAsc' | 'nameDesc' | 'nameAsc' | 'default'
+  investmentsScreen: {
+    selectedAccounts?: { id: string, name: string }[]
+    window?: {
+      period: 'month' | 'year'
+      amount: number
+    }
+  },
+  depositsScreen: {
+    selectedAccounts?: string[]
+  }
 }
 
 const initialState: State = {
-  billCatSort: 'default'
+  billCatSort: 'default',
+  investmentsScreen: {},
+  depositsScreen: {}
 }
 
 export const uiSlice = createSlice({
-  name: 'uiSlice',
+  name: 'ui',
   initialState,
   reducers: {
     setBillCatSort: (state, action) => {
       state.billCatSort = action.payload
-    }
+    },
+    setInvestmentsScreenAccounts: (state, action: PayloadAction<State['investmentsScreen']['selectedAccounts']>) => {
+      state.investmentsScreen.selectedAccounts = action.payload
+    },
+    setInvestmentsScreenWindow: (state, action: PayloadAction<State['investmentsScreen']['window']>) => {
+      state.investmentsScreen.window = action.payload
+    },
+    setDepositsScreenAccounts: (state, action: PayloadAction<State['depositsScreen']['selectedAccounts']>) => {
+      state.depositsScreen.selectedAccounts = action.payload
+    },
   }
 })
 
-export const { setBillCatSort } = uiSlice.actions
+export const {
+  setBillCatSort,
+  setInvestmentsScreenAccounts,
+  setDepositsScreenAccounts,
+  setInvestmentsScreenWindow
+} = uiSlice.actions
 
 export const selectBillCatSort = (state: { ui: State }) => state.ui.billCatSort
+export const selectInvestmentsScreenAccounts = (state: { ui: State }) => state.ui.investmentsScreen?.selectedAccounts
+export const selectDepositsScreenAccounts = (state: { ui: State }) => state.ui.depositsScreen?.selectedAccounts
+export const selectInvestmentsScreenWindow = (state: { ui: State }) => state.ui.investmentsScreen?.window

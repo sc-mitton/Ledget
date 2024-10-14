@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   menuButtonContainer: {
     position: 'absolute',
     top: 8,
-    right: 8,
+    right: 4,
     zIndex: 10,
   },
   blurViewContainer: {

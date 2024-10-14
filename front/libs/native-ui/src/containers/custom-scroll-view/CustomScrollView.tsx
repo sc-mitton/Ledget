@@ -30,7 +30,6 @@ export const CustomScrollView = forwardRef<ScrollView, Props>((props, ref) => {
   } = props;
   const { style, ...rest } = props;
 
-
   const theme = useTheme();
 
   const [state, setState] = useState({
@@ -100,7 +99,8 @@ export const CustomScrollView = forwardRef<ScrollView, Props>((props, ref) => {
           style={[
             styles.scrollIndicator,
             {
-              height: indicatorSize,
+              height: props.horizontal ? 4 : indicatorSize,
+              width: props.horizontal ? indicatorSize : 4,
               opacity,
               backgroundColor: theme.colors.scrollbar,
               transform: [{ translateY: y }]

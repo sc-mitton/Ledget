@@ -32,8 +32,9 @@ class InvestmentsTransactionSerializer(serializers.Serializer):
     security_id = serializers.CharField(required=False)
 
 
-class InvestmentsSerializer(serializers.Serializer):
+class InvestmentSerializer(serializers.Serializer):
     account_id = serializers.CharField()
+    account_name = serializers.CharField(required=False)
     product_not_supported = serializers.BooleanField(required=False)
     holdings = HoldingSerializer(many=True, required=False)
     transactions = InvestmentsTransactionSerializer(many=True, required=False)
@@ -90,6 +91,7 @@ class InvestmenetBalanceListSerializer(serializers.ListSerializer):
 
             final.append({
                 'account_id': account_id,
+
                 'balances': balances
             })
 
@@ -101,3 +103,8 @@ class InvestmentBalanceSerializer(serializers.ModelSerializer):
         model = AccountBalance
         fields = '__all__'
         list_serializer_class = InvestmenetBalanceListSerializer
+
+    def to_representation(self, instance):
+        repr = super().to_representation(instance)
+        repr['account_name'] = instance.account.name
+        return repr

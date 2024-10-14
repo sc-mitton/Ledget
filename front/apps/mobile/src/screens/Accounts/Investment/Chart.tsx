@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { View } from 'react-native'
+import { useEffect, useMemo, useState } from 'react';
+import { View, StyleSheet } from 'react-native'
 import { CartesianChart, Area, Line, useChartPressState } from 'victory-native';
 import {
   LinearGradient,
@@ -7,12 +7,30 @@ import {
   vec,
 } from '@shopify/react-native-skia';
 import { useTheme } from '@shopify/restyle';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import { BlurView } from 'expo-blur';
+import { ChevronDown, ArrowUpRight, ArrowDownRight, Check } from 'geist-native-icons';
+import { Big } from 'big.js';
 import dayjs from 'dayjs';
 
 import styles from './styles/chart';
 import SourceSans3Regular from '../../../../assets/fonts/SourceSans3Regular.ttf';
 import tempDataValues from './tempChartData';
-import { VictoryTooltip } from '@ledget/native-ui';
+import { VictoryTooltip, Text, Menu, DollarCents, Icon } from '@ledget/native-ui';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import {
+  useGetInvestmendsBalanceHistoryQuery,
+  useGetInvestmentsQuery,
+  isInvestmentSupported
+} from '@ledget/shared-features';
+import {
+  selectInvestmentsScreenAccounts,
+  selectInvestmentsScreenWindow,
+  setInvestmentsScreenAccounts,
+  setInvestmentsScreenWindow
+} from '@/features/uiSlice';
+import { ChartWindowsMenu } from '@/components';
+import { useAppearance } from '@features/appearanceSlice';
 
 const tempChartData = tempDataValues.map((d, i) => ({
   date: dayjs().subtract(i, 'days').format('YYYY-MM-DD'),
@@ -20,25 +38,153 @@ const tempChartData = tempDataValues.map((d, i) => ({
 })).reverse();
 
 const windows = [
-  { key: '1W', label: '1 Week', format: 'MMM D', ticks: 3 },
-  { key: '1M', label: '1 Month', format: 'MMM D', ticks: 5 },
-  { key: '6M', label: '6 Months', format: 'MMM', ticks: 5 },
-  { key: '1Y', label: '1 Year', format: 'MMM YY', ticks: 5 },
-  { key: 'ALL', label: 'All', format: 'MMM YY', ticks: 5 },
-] as const;
+  { key: '1M', label: '1 month', period: 'month' as const, number: 1, format: 'MMM D', ticks: 5 },
+  { key: '3M', label: '3 months', period: 'month' as const, number: 3, format: 'MMM D', ticks: 5 },
+  { key: '6M', label: '6 months', period: 'month' as const, number: 6, format: 'MMM', ticks: 5 },
+  { key: '1Y', label: '1 year', period: 'year' as const, number: 1, format: 'MMM YY', ticks: 5 },
+  { key: 'ALL', label: 'All', format: 'MMM YY', ticks: 5 }
+];
 
 const BOTTOM_PADDING = 100
 
-const Chart = ({ data }: { data?: { date: string, balance: number }[] }) => {
-  const [window, setWindow] = useState<typeof windows[number]['key']>(windows[0].key)
-  const chartData = data || tempChartData
+const Chart = () => {
+  const dispatch = useAppDispatch()
+
+  const { data: fetchedData } = useGetInvestmendsBalanceHistoryQuery()
+  const { data: investmentsData } = useGetInvestmentsQuery()
+  const accounts = useAppSelector(selectInvestmentsScreenAccounts)
+  const window = useAppSelector(selectInvestmentsScreenWindow)
+
+  const { mode } = useAppearance()
+
+  const [chartData, setChartData] = useState(tempChartData)
+  const [useingFakeData, setUseingFakeData] = useState(true)
+  const [showWindowMenu, setShowWindowMenu] = useState(false)
 
   const font = useFont(SourceSans3Regular, 14)
   const theme = useTheme()
   const { state, isActive } = useChartPressState({ x: '0', y: { balance: 0 } })
 
+  const trend = useMemo(() => {
+    if (fetchedData?.length === 0 || !fetchedData) return undefined
+    const last = fetchedData
+      .filter(acnt => accounts ? accounts.some(ac => ac.id === acnt.account_id) : true)
+      .reduce((acc, acnt) => {
+        return acc.plus(acnt.balances[0].balance)
+      }, Big(0))
+    const second2Last = fetchedData
+      .filter(acnt => accounts ? accounts.some(ac => ac.id === acnt.account_id) : true)
+      .reduce((acc, acnt) => {
+        return acc.plus(acnt.balances[1].balance)
+      }, Big(0))
+    return last.minus(second2Last).times(100).toNumber()
+  }, [fetchedData])
+
+  useEffect(() => {
+    if (fetchedData && fetchedData.length > 0) {
+      setChartData(fetchedData
+        .filter(acnt => accounts ? accounts.some(ac => ac.id === acnt.account_id) : true)
+        .reduce((acc, acnt) => {
+          return acnt.balances.map(b => ({
+            date: b.date,
+            balance: b.balance
+          })).concat(acc)
+        }, [] as { date: string, balance: number }[])
+      )
+      setUseingFakeData(false)
+    }
+  }, [accounts])
+
   return (
     <View style={styles.chartContainer}>
+      <View style={styles.accountMenu}>
+        <Menu
+          as='menu'
+          placement='left'
+          closeOnSelect={true}
+          onShowChange={setShowWindowMenu}
+          items={[
+            ...(
+              investmentsData?.filter(a => isInvestmentSupported(a)).map(a => ({
+                label: a.account_name,
+                icon: () => <Icon
+                  icon={Check}
+                  size={16}
+                  strokeWidth={2}
+                  color={accounts?.some(ac => ac.id === a.account_id) ? 'blueText' : 'transparent'}
+                />,
+                onSelect: () => dispatch(setInvestmentsScreenAccounts([{ id: a.account_id, name: a.account_name }]))
+              })) || []
+            ),
+            {
+              label: 'All Accounts',
+              icon: () => <Icon icon={Check} size={16} strokeWidth={2} color={accounts ? 'transparent' : 'blueText'} />,
+              onSelect: () => dispatch(setInvestmentsScreenAccounts(undefined))
+            }
+          ]}
+        >
+          <Text color='tertiaryText'>{accounts ? accounts[0]?.name : 'All Accounts'}
+            &nbsp;
+            <Icon icon={ChevronDown} size={16} strokeWidth={2} color='tertiaryText' />
+          </Text>
+        </Menu>
+        <View style={styles.balanceContainer}>
+          <DollarCents
+            fontSize={24}
+            variant='bold'
+            value={
+              investmentsData?.filter(a => isInvestmentSupported(a)).reduce((acc, investment) => {
+                if (accounts) {
+                  return accounts?.some(ac => ac.id === investment.account_id)
+                    ? acc.plus(investment.balance)
+                    : acc
+                }
+                return acc.plus(investment.balance)
+              }, Big(0))?.times(100).toNumber() || 0
+            }
+          />
+          {trend !== undefined &&
+            <View style={styles.trendContainer}>
+              <DollarCents color='tertiaryText' value={trend} withCents={false} />
+              <Icon
+                icon={trend > 0 ? ArrowUpRight : ArrowDownRight}
+                size={16}
+                strokeWidth={2}
+                color={trend > 0 ? 'greenText' : 'alert'} />
+            </View>}
+        </View>
+      </View>
+      <View style={styles.windowMenu}>
+        <ChartWindowsMenu
+          windows={windows}
+          onShowChange={setShowWindowMenu}
+          onSelect={(w) => {
+            dispatch(setInvestmentsScreenWindow({
+              period: windows.find(win => win.key === w)?.period || 'month',
+              amount: windows.find(win => win.key === w)?.number || 1
+            }))
+          }}
+          defaultWindow={
+            windows.find(w => w.period === window?.period && w.number === window?.amount)?.key
+            || windows[0].key
+          }
+          closeOption={false}
+        />
+      </View>
+      {showWindowMenu &&
+        <Animated.View entering={FadeIn} exiting={FadeOut} style={[StyleSheet.absoluteFill, styles.blurViewContainer]}>
+          <BlurView
+            intensity={8}
+            style={[StyleSheet.absoluteFill]}
+            tint={mode === 'dark' ? 'dark' : 'light'}
+          />
+        </Animated.View>}
+      {useingFakeData &&
+        <View style={styles.emptyTextContainer}>
+          <Text variant='footer' style={styles.emptyText}>
+            Not enough data yet
+          </Text>
+        </View>}
       <CartesianChart
         chartPressState={state}
         data={chartData}
@@ -48,13 +194,14 @@ const Chart = ({ data }: { data?: { date: string, balance: number }[] }) => {
           font,
           lineWidth: 0,
           labelOffset: -20,
-          tickCount: data ? windows.find(w => w.key === window)?.ticks || 3 : 5,
+          tickCount: useingFakeData ? 5 : windows.find(w => w.period === window?.period && w.number === window?.amount)?.ticks,
           labelColor:
-            data
-              ? theme.colors.faintBlueText
-              : theme.colors.quaternaryText,
+            useingFakeData
+              ? theme.colors.quaternaryText
+              : theme.colors.faintBlueText,
           formatXLabel: (date) =>
-            `            ${dayjs(date).format(windows.find(w => w.key === window)?.format || 'MMM D')}`,
+            useingFakeData ? '' :
+              `${' '.repeat(14)}${dayjs(date).format(windows.find(w => w.period === window?.period && w.number === window?.amount)?.format)}`
         }}
         yAxis={[{
           font,
@@ -74,14 +221,14 @@ const Chart = ({ data }: { data?: { date: string, balance: number }[] }) => {
               curveType='natural'
             >
               <LinearGradient
-                colors={data
+                colors={useingFakeData
                   ? [
-                    theme.colors.blueChartGradientStart,
-                    theme.colors.blueChartGradientStart,
+                    theme.colors.emptyChartGradientStart,
                     theme.colors.blueChartGradientEnd
                   ]
                   : [
-                    theme.colors.emptyChartGradientStart,
+                    theme.colors.blueChartGradientStart,
+                    theme.colors.blueChartGradientStart,
                     theme.colors.blueChartGradientEnd
                   ]
                 }
@@ -92,12 +239,12 @@ const Chart = ({ data }: { data?: { date: string, balance: number }[] }) => {
             <Line
               animate={{ type: 'spring', duration: 300 }}
               points={points.balance}
-              color={data ? theme.colors.blueChartColor : theme.colors.quinaryText}
+              color={useingFakeData ? theme.colors.quinaryText : theme.colors.blueChartColor}
               strokeWidth={2}
               strokeCap='round'
               curveType='natural'
             />
-            {isActive && data && (
+            {isActive && !useingFakeData && (
               <VictoryTooltip
                 state={state}
                 font={font}

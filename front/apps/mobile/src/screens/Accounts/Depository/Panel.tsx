@@ -6,12 +6,11 @@ import { AccountsTabsScreenProps } from '@types';
 import { hasErrorCode } from '@ledget/helpers';
 import { popToast, Account, useGetAccountsQuery, apiSlice } from '@ledget/shared-features';
 import { useAppDispatch } from '@hooks';
-import { Box, Seperator } from '@ledget/native-ui';
+import { Box } from '@ledget/native-ui';
 import { DefaultHeader, AccountHeader } from '../Header';
 import Transactions from '../TransactionsList/Transactions';
 import AccountsPickerButton from '../AccountsPickerButton';
 import Summary from './Summary/Summary';
-import { BoxHeader } from '@ledget/native-ui';
 
 const Panel = (props: AccountsTabsScreenProps<'Depository'> & { account?: Account }) => {
   const [bottomOfContentPos, setBottomOfContentPos] = useState(0)
@@ -19,7 +18,6 @@ const Panel = (props: AccountsTabsScreenProps<'Depository'> & { account?: Accoun
   const [account, setAccount] = useState<Account>()
   const [transactionsListExpanded, setTransactionsListExpanded] = useState(false)
   const dispatch = useAppDispatch()
-  const ref = useRef<View>(null);
 
   useEffect(() => {
     if (transactionsListExpanded && account) {
@@ -57,9 +55,7 @@ const Panel = (props: AccountsTabsScreenProps<'Depository'> & { account?: Accoun
 
   return (
     <Box style={[styles.main]} paddingHorizontal='pagePadding'>
-      <View
-        ref={ref}
-        onLayout={(event) => { setBottomOfContentPos(event.nativeEvent.layout.height) }}>
+      <View onLayout={(event) => { setBottomOfContentPos(event.nativeEvent.layout.height) }}>
         <Summary {...props} />
         <AccountsPickerButton {...props} account={account} />
       </View>
