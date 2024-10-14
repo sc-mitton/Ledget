@@ -7,15 +7,12 @@ from financials.models import Account, Institution, UserAccount
 
 class CustomBase64LogoField(serializers.Field):
     def to_representation(self, value):
-        try:
-            self.read_field(value)
-        except Exception:
-            return None
-
-    def read_field(self, value):
         if value and value.path:
-            with open(value.path, "rb") as f:
-                return base64.b64encode(f.read()).decode("utf-8")
+            try:
+                with open(value.path, "rb") as f:
+                    return base64.b64encode(f.read()).decode("utf-8")
+            except Exception:
+                return None
         else:
             return None
 

@@ -6,6 +6,7 @@ import json
 
 from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.response import Response
+from rest_framework import status
 from django.db.models import Prefetch
 from django.utils import timezone
 from plaid.model.investments_holdings_get_request import InvestmentsHoldingsGetRequest
@@ -55,14 +56,19 @@ class InvestmentsView(GenericAPIView):
                     kwargs.get('end', date.today())
                 )
             except plaid.ApiException as e:
-                if json.loads(e.body)['error_code'] == 'PRODUCT_NOT_SUPPORTED':
-                    continue
+                if json.loads(e.body)['error_code'] == 'PRODUCTS_NOT_SUPPORTED':
+                    s = InvestmentsSerializer(data={
+                        'account_id': item.accounts.first().id,
+                        'product_not_supported': True
+                    })
+                    s.is_valid(raise_exception=True)
+                    results.append(s.data)
                 else:
                     raise e
             else:
                 results.extend(plaid_data)
 
-        return Response()
+        return Response(results, status=status.HTTP_200_OK)
 
     def _get_plaid_transactions_data(self, plaid_item, start, end):
 
@@ -146,4 +152,4 @@ class InvestmentsBalanceHistoryView(ListAPIView):
             date__lte=end
         )
 
-        return [] if len(qset) < 7 else qset
+        return qset

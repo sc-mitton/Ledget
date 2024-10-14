@@ -34,13 +34,16 @@ class InvestmentsTransactionSerializer(serializers.Serializer):
 
 class InvestmentsSerializer(serializers.Serializer):
     account_id = serializers.CharField()
-    holdings = HoldingSerializer(many=True)
-    transactions = InvestmentsTransactionSerializer(many=True)
-    securities = SecuritySerializer(many=True)
-    balance = serializers.FloatField()
+    product_not_supported = serializers.BooleanField(required=False)
+    holdings = HoldingSerializer(many=True, required=False)
+    transactions = InvestmentsTransactionSerializer(many=True, required=False)
+    securities = SecuritySerializer(many=True, required=False)
+    balance = serializers.FloatField(required=False)
 
     def to_representation(self, instance):
         repr = super().to_representation(instance)
+        if 'product_not_supported' in repr:
+            return repr
 
         transactions = repr.pop('transactions')
         holdings = repr.pop('holdings')
@@ -77,15 +80,17 @@ class InvestmenetBalanceListSerializer(serializers.ListSerializer):
         final = []
         for account_id, balances in grouped:
             balances = list(balances)
+            balances = [
+                {
+                    'date': b['date'],
+                    'value': b['value']
+                }
+                for b in balances
+            ] if len(balances) > 7 else []
+
             final.append({
                 'account_id': account_id,
-                'balances': [
-                    {
-                        'date': b['date'],
-                        'value': b['value']
-                    }
-                    for b in balances
-                ]
+                'balances': balances
             })
 
         return final
