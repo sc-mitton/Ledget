@@ -19,6 +19,13 @@ const styles = StyleSheet.create({
   },
   defaultHeaderContainer: {
     marginBottom: 44
+  },
+  logos: {
+    flexDirection: 'row',
+    marginLeft: 8
+  },
+  logo: {
+    marginLeft: -8
   }
 });
 

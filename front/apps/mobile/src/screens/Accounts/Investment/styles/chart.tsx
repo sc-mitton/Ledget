@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   emptyTextContainer: {
     position: 'absolute',
     left: '50%',
-    bottom: 44,
+    bottom: 32,
     justifyContent: 'center',
     alignItems: 'center',
   },

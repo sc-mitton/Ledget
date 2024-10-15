@@ -5,31 +5,34 @@ import styles from './styles/panel';
 import { AccountsTabsScreenProps } from '@types';
 import { hasErrorCode } from '@ledget/helpers';
 import { popToast, Account, useGetAccountsQuery, apiSlice } from '@ledget/shared-features';
-import { useAppDispatch } from '@hooks';
+import { useAppDispatch, useAppSelector } from '@hooks';
 import { Box } from '@ledget/native-ui';
 import { DefaultHeader, AccountHeader } from '../Header';
 import Transactions from '../TransactionsList/Transactions';
 import AccountsPickerButton from '../AccountsPickerButton';
 import Summary from './Summary/Summary';
+import { selectDepositsScreenAccounts, setDepositsScreenAccounts } from '@/features/uiSlice';
 
 const Panel = (props: AccountsTabsScreenProps<'Depository'> & { account?: Account }) => {
+  const accounts = useAppSelector(selectDepositsScreenAccounts)
+
   const [bottomOfContentPos, setBottomOfContentPos] = useState(0)
   const { data: accountsData, error } = useGetAccountsQuery()
-  const [account, setAccount] = useState<Account>()
   const [transactionsListExpanded, setTransactionsListExpanded] = useState(false)
+
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    if (transactionsListExpanded && account) {
+    if (transactionsListExpanded) {
       props.navigation.setOptions({
-        header: () => <AccountHeader account={account} />
+        header: () => <AccountHeader />
       })
     } else {
       props.navigation.setOptions({
         header: () => <DefaultHeader routeName={props.route.name} />
       })
     }
-  }, [transactionsListExpanded, account])
+  }, [transactionsListExpanded])
 
   useEffect(() => {
     if (error) {
@@ -46,24 +49,22 @@ const Panel = (props: AccountsTabsScreenProps<'Depository'> & { account?: Accoun
   }, [error])
 
   useEffect(() => {
-    if (props.route.params?.account) {
-      setAccount(props.route.params.account)
-    } else if (accountsData) {
-      setAccount(accountsData.accounts.find(a => a.type === props.route.name.toLowerCase()))
+    if (!accounts && accountsData) {
+      const account = accountsData.accounts.find(a => a.type === props.route.name.toLowerCase())
+      dispatch(setDepositsScreenAccounts(account ? [account] : []))
     }
-  }, [accountsData, props.route.params])
+  }, [accountsData, accounts])
 
   return (
     <Box style={[styles.main]} paddingHorizontal='pagePadding'>
       <View onLayout={(event) => { setBottomOfContentPos(event.nativeEvent.layout.height) }}>
         <Summary {...props} />
-        <AccountsPickerButton {...props} account={account} />
+        <AccountsPickerButton {...props} />
       </View>
       <Transactions
         onStateChange={(state) => { setTransactionsListExpanded(state === 'expanded' ? true : false) }}
         collapsedTop={bottomOfContentPos}
         expandedTop={24}
-        account={account}
         {...props}
       />
     </Box>

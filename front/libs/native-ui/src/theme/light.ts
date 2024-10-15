@@ -21,7 +21,7 @@ const palette = {
   darkRed: 'hsl(0, 59%, 34%)',
   successGreen: 'hsl(144, 62%, 53%)',
   successGreenFaint: 'hsl(144, 62%, 83%)',
-  greenText: 'hsl(144, 62%, 53%)',
+  greenText: 'hsl(144, 62%, 43%)',
 
   gray100: `hsl(${grayH}, ${grayS}%, 98%)`,
   gray150: `hsl(${grayH}, ${grayS}%, 95%)`,
@@ -153,7 +153,7 @@ export const lightTheme = createTheme({
     mediumGrayButtonBorder: palette.gray300,
     tabNavPill: palette.blue100,
     borderedGrayButton: palette.gray200,
-    dragBar: palette.gray200,
+    dragBar: palette.gray300,
     tabsTrack: palette.gray200,
     tabsBackground: palette.gray100,
     radioCardSelected: palette.gray200,

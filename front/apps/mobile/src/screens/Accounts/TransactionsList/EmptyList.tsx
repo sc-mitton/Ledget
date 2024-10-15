@@ -15,8 +15,12 @@ import { ArrowDown } from 'geist-native-icons';
 import styles from './styles/empty-list';
 import { useTransactionsSyncMutation } from '@ledget/shared-features';
 import { defaultSpringConfig, Text, Icon } from '@ledget/native-ui';
+import { useAppSelector } from '@/hooks';
+import { selectDepositsScreenAccounts } from '@/features/uiSlice';
 
-const EmptyList = ({ account }: { account: string }) => {
+const EmptyList = () => {
+  const accounts = useAppSelector(selectDepositsScreenAccounts)
+
   const arrowIconY = useSharedValue(5)
   const theme = useTheme()
   const [syncTransactions, { isLoading: isSyncing }] = useTransactionsSyncMutation()
@@ -35,7 +39,11 @@ const EmptyList = ({ account }: { account: string }) => {
     <ScrollView
       refreshControl={
         <RefreshControl
-          onRefresh={() => syncTransactions({ account: account })}
+          onRefresh={() => {
+            if (accounts) {
+              syncTransactions({ accounts: accounts.map(a => a.id) })
+            }
+          }}
           refreshing={isSyncing}
           style={{ transform: [{ scaleY: .7 }, { scaleX: .7 }] }}
           colors={[theme.colors.blueText]}

@@ -42,18 +42,24 @@ const windows = [
   { key: '3M', label: '3 months', period: 'month' as const, number: 3, format: 'MMM D', ticks: 5 },
   { key: '6M', label: '6 months', period: 'month' as const, number: 6, format: 'MMM', ticks: 5 },
   { key: '1Y', label: '1 year', period: 'year' as const, number: 1, format: 'MMM YY', ticks: 5 },
-  { key: 'ALL', label: 'All', format: 'MMM YY', ticks: 5 }
+  { key: 'MAX', label: 'Max', format: 'MMM YY', ticks: 5 }
 ];
 
-const BOTTOM_PADDING = 100
+const BOTTOM_PADDING = 50
 
 const Chart = () => {
   const dispatch = useAppDispatch()
 
-  const { data: fetchedData } = useGetInvestmendsBalanceHistoryQuery()
-  const { data: investmentsData } = useGetInvestmentsQuery()
   const accounts = useAppSelector(selectInvestmentsScreenAccounts)
   const window = useAppSelector(selectInvestmentsScreenWindow)
+
+  const { data: fetchedData } = useGetInvestmendsBalanceHistoryQuery()
+  const { data: investmentsData } = useGetInvestmentsQuery({
+    end: dayjs().format('YYYY-MM-DD'),
+    start: dayjs().subtract(window?.amount || 100, window?.period || 'year').format('YYYY-MM-DD')
+  }, {
+    skip: !window
+  })
 
   const { mode } = useAppearance()
 
@@ -210,7 +216,7 @@ const Chart = () => {
           formatYLabel: () => '',
         }]}
         padding={{ left: 0 }}
-        domainPadding={{ left: 6, right: 6, top: 50, bottom: BOTTOM_PADDING }}
+        domainPadding={{ left: 6, right: 6, top: 25, bottom: BOTTOM_PADDING }}
       >
         {({ points, chartBounds }) => (
           <>

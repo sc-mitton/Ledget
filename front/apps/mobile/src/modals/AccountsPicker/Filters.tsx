@@ -105,7 +105,7 @@ const Filters = (props: FiltersP) => {
                 <Box style={styles.groupDelimiter} backgroundColor='borderedGrayButton' />}
               <Button
                 style={styles.filter}
-                key={i}
+                key={`filter-${i}`}
                 variant={selectedFilters.includes(filter) ? 'blueBorderedPill' : 'borderedPill'}
                 onPress={() => {
                   if (selectedFilters.includes(filter)) {

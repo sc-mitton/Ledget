@@ -12,12 +12,17 @@ import type { Account } from '@ledget/shared-features';
 import Filters from './Filters';
 import AccountRow from './AccountRow';
 import TableHeaders from './Headers';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { selectDepositsScreenAccounts, setDepositsScreenAccounts } from '@/features/uiSlice';
 
 const AccountPicker = (props: ModalScreenProps<'PickAccount'>) => {
   const [updateOrder] = useUpdateAccountsMutation();
   const theme = useTheme();
   const [isFiltered, setIsFiltered] = useState(false);
   const [accounts, setAccounts] = useState<Account[]>();
+
+  const dispatch = useAppDispatch();
+  const globalAccounts = useAppSelector(selectDepositsScreenAccounts);
 
   const handleEndDrag = (args: DragEndParams<Account>) => {
     // If order of accounts has changed, update the order in the database
@@ -63,26 +68,27 @@ const AccountPicker = (props: ModalScreenProps<'PickAccount'>) => {
                     <AccountRow
                       index={args.getIndex() || 0}
                       draggable={!isFiltered}
-                      isSelected={args.item.id === props.route.params.currentAccount}
+                      isSelected={globalAccounts?.some(a => a.id === args.item.id)}
                       detailedView={args.isActive}
                       onLongPress={() => {
                         Haptics.selectionAsync();
                         args.drag();
                       }}
                       onPress={() => {
+                        dispatch(setDepositsScreenAccounts([args.item]));
                         props.navigation.navigate(
                           'Accounts', {
                           screen: 'AccountsTabs',
                           params: {
                             screen: 'Depository',
-                            params: { account: args.item }
+                            params: {}
                           }
                         }
                         )
                       }}
                       last={args.getIndex() === accounts.length - 1}
                       account={args.item}
-                      selected={args.item.id === props.route.params.currentAccount}
+                      selected={globalAccounts?.some(a => a.id === args.item.id)}
                     />
                   </ScaleDecorator>
                 </>

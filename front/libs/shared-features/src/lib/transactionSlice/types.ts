@@ -80,6 +80,14 @@ export interface TransactionsSyncResponse {
   removed: number;
 }
 
+export type TransactionsSyncParams = {
+  account?: string
+} | {
+  item?: string
+} | {
+  accounts?: string[]
+}
+
 interface SimpleTransaction {
   transaction: Transaction;
   categories?: SplitCategory[];

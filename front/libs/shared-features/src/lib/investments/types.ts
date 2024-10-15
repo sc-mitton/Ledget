@@ -1,4 +1,11 @@
-type Holding = {
+
+type Security = {
+  name?: string | null;
+  ticker_symbol?: string | null;
+  security_id: string;
+}
+
+export type Holding = {
   cost_basis?: number;
   institution_price?: number;
   institution_value?: number;
@@ -6,6 +13,7 @@ type Holding = {
   vested_quantity?: number;
   vested_value?: number;
   security_id?: string;
+  security: Security;
 }
 
 export type InvestmentTransaction = {
@@ -18,15 +26,10 @@ export type InvestmentTransaction = {
   fees?: number;
   name: string | null;
   security_id?: string;
+  security: Security;
 }
 
-type Security = {
-  name?: string | null;
-  ticker_symbol?: string | null;
-  security_id: string;
-}
-
-type InvestmentWithProductSupport = {
+export type InvestmentWithProductSupport = {
   account_name: string;
   balance: number;
   securities: Security[];

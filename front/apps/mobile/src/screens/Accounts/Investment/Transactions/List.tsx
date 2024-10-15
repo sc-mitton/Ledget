@@ -13,6 +13,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import dayjs from 'dayjs';
 import { groupBy } from 'lodash-es';
+import { useTheme } from '@shopify/restyle';
 
 import styles from './styles/list';
 import { useGetInvestmentsQuery, InvestmentTransaction, isInvestmentSupported } from '@ledget/shared-features';
@@ -32,6 +33,7 @@ const Transactions = (props: PTransactions) => {
   const state = useRef<ListState>('neutral')
   const propTop = useRef(props.collapsedTop)
   const top = useSharedValue(props.collapsedTop)
+  const theme = useTheme()
   const accounts = useAppSelector(selectInvestmentsScreenAccounts)
   const [sectionHeaderHeight, setSectionHeaderHeight] = useState(0)
   const [stuckTitle, setStuckTitle] = useState<string | null>(null)
@@ -40,8 +42,10 @@ const Transactions = (props: PTransactions) => {
   const window = useAppSelector(selectInvestmentsScreenWindow)
 
   const { data: investmentsData, isLoading: isLoadingInvestmentsData } = useGetInvestmentsQuery({
-    start: dayjs().format('YYYY-MM-DD'),
-    end: dayjs().subtract(window?.amount || 100, window?.period || 'year').format('YYYY-MM-DD')
+    end: dayjs().format('YYYY-MM-DD'),
+    start: dayjs().subtract(window?.amount || 100, window?.period || 'year').format('YYYY-MM-DD')
+  }, {
+    skip: !window
   })
 
   const animation = useAnimatedStyle(() => {
@@ -145,6 +149,8 @@ const Transactions = (props: PTransactions) => {
               bounces={true}
               overScrollMode='always'
               sections={sections}
+              scrollIndicatorPadding={[0, theme.spacing.navHeight - 64]}
+              contentContainerStyle={{ paddingBottom: theme.spacing.navHeight - 48 }}
               stickySectionHeadersEnabled={true}
               renderSectionHeader={({ section }) => (
                 <Pressable
@@ -170,17 +176,21 @@ const Transactions = (props: PTransactions) => {
                 viewAreaCoveragePercentThreshold: 0
               }}
               onViewableItemsChanged={({ changed, viewableItems }) => {
-                if (changed.length > 1 && viewableItems.length > 0) {
+                if (changed.length > 1 && viewableItems.length > 0 && viewableItems[1]?.section.title) {
                   setStuckTitle(viewableItems[1]?.section.title)
                 }
               }}
               keyExtractor={(item, index) => item.transaction_id}
               renderItem={({ item: transaction, index: i, section }) => (
-                <View style={{
-                  marginTop: i === 0 && section.index === 0
-                    ? -1 * (sectionHeaderHeight + 10)
-                    : i === 0 ? -1 * sectionHeaderHeight : 0
-                }}
+                <View
+                  key={transaction.transaction_id}
+                  style={[
+                    {
+                      marginTop: i === 0 && section.index === 0
+                        ? -1 * (sectionHeaderHeight + 10)
+                        : i === 0 ? -1 * sectionHeaderHeight : 0
+                    }
+                  ]}
                 >
                   <TouchableOpacity
                     onPress={() => {
@@ -190,7 +200,6 @@ const Transactions = (props: PTransactions) => {
                       )
                     }}
                     activeOpacity={.7}
-                    key={transaction.transaction_id}
                   >
                     <Row transaction={transaction} section={section} index={i} />
                   </TouchableOpacity>

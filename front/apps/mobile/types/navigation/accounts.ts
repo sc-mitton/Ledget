@@ -3,12 +3,12 @@ import { NavigatorScreenParams } from '@react-navigation/native';
 import type { CompositeScreenProps } from '@react-navigation/native';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
-import type { BottomTabNavParamList, RootStackParamList } from './root';
-import { Account, Transaction } from '@ledget/shared-features';
+import type { BottomTabNavParamList } from './bottomNav';
+import type { RootStackParamList } from './root';
+import { Account } from '@ledget/shared-features';
 
 
 type AccountScreenBase = {
-  account?: Account
   options?: {
     title: React.ReactNode
   }

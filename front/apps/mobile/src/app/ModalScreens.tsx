@@ -17,7 +17,8 @@ import {
   NewCategory,
   NewBill,
   ConfirmDeleteCategory,
-  ConfirmDeleteBill
+  ConfirmDeleteBill,
+  Holdings
 } from '@modals';
 import { Activity } from '@screens';
 import { useModalStyleInterpolator, useModifiedDefaultModalStyleInterpolator, useFullScreenModalStyleInterpolator } from '@/hooks';
@@ -56,6 +57,7 @@ const ModalScreens = () => {
         <RootStack.Screen name='NewBill' component={NewBill} />
         <RootStack.Screen name='PickerCard' component={CardPicker} />
         <RootStack.Screen name='PickAccount' component={AccountsPicker} />
+        <RootStack.Screen name='Holdings' component={Holdings} />
       </RootStack.Group>
     </RootStack.Navigator>
   )

@@ -11,59 +11,56 @@ import Animated, {
   Extrapolation,
   withTiming,
   cancelAnimation,
-  withDelay
+  withDelay,
+  useDerivedValue
 } from 'react-native-reanimated';
 
 import styles from './styles';
 
 type CustomSectionListProps<ItemT, SectionT> = SectionListProps<ItemT, SectionT> & {
   showsVerticalScrollIndicator?: boolean;
+  scrollIndicatorPadding?: [number, number];
 };
 
 export const CustomSectionList = forwardRef<SectionList, CustomSectionListProps<any, any>>((props, ref) => {
   const {
     onContentSizeChange,
-    onLayout,
     onScroll,
     showsVerticalScrollIndicator = true
   } = props;
   const theme = useTheme();
 
-  const state = useRef({
-    wholeHeight: 0,
-    visibleHeight: 0
-  });
-
+  const wholeHeight = useSharedValue(0);
+  const visibleHeight = useSharedValue(0);
   const opacity = useSharedValue(0);
   const y = useSharedValue(0);
 
-  const indicatorSize =
-    state.current.wholeHeight > state.current.visibleHeight
-      ? (state.current.visibleHeight * state.current.visibleHeight) / state.current.wholeHeight
-      : state.current.visibleHeight;
+  const indicatorSize = useDerivedValue(() => {
+    return wholeHeight.value > visibleHeight.value
+      ? (visibleHeight.value * visibleHeight.value) / wholeHeight.value
+      : visibleHeight.value;
+  }, [wholeHeight, visibleHeight]);
 
-  const difference = state.current.visibleHeight > indicatorSize ? state.current.visibleHeight - indicatorSize : 1;
+  const difference = useDerivedValue(() => {
+    return visibleHeight.value > indicatorSize.value ? visibleHeight.value - indicatorSize.value : 1;
+  }, [visibleHeight, indicatorSize]);
 
   return (
-    <View>
+    <View style={styles.container}>
       <SectionList
         ref={ref}
         {...props}
         showsVerticalScrollIndicator={false}
         onContentSizeChange={(width, height) => {
           onContentSizeChange && onContentSizeChange(width, height);
-          state.current.wholeHeight = height;
-        }}
-        onLayout={(e) => {
-          state.current.visibleHeight = e.nativeEvent.layout.height;
-          onLayout && onLayout(e);
+          wholeHeight.value = height;
         }}
         scrollEventThrottle={16}
         onScroll={(e) => {
           y.value = interpolate(
             e.nativeEvent.contentOffset.y,
-            [0, state.current.wholeHeight - state.current.visibleHeight],
-            [0, difference],
+            [0, wholeHeight.value - visibleHeight.value],
+            [0, difference.value],
             Extrapolation.CLAMP
           );
           onScroll && onScroll(e);
@@ -79,17 +76,30 @@ export const CustomSectionList = forwardRef<SectionList, CustomSectionListProps<
         }}
       />
       {showsVerticalScrollIndicator && (
-        <Animated.View
+        <View
+          onLayout={(e) => {
+            visibleHeight.value = e.nativeEvent.layout.height;
+          }}
           style={[
-            styles.scrollIndicator,
+            styles.verticalScrollIndicator,
             {
-              height: indicatorSize,
-              opacity,
-              backgroundColor: theme.colors.scrollbar,
-              transform: [{ translateY: y }]
+              top: props.scrollIndicatorPadding ? props.scrollIndicatorPadding?.[0] : 0,
+              bottom: props.scrollIndicatorPadding ? props.scrollIndicatorPadding?.[1] : 0,
             }
           ]}
-        />
+        >
+          <Animated.View
+            style={[
+              styles.scrollIndicator,
+              {
+                height: indicatorSize,
+                opacity,
+                backgroundColor: theme.colors.scrollbar,
+                transform: [{ translateY: y }]
+              }
+            ]}
+          />
+        </View>
       )}
     </View>
   );

@@ -11,7 +11,8 @@ import Animated, {
   Extrapolation,
   withTiming,
   cancelAnimation,
-  withDelay
+  withDelay,
+  useDerivedValue
 } from 'react-native-reanimated';
 
 import styles from './styles';
@@ -26,7 +27,8 @@ export const CustomScrollView = forwardRef<ScrollView, Props>((props, ref) => {
     onLayout,
     onScroll,
     peekabooScrollIndicator = true,
-    showsVerticalScrollIndicator = true
+    showsVerticalScrollIndicator = true,
+    showsHorizontalScrollIndicator = true,
   } = props;
   const { style, ...rest } = props;
 
@@ -34,17 +36,26 @@ export const CustomScrollView = forwardRef<ScrollView, Props>((props, ref) => {
 
   const [state, setState] = useState({
     wholeHeight: 0,
+    wholeWidth: 0,
+    visibleWidth: 0,
     visibleHeight: 0
   });
 
   const opacity = useSharedValue(100);
   const y = useSharedValue(0);
+  const x = useSharedValue(0);
 
-  const indicatorSize = state.wholeHeight > state.visibleHeight
-    ? state.visibleHeight * state.visibleHeight / state.wholeHeight
-    : state.visibleHeight
+  const indicatorSize = props.horizontal
+    ? state.wholeWidth > state.visibleWidth
+      ? state.visibleWidth * state.visibleWidth / state.wholeWidth
+      : state.visibleWidth
+    : state.wholeHeight > state.visibleHeight
+      ? state.visibleHeight * state.visibleHeight / state.wholeHeight
+      : state.visibleHeight;
 
-  const difference = state.visibleHeight > indicatorSize ? state.visibleHeight - indicatorSize : 1
+  const difference = props.horizontal
+    ? state.visibleWidth > indicatorSize ? state.visibleWidth - indicatorSize : 1
+    : state.visibleHeight > indicatorSize ? state.visibleHeight - indicatorSize : 1;
 
   useEffect(() => {
     if (peekabooScrollIndicator) {
@@ -57,28 +68,42 @@ export const CustomScrollView = forwardRef<ScrollView, Props>((props, ref) => {
       <ScrollView
         {...rest}
         showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
         onContentSizeChange={(width, height) => {
           onContentSizeChange && onContentSizeChange(width, height);
-          setState({ ...state, wholeHeight: height });
+          if (props.horizontal) {
+            setState({ ...state, wholeWidth: width });
+          } else {
+            setState({ ...state, wholeHeight: height });
+          }
         }}
         onLayout={(e) => {
-          setState({ ...state, visibleHeight: e.nativeEvent.layout.height });
+          if (props.horizontal) {
+            setState({ ...state, visibleWidth: e.nativeEvent.layout.width });
+          } else {
+            setState({ ...state, visibleHeight: e.nativeEvent.layout.height });
+          }
           onLayout && onLayout(e);
         }}
         scrollEventThrottle={16}
         onScroll={(e) => {
-          y.value = interpolate(
-            e.nativeEvent.contentOffset.y,
-            [0, state.wholeHeight - state.visibleHeight],
-            [0, difference],
-            Extrapolation.CLAMP);
+          if (props.horizontal) {
+            x.value = interpolate(
+              e.nativeEvent.contentOffset.x,
+              [0, state.wholeWidth - state.visibleWidth],
+              [0, difference],
+              Extrapolation.CLAMP);
+          } else {
+            y.value = interpolate(
+              e.nativeEvent.contentOffset.y,
+              [0, state.wholeHeight - state.visibleHeight],
+              [0, difference],
+              Extrapolation.CLAMP);
+          }
           onScroll && onScroll(e);
         }}
         onScrollBeginDrag={(e) => {
-          cancelAnimation(opacity);
-          if (e.nativeEvent.contentOffset.y > 0) {
-            opacity.value = withTiming(1, { duration: 200 });
-          }
+          opacity.value = withTiming(1, { duration: 200 });
         }}
         onScrollEndDrag={(e) => {
           setTimeout(() => {
@@ -94,21 +119,28 @@ export const CustomScrollView = forwardRef<ScrollView, Props>((props, ref) => {
         ref={ref}
       >
       </ScrollView >
-      {showsVerticalScrollIndicator &&
-        <Animated.View
+      {
+        true &&
+        < Animated.View
           style={[
-            styles.scrollIndicator,
+            props.horizontal ? styles.horizontalScrollIndicator : styles.verticalscrollIndicator,
             {
               height: props.horizontal ? 4 : indicatorSize,
               width: props.horizontal ? indicatorSize : 4,
               opacity,
               backgroundColor: theme.colors.scrollbar,
-              transform: [{ translateY: y }]
+              transform: [
+                { translateY: y },
+                { translateX: x }
+              ],
             }]}
-        />}
-    </View>
+        />
+      }
+    </View >
   );
 });
 
 export default CustomScrollView;
 
+
+// (props.horizontal && showsHorizontalScrollIndicator) || (!props.horizontal && showsVerticalScrollIndicator) &&

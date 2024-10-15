@@ -1,3 +1,4 @@
+import { Account } from "@ledget/shared-features";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Null indicates all accounts
@@ -11,7 +12,7 @@ type State = {
     }
   },
   depositsScreen: {
-    selectedAccounts?: string[]
+    selectedAccounts?: Account[]
   }
 }
 
@@ -29,12 +30,15 @@ export const uiSlice = createSlice({
       state.billCatSort = action.payload
     },
     setInvestmentsScreenAccounts: (state, action: PayloadAction<State['investmentsScreen']['selectedAccounts']>) => {
+      if (!state.investmentsScreen) state.investmentsScreen = {}
       state.investmentsScreen.selectedAccounts = action.payload
     },
     setInvestmentsScreenWindow: (state, action: PayloadAction<State['investmentsScreen']['window']>) => {
+      if (!state.investmentsScreen) state.investmentsScreen = {}
       state.investmentsScreen.window = action.payload
     },
     setDepositsScreenAccounts: (state, action: PayloadAction<State['depositsScreen']['selectedAccounts']>) => {
+      if (!state.depositsScreen) state.depositsScreen = {}
       state.depositsScreen.selectedAccounts = action.payload
     },
   }

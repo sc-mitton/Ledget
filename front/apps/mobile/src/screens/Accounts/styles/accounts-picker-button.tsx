@@ -33,6 +33,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   balanceContainer: {
+  },
+  logos: {
+    flexDirection: 'row',
+    marginLeft: 8
+  },
+  logo: {
+    marginLeft: -8
   }
 });
 

@@ -19,7 +19,8 @@ import {
   ConfirmStackInitialState,
   RootStateWithTransactions,
   TransactionsFilter,
-  TransactionsFilterState
+  TransactionsFilterState,
+  TransactionsSyncParams
 } from './types';
 import { SplitCategory } from '../categorySlice/types';
 import { Bill } from '../billSlice/types';
@@ -33,7 +34,7 @@ export const transactionSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     transactionsSync: builder.mutation<
       TransactionsSyncResponse,
-      { account?: string } | { item?: string }
+      TransactionsSyncParams
     >({
       query: (params) => ({
         url: 'transactions/sync',

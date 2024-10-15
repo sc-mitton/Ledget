@@ -25,6 +25,8 @@ import type { PTransactions, Section, ListState } from './types';
 import SkeletonTransactions from './SkeletonTransactions';
 import Row from './Row';
 import EmptyList from './EmptyList';
+import { useAppSelector } from '@/hooks';
+import { selectDepositsScreenAccounts } from '@/features/uiSlice';
 
 const SKELETON_HEIGHT = 740
 
@@ -40,6 +42,7 @@ const Transactions = (props: PTransactions) => {
   const [sections, setSections] = useState<Section[]>([])
   const theme = useTheme()
 
+  const accounts = useAppSelector(selectDepositsScreenAccounts)
   const [getTransactions, { data: transactionsData, isLoading: isLoadingTransactions }] = useLazyGetTransactionsQuery()
   const [syncTransactions, { isLoading: isSyncing }] = useTransactionsSyncMutation()
 
@@ -51,18 +54,18 @@ const Transactions = (props: PTransactions) => {
   }, [])
 
   useEffect(() => {
-    if (props.account) {
+    if (accounts) {
       getTransactions(
         {
-          account: props.account.id,
-          type: props.account.type,
+          accounts: accounts.map(a => a.id),
           limit: 25,
           offset: 0
         },
         true
       );
     }
-  }, [props.account])
+  }, [accounts])
+
   useEffect(() => {
     top.value = props.collapsedTop
     propTop.current = props.collapsedTop
@@ -136,10 +139,9 @@ const Transactions = (props: PTransactions) => {
     const { contentOffset, layoutMeasurement, contentSize } = e.nativeEvent
     const bottom = contentOffset.y + layoutMeasurement.height >= contentSize.height
 
-    if (bottom && transactionsData?.next !== null && transactionsData) {
+    if (bottom && transactionsData?.next !== null && transactionsData && accounts) {
       getTransactions({
-        account: props.account?.id,
-        type: props.account?.type,
+        accounts: accounts.map(a => a.id),
         offset: transactionsData.next,
         limit: transactionsData.limit
       });
@@ -164,20 +166,26 @@ const Transactions = (props: PTransactions) => {
             </View>}
           {(transactionsData?.results.length || 0) <= 0 || isLoadingTransactions
             ?
-            transactionsData?.results.length === 0 && !isLoadingTransactions && props.account
-              ? <EmptyList account={props.account.id} />
+            transactionsData?.results.length === 0 && !isLoadingTransactions && accounts
+              ? <EmptyList />
               : <SkeletonTransactions height={SKELETON_HEIGHT} />
             :
             <CustomSectionList
               refreshControl={
                 <RefreshControl
-                  onRefresh={() => syncTransactions({ account: props.account?.id })}
+                  onRefresh={() => {
+                    if (accounts) {
+                      syncTransactions({ accounts: accounts.map(a => a.id) })
+                    }
+                  }}
                   refreshing={isSyncing}
                   style={{ transform: [{ scaleY: .7 }, { scaleX: .7 }] }}
                   colors={[theme.colors.blueText]}
                   progressBackgroundColor={theme.colors.modalBox}
                   tintColor={theme.colors.secondaryText}
                 />}
+              scrollIndicatorPadding={[0, theme.spacing.navHeight - 64]}
+              contentContainerStyle={{ paddingBottom: theme.spacing.navHeight - 48 }}
               bounces={true}
               overScrollMode='always'
               onScroll={handleScroll}
@@ -213,11 +221,13 @@ const Transactions = (props: PTransactions) => {
               }}
               keyExtractor={(item, index) => item.transaction_id}
               renderItem={({ item: transaction, index: i, section }) => (
-                <View style={{
-                  marginTop: i === 0 && section.index === 0
-                    ? -1 * (sectionHeaderHeight + 10)
-                    : i === 0 ? -1 * sectionHeaderHeight : 0
-                }}
+                <View
+                  key={transaction.transaction_id}
+                  style={{
+                    marginTop: i === 0 && section.index === 0
+                      ? -1 * (sectionHeaderHeight + 10)
+                      : i === 0 ? -1 * sectionHeaderHeight : 0
+                  }}
                 >
                   <TouchableOpacity
                     onPress={() => {
@@ -227,7 +237,6 @@ const Transactions = (props: PTransactions) => {
                       )
                     }}
                     activeOpacity={.7}
-                    key={transaction.transaction_id}
                   >
                     <Row {...transaction} section={section} index={i} />
                   </TouchableOpacity>

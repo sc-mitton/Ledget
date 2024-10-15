@@ -9,7 +9,8 @@ const styles = StyleSheet.create({
     gap: 4,
     alignItems: 'center',
     paddingHorizontal: 8,
-    marginTop: 8
+    marginTop: 8,
+    zIndex: -1
   },
   transactionsHeader: {
     flexGrow: 1

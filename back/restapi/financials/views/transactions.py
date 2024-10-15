@@ -327,16 +327,18 @@ class TransactionViewSet(ModelViewSet):
 
     def _get_plaid_items(self, request):
         item_id = self.request.query_params.get('item', None)
+        account_ids = self.request.query_params.get('accounts', [])
         account_id = self.request.query_params.get('account', None)
+        account_ids = account_ids + [account_id]
 
         if item_id:
             try:
                 plaid_items = PlaidItem.objects.filter(id=item_id)
             except PlaidItem.DoesNotExist:
                 raise ValidationError('Invalid item id')
-        elif account_id:
+        elif account_ids:
             try:
-                plaid_items = PlaidItem.objects.filter(accounts__id=account_id)
+                plaid_items = PlaidItem.objects.filter(accounts__id__in=account_ids)
             except PlaidItem.DoesNotExist:
                 raise ValidationError('Invalid account id')
         else:
@@ -400,11 +402,14 @@ class TransactionViewSet(ModelViewSet):
             'type': 'account__type',
             'merchants': 'merchant_name__in',
             'accounts': 'account_id__in',
+            'account': 'account_id'
         }
 
         for key, value in query_params.items():
             if key not in query_params_2_filter_params:
                 continue
+            if key == 'accounts' and isinstance(value, str):
+                value = [value]
             if value == 'true':
                 value = True
             elif value == 'false':

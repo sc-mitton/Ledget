@@ -25,7 +25,7 @@ export const PulseBox = (props: PulseBoxProps) => {
   return (
     <Animated.View style={[{ opacity }, { height: heightMap[height || 'reg'] }]}>
       <Box
-        borderRadius='circle'
+        borderRadius='xxs'
         backgroundColor='transactionShimmer'
         height={'100%'}
         {...rest}
