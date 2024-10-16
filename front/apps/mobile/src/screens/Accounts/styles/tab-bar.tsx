@@ -25,7 +25,20 @@ const styles = StyleSheet.create({
     left: -200,
     alignItems: 'center',
     justifyContent: 'center',
-  }
+  },
+  mask: {
+    position: 'absolute',
+    width: 32,
+    top: -2,
+    height: '103%',
+    zIndex: 20,
+  },
+  rightMask: {
+    right: -16,
+  },
+  leftMask: {
+    left: -24
+  },
 });
 
 export default styles;

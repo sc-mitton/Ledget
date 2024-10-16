@@ -185,12 +185,12 @@ const Chart = () => {
             tint={mode === 'dark' ? 'dark' : 'light'}
           />
         </Animated.View>}
-      {/* {useingFakeData &&
+      {useingFakeData &&
         <View style={styles.emptyTextContainer}>
           <Text variant='footer' style={styles.emptyText}>
             Not enough data yet
           </Text>
-        </View>} */}
+        </View>}
       <View style={styles.chartContainer}>
         <CartesianChart
           chartPressState={state}
@@ -228,10 +228,7 @@ const Chart = () => {
                 <LinearGradient
                   colors={useingFakeData
                     ? [
-                      // theme.colors.emptyChartGradientStart,
-                      // theme.colors.blueChartGradientEnd
-                      theme.colors.blueChartGradientStart,
-                      theme.colors.blueChartGradientStart,
+                      theme.colors.emptyChartGradientStart,
                       theme.colors.blueChartGradientEnd
                     ]
                     : [
@@ -247,25 +244,12 @@ const Chart = () => {
               <Line
                 animate={{ type: 'spring', duration: 300 }}
                 points={points.balance}
-                // color={useingFakeData ? theme.colors.quinaryText : theme.colors.blueChartColor}
-                color={theme.colors.blueChartColor}
+                color={useingFakeData ? theme.colors.quinaryText : theme.colors.blueChartColor}
                 strokeWidth={2}
                 strokeCap='round'
                 curveType='natural'
               />
-              {/* {isActive && !useingFakeData && (
-              <VictoryTooltip
-                state={state}
-                font={font}
-                chartBounds={chartBounds}
-                color={theme.colors.mainText}
-                dotColor={theme.colors.blueText}
-                borderColor={theme.colors.lightBlueButton}
-                backgroundColor={theme.colors.grayButton}
-                verticalCrosshair={true}
-                lineOffset={-20}
-              />)} */}
-              {isActive && (
+              {isActive && !useingFakeData && (
                 <VictoryTooltip
                   state={state}
                   font={font}

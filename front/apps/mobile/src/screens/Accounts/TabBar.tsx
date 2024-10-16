@@ -1,7 +1,8 @@
 import { ScrollView, View } from 'react-native';
-import Animated, { useSharedValue, useAnimatedStyle, withSpring, interpolate } from 'react-native-reanimated';
 import { ParamListBase, TabNavigationState, CommonActions } from '@react-navigation/native';
 import { Clock, CreditCard, TrendingUp } from 'geist-native-icons';
+import { LinearGradient, Canvas, Rect, vec } from '@shopify/react-native-skia';
+import { useTheme } from '@shopify/restyle';
 
 import styles from './styles/tab-bar';
 import { CurrencyNote } from '@ledget/media/native';
@@ -84,9 +85,10 @@ const TabButton = (props: ButtonProps) => {
 }
 
 const Tabs = ({ state, descriptors, navigation }: Props) => {
+  const theme = useTheme();
 
   return (
-    <>
+    <View>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -104,10 +106,36 @@ const Tabs = ({ state, descriptors, navigation }: Props) => {
           />
         ))}
       </ScrollView>
+      <Canvas style={[styles.leftMask, styles.mask]}>
+        <Rect x={0} y={0} width={65} height={36}>
+          <LinearGradient
+            colors={[
+              theme.colors.blueChartGradientEnd,
+              theme.colors.mainBackground,
+              theme.colors.mainBackground
+            ]}
+            start={vec(32, 0)}
+            end={vec(0, 0)}
+          />
+        </Rect>
+      </Canvas>
+      <Canvas style={[styles.rightMask, styles.mask]}>
+        <Rect x={0} y={0} width={65} height={36}>
+          <LinearGradient
+            colors={[
+              theme.colors.blueChartGradientEnd,
+              theme.colors.mainBackground,
+              theme.colors.mainBackground
+            ]}
+            start={vec(0, 0)}
+            end={vec(32, 0)}
+          />
+        </Rect>
+      </Canvas>
       <View style={styles.seperator}>
         <Seperator backgroundColor='mainScreenSeperator' height={2} />
       </View>
-    </>
+    </View>
   )
 }
 
