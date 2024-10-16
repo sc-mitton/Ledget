@@ -1,14 +1,15 @@
+import { useEffect, useState } from 'react';
 import Animated, { FadeOut, FadeIn } from 'react-native-reanimated';
 import { useTheme } from '@shopify/restyle';
 import { View } from 'react-native';
-import { Plus } from 'geist-native-icons';
 import Big from 'big.js';
 
 import styles from './styles/header';
-import { Header2, Header, InstitutionLogo, DollarCents, Icon, Text } from '@ledget/native-ui';
+import { Header2, Header, InstitutionLogo, DollarCents } from '@ledget/native-ui';
 import { Account } from '@ledget/shared-features';
 import { useAppSelector } from '@/hooks';
 import { selectDepositsScreenAccounts } from '@/features/uiSlice';
+import store from '@/features/store';
 
 const headerMap = {
   'Depository': 'Accounts',
@@ -17,9 +18,19 @@ const headerMap = {
   'Loan': 'Loans'
 }
 
-export const AccountHeader = () => {
+export const AccountHeader = (props: { account: Account }) => {
   const theme = useTheme()
-  const accounts = useAppSelector(selectDepositsScreenAccounts)
+
+  const [accounts, setAccounts] = useState<Account[]>()
+  const storedAccounts = useAppSelector(selectDepositsScreenAccounts)
+
+  useEffect(() => {
+    if (props.account) {
+      setAccounts([props.account])
+    } else {
+      setAccounts(storedAccounts)
+    }
+  }, [storedAccounts, props.account])
 
   return (
     <Animated.View

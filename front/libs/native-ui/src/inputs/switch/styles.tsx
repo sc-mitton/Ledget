@@ -6,6 +6,7 @@ export default StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginVertical: 6,
+    width: "100%"
   },
   disabled: {
     opacity: .4

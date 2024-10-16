@@ -15,44 +15,42 @@ export default function Panel(props: AccountsTabsScreenProps<'Loan'>) {
       padding='pagePadding'
       style={styles.main}
     >
-      <Box style={styles.main}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.cardsScrollViewContainer}
-        >
-          <Box height={12} width={'100%'} />
-          {liabilities
-            ?
-            <>
-              {liabilities.student
-                .filter((liability) => !liability.product_not_supported)
-                .map((liability) => (
-                  <LoanCard key={liability.account_id} liability={liability} />
-                ))}
-              {liabilities.mortgage
-                .filter((liability) => !liability.product_not_supported)
-                .map((liability) => (
-                  <LoanCard key={liability.account_id} liability={liability} />
-                ))}
-              {liabilities.student
-                .filter((liability) => liability.product_not_supported)
-                .map((liability) => (
-                  <LoanCard key={liability.account_id} liability={liability} />
-                ))}
-              {liabilities.mortgage
-                .filter((liability) => liability.product_not_supported)
-                .map((liability) => (
-                  <LoanCard key={liability.account_id} liability={liability} />
-                ))}
-            </>
-            :
-            <>
-              {Array.from({ length: 2 }).map((_, i) => <SkeletonLoanCard key={i} />)}
-            </>
-          }
-          <Box marginBottom='navHeight' width={'100%'} />
-        </ScrollView>
-      </Box>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.cardsScrollViewContainer}
+      >
+        <Box height={12} width={'100%'} />
+        {liabilities
+          ?
+          <>
+            {liabilities.student
+              .filter((liability) => !liability.product_not_supported)
+              .map((liability) => (
+                <LoanCard key={liability.account_id} liability={liability} />
+              ))}
+            {liabilities.mortgage
+              .filter((liability) => !liability.product_not_supported)
+              .map((liability) => (
+                <LoanCard key={liability.account_id} liability={liability} />
+              ))}
+            {liabilities.student
+              .filter((liability) => liability.product_not_supported)
+              .map((liability) => (
+                <LoanCard key={liability.account_id} liability={liability} />
+              ))}
+            {liabilities.mortgage
+              .filter((liability) => liability.product_not_supported)
+              .map((liability) => (
+                <LoanCard key={liability.account_id} liability={liability} />
+              ))}
+          </>
+          :
+          <>
+            {Array.from({ length: 2 }).map((_, i) => <SkeletonLoanCard key={i} />)}
+          </>
+        }
+        <Box marginBottom='navHeight' width={'100%'} />
+      </ScrollView>
     </Box>
   )
 }

@@ -12,14 +12,28 @@ import {
   environmentSlice,
   holdingsSlice
 } from '@ledget/shared-features';
-import { persistReducer } from "redux-persist";
-import reduxStorage from "./storage";
+import { createMigrate, persistReducer } from "redux-persist";
+import storage from "./storage";
+import { RootState } from './store';
+
+const migrations = {
+  1: (state: RootState) => ({
+    ...state,
+    ui: {
+      ...state.ui,
+      settings: {
+        startOnHome: true
+      }
+    }
+  })
+} as any;
 
 const persistConfig = {
   key: "root",
   version: 1,
-  storage: reduxStorage,
+  storage,
   timeout: 0,
+  migrate: createMigrate(migrations),
   whitelist: ['appearance', 'budgetItemMetaData', 'ui', 'holdings']
 };
 

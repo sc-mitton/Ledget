@@ -5,7 +5,7 @@ import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
 import type { BottomTabNavParamList } from './bottomNav';
 import type { RootStackParamList } from './root';
-import { Account } from '@ledget/shared-features';
+import type { Account, Transaction } from '@ledget/shared-features';
 
 
 type AccountScreenBase = {
@@ -16,13 +16,21 @@ type AccountScreenBase = {
 
 export type AccountsTabsParamList = {
   Depository: AccountScreenBase,
-  Credit: AccountScreenBase,
+  Credit: AccountScreenBase & {
+    account: Account
+  },
   Investment: AccountScreenBase,
   Loan: AccountScreenBase
 };
 
 export type AccountsStackParamList = {
   AccountsTabs: NavigatorScreenParams<AccountsTabsParamList>,
+  Transaction: {
+    transaction: Transaction | string
+    options?: {
+      rename?: boolean
+    }
+  }
 };
 
 export type AccountsScreenProps<T extends keyof AccountsStackParamList> =

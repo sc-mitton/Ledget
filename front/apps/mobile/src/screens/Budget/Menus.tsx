@@ -3,7 +3,7 @@ import { ArrowUp, ArrowDown, MoreHorizontal, Plus, AlignJustify } from "geist-na
 
 import { Filter2 } from "@ledget/media/native";
 import styles from "./styles/menu";
-import { Menu, Box, Icon, Text, Button } from "@ledget/native-ui";
+import { Menu, Box, Icon, Text } from "@ledget/native-ui";
 import { useAppDispatch } from "@hooks";
 import { setBillCatSort } from "@features/uiSlice";
 import { BottomTabScreenProps } from "@types";

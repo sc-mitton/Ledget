@@ -2,8 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { StatusBar } from 'expo-status-bar';
 import { Platform } from 'react-native';
-import { useAppDispatch, useAppSelector } from '@hooks';
-import { selectEnvironment, setEnvironment } from '@ledget/shared-features';
 import { useTheme } from '@shopify/restyle';
 import { useFonts } from 'expo-font';
 import { MMKV } from 'react-native-mmkv'
@@ -25,7 +23,8 @@ import { withProviders } from './Providers';
 import { ENV, IOS_LEDGET_API_URI, ANDROID_LEDGET_API_URI } from '@env';
 import { useAppearance } from '@features/appearanceSlice';
 import { RootStackParamList } from '@types';
-import { useModalStyleInterpolator } from '@hooks';
+import { useModalStyleInterpolator, useAppDispatch, useAppSelector } from '@hooks';
+import { selectEnvironment, setEnvironment } from '@ledget/shared-features';
 import Authentication from './Authentication';
 import BottomTabScreens from './BottomTabScreens';
 import SourceSans3Regular from '../../assets/fonts/SourceSans3Regular.ttf';
@@ -97,11 +96,12 @@ const useAuthLogic = () => {
 }
 
 export const App = withProviders(() => {
+  const dispatch = useAppDispatch();
+
   const [fontsGood, setFontsGood] = useState(false);
   const appearance = useAppearance();
-  const theme = useTheme();
-  const dispatch = useAppDispatch();
   const environment = useAppSelector(selectEnvironment);
+
   const modalStyleInterpolator = useModalStyleInterpolator();
 
   const [fontsLoaded, fontError] = useFonts({

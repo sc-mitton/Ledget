@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
     left: -200,
     alignItems: 'center',
     justifyContent: 'center',
+    zIndex: 21
   },
   mask: {
     position: 'absolute',

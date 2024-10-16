@@ -7,8 +7,9 @@ import { useGetTransactionsCountQuery } from '@ledget/shared-features';
 import styles from './styles/bottom-nav';
 import { Box, Icon } from '@ledget/native-ui';
 import { useAppearance } from '@features/appearanceSlice';
+import { updateLastTab } from '@/features/uiSlice';
 import { Institution } from '@ledget/media/native';
-import { useAppSelector } from '@hooks';
+import { useAppSelector, useAppDispatch } from '@hooks';
 import { selectBudgetMonthYear } from '@ledget/shared-features';
 
 interface Props {
@@ -23,11 +24,15 @@ interface ButtonProps extends Props {
 }
 
 const Button = (props: ButtonProps) => {
+  const dispatch = useAppDispatch();
   const { route, index, state, descriptors, navigation } = props;
   const isFocused = state.index === index;
   const des = descriptors[route.key];
 
   const onPress = () => {
+
+    dispatch(updateLastTab(props.index!))
+
     const event = navigation.emit({
       type: 'tabPress',
       target: route.key,
@@ -44,6 +49,9 @@ const Button = (props: ButtonProps) => {
   };
 
   const onLongPress = () => {
+    if (props.index) {
+      dispatch(updateLastTab(props.index))
+    }
     navigation.emit({
       type: 'tabLongPress',
       target: route.key,
@@ -62,14 +70,14 @@ const Button = (props: ButtonProps) => {
       onLongPress={onLongPress}
     >
       {route.key.includes('Home')
-        ? <Icon strokeWidth={1.75} icon={Home} color={isFocused ? 'blueText' : 'tertiaryText'} />
+        ? <Icon strokeWidth={1.75} icon={Home} color={isFocused ? 'blueText' : 'secondaryText'} />
         : route.key.includes('Budget')
-          ? <Icon strokeWidth={1.75} icon={DollarSign} color={isFocused ? 'blueText' : 'tertiaryText'} />
+          ? <Icon strokeWidth={1.75} icon={DollarSign} color={isFocused ? 'blueText' : 'secondaryText'} />
           : route.key.includes('Accounts')
-            ? <Icon strokeWidth={1.75} icon={Institution} color={isFocused ? 'blueText' : 'tertiaryText'} />
+            ? <Icon strokeWidth={1.75} icon={Institution} color={isFocused ? 'blueText' : 'secondaryText'} />
             : route.key.includes('Activity')
-              ? <Icon strokeWidth={1.75} icon={Activity} color={isFocused ? 'blueText' : 'tertiaryText'} />
-              : <Icon strokeWidth={1.75} icon={User} color={isFocused ? 'blueText' : 'tertiaryText'} />
+              ? <Icon strokeWidth={1.75} icon={Activity} color={isFocused ? 'blueText' : 'secondaryText'} />
+              : <Icon strokeWidth={1.75} icon={User} color={isFocused ? 'blueText' : 'secondaryText'} />
       }
     </TouchableOpacity>
   )

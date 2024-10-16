@@ -19,7 +19,7 @@ import { groupBy } from 'lodash-es';
 import { useTheme } from '@shopify/restyle';
 
 import styles from './styles/transactions';
-import { useLazyGetTransactionsQuery, useTransactionsSyncMutation } from '@ledget/shared-features';
+import { Account, useLazyGetTransactionsQuery, useTransactionsSyncMutation } from '@ledget/shared-features';
 import { Box, defaultSpringConfig, Text, CustomSectionList } from '@ledget/native-ui';
 import type { PTransactions, Section, ListState } from './types';
 import SkeletonTransactions from './SkeletonTransactions';
@@ -33,16 +33,17 @@ const SKELETON_HEIGHT = 740
 const DRAG_THRESHOLD = Dimensions.get('window').height * 0.1
 const ESCAPE_VELOCITY = 1.5
 
-const Transactions = (props: PTransactions) => {
+const Transactions = (props: PTransactions & { account?: Account }) => {
   const state = useRef<ListState>('neutral')
   const propTop = useRef(props.collapsedTop)
   const top = useSharedValue(props.collapsedTop)
   const [sectionHeaderHeight, setSectionHeaderHeight] = useState(0)
   const [stuckTitle, setStuckTitle] = useState<string | null>(null)
   const [sections, setSections] = useState<Section[]>([])
+  const [accounts, setAccounts] = useState<Account[]>()
   const theme = useTheme()
 
-  const accounts = useAppSelector(selectDepositsScreenAccounts)
+  const storedAccounts = useAppSelector(selectDepositsScreenAccounts)
   const [getTransactions, { data: transactionsData, isLoading: isLoadingTransactions }] = useLazyGetTransactionsQuery()
   const [syncTransactions, { isLoading: isSyncing }] = useTransactionsSyncMutation()
 
@@ -52,6 +53,14 @@ const Transactions = (props: PTransactions) => {
       opacity: top.value ? 1 : 0,
     }
   }, [])
+
+  useEffect(() => {
+    if (props.account) {
+      setAccounts([props.account])
+    } else {
+      setAccounts(storedAccounts)
+    }
+  }, [props.account, storedAccounts])
 
   useEffect(() => {
     if (accounts) {

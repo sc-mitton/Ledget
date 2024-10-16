@@ -1,8 +1,7 @@
-import { useEffect } from 'react';
 import { View, ScrollView } from 'react-native';
 import { useForm, Controller, useController, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Smile, X } from 'geist-native-icons';
+import { Emoji, X } from 'geist-native-icons';
 import { z } from 'zod';
 
 import styles from './styles/screen';
@@ -68,7 +67,7 @@ const Screen = (props: ModalScreenProps<'NewBill'>) => {
                 <TextInputbase>
                   {emoji
                     ? <Text>{emoji}</Text>
-                    : <Icon icon={Smile} color='placeholderText' size={24} />}
+                    : <Icon icon={Emoji} color='placeholderText' size={24} />}
                 </TextInputbase>
               </EmojiPicker.Trigger>
             </View>
