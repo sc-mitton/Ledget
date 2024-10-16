@@ -16,8 +16,10 @@ export interface VictoryTooltipProps {
     x: string;
     y: { balance: number };
   }>,
+  xAxisTip?: boolean;
   chartBounds: ChartBounds
   color: string;
+  xAxisTipColor?: string;
   dotColor: string;
   borderColor: string;
   backgroundColor?: string;
@@ -26,7 +28,20 @@ export interface VictoryTooltipProps {
 }
 
 export const VictoryTooltip = (props: VictoryTooltipProps) => {
-  const { state, font, chartBounds, dotColor, color, borderColor, backgroundColor, lineOffset = 0, verticalCrosshair = false } = props;
+  const {
+    state,
+    font,
+    chartBounds,
+    dotColor,
+    color,
+    borderColor,
+    backgroundColor,
+    lineOffset = 0,
+    verticalCrosshair = false,
+    xAxisTip = false,
+    xAxisTipColor
+  } = props;
+
   const value = useDerivedValue(() => {
     return "$" + `${state.y.balance.value.value}`.split('.')[0];
   }, [state]);
@@ -74,6 +89,26 @@ export const VictoryTooltip = (props: VictoryTooltipProps) => {
     return textYPosition.value - rectHeight / 1.5;
   }, [value, rectHeight]);
 
+
+  const tooltipDate = useDerivedValue(() => {
+    if (!state.x.value.value) return ''
+    return state.x.value.value
+  }, [state])
+
+  const tooltipDateXPos = useDerivedValue(() => {
+    if (!font) {
+      return 0;
+    } else if (state.x.position.value > chartBounds.right - 50) {
+      return state.x.position.value - font.measureText(tooltipDate.value).width - 6
+    } else if (state.x.position.value < chartBounds.left + 50) {
+      return state.x.position.value + 6;
+    }
+
+    return (
+      state.x.position.value - font.measureText(tooltipDate.value).width / 2
+    )
+  }, [state, font, tooltipDate])
+
   return (
     <>
       {verticalCrosshair &&
@@ -84,6 +119,15 @@ export const VictoryTooltip = (props: VictoryTooltipProps) => {
           strokeWidth={2}
           color={borderColor}
         />}
+      {xAxisTip && (
+        <SkText
+          text={tooltipDate}
+          font={font}
+          color={xAxisTipColor || color}
+          x={tooltipDateXPos}
+          y={chartBounds.bottom}
+        />
+      )}
       <RoundedRect
         x={rectXPosition}
         y={rectYPosition}

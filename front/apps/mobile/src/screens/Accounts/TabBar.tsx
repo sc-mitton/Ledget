@@ -70,13 +70,13 @@ const TabButton = (props: ButtonProps) => {
       onLongPress={onLongPress}
       icon={
         route.name.toLowerCase() === 'depository'
-          ? <Icon size={16} strokeWidth={1.75} icon={CurrencyNote} color={isFocused ? 'blueText' : 'secondaryText'} />
+          ? <Icon size={16} strokeWidth={1.75} icon={CurrencyNote} color={isFocused ? 'whiteText' : 'secondaryText'} />
           : route.name.toLowerCase() === 'credit'
-            ? <Icon size={16} strokeWidth={1.75} icon={CreditCard} color={isFocused ? 'blueText' : 'secondaryText'} />
+            ? <Icon size={16} strokeWidth={1.75} icon={CreditCard} color={isFocused ? 'whiteText' : 'secondaryText'} />
             : route.name.toLowerCase() === 'investment'
-              ? <Icon size={16} strokeWidth={1.75} icon={TrendingUp} color={isFocused ? 'blueText' : 'secondaryText'} />
+              ? <Icon size={16} strokeWidth={1.75} icon={TrendingUp} color={isFocused ? 'whiteText' : 'secondaryText'} />
               : route.name.toLowerCase() === 'loan'
-                ? <Icon size={16} strokeWidth={1.75} icon={Clock} color={isFocused ? 'blueText' : 'secondaryText'} />
+                ? <Icon size={16} strokeWidth={1.75} icon={Clock} color={isFocused ? 'whiteText' : 'secondaryText'} />
                 : null
       }
     />

@@ -2,7 +2,6 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   header: {
-    paddingHorizontal: 24,
     marginBottom: 6,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -15,6 +14,15 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     position: 'relative'
+  },
+  headerSeperator: {
+    width: '200%',
+    transform: [{ translateX: '-50%' }],
+  },
+  tableHeader: {
+    width: '103%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   }
 });
 

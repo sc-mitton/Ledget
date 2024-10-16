@@ -3,9 +3,9 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   filters: {
     paddingBottom: 16,
-    paddingHorizontal: 24,
   },
   filterScroll: {
+    paddingHorizontal: 24,
     alignItems: 'center',
   },
   filter: {
@@ -21,6 +21,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  mask: {
+    position: 'absolute',
+    width: 32,
+    height: '103%'
+  },
+  rightMask: {
+    right: 0,
+  },
+  leftMask: {
+    left: -8
   },
   groupDelimiter: {
     height: 24,

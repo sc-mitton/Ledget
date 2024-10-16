@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, View, StyleSheet } from 'react-native';
+import {
+  LinearGradient,
+  Rect,
+  Canvas,
+  vec
+} from '@shopify/react-native-skia';
+import { useTheme } from '@shopify/restyle';
 
 import styles from './styles/filters';
 import { Button, Seperator, Box } from '@ledget/native-ui';
@@ -20,6 +27,7 @@ interface FiltersP extends ModalScreenProps<'PickAccount'> {
 
 const Filters = (props: FiltersP) => {
   const { data } = useGetAccountsQuery();
+  const theme = useTheme();
 
   const [filters, setFilters] = useState<Filter[]>([]);
   const [localAccounts, setLocalAccounts] = useState<Account[]>();
@@ -123,6 +131,32 @@ const Filters = (props: FiltersP) => {
             </>
           ))}
         </ScrollView>
+        <Canvas style={[styles.leftMask, styles.mask]}>
+          <Rect x={0} y={0} width={65} height={36}>
+            <LinearGradient
+              colors={[
+                theme.colors.blueChartGradientEnd,
+                theme.colors.modalBox100,
+                theme.colors.modalBox100
+              ]}
+              start={vec(32, 0)}
+              end={vec(0, 0)}
+            />
+          </Rect>
+        </Canvas>
+        <Canvas style={[styles.rightMask, styles.mask]}>
+          <Rect x={0} y={0} width={65} height={36}>
+            <LinearGradient
+              colors={[
+                theme.colors.blueChartGradientEnd,
+                theme.colors.modalBox100,
+                theme.colors.modalBox100
+              ]}
+              start={vec(0, 0)}
+              end={vec(32, 0)}
+            />
+          </Rect>
+        </Canvas>
       </View>
       <Seperator variant='bare' backgroundColor='modalSeperator' />
     </>

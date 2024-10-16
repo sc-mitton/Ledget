@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { useTheme } from '@shopify/restyle';
 import Big from 'big.js';
 
 import styles from './styles/account-row';
@@ -9,11 +10,12 @@ import {
   Text,
   DollarCents,
   InstitutionLogo,
-  ChevronTouchable,
+  Icon,
   Seperator
 } from '@ledget/native-ui';
 import type { Account } from '@ledget/shared-features';
 import { useAppearance } from '@/features/appearanceSlice';
+import { ChevronRight } from 'geist-native-icons';
 
 interface AccountP {
   account: Account;
@@ -31,6 +33,7 @@ const AccountRow = (props: AccountP) => {
   const [pressed, setPressed] = useState(false);
   const maskViewHeight = useSharedValue(0);
   const { mode } = useAppearance();
+  const theme = useTheme();
 
   useEffect(() => {
     if (props.detailedView) {
@@ -53,7 +56,7 @@ const AccountRow = (props: AccountP) => {
   }, [props.detailedView]);
 
   return (
-    <View style={{ marginBottom: props.last ? 40 : 0 }}>
+    <>
       {props.index !== 0 && !props.detailedView &&
         <View style={styles.seperator}>
           <Seperator
@@ -62,29 +65,30 @@ const AccountRow = (props: AccountP) => {
           />
         </View>}
       <Box
-        backgroundColor='modalBox100'
         borderColor={props.detailedView ? 'modalBorder' : 'transparent'}
         borderWidth={1.5}
         shadowColor='navShadow'
+        borderRadius={'l'}
         shadowOpacity={props.detailedView ? mode === 'dark' ? 1 : 0.5 : 0}
         shadowRadius={props.detailedView ? 16 : 0}
         shadowOffset={{ width: 0, height: 4 }}
         elevation={props.detailedView ? 10 : 0}
         style={styles.accountCard}
       >
-        <ChevronTouchable
-          iconStyle={{ opacity: props.detailedView ? 0 : 1 }}
+        <TouchableOpacity
           onPress={props.onPress}
-          activeOpacity={1}
+          activeOpacity={.99}
           onPressIn={() => setPressed(true)}
           onPressOut={() => setPressed(false)}
           onLongPress={() => {
             if (!props.draggable) return;
             props.onLongPress();
           }}
-          style={styles.accountCardTouchable}
         >
-          <View style={[styles.accountCardInfo, { opacity: pressed ? .7 : 1 }]}>
+          <Box
+            backgroundColor='modalBox100'
+            style={[styles.accountCardInfo, { opacity: pressed ? .7 : 1 }]}
+          >
             <View style={styles.institutionLogoContainer}>
               {props.selected &&
                 <Box
@@ -112,11 +116,12 @@ const AccountRow = (props: AccountP) => {
               <DollarCents
                 color={props.isSelected ? 'blueTextSecondary' : 'mainText'}
                 value={Big(props.account.balances.current).times(100).toNumber()} />
+              <Icon icon={ChevronRight} color='quinaryText' strokeWidth={2} />
             </View>
-          </View>
-        </ChevronTouchable >
+          </Box>
+        </TouchableOpacity >
       </Box>
-    </View>
+    </>
   )
 }
 

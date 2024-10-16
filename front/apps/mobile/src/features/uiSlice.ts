@@ -9,7 +9,8 @@ type State = {
     window?: {
       period: 'month' | 'year'
       amount: number
-    }
+    },
+    pinnedHoldings?: string[]
   },
   depositsScreen: {
     selectedAccounts?: Account[]
@@ -41,6 +42,16 @@ export const uiSlice = createSlice({
       if (!state.depositsScreen) state.depositsScreen = {}
       state.depositsScreen.selectedAccounts = action.payload
     },
+    pinHolding: (state, action: PayloadAction<string>) => {
+      if (!state.investmentsScreen) state.investmentsScreen = {}
+      if (!state.investmentsScreen.pinnedHoldings) state.investmentsScreen.pinnedHoldings = []
+      state.investmentsScreen.pinnedHoldings.push(action.payload)
+    },
+    unPinHolding: (state, action: PayloadAction<string>) => {
+      if (!state.investmentsScreen) state.investmentsScreen = {}
+      if (!state.investmentsScreen.pinnedHoldings) state.investmentsScreen.pinnedHoldings = []
+      state.investmentsScreen.pinnedHoldings = state.investmentsScreen.pinnedHoldings.filter(h => h !== action.payload)
+    }
   }
 })
 
@@ -48,10 +59,13 @@ export const {
   setBillCatSort,
   setInvestmentsScreenAccounts,
   setDepositsScreenAccounts,
-  setInvestmentsScreenWindow
+  setInvestmentsScreenWindow,
+  pinHolding,
+  unPinHolding
 } = uiSlice.actions
 
 export const selectBillCatSort = (state: { ui: State }) => state.ui.billCatSort
 export const selectInvestmentsScreenAccounts = (state: { ui: State }) => state.ui.investmentsScreen?.selectedAccounts
 export const selectDepositsScreenAccounts = (state: { ui: State }) => state.ui.depositsScreen?.selectedAccounts
 export const selectInvestmentsScreenWindow = (state: { ui: State }) => state.ui.investmentsScreen?.window
+export const selectPinnedHoldings = (state: { ui: State }) => state.ui.investmentsScreen?.pinnedHoldings

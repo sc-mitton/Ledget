@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useTheme } from '@shopify/restyle';
 import DraggableFlatList, { ScaleDecorator, DragEndParams } from 'react-native-draggable-flatlist';
@@ -7,7 +7,7 @@ import * as Haptics from 'expo-haptics';
 import styles from './styles/screen';
 import { ModalScreenProps } from '@types';
 import { Box, Header2 } from '@ledget/native-ui';
-import { useUpdateAccountsMutation } from '@ledget/shared-features';
+import { useGetAccountsQuery, useUpdateAccountsMutation } from '@ledget/shared-features';
 import type { Account } from '@ledget/shared-features';
 import Filters from './Filters';
 import AccountRow from './AccountRow';
@@ -19,9 +19,11 @@ const AccountPicker = (props: ModalScreenProps<'PickAccount'>) => {
   const [updateOrder] = useUpdateAccountsMutation();
   const theme = useTheme();
   const [isFiltered, setIsFiltered] = useState(false);
+
   const [accounts, setAccounts] = useState<Account[]>();
 
   const dispatch = useAppDispatch();
+  const { data: accountsData } = useGetAccountsQuery();
   const globalAccounts = useAppSelector(selectDepositsScreenAccounts);
 
   const handleEndDrag = (args: DragEndParams<Account>) => {
@@ -35,6 +37,11 @@ const AccountPicker = (props: ModalScreenProps<'PickAccount'>) => {
       setAccounts(args.data);
     }
   }
+
+  useEffect(() => {
+    setAccounts(accountsData?.accounts.filter(a => a.type === props.route.params.accountType));
+  }, [accountsData]);
+
 
   return (
     <Box
@@ -61,7 +68,7 @@ const AccountPicker = (props: ModalScreenProps<'PickAccount'>) => {
               debug={false}
               onDragEnd={handleEndDrag}
               keyExtractor={item => item.id}
-              data={accounts.filter(a => a.type === props.route.params.accountType)}
+              data={accounts}
               renderItem={(args) => (
                 <>
                   <ScaleDecorator activeScale={1.03}>

@@ -1,10 +1,14 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  chartContainer: {
+  container: {
     height: 200,
     width: '100%',
-    paddingTop: 48
+    paddingTop: 48,
+  },
+  chartContainer: {
+    flex: 1,
+    transform: [{ translateY: -12 }],
   },
   emptyTextContainer: {
     position: 'absolute',

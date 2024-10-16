@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   draggableListContent: {
     paddingBottom: 16,
     paddingHorizontal: 16,
-    paddingTop: 2
+    paddingTop: 2,
   },
 });
 

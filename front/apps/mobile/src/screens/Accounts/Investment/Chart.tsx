@@ -4,7 +4,7 @@ import { CartesianChart, Area, Line, useChartPressState } from 'victory-native';
 import {
   LinearGradient,
   useFont,
-  vec,
+  vec
 } from '@shopify/react-native-skia';
 import { useTheme } from '@shopify/restyle';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
@@ -102,7 +102,7 @@ const Chart = () => {
   }, [accounts])
 
   return (
-    <View style={styles.chartContainer}>
+    <View style={styles.container}>
       <View style={styles.accountMenu}>
         <Menu
           as='menu'
@@ -185,72 +185,75 @@ const Chart = () => {
             tint={mode === 'dark' ? 'dark' : 'light'}
           />
         </Animated.View>}
-      {useingFakeData &&
+      {/* {useingFakeData &&
         <View style={styles.emptyTextContainer}>
           <Text variant='footer' style={styles.emptyText}>
             Not enough data yet
           </Text>
-        </View>}
-      <CartesianChart
-        chartPressState={state}
-        data={chartData}
-        xKey={'date'}
-        yKeys={['balance']}
-        xAxis={{
-          font,
-          lineWidth: 0,
-          labelOffset: -20,
-          tickCount: useingFakeData ? 5 : windows.find(w => w.period === window?.period && w.number === window?.amount)?.ticks,
-          labelColor:
-            useingFakeData
-              ? theme.colors.quaternaryText
-              : theme.colors.faintBlueText,
-          formatXLabel: (date) =>
-            useingFakeData ? '' :
-              `${' '.repeat(14)}${dayjs(date).format(windows.find(w => w.period === window?.period && w.number === window?.amount)?.format)}`
-        }}
-        yAxis={[{
-          font,
-          lineWidth: 0,
-          tickCount: 0,
-          formatYLabel: () => '',
-        }]}
-        padding={{ left: 0 }}
-        domainPadding={{ left: 6, right: 6, top: 25, bottom: BOTTOM_PADDING }}
-      >
-        {({ points, chartBounds }) => (
-          <>
-            <Area
-              y0={chartBounds.bottom}
-              points={points.balance}
-              animate={{ type: 'spring', duration: 300 }}
-              curveType='natural'
-            >
-              <LinearGradient
-                colors={useingFakeData
-                  ? [
-                    theme.colors.emptyChartGradientStart,
-                    theme.colors.blueChartGradientEnd
-                  ]
-                  : [
-                    theme.colors.blueChartGradientStart,
-                    theme.colors.blueChartGradientStart,
-                    theme.colors.blueChartGradientEnd
-                  ]
-                }
-                start={vec(chartBounds.bottom, 0)}
-                end={vec(chartBounds.bottom, chartBounds.bottom)}
+        </View>} */}
+      <View style={styles.chartContainer}>
+        <CartesianChart
+          chartPressState={state}
+          data={chartData}
+          xKey={'date'}
+          yKeys={['balance']}
+          xAxis={{
+            font,
+            lineWidth: 0,
+            labelOffset: -20,
+            tickCount: 0,
+            labelColor:
+              useingFakeData
+                ? theme.colors.quaternaryText
+                : theme.colors.faintBlueText,
+            formatXLabel: (date) => ''
+          }}
+          yAxis={[{
+            font,
+            lineWidth: 0,
+            tickCount: 0,
+            formatYLabel: () => '',
+          }]}
+          padding={{ left: 0 }}
+          domainPadding={{ left: 6, right: 6, top: 50, bottom: BOTTOM_PADDING }}
+        >
+          {({ points, chartBounds }) => (
+            <>
+              <Area
+                y0={chartBounds.bottom}
+                points={points.balance}
+                animate={{ type: 'spring', duration: 300 }}
+                curveType='natural'
+              >
+                <LinearGradient
+                  colors={useingFakeData
+                    ? [
+                      // theme.colors.emptyChartGradientStart,
+                      // theme.colors.blueChartGradientEnd
+                      theme.colors.blueChartGradientStart,
+                      theme.colors.blueChartGradientStart,
+                      theme.colors.blueChartGradientEnd
+                    ]
+                    : [
+                      theme.colors.blueChartGradientStart,
+                      theme.colors.blueChartGradientStart,
+                      theme.colors.blueChartGradientEnd
+                    ]
+                  }
+                  start={vec(chartBounds.bottom, 0)}
+                  end={vec(chartBounds.bottom, chartBounds.bottom)}
+                />
+              </Area>
+              <Line
+                animate={{ type: 'spring', duration: 300 }}
+                points={points.balance}
+                // color={useingFakeData ? theme.colors.quinaryText : theme.colors.blueChartColor}
+                color={theme.colors.blueChartColor}
+                strokeWidth={2}
+                strokeCap='round'
+                curveType='natural'
               />
-            </Area>
-            <Line
-              animate={{ type: 'spring', duration: 300 }}
-              points={points.balance}
-              color={useingFakeData ? theme.colors.quinaryText : theme.colors.blueChartColor}
-              strokeWidth={2}
-              strokeCap='round'
-              curveType='natural'
-            />
-            {isActive && !useingFakeData && (
+              {/* {isActive && !useingFakeData && (
               <VictoryTooltip
                 state={state}
                 font={font}
@@ -261,10 +264,25 @@ const Chart = () => {
                 backgroundColor={theme.colors.grayButton}
                 verticalCrosshair={true}
                 lineOffset={-20}
-              />)}
-          </>
-        )}
-      </CartesianChart>
+              />)} */}
+              {isActive && (
+                <VictoryTooltip
+                  state={state}
+                  font={font}
+                  chartBounds={chartBounds}
+                  color={theme.colors.mainText}
+                  xAxisTipColor={theme.colors.tertiaryText}
+                  dotColor={theme.colors.blueText}
+                  borderColor={theme.colors.lightBlueButton}
+                  backgroundColor={theme.colors.grayButton}
+                  verticalCrosshair={true}
+                  lineOffset={-20}
+                  xAxisTip={true}
+                />)}
+            </>
+          )}
+        </CartesianChart>
+      </View>
     </View>
   )
 }
