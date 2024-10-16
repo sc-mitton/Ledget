@@ -44,7 +44,6 @@ class TextInvestmentsViews(ViewTestsMixin):
             to_dict=MagicMock(return_value=self.holdings_get_response))
 
         response = self.client.get(reverse('investments'))
-        print(response.data)
 
         self.assertEqual(response.status_code, 200)
 

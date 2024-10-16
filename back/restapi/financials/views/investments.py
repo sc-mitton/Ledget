@@ -74,6 +74,7 @@ class InvestmentsView(GenericAPIView):
 
         account_ids = [a.id for a in plaid_item.accounts.all()]
         account_names = [a.name for a in plaid_item.accounts.all()]
+
         holdings_request = InvestmentsHoldingsGetRequest(
             access_token=plaid_item.access_token,
             options=InvestmentHoldingsGetRequestOptions(
@@ -87,6 +88,9 @@ class InvestmentsView(GenericAPIView):
         serialized_data = []
         for (account_id, transaction_group), (_, holding_group), balances \
                 in zip(transactions, holdings, balances):
+
+            if account_id not in account_ids:
+                continue
 
             serializer = InvestmentSerializer(
                 data={

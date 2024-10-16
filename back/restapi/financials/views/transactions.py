@@ -328,8 +328,10 @@ class TransactionViewSet(ModelViewSet):
     def _get_plaid_items(self, request):
         item_id = self.request.query_params.get('item', None)
         account_ids = self.request.query_params.get('accounts', [])
+        if isinstance(account_ids, str):
+            account_ids = [account_ids]
         account_id = self.request.query_params.get('account', None)
-        account_ids = account_ids + [account_id]
+        account_ids.append(account_id) if account_id else None
 
         if item_id:
             try:
@@ -343,8 +345,7 @@ class TransactionViewSet(ModelViewSet):
                 raise ValidationError('Invalid account id')
         else:
             plaid_items = PlaidItem.objects.filter(
-                user__in=self.request.user.account.users.all()
-            )
+                user__in=self.request.user.account.users.all())
 
         for item in plaid_items:
             self.check_object_permissions(request, item)

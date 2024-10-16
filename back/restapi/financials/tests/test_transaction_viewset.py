@@ -118,7 +118,6 @@ class TestTransactionViewSet(ViewTestsMixin):
         mock_response.to_dict.return_value = self.sync_response
 
         # Delete all transactions and reset all account cursors
-        Transaction.objects.all().delete()
         plaid_items = PlaidItem.objects.filter(user=self.user)
         for item in plaid_items:
             item.cursor = None
@@ -132,7 +131,7 @@ class TestTransactionViewSet(ViewTestsMixin):
             item.refresh_from_db()
             self.assertGreater(
                 item.last_synced,
-                timezone.now() - timezone.timedelta(seconds=30))
+                timezone.now() - timezone.timedelta(seconds=2))
 
     def test_count_transactions(self):
         response = self.client.get(reverse(
