@@ -85,6 +85,12 @@ const Transactions = (props: PTransactions & { account?: Account }) => {
       onStartShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponder: () => true,
       onPanResponderMove: (e, gs) => {
+        if (gs.dy > 0 && state.current === 'neutral') {
+          return
+        }
+        if (gs.dy < 0 && state.current === 'expanded') {
+          return
+        }
         if ((Math.abs(gs.dy) > DRAG_THRESHOLD) || (Math.abs(gs.vy) > ESCAPE_VELOCITY)) {
           if (gs.vy < 0) {
             top.value = withSpring(
