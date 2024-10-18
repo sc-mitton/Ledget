@@ -20,14 +20,14 @@ import {
 } from '@ledget/native-ui';
 import { getScheduleDescription } from './helpers';
 import { getOrderSuffix } from '@ledget/helpers';
-import type { SchedulerModalProps, Value } from './types';
+import type { ModalProps } from './types';
 
 const DAYS = Array.from({ length: 31 }, (_, i) => i).reduce((acc, day) => {
   acc[day % 7].push(day + 1);
   return acc;
 }, Array.from({ length: 7 }, () => [] as number[]));
 
-const SchedulerModal = (props: SchedulerModalProps) => {
+const SchedulerModal = (props: ModalProps) => {
   const { field: { onChange: onPeriodChange, value: periodValue } } = useController({ control: props.control, name: 'period' });
   const { field: { onChange: onScheduleChange, value: scheduleValue } } = useController({ control: props.control, name: 'schedule' });
   const { field: { onChange: onExpiresChange, value: expiresValue } } = useController({ control: props.control, name: 'expires' });

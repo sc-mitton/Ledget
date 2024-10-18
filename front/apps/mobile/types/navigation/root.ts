@@ -33,10 +33,3 @@ export type RootAuthenticationStackParamList = {
 export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<RootStackParamList, T>;
 export type RecoveryScreenProps = StackScreenProps<RootAuthenticationStackParamList, 'Recovery'>
 export type VerificationScreenProps = StackScreenProps<RootAuthenticationStackParamList, 'Verification'>
-export type BottomTabScreenProps<T extends keyof BottomTabNavParamList> = CompositeScreenProps<
-  StackScreenProps<BottomTabNavParamList, T>,
-  CompositeScreenProps<
-    StackScreenProps<RootStackParamList>,
-    StackScreenProps<ModalStackParamList>
-  >
->;

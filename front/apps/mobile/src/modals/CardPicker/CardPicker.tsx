@@ -1,4 +1,4 @@
-import React, { useEffect, useState, forwardRef, useRef, createRef } from 'react';
+import React, { useEffect, useState, forwardRef } from 'react';
 import { View } from 'react-native';
 import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
 import { useTheme } from '@shopify/restyle';
@@ -9,7 +9,6 @@ import {
   Box,
   Header2,
   Seperator,
-  Button,
   defaultSpringConfig,
   GridSortableList,
   DollarCents,

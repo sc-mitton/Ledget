@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { BackHeader } from '@ledget/native-ui';
 import { AccountsStackParamList } from '@types';
 import { useCardStyleInterpolator } from '@/hooks';
-import AccountTabs from './AccountScreens';
+import AccountTabs from './AccountsNavigator';
 import Transaction from '../Transaction/Screen';
 
 const Stack = createStackNavigator<AccountsStackParamList>()

@@ -18,7 +18,8 @@ type State = {
   settings: {
     startOnHome: boolean
   },
-  lastTab: number
+  lastTab: number,
+  hideBottomTabs: boolean
 }
 
 const initialState: State = {
@@ -28,7 +29,8 @@ const initialState: State = {
   settings: {
     startOnHome: true
   },
-  lastTab: 0
+  lastTab: 0,
+  hideBottomTabs: false
 }
 
 export const uiSlice = createSlice({
@@ -65,6 +67,9 @@ export const uiSlice = createSlice({
     },
     updateLastTab: (state, action: PayloadAction<number>) => {
       state.lastTab = action.payload
+    },
+    hideBottomTabs: (state, action: PayloadAction<boolean>) => {
+      state.hideBottomTabs = action.payload
     }
   }
 })
@@ -77,7 +82,8 @@ export const {
   pinHolding,
   unPinHolding,
   updateSetting,
-  updateLastTab
+  updateLastTab,
+  hideBottomTabs
 } = uiSlice.actions
 
 export const selectBillCatSort = (state: { ui: State }) => state.ui.billCatSort
@@ -87,3 +93,4 @@ export const selectInvestmentsScreenWindow = (state: { ui: State }) => state.ui.
 export const selectPinnedHoldings = (state: { ui: State }) => state.ui.investmentsScreen?.pinnedHoldings
 export const selectSettings = (state: { ui: State }) => state.ui.settings
 export const selectLastTab = (state: { ui: State }) => state.ui.lastTab
+export const selectHideBottomTabs = (state: { ui: State }) => state.ui.hideBottomTabs

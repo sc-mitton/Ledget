@@ -3,6 +3,7 @@ import { appearanceslice } from './appearanceSlice';
 import { bioSlice } from './bioSlice';
 import { authSlice } from './authSlice';
 import { uiSlice } from './uiSlice';
+import { widgetsSlice } from './widgetsSlice';
 import {
   apiSlice,
   toastSlice,
@@ -25,12 +26,19 @@ const migrations = {
         startOnHome: true
       }
     }
+  }),
+  2: (state: RootState) => ({
+    ...state,
+    ui: {
+      ...state.ui,
+      hideBottomTabs: false
+    }
   })
 } as any;
 
 const persistConfig = {
   key: "root",
-  version: 1,
+  version: 2,
   storage,
   timeout: 0,
   migrate: createMigrate(migrations),
@@ -50,6 +58,7 @@ const rootReducer = combineReducers({
   auth: authSlice.reducer,
   holdings: holdingsSlice.reducer,
   ui: uiSlice.reducer,
+  widgets: widgetsSlice.reducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

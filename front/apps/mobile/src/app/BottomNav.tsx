@@ -1,13 +1,15 @@
+import { useEffect } from 'react';
 import { BlurView } from 'expo-blur';
 import { TouchableOpacity, View, Platform } from 'react-native';
 import { ParamListBase, TabNavigationState, CommonActions } from '@react-navigation/native';
 import { Home, DollarSign, Activity, User } from 'geist-native-icons';
+import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
 import { useGetTransactionsCountQuery } from '@ledget/shared-features';
 
 import styles from './styles/bottom-nav';
-import { Box, Icon } from '@ledget/native-ui';
+import { Box, Icon, defaultSpringConfig } from '@ledget/native-ui';
 import { useAppearance } from '@features/appearanceSlice';
-import { updateLastTab } from '@/features/uiSlice';
+import { selectHideBottomTabs, updateLastTab } from '@/features/uiSlice';
 import { Institution } from '@ledget/media/native';
 import { useAppSelector, useAppDispatch } from '@hooks';
 import { selectBudgetMonthYear } from '@ledget/shared-features';
@@ -85,14 +87,20 @@ const Button = (props: ButtonProps) => {
 
 export default function Nav({ state, descriptors, navigation }: Props) {
   const { mode } = useAppearance();
+  const hidden = useAppSelector(selectHideBottomTabs);
   const { month, year } = useAppSelector(selectBudgetMonthYear);
   const { data } = useGetTransactionsCountQuery(
     { confirmed: false, month, year },
     { skip: !month || !year }
   );
+  const y = useSharedValue(0);
+
+  useEffect(() => {
+    y.value = withSpring(hidden ? 150 : 0, defaultSpringConfig);
+  }, [hidden])
 
   return (
-    <>
+    <Animated.View style={{ transform: [{ translateY: y }] }}>
       <BlurView
         intensity={
           mode === 'dark'
@@ -155,7 +163,7 @@ export default function Nav({ state, descriptors, navigation }: Props) {
           ))}
         </Box>
       </BlurView>
-    </>
+    </Animated.View>
   );
 }
 

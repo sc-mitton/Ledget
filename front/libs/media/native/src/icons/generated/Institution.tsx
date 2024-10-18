@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Svg, { SvgProps, G, Path } from 'react-native-svg';
+import Svg, { SvgProps, Path } from 'react-native-svg';
 function SvgInstitution({
   size = 24,
   ...props
@@ -18,7 +18,21 @@ function SvgInstitution({
       fill="none"
       {...props}
     >
-      <Path d="M9.8 11.9v10.3M20.6 11.9v10.3M4.4 11.9v10.3M12.2 2.9 3 6.8c-1 .3-.8 1.9.3 1.9h18.4c1.1 0 1.3-1.5.3-1.9L12.9 3c-.3-.3-.5-.3-.7-.1M2.3 22.2h20.4M15.2 11.9v10.3" />
+      <Path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M9.8 11.9v10.3M20.6 11.9v10.3"
+      />
+      <Path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M4.4 11.9v10.3M12.2 2.9 3 6.8c-1 .3-.8 1.9.3 1.9h18.4c1.1 0 1.3-1.5.3-1.9L12.9 3c-.3-.3-.5-.3-.7-.1"
+      />
+      <Path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M2.3 22.2h20.4M15.2 11.9v10.3"
+      />
     </Svg>
   );
 }

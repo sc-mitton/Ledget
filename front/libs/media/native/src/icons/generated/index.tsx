@@ -12,3 +12,4 @@ export { default as MapPin2 } from './MapPin2';
 export { default as Qr } from './Qr';
 export { default as Relink } from './Relink';
 export { default as Stars } from './Stars';
+export { default as Widgets } from './Widgets';

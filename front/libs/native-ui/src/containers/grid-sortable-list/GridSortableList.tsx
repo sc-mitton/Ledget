@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Animated, { useAnimatedScrollHandler, useSharedValue, useAnimatedRef } from "react-native-reanimated";
 import { View } from "react-native";
-import { useTheme } from "@shopify/restyle";
 
 import type { GridSortableListProps, Positions } from './types';
 import Item from './Item';
