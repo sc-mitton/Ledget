@@ -1,3 +1,4 @@
+import { RefObject } from 'react'
 import { ViewStyle } from 'react-native'
 import Animated, { AnimatedRef, SharedValue } from 'react-native-reanimated'
 
@@ -18,15 +19,9 @@ export type ItemProps = {
   scrollY: SharedValue<number>
   id: string;
   children: Child,
+  scrollHeight: number;
   positions: SharedValue<Positions>;
-  containerSize: {
-    width: number;
-    height: number;
-  };
-  size: {
-    width: number;
-    height: number;
-  }
+  size: SharedValue<{ width: number, height: number }>;
 } & Required<SharedProps>
 
 export type GridSortableListProps<TData extends object> = {

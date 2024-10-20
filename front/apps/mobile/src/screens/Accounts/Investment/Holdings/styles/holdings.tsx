@@ -13,13 +13,18 @@ const styles = StyleSheet.create({
   },
   holdings: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+  },
+  skeletonHoldings: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 5,
   },
   holding: {
     marginHorizontal: 2,
   },
   skeletonHolding: {
-    gap: 8,
+    gap: 12,
     marginHorizontal: 2,
   },
   holdingTitle: {

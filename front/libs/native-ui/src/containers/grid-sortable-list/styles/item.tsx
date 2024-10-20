@@ -4,6 +4,9 @@ const styles = StyleSheet.create({
   itemContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  measure: {
+    width: '100%',
   }
 });
 

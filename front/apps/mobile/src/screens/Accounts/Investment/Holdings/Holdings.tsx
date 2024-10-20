@@ -60,12 +60,13 @@ const Holdings = (props: AccountsTabsScreenProps<'Investment'>) => {
           icon={<Icon icon={ChevronRight} size={16} color='quaternaryText' />}
         />
       </Box>
-      {investmentsData
+      {investmentsData && holdings
         ?
         <Box variant='nestedContainer'>
           <CustomScrollView
             contentContainerStyle={styles.holdings}
-            horizontal>
+            horizontal
+          >
             {holdings?.map((holding, index) => {
               let previous_institution_value, current_institution_value, percent_change: number | undefined = undefined
 

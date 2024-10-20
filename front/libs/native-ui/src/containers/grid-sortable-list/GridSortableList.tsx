@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import Animated, { useAnimatedScrollHandler, useSharedValue, useAnimatedRef } from "react-native-reanimated";
 import { View } from "react-native";
 
 import type { GridSortableListProps, Positions } from './types';
+import { getPosition } from "./config";
 import Item from './Item';
 import styles from './styles/grid-sortable-list';
 
@@ -13,10 +14,9 @@ export const GridSortableList = <T extends object>(props: GridSortableListProps<
     idField = 'id' as keyof T
   } = props;
 
-  const [itemWidth, setItemWidth] = useState(0);
-  const [itemHeight, setItemHeight] = useState(0);
-  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
+  const [scrollContentHeight, setScrollContentHeight] = useState(0)
 
+  const itemSize = useSharedValue({ width: 0, height: 0 });
   const scrollView = useAnimatedRef<Animated.ScrollView>();
   const scrollY = useSharedValue(0);
   const positions = useSharedValue<Positions>(
@@ -29,48 +29,36 @@ export const GridSortableList = <T extends object>(props: GridSortableListProps<
 
   return (
     <>
-      {(itemWidth === 0 || itemHeight === 0)
-        ?
-        <View style={styles.measuringItemContainer}>
-          <View
-            style={styles.measuringItem}
-            onLayout={(e) => {
-              setItemWidth(e.nativeEvent.layout.width);
-              setItemHeight(e.nativeEvent.layout.height);
-            }}
-          >
-            {props.renderItem({ item: props.data[0], index: 0 })}
-          </View>
-        </View>
-        :
-        <Animated.ScrollView
-          ref={scrollView}
-          onScroll={scrollHandler}
-          scrollEventThrottle={16}
-          bounces={false}
-          showsVerticalScrollIndicator={false}
-          style={[styles.scrollView, props.containerViewStyle]}
-          onLayout={(e) => {
-            setContainerSize(e.nativeEvent.layout);
+      <View style={styles.measuringItemContainer}>
+        <View
+          style={styles.measuringItem}
+          onLayout={({ nativeEvent: e }) => {
+            setScrollContentHeight(
+              Math.ceil(props.data.length / columns) *
+              (e.layout.height + rowPadding))
+
+            itemSize.value = { width: e.layout.width, height: e.layout.height };
           }}
         >
-          <View style={styles.ghosts}>
-            {props.data.map((item, index) => (
-              <View style={{ marginBottom: rowPadding }} key={index}>
-                {props.renderItem({ item, index })}
-              </View>
-            ))}
-          </View>
+          {props.renderItem({ item: props.data[0], index: 0 })}
+        </View>
+      </View>
+      <Animated.ScrollView
+        ref={scrollView}
+        onScroll={scrollHandler}
+        scrollEventThrottle={16}
+        bounces={false}
+        showsVerticalScrollIndicator={false}
+        style={[styles.scrollView, props.containerViewStyle]}
+      >
+        <View style={{ height: scrollContentHeight }}>
           {props.data.map((item, index) => (
             <Item
-              size={{
-                width: itemWidth,
-                height: itemHeight,
-              }}
               key={index}
+              size={itemSize}
+              scrollHeight={scrollContentHeight}
               id={item[idField] as string}
               positions={positions}
-              containerSize={containerSize}
               scrollY={scrollY}
               scrollView={scrollView}
               columns={columns}
@@ -80,8 +68,8 @@ export const GridSortableList = <T extends object>(props: GridSortableListProps<
               {props.renderItem({ item, index })}
             </Item>
           ))}
-        </Animated.ScrollView>
-      }
+        </View>
+      </Animated.ScrollView>
     </>
   )
 }

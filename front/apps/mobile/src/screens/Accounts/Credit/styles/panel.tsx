@@ -23,17 +23,20 @@ const styles = StyleSheet.create({
   totalBalanceText: {
     marginTop: -4
   },
+  skeletonContainer: {
+
+  },
   skeletonCard: {
     position: 'relative',
     flexDirection: 'row',
     justifyContent: 'center',
     width: '100%',
-    marginTop: 2,
-    marginBottom: 12
+    marginTop: 12,
+    marginBottom: 40
   },
   carouselContainer: {
     flexDirection: 'row',
-    marginVertical: 8
+    marginVertical: 12
   },
   carousel: {
     alignItems: 'center',
@@ -45,7 +48,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     gap: 7,
-    transform: [{ translateY: -20 }]
+    transform: [{ translateY: -24 }]
   },
   pageDotsBack: {
     paddingHorizontal: 12,

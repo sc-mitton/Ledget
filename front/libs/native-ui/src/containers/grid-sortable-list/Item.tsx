@@ -6,7 +6,8 @@ import Animated, {
   withTiming,
   runOnJS,
   scrollTo,
-  useAnimatedReaction
+  useAnimatedReaction,
+  useDerivedValue
 } from "react-native-reanimated";
 import {
   GestureDetector,
@@ -17,25 +18,19 @@ import styles from './styles/item';
 import { Box } from "../../restyled/Box";
 import { ItemProps } from "./types";
 import { getPosition, animationConfig, getUpdatedIndex } from "./config";
-import { useEffect, useLayoutEffect } from "react";
+import { useLayoutEffect } from "react";
 
 const Item = (props: ItemProps) => {
-
-  const position = getPosition(
-    props.positions.value[props.id]!,
-    props.size.width,
-    (props.size.height + props.rowPadding),
-    props.columns,
-    props.containerSize.width
-  );
-
+  const containerWidth = useSharedValue(0);
   const shadowOpacity = useSharedValue(0);
-  const translateX = useSharedValue(position.x);
-  const translateY = useSharedValue(position.y);
+  const translateX = useSharedValue(0);
+  const translateY = useSharedValue(0);
   const isGestureActive = useSharedValue(false);
-  const contentHeight = (
+
+  const contentHeight = useDerivedValue(() => (
     Object.keys(props.positions.value).length / props.columns) *
-    (props.size.height + props.rowPadding);
+    (props.size.value.height + props.rowPadding)
+  );
 
   const style = useAnimatedStyle(() => {
     const zIndex = isGestureActive.value ? 100 : 0;
@@ -44,8 +39,8 @@ const Item = (props: ItemProps) => {
       position: "absolute",
       top: 0,
       left: 0,
-      width: props.size.width,
-      height: props.size.height,
+      width: props.size.value.width,
+      height: props.size.value.height,
       zIndex,
       shadowColor: "#000",
       shadowOpacity: shadowOpacity.value,
@@ -62,33 +57,34 @@ const Item = (props: ItemProps) => {
     };
   });
 
-  useEffect(() => {
+  useAnimatedReaction(() => containerWidth.value, (newWidth) => {
+    if (!containerWidth.value) return;
     const pos = getPosition(
       props.positions.value[props.id]!,
-      props.size.width,
-      props.size.height + props.rowPadding,
+      props.size.value.width,
+      props.size.value.height + props.rowPadding,
       props.columns,
-      props.containerSize.width
+      newWidth
     );
     translateX.value = pos.x;
     translateY.value = pos.y;
-  }, [props.size]);
+  }, []);
 
-  useAnimatedReaction(() => props.positions.value[props.id]!,
-    (newOrder) => {
-      if (!isGestureActive.value) {
-        const pos = getPosition(
-          newOrder,
-          props.size.width,
-          props.size.height + props.rowPadding,
-          props.columns,
-          props.containerSize.width
-        );
-        translateX.value = withTiming(pos.x, animationConfig);
-        translateY.value = withTiming(pos.y, animationConfig);
-      }
+  useAnimatedReaction(() => props.positions.value[props.id]!, (newOrder) => {
+    if (!containerWidth.value) return;
+    if (!isGestureActive.value) {
+      const pos = getPosition(
+        newOrder,
+        props.size.value.width,
+        props.size.value.height + props.rowPadding,
+        props.columns,
+        containerWidth.value
+      );
+      translateX.value = withTiming(pos.x, animationConfig);
+      translateY.value = withTiming(pos.y, animationConfig);
     }
-  );
+  }
+  ), [];
 
   const pan = Gesture.Pan()
     .activateAfterLongPress(500)
@@ -110,9 +106,9 @@ const Item = (props: ItemProps) => {
         td: { tx: translateX.value, ty: translateY.value },
         index: props.positions.value[props.id]!,
         max: Object.keys(props.positions.value).length - 1,
-        size: { width: props.size.width, height: props.size.height + props.rowPadding },
+        size: { width: props.size.value.width, height: props.size.value.height + props.rowPadding },
         column: props.columns,
-        containerWidth: props.containerSize.width
+        containerWidth: containerWidth.value
       });
 
       // 2. We swap the positions
@@ -134,8 +130,8 @@ const Item = (props: ItemProps) => {
 
       // 3. Scroll up and down if necessary
       const lowerBound = props.scrollY.value;
-      const upperBound = lowerBound + props.containerSize.height - props.size.height;
-      const maxScroll = contentHeight - props.containerSize.height;
+      const upperBound = lowerBound + props.scrollHeight - props.size.value.height;
+      const maxScroll = contentHeight.value - props.scrollHeight;
       const leftToScrollDown = maxScroll - props.scrollY.value;
       if (translateY.value < lowerBound) {
         const diff = Math.min(lowerBound - translateY.value, lowerBound);
@@ -161,10 +157,10 @@ const Item = (props: ItemProps) => {
 
       const newPosition = getPosition(
         props.positions.value[props.id]!,
-        props.size.width,
-        props.size.height + props.rowPadding,
+        props.size.value.width,
+        props.size.value.height + props.rowPadding,
         props.columns,
-        props.containerSize.width
+        containerWidth.value
       );
       translateX.value = withTiming(newPosition.x, animationConfig, () => {
         isGestureActive.value = false;
@@ -174,21 +170,27 @@ const Item = (props: ItemProps) => {
     })
 
   return (
-    <Animated.View
-      style={style}
-      onLayout={(e) => {
-        props.size.width = e.nativeEvent.layout.width;
-        props.size.height = e.nativeEvent.layout.height;
-      }}
-    >
-      <GestureDetector gesture={pan}>
-        <Animated.View style={StyleSheet.absoluteFill}>
-          <Box style={styles.itemContainer}>
-            {props.children}
-          </Box>
-        </Animated.View>
-      </GestureDetector>
-    </Animated.View>
+    <>
+      <View
+        style={styles.measure}
+        onLayout={({ nativeEvent: e }) => { containerWidth.value = e.layout.width }}
+      />
+      <Animated.View
+        style={style}
+        onLayout={(e) => {
+          props.size.value.width;
+          props.size.value.height = e.nativeEvent.layout.height;
+        }}
+      >
+        <GestureDetector gesture={pan}>
+          <Animated.View style={StyleSheet.absoluteFill}>
+            <Box style={styles.itemContainer}>
+              {props.children}
+            </Box>
+          </Animated.View>
+        </GestureDetector>
+      </Animated.View>
+    </>
   )
 }
 

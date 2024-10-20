@@ -163,13 +163,16 @@ const Transactions = (props: PTransactions & { account?: Account }) => {
     }
   };
 
-  useEffect(() => {
-    console.log('isLoadingTransactions', isLoadingTransactions)
-  }, [isLoadingTransactions])
-
   return (
     <Animated.View style={[styles.boxContainer, animation]}>
-      <Box style={styles.mainBackgroundBox}>
+      <Box
+        style={styles.mainBackgroundBox}
+        backgroundColor={state.current === 'expanded' ? 'mainBackground' : 'transparent'}
+        shadowColor='mainBackground'
+        shadowOpacity={1}
+        shadowRadius={12}
+        shadowOffset={{ width: 0, height: 0 }}
+      >
         <Box
           style={styles.box}
           shadowColor='navShadow'

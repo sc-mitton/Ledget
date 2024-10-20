@@ -26,7 +26,7 @@ import Row from './Row';
 
 const SKELETON_HEIGHT = 740
 
-const DRAG_THRESHOLD = Dimensions.get('window').height * 0.1
+const DRAG_THRESHOLD = Dimensions.get('window').height * 0.2
 const ESCAPE_VELOCITY = 1.5
 
 const Transactions = (props: PTransactions) => {

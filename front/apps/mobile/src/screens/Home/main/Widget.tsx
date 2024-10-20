@@ -52,20 +52,7 @@ const Widget = (props: WidgetProps) => {
       translateX.value = withTiming(pos.x, animationConfig);
       translateY.value = withTiming(pos.y, animationConfig);
     }
-  }, [props.positions.value]);
-
-  useAnimatedReaction(() => props.positions,
-    (newOrder) => {
-      if (!isGestureActive.value) {
-        const pos = getAbsPosition(
-          props.positions.value[props.widget.id || props.widget.type],
-          props.height
-        );
-        translateX.value = withTiming(pos.x, animationConfig);
-        translateY.value = withTiming(pos.y, animationConfig);
-      }
-    }
-  );
+  }, []);
 
   useEffect(() => {
     if (props.visible) {
@@ -114,7 +101,7 @@ const Widget = (props: WidgetProps) => {
         <Box
           style={styles.filled}
           shadowColor='navShadow'
-          shadowOpacity={.3}
+          shadowOpacity={.2}
           shadowRadius={2}
           shadowOffset={{ width: 0, height: 2 }}
         >

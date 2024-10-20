@@ -7,7 +7,7 @@ import { Box } from "../../restyled/Box";
 import { AnimatedView } from "../../animated/views/AnimatedView";
 
 interface Props {
-  currentIndex: number;
+  currentIndex?: number;
   length: number;
 }
 

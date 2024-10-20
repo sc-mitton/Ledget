@@ -4,19 +4,22 @@ import Big from 'big.js';
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
 import { useSprings } from '@react-spring/native'
 import { Grid } from 'geist-native-icons';
+import Animated, { useSharedValue, FadeOut, FadeIn } from 'react-native-reanimated';
 
 import styles from './styles/panel';
 import { DollarCents, Text, Box, Button, AnimatedView, Icon, CarouselDots } from '@ledget/native-ui';
 import { useGetAccountsQuery, Account } from '@ledget/shared-features'
+import { setDepositsScreenAccounts } from '@/features/uiSlice';
 import { AccountsTabsScreenProps } from '@types'
 import Transactions from '../TransactionsList/Transactions'
 import { Card } from '@components'
 import { CARD_WIDTH, CARD_HEIGHT } from '@components/card/constants'
 import { DefaultHeader, AccountHeader } from '../Header';
+import { useAppDispatch } from '@/hooks';
 import CarouselItem from './Carouseltem';
-import { useSharedValue } from 'react-native-reanimated';
 
 export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
+  const dispatch = useAppDispatch()
   const [bottomOfContentPos, setBottomOfContentPos] = useState(0)
   const [accounts, setAccounts] = useState<Account[]>()
   const [account, setAccount] = useState<Account>()
@@ -61,9 +64,15 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
   // Update account
   useEffect(() => {
     if (!account && accounts) {
-      setAccount(props.route.params?.account || accounts[0])
+      const acnt = props.route.params?.account || accounts[0]
+      setAccount(acnt)
+      dispatch(setDepositsScreenAccounts([acnt]))
     } else {
-      setAccount(accounts?.[carouselIndex])
+      const acnt = accounts?.[carouselIndex]
+      setAccount(acnt)
+      if (acnt) {
+        dispatch(setDepositsScreenAccounts([acnt]))
+      }
     }
   }, [props.route.params?.account, accounts, carouselIndex])
 
@@ -79,7 +88,7 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
   useEffect(() => {
     if (transactionsListExpanded && account) {
       props.navigation.setOptions({
-        header: () => <AccountHeader account={account} />
+        header: () => <AccountHeader />
       })
     } else {
       props.navigation.setOptions({
@@ -126,7 +135,7 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
         {accounts
           ?
           <>
-            <View style={styles.carouselContainer}>
+            <Animated.View style={styles.carouselContainer} entering={FadeIn}>
               <Carousel
                 ref={carouselRef}
                 vertical={false}
@@ -180,7 +189,7 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
                   parallaxScrollingOffset: -10,
                 }}
               />
-            </View>
+            </Animated.View>
             <View style={styles.pageDots}>
               <Box backgroundColor='grayButton' style={styles.pageDotsBack}>
                 <CarouselDots currentIndex={carouselIndex} length={accounts.length} />
@@ -188,7 +197,16 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
             </View>
           </>
           :
-          <View style={styles.skeletonCard}><Card skeleton={true} /></View>}
+          <>
+            <Animated.View style={styles.skeletonCard} exiting={FadeOut}>
+              <Card skeleton={true} />
+            </Animated.View>
+            <View style={styles.pageDots}>
+              <Box backgroundColor='grayButton' style={styles.pageDotsBack}>
+                <CarouselDots length={3} />
+              </Box>
+            </View>
+          </>}
       </View>
       <Transactions
         collapsedTop={bottomOfContentPos}
