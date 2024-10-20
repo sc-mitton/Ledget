@@ -103,7 +103,9 @@
     "emoji-datasource": "*",
     "@expo/vector-icons": "*",
     "@gorhom/portal": "*",
-    "@miblanchard/react-native-slider": "*"
+    "@miblanchard/react-native-slider": "*",
+    "react-native-slot-text": "*",
+    "underscore": "*"
   },
   "devDependencies": {}
 }

@@ -88,6 +88,7 @@ export const lightTheme = createTheme({
     toast: palette.white,
     creditCardGradientStart: `hsl(${blueH}, 75%, 35%)`,
     creditCardGradientEnd: `hsl(${blueH}, 75%, 62%)`,
+    widgetPickerBackground: palette.gray150,
 
     // Borders
     inputBorder: palette.gray250,

@@ -24,6 +24,7 @@ const palette = {
 
   gray1000: `hsl(${grayH}, ${grayS}%, 0%)`,
   gray900: `hsl(${grayH}, ${grayS}%, 7%)`,
+  gray875: `hsl(${grayH}, ${grayS}%, 9.5%)`,
   gray850: `hsl(${grayH}, ${grayS}%, 11%)`,
   gray800: `hsl(${grayH}, ${grayS}%, 14%)`,
   gray775: `hsl(${grayH}, ${grayS}%, 15%)`,
@@ -87,6 +88,7 @@ export const darkTheme = createTheme({
     toast: palette.gray850,
     creditCardGradientStart: `hsl(${blueH}, ${blueS}%, 30%)`,
     creditCardGradientEnd: `hsl(${blueH}, ${blueS}%, 42%)`,
+    widgetPickerBackground: palette.gray875,
 
     // Borders
     inputBorder: palette.gray775,

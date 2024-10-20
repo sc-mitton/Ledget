@@ -163,6 +163,10 @@ const Transactions = (props: PTransactions & { account?: Account }) => {
     }
   };
 
+  useEffect(() => {
+    console.log('isLoadingTransactions', isLoadingTransactions)
+  }, [isLoadingTransactions])
+
   return (
     <Animated.View style={[styles.boxContainer, animation]}>
       <Box style={styles.mainBackgroundBox}>

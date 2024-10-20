@@ -8,7 +8,6 @@ import {
   useSharedValue,
   SharedValue,
   useDerivedValue,
-  useAnimatedReaction,
   runOnJS
 } from "react-native-reanimated";
 

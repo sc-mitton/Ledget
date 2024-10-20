@@ -17,7 +17,7 @@ import styles from './styles/item';
 import { Box } from "../../restyled/Box";
 import { ItemProps } from "./types";
 import { getPosition, animationConfig, getUpdatedIndex } from "./config";
-import { useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 
 const Item = (props: ItemProps) => {
 
@@ -62,7 +62,7 @@ const Item = (props: ItemProps) => {
     };
   });
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const pos = getPosition(
       props.positions.value[props.id]!,
       props.size.width,

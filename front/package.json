@@ -32,6 +32,7 @@
     "@shopify/restyle": "^2.4.4",
     "@stripe/react-stripe-js": "^2.8.0",
     "@stripe/stripe-js": "^1.54.2",
+    "@types/underscore": "^1.13.0",
     "@use-gesture/react": "^10.3.1",
     "axios": "^1.7.5",
     "big.js": "^6.2.1",
@@ -101,6 +102,7 @@
     "styled-components": "^6.1.12",
     "tslib": "^2.6.3",
     "type-fest": "^4.25.0",
+    "underscore": "^1.13.7",
     "victory-native": "^41.4.0",
     "zeego": "^1.10.0",
     "zod": "^3.23.8"
