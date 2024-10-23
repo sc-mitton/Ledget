@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     zIndex: 100
   },
   currentWidgets: {
-    zIndex: -1,
+    zIndex: 0,
     flex: 1,
   },
   scrollView: {

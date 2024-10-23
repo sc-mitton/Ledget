@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import Animated, { useSharedValue, useAnimatedRef, useAnimatedReaction } from "react-native-reanimated";
+import Animated, { useSharedValue, useAnimatedRef, useAnimatedReaction, withDelay, withTiming } from "react-native-reanimated";
 import { useTheme } from "@shopify/restyle";
 
 import styles from '../styles/widgets-grid';
@@ -30,6 +30,7 @@ const WidgetsGrid = (props: WidgetsGridProps) => {
   const [widgets, setWidgets] = useState(selectedStoredWidgets)
 
   const itemHeight = useSharedValue(0)
+  const pickerZIndex = useSharedValue(-1)
   const order = useSharedValue(selectedStoredWidgets.map(w => w.id!))
   const positions = useSharedValue(
     Object.assign(
@@ -64,6 +65,15 @@ const WidgetsGrid = (props: WidgetsGridProps) => {
   useEffect(() => {
     setWidgets(selectedStoredWidgets)
   }, [selectedStoredWidgets])
+
+  // Make sure the picker is on top when it's active, and behind when it's not
+  useEffect(() => {
+    if (props.pickerMode) {
+      pickerZIndex.value = 100
+    } else {
+      pickerZIndex.value = withDelay(500, withTiming(-1, { duration: 0 }))
+    }
+  }, [props.pickerMode])
 
   useEffect(() => {
     positions.value = Object.assign(
@@ -123,43 +133,45 @@ const WidgetsGrid = (props: WidgetsGridProps) => {
           </Animated.ScrollView>
         </Box>
       </Box>
-      <Box style={[styles.pickerBoxOuter, StyleSheet.absoluteFill]} paddingHorizontal="pageExtraPadding">
-        <Animated.ScrollView
-          style={[
-            styles.scrollView,
-            { paddingTop: theme.spacing.statusBar + 54 }
-          ]}
-          contentContainerStyle={{ paddingBottom: theme.spacing.navHeight + 54, }}
-          ref={pickerScrollView}
-          scrollEventThrottle={16}
-          showsVerticalScrollIndicator={false}
-          onLayout={(e) => { pickerWidgetsContainerHeight.value = e.nativeEvent.layout.height }}
-        >
-          <View
+      <Animated.View style={[StyleSheet.absoluteFill, { zIndex: pickerZIndex }]}>
+        <Box style={[styles.pickerBoxOuter, StyleSheet.absoluteFill]} paddingHorizontal="pageExtraPadding">
+          <Animated.ScrollView
             style={[
-              { height: Math.ceil(widgetTypes.length / 2) * (itemHeight.value + gap) },
-              styles.pickerWidgetsScrollView
+              styles.scrollView,
+              { paddingTop: theme.spacing.statusBar + 54 }
             ]}
+            contentContainerStyle={{ paddingBottom: theme.spacing.navHeight + 54, }}
+            ref={pickerScrollView}
+            scrollEventThrottle={16}
+            showsVerticalScrollIndicator={false}
+            onLayout={(e) => { pickerWidgetsContainerHeight.value = e.nativeEvent.layout.height }}
           >
-            {widgetTypes.map(t => ({ type: t, shape: 'square' as const })).map((widget, index) => (
-              <Widget
-                key={widget.type}
-                widget={widget}
-                index={index}
-                visible={props.pickerMode}
-                height={itemHeight}
-                positions={positions}
-                order={order}
-                scrollY={pickerScrollY}
-                scrollHeight={Math.ceil(widgetTypes.length / 2) * itemHeight.value}
-                containerHeight={pickerWidgetsContainerHeight}
-                scrollView={pickerScrollView}
-                onDragStart={() => { props.setPickerMode(false) }}
-              />
-            ))}
-          </View>
-        </Animated.ScrollView>
-      </Box>
+            <View
+              style={[
+                { height: Math.ceil(widgetTypes.length / 2) * (itemHeight.value + gap) },
+                styles.pickerWidgetsScrollView
+              ]}
+            >
+              {widgetTypes.map(t => ({ type: t, shape: 'square' as const })).map((widget, index) => (
+                <Widget
+                  key={widget.type}
+                  widget={widget}
+                  index={index}
+                  visible={props.pickerMode}
+                  height={itemHeight}
+                  positions={positions}
+                  order={order}
+                  scrollY={pickerScrollY}
+                  scrollHeight={Math.ceil(widgetTypes.length / 2) * itemHeight.value}
+                  containerHeight={pickerWidgetsContainerHeight}
+                  scrollView={pickerScrollView}
+                  onDragStart={() => { props.setPickerMode(false) }}
+                />
+              ))}
+            </View>
+          </Animated.ScrollView>
+        </Box>
+      </Animated.View>
     </>
   )
 }

@@ -4,7 +4,7 @@ import { Widget } from "@/features/widgetsSlice";
 import { Easing } from "react-native-reanimated";
 import { gap } from "./constants";
 
-const PROXIMITY_THRESHOLD = 0.3;
+const PROXIMITY_THRESHOLD = 0.25;
 
 export const animationConfig = {
   easing: Easing.inOut(Easing.ease),

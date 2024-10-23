@@ -56,10 +56,10 @@ const Widget = (props: WidgetProps) => {
   // Update the absolute position of the widget when the grid positions change
   // (Only if not dragging, we dont' want the positions updates that happen in the gesture
   // to affect the widget's position)
-  useAnimatedReaction(() => props.positions, (newPositions) => {
+  useAnimatedReaction(() => props.positions.value, (newPositions) => {
     if (!isDragging.value) {
       const pos = getAbsPosition(
-        props.positions.value[props.widget.id || props.widget.type],
+        newPositions[props.widget.id || props.widget.type],
         props.height.value
       );
       translateX.value = withTiming(pos.x, animationConfig);
@@ -70,7 +70,6 @@ const Widget = (props: WidgetProps) => {
       }
     }
   });
-
 
   // Pop in affect for picker
   // This wont end up having any effect for the widgets that are not part of the picker
@@ -138,12 +137,13 @@ const Widget = (props: WidgetProps) => {
     .failOffsetX(-50)
     .onStart((ctx) => {
       props.onDragStart && runOnJS(props.onDragStart)();
+
       shadowOpacity.value = withTiming(0.3);
-      isDragging.value = 1;
       scale.value = withTiming(1.1, defaultSpringConfig);
+      isDragging.value = 1;
+
       ctx.x = translateX.value;
       ctx.y = translateY.value;
-      isDragging.value = 1;
 
       // Shift down grid position by 1000 if needed to indicate part of main screen
       if (props.positions.value[props.widget.id || props.widget.type] > 1000) {
@@ -239,7 +239,7 @@ const Widget = (props: WidgetProps) => {
     })
 
   return (
-    <Animated.View style={style}>
+    <Animated.View style={style} pointerEvents={props.visible ? 'auto' : 'none'}>
       <GestureDetector gesture={pan}>
         <Box
           style={styles.filled}
