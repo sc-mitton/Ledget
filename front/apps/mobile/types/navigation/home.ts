@@ -7,9 +7,7 @@ import type { BottomTabNavParamList } from './bottomNav';
 import type { RootStackParamList } from './root';
 
 export type HomeStackParamList = {
-  Main: {
-    editMode: boolean;
-  }
+  Main: undefined
 };
 
 export type HomeScreenProps<T extends keyof HomeStackParamList> =

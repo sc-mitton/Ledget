@@ -89,6 +89,7 @@ export const lightTheme = createTheme({
     creditCardGradientStart: `hsl(${blueH}, 75%, 35%)`,
     creditCardGradientEnd: `hsl(${blueH}, 75%, 62%)`,
     widgetPickerBackground: palette.gray150,
+    widget: palette.white,
 
     // Borders
     inputBorder: palette.gray250,
@@ -214,6 +215,7 @@ export const lightTheme = createTheme({
     navHeight: 104,
     statusBar: StatusBarManager.HEIGHT + 4,
     pagePadding: 16,
+    pageExtraPadding: 20,
     nestedContainerVPadding: 12,
     nestedContainerHPadding: 16,
   },

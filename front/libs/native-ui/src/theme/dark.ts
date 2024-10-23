@@ -89,6 +89,7 @@ export const darkTheme = createTheme({
     creditCardGradientStart: `hsl(${blueH}, ${blueS}%, 30%)`,
     creditCardGradientEnd: `hsl(${blueH}, ${blueS}%, 42%)`,
     widgetPickerBackground: palette.gray875,
+    widget: palette.gray850,
 
     // Borders
     inputBorder: palette.gray775,
@@ -151,7 +152,7 @@ export const darkTheme = createTheme({
     blueButtonBorder: palette.blue400,
     lightGrayButton: palette.gray800,
     darkGrayButton: palette.gray800,
-    grayButton: `hsl(${grayH}, ${grayS}%, 11%)`,
+    grayButton: palette.gray850,
     grayButtonBorder: `hsl(${grayH}, ${grayS}%, 12%)`,
     mediumGrayButton: palette.gray700,
     mediumGrayButtonBorder: palette.gray650,

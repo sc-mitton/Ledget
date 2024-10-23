@@ -1,6 +1,6 @@
+import { useState } from "react";
 import { StyleSheet, Dimensions } from "react-native"
-import { BlurView } from "expo-blur"
-import Animated, { FadeIn, FadeOut } from "react-native-reanimated"
+import Animated, { FadeIn, FadeOut, SlideInDown } from "react-native-reanimated"
 import { Canvas, Rect, vec, LinearGradient } from '@shopify/react-native-skia';
 import { useTheme } from "@shopify/restyle";
 
@@ -18,16 +18,16 @@ import WidgetsGrid from "./WidgetsGrid"
 const MainScreen = (props: HomeScreenProps<'Main'>) => {
   const { data: user } = useGetMeQuery();
   const dispatch = useAppDispatch()
-  const { mode } = useAppearance()
   const theme = useTheme()
+  const [pickerMode, setPickerMode] = useState(false)
 
   useEffect(() => {
-    if (props.route.params?.editMode) {
+    if (pickerMode) {
       dispatch(hideBottomTabs(true))
       props.navigation.setOptions({
         header: () =>
           <Animated.View
-            entering={FadeIn}
+            entering={SlideInDown.withInitialValues({ opacity: 0 })}
             exiting={FadeOut}
           >
             <Box
@@ -41,9 +41,7 @@ const MainScreen = (props: HomeScreenProps<'Main'>) => {
                 variant='bold'
                 textColor='blueText'
                 paddingBottom='none'
-                onPress={() => {
-                  props.navigation.setParams({ editMode: false });
-                }}
+                onPress={() => { setPickerMode(false) }}
               />
             </Box>
             <Canvas style={[styles.mask]}>
@@ -70,9 +68,7 @@ const MainScreen = (props: HomeScreenProps<'Main'>) => {
                 {`Welcome ${user?.name.first}`}
               </Header2>
               <Button
-                onPress={() => {
-                  props.navigation.setParams({ editMode: props.route.params?.editMode ? false : true });
-                }}
+                onPress={() => { setPickerMode(true) }}
                 variant='square'
                 backgroundColor='grayButton'
               >
@@ -83,20 +79,25 @@ const MainScreen = (props: HomeScreenProps<'Main'>) => {
         )
       })
     }
-  }, [props.route.params?.editMode])
+  }, [pickerMode])
 
   return (
     <>
-      {props.route.params?.editMode && (
-        <Animated.View entering={FadeIn} exiting={FadeOut} style={[styles.overlay, StyleSheet.absoluteFill]}>
-          <BlurView
-            intensity={70}
-            style={[StyleSheet.absoluteFill, styles.overlay]}
-            tint={mode === 'dark' ? 'dark' : 'light'}
+      {pickerMode && (
+        <Animated.View
+          entering={SlideInDown}
+          exiting={FadeOut}
+          style={[styles.pickerBackground, StyleSheet.absoluteFill]}
+        >
+          <Box
+            style={[StyleSheet.absoluteFill, styles.pickerBackground]}
+            backgroundColor="widgetPickerBackground"
+            borderTopLeftRadius="l"
+            borderTopRightRadius="l"
           />
         </Animated.View>
       )}
-      <WidgetsGrid {...props} />
+      <WidgetsGrid pickerMode={pickerMode} setPickerMode={setPickerMode} />
     </>
   )
 }

@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: '100%'
   },
-  overlay: {
+  pickerBackground: {
     position: 'absolute',
     zIndex: 100
   },

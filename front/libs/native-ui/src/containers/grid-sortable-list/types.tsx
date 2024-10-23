@@ -15,11 +15,11 @@ export type Positions = {
 type Child = React.ReactElement<{ id: string }>
 
 export type ItemProps = {
-  scrollView: AnimatedRef<Animated.ScrollView>;
-  scrollY: SharedValue<number>
   id: string;
   children: Child,
+  scrollView: AnimatedRef<Animated.ScrollView>;
   scrollHeight: number;
+  scrollY: SharedValue<number>
   positions: SharedValue<Positions>;
   size: SharedValue<{ width: number, height: number }>;
 } & Required<SharedProps>

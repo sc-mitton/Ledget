@@ -18,7 +18,6 @@ import styles from './styles/item';
 import { Box } from "../../restyled/Box";
 import { ItemProps } from "./types";
 import { getPosition, animationConfig, getUpdatedIndex } from "./config";
-import { useLayoutEffect } from "react";
 
 const Item = (props: ItemProps) => {
   const containerWidth = useSharedValue(0);

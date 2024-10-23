@@ -42,7 +42,7 @@ const persistConfig = {
   storage,
   timeout: 0,
   migrate: createMigrate(migrations),
-  whitelist: ['appearance', 'budgetItemMetaData', 'ui', 'holdings']
+  whitelist: ['appearance', 'budgetItemMetaData', 'ui', 'holdings', 'widgets']
 };
 
 const rootReducer = combineReducers({

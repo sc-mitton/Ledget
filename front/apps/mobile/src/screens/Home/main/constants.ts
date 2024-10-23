@@ -1,3 +1,3 @@
-const gap = 28;
+const gap = 32;
 
 export { gap };

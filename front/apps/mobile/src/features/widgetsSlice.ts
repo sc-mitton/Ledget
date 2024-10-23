@@ -7,10 +7,7 @@ export const widgetTypes = [
   'investments-balance',
   'monthly-spending-left',
   'yearly-spending-left',
-  'credit-cards-balance',
-  'sample1',
-  'sample2',
-  'sample3'
+  'credit-cards-balance'
 ] as const
 
 export type Widget = {
@@ -29,24 +26,30 @@ export const widgetsSlice = createSlice({
   name: 'widgets',
   initialState,
   reducers: {
-    addWidget: (state, action: PayloadAction<Omit<Widget, 'id'>>) => {
-      state.push({ ...action.payload, id: Math.random().toString(36).substring(7) })
+    addWidget: (state, action: PayloadAction<{ widget: Omit<Widget, 'id'>, index?: number }>) => {
+      if (action.payload.index === undefined) {
+        state.push({ ...action.payload.widget, id: Math.random().toString(36).substring(7) })
+      } else {
+        state.splice(
+          action.payload.index,
+          0,
+          { ...action.payload.widget, id: Math.random().toString(36).substring(7) }
+        )
+      }
     },
-    reorderWidget: (state, action: PayloadAction<Widget & { index: number }>) => {
-      const widgetIndex = state.findIndex(w => w.id === action.payload.id)
-      state = [
-        ...state.slice(0, widgetIndex),
-        action.payload,
-        ...state.slice(widgetIndex + 1)
-      ]
+    moveWidget: (state, action: PayloadAction<{ widget: Widget, index: number }>) => {
+      const widgetIndex = state.findIndex(w => w.id === action.payload.widget.id)
+      state.splice(widgetIndex, 1)
+      state.splice(action.payload.index, 0, action.payload.widget)
     },
     removeWidget: (state, action: PayloadAction<Widget>) => {
-      state = state.filter(w => w.id !== action.payload.id)
+      const index = state.findIndex(w => w.id === action.payload.id)
+      state.splice(index, 1)
     }
   }
 })
 
-export const { addWidget, removeWidget } = widgetsSlice.actions
+export const { addWidget, removeWidget, moveWidget } = widgetsSlice.actions
 
 export const selectWidgets = (state: { widgets: WidgetsState }) => state.widgets
 

@@ -4,12 +4,19 @@ import { Widget } from "@/features/widgetsSlice";
 import { Easing } from "react-native-reanimated";
 import { gap } from "./constants";
 
-// const PROXIMITY_THRESHOLD = 0.1;
+const PROXIMITY_THRESHOLD = 0.3;
 
 export const animationConfig = {
   easing: Easing.inOut(Easing.ease),
   duration: 350,
 };
+
+export const getPositionsMap = (widgets: Widget[]) => {
+  const positionEntries = getGridPositions(widgets).map((gridPosition, index) =>
+    [widgets[index].id || widgets[index].type, gridPosition] as [string, number]
+  )
+  return Object.fromEntries(positionEntries)
+}
 
 
 // The grid position indicates the cell number that the left side of the widget is placed
@@ -19,16 +26,22 @@ export const animationConfig = {
 // 2 3
 // 4 5
 export const getGridPositions = (widgets: Widget[]) => {
-
+  'worklet';
 
   // Shift widgets without an id by 1000 to indicate an overlayed grid
+
   const acc = {
     last: null,
-    gridPositions: [widgets.every(w => !w.id) ? 999 : 0]
+    gridPositions: []
   } as { last: Widget | null, gridPositions: number[] }
 
+  const shift = widgets.every(w => !w.id) ? 999 : -1
+
   const gridPositions = widgets.reduce((acc, w) => {
-    const lastGridPosition = acc.gridPositions[acc.gridPositions.length - 1]
+    const lastGridPosition = isNaN(acc.gridPositions[acc.gridPositions.length - 1])
+      ? shift
+      : acc.gridPositions[acc.gridPositions.length - 1]
+
     // Four possible scenarios
     // 1. Last widget was square and current widget is square, place widget in next slot (+1)
     // 2. Last widget was square and current widget is rectangle
@@ -48,7 +61,7 @@ export const getGridPositions = (widgets: Widget[]) => {
     acc.last = w
 
     return acc
-  }, acc).gridPositions.slice(1)
+  }, acc).gridPositions
 
   return gridPositions
 }
@@ -68,35 +81,34 @@ export const getAbsPosition = (position: number, height: number) => {
   };
 }
 
-// export const getUpdatedGridPos = (
-//   { widget, currentIndex, max, td, height, containerWidth }:
-//     {
-//       widget: Widget,
-//       currentIndex: number,
-//       max: number,
-//       td: { tx: number, ty: number },
-//       height: number,
-//       containerWidth: number
-//     }
-// ) => {
+// Get the number of grid positions up/down and left/right to shift the widget
+export const getNewGridPosition = (
+  widget: Widget,
+  positions: SharedValue<{ [id: string]: number }>,
+  td: { x: number, y: number },
+  height: number
+) => {
+  'worklet';
 
-//   const width = widget.shape === 'square'
-//     ? (containerWidth / 2) - gap
-//     : containerWidth
+  const gridPosition = positions.value[widget.id || widget.type] >= 1000
+    ? positions.value[widget.id || widget.type] - 1000
+    : positions.value[widget.id || widget.type]
 
-//   const x = ((td.tx - gap) + (width + gap)) / (width + gap);
-//   const y = (td.ty + height) / height;
+  const width = widget.shape === 'square' ? height : (height * 2) + gap
 
-//   const proximityY = Math.abs(Math.round(y) - y)
-//   const proximityX = Math.abs(Math.round(x) - x)
+  const x = ((td.x - gap) + (width + gap)) / (width + gap);
+  const y = (td.y + height) / height;
 
-//   const row = proximityY < PROXIMITY_THRESHOLD
-//     ? Math.round(y) - 1
-//     : Math.round(currentIndex / 2)
+  const proximityY = Math.abs(Math.round(y) - y)
+  const proximityX = Math.abs(Math.round(x) - x)
 
-//   const col = proximityX < PROXIMITY_THRESHOLD
-//     ? Math.round(x) - 1
-//     : currentIndex % 2
+  const row = proximityY < PROXIMITY_THRESHOLD
+    ? Math.round(y) - 1
+    : Math.round(gridPosition / 2)
 
-//   return Math.min(row * 2 + col, max);
-// }
+  const col = proximityX < PROXIMITY_THRESHOLD
+    ? Math.round(x) - 1
+    : gridPosition % 2
+
+  return Math.min(row * 2 + col, Object.keys(positions.value).length - 1)
+}

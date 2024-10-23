@@ -13,8 +13,5 @@ export const widgetsMap = {
   'investments-balance': InvestmentsBalance,
   'monthly-spending-left': MonthlySpendingLeft,
   'yearly-spending-left': YearlySpendingLeft,
-  'credit-cards-balance': CreditCardsBalance,
-  'sample1': CreditCardsBalance,
-  'sample2': CreditCardsBalance,
-  'sample3': CreditCardsBalance
+  'credit-cards-balance': CreditCardsBalance
 }
