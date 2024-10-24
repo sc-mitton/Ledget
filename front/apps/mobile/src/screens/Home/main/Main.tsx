@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { StyleSheet, Dimensions } from "react-native"
-import Animated, { FadeIn, FadeOut, SlideInDown } from "react-native-reanimated"
+import { StyleSheet, Dimensions, View } from "react-native"
+import Animated, { FadeIn, FadeOut } from "react-native-reanimated"
 import { Canvas, Rect, vec, LinearGradient } from '@shopify/react-native-skia';
 import { useTheme } from "@shopify/restyle";
 
@@ -12,50 +12,57 @@ import { Widgets as WidgetsIcon } from '@ledget/media/native';
 import { useEffect } from "react"
 import { hideBottomTabs } from "@/features/uiSlice"
 import { useGetMeQuery } from "@ledget/shared-features"
-import { useAppearance } from "@/features/appearanceSlice"
 import WidgetsGrid from "./WidgetsGrid"
 
 const MainScreen = (props: HomeScreenProps<'Main'>) => {
   const { data: user } = useGetMeQuery();
   const dispatch = useAppDispatch()
   const theme = useTheme()
-  const [pickerMode, setPickerMode] = useState(false)
+  // const [pickerMode, setPickerMode] = useState(false)
+  const [state, setState] = useState<'picking' | 'editing'>()
 
   useEffect(() => {
-    if (pickerMode) {
+    if (state === 'picking') {
       dispatch(hideBottomTabs(true))
+    }
+    if (state) {
       props.navigation.setOptions({
         header: () =>
-          <Animated.View
-            entering={SlideInDown.withInitialValues({ opacity: 0 })}
-            exiting={FadeOut}
-          >
+          <Animated.View entering={FadeIn} exiting={FadeOut}>
             <Box
               paddingTop='statusBar'
               style={[styles.header]}
-              backgroundColor={'widgetPickerBackground'}
+              backgroundColor={state === 'picking' ? 'widgetPickerBackground' : 'mainBackground'}
             >
-              <Box />
-              <Button
-                label='Close'
-                variant='bold'
-                textColor='blueText'
-                paddingBottom='none'
-                onPress={() => { setPickerMode(false) }}
-              />
-            </Box>
-            <Canvas style={[styles.mask]}>
-              <Rect x={0} y={0} width={Dimensions.get('window').width} height={28}>
-                <LinearGradient
-                  colors={[
-                    theme.colors.widgetPickerBackground,
-                    theme.colors.blueChartGradientEnd
-                  ]}
-                  start={vec(0, 0)}
-                  end={vec(0, 28)}
+              {state === 'editing'
+                ? <Header2>{`Welcome ${user?.name.first}`}</Header2>
+                : <Box />}
+              <View>
+                <Button
+                  label={state === 'editing' ? 'Done' : 'Close'}
+                  variant={'bold'}
+                  borderRadius="circle"
+                  paddingHorizontal="l"
+                  paddingVertical="xs"
+                  backgroundColor={state === 'picking' ? 'transparent' : 'grayButton'}
+                  textColor={state === 'picking' ? 'blueText' : 'secondaryText'}
+                  onPress={() => { setState(undefined) }}
                 />
-              </Rect>
-            </Canvas>
+              </View>
+            </Box>
+            {state === 'picking' &&
+              <Canvas style={[styles.mask]}>
+                <Rect x={0} y={0} width={Dimensions.get('window').width} height={28}>
+                  <LinearGradient
+                    colors={[
+                      theme.colors.widgetPickerBackground,
+                      theme.colors.blueChartGradientEnd
+                    ]}
+                    start={vec(0, 0)}
+                    end={vec(0, 28)}
+                  />
+                </Rect>
+              </Canvas>}
           </Animated.View>,
       })
     } else {
@@ -64,28 +71,26 @@ const MainScreen = (props: HomeScreenProps<'Main'>) => {
         header: () => (
           <Animated.View entering={FadeIn} exiting={FadeOut} >
             <Box paddingTop='statusBar' style={styles.header}>
-              <Header2>
-                {`Welcome ${user?.name.first}`}
-              </Header2>
+              <Header2>{`Welcome ${user?.name.first}`}</Header2>
               <Button
-                onPress={() => { setPickerMode(true) }}
+                onPress={() => { setState('picking') }}
                 variant='square'
                 backgroundColor='grayButton'
               >
-                <Icon icon={WidgetsIcon} color='secondaryText' />
+                <Icon icon={WidgetsIcon} color='mainText' />
               </Button>
             </Box>
           </Animated.View>
         )
       })
     }
-  }, [pickerMode])
+  }, [state])
 
   return (
     <>
-      {pickerMode && (
+      {state === 'picking' && (
         <Animated.View
-          entering={SlideInDown}
+          entering={FadeIn}
           exiting={FadeOut}
           style={[styles.pickerBackground, StyleSheet.absoluteFill]}
         >
@@ -97,7 +102,7 @@ const MainScreen = (props: HomeScreenProps<'Main'>) => {
           />
         </Animated.View>
       )}
-      <WidgetsGrid pickerMode={pickerMode} setPickerMode={setPickerMode} />
+      <WidgetsGrid state={state} setState={setState} />
     </>
   )
 }

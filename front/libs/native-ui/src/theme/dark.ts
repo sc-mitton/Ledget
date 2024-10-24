@@ -108,6 +108,7 @@ export const darkTheme = createTheme({
     contextMenuDivider: palette.gray600,
     creditCardBorderStart: `hsl(${blueH}, ${blueS}%, 72%)`,
     creditCardBorderStop: `hsl(${blueH}, ${blueS}%, 38%)`,
+    containerDragBar: palette.gray700,
 
     // Shadows
     navShadow: palette.gray900,

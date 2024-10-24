@@ -3,6 +3,8 @@ import Animated, { SharedValue, AnimatedRef } from "react-native-reanimated";
 
 import { Widget } from "@features/widgetsSlice";
 
+type State = 'editing' | 'picking'
+
 export interface WidgetProps {
   widget: Widget
   index: number,
@@ -16,9 +18,11 @@ export interface WidgetProps {
   scrollY: SharedValue<number>
   onPress?: (id: string) => void
   onDragStart?: () => void
+  loaded: boolean
+  state?: State
 }
 
 export interface WidgetsGridProps {
-  pickerMode: boolean
-  setPickerMode: (mode: boolean) => void
+  state?: State
+  setState: (state?: State) => void
 }

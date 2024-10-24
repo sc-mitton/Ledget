@@ -45,11 +45,28 @@ export const widgetsSlice = createSlice({
     removeWidget: (state, action: PayloadAction<Widget>) => {
       const index = state.findIndex(w => w.id === action.payload.id)
       state.splice(index, 1)
+    },
+    updateWidget: (state, action: PayloadAction<{ widget: Widget, index?: number }>) => {
+      const widgetIndex = state.findIndex(w => w.id === action.payload.widget.id);
+
+      if (widgetIndex === -1) return;
+
+      const updatedWidget = { ...state[widgetIndex], ...action.payload.widget };
+
+      if (action.payload.index !== undefined) {
+        const reordered = [...state];
+        reordered[widgetIndex] = reordered[action.payload.index];  // Swap the widgets
+        reordered[action.payload.index] = updatedWidget;
+        return reordered;  // Return new state array
+      } else {
+        state[widgetIndex] = updatedWidget;
+      }
     }
+
   }
 })
 
-export const { addWidget, removeWidget, moveWidget } = widgetsSlice.actions
+export const { addWidget, removeWidget, moveWidget, updateWidget } = widgetsSlice.actions
 
 export const selectWidgets = (state: { widgets: WidgetsState }) => state.widgets
 

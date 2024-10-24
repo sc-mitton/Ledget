@@ -1,16 +1,22 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import Animated, { useSharedValue, useAnimatedRef, useAnimatedReaction, withDelay, withTiming } from "react-native-reanimated";
+import Animated, {
+  useSharedValue,
+  useAnimatedRef,
+  useAnimatedReaction,
+  withDelay,
+  withTiming
+} from "react-native-reanimated";
 import { useTheme } from "@shopify/restyle";
 
 import styles from '../styles/widgets-grid';
 import { Box } from "@ledget/native-ui";
 import { useAppSelector } from "@hooks";
-import { selectWidgets, widgetTypes, removeWidget } from "@/features/widgetsSlice";
+import { selectWidgets, widgetTypes } from "@/features/widgetsSlice";
 import { WidgetsGridProps } from './types';
 import { getGridPositions, getPositionsMap } from './helpers';
+import { useLoaded } from "@ledget/helpers";
 import { gap } from "./constants";
-import { useAppDispatch } from "@hooks";
 import Widget from "./Widget";
 
 /*
@@ -23,11 +29,14 @@ is reflected in the UI. The widget being dragged around isn't affected by any of
 */
 
 const WidgetsGrid = (props: WidgetsGridProps) => {
-  const dispatch = useAppDispatch();
   const theme = useTheme()
 
   const selectedStoredWidgets = useAppSelector(selectWidgets);
   const [widgets, setWidgets] = useState(selectedStoredWidgets)
+
+  // idk why, but I had to use this to make sure the widgets are set, otherwise they
+  // weren't animating properly
+  const loaded = useLoaded(1000)
 
   const itemHeight = useSharedValue(0)
   const pickerZIndex = useSharedValue(-1)
@@ -38,10 +47,6 @@ const WidgetsGrid = (props: WidgetsGridProps) => {
       getPositionsMap(widgetTypes.map(t => ({ type: t, shape: 'square' as const }))),
     )
   );
-
-  // useEffect(() => {
-  //   dispatch(removeWidget(widgets[0]))
-  // }, [])
 
   useAnimatedReaction(() => order.value, (newOrder) => {
     const orderedWidgets = newOrder
@@ -68,12 +73,12 @@ const WidgetsGrid = (props: WidgetsGridProps) => {
 
   // Make sure the picker is on top when it's active, and behind when it's not
   useEffect(() => {
-    if (props.pickerMode) {
+    if (props.state === 'picking') {
       pickerZIndex.value = 100
     } else {
       pickerZIndex.value = withDelay(500, withTiming(-1, { duration: 0 }))
     }
-  }, [props.pickerMode])
+  }, [props.state])
 
   useEffect(() => {
     positions.value = Object.assign(
@@ -127,13 +132,19 @@ const WidgetsGrid = (props: WidgetsGridProps) => {
                   scrollView={currentScrollView}
                   scrollHeight={Math.ceil(widgets.length / 2) * (itemHeight.value + gap)}
                   containerHeight={currentWidgetsContainerHeight}
+                  onDragStart={() => { props.setState('editing') }}
+                  loaded={loaded}
+                  state={props.state}
                 />
               ))}
             </View>
           </Animated.ScrollView>
         </Box>
       </Box>
-      <Animated.View style={[StyleSheet.absoluteFill, { zIndex: pickerZIndex }]}>
+      <Animated.View
+        style={[StyleSheet.absoluteFill, { zIndex: pickerZIndex }]}
+        pointerEvents={props.state === 'picking' ? 'auto' : 'none'}
+      >
         <Box style={[styles.pickerBoxOuter, StyleSheet.absoluteFill]} paddingHorizontal="pageExtraPadding">
           <Animated.ScrollView
             style={[
@@ -157,15 +168,17 @@ const WidgetsGrid = (props: WidgetsGridProps) => {
                   key={widget.type}
                   widget={widget}
                   index={index}
-                  visible={props.pickerMode}
+                  visible={props.state === 'picking'}
                   height={itemHeight}
                   positions={positions}
                   order={order}
                   scrollY={pickerScrollY}
                   scrollHeight={Math.ceil(widgetTypes.length / 2) * itemHeight.value}
                   containerHeight={pickerWidgetsContainerHeight}
+                  onDragStart={() => { props.setState(undefined) }}
                   scrollView={pickerScrollView}
-                  onDragStart={() => { props.setPickerMode(false) }}
+                  loaded={loaded}
+                  state={props.state}
                 />
               ))}
             </View>

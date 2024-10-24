@@ -95,7 +95,7 @@ const Item = (props: ItemProps) => {
       ctx.y = translateY.value;
       isGestureActive.value = true;
     })
-    .onChange(({ translationX, translationY, changeX, changeY }) => {
+    .onChange(({ changeX, changeY }) => {
 
       translateX.value += changeX;
       translateY.value += changeY;

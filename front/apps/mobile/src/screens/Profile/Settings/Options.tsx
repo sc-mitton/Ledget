@@ -11,7 +11,7 @@ const Options = () => {
       <BoxHeader>Options</BoxHeader>
       <Box variant='nestedContainer'>
         <Switch
-          label='Open app on home screen'
+          label='Open on home screen'
           value={settings?.startOnHome}
           onValueChange={(value) => {
             dispatch(updateSetting({ key: 'startOnHome', value }))

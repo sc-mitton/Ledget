@@ -29,15 +29,20 @@ export const getGridPositions = (widgets: Widget[]) => {
   'worklet';
 
   // Shift widgets without an id by 1000 to indicate an overlayed grid
+  const shift = widgets.every(w => !w.id) ? 1000 : 0
 
   const acc = {
     last: null,
     gridPositions: []
   } as { last: Widget | null, gridPositions: number[] }
 
-  const shift = widgets.every(w => !w.id) ? 999 : -1
-
   const gridPositions = widgets.reduce((acc, w) => {
+    if (acc.gridPositions.length === 0) {
+      acc.gridPositions.push(shift)
+      acc.last = w
+      return acc
+    }
+
     const lastGridPosition = isNaN(acc.gridPositions[acc.gridPositions.length - 1])
       ? shift
       : acc.gridPositions[acc.gridPositions.length - 1]

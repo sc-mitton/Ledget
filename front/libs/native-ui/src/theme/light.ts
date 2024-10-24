@@ -15,10 +15,10 @@ const greenH = 130;
 const palette = {
   ...basePalette,
 
-  red: 'hsl(0, 55%, 68%)',
+  red: 'hsl(352, 85%, 68%)',
   mutedRed: 'hsl(352, 98%, 86%)',
-  faintRed: 'hsl(0, 55%, 90%)',
-  darkRed: 'hsl(0, 59%, 34%)',
+  faintRed: 'hsl(352, 55%, 90%)',
+  darkRed: 'hsl(352, 59%, 34%)',
   successGreen: 'hsl(144, 62%, 53%)',
   successGreenFaint: 'hsl(144, 62%, 83%)',
   greenText: 'hsl(144, 62%, 43%)',
@@ -106,6 +106,7 @@ export const lightTheme = createTheme({
     modalBorder: palette.gray200,
     toastBorder: palette.gray100,
     contextMenuDivider: palette.gray200,
+    containerDragBar: palette.gray500,
 
     // Shadows
     navShadow: palette.gray400,

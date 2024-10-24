@@ -1,3 +1,4 @@
-const gap = 32;
+const gap = 28;
+const activeScale = 1.05;
 
-export { gap };
+export { gap, activeScale };
