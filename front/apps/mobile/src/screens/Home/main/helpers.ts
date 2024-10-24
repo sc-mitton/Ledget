@@ -6,18 +6,12 @@ import { gap } from "./constants";
 
 const PROXIMITY_THRESHOLD = 0.25;
 
-export const animationConfig = {
-  easing: Easing.inOut(Easing.ease),
-  duration: 350,
-};
-
 export const getPositionsMap = (widgets: Widget[]) => {
   const positionEntries = getGridPositions(widgets).map((gridPosition, index) =>
     [widgets[index].id || widgets[index].type, gridPosition] as [string, number]
   )
   return Object.fromEntries(positionEntries)
 }
-
 
 // The grid position indicates the cell number that the left side of the widget is placed
 // the numbers increment left to right and top to bottom. So a rectangle widget on the second
@@ -70,7 +64,6 @@ export const getGridPositions = (widgets: Widget[]) => {
 
   return gridPositions
 }
-
 
 export const getAbsPosition = (position: number, height: number) => {
   'worklet';

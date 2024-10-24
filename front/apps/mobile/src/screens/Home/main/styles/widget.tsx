@@ -14,12 +14,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '50%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   dragBar: {
     position: 'absolute',
     width: 0,
-    borderWidth: 4
+    borderWidth: 6
   },
   deleteButtonContainer: {
     position: 'absolute',
@@ -27,6 +27,13 @@ const styles = StyleSheet.create({
     left: -6,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  gestureArea: {
+    position: 'absolute',
+    top: 16,
+    left: 16,
+    right: 16,
+    bottom: 16
   }
 });
 

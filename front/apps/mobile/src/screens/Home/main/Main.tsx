@@ -35,7 +35,7 @@ const MainScreen = (props: HomeScreenProps<'Main'>) => {
               backgroundColor={state === 'picking' ? 'widgetPickerBackground' : 'mainBackground'}
             >
               {state === 'editing'
-                ? <Header2>{`Welcome ${user?.name.first}`}</Header2>
+                ? <Header2>{`Welcome, ${user?.name.first}`}</Header2>
                 : <Box />}
               <View>
                 <Button
@@ -71,7 +71,7 @@ const MainScreen = (props: HomeScreenProps<'Main'>) => {
         header: () => (
           <Animated.View entering={FadeIn} exiting={FadeOut} >
             <Box paddingTop='statusBar' style={styles.header}>
-              <Header2>{`Welcome ${user?.name.first}`}</Header2>
+              <Header2>{`Welcome, ${user?.name.first}`}</Header2>
               <Button
                 onPress={() => { setState('picking') }}
                 variant='square'

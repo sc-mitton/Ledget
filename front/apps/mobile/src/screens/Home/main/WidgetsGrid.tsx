@@ -121,7 +121,7 @@ const WidgetsGrid = (props: WidgetsGridProps) => {
             >
               {widgets.map((widget, index) => (
                 <Widget
-                  key={widget.id as string}
+                  key={`widget-${widget.id}`}
                   widget={widget}
                   index={index}
                   visible={true}
@@ -165,7 +165,7 @@ const WidgetsGrid = (props: WidgetsGridProps) => {
             >
               {widgetTypes.map(t => ({ type: t, shape: 'square' as const })).map((widget, index) => (
                 <Widget
-                  key={widget.type}
+                  key={`widget-${widget.type}`}
                   widget={widget}
                   index={index}
                   visible={props.state === 'picking'}

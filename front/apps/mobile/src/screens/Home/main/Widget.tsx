@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { TouchableHighlight, View, StyleSheet } from 'react-native';
+import { TouchableHighlight, View } from 'react-native';
 import { useTheme } from '@shopify/restyle';
 import Animated, {
   useAnimatedStyle,
@@ -18,7 +18,7 @@ import * as Haptics from 'expo-haptics';
 
 import styles from './styles/widget';
 import { Box, Button, defaultSpringConfig, Icon } from '@ledget/native-ui';
-import { getAbsPosition, animationConfig, getNewGridPosition, getGridPositions } from './helpers';
+import { getAbsPosition, getNewGridPosition, getGridPositions } from './helpers';
 import type { WidgetProps } from './types';
 import { widgetsMap } from "./widgetsMap";
 import { gap, activeScale } from './constants';
@@ -78,8 +78,8 @@ const Widget = (props: WidgetProps) => {
         newPositions.value[props.widget.id || props.widget.type],
         props.height.value
       );
-      translateX.value = withTiming(pos.x, animationConfig);
-      translateY.value = withTiming(pos.y, animationConfig);
+      translateX.value = withSpring(pos.x, defaultSpringConfig);
+      translateY.value = withSpring(pos.y, defaultSpringConfig);
 
       if (!props.visible) {
         opacity.value = withSpring(0, defaultSpringConfig);
@@ -114,8 +114,8 @@ const Widget = (props: WidgetProps) => {
         props.positions.value[props.widget.id || props.widget.type],
         props.height.value
       );
-      translateX.value = withTiming(pos.x, animationConfig);
-      translateY.value = withTiming(pos.y, animationConfig);
+      translateX.value = withSpring(pos.x, defaultSpringConfig);
+      translateY.value = withSpring(pos.y, defaultSpringConfig);
 
       if (!props.visible) {
         opacity.value = withSpring(0, defaultSpringConfig);
@@ -136,13 +136,13 @@ const Widget = (props: WidgetProps) => {
     if (props.visible) {
       scale.value = withDelay(props.index * 50, withSpring(1, defaultSpringConfig));
       opacity.value = withDelay(props.index * 50, withSpring(1, defaultSpringConfig));
-      translateY.value = withTiming(pos.y, animationConfig);
+      translateY.value = withSpring(pos.y, defaultSpringConfig);
     } else {
       scale.value = withDelay(500, withSpring(.5, defaultSpringConfig));
       opacity.value = withTiming(0, defaultSpringConfig);
       translateY.value = withDelay(500, withSpring(pos.y, defaultSpringConfig));
     }
-  }, [props.visible]);
+  }, [props.visible, isDragging.value]);
 
   const style = useAnimatedStyle(() => {
     const zIndex = isDragging.value ? 100 : 0;
@@ -230,11 +230,6 @@ const Widget = (props: WidgetProps) => {
 
       shadowOpacity.value = theme.colors.mode === 'dark' ? withTiming(0.3) : withTiming(.1);
       scale.value = withSpring(activeScale, defaultSpringConfig);
-      isDragging.value = 1;
-
-      ctx.x = translateX.value;
-      ctx.y = translateY.value;
-
 
       // 1. Calculate the new grid position
       const newGridPos = getNewGridPosition(
@@ -278,6 +273,7 @@ const Widget = (props: WidgetProps) => {
       }
     })
     .onChange(({ translationX: tx, translationY: ty, changeX, changeY }) => {
+      isDragging.value = 1;
 
       translateX.value += changeX;
       translateY.value += changeY;
@@ -347,19 +343,28 @@ const Widget = (props: WidgetProps) => {
 
       }
     })
-    .onEnd(({ translationX }) => {
+    .onEnd(({ translationX, translationY }) => {
       shadowOpacity.value = withTiming(0);
       scale.value = withSpring(1, defaultSpringConfig);
       isDragging.value = withDelay(500, withTiming(0, { duration: 0 }));
 
-      const newPosition = getAbsPosition(
-        props.positions.value[props.widget.id || props.widget.type]!,
+      const gridPosition = getNewGridPosition(
+        props.widget,
+        props.positions,
+        { x: translateX.value, y: translateY.value },
         props.height.value
+      )
+      const finalGridPosition = Math.min(
+        gridPosition,
+        props.positions.value[props.order.value[props.order.value.length - 1]] || 0
       );
-      translateX.value = withSpring(newPosition.x, defaultSpringConfig);
-      translateY.value = withSpring(newPosition.y, defaultSpringConfig);
 
-      if (translationX > 40) {
+      const finalPosition = getAbsPosition(finalGridPosition, props.height.value);
+
+      translateX.value = withSpring(finalPosition.x, defaultSpringConfig);
+      translateY.value = withSpring(finalPosition.y, defaultSpringConfig);
+
+      if (translationX > 40 || !props.widget.id) {
         runOnJS(updateGlobalState)();
       }
     })
@@ -367,18 +372,14 @@ const Widget = (props: WidgetProps) => {
   const resize = Gesture.Pan()
     .onChange(({ changeX }) => {
 
-      if (changeX < 0 && props.widget.shape === 'rectangle') {
-        width.value += changeX;
-        dragBarPos.value += changeX;
-      } else if (changeX > 0 && props.widget.shape === 'square' && column.value === 0) {
-        width.value += changeX;
-        dragBarPos.value += changeX;
-      } else if (changeX < 0 && props.widget.shape === 'square' && column.value === 1) {
-        width.value += Math.abs(changeX);
-        translateX.value += changeX;
-      } else {
-        return;
-      }
+      width.value = Math.min(
+        Math.max(changeX + width.value, props.height.value),
+        (props.height.value * 2) + gap
+      );
+      dragBarPos.value = Math.min(
+        Math.max(changeX + dragBarPos.value, props.height.value),
+        (props.height.value * 2) + gap
+      );
 
       // Update ordering/positioning immediately only if it's a square
       if (props.widget.shape === 'square') {
@@ -388,7 +389,6 @@ const Widget = (props: WidgetProps) => {
           ? (props.positions.value[props.order.value[currentIndex + 1]] - props.positions.value[props.widget.id!]) == 1
           : props.positions.value[props.order.value[currentIndex - 1]] < props.positions.value[props.widget.id!]
 
-        console.log('needsUpdating', needsUpdating)
         if (!needsUpdating) return;
 
         // Update positions
@@ -424,7 +424,11 @@ const Widget = (props: WidgetProps) => {
           : (props.height.value * 2) + gap
 
         width.value = withSpring(newSize, defaultSpringConfig);
-        dragBarPos.value = withSpring(newSize, defaultSpringConfig);
+        if (props.widget.shape === 'square' && column.value === 1) {
+          dragBarPos.value = newSize;
+        } else {
+          dragBarPos.value = withSpring(newSize, defaultSpringConfig);
+        }
 
         runOnJS(dispatchWidgetUpdates)();
       } else {
@@ -436,23 +440,17 @@ const Widget = (props: WidgetProps) => {
           props.positions.value[props.widget.id || props.widget.type],
           props.height.value
         );
-        const dragbarPos = props.widget.shape === 'rectangle'
-          ? (props.height.value * 2) + gap
-          : column.value === 0
-            ? props.height.value
-            : 0
+        translateX.value = withSpring(pos.x, defaultSpringConfig);
+        dragBarPos.value = withTiming(size, defaultSpringConfig);
+        width.value = withTiming(size, defaultSpringConfig);
 
         // Put back to original position
-        if (props.widget.shape === 'square' && column.value === 1) {
+        if (props.widget.shape === 'square') {
           const returnedGridPositions = getGridPositions(storedWidgets);
           const returnedPositionsMap = Object.fromEntries(
             returnedGridPositions.map((pos, index) => [storedWidgets[index].id, pos] as [string, number]))
           props.positions.value = returnedPositionsMap;
         }
-
-        translateX.value = withSpring(pos.x, defaultSpringConfig);
-        dragBarPos.value = withSpring(dragbarPos, defaultSpringConfig);
-        width.value = withSpring(size, defaultSpringConfig);
       }
     })
 
@@ -487,7 +485,7 @@ const Widget = (props: WidgetProps) => {
                 style={styles.filled}
               >
                 <GestureDetector gesture={pan}>
-                  <View style={StyleSheet.absoluteFill}>
+                  <View style={styles.gestureArea}>
                     <WidgetComponent {...props.widget.args} />
                   </View>
                 </GestureDetector>
