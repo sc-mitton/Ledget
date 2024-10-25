@@ -98,7 +98,7 @@ const WidgetsGrid = (props: WidgetsGridProps) => {
 
   return (
     <>
-      <Box style={styles.currentWidgets} variant='nestedScreen' paddingHorizontal="pageExtraPadding">
+      <Box style={styles.currentWidgets} variant='nestedScreen' paddingHorizontal="pagePadding">
         <Box
           style={styles.currentWidgets}
           onLayout={({ nativeEvent: e }) => {
@@ -145,7 +145,7 @@ const WidgetsGrid = (props: WidgetsGridProps) => {
         style={[StyleSheet.absoluteFill, { zIndex: pickerZIndex }]}
         pointerEvents={props.state === 'picking' ? 'auto' : 'none'}
       >
-        <Box style={[styles.pickerBoxOuter, StyleSheet.absoluteFill]} paddingHorizontal="pageExtraPadding">
+        <Box style={[styles.pickerBoxOuter, StyleSheet.absoluteFill]} paddingHorizontal="pagePadding">
           <Animated.ScrollView
             style={[
               styles.scrollView,

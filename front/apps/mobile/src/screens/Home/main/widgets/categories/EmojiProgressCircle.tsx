@@ -34,7 +34,7 @@ function EmojiProgressCircle(props: ProgressEmojiProps) {
               opacity={1}
               stroke={props.period === 'year'
                 ? theme.colors.yearBorder
-                : props.period === 'month' ? theme.colors.monthBorder : theme.colors.quinaryText}
+                : props.period === 'month' ? theme.colors.monthBorder : theme.colors.transactionShimmer}
               strokeWidth={18}
             />
             <Circle
@@ -44,7 +44,7 @@ function EmojiProgressCircle(props: ProgressEmojiProps) {
               fill="none"
               stroke={props.period === 'year'
                 ? theme.colors.yearColor
-                : props.period === 'month' ? theme.colors.monthColor : theme.colors.secondaryText}
+                : props.period === 'month' ? theme.colors.monthColor : theme.colors.quaternaryText}
               strokeLinecap='round'
               strokeWidth={18}
               transform="rotate(-90 115 115)"

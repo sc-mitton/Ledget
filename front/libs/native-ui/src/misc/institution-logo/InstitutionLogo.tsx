@@ -5,14 +5,17 @@ import { Base64Image } from "../base64-image/Base64Image"
 import type { Props } from "../base64-image/Base64Image"
 import { useGetPlaidItemsQuery } from '@ledget/shared-features';
 
-export const InstitutionLogo = (props: Props & { account?: string }) => {
+export const InstitutionLogo = (props: Props & { account?: string, institution?: string }) => {
   const { data: plaidItemsData } = useGetPlaidItemsQuery();
 
-
   const logoData = useMemo(() => {
-    return plaidItemsData?.find((p) =>
-      p.accounts.find((account) => account.id === props.account))?.institution?.logo
-  }, [plaidItemsData, props.account])
+    if (props.institution) {
+      return plaidItemsData?.find((p) => p.institution?.id === props.institution)?.institution?.logo
+    } else {
+      return plaidItemsData?.find((p) =>
+        p.accounts.find((account) => account.id === props.account))?.institution?.logo
+    }
+  }, [plaidItemsData, props.account, props.institution])
 
   return (
     <Base64Image

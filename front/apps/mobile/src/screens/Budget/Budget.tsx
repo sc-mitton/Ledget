@@ -9,7 +9,6 @@ import Categories from './categories/Categories';
 import CategoriesHeader from './categories/Header';
 import Bills from './bills/Bills';
 import BillsHeader from './bills/Header';
-import Carousel from './carousel/Carousel';
 
 const MainScreen = (props: BudgetScreenProps<'Main'>) => {
   const theme = useTheme()
@@ -18,7 +17,6 @@ const MainScreen = (props: BudgetScreenProps<'Main'>) => {
 
   return (
     <Box variant='screen'>
-      <Carousel />
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={[{ paddingBottom: theme.spacing.navHeight * 1 }]}

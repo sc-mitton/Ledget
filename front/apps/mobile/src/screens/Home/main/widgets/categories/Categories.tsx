@@ -2,8 +2,9 @@ import { View } from 'react-native'
 
 import styles from './styles/widget';
 import { useGetCategoriesQuery } from '@ledget/shared-features'
+import { WidgetProps } from '@features/widgetsSlice'
 import { useAppDispatch } from '@/hooks'
-import Shadow from './Shadow'
+import PickerOption from './PickerOption'
 
 const Selector = () => {
   const dispatch = useAppDispatch()
@@ -15,7 +16,7 @@ const Selector = () => {
   )
 }
 
-const Filled = (props: { categories?: string[] }) => {
+const Filled = (widget: WidgetProps<{ categories?: string[] }>) => {
   const { data: categories } = useGetCategoriesQuery()
 
   return (
@@ -25,10 +26,10 @@ const Filled = (props: { categories?: string[] }) => {
   )
 }
 
-const CategoriesProgress = (props: { categories?: string[] }) => {
-  return props.categories
-    ? <Filled categories={props.categories} />
-    : <Shadow />
+const CategoriesProgress = (widget: WidgetProps<{ categories?: string[] }>) => {
+  return widget.args?.categories
+    ? <Filled {...widget} />
+    : <PickerOption />
 }
 
 export default CategoriesProgress

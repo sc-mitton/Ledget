@@ -11,8 +11,8 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
     position: 'relative',
-    marginHorizontal: -24,
-    paddingHorizontal: 24
+    marginHorizontal: -16,
+    paddingHorizontal: 16
   },
   currentWidgetsScrollView: {
     marginTop: 12

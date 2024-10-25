@@ -1,17 +1,17 @@
-import AccountsBalance from "./widgets/accounts-balance/Widget";
-import CategoriesProgress from "./widgets/categories-progress/Widget";
+import AccountsBalance from "./widgets/accounts-balance/AccountsBalance";
+import CategoriesProgress from "./widgets/categories/Categories";
 import CreditCardsBalance from "./widgets/credit-cards-balance/CreditCardsBalance";
 import InvestmentsBalance from "./widgets/investments-balance/InvestmentsBalance";
-import MonthlySpendingLeft from "./widgets/monthly-spending-left/MonthlySpendingLeft";
+import SpendingSummary from "./widgets/spending-summary/SpendingSummary";
 import SpendingVsIncome from "./widgets/spending-vs-income/SpendingVsIncome";
-import YearlySpendingLeft from "./widgets/yearly-spending-left/YearlySpendingLeft";
+import Bills from "./widgets/bills/Widget";
 
 export const widgetsMap = {
   'categories': CategoriesProgress,
   'accounts': AccountsBalance,
   'spending-vs-income': SpendingVsIncome,
   'investments': InvestmentsBalance,
-  'monthly-spending': MonthlySpendingLeft,
-  'yearly-spending': YearlySpendingLeft,
-  'credit-cards': CreditCardsBalance
+  'spending-summary': SpendingSummary,
+  'bills': Bills,
+  'credit-cards': CreditCardsBalance,
 }

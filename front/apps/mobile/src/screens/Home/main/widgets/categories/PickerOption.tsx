@@ -1,9 +1,11 @@
-import { View, Text } from "react-native"
+import { View } from "react-native"
 
 import styles from './styles/shared';
 import EmojiProgressCircle from "./EmojiProgressCircle"
+import { Text } from "@ledget/native-ui";
+import WidgetHeader from "../../WidgetHeader";
 
-const Shadow = () => {
+const PickerOption = () => {
 
   return (
     <View style={styles.columns}>
@@ -27,4 +29,4 @@ const Shadow = () => {
   )
 }
 
-export default Shadow
+export default PickerOption

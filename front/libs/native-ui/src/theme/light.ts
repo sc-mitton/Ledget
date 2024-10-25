@@ -216,7 +216,6 @@ export const lightTheme = createTheme({
     navHeight: 104,
     statusBar: StatusBarManager.HEIGHT + 4,
     pagePadding: 16,
-    pageExtraPadding: 20,
     nestedContainerVPadding: 12,
     nestedContainerHPadding: 16,
   },

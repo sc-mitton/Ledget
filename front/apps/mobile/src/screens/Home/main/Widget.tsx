@@ -55,7 +55,7 @@ const Widget = (props: WidgetProps) => {
       const pos = getAbsPosition(
         props.positions.value[props.widget.id],
         height.value,
-        !Boolean(props.widget.id)
+        Boolean(props.widget.id) ? undefined : 'bottom-label'
       );
       translateX.value = pos.x;
       translateY.value = pos.y;
@@ -78,7 +78,7 @@ const Widget = (props: WidgetProps) => {
       const pos = getAbsPosition(
         newPositions.value[props.widget.id || props.widget.type],
         props.height.value,
-        !Boolean(props.widget.id)
+        Boolean(props.widget.id) ? undefined : 'bottom-label'
       );
       translateX.value = withSpring(pos.x, defaultSpringConfig);
       translateY.value = withSpring(pos.y, defaultSpringConfig);
@@ -115,7 +115,7 @@ const Widget = (props: WidgetProps) => {
       const pos = getAbsPosition(
         props.positions.value[props.widget.id || props.widget.type],
         props.height.value,
-        !Boolean(props.widget.id)
+        Boolean(props.widget.id) ? undefined : 'bottom-label'
       );
       translateX.value = withSpring(pos.x, defaultSpringConfig);
       translateY.value = withSpring(pos.y, defaultSpringConfig);
@@ -134,7 +134,7 @@ const Widget = (props: WidgetProps) => {
     const pos = getAbsPosition(
       props.positions.value[props.widget.id || props.widget.type],
       props.height.value,
-      !Boolean(props.widget.id)
+      Boolean(props.widget.id) ? undefined : 'bottom-label'
     );
 
     if (props.visible) {
@@ -363,11 +363,7 @@ const Widget = (props: WidgetProps) => {
         props.positions.value[props.order.value[props.order.value.length - 1]] || 0
       );
 
-      const finalPosition = getAbsPosition(
-        finalGridPosition,
-        props.height.value,
-        false
-      );
+      const finalPosition = getAbsPosition(finalGridPosition, props.height.value);
 
       translateX.value = withSpring(finalPosition.x, defaultSpringConfig);
       translateY.value = withSpring(finalPosition.y, defaultSpringConfig);
@@ -444,11 +440,7 @@ const Widget = (props: WidgetProps) => {
         const size = props.widget.shape === 'rectangle'
           ? (props.height.value * 2) + gap
           : props.height.value
-        const pos = getAbsPosition(
-          props.positions.value[props.widget.id || props.widget.type],
-          props.height.value,
-          false
-        );
+        const pos = getAbsPosition(props.positions.value[props.widget.id || props.widget.type], props.height.value);
         translateX.value = withSpring(pos.x, defaultSpringConfig);
         dragBarPos.value = withTiming(size, defaultSpringConfig);
         width.value = withTiming(size, defaultSpringConfig);
@@ -490,7 +482,7 @@ const Widget = (props: WidgetProps) => {
                 backgroundColor='nestedContainer'
                 borderRadius='xl'
                 paddingHorizontal='nestedContainerHPadding'
-                paddingVertical='nestedContainerVPadding'
+                paddingVertical='nestedContainerHPadding'
                 style={styles.filled}
               >
                 <GestureDetector gesture={pan}>

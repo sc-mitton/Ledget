@@ -5,8 +5,8 @@ export const widgetTypes = [
   'accounts',
   'spending-vs-income',
   'investments',
-  'monthly-spending',
-  'yearly-spending',
+  'spending-summary',
+  'bills',
   'credit-cards'
 ] as const
 
@@ -16,6 +16,8 @@ export type Widget = {
   type: (typeof widgetTypes)[number]
   args?: any
 }
+
+export type WidgetProps<T extends {} = {}> = Omit<Widget, 'args'> & { args?: T }
 
 type WidgetsState = Widget[]
 
