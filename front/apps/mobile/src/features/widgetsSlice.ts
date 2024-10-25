@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export const widgetTypes = [
-  'categories-progress',
-  'accounts-balance',
+  'categories',
+  'accounts',
   'spending-vs-income',
-  'investments-balance',
-  'monthly-spending-left',
-  'yearly-spending-left',
-  'credit-cards-balance'
+  'investments',
+  'monthly-spending',
+  'yearly-spending',
+  'credit-cards'
 ] as const
 
 export type Widget = {
@@ -16,7 +16,6 @@ export type Widget = {
   type: (typeof widgetTypes)[number]
   args?: any
 }
-
 
 type WidgetsState = Widget[]
 
@@ -62,7 +61,6 @@ export const widgetsSlice = createSlice({
         state[widgetIndex] = updatedWidget;
       }
     }
-
   }
 })
 

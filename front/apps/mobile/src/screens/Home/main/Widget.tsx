@@ -17,7 +17,7 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 
 import styles from './styles/widget';
-import { Box, Button, defaultSpringConfig, Icon } from '@ledget/native-ui';
+import { Box, Button, defaultSpringConfig, Icon, Text } from '@ledget/native-ui';
 import { getAbsPosition, getNewGridPosition, getGridPositions } from './helpers';
 import type { WidgetProps } from './types';
 import { widgetsMap } from "./widgetsMap";
@@ -54,7 +54,8 @@ const Widget = (props: WidgetProps) => {
     if (props.widget.id && !initiallyPositioned.value) {
       const pos = getAbsPosition(
         props.positions.value[props.widget.id],
-        height.value
+        height.value,
+        !Boolean(props.widget.id)
       );
       translateX.value = pos.x;
       translateY.value = pos.y;
@@ -76,7 +77,8 @@ const Widget = (props: WidgetProps) => {
     if (!isDragging.value) {
       const pos = getAbsPosition(
         newPositions.value[props.widget.id || props.widget.type],
-        props.height.value
+        props.height.value,
+        !Boolean(props.widget.id)
       );
       translateX.value = withSpring(pos.x, defaultSpringConfig);
       translateY.value = withSpring(pos.y, defaultSpringConfig);
@@ -112,7 +114,8 @@ const Widget = (props: WidgetProps) => {
     if (!isDragging.value) {
       const pos = getAbsPosition(
         props.positions.value[props.widget.id || props.widget.type],
-        props.height.value
+        props.height.value,
+        !Boolean(props.widget.id)
       );
       translateX.value = withSpring(pos.x, defaultSpringConfig);
       translateY.value = withSpring(pos.y, defaultSpringConfig);
@@ -130,7 +133,8 @@ const Widget = (props: WidgetProps) => {
 
     const pos = getAbsPosition(
       props.positions.value[props.widget.id || props.widget.type],
-      props.height.value
+      props.height.value,
+      !Boolean(props.widget.id)
     );
 
     if (props.visible) {
@@ -359,7 +363,11 @@ const Widget = (props: WidgetProps) => {
         props.positions.value[props.order.value[props.order.value.length - 1]] || 0
       );
 
-      const finalPosition = getAbsPosition(finalGridPosition, props.height.value);
+      const finalPosition = getAbsPosition(
+        finalGridPosition,
+        props.height.value,
+        false
+      );
 
       translateX.value = withSpring(finalPosition.x, defaultSpringConfig);
       translateY.value = withSpring(finalPosition.y, defaultSpringConfig);
@@ -438,7 +446,8 @@ const Widget = (props: WidgetProps) => {
           : props.height.value
         const pos = getAbsPosition(
           props.positions.value[props.widget.id || props.widget.type],
-          props.height.value
+          props.height.value,
+          false
         );
         translateX.value = withSpring(pos.x, defaultSpringConfig);
         dragBarPos.value = withTiming(size, defaultSpringConfig);
@@ -473,7 +482,7 @@ const Widget = (props: WidgetProps) => {
           <Box style={[styles.filled, styles.clipBox]} borderRadius='xl'>
             <TouchableHighlight
               underlayColor={theme.colors.mainText}
-              activeOpacity={.97}
+              activeOpacity={.98}
               style={[styles.filled, styles.button]}
               onLongPress={() => { Haptics.selectionAsync() }}
             >
@@ -493,13 +502,14 @@ const Widget = (props: WidgetProps) => {
             </TouchableHighlight>
           </Box>
         </Box>
+        {props.state === 'picking' && !props.widget.id &&
+          <View style={styles.labelContainer}>
+            <Text style={styles.label} fontSize={15} color='secondaryText'>
+              {props.widget.type.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
+            </Text>
+          </View>}
         <GestureDetector gesture={resize} touchAction={props.state === 'editing' ? 'auto' : 'none'}>
-          <Animated.View
-            style={[
-              styles.dragBarContainer,
-              dragBarStyle
-            ]}
-          >
+          <Animated.View style={[styles.dragBarContainer, dragBarStyle]}>
             <Box
               borderColor='containerDragBar'
               backgroundColor='containerDragBar'

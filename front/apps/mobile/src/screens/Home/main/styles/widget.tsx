@@ -34,6 +34,16 @@ const styles = StyleSheet.create({
     left: 16,
     right: 16,
     bottom: 16
+  },
+  labelContainer: {
+    position: 'absolute',
+    bottom: -20,
+    left: '50%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  label: {
+    position: 'absolute',
   }
 });
 

@@ -65,7 +65,7 @@ export const getGridPositions = (widgets: Widget[]) => {
   return gridPositions
 }
 
-export const getAbsPosition = (position: number, height: number) => {
+export const getAbsPosition = (position: number, height: number, hasLabel: boolean) => {
   'worklet';
 
   const gridPosition = position >= 1000 ? position - 1000 : position
@@ -75,7 +75,7 @@ export const getAbsPosition = (position: number, height: number) => {
 
   return {
     x: column * (height + gap),
-    y: row * (height + gap),
+    y: row * (height + gap + (hasLabel ? 24 : 0)),
   };
 }
 

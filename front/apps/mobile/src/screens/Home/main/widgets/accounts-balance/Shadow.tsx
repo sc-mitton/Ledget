@@ -1,8 +1,11 @@
 import { View } from 'react-native'
-const CategoriesProgress = () => {
+
+const AccountsBalance = () => {
   return (
     <View>
+
     </View>
   )
 }
-export default CategoriesProgress
+
+export default AccountsBalance
