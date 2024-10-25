@@ -12,8 +12,9 @@ type State = {
     },
     pinnedHoldings?: string[]
   },
-  depositsScreen: {
-    selectedAccounts?: Account[]
+  accountsTab: {
+    selectedDepositsAccounts?: Account[]
+    selectedCreditAccounts?: Account[]
   },
   settings: {
     startOnHome: boolean
@@ -25,7 +26,7 @@ type State = {
 const initialState: State = {
   billCatSort: 'default',
   investmentsScreen: {},
-  depositsScreen: {},
+  accountsTab: {},
   settings: {
     startOnHome: true
   },
@@ -48,9 +49,13 @@ export const uiSlice = createSlice({
       if (!state.investmentsScreen) state.investmentsScreen = {}
       state.investmentsScreen.window = action.payload
     },
-    setDepositsScreenAccounts: (state, action: PayloadAction<State['depositsScreen']['selectedAccounts']>) => {
-      if (!state.depositsScreen) state.depositsScreen = {}
-      state.depositsScreen.selectedAccounts = action.payload
+    setAccountsTabDepositAccounts: (state, action: PayloadAction<State['accountsTab']['selectedDepositsAccounts']>) => {
+      if (!state.accountsTab) state.accountsTab = {}
+      state.accountsTab.selectedDepositsAccounts = action.payload
+    },
+    setAccountsTabCreditAccounts: (state, action: PayloadAction<State['accountsTab']['selectedDepositsAccounts']>) => {
+      if (!state.accountsTab) state.accountsTab = {}
+      state.accountsTab.selectedCreditAccounts = action.payload
     },
     pinHolding: (state, action: PayloadAction<string>) => {
       if (!state.investmentsScreen) state.investmentsScreen = {}
@@ -77,7 +82,8 @@ export const uiSlice = createSlice({
 export const {
   setBillCatSort,
   setInvestmentsScreenAccounts,
-  setDepositsScreenAccounts,
+  setAccountsTabDepositAccounts,
+  setAccountsTabCreditAccounts,
   setInvestmentsScreenWindow,
   pinHolding,
   unPinHolding,
@@ -88,7 +94,8 @@ export const {
 
 export const selectBillCatSort = (state: { ui: State }) => state.ui.billCatSort
 export const selectInvestmentsScreenAccounts = (state: { ui: State }) => state.ui.investmentsScreen?.selectedAccounts
-export const selectDepositsScreenAccounts = (state: { ui: State }) => state.ui.depositsScreen?.selectedAccounts
+export const selectAccountsTabDepositAccounts = (state: { ui: State }) => state.ui.accountsTab?.selectedDepositsAccounts
+export const selectAccountsTabCreditAccounts = (state: { ui: State }) => state.ui.accountsTab?.selectedCreditAccounts
 export const selectInvestmentsScreenWindow = (state: { ui: State }) => state.ui.investmentsScreen?.window
 export const selectPinnedHoldings = (state: { ui: State }) => state.ui.investmentsScreen?.pinnedHoldings
 export const selectSettings = (state: { ui: State }) => state.ui.settings

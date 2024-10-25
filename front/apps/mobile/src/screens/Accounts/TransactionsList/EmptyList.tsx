@@ -1,8 +1,5 @@
 import { useEffect } from 'react';
-import {
-  RefreshControl,
-  ScrollView
-} from 'react-native';
+import { RefreshControl, ScrollView } from 'react-native';
 import Animated, {
   useSharedValue,
   withRepeat,
@@ -16,10 +13,12 @@ import styles from './styles/empty-list';
 import { useTransactionsSyncMutation } from '@ledget/shared-features';
 import { defaultSpringConfig, Text, Icon } from '@ledget/native-ui';
 import { useAppSelector } from '@/hooks';
-import { selectDepositsScreenAccounts } from '@/features/uiSlice';
+import { selectAccountsTabCreditAccounts, selectAccountsTabDepositAccounts } from '@/features/uiSlice';
+import { AccountsTabsScreenProps } from '@types';
 
-const EmptyList = () => {
-  const accounts = useAppSelector(selectDepositsScreenAccounts)
+const EmptyList = (props: AccountsTabsScreenProps<'Depository' | 'Credit'>) => {
+  const accounts = useAppSelector(
+    props.route.name === 'Depository' ? selectAccountsTabDepositAccounts : selectAccountsTabCreditAccounts)
 
   const arrowIconY = useSharedValue(5)
   const theme = useTheme()

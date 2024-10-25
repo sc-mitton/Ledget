@@ -5,7 +5,7 @@ import { billSchema } from "@ledget/form-schemas";
 
 export interface Error {
   message?: string,
-  type: string
+  type?: string
 }
 
 export type Value = {

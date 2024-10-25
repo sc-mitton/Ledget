@@ -5,9 +5,9 @@ import Big from 'big.js';
 
 import styles from './styles/header';
 import { Header2, Header, InstitutionLogo, DollarCents } from '@ledget/native-ui';
-import { Account } from '@ledget/shared-features';
 import { useAppSelector } from '@/hooks';
-import { selectDepositsScreenAccounts } from '@/features/uiSlice';
+import { selectAccountsTabDepositAccounts, selectAccountsTabCreditAccounts } from '@/features/uiSlice';
+import { Account } from '@ledget/shared-features';
 
 const headerMap = {
   'Depository': 'Accounts',
@@ -16,10 +16,11 @@ const headerMap = {
   'Loan': 'Loans'
 }
 
-export const AccountHeader = () => {
+export const AccountHeader = ({ accountType }: { accountType: Account['type'] }) => {
   const theme = useTheme()
 
-  const accounts = useAppSelector(selectDepositsScreenAccounts)
+  const depositAccounts = useAppSelector(selectAccountsTabDepositAccounts)
+  const creditAccounts = useAppSelector(selectAccountsTabCreditAccounts)
 
   return (
     <Animated.View
@@ -28,19 +29,20 @@ export const AccountHeader = () => {
       style={[styles.headerContainer, styles.accountHeaderContainer, { paddingTop: theme.spacing.statusBar }]}
     >
       <View style={styles.logos}>
-        {accounts?.map(a => (
+        {(accountType === 'depository' ? depositAccounts : creditAccounts)?.map(a => (
           <View style={styles.logo}>
             <InstitutionLogo key={a.id} account={a.id} />
           </View>
         ))}
       </View>
-      {(accounts?.length || 0) < 2 &&
+      {((accountType === 'depository' ? depositAccounts : creditAccounts)?.length || 0) < 2 &&
         <Header2>
-          {accounts?.[0].name}
+          {(accountType === 'depository' ? depositAccounts : creditAccounts)?.[0].name}
         </Header2>}
       <View style={styles.balanceContainer}>
         <DollarCents
-          value={accounts?.reduce((acc, a) => Big(acc).plus(a.balances.current), Big(0)).times(100).toNumber() || 0}
+          value={(accountType === 'depository' ? depositAccounts : creditAccounts)?.reduce((acc, a) =>
+            Big(acc).plus(a.balances.current), Big(0)).times(100).toNumber() || 0}
           fontSize={20}
         />
       </View>

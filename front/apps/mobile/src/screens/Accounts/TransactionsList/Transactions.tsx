@@ -26,7 +26,7 @@ import SkeletonTransactions from './SkeletonTransactions';
 import Row from './Row';
 import EmptyList from './EmptyList';
 import { useAppSelector } from '@/hooks';
-import { selectDepositsScreenAccounts } from '@/features/uiSlice';
+import { selectAccountsTabDepositAccounts } from '@/features/uiSlice';
 
 const SKELETON_HEIGHT = 740
 
@@ -43,7 +43,7 @@ const Transactions = (props: PTransactions & { account?: Account }) => {
   const [accounts, setAccounts] = useState<Account[]>()
   const theme = useTheme()
 
-  const storedAccounts = useAppSelector(selectDepositsScreenAccounts)
+  const storedAccounts = useAppSelector(selectAccountsTabDepositAccounts)
   const [getTransactions, { data: transactionsData, isLoading: isLoadingTransactions }] = useLazyGetTransactionsQuery()
   const [syncTransactions, { isLoading: isSyncing }] = useTransactionsSyncMutation()
 
@@ -189,7 +189,7 @@ const Transactions = (props: PTransactions & { account?: Account }) => {
           {(transactionsData?.results.length || 0) <= 0 || isLoadingTransactions
             ?
             transactionsData?.results.length === 0 && !isLoadingTransactions && accounts
-              ? <EmptyList />
+              ? <EmptyList {...props} />
               : <SkeletonTransactions height={SKELETON_HEIGHT} />
             :
             <CustomSectionList

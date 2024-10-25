@@ -11,10 +11,10 @@ import { DefaultHeader, AccountHeader } from '../Header';
 import Transactions from '../TransactionsList/Transactions';
 import AccountsPickerButton from '../AccountsPickerButton';
 import Summary from './Summary/Summary';
-import { selectDepositsScreenAccounts, setDepositsScreenAccounts } from '@/features/uiSlice';
+import { selectAccountsTabDepositAccounts, setAccountsTabDepositAccounts } from '@/features/uiSlice';
 
 const Panel = (props: AccountsTabsScreenProps<'Depository'> & { account?: Account }) => {
-  const accounts = useAppSelector(selectDepositsScreenAccounts)
+  const accounts = useAppSelector(selectAccountsTabDepositAccounts)
 
   const [bottomOfContentPos, setBottomOfContentPos] = useState(0)
   const { data: accountsData, error } = useGetAccountsQuery()
@@ -25,7 +25,7 @@ const Panel = (props: AccountsTabsScreenProps<'Depository'> & { account?: Accoun
   useEffect(() => {
     if (transactionsListExpanded) {
       props.navigation.setOptions({
-        header: () => <AccountHeader />
+        header: () => <AccountHeader accountType='depository' />
       })
     } else {
       props.navigation.setOptions({
@@ -49,11 +49,11 @@ const Panel = (props: AccountsTabsScreenProps<'Depository'> & { account?: Accoun
   }, [error])
 
   useEffect(() => {
-    if (!accounts && accountsData) {
+    if (accountsData) {
       const account = accountsData.accounts.find(a => a.type === props.route.name.toLowerCase())
-      dispatch(setDepositsScreenAccounts(account ? [account] : []))
+      dispatch(setAccountsTabDepositAccounts(account ? [account] : []))
     }
-  }, [accountsData, accounts])
+  }, [accountsData])
 
   return (
     <Box style={[styles.main]} paddingHorizontal='pagePadding'>

@@ -33,12 +33,16 @@ const migrations = {
       ...state.ui,
       hideBottomTabs: false
     }
+  }),
+  3: (state: RootState) => ({
+    ...state,
+    ui: state.ui
   })
 } as any;
 
 const persistConfig = {
   key: "root",
-  version: 2,
+  version: 3,
   storage,
   timeout: 0,
   migrate: createMigrate(migrations),

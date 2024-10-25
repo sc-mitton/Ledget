@@ -1,16 +1,16 @@
 import { View } from 'react-native';
-import { ChevronDown, Plus } from 'geist-native-icons';
+import { ChevronDown } from 'geist-native-icons';
 import Big from 'big.js';
 
 import styles from './styles/accounts-picker-button';
 import { Text, Icon, InstitutionLogo, DollarCents, Button } from '@ledget/native-ui';
 import { AccountsTabsScreenProps } from '@types';
 import { useAppSelector } from '@/hooks';
-import { selectDepositsScreenAccounts } from '@/features/uiSlice';
+import { selectAccountsTabDepositAccounts } from '@/features/uiSlice';
 import { AccountType } from '@ledget/shared-features';
 
 const AccountsPickerButton = (props: AccountsTabsScreenProps<any>) => {
-  const accounts = useAppSelector(selectDepositsScreenAccounts)
+  const accounts = useAppSelector(selectAccountsTabDepositAccounts)
 
   return (
     <View style={styles.buttonBalanceContainer}>

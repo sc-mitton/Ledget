@@ -9,7 +9,7 @@ import Animated, { useSharedValue, FadeOut, FadeIn } from 'react-native-reanimat
 import styles from './styles/panel';
 import { DollarCents, Text, Box, Button, AnimatedView, Icon, CarouselDots } from '@ledget/native-ui';
 import { useGetAccountsQuery, Account } from '@ledget/shared-features'
-import { setDepositsScreenAccounts } from '@/features/uiSlice';
+import { setAccountsTabCreditAccounts } from '@/features/uiSlice';
 import { AccountsTabsScreenProps } from '@types'
 import Transactions from '../TransactionsList/Transactions'
 import { Card } from '@components'
@@ -66,12 +66,12 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
     if (!account && accounts) {
       const acnt = props.route.params?.account || accounts[0]
       setAccount(acnt)
-      dispatch(setDepositsScreenAccounts([acnt]))
+      dispatch(setAccountsTabCreditAccounts([acnt]))
     } else {
       const acnt = accounts?.[carouselIndex]
       setAccount(acnt)
       if (acnt) {
-        dispatch(setDepositsScreenAccounts([acnt]))
+        dispatch(setAccountsTabCreditAccounts([acnt]))
       }
     }
   }, [props.route.params?.account, accounts, carouselIndex])
@@ -88,7 +88,7 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
   useEffect(() => {
     if (transactionsListExpanded && account) {
       props.navigation.setOptions({
-        header: () => <AccountHeader />
+        header: () => <AccountHeader accountType='credit' />
       })
     } else {
       props.navigation.setOptions({

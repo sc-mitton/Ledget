@@ -13,7 +13,7 @@ import Filters from './Filters';
 import AccountRow from './AccountRow';
 import TableHeaders from './Headers';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { selectDepositsScreenAccounts, setDepositsScreenAccounts } from '@/features/uiSlice';
+import { selectAccountsTabDepositAccounts, setAccountsTabDepositAccounts } from '@/features/uiSlice';
 
 const AccountPicker = (props: ModalScreenProps<'PickAccount'>) => {
   const [updateOrder] = useUpdateAccountsMutation();
@@ -24,7 +24,7 @@ const AccountPicker = (props: ModalScreenProps<'PickAccount'>) => {
 
   const dispatch = useAppDispatch();
   const { data: accountsData } = useGetAccountsQuery();
-  const globalAccounts = useAppSelector(selectDepositsScreenAccounts);
+  const globalAccounts = useAppSelector(selectAccountsTabDepositAccounts);
 
   const handleEndDrag = (args: DragEndParams<Account>) => {
     // If order of accounts has changed, update the order in the database
@@ -82,7 +82,7 @@ const AccountPicker = (props: ModalScreenProps<'PickAccount'>) => {
                         args.drag();
                       }}
                       onPress={() => {
-                        dispatch(setDepositsScreenAccounts([args.item]));
+                        dispatch(setAccountsTabDepositAccounts([args.item]));
                         props.navigation.navigate(
                           'Accounts', {
                           screen: 'AccountsTabs',
