@@ -9,7 +9,7 @@ export interface Category {
   created: string;
   emoji?: string | null;
   limit_amount: number;
-  amount_spent: number;
+  amount_spent: number | null;
   alerts: Alert[];
   is_default: boolean;
   has_transactions: boolean;

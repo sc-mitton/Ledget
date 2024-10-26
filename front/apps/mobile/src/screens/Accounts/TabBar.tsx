@@ -1,4 +1,4 @@
-import { Dimensions, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { ParamListBase, TabNavigationState, CommonActions } from '@react-navigation/native';
 import { Clock, CreditCard, TrendingUp } from 'geist-native-icons';
 import { LinearGradient, Canvas, Rect, vec } from '@shopify/react-native-skia';

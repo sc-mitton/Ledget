@@ -38,6 +38,7 @@ export * from './restyled/Icon';
 export * from './restyled/Button';
 export * from './restyled/Seperator';
 export * from './restyled/SubmitButton';
+export * from './restyled/CircleNumber';
 
 export * from './inputs/text-inputs/text-inputs';
 export * from './inputs/otc/Otc';

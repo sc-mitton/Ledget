@@ -9,6 +9,8 @@ import { Text } from '../../restyled/Text';
 interface BillCatEmojiProps {
   emoji?: string | null;
   period: 'month' | 'year' | 'once';
+  hasBorder?: boolean;
+  size?: number;
 }
 
 interface BillCatLabelProps extends BillCatEmojiProps {
@@ -63,6 +65,7 @@ export function ProgressEmoji(props: ProgressEmojiProps) {
 }
 
 export function BillCatEmoji(props: BillCatEmojiProps) {
+  const { hasBorder = true, size = 32 } = props;
 
   return (
     <View style={styles.billCatEmojiContainer}>
@@ -70,8 +73,11 @@ export function BillCatEmoji(props: BillCatEmojiProps) {
         <Box
           backgroundColor={props.period === 'year' ? 'yearBackground' : 'monthBackground'}
           borderColor={props.period === 'year' ? 'yearBorder' : 'monthBorder'}
-          borderWidth={1.5}
-          style={styles.background}
+          borderWidth={hasBorder ? 1.5 : 0}
+          style={[
+            styles.background,
+            { width: size, height: size, borderRadius: size / 2 }
+          ]}
         />
       </View>
       <Text>{props.emoji}</Text>

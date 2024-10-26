@@ -20,10 +20,7 @@ export default StyleSheet.create({
   },
   background: {
     position: 'absolute',
-    borderRadius: 16,
-    padding: 4,
-    width: 32,
-    height: 32
+    padding: 4
   },
   backgroundContainer: {
     position: 'absolute'

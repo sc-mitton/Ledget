@@ -12,7 +12,7 @@ import { Widgets as WidgetsIcon } from '@ledget/media/native';
 import { useEffect } from "react"
 import { hideBottomTabs } from "@/features/uiSlice"
 import { useGetMeQuery } from "@ledget/shared-features"
-import WidgetsGrid from "./WidgetsGrid"
+import WidgetsGrid from "./WidgetsBento"
 
 const MainScreen = (props: HomeScreenProps<'Main'>) => {
   const { data: user } = useGetMeQuery();

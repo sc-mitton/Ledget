@@ -3,10 +3,8 @@ import { View } from "react-native"
 import styles from './styles/shared';
 import EmojiProgressCircle from "./EmojiProgressCircle"
 import { Text } from "@ledget/native-ui";
-import WidgetHeader from "../../WidgetHeader";
 
 const PickerOption = () => {
-
   return (
     <View style={styles.columns}>
       <View style={styles.row}>

@@ -226,7 +226,7 @@ const Widget = (props: WidgetProps) => {
   }, []);
 
   const pan = Gesture.Pan()
-    .activateAfterLongPress(500)
+    .activateAfterLongPress(1000)
     .failOffsetY(50)
     .failOffsetX([-1 * props.height.value / 2, (props.height.value * 2.5) + gap])
     .onStart((ctx) => {
@@ -488,7 +488,7 @@ const Widget = (props: WidgetProps) => {
               >
                 <GestureDetector gesture={pan}>
                   <View style={styles.gestureArea}>
-                    <WidgetComponent {...props.widget.args} />
+                    <WidgetComponent {...props.widget} />
                   </View>
                 </GestureDetector>
               </Box>
