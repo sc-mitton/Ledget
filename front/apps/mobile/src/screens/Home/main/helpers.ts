@@ -75,7 +75,7 @@ export const getAbsPosition = (position: number, height: number, label?: 'top-la
 
   return {
     x: column * (height + gap),
-    y: row * (height + gap + (label === 'bottom-label' ? 24 : label === 'top-label' ? -24 : 0)),
+    y: row * (height + gap + (label === 'bottom-label' ? 32 : label === 'top-label' ? -24 : 0)),
   };
 }
 

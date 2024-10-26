@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 
-import styles from './styles/pick-option';
-import { Box, InstitutionLogo, Text } from '@ledget/native-ui';
+import styles from './styles/picker-option';
+import { Box, InstitutionLogo } from '@ledget/native-ui';
 import { useGetAccountsQuery } from '@ledget/shared-features';
 
 const Shadow = () => {
@@ -11,10 +11,22 @@ const Shadow = () => {
     <View style={styles.skeletonRows}>
       {Array.from({ length: 3 }).map((_, i) => (
         <View style={styles.row}>
-          <InstitutionLogo
-            institution={accounts?.institutions[i % (accounts.institutions.length)].id}
-            size={16}
-          />
+          <View
+            style={[{
+              backgroundColor: accounts?.institutions[i % (accounts.institutions.length)].primary_color,
+            },
+            styles.card
+            ]}
+          >
+            <View style={styles.logoContainer}>
+              <InstitutionLogo
+                institution={accounts?.institutions[i % (accounts.institutions.length)].id}
+                hasBorder={false}
+                hasShadow={false}
+                size={16}
+              />
+            </View>
+          </View>
           <View style={styles.rightContainer}>
             <Box
               backgroundColor='transactionShimmer'

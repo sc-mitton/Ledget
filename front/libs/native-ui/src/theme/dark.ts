@@ -21,6 +21,8 @@ const palette = {
   successGreen: 'hsl(144, 62%, 33%)',
   successGreenFaint: 'hsl(144, 62%, 18%)',
   greenText: 'hsl(144, 62%, 40%)',
+  coralText: 'hsl(0, 100%, 50%)',
+  purpleText: 'hsl(250, 100%, 70%)',
 
   gray1000: `hsl(${grayH}, ${grayS}%, 0%)`,
   gray900: `hsl(${grayH}, ${grayS}%, 7%)`,
@@ -143,6 +145,7 @@ export const darkTheme = createTheme({
     greenText: palette.greenText,
     footerText: palette.gray600,
     redText: palette.red,
+    purpleText: palette.purpleText,
 
     // Buttons
     lightBlueButton: palette.blue700,

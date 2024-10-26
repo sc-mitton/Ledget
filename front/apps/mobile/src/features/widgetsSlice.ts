@@ -2,11 +2,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export const widgetTypes = [
   'categories',
-  'accounts',
-  'spending-vs-income',
-  'investments',
+  'deposit-accounts',
+  'deposit-account',
+  'saving-and-investing',
   'spending-summary',
   'bills',
+  'investment-accounts',
+  'investment-account',
   'credit-cards'
 ] as const
 

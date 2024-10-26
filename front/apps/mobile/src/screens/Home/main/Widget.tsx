@@ -230,6 +230,7 @@ const Widget = (props: WidgetProps) => {
     .failOffsetY(50)
     .failOffsetX([-1 * props.height.value / 2, (props.height.value * 2.5) + gap])
     .onStart((ctx) => {
+      runOnJS(Haptics.selectionAsync)();
       props.onDragStart && runOnJS(props.onDragStart)();
 
       shadowOpacity.value = theme.colors.mode === 'dark' ? withTiming(0.3) : withTiming(.1);
@@ -476,7 +477,7 @@ const Widget = (props: WidgetProps) => {
               underlayColor={theme.colors.mainText}
               activeOpacity={.98}
               style={[styles.filled, styles.button]}
-              onLongPress={() => { Haptics.selectionAsync() }}
+              onLongPress={() => { }}
             >
               <Box
                 backgroundColor='nestedContainer'
@@ -497,7 +498,7 @@ const Widget = (props: WidgetProps) => {
         {props.state === 'picking' && !props.widget.id &&
           <View style={styles.labelContainer}>
             <Text style={styles.label} fontSize={15} color='secondaryText'>
-              {props.widget.type.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
+              {props.widget.type.split('-').map(w => ['vs', 'and'].includes(w) ? w : w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
             </Text>
           </View>}
         <GestureDetector gesture={resize} touchAction={props.state === 'editing' ? 'auto' : 'none'}>

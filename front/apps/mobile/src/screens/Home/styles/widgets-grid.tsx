@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
   pickerWidgetsScrollView: {
     marginTop: 8,
-    marginBottom: 64
+    marginBottom: 144
   },
   widgetsContainer: {
     width: '100%',
