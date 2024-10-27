@@ -8,8 +8,8 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
-    paddingHorizontal: 8,
+    gap: 24,
+    paddingHorizontal: 16,
   },
   logoSkeleton: {
     width: 18,
@@ -17,12 +17,12 @@ const styles = StyleSheet.create({
   },
   rightContainer: {
     flexGrow: 1,
-    alignItems: 'flex-start',
+    alignItems: 'flex-end',
     gap: 6
   },
   amountSkeleton: {
     height: 9,
-    width: 36,
+    width: 54,
   },
   nameSkeleton: {
     height: 10,

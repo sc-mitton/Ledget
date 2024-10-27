@@ -13,10 +13,10 @@ import styles from '../styles/widgets-grid';
 import { Box } from "@ledget/native-ui";
 import { useAppSelector } from "@hooks";
 import { selectWidgets, widgetTypes } from "@/features/widgetsSlice";
-import { WidgetsGridProps } from './types';
+import { WidgetsBentoProps } from './types';
 import { getGridPositions, getPositionsMap } from './helpers';
 import { useLoaded } from "@ledget/helpers";
-import { gap } from "./constants";
+import { gap, bottomLabelPadding } from "./constants";
 import Widget from "./Widget";
 
 /*
@@ -28,7 +28,7 @@ is reflected in the UI. The widget being dragged around isn't affected by any of
 
 */
 
-const WidgetsGrid = (props: WidgetsGridProps) => {
+const WidgetsBento = (props: WidgetsBentoProps) => {
   const theme = useTheme()
 
   const selectedStoredWidgets = useAppSelector(selectWidgets);
@@ -44,7 +44,7 @@ const WidgetsGrid = (props: WidgetsGridProps) => {
   const positions = useSharedValue(
     Object.assign(
       getPositionsMap(selectedStoredWidgets),
-      getPositionsMap(widgetTypes.map(t => ({ type: t, shape: 'square' as const }))),
+      getPositionsMap(widgetTypes),
     )
   );
 
@@ -53,8 +53,7 @@ const WidgetsGrid = (props: WidgetsGridProps) => {
       .map(key => selectedStoredWidgets.some(w => w.id === key)
         ? selectedStoredWidgets.find(w => w.id === key)
         : {
-          type: widgetTypes.find(t => t === key)!,
-          shape: 'square' as const,
+          ...widgetTypes.find(t => t.type === key)!,
           id: undefined
         }
       ).filter(w => w !== undefined)
@@ -83,7 +82,7 @@ const WidgetsGrid = (props: WidgetsGridProps) => {
   useEffect(() => {
     positions.value = Object.assign(
       getPositionsMap(widgets),
-      getPositionsMap(widgetTypes.map(t => ({ type: t, shape: 'square' as const }))),
+      getPositionsMap(widgetTypes),
     )
     order.value = widgets.map(w => w.id!)
   }, [widgets])
@@ -114,7 +113,12 @@ const WidgetsGrid = (props: WidgetsGridProps) => {
           >
             <View
               style={[
-                { height: Math.ceil(widgets.length / 2) * (itemHeight.value + gap) },
+                {
+                  height:
+                    order.value.length > 0
+                      ? Math.ceil(positions.value[order.value[order.value.length - 1]] / 2) * (itemHeight.value + gap)
+                      : 0
+                },
                 styles.widgetsContainer,
                 styles.currentWidgetsScrollView
               ]}
@@ -130,7 +134,7 @@ const WidgetsGrid = (props: WidgetsGridProps) => {
                   order={order}
                   scrollY={currentWidgetsScrollY}
                   scrollView={currentScrollView}
-                  scrollHeight={Math.ceil(widgets.length / 2) * (itemHeight.value + gap)}
+                  scrollHeight={Math.ceil(positions.value[order.value[order.value.length - 1]] / 2) * (itemHeight.value + gap)}
                   containerHeight={currentWidgetsContainerHeight}
                   onDragStart={() => { props.setState('editing') }}
                   loaded={loaded}
@@ -159,11 +163,11 @@ const WidgetsGrid = (props: WidgetsGridProps) => {
           >
             <View
               style={[
-                { height: Math.ceil(widgetTypes.length / 2) * (itemHeight.value + gap) },
+                { height: ((Math.ceil(positions.value[widgetTypes[widgetTypes.length - 1].type] - 1000) / 2)) * (itemHeight.value + gap + bottomLabelPadding) + 54 },
                 styles.pickerWidgetsScrollView
               ]}
             >
-              {widgetTypes.map(t => ({ type: t, shape: 'square' as const })).map((widget, index) => (
+              {widgetTypes.map((widget, index) => (
                 <Widget
                   key={`widget-${widget.type}`}
                   widget={widget}
@@ -173,7 +177,7 @@ const WidgetsGrid = (props: WidgetsGridProps) => {
                   positions={positions}
                   order={order}
                   scrollY={pickerScrollY}
-                  scrollHeight={Math.ceil(widgetTypes.length / 2) * itemHeight.value}
+                  scrollHeight={((Math.ceil(positions.value[widgetTypes[widgetTypes.length - 1].type] - 1000) / 2)) * (itemHeight.value + gap + bottomLabelPadding) + 54}
                   containerHeight={pickerWidgetsContainerHeight}
                   onDragStart={() => { props.setState(undefined) }}
                   scrollView={pickerScrollView}
@@ -189,4 +193,4 @@ const WidgetsGrid = (props: WidgetsGridProps) => {
   )
 }
 
-export default WidgetsGrid;
+export default WidgetsBento;

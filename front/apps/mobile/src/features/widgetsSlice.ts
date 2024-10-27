@@ -1,21 +1,22 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export const widgetTypes = [
-  'categories',
-  'deposit-accounts',
-  'deposit-account',
-  'saving-and-investing',
-  'spending-summary',
-  'bills',
-  'investment-accounts',
-  'investment-account',
-  'credit-cards'
+const types = [
+  { type: 'categories', shape: 'square' },
+  { type: 'investment-account', shape: 'square' },
+  { type: 'deposit-account', shape: 'square' },
+  { type: 'saving-and-investing', shape: 'square' },
+  { type: 'spending-summary', shape: 'square' },
+  { type: 'bills', shape: 'square' },
+  { type: 'credit-cards', shape: 'square' },
 ] as const
+
+export const widgetTypes = types.map(t => t as { type: (typeof types)[number]['type'], shape: (typeof types)[number]['shape'] })
 
 export type Widget = {
   id?: string
   shape: 'rectangle' | 'square'
-  type: (typeof widgetTypes)[number]
+  minSize?: 'rectangle'
+  type: (typeof types)[number]['type']
   args?: any
 }
 
@@ -31,12 +32,19 @@ export const widgetsSlice = createSlice({
   reducers: {
     addWidget: (state, action: PayloadAction<{ widget: Omit<Widget, 'id'>, index?: number }>) => {
       if (action.payload.index === undefined) {
-        state.push({ ...action.payload.widget, id: Math.random().toString(36).substring(7) })
+        state.push({
+          ...action.payload.widget,
+          ...(action.payload.widget.shape === 'rectangle' ? { minSize: 'rectangle' } : {}),
+          id: Math.random().toString(36).substring(7)
+        })
       } else {
         state.splice(
           action.payload.index,
           0,
-          { ...action.payload.widget, id: Math.random().toString(36).substring(7) }
+          {
+            ...(action.payload.widget.shape === 'rectangle' ? { minSize: 'rectangle' } : {}),
+            ...action.payload.widget, id: Math.random().toString(36).substring(7)
+          }
         )
       }
     },

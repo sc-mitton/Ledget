@@ -1,8 +1,7 @@
 import { SharedValue } from "react-native-reanimated";
 
 import { Widget } from "@/features/widgetsSlice";
-import { Easing } from "react-native-reanimated";
-import { gap } from "./constants";
+import { gap, bottomLabelPadding, topLabelPadding } from "./constants";
 
 const PROXIMITY_THRESHOLD = 0.25;
 
@@ -54,7 +53,7 @@ export const getGridPositions = (widgets: Widget[]) => {
         : lastGridPosition % 2 === 1
           ? lastGridPosition + 1
           : lastGridPosition + 2
-      : 2
+      : lastGridPosition + 2
 
     acc.gridPositions.push(gridPosition)
     acc.last = w
@@ -75,7 +74,7 @@ export const getAbsPosition = (position: number, height: number, label?: 'top-la
 
   return {
     x: column * (height + gap),
-    y: row * (height + gap + (label === 'bottom-label' ? 32 : label === 'top-label' ? -24 : 0)),
+    y: row * (height + gap + (label === 'bottom-label' ? bottomLabelPadding : label === 'top-label' ? topLabelPadding : 0)),
   };
 }
 

@@ -12,7 +12,7 @@ import { Widgets as WidgetsIcon } from '@ledget/media/native';
 import { useEffect } from "react"
 import { hideBottomTabs } from "@/features/uiSlice"
 import { useGetMeQuery } from "@ledget/shared-features"
-import WidgetsGrid from "./WidgetsBento"
+import WidgetsBento from "./WidgetsBento"
 
 const MainScreen = (props: HomeScreenProps<'Main'>) => {
   const { data: user } = useGetMeQuery();
@@ -42,6 +42,7 @@ const MainScreen = (props: HomeScreenProps<'Main'>) => {
                   label={state === 'editing' ? 'Done' : 'Close'}
                   variant={'bold'}
                   borderRadius="circle"
+                  marginTop='xs'
                   paddingHorizontal="l"
                   paddingVertical="xs"
                   backgroundColor={state === 'picking' ? 'transparent' : 'grayButton'}
@@ -102,7 +103,7 @@ const MainScreen = (props: HomeScreenProps<'Main'>) => {
           />
         </Animated.View>
       )}
-      <WidgetsGrid state={state} setState={setState} />
+      <WidgetsBento state={state} setState={setState} />
     </>
   )
 }

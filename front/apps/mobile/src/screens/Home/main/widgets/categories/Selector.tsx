@@ -1,11 +1,10 @@
 import { useState, useRef } from 'react';
-import { View, TouchableOpacity, Dimensions } from 'react-native'
-import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
+import { View, TouchableOpacity } from 'react-native'
 import { useSharedValue } from 'react-native-reanimated';
 import { CheckInCircleFill } from 'geist-native-icons';
 import { LinearGradient, Canvas, Rect, vec } from '@shopify/react-native-skia';
 import { useTheme } from '@shopify/restyle';
-import dayjs from 'dayjs';
+import Carousel from "react-native-reanimated-carousel";
 
 import styles from './styles/selector';
 import { useGetCategoriesQuery, Category, selectBudgetMonthYear } from '@ledget/shared-features'
@@ -19,7 +18,6 @@ const Selector = (widget: WidgetProps<{ categories?: string[] }>) => {
   const dispatch = useAppDispatch()
 
   const { month, year } = useAppSelector(selectBudgetMonthYear)
-  const carouselRef = useRef<ICarouselInstance>(null)
   const { data: categories } = useGetCategoriesQuery(
     { month, year },
     { skip: !month || !year }
@@ -82,10 +80,10 @@ const Selector = (widget: WidgetProps<{ categories?: string[] }>) => {
             </Canvas>
           </>
         }
-        {categories &&
+        {categories
+          ?
           <Carousel
             style={styles.categoriesCarousel}
-            ref={carouselRef}
             vertical={false}
             snapEnabled={true}
             mode='parallax'
@@ -153,7 +151,19 @@ const Selector = (widget: WidgetProps<{ categories?: string[] }>) => {
               parallaxScrollingScale: 1,
               parallaxScrollingOffset: 12,
             }}
-          />}
+          />
+          :
+          <View style={styles.skeletonContainer}>
+            {Array.from({ length: 3 }).map((_, index) => (
+              <Box
+                width={index === 1 ? 32 : 24}
+                height={index === 1 ? 32 : 24}
+                backgroundColor='transactionShimmer'
+                borderRadius='circle'
+              />
+            ))}
+          </View>
+        }
       </View>
       <Seperator variant='s' />
       <View style={styles.selectorButtons}>

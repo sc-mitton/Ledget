@@ -501,17 +501,18 @@ const Widget = (props: WidgetProps) => {
               {props.widget.type.split('-').map(w => ['vs', 'and'].includes(w) ? w : w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
             </Text>
           </View>}
-        <GestureDetector gesture={resize} touchAction={props.state === 'editing' ? 'auto' : 'none'}>
-          <Animated.View style={[styles.dragBarContainer, dragBarStyle]}>
-            <Box
-              borderColor='containerDragBar'
-              backgroundColor='containerDragBar'
-              height={props.height.value / 3}
-              borderRadius='xl'
-              style={styles.dragBar}
-            />
-          </Animated.View>
-        </GestureDetector>
+        {props.widget.minSize !== 'rectangle' &&
+          <GestureDetector gesture={resize} touchAction={props.state === 'editing' ? 'auto' : 'none'}>
+            <Animated.View style={[styles.dragBarContainer, dragBarStyle]}>
+              <Box
+                borderColor='containerDragBar'
+                backgroundColor='containerDragBar'
+                height={props.height.value / 3}
+                borderRadius='xl'
+                style={styles.dragBar}
+              />
+            </Animated.View>
+          </GestureDetector>}
         <Animated.View
           style={[
             styles.deleteButtonContainer,

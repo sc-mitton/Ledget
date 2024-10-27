@@ -22,7 +22,7 @@ export interface WidgetProps {
   state?: State
 }
 
-export interface WidgetsGridProps {
+export interface WidgetsBentoProps {
   state?: State
   setState: (state?: State) => void
 }

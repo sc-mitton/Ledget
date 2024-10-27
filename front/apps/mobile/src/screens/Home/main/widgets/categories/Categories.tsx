@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
 import { View } from 'react-native'
-import dayjs from 'dayjs';
 import Big from 'big.js';
 
 import styles from './styles/widget';
-import sharedStyles from './styles/shared';
 import { useGetCategoriesQuery, Category, selectBudgetMonthYear } from '@ledget/shared-features'
 import { WidgetProps } from '@features/widgetsSlice'
 import { Text, DollarCents } from '@ledget/native-ui';
@@ -65,11 +63,17 @@ const Filled = (widget: WidgetProps<{ categories?: string[] }>) => {
 }
 
 const CategoriesProgress = (widget: WidgetProps<{ categories?: string[] }>) => {
-  return widget.id
+  const { month, year } = useAppSelector(selectBudgetMonthYear)
+  const { isSuccess, isLoading } = useGetCategoriesQuery(
+    { month, year, spending: true },
+    { skip: !month || !year },
+  )
+
+  return widget.id && isSuccess
     ? widget.args?.categories
       ? <Filled {...widget} />
       : <Selector {...widget} />
-    : <PickerOption />
+    : <PickerOption loading={isLoading} />
 }
 
 export default CategoriesProgress

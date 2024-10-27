@@ -15,12 +15,17 @@ const Shadow = () => {
             institution={accounts?.institutions[i % (accounts.institutions.length)].id}
             size={16}
           />
+          <Box
+            backgroundColor='transactionShimmer'
+            style={styles.nameSkeleton}
+            borderRadius='xxs'
+          />
+          <Box
+            backgroundColor='transactionShimmer'
+            style={styles.amountSkeleton}
+            borderRadius='xxs'
+          />
           <View style={styles.rightContainer}>
-            <Box
-              backgroundColor='transactionShimmer'
-              style={styles.nameSkeleton}
-              borderRadius='xxs'
-            />
             <Box
               backgroundColor='transactionShimmer'
               style={styles.amountSkeleton}

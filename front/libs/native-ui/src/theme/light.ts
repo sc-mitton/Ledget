@@ -599,7 +599,7 @@ export const lightTheme = createTheme({
       width: 2,
       height: 20,
       borderRadius: 'circle',
-      marginHorizontal: 'l',
+      marginHorizontal: 's',
     },
     carouselDot: {
       width: 5,
