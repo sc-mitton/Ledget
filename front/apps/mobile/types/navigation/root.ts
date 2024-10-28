@@ -1,6 +1,6 @@
 import { NavigatorScreenParams } from '@react-navigation/native';
+import { createNavigationContainerRef } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
-import type { CompositeScreenProps } from '@react-navigation/native';
 
 import type { LoginStackParamList } from './login';
 import type { ModalStackParamList } from './modals';
@@ -33,3 +33,5 @@ export type RootAuthenticationStackParamList = {
 export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<RootStackParamList, T>;
 export type RecoveryScreenProps = StackScreenProps<RootAuthenticationStackParamList, 'Recovery'>
 export type VerificationScreenProps = StackScreenProps<RootAuthenticationStackParamList, 'Verification'>
+
+export const navigationRef = createNavigationContainerRef<RootStackParamList>();

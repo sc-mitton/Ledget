@@ -5,7 +5,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: '50%',
     top: '50%',
-    zIndex: -1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  container: {
     justifyContent: 'center',
     alignItems: 'center',
   },

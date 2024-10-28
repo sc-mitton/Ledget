@@ -18,10 +18,11 @@ import {
   NewBill,
   ConfirmDeleteCategory,
   ConfirmDeleteBill,
-  Holdings
+  Holdings,
+  BillsCalendar
 } from '@modals';
 import { Activity } from '@screens';
-import { useModalStyleInterpolator, useModifiedDefaultModalStyleInterpolator, useFullScreenModalStyleInterpolator } from '@/hooks';
+import { useModalStyleInterpolator, useModifiedDefaultModalStyleInterpolator } from '@/hooks';
 
 const RootStack = createStackNavigator<ModalStackParamList>();
 
@@ -44,6 +45,7 @@ const ModalScreens = () => {
       <RootStack.Screen name='Split' component={SplitTransaction} />
       <RootStack.Screen name='ConfirmDeleteCategory' component={ConfirmDeleteCategory} />
       <RootStack.Screen name='ConfirmDeleteBill' component={ConfirmDeleteBill} />
+      <RootStack.Screen name='BillsCalendar' component={BillsCalendar} />
       <RootStack.Group
         screenOptions={{
           presentation: 'modal',

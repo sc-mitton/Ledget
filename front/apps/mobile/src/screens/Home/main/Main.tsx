@@ -19,13 +19,16 @@ const MainScreen = (props: HomeScreenProps<'Main'>) => {
   const dispatch = useAppDispatch()
   const theme = useTheme()
   // const [pickerMode, setPickerMode] = useState(false)
-  const [state, setState] = useState<'picking' | 'editing'>()
+  const [state, setState] = useState<'picking' | 'editing' | 'dropping'>()
 
   useEffect(() => {
-    if (state === 'picking') {
+    if ('picking' === state) {
       dispatch(hideBottomTabs(true))
+    } else {
+      dispatch(hideBottomTabs(false))
     }
-    if (state) {
+
+    if (state && ['editing', 'picking'].includes(state)) {
       props.navigation.setOptions({
         header: () =>
           <Animated.View entering={FadeIn} exiting={FadeOut}>
@@ -66,8 +69,9 @@ const MainScreen = (props: HomeScreenProps<'Main'>) => {
               </Canvas>}
           </Animated.View>,
       })
-    } else {
-      dispatch(hideBottomTabs(false))
+    }
+
+    if (!state || state === 'dropping') {
       props.navigation.setOptions({
         header: () => (
           <Animated.View entering={FadeIn} exiting={FadeOut} >

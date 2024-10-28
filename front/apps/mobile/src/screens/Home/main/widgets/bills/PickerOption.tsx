@@ -2,12 +2,12 @@ import { View } from 'react-native';
 import { Calendar } from 'geist-native-icons';
 import dayjs from 'dayjs';
 
-import styles from './styles/picker-option';
-import { Icon, Text, Button, Box } from '@ledget/native-ui';
+import styles from './styles/shared';
+import { Icon, Text, Button, Box, ColorNumber } from '@ledget/native-ui';
 import { useAppSelector } from '@/hooks';
 import { selectBudgetMonthYear } from '@ledget/shared-features';
 
-const SpendingVsIncome = () => {
+const SpendingVsIncome = ({ loading }: { loading: boolean }) => {
   const { month, year } = useAppSelector(selectBudgetMonthYear);
 
   return (
@@ -16,7 +16,7 @@ const SpendingVsIncome = () => {
         {dayjs(`${year}-${month}-01`).format('MMMM')}&nbsp;
         Bills Paid
       </Text>
-      <Text fontSize={28} lineHeight={30} variant='bold'>5 / 10</Text>
+      <Text fontSize={28} lineHeight={30} variant='bold'>{loading ? '0 / 0' : '5 / 10'}</Text>
       <View style={styles.calendarButtonContainer}>
         <Button
           variant='square'
@@ -25,24 +25,18 @@ const SpendingVsIncome = () => {
           icon={<Icon icon={Calendar} color='secondaryText' />}
         />
         <View style={styles.numbers}>
-          <View style={styles.numberContainer}>
-            <View style={styles.dotContainer}>
-              <Box
-                backgroundColor='monthBackground'
-                style={styles.dot}
-              />
-            </View>
-            <Text fontSize={14} color='monthColor'>5</Text>
-          </View>
-          <View style={styles.numberContainer}>
-            <View style={styles.dotContainer}>
-              <Box
-                backgroundColor='yearBackground'
-                style={styles.dot}
-              />
-            </View>
-            <Text fontSize={14} color='yearColor'>5</Text>
-          </View>
+          <ColorNumber
+            value={loading ? 0 : 5}
+            color='monthColor'
+            backgroundColor='monthBackground'
+            fontSize={14}
+          />
+          <ColorNumber
+            value={loading ? 0 : 5}
+            color='yearColor'
+            backgroundColor='yearBackground'
+            fontSize={14}
+          />
         </View>
       </View>
     </View>

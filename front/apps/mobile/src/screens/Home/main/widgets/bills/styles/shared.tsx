@@ -30,7 +30,8 @@ const styles = StyleSheet.create({
   numbers: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 16
+    gap: 4,
+    marginLeft: -4
   },
   numberContainer: {
     alignItems: 'center',

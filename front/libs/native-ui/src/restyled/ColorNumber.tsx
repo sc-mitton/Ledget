@@ -18,28 +18,30 @@ type RestyleProps = TextProps<Theme>;
 
 const restyleTextFunctions = composeRestyleFunctions<Theme, RestyleProps>([typography]);
 
-export type ColorNumberProps = RestyleProps & { value: number, backgroundColor: & BoxProps['backgroundColor'] };
+export type ColorNumberProps = RestyleProps & {
+  value: number,
+  backgroundColor: & BoxProps['backgroundColor'],
+  size?: number,
+};
 
 export const ColorNumber = (props: ColorNumberProps) => {
-  const { value, backgroundColor, ...rest } = props;
-  const circleSize = useRef<number>();
+  const { value, backgroundColor, size = 24, ...rest } = props;
 
   const textProps = useRestyle(restyleTextFunctions, rest);
 
   return (
-    <View onLayout={(e) => { circleSize.current = e.nativeEvent.layout.width * 3 }}>
+    <View style={[styles.container, { width: size, height: size, }]}>
+      <Box
+        width={size}
+        height={size}
+        borderRadius={'circle'}
+        backgroundColor={backgroundColor}
+      />
       <View style={styles.circleNumberContainer}>
-        <Box
-          style={styles.circleNumber}
-          width={circleSize.current}
-          height={circleSize.current}
-          borderRadius={'circle'}
-          backgroundColor={backgroundColor}
-        />
+        <View style={styles.circleNumber}>
+          <Text {...textProps}>{`${value}`}</Text>
+        </View>
       </View>
-      <Text {...textProps}>
-        {`${value}`}
-      </Text>
     </View>
   )
 };

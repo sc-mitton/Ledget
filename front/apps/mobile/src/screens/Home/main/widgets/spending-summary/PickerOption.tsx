@@ -1,12 +1,12 @@
 import { View } from 'react-native'
 import dayjs from 'dayjs';
 
-import styles from './styles/picker-option';
+import styles from './styles/shared';
 import { Text, DollarCents, Box } from '@ledget/native-ui';
 import { useAppSelector } from '@/hooks';
 import { selectBudgetMonthYear } from '@ledget/shared-features';
 
-const PickerOption = () => {
+const PickerOption = ({ loading }: { loading: boolean }) => {
   const { month, year } = useAppSelector(selectBudgetMonthYear);
 
   return (
@@ -27,11 +27,11 @@ const PickerOption = () => {
           />
         </View>
         <Text color='secondaryText' fontSize={13}>
-          Spent this {dayjs(`${year}-${month}-01`).format('MMM')}&nbsp;
+          {dayjs(`${year}-${month}-01`).format('MMM')}&nbsp;Spending
         </Text>
       </View>
       <View style={styles.totalAmount}>
-        <DollarCents value={200000} withCents={false} variant='bold' fontSize={28} />
+        <DollarCents value={loading ? 0 : 200000} withCents={false} variant='bold' fontSize={28} />
       </View>
       <Box style={styles.bottomRow} paddingHorizontal='xxxs'>
         <View style={styles.bottomRowCell}>

@@ -97,6 +97,20 @@ const Widget = (props: WidgetProps) => {
         : 0
   });
 
+  useAnimatedReaction(() => isDragging.value, (dragging) => {
+    if (!dragging && !props.visible) {
+      const pos = getAbsPosition(
+        props.positions.value[props.widget.id || props.widget.type],
+        props.height.value,
+        Boolean(props.widget.id) ? undefined : 'bottom-label'
+      );
+
+      scale.value = withDelay(500, withTiming(.5, { duration: 0 }));
+      opacity.value = withTiming(0, { duration: 0 });
+      translateY.value = withDelay(500, withTiming(pos.y, { duration: 0 }));
+    }
+  });
+
   // Add jitter effect when in editing mode
   useEffect(() => {
     if (props.state === 'editing') {
@@ -146,7 +160,7 @@ const Widget = (props: WidgetProps) => {
       opacity.value = withTiming(0, defaultSpringConfig);
       translateY.value = withDelay(500, withSpring(pos.y, defaultSpringConfig));
     }
-  }, [props.visible, isDragging.value]);
+  }, [props.visible]);
 
   const style = useAnimatedStyle(() => {
     const zIndex = isDragging.value ? 100 : 0;
@@ -349,6 +363,7 @@ const Widget = (props: WidgetProps) => {
       }
     })
     .onEnd(({ translationX, translationY }) => {
+      props.onDragEnd && runOnJS(props.onDragEnd)();
       shadowOpacity.value = withTiming(0);
       scale.value = withSpring(1, defaultSpringConfig);
       isDragging.value = withDelay(500, withTiming(0, { duration: 0 }));

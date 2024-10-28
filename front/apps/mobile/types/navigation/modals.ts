@@ -60,6 +60,10 @@ export type ModalStackParamList = {
     bill: Bill
   },
   Holdings: undefined;
+  BillsCalendar: {
+    month: number;
+    year: number;
+  }
 };
 
 export type ModalScreenProps<T extends keyof ModalStackParamList> =

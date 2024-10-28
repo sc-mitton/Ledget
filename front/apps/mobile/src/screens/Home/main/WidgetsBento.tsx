@@ -72,7 +72,7 @@ const WidgetsBento = (props: WidgetsBentoProps) => {
 
   // Make sure the picker is on top when it's active, and behind when it's not
   useEffect(() => {
-    if (props.state === 'picking') {
+    if (props.state === 'picking' || props.state === 'dropping') {
       pickerZIndex.value = 100
     } else {
       pickerZIndex.value = withDelay(500, withTiming(-1, { duration: 0 }))
@@ -179,7 +179,8 @@ const WidgetsBento = (props: WidgetsBentoProps) => {
                   scrollY={pickerScrollY}
                   scrollHeight={((Math.ceil(positions.value[widgetTypes[widgetTypes.length - 1].type] - 1000) / 2)) * (itemHeight.value + gap + bottomLabelPadding) + 54}
                   containerHeight={pickerWidgetsContainerHeight}
-                  onDragStart={() => { props.setState(undefined) }}
+                  onDragStart={() => { props.setState('dropping') }}
+                  onDragEnd={() => { props.setState(undefined) }}
                   scrollView={pickerScrollView}
                   loaded={loaded}
                   state={props.state}

@@ -208,12 +208,13 @@ const Selector = (widget: WidgetProps<{ accounts: string[] }>) => {
           }}
         >
           {(selectedAccounts?.length || 0) > 0 &&
-            <Box marginRight='s'>
+            <Box>
               <ColorNumber
                 value={selectedAccounts?.length || 0}
                 color='blueText'
-                backgroundColor='lightBlueButton'
-                fontSize={12}
+                backgroundColor='nestedContainerSeperator'
+                fontSize={13}
+                size={18}
               />
             </Box>}
         </Button>

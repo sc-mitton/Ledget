@@ -197,12 +197,13 @@ const Selector = (widget: WidgetProps<{ categories?: string[] }>) => {
           }}
         >
           {selectedCategories.length > 0 &&
-            <Box marginRight='s'>
+            <Box>
               <ColorNumber
                 value={selectedCategories.length}
                 color='blueText'
                 backgroundColor='nestedContainerSeperator'
-                fontSize={12}
+                fontSize={13}
+                size={18}
               />
             </Box>}
         </Button>

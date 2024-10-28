@@ -15,3 +15,4 @@ export { default as NewBill } from './NewBill/Screen';
 export { default as ConfirmDeleteCategory } from './ConfirmDeleteCategory';
 export { default as ConfirmDeleteBill } from './ConfirmDeleteBill';
 export { default as Holdings } from './Holdings/Holdings';
+export { default as BillsCalendar } from './BillsCalendar';
