@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     gap: 8
   },
   calendarButtonContainer: {
-    marginTop: 8,
+    marginTop: 4,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 16
@@ -29,9 +29,9 @@ const styles = StyleSheet.create({
   },
   numbers: {
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    marginLeft: -4
+    alignItems: 'baseline',
+    marginTop: 4,
+    gap: 4
   },
   numberContainer: {
     alignItems: 'center',

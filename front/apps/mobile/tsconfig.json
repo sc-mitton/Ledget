@@ -39,7 +39,7 @@
         "src/modals/index.ts"
       ],
       "@types": [
-        "types"
+        "src/types"
       ],
       "@ledget/ory": [
         "../../libs/ory/src"

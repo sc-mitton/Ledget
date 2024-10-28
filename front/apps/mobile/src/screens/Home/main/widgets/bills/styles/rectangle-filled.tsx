@@ -1,36 +1,41 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
 const styles = StyleSheet.create({
-  grid: {
+  container: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginHorizontal: -6
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    gap: 24,
+  },
+  leftColumn: {
+    flex: 1,
+    flexGrow: 1,
+    alignItems: 'center',
+  },
+  leftColumnInner: {
+    minWidth: 75,
   },
   column: {
-    height: '100%',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+    flexGrow: 1
   },
   calendar: {
-    marginTop: 12,
-    marginBottom: 8,
-    paddingHorizontal: 4,
-    paddingVertical: 4,
-    gap: 10,
-    height: Dimensions.get('window').width * .625,
+    flex: 1.5,
+    flexGrow: 1.5,
+    gap: 8,
+    flexDirection: 'row',
+    height: '100%',
   },
   calendarCell: {
-    paddingHorizontal: 10,
-    paddingVertical: 2,
     borderRadius: 6,
+    marginTop: -1
   },
   cell: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%'
-  },
-  header: {
-    marginBottom: 12
+    width: '100%',
   },
   day: {
     position: 'relative',
@@ -39,7 +44,7 @@ const styles = StyleSheet.create({
   markersContainer: {
     position: 'absolute',
     left: '50%',
-    bottom: -6,
+    bottom: 0,
     justifyContent: 'center',
     alignItems: 'center'
   },

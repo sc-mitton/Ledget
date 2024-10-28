@@ -3,9 +3,9 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   rectangleBox: {
     flexDirection: 'row',
-    gap: 24,
     width: '100%',
     height: '100%',
+    gap: 24,
   },
   totalAmount: {
     marginTop: -4

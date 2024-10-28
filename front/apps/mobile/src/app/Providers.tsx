@@ -11,6 +11,7 @@ import { useAppearance, setDeviceMode, selectUseDeviceAppearance } from '@featur
 import store, { persistor } from '@features/store';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useEffect } from 'react';
+import { navigationRef } from '@types';
 
 const navTheme = {
   ...DefaultTheme,
@@ -76,7 +77,7 @@ export const withProviders = (App: React.FC) => () => (
       <EventProvider style={styles.fullWidth}>
         <ThemeProvider>
           <GestureHandlerRootView>
-            <NavigationContainer theme={navTheme}>
+            <NavigationContainer theme={navTheme} ref={navigationRef}>
               <ModalPickerProvider>
                 <EmojiPickerProvider>
                   <App />

@@ -65,7 +65,10 @@ const BillsCalendarModal = (props: ModalScreenProps<'BillsCalendar'>) => {
   return (
     <Modal position='centerFloat'>
       <View style={styles.calendar}>
-        <Text fontSize={20}>{dayjs(`${year}-${month}-01`).format('MMMM YYYY')}</Text>
+        <Text fontSize={20}>
+          {dayjs(`${year}-${month}-01`).format('MMM YYYY')}&nbsp;
+          <Text fontSize={20} color='secondaryText'>Bills</Text>
+        </Text>
         <View style={styles.grid}>
           {days.map((weekDays, weekDay) => (
             <View style={styles.column}>
@@ -74,36 +77,28 @@ const BillsCalendarModal = (props: ModalScreenProps<'BillsCalendar'>) => {
                 const monthDots = (billsPerDay?.[day - 1]?.month || 0) + (billsPerDay?.[day - 1]?.once || 0)
                 const yearDots = (billsPerDay?.[day - 1]?.year || 0)
                 return (
-                  <>
+                  <View style={styles.cell}>
                     {i === 0 &&
-                      <Text color='tertiaryText' variant='bold'>
+                      <Text color='tertiaryText' variant='bold' style={styles.header}>
                         {dayjs(`${year}-${month}-${weekDay}`).format('dd')}
                       </Text>}
-                    <View>
-                      <Box style={styles.calendarCell}>
-                        <Text color={isBookend ? 'tertiaryText' : 'mainText'}>
-                          {day}
-                        </Text>
-                      </Box>
-                      {/* Show dots for the number of bills on each day. Max 4 dots total. */}
-                      {!isBookend &&
-                        <View style={styles.markersWrapper}>
-                          <View style={styles.markersContainer}>
-                            <View style={styles.markers}>
-                              {Array.from({ length: monthDots }).slice(0, 4 - Math.min(billsPerDay?.[day - 1]?.year || 0, 2)).map((_, i) =>
-                                <Box backgroundColor='monthColor' key={i} style={styles.marker} />)
-                              }
-                              {Array.from({ length: yearDots })
-                                .slice(0, 4 - Math.min((billsPerDay?.[day - 1]?.month || 0) + (billsPerDay?.[day - 1]?.once || 0), 2))
-                                .map((_, i) =>
-                                  <Box backgroundColor='yearColor' key={i} style={styles.marker} />)
-                              }
-                              {monthDots + yearDots >= 4 && <Icon icon={Plus} color='quinaryText' size={12} strokeWidth={3} />}
-                            </View>
-                          </View>
-                        </View>}
-                    </View>
-                  </>
+                    <Box style={styles.calendarCell}>
+                      <Text color={isBookend ? 'tertiaryText' : 'mainText'}>{day}</Text>
+                    </Box>
+                    {/* Show dots for the number of bills on each day. Max 4 dots total. */}
+                    {!isBookend &&
+                      <View style={styles.markersContainer}>
+                        <View style={styles.markers}>
+                          {Array.from({ length: monthDots }).slice(0, 4 - Math.min(billsPerDay?.[day - 1]?.year || 0, 2)).map((_, i) =>
+                            <Box backgroundColor='monthColor' key={i} style={styles.marker} />)}
+                          {Array.from({ length: yearDots })
+                            .slice(0, 4 - Math.min((billsPerDay?.[day - 1]?.month || 0) + (billsPerDay?.[day - 1]?.once || 0), 2))
+                            .map((_, i) =>
+                              <Box backgroundColor='yearColor' key={i} style={styles.marker} />)}
+                          {monthDots + yearDots >= 4 && <Icon icon={Plus} color='quinaryText' size={12} strokeWidth={3} />}
+                        </View>
+                      </View>}
+                  </View>
                 )
               })}
             </View>
