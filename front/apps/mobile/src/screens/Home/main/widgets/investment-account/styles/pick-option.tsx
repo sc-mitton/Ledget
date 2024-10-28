@@ -28,9 +28,6 @@ const styles = StyleSheet.create({
   nameSkeleton: {
     height: 10,
     width: 72
-  },
-  chartContainer: {
-    flexGrow: 2
   }
 });
 

@@ -8,7 +8,7 @@ import styles from './styles/rectangle-filled'
 import sharedStyles from './styles/shared'
 import { WidgetProps } from '@features/widgetsSlice'
 import { useAppSelector } from '@hooks'
-import { Text, Box, Icon, ColorNumber, DollarCents } from '@ledget/native-ui'
+import { Text, Box, Icon, DollarCents, PulseBox } from '@ledget/native-ui'
 import {
   selectBudgetMonthYear,
   selectBillMetaData,
@@ -80,8 +80,16 @@ const RectangleFilled = (props: WidgetProps & { loading: boolean }) => {
   } = useAppSelector(selectBillMetaData)
 
   return (
-    <Box style={styles.container} padding='m'>
-      <View style={styles.leftColumn}>
+    <Box
+      style={styles.container}
+      paddingRight='s'
+      paddingLeft='s'
+    >
+      <Box
+        style={styles.leftColumn}
+        backgroundColor='nestedContainerSeperator'
+        borderRadius='m'
+      >
         <View style={styles.leftColumnInner}>
           <Text color='secondaryText' fontSize={13}>
             {dayjs(`${year}-${month}-01`).format('MMM')}&nbsp;
@@ -93,31 +101,42 @@ const RectangleFilled = (props: WidgetProps & { loading: boolean }) => {
           <View style={sharedStyles.calendarButtonContainer}>
             <View>
               <View style={sharedStyles.numbers}>
-                <DollarCents
-                  value={
-                    Big(total_monthly_bills_amount)
-                      .plus(total_yearly_bills_amount)
-                      .minus(monthly_bills_amount_remaining)
-                      .minus(yearly_bills_amount_remaining)
-                      .toNumber()
-                  }
-                  withCents={false}
-                  fontSize={15}
-                />
+                {props.loading
+                  ?
+                  <Box marginRight='xs'>
+                    <PulseBox width={32} height='s' />
+                  </Box>
+                  :
+                  <DollarCents
+                    value={
+                      Big(total_monthly_bills_amount)
+                        .plus(total_yearly_bills_amount)
+                        .minus(monthly_bills_amount_remaining)
+                        .minus(yearly_bills_amount_remaining)
+                        .toNumber()
+                    }
+                    withCents={false}
+                    fontSize={15}
+                  />}
                 <Text color='tertiaryText' fontSize={13} lineHeight={15}>paid</Text>
               </View>
               <View style={sharedStyles.numbers}>
-                <DollarCents
-                  value={Big(monthly_bills_amount_remaining).plus(yearly_bills_amount_remaining).toNumber()}
-                  withCents={false}
-                  fontSize={15}
-                />
+                {props.loading
+                  ?
+                  <Box marginRight='xs'>
+                    <PulseBox width={32} height='s' />
+                  </Box>
+                  : <DollarCents
+                    value={Big(monthly_bills_amount_remaining).plus(yearly_bills_amount_remaining).toNumber()}
+                    withCents={false}
+                    fontSize={15}
+                  />}
                 <Text color='tertiaryText' fontSize={13} lineHeight={15}>unpaid</Text>
               </View>
             </View>
           </View>
         </View>
-      </View>
+      </Box>
       <View style={styles.calendar}>
         {days.map((weekDays, weekDay) => (
           <View style={styles.column}>

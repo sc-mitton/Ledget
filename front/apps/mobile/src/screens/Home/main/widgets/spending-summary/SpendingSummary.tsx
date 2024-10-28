@@ -104,14 +104,14 @@ const RectangleFilled = (props: WidgetProps & { loading: boolean }) => {
           <View style={styles.dots}>
             <Box
               backgroundColor='yearColor'
-              borderColor='lightGrayCard'
+              borderColor='nestedContainer'
               borderWidth={1.5}
               style={sharedStyles.dot}
             />
             <View style={sharedStyles.overlappingDot}>
               <Box
                 backgroundColor='monthColor'
-                borderColor='lightGrayCard'
+                borderColor='nestedContainer'
                 borderWidth={1.5}
                 style={sharedStyles.dot}
               />
@@ -143,7 +143,7 @@ const RectangleFilled = (props: WidgetProps & { loading: boolean }) => {
               <View style={sharedStyles.bottomTitle}>
                 <Box
                   backgroundColor='monthColor'
-                  borderColor='lightGrayCard'
+                  borderColor='nestedContainerSeperator'
                   borderWidth={1.5}
                   style={sharedStyles.dot}
                 />
@@ -165,7 +165,7 @@ const RectangleFilled = (props: WidgetProps & { loading: boolean }) => {
               <View style={sharedStyles.bottomTitle}>
                 <Box
                   backgroundColor='yearColor'
-                  borderColor='lightGrayCard'
+                  borderColor='nestedContainerSeperator'
                   borderWidth={1.5}
                   style={sharedStyles.dot}
                 />
@@ -191,7 +191,7 @@ const RectangleFilled = (props: WidgetProps & { loading: boolean }) => {
                 <View style={sharedStyles.bottomTitle}>
                   <Box
                     backgroundColor='monthColor'
-                    borderColor='lightGrayCard'
+                    borderColor='nestedContainerSeperator'
                     borderWidth={1.5}
                     style={sharedStyles.dot}
                   />
@@ -216,7 +216,7 @@ const RectangleFilled = (props: WidgetProps & { loading: boolean }) => {
                 <View style={sharedStyles.bottomTitle}>
                   <Box
                     backgroundColor='yearColor'
-                    borderColor='lightGrayCard'
+                    borderColor='nestedContainerSeperator'
                     borderWidth={1.5}
                     style={sharedStyles.dot}
                   />

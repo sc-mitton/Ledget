@@ -11,7 +11,7 @@ import {
   filteredFetchedConfirmedTransactions,
   budgetItemMetaDataSlice,
   environmentSlice,
-  holdingsSlice
+  investmentsSlice
 } from '@ledget/shared-features';
 import { createMigrate, persistReducer } from "redux-persist";
 import storage from "./storage";
@@ -46,7 +46,7 @@ const persistConfig = {
   storage,
   timeout: 0,
   migrate: createMigrate(migrations),
-  whitelist: ['appearance', 'budgetItemMetaData', 'ui', 'holdings', 'widgets']
+  whitelist: ['appearance', 'budgetItemMetaData', 'ui', 'investments', 'widgets']
 };
 
 const rootReducer = combineReducers({
@@ -60,7 +60,7 @@ const rootReducer = combineReducers({
   appearance: appearanceslice.reducer,
   bio: bioSlice.reducer,
   auth: authSlice.reducer,
-  holdings: holdingsSlice.reducer,
+  investments: investmentsSlice.reducer,
   ui: uiSlice.reducer,
   widgets: widgetsSlice.reducer
 });

@@ -10,9 +10,7 @@ import Animated, {
   interpolate,
   Extrapolation,
   withTiming,
-  cancelAnimation,
   withDelay,
-  useDerivedValue
 } from 'react-native-reanimated';
 
 import styles from './styles';
@@ -120,7 +118,7 @@ export const CustomScrollView = forwardRef<ScrollView, Props>((props, ref) => {
       >
       </ScrollView >
       {
-        true &&
+        showsVerticalScrollIndicator &&
         < Animated.View
           style={[
             props.horizontal ? styles.horizontalScrollIndicator : styles.verticalscrollIndicator,
@@ -141,6 +139,3 @@ export const CustomScrollView = forwardRef<ScrollView, Props>((props, ref) => {
 });
 
 export default CustomScrollView;
-
-
-// (props.horizontal && showsHorizontalScrollIndicator) || (!props.horizontal && showsVerticalScrollIndicator) &&

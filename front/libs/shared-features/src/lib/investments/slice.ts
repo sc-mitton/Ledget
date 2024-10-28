@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import apiSlice from '../apiSlice/slice';
 import { Investments, InvestmentsBalanceHistory, isInvestmentSupported, InvestmentWithProductSupport } from './types';
 
-const investmentsSlice = apiSlice.injectEndpoints({
+const investmentsRTKSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
     getInvestments: build.query<Investments, { start: string, end: string } | void>({
       query: () => 'investments',
@@ -16,20 +16,22 @@ const investmentsSlice = apiSlice.injectEndpoints({
     }),
   }),
 });
-export const { useGetInvestmentsQuery, useGetInvestmendsBalanceHistoryQuery } = investmentsSlice;
+export const { useGetInvestmentsQuery, useGetInvestmendsBalanceHistoryQuery } = investmentsRTKSlice;
 
 
-const initialSecuritiesState = {} as { [key: string]: { institution_value: number, date: string }[] }
+const initialInvestmentsState = {
+  holdingsHistory: {} as { [key: string]: { institution_value: number, date: string }[] },
+}
 
-export const holdingsSlice = createSlice({
-  name: 'holdings',
-  initialState: initialSecuritiesState,
+export const investmentsSlice = createSlice({
+  name: 'investments',
+  initialState: initialInvestmentsState,
   reducers: {
     setSecurities: (state, action) => { }
   },
   extraReducers: (builder) => {
     builder.addMatcher(
-      investmentsSlice.endpoints.getInvestments.matchFulfilled,
+      investmentsRTKSlice.endpoints.getInvestments.matchFulfilled,
       (state, action) => {
         const holdings = action.payload.reduce((acc, i) => {
           if (isInvestmentSupported(i)) {
@@ -41,15 +43,21 @@ export const holdingsSlice = createSlice({
           if (!holding.security_id || !holding.institution_value) {
             continue
           }
-          if (!state[holding.security_id]) {
-            state[holding.security_id] = []
+          if (!state.holdingsHistory[holding.security_id]) {
+            state.holdingsHistory[holding.security_id] = []
           }
-          const latestDate = state[holding.security_id]?.[state[holding.security_id].length - 1]?.date
+          const latestDate = state.holdingsHistory[holding.security_id]?.[state.holdingsHistory[holding.security_id].length - 1]?.date
           if (!latestDate || dayjs(latestDate).isBefore(dayjs(), 'day')) {
-            state[holding.security_id].push({
+            state.holdingsHistory[holding.security_id].push({
               institution_value: holding.institution_value,
               date: dayjs().format('YYYY-MM-DD')
             })
+
+            // Trim the history to the last 2 entries to save memory
+            state.holdingsHistory[holding.security_id] = state.holdingsHistory[holding.security_id].slice(
+              state.holdingsHistory[holding.security_id].length - 2,
+              state.holdingsHistory[holding.security_id].length
+            )
           }
         }
       }
@@ -57,4 +65,4 @@ export const holdingsSlice = createSlice({
   }
 })
 
-export const selectTrackedHoldings = (state: { holdings: typeof initialSecuritiesState }) => state.holdings
+export const selectTrackedHoldings = (state: { holdings: typeof initialInvestmentsState }) => state.holdings

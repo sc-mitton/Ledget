@@ -1,18 +1,20 @@
-import { View } from 'react-native'
-
 import PickOption from './PickOption'
 import { WidgetProps } from '@features/widgetsSlice'
+import { useGetInvestmentsQuery } from '@ledget/shared-features'
+import Selector from './Selector'
+import Filled from './Filled'
 
-const Filled = (props: { accounts: string[] }) => {
-  return (
-    <View></View>
-  )
-}
+const InvestmentAccount = (widget: WidgetProps<{ account: string }>) => {
 
-const AccountsBalance = (widget: WidgetProps<{ accounts: string[] }>) => {
-  return widget.args?.accounts
-    ? <Filled accounts={widget.args?.accounts} />
+  const { data: fetchedData } = useGetInvestmendsBalanceHistoryQuery({
+
+  })
+
+  return widget.id
+    ? widget.args
+      ? <Filled account={widget.args?.account} shape={widget.shape} />
+      : <Selector />
     : <PickOption />
 }
 
-export default AccountsBalance
+export default InvestmentAccount

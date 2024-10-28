@@ -6,12 +6,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: '100%',
-    gap: 24,
+    gap: 16,
   },
   leftColumn: {
     flex: 1,
     flexGrow: 1,
     alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%'
   },
   leftColumnInner: {
     minWidth: 75,
@@ -25,6 +27,7 @@ const styles = StyleSheet.create({
     flex: 1.5,
     flexGrow: 1.5,
     gap: 8,
+    marginRight: 4,
     flexDirection: 'row',
     height: '100%',
   },

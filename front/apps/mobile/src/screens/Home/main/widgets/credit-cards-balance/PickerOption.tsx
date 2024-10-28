@@ -10,7 +10,7 @@ const Shadow = () => {
   return (
     <View style={styles.skeletonRows}>
       {Array.from({ length: 3 }).map((_, i) => (
-        <View style={styles.row}>
+        <View style={styles.row} key={`credit-card-shadow-${i}`}>
           <View
             style={[{
               backgroundColor: accounts?.institutions[i % (accounts.institutions.length)].primary_color,

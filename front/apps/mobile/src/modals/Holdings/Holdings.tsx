@@ -5,7 +5,7 @@ import { ArrowUp, ArrowDown } from 'geist-native-icons';
 
 import styles from './styles/holdings';
 import { ModalScreenProps } from '@types';
-import { Box, Button, Header2, Seperator, Icon } from '@ledget/native-ui';
+import { Box, Button, Header2, Seperator, Icon, CustomScrollView } from '@ledget/native-ui';
 import { useAppSelector } from '@/hooks';
 import { useGetInvestmentsQuery, isInvestmentSupported, Holding } from '@ledget/shared-features';
 import { selectInvestmentsScreenAccounts, selectInvestmentsScreenWindow, selectPinnedHoldings } from '@/features/uiSlice';
@@ -105,9 +105,11 @@ const AccountPicker = (props: ModalScreenProps<'Holdings'>) => {
             />}
         />
       </Box>
-      {holdings?.map((holding, index) => (
-        <Row key={holding.security_id} holding={holding} account={holding.account} index={index} />
-      ))}
+      <CustomScrollView>
+        {holdings?.map((holding, index) => (
+          <Row key={holding.security_id} holding={holding} account={holding.account} index={index} />
+        ))}
+      </CustomScrollView>
     </Box>
   )
 }
