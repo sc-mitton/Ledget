@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   button: {
-    transform: [{ scale: 1.1 }],
+    transform: [{ scale: 1.01 }],
   },
   dragBarContainer: {
     position: 'absolute',
@@ -30,10 +30,10 @@ const styles = StyleSheet.create({
   },
   gestureArea: {
     position: 'absolute',
-    top: 16,
-    left: 16,
-    right: 16,
-    bottom: 16
+    top: 8,
+    left: 8,
+    right: 8,
+    bottom: 8
   },
   labelContainer: {
     position: 'absolute',

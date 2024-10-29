@@ -20,16 +20,16 @@ const styles = StyleSheet.create({
   },
   column: {
     alignItems: 'center',
-    justifyContent: 'center',
-    flexGrow: 1
+    justifyContent: 'space-evenly',
+    flexGrow: 1,
   },
   calendar: {
     flex: 1.5,
     flexGrow: 1.5,
     gap: 8,
-    marginRight: 4,
-    flexDirection: 'row',
+    marginRight: 8,
     height: '100%',
+    flexDirection: 'row',
   },
   calendarCell: {
     borderRadius: 6,

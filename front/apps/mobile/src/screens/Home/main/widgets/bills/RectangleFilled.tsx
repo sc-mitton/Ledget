@@ -80,15 +80,11 @@ const RectangleFilled = (props: WidgetProps & { loading: boolean }) => {
   } = useAppSelector(selectBillMetaData)
 
   return (
-    <Box
-      style={styles.container}
-      paddingRight='s'
-      paddingLeft='s'
-    >
+    <Box style={styles.container}>
       <Box
         style={styles.leftColumn}
         backgroundColor='nestedContainerSeperator'
-        borderRadius='m'
+        borderRadius='l'
       >
         <View style={styles.leftColumnInner}>
           <Text color='secondaryText' fontSize={13}>

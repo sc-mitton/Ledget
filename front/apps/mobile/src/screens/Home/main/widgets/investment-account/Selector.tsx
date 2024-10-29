@@ -15,7 +15,6 @@ import { updateWidget, WidgetProps } from '@features/widgetsSlice';
 import { windows } from './constants';
 
 const SELECT_OPTION_WIDTH = 120
-const MAX = 1
 
 const Selector = (props: WidgetProps) => {
   const theme = useTheme()

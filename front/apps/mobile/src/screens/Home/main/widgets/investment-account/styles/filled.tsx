@@ -8,19 +8,20 @@ const styles = StyleSheet.create({
   squareTitleContainer: {
     alignItems: 'flex-start',
     gap: 4,
-    marginLeft: 4
+    marginTop: 4,
+    marginLeft: 6
   },
   rectangleTitleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
     marginVertical: 4,
-    marginHorizontal: 12
+    marginHorizontal: 6
   },
   squareTitle: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: 6,
     marginLeft: -4
   },
   rectangleTitle: {

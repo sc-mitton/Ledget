@@ -1,6 +1,7 @@
 import { View } from 'react-native';
 
 import styles from './styles/picker-option';
+import sharedStyles from './styles/shared';
 import { Box, InstitutionLogo } from '@ledget/native-ui';
 import { useGetAccountsQuery } from '@ledget/shared-features';
 
@@ -15,7 +16,7 @@ const Shadow = () => {
             style={[{
               backgroundColor: accounts?.institutions[i % (accounts.institutions.length)].primary_color,
             },
-            styles.card
+            sharedStyles.card
             ]}
           >
             <View style={styles.logoContainer}>

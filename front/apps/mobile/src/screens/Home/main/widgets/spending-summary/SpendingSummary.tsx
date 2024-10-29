@@ -52,7 +52,7 @@ const SquareFilled = (props: WidgetProps & { loading: boolean }) => {
               borderWidth={1.5}
               style={sharedStyles.dot}
             />
-            <Text fontSize={12} color='secondaryText'>Month</Text>
+            <Text fontSize={13} color='secondaryText'>Month</Text>
           </View>
           <DollarCents value={Big(monthly_spent).toNumber()} withCents={false} fontSize={15} />
         </View>
@@ -73,7 +73,7 @@ const SquareFilled = (props: WidgetProps & { loading: boolean }) => {
                 borderWidth={1.5}
                 style={sharedStyles.dot}
               />
-              <Text fontSize={12} color='secondaryText'>Year</Text>
+              <Text fontSize={13} color='secondaryText'>Year</Text>
               <Icon icon={Info} size={12} color='tertiaryText' strokeWidth={2} />
             </View>
           </TouchableOpacity>
@@ -98,7 +98,7 @@ const RectangleFilled = (props: WidgetProps & { loading: boolean }) => {
   });
 
   return (
-    <Box paddingRight='s' paddingLeft='l' style={styles.rectangleBox}>
+    <Box style={styles.rectangleBox}>
       <View style={styles.rectangleLeft}>
         <View style={styles.rectangleLeftInner}>
           <View style={styles.dots}>
@@ -129,7 +129,7 @@ const RectangleFilled = (props: WidgetProps & { loading: boolean }) => {
       </View>
       <Box
         backgroundColor='nestedContainerSeperator'
-        borderRadius='m'
+        borderRadius='l'
         style={styles.rectangleRight}
       >
         <View style={styles.rectangleRightColumn}>
@@ -147,7 +147,7 @@ const RectangleFilled = (props: WidgetProps & { loading: boolean }) => {
                   borderWidth={1.5}
                   style={sharedStyles.dot}
                 />
-                <Text fontSize={12} color='secondaryText'>Month</Text>
+                <Text fontSize={13} color='secondaryText'>Month</Text>
                 <Icon icon={Info} size={12} color='tertiaryText' strokeWidth={2} />
               </View>
             </TouchableOpacity>
@@ -169,7 +169,7 @@ const RectangleFilled = (props: WidgetProps & { loading: boolean }) => {
                   borderWidth={1.5}
                   style={sharedStyles.dot}
                 />
-                <Text fontSize={12} color='secondaryText'>Year</Text>
+                <Text fontSize={13} color='secondaryText'>Year</Text>
                 <Icon icon={Info} size={12} color='tertiaryText' strokeWidth={2} />
               </View>
             </TouchableOpacity>
@@ -195,7 +195,7 @@ const RectangleFilled = (props: WidgetProps & { loading: boolean }) => {
                     borderWidth={1.5}
                     style={sharedStyles.dot}
                   />
-                  <Text fontSize={12} color='secondaryText'>Left</Text>
+                  <Text fontSize={13} color='secondaryText'>Left</Text>
                   <Icon icon={Info} size={12} color='tertiaryText' strokeWidth={2} />
                 </View>
               </TouchableOpacity>
@@ -220,7 +220,7 @@ const RectangleFilled = (props: WidgetProps & { loading: boolean }) => {
                     borderWidth={1.5}
                     style={sharedStyles.dot}
                   />
-                  <Text fontSize={12} color='secondaryText'>Left</Text>
+                  <Text fontSize={13} color='secondaryText'>Left</Text>
                   <Icon icon={Info} size={12} color='tertiaryText' strokeWidth={2} />
                 </View>
               </TouchableOpacity>

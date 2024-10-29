@@ -28,13 +28,6 @@ const styles = StyleSheet.create({
     height: 10,
     width: 72
   },
-  card: {
-    width: 36,
-    height: 23,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4
-  },
   logoContainer: {
     justifyContent: 'center',
     alignItems: 'center',

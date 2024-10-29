@@ -115,7 +115,7 @@ const WidgetsBento = (props: WidgetsBentoProps) => {
               style={[
                 {
                   height: order.value.length > 0 && positions.value[order.value[order.value.length - 1]] > 0
-                    ? Math.ceil(positions.value[order.value[order.value.length - 1]] / 2) * (itemHeight.value + gap)
+                    ? Math.ceil(positions.value[order.value[order.value.length - 1]] / 2) * (itemHeight.value + gap) + theme.spacing.navHeight * 2.5
                     : 0
                 },
                 styles.widgetsContainer,
