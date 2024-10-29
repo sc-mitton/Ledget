@@ -44,7 +44,7 @@ const WidgetsBento = (props: WidgetsBentoProps) => {
   const positions = useSharedValue(
     Object.assign(
       getPositionsMap(selectedStoredWidgets),
-      getPositionsMap(widgetTypes),
+      getPositionsMap(widgetTypes.map(t => ({ ...t, shape: 'square' })))
     )
   );
 
@@ -82,7 +82,7 @@ const WidgetsBento = (props: WidgetsBentoProps) => {
   useEffect(() => {
     positions.value = Object.assign(
       getPositionsMap(widgets),
-      getPositionsMap(widgetTypes),
+      getPositionsMap(widgetTypes.map(t => ({ ...t, shape: 'square' })))
     )
     order.value = widgets.map(w => w.id!)
   }, [widgets])

@@ -7,7 +7,7 @@ const types = [
   { type: 'saving-and-investing', shape: 'square' },
   { type: 'spending-summary', shape: 'square' },
   { type: 'bills', shape: 'square' },
-  { type: 'credit-cards', shape: 'square' },
+  { type: 'credit-cards', shape: 'rectangle' },
 ] as const
 
 export const widgetTypes = types.map(t => t as { type: (typeof types)[number]['type'], shape: (typeof types)[number]['shape'] })

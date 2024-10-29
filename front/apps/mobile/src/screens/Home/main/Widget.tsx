@@ -47,7 +47,7 @@ const Widget = (props: WidgetProps) => {
 
   // Make sure widget is immediately positioned if it's not part of the picker
   useAnimatedReaction(() => props.height, (height) => {
-    width.value = props.widget.shape === 'rectangle'
+    width.value = props.widget.shape === 'rectangle' && props.widget.id
       ? (height.value * 2) + gap
       : height.value;
 
