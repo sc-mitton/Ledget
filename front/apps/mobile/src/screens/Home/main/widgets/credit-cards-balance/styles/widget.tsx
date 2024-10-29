@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   carouselDotsContainer: {
-    transform: [{ translateX: -2 }, { translateY: 4 }],
+    transform: [{ translateX: -2 }],
   }
 });
 
