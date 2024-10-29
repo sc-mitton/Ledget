@@ -3,10 +3,10 @@ import { Big } from 'big.js'
 
 import styles from './styles/accounts-balance'
 import { WidgetProps } from '@features/widgetsSlice'
-import PickOption from './PickerOption'
-import Selector from './Selector'
 import { useGetAccountsQuery } from '@ledget/shared-features'
 import { InstitutionLogo, DollarCents, Text } from '@ledget/native-ui'
+import PickOption from './PickerOption';
+import AccountPicker from './AccountPicker';
 
 const Filled = (widget: WidgetProps<{ accounts: string[] }>) => {
   const { data: accounts } = useGetAccountsQuery()
@@ -32,12 +32,12 @@ const Filled = (widget: WidgetProps<{ accounts: string[] }>) => {
 }
 
 const AccountsBalance = (widget: WidgetProps<{ accounts: string[] }>) => {
-  const { isSuccess } = useGetAccountsQuery()
+  const { data } = useGetAccountsQuery()
 
-  return widget.id && isSuccess
+  return widget.id && data
     ? widget.args
       ? <Filled {...widget} />
-      : <Selector {...widget} />
+      : <AccountPicker accounts={data.accounts} {...widget} />
     : <PickOption />
 }
 

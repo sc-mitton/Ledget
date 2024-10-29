@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { Fragment, useEffect, useMemo, useState } from 'react'
 import { View, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { Plus } from 'geist-native-icons'
@@ -72,13 +72,13 @@ const Calendar = (props: BudgetScreenProps<'Main'> & { onPress: () => void }) =>
       <Text fontSize={20}>{dayjs(`${year}-${month}-01`).format('MMMM YYYY')}</Text>
       <View style={styles.grid}>
         {days.map((weekDays, weekDay) => (
-          <View style={styles.column}>
+          <View style={styles.column} key={`calendar-week-${weekDay}`}>
             {weekDays.map((day, i) => {
               const isBookend = ((weekDays[i + 1] || 40) < day && i < 2) || ((weekDays[i - 1] || 0) > day && i > 2)
               const monthDots = (billsPerDay?.[day - 1]?.month || 0) + (billsPerDay?.[day - 1]?.once || 0)
               const yearDots = (billsPerDay?.[day - 1]?.year || 0)
               return (
-                <>
+                <Fragment key={`calendar-day-${day}`}>
                   {i === 0 &&
                     <Text color='tertiaryText' variant='bold'>
                       {dayjs(`${year}-${month}-${weekDay}`).format('dd')}
@@ -104,14 +104,14 @@ const Calendar = (props: BudgetScreenProps<'Main'> & { onPress: () => void }) =>
                             {Array.from({ length: yearDots })
                               .slice(0, 4 - Math.min((billsPerDay?.[day - 1]?.month || 0) + (billsPerDay?.[day - 1]?.once || 0), 2))
                               .map((_, i) =>
-                                <Box backgroundColor='yearColor' key={i} style={styles.marker} />)
+                                <Box backgroundColor='yearColor' key={`year-dot-${i}`} style={styles.marker} />)
                             }
                             {monthDots + yearDots >= 4 && <Icon icon={Plus} color='quinaryText' size={12} strokeWidth={3} />}
                           </View>
                         </View>
                       </View>}
                   </TouchableOpacity>
-                </>
+                </Fragment>
               )
             })}
           </View>

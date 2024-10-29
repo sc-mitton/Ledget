@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { View, TouchableHighlight, TouchableOpacity, ViewStyle } from 'react-native';
 import Animated, { ZoomOut, ZoomIn, Easing } from 'react-native-reanimated';
 import OutsidePressHandler from 'react-native-outside-press';
@@ -93,7 +93,7 @@ export function Menu(props: MenuProps) {
                   >
                     <Box style={styles.menuBackground} />
                     {props.items.map((item, index) => (
-                      <>
+                      <Fragment key={`context-menu-item-${item.label.replace(' ', '-')}`}>
                         {index !== 0 &&
                           <View style={styles.seperator}>
                             <Seperator
@@ -121,7 +121,7 @@ export function Menu(props: MenuProps) {
                             {item.icon && <View style={styles.icon}><item.icon /></View>}
                           </Box>
                         </TouchableHighlight>
-                      </>
+                      </Fragment>
                     ))}
                   </BlurView>
                 </Box>

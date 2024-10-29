@@ -53,7 +53,10 @@ const Chart = () => {
   const accounts = useAppSelector(selectInvestmentsScreenAccounts)
   const window = useAppSelector(selectInvestmentsScreenWindow)
 
-  const { data: fetchedData } = useGetInvestmendsBalanceHistoryQuery()
+  const { data: fetchedData } = useGetInvestmendsBalanceHistoryQuery({
+    end: dayjs().format('YYYY-MM-DD'),
+    start: dayjs().subtract(window?.amount || 100, window?.period || 'year').format('YYYY-MM-DD')
+  })
   const { data: investmentsData } = useGetInvestmentsQuery({
     end: dayjs().format('YYYY-MM-DD'),
     start: dayjs().subtract(window?.amount || 100, window?.period || 'year').format('YYYY-MM-DD')

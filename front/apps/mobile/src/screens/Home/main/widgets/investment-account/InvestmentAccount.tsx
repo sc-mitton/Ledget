@@ -1,19 +1,14 @@
 import PickOption from './PickOption'
-import { WidgetProps } from '@features/widgetsSlice'
-import { useGetInvestmentsQuery } from '@ledget/shared-features'
 import Selector from './Selector'
 import Filled from './Filled'
+import { Props } from './types'
 
-const InvestmentAccount = (widget: WidgetProps<{ account: string }>) => {
+const InvestmentAccount = (props: Props) => {
 
-  const { data: fetchedData } = useGetInvestmendsBalanceHistoryQuery({
-
-  })
-
-  return widget.id
-    ? widget.args
-      ? <Filled account={widget.args?.account} shape={widget.shape} />
-      : <Selector />
+  return props.id
+    ? props.args
+      ? <Filled {...props} shape={props.shape} />
+      : <Selector {...props} />
     : <PickOption />
 }
 

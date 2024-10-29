@@ -6,8 +6,8 @@ import Carousel from "react-native-reanimated-carousel";
 import { useTheme } from "@shopify/restyle";
 import { LinearGradient, Canvas, Rect, vec } from '@shopify/react-native-skia';
 
-import styles from './styles/selector';
-import { Account, useGetAccountsQuery } from "@ledget/shared-features";
+import styles from './styles/accounts-picker';
+import { Account } from "@ledget/shared-features";
 import { Button, Box, ColorNumber, Text, Icon, InstitutionLogo } from "@ledget/native-ui";
 import { WidgetProps, updateWidget } from "@/features/widgetsSlice";
 import { useAppDispatch } from "@/hooks";
@@ -15,9 +15,8 @@ import { useAppDispatch } from "@/hooks";
 const SELECT_OPTION_WIDTH = 150
 const MAX = 3
 
-const Selector = (widget: WidgetProps<{ accounts: string[] }>) => {
+const Selector = (props: WidgetProps<{ accounts: string[] }> & { accounts: Account[] }) => {
   const dispatch = useAppDispatch()
-  const { data } = useGetAccountsQuery()
   const theme = useTheme()
 
   const progress = useSharedValue(0)
@@ -63,14 +62,14 @@ const Selector = (widget: WidgetProps<{ accounts: string[] }>) => {
           />
         </Rect>
       </Canvas>
-      {data?.accounts
+      {props?.accounts
         ?
         <Carousel
           style={styles.accountsCarousel}
           vertical={false}
           snapEnabled={true}
           mode='parallax'
-          data={data?.accounts.filter(a => a.type === 'depository')}
+          data={props.accounts.filter(a => a.type === 'depository')}
           renderItem={({ item: account, index }) => (
             <View style={styles.optionButtonContainer}>
               <View>
@@ -140,11 +139,11 @@ const Selector = (widget: WidgetProps<{ accounts: string[] }>) => {
               return
             }
             if (p - progress.value > 20) {
-              setCarouselIndex(carouselIndex - 1 >= 0 ? carouselIndex - 1 : data.accounts.length - 1)
+              setCarouselIndex(carouselIndex - 1 >= 0 ? carouselIndex - 1 : props.accounts.length - 1)
               carouselIndexLock.current = true
               progress.value = p
             } else if (p - progress.value < -20) {
-              setCarouselIndex(carouselIndex + 1 < data.accounts.length ? carouselIndex + 1 : 0)
+              setCarouselIndex(carouselIndex + 1 < props.accounts.length ? carouselIndex + 1 : 0)
               carouselIndexLock.current = true
               progress.value = p
             }
@@ -197,9 +196,9 @@ const Selector = (widget: WidgetProps<{ accounts: string[] }>) => {
             if (selectedAccounts) {
               dispatch(updateWidget({
                 widget: {
-                  ...widget,
+                  ...props,
                   args: {
-                    ...widget.args,
+                    ...props.args,
                     accounts: selectedAccounts.map(a => a.id)
                   }
                 }

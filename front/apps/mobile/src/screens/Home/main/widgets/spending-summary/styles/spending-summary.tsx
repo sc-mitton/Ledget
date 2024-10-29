@@ -23,6 +23,9 @@ const styles = StyleSheet.create({
     flex: 3,
     paddingLeft: 0
   },
+  rectangleLeftInner: {
+    minWidth: 75
+  },
   rectangleRight: {
     flexGrow: 1,
     flex: 1,

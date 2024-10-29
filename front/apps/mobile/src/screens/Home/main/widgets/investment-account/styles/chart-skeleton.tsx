@@ -2,7 +2,8 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   chartContainer: {
-    flexGrow: 2
+    flexGrow: 2,
+    marginHorizontal: -13
   }
 });
 

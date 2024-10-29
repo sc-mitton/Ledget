@@ -1,6 +1,7 @@
 import apiSlice from '../apiSlice/slice';
+import { createSlice, createSelector } from '@reduxjs/toolkit';
 
-import { PlaidItem, AddNewPlaidItemPayload, GetPlaidTokenResponse } from './types';
+import { PlaidItem, AddNewPlaidItemPayload, GetPlaidTokenResponse, Institution, RootStateWithInstitutions } from './types';
 
 const apiWithTags = apiSlice.enhanceEndpoints({
   addTagTypes: ['PlaidItem', 'PlaidToken']
@@ -59,10 +60,43 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
   })
 });
 
+
+export const institutionsSlice = createSlice({
+  name: 'institutions',
+  initialState: {
+    map: {} as { [key: string]: string },
+    institutions: {} as { [key: string]: Institution }
+  },
+  reducers: { foo: (state, action) => { } },
+  extraReducers: (builder) => {
+    builder.addMatcher(
+      extendedApiSlice.endpoints.getPlaidItems.matchFulfilled,
+      (state, action) => {
+        action.payload.forEach((item) => {
+          item.accounts.forEach((account) => {
+            if (item.institution) {
+              state.map[account.id] = item.institution?.id;
+              state.institutions[item.institution.id] = item.institution;
+            }
+          });
+        })
+      }
+    );
+  }
+});
+
+const selectInstitutionId = (state: RootStateWithInstitutions, accountId: string) => (state.institutions.map[accountId] || accountId);
+const selectInstitutions = (state: RootStateWithInstitutions) => state.institutions.institutions;
+export const selectInstitution = createSelector(
+  [selectInstitutionId, selectInstitutions],
+  (institutionId, institutions) => institutions[institutionId]
+);
+
 export const {
   useGetPlaidTokenQuery,
   useLazyGetPlaidTokenQuery,
   useGetPlaidItemsQuery,
+  useLazyGetPlaidItemsQuery,
   useExchangePlaidTokenMutation,
   useDeletePlaidItemMutation,
 } = extendedApiSlice;

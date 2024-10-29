@@ -4,7 +4,7 @@ import { ArrowUpRight } from 'geist-native-icons';
 import styles from './styles/pick-option';
 import { Box, InstitutionLogo, Icon } from '@ledget/native-ui';
 import { useGetAccountsQuery } from '@ledget/shared-features';
-import ChartSkeleton from './ChartSkeleton';
+import ChartSkeleton from './Chart';
 
 const Shadow = () => {
   const { data: accounts } = useGetAccountsQuery();

@@ -40,7 +40,7 @@ const AccountsPickerButton = (props: AccountsTabsScreenProps<any>) => {
         <View style={styles.accountsPickerbuttonContent}>
           <View style={styles.logos}>
             {accounts?.map(a => (
-              <View style={styles.logo}>
+              <View style={styles.logo} key={`account-picker-button-${a.id}`}>
                 <InstitutionLogo key={a.id} account={a.id} />
               </View>
             ))}

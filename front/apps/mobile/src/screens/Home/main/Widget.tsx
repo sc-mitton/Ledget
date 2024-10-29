@@ -114,12 +114,12 @@ const Widget = (props: WidgetProps) => {
   // Add jitter effect when in editing mode
   useEffect(() => {
     if (props.state === 'editing') {
-      dragBarOpacity.value = withTiming(1);
-      deleteButtonOpacity.value = withTiming(1);
+      deleteButtonOpacity.value = withTiming(1, { duration: 200 })
+      dragBarOpacity.value = withTiming(1, { duration: 200 })
       rotate.value = withRepeat(withTiming(1, { duration: 100 }), -1, true)
     } else {
-      dragBarOpacity.value = withTiming(0);
-      deleteButtonOpacity.value = withTiming(0);
+      deleteButtonOpacity.value = withTiming(0, { duration: 200 })
+      dragBarOpacity.value = withTiming(0, { duration: 200 })
       rotate.value = withTiming(0, { duration: 0 })
     }
   }, [props.state])

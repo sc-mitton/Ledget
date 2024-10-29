@@ -10,14 +10,13 @@ const investmentsRTKSlice = apiSlice.injectEndpoints({
       query: () => 'investments',
       providesTags: ['Investment'],
     }),
-    getInvestmendsBalanceHistory: build.query<InvestmentsBalanceHistory, void>({
+    getInvestmendsBalanceHistory: build.query<InvestmentsBalanceHistory, { start: string, end: string }>({
       query: () => 'investments/balance-history',
       providesTags: ['InvestmentBalanceHistory'],
     }),
   }),
 });
 export const { useGetInvestmentsQuery, useGetInvestmendsBalanceHistoryQuery } = investmentsRTKSlice;
-
 
 const initialInvestmentsState = {
   holdingsHistory: {} as { [key: string]: { institution_value: number, date: string }[] },

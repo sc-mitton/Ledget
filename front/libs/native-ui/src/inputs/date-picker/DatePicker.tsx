@@ -57,8 +57,7 @@ export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<P
 
   return (
     <>
-      {props.label &&
-        <InputLabel>{props.label}</InputLabel>}
+      {props.label && <InputLabel>{props.label}</InputLabel>}
       <View
         style={styles.mainContainer}
         onLayout={(e) => setPickerWidth(e.nativeEvent.layout.width)}

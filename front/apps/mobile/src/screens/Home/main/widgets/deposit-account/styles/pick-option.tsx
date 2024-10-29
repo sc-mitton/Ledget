@@ -30,7 +30,8 @@ const styles = StyleSheet.create({
     width: 72
   },
   chartContainer: {
-    flexGrow: 2
+    flexGrow: 2,
+    marginHorizontal: -12,
   }
 });
 

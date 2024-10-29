@@ -1,23 +1,42 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Platform } from "react-native";
+import { useSelector } from "react-redux";
 
 import { Base64Image } from "../base64-image/Base64Image"
 import type { Props } from "../base64-image/Base64Image"
-import { useGetPlaidItemsQuery } from '@ledget/shared-features';
+import { selectInstitution, useLazyGetPlaidItemsQuery } from '@ledget/shared-features';
 
-export const InstitutionLogo = (props: Props & { account?: string, institution?: string, hasShadow?: boolean, hasBorder?: boolean }) => {
+interface InstitutionLogoProps extends Props {
+  account?: string
+  institution?: string
+  hasShadow?: boolean
+  hasBorder?: boolean
+}
+
+export const InstitutionLogo = (props: InstitutionLogoProps) => {
   const { hasShadow = true, hasBorder = true } = props;
 
-  const { data: plaidItemsData } = useGetPlaidItemsQuery();
+  const institution = useSelector((state: any) => selectInstitution(state, props.account || props.institution || ''));
+  const [getPlaidItems, { data: plaidItemsData }] = useLazyGetPlaidItemsQuery();
+  const [logoData, setLogoData] = useState<string>();
 
-  const logoData = useMemo(() => {
-    if (props.institution) {
-      return plaidItemsData?.find((p) => p.institution?.id === props.institution)?.institution?.logo
+  useEffect(() => {
+    if (!institution) {
+      getPlaidItems()
     } else {
-      return plaidItemsData?.find((p) =>
-        p.accounts.find((account) => account.id === props.account))?.institution?.logo
+      setLogoData(institution?.logo)
     }
-  }, [plaidItemsData, props.account, props.institution])
+  }, [institution])
+
+  useEffect(() => {
+    if (plaidItemsData) {
+      if (props.institution && !institution) {
+        setLogoData(plaidItemsData?.find((p) => p.institution?.id === props.institution)?.institution?.logo)
+      } else if (props.account && !institution) {
+        setLogoData(plaidItemsData?.find((p) => p.accounts.find((account) => account.id === props.account))?.institution?.logo)
+      }
+    }
+  }, [plaidItemsData])
 
   return (
     <Base64Image

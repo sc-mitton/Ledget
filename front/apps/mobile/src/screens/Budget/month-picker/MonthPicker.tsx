@@ -90,10 +90,10 @@ export default function DatePicker() {
                   onPageSelected={(n) => setPagerIndex(n.nativeEvent.position)}
                   style={styles.pagerView}>
                   {options.map((yearKey, i) => (
-                    <View key={`year`} style={styles.grid}>
+                    <View key={`year-${yearKey}`} style={styles.grid}>
                       {Object.entries(yearKey).map(([y, group]) => (
                         group.map((months, c) => (
-                          <View style={styles.column}>
+                          <View style={styles.column} key={`month-${y}-${c}`}>
                             {months.map((m, r) => (
                               <Button
                                 backgroundColor={

@@ -1,24 +1,35 @@
 import { useTheme } from '@shopify/restyle';
 import { View } from 'react-native';
-import { CartesianChart, Area, Line } from 'victory-native';
-import { LinearGradient, vec } from '@shopify/react-native-skia';
+import { CartesianChart, Area, Line, useChartPressState } from 'victory-native';
+import { LinearGradient, vec, useFont } from '@shopify/react-native-skia';
 import dayjs from 'dayjs';
 
 import styles from './styles/chart-skeleton';
-import tempDataValues from './tempChartData';
+import { VictoryTooltip } from '@ledget/native-ui';
+import { tempInvestmentsBalanceChartData } from '@constants';
+import SourceSans3Regular from '../../../../../../assets/fonts/SourceSans3Regular.ttf'
 
-const tempChartData = tempDataValues.map((d, i) => ({
+const tempChartData = tempInvestmentsBalanceChartData.map((d, i) => ({
   date: dayjs().subtract(i, 'days').format('YYYY-MM-DD'),
   balance: d
 })).reverse();
 
-const ChartSkeleton = () => {
+interface Props {
+  data?: {
+    date: string,
+    balance: number,
+  }[]
+}
+
+const ChartSkeleton = (props: Props) => {
   const theme = useTheme();
+  const { state, isActive } = useChartPressState({ x: '0', y: { balance: 0 } })
+  const font = useFont(SourceSans3Regular, 14)
 
   return (
     <View style={styles.chartContainer}>
       <CartesianChart
-        data={tempChartData}
+        data={props.data || tempChartData}
         xKey={'date'}
         yKeys={['balance']}
         xAxis={{
@@ -34,7 +45,7 @@ const ChartSkeleton = () => {
           formatYLabel: () => '',
         }]}
         padding={{ left: 0 }}
-        domainPadding={{ left: 6, right: 6, top: 20, bottom: 100 }}
+        domainPadding={{ left: 6, right: 6, top: 20, bottom: 45 }}
       >
         {({ points, chartBounds }) => (
           <>
@@ -61,6 +72,28 @@ const ChartSkeleton = () => {
               strokeCap='round'
               curveType='natural'
             />
+            <Line
+              animate={{ type: 'spring', duration: 300 }}
+              points={points.balance}
+              color={props.data ? theme.colors.blueChartColor : theme.colors.quinaryText}
+              strokeWidth={2}
+              strokeCap='round'
+              curveType='natural'
+            />
+            {isActive && props.data && (
+              <VictoryTooltip
+                state={state}
+                font={font}
+                chartBounds={chartBounds}
+                color={theme.colors.mainText}
+                xAxisTipColor={theme.colors.tertiaryText}
+                dotColor={theme.colors.blueText}
+                borderColor={theme.colors.lightBlueButton}
+                backgroundColor={theme.colors.grayButton}
+                verticalCrosshair={true}
+                lineOffset={-20}
+                xAxisTip={true}
+              />)}
           </>
         )}
       </CartesianChart>

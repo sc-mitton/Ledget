@@ -75,7 +75,7 @@ const WidgetsBento = (props: WidgetsBentoProps) => {
     if (props.state === 'picking' || props.state === 'dropping') {
       pickerZIndex.value = 100
     } else {
-      pickerZIndex.value = withDelay(500, withTiming(-1, { duration: 0 }))
+      pickerZIndex.value = withDelay(1500, withTiming(-1, { duration: 0 }))
     }
   }, [props.state])
 
@@ -114,10 +114,9 @@ const WidgetsBento = (props: WidgetsBentoProps) => {
             <View
               style={[
                 {
-                  height:
-                    order.value.length > 0
-                      ? Math.ceil(positions.value[order.value[order.value.length - 1]] / 2) * (itemHeight.value + gap)
-                      : 0
+                  height: order.value.length > 0 && positions.value[order.value[order.value.length - 1]] > 0
+                    ? Math.ceil(positions.value[order.value[order.value.length - 1]] / 2) * (itemHeight.value + gap)
+                    : 0
                 },
                 styles.widgetsContainer,
                 styles.currentWidgetsScrollView
@@ -163,7 +162,11 @@ const WidgetsBento = (props: WidgetsBentoProps) => {
           >
             <View
               style={[
-                { height: ((Math.ceil(positions.value[widgetTypes[widgetTypes.length - 1].type] - 1000) / 2)) * (itemHeight.value + gap + bottomLabelPadding) + 54 },
+                {
+                  height: positions.value[widgetTypes[widgetTypes.length - 1].type] > 0
+                    ? ((Math.ceil(positions.value[widgetTypes[widgetTypes.length - 1].type] - 1000) / 2)) * (itemHeight.value + gap + bottomLabelPadding) + 54
+                    : 0
+                },
                 styles.pickerWidgetsScrollView
               ]}
             >

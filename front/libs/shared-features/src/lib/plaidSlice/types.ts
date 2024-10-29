@@ -1,5 +1,5 @@
-interface Institution {
-  id?: string;
+export interface Institution {
+  id: string;
   name?: string;
   logo?: string;
   primary_color?: string;
@@ -37,4 +37,12 @@ export interface AddNewPlaidItemPayload {
   public_token: string;
   accounts: Account[];
   institution?: Institution;
+}
+
+export type RootStateWithInstitutions = {
+  institutions: {
+    map: { [key: string]: string };
+    institutions: { [key: string]: Institution };
+  },
+  [key: string]: any;
 }

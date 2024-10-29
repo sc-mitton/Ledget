@@ -100,7 +100,7 @@ const RectangleFilled = (props: WidgetProps & { loading: boolean }) => {
   return (
     <Box paddingRight='s' paddingLeft='l' style={styles.rectangleBox}>
       <View style={styles.rectangleLeft}>
-        <View>
+        <View style={styles.rectangleLeftInner}>
           <View style={styles.dots}>
             <Box
               backgroundColor='yearColor'

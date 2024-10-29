@@ -29,6 +29,9 @@
       "@hooks": [
         "src/hooks/index.ts"
       ],
+      "@constants": [
+        "src/constants/index.ts"
+      ],
       "@components": [
         "src/components/index.ts"
       ],

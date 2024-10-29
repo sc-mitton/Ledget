@@ -419,10 +419,8 @@ export const {
 export const useGetTransactionQueryState = transactionSlice.endpoints.getTransactions.useQueryState;
 
 // Selectors
-const selectUnconfirmed = (state: RootStateWithTransactions) =>
-  state.confirmStack.unconfirmed;
-const selectConfirmedQue = (state: RootStateWithTransactions) =>
-  state.confirmStack.confirmedQue;
+const selectUnconfirmed = (state: RootStateWithTransactions) => state.confirmStack.unconfirmed;
+const selectConfirmedQue = (state: RootStateWithTransactions) => state.confirmStack.confirmedQue;
 const selectDateYear = (state: RootStateWithTransactions, date: { year: number; month: number }) => date;
 const selectMonthYear = (state: RootStateWithTransactions, date: { year: number; month: number }) => date;
 export const selectFilteredFetchedConfirmedTransactions = (state: RootStateWithTransactions) => state.filteredFetchedonfirmedTransactions.filtered;

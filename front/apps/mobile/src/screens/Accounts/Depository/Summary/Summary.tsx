@@ -23,7 +23,7 @@ import { useGetAccountsQuery, useLazyGetAccountBalanceHistoryQuery, useLazyGetAc
 import SourceSans3Regular from '../../../../../assets/fonts/SourceSans3Regular.ttf';
 import { useAppearance } from '@/features/appearanceSlice';
 import { ChartWindowsMenu } from '@/components';
-import { tempChartData, windows } from './constants';
+import { tempDepositBalanceChartData, chartWindows } from '@constants';
 
 export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
   const { data: accountsData } = useGetAccountsQuery()
@@ -33,11 +33,11 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
   const theme = useTheme();
   const font = useFont(SourceSans3Regular, 14)
 
-  const [window, setWindow] = useState<typeof windows[number]['key']>(windows[0].key)
+  const [window, setWindow] = useState<typeof chartWindows[number]['key']>(chartWindows[0].key)
   const [showMenu, setShowMenu] = useState(false)
   const [dateWindow, setDateWindow] = useState<{ start: number, end: number }>({ start: 0, end: 0 })
   const [calculatedTrend, setCalculatedTrend] = useState(0)
-  const [balanceHistoryChartData, setBalanceHistoryChartData] = useState(tempChartData)
+  const [balanceHistoryChartData, setBalanceHistoryChartData] = useState(tempDepositBalanceChartData)
   const [showChart, setShowChart] = useState(true)
   const { state, isActive } = useChartPressState({ x: '0', y: { balance: 0 } })
 
@@ -162,7 +162,7 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
         {showChart
           ?
           <ChartWindowsMenu
-            windows={windows}
+            windows={chartWindows}
             onSelect={(w) => {
               setWindow(w);
               setShowMenu(false);

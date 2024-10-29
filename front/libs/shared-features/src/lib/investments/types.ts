@@ -43,7 +43,7 @@ type InvestmentWithoutProductSupport = {
   product_not_supported: boolean;
 };
 
-type Investment = InvestmentWithProductSupport | InvestmentWithoutProductSupport;
+export type Investment = InvestmentWithProductSupport | InvestmentWithoutProductSupport;
 
 export function isInvestmentSupported(obj: any): obj is InvestmentWithProductSupport {
   return !('product_not_supported' in obj);
