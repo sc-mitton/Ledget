@@ -6,8 +6,10 @@ import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import type { BottomTabNavParamList } from './bottomNav';
 import type { RootStackParamList } from './root';
 
+export type BentoState = 'editing' | 'picking' | 'dropping' | 'idle'
+
 export type HomeStackParamList = {
-  Main: undefined
+  Main: { state: BentoState }
 };
 
 export type HomeScreenProps<T extends keyof HomeStackParamList> =

@@ -13,10 +13,10 @@ import styles from '../styles/widgets-grid';
 import { Box } from "@ledget/native-ui";
 import { useAppSelector } from "@hooks";
 import { selectWidgets, widgetTypes } from "@/features/widgetsSlice";
-import { WidgetsBentoProps } from './types';
 import { getGridPositions, getPositionsMap } from './helpers';
 import { useLoaded } from "@ledget/helpers";
 import { gap, bottomLabelPadding } from "./constants";
+import { HomeScreenProps } from "@types";
 import Widget from "./Widget";
 
 /*
@@ -28,7 +28,7 @@ is reflected in the UI. The widget being dragged around isn't affected by any of
 
 */
 
-const WidgetsBento = (props: WidgetsBentoProps) => {
+const WidgetsBento = (props: HomeScreenProps<'Main'>) => {
   const theme = useTheme()
 
   const selectedStoredWidgets = useAppSelector(selectWidgets);
@@ -72,12 +72,12 @@ const WidgetsBento = (props: WidgetsBentoProps) => {
 
   // Make sure the picker is on top when it's active, and behind when it's not
   useEffect(() => {
-    if (props.state === 'picking' || props.state === 'dropping') {
+    if (['picking', 'dropping'].includes(props.route.params.state)) {
       pickerZIndex.value = 100
     } else {
       pickerZIndex.value = withDelay(1500, withTiming(-1, { duration: 0 }))
     }
-  }, [props.state])
+  }, [props.route.params.state])
 
   useEffect(() => {
     positions.value = Object.assign(
@@ -97,18 +97,17 @@ const WidgetsBento = (props: WidgetsBentoProps) => {
 
   return (
     <>
-      <Box style={styles.currentWidgets} variant='nestedScreen' paddingHorizontal="pagePadding">
+      <Box style={styles.mainBox} variant='nestedScreen' paddingHorizontal="pagePadding">
         <Box
-          style={styles.currentWidgets}
-          onLayout={({ nativeEvent: e }) => {
-            itemHeight.value = (e.layout.width - gap) / 2
-          }}
+          style={styles.box}
+          onLayout={({ nativeEvent: e }) => { itemHeight.value = (e.layout.width - gap) / 2 }}
         >
           <Animated.ScrollView
             style={[styles.scrollView]}
             ref={currentScrollView}
             scrollEventThrottle={16}
             showsVerticalScrollIndicator={false}
+            onScroll={(e) => { currentWidgetsScrollY.value = e.nativeEvent.contentOffset.y }}
             onLayout={(e) => { currentWidgetsContainerHeight.value = e.nativeEvent.layout.height }}
           >
             <View
@@ -135,9 +134,9 @@ const WidgetsBento = (props: WidgetsBentoProps) => {
                   scrollView={currentScrollView}
                   scrollHeight={Math.ceil(positions.value[order.value[order.value.length - 1]] / 2) * (itemHeight.value + gap)}
                   containerHeight={currentWidgetsContainerHeight}
-                  onDragStart={() => { props.setState('editing') }}
+                  onDragStart={() => { props.navigation.setParams({ state: 'editing' }) }}
                   loaded={loaded}
-                  state={props.state}
+                  state={props.route.params.state}
                 />
               ))}
             </View>
@@ -146,7 +145,7 @@ const WidgetsBento = (props: WidgetsBentoProps) => {
       </Box>
       <Animated.View
         style={[StyleSheet.absoluteFill, { zIndex: pickerZIndex }]}
-        pointerEvents={props.state === 'picking' ? 'auto' : 'none'}
+        pointerEvents={props.route.params.state === 'picking' ? 'auto' : 'none'}
       >
         <Box style={[styles.pickerBoxOuter, StyleSheet.absoluteFill]} paddingHorizontal="pagePadding">
           <Animated.ScrollView
@@ -158,6 +157,7 @@ const WidgetsBento = (props: WidgetsBentoProps) => {
             ref={pickerScrollView}
             scrollEventThrottle={16}
             showsVerticalScrollIndicator={false}
+            onScroll={(e) => { pickerScrollY.value = e.nativeEvent.contentOffset.y }}
             onLayout={(e) => { pickerWidgetsContainerHeight.value = e.nativeEvent.layout.height }}
           >
             <View
@@ -175,18 +175,18 @@ const WidgetsBento = (props: WidgetsBentoProps) => {
                   key={`widget-${widget.type}`}
                   widget={widget}
                   index={index}
-                  visible={props.state === 'picking'}
+                  visible={props.route.params.state === 'picking'}
                   height={itemHeight}
                   positions={positions}
                   order={order}
                   scrollY={pickerScrollY}
                   scrollHeight={((Math.ceil(positions.value[widgetTypes[widgetTypes.length - 1].type] - 1000) / 2)) * (itemHeight.value + gap + bottomLabelPadding) + 54}
                   containerHeight={pickerWidgetsContainerHeight}
-                  onDragStart={() => { props.setState('dropping') }}
-                  onDragEnd={() => { props.setState(undefined) }}
+                  onDragStart={() => { props.navigation.setParams({ state: 'dropping' }) }}
+                  onDragEnd={() => { props.navigation.setParams({ state: 'idle' }) }}
                   scrollView={pickerScrollView}
                   loaded={loaded}
-                  state={props.state}
+                  state={props.route.params.state}
                 />
               ))}
             </View>

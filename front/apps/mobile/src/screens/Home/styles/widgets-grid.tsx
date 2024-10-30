@@ -1,18 +1,20 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  pickerBoxOuter: {
-    zIndex: 100
-  },
-  currentWidgets: {
+  mainBox: {
     zIndex: 0,
     flex: 1,
+  },
+  box: {
+    zIndex: 0,
+    flex: 1,
+    position: 'relative',
   },
   scrollView: {
     flex: 1,
     position: 'relative',
     marginHorizontal: -16,
-    paddingHorizontal: 16
+    paddingHorizontal: 16,
   },
   currentWidgetsScrollView: {
     marginTop: 12
@@ -23,7 +25,10 @@ const styles = StyleSheet.create({
   },
   widgetsContainer: {
     width: '100%',
-  }
+  },
+  pickerBoxOuter: {
+    zIndex: 100
+  },
 });
 
 export default styles;

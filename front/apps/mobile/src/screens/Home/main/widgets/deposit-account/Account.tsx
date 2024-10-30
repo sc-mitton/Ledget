@@ -2,16 +2,14 @@ import { View } from 'react-native'
 
 import PickOption from './PickOption'
 import { WidgetProps } from '@features/widgetsSlice'
+import Filled from './Filled'
+import Selector from './Selector'
 
-const Filled = (props: { accounts: string[] }) => {
-  return (
-    <View></View>
-  )
-}
-
-const AccountsBalance = (widget: WidgetProps<{ accounts: string[] }>) => {
-  return widget.args?.accounts
-    ? <Filled accounts={widget.args?.accounts} />
+const AccountsBalance = (widget: WidgetProps<{ account: string }>) => {
+  return widget.id
+    ? widget.args
+      ? <Filled {...widget} />
+      : <Selector {...widget} />
     : <PickOption />
 }
 

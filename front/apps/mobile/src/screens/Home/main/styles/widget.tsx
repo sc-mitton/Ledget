@@ -12,14 +12,16 @@ const styles = StyleSheet.create({
   },
   dragBarContainer: {
     position: 'absolute',
-    top: '50%',
     justifyContent: 'center',
     alignItems: 'center',
+    transform: [{ translateX: -12 }],
+    width: 24,
+    height: '100%',
   },
   dragBar: {
     position: 'absolute',
     width: 0,
-    borderWidth: 6
+    borderWidth: 3
   },
   deleteButtonContainer: {
     position: 'absolute',

@@ -11,7 +11,7 @@ import PickerOption from './PickerOption'
 import Selector from './Selector';
 import { useAppSelector } from '@/hooks';
 
-const Filled = (widget: WidgetProps<{ categories?: string[] }>) => {
+const Categories = (widget: WidgetProps<{ categories?: string[] }>) => {
   const { month, year } = useAppSelector(selectBudgetMonthYear)
   const { data: fetchedCategories } = useGetCategoriesQuery(
     { month, year, spending: true },
@@ -37,12 +37,12 @@ const Filled = (widget: WidgetProps<{ categories?: string[] }>) => {
             {widget.shape === 'rectangle'
               ?
               <View>
-                <EmojiProgressCircle progress={Big(category.amount_spent || 0).div(category.limit_amount).toNumber()}>
+                <EmojiProgressCircle progress={Big(category.amount_spent || 0).div(category.limit_amount || 1).toNumber()}>
                   <Text>{category.emoji}</Text>
                 </EmojiProgressCircle>
               </View>
               :
-              <EmojiProgressCircle progress={Big(category.amount_spent || 0).div(category.limit_amount).toNumber()}>
+              <EmojiProgressCircle progress={Big(category.amount_spent || 0).div(category.limit_amount || 1).toNumber()}>
                 <Text>{category.emoji}</Text>
               </EmojiProgressCircle>
             }
@@ -52,7 +52,7 @@ const Filled = (widget: WidgetProps<{ categories?: string[] }>) => {
                 <View style={styles.amountsContainer}>
                   <DollarCents fontSize={14} value={Big(category.amount_spent || 0).times(100).toNumber()} withCents={false} />
                   <Text fontSize={12}>/</Text>
-                  <DollarCents fontSize={14} value={Big(category.limit_amount).toNumber()} withCents={false} />
+                  <DollarCents fontSize={14} value={Big(category.limit_amount || 0).toNumber()} withCents={false} />
                 </View>
               </View>}
           </View>
@@ -71,7 +71,7 @@ const CategoriesProgress = (widget: WidgetProps<{ categories?: string[] }>) => {
 
   return widget.id && isSuccess
     ? widget.args?.categories
-      ? <Filled {...widget} />
+      ? <Categories {...widget} />
       : <Selector {...widget} />
     : <PickerOption loading={isLoading} />
 }

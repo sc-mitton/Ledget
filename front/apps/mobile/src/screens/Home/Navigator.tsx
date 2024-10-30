@@ -17,7 +17,7 @@ const Screen = (props: BottomTabScreenProps<'Home'>) => {
         headerTitle: () => '',
       }}
     >
-      <Stack.Screen name='Main' component={Main} />
+      <Stack.Screen name='Main' component={Main} initialParams={{ state: 'idle' }} />
     </Stack.Navigator>
   )
 }

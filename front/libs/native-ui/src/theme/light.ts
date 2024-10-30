@@ -199,6 +199,7 @@ export const lightTheme = createTheme({
     blueChartGradientStart: palette.blue50,
     blueChartGradientEnd: palette.gray200.replace('hsl', 'hsla').replace(')', ', 0)'),
     blueChartColor: palette.blue300,
+    blueChartColorSecondary: palette.blue500,
     emptyChartGradientStart: palette.gray300,
 
     // Icons

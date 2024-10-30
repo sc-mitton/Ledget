@@ -5,6 +5,14 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  windowButtons: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: '100%',
+    transform: [{ translateY: 2 }],
+    alignItems: 'center',
+    gap: 6,
+  },
   squareTitleContainer: {
     alignItems: 'flex-start',
     gap: 4,
@@ -31,14 +39,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8
   },
-  windowButtons: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    width: '100%',
-    alignItems: 'center',
-    gap: 6,
-    transform: [{ translateY: 2 }],
-  }
 });
 
 export default styles;

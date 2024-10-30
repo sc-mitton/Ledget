@@ -57,6 +57,7 @@ const Widget = (props: WidgetProps) => {
         height.value,
         Boolean(props.widget.id) ? undefined : 'bottom-label'
       );
+
       translateX.value = pos.x;
       translateY.value = pos.y;
       if (height.value > 0) {
@@ -80,6 +81,7 @@ const Widget = (props: WidgetProps) => {
         props.height.value,
         Boolean(props.widget.id) ? undefined : 'bottom-label'
       );
+
       translateX.value = withSpring(pos.x, defaultSpringConfig);
       translateY.value = withSpring(pos.y, defaultSpringConfig);
 
@@ -131,6 +133,7 @@ const Widget = (props: WidgetProps) => {
         props.height.value,
         Boolean(props.widget.id) ? undefined : 'bottom-label'
       );
+
       translateX.value = withSpring(pos.x, defaultSpringConfig);
       translateY.value = withSpring(pos.y, defaultSpringConfig);
 
@@ -239,7 +242,9 @@ const Widget = (props: WidgetProps) => {
     });
   }, []);
 
+
   const pan = Gesture.Pan()
+    .enabled(!Boolean(props.widget.id))
     .activateAfterLongPress(1000)
     .failOffsetY(50)
     .failOffsetX([-1 * props.height.value / 2, (props.height.value * 2.5) + gap])
@@ -382,7 +387,7 @@ const Widget = (props: WidgetProps) => {
       const finalPosition = getAbsPosition(finalGridPosition, props.height.value);
 
       translateX.value = withSpring(finalPosition.x, defaultSpringConfig);
-      translateY.value = withSpring(finalPosition.y, defaultSpringConfig);
+      translateY.value = withSpring(finalPosition.y + props.scrollY.value, defaultSpringConfig);
 
       if (translationX > 40 || !props.widget.id) {
         runOnJS(updateGlobalState)();
@@ -391,20 +396,31 @@ const Widget = (props: WidgetProps) => {
 
   const resize = Gesture.Pan()
     .onChange(({ changeX }) => {
-
+      const widthDx = column.value === 0 ? changeX : -1 * changeX;
       width.value = Math.min(
-        Math.max(changeX + width.value, props.height.value),
+        Math.max(widthDx + width.value, props.height.value),
         (props.height.value * 2) + gap
       );
-      dragBarPos.value = Math.min(
-        Math.max(changeX + dragBarPos.value, props.height.value),
-        (props.height.value * 2) + gap
-      );
+      if (column.value === 0) {
+        dragBarPos.value = Math.min(
+          Math.max(changeX + dragBarPos.value, props.height.value),
+          (props.height.value * 2) + gap
+        );
+      }
+
+      // Translate it sideways also if in the right column and square
+      if (props.widget.shape === 'square' && column.value === 1) {
+        translateX.value = Math.min(
+          Math.max(changeX + translateX.value, 0),
+          props.height.value + gap
+        )
+      }
 
       // Update ordering/positioning immediately only if it's a square
       if (props.widget.shape === 'square') {
         const currentIndex = props.order.value.findIndex(k => k === props.widget.id || k === props.widget.type);
 
+        // Do we need to move around other widgets?
         const needsUpdating = column.value === 0
           ? (props.positions.value[props.order.value[currentIndex + 1]] - props.positions.value[props.widget.id!]) == 1
           : props.positions.value[props.order.value[currentIndex - 1]] < props.positions.value[props.widget.id!]
@@ -442,6 +458,7 @@ const Widget = (props: WidgetProps) => {
         const newSize = props.widget.shape === 'rectangle'
           ? props.height.value
           : (props.height.value * 2) + gap
+        translateX.value = withSpring(0, defaultSpringConfig);
 
         width.value = withSpring(newSize, defaultSpringConfig);
         if (props.widget.shape === 'square' && column.value === 1) {
@@ -458,8 +475,10 @@ const Widget = (props: WidgetProps) => {
           : props.height.value
         const pos = getAbsPosition(props.positions.value[props.widget.id || props.widget.type], props.height.value);
         translateX.value = withSpring(pos.x, defaultSpringConfig);
-        dragBarPos.value = withTiming(size, defaultSpringConfig);
         width.value = withTiming(size, defaultSpringConfig);
+        if (column.value === 0) {
+          dragBarPos.value = withTiming(size, defaultSpringConfig);
+        }
 
         // Put back to original position
         if (props.widget.shape === 'square') {
@@ -491,7 +510,9 @@ const Widget = (props: WidgetProps) => {
             <TouchableHighlight
               underlayColor={theme.colors.mainText}
               activeOpacity={.98}
+              delayPressIn={200}
               style={[styles.filled, styles.button]}
+              disabled={Boolean(props.widget.id)}
               onLongPress={() => { }}
             >
               <Box

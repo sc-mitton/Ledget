@@ -110,7 +110,7 @@ export const darkTheme = createTheme({
     contextMenuDivider: palette.gray600,
     creditCardBorderStart: `hsl(${blueH}, ${blueS}%, 72%)`,
     creditCardBorderStop: `hsl(${blueH}, ${blueS}%, 38%)`,
-    containerDragBar: palette.gray700,
+    containerDragBar: palette.gray200,
 
     // Shadows
     navShadow: palette.gray900,
@@ -203,6 +203,7 @@ export const darkTheme = createTheme({
     blueChartGradientStart: palette.blue900.replace(`${blueS}`, `${blueS - 20}`),
     blueChartGradientEnd: `hsla(${grayH}, ${grayS}%, 10%, 0)`,
     blueChartColor: palette.blue500,
+    blueChartColorSecondary: palette.blue400,
     emptyChartGradientStart: palette.gray750,
   }
 });

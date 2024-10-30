@@ -6,13 +6,8 @@ import dayjs from 'dayjs';
 
 import styles from './styles/chart-skeleton';
 import { VictoryTooltip } from '@ledget/native-ui';
-import { tempInvestmentsBalanceChartData } from '@constants';
+import { tempDepositBalanceChartData } from '@constants';
 import SourceSans3Regular from '../../../../../../assets/fonts/SourceSans3Regular.ttf'
-
-const tempChartData = tempInvestmentsBalanceChartData.map((d, i) => ({
-  date: dayjs().subtract(i, 'days').format('YYYY-MM-DD'),
-  balance: d
-})).reverse();
 
 interface Props {
   data?: {
@@ -29,10 +24,10 @@ const ChartSkeleton = (props: Props) => {
   return (
     <View style={styles.chartContainer}>
       <CartesianChart
-        data={props.data || tempChartData}
+        chartPressState={state}
+        data={props.data || tempDepositBalanceChartData}
         xKey={'date'}
         yKeys={['balance']}
-        chartPressState={state}
         xAxis={{
           lineWidth: 0,
           labelOffset: -20,
@@ -58,7 +53,7 @@ const ChartSkeleton = (props: Props) => {
             >
               <LinearGradient
                 colors={[
-                  theme.colors.emptyChartGradientStart,
+                  props.data ? theme.colors.blueChartColor : theme.colors.emptyChartGradientStart,
                   theme.colors.blueChartGradientEnd
                 ]}
                 start={vec(chartBounds.bottom, 0)}
@@ -76,7 +71,7 @@ const ChartSkeleton = (props: Props) => {
             <Line
               animate={{ type: 'spring', duration: 300 }}
               points={points.balance}
-              color={props.data ? theme.colors.blueChartColor : theme.colors.quinaryText}
+              color={props.data ? theme.colors.blueChartColorSecondary : theme.colors.quinaryText}
               strokeWidth={2}
               strokeCap='round'
               curveType='natural'

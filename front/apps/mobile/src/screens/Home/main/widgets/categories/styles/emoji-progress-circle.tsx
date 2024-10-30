@@ -15,8 +15,8 @@ export default StyleSheet.create({
     position: 'absolute',
     borderRadius: 16,
     padding: 4,
-    width: 32,
-    height: 32
+    width: 40,
+    height: 40
   },
   backgroundContainer: {
     position: 'absolute'
@@ -30,8 +30,8 @@ export default StyleSheet.create({
   },
   absEmoji: {
     position: 'absolute',
-    width: 50,
-    height: 50,
+    width: 58,
+    height: 58,
   },
   progressEmoji: {
     justifyContent: 'center',

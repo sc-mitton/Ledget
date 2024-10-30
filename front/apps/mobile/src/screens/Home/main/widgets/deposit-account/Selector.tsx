@@ -1,20 +1,19 @@
 import { useRef, useState } from 'react';
-import { View, TouchableHighlight } from 'react-native'
+import { View, TouchableHighlight, StyleSheet } from 'react-native'
 import { useTheme } from "@shopify/restyle";
 import { LinearGradient, Canvas, Rect, vec } from '@shopify/react-native-skia';
 import Carousel from "react-native-reanimated-carousel";
 import { CheckInCircleFill } from 'geist-native-icons';
-import { useSharedValue } from 'react-native-reanimated';
-import dayjs from 'dayjs';
+import Animated, { useSharedValue, FadeOut } from 'react-native-reanimated';
 
 import styles from './styles/selector';
 import { useAppDispatch } from '@/hooks';
 import { Button, Text, Icon, Box, InstitutionLogo, Seperator } from '@ledget/native-ui';
-import { InvestmentWithProductSupport, useGetInvestmentsQuery, isInvestmentSupported } from '@ledget/shared-features';
+import { useGetAccountsQuery, Account } from '@ledget/shared-features';
 import { updateWidget, WidgetProps } from '@features/widgetsSlice';
-import { windows } from './constants';
 
-const SELECT_OPTION_WIDTH = 120
+const SELECT_OPTION_WIDTH = 140
+const SELECT_OPTION_HEIGHT = 120 * .8
 
 const Selector = (props: WidgetProps) => {
   const theme = useTheme()
@@ -23,12 +22,9 @@ const Selector = (props: WidgetProps) => {
   const progress = useSharedValue(0)
   const carouselIndexLock = useRef(false)
   const [carouselIndex, setCarouselIndex] = useState(0)
-  const [selectedInvestment, setSelectedInvestment] = useState<InvestmentWithProductSupport>()
+  const [selectedAccount, setSelectedAccount] = useState<Account>()
 
-  const { data: investments } = useGetInvestmentsQuery({
-    end: dayjs().format('YYYY-MM-DD'),
-    start: dayjs().subtract(windows[0].amount, windows[0].period).format('YYYY-MM-DD')
-  })
+  const { data: accountsData } = useGetAccountsQuery()
 
   return (
     <View style={styles.container}>
@@ -58,63 +54,61 @@ const Selector = (props: WidgetProps) => {
           />
         </Rect>
       </Canvas>
-      {investments
+      {accountsData?.accounts
         ?
         <Carousel
           style={styles.accountsCarousel}
           vertical={false}
           snapEnabled={true}
           mode='parallax'
-          data={investments.filter(i => isInvestmentSupported(i))}
-          renderItem={({ item: investment, index }) => (
-            <View style={styles.optionButtonContainer}>
-              <View>
-                <Box
-                  key={`category-option-${investment.account_id}`}
-                  style={styles.optionBoxOuter}
-                >
+          data={accountsData?.accounts.filter(account => account.type === 'depository')}
+          renderItem={({ item: account, index }) => (
+            <View style={styles.carouselItem}>
+              <View style={{ width: SELECT_OPTION_WIDTH, height: SELECT_OPTION_HEIGHT }}>
+                <Box key={`category-option-${account.id}`} style={styles.optionBoxOuter}>
                   <TouchableHighlight
                     activeOpacity={0.97}
-                    onPress={() => selectedInvestment ? setSelectedInvestment(undefined) : setSelectedInvestment(investment)}
                     underlayColor={theme.colors.mainText}
-                    style={{ width: SELECT_OPTION_WIDTH }}
+                    onPress={() => selectedAccount ? setSelectedAccount(undefined) : setSelectedAccount(account)}
+                    style={[StyleSheet.absoluteFillObject, styles.touchable]}
                   >
-                    <Box
-                      backgroundColor="transactionShimmer"
-                      style={styles.optionBoxInner}
-                    >
-                      <View>
-                        <InstitutionLogo account={investment.account_id} size={16} />
-                      </View>
-                      <View>
-                        <Text fontSize={14}>
-                          {investment.account_name.length > 12
-                            ? `${investment.account_name.slice(0, 12)}..`
-                            : investment.account_name}
+                    <>
+                      <Box style={[StyleSheet.absoluteFillObject, styles.grayBack]} backgroundColor='nestedContainerSeperator' />
+                      <View style={styles.logo}>
+                        <View><InstitutionLogo account={account.id} size={18} /></View>
+                        <Text color='tertiaryText' fontSize={13}>
+                          &nbsp;&bull;&nbsp;&bull;&nbsp;&nbsp;
+                          {account.mask}
                         </Text>
                       </View>
-                    </Box>
+                      <View style={styles.name}>
+                        <Text fontSize={14} lineHeight={18}>
+                          {account.name.length > 26 ? `${account.name.slice(0, 24)}..` : account.name}
+                        </Text>
+                      </View>
+                    </>
                   </TouchableHighlight>
                 </Box>
-                <View style={styles.checkedIcon}>
-                  {selectedInvestment === investment
-                    ?
-                    <Icon
-                      icon={CheckInCircleFill}
-                      borderColor={'nestedContainer'}
-                      color={'greenText'}
-                      size={18}
-                      strokeWidth={2}
-                    />
-                    :
-                    <Icon
-                      icon={CheckInCircleFill}
-                      borderColor='nestedContainer'
-                      color='quinaryText'
-                      size={18}
-                      strokeWidth={2}
-                    />}
-                </View>
+                {!props.args &&
+                  <Animated.View style={styles.checkedIcon} exiting={FadeOut}>
+                    {selectedAccount === account
+                      ?
+                      <Icon
+                        icon={CheckInCircleFill}
+                        borderColor={'nestedContainer'}
+                        color={'greenText'}
+                        size={18}
+                        strokeWidth={2}
+                      />
+                      :
+                      <Icon
+                        icon={CheckInCircleFill}
+                        borderColor='nestedContainer'
+                        color='quinaryText'
+                        size={18}
+                        strokeWidth={2}
+                      />}
+                  </Animated.View>}
               </View>
             </View>
           )}
@@ -128,11 +122,11 @@ const Selector = (props: WidgetProps) => {
               return
             }
             if (p - progress.value > 20) {
-              setCarouselIndex(carouselIndex - 1 >= 0 ? carouselIndex - 1 : investments.length - 1)
+              setCarouselIndex(carouselIndex - 1 >= 0 ? carouselIndex - 1 : accountsData.accounts.length - 1)
               carouselIndexLock.current = true
               progress.value = p
             } else if (p - progress.value < -20) {
-              setCarouselIndex(carouselIndex + 1 < investments.length ? carouselIndex + 1 : 0)
+              setCarouselIndex(carouselIndex + 1 < accountsData.accounts.length ? carouselIndex + 1 : 0)
               carouselIndexLock.current = true
               progress.value = p
             }
@@ -162,7 +156,7 @@ const Selector = (props: WidgetProps) => {
           ))}
         </View>
       }
-      <Seperator backgroundColor='nestedContainerSeperator' variant='s' />
+      <Seperator backgroundColor='nestedContainerSeperator' variant='bare' />
       <View style={styles.selectorButtons}>
         <Button
           label='Save'
@@ -173,9 +167,9 @@ const Selector = (props: WidgetProps) => {
           fontSize={13}
           labelPlacement='left'
           onPress={() => {
-            if (selectedInvestment) {
+            if (selectedAccount) {
               dispatch(updateWidget({
-                widget: { ...props, args: { investment: selectedInvestment.account_id } }
+                widget: { ...props, args: { account: selectedAccount.id } }
               }))
             }
           }}

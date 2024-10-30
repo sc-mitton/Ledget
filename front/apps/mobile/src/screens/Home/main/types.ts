@@ -2,8 +2,8 @@ import { MutableRefObject } from 'react'
 import Animated, { SharedValue, AnimatedRef } from "react-native-reanimated";
 
 import { Widget } from "@features/widgetsSlice";
+import { BentoState } from "@types"
 
-type State = 'editing' | 'picking' | 'dropping'
 
 export interface WidgetProps {
   widget: Widget
@@ -20,10 +20,5 @@ export interface WidgetProps {
   onDragStart?: () => void
   onDragEnd?: () => void
   loaded: boolean
-  state?: State
-}
-
-export interface WidgetsBentoProps {
-  state?: State
-  setState: (state?: State) => void
+  state?: BentoState
 }

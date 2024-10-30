@@ -16,6 +16,11 @@ const styles = StyleSheet.create({
     flex: 1,
     height: '100%'
   },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8
+  },
   pickerBackground: {
     position: 'absolute',
     zIndex: 100

@@ -5,7 +5,7 @@ import { LinearGradient, Canvas, Rect, vec } from '@shopify/react-native-skia';
 import Carousel from "react-native-reanimated-carousel";
 import { CheckInCircleFill } from 'geist-native-icons';
 import Animated, { FadeOut, useSharedValue, StretchOutY } from 'react-native-reanimated';
-import { SlotText } from 'react-native-slot-text';
+import { SlotText } from './components';
 
 import styles from './styles/widget';
 import { useAppDispatch } from "@/hooks"
@@ -81,8 +81,7 @@ const Selector = (widget: WidgetProps<{ accounts: string[] }>) => {
           />
         </Rect>
       </Canvas>
-      {/* {(accounts || accountOptions) */}
-      {true
+      {(accounts || accountOptions)
         ?
         <Carousel
           style={styles.accountsCarousel}
@@ -206,7 +205,7 @@ const Selector = (widget: WidgetProps<{ accounts: string[] }>) => {
           ))}
         </View>
       }
-      {widget.args && accounts &&
+      {widget.args &&
         <View style={styles.balanceContainer}>
           {accounts
             ?
@@ -216,7 +215,7 @@ const Selector = (widget: WidgetProps<{ accounts: string[] }>) => {
                   { color: theme.colors.mainText },
                   styles.fontStyle
                 ]}
-                value={`${Big(accounts[carouselIndex].balances.current || 0).toNumber()}`}
+                value={`${Big(accounts[carouselIndex].balances?.current || 0).toNumber()}`}
                 animationDuration={200}
                 prefix={'$'}
                 includeComma={true}
