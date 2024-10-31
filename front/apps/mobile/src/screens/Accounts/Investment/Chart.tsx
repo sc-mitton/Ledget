@@ -40,8 +40,8 @@ const tempChartData = tempDataValues.map((d, i) => ({
 const windows = [
   { key: '1M', label: '1 month', period: 'month' as const, number: 1, format: 'MMM D', ticks: 5 },
   { key: '3M', label: '3 months', period: 'month' as const, number: 3, format: 'MMM D', ticks: 5 },
-  { key: '6M', label: '6 months', period: 'month' as const, number: 6, format: 'MMM', ticks: 5 },
-  { key: '1Y', label: '1 year', period: 'year' as const, number: 1, format: 'MMM YY', ticks: 5 },
+  { key: '6M', label: '6 months', period: 'month' as const, number: 6, format: 'MMM YYYY', ticks: 5 },
+  { key: '1Y', label: '1 year', period: 'year' as const, number: 1, format: 'MMM YYYY', ticks: 5 },
   { key: 'MAX', label: 'Max', format: 'MMM YY', ticks: 5 }
 ];
 
@@ -169,13 +169,15 @@ const Chart = () => {
           onShowChange={setShowWindowMenu}
           onSelect={(w) => {
             dispatch(setInvestmentsScreenWindow({
-              period: windows.find(win => win.key === w)?.period || 'month',
-              amount: windows.find(win => win.key === w)?.number || 1
+              period: windows.find(win => win.key === w)?.period || 'year',
+              amount: windows.find(win => win.key === w)?.number || 5
             }))
           }}
           defaultWindow={
-            windows.find(w => w.period === window?.period && w.number === window?.amount)?.key
-            || windows[0].key
+            window
+              ? windows.find(w => w.period === window?.period && w.number === window?.amount)?.key
+              || windows[windows.length - 1].key
+              : windows[0].key
           }
           closeOption={false}
         />
