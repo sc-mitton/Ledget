@@ -1,5 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { ArrowUp, ArrowDown } from 'geist-native-icons';
 
@@ -27,7 +26,7 @@ const AccountPicker = (props: ModalScreenProps<'Holdings'>) => {
   })
 
   useEffect(() => {
-    const newHoldings = investmentsData?.reduce(
+    const newHoldings = investmentsData?.results.reduce(
       (acc, i) => {
         if (isInvestmentSupported(i) && (!accounts || accounts?.some(a => a.id === i.account_id))) {
           return acc.concat(i.holdings.map(h => ({ ...h, account: i.account_id })))

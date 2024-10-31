@@ -27,7 +27,7 @@ const Holdings = (props: AccountsTabsScreenProps<'Investment'>) => {
   const pinnedHoldings = useAppSelector(selectPinnedHoldings)
 
   useEffect(() => {
-    const newHoldings = investmentsData?.reduce(
+    const newHoldings = investmentsData?.results.reduce(
       (acc, i) => {
         if (isInvestmentSupported(i) && (!accounts || accounts?.some(a => a.id === i.account_id))) {
           return acc.concat(i.holdings)

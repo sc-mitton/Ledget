@@ -55,6 +55,7 @@ export * from './misc/toast/Stack';
 export * from './misc/carousel-dots/CarouselDots';
 
 export * from './animated/loading-indicators/Spinner';
+export * from './animated/loading-indicators/LoadingDots';
 export * from './animated/pulse/Pulse';
 export * from './animated/views/JiggleView';
 export * from './animated/views/AnimatedView';

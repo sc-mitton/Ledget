@@ -2,13 +2,43 @@ import { createSlice } from '@reduxjs/toolkit';
 import dayjs from 'dayjs';
 
 import apiSlice from '../apiSlice/slice';
-import { Investments, InvestmentsBalanceHistory, isInvestmentSupported, InvestmentWithProductSupport } from './types';
+import {
+  InvestmentsResponse,
+  InvestmentsBalanceHistory,
+  isInvestmentSupported,
+  InvestmentWithProductSupport,
+  InvestmentsState,
+  GetInvestmentsQuery
+} from './types';
 
 const investmentsRTKSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
-    getInvestments: build.query<Investments, { start: string, end: string } | void>({
+    getInvestments: build.query<InvestmentsResponse, GetInvestmentsQuery>({
       query: () => 'investments',
       providesTags: ['Investment'],
+      // For merging in paginated responses to the cache
+      // cache key needs to not include offset and limit
+      serializeQueryArgs: ({ queryArgs }) => {
+        if (queryArgs) {
+          const { cursor, ...cacheKeyArgs } = queryArgs;
+          return cacheKeyArgs;
+        } else {
+          return 'getInvestments';
+        }
+      },
+      merge: (currentCache, newItems) => {
+        if (currentCache.cursor) {
+          const { results } = currentCache;
+          const { results: newResults, ...newRest } = newItems;
+          return {
+            results: [...results, ...newResults],
+            ...newRest
+          };
+        } else if (currentCache.results) {
+          return newItems;
+        }
+        return currentCache;
+      }
     }),
     getInvestmendsBalanceHistory: build.query<InvestmentsBalanceHistory, { start: string, end: string }>({
       query: () => 'investments/balance-history',
@@ -16,9 +46,9 @@ const investmentsRTKSlice = apiSlice.injectEndpoints({
     }),
   }),
 });
-export const { useGetInvestmentsQuery, useGetInvestmendsBalanceHistoryQuery } = investmentsRTKSlice;
 
-const initialInvestmentsState = {
+
+const initialInvestmentsState: InvestmentsState = {
   holdingsHistory: {} as { [key: string]: { institution_value: number, date: string }[] },
 }
 
@@ -32,7 +62,7 @@ export const investmentsSlice = createSlice({
     builder.addMatcher(
       investmentsRTKSlice.endpoints.getInvestments.matchFulfilled,
       (state, action) => {
-        const holdings = action.payload.reduce((acc, i) => {
+        const holdings = action.payload.results.reduce((acc, i) => {
           if (isInvestmentSupported(i)) {
             return acc.concat(i.holdings)
           }
@@ -64,4 +94,10 @@ export const investmentsSlice = createSlice({
   }
 })
 
-export const selectTrackedHoldings = (state: { holdings: typeof initialInvestmentsState }) => state.holdings
+export const selectTrackedHoldings = (state: { investments: InvestmentsState }) => state.investments.holdingsHistory
+
+export const {
+  useGetInvestmentsQuery,
+  useLazyGetInvestmentsQuery,
+  useGetInvestmendsBalanceHistoryQuery
+} = investmentsRTKSlice;

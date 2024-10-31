@@ -46,5 +46,14 @@ export default StyleSheet.create({
     right: 0,
     position: 'relative',
     zIndex: -1,
+  },
+  loadingIndicatorContainer: {
+    position: 'absolute',
+    left: '50%',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  loadingIndicator: {
+    position: 'absolute'
   }
 });

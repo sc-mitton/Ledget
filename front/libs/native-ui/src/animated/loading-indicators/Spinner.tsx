@@ -14,7 +14,7 @@ import { useTheme } from '@shopify/restyle';
 import { View } from 'react-native';
 import { ColorProps, color, composeRestyleFunctions, useRestyle } from '@shopify/restyle';
 
-import styles from './styles';
+import styles from './styles/spinner';
 import { Theme } from '../../theme';
 
 

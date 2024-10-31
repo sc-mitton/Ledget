@@ -49,7 +49,10 @@ export function isInvestmentSupported(obj: any): obj is InvestmentWithProductSup
   return !('product_not_supported' in obj);
 }
 
-export type Investments = Investment[]
+export type InvestmentsResponse = {
+  cursor?: string;
+  results: Investment[]
+}
 
 export type InvestmentsBalanceHistory = {
   account_id: string;
@@ -59,3 +62,9 @@ export type InvestmentsBalanceHistory = {
     balance: number;
   }[]
 }[]
+
+export type InvestmentsState = {
+  holdingsHistory: { [key: string]: { institution_value: number, date: string }[] }
+}
+
+export type GetInvestmentsQuery = { start: string, end: string, cursor?: string } | void

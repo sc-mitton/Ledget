@@ -5,6 +5,8 @@ import {
   TouchableOpacity,
   Dimensions,
   Pressable,
+  NativeSyntheticEvent,
+  NativeScrollEvent
 } from 'react-native';
 import Animated, {
   useAnimatedStyle,
@@ -16,8 +18,8 @@ import { groupBy } from 'lodash-es';
 import { useTheme } from '@shopify/restyle';
 
 import styles from './styles/list';
-import { useGetInvestmentsQuery, InvestmentTransaction, isInvestmentSupported } from '@ledget/shared-features';
-import { Box, defaultSpringConfig, Text, CustomSectionList } from '@ledget/native-ui';
+import { useLazyGetInvestmentsQuery, InvestmentTransaction, isInvestmentSupported } from '@ledget/shared-features';
+import { Box, defaultSpringConfig, Text, CustomSectionList, LoadingDots } from '@ledget/native-ui';
 import { selectInvestmentsScreenAccounts, selectInvestmentsScreenWindow } from '@/features/uiSlice';
 import type { PTransactions, Section, ListState } from './types';
 import { useAppSelector } from '@/hooks';
@@ -41,12 +43,7 @@ const Transactions = (props: PTransactions) => {
   const [transactionsData, setTransactionsData] = useState<InvestmentTransaction[]>([])
   const window = useAppSelector(selectInvestmentsScreenWindow)
 
-  const { data: investmentsData, isLoading: isLoadingInvestmentsData } = useGetInvestmentsQuery({
-    end: dayjs().format('YYYY-MM-DD'),
-    start: dayjs().subtract(window?.amount || 100, window?.period || 'year').format('YYYY-MM-DD')
-  }, {
-    skip: !window
-  })
+  const [getInvestments, { data: investmentsData, isLoading: isLoadingInvestmentsData }] = useLazyGetInvestmentsQuery()
 
   const animation = useAnimatedStyle(() => {
     return {
@@ -56,8 +53,17 @@ const Transactions = (props: PTransactions) => {
   }, [])
 
   useEffect(() => {
+    if (window) {
+      getInvestments({
+        end: dayjs().format('YYYY-MM-DD'),
+        start: dayjs().subtract(window?.amount || 100, window?.period || 'year').format('YYYY-MM-DD')
+      }, true)
+    }
+  }, [window])
+
+  useEffect(() => {
     setTransactionsData(
-      investmentsData
+      investmentsData?.results
         ?.filter(i => accounts === undefined || accounts?.some(a => a.id === i.account_id))
         .filter(i => isInvestmentSupported(i)).reduce((acc, investment) => {
           return acc.concat(investment.transactions)
@@ -131,6 +137,21 @@ const Transactions = (props: PTransactions) => {
       }
     })).current
 
+  // Fetch more
+  const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    // If at the bottom of the scroll view, fetch more transactions
+    const { contentOffset, layoutMeasurement, contentSize } = e.nativeEvent
+    const bottom = contentOffset.y + layoutMeasurement.height >= contentSize.height
+
+    if (bottom && investmentsData?.cursor) {
+      getInvestments({
+        end: dayjs().format('YYYY-MM-DD'),
+        start: dayjs().subtract(window?.amount || 100, window?.period || 'year').format('YYYY-MM-DD'),
+        cursor: investmentsData.cursor
+      }, true)
+    }
+  };
+
   return (
     <Animated.View style={[styles.boxContainer, animation]}>
       <Box style={styles.mainBackgroundBox}>
@@ -155,9 +176,10 @@ const Transactions = (props: PTransactions) => {
               bounces={true}
               overScrollMode='always'
               sections={sections}
-              scrollIndicatorPadding={[0, theme.spacing.navHeight - 64]}
-              contentContainerStyle={{ paddingBottom: theme.spacing.navHeight - 48 }}
+              scrollIndicatorPadding={[0, theme.spacing.navHeight]}
+              contentContainerStyle={{ paddingBottom: theme.spacing.navHeight }}
               stickySectionHeadersEnabled={true}
+              onScroll={handleScroll}
               renderSectionHeader={({ section }) => (
                 <Pressable
                   onPress={() =>
@@ -213,6 +235,11 @@ const Transactions = (props: PTransactions) => {
               )}
               style={styles.transactionsScrollView}
             />}
+          <View style={[styles.loadingIndicatorContainer, { bottom: theme.spacing.navHeight - 24 }]}>
+            <View style={styles.loadingIndicator}>
+              <LoadingDots visible={isLoadingInvestmentsData} />
+            </View>
+          </View>
         </Box>
       </Box>
     </Animated.View>

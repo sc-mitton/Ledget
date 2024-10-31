@@ -1,3 +1,5 @@
+import { Institution } from '../plaidSlice/types';
+
 export type AccountType =
   | 'depository'
   | 'credit'
@@ -21,15 +23,6 @@ export interface Account {
   subtype: string;
   institution_id: string;
   cardHue?: number;
-}
-
-export interface Institution {
-  id: string;
-  name: string;
-  primary_color: string;
-  logo: string;
-  url: string;
-  oath: boolean;
 }
 
 export type UpdateAccount =

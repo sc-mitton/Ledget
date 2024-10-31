@@ -3,6 +3,7 @@ from datetime import timedelta
 from datetime import datetime
 from dateutil import parser
 import json
+import base64
 
 from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.response import Response
@@ -47,14 +48,19 @@ class InvestmentsView(GenericAPIView):
                 user__in=request.user.account.users.all()) \
             .prefetch_related(prefetch)
 
+        offsets = base64.b64decode(kwargs.get('cursor', '{}')) or {}
         results = []
+
         for item in plaid_items:
             try:
-                plaid_data = self._get_plaid_transactions_data(
+                plaid_data, offset = self._get_plaid_transactions_data(
                     item,
                     kwargs.get('start', date.today()) - timedelta(days=30),
-                    kwargs.get('end', date.today())
+                    kwargs.get('end', date.today()),
+                    offset=offsets.get(item.id, None)
                 )
+                if offset:
+                    offsets[item.id] = offset
             except plaid.ApiException as e:
                 if json.loads(e.body)['error_code'] == 'PRODUCTS_NOT_SUPPORTED':
                     s = InvestmentSerializer(data={
@@ -68,9 +74,14 @@ class InvestmentsView(GenericAPIView):
             else:
                 results.extend(plaid_data)
 
-        return Response(results, status=status.HTTP_200_OK)
+        payload = {'results': results}
 
-    def _get_plaid_transactions_data(self, plaid_item, start, end):
+        if offsets:
+            payload['cursor'] = base64.b64encode(json.dumps(offsets))
+
+        return Response(payload, status=status.HTTP_200_OK)
+
+    def _get_plaid_transactions_data(self, plaid_item, start, end, offset=None):
 
         account_ids = [a.id for a in plaid_item.accounts.all()]
         account_names = [a.name for a in plaid_item.accounts.all()]
@@ -83,7 +94,8 @@ class InvestmentsView(GenericAPIView):
         holdings = groupby(
             holdings_response.to_dict()['holdings'], lambda x: x['account_id'])
         balances = holdings_response.to_dict()['accounts']
-        transactions = self._get_transactions_plaid_data(plaid_item, start, end)
+        transactions, offset = self._get_transactions_plaid_data(
+            plaid_item, start, end, offset)
 
         serialized_data = []
         for (account_id, transaction_group), (_, holding_group), balances \
@@ -105,39 +117,38 @@ class InvestmentsView(GenericAPIView):
             serializer.is_valid(raise_exception=True)
             serialized_data.append(serializer.data)
 
-        return serialized_data
+        return serialized_data, offset
 
-    def _get_transactions_plaid_data(self, plaid_item, start, end):
+    def _get_transactions_plaid_data(self, plaid_item, start, end, offset=None):
         '''
         Concatenates all of the transactions for the paginated responses
         '''
 
         account_ids = [a.id for a in plaid_item.accounts.all()]
 
+        optionArgs = {'account_ids': account_ids}
+        if (offset):
+            optionArgs['offset'] = offset
+
         transactions_request = InvestmentsTransactionsGetRequest(
             access_token=plaid_item.access_token,
             start_date=start,
             end_date=end,
-            options=InvestmentsTransactionsGetRequestOptions(
-                account_ids=account_ids))
+            options=InvestmentsTransactionsGetRequestOptions(**optionArgs))
         response = plaid_client.investments_transactions_get(
             transactions_request).to_dict()
+
         investment_transactions = response['investment_transactions']
+        total_investment_transactions = response['total_investment_transactions']
 
-        transactions = response['investment_transactions']
+        offset = offset + len(investment_transactions) \
+            if offset \
+            else len(investment_transactions)
 
-        while len(investment_transactions) < response['total_investment_transactions']:
-            transactions_request = InvestmentsTransactionsGetRequest(
-                access_token=plaid_item.access_token,
-                start_date=start,
-                end_date=end,
-                options=InvestmentsTransactionsGetRequestOptions(
-                    account_ids=account_ids))
-            response = plaid_client.investments_transactions_get(
-                transactions_request).to_dict()
-            transactions.extend(response['investment_transactions'])
-
-        return groupby(transactions, lambda x: x['account_id'])
+        if len(investment_transactions) + offset < total_investment_transactions:
+            return groupby(investment_transactions, lambda x: x['account_id']), offset
+        else:
+            return groupby(investment_transactions, lambda x: x['account_id']), None
 
 
 class InvestmentsBalanceHistoryView(ListAPIView):

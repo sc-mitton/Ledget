@@ -114,7 +114,7 @@ const Chart = () => {
           onShowChange={setShowWindowMenu}
           items={[
             ...(
-              investmentsData?.filter(a => isInvestmentSupported(a)).map(a => ({
+              investmentsData?.results.filter(a => isInvestmentSupported(a)).map(a => ({
                 label: a.account_name,
                 icon: () => <Icon
                   icon={Check}
@@ -142,7 +142,7 @@ const Chart = () => {
             fontSize={24}
             variant='bold'
             value={
-              investmentsData?.filter(a => isInvestmentSupported(a)).reduce((acc, investment) => {
+              investmentsData?.results.filter(a => isInvestmentSupported(a)).reduce((acc, investment) => {
                 if (accounts) {
                   return accounts?.some(ac => ac.id === investment.account_id)
                     ? acc.plus(investment.balance)

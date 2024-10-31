@@ -25,7 +25,7 @@ const Selector = (props: WidgetProps) => {
   const [carouselIndex, setCarouselIndex] = useState(0)
   const [selectedInvestment, setSelectedInvestment] = useState<InvestmentWithProductSupport>()
 
-  const { data: investments } = useGetInvestmentsQuery({
+  const { data: investmentsData } = useGetInvestmentsQuery({
     end: dayjs().format('YYYY-MM-DD'),
     start: dayjs().subtract(windows[0].amount, windows[0].period).format('YYYY-MM-DD')
   })
@@ -58,14 +58,14 @@ const Selector = (props: WidgetProps) => {
           />
         </Rect>
       </Canvas>
-      {investments
+      {investmentsData
         ?
         <Carousel
           style={styles.accountsCarousel}
           vertical={false}
           snapEnabled={true}
           mode='parallax'
-          data={investments.filter(i => isInvestmentSupported(i))}
+          data={investmentsData.results.filter(i => isInvestmentSupported(i))}
           renderItem={({ item: investment, index }) => (
             <View style={styles.optionButtonContainer}>
               <View>
@@ -128,11 +128,11 @@ const Selector = (props: WidgetProps) => {
               return
             }
             if (p - progress.value > 20) {
-              setCarouselIndex(carouselIndex - 1 >= 0 ? carouselIndex - 1 : investments.length - 1)
+              setCarouselIndex(carouselIndex - 1 >= 0 ? carouselIndex - 1 : investmentsData.results.length - 1)
               carouselIndexLock.current = true
               progress.value = p
             } else if (p - progress.value < -20) {
-              setCarouselIndex(carouselIndex + 1 < investments.length ? carouselIndex + 1 : 0)
+              setCarouselIndex(carouselIndex + 1 < investmentsData.results.length ? carouselIndex + 1 : 0)
               carouselIndexLock.current = true
               progress.value = p
             }

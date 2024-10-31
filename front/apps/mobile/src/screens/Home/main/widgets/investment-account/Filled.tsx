@@ -43,7 +43,7 @@ const Filled = (props: Props) => {
 
   useEffect(() => {
     if (!investments) return
-    setInvestment(investments
+    setInvestment(investments.results
       .filter(i => isInvestmentSupported(i))
       .find(i => i.account_id === props.args?.investment)
     )
