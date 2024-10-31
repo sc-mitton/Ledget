@@ -25,6 +25,7 @@ export interface VictoryTooltipProps {
   backgroundColor?: string;
   lineOffset?: number;
   verticalCrosshair?: boolean;
+  hidden?: ('point' | 'axis' | 'tip' | 'xTip')[]
 }
 
 export const VictoryTooltip = (props: VictoryTooltipProps) => {
@@ -111,7 +112,7 @@ export const VictoryTooltip = (props: VictoryTooltipProps) => {
 
   return (
     <>
-      {verticalCrosshair &&
+      {verticalCrosshair && !props.hidden?.includes('axis') &&
         <SkLine
           p1={lineTop}
           p2={lineBottom}
@@ -119,7 +120,7 @@ export const VictoryTooltip = (props: VictoryTooltipProps) => {
           strokeWidth={2}
           color={borderColor}
         />}
-      {xAxisTip && (
+      {xAxisTip && !props.hidden?.includes('xTip') && (
         <SkText
           text={tooltipDate}
           font={font}
@@ -128,27 +129,31 @@ export const VictoryTooltip = (props: VictoryTooltipProps) => {
           y={chartBounds.bottom}
         />
       )}
-      <RoundedRect
-        x={rectXPosition}
-        y={rectYPosition}
-        width={rectWidth}
-        height={rectHeight}
-        r={12}
-        color={backgroundColor}
-      />
-      <SkText
-        x={textXPosition}
-        y={textYPosition}
-        font={font}
-        color={color}
-        text={value}
-      />
-      <Circle
-        cx={state.x.position}
-        cy={state.y.balance.position}
-        r={3}
-        color={dotColor}
-      />
+      {!props.hidden?.includes('tip') &&
+        <>
+          <RoundedRect
+            x={rectXPosition}
+            y={rectYPosition}
+            width={rectWidth}
+            height={rectHeight}
+            r={12}
+            color={backgroundColor}
+          />
+          <SkText
+            x={textXPosition}
+            y={textYPosition}
+            font={font}
+            color={color}
+            text={value}
+          />
+        </>}
+      {!props.hidden?.includes('point') &&
+        <Circle
+          cx={state.x.position}
+          cy={state.y.balance.position}
+          r={3}
+          color={dotColor}
+        />}
     </>
   )
 }

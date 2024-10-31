@@ -46,6 +46,10 @@ const styles = StyleSheet.create({
   },
   label: {
     position: 'absolute',
+  },
+  overlay: {
+    opacity: .8,
+    zIndex: 100
   }
 });
 

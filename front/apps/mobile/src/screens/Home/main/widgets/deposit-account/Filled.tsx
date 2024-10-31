@@ -16,17 +16,23 @@ const Filled = (props: WidgetProps<{ account: string }>) => {
   const [account, setAccount] = useState<Account>()
   const [dateWindow, setDateWindow] = useState<{ start: number, end: number }>({ start: 0, end: 0 })
   const { data: accountsData } = useGetAccountsQuery()
-  const [getBalanceHistory, { data: balanceHistoryData }] = useLazyGetAccountBalanceHistoryQuery()
+  const [getBalanceHistory, { data: balanceHistoryData, isFetching }] = useLazyGetAccountBalanceHistoryQuery()
   const [balanceHistoryChartData, setBalanceHistoryChartData] = useState<typeof tempDepositBalanceChartData>()
 
   useEffect(() => {
+    if (isFetching) {
+      setBalanceHistoryChartData(undefined)
+    }
+  }, [isFetching])
+
+  useEffect(() => {
     if (balanceHistoryData) {
-      const chartData = balanceHistoryData.reduce((acc, balance) => {
-        return acc.map((h, i) => ({
-          date: h.date,
-          balance: Big(h.balance || 0).plus(balance.history[i]?.balance || 0).toNumber()
-        }))
-      }, balanceHistoryData[0].history.map(h => ({ date: h.month, balance: 0 }))).reverse();
+      const chartData = balanceHistoryData
+        .find(a => a.account_id === props.args?.account)
+        ?.history
+        ?.map(d => ({ balance: d.balance, date: dayjs(d.month).format('YYYY-MM-DD') }))
+        .reverse()
+
       setBalanceHistoryChartData(chartData);
     }
   }, [balanceHistoryData])
@@ -44,7 +50,7 @@ const Filled = (props: WidgetProps<{ account: string }>) => {
         end: dateWindow.end,
         type: account.type as any,
         accounts: accountsData?.accounts.map(a => a.id) || [],
-      });
+      }, true);
     }
   }, [accountsData, dateWindow, account])
 

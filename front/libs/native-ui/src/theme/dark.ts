@@ -203,7 +203,7 @@ export const darkTheme = createTheme({
     blueChartGradientStart: palette.blue900.replace(`${blueS}`, `${blueS - 20}`),
     blueChartGradientEnd: `hsla(${grayH}, ${grayS}%, 10%, 0)`,
     blueChartColor: palette.blue500,
-    blueChartColorSecondary: palette.blue400,
+    blueChartColorSecondary: palette.blue700,
     emptyChartGradientStart: palette.gray750,
   }
 });

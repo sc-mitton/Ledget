@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { TouchableHighlight, View } from 'react-native';
+import { TouchableHighlight, View, StyleSheet } from 'react-native';
 import { useTheme } from '@shopify/restyle';
 import Animated, {
   useAnimatedStyle,
@@ -11,6 +11,8 @@ import Animated, {
   withRepeat,
   runOnJS,
   scrollTo,
+  FadeIn,
+  FadeOut
 } from "react-native-reanimated";
 import { Divider } from 'geist-native-icons';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
@@ -36,6 +38,7 @@ const Widget = (props: WidgetProps) => {
   const translateX = useSharedValue(0)
   const translateY = useSharedValue(0)
   const rotate = useSharedValue(0)
+  const overlayOpacity = useSharedValue(0)
   const deleteButtonOpacity = useSharedValue(0)
   const dragBarOpacity = useSharedValue(0)
   const shadowOpacity = useSharedValue(0)
@@ -119,10 +122,12 @@ const Widget = (props: WidgetProps) => {
       deleteButtonOpacity.value = withTiming(1, { duration: 200 })
       dragBarOpacity.value = withTiming(1, { duration: 200 })
       rotate.value = withRepeat(withTiming(1, { duration: 100 }), -1, true)
+      overlayOpacity.value = withTiming(.95, { duration: 200 })
     } else {
       deleteButtonOpacity.value = withTiming(0, { duration: 200 })
       dragBarOpacity.value = withTiming(0, { duration: 200 })
       rotate.value = withTiming(0, { duration: 0 })
+      overlayOpacity.value = withTiming(0, { duration: 200 })
     }
   }, [props.state])
 
@@ -395,6 +400,7 @@ const Widget = (props: WidgetProps) => {
     })
 
   const resize = Gesture.Pan()
+    .enabled(props.state === 'editing')
     .onChange(({ changeX }) => {
       const widthDx = column.value === 0 ? changeX : -1 * changeX;
       width.value = Math.min(
@@ -507,6 +513,9 @@ const Widget = (props: WidgetProps) => {
           shadowOffset={{ width: 0, height: 2 }}
         >
           <Box style={[styles.filled, styles.clipBox]} borderRadius='xl'>
+            <Animated.View style={[StyleSheet.absoluteFill, styles.overlay, { opacity: overlayOpacity }]} pointerEvents={'none'}>
+              <Box backgroundColor='nestedContainer' style={[StyleSheet.absoluteFill, styles.overlay]} />
+            </Animated.View>
             <TouchableHighlight
               underlayColor={theme.colors.mainText}
               activeOpacity={.98}
@@ -538,7 +547,7 @@ const Widget = (props: WidgetProps) => {
             </Text>
           </View>}
         {props.widget.minSize !== 'rectangle' &&
-          <GestureDetector gesture={resize} touchAction={props.state === 'editing' ? 'auto' : 'none'}>
+          <GestureDetector gesture={resize}>
             <Animated.View style={[styles.dragBarContainer, dragBarStyle]}>
               <Box
                 borderColor='containerDragBar'

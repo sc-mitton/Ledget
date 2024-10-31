@@ -26,6 +26,7 @@ const palette = {
   purpleText: 'hsl(250, 100%, 70%)',
 
   gray100: `hsl(${grayH}, ${grayS}%, 98%)`,
+  gray125: `hsl(${grayH}, ${grayS}%, 96%)`,
   gray150: `hsl(${grayH}, ${grayS}%, 95%)`,
   gray200: `hsl(${grayH}, ${grayS}%, 91%)`,
   gray250: `hsl(${grayH}, ${grayS}%, 89%)`,
@@ -186,7 +187,7 @@ export const lightTheme = createTheme({
     modalSeperator: palette.gray200,
     menuSeperator: palette.gray200,
     mainScreenSeperator: palette.gray200,
-    nestedContainerSeperator: palette.gray150,
+    nestedContainerSeperator: palette.gray125,
     authScreenSeperator: palette.gray250,
 
     // Misc
@@ -199,7 +200,7 @@ export const lightTheme = createTheme({
     blueChartGradientStart: palette.blue50,
     blueChartGradientEnd: palette.gray200.replace('hsl', 'hsla').replace(')', ', 0)'),
     blueChartColor: palette.blue300,
-    blueChartColorSecondary: palette.blue500,
+    blueChartColorSecondary: palette.blue200,
     emptyChartGradientStart: palette.gray300,
 
     // Icons

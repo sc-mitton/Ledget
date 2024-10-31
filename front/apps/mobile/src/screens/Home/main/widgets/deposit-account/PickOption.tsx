@@ -4,18 +4,12 @@ import {
   LinearGradient,
   vec
 } from '@shopify/react-native-skia';
-import dayjs from 'dayjs';
 import { useTheme } from '@shopify/restyle';
 
+import { tempDepositBalanceChartData } from '@constants'
 import styles from './styles/pick-option';
 import { Box, InstitutionLogo } from '@ledget/native-ui';
 import { useGetAccountsQuery } from '@ledget/shared-features';
-import tempDataValues from './tempChartData';
-
-const tempChartData = tempDataValues.map((d, i) => ({
-  date: dayjs().subtract(i, 'days').format('YYYY-MM-DD'),
-  balance: d
-})).reverse();
 
 const Shadow = () => {
   const { data: accounts } = useGetAccountsQuery();
@@ -43,7 +37,7 @@ const Shadow = () => {
       </View>
       <View style={styles.chartContainer}>
         <CartesianChart
-          data={tempChartData}
+          data={tempDepositBalanceChartData}
           xKey={'date'}
           yKeys={['balance']}
           xAxis={{

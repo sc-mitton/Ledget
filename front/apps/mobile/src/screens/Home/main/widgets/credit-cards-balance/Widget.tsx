@@ -5,7 +5,7 @@ import { LinearGradient, Canvas, Rect, vec } from '@shopify/react-native-skia';
 import Carousel from "react-native-reanimated-carousel";
 import { CheckInCircleFill } from 'geist-native-icons';
 import Animated, { FadeOut, useSharedValue, StretchOutY } from 'react-native-reanimated';
-import { SlotText } from './components';
+import { SlotText } from 'react-native-slot-text';
 
 import styles from './styles/widget';
 import { useAppDispatch } from "@/hooks"
@@ -114,15 +114,17 @@ const Selector = (widget: WidgetProps<{ accounts: string[] }>) => {
                             {account.mask}
                           </Text>
                         </View>
-                        <Canvas style={[StyleSheet.absoluteFill, { opacity: .2 }]}>
-                          <Rect x={0} y={0} width={SELECT_OPTION_WIDTH} height={SELECT_OPTION_HEIGHT}>
-                            <LinearGradient
-                              colors={gradientColors}
-                              start={vec(0, 0)}
-                              end={vec(SELECT_OPTION_WIDTH * .5, SELECT_OPTION_WIDTH * .5)}
-                            />
-                          </Rect>
-                        </Canvas>
+                        <View style={[StyleSheet.absoluteFill, { opacity: .7 }]}>
+                          <Canvas style={[StyleSheet.absoluteFill, { opacity: .2 }]}>
+                            <Rect x={0} y={0} width={SELECT_OPTION_WIDTH} height={SELECT_OPTION_HEIGHT}>
+                              <LinearGradient
+                                colors={gradientColors}
+                                start={vec(0, 0)}
+                                end={vec(SELECT_OPTION_WIDTH * .5, SELECT_OPTION_WIDTH * .5)}
+                              />
+                            </Rect>
+                          </Canvas>
+                        </View>
                         <Box style={[StyleSheet.absoluteFillObject, styles.grayBack]} backgroundColor='nestedContainerSeperator' />
                         <Text fontSize={14} lineHeight={18} style={styles.name}>
                           {account.name.length > 26 ? `${account.name.slice(0, 24)}..` : account.name}

@@ -10,9 +10,9 @@ import dayjs from 'dayjs'
 export const tempDepositBalanceChartData = [
   { date: dayjs().startOf('month').subtract(3, 'month').format('YYYY-MM-DD'), balance: 1200 },
   { date: dayjs().startOf('month').subtract(2, 'month').format('YYYY-MM-DD'), balance: 2700 },
-  { date: dayjs().startOf('month').subtract(1, 'month').format('YYYY-MM-DD'), balance: 2300 },
-  { date: dayjs().startOf('month').format('YYYY-MM-DD'), balance: 4000 },
-  { date: dayjs().format('YYYY-MM-DD'), balance: 3800 },
+  { date: dayjs().startOf('month').subtract(1, 'month').format('YYYY-MM-DD'), balance: 3700 },
+  { date: dayjs().startOf('month').format('YYYY-MM-DD'), balance: 4300 },
+  { date: dayjs().format('YYYY-MM-DD'), balance: 4500 },
 ]
 
 export const tempInvestmentsBalanceChartData = [

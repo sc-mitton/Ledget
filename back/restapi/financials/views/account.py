@@ -209,7 +209,7 @@ class AccountsViewSet(ViewSet):
         }
 
         for item in qset:
-            balance = data[item['account']][-1]['balance'] - item['total']
+            balance = data[item['account']][-1]['balance'] + item['total']
             data[item['account']].append({
                 'month': f"{item['month']}",
                 'balance': balance
@@ -234,7 +234,7 @@ class AccountsViewSet(ViewSet):
         for item in qset:
             data.append({
                 'account': item['account'],
-                'trend': item['total']
+                'trend': item['total'] * -1
             })
 
         return data
