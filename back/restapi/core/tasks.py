@@ -80,14 +80,11 @@ def cancelation_cleanup(user_id: str) -> None:
 
     plaid_items = PlaidItem.objects.filter(
         user_id__in=[user.id, user.co_owner.id])
-    delete_tasks = []
-    for item in plaid_items:
-        delete_task = delete_plaid_item.si(item.id, item.access_token)
-        delete_tasks.append(delete_task)
 
-    if delete_tasks:
-        grouped_delete_tasks = group(delete_tasks)
-        grouped_delete_tasks()
+    grouped_delete_tasks = group(
+        delete_plaid_item.s(item.id, item.access_token)
+        for item in plaid_items)
+    grouped_delete_tasks()
 
     update_db(user, plaid_items)
     delete_ory_identity.delay(user_id)

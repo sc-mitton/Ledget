@@ -9,7 +9,6 @@ from django.apps import apps
 # In production, make sure ssl is enabled
 app = Celery("restapi")
 app.config_from_object("django.conf:settings", namespace="CELERY")
-app.autodiscover_tasks(lambda: [n.name for n in apps.get_app_configs()])
 
 app.conf.beat_schedule = {
     'fetch_investments_balance': {
@@ -17,3 +16,5 @@ app.conf.beat_schedule = {
         'schedule': crontab(hour=0, minute=0)
     },
 }
+
+app.autodiscover_tasks(lambda: [n.name for n in apps.get_app_configs()])

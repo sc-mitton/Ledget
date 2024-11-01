@@ -1,4 +1,3 @@
-import logging
 import json
 
 from celery import shared_task, group
@@ -13,14 +12,21 @@ from core.clients import create_plaid_client
 import plaid
 
 from financials.models import PlaidItem, AccountBalance, Account
+from celery.utils.log import get_task_logger
 
-logger = logging.getLogger('ledget')
+logger = get_task_logger(__name__)
 plaid_client = create_plaid_client()
 
 
 @shared_task(auto_retry_for=(OperationalError), retry_backoff=10, retry_jitter=True,
              retry_kwargs={'max_retries': 3})
-def fetch_balences(item_ids=[], account_ids=[], access_tokens=[]) -> None:
+def fetch_balences(
+    item_ids=[],
+    account_ids=[],
+    access_tokens=[],
+    *args,
+    **kwargs
+) -> None:
 
     if (len(account_ids) != len(access_tokens)):
         logger.error(
@@ -57,7 +63,7 @@ def fetch_balences(item_ids=[], account_ids=[], access_tokens=[]) -> None:
 
 @shared_task(auto_retry_for=(OperationalError), retry_backoff=10, retry_jitter=True,
              retry_kwargs={'max_retries': 3})
-def fetch_investments_balance() -> None:
+def fetch_investments_balance(*args, **kwargs) -> None:
     '''
     Fetch investments balance data for all of the investment accounts in the db
     '''
@@ -78,13 +84,13 @@ def fetch_investments_balance() -> None:
     tasks = []
     for i in range(0, len(plaid_items), batch_size):
         batch = plaid_items[i:i+batch_size]
-        task = fetch_balences.si(
+        task = fetch_balences.s(
             account_ids=[[a.id for a in item.accounts.all()] for item in batch],
             access_tokens=[item.access_token for item in batch],
             kwargsrepr=repr({'access_tokens': '**REDACTED**[]'})
-        ).apply_async()
+        )
         tasks.append(task)
 
     if tasks:
         tasks_group = group(tasks)
-        tasks_group()
+        tasks_group.apply_async()
