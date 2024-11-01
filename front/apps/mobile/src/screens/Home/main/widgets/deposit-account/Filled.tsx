@@ -49,7 +49,7 @@ const Filled = (props: WidgetProps<{ account: string }>) => {
         start: dateWindow.start,
         end: dateWindow.end,
         type: account.type as any,
-        accounts: accountsData?.accounts.map(a => a.id) || [],
+        accounts: [account.id],
       }, true);
     }
   }, [accountsData, dateWindow, account])

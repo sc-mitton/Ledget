@@ -1,18 +1,23 @@
+import { useState } from 'react';
 import { useTheme } from '@shopify/restyle';
 import { View } from 'react-native';
 import { CartesianChart, Area, Line, useChartPressState } from 'victory-native';
 import { LinearGradient, vec, useFont } from '@shopify/react-native-skia';
+import Animated, { useAnimatedStyle, useSharedValue, useAnimatedReaction, runOnJS } from 'react-native-reanimated';
+import { SlotText } from 'react-native-slot-text';
 import dayjs from 'dayjs';
 
 import styles from './styles/chart-skeleton';
-import { VictoryTooltip } from '@ledget/native-ui';
+import { VictoryTooltip, Box } from '@ledget/native-ui';
 import { tempInvestmentsBalanceChartData } from '@constants';
 import SourceSans3Regular from '../../../../../../assets/fonts/SourceSans3Regular.ttf'
 
-const tempChartData = tempInvestmentsBalanceChartData.map((d, i) => ({
+export const tempChartData = tempInvestmentsBalanceChartData.map((d, i) => ({
   date: dayjs().subtract(i, 'days').format('YYYY-MM-DD'),
   balance: d
 })).reverse();
+
+export type ChartDataT = typeof tempChartData
 
 interface Props {
   data?: {
@@ -25,9 +30,49 @@ const ChartSkeleton = (props: Props) => {
   const theme = useTheme();
   const { state, isActive } = useChartPressState({ x: '0', y: { balance: 0 } })
   const font = useFont(SourceSans3Regular, 14)
+  const tipOpacity = useSharedValue(0);
+  const [slotsValue, setSlotsValue] = useState<`${number}`>();
+
+  useAnimatedReaction(() => state.y.balance.value.value, (value) => {
+    const newValue = `${value}`.split('.')[0];
+    runOnJS(setSlotsValue)(newValue as `${number}`);
+  });
+
+  useAnimatedReaction(() => isActive, (active) => {
+    if (props.data) {
+      tipOpacity.value = active ? 1 : 0;
+    }
+  });
+
+  const tipStyle = useAnimatedStyle(() => ({ opacity: tipOpacity.value }));
 
   return (
     <View style={styles.chartContainer}>
+      <View style={styles.tipContainer}>
+        <Animated.View style={[styles.tip, tipStyle]}>
+          <Box
+            backgroundColor='nestedContainerSeperator'
+            paddingHorizontal='s'
+            paddingVertical='xs'
+            borderRadius='s'
+            shadowColor='mainText'
+            shadowOpacity={.3}
+            shadowRadius={5}
+            shadowOffset={{ width: 0, height: 0 }}
+          >
+            <SlotText
+              fontStyle={[
+                { color: theme.colors.mainText },
+                styles.fontStyle
+              ]}
+              prefix='$'
+              value={slotsValue as any}
+              animationDuration={200}
+              includeComma={true}
+            />
+          </Box>
+        </Animated.View>
+      </View>
       <CartesianChart
         data={props.data || tempChartData}
         xKey={'date'}
@@ -53,7 +98,7 @@ const ChartSkeleton = (props: Props) => {
             <Area
               y0={chartBounds.bottom}
               points={points.balance}
-              animate={{ type: 'spring', duration: 300 }}
+              animate={{ type: 'timing', duration: 300 }}
               curveType='natural'
             >
               <LinearGradient
@@ -66,7 +111,7 @@ const ChartSkeleton = (props: Props) => {
               />
             </Area>
             <Line
-              animate={{ type: 'spring', duration: 300 }}
+              animate={{ type: 'timing', duration: 300 }}
               points={points.balance}
               color={theme.colors.quinaryText}
               strokeWidth={2}
@@ -74,7 +119,7 @@ const ChartSkeleton = (props: Props) => {
               curveType='natural'
             />
             <Line
-              animate={{ type: 'spring', duration: 300 }}
+              animate={{ type: 'timing', duration: 300 }}
               points={points.balance}
               color={props.data ? theme.colors.blueChartColor : theme.colors.quinaryText}
               strokeWidth={2}
@@ -89,7 +134,7 @@ const ChartSkeleton = (props: Props) => {
                 color={theme.colors.mainText}
                 xAxisTipColor={theme.colors.tertiaryText}
                 dotColor={theme.colors.blueText}
-                borderColor={theme.colors.lightBlueButton}
+                borderColor={theme.colors.blueChartColor}
                 backgroundColor={theme.colors.grayButton}
                 verticalCrosshair={true}
                 lineOffset={-20}

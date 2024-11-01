@@ -38,6 +38,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 6,
     transform: [{ translateY: 2 }],
+  },
+  amountContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8
+  },
+  percent: {
+    flexDirection: 'row',
+    alignItems: 'center'
   }
 });
 

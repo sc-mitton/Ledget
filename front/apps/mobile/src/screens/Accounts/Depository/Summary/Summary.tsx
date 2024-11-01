@@ -24,15 +24,19 @@ import SourceSans3Regular from '../../../../../assets/fonts/SourceSans3Regular.t
 import { useAppearance } from '@/features/appearanceSlice';
 import { ChartWindowsMenu } from '@/components';
 import { tempDepositBalanceChartData, chartWindows } from '@constants';
+import { useAppSelector } from '@/hooks';
+import { selectAccountsTabDepositAccounts } from '@/features/uiSlice';
 
 export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
   const { data: accountsData } = useGetAccountsQuery()
   const [getBalanceTrend, { data: balanceTrend }] = useLazyGetAccountBalanceTrendQuery()
   const [getBalanceHistory, { data: balanceHistory, isSuccess: isBalanceHistoryLoaded }] = useLazyGetAccountBalanceHistoryQuery()
+
   const { mode } = useAppearance();
   const theme = useTheme();
   const font = useFont(SourceSans3Regular, 14)
 
+  const storedAccounts = useAppSelector(selectAccountsTabDepositAccounts)
   const [window, setWindow] = useState<typeof chartWindows[number]['key']>(chartWindows[0].key)
   const [showMenu, setShowMenu] = useState(false)
   const [dateWindow, setDateWindow] = useState<{ start: number, end: number }>({ start: 0, end: 0 })
@@ -100,15 +104,15 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
   }, [balanceTrend, accountsData])
 
   useEffect(() => {
-    if (dateWindow.start && dateWindow.end && accountsData) {
+    if (dateWindow.start && dateWindow.end && storedAccounts) {
       getBalanceHistory({
         start: dateWindow.start,
         end: dateWindow.end,
         type: props.route.name.toLowerCase() as any,
-        accounts: accountsData?.accounts.map(a => a.id) || [],
+        accounts: storedAccounts?.map(a => a.id) || [],
       });
     }
-  }, [accountsData, dateWindow]);
+  }, [dateWindow, storedAccounts]);
 
   useEffect(() => {
     if (accountsData?.accounts.length) {

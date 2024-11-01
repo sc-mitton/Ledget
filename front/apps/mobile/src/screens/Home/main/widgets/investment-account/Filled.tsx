@@ -1,12 +1,13 @@
+import { useMemo } from "react";
 import { View } from "react-native"
-import { Widget } from "@/features/widgetsSlice"
 import Big from 'big.js'
 import dayjs from 'dayjs'
+import { ArrowUpRight, ArrowDownRight } from 'geist-native-icons';
 
 import styles from './styles/filled'
-import { Text, InstitutionLogo, DollarCents, Button, Box, PulseBox } from "@ledget/native-ui"
+import { Icon, Text, InstitutionLogo, DollarCents, Button, Box, PulseBox } from "@ledget/native-ui"
 import {
-  useGetInvestmendsBalanceHistoryQuery,
+  useLazyGetInvestmendsBalanceHistoryQuery,
   useGetInvestmentsQuery,
   isInvestmentSupported,
   InvestmentWithProductSupport
@@ -17,25 +18,44 @@ import { windows } from "./constants"
 import { Props } from "./types"
 import { useAppDispatch } from "@hooks"
 import { updateWidget } from "@features/widgetsSlice"
+import type { ChartDataT } from './Chart'
 
 const Filled = (props: Props) => {
   const [window, setWindow] = useState<typeof windows[number]>(props.args?.window || windows[0])
   const [investment, setInvestment] = useState<InvestmentWithProductSupport>()
 
+
   const dispatch = useAppDispatch()
+
   const { data: investments } = useGetInvestmentsQuery({
     end: dayjs().format('YYYY-MM-DD'),
     start: dayjs().subtract(window.amount || 100, window.period).format('YYYY-MM-DD')
   }, {
     skip: !props.args?.window
   })
+  const [getBalanceHistory, { data: history }] = useLazyGetInvestmendsBalanceHistoryQuery()
+  const [chartData, setChartData] = useState<ChartDataT>()
 
-  const { data: history } = useGetInvestmendsBalanceHistoryQuery({
-    end: dayjs().format('YYYY-MM-DD'),
-    start: dayjs().subtract(window.amount || 100, window.period).format('YYYY-MM-DD')
-  }, {
-    skip: !props.args?.window
-  })
+  const percentChange = useMemo(() => {
+    if (!history || (history[0]?.balances?.length || 0) < 2) return
+
+    return Big(history[0].balances[1].balance)
+      .minus(Big(history[0].balances[2].balance))
+      .div(Big(history[0].balances[2].balance))
+      .times(100)
+      .toNumber()
+
+  }, [history])
+
+  useEffect(() => {
+    if (props.args?.investment && window) {
+      getBalanceHistory({
+        end: dayjs().format('YYYY-MM-DD'),
+        start: dayjs().subtract(window.amount || 100, window.period).format('YYYY-MM-DD'),
+        accounts: [props.args.investment]
+      }, true)
+    }
+  }, [props.args?.investment, window])
 
   useEffect(() => {
     dispatch(updateWidget({ widget: { ...props, args: { window, ...props.args } } }))
@@ -48,6 +68,11 @@ const Filled = (props: Props) => {
       .find(i => i.account_id === props.args?.investment)
     )
   }, [investments])
+
+  useEffect(() => {
+    if (!history || (history[0]?.balances?.length || 0) < 7) return
+    setChartData(history[0].balances)
+  }, [history])
 
   return (
     <View style={styles.container}>
@@ -67,14 +92,26 @@ const Filled = (props: Props) => {
             </Text>
             : <Box marginBottom='xs'><PulseBox width={70} height={'reg'} /></Box>}
         </View>
-        <DollarCents
-          value={Big(investment?.balance || 0).times(100).toNumber()}
-          fontSize={15}
-          lineHeight={22}
-          withCents={props.shape === 'rectangle'}
-        />
+        <View style={styles.amountContainer}>
+          <DollarCents
+            value={Big(investment?.balance || 0).times(100).toNumber()}
+            fontSize={15}
+            lineHeight={22}
+            withCents={props.shape === 'rectangle'}
+          />
+          {percentChange !== undefined &&
+            <View style={styles.percent}>
+              <Text fontSize={15} color={percentChange > 0 ? 'greenText' : 'alert'}>
+                {`${2}%`}
+              </Text>
+              {percentChange > 0
+                ? <Icon icon={ArrowUpRight} size={15} color='greenText' />
+                : <Icon icon={ArrowDownRight} size={15} color='alert' />}
+            </View>
+          }
+        </View>
       </View>
-      <Chart />
+      <Chart data={chartData} />
       <View style={styles.windowButtons}>
         {windows.map((w, i) => (
           <Fragment key={`investment-widget-${w.key}`}>

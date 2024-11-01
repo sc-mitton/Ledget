@@ -30,8 +30,7 @@ import pathMappings from '../path-mappings';
 export const BalanceChart = () => {
   const { accounts } = useAccountsContext();
   const location = useLocation();
-  const [getAccountBalance, { data: balanceHistoryData }] =
-    useLazyGetAccountBalanceHistoryQuery();
+  const [getAccountBalance, { data: balanceHistoryData }] = useLazyGetAccountBalanceHistoryQuery();
   const nivoBaseProps = useMinimalistNivoResponsiveBaseProps({
     primaryColor: '--blue-medium',
     gradientColorStart: '--blue-light-medium',

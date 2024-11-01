@@ -32,12 +32,12 @@ const ChartSkeleton = (props: Props) => {
   });
 
   useAnimatedReaction(() => isActive, (active) => {
-    tipOpacity.value = active ? 1 : 0;
+    if (props.data) {
+      tipOpacity.value = active ? 1 : 0;
+    }
   });
 
-  const tipStyle = useAnimatedStyle(() => ({
-    opacity: tipOpacity.value
-  }));
+  const tipStyle = useAnimatedStyle(() => ({ opacity: tipOpacity.value }));
 
   useEffect(() => {
     if (props.data) {
@@ -97,7 +97,7 @@ const ChartSkeleton = (props: Props) => {
             <Area
               y0={chartBounds.bottom}
               points={points.balance}
-              animate={{ type: 'spring', duration: 300 }}
+              animate={{ type: 'timing', duration: 300 }}
               curveType='natural'
             >
               <LinearGradient
@@ -110,7 +110,7 @@ const ChartSkeleton = (props: Props) => {
               />
             </Area>
             <Line
-              animate={{ type: 'spring', duration: 300 }}
+              animate={{ type: 'timing', duration: 300 }}
               points={points.balance}
               color={theme.colors.quinaryText}
               strokeWidth={2}
@@ -118,7 +118,7 @@ const ChartSkeleton = (props: Props) => {
               curveType='natural'
             />
             <Line
-              animate={{ type: 'spring', duration: 300 }}
+              animate={{ type: 'timing', duration: 300 }}
               points={points.balance}
               color={props.data ? theme.colors.blueChartColor : theme.colors.quinaryText}
               strokeWidth={2}

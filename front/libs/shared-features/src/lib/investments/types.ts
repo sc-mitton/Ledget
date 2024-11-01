@@ -68,3 +68,5 @@ export type InvestmentsState = {
 }
 
 export type GetInvestmentsQuery = { start: string, end: string, cursor?: string } | void
+
+export type InvestmentsBalanceQuery = { start: string, end: string, accounts?: string[] }

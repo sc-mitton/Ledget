@@ -8,7 +8,8 @@ import {
   isInvestmentSupported,
   InvestmentWithProductSupport,
   InvestmentsState,
-  GetInvestmentsQuery
+  GetInvestmentsQuery,
+  InvestmentsBalanceQuery
 } from './types';
 
 const investmentsRTKSlice = apiSlice.injectEndpoints({
@@ -40,8 +41,12 @@ const investmentsRTKSlice = apiSlice.injectEndpoints({
         return currentCache;
       }
     }),
-    getInvestmendsBalanceHistory: build.query<InvestmentsBalanceHistory, { start: string, end: string }>({
-      query: () => 'investments/balance-history',
+    getInvestmendsBalanceHistory: build.query<InvestmentsBalanceHistory, InvestmentsBalanceQuery>({
+      query: (params) => ({
+        url: 'investments/balance-history',
+        method: 'GET',
+        params
+      }),
       providesTags: ['InvestmentBalanceHistory'],
     }),
   }),
@@ -99,5 +104,6 @@ export const selectTrackedHoldings = (state: { investments: InvestmentsState }) 
 export const {
   useGetInvestmentsQuery,
   useLazyGetInvestmentsQuery,
-  useGetInvestmendsBalanceHistoryQuery
+  useGetInvestmendsBalanceHistoryQuery,
+  useLazyGetInvestmendsBalanceHistoryQuery
 } = investmentsRTKSlice;

@@ -156,6 +156,9 @@ class InvestmentsBalanceHistoryView(ListAPIView):
     serializer_class = InvestmentBalanceSerializer
 
     def get_queryset(self, *args, **kwargs):
+        qset = AccountBalance.objects.filter(
+            account__plaid_item__user__in=self.request.user.account.users.all())
+
         start = self.request.query_params.get('start', None)
         end = self.request.query_params.get('end', None)
         start = parser.parse(start) if start else datetime.now() - timedelta(days=30)
@@ -163,10 +166,11 @@ class InvestmentsBalanceHistoryView(ListAPIView):
         start.replace(tzinfo=timezone.utc)
         end.replace(tzinfo=timezone.utc)
 
-        qset = AccountBalance.objects.filter(
-            account__plaid_item__user__in=self.request.user.account.users.all(),
-            date__gte=start,
-            date__lte=end
-        ).prefetch_related('account')
+        qset = qset.filter(date__gte=start, date__lte=end)
 
-        return qset
+        accounts = self.request.query_params.getlist('accounts')
+
+        if accounts and accounts[0] != '*':
+            qset = qset.filter(account__in=accounts)
+
+        return qset.prefetch_related('account')

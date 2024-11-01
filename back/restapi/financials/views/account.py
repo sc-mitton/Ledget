@@ -132,15 +132,19 @@ class AccountsViewSet(ViewSet):
         }, HTTP_200_OK)
 
     def _get_users_accounts(self, include_institutions=False):
-        account_ids = self.request.query_params.getlist('accounts')
 
         qset = Account.objects.filter(
-            useraccount__user__in=self.request.user.account.users.all()) \
-            .annotate(order=F('useraccount__order')) \
+                useraccount__user__in=self.request.user.account.users.all()
+            ).annotate(order=F('useraccount__order')) \
             .annotate(cardHue=F('useraccount__cardHue'))
 
-        if account_ids:
+        account_ids = self.request.query_params.getlist('accounts')
+        if account_ids and account_ids[0] != '*':
             qset = qset.filter(id__in=account_ids)
+
+        type = self.request.query_params.get('type')
+        if type:
+            qset = qset.filter(type=type)
 
         qset = qset.order_by('useraccount__order').prefetch_related('plaid_item')
 
