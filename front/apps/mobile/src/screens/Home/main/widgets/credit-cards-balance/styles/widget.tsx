@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   fontStyle: {
-    fontFamily: 'SourceSans3SemiBold',
+    fontFamily: 'SourceSans3Regular',
     fontSize: 18
   },
   balanceContainer: {

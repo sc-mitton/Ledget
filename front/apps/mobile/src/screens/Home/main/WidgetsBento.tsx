@@ -8,6 +8,7 @@ import Animated, {
   withTiming
 } from "react-native-reanimated";
 import { useTheme } from "@shopify/restyle";
+import { Edit } from "geist-native-icons";
 
 import styles from '../styles/widgets-grid';
 import { Box } from "@ledget/native-ui";
@@ -60,7 +61,7 @@ const WidgetsBento = (props: HomeScreenProps<'Main'>) => {
 
     const newGridPositions = getGridPositions(orderedWidgets)
     const updatedPositionEntries = orderedWidgets.map((w, index) =>
-      [w.id || w.type, newGridPositions[index]] as [string, number])
+      [w.id || w.type, newGridPositions[index]])
     const updatedPositionsMap = Object.fromEntries(updatedPositionEntries)
     Object.assign(positions.value, updatedPositionsMap)
   })
@@ -113,9 +114,9 @@ const WidgetsBento = (props: HomeScreenProps<'Main'>) => {
             <View
               style={[
                 {
-                  height: order.value.length > 0 && positions.value[order.value[order.value.length - 1]] > 0
-                    ? Math.ceil(positions.value[order.value[order.value.length - 1]] / 2) * (itemHeight.value + gap) + theme.spacing.navHeight * 2.5
-                    : 0
+                  height: order.value.length > 0 && positions.value[order.value[order.value.length - 1]][0] > 0
+                    ? Math.ceil(positions.value[order.value[order.value.length - 1]][0] / 2) * (itemHeight.value + gap) + theme.spacing.navHeight * 2.5
+                    : 0,
                 },
                 styles.widgetsContainer,
                 styles.currentWidgetsScrollView
@@ -132,7 +133,9 @@ const WidgetsBento = (props: HomeScreenProps<'Main'>) => {
                   order={order}
                   scrollY={currentWidgetsScrollY}
                   scrollView={currentScrollView}
-                  scrollHeight={Math.ceil(positions.value[order.value[order.value.length - 1]] / 2) * (itemHeight.value + gap)}
+                  scrollHeight={order.value.length > 0 && positions.value[order.value[order.value.length - 1]][0] > 0
+                    ? Math.ceil(positions.value[order.value[order.value.length - 1]][0] / 2) * (itemHeight.value + gap) + theme.spacing.navHeight * 2.5
+                    : 0}
                   containerHeight={currentWidgetsContainerHeight}
                   onDragStart={() => { props.navigation.setParams({ state: 'editing' }) }}
                   loaded={loaded}
@@ -163,8 +166,8 @@ const WidgetsBento = (props: HomeScreenProps<'Main'>) => {
             <View
               style={[
                 {
-                  height: positions.value[widgetTypes[widgetTypes.length - 1].type] > 0
-                    ? ((Math.ceil(positions.value[widgetTypes[widgetTypes.length - 1].type] - 1000) / 2)) * (itemHeight.value + gap + bottomLabelPadding) + 54
+                  height: positions.value[widgetTypes[widgetTypes.length - 1].type][0] > 0
+                    ? ((Math.ceil(positions.value[widgetTypes[widgetTypes.length - 1].type][0] - 1000) / 2)) * (itemHeight.value + gap + bottomLabelPadding) + 54
                     : 0
                 },
                 styles.pickerWidgetsScrollView
@@ -180,7 +183,9 @@ const WidgetsBento = (props: HomeScreenProps<'Main'>) => {
                   positions={positions}
                   order={order}
                   scrollY={pickerScrollY}
-                  scrollHeight={((Math.ceil(positions.value[widgetTypes[widgetTypes.length - 1].type] - 1000) / 2)) * (itemHeight.value + gap + bottomLabelPadding) + 54}
+                  scrollHeight={positions.value[widgetTypes[widgetTypes.length - 1].type][0] > 0
+                    ? ((Math.ceil(positions.value[widgetTypes[widgetTypes.length - 1].type][0] - 1000) / 2)) * (itemHeight.value + gap + bottomLabelPadding) + 54
+                    : 0}
                   containerHeight={pickerWidgetsContainerHeight}
                   onDragStart={() => { props.navigation.setParams({ state: 'dropping' }) }}
                   onDragEnd={() => { props.navigation.setParams({ state: 'idle' }) }}

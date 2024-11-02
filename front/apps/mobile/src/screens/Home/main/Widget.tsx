@@ -10,9 +10,7 @@ import Animated, {
   withDelay,
   withRepeat,
   runOnJS,
-  scrollTo,
-  FadeIn,
-  FadeOut
+  scrollTo
 } from "react-native-reanimated";
 import { Divider } from 'geist-native-icons';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
@@ -56,9 +54,9 @@ const Widget = (props: WidgetProps) => {
 
     if (props.widget.id && !initiallyPositioned.value) {
       const pos = getAbsPosition(
-        props.positions.value[props.widget.id],
+        props.positions.value[props.widget.id][0],
         height.value,
-        Boolean(props.widget.id) ? undefined : 'bottom-label'
+        !Boolean(props.widget.id)
       );
 
       translateX.value = pos.x;
@@ -69,20 +67,18 @@ const Widget = (props: WidgetProps) => {
     }
   })
 
-  // Update column
-  useAnimatedReaction(() => props.positions, (newPositions) => {
-    column.value = newPositions.value[props.widget.id || props.widget.type] % 2;
-  });
-
   // Update the absolute position of the widget when the grid positions change
   // (Only if not dragging, we dont' want the positions updates that happen in the gesture
   // to affect the widget's position)
   useAnimatedReaction(() => props.positions, (newPositions) => {
     if (!isDragging.value) {
+      // Update column
+      column.value = newPositions.value[props.widget.id || props.widget.type][0] % 2;
+
       const pos = getAbsPosition(
-        newPositions.value[props.widget.id || props.widget.type],
+        newPositions.value[props.widget.id || props.widget.type][0],
         props.height.value,
-        Boolean(props.widget.id) ? undefined : 'bottom-label'
+        !Boolean(props.widget.id)
       );
 
       translateX.value = withSpring(pos.x, defaultSpringConfig);
@@ -105,10 +101,12 @@ const Widget = (props: WidgetProps) => {
   useAnimatedReaction(() => isDragging.value, (dragging) => {
     if (!dragging && !props.visible) {
       const pos = getAbsPosition(
-        props.positions.value[props.widget.id || props.widget.type],
+        props.positions.value[props.widget.id || props.widget.type][0],
         props.height.value,
-        Boolean(props.widget.id) ? undefined : 'bottom-label'
+        !Boolean(props.widget.id)
       );
+
+      column.value = props.positions.value[props.widget.id || props.widget.type][0] % 2;
 
       scale.value = withDelay(500, withTiming(.5, { duration: 0 }));
       opacity.value = withTiming(0, { duration: 0 });
@@ -134,9 +132,9 @@ const Widget = (props: WidgetProps) => {
   useEffect(() => {
     if (!isDragging.value) {
       const pos = getAbsPosition(
-        props.positions.value[props.widget.id || props.widget.type],
+        props.positions.value[props.widget.id || props.widget.type][0],
         props.height.value,
-        Boolean(props.widget.id) ? undefined : 'bottom-label'
+        !Boolean(props.widget.id)
       );
 
       translateX.value = withSpring(pos.x, defaultSpringConfig);
@@ -154,9 +152,9 @@ const Widget = (props: WidgetProps) => {
     if (isDragging.value) return;
 
     const pos = getAbsPosition(
-      props.positions.value[props.widget.id || props.widget.type],
+      props.positions.value[props.widget.id || props.widget.type][0],
       props.height.value,
-      Boolean(props.widget.id) ? undefined : 'bottom-label'
+      !Boolean(props.widget.id)
     );
 
     if (props.visible) {
@@ -206,8 +204,7 @@ const Widget = (props: WidgetProps) => {
   }));
 
   const updateGlobalState = useCallback(() => {
-    const index = props.order.value.findIndex(
-      k => k === props.widget.id || k === props.widget.type);
+    const index = props.order.value.findIndex(k => k === props.widget.id || k === props.widget.type);
 
     // If the widget is not new, move the widgets position in the global state
     if (props.widget.id) {
@@ -247,14 +244,14 @@ const Widget = (props: WidgetProps) => {
     });
   }, []);
 
-
   const pan = Gesture.Pan()
-    .enabled(!Boolean(props.widget.id))
-    .activateAfterLongPress(1000)
+    .activateAfterLongPress(200)
+    .enabled(props.state !== 'idle')
     .failOffsetY(50)
     .failOffsetX([-1 * props.height.value / 2, (props.height.value * 2.5) + gap])
     .onStart((ctx) => {
       runOnJS(Haptics.selectionAsync)();
+
       props.onDragStart && runOnJS(props.onDragStart)();
 
       shadowOpacity.value = theme.colors.mode === 'dark' ? withTiming(0.3) : withTiming(.1);
@@ -274,7 +271,11 @@ const Widget = (props: WidgetProps) => {
       // Iterate through the widgets array while keeping track of the accumulated grid position.
       // We stick the widget in ordered array based on its grid position.
 
-      if (newGridPos !== props.positions.value[props.widget.id || props.widget.type]) {
+      const shouldMove = [
+        newGridPos[0] !== props.positions.value[props.widget.id || props.widget.type][0],
+        !Boolean(props.widget.id)
+      ]
+      if (shouldMove.every(Boolean)) {
 
         for (let i = 0; i < props.order.value.length; i++) {
           const nextGridPos = props.positions.value[props.order.value[i + 1]]
@@ -282,19 +283,11 @@ const Widget = (props: WidgetProps) => {
 
           if (nextGridPos > newGridPos || atEnd) {
             const newOrder = [...props.order.value];
-            const widgetKey = props.widget.id || props.widget.type;
-            const currentIndex = newOrder.findIndex(k => k === widgetKey);
-
-            // If already in order array, move it, otherwise insert it
-            if (currentIndex > -1) {
-              newOrder.splice(currentIndex, 1);
-              newOrder.splice(i, 0, widgetKey);
-            } else if (atEnd) {
+            if (atEnd) {
               newOrder.splice(i + 1, 0, props.widget.type);
             } else {
               newOrder.splice(i, 0, props.widget.type);
             }
-
             props.order.value = newOrder;
             break;
           }
@@ -320,26 +313,49 @@ const Widget = (props: WidgetProps) => {
 
       // Iterate through the widgets array while keeping track of the accumulated grid position.
       // We stick the widget in ordered array based on its grid position.
+      if (newGridPos[0] !== props.positions.value[props.widget.id || props.widget.type][0]) {
 
-      if (newGridPos !== props.positions.value[props.widget.id || props.widget.type]) {
+        const iterator = Array.from({ length: props.order.value.length }, (_, i) =>
+          (changeY > 0 || changeX > 0) ? i : props.order.value.length - 1 - i)
 
-        for (let i = 0; i < props.order.value.length; i++) {
-          const nextGridPos = props.positions.value[props.order.value[i + 1]]
-          const atEnd = i === props.order.value.length - 1
+        for (const i of iterator) {
 
-          if (nextGridPos > newGridPos || atEnd) {
+          const nextGridPos = props.positions.value[props.order.value[i]]
+          const direction = changeY > 0 || changeX > 0 ? 1 : -1
+
+          const initiateReorder = direction > 0
+            ? props.widget.shape === 'rectangle'
+              ? nextGridPos && nextGridPos[0] + nextGridPos[1] - 1 >= newGridPos[0] + 1
+              : nextGridPos && nextGridPos[0] >= newGridPos[0]
+            : props.widget.shape === 'rectangle'
+              ? nextGridPos && nextGridPos[0] - nextGridPos[1] + 1 <= newGridPos[0]
+              : nextGridPos && nextGridPos[0] <= newGridPos[0]
+
+          if (initiateReorder) {
+
             const newOrder = [...props.order.value];
             const widgetKey = props.widget.id || props.widget.type;
-            const currentIndex = newOrder.findIndex(k => k === widgetKey);
+            const currentIndex = props.order.value.findIndex(k => k === widgetKey);
+            const hasSquareNeighbor = currentIndex === props.order.value.length - 1 ? false
+              : column.value === 0
+                ? props.positions.value[props.order.value[currentIndex + 1]][1] === 1
+                : props.positions.value[props.order.value[currentIndex - 1]][1] === 1
 
             // If already in order array, move it, otherwise insert it
             if (currentIndex > -1) {
-              newOrder.splice(currentIndex, 1);
-              newOrder.splice(i, 0, widgetKey);
-            } else if (atEnd) {
-              newOrder.splice(i + 1, 0, props.widget.type);
+              // If swapping square with rectangle, then move square
+              // neighbor with it if there is one
+              if (hasSquareNeighbor && newGridPos[1] === 1 && nextGridPos[1] === 2) {
+                const startSnip = column.value === 0 ? currentIndex : currentIndex - 1;
+                const snipped = newOrder.splice(startSnip, 2);
+                const targetIndex = direction > 0 ? i - 1 : i;
+                newOrder.splice(targetIndex, 0, ...snipped);
+              } else {
+                newOrder.splice(currentIndex, 1);
+                newOrder.splice(i, 0, widgetKey);
+              }
             } else {
-              newOrder.splice(i, 0, props.widget.type);
+              newOrder.splice(i, 0, widgetKey);
             }
 
             props.order.value = newOrder;
@@ -350,9 +366,10 @@ const Widget = (props: WidgetProps) => {
 
       // 3. Scroll up and down if necessary
       const lowerBound = props.scrollY.value;
-      const upperBound = lowerBound + props.containerHeight.value - props.height.value;
+      const upperBound = lowerBound + props.containerHeight.value - theme.spacing.navHeight - (props.height.value * .75);
       const maxScroll = props.scrollHeight - props.containerHeight.value;
       const leftToScrollDown = maxScroll - props.scrollY.value;
+
       if (translateY.value < lowerBound) {
         const diff = Math.min(lowerBound - translateY.value, lowerBound);
         props.scrollY.value -= diff;
@@ -369,7 +386,6 @@ const Widget = (props: WidgetProps) => {
         scrollTo(props.scrollView, 0, props.scrollY.value, false);
         changeY += diff;
         translateY.value += changeY;
-
       }
     })
     .onEnd(({ translationX, translationY }) => {
@@ -385,16 +401,19 @@ const Widget = (props: WidgetProps) => {
         props.height.value
       )
       const finalGridPosition = Math.min(
-        gridPosition,
-        props.positions.value[props.order.value[props.order.value.length - 1]] || 0
+        gridPosition[0],
+        props.positions.value[props.order.value[props.order.value.length - 1]][0] || 0
       );
 
       const finalPosition = getAbsPosition(finalGridPosition, props.height.value);
 
-      translateX.value = withSpring(finalPosition.x, defaultSpringConfig);
-      translateY.value = withSpring(finalPosition.y + props.scrollY.value, defaultSpringConfig);
+      column.value = finalGridPosition % 2;
 
-      if (translationX > 40 || !props.widget.id) {
+      translateX.value = withSpring(finalPosition.x, defaultSpringConfig);
+      translateY.value = withSpring(finalPosition.y, defaultSpringConfig);
+
+      // Used to make sure we don't unecessarily update the global state
+      if (Math.abs(translationX) > 40 || Math.abs(translationY) > 40 || !props.widget.id) {
         runOnJS(updateGlobalState)();
       }
     })
@@ -428,20 +447,21 @@ const Widget = (props: WidgetProps) => {
 
         // Do we need to move around other widgets?
         const needsUpdating = column.value === 0
-          ? (props.positions.value[props.order.value[currentIndex + 1]] - props.positions.value[props.widget.id!]) == 1
+          ? (props.positions.value[props.order.value[currentIndex + 1]][0] - props.positions.value[props.widget.id!][0]) == 1
           : props.positions.value[props.order.value[currentIndex - 1]] < props.positions.value[props.widget.id!]
 
         if (!needsUpdating) return;
 
         // Update positions
-        let gridPositions: number[] = [];
+        let gridPositions: [number, number][] = [];
+
         if (column.value === 0) {
           const remappedWidgets = storedWidgets.map(w =>
             w.id === props.widget.id ? { ...w, shape: 'rectangle' as const } : w)
           gridPositions = getGridPositions(remappedWidgets)
 
           const updatedGridPositions = Object.fromEntries(
-            gridPositions.map((pos, index) => [remappedWidgets[index].id, pos] as [string, number]))
+            gridPositions.map((pos, index) => [remappedWidgets[index].id, pos]))
           updatedGridPositions[props.widget.id || props.widget.type] = props.positions.value[props.widget.id || props.widget.type];
           props.positions.value = updatedGridPositions;
         } else {
@@ -453,7 +473,7 @@ const Widget = (props: WidgetProps) => {
           gridPositions = getGridPositions(remappedWidgets);
 
           const updatedGridPositions = Object.fromEntries(
-            gridPositions.map((pos, index) => [remappedWidgets[index].id, pos] as [string, number]))
+            gridPositions.map((pos, index) => [remappedWidgets[index].id, pos]))
           updatedGridPositions[props.widget.id || props.widget.type] = props.positions.value[props.widget.id || props.widget.type];
           props.positions.value = updatedGridPositions;
         }
@@ -479,7 +499,7 @@ const Widget = (props: WidgetProps) => {
         const size = props.widget.shape === 'rectangle'
           ? (props.height.value * 2) + gap
           : props.height.value
-        const pos = getAbsPosition(props.positions.value[props.widget.id || props.widget.type], props.height.value);
+        const pos = getAbsPosition(props.positions.value[props.widget.id || props.widget.type][0], props.height.value);
         translateX.value = withSpring(pos.x, defaultSpringConfig);
         width.value = withTiming(size, defaultSpringConfig);
         if (column.value === 0) {
@@ -490,7 +510,7 @@ const Widget = (props: WidgetProps) => {
         if (props.widget.shape === 'square') {
           const returnedGridPositions = getGridPositions(storedWidgets);
           const returnedPositionsMap = Object.fromEntries(
-            returnedGridPositions.map((pos, index) => [storedWidgets[index].id, pos] as [string, number]))
+            returnedGridPositions.map((pos, index) => [storedWidgets[index].id, pos]))
           props.positions.value = returnedPositionsMap;
         }
       }
@@ -513,9 +533,14 @@ const Widget = (props: WidgetProps) => {
           shadowOffset={{ width: 0, height: 2 }}
         >
           <Box style={[styles.filled, styles.clipBox]} borderRadius='xl'>
-            <Animated.View style={[StyleSheet.absoluteFill, styles.overlay, { opacity: overlayOpacity }]} pointerEvents={'none'}>
-              <Box backgroundColor='nestedContainer' style={[StyleSheet.absoluteFill, styles.overlay]} />
-            </Animated.View>
+            <GestureDetector gesture={pan}>
+              <Animated.View
+                style={[StyleSheet.absoluteFill, styles.overlay, { opacity: overlayOpacity }]}
+                pointerEvents={props.state === 'idle' ? 'none' : 'auto'}
+              >
+                <Box backgroundColor='nestedContainer' style={[StyleSheet.absoluteFill, styles.overlay]} />
+              </Animated.View>
+            </GestureDetector>
             <TouchableHighlight
               underlayColor={theme.colors.mainText}
               activeOpacity={.98}
@@ -531,11 +556,13 @@ const Widget = (props: WidgetProps) => {
                 paddingVertical='nestedContainerHPadding'
                 style={styles.filled}
               >
-                <GestureDetector gesture={pan}>
-                  <View style={styles.gestureArea}>
-                    <WidgetComponent {...props.widget} />
-                  </View>
-                </GestureDetector>
+
+                <View
+                  style={styles.gestureArea}
+                  pointerEvents={props.state === 'editing' ? 'none' : 'auto'}
+                >
+                  <WidgetComponent {...props.widget} />
+                </View>
               </Box>
             </TouchableHighlight>
           </Box>
@@ -558,12 +585,7 @@ const Widget = (props: WidgetProps) => {
               />
             </Animated.View>
           </GestureDetector>}
-        <Animated.View
-          style={[
-            styles.deleteButtonContainer,
-            deleteButtonStyle
-          ]}
-        >
+        <Animated.View style={[styles.deleteButtonContainer, deleteButtonStyle]}>
           <Button
             variant='circleButton'
             backgroundColor='redText'

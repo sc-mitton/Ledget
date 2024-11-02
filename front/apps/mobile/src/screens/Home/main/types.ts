@@ -10,7 +10,7 @@ export interface WidgetProps {
   index: number,
   visible: boolean,
   height: SharedValue<number>,
-  positions: SharedValue<{ [id: string]: number }>,
+  positions: SharedValue<{ [id: string]: [number, number] }>,
   order: SharedValue<string[]>,
   scrollView: AnimatedRef<Animated.ScrollView>;
   scrollHeight: number;
@@ -20,5 +20,5 @@ export interface WidgetProps {
   onDragStart?: () => void
   onDragEnd?: () => void
   loaded: boolean
-  state?: BentoState
+  state: BentoState
 }
