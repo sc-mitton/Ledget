@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useTheme } from '@shopify/restyle';
 import { View } from 'react-native';
 import { CartesianChart, Area, Line, useChartPressState } from 'victory-native';
-import { LinearGradient, vec, useFont } from '@shopify/react-native-skia';
+import { LinearGradient, vec, useFont, Text as SkText } from '@shopify/react-native-skia';
 import Animated, { useAnimatedStyle, useSharedValue, useAnimatedReaction, runOnJS } from 'react-native-reanimated';
 import { SlotText } from 'react-native-slot-text';
 import dayjs from 'dayjs';
@@ -30,6 +30,7 @@ const ChartSkeleton = (props: Props) => {
   const theme = useTheme();
   const { state, isActive } = useChartPressState({ x: '0', y: { balance: 0 } })
   const font = useFont(SourceSans3Regular, 14)
+  const tempFont = useFont(SourceSans3Regular, 13)
   const tipOpacity = useSharedValue(0);
   const [slotsValue, setSlotsValue] = useState<`${number}`>();
 
@@ -126,6 +127,15 @@ const ChartSkeleton = (props: Props) => {
               strokeCap='round'
               curveType='natural'
             />
+            {!props.data &&
+              <SkText
+                text={`not enough data yet`}
+                font={tempFont}
+                color={theme.colors.quinaryText}
+                x={(chartBounds.right / 2) - ((tempFont?.measureText('not enough data yet')?.width || 0) / 2)}
+                y={chartBounds.bottom - 8}
+              />
+            }
             {isActive && props.data && (
               <VictoryTooltip
                 state={state}

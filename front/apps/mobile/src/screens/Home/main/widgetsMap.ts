@@ -3,13 +3,13 @@ import CategoriesProgress from "./widgets/categories/Categories";
 import CreditCardsBalance from "./widgets/credit-cards-balance/CreditCardsBalance";
 import InvestmentAccount from './widgets/investment-account/InvestmentAccount';
 import SpendingSummary from "./widgets/spending-summary/SpendingSummary";
-import SpendingVsIncome from "./widgets/spending-vs-income/SpendingVsIncome";
+import SpendingInvestmentBar from "./widgets/spending-investments-bars/SpendingInvestmentBar";
 import Bills from "./widgets/bills/Widget";
 
 export const widgetsMap = {
   'categories': CategoriesProgress,
   'deposit-account': Account,
-  'saving-and-investing': SpendingVsIncome,
+  'saving-and-investing': SpendingInvestmentBar,
   'investment-account': InvestmentAccount,
   'spending-summary': SpendingSummary,
   'bills': Bills,

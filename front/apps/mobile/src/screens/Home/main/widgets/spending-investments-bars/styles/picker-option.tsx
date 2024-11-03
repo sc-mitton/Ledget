@@ -44,10 +44,13 @@ const styles = StyleSheet.create({
     height: '100%',
     paddingVertical: 8,
   },
-  barsContainer2: {
+  barsContainer0: {
+    transform: [{ translateX: 0 }],
+  },
+  barsContainer1: {
     transform: [{ translateX: -24 }],
   },
-  barsContainer3: {
+  barsContainer2: {
     transform: [{ translateX: -48 }],
   },
   investedBar: {

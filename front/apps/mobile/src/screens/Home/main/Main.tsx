@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { StyleSheet, Dimensions, View } from "react-native"
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated"
 import { Canvas, Rect, vec, LinearGradient } from '@shopify/react-native-skia';
@@ -17,44 +18,38 @@ import WidgetsBento from "./WidgetsBento"
 const MainScreen = (props: HomeScreenProps<'Main'>) => {
   const { data: user } = useGetMeQuery();
   const dispatch = useAppDispatch()
-  const theme = useTheme()
-
-  useEffect(() => {
-    if ('picking' === props.route.params.state) {
-      dispatch(hideBottomTabs(true))
-    } else {
-      dispatch(hideBottomTabs(false))
-    }
-  }, [props.route.params])
+  const [showOverlay, setShowOverlay] = useState(false)
 
   useEffect(() => {
     props.navigation.setOptions({
-      header: () =>
+      header: (props: any) =>
         <Animated.View entering={FadeIn} exiting={FadeOut}>
           <Box
             paddingTop='statusBar'
             style={[styles.header]}
-            backgroundColor={props.route.params.state === 'picking' ? 'widgetPickerBackground' : 'mainBackground'}
+            backgroundColor={showOverlay ? 'widgetPickerBackground' : 'transparent'}
           >
-            {props.route.params.state === 'picking'
+            {props.route.params?.state === 'picking'
               ? <Box />
               : <Header2>{`Welcome, ${user?.name.first}`}</Header2>}
             <View style={styles.headerRight}>
-              {['editing', 'picking'].includes(props.route.params.state) &&
+              {['editing', 'picking'].includes(props.route.params?.state) &&
                 <Button
-                  label={props.route.params.state === 'editing' ? 'Done' : 'Close'}
+                  label={props.route.params?.state === 'editing' ? 'Done' : 'Close'}
                   variant={'bold'}
                   borderRadius="circle"
                   marginTop='xs'
                   paddingHorizontal="l"
                   paddingVertical="xs"
-                  backgroundColor={props.route.params.state === 'picking' ? 'transparent' : 'grayButton'}
-                  textColor={props.route.params.state === 'picking' ? 'blueText' : 'secondaryText'}
+                  backgroundColor={showOverlay ? 'transparent' : 'grayButton'}
+                  textColor={props.route.params?.state === 'picking' ? 'blueText' : 'secondaryText'}
                   onPress={() => {
                     props.navigation.setParams({ state: 'idle' })
+                    dispatch(hideBottomTabs(false))
+                    setShowOverlay(false)
                   }}
                 />}
-              {['dropping', 'idle'].includes(props.route.params.state) &&
+              {['dropping', 'idle'].includes(props.route.params?.state) &&
                 <>
                   <Button
                     onPress={() => { props.navigation.setParams({ state: 'editing' }) }}
@@ -63,7 +58,11 @@ const MainScreen = (props: HomeScreenProps<'Main'>) => {
                     icon={<Icon icon={Edit2} color='mainText' size={18} />}
                   />
                   <Button
-                    onPress={() => { props.navigation.setParams({ state: 'picking' }) }}
+                    onPress={() => {
+                      props.navigation.setParams({ state: 'picking' })
+                      dispatch(hideBottomTabs(true))
+                      setShowOverlay(true)
+                    }}
                     variant='square'
                     backgroundColor='grayButton'
                     icon={<Icon icon={WidgetsIcon} color='mainText' />}
@@ -71,7 +70,7 @@ const MainScreen = (props: HomeScreenProps<'Main'>) => {
                 </>}
             </View>
           </Box>
-          {props.route.params.state === 'picking' &&
+          {/* {state === 'picking' &&
             <Canvas style={[styles.mask]}>
               <Rect x={0} y={0} width={Dimensions.get('window').width} height={28}>
                 <LinearGradient
@@ -83,14 +82,14 @@ const MainScreen = (props: HomeScreenProps<'Main'>) => {
                   end={vec(0, 28)}
                 />
               </Rect>
-            </Canvas>}
+            </Canvas>} */}
         </Animated.View>,
     })
-  }, [props.route.params.state])
+  }, [])
 
   return (
     <>
-      {props.route.params.state === 'picking' && (
+      {showOverlay && (
         <Animated.View
           entering={FadeIn}
           exiting={FadeOut}

@@ -33,21 +33,36 @@ const PickerOption = () => {
         </View>
       </View>
       <View style={styles.visualization}>
-        <View style={[styles.barsContainer]}>
-          <Box style={styles.investedBar} backgroundColor='purpleText' />
-          <Box style={styles.savedBar} backgroundColor='greenText' />
-          <Box style={styles.incomeBar} backgroundColor='transactionShimmer' />
-        </View>
-        <View style={[styles.barsContainer2, styles.barsContainer]}>
-          <Box style={styles.investedBar} backgroundColor='purpleText' />
-          <Box style={styles.savedBar} backgroundColor='greenText' />
-          <Box style={styles.incomeBar} backgroundColor='transactionShimmer' />
-        </View>
-        <View style={[styles.barsContainer3, styles.barsContainer]}>
-          <Box style={styles.investedBar} backgroundColor='purpleText' />
-          <Box style={styles.savedBar} backgroundColor='greenText' />
-          <Box style={styles.incomeBar} backgroundColor='transactionShimmer' />
-        </View>
+        {Array.from({ length: 3 }).map((_, index) => (
+          <View
+            style={[(styles as any)[`barsContainer${index}`], styles.barsContainer]}
+            key={`skeleton-bar-${index}`}
+          >
+            <Box
+              style={styles.investedBar}
+              backgroundColor='purpleText'
+              shadowColor='nestedContainer'
+              shadowOpacity={.3}
+              shadowRadius={3}
+              shadowOffset={{
+                width: 0,
+                height: -3
+              }}
+            />
+            <Box
+              style={styles.savedBar}
+              backgroundColor='greenText'
+              shadowColor='nestedContainer'
+              shadowOpacity={.3}
+              shadowRadius={3}
+              shadowOffset={{
+                width: 0,
+                height: -3
+              }}
+            />
+            <Box style={styles.incomeBar} backgroundColor='transactionShimmer' />
+          </View>
+        ))}
       </View>
       <View style={styles.bottomRow}>
 

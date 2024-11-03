@@ -8,16 +8,14 @@ import Animated, {
   withTiming
 } from "react-native-reanimated";
 import { useTheme } from "@shopify/restyle";
-import { Edit } from "geist-native-icons";
 
 import styles from '../styles/widgets-grid';
 import { Box } from "@ledget/native-ui";
 import { useAppSelector } from "@hooks";
 import { selectWidgets, widgetTypes } from "@/features/widgetsSlice";
 import { getGridPositions, getPositionsMap } from './helpers';
-import { useLoaded } from "@ledget/helpers";
 import { gap, bottomLabelPadding } from "./constants";
-import { HomeScreenProps } from "@types";
+import { WidgetsBentoProps } from './types';
 import Widget from "./Widget";
 
 /*
@@ -29,15 +27,11 @@ is reflected in the UI. The widget being dragged around isn't affected by any of
 
 */
 
-const WidgetsBento = (props: HomeScreenProps<'Main'>) => {
+const WidgetsBento = (props: WidgetsBentoProps) => {
   const theme = useTheme()
 
   const selectedStoredWidgets = useAppSelector(selectWidgets);
   const [widgets, setWidgets] = useState(selectedStoredWidgets)
-
-  // idk why, but I had to use this to make sure the widgets are set, otherwise they
-  // weren't animating properly
-  const loaded = useLoaded(1000)
 
   const itemHeight = useSharedValue(0)
   const pickerZIndex = useSharedValue(-1)
@@ -73,12 +67,12 @@ const WidgetsBento = (props: HomeScreenProps<'Main'>) => {
 
   // Make sure the picker is on top when it's active, and behind when it's not
   useEffect(() => {
-    if (['picking', 'dropping'].includes(props.route.params.state)) {
+    if (['picking', 'dropping'].includes(props.route.params?.state)) {
       pickerZIndex.value = 100
     } else {
       pickerZIndex.value = withDelay(1500, withTiming(-1, { duration: 0 }))
     }
-  }, [props.route.params.state])
+  }, [props.route.params?.state])
 
   useEffect(() => {
     positions.value = Object.assign(
@@ -127,7 +121,6 @@ const WidgetsBento = (props: HomeScreenProps<'Main'>) => {
                   key={`widget-${widget.id}`}
                   widget={widget}
                   index={index}
-                  visible={true}
                   height={itemHeight}
                   positions={positions}
                   order={order}
@@ -137,9 +130,8 @@ const WidgetsBento = (props: HomeScreenProps<'Main'>) => {
                     ? Math.ceil(positions.value[order.value[order.value.length - 1]][0] / 2) * (itemHeight.value + gap) + theme.spacing.navHeight * 2.5
                     : 0}
                   containerHeight={currentWidgetsContainerHeight}
-                  onDragStart={() => { props.navigation.setParams({ state: 'editing' }) }}
-                  loaded={loaded}
-                  state={props.route.params.state}
+                  onDragStart={() => { props.navigation.setParams({ state: 'dropping' }) }}
+                  state={props.route.params?.state}
                 />
               ))}
             </View>
@@ -148,7 +140,7 @@ const WidgetsBento = (props: HomeScreenProps<'Main'>) => {
       </Box>
       <Animated.View
         style={[StyleSheet.absoluteFill, { zIndex: pickerZIndex }]}
-        pointerEvents={props.route.params.state === 'picking' ? 'auto' : 'none'}
+        pointerEvents={props.route.params?.state === 'picking' ? 'auto' : 'none'}
       >
         <Box style={[styles.pickerBoxOuter, StyleSheet.absoluteFill]} paddingHorizontal="pagePadding">
           <Animated.ScrollView
@@ -178,7 +170,6 @@ const WidgetsBento = (props: HomeScreenProps<'Main'>) => {
                   key={`widget-${widget.type}`}
                   widget={widget}
                   index={index}
-                  visible={props.route.params.state === 'picking'}
                   height={itemHeight}
                   positions={positions}
                   order={order}
@@ -190,8 +181,7 @@ const WidgetsBento = (props: HomeScreenProps<'Main'>) => {
                   onDragStart={() => { props.navigation.setParams({ state: 'dropping' }) }}
                   onDragEnd={() => { props.navigation.setParams({ state: 'idle' }) }}
                   scrollView={pickerScrollView}
-                  loaded={loaded}
-                  state={props.route.params.state}
+                  state={props.route.params?.state}
                 />
               ))}
             </View>

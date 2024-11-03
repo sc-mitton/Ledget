@@ -69,7 +69,7 @@ const Widget = (props: WidgetProps) => {
 
   // Update the absolute position of the widget when the grid positions change
   // (Only if not dragging, we dont' want the positions updates that happen in the gesture
-  // to affect the widget's position)
+  // to affect the widget's position if it's being dragged around)
   useAnimatedReaction(() => props.positions, (newPositions) => {
     if (!isDragging.value) {
       // Update column
@@ -83,10 +83,6 @@ const Widget = (props: WidgetProps) => {
 
       translateX.value = withSpring(pos.x, defaultSpringConfig);
       translateY.value = withSpring(pos.y, defaultSpringConfig);
-
-      if (!props.visible) {
-        opacity.value = withSpring(0, defaultSpringConfig);
-      }
     }
   });
 
@@ -96,22 +92,6 @@ const Widget = (props: WidgetProps) => {
       : newColumn === 0
         ? props.height.value
         : 0
-  });
-
-  useAnimatedReaction(() => isDragging.value, (dragging) => {
-    if (!dragging && !props.visible) {
-      const pos = getAbsPosition(
-        props.positions.value[props.widget.id || props.widget.type][0],
-        props.height.value,
-        !Boolean(props.widget.id)
-      );
-
-      column.value = props.positions.value[props.widget.id || props.widget.type][0] % 2;
-
-      scale.value = withDelay(500, withTiming(.5, { duration: 0 }));
-      opacity.value = withTiming(0, { duration: 0 });
-      translateY.value = withDelay(500, withTiming(pos.y, { duration: 0 }));
-    }
   });
 
   // Add jitter effect when in editing mode
@@ -129,35 +109,31 @@ const Widget = (props: WidgetProps) => {
     }
   }, [props.state])
 
+  // Immediate positioning if necessary for set widgets (ie has id)
   useEffect(() => {
-    if (!isDragging.value) {
+    if (props.widget.id) {
       const pos = getAbsPosition(
         props.positions.value[props.widget.id || props.widget.type][0],
         props.height.value,
         !Boolean(props.widget.id)
       );
-
       translateX.value = withSpring(pos.x, defaultSpringConfig);
       translateY.value = withSpring(pos.y, defaultSpringConfig);
-
-      if (!props.visible) {
-        opacity.value = withSpring(0, defaultSpringConfig);
-      }
     }
-  }, [props.loaded])
+  }, [])
 
-  // Pop in affect for picker
+  // Pop in affect for widget (only picker widgets)
   // This wont end up having any effect for the widgets that are not part of the picker
   useEffect(() => {
-    if (isDragging.value) return;
+    if (isDragging.value || props.widget.id) return;
 
     const pos = getAbsPosition(
-      props.positions.value[props.widget.id || props.widget.type][0],
+      props.positions.value[props.widget.type][0],
       props.height.value,
       !Boolean(props.widget.id)
     );
 
-    if (props.visible) {
+    if (props.state === 'picking') {
       scale.value = withDelay(props.index * 50, withSpring(1, defaultSpringConfig));
       opacity.value = withDelay(props.index * 50, withSpring(1, defaultSpringConfig));
       translateY.value = withSpring(pos.y, defaultSpringConfig);
@@ -166,7 +142,7 @@ const Widget = (props: WidgetProps) => {
       opacity.value = withTiming(0, defaultSpringConfig);
       translateY.value = withDelay(500, withSpring(pos.y, defaultSpringConfig));
     }
-  }, [props.visible]);
+  }, [props.state]);
 
   const style = useAnimatedStyle(() => {
     const zIndex = isDragging.value ? 100 : 0;
@@ -416,6 +392,20 @@ const Widget = (props: WidgetProps) => {
       if (Math.abs(translationX) > 40 || Math.abs(translationY) > 40 || !props.widget.id) {
         runOnJS(updateGlobalState)();
       }
+
+      // Sending dragged widget back to where it belongs
+      // after done dragging
+      const pos = getAbsPosition(
+        props.positions.value[props.widget.id || props.widget.type][0],
+        props.height.value,
+        !Boolean(props.widget.id)
+      );
+
+      column.value = props.positions.value[props.widget.id || props.widget.type][0] % 2;
+      scale.value = withDelay(500, withTiming(.5, { duration: 0 }));
+      opacity.value = withDelay(500, withTiming(0, { duration: 0 }));
+      translateY.value = withDelay(500, withTiming(pos.y, { duration: 0 }));
+
     })
 
   const resize = Gesture.Pan()

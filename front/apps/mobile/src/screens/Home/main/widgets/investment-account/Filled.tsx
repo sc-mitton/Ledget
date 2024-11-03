@@ -112,20 +112,21 @@ const Filled = (props: Props) => {
         </View>
       </View>
       <Chart data={chartData} />
-      <View style={styles.windowButtons}>
-        {windows.map((w, i) => (
-          <Fragment key={`investment-widget-${w.key}`}>
-            {i !== 0 && <Box variant='divider' backgroundColor="nestedContainerSeperator" />}
-            <Button
-              label={w.key}
-              fontSize={13}
-              padding='none'
-              textColor={window.key === w.key ? 'mainText' : 'tertiaryText'}
-              onPress={() => setWindow(w)}
-            />
-          </Fragment>
-        ))}
-      </View>
+      {chartData &&
+        <View style={styles.windowButtons}>
+          {windows.map((w, i) => (
+            <Fragment key={`investment-widget-${w.key}`}>
+              {i !== 0 && <Box variant='divider' backgroundColor="nestedContainerSeperator" />}
+              <Button
+                label={w.key}
+                fontSize={13}
+                padding='none'
+                textColor={window.key === w.key ? 'mainText' : 'tertiaryText'}
+                onPress={() => setWindow(w)}
+              />
+            </Fragment>
+          ))}
+        </View>}
     </View>
   )
 }
