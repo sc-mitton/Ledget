@@ -81,7 +81,7 @@ def sync_transactions(plaid_item: PlaidItem, default_category: Category) -> dict
     def _bulk_add_transactions():
         Transaction.objects.bulk_create([
             Transaction(predicted_category=default_category, **t)
-            if t['detail'] == Transaction.Detail.SPENDING
+            if t.get('detail') == Transaction.Detail.SPENDING
             else Transaction(**t)
             for t in added
         ], ignore_conflicts=True)
@@ -287,30 +287,27 @@ class TransactionViewSet(ModelViewSet):
         pass
 
     def _get_plaid_items(self, request):
-        item_id = self.request.query_params.get('item', None)
-        account_ids = self.request.query_params.get('accounts', [])
-        if isinstance(account_ids, str):
-            account_ids = [account_ids]
-        account_id = self.request.query_params.get('account', None)
-        account_ids.append(account_id) if account_id else None
-
-        if item_id:
-            try:
-                plaid_items = PlaidItem.objects.filter(id=item_id)
-            except PlaidItem.DoesNotExist:
-                raise ValidationError('Invalid item id')
-        elif account_ids:
-            try:
-                plaid_items = PlaidItem.objects.filter(accounts__id__in=account_ids)
-            except PlaidItem.DoesNotExist:
-                raise ValidationError('Invalid account id')
-        else:
-            plaid_items = PlaidItem.objects.filter(
+        qset = PlaidItem.objects.filter(
                 user__in=self.request.user.account.users.all())
 
-        for item in plaid_items:
-            self.check_object_permissions(request, item)
-        return plaid_items
+        item_id = self.request.query_params.get('item', None)
+        account_ids = self.request.query_params.getlist('accounts', [])
+        account_id = self.request.query_params.get('account', None)
+
+        if item_id:
+            qset = qset.filter(id=item_id)
+        if account_ids:
+            qset = qset.filter(accounts__id__in=account_ids)
+        if account_id:
+            qset = qset.filter(accounts__id=account_id)
+
+        try:
+            for item in qset:
+                self.check_object_permissions(request, item)
+        except PlaidItem.DoesNotExist:
+            raise ValidationError('Plaid item does not exist')
+
+        return qset
 
     def _extract_date_boundaries(self) -> dict:
         params = self.request.query_params

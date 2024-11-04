@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { RefreshControl, ScrollView } from 'react-native';
+import { RefreshControl, ScrollView, View } from 'react-native';
 import Animated, {
   useSharedValue,
   withRepeat,
@@ -39,20 +39,20 @@ const EmptyList = (props: AccountsTabsScreenProps<'Depository' | 'Credit'>) => {
       refreshControl={
         <RefreshControl
           onRefresh={() => {
-            if (accounts) {
-              syncTransactions({ accounts: accounts.map(a => a.id) })
-            }
+            if (accounts) { syncTransactions() }
           }}
           refreshing={isSyncing}
-          style={{ transform: [{ scaleY: .7 }, { scaleX: .7 }] }}
+          style={styles.refreshControl}
           colors={[theme.colors.blueText]}
           progressBackgroundColor={theme.colors.modalBox}
           tintColor={theme.colors.secondaryText}
         />}
       contentContainerStyle={styles.emptyBoxContainer}>
-      <Text color='quaternaryText'>No transactions</Text>
+      <Text color='quaternaryText'>
+        No Transactions
+      </Text>
       <Animated.View style={{ transform: [{ translateY: arrowIconY }] }}>
-        <Icon icon={ArrowDown} color='quaternaryText' strokeWidth={2} />
+        <Icon icon={ArrowDown} color='quinaryText' strokeWidth={2} />
       </Animated.View>
     </ScrollView>
   )

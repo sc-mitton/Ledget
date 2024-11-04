@@ -86,7 +86,7 @@ export type TransactionsSyncParams = {
   item?: string
 } | {
   accounts?: string[]
-}
+} | void;
 
 interface SimpleTransaction {
   transaction: Transaction;

@@ -38,8 +38,8 @@ export const transactionSlice = apiSlice.injectEndpoints({
     >({
       query: (params) => ({
         url: 'transactions/sync',
-        params: params,
-        method: 'POST'
+        method: 'POST',
+        ...(params && { params })
       }),
       invalidatesTags: (result, error, arg) => {
         if (!result) {

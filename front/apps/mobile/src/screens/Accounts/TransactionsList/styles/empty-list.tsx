@@ -6,6 +6,9 @@ const styles = StyleSheet.create({
     height: '80%',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  refreshControl: {
+    transform: [{ scaleY: .7 }, { scaleX: .7 }, { translateY: -24 }],
   }
 });
 
