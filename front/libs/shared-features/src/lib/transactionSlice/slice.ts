@@ -42,20 +42,15 @@ export const transactionSlice = apiSlice.injectEndpoints({
         ...(params && { params })
       }),
       invalidatesTags: (result, error, arg) => {
-        if (!result) {
-          return [];
-        } else if (
-          result.added > 0 ||
-          result.modified > 0 ||
-          result.removed > 0
-        ) {
-          return [
+        return result && (result.added > 0 || result.modified > 0 || result.removed > 0)
+          ? [
             { type: 'Transaction', id: 'LIST' },
-            { type: 'UnconfirmedTransaction', id: 'LIST' }
-          ];
-        } else {
-          return [];
-        }
+            { type: 'UnconfirmedTransaction', id: 'LIST' },
+            'TransactionCount',
+            'AccountBalanceHistory',
+            'AccountBalanceTrend'
+          ]
+          : [];
       }
     }),
     getUnconfirmedTransactions: builder.query<
@@ -108,11 +103,13 @@ export const transactionSlice = apiSlice.injectEndpoints({
       }),
       providesTags: (result, error, arg) => {
         return result
-          ? result.results.map((item) => ({
-            type: 'Transaction',
-            id: item.transaction_id
-          }))
-          : [{ type: 'Transaction', id: 'LIST' } as const];
+          ? [
+            ...result.results.map(
+              (item) => ({ type: 'Transaction', id: item.transaction_id })
+            ),
+            { type: 'Transaction', id: 'LIST' }
+          ]
+          : [{ type: 'Transaction', id: 'LIST' }];
       },
       // For merging in paginated responses to the cache
       // cache key needs to not include offset and limit

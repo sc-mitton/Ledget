@@ -30,6 +30,7 @@ export const accountsSlice = apiWithTag.injectEndpoints({
         };
         return rest ? { ...queryObj, params: rest } : queryObj;
       },
+      providesTags: ['AccountBalanceHistory'],
       keepUnusedDataFor: 60 * 30 // 30 minutes
     }),
     getAccountBalanceTrend: builder.query<
@@ -45,6 +46,7 @@ export const accountsSlice = apiWithTag.injectEndpoints({
         };
         return rest ? { ...queryObj, params: rest } : queryObj;
       },
+      providesTags: ['AccountBalanceTrend'],
       keepUnusedDataFor: 60 * 30 // 30 minutes
     }),
     updateAccounts: builder.mutation<UpdateAccount[], UpdateAccount[]>({

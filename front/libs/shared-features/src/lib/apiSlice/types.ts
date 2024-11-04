@@ -4,6 +4,8 @@ export const tagTypes = [
   'Category',
   'UnconfirmedTransaction',
   'Account',
+  'AccountBalanceHistory',
+  'AccountBalanceTrend',
   'SpendingHistory',
   'Device',
   'User',
