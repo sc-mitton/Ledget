@@ -18,7 +18,7 @@ export type Transaction = {
   bill?: Bill;
   predicted_category?: Category;
   predicted_bill?: Bill;
-  is_spend?: boolean;
+  detail: 'investment_transfer_out' | 'spending' | 'income' | null;
   name: string;
   preferred_name?: string;
   merchant_name?: string;

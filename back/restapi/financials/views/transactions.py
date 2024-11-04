@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from collections import OrderedDict
 import pytz
 
-from django.db import transaction, models
+from django.db import transaction
 from django.db.models import Q, Prefetch
 from django.utils import timezone
 
@@ -39,33 +39,13 @@ from financials.serializers.transactions import (
     NoteSerializer,
     MerchantSerializer
 )
+from financials.serializers.plaid import PlaidTransactionSerializer
 from financials.models import PlaidItem, Note
 from budget.models import Category, TransactionCategory
 
 
 plaid_client = create_plaid_client()
 logger = logging.getLogger('ledget')
-
-
-transaction_fields = [
-    f.name if not issubclass(f.__class__, models.ForeignKey)
-    else f"{f.name}_id"
-    for f in Transaction._meta.fields
-]
-filter_target_fields = [
-    f for f in transaction_fields if f not in Transaction.ignored_plaid_fields
-]
-NOT_SPEND_PRIMARY = ['INCOME']
-NOT_SPEND_DETAIL = [
-    'TRANSFER_IN_ACCOUNT_TRANSFER',
-    'LOAN_PAYMENTS_CREDIT_CARD_PAYMENT',
-    'TRANSFER_IN_CASH_ADVANCES_AND_LOANS',
-    'TRANSFER_IN_DEPOSIT',
-    'TRANSFER_IN_INVESTMENT_AND_RETIREMENT_FUNDS',
-    'TRANSFER_IN_SAVINGS',
-    'TRANSFER_IN_OTHER_TRANSFER_IN',
-    'TRANSFER_OUT_SAVINGS',
-]
 
 
 @transaction.atomic
@@ -78,52 +58,30 @@ def sync_transactions(plaid_item: PlaidItem, default_category: Category) -> dict
     has_more = True
     response_data = {'added': 0, 'modified': 0, 'removed': 0}
 
-    def _format_transaction(unfiltered):
-        '''
-        Take in a transaction from the plaid api response
-        and return a filtered dict that matches the transaction
-        schema
-        '''
-        filtered = {'is_spend': True}
-        for field in filter_target_fields:
-            if unfiltered.get(field, False):
-                filtered[field] = unfiltered[field]
-        for nested_field in Transaction.nested_plaid_fields:
-            if unfiltered.get(nested_field, False):
-                filtered.update(**unfiltered[nested_field])
-
-        if unfiltered.get('personal_finance_category', {}) \
-                     .get('primary', '').upper() in NOT_SPEND_PRIMARY or \
-           unfiltered.get('personal_finance_category', {}) \
-                     .get('detailed', '').upper() in NOT_SPEND_DETAIL or \
-           (unfiltered.get('personal_finance_category', {})
-                     .get('detailed', '').upper() == 'TRANSFER_OUT_ACCOUNT_TRANSFER' and
-           all('THIRD PARTY' != c.upper() for c in unfiltered.get('category'))):
-            filtered['is_spend'] = False
-
-        return filtered
-
     def _extend_lists(response):
         '''
         Take in the plaid api response and extend the list
         of added, modified, and removed transactions which will
         eventually be flushed to the database
         '''
-        for _ in ['added', 'modified', 'removed']:
-            for trans in response[_]:
-                if _ == 'added':
-                    formated_trans = _format_transaction(trans)
-                    added.append(formated_trans)
-                elif _ == 'modified':
-                    formated_trans = _format_transaction(trans)
-                    modified.append(formated_trans)
-                elif _ == 'removed':
+        for t_type in ['added', 'modified', 'removed']:
+            for trans in response[t_type]:
+                if t_type == 'removed':
                     removed.append(trans['transaction_id'])
+                    continue
+
+                s = PlaidTransactionSerializer(data=trans)
+                s.is_valid(raise_exception=True)
+
+                if t_type == 'added':
+                    added.append(s.validated_data)
+                elif t_type == 'modified':
+                    modified.append(s.validated_data)
 
     def _bulk_add_transactions():
         Transaction.objects.bulk_create([
             Transaction(predicted_category=default_category, **t)
-            if t['is_spend']
+            if t['detail'] == Transaction.Detail.SPENDING
             else Transaction(**t)
             for t in added
         ], ignore_conflicts=True)
@@ -180,6 +138,9 @@ def sync_transactions(plaid_item: PlaidItem, default_category: Category) -> dict
         )
     except Exception as e:
         logger.error(e)
+        # Print stack trace
+        import traceback
+        traceback.print_exc()
         raise ValidationError(
             {'error': 'Internal server error'},
             code=HTTP_500_INTERNAL_SERVER_ERROR
@@ -391,7 +352,7 @@ class TransactionViewSet(ModelViewSet):
         if query_params.get('confirmed') is not None:
             # If filtering for confirmed or unconfirmed transactions
             # filter out everything that isn't spending
-            result['is_spend'] = True
+            result['detail'] = Transaction.Detail.SPENDING
 
         query_params_2_filter_params = {
             'merchant': 'merchant_name__in',

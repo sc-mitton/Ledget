@@ -145,7 +145,7 @@ class TransactionSerializer(serializers.ModelSerializer):
 
     def update(sef, instance, validated_data):
 
-        if (validated_data.get('is_spend') is False):
+        if validated_data.get('detail') != Transaction.Detail.SPENDING:
             TransactionCategory.objects.filter(transaction=instance).delete()
             nullified_fields = ['predicted_category', 'predicted_bill', 'bill']
             validated_data.update({field: None for field in nullified_fields})

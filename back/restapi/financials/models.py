@@ -1,5 +1,6 @@
 from django.db import models
 import uuid
+from django.utils.translation import gettext_lazy as _
 
 from core.models import User
 from budget.models import (
@@ -95,19 +96,11 @@ class Transaction(BaseSharedModel):
     Having a blank category or bill field is considered misc. category
     '''
 
-    ignored_plaid_fields = [
-            'account_owner',
-            'category',
-            'category_id',
-            'check_number',
-            'payment_meta',
-            'personal_finance_category',
-            'unofficial_currency_code',
-        ]
-
-    nested_plaid_fields = [
-        'location'
-    ]
+    class Detail(models.TextChoices):
+        # options: income, investment_transfer_out, spending
+        INCOME = 0, _('income')
+        INVESTMENT_TRANSFER_OUT = 1, _('investment_transfer_out')
+        SPENDING = 2, _('spending')
 
     class Meta:
         get_latest_by = ['date', 'datetime']
@@ -141,7 +134,7 @@ class Transaction(BaseSharedModel):
                                        null=True,
                                        blank=True,
                                        related_name='predicted_bill')
-    is_spend = models.BooleanField(null=True, blank=True)
+    detail = models.CharField(choices=Detail.choices, null=True, blank=True)
 
     # Transaction info
     name = models.CharField(max_length=100, null=False, blank=False)

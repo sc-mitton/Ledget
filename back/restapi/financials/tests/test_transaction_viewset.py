@@ -82,11 +82,12 @@ class TestTransactionViewSet(ViewTestsMixin):
 
         transaction = Transaction.objects.filter(
             account__useraccount__user=self.user,
-            is_spend=True).first()
+            detail=Transaction.Detail.SPENDING
+        ).first()
 
         response = self.client.patch(
             reverse('transactions-detail', args=[transaction.transaction_id]),
-            {'is_spend': False},
+            {'detail': None},
             format='json'
         )
 

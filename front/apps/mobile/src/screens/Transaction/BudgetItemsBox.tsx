@@ -56,7 +56,7 @@ const BudgetItemsBox = (props: { item: TransactionT } & RootStackScreenProps<'Tr
                 } else {
                   updateTransaction({
                     transactionId: props.item.transaction_id,
-                    data: { is_spend: false }
+                    data: { detail: null }
                   })
                 }
               }}
