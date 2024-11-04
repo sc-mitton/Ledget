@@ -1,5 +1,5 @@
 import { ChartPressState, ChartBounds } from 'victory-native';
-import { useDerivedValue } from 'react-native-reanimated';
+import { useDerivedValue, SharedValue } from 'react-native-reanimated';
 import {
   Text as SkText,
   vec,
@@ -16,7 +16,7 @@ export interface VictoryTooltipProps {
     x: string;
     y: { balance: number };
   }>,
-  xAxisTip?: boolean;
+  isActive: SharedValue<boolean>;
   chartBounds: ChartBounds
   color: string;
   xAxisTipColor?: string;
@@ -24,12 +24,12 @@ export interface VictoryTooltipProps {
   borderColor: string;
   backgroundColor?: string;
   lineOffset?: number;
-  verticalCrosshair?: boolean;
-  hidden?: ('point' | 'axis' | 'tip' | 'xTip')[]
+  hidden?: ('point' | 'verticalCrossHair' | 'tip' | 'xTip')[]
 }
 
 export const VictoryTooltip = (props: VictoryTooltipProps) => {
   const {
+    isActive,
     state,
     font,
     chartBounds,
@@ -38,8 +38,6 @@ export const VictoryTooltip = (props: VictoryTooltipProps) => {
     borderColor,
     backgroundColor,
     lineOffset = 0,
-    verticalCrosshair = false,
-    xAxisTip = false,
     xAxisTipColor
   } = props;
 
@@ -112,7 +110,7 @@ export const VictoryTooltip = (props: VictoryTooltipProps) => {
 
   return (
     <>
-      {verticalCrosshair && !props.hidden?.includes('axis') &&
+      {!props.hidden?.includes('verticalCrossHair') && isActive.value &&
         <SkLine
           p1={lineTop}
           p2={lineBottom}
@@ -120,7 +118,7 @@ export const VictoryTooltip = (props: VictoryTooltipProps) => {
           strokeWidth={2}
           color={borderColor}
         />}
-      {xAxisTip && !props.hidden?.includes('xTip') && (
+      {!props.hidden?.includes('xTip') && isActive.value && (
         <SkText
           text={tooltipDate}
           font={font}
@@ -129,7 +127,7 @@ export const VictoryTooltip = (props: VictoryTooltipProps) => {
           y={chartBounds.bottom}
         />
       )}
-      {!props.hidden?.includes('tip') &&
+      {!props.hidden?.includes('tip') && isActive.value &&
         <>
           <RoundedRect
             x={rectXPosition}
@@ -147,7 +145,7 @@ export const VictoryTooltip = (props: VictoryTooltipProps) => {
             text={value}
           />
         </>}
-      {!props.hidden?.includes('point') &&
+      {!props.hidden?.includes('point') && isActive.value &&
         <Circle
           cx={state.x.position}
           cy={state.y.balance.position}

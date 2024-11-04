@@ -1,18 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { View, StyleSheet } from 'react-native'
-import { CartesianChart, Area, Line, useChartPressState } from 'victory-native';
-import {
-  Text as SkText,
-  LinearGradient,
-  useFont,
-  vec,
-  Circle
-} from '@shopify/react-native-skia';
 import { ArrowDownRight, ArrowUpRight } from 'geist-native-icons';
-import { useTheme } from '@shopify/restyle';
 import Big from 'big.js';
 import dayjs from 'dayjs';
-import Animated, { useDerivedValue, FadeIn, FadeOut, StretchInY, StretchOutY } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeOut, StretchInY, StretchOutY } from 'react-native-reanimated';
 import { BlurView } from 'expo-blur';
 
 import styles from './styles/summary';
@@ -20,30 +11,27 @@ import { AccountsTabsScreenProps } from '@types';
 import { Graph } from '@ledget/media/native';
 import { Box, DollarCents, Icon, Text, Button } from '@ledget/native-ui';
 import { useGetAccountsQuery, useLazyGetAccountBalanceHistoryQuery, useLazyGetAccountBalanceTrendQuery } from '@ledget/shared-features';
-import SourceSans3Regular from '../../../../../assets/fonts/SourceSans3Regular.ttf';
 import { useAppearance } from '@/features/appearanceSlice';
 import { ChartWindowsMenu } from '@/components';
 import { tempDepositBalanceChartData, chartWindows } from '@constants';
 import { useAppSelector } from '@/hooks';
 import { selectAccountsTabDepositAccounts } from '@/features/uiSlice';
+import Chart from './Chart';
 
 export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
   const { data: accountsData } = useGetAccountsQuery()
   const [getBalanceTrend, { data: balanceTrend }] = useLazyGetAccountBalanceTrendQuery()
-  const [getBalanceHistory, { data: balanceHistory, isSuccess: isBalanceHistoryLoaded }] = useLazyGetAccountBalanceHistoryQuery()
+  const [getBalanceHistory, { data: balanceHistory }] = useLazyGetAccountBalanceHistoryQuery()
 
   const { mode } = useAppearance();
-  const theme = useTheme();
-  const font = useFont(SourceSans3Regular, 14)
 
   const storedAccounts = useAppSelector(selectAccountsTabDepositAccounts)
   const [window, setWindow] = useState<typeof chartWindows[number]['key']>(chartWindows[0].key)
   const [showMenu, setShowMenu] = useState(false)
   const [dateWindow, setDateWindow] = useState<{ start: number, end: number }>({ start: 0, end: 0 })
   const [calculatedTrend, setCalculatedTrend] = useState(0)
-  const [balanceHistoryChartData, setBalanceHistoryChartData] = useState(tempDepositBalanceChartData)
+  const [balanceHistoryChartData, setBalanceHistoryChartData] = useState<typeof tempDepositBalanceChartData>()
   const [showChart, setShowChart] = useState(true)
-  const { state, isActive } = useChartPressState({ x: '0', y: { balance: 0 } })
 
   const totalBalance = useMemo(
     () =>
@@ -55,30 +43,6 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
     [accountsData]
   )
 
-  const value = useDerivedValue(() => {
-    return "$" + `${state.y.balance.value.value}`.split('.')[0];
-  }, [state]);
-
-  const textYPosition = useDerivedValue(() => {
-    return state.y.balance.position.value - 15;
-  }, [value]);
-
-  const textXPosition = useDerivedValue(() => {
-    const lastValue = balanceHistoryChartData[balanceHistoryChartData.length - 1]?.balance || 0;
-    const firstValue = balanceHistoryChartData[0]?.balance || 0;
-    if (!font) {
-      return 0;
-    } else if (value.value === `$${Math.floor(lastValue)}`) {
-      return state.x.position.value - font.measureText(value.value).width - 4
-    } else if (value.value === `$${Math.floor(firstValue)}`) {
-      return state.x.position.value + 4;
-    }
-
-    return (
-      state.x.position.value - font.measureText(value.value).width / 2
-    );
-  }, [value, font, balanceHistoryChartData]);
-
   useEffect(() => {
     if (balanceHistory) {
       const chartData = balanceHistory.reduce((acc, balance) => {
@@ -87,6 +51,9 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
           balance: Big(h.balance || 0).plus(balance.history[i]?.balance || 0).toNumber()
         }))
       }, balanceHistory[0].history.map(h => ({ date: h.month, balance: 0 }))).reverse();
+      if (chartData.length < 2) {
+        return
+      }
       setBalanceHistoryChartData(chartData);
     }
   }, [balanceHistory])
@@ -204,89 +171,13 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
       </View>
       {showChart &&
         <Animated.View style={[styles.graphContainer]} entering={StretchInY} exiting={StretchOutY}>
-          <CartesianChart
-            chartPressState={state}
+          <Chart
             data={balanceHistoryChartData}
-            xKey={'date'}
-            yKeys={['balance']}
-            xAxis={{
-              font,
-              lineWidth: 0,
-              labelOffset: -20,
-              tickCount: window.endsWith('M') ? 3 : 5,
-              labelColor:
-                isBalanceHistoryLoaded
-                  ? theme.colors.faintBlueText
-                  : theme.colors.quaternaryText,
-              formatXLabel: (date) => window.endsWith('M')
-                ? `      ${dayjs(date).format('MMM')}`
-                : `         ${dayjs(date).format('MMM YY')}`,
-            }}
-            yAxis={[{
-              font,
-              lineWidth: 0,
-              tickCount: 0,
-              formatYLabel: () => '',
-            }]}
-            padding={{
-              left: 0,
-
-              bottom: 24
-            }}
-            domainPadding={{ left: 3, right: 3, top: 50, bottom: 100 }}
-          >
-            {({ points, chartBounds }) => (
-              <>
-                <Area
-                  y0={chartBounds.bottom}
-                  points={points.balance}
-                  animate={{ type: 'spring', duration: 300 }}
-                  curveType='natural'
-                >
-                  <LinearGradient
-                    colors={isBalanceHistoryLoaded
-                      ? [
-                        theme.colors.blueChartGradientStart,
-                        theme.colors.blueChartGradientStart,
-                        theme.colors.blueChartGradientEnd
-                      ]
-                      : [
-                        theme.colors.emptyChartGradientStart,
-                        theme.colors.mainBackground
-                      ]
-                    }
-                    start={vec(chartBounds.bottom, 0)}
-                    end={vec(chartBounds.bottom, chartBounds.bottom)}
-                  />
-                </Area>
-                <Line
-                  animate={{ type: 'spring', duration: 300 }}
-                  points={points.balance}
-                  color={isBalanceHistoryLoaded ? theme.colors.blueChartColor : theme.colors.quinaryText}
-                  strokeWidth={2}
-                  strokeCap='round'
-                  curveType='natural'
-                />
-                {isActive && (
-                  <SkText
-                    x={textXPosition}
-                    y={textYPosition}
-                    font={font}
-                    color={theme.colors.blueText}
-                    text={value}
-                  />
-                )}
-                {isActive && (
-                  <Circle
-                    cx={state.x.position}
-                    cy={state.y.balance.position}
-                    r={3}
-                    color={theme.colors.faintBlueText}
-                  />
-                )}
-              </>
-            )}
-          </CartesianChart>
+            tickCount={window.endsWith('M') ? 3 : 5}
+            xLabelFormat={(date) => window.endsWith('M')
+              ? `      ${dayjs(date).format('MMM')}`
+              : `         ${dayjs(date).format('MMM YY')}`}
+          />
         </Animated.View>}
     </Box>
   )

@@ -257,6 +257,7 @@ const Chart = () => {
               {isActive && !useingFakeData && (
                 <VictoryTooltip
                   state={state}
+                  isActive={state.isActive}
                   font={font}
                   chartBounds={chartBounds}
                   color={theme.colors.mainText}
@@ -264,9 +265,7 @@ const Chart = () => {
                   dotColor={theme.colors.blueText}
                   borderColor={theme.colors.lightBlueButton}
                   backgroundColor={theme.colors.grayButton}
-                  verticalCrosshair={true}
                   lineOffset={-20}
-                  xAxisTip={true}
                 />)}
             </>
           )}

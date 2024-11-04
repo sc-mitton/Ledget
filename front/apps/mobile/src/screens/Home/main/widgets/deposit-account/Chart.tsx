@@ -128,6 +128,7 @@ const ChartSkeleton = (props: Props) => {
             {isActive && props.data && (
               <VictoryTooltip
                 state={state}
+                isActive={state.isActive}
                 font={font}
                 chartBounds={chartBounds}
                 color={theme.colors.mainText}
@@ -135,9 +136,7 @@ const ChartSkeleton = (props: Props) => {
                 dotColor={theme.colors.blueText}
                 borderColor={theme.colors.blueChartColor}
                 backgroundColor={theme.colors.nestedContainerSeperator}
-                verticalCrosshair={true}
                 lineOffset={-20}
-                xAxisTip={true}
                 hidden={['tip']}
               />)}
           </>

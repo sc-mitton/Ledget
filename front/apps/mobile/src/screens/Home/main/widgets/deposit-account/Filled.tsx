@@ -32,7 +32,9 @@ const Filled = (props: WidgetProps<{ account: string }>) => {
         ?.history
         ?.map(d => ({ balance: d.balance, date: dayjs(d.month).format('YYYY-MM-DD') }))
         .reverse()
-
+      if (!chartData || chartData.length < 2) {
+        return
+      }
       setBalanceHistoryChartData(chartData);
     }
   }, [balanceHistoryData])
