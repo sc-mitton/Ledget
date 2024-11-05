@@ -154,6 +154,6 @@ class BreakdownHistorySerializer(serializers.ModelSerializer):
         repr['date'] = datetime(
             year_date.year, month_date.month, 1).strftime('%Y-%m-%d')
 
-        repr['detail'] = Transaction.Detail(repr['detail']).label
+        repr['detail'] = str(Transaction.Detail(repr['detail']).label)
 
         return repr

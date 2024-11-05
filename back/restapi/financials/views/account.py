@@ -82,7 +82,7 @@ class AccountsViewSet(ViewSet):
 
         s = BreakdownHistorySerializer(qset, many=True)
 
-        return Response(s.data, HTTP_200_OK)
+        return Response(data=s.data)
 
     @action(detail=False, methods=['get'], url_path='balance-history',
             url_name='balance-history')
