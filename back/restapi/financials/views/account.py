@@ -24,7 +24,8 @@ from financials.serializers.account import (
     InstitutionSerializer,
     UserAccountSerializer,
     AccountSerializer,
-    PlaidBalanceSerializer
+    PlaidBalanceSerializer,
+    BreakdownHistorySerializer
 )
 
 plaid_client = create_plaid_client()
@@ -66,6 +67,22 @@ class AccountsViewSet(ViewSet):
         serializer.update(to_update, serializer.validated_data)
 
         return Response(serializer.data)
+
+    @action(detail=False, methods=['get'], url_path='breakdown-history')
+    def breakdown_history(self, response, *args, **kwargs):
+        '''Get the breakdown over all the accounts (spending, income, investments)'''
+
+        qset = Transaction.objects.filter(
+            account__useraccount__user__in=self.request.user.account.users.all(),
+            detail__isnull=False
+        ).annotate(month=TruncMonth('date')) \
+         .annotate(year=TruncYear('date')) \
+         .values('month', 'year', 'detail') \
+         .annotate(total=Sum('amount'))
+
+        s = BreakdownHistorySerializer(qset, many=True)
+
+        return Response(s.data, HTTP_200_OK)
 
     @action(detail=False, methods=['get'], url_path='balance-history',
             url_name='balance-history')

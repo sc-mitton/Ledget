@@ -447,6 +447,14 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
+    id: 'breakdown-history',
+    match: {
+      methods: ["GET"],
+      url: base_url + "/accounts/breakdown-history",
+    },
+  },
+  BaseWithAuth
+  {
     id: "account-balance-trend",
     match: {
       methods: ["GET"],

@@ -6,6 +6,7 @@ export const tagTypes = [
   'Account',
   'AccountBalanceHistory',
   'AccountBalanceTrend',
+  'AccountBreakdownHistory',
   'SpendingHistory',
   'Device',
   'User',

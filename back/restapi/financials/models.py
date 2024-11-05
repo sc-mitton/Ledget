@@ -96,8 +96,7 @@ class Transaction(BaseSharedModel):
     Having a blank category or bill field is considered misc. category
     '''
 
-    class Detail(models.TextChoices):
-        # options: income, investment_transfer_out, spending
+    class Detail(models.IntegerChoices):
         INCOME = 0, _('income')
         INVESTMENT_TRANSFER_OUT = 1, _('investment_transfer_out')
         SPENDING = 2, _('spending')
@@ -134,7 +133,7 @@ class Transaction(BaseSharedModel):
                                        null=True,
                                        blank=True,
                                        related_name='predicted_bill')
-    detail = models.CharField(choices=Detail.choices, null=True, blank=True)
+    detail = models.IntegerField(choices=Detail.choices, null=True, blank=True)
 
     # Transaction info
     name = models.CharField(max_length=100, null=False, blank=False)

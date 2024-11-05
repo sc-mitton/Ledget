@@ -5,7 +5,8 @@ import {
   GetAccountsResponse,
   GetBalanceHistoryResponse,
   GetAccountBalanceTrendResponse,
-  UpdateAccount
+  UpdateAccount,
+  GetBreakdownHistoryResponse
 } from './types';
 
 const apiWithTag = apiSlice.enhanceEndpoints({ addTagTypes: ['Accounts'] });
@@ -16,6 +17,11 @@ export const accountsSlice = apiWithTag.injectEndpoints({
       query: () => `accounts`,
       keepUnusedDataFor: 60 * 30, // 30 minutes
       providesTags: ['Account']
+    }),
+    getBreakdownHistory: builder.query<GetBreakdownHistoryResponse, void>({
+      query: () => `accounts/breakdown-history`,
+      providesTags: ['AccountBreakdownHistory'],
+      keepUnusedDataFor: 60 * 30 // 30 minutes
     }),
     getAccountBalanceHistory: builder.query<
       GetBalanceHistoryResponse,
@@ -64,7 +70,8 @@ export const {
   useGetAccountsQuery,
   useUpdateAccountsMutation,
   useLazyGetAccountBalanceHistoryQuery,
-  useLazyGetAccountBalanceTrendQuery
+  useLazyGetAccountBalanceTrendQuery,
+  useGetBreakdownHistoryQuery
 } = accountsSlice;
 
 export const useGetAccountsQueryState =

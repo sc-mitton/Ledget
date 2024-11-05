@@ -1,8 +1,15 @@
 import base64
+from itertools import groupby
+from datetime import datetime
 
 from rest_framework import serializers
 
-from financials.models import Account, Institution, UserAccount
+from financials.models import (
+    Account,
+    Institution,
+    UserAccount,
+    Transaction
+)
 
 
 class CustomBase64LogoField(serializers.Field):
@@ -108,3 +115,45 @@ class UserAccountSerializer(serializers.ModelSerializer):
         model = UserAccount
         exclude = ('user',)
         list_serializer_class = AccountLS
+
+
+class BreakdownHistoryListSerializer(serializers.ListSerializer):
+
+    def to_representation(self, data):
+        repr = super().to_representation(data)
+        grouped = groupby(repr, key=lambda x: x['date'])
+
+        final = []
+        for date, group in grouped:
+            detail_totals_list = list(group)
+            detail_totals = {'date': date}
+
+            for detail_total in detail_totals_list:
+                detail_totals[detail_total['detail']] = detail_total['total']
+
+            final.append(detail_totals)
+
+        return final
+
+
+class BreakdownHistorySerializer(serializers.ModelSerializer):
+    month = serializers.DateField()
+    year = serializers.DateField()
+    total = serializers.DecimalField(max_digits=30, decimal_places=4)
+
+    class Meta:
+        model = Transaction
+        list_serializer_class = BreakdownHistoryListSerializer
+        fields = ('detail', 'total', 'month', 'year', )
+
+    def to_representation(self, instance):
+        repr = super().to_representation(instance)
+        month_date = datetime.strptime(repr['month'], '%Y-%m-%d')
+        year_date = datetime.strptime(repr['year'], '%Y-%m-%d')
+
+        repr['date'] = datetime(
+            year_date.year, month_date.month, 1).strftime('%Y-%m-%d')
+
+        repr['detail'] = Transaction.Detail(repr['detail']).label
+
+        return repr

@@ -48,7 +48,8 @@ export const transactionSlice = apiSlice.injectEndpoints({
             { type: 'UnconfirmedTransaction', id: 'LIST' },
             'TransactionCount',
             'AccountBalanceHistory',
-            'AccountBalanceTrend'
+            'AccountBalanceTrend',
+            'AccountBreakdownHistory'
           ]
           : [];
       }

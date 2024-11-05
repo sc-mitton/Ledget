@@ -67,3 +67,10 @@ export type GetAccountBalanceTrendResponse = {
 };
 
 export type GetBalanceHistoryResponse = AccountBalance[];
+
+export type GetBreakdownHistoryResponse = {
+  date: string;
+  'spending': number;
+  'income': number;
+  'investment_transfer_out': number;
+}[]
