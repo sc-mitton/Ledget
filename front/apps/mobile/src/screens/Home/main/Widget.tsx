@@ -9,6 +9,7 @@ import Animated, {
   withTiming,
   withDelay,
   withRepeat,
+  withSequence,
   runOnJS,
   scrollTo
 } from "react-native-reanimated";
@@ -111,9 +112,9 @@ const Widget = (props: WidgetProps) => {
 
   // Immediate positioning if necessary for set widgets (ie has id)
   useEffect(() => {
-    if (props.widget.id) {
+    if (props.widget.id && props.positions.value[props.widget.id]) {
       const pos = getAbsPosition(
-        props.positions.value[props.widget.id || props.widget.type][0],
+        props.positions.value[props.widget.id][0],
         props.height.value,
         !Boolean(props.widget.id)
       );
@@ -367,8 +368,11 @@ const Widget = (props: WidgetProps) => {
     .onEnd(({ translationX, translationY }) => {
       props.onDragEnd && runOnJS(props.onDragEnd)();
       shadowOpacity.value = withTiming(0);
-      scale.value = withSpring(1, defaultSpringConfig);
-      isDragging.value = withDelay(500, withTiming(0, { duration: 0 }));
+      scale.value = withSequence(
+        withSpring(1, defaultSpringConfig),
+        withDelay(1500, withTiming(.5, { duration: 0 }))
+      )
+      isDragging.value = withDelay(1500, withTiming(0, { duration: 0 }));
 
       const gridPosition = getNewGridPosition(
         props.widget,
@@ -380,31 +384,30 @@ const Widget = (props: WidgetProps) => {
         gridPosition[0],
         props.positions.value[props.order.value[props.order.value.length - 1]][0] || 0
       );
-
       const finalPosition = getAbsPosition(finalGridPosition, props.height.value);
-
-      column.value = finalGridPosition % 2;
-
-      translateX.value = withSpring(finalPosition.x, defaultSpringConfig);
-      translateY.value = withSpring(finalPosition.y, defaultSpringConfig);
-
-      // Used to make sure we don't unecessarily update the global state
-      if (Math.abs(translationX) > 40 || Math.abs(translationY) > 40 || !props.widget.id) {
-        runOnJS(updateGlobalState)();
-      }
-
-      // Sending dragged widget back to where it belongs
-      // after done dragging
-      const pos = getAbsPosition(
+      // Sending dragged widget back to where it belongs after done dragging
+      const returnPos = getAbsPosition(
         props.positions.value[props.widget.id || props.widget.type][0],
         props.height.value,
         !Boolean(props.widget.id)
       );
 
-      column.value = props.positions.value[props.widget.id || props.widget.type][0] % 2;
-      scale.value = withDelay(500, withTiming(.5, { duration: 0 }));
-      opacity.value = withDelay(500, withTiming(0, { duration: 0 }));
-      translateY.value = withDelay(500, withTiming(pos.y, { duration: 0 }));
+      column.value = finalGridPosition % 2;
+
+      translateX.value = withSequence(
+        withSpring(finalPosition.x, defaultSpringConfig),
+        withDelay(1500, withTiming(returnPos.x, { duration: 0 }))
+      )
+      translateY.value = withSequence(
+        withSpring(finalPosition.y, defaultSpringConfig),
+        withDelay(1500, withTiming(returnPos.y, { duration: 0 }))
+      )
+      opacity.value = withDelay(1000, withTiming(0, { duration: 0 }));
+
+      // Used to make sure we don't unecessarily update the global state
+      if (Math.abs(translationX) > 40 || Math.abs(translationY) > 40 || !props.widget.id) {
+        runOnJS(updateGlobalState)();
+      }
 
     })
 

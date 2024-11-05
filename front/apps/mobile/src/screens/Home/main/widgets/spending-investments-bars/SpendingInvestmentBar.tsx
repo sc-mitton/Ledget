@@ -3,7 +3,7 @@ import PickerOption from './PickerOption';
 import Filled from './Filled';
 
 const SpendingVsIncome = (widget: WidgetProps) => {
-  return widget.args
+  return widget.id
     ? <Filled {...widget} />
     : <PickerOption />
 }

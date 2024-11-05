@@ -21,6 +21,13 @@ const MainScreen = (props: HomeScreenProps<'Main'>) => {
   const [showOverlay, setShowOverlay] = useState(false)
 
   useEffect(() => {
+    if (props.route.params?.state === 'dropping') {
+      dispatch(hideBottomTabs(false))
+      setShowOverlay(false)
+    }
+  }, [props.route.params?.state])
+
+  useEffect(() => {
     props.navigation.setOptions({
       header: (props: any) =>
         <Animated.View entering={FadeIn} exiting={FadeOut}>
@@ -70,19 +77,6 @@ const MainScreen = (props: HomeScreenProps<'Main'>) => {
                 </>}
             </View>
           </Box>
-          {/* {state === 'picking' &&
-            <Canvas style={[styles.mask]}>
-              <Rect x={0} y={0} width={Dimensions.get('window').width} height={28}>
-                <LinearGradient
-                  colors={[
-                    theme.colors.widgetPickerBackground,
-                    theme.colors.blueChartGradientEnd
-                  ]}
-                  start={vec(0, 0)}
-                  end={vec(0, 28)}
-                />
-              </Rect>
-            </Canvas>} */}
         </Animated.View>,
     })
   }, [])
