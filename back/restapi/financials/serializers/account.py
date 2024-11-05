@@ -133,6 +133,8 @@ class BreakdownHistoryListSerializer(serializers.ListSerializer):
 
             final.append(detail_totals)
 
+        final = sorted(final, key=lambda x: x['date'])
+
         return final
 
 
