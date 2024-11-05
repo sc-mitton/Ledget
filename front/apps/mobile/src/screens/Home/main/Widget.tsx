@@ -72,7 +72,7 @@ const Widget = (props: WidgetProps) => {
   // (Only if not dragging, we dont' want the positions updates that happen in the gesture
   // to affect the widget's position if it's being dragged around)
   useAnimatedReaction(() => props.positions, (newPositions) => {
-    if (!isDragging.value) {
+    if (!isDragging.value && newPositions.value[props.widget.id || props.widget.type]) {
       // Update column
       column.value = newPositions.value[props.widget.id || props.widget.type][0] % 2;
 
@@ -126,7 +126,7 @@ const Widget = (props: WidgetProps) => {
   // Pop in affect for widget (only picker widgets)
   // This wont end up having any effect for the widgets that are not part of the picker
   useEffect(() => {
-    if (isDragging.value || props.widget.id) return;
+    if (isDragging.value || props.widget.id || !props.positions.value[props.widget.type]) return;
 
     const pos = getAbsPosition(
       props.positions.value[props.widget.type][0],

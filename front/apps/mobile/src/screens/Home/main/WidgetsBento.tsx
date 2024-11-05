@@ -158,7 +158,7 @@ const WidgetsBento = (props: WidgetsBentoProps) => {
             <View
               style={[
                 {
-                  height: positions.value[widgetTypes[widgetTypes.length - 1].type][0] > 0
+                  height: positions.value[widgetTypes[widgetTypes.length - 1].type]?.[0] > 0
                     ? ((Math.ceil(positions.value[widgetTypes[widgetTypes.length - 1].type][0] - 1000) / 2)) * (itemHeight.value + gap + bottomLabelPadding) + 54
                     : 0
                 },
@@ -174,7 +174,7 @@ const WidgetsBento = (props: WidgetsBentoProps) => {
                   positions={positions}
                   order={order}
                   scrollY={pickerScrollY}
-                  scrollHeight={positions.value[widgetTypes[widgetTypes.length - 1].type][0] > 0
+                  scrollHeight={positions.value[widgetTypes[widgetTypes.length - 1].type]?.[0] > 0
                     ? ((Math.ceil(positions.value[widgetTypes[widgetTypes.length - 1].type][0] - 1000) / 2)) * (itemHeight.value + gap + bottomLabelPadding) + 54
                     : 0}
                   containerHeight={pickerWidgetsContainerHeight}
