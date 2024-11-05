@@ -1,6 +1,7 @@
 import base64
 from itertools import groupby
 from datetime import datetime
+from decimal import Decimal
 
 from rest_framework import serializers
 
@@ -129,9 +130,13 @@ class BreakdownHistoryListSerializer(serializers.ListSerializer):
             detail_totals = {'date': date}
 
             for detail_total in detail_totals_list:
-                detail_totals[detail_total['detail']] = detail_total['total']
+                detail_totals[detail_total['detail']] = Decimal(detail_total['total'])
+            for choice in Transaction.Detail.choices:
+                if choice[1] not in detail_totals:
+                    detail_totals[str(choice[1])] = 0
 
             final.append(detail_totals)
+        print('final', final)
 
         final = sorted(final, key=lambda x: x['date'])
 
