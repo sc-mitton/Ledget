@@ -65,3 +65,11 @@ class TestPlaidItemView(ViewTestsMixin):
         self.assertEqual(response.status_code, 200)
         self.assertIn('days', response.data)
         self.assertIn('trends', response.data)
+
+    def test_get_breakdown_history(self):
+        '''
+        Test the breakdown history endpoint returns a 200 status code
+        '''
+
+        response = self.client.get(reverse('accounts-breakdown-history'))
+        self.assertEqual(response.status_code, 200)
