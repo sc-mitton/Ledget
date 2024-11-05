@@ -19,6 +19,8 @@ const MainScreen = (props: HomeScreenProps<'Main'>) => {
   const { data: user } = useGetMeQuery();
   const dispatch = useAppDispatch()
   const [showOverlay, setShowOverlay] = useState(false)
+  const theme = useTheme()
+
 
   useEffect(() => {
     if (props.route.params?.state === 'dropping') {
@@ -31,10 +33,15 @@ const MainScreen = (props: HomeScreenProps<'Main'>) => {
     props.navigation.setOptions({
       header: (props: any) =>
         <Animated.View entering={FadeIn} exiting={FadeOut}>
+          {props.route.params?.state === 'picking' &&
+            <Animated.View
+              entering={FadeIn.delay(1000)}
+              exiting={FadeOut}
+              style={[StyleSheet.absoluteFill, { backgroundColor: theme.colors.widgetPickerBackground }]} /
+            >}
           <Box
             paddingTop='statusBar'
             style={[styles.header]}
-            backgroundColor={showOverlay ? 'widgetPickerBackground' : 'transparent'}
           >
             {props.route.params?.state === 'picking'
               ? <Box />
@@ -77,6 +84,19 @@ const MainScreen = (props: HomeScreenProps<'Main'>) => {
                 </>}
             </View>
           </Box>
+          {props.route.params?.state === 'picking' &&
+            <Canvas style={[styles.mask]}>
+              <Rect x={0} y={0} width={Dimensions.get('window').width} height={28}>
+                <LinearGradient
+                  colors={[
+                    theme.colors.widgetPickerBackground,
+                    theme.colors.blueChartGradientEnd
+                  ]}
+                  start={vec(0, 0)}
+                  end={vec(0, 28)}
+                />
+              </Rect>
+            </Canvas>}
         </Animated.View>,
     })
   }, [])
