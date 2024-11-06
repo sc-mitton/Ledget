@@ -41,7 +41,7 @@ const investmentsRTKSlice = apiSlice.injectEndpoints({
         return currentCache;
       }
     }),
-    getInvestmendsBalanceHistory: build.query<InvestmentsBalanceHistory, InvestmentsBalanceQuery>({
+    getInvestmentsBalanceHistory: build.query<InvestmentsBalanceHistory, InvestmentsBalanceQuery>({
       query: (params) => ({
         url: 'investments/balance-history',
         method: 'GET',
@@ -104,6 +104,6 @@ export const selectTrackedHoldings = (state: { investments: InvestmentsState }) 
 export const {
   useGetInvestmentsQuery,
   useLazyGetInvestmentsQuery,
-  useGetInvestmendsBalanceHistoryQuery,
-  useLazyGetInvestmendsBalanceHistoryQuery
+  useGetInvestmentsBalanceHistoryQuery,
+  useLazyGetInvestmentsBalanceHistoryQuery
 } = investmentsRTKSlice;

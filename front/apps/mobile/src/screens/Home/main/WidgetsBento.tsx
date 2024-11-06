@@ -79,7 +79,7 @@ const WidgetsBento = (props: WidgetsBentoProps) => {
     )
     runOnJS(setCurrentHeight)(
       positions.value[order.value[order.value.length - 1]]?.[0]
-        ? Math.ceil((positions.value[order.value[order.value.length - 1]]?.[0] + 1) / 2) * (newHeight + gap) + theme.spacing.navHeight
+        ? Math.ceil((positions.value[order.value[order.value.length - 1]]?.[0] + 1) / 2) * (newHeight + gap) + theme.spacing.navHeight - gap
         : 0
     )
   })

@@ -19,7 +19,7 @@ import tempDataValues from './tempChartData';
 import { VictoryTooltip, Text, Menu, DollarCents, Icon } from '@ledget/native-ui';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import {
-  useGetInvestmendsBalanceHistoryQuery,
+  useGetInvestmentsBalanceHistoryQuery,
   useGetInvestmentsQuery,
   isInvestmentSupported
 } from '@ledget/shared-features';
@@ -53,7 +53,7 @@ const Chart = () => {
   const accounts = useAppSelector(selectInvestmentsScreenAccounts)
   const window = useAppSelector(selectInvestmentsScreenWindow)
 
-  const { data: fetchedData } = useGetInvestmendsBalanceHistoryQuery({
+  const { data: fetchedData } = useGetInvestmentsBalanceHistoryQuery({
     end: dayjs().format('YYYY-MM-DD'),
     start: dayjs().subtract(window?.amount || 100, window?.period || 'year').format('YYYY-MM-DD')
   })

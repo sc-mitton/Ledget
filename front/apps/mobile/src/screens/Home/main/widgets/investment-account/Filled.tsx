@@ -7,7 +7,7 @@ import { ArrowUpRight, ArrowDownRight } from 'geist-native-icons';
 import styles from './styles/filled'
 import { Icon, Text, InstitutionLogo, DollarCents, Button, Box, PulseBox } from "@ledget/native-ui"
 import {
-  useLazyGetInvestmendsBalanceHistoryQuery,
+  useLazyGetInvestmentsBalanceHistoryQuery,
   useGetInvestmentsQuery,
   isInvestmentSupported,
   InvestmentWithProductSupport
@@ -33,7 +33,7 @@ const Filled = (props: Props) => {
   }, {
     skip: !props.args?.window
   })
-  const [getBalanceHistory, { data: history }] = useLazyGetInvestmendsBalanceHistoryQuery()
+  const [getBalanceHistory, { data: history }] = useLazyGetInvestmentsBalanceHistoryQuery()
   const [chartData, setChartData] = useState<ChartDataT>()
 
   const percentChange = useMemo(() => {
