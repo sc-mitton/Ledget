@@ -36,15 +36,19 @@ def fetch_balences(
     balance_objects = []
     investments_not_supported = []
     for i in range(len(account_ids)):
-        request = InvestmentsHoldingsGetRequest(
-            access_token=access_tokens[i],
-            options=InvestmentHoldingsGetRequestOptions(account_ids=account_ids[i]))
         try:
+            request = InvestmentsHoldingsGetRequest(
+                access_token=access_tokens[i],
+                options=InvestmentHoldingsGetRequestOptions(account_ids=account_ids[i]))
             response = plaid_client.investments_holdings_get(request)
         except plaid.ApiException as e:
             if json.loads(e.body)['error_code'] == 'PRODUCT_NOT_SUPPORTED':
+                logger.error(f'investments not supported: {e.body}')
                 investments_not_supported.append(item_ids[i])
+        except Exception as e:
+            logger.error(f'Error fetching investments: {e}')
         else:
+            logger.info(f"Extending balance_objects with {len(response.accounts)} accounts")
             balance_objects.extend([
                 AccountBalance(
                     date=timezone.now().date(),
@@ -78,7 +82,8 @@ def fetch_investments_balance(*args, **kwargs) -> None:
             .filter(Q(max_date__lt=timezone.now().date()) | Q(max_date=None))
             .values('id')
         )
-    ).prefetch_related('accounts')
+    ).prefetch_related('accounts') \
+    .distinct('id')
 
     batch_size = 1000
     tasks = []
