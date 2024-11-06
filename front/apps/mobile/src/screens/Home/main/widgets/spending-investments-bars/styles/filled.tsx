@@ -46,8 +46,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   rectangleLeftSide: {
-    justifyContent: 'space-evenly',
-    alignItems: 'flex-start',
+    justifyContent: 'center',
+    gap: 12,
+    alignItems: 'center',
     height: '100%',
     flexGrow: 2,
     flex: 2
@@ -55,6 +56,7 @@ const styles = StyleSheet.create({
   rectangleRightSide: {
     flexGrow: 2.5,
     flex: 2.5,
+    paddingVertical: 6
   },
   bottomHalf: {
     flexGrow: 1,

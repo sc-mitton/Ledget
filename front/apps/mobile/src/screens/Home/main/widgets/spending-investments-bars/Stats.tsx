@@ -5,6 +5,7 @@ import Big from "big.js";
 import { useTheme } from "@shopify/restyle";
 
 import styles from './styles/filled';
+import rectangleStyles from './styles/rectangleStyles';
 import sharedStyles from "./styles/sharedStyles";
 import { Box, Text } from "@ledget/native-ui";
 import { useGetBreakdownHistoryQuery } from "@ledget/shared-features";
@@ -99,8 +100,8 @@ export const VerticalStats = ({ index }: { index: number }) => {
       paddingVertical={'s'}
       style={styles.rectangleLeftSide}
     >
-      <View>
-        <View style={styles.incomeContainer}>
+      <View style={rectangleStyles.statsTopRow}>
+        <View style={sharedStyles.topRowHeader}>
           <Box style={sharedStyles.dot} backgroundColor={'quinaryText'} />
           <Text color='tertiaryText' fontSize={15}>Income</Text>
         </View>
@@ -115,8 +116,8 @@ export const VerticalStats = ({ index }: { index: number }) => {
           includeComma={true}
         />
       </View>
-      <View style={styles.rectangleLeftBottom}>
-        <View>
+      <View style={rectangleStyles.statsBottomRow}>
+        <View style={rectangleStyles.bottomRowCell}>
           <View style={sharedStyles.topRowHeader}>
             <Box
               style={sharedStyles.dot}
@@ -124,36 +125,32 @@ export const VerticalStats = ({ index }: { index: number }) => {
             />
             <Text fontSize={13} lineHeight={24} color='tertiaryText'>Saved</Text>
           </View>
-          <View style={sharedStyles.currencyContainer}>
-            <SlotText
-              value={saved as `${number}`}
-              fontStyle={[
-                { color: theme.colors.mainText },
-                styles.fontStyle
-              ]}
-              animationDuration={200}
-              prefix={negativeSaved ? '-$' : '$'}
-              includeComma={true}
-            />
-          </View>
+          <SlotText
+            value={saved as `${number}`}
+            fontStyle={[
+              { color: theme.colors.mainText },
+              styles.fontStyle
+            ]}
+            animationDuration={200}
+            prefix={negativeSaved ? '-$' : '$'}
+            includeComma={true}
+          />
         </View>
-        <View>
+        <View style={rectangleStyles.bottomRowCell}>
           <View style={sharedStyles.topRowHeader}>
             <Box backgroundColor='purpleText' style={sharedStyles.dot} />
             <Text fontSize={13} lineHeight={24} color='tertiaryText'>Invested</Text>
           </View>
-          <View style={sharedStyles.currencyContainer}>
-            <SlotText
-              value={invested as `${number}`}
-              fontStyle={[
-                { color: theme.colors.mainText },
-                styles.fontStyle
-              ]}
-              animationDuration={200}
-              prefix={'$'}
-              includeComma={true}
-            />
-          </View>
+          <SlotText
+            value={invested as `${number}`}
+            fontStyle={[
+              { color: theme.colors.mainText },
+              styles.fontStyle
+            ]}
+            animationDuration={200}
+            prefix={'$'}
+            includeComma={true}
+          />
         </View>
       </View>
     </Box>

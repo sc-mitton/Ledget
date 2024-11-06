@@ -16,7 +16,7 @@ interface CarouselProps {
   setIndex: (index: number) => void
 }
 
-export const BakedCarousel = ({ index, setIndex }: CarouselProps) => {
+export const BakedCarousel = (props: CarouselProps) => {
   const { data } = useGetBreakdownHistoryQuery();
 
   const progress = useSharedValue(0)
@@ -27,7 +27,7 @@ export const BakedCarousel = ({ index, setIndex }: CarouselProps) => {
     if (data) {
       const newCarouselData = [...data].reverse()
       setCarouselData(newCarouselData)
-      setIndex(newCarouselData.length - 1)
+      props.setIndex(newCarouselData.length - 1)
     }
   }, [data])
 
@@ -56,9 +56,10 @@ export const BakedCarousel = ({ index, setIndex }: CarouselProps) => {
             const saved = Math.max(breakdown.income - breakdown.spending - breakdown.investment_transfer_out, 0)
             const savedPercent = (saved / (breakdown.income || 1)) * 100
             const incomePercent = Math.max(breakdown.income / (maxIncome || 1), 10)
+            const opacity = index > props.index ? Math.max(1 - (.34 * (index - props.index)), 0) : 1
 
             return (
-              <View style={styles.carouselItem}>
+              <View style={[styles.carouselItem, { opacity }]}>
                 <Box
                   style={[styles.bar, { zIndex: investmentPercent > savedPercent ? 0 : 1, height: `${investmentPercent * 100}%` },]}
                   backgroundColor='purpleText'
@@ -84,11 +85,11 @@ export const BakedCarousel = ({ index, setIndex }: CarouselProps) => {
             const carouselLength = carouselData?.length || 0
 
             if (p - progress.value > 20) {
-              setIndex(index - 1 >= 0 ? index - 1 : carouselLength - 1)
+              props.setIndex(props.index - 1 >= 0 ? props.index - 1 : carouselLength - 1)
               indexLock.current = true
               progress.value = p
             } else if (p - progress.value < -20) {
-              setIndex(index + 1 < carouselLength ? index + 1 : 0)
+              props.setIndex(props.index + 1 < carouselLength ? props.index + 1 : 0)
               indexLock.current = true
               progress.value = p
             }
@@ -97,7 +98,7 @@ export const BakedCarousel = ({ index, setIndex }: CarouselProps) => {
             setTimeout(() => {
               indexLock.current = false
             }, 200)
-            setIndex(index)
+            props.setIndex(index)
             progress.value = 0
           }}
         />}
@@ -107,7 +108,7 @@ export const BakedCarousel = ({ index, setIndex }: CarouselProps) => {
             <Icon icon={ChevronUp} color='quaternaryText' size={12} strokeWidth={2.5} />
           </View>
           <Text color='quaternaryText' fontSize={14}>
-            {dayjs(data[index].date).format('MMM YYYY')}
+            {dayjs(data[props.index].date).format('MMM YYYY')}
           </Text>
         </View>}
     </>
