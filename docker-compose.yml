@@ -131,8 +131,6 @@ services:
   celery:
     build:
       context: ./back
-      args:
-        - ENVIRONMENT=dev
     entrypoint: sh -c "/restapi/celery_startup.sh"
     volumes:
       - ./back/restapi:/restapi
@@ -141,12 +139,15 @@ services:
       - DB_HOST=db
       - DB_NAME=devdb
       - DB_PORT=5432
+      - PLAID_ENV=Sandbox
+      - ENVIRONMENT=dev
     depends_on:
       - rabbitmq
       - restapi
     secrets:
       - ory_api_key
       - plaid_api_key
+      - plaid_sand_api_key
       - postgres_user
       - postgres_password
       - plaid_client_id

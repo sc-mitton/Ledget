@@ -48,7 +48,8 @@ def fetch_balences(
         except Exception as e:
             logger.error(f'Error fetching investments: {e}')
         else:
-            logger.info(f"Extending balance_objects with {len(response.accounts)} accounts")
+            logger.info(
+                f"Extending balance_objects with {len(response.accounts)} accounts")
             balance_objects.extend([
                 AccountBalance(
                     date=timezone.now().date(),
@@ -83,7 +84,7 @@ def fetch_investments_balance(*args, **kwargs) -> None:
             .values('id')
         )
     ).prefetch_related('accounts') \
-    .distinct('id')
+     .distinct('id')
 
     batch_size = 1000
     tasks = []
