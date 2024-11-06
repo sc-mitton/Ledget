@@ -136,7 +136,6 @@ class BreakdownHistoryListSerializer(serializers.ListSerializer):
                     detail_totals[str(choice[1])] = 0
 
             final.append(detail_totals)
-        print('final', final)
 
         final = sorted(final, key=lambda x: x['date'])
 

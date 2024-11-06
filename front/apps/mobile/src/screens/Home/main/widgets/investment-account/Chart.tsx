@@ -24,6 +24,7 @@ interface Props {
     date: string,
     balance: number,
   }[]
+  emptyMessage: boolean
 }
 
 const ChartSkeleton = (props: Props) => {
@@ -127,7 +128,7 @@ const ChartSkeleton = (props: Props) => {
               strokeCap='round'
               curveType='natural'
             />
-            {!props.data &&
+            {!props.data && props.emptyMessage &&
               <SkText
                 text={`not enough data yet`}
                 font={tempFont}

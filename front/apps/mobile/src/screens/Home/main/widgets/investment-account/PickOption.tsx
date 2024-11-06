@@ -35,7 +35,7 @@ const Shadow = () => {
           size={16}
         />
       </View>
-      <ChartSkeleton />
+      <ChartSkeleton emptyMessage={false} />
     </View>
   )
 }

@@ -95,8 +95,9 @@ const Filled = (props: Props) => {
         <View style={styles.amountContainer}>
           <DollarCents
             value={Big(investment?.balance || 0).times(100).toNumber()}
-            fontSize={15}
-            lineHeight={22}
+            fontSize={16}
+            lineHeight={24}
+            variant='bold'
             withCents={props.shape === 'rectangle'}
           />
           {percentChange !== undefined &&
@@ -111,7 +112,7 @@ const Filled = (props: Props) => {
           }
         </View>
       </View>
-      <Chart data={chartData} />
+      <Chart data={chartData} emptyMessage={Boolean(props.id)} />
       {chartData &&
         <View style={styles.windowButtons}>
           {windows.map((w, i) => (

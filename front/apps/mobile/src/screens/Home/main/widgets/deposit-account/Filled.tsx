@@ -99,8 +99,9 @@ const Filled = (props: WidgetProps<{ account: string }>) => {
         </View>
         <DollarCents
           value={Big(account?.balances.current || 0).times(100).toNumber()}
-          fontSize={15}
-          lineHeight={22}
+          fontSize={16}
+          lineHeight={24}
+          variant='bold'
           withCents={props.shape === 'rectangle'}
         />
       </View>

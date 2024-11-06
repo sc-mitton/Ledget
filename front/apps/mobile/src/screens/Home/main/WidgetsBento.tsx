@@ -5,7 +5,8 @@ import Animated, {
   useAnimatedRef,
   useAnimatedReaction,
   withDelay,
-  withTiming
+  withTiming,
+  runOnJS
 } from "react-native-reanimated";
 import { useTheme } from "@shopify/restyle";
 
@@ -32,6 +33,8 @@ const WidgetsBento = (props: WidgetsBentoProps) => {
 
   const selectedStoredWidgets = useAppSelector(selectWidgets);
   const [widgets, setWidgets] = useState(selectedStoredWidgets)
+  const [pickerHeight, setPickerHeight] = useState(0)
+  const [currentHeight, setCurrentHeight] = useState(0)
 
   const itemHeight = useSharedValue(0)
   const pickerZIndex = useSharedValue(-1)
@@ -42,6 +45,14 @@ const WidgetsBento = (props: WidgetsBentoProps) => {
       getPositionsMap(widgetTypes.map(t => ({ ...t, shape: 'square' })))
     )
   );
+
+  const pickerScrollView = useAnimatedRef<Animated.ScrollView>();
+  const pickerWidgetsContainerHeight = useSharedValue(0);
+  const pickerScrollY = useSharedValue(0);
+
+  const currentScrollView = useAnimatedRef<Animated.ScrollView>();
+  const currentWidgetsContainerHeight = useSharedValue(0);
+  const currentWidgetsScrollY = useSharedValue(0);
 
   useAnimatedReaction(() => order.value, (newOrder) => {
     const orderedWidgets = newOrder
@@ -58,6 +69,19 @@ const WidgetsBento = (props: WidgetsBentoProps) => {
       [w.id || w.type, newGridPositions[index]])
     const updatedPositionsMap = Object.fromEntries(updatedPositionEntries)
     Object.assign(positions.value, updatedPositionsMap)
+  })
+
+  useAnimatedReaction(() => itemHeight.value, (newHeight) => {
+    runOnJS(setPickerHeight)(
+      positions.value[widgetTypes[widgetTypes.length - 1].type]?.[0] > 0
+        ? ((Math.ceil(positions.value[widgetTypes[widgetTypes.length - 1].type][0] - 1000) / 2)) * (newHeight + gap + bottomLabelPadding) + 54
+        : 0
+    )
+    runOnJS(setCurrentHeight)(
+      positions.value[order.value[order.value.length - 1]]?.[0]
+        ? Math.ceil((positions.value[order.value[order.value.length - 1]]?.[0] + 1) / 2) * (newHeight + gap) + theme.spacing.navHeight
+        : 0
+    )
   })
 
   // Update the grid positions and order
@@ -82,14 +106,6 @@ const WidgetsBento = (props: WidgetsBentoProps) => {
     order.value = widgets.map(w => w.id!)
   }, [widgets])
 
-  const pickerScrollView = useAnimatedRef<Animated.ScrollView>();
-  const pickerWidgetsContainerHeight = useSharedValue(0);
-  const pickerScrollY = useSharedValue(0);
-
-  const currentScrollView = useAnimatedRef<Animated.ScrollView>();
-  const currentWidgetsContainerHeight = useSharedValue(0);
-  const currentWidgetsScrollY = useSharedValue(0);
-
   return (
     <>
       <Box style={styles.mainBox} variant='nestedScreen' paddingHorizontal="pagePadding">
@@ -107,11 +123,7 @@ const WidgetsBento = (props: WidgetsBentoProps) => {
           >
             <View
               style={[
-                {
-                  height: order.value.length > 0 && positions.value[order.value[order.value.length - 1]][0] > 0
-                    ? Math.ceil(positions.value[order.value[order.value.length - 1]][0] / 2) * (itemHeight.value + gap) + theme.spacing.navHeight * 2.5
-                    : 0,
-                },
+                { height: currentHeight },
                 styles.widgetsContainer,
                 styles.currentWidgetsScrollView
               ]}
@@ -155,16 +167,7 @@ const WidgetsBento = (props: WidgetsBentoProps) => {
             onScroll={(e) => { pickerScrollY.value = e.nativeEvent.contentOffset.y }}
             onLayout={(e) => { pickerWidgetsContainerHeight.value = e.nativeEvent.layout.height }}
           >
-            <View
-              style={[
-                {
-                  height: positions.value[widgetTypes[widgetTypes.length - 1].type]?.[0] > 0
-                    ? ((Math.ceil(positions.value[widgetTypes[widgetTypes.length - 1].type][0] - 1000) / 2)) * (itemHeight.value + gap + bottomLabelPadding) + 54
-                    : 0
-                },
-                styles.pickerWidgetsScrollView
-              ]}
-            >
+            <View style={[{ height: pickerHeight }, styles.pickerWidgetsScrollView]}>
               {widgetTypes.map((widget, index) => (
                 <Widget
                   key={`widget-${widget.type}`}
