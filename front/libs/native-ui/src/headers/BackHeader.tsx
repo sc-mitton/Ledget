@@ -16,7 +16,7 @@ export function BackHeader(props: StackHeaderProps & { pagesWithTitle?: string[]
     <Box
       style={[
         styles.headerContainer,
-        { top: StatusBarManager.HEIGHT }
+        { top: StatusBarManager.HEIGHT + 8 }
       ]}
       backgroundColor={props.authenticationScreens ? 'accountsMainBackground' : 'mainBackground'}
     >
