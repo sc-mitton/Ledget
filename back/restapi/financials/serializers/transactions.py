@@ -4,7 +4,7 @@ from datetime import datetime
 
 from financials.models import Transaction, Note
 from budget.models import Bill, TransactionCategory, Category
-from budget.serializers import BillSerializer
+from budget.serializers import BillSerializer, AlertSerializer
 
 
 class NoteSerializer(serializers.ModelSerializer):
@@ -76,6 +76,7 @@ class UpdateTransactionListSerializer(serializers.ListSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    alerts = AlertSerializer(many=True, required=False)
 
     class Meta:
         model = Category
@@ -143,12 +144,26 @@ class TransactionSerializer(serializers.ModelSerializer):
         model = Transaction
         fields = '__all__'
 
-    def update(sef, instance, validated_data):
+    def to_internal_value(self, data):
+        if 'detail' in data:
+            data['detail'] = Transaction.Detail(
+                Transaction.Detail.labels.index(data['detail'])
+            ).value
+
+        return data
+
+    def update(self, instance, validated_data):
 
         if validated_data.get('detail') != Transaction.Detail.SPENDING:
             TransactionCategory.objects.filter(transaction=instance).delete()
             nullified_fields = ['predicted_category', 'predicted_bill', 'bill']
             validated_data.update({field: None for field in nullified_fields})
+        else:
+            default_category = Category.objects.filter(
+                usercategory__user__in=self.context['request'].user.account.users.all(),
+                is_default=True
+            ).first()
+            instance.predicted_category = default_category
 
         return super().update(instance, validated_data)
 
@@ -157,4 +172,8 @@ class TransactionSerializer(serializers.ModelSerializer):
         repr = super().to_representation(instance)
         if 'splits' in repr:
             repr['categories'] = repr.pop('splits')
+
+        if 'detail' in repr:
+            repr['detail'] = Transaction.Detail(repr['detail']).label
+
         return repr
