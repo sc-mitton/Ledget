@@ -13,6 +13,7 @@ import {
   GestureDetector,
   Gesture
 } from 'react-native-gesture-handler';
+import * as Haptics from 'expo-haptics';
 
 import styles from './styles/item';
 import { Box } from "../../restyled/Box";
@@ -94,6 +95,7 @@ const Item = (props: ItemProps) => {
       ctx.x = translateX.value;
       ctx.y = translateY.value;
       isGestureActive.value = true;
+      runOnJS(Haptics.selectionAsync)();
     })
     .onChange(({ changeX, changeY }) => {
 
@@ -182,7 +184,7 @@ const Item = (props: ItemProps) => {
         }}
       >
         <GestureDetector gesture={pan}>
-          <Animated.View style={StyleSheet.absoluteFill}>
+          <Animated.View style={[StyleSheet.absoluteFill]}>
             <Box style={styles.itemContainer}>
               {props.children}
             </Box>

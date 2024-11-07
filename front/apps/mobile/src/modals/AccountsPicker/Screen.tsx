@@ -12,19 +12,19 @@ import type { Account } from '@ledget/shared-features';
 import Filters from './Filters';
 import AccountRow from './AccountRow';
 import TableHeaders from './Headers';
-import { useAppDispatch, useAppSelector } from '@/hooks';
+import { useAppSelector, useAppDispatch } from '@/hooks';
 import { selectAccountsTabDepositAccounts, setAccountsTabDepositAccounts } from '@/features/uiSlice';
 
 const AccountPicker = (props: ModalScreenProps<'PickAccount'>) => {
+  const dispatch = useAppDispatch();
+
   const [updateOrder] = useUpdateAccountsMutation();
   const theme = useTheme();
   const [isFiltered, setIsFiltered] = useState(false);
 
   const [accounts, setAccounts] = useState<Account[]>();
-
-  const dispatch = useAppDispatch();
   const { data: accountsData } = useGetAccountsQuery();
-  const globalAccounts = useAppSelector(selectAccountsTabDepositAccounts);
+  const globalAccounts = useAppSelector(selectAccountsTabDepositAccounts, () => true);
 
   const handleEndDrag = (args: DragEndParams<Account>) => {
     // If order of accounts has changed, update the order in the database
@@ -41,7 +41,6 @@ const AccountPicker = (props: ModalScreenProps<'PickAccount'>) => {
   useEffect(() => {
     setAccounts(accountsData?.accounts.filter(a => a.type === props.route.params.accountType));
   }, [accountsData]);
-
 
   return (
     <Box
@@ -83,15 +82,7 @@ const AccountPicker = (props: ModalScreenProps<'PickAccount'>) => {
                       }}
                       onPress={() => {
                         dispatch(setAccountsTabDepositAccounts([args.item]));
-                        props.navigation.navigate(
-                          'Accounts', {
-                          screen: 'AccountsTabs',
-                          params: {
-                            screen: 'Depository',
-                            params: {}
-                          }
-                        }
-                        )
+                        props.navigation.goBack();
                       }}
                       last={args.getIndex() === accounts.length - 1}
                       account={args.item}

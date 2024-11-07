@@ -15,7 +15,9 @@ type AccountScreenBase = {
 }
 
 export type AccountsTabsParamList = {
-  Depository: AccountScreenBase,
+  Depository: AccountScreenBase & {
+    accounts?: Account[]
+  },
   Credit: AccountScreenBase & {
     account: Account
   },

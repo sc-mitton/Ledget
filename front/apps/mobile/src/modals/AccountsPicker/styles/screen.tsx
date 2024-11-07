@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   },
   accountsListContainer: {
     position: 'relative',
-    flex: 1,
+    flex: 1
   },
   accountsList: {
     position: 'absolute',
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     paddingLeft: 0,
-    paddingRight: 0,
+    paddingRight: 0
   },
   draggableListContent: {
     paddingBottom: 16,

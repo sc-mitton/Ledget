@@ -27,7 +27,7 @@ export type ItemProps = {
 export type GridSortableListProps<TData extends object> = {
   data: TData[]
   renderItem: ({ item, index }: { item: TData, index: number }) => Child
-  containerViewStyle?: ViewStyle
+  containerViewStyle?: ViewStyle | ViewStyle[]
   idField?: keyof TData
 } & SharedProps
 

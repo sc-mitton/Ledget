@@ -35,6 +35,12 @@ const Panel = (props: AccountsTabsScreenProps<'Depository'> & { account?: Accoun
   }, [transactionsListExpanded])
 
   useEffect(() => {
+    if (props.route.params?.accounts && props.route.params.accounts !== accounts) {
+      dispatch(setAccountsTabDepositAccounts(props.route.params.accounts))
+    }
+  }, [props.route.params?.accounts])
+
+  useEffect(() => {
     if (error) {
       hasErrorCode('ITEM_LOGIN_REQUIRED', error)
       dispatch(popToast({
@@ -49,7 +55,7 @@ const Panel = (props: AccountsTabsScreenProps<'Depository'> & { account?: Accoun
   }, [error])
 
   useEffect(() => {
-    if (accountsData) {
+    if (accountsData && !accounts) {
       const account = accountsData.accounts.find(a => a.type === props.route.name.toLowerCase())
       dispatch(setAccountsTabDepositAccounts(account ? [account] : []))
     }

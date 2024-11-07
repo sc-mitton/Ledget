@@ -173,7 +173,7 @@ class TransactionSerializer(serializers.ModelSerializer):
         if 'splits' in repr:
             repr['categories'] = repr.pop('splits')
 
-        if 'detail' in repr:
+        if 'detail' in repr and repr['detail'] is not None:
             repr['detail'] = Transaction.Detail(repr['detail']).label
 
         return repr

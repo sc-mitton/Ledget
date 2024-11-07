@@ -23,9 +23,9 @@ export const categorySlice = apiSlice.injectEndpoints({
       providesTags: (result, error, arg) =>
         result
           ? [
-              ...result.map(({ id }) => ({ type: 'Category', id } as const)),
-              { type: 'Category', id: 'LIST' }
-            ]
+            ...result.map(({ id }) => ({ type: 'Category', id } as const)),
+            { type: 'Category', id: 'LIST' }
+          ]
           : [{ type: 'Category', id: 'LIST' }]
     }),
     getCategorySpendingHistory: builder.query<
@@ -47,9 +47,9 @@ export const categorySlice = apiSlice.injectEndpoints({
       providesTags: (result, error, arg) =>
         result
           ? [
-              { type: 'SpendingHistory', id: arg.categoryId },
-              { type: 'SpendingHistory', id: 'LIST' }
-            ]
+            { type: 'SpendingHistory', id: arg.categoryId },
+            { type: 'SpendingHistory', id: 'LIST' }
+          ]
           : [{ type: 'SpendingHistory', id: 'LIST' }]
     }),
     addNewCategory: builder.mutation<any, NewCategory[] | NewCategory>({
@@ -110,8 +110,8 @@ export const categorySlice = apiSlice.injectEndpoints({
   })
 });
 
-export function isCategory(obj: any): obj is Category {
-  return 'alerts' in obj;
+export function isCategory(obj: Object): obj is Category {
+  return 'alerts' in obj
 }
 
 export const {

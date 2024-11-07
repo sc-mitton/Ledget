@@ -4,6 +4,7 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     marginTop: 20,
+    marginBottom: 12
   },
   scrollView: {
     flex: 1
