@@ -4,12 +4,15 @@ from datetime import datetime
 from dateutil import parser
 import json
 import base64
+import logging
 
 from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.response import Response
+from rest_framework.status import HTTP_400_BAD_REQUEST
 from rest_framework import status
 from django.db.models import Prefetch
 from django.utils import timezone
+from rest_framework.exceptions import ValidationError
 from plaid.model.investments_holdings_get_request import InvestmentsHoldingsGetRequest
 from plaid.model.investments_transactions_get_request_options import (
     InvestmentsTransactionsGetRequestOptions
@@ -32,6 +35,7 @@ from core.clients import create_plaid_client
 from restapi.permissions.auth import IsAuthedVerifiedSubscriber
 
 plaid_client = create_plaid_client()
+logger = logging.getLogger('ledget')
 
 
 class InvestmentsView(GenericAPIView):
@@ -69,6 +73,14 @@ class InvestmentsView(GenericAPIView):
                     })
                     s.is_valid(raise_exception=True)
                     results.append(s.data)
+                elif json.loads(e.body)['error_code'] == 'ITEM_LOGIN_REQUIRED':
+                    item.login_required = True
+                    item.save()
+                    logger.error(e)
+                    raise ValidationError(
+                        {'plaid': 'error syncing transactions'},
+                        code=HTTP_400_BAD_REQUEST
+                    )
                 else:
                     raise e
             else:
