@@ -90,7 +90,7 @@ const Filled = (props: Props) => {
             >
               {investment?.account_name}
             </Text>
-            : <Box marginBottom='xs'><PulseBox width={70} height={'reg'} /></Box>}
+            : <Box marginBottom='xs'><PulseBox width={70} height={'reg'} borderRadius='xs' /></Box>}
         </View>
         <View style={styles.amountContainer}>
           <DollarCents

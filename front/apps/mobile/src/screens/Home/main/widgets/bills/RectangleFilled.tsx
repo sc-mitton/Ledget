@@ -100,7 +100,7 @@ const RectangleFilled = (props: WidgetProps & { loading: boolean }) => {
                 {props.loading
                   ?
                   <Box marginRight='xs'>
-                    <PulseBox width={32} height='s' />
+                    <PulseBox width={32} height='s' borderRadius='s' />
                   </Box>
                   :
                   <DollarCents

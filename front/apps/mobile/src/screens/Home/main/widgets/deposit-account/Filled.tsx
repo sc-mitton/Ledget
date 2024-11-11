@@ -95,7 +95,7 @@ const Filled = (props: WidgetProps<{ account: string }>) => {
             >
               {account?.name}
             </Text>
-            : <Box marginBottom='xs'><PulseBox width={70} height={'reg'} /></Box>}
+            : <Box marginBottom='xs'><PulseBox width={70} height={'reg'} borderRadius='xs' /></Box>}
         </View>
         <DollarCents
           value={Big(account?.balances.current || 0).times(100).toNumber()}

@@ -2,7 +2,7 @@ import { ViewBase, View } from 'react-native'
 
 import sharedStyles from './styles/sharedStyles'
 import styles from './styles/skeleton'
-import { Box, PulseBox } from '@ledget/native-ui';
+import { PulseBox } from '@ledget/native-ui';
 import { WidgetProps } from '@/features/widgetsSlice';
 
 const Skeleton = (widget: WidgetProps) => (
@@ -10,28 +10,28 @@ const Skeleton = (widget: WidgetProps) => (
     <View style={sharedStyles.topRow}>
       <View>
         <View style={styles.topRowHeader}>
-          <PulseBox height='s' width={32} />
+          <PulseBox height='s' width={32} borderRadius='xs' />
         </View>
         <View style={sharedStyles.currencyContainer}>
-          <PulseBox height='reg' width={64} />
+          <PulseBox height='reg' width={64} borderRadius='xs' />
         </View>
       </View>
       {widget.shape === 'rectangle' && (
         <View>
           <View style={styles.topRowHeader}>
-            <PulseBox height='s' width={32} />
+            <PulseBox height='s' width={32} borderRadius='xs' />
           </View>
           <View style={sharedStyles.currencyContainer}>
-            <PulseBox height='reg' width={64} />
+            <PulseBox height='reg' width={64} borderRadius='xs' />
           </View>
         </View>
       )}
       <View>
         <View style={styles.topRowHeader}>
-          <PulseBox height='s' width={32} />
+          <PulseBox height='s' width={32} borderRadius='xs' />
         </View>
         <View style={sharedStyles.currencyContainer}>
-          <PulseBox height='reg' width={64} />
+          <PulseBox height='reg' width={64} borderRadius='xs' />
         </View>
       </View>
     </View>

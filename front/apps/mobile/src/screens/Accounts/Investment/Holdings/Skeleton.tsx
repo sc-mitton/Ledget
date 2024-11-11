@@ -13,8 +13,8 @@ const Holdings = () => {
           <Fragment key={`$holding-${index}`}>
             {index !== 0 && <Box variant='divider' backgroundColor='nestedContainerSeperator' />}
             <Box style={styles.skeletonHolding} >
-              <PulseBox height='reg' width={54} />
-              <PulseBox height='s' width={32} />
+              <PulseBox height='reg' width={54} borderRadius='s' />
+              <PulseBox height='s' width={32} borderRadius='s' />
             </Box>
           </Fragment>
         ))
