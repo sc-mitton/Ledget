@@ -26,7 +26,6 @@ import { useAppDispatch } from '@hooks/store';
 import { CurrencyNote, Filter2 } from '@ledget/media';
 import { useAccountsContext } from './context';
 import pathMappings from './path-mappings';
-import { hasErrorCode } from '@ledget/helpers';
 
 const _getNavIcon = (key = '', isCurrent: boolean) => {
   switch (key) {
@@ -156,21 +155,6 @@ const Filters = ({
   const dispatch = useAppDispatch();
   const { screenSize } = useScreenContext();
 
-  // Handle get accounts error
-  useEffect(() => {
-    if (hasErrorCode('ITEM_LOGIN_REQUIRED', getAccountsError)) {
-      dispatch(
-        popToast({
-          type: 'error',
-          message: 'Account connection broken',
-          actionLink: '/settings/connections',
-          actionMessage: 'reconnect',
-          timer: 10000
-        })
-      );
-    }
-  }, [getAccountsError]);
-
   // Set filter options
   useEffect(() => {
     if (data) {
@@ -290,11 +274,10 @@ export const Nav = () => {
       dispatch(
         popToast({
           type: 'success',
-          message: `Synced${
-            syncResult?.added
+          message: `Synced${syncResult?.added
               ? `, ${syncResult?.added} new transactions`
               : ' successfully'
-          }`
+            }`
         })
       );
     }

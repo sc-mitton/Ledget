@@ -1,10 +1,9 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { View } from 'react-native';
 
 import styles from './styles/panel';
 import { AccountsTabsScreenProps } from '@types';
-import { hasErrorCode } from '@ledget/helpers';
-import { popToast, Account, useGetAccountsQuery, apiSlice } from '@ledget/shared-features';
+import { Account, useGetAccountsQuery } from '@ledget/shared-features';
 import { useAppDispatch, useAppSelector } from '@hooks';
 import { Box } from '@ledget/native-ui';
 import { DefaultHeader, AccountHeader } from '../Header';
@@ -17,7 +16,7 @@ const Panel = (props: AccountsTabsScreenProps<'Depository'> & { account?: Accoun
   const accounts = useAppSelector(selectAccountsTabDepositAccounts)
 
   const [bottomOfContentPos, setBottomOfContentPos] = useState(0)
-  const { data: accountsData, error } = useGetAccountsQuery()
+  const { data: accountsData } = useGetAccountsQuery()
   const [transactionsListExpanded, setTransactionsListExpanded] = useState(false)
 
   const dispatch = useAppDispatch()
@@ -39,20 +38,6 @@ const Panel = (props: AccountsTabsScreenProps<'Depository'> & { account?: Accoun
       dispatch(setAccountsTabDepositAccounts(props.route.params.accounts))
     }
   }, [props.route.params?.accounts])
-
-  useEffect(() => {
-    if (error) {
-      hasErrorCode('ITEM_LOGIN_REQUIRED', error)
-      dispatch(popToast({
-        message: `Account connection broken`,
-        actionLink: ['Profile', { screen: 'Connections' }],
-        actionMessage: 'Reconnect',
-        type: 'error',
-        timer: 7000
-      }))
-      apiSlice.util.invalidateTags(['PlaidItem'])
-    }
-  }, [error])
 
   useEffect(() => {
     if (accountsData && !accounts) {

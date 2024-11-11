@@ -1,6 +1,6 @@
 import rootReducer from '@features/rootReducer';
 import { configureStore } from '@reduxjs/toolkit';
-import { apiSlice } from '@ledget/shared-features';
+import { apiSlice, toastErrorMiddleware } from '@ledget/shared-features';
 import devToolsEnhancer from 'redux-devtools-expo-dev-plugin';
 import {
   FLUSH,
@@ -19,7 +19,10 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(apiSlice.middleware),
+    }).concat([
+      apiSlice.middleware,
+      toastErrorMiddleware
+    ]),
   devTools: false,
   enhancers: (getDefaultEnhancers) => getDefaultEnhancers.concat(devToolsEnhancer()),
 });

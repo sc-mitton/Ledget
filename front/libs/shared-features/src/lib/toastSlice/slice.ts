@@ -1,5 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, isRejectedWithValue } from '@reduxjs/toolkit';
 import { NewToast, ToastItem, RootStateWithToast } from './types';
+import type { MiddlewareAPI, Middleware } from '@reduxjs/toolkit'
+import { hasErrorCode } from '@ledget/helpers'
+import apiSlice from '../apiSlice/slice'
 
 export const toastSlice = createSlice({
   name: 'toast',
@@ -13,7 +16,12 @@ export const toastSlice = createSlice({
         timer: 5000,
         ...action.payload
       };
-      if (!state.freshToast.includes(newToast)) {
+
+      const shouldAdd = [
+        !state.freshToast.some(t => t.messageId === newToast.messageId),
+        !state.freshToast.includes(newToast)
+      ]
+      if (shouldAdd.every(Boolean)) {
         state.freshToast = [...state.freshToast, newToast]
       };
     },
@@ -25,8 +33,26 @@ export const toastSlice = createSlice({
   }
 });
 
-export const { popToast } = toastSlice.actions;
-export const { tossToast } = toastSlice.actions;
+export const { popToast, tossToast } = toastSlice.actions;
 
 export const toastStackSelector = (state: RootStateWithToast) =>
   state.toast.freshToast;
+
+export const toastErrorMiddleware: Middleware = (api: MiddlewareAPI) => (next) => (action) => {
+
+  if (isRejectedWithValue(action)) {
+    if (hasErrorCode('ITEM_LOGIN_REQUIRED', action.payload)) {
+      api.dispatch(popToast({
+        message: `Account connection broken`,
+        messageId: 'toast-connection-broken',
+        actionLink: ['Profile', { screen: 'Connections' }],
+        actionMessage: 'Reconnect',
+        type: 'error',
+        timer: 7000
+      }))
+      apiSlice.util.invalidateTags(['PlaidItem'])
+    }
+  }
+
+  return next(action)
+}

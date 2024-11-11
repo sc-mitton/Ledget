@@ -37,11 +37,7 @@ const rawBaseQuery = retry(
   { maxRetries: 3 }
 );
 
-const dynamicBaseQuery: BaseQueryFn<
-  string | FetchArgs,
-  unknown,
-  FetchBaseQueryError
-> = async (args, api, extraOptions) => {
+const dynamicBaseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (args, api, extraOptions) => {
   const apiUrl = selectApiUrl(api.getState() as RootStateWithEnvironment);
 
   // gracefully handle scenarios where data to generate the URL is missing
