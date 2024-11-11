@@ -177,7 +177,7 @@ export const darkTheme = createTheme({
     yearColor: `hsl(${greenH}, 90%, 50%)`,
 
     // Switch
-    enabledSwitchPill: `hsl(${grayH}, ${grayS}%, 70%)`,
+    enabledSwitchPill: `hsl(${grayH}, ${grayS}%, 80%)`,
     enabledSwitchCrib: 'hsl(144, 85%, 23%)',
     disabledSwitchPill: palette.gray200,
     disabledSwitchCrib: palette.gray600,

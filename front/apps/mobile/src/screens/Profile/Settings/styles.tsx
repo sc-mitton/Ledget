@@ -14,10 +14,11 @@ const styles = StyleSheet.create({
     gap: 8,
     alignItems: 'center',
     position: 'relative',
-    padding: 8
+    paddingHorizontal: 8,
+    paddingVertical: 12,
   },
   optionBorder: {
-    borderRadius: 12,
+    borderRadius: 16,
   },
   optionBorderMain: {
     borderWidth: 2,

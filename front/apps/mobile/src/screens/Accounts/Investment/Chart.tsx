@@ -79,7 +79,7 @@ const Chart = () => {
     const last = fetchedData
       .filter(acnt => accounts ? accounts.some(ac => ac.id === acnt.account_id) : true)
       .reduce((acc, acnt) => {
-        return acc.plus(acnt.balances[0].balance)
+        return acc.plus(acnt.balances[0]?.balance)
       }, Big(0))
     const second2Last = fetchedData
       .filter(acnt => accounts ? accounts.some(ac => ac.id === acnt.account_id) : true)
