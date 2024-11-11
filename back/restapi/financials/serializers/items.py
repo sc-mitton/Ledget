@@ -14,14 +14,18 @@ from django.db import transaction
 from core.clients import create_plaid_client
 from financials.models import PlaidItem
 from financials.models import Account, Institution, UserAccount
-from financials.serializers.account import (
-    AccountSerializer,
-    InstitutionSerializer
-)
+from financials.serializers.account import InstitutionSerializer
 
 PLAID_COUNTRY_CODES = settings.PLAID_COUNTRY_CODES
 plaid_client = create_plaid_client()
 logger = logging.getLogger('ledget')
+
+
+class AccountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = '__all__'
+        extra_kwargs = {'id': {'validators': []}}
 
 
 class ExchangePlaidTokenSerializer(serializers.Serializer):
@@ -83,7 +87,7 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
         response = plaid_client.item_public_token_exchange(exchange_request)
 
         # Create plaid item
-        plaid_item, _ = PlaidItem.objects.update_or_create(
+        plaid_item, created = PlaidItem.objects.update_or_create(
             institution_id=validated_data['institution']['id'],
             user_id=self.context['request'].user.id,
             id=response['item_id'],
