@@ -58,15 +58,17 @@ export const usePlaidLink = (args: { isOnboarding?: boolean, itemId?: string, sk
   const openLink = useCallback(() => {
     const openProps = {
       onSuccess: async (success: LinkSuccess) => {
-        const institution = {
-          id: success.metadata.institution?.id,
-          name: success.metadata.institution?.name
-        };
+        const institution = success.metadata.institution &&
+        {
+          id: success.metadata.institution.id,
+          name: success.metadata.institution.name
+        }
+
         exchangePlaidToken({
           data: {
             public_token: success.publicToken,
             accounts: success.metadata.accounts,
-            institution: institution
+            institution
           }
         });
         if (args && args.itemId) {
