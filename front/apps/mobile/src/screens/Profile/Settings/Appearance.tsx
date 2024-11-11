@@ -38,25 +38,29 @@ const Option = ({ onPress, selected, imageMode }: OptionP) => {
           borderColor='focusedInputBorderSecondary'
           style={[styles.optionBorder, styles.optionBorderSecondary]}
         />}
-      <PhoneAppearance
-        appearance={
-          DeviceInfo.hasDynamicIsland()
-            ? 'dynamic'
-            : DeviceInfo.hasNotch() ? 'notch' : 'punch-hole'}
-        mode={mode}
-        imageMode={imageMode}
-      />
-      <View style={styles.optionText}>
-        {selected &&
-          <Icon
-            icon={CheckInCircle}
-            strokeWidth={2.25}
-            size={16}
-            color='blueText'
-          />}
-        <Text color={selected ? 'blueText' : 'secondaryText'}>
-          {imageMode.charAt(0).toUpperCase() + imageMode.slice(1)}
-        </Text>
+      <View style={styles.phoneImageContainer}>
+        <PhoneAppearance
+          appearance={
+            DeviceInfo.hasDynamicIsland()
+              ? 'dynamic'
+              : DeviceInfo.hasNotch() ? 'notch' : 'punch-hole'}
+          mode={mode}
+          imageMode={imageMode}
+        />
+      </View>
+      <View style={styles.optionTextContainer}>
+        <View style={styles.optionText}>
+          {selected &&
+            <Icon
+              icon={CheckInCircle}
+              strokeWidth={2.25}
+              size={16}
+              color='blueText'
+            />}
+          <Text color={selected ? 'blueText' : 'secondaryText'}>
+            {imageMode.charAt(0).toUpperCase() + imageMode.slice(1)}
+          </Text>
+        </View>
       </View>
     </TouchableOpacity>
   )

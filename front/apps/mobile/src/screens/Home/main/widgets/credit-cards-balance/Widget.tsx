@@ -227,7 +227,7 @@ const Selector = (widget: WidgetProps<{ accounts: string[] }>) => {
               </View>
             </View>
             :
-            <PulseBox height='m' width={50} backgroundColor='nestedContainerSeperator' />
+            <PulseBox height='m' width={50} borderRadius='s' backgroundColor='nestedContainerSeperator' />
           }
         </View>}
       {!widget.args &&

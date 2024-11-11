@@ -37,8 +37,8 @@ interface TProps {
 const imageProps = {
   resizeMode: 'contain',
   style: {
-    height: 104,
-    width: 60,
+    height: 70,
+    width: 40,
   }
 } as const
 
