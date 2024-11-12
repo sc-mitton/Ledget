@@ -145,12 +145,14 @@ class TransactionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def to_internal_value(self, data):
-        if 'detail' in data:
-            data['detail'] = Transaction.Detail(
+        ret = super().to_internal_value(data)
+
+        if 'detail' in data and data['detail'] is not None:
+            ret['detail'] = Transaction.Detail(
                 Transaction.Detail.labels.index(data['detail'])
             ).value
 
-        return data
+        return ret
 
     def update(self, instance, validated_data):
 
