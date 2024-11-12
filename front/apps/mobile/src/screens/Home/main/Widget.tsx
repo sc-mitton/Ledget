@@ -97,6 +97,7 @@ const Widget = (props: WidgetProps) => {
 
   // Add jitter effect when in editing mode
   useEffect(() => {
+    console.log('props.state', props.state)
     if (props.state === 'editing') {
       deleteButtonOpacity.value = withTiming(1, { duration: 200 })
       dragBarOpacity.value = withTiming(1, { duration: 200 })
@@ -170,6 +171,10 @@ const Widget = (props: WidgetProps) => {
       ],
     };
   });
+
+  const overlayStyle = useAnimatedStyle(() => ({
+    opacity: overlayOpacity.value,
+  }));
 
   const deleteButtonStyle = useAnimatedStyle(() => ({
     opacity: deleteButtonOpacity.value,
@@ -528,7 +533,7 @@ const Widget = (props: WidgetProps) => {
           <Box style={[styles.filled, styles.clipBox]} borderRadius='xl'>
             <GestureDetector gesture={pan}>
               <Animated.View
-                style={[StyleSheet.absoluteFill, styles.overlay, { opacity: overlayOpacity }]}
+                style={[StyleSheet.absoluteFill, styles.overlay, overlayStyle]}
                 pointerEvents={props.state === 'idle' ? 'none' : 'auto'}
               >
                 <Box backgroundColor='nestedContainer' style={[StyleSheet.absoluteFill, styles.overlay]} />

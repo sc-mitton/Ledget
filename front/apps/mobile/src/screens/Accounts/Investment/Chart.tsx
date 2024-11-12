@@ -156,10 +156,10 @@ const Chart = () => {
             <View style={styles.trendContainer}>
               <DollarCents color='tertiaryText' value={trend} withCents={false} />
               <Icon
-                icon={trend > 0 ? ArrowUpRight : ArrowDownRight}
+                icon={trend >= 0 ? ArrowUpRight : ArrowDownRight}
                 size={16}
                 strokeWidth={2}
-                color={trend > 0 ? 'greenText' : 'alert'} />
+                color={trend >= 0 ? 'greenText' : 'alert'} />
             </View>}
         </View>
       </View>

@@ -101,7 +101,7 @@ export const lightTheme = createTheme({
     focusedInputBorderSecondary: palette.blue50,
     focusedInputBorderMain: palette.blue300,
     tabNavPillBorder: palette.blue100,
-    bottomNavBorder: Platform.OS === 'ios' ? palette.white : palette.white,
+    bottomNavBorder: Platform.OS === 'ios' ? palette.gray200 : palette.white,
     nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 94%)`,
     tabNavBorder: palette.gray250,
     newTransactionBorder: palette.gray200,
@@ -112,7 +112,7 @@ export const lightTheme = createTheme({
     containerDragBar: palette.gray500,
 
     // Shadows
-    navShadow: palette.gray400,
+    navShadow: 'transparent',
     modalShadow: palette.gray800.replace(`${grayS}`, '0'),
     tabsShadow: palette.gray300,
     activeIcon: palette.blueSat,

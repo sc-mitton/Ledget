@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { StatusBar } from 'expo-status-bar';
-import { Platform } from 'react-native';
-import { useTheme } from '@shopify/restyle';
+import { Platform, LogBox } from 'react-native';
 import { useFonts } from 'expo-font';
 import { MMKV } from 'react-native-mmkv'
 import { createStackNavigator } from '@react-navigation/stack';
@@ -35,6 +34,8 @@ import ModalScreens from './ModalScreens';
 import Toast from './Toast';
 
 export const storage = new MMKV();
+
+LogBox.ignoreAllLogs();
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
