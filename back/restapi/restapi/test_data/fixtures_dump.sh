@@ -12,22 +12,21 @@ python ../../manage.py dumpdata financials.UserAccount --indent 4 > ./user_accou
 python ../../manage.py dumpdata budget.UserCategory --indent 4 > ./user_category_fixture.json
 python ../../manage.py dumpdata budget.userBill --indent 4 > ./user_bill_fixture.json
 python ../../manage.py dumpdata core.Settings --indent 4 > ./settings_fixture.json
+python ../../manage.py dumpdata financials.AccountBalance --indent 4 > ./account_balance_fixture.json
 
 
 # Use sed to replace all account ids
 old_account_id=$(sed -n 's/.*"account_id": *"\([^"]*\)".*/\1/p' ./responses/plaid_sync_response.json | head -1)
 first_account_id=$(sed -n 's/.*"pk": *"\([^"]*\)".*/\1/p' account_fixture.json | head -1)
 
-sed -i "s/<${old_account_id}>/${first_account_id}/g" ./responses/plaid_sync_response_2.json
-
 # Update the old account ids in the balance fixture data
-old_account_id1=$(sed -n 's/.*"account": *"\([^"]*\)".*/\1/p' ./responses/account_balance_fixture.json | head -1)
-old_account_id2=$(sed -n 's/.*"account": *"\([^"]*\)".*/\1/p' ./responses/account_balance_fixture.json | tail -1)
+old_account_id1=$(sed -n 's/.*"account": *"\([^"]*\)".*/\1/p' ./account_balance_fixture.json | head -1)
+old_account_id2=$(sed -n 's/.*"account": *"\([^"]*\)".*/\1/p' ./account_balance_fixture.json | tail -1)
 new_account_id1=$(sed -n 's/.*"pk": *"\([^"]*\)".*/\1/p' account_fixture.json | head -1)
 new_account_id2=$(sed -n 's/.*"pk": *"\([^"]*\)".*/\1/p' account_fixture.json | tail -1)
 
-sed -i "s/<${old_account_id1}>/${new_account_id1}/g" ./responses/account_balance_fixture.json
-sed -i "s/<${old_account_id2}>/${new_account_id2}/g" ./responses/account_balance_fixture.json
+sed -i "s/<${old_account_id1}>/${new_account_id1}/g" ./account_balance_fixture.json
+sed -i "s/<${old_account_id2}>/${new_account_id2}/g" ./account_balance_fixture.json
 
 # Use sed to replace all the item ids
 
