@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import Animated, {
   useSharedValue,
@@ -12,8 +12,8 @@ import { useTheme } from "@shopify/restyle";
 
 import styles from '../styles/widgets-grid';
 import { Box } from "@ledget/native-ui";
-import { useAppSelector } from "@hooks";
-import { selectWidgets, widgetTypes } from "@/features/widgetsSlice";
+import { useAppDispatch, useAppSelector } from "@hooks";
+import { selectWidgets, widgetTypes, moveWidgets } from "@/features/widgetsSlice";
 import { getGridPositions, getPositionsMap } from './helpers';
 import { gap, bottomLabelPadding } from "./constants";
 import { WidgetsBentoProps } from './types';
@@ -31,7 +31,9 @@ is reflected in the UI. The widget being dragged around isn't affected by any of
 const WidgetsBento = (props: WidgetsBentoProps) => {
   const theme = useTheme()
 
+  const dispatch = useAppDispatch();
   const selectedStoredWidgets = useAppSelector(selectWidgets);
+
   const [widgets, setWidgets] = useState(selectedStoredWidgets)
   const [pickerHeight, setPickerHeight] = useState(0)
   const [currentHeight, setCurrentHeight] = useState(0)
@@ -96,6 +98,9 @@ const WidgetsBento = (props: WidgetsBentoProps) => {
     } else {
       pickerZIndex.value = withDelay(1500, withTiming(-1, { duration: 0 }))
     }
+    if (!['picking', 'dropping'].includes(props.route.params?.state)) {
+      pickerScrollView.current?.scrollTo({ y: 0, animated: false })
+    }
   }, [props.route.params?.state])
 
   useEffect(() => {
@@ -105,6 +110,16 @@ const WidgetsBento = (props: WidgetsBentoProps) => {
     )
     order.value = widgets.map(w => w.id!)
   }, [widgets])
+
+  const onDragEnd = useCallback(() => {
+    const moves = [] as { widget: string, index: number }[]
+    order.value.forEach((id, index) => {
+      if (id !== widgets[index].id) {
+        moves.push({ widget: id, index })
+      }
+    });
+    dispatch(moveWidgets(moves))
+  }, [order.value])
 
   return (
     <>
@@ -142,7 +157,7 @@ const WidgetsBento = (props: WidgetsBentoProps) => {
                     ? Math.ceil(positions.value[order.value[order.value.length - 1]][0] / 2) * (itemHeight.value + gap) + theme.spacing.navHeight * 2.5
                     : 0}
                   containerHeight={currentWidgetsContainerHeight}
-                  onDragStart={() => { props.navigation.setParams({ state: 'dropping' }) }}
+                  onDragEnd={onDragEnd}
                   state={props.route.params?.state}
                 />
               ))}

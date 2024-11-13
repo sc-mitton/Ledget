@@ -48,10 +48,14 @@ export const widgetsSlice = createSlice({
         )
       }
     },
-    moveWidget: (state, action: PayloadAction<{ widget: Widget, index: number }>) => {
-      const widgetIndex = state.findIndex(w => w.id === action.payload.widget.id)
-      state.splice(widgetIndex, 1)
-      state.splice(action.payload.index, 0, action.payload.widget)
+    moveWidgets: (state, action: PayloadAction<{ widget: string, index: number }[]>) => {
+
+      action.payload.forEach(({ widget: widgetId, index }) => {
+        const widgetIndex = state.findIndex(w => w.id === widgetId)
+        const widget = state[widgetIndex]
+        state.splice(widgetIndex, 1)
+        state.splice(index, 0, widget)
+      })
     },
     removeWidget: (state, action: PayloadAction<Widget>) => {
       const index = state.findIndex(w => w.id === action.payload.id)
@@ -76,7 +80,7 @@ export const widgetsSlice = createSlice({
   }
 })
 
-export const { addWidget, removeWidget, moveWidget, updateWidget } = widgetsSlice.actions
+export const { addWidget, removeWidget, moveWidgets, updateWidget } = widgetsSlice.actions
 
 export const selectWidgets = (state: { widgets: WidgetsState }) => state.widgets
 

@@ -24,7 +24,7 @@ import type { WidgetProps } from './types';
 import { widgetsMap } from "./widgetsMap";
 import { gap, activeScale } from './constants';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { addWidget, moveWidget, removeWidget, selectWidgets, updateWidget } from '@features/widgetsSlice';
+import { addWidget, removeWidget, selectWidgets, updateWidget } from '@features/widgetsSlice';
 
 const Widget = (props: WidgetProps) => {
   const WidgetComponent = widgetsMap[props.widget.type];
@@ -46,6 +46,19 @@ const Widget = (props: WidgetProps) => {
   const width = useSharedValue(0)
   const column = useSharedValue(0)
   const dragBarPos = useSharedValue(0)
+
+  const overlayStyle = useAnimatedStyle(() => ({
+    opacity: overlayOpacity.value,
+  }));
+
+  const deleteButtonStyle = useAnimatedStyle(() => ({
+    opacity: deleteButtonOpacity.value,
+  }));
+
+  const dragBarStyle = useAnimatedStyle(() => ({
+    opacity: dragBarOpacity.value,
+    left: dragBarPos.value,
+  }));
 
   // Make sure widget is immediately positioned if it's not part of the picker
   useAnimatedReaction(() => props.height, (height) => {
@@ -97,7 +110,6 @@ const Widget = (props: WidgetProps) => {
 
   // Add jitter effect when in editing mode
   useEffect(() => {
-    console.log('props.state', props.state)
     if (props.state === 'editing') {
       deleteButtonOpacity.value = withTiming(1, { duration: 200 })
       dragBarOpacity.value = withTiming(1, { duration: 200 })
@@ -172,28 +184,11 @@ const Widget = (props: WidgetProps) => {
     };
   });
 
-  const overlayStyle = useAnimatedStyle(() => ({
-    opacity: overlayOpacity.value,
-  }));
-
-  const deleteButtonStyle = useAnimatedStyle(() => ({
-    opacity: deleteButtonOpacity.value,
-  }));
-
-  const dragBarStyle = useAnimatedStyle(() => ({
-    opacity: dragBarOpacity.value,
-    left: dragBarPos.value,
-  }));
-
   const updateGlobalState = useCallback(() => {
     const index = props.order.value.findIndex(k => k === props.widget.id || k === props.widget.type);
 
-    // If the widget is not new, move the widgets position in the global state
-    if (props.widget.id) {
-      dispatch(moveWidget({ widget: props.widget, index }))
-    }
-    // Otherwise,insert the widget to the stored widgets global state
-    else {
+    // Add widget if it's new
+    if (!props.widget.id) {
       dispatch(addWidget({ widget: props.widget, index }))
     }
   }, [props.widget, props.order.value]);
@@ -373,10 +368,6 @@ const Widget = (props: WidgetProps) => {
     .onEnd(({ translationX, translationY }) => {
       props.onDragEnd && runOnJS(props.onDragEnd)();
       shadowOpacity.value = withTiming(0);
-      scale.value = withSequence(
-        withSpring(1, defaultSpringConfig),
-        withDelay(1500, withTiming(.5, { duration: 0 }))
-      )
       isDragging.value = withDelay(1500, withTiming(0, { duration: 0 }));
 
       const gridPosition = getNewGridPosition(
@@ -385,29 +376,49 @@ const Widget = (props: WidgetProps) => {
         { x: translateX.value, y: translateY.value },
         props.height.value
       )
+
       const finalGridPosition = Math.min(
         gridPosition[0],
-        props.positions.value[props.order.value[props.order.value.length - 1]][0] || 0
+        props.positions.value[props.order.value[props.order.value.length - 1]]?.[0] || 0
       );
+
       const finalPosition = getAbsPosition(finalGridPosition, props.height.value);
+      finalPosition.y = props.widget.id ? finalPosition.y : finalPosition.y + props.scrollY.value;
+
       // Sending dragged widget back to where it belongs after done dragging
-      const returnPos = getAbsPosition(
-        props.positions.value[props.widget.id || props.widget.type][0],
-        props.height.value,
-        !Boolean(props.widget.id)
-      );
+      // if it's a new widget (ie no id)
+      if (!props.widget.id) {
+        const returnPos = getAbsPosition(
+          props.positions.value[props.widget.id || props.widget.type][0],
+          props.height.value,
+          !Boolean(props.widget.id)
+        );
 
-      column.value = finalGridPosition % 2;
+        column.value = finalGridPosition % 2;
 
-      translateX.value = withSequence(
-        withSpring(finalPosition.x, defaultSpringConfig),
-        withDelay(1500, withTiming(returnPos.x, { duration: 0 }))
-      )
-      translateY.value = withSequence(
-        withSpring(finalPosition.y, defaultSpringConfig),
-        withDelay(1500, withTiming(returnPos.y, { duration: 0 }))
-      )
-      opacity.value = withDelay(1000, withTiming(0, { duration: 0 }));
+        translateX.value = withSequence(
+          withSpring(finalPosition.x, defaultSpringConfig),
+          withDelay(1500, withTiming(returnPos.x, { duration: 0 }))
+        )
+        translateY.value = withSequence(
+          withSpring(finalPosition.y, defaultSpringConfig),
+          withDelay(1500, withTiming(returnPos.y, { duration: 0 }))
+        )
+      } else {
+        translateX.value = withSpring(finalPosition.x, defaultSpringConfig);
+        translateY.value = withSpring(finalPosition.y, defaultSpringConfig);
+      }
+
+      // Hide widget after placement if it's being dropped into place after picking
+      if (!props.widget.id) {
+        opacity.value = withDelay(1000, withTiming(0, { duration: 0 }));
+        scale.value = withSequence(
+          withSpring(1, defaultSpringConfig),
+          withDelay(1500, withTiming(.5, { duration: 0 }))
+        )
+      } else {
+        scale.value = withSpring(1, defaultSpringConfig)
+      }
 
       // Used to make sure we don't unecessarily update the global state
       if (Math.abs(translationX) > 40 || Math.abs(translationY) > 40 || !props.widget.id) {
@@ -443,9 +454,9 @@ const Widget = (props: WidgetProps) => {
       if (props.widget.shape === 'square') {
         const currentIndex = props.order.value.findIndex(k => k === props.widget.id || k === props.widget.type);
 
-        // Do we need to move around other widgets?
+        // Do we need to move around other widgets? - Yes if there is a square neighbor
         const needsUpdating = column.value === 0
-          ? (props.positions.value[props.order.value[currentIndex + 1]][0] - props.positions.value[props.widget.id!][0]) == 1
+          ? ((props.positions.value[props.order.value[currentIndex + 1]]?.[0] || 0) - (props.positions.value[props.widget.id!]?.[0] || 0)) == 1
           : props.positions.value[props.order.value[currentIndex - 1]] < props.positions.value[props.widget.id!]
 
         if (!needsUpdating) return;
