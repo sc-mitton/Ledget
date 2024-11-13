@@ -16,10 +16,11 @@ function EmojiProgressCircle(props: ProgressEmojiProps) {
   const theme = useTheme();
 
   return (
-    <View style={styles.progressEmoji}>
+    <Box style={styles.progressEmoji} backgroundColor="nestedContainer">
       <View style={styles.absEmojiContainer}>
         <Box
           borderRadius='circle'
+          backgroundColor='nestedContainer'
           style={styles.absEmoji}
         >
           <Svg
@@ -54,7 +55,7 @@ function EmojiProgressCircle(props: ProgressEmojiProps) {
         </Box>
       </View>
       {props.emoji ? <Text>{props.emoji}</Text> : props.children}
-    </View>
+    </Box>
   )
 }
 

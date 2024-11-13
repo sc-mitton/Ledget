@@ -5,7 +5,7 @@ import Big from 'big.js';
 import styles from './styles/widget';
 import { useGetCategoriesQuery, Category, selectBudgetMonthYear } from '@ledget/shared-features'
 import { WidgetProps } from '@features/widgetsSlice'
-import { Text, DollarCents } from '@ledget/native-ui';
+import { Text, DollarCents, Box } from '@ledget/native-ui';
 import EmojiProgressCircle from "./EmojiProgressCircle"
 import PickerOption from './PickerOption'
 import Selector from './Selector';
@@ -29,7 +29,8 @@ const Categories = (widget: WidgetProps<{ categories?: string[] }>) => {
   return (
     <View style={[widget.shape === 'rectangle' ? styles.rectangleContainer : styles.squareContainer]}>
       {categories.slice(0, 4).map(category => (
-        <View
+        <Box
+          backgroundColor='nestedContainer'
           key={`categories-widget-${category.id}`}
           style={widget.shape === 'rectangle' ? styles.rectangleCell : styles.squareCell}
         >
@@ -56,7 +57,7 @@ const Categories = (widget: WidgetProps<{ categories?: string[] }>) => {
                 </View>
               </View>}
           </View>
-        </View>
+        </Box>
       ))}
     </View>
   )
