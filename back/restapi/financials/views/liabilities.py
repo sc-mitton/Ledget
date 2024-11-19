@@ -40,7 +40,7 @@ class LiabilitiesView(GenericAPIView):
 
     def _get_plaid_data(self, plaid_item):
         try:
-            account_ids = [a.id for a in plaid_item.accounts.all()]
+            account_ids = [a.id for a in plaid_item.accounts.all() if a.type == 'loan']
             request = LiabilitiesGetRequest(
                 access_token=plaid_item.access_token,
                 options=LiabilitiesGetRequestOptions(account_ids=account_ids))

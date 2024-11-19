@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import Big from 'big.js';
 
 import styles from './styles/header';
-import { Header2, Header, InstitutionLogo, DollarCents } from '@ledget/native-ui';
+import { Text, Header, InstitutionLogo, DollarCents } from '@ledget/native-ui';
 import { useAppSelector } from '@/hooks';
 import { selectAccountsTabDepositAccounts, selectAccountsTabCreditAccounts } from '@/features/uiSlice';
 import { Account } from '@ledget/shared-features';
@@ -26,7 +26,7 @@ export const AccountHeader = ({ accountType }: { accountType: Account['type'] })
     <Animated.View
       entering={FadeIn}
       exiting={FadeOut}
-      style={[styles.headerContainer, styles.accountHeaderContainer, { paddingTop: theme.spacing.statusBar }]}
+      style={[styles.headerContainer, styles.accountHeaderContainer, { paddingTop: theme.spacing.statusBar + 12 }]}
     >
       <View style={styles.logos}>
         {(accountType === 'depository' ? depositAccounts : creditAccounts)?.map(a => (
@@ -35,16 +35,18 @@ export const AccountHeader = ({ accountType }: { accountType: Account['type'] })
           </View>
         ))}
       </View>
-      {((accountType === 'depository' ? depositAccounts : creditAccounts)?.length || 0) < 2 &&
-        <Header2>
-          {(accountType === 'depository' ? depositAccounts : creditAccounts)?.[0].name}
-        </Header2>}
-      <View style={styles.balanceContainer}>
-        <DollarCents
-          value={(accountType === 'depository' ? depositAccounts : creditAccounts)?.reduce((acc, a) =>
-            Big(acc).plus(a.balances.current), Big(0)).times(100).toNumber() || 0}
-          fontSize={20}
-        />
+      <View style={styles.accountHeaderText}>
+        {((accountType === 'depository' ? depositAccounts : creditAccounts)?.length || 0) < 2 &&
+          <Text fontSize={18}>
+            {(accountType === 'depository' ? depositAccounts : creditAccounts)?.[0].name}
+          </Text>}
+        <View style={styles.balanceContainer}>
+          <DollarCents
+            value={(accountType === 'depository' ? depositAccounts : creditAccounts)?.reduce((acc, a) =>
+              Big(acc).plus(a.balances.current), Big(0)).times(100).toNumber() || 0}
+            fontSize={18}
+          />
+        </View>
       </View>
     </Animated.View>
   )

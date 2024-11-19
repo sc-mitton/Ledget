@@ -15,7 +15,6 @@ const AccountsPickerButton = (props: AccountsTabsScreenProps<any>) => {
   return (
     <View style={styles.buttonBalanceContainer}>
       <Button
-        backgroundColor={'nestedContainer'}
         borderBottomColor='nestedContainerBorder'
         borderLeftColor='nestedContainerBorder'
         borderRightColor='nestedContainerBorder'
@@ -58,8 +57,10 @@ const AccountsPickerButton = (props: AccountsTabsScreenProps<any>) => {
               </View>
               <Icon
                 icon={ChevronDown}
-                color='quinaryText'
-                strokeWidth={2} size={18} />
+                strokeWidth={2.5}
+                color='tertiaryText'
+                size={18}
+              />
             </>
           }
         </View>

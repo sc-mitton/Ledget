@@ -315,8 +315,8 @@ const Widget = (props: WidgetProps) => {
             const currentIndex = props.order.value.findIndex(k => k === widgetKey);
             const hasSquareNeighbor = currentIndex === props.order.value.length - 1 ? false
               : column.value === 0
-                ? props.positions.value[props.order.value[currentIndex + 1]][1] === 1
-                : props.positions.value[props.order.value[currentIndex - 1]][1] === 1
+                ? props.positions.value[props.order.value[currentIndex + 1]]?.[1] === 1
+                : props.positions.value[props.order.value[currentIndex - 1]]?.[1] === 1
 
             // If already in order array, move it, otherwise insert it
             if (currentIndex > -1) {

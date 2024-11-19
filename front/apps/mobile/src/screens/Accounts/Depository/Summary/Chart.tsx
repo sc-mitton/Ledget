@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { CartesianChart, Area, Line, useChartPressState } from 'victory-native';
 import {
   LinearGradient,
@@ -10,12 +10,9 @@ import { useTheme } from '@shopify/restyle';
 import { tempDepositBalanceChartData } from '@constants';
 import { VictoryTooltip } from '@ledget/native-ui';
 import SourceSans3Regular from '../../../../../assets/fonts/SourceSans3Regular.ttf';
+import dayjs from 'dayjs';
 
-interface ChartProps {
-  data?: typeof tempDepositBalanceChartData
-  tickCount: number
-  xLabelFormat: (date: string) => string
-}
+interface ChartProps { data?: typeof tempDepositBalanceChartData }
 
 const Chart = (props: ChartProps) => {
   const theme = useTheme();
@@ -23,6 +20,7 @@ const Chart = (props: ChartProps) => {
 
   const [chartData, setChartData] = useState(tempDepositBalanceChartData)
   const [usingTempData, setUsingTempData] = useState(true)
+  const [xLabelFormat, setXLabelFormat] = useState('')
   const { state } = useChartPressState({ x: '0', y: { balance: 0 } })
 
   useEffect(() => {
@@ -31,6 +29,15 @@ const Chart = (props: ChartProps) => {
       setUsingTempData(false)
     }
   }, [props.data])
+
+  useEffect(() => {
+    const numberOfMonths = dayjs(props.data?.[0]?.date).diff(dayjs(props.data?.[props.data.length - 1]?.date), 'month')
+    if (numberOfMonths > 6) {
+      setXLabelFormat('MMM YYYY')
+    } else {
+      setXLabelFormat('MMM')
+    }
+  }, [chartData])
 
   return (
     <CartesianChart
@@ -42,12 +49,13 @@ const Chart = (props: ChartProps) => {
         font,
         lineWidth: 0,
         labelOffset: -20,
-        tickCount: props.tickCount,
         labelColor:
           usingTempData
             ? theme.colors.transparent
             : theme.colors.faintBlueText,
-        formatXLabel: props.xLabelFormat,
+        formatXLabel: (date) => dayjs(date).isSame(chartData[0].date, 'month')
+          ? '' : dayjs(date).format(xLabelFormat),
+        tickCount: 5
       }}
       yAxis={[{
         font,
@@ -56,7 +64,7 @@ const Chart = (props: ChartProps) => {
         formatYLabel: () => '',
       }]}
       padding={{ left: 0, bottom: 24 }}
-      domainPadding={{ left: 3, right: 3, top: 50, bottom: 100 }}
+      domainPadding={{ left: 3, right: 3, top: 65, bottom: 100 }}
     >
       {({ points, chartBounds }) => (
         <>
@@ -64,7 +72,7 @@ const Chart = (props: ChartProps) => {
             y0={chartBounds.bottom}
             points={points.balance}
             animate={{ type: 'spring', duration: 300 }}
-            curveType='natural'
+            curveType='linear'
           >
             <LinearGradient
               colors={usingTempData
@@ -88,7 +96,7 @@ const Chart = (props: ChartProps) => {
             color={usingTempData ? theme.colors.quinaryText : theme.colors.blueChartColor}
             strokeWidth={2}
             strokeCap='round'
-            curveType='natural'
+            curveType='linear'
           />
           <VictoryTooltip
             state={state}

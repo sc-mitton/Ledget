@@ -3,10 +3,10 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   buttonBalanceContainer: {
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     zIndex: -1,
-    marginTop: 0,
-    marginBottom: 20
+    marginTop: 24,
+    marginBottom: 8
   },
   accountsPickerButton: {
     gap: 8,
@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   balanceContainer: {
+    marginRight: 4
   },
   logos: {
     flexDirection: 'row',

@@ -41,10 +41,6 @@ export const InstitutionLogo = (props: InstitutionLogoProps) => {
   return (
     <Base64Image
       borderRadius={'circle'}
-      shadowColor="logoShadow"
-      shadowOffset={{ width: 0, height: 1 }}
-      shadowOpacity={hasShadow ? .8 : 0}
-      shadowRadius={1}
       elevation={2}
       borderColor='modalSeperator'
       backgroundColor='modalSeperator'

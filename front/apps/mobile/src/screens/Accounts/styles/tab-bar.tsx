@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   tabsContent: {
-    paddingRight: 32,
+    paddingRight: 48,
     alignItems: 'flex-start',
   },
   tabButton: {

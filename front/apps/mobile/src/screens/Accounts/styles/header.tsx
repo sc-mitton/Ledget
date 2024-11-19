@@ -14,8 +14,17 @@ const styles = StyleSheet.create({
     marginLeft: 4
   },
   accountHeaderContainer: {
-    marginBottom: 47,
-    marginLeft: 10
+    marginBottom: 52,
+    marginLeft: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    gap: 12
+  },
+  accountHeaderText: {
+    alignItems: 'baseline',
+    flexDirection: 'row',
+    gap: 4
   },
   defaultHeaderContainer: {
     marginBottom: 44

@@ -26,17 +26,21 @@ const ConfirmDeletePlaidItem = (props: ModalScreenProps<'ConfirmDeletePlaidItem'
 
   return (
     <Modal position='centerFloat'>
-      <View style={sharedStyles.header}>
+      <Box
+        paddingHorizontal='xs'
+        style={sharedStyles.header}
+      >
         <Text fontSize={20} variant='bold'>Disconnect</Text>
         <Text color='secondaryText'>This will remove the connection to your bank account and all of the data associated with this bank.
           <Text variant='bold'> This action cannot be undone.</Text>
         </Text>
-      </View>
+      </Box>
       <Seperator variant='m' backgroundColor='modalSeperator' />
       <View style={sharedStyles.splitButtons}>
         <View style={sharedStyles.splitButton}>
           <Button
-            variant='mediumGrayMain'
+            justifyContent='center'
+            alignItems='center'
             onPress={() => props.navigation.goBack()}
             label='Cancel'
             textColor='secondaryText'
@@ -46,7 +50,8 @@ const ConfirmDeletePlaidItem = (props: ModalScreenProps<'ConfirmDeletePlaidItem'
         <Box variant='divider' backgroundColor='quinaryText' />
         <View style={sharedStyles.splitButton}>
           <SubmitButton
-            variant='main'
+            justifyContent='center'
+            alignItems='center'
             label='Disconnect'
             textColor='alert'
             backgroundColor='transparent'

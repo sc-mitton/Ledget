@@ -8,7 +8,7 @@ const grayH = 240;
 const grayS = 5;
 
 const blueH = 230;
-const blueS = 55;
+const blueS = 65;
 
 const greenH = 170;
 

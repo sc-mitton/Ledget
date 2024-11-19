@@ -42,7 +42,7 @@ export const VictoryTooltip = (props: VictoryTooltipProps) => {
   } = props;
 
   const value = useDerivedValue(() => {
-    return "$" + `${state.y.balance.value.value}`.split('.')[0];
+    return "$" + `${state.y.balance.value.value}`.split('.')[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }, [state]);
 
   const rectHeight = 24;
@@ -70,9 +70,9 @@ export const VictoryTooltip = (props: VictoryTooltipProps) => {
     if (!font) {
       return 0;
     } else if (state.x.position.value > chartBounds.right - 50) {
-      return state.x.position.value - font.measureText(value.value).width - 6
+      return state.x.position.value - font.measureText(value.value).width - 16
     } else if (state.x.position.value < chartBounds.left + 50) {
-      return state.x.position.value + 6;
+      return state.x.position.value + 16;
     }
 
     return (

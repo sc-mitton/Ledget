@@ -15,7 +15,7 @@ const greenH = 130;
 const palette = {
   ...basePalette,
 
-  red: 'hsl(352, 85%, 68%)',
+  red: 'hsl(352, 100%, 68%)',
   mutedRed: 'hsl(352, 98%, 86%)',
   faintRed: 'hsl(352, 55%, 90%)',
   darkRed: 'hsl(352, 59%, 34%)',
@@ -157,8 +157,8 @@ export const lightTheme = createTheme({
     lightGrayButtonBorder: palette.gray100,
     grayButton: palette.gray250,
     grayButtonBorder: palette.gray300,
-    mediumGrayButton: palette.gray250,
-    mediumGrayButtonBorder: palette.gray300,
+    mediumGrayButton: palette.gray500,
+    mediumGrayButtonBorder: palette.gray600,
     tabNavPill: palette.blue100,
     borderedGrayButton: palette.gray200,
     dragBar: palette.gray300,
@@ -253,7 +253,7 @@ export const lightTheme = createTheme({
     boxHeader: {
       fontSize: 15,
       lineHeight: 20,
-      fontFamily: 'SourceSans3Medium',
+      fontFamily: 'SourceSans3Regular',
       alignItems: 'center',
       marginTop: 'l',
       gap: 's',

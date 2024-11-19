@@ -23,14 +23,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dot: {
-    width: 9,
-    height: 9,
-    borderRadius: 8,
+    width: 10,
+    height: 10,
+    borderRadius: 120,
+    borderWidth: 1.5
   },
   smallDot: {
     width: 6,
     height: 6,
-    borderRadius: 8,
+    borderRadius: 120,
   },
   overlappingDot: {
     marginLeft: -7

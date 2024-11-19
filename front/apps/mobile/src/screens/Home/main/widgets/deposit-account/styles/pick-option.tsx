@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   },
   chartContainer: {
     flexGrow: 2,
-    marginHorizontal: -12,
+    marginHorizontal: -14,
   }
 });
 

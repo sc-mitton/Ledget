@@ -14,8 +14,7 @@ const styles = StyleSheet.create({
   filterDot: {
     width: 6,
     height: 6,
-    borderRadius: 8,
-    marginRight: 8
+    borderRadius: 8
   },
   iconFilter: {
     flexDirection: 'row',

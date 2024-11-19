@@ -24,15 +24,15 @@ const SquareFilled = (props: WidgetProps & { loading: boolean }) => {
       <View style={sharedStyles.title}>
         <Box
           backgroundColor='yearColor'
-          borderColor='lightGrayCard'
-          borderWidth={1.5}
+          borderColor='nestedContainer'
+          borderWidth={2}
           style={sharedStyles.dot}
         />
         <View style={sharedStyles.overlappingDot}>
           <Box
             backgroundColor='monthColor'
-            borderColor='lightGrayCard'
-            borderWidth={1.5}
+            borderColor='nestedContainer'
+            borderWidth={2}
             style={sharedStyles.dot}
           />
         </View>
@@ -48,8 +48,8 @@ const SquareFilled = (props: WidgetProps & { loading: boolean }) => {
           <View style={sharedStyles.bottomTitle}>
             <Box
               backgroundColor='monthColor'
-              borderColor='lightGrayCard'
-              borderWidth={1.5}
+              borderColor='nestedContainer'
+              borderWidth={2}
               style={sharedStyles.dot}
             />
             <Text fontSize={13} color='secondaryText'>Month</Text>
@@ -69,8 +69,8 @@ const SquareFilled = (props: WidgetProps & { loading: boolean }) => {
             <View style={sharedStyles.bottomTitle}>
               <Box
                 backgroundColor='yearColor'
-                borderColor='lightGrayCard'
-                borderWidth={1.5}
+                borderColor='nestedContainer'
+                borderWidth={2}
                 style={sharedStyles.dot}
               />
               <Text fontSize={13} color='secondaryText'>Year</Text>
@@ -105,14 +105,14 @@ const RectangleFilled = (props: WidgetProps & { loading: boolean }) => {
             <Box
               backgroundColor='yearColor'
               borderColor='nestedContainer'
-              borderWidth={1.5}
+              borderWidth={2}
               style={sharedStyles.dot}
             />
             <View style={sharedStyles.overlappingDot}>
               <Box
                 backgroundColor='monthColor'
                 borderColor='nestedContainer'
-                borderWidth={1.5}
+                borderWidth={2}
                 style={sharedStyles.dot}
               />
             </View>
@@ -143,8 +143,8 @@ const RectangleFilled = (props: WidgetProps & { loading: boolean }) => {
               <View style={sharedStyles.bottomTitle}>
                 <Box
                   backgroundColor='monthColor'
-                  borderColor='nestedContainerSeperator'
-                  borderWidth={1.5}
+                  borderColor='nestedContainer'
+                  borderWidth={2}
                   style={sharedStyles.dot}
                 />
                 <Text fontSize={13} color='secondaryText'>Month</Text>
@@ -165,8 +165,8 @@ const RectangleFilled = (props: WidgetProps & { loading: boolean }) => {
               <View style={sharedStyles.bottomTitle}>
                 <Box
                   backgroundColor='yearColor'
-                  borderColor='nestedContainerSeperator'
-                  borderWidth={1.5}
+                  borderColor='nestedContainer'
+                  borderWidth={2}
                   style={sharedStyles.dot}
                 />
                 <Text fontSize={13} color='secondaryText'>Year</Text>
@@ -191,8 +191,8 @@ const RectangleFilled = (props: WidgetProps & { loading: boolean }) => {
                 <View style={sharedStyles.bottomTitle}>
                   <Box
                     backgroundColor='monthColor'
-                    borderColor='nestedContainerSeperator'
-                    borderWidth={1.5}
+                    borderColor='nestedContainer'
+                    borderWidth={2}
                     style={sharedStyles.dot}
                   />
                   <Text fontSize={13} color='secondaryText'>Left</Text>
@@ -216,8 +216,8 @@ const RectangleFilled = (props: WidgetProps & { loading: boolean }) => {
                 <View style={sharedStyles.bottomTitle}>
                   <Box
                     backgroundColor='yearColor'
-                    borderColor='nestedContainerSeperator'
-                    borderWidth={1.5}
+                    borderColor='nestedContainer'
+                    borderWidth={2}
                     style={sharedStyles.dot}
                   />
                   <Text fontSize={13} color='secondaryText'>Left</Text>

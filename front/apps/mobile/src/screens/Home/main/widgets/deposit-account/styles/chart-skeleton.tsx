@@ -4,7 +4,8 @@ const styles = StyleSheet.create({
   chartContainer: {
     flexGrow: 2,
     paddingBottom: 8,
-    marginHorizontal: -13
+    marginHorizontal: -13,
+    opacity: 0,
   },
   fontStyle: {
     fontFamily: 'SourceSans3Regular',

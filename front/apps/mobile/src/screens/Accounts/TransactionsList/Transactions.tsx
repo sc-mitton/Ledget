@@ -206,8 +206,8 @@ const Transactions = (props: PTransactions & { account?: Account }) => {
                   progressBackgroundColor={theme.colors.modalBox}
                   tintColor={theme.colors.secondaryText}
                 />}
-              scrollIndicatorPadding={[0, theme.spacing.navHeight - 64]}
-              contentContainerStyle={{ paddingBottom: theme.spacing.navHeight - 48 }}
+              scrollIndicatorPadding={[0, theme.spacing.navHeight - 48]}
+              contentContainerStyle={{ paddingBottom: theme.spacing.navHeight - 24 }}
               bounces={true}
               overScrollMode='always'
               onScroll={handleScroll}

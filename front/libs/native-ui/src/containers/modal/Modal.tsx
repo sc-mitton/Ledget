@@ -131,9 +131,11 @@ export function Modal(props: ModalProps) {
           } : {})}
         >
           {hasExitButton && <View style={styles.closeButton}>
-            <Button onPress={() => onClose ? onClose() : navigation.goBack()} variant='circleButton' >
-              <Icon icon={X} size={20} color='secondaryText' />
-            </Button>
+            <Button
+              onPress={() => onClose ? onClose() : navigation.goBack()}
+              variant='circleButton'
+              icon={<Icon icon={X} size={20} color='secondaryText' strokeWidth={1.75} />}
+            />
           </View>}
           <Animated.View style={[avoidKeyboardAnimation]}>
             {children}

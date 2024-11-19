@@ -2,16 +2,17 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 16,
     marginTop: 32,
     paddingLeft: 8,
+    marginLeft: -28,
+    marginRight: -20,
     position: 'relative',
     flexDirection: 'column',
     alignItems: 'flex-start',
   },
   graphContainer: {
     width: '100%',
-    height: 150
+    height: 155
   },
   nestedContainerBox: {
     padding: 0
@@ -35,6 +36,7 @@ const styles = StyleSheet.create({
     marginLeft: 2
   },
   chartHeader: {
+    marginHorizontal: 28,
   },
   tooltipText: {
     position: 'absolute',
@@ -43,7 +45,7 @@ const styles = StyleSheet.create({
   menuButtonContainer: {
     position: 'absolute',
     top: 8,
-    right: 4,
+    right: 24,
     zIndex: 10,
   },
   blurViewContainer: {

@@ -5,7 +5,7 @@ import styles from './styles/panel';
 import { AccountsTabsScreenProps } from '@types';
 import { Account, useGetAccountsQuery } from '@ledget/shared-features';
 import { useAppDispatch, useAppSelector } from '@hooks';
-import { Box } from '@ledget/native-ui';
+import { Box, Seperator } from '@ledget/native-ui';
 import { DefaultHeader, AccountHeader } from '../Header';
 import Transactions from '../TransactionsList/Transactions';
 import AccountsPickerButton from '../AccountsPickerButton';
@@ -50,6 +50,9 @@ const Panel = (props: AccountsTabsScreenProps<'Depository'> & { account?: Accoun
     <Box style={[styles.main]} paddingHorizontal='pagePadding'>
       <View onLayout={(event) => { setBottomOfContentPos(event.nativeEvent.layout.height) }}>
         <Summary {...props} />
+        <View style={styles.seperator}>
+          <Seperator variant='bare' height={1.5} backgroundColor='mainScreenSeperator' />
+        </View>
         <AccountsPickerButton {...props} />
       </View>
       <Transactions

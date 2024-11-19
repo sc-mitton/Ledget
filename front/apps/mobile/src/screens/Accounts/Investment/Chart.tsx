@@ -79,12 +79,12 @@ const Chart = () => {
     const last = fetchedData
       .filter(acnt => accounts ? accounts.some(ac => ac.id === acnt.account_id) : true)
       .reduce((acc, acnt) => {
-        return acc.plus(acnt.balances[0]?.balance || 0)
+        return acc.plus(acnt.balances[0]?.value || 0)
       }, Big(0))
     const second2Last = fetchedData
       .filter(acnt => accounts ? accounts.some(ac => ac.id === acnt.account_id) : true)
       .reduce((acc, acnt) => {
-        return acc.plus(acnt.balances[1]?.balance || 0)
+        return acc.plus(acnt.balances[1]?.value || 0)
       }, Big(0))
     return last.minus(second2Last).times(100).toNumber()
   }, [fetchedData])
@@ -96,7 +96,7 @@ const Chart = () => {
         .reduce((acc, acnt) => {
           return acnt.balances.map(b => ({
             date: b.date,
-            balance: b.balance
+            balance: b.value
           })).concat(acc)
         }, [] as { date: string, balance: number }[])
       )

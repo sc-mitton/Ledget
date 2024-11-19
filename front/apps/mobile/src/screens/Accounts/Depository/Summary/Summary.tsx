@@ -171,13 +171,7 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
       </View>
       {showChart &&
         <Animated.View style={[styles.graphContainer]} entering={StretchInY} exiting={StretchOutY}>
-          <Chart
-            data={balanceHistoryChartData}
-            tickCount={window.endsWith('M') ? 3 : 5}
-            xLabelFormat={(date) => window.endsWith('M')
-              ? `      ${dayjs(date).format('MMM')}`
-              : `         ${dayjs(date).format('MMM YY')}`}
-          />
+          <Chart data={balanceHistoryChartData} />
         </Animated.View>}
     </Box>
   )

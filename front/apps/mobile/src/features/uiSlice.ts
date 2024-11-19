@@ -25,7 +25,12 @@ type State = {
 
 const initialState: State = {
   billCatSort: 'default',
-  investmentsScreen: {},
+  investmentsScreen: {
+    window: {
+      period: 'month',
+      amount: 3
+    }
+  },
   accountsTab: {},
   settings: {
     startOnHome: true

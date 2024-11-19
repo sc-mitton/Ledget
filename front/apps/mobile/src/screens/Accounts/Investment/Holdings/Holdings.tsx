@@ -105,11 +105,7 @@ const Holdings = (props: AccountsTabsScreenProps<'Investment'>) => {
                         }
                       </View>
                     </View>
-                    {holding.institution_value &&
-                      <DollarCents
-                        variant='bold'
-                        value={Big(holding.institution_value).times(100).toNumber()}
-                      />}
+                    {holding.institution_value && <DollarCents value={Big(holding.institution_value).times(100).toNumber()} />}
                   </Box>
                 </Fragment>
               )

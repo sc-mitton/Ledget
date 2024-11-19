@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   main: {
@@ -15,6 +15,11 @@ const styles = StyleSheet.create({
   transactions: {
     flex: 1,
     zIndex: 1,
+  },
+  seperator: {
+    width: '200%',
+    zIndex: -1,
+    transform: [{ translateX: -1 * Dimensions.get('window').width / 2 }],
   }
 });
 

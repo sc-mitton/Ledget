@@ -89,7 +89,7 @@ const ChartSkeleton = (props: Props) => {
           tickCount: 0,
           formatYLabel: () => '',
         }]}
-        padding={{ left: 0 }}
+        padding={{ left: -2 }}
         domainPadding={{ left: 6, right: 6, top: 20, bottom: 50 }}
       >
         {({ points, chartBounds }) => (

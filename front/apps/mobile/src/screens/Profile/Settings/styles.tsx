@@ -5,13 +5,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
-    marginTop: 16,
     gap: 20,
     paddingTop: 16,
     paddingBottom: 48
   },
   phoneImageContainer: {
-    paddingHorizontal: 8,
+    paddingHorizontal: 12,
   },
   option: {
     gap: 8,
