@@ -104,10 +104,17 @@ const ChartSkeleton = (props: Props) => {
               curveType='natural'
             >
               <LinearGradient
-                colors={[
-                  theme.colors.emptyChartGradientStart,
-                  theme.colors.blueChartGradientEnd
-                ]}
+                colors={props.data
+                  ? [
+                    theme.colors.blueChartGradientStart,
+                    theme.colors.blueChartGradientStart,
+                    theme.colors.nestedContainer
+                  ]
+                  : [
+                    theme.colors.emptyChartGradientStart,
+                    theme.colors.nestedContainer
+                  ]
+                }
                 start={vec(chartBounds.bottom, 0)}
                 end={vec(chartBounds.bottom, chartBounds.bottom)}
               />

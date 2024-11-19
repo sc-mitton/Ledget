@@ -59,7 +59,16 @@ export type InvestmentsBalanceHistory = {
   account_name: string;
   balances: {
     date: string;
-    balance: number;
+    value: string;
+  }[]
+}[]
+
+export type TransformedInvestmentsBalanceHistory = {
+  account_id: string;
+  account_name: string;
+  balances: {
+    date: string;
+    value: number;
   }[]
 }[]
 

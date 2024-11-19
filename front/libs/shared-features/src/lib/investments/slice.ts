@@ -9,7 +9,8 @@ import {
   InvestmentWithProductSupport,
   InvestmentsState,
   GetInvestmentsQuery,
-  InvestmentsBalanceQuery
+  InvestmentsBalanceQuery,
+  TransformedInvestmentsBalanceHistory
 } from './types';
 
 const investmentsRTKSlice = apiSlice.injectEndpoints({
@@ -41,12 +42,18 @@ const investmentsRTKSlice = apiSlice.injectEndpoints({
         return currentCache;
       }
     }),
-    getInvestmentsBalanceHistory: build.query<InvestmentsBalanceHistory, InvestmentsBalanceQuery>({
+    getInvestmentsBalanceHistory: build.query<TransformedInvestmentsBalanceHistory, InvestmentsBalanceQuery>({
       query: (params) => ({
         url: 'investments/balance-history',
         method: 'GET',
         params
       }),
+      transformResponse: (response: InvestmentsBalanceHistory) => {
+        return response.map((r) => ({
+          ...r,
+          balances: r.balances.map((b) => ({ ...b, value: parseFloat(b.value) }))
+        }));
+      },
       providesTags: ['InvestmentBalanceHistory'],
     }),
   }),

@@ -39,9 +39,9 @@ const Filled = (props: Props) => {
   const percentChange = useMemo(() => {
     if (!history || (history[0]?.balances?.length || 0) < 2) return
 
-    return Big(history[0].balances[1].balance)
-      .minus(Big(history[0].balances[2].balance))
-      .div(Big(history[0].balances[2].balance))
+    return Big(history[0].balances[1].value)
+      .minus(Big(history[0].balances[2].value))
+      .div(Big(history[0].balances[2].value))
       .times(100)
       .toNumber()
 
@@ -71,7 +71,7 @@ const Filled = (props: Props) => {
 
   useEffect(() => {
     if (!history || (history[0]?.balances?.length || 0) < 7) return
-    setChartData(history[0].balances)
+    setChartData(history[0].balances.map(v => ({ date: v.date, balance: v.value })))
   }, [history])
 
   return (
