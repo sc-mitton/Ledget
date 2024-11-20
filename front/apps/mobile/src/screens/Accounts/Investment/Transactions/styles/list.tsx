@@ -8,14 +8,25 @@ export default StyleSheet.create({
     bottom: 0
   },
   mainBackgroundBox: {
-    paddingHorizontal: 16
+    paddingHorizontal: 0
   },
   box: {
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    width: '100%',
+    marginHorizontal: 16,
     height: '100%',
     position: 'relative',
+  },
+  backgroundSheet: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: -12,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    height: '100%',
+    width: '100%',
+    zIndex: -1,
   },
   dragBar: {
     width: 54,

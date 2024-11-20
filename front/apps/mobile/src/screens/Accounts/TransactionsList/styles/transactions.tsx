@@ -8,7 +8,9 @@ export default StyleSheet.create({
     bottom: 0
   },
   mainBackgroundBox: {
-    paddingHorizontal: 16
+    paddingHorizontal: 16,
+    borderTopEndRadius: 16,
+    borderTopStartRadius: 16,
   },
   box: {
     borderTopLeftRadius: 20,

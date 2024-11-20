@@ -92,43 +92,42 @@ const Transactions = (props: PTransactions) => {
       onStartShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponder: () => true,
       onPanResponderMove: (e, gs) => {
-        if (gs.dy > 0 && state.current === 'neutral') {
+        if ((gs.dy > 0 && state.current === 'neutral') || (gs.dy < 0 && state.current === 'expanded')) {
           return
         }
-        if (gs.dy < 0 && state.current === 'expanded') {
+
+        top.value = state.current === 'neutral'
+          ? propTop.current + gs.dy
+          : props.expandedTop + gs.dy
+      },
+      onPanResponderRelease: (e, gs) => {
+        if ((gs.dy > 0 && state.current === 'neutral') || (gs.dy < 0 && state.current === 'expanded')) {
           return
         }
         if ((Math.abs(gs.dy) > DRAG_THRESHOLD) || (Math.abs(gs.vy) > ESCAPE_VELOCITY)) {
-          if (gs.vy < 0) {
-            top.value = withSpring(
-              props.expandedTop,
-              defaultSpringConfig);
-            state.current = 'expanded';
-            props.onStateChange?.('expanded');
-          } else {
-            top.value = withSpring(
-              propTop.current,
-              defaultSpringConfig);
-            state.current = 'neutral';
-            props.onStateChange?.('neutral');
-          }
+          top.value = state.current === 'expanded'
+            ? withSpring(propTop.current, defaultSpringConfig)
+            : withSpring(props.expandedTop, defaultSpringConfig)
+          props.onStateChange?.(state.current === 'expanded' ? 'neutral' : 'expanded')
+          state.current = state.current === 'expanded' ? 'neutral' : 'expanded'
         } else {
-          if (state.current === 'neutral' && gs.dy < 0) {
-            top.value = propTop.current + gs.dy
-          } else {
-            top.value = props.expandedTop + gs.dy
-          }
-        }
-      },
-      onPanResponderRelease: (e, gs) => {
-        if (Math.abs(gs.dy) < DRAG_THRESHOLD) {
           top.value = state.current === 'expanded'
             ? withSpring(props.expandedTop, defaultSpringConfig)
             : withSpring(propTop.current, defaultSpringConfig)
         }
+        return true
       },
       onPanResponderTerminationRequest: (e, gs) => {
-        if (Math.abs(gs.dy) < DRAG_THRESHOLD) {
+        if ((gs.dy > 0 && state.current === 'neutral') || (gs.dy < 0 && state.current === 'expanded')) {
+          return true
+        }
+        if ((Math.abs(gs.dy) > DRAG_THRESHOLD) || (Math.abs(gs.vy) > ESCAPE_VELOCITY)) {
+          top.value = state.current === 'expanded'
+            ? withSpring(propTop.current, defaultSpringConfig)
+            : withSpring(props.expandedTop, defaultSpringConfig)
+          props.onStateChange?.(state.current === 'expanded' ? 'neutral' : 'expanded')
+          state.current = state.current === 'expanded' ? 'neutral' : 'expanded'
+        } else {
           top.value = state.current === 'expanded'
             ? withSpring(props.expandedTop, defaultSpringConfig)
             : withSpring(propTop.current, defaultSpringConfig)
@@ -154,6 +153,8 @@ const Transactions = (props: PTransactions) => {
 
   return (
     <Animated.View style={[styles.boxContainer, animation]}>
+      {/* To cover the sides of the graph when expanded  */}
+      <Box backgroundColor='mainBackground' style={styles.backgroundSheet} />
       <Box style={styles.mainBackgroundBox}>
         <Box
           style={styles.box}

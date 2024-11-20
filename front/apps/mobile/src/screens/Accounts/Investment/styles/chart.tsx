@@ -8,6 +8,8 @@ const styles = StyleSheet.create({
   },
   chartContainer: {
     flex: 1,
+    marginLeft: -20,
+    marginRight: -20,
     transform: [{ translateY: -12 }],
   },
   emptyTextContainer: {

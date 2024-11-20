@@ -170,7 +170,7 @@ export { BottomDrawerModal }
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    top: 6,
+    top: 4,
     position: 'absolute',
     width: '100%',
     alignItems: 'center',
