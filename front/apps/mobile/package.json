@@ -105,7 +105,8 @@
     "@gorhom/portal": "*",
     "@miblanchard/react-native-slider": "*",
     "react-native-slot-text": "*",
-    "underscore": "*"
+    "underscore": "*",
+    "expo@52": "*"
   },
   "devDependencies": {}
 }
