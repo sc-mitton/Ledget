@@ -41,6 +41,11 @@ const RootStack = createStackNavigator<RootStackParamList>();
 
 SplashScreen.preventAutoHideAsync();
 
+SplashScreen.setOptions({
+  duration: 1000,
+  fade: true,
+});
+
 const useAuthLogic = () => {
   const dispatch = useAppDispatch();
   const [appIsReady, setAppIsReady] = useState<boolean>(false);
