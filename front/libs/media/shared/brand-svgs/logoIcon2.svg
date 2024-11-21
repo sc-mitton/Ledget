@@ -6,12 +6,14 @@
 	.st0{fill:url(#SVGID_1_);}
 	.st1{fill:#FFFFFF;enable-background:new    ;}
 </style>
-<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="133.5052" y1="509.5738" x2="539.8115" y2="509.5738">
-	<stop  offset="0" style="stop-color:#BDC2DB"/>
-	<stop  offset="1" style="stop-color:#FFFFFF"/>
-</linearGradient>
-<path class="st0" d="M539.8,463.7v58.7c0,36.6-29.7,66.3-66.3,66.3H352.8H133.5c36.6,0,66.3-29.7,66.3-66.3v-58.7
-	c0-18.4,14.9-33.3,33.3-33.3h273.4C524.9,430.4,539.8,445.3,539.8,463.7z"/>
-<path class="st1" d="M254.2,12.9c18.4,0,33.3,14.9,33.3,33.3v476.2c0,36.6,29.7,66.3,66.3,66.3H133.5c-36.6,0-66.3-29.7-66.3-66.3
-	V46.2c0-18.4,14.9-33.3,33.3-33.3H254.2z"/>
+<g>
+	<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="164.4033" y1="510.1139" x2="540.9678" y2="510.1139">
+		<stop  offset="0" style="stop-color:#B0B5CC"/>
+		<stop  offset="1" style="stop-color:#FFFFFF"/>
+	</linearGradient>
+	<path class="st0" d="M541,478.9v29.2c0,45.1-36.6,81.7-81.7,81.7H352.8H164.4c36.8,0,34.4-29.9,34.4-66.7v-44.1
+		c0-26.8,21.7-48.5,48.5-48.5h245.2C519.3,430.5,541,452.2,541,478.9z"/>
+	<path class="st1" d="M230.7,10.3c31.1,0,56.4,25.2,56.4,56.4v456.3c0,36.8,29.9,66.7,66.7,66.7H155c-49.5,0-89.6-40.1-89.6-89.6
+		V66.7c0-31.1,25.2-56.4,56.4-56.4H230.7z"/>
+</g>
 </svg>

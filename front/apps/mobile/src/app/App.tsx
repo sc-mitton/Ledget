@@ -41,10 +41,10 @@ const RootStack = createStackNavigator<RootStackParamList>();
 
 SplashScreen.preventAutoHideAsync();
 
-SplashScreen.setOptions({
-  duration: 1000,
-  fade: true,
-});
+// SplashScreen.setOptions({
+//   duration: 1000,
+//   fade: true,
+// });
 
 const useAuthLogic = () => {
   const dispatch = useAppDispatch();
@@ -177,7 +177,7 @@ export const App = withProviders(() => {
         style={appearance.mode === 'dark' ? 'light' : 'dark'}
       />
       <Toast />
-      {continueToMainApp
+      {false
         ?
         <RootStack.Navigator>
           <RootStack.Group screenOptions={{ headerShown: false }}>

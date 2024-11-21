@@ -169,9 +169,9 @@ export const darkTheme = createTheme({
     redButton: palette.faintRed,
 
     // Category and Bill Colors
-    monthBackground: `hsl(${blueH}, 50%, 25%)`,
+    monthBackground: `hsl(${blueH}, 50%, 20%)`,
     monthBorder: `hsl(${blueH}, 50%, 31%)`,
-    monthColor: `hsl(${blueH}, 100%, 70%)`,
+    monthColor: palette.blue100,
     yearBackground: `hsl(${greenH}, 58%, 17%)`,
     yearBorder: `hsl(${greenH}, 58%, 24%)`,
     yearColor: `hsl(${greenH}, 90%, 50%)`,

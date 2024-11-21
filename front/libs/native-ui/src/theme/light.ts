@@ -585,8 +585,8 @@ export const lightTheme = createTheme({
     },
     dragBar: {
       backgroundColor: 'dragBar',
-      width: 54,
-      height: 4,
+      width: 32,
+      height: 7,
       borderRadius: 'circle',
       position: 'absolute',
       top: 6

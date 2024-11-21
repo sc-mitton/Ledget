@@ -20,13 +20,13 @@ export default StyleSheet.create({
     position: 'relative',
   },
   dragBar: {
-    width: 54,
-    height: 4.5,
+    width: 40,
+    height: 7,
     position: 'absolute',
     top: 8,
     left: '50%',
     transform: [
-      { translateX: -27 },
+      { translateX: -18 },
       { translateY: -1.5 }
     ]
   },

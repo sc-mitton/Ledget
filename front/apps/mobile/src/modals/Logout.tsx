@@ -66,7 +66,8 @@ const Logout = (props: ModalScreenProps<'Logout'>) => {
           <Button
             backgroundColor='transparent'
             onPress={() => props.navigation.goBack()}
-            variant='mediumGrayMain'
+            justifyContent='center'
+            alignItems='center'
             label='Cancel'
             textColor='secondaryText'
           />
@@ -77,7 +78,8 @@ const Logout = (props: ModalScreenProps<'Logout'>) => {
             backgroundColor='transparent'
             onPress={() => setQuedLogout(true)}
             isSubmitting={isLoggingOut}
-            variant='mediumGrayMain'
+            justifyContent='center'
+            alignItems='center'
             textColor='alert'
             label='Log Out'
             labelPlacement='right'
