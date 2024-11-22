@@ -50,9 +50,6 @@ const Panel = (props: AccountsTabsScreenProps<'Depository'> & { account?: Accoun
     <Box style={[styles.main]} paddingHorizontal='pagePadding'>
       <View onLayout={(event) => { setBottomOfContentPos(event.nativeEvent.layout.height) }}>
         <Summary {...props} />
-        <View style={styles.seperator}>
-          <Seperator variant='bare' height={1.5} backgroundColor='mainScreenSeperator' />
-        </View>
         <AccountsPickerButton {...props} />
       </View>
       <Transactions

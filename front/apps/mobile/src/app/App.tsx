@@ -26,10 +26,14 @@ import { useModalStyleInterpolator, useAppDispatch, useAppSelector } from '@hook
 import { selectEnvironment, setEnvironment } from '@ledget/shared-features';
 import Authentication from './Authentication';
 import BottomTabScreens from './BottomTabScreens';
+import Onboarding from '../screens/Onboarding/Stack';
 import SourceSans3Regular from '../../assets/fonts/SourceSans3Regular.ttf';
 import SourceSans3Medium from '../../assets/fonts/SourceSans3Medium.ttf';
 import SourceSans3SemiBold from '../../assets/fonts/SourceSans3SemiBold.ttf';
 import SourceSans3Bold from '../../assets/fonts/SourceSans3Bold.ttf';
+import GeistMedium from '../../assets/fonts/Geist-Medium.ttf';
+import GeistRegular from '../../assets/fonts/Geist-Regular.ttf';
+import GeistSemiBold from '../../assets/fonts/Geist-SemiBold.ttf';
 import ModalScreens from './ModalScreens';
 import Toast from './Toast';
 
@@ -115,9 +119,13 @@ export const App = withProviders(() => {
     'SourceSans3Medium': SourceSans3Medium,
     'SourceSans3SemiBold': SourceSans3SemiBold,
     'SourceSans3Bold': SourceSans3Bold,
+    'GeistMedium': GeistMedium,
+    'GeistRegular': GeistRegular,
+    'GeistSemiBold': GeistSemiBold
   });
 
   const { appIsReady, continueToMainApp } = useAuthLogic();
+  const { data: user } = useGetMeQuery(undefined, { skip: !continueToMainApp });
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
@@ -179,9 +187,10 @@ export const App = withProviders(() => {
       <Toast />
       {continueToMainApp
         ?
-        <RootStack.Navigator>
+        <RootStack.Navigator initialRouteName={user?.is_onboarded ? 'BottomTabs' : 'Onboarding'}>
           <RootStack.Group screenOptions={{ headerShown: false }}>
             <RootStack.Screen name='BottomTabs' component={BottomTabScreens} />
+            <RootStack.Screen name='Onboarding' component={Onboarding} />
           </RootStack.Group>
           <RootStack.Group
             screenOptions={{

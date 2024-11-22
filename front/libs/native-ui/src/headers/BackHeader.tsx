@@ -30,9 +30,6 @@ export function BackHeader(props: StackHeaderProps & { pagesWithTitle?: string[]
         <Text fontSize={19} style={styles.title} color='highContrastText'>
           {props.options.title || route.name}
         </Text>}
-      <View style={styles.seperator}>
-        <Seperator variant='bare' height={2} backgroundColor='mainScreenSeperator' />
-      </View>
       <View style={styles.menuContainer}>
         {options.headerRight && options.headerRight({})}
       </View>

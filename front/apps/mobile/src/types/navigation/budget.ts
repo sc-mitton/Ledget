@@ -2,7 +2,8 @@ import { StackScreenProps } from '@react-navigation/stack';
 import type { CompositeScreenProps } from '@react-navigation/native';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
-import type { BottomTabNavParamList, RootStackParamList } from './root';
+import type { BottomTabNavParamList } from './bottomNav';
+import type { RootStackParamList } from './root';
 import { Bill, Category, Transaction } from '@ledget/shared-features';
 
 export type BudgetStackParamList = {

@@ -186,7 +186,7 @@ export const darkTheme = createTheme({
     seperator: palette.gray800,
     modalSeperator: palette.gray800,
     menuSeperator: palette.gray650,
-    mainScreenSeperator: palette.gray850,
+    mainScreenSeperator: palette.gray875,
     nestedContainerSeperator: palette.gray800,
     authScreenSeperator: palette.gray750,
 

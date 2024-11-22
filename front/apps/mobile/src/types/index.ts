@@ -6,3 +6,4 @@ export * from './navigation/accounts'
 export * from './navigation/budget'
 export * from './navigation/home'
 export * from './navigation/bottomNav';
+export * from './navigation/onboarding';
