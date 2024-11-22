@@ -1,4 +1,4 @@
-import { TextProps, View } from "react-native";
+import { TextProps } from "react-native";
 import { createText } from "@shopify/restyle";
 import { formatCurrency } from '@ledget/helpers';
 import {
@@ -20,7 +20,7 @@ const restyledFunctions = composeRestyleFunctions<Theme, RestyledColorProps>([co
 
 export const Text = createText();
 
-export const Header = (props: TextProps) => {
+export const Header = (props: TextProps & RestyledColorProps) => {
   const { children, ...rest } = props;
 
   return (
@@ -28,7 +28,7 @@ export const Header = (props: TextProps) => {
   );
 }
 
-export const Header2 = (props: TextProps) => {
+export const Header2 = (props: TextProps & RestyledColorProps) => {
   const { children, ...rest } = props;
 
   return (
@@ -36,7 +36,7 @@ export const Header2 = (props: TextProps) => {
   );
 }
 
-export const BoxHeader = (props: TextProps) => {
+export const BoxHeader = (props: TextProps & RestyledColorProps) => {
   const { children, ...rest } = props;
 
   return (
@@ -44,7 +44,7 @@ export const BoxHeader = (props: TextProps) => {
   );
 }
 
-export const SubHeader = (props: TextProps) => {
+export const SubHeader = (props: TextProps & RestyledColorProps) => {
   const { children, ...rest } = props;
 
   return (
@@ -52,7 +52,7 @@ export const SubHeader = (props: TextProps) => {
   );
 }
 
-export const SubHeader2 = (props: TextProps) => {
+export const SubHeader2 = (props: TextProps & RestyledColorProps) => {
   const { children, ...rest } = props;
 
   return (
@@ -60,7 +60,7 @@ export const SubHeader2 = (props: TextProps) => {
   );
 }
 
-export const InputLabel = (props: TextProps) => {
+export const InputLabel = (props: TextProps & RestyledColorProps) => {
   const { children, ...rest } = props;
 
   return (

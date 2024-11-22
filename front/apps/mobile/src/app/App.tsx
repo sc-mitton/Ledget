@@ -177,7 +177,7 @@ export const App = withProviders(() => {
         style={appearance.mode === 'dark' ? 'light' : 'dark'}
       />
       <Toast />
-      {false
+      {continueToMainApp
         ?
         <RootStack.Navigator>
           <RootStack.Group screenOptions={{ headerShown: false }}>

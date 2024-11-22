@@ -8,3 +8,5 @@ export { default as RecoveryCode } from './images/RecoveryCode';
 export { default as Authenticator } from './images/Authenticator';
 export { default as EmptyBox } from './images/EmptyBox';
 export { default as PhoneAppearance } from './images/PhoneAppearance';
+export { default as DollarGraphic } from './images/DollarGraphic';
+export { default as LogoIconGrayscale } from './brand/LogoIconGrayscale';

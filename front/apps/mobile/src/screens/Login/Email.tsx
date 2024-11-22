@@ -19,8 +19,9 @@ import {
   GoogleLogo,
 } from '@ledget/media/native';
 import { LoginScreenProps } from '@types';
-import { LogoIcon } from '@ledget/media/native';
+import { LogoIconGrayscale } from '@ledget/media/native';
 import Legal from './Legal';
+import { useAppearance } from '@/features/appearanceSlice';
 
 const schema = z.object({
   email: z.string()
@@ -30,6 +31,7 @@ const schema = z.object({
 });
 
 export default function Email({ navigation, route }: LoginScreenProps<'Email'>) {
+  const { mode } = useAppearance();
   const { control, handleSubmit, formState: { errors } } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: 'onSubmit',
@@ -43,10 +45,12 @@ export default function Email({ navigation, route }: LoginScreenProps<'Email'>) 
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <Box variant='fullCentered'>
         <View style={styles.logoContainer}>
-          <LogoIcon />
+          <LogoIconGrayscale dark={mode === 'dark'} size={32} />
         </View>
-        <Header style={styles.header}>Welcome Back</Header>
-        <SubHeader2 style={styles.header}>Please login to continue</SubHeader2>
+        <Header fontSize={30} lineHeight={54} style={styles.header}>Welcome Back</Header>
+        <SubHeader2 style={styles.header} color='blueText'>
+          Please login to continue
+        </SubHeader2>
         <View style={styles.form}>
           <Controller
             control={control}
