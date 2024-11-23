@@ -4,7 +4,12 @@ import { RootStackParamList } from './root';
 
 export type OnboardingStackParamList = {
   Welcome: undefined;
-  Tour: undefined;
+  TourSpending: undefined;
+  TourBills: undefined;
+  TourActivity: undefined;
+  TourAccounts: undefined;
+  AddCategories: undefined;
+  AddBills: undefined;
 };
 
 export type OnboardingScreenProps<T extends keyof OnboardingStackParamList> =

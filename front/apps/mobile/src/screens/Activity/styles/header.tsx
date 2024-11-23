@@ -15,7 +15,7 @@ export default StyleSheet.create({
   },
   countCountainer: {
     position: 'relative',
-    marginRight: 12,
+    marginRight: 6,
   },
   countBackgroundOuterContainer: {
     position: 'relative'

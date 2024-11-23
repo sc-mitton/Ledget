@@ -1,4 +1,4 @@
-import { Image, View } from 'react-native';
+import { Image } from 'react-native';
 
 import envelopelight from '../../../shared/images/envelopelight.png';
 import envelopedark from '../../../shared/images/envelopedark.png';

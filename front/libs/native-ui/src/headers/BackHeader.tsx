@@ -5,7 +5,6 @@ import styles from './styles';
 import { Box } from '../restyled/Box';
 import { BackButton } from '../buttons/back-button/BackButton';
 import { Text } from '../restyled/Text';
-import { Seperator } from '../restyled/Seperator';
 
 const { StatusBarManager } = NativeModules;
 

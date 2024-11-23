@@ -10,3 +10,6 @@ export { default as EmptyBox } from './images/EmptyBox';
 export { default as PhoneAppearance } from './images/PhoneAppearance';
 export { default as DollarGraphic } from './images/DollarGraphic';
 export { default as LogoIconGrayscale } from './brand/LogoIconGrayscale';
+export { default as TourSpendingCategories } from './images/TourSpendingCategories';
+export { default as TourBills } from './images/TourBills';
+export { default as TourActivity } from './images/TourActivity';

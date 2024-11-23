@@ -51,7 +51,7 @@ const Connections = ({
                   <Seperator variant='bare' backgroundColor='nestedContainerSeperator' />}
               </>
             ))
-            : <Text variant='footer'>No connections</Text>
+            : <Text color='quinaryText'>No connections</Text>
           }
         </ShimmerBox>
         {user?.co_owner && (
@@ -77,7 +77,7 @@ const Connections = ({
                   </>
                 ))}
                 {plaidItems?.filter((item) => item.user === coOwner?.id).length === 0 && (
-                  <Text variant='footer'>No connections</Text>
+                  <Text color='quinaryText'>No connections</Text>
                 )}
               </Box>
             </ShimmerBox>

@@ -11,7 +11,7 @@ export const BackButton = ({ onPress, label }: { onPress: (e: GestureResponderEv
   return (
     <TouchableOpacity onPress={onPress} style={styles.container} activeOpacity={0.5}>
       <View style={styles.chevronContainer}>
-        <ChevronLeft stroke={theme.colors.blueText} size={28} strokeWidth={1.5} />
+        <ChevronLeft stroke={theme.colors.blueText} size={28} strokeWidth={2} />
       </View>
       <Text color={'blueText'} fontSize={19}>
         {label ? label : 'back'}

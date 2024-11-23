@@ -38,8 +38,8 @@ export default StyleSheet.create({
   bottomModal: {
     width: '100%',
     position: 'absolute',
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     padding: 16,
   },
   bottomFloatModal: {

@@ -57,7 +57,7 @@ const Option = ({ onPress, selected, imageMode }: OptionP) => {
               size={16}
               color='blueText'
             />}
-          <Text color={selected ? 'blueText' : 'secondaryText'}>
+          <Text color={selected ? 'blueText' : 'mainText'}>
             {imageMode.charAt(0).toUpperCase() + imageMode.slice(1)}
           </Text>
         </View>

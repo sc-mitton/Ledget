@@ -58,7 +58,7 @@ const palette = {
   blueSat: `hsl(${blueH}, ${blueS + 10}%, 50%)`,
 
   black: 'hsl(0, 0%, 0%)',
-  offBlack: `hsl(${grayH}, ${grayS}%, 10%)`,
+  offBlack: `hsl(${grayH}, ${grayS}%, 0%)`,
   offBlack2: `hsl(${grayH}, ${grayS}%, 30%)`,
   offBlack3: `hsl(${grayH}, ${grayS}%, 60%)`,
   offBlack4: `hsl(${grayH}, ${grayS}%, 70%)`,
