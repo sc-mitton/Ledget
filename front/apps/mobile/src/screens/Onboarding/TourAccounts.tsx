@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import sharedStyles from './styles/shared';
 import { OnboardingScreenProps } from '@/types'
 import { Button, Box, Text } from '@ledget/native-ui';
-import { TourSpendingCategories } from '@ledget/media/native';
+import { TourAccounts as TourAccountsGraphic } from '@ledget/media/native';
 import { useAppearance } from '@/features/appearanceSlice';
 import MaskedImageWrapper from './MaskedImageWrapper';
 
@@ -12,8 +12,8 @@ const TourAccounts = (props: OnboardingScreenProps<'TourAccounts'>) => {
 
   return (
     <Box variant='screen'>
-      <View style={sharedStyles.mainContainer}>
-        <TourSpendingCategories dark={mode === 'dark'} />
+      <Box style={sharedStyles.mainContainer} marginTop='xxxl'>
+        <TourAccountsGraphic dark={mode === 'dark'} />
         <Box paddingHorizontal='xs' marginTop='l'>
           <Text fontSize={24} lineHeight={28} variant='geistSemiBold' marginVertical='m'>
             Accounts
@@ -23,12 +23,12 @@ const TourAccounts = (props: OnboardingScreenProps<'TourAccounts'>) => {
             investments, and loans in one place.
           </Text>
         </Box>
-      </View>
+      </Box>
       <Box paddingBottom='navHeight'>
         <Button
           variant='main'
           label='Continue'
-          onPress={() => props.navigation.navigate('AddCategories')}
+          onPress={() => props.navigation.navigate('Connect')}
         />
       </Box>
     </Box>

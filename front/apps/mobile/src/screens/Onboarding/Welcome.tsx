@@ -10,7 +10,7 @@ import Animated, { useSharedValue, interpolate, Easing, withTiming, withDelay, u
 import { DollarGraphic } from '@ledget/media/native';
 import { Text, Button, Box } from '@ledget/native-ui';
 import { useUpdateUserMutation } from '@ledget/shared-features';
-import { useProgress } from './Progress';
+import { useProgress } from './Header';
 
 const easing = Easing.bezier(0.25, 0.1, 0.25, 1).factory()
 

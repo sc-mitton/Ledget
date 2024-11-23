@@ -15,7 +15,7 @@ const AddBills = (props: OnboardingScreenProps<'AddBills'>) => {
       <Box paddingBottom='navHeight'>
         <Button
           variant='main'
-          label='Continue'
+          label='Save and Finish'
           onPress={() => {
             updateUser({ is_onboarded: true })
             props.navigation.navigate('BottomTabs', { screen: 'Budget' } as any)

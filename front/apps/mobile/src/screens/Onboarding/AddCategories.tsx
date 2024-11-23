@@ -13,7 +13,7 @@ const AddCategories = (props: OnboardingScreenProps<'AddCategories'>) => {
       <Box paddingBottom='navHeight'>
         <Button
           variant='main'
-          label='Continue'
+          label='Save and Continue'
           onPress={() => props.navigation.navigate('AddBills')}
         />
       </Box>

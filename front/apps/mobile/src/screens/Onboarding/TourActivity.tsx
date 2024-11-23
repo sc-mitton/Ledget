@@ -7,7 +7,7 @@ import { TourActivity } from '@ledget/media/native';
 import { useAppearance } from '@/features/appearanceSlice';
 import MaskedImageWrapper from './MaskedImageWrapper';
 
-const Tour = (props: OnboardingScreenProps<'TourBills'>) => {
+const Tour = (props: OnboardingScreenProps<'TourActivity'>) => {
   const { mode } = useAppearance();
 
   return (

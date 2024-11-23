@@ -13,3 +13,5 @@ export { default as LogoIconGrayscale } from './brand/LogoIconGrayscale';
 export { default as TourSpendingCategories } from './images/TourSpendingCategories';
 export { default as TourBills } from './images/TourBills';
 export { default as TourActivity } from './images/TourActivity';
+export { default as TourAccounts } from './images/TourAccounts';
+export { default as LinkGraphic } from './images/LinkGraphic';

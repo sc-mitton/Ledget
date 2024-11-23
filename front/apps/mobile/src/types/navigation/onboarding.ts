@@ -8,6 +8,7 @@ export type OnboardingStackParamList = {
   TourBills: undefined;
   TourActivity: undefined;
   TourAccounts: undefined;
+  Connect: undefined;
   AddCategories: undefined;
   AddBills: undefined;
 };
