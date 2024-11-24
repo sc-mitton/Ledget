@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, useMemo, useRef } from 'react';
+import { createContext, useContext, useState, useMemo, useRef } from 'react';
 import { Portal } from "@gorhom/portal";
 import { View, TouchableOpacity, Modal, FlatList, SectionList } from 'react-native';
 import { useTheme } from '@shopify/restyle';
@@ -12,7 +12,7 @@ import { Text } from '../../../restyled/Text';
 import { Icon } from '../../../restyled/Icon';
 import { TextInput } from '../../../inputs/text-inputs/text-inputs';
 import { CustomSectionList } from '../../../containers/custom-section-list/CustomSectionList';
-import type { Section, NativeEmojiPickerProps, Context } from './types';
+import type { NativeEmojiPickerProps, Context } from './types';
 import type { Emoji } from '../types';
 import { categories } from '../constants';
 import Header from './Header';

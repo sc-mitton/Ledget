@@ -28,7 +28,6 @@ export const CustomScrollView = forwardRef<ScrollView, Props>((props, ref) => {
     showsVerticalScrollIndicator = true,
     showsHorizontalScrollIndicator = true,
   } = props;
-  const { style, ...rest } = props;
 
   const theme = useTheme();
 
@@ -62,9 +61,9 @@ export const CustomScrollView = forwardRef<ScrollView, Props>((props, ref) => {
   }, []);
 
   return (
-    <View style={[styles.container, style]}>
+    <>
       <ScrollView
-        {...rest}
+        {...props}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         onContentSizeChange={(width, height) => {
@@ -134,7 +133,7 @@ export const CustomScrollView = forwardRef<ScrollView, Props>((props, ref) => {
             }]}
         />
       }
-    </View >
+    </ >
   );
 });
 

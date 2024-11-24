@@ -246,6 +246,10 @@ export const lightTheme = createTheme({
       fontFamily: 'GeistSemiBold',
       color: 'mainText',
     },
+    geistBold: {
+      fontFamily: 'GeistBold',
+      color: 'mainText',
+    },
     header: {
       fontSize: 26,
       lineHeight: 30,

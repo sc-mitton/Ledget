@@ -3,13 +3,22 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   header: {
     position: 'absolute',
+    top: 0,
     width: '100%',
     zIndex: 2,
-    gap: 12,
-    paddingHorizontal: 16,
-    alignItems: 'flex-start'
+  },
+  headerBox: {
+    width: '100%',
+    height: '100%',
+  },
+  backButton: {
+    position: 'absolute',
+    left: 16,
+    bottom: 0
   },
   progressContainer: {
+    paddingTop: 16,
+    paddingBottom: 12,
     width: '100%',
     justifyContent: 'center',
     gap: 12,
@@ -17,16 +26,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   pill: {
-    height: 6,
-    borderRadius: 24
+    borderRadius: 24,
+    overflow: 'hidden',
   },
   pillFill: {
-    position: 'absolute',
-    height: '100%',
-    borderRadius: 24
-  },
-  pillFillBack: {
     width: '100%',
+    height: '100%',
   }
 });
 

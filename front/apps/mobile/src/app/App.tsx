@@ -34,6 +34,7 @@ import SourceSans3Bold from '../../assets/fonts/SourceSans3Bold.ttf';
 import GeistMedium from '../../assets/fonts/Geist-Medium.ttf';
 import GeistRegular from '../../assets/fonts/Geist-Regular.ttf';
 import GeistSemiBold from '../../assets/fonts/Geist-SemiBold.ttf';
+import GeistBold from '../../assets/fonts/Geist-Bold.ttf';
 import ModalScreens from './ModalScreens';
 import Toast from './Toast';
 
@@ -121,7 +122,8 @@ export const App = withProviders(() => {
     'SourceSans3Bold': SourceSans3Bold,
     'GeistMedium': GeistMedium,
     'GeistRegular': GeistRegular,
-    'GeistSemiBold': GeistSemiBold
+    'GeistSemiBold': GeistSemiBold,
+    'GeistBold': GeistBold,
   });
 
   const { appIsReady, continueToMainApp } = useAuthLogic();

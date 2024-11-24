@@ -59,7 +59,7 @@ const Welcome = (props: OnboardingScreenProps<'Welcome'>) => {
           <DollarGraphic dark={mode === 'dark'} size={160} />
         </Animated.View>
         <Animated.View style={[style2]}>
-          <Text variant='geistSemiBold' fontSize={30} lineHeight={40}>
+          <Text variant={mode === 'dark' ? 'geistSemiBold' : 'geistBold'} fontSize={30} lineHeight={40}>
             Welcome to Ledget
           </Text>
         </Animated.View>
