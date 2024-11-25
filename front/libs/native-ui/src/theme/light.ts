@@ -171,9 +171,11 @@ export const lightTheme = createTheme({
     // Category and Bill Colors
     monthBackground: `hsl(${blueH}, 100%, 93%)`,
     monthBorder: `hsl(${blueH}, 100%, 87%)`,
+    monthBorder2: `hsl(${blueH}, 100%, 80%)`,
     monthColor: `hsl(${blueH}, 80%, 58%)`,
     yearBackground: `hsl(${greenH}, 70%, 88%)`,
     yearBorder: `hsl(${greenH}, 70%, 80%)`,
+    yearBorder2: `hsl(${greenH}, 70%, 73%)`,
     yearColor: `hsl(${greenH}, 80%, 38%)`,
 
     // Switch
@@ -569,7 +571,7 @@ export const lightTheme = createTheme({
       paddingTop: 'm',
     },
     nestedContainer: {
-      borderRadius: 'm',
+      borderRadius: 'l',
       paddingHorizontal: 'nestedContainerHPadding',
       paddingVertical: 'nestedContainerVPadding',
       marginVertical: 's',

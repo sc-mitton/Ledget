@@ -14,7 +14,8 @@ const styles = StyleSheet.create({
   backButton: {
     position: 'absolute',
     left: 16,
-    bottom: 0
+    bottom: 0,
+    zIndex: 10,
   },
   progressContainer: {
     paddingTop: 16,

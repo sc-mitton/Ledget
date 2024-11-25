@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { Check, AlertCircle } from 'geist-native-icons';
-import { Dimensions, View } from 'react-native';
+import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import Animated, { runOnJS, useSharedValue, useAnimatedStyle, withTiming, SlideInUp, SlideOutUp } from 'react-native-reanimated';

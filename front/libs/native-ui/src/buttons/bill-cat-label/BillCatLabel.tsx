@@ -16,6 +16,7 @@ interface BillCatEmojiProps {
 interface BillCatLabelProps extends BillCatEmojiProps {
   name: string;
   children?: React.ReactNode;
+  selected?: boolean;
 }
 
 interface ProgressEmojiProps extends BillCatEmojiProps {
@@ -91,6 +92,11 @@ export function BillCatLabel(props: BillCatLabelProps) {
   return (
     <Box
       style={styles.billCatLabel}
+      borderWidth={1}
+      borderColor={props.selected
+        ? period === 'year' ? 'yearBorder2' : 'monthBorder2'
+        : period === 'year' ? 'yearBackground' : 'monthBackground'
+      }
       backgroundColor={period === 'year' ? 'yearBackground' : 'monthBackground'}>
       <Text fontSize={14}>{emoji}</Text>
       <Text

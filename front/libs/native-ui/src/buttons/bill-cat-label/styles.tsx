@@ -4,7 +4,7 @@ export default StyleSheet.create({
   billCatLabel: {
     borderRadius: 10,
     paddingHorizontal: 8,
-    paddingVertical: 1,
+    paddingVertical: 2,
     flexDirection: 'row',
     gap: 4
   },

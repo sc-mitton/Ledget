@@ -172,8 +172,10 @@ export const darkTheme = createTheme({
     monthBackground: `hsl(${blueH}, 50%, 20%)`,
     monthBorder: `hsl(${blueH}, 50%, 31%)`,
     monthColor: palette.blue100,
+    monthBorder2: `hsl(${blueH}, 50%, 60%)`,
     yearBackground: `hsl(${greenH}, 58%, 17%)`,
     yearBorder: `hsl(${greenH}, 58%, 24%)`,
+    yearBorder2: `hsl(${greenH}, 58%, 37%)`,
     yearColor: `hsl(${greenH}, 90%, 50%)`,
 
     // Switch

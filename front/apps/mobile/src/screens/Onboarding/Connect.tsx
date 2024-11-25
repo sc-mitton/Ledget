@@ -71,7 +71,7 @@ const Connect = (props: OnboardingScreenProps<'Connect'>) => {
           </Text>
         </Box>
         <Box variant='nestedContainer'>
-          {plaidItems?.length !== 0 &&
+          {(plaidItems?.length || 0) > 0 &&
             <View style={styles.logos}>
               {plaidItems?.map((item) => (
                 <Box style={styles.logo} borderWidth={3} borderColor='nestedContainer' borderRadius='circle'>
@@ -92,17 +92,16 @@ const Connect = (props: OnboardingScreenProps<'Connect'>) => {
           </View>
         </Box>
       </View>
-      <Box paddingBottom='xxxxl' style={sharedStyles.bottomSplitButtons}>
+      <Box paddingBottom='xxxxl'>
         <Button
-          label='Skip'
-          textColor='mainText'
-          variant='rectangle'
+          label='Done'
+          variant='grayMain'
           onPress={() => props.navigation.navigate('AddCategories')}
         />
         <Button
-          label='Done'
-          textColor='blueText'
-          variant='rectangle'
+          label='Skip'
+          backgroundColor='transparent'
+          variant='grayMain'
           onPress={() => props.navigation.navigate('AddCategories')}
         />
       </Box>

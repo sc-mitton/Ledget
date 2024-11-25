@@ -6,7 +6,7 @@ import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import styles from './styles/progress';
 import { View } from "react-native";
-import { Box, AnimatedView, BackButton, defaultSpringConfig } from '@ledget/native-ui';
+import { Box, AnimatedView, BackButton } from '@ledget/native-ui';
 
 interface ContextT {
   setIndex: React.Dispatch<React.SetStateAction<number>>;
@@ -64,7 +64,7 @@ export default function ({ children }: { children: React.ReactNode }) {
             <View style={styles.backButton}>
               <BackButton onPress={() => navigation.goBack()} />
             </View>
-            <View style={[styles.progressContainer,]}>
+            <View style={[styles.progressContainer]}>
               {springs.map((style, i) => (
                 <AnimatedView style={[styles.pill, style]} >
                   <Box style={[styles.pillFill]} backgroundColor="mainText" />

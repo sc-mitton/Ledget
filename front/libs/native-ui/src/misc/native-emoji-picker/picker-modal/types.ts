@@ -8,6 +8,7 @@ export interface NativeEmojiPickerProps {
   title?: string;
   children?: React.ReactNode;
   numColumns?: number;
+  as?: 'modal' | 'inline'
 }
 
 export interface ISearchProps extends React.ComponentProps<typeof TextInput> {

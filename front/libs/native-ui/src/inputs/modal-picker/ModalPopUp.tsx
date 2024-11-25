@@ -75,7 +75,7 @@ function ModalPopUp<O extends PickerOption, TMultiple extends boolean>(
         transparent={true}
         animationType='slide'
       >
-        <Modal onClose={handleClose} position='centerFloat'>
+        <Modal onClose={handleClose} position='centerFloat' hasOverlay={true}>
           <></>
           {props.header &&
             <>
@@ -162,7 +162,7 @@ function ModalPopUp<O extends PickerOption, TMultiple extends boolean>(
                     >
                       <Text>{label}</Text>
                       <View style={styles.selectedIcon}>
-                        {selected && <Icon icon={Check} color='blueButton' strokeWidth={2} />}
+                        {selected && <Icon icon={Check} color='blueText' strokeWidth={2} />}
                       </View>
                     </TouchableOpacity>
                     {index !== (props.options?.length || 0) - 1 && <Seperator variant='bare' backgroundColor='modalSeperator' />}
