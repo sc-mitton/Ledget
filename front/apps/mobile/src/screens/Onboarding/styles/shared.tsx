@@ -14,7 +14,22 @@ const styles = StyleSheet.create({
   },
   emptyMessage: {
     marginVertical: 24
-  }
+  },
+  header: {
+    width: '100%',
+    marginTop: 48,
+    marginBottom: 8,
+    marginLeft: 8
+  },
+  form: {
+    flexDirection: 'column',
+    width: '100%',
+    marginTop: 12,
+    paddingHorizontal: 6,
+    paddingBottom: 6,
+    paddingTop: 12,
+    overflow: 'hidden',
+  },
 });
 
 export default styles;

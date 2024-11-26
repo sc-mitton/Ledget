@@ -1,12 +1,14 @@
-import { useEffect, useState, useCallback } from 'react';
-import { View, Modal, TouchableOpacity } from 'react-native'
+import { useEffect, useRef, useState } from 'react';
+import { Animated, View, Modal, TouchableOpacity, StyleSheet, Dimensions } from 'react-native'
 import { useForm, Controller, useController, useWatch } from 'react-hook-form';
+import ReAnimated, { FadeIn, FadeOut, SlideInDown, SlideOutDown } from 'react-native-reanimated';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { LinearGradient, Canvas, Rect, vec } from '@shopify/react-native-skia';
 import { z } from 'zod';
-import { Emoji, Plus, Edit, Edit3 } from 'geist-native-icons';
+import { Emoji, Edit } from 'geist-native-icons';
+import { BlurView } from 'expo-blur';
+import { useTheme } from '@shopify/restyle';
 import Big from 'big.js';
-import { useTransition } from '@react-spring/native';
-import Animated, { useSharedValue, useAnimatedStyle, withTiming, withDelay } from 'react-native-reanimated';
 
 import sharedStyles from './styles/shared';
 import styles from './styles/add-categories';
@@ -15,95 +17,51 @@ import {
   Button,
   Box,
   Text,
-  TabsTrack,
   EmojiPicker,
   TextInput,
   TextInputbase,
   ModalPicker,
   Icon,
   MoneyInput,
-  DollarCents,
-  CustomScrollView,
-  LoadingDots,
-  BillCatEmoji,
   BillCatLabel,
-  InputLabel,
-  SwipeDelete,
-  AnimatedView
+  InputLabel
 } from '@ledget/native-ui';
-import { Tags } from '@ledget/media/native';
-import { Category, useAddNewCategoryMutation, useGetCategoriesQuery, selectBudgetMonthYear } from '@ledget/shared-features';
+import {
+  Category,
+  useAddNewCategoryMutation,
+  useGetCategoriesQuery,
+  selectBudgetMonthYear,
+  isCategory
+} from '@ledget/shared-features';
 import { categorySchema } from '@ledget/form-schemas';
 import { useAppSelector } from '@hooks';
 import { yearRecommendations, monthRecommendations } from './suggestedCategories';
+import { useAppearance } from '@/features/appearanceSlice';
 
-const Row = (
-  { category, index, onDelete }:
-    {
-      category: Category,
-      onDelete: () => void,
-      index: number
-    }
-) => {
-
-  return (
-    <SwipeDelete onDeleted={onDelete}>
-      <Box
-        backgroundColor='nestedContainer'
-        borderTopColor='nestedContainerSeperator'
-        borderTopWidth={index === 0 ? 0 : 1.5}
-        style={styles.row}
-      >
-        <View><BillCatEmoji emoji={category.emoji} period={category.period} /></View>
-        <Text>{category.name.charAt(0).toUpperCase() + category.name.slice(1)}</Text>
-        {Number.isFinite(category.limit_amount)
-          ?
-          <View style={styles.amount}>
-            <DollarCents value={Big(category.limit_amount || 0).toNumber()} withCents={false} />
-          </View>
-          :
-          <View style={styles.editAmount}>
-            <Button
-              variant='square'
-              backgroundColor='nestedContainerSeperator'
-              icon={<Icon icon={Edit3} color='secondaryText' size={24} />}
-            />
-          </View>
-        }
-      </Box>
-    </SwipeDelete>
-  )
-}
+const GAP = 10;
 
 const AddCategories = (props: OnboardingScreenProps<'AddCategories'>) => {
   const { month, year } = useAppSelector(selectBudgetMonthYear)
+  const { mode } = useAppearance();
+  const theme = useTheme();
 
-  const { data: categoriesData, isLoading } = useGetCategoriesQuery({ month, year, spending: false }, { skip: !month || !year })
+  const { data: categoriesData } = useGetCategoriesQuery({ month, year, spending: false }, { skip: !month || !year })
   const [addNewCategory] = useAddNewCategoryMutation()
-  const { control, handleSubmit, setValue } = useForm<z.infer<typeof categorySchema>>({
+  const { control, handleSubmit, setValue, reset } = useForm<z.infer<typeof categorySchema>>({
     resolver: zodResolver(categorySchema)
   });
   const emoji = useWatch({ control, name: 'emoji' });
+  const name = useWatch({ control, name: 'name' });
   const { field: { onChange: onEmojiChange }, formState: { errors } } = useController({ control, name: 'emoji' });
 
+  const scrollY = useRef(new Animated.Value(0)).current
+  const scrollHeight = useRef(0)
+  const touchablePagePositions = useRef<number[]>([])
+  const [, setRowsMeasured] = useState(false)
   const [categories, setCategories] = useState<Category[]>([])
-  const [tabIndex, setTabIndex] = useState(0)
+  const [currentCategories, setCurrentCategories] = useState<Category[]>([])
   const [showModal, setShowModal] = useState(false)
-  const [showSuggestionsGrid, setShowSuggestionsGrid] = useState(true)
-  const suggestionsContainerMaxHeight = useSharedValue(1000)
-  const suggestionsContainerOpacity = useSharedValue(1)
-  const categoriesTableMaxHeight = useSharedValue(0)
-  const categoriesTableOpacity = useSharedValue(0)
-
-  const suggestionsContainerStyle = useAnimatedStyle(() => ({
-    maxHeight: suggestionsContainerMaxHeight.value,
-    opacity: suggestionsContainerOpacity.value
-  }));
-
-  const categoriesTableStyle = useAnimatedStyle(() => ({
-    maxHeight: categoriesTableMaxHeight.value,
-    opacity: categoriesTableOpacity.value
-  }));
+  const [showFloatingAmountInput, setShowFloatingAmountInput] = useState(false)
 
   const handleFinalSubmit = () => {
     const addedCategories = [...categories.filter(c => !categoriesData?.some(cd => cd.id === c.id))]
@@ -112,200 +70,223 @@ const AddCategories = (props: OnboardingScreenProps<'AddCategories'>) => {
     }
   }
 
-  const [transitions, api] = useTransition(categories, () => ({
-    keys: categories.map(c => c.id || c.name),
-    from: { maxHeight: 300, opacity: 1 },
-    enter: { maxHeight: 300, opacity: 1 },
-    update: (item) => {
-      const isActive = (tabIndex === 0 && item.period === 'month') || (tabIndex === 1 && item.period === 'year')
-      return { maxHeight: isActive ? 300 : 0, opacity: isActive ? 1 : 0 }
-    },
-    leave: { maxHeight: 0, opacity: 0 }
-  }));
+  const handlePress = (item: Category | { name: string; emoji: string; period: Category['period'] }) => {
+    if (categories.some(c => isCategory(item) ? c.id === item.id : c.name === item.name)) {
+      setCategories(categories.filter(c => isCategory(item)
+        ? c.id !== item.id
+        : c.name !== item.name)
+      )
+    } else {
+      setValue('name', item.name)
+      setValue('emoji', item.emoji)
+      setValue('period', item.period)
+      setShowFloatingAmountInput(true)
+    }
+  }
 
-  const handeBillCatPress = (category: typeof monthRecommendations[0], period: Category['period']) => {
-    setCategories(prev => {
-      if (prev.some(c => c.name === category.name)) {
-        return prev.filter(c => c.name !== category.name)
-      } else {
-        return [...prev, { ...category, period } as Category]
-      }
-    })
-  };
-
-  const onDelete = (category: Category) => {
-    setCategories(prev => prev.filter(c => c.id ? c.id !== category.id : c.name !== category.name))
-    api.start();
+  const clearForm = () => {
+    handleSubmit((data) => {
+      setCategories([...categories, data as Category])
+    })();
   }
 
   useEffect(() => {
-    if (showSuggestionsGrid) {
-      categoriesTableOpacity.value = withTiming(0, { duration: 500 })
-      categoriesTableMaxHeight.value = withDelay(500, withTiming(0, { duration: 800 }))
-      suggestionsContainerMaxHeight.value = withDelay(1000, withTiming(800, { duration: 800 }))
-      suggestionsContainerOpacity.value = withDelay(1400, withTiming(1, { duration: 500 }))
-    } else {
-      suggestionsContainerOpacity.value = withTiming(0, { duration: 500 })
-      suggestionsContainerMaxHeight.value = withDelay(500, withTiming(0, { duration: 800 }))
-      categoriesTableMaxHeight.value = withDelay(1000, withTiming(800, { duration: 800 }))
-      categoriesTableOpacity.value = withDelay(1400, withTiming(1, { duration: 500 }))
-    }
-  }, [showSuggestionsGrid])
-
-  useEffect(() => {
-    if (tabIndex === 0) {
-      setValue('period', 'month')
-    } else {
-      setValue('period', 'year')
-    }
-  }, [tabIndex])
-
-  useEffect(() => {
     if (categoriesData) {
-      setCategories(categoriesData)
-      api.start((index, item: any) => {
-        if ((tabIndex === 0 && item._item.period === 'month') || (tabIndex === 1 && item._item.period === 'year')) {
-          return { maxHeight: 300, opacity: 1, config: { duration: 1000 } }
-        } else {
-          return ({ maxHeight: 0, opacity: 0, config: { duration: 1000 } })
-        }
-      })
+      setCurrentCategories(categoriesData)
     }
-  }, [categoriesData,])
+  }, [categoriesData])
 
   useEffect(() => {
-    api.start((index, item: any) => {
-      if ((tabIndex === 0 && item._item.period === 'month') || (tabIndex === 1 && item._item.period === 'year')) {
-        return { maxHeight: 300, opacity: 1, config: { duration: 1000 } }
-      } else {
-        return { maxHeight: 0, opacity: 0, config: { duration: 1000 } }
-      }
-    })
-  }, [tabIndex, showSuggestionsGrid])
+    setTimeout(() => {
+      setRowsMeasured(true)
+    }, 1000)
+  }, []);
 
   return (
     <Box variant='screen'>
       <View style={[sharedStyles.mainContainer]}>
-        <View>
-          <Text fontSize={24} lineHeight={28} variant='geistSemiBold' marginTop='xxxl' marginBottom='s'>
+        <View style={sharedStyles.header}>
+          <Text fontSize={24} lineHeight={28} variant='geistSemiBold'>
             Add Categories
           </Text>
           <Text color='secondaryText'>
             Add a few categories to get started. You can always add more later.
           </Text>
         </View>
-        <Box variant='nestedContainer' style={styles.form}>
-          <Animated.View style={[categoriesTableStyle, styles.form]}>
-            <Box
-              style={styles.tabsBox}
-              backgroundColor='nestedContainer'
-              shadowColor='nestedContainer'
-              shadowOffset={{ width: 0, height: 0 }}
-              shadowOpacity={1}
-              shadowRadius={16}
+        <Box variant='nestedContainer' style={sharedStyles.form}>
+          {showFloatingAmountInput &&
+            <ReAnimated.View
+              entering={FadeIn}
+              exiting={FadeOut}
+              style={[StyleSheet.absoluteFill, styles.blurViewContainer]}
             >
-              <TabsTrack onIndexChange={setTabIndex} containerStyle={styles.tabs}>
-                <TabsTrack.Tab index={0}>
-                  {({ selected }) => (
-                    <Text color={selected ? 'mainText' : 'secondaryText'}>
-                      Monthly
-                    </Text>
+              <BlurView
+                intensity={70}
+                style={[StyleSheet.absoluteFill, styles.blurView]}
+                tint={mode === 'dark' ? 'dark' : 'light'}
+              >
+                <Controller
+                  name='limit_amount'
+                  render={({ field }) => (
+                    <ReAnimated.View
+                      entering={SlideInDown.withInitialValues({ originY: 100 }).springify().damping(21).stiffness(200)}
+                      exiting={SlideOutDown.withInitialValues({ originY: 50 })}
+                    >
+                      <Box
+                        style={styles.floatingAmountInput}
+                        shadowColor='mainBackground'
+                        shadowOpacity={.7}
+                        shadowRadius={8}
+                        shadowOffset={{ width: 0, height: 4 }}
+                      >
+                        <MoneyInput
+                          autoFocus
+                          label={`${emoji}  ${name} Limit`}
+                          defaultValue={field.value}
+                          onChange={(v) => {
+                            field.onChange(Big(v || 0).times(100).toNumber())
+                          }}
+                          onBlur={(e) => {
+                            if (e.nativeEvent.text !== '') {
+                              clearForm();
+                            } else {
+                              reset();
+                            }
+                            setShowFloatingAmountInput(false)
+                          }}
+                          inputType='single'
+                          error={errors.limit_amount}
+                          accuracy={2}
+                        />
+                      </Box>
+                    </ReAnimated.View>
                   )}
-                </TabsTrack.Tab>
-                <TabsTrack.Tab index={1}>
-                  {({ selected }) => (
-                    <Text color={selected ? 'mainText' : 'secondaryText'}>
-                      Yearly
-                    </Text>
-                  )}
-                </TabsTrack.Tab>
-              </TabsTrack>
-            </Box>
-            <View style={styles.table}>
-              {transitions.length > 0
-                ?
-                <CustomScrollView style={styles.scrollView} >
-                  {transitions((style, category, _, index) => (
-                    <AnimatedView style={style}>
-                      <Row
-                        onDelete={() => onDelete(category)}
-                        category={category}
-                        index={index}
-                      />
-                    </AnimatedView>
-                  ))}
-                </CustomScrollView>
-                : isLoading
-                  ? <LoadingDots visible={true} />
-                  : <Text textAlign='center' color='tertiaryText'>No categories yet</Text>
-              }
-            </View>
-            <View style={styles.bottomFormButtons}>
-              <Button
-                variant='rectangle'
-                label='New Category'
-                textColor='blueText'
-                labelPlacement='left'
-                onPress={() => setShowModal(true)}
-                icon={<Icon icon={Plus} color='blueText' strokeWidth={2} size={16} />}
-              />
-              <Button
-                variant='square'
-                backgroundColor='nestedContainerSeperator'
-                onPress={() => setShowSuggestionsGrid(true)}
-                icon={<Icon icon={Tags} color='tertiaryText' borderColor='tertiaryText' strokeWidth={0} size={24} />}
-              />
-            </View>
-          </Animated.View>
-          <Animated.View style={[suggestionsContainerStyle, styles.suggestionsGrid]}>
-            <CustomScrollView contentContainerStyle={styles.suggestionsScrollView}>
-              {monthRecommendations.map((category, index) => (
-                <TouchableOpacity
-                  style={styles.suggestionOption}
-                  onPress={() => handeBillCatPress(category, 'month')}
-                >
-                  <BillCatLabel
-                    selected={categories.some(c => c.name === category.name)}
-                    emoji={category.emoji}
-                    name={category.name}
-                    key={`month-suggestion-${index}`}
-                    period='month'
-                  />
-                </TouchableOpacity>
-              ))}
-              {yearRecommendations.map((category, index) => (
-                <TouchableOpacity
-                  style={styles.suggestionOption}
-                  onPress={() => handeBillCatPress(category, 'year')}
-                >
-                  <BillCatLabel
-                    selected={categories.some(c => c.name === category.name)}
-                    emoji={category.emoji}
-                    name={category.name}
-                    key={`year-suggestion-${index}`}
-                    period='year'
-                  />
-                </TouchableOpacity>
-              ))}
-              <Button
-                label='Custom'
-                backgroundColor='mediumGrayButton'
-                variant='rectangle'
-                paddingVertical='xs'
-                marginTop='xs'
-                textColor='secondaryText'
-                labelPlacement='left'
-                icon={<Icon icon={Edit} color='secondaryText' strokeWidth={2} size={16} />}
-                onPress={() => setShowSuggestionsGrid(false)}
-              />
-            </CustomScrollView>
+                  control={control}
+                />
+              </BlurView>
+            </ReAnimated.View>}
+          <View style={[styles.suggestionsGrid]}>
             <View style={styles.legend}>
               <Box backgroundColor='monthColor' style={styles.dot} />
-              <Text color='tertiaryText' fontSize={15}>Monthly Category</Text>
+              <Text color='tertiaryText' fontSize={15}>Monthly</Text>
               <Box backgroundColor='yearColor' style={styles.dot} />
-              <Text color='tertiaryText' fontSize={15}>Yearly Category</Text>
+              <Text color='tertiaryText' fontSize={15}>Yearly</Text>
             </View>
-          </Animated.View>
+            <View
+              onLayout={(e) => { scrollHeight.current = e.nativeEvent.layout.height }}
+              style={styles.suggestionsFlatListContainer}
+            >
+              <Canvas style={[styles.topMask, styles.mask]}>
+                <Rect x={0} y={0} width={Dimensions.get('window').width} height={38}>
+                  <LinearGradient
+                    colors={[
+                      theme.colors.blueChartGradientEnd,
+                      theme.colors.nestedContainer,
+                      theme.colors.nestedContainer
+                    ]}
+                    start={vec(0, 38)}
+                    end={vec(0, 0)}
+                  />
+                </Rect>
+              </Canvas>
+              <Animated.FlatList
+                style={[styles.flatList]}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={[styles.suggestionsFlatListContent, { gap: GAP }]}
+                onScroll={Animated.event(
+                  [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                  { useNativeDriver: true }
+                )}
+                data={
+                  (currentCategories as (Category | { name: string; emoji: string; period: Category['period'] })[])
+                    .concat(
+                      monthRecommendations
+                        .map(c => ({ ...c, period: 'month' }))
+                        .concat(yearRecommendations.map(c => ({ ...c, period: 'year' })))
+                        .filter(c => !currentCategories.some(cat => cat.name === c.name))
+                        .map(c => c as { name: string; emoji: string; period: Category['period'] })
+                    )
+                }
+                renderItem={({ item, index }) => {
+                  const row = touchablePagePositions.current.length === 0
+                    ? null
+                    : touchablePagePositions.current.reduce((acc, pos, i) => {
+                      if (i > index) return acc
+                      return acc[1] !== pos ? [acc[0] + 1, pos] : acc
+                    }, [-1, 0])[0]
+                  const rows = touchablePagePositions.current.length === 0
+                    ? 0
+                    : new Set(touchablePagePositions.current).size
+                  const itemHeight = scrollHeight.current / rows
+
+                  const inputRange = row !== null
+                    ? [
+                      ((row) * itemHeight) - scrollHeight.current,
+                      ((row + 1) * itemHeight) - scrollHeight.current,
+                      row * itemHeight,
+                      (row + 1) * itemHeight,
+                    ]
+                    : [-1, 0, 100, 100]
+                  const scale = scrollY.interpolate({
+                    inputRange,
+                    outputRange: [.5, 1, 1, .5]
+                  })
+                  const opacity = scrollY.interpolate({
+                    inputRange,
+                    outputRange: [0, 1, 1, 0]
+                  })
+
+                  return (
+                    <Animated.View
+                      style={[styles.suggestionOption, { transform: [{ scale }], opacity }]}
+                      onLayout={e => {
+                        e.target.measure((x, y, width, height, pageX, pageY) => {
+                          touchablePagePositions.current[index] = pageY
+                        })
+                      }}
+                    >
+                      <TouchableOpacity
+                        onPress={() => handlePress(item)}
+                      >
+                        <BillCatLabel
+                          selected={
+                            currentCategories.some(c => c.name === item.name) ||
+                            categories.some(c => c.name === item.name)
+                          }
+                          emoji={item.emoji}
+                          name={item.name}
+                          period={item.period}
+                        />
+                      </TouchableOpacity>
+                    </Animated.View>
+                  )
+                }}
+                keyExtractor={c => isCategory(c) ? c.id : c.name}
+              />
+              <Canvas style={[styles.bottomMask, styles.mask]}>
+                <Rect x={0} y={0} width={Dimensions.get('window').width} height={38}>
+                  <LinearGradient
+                    colors={[
+                      theme.colors.blueChartGradientEnd,
+                      theme.colors.nestedContainer,
+                      theme.colors.nestedContainer
+                    ]}
+                    start={vec(0, 0)}
+                    end={vec(0, 38)}
+                  />
+                </Rect>
+              </Canvas>
+            </View>
+            <Button
+              style={styles.customButton}
+              label='Custom'
+              backgroundColor='transparent'
+              textColor='blueText'
+              labelPlacement='left'
+              icon={<Icon icon={Edit} color='blueText' strokeWidth={2} size={16} />}
+              onPress={() => setShowModal(true)}
+            />
+          </View>
         </Box>
       </View>
       <Modal
@@ -396,9 +377,7 @@ const AddCategories = (props: OnboardingScreenProps<'AddCategories'>) => {
             <Button
               variant='main'
               label='Save'
-              onPress={handleSubmit((data) => {
-                setCategories([...categories, data as Category])
-              })}
+              onPress={clearForm}
             />
           </EmojiPicker>
         </Box>

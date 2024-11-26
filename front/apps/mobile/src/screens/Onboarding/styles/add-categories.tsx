@@ -11,21 +11,37 @@ const styles = StyleSheet.create({
   dragBar: {
     position: 'absolute',
   },
+  blurViewContainer: {
+    zIndex: 10,
+  },
+  blurView: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  },
+  floatingAmountInput: {
+    width: '100%',
+  },
+  mask: {
+    position: 'absolute',
+    width: '100%',
+    left: 0,
+    right: 0,
+    height: 38,
+    zIndex: 20,
+  },
+  topMask: {
+    top: 0
+  },
+  bottomMask: {
+    bottom: 0
+  },
   modal: {
     flex: 1,
     flexGrow: 1,
     overflow: 'hidden',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16
-  },
-  closeButton: {
-    position: 'absolute',
-    top: 16,
-    right: 16,
-    zIndex: 10
-  },
-  tabs: {
-    maxWidth: '60%',
   },
   nameInput: {
     marginLeft: 72,
@@ -40,66 +56,46 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     width: '100%',
     marginTop: 8,
+    paddingHorizontal: 6,
+    paddingBottom: 6,
+    paddingTop: 12,
     overflow: 'hidden',
   },
-  bottomFormButtons: {
-    flexDirection: 'row',
-    width: '101%',
-    marginTop: 8,
-    transform: [{ translateX: -4 }],
-    justifyContent: 'space-between'
+  suggestionsFlatListContainer: {
+    marginTop: -16
   },
-  table: {
-    width: '100%',
-    marginBottom: 8,
-  },
-  row: {
-    flexDirection: 'row',
-    paddingLeft: 8,
-    paddingTop: 16,
-    paddingBottom: 10,
-    transform: [{ translateY: -4 }],
-    gap: 16,
-  },
-  amount: {
-    flexGrow: 1,
-    paddingRight: 4,
-    alignItems: 'flex-end',
-  },
-  editAmount: {
-    flexGrow: 1,
-    alignItems: 'flex-end',
-  },
-  scrollView: {
-    maxHeight: 290,
+  flatList: {
+    maxHeight: 375,
   },
   tabsBox: {
-    width: '110%',
+    width: '100%',
     alignItems: 'center',
-    paddingBottom: 16,
+    paddingBottom: 16
   },
-  suggestionsScrollView: {
+  suggestionsFlatListContent: {
+    marginTop: 38,
+    paddingBottom: 78,
     flexDirection: 'row',
     justifyContent: 'center',
-    flexWrap: 'wrap',
-    gap: 8,
+    flexWrap: 'wrap'
   },
   suggestionsGrid: {
     width: '100%',
-  },
-  sectionHeader: {
-    width: '100%',
+    alignItems: 'center',
   },
   suggestionOption: {
-    marginVertical: 4
+    paddingVertical: 4,
   },
   legend: {
     flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
     width: '100%',
     gap: 10,
-    marginTop: 16,
+    zIndex: 20
+  },
+  customButton: {
+    marginTop: -12
   },
   dot: {
     width: 6,
