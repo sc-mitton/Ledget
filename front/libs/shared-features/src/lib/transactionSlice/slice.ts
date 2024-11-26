@@ -149,6 +149,9 @@ export const transactionSlice = apiSlice.injectEndpoints({
       },
       keepUnusedDataFor: 60 * 30 // 30 minutes
     }),
+    getRecurringTransactions: builder.query<GetTransactionsResponse, void>({
+      query: () => ({ url: 'transactions/recurring' })
+    }),
     getTransactionsCount: builder.query<
       { count: number },
       GetTransactionsParams
@@ -411,7 +414,8 @@ export const {
   useAddNoteMutation,
   useUpdateDeleteNoteMutation,
   useGetMerchantsQuery,
-  useGetTransactionsCountQuery
+  useGetTransactionsCountQuery,
+  useGetRecurringTransactionsQuery
 } = transactionSlice;
 
 export const useGetTransactionQueryState = transactionSlice.endpoints.getTransactions.useQueryState;

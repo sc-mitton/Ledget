@@ -23,6 +23,9 @@ import plaid
 # from plaid.model.transactions_recurring_get_request import (
 #     TransactionsRecurringGetRequest
 # )
+from plaid.model.transactions_recurring_get_request import (
+    TransactionsRecurringGetRequest
+)
 from plaid.model.transactions_sync_request import TransactionsSyncRequest
 from plaid.model.transactions_sync_request_options import TransactionsSyncRequestOptions
 
@@ -251,9 +254,21 @@ class TransactionViewSet(ModelViewSet):
 
         return Response(serializer.data)
 
-    @action(detail=False, methods=['get'], url_path='recurring/get',
+    @action(detail=False, methods=['get'], url_path='recurring',
             url_name='recurring', permission_classes=[IsAuthedVerifiedSubscriber])
     def recurring(self, request, *args, **kwargs):
+        plaid_items = PlaidItem.objects.filter(
+            user__in=self.request.user.account.users.all()
+        ).prefetch_related('accounts')
+
+        recurring_transactions = []
+        for plaid_item in plaid_items:
+            request = TransactionsRecurringGetRequest(
+                access_token=plaid_item.access_token,
+                account_ids=[account.id for account in plaid_item.accounts.all()]
+            )
+            response = plaid_client.transactions_recurring_get(request).to_dict()
+            recurring_transactions.extend(response['outflow_streams'])
 
         return Response([], HTTP_200_OK)
 

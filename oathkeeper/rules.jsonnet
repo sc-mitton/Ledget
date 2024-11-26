@@ -346,7 +346,7 @@ local BaseWithAuth = {
     id: "recurring-transactions",
     match: {
       methods: ["GET"],
-      url: base_url + "/transactions/recurring/get",
+      url: base_url + "/transactions/recurring",
     },
   },
   BaseWithAuth
@@ -447,7 +447,7 @@ local BaseWithAuth = {
   },
   BaseWithAuth
   {
-    id: 'breakdown-history',
+    id: "breakdown-history",
     match: {
       methods: ["GET"],
       url: base_url + "/accounts/breakdown-history",

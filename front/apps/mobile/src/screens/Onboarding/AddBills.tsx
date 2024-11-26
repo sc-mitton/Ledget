@@ -3,9 +3,10 @@ import { View } from 'react-native'
 import sharedStyles from './styles/shared';
 import { OnboardingScreenProps } from '@/types'
 import { Button, Box, Text, Checkbox } from '@ledget/native-ui';
-import { useUpdateUserMutation } from '@ledget/shared-features';
+import { useUpdateUserMutation, useGetRecurringTransactionsQuery } from '@ledget/shared-features';
 
 const AddBills = (props: OnboardingScreenProps<'AddBills'>) => {
+  const { data } = useGetRecurringTransactionsQuery();
   const [updateUser] = useUpdateUserMutation();
 
   return (
