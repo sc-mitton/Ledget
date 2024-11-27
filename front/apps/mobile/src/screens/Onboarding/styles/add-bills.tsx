@@ -27,8 +27,8 @@ const styles = StyleSheet.create({
   },
   flatList: {
     maxHeight: 400,
-    paddingRight: 12,
-    marginRight: -12,
+    paddingRight: 6,
+    marginRight: -6,
   },
   form: {
     flexDirection: 'column',
@@ -64,7 +64,8 @@ const styles = StyleSheet.create({
   suggestionOptionContent: {
     flexDirection: 'row',
     width: '100%',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   loadingDotsContainer: {
     position: 'absolute',

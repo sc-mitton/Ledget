@@ -21,7 +21,7 @@ const Tour = (props: OnboardingScreenProps<'TourBills'>) => {
             Bills
           </Text>
           <Text variant='geistRegular' color='secondaryText'>
-            All monthly reacurring payments, or one-time payments, can be tracked here.
+            All monthly recurring payments, or one-time payments, can be tracked here.
           </Text>
         </Box>
       </View>

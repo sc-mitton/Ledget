@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, createRef } from 'react';
 import { View, ScrollView, Dimensions, FlatList } from 'react-native'
 import { Emoji, Edit, Edit2 } from 'geist-native-icons';
 import Swipeable, { SwipeableMethods } from 'react-native-gesture-handler/ReanimatedSwipeable';
-import { Animated, Modal } from 'react-native';
+import { Modal } from 'react-native';
 import { LinearGradient, Canvas, Rect, vec } from '@shopify/react-native-skia';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -57,7 +57,7 @@ const AddBills = (props: OnboardingScreenProps<'AddBills'>) => {
   const [flatListData, setFlatListData] = useState<Bill[]>([]);
   const swipeables = [...Array(100)].map(() => createRef<SwipeableMethods>())
 
-  const { control, handleSubmit, setValue, reset, resetField, getValues } = useForm<z.infer<typeof billSchema>>({
+  const { control, handleSubmit, setValue, reset, resetField } = useForm<z.infer<typeof billSchema>>({
     resolver: zodResolver(billSchema)
   });
   const { field: { onChange: onEmojiChange }, formState: { errors } } = useController({ control, name: 'emoji' });
@@ -86,9 +86,9 @@ const AddBills = (props: OnboardingScreenProps<'AddBills'>) => {
     })();
   }
 
-  const handlePress = (item: RecurringTransaction | Bill) => {
+  const handlePress = (item: RecurringTransaction & { id: string } | Bill) => {
     setSelectedBills(prev => {
-      if (prev.some(b => b.id === modalBillId)) {
+      if (prev.some(b => b.id === item.id)) {
         return prev.filter(b => isBill(item) ? b.id !== item.id : b.name !== item.transactions[0]?.name)
       } else if (isBill(item)) {
         return [...prev, item]
@@ -123,7 +123,7 @@ const AddBills = (props: OnboardingScreenProps<'AddBills'>) => {
             Add Bills
           </Text>
           <Text color='secondaryText'>
-            Confirm any of your reaccuring payments, or enter them manually.
+            Confirm any of your recurring payments, or enter them manually.
           </Text>
         </View>
         <Box variant='nestedContainer' style={styles.form}>
@@ -190,7 +190,8 @@ const AddBills = (props: OnboardingScreenProps<'AddBills'>) => {
                         </Box>}
                     >
                       <Box
-                        padding='m'
+                        paddingHorizontal='s'
+                        paddingVertical='xs'
                         borderWidth={1.5}
                         backgroundColor='nestedContainer'
                         borderColor='borderedGrayButton'
@@ -256,6 +257,7 @@ const AddBills = (props: OnboardingScreenProps<'AddBills'>) => {
         </Box>
       </View>
       <Modal
+
         visible={showModal}
         onRequestClose={() => {
           reset()
