@@ -74,6 +74,17 @@ export type GetTransactionsResponse = {
   limit?: number;
 };
 
+export type RecurringTransaction = {
+  upper_amount: number;
+  transactions: {
+    transaction_id: string;
+    date: string;
+    name: string;
+  }[]
+} & Pick<Bill, 'day' | 'week' | 'week_day' | 'month' | 'year'> & Partial<Pick<Bill, 'period'>>
+
+export type TransformedRecurringTransaction = RecurringTransaction & { name: string }
+
 export interface TransactionsSyncResponse {
   added: number;
   modified: number;

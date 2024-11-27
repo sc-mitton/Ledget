@@ -57,7 +57,7 @@ const AddCategories = (props: OnboardingScreenProps<'AddCategories'>) => {
   const scrollY = useRef(new Animated.Value(0)).current
   const scrollHeight = useRef(0)
   const touchablePagePositions = useRef<number[]>([])
-  const [, setRowsMeasured] = useState(false)
+  const [, setRowsMeasured] = useState(Math.random())
   const [categories, setCategories] = useState<Category[]>([])
   const [currentCategories, setCurrentCategories] = useState<Category[]>([])
   const [showModal, setShowModal] = useState(false)
@@ -93,14 +93,11 @@ const AddCategories = (props: OnboardingScreenProps<'AddCategories'>) => {
   useEffect(() => {
     if (categoriesData) {
       setCurrentCategories(categoriesData)
+      setTimeout(() => {
+        setRowsMeasured(Math.random())
+      }, 1000);
     }
   }, [categoriesData])
-
-  useEffect(() => {
-    setTimeout(() => {
-      setRowsMeasured(true)
-    }, 1000)
-  }, []);
 
   return (
     <Box variant='screen'>
@@ -113,7 +110,7 @@ const AddCategories = (props: OnboardingScreenProps<'AddCategories'>) => {
             Add a few categories to get started. You can always add more later.
           </Text>
         </View>
-        <Box variant='nestedContainer' style={sharedStyles.form}>
+        <Box variant='nestedContainer' style={styles.form}>
           {showFloatingAmountInput &&
             <ReAnimated.View
               entering={FadeIn}
@@ -129,8 +126,9 @@ const AddCategories = (props: OnboardingScreenProps<'AddCategories'>) => {
                   name='limit_amount'
                   render={({ field }) => (
                     <ReAnimated.View
-                      entering={SlideInDown.withInitialValues({ originY: 100 }).springify().damping(21).stiffness(200)}
-                      exiting={SlideOutDown.withInitialValues({ originY: 50 })}
+                      style={styles.floatingAmountInput}
+                      entering={SlideInDown.withInitialValues({ originY: 300 }).springify().damping(21).stiffness(200)}
+                      exiting={SlideOutDown.withInitialValues({ originY: 300 })}
                     >
                       <Box
                         style={styles.floatingAmountInput}
@@ -176,7 +174,7 @@ const AddCategories = (props: OnboardingScreenProps<'AddCategories'>) => {
               onLayout={(e) => { scrollHeight.current = e.nativeEvent.layout.height }}
               style={styles.suggestionsFlatListContainer}
             >
-              <Canvas style={[styles.topMask, styles.mask]}>
+              <Canvas style={[sharedStyles.topMask, sharedStyles.mask]}>
                 <Rect x={0} y={0} width={Dimensions.get('window').width} height={38}>
                   <LinearGradient
                     colors={[
@@ -192,7 +190,7 @@ const AddCategories = (props: OnboardingScreenProps<'AddCategories'>) => {
               <Animated.FlatList
                 style={[styles.flatList]}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={[styles.suggestionsFlatListContent, { gap: GAP }]}
+                contentContainerStyle={[sharedStyles.suggestionsFlatListContent, { gap: GAP }]}
                 onScroll={Animated.event(
                   [{ nativeEvent: { contentOffset: { y: scrollY } } }],
                   { useNativeDriver: true }
@@ -214,6 +212,7 @@ const AddCategories = (props: OnboardingScreenProps<'AddCategories'>) => {
                       if (i > index) return acc
                       return acc[1] !== pos ? [acc[0] + 1, pos] : acc
                     }, [-1, 0])[0]
+
                   const rows = touchablePagePositions.current.length === 0
                     ? 0
                     : new Set(touchablePagePositions.current).size
@@ -263,7 +262,7 @@ const AddCategories = (props: OnboardingScreenProps<'AddCategories'>) => {
                 }}
                 keyExtractor={c => isCategory(c) ? c.id : c.name}
               />
-              <Canvas style={[styles.bottomMask, styles.mask]}>
+              <Canvas style={[sharedStyles.bottomMask, sharedStyles.mask]}>
                 <Rect x={0} y={0} width={Dimensions.get('window').width} height={38}>
                   <LinearGradient
                     colors={[
@@ -295,16 +294,16 @@ const AddCategories = (props: OnboardingScreenProps<'AddCategories'>) => {
         animationType='slide'
         presentationStyle='pageSheet'
         transparent={true}
-        style={styles.modal}
+        style={sharedStyles.modal}
       >
         <Box
           backgroundColor='modalBox'
           paddingHorizontal='pagePadding'
-          style={styles.modal}
+          style={sharedStyles.modal}
         >
           <EmojiPicker value={emoji} onChange={onEmojiChange} title='Emoji' as='inline'>
-            <View style={styles.dragBarContainer}>
-              <View style={styles.dragBar}>
+            <View style={sharedStyles.dragBarContainer}>
+              <View style={sharedStyles.dragBar}>
                 <Box variant='dragBar' />
               </View>
             </View>
@@ -313,7 +312,7 @@ const AddCategories = (props: OnboardingScreenProps<'AddCategories'>) => {
             </Text>
             <View>
               <InputLabel>Name</InputLabel>
-              <View style={styles.emojiButton}>
+              <View style={sharedStyles.emojiButton}>
                 <EmojiPicker.Trigger>
                   <TextInputbase>
                     {emoji
@@ -322,7 +321,7 @@ const AddCategories = (props: OnboardingScreenProps<'AddCategories'>) => {
                   </TextInputbase>
                 </EmojiPicker.Trigger>
               </View>
-              <View style={styles.nameInput}>
+              <View style={sharedStyles.nameInput}>
                 <Controller
                   control={control}
                   render={({ field: { onChange, onBlur, value } }) => (

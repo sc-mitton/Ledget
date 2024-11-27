@@ -92,6 +92,7 @@ const Screen = (props: ModalScreenProps<'NewBill'>) => {
         <Box style={styles.moneyInputs}>
           <MoneyInput
             label='Amount'
+            accuracy={2}
             inputType={isRange ? 'range' : undefined}
             error={errors.lower_amount || errors.upper_amount}
             onChange={(value) => {

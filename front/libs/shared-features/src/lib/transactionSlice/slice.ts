@@ -20,7 +20,9 @@ import {
   RootStateWithTransactions,
   TransactionsFilter,
   TransactionsFilterState,
-  TransactionsSyncParams
+  TransactionsSyncParams,
+  RecurringTransaction,
+  TransformedRecurringTransaction
 } from './types';
 import { SplitCategory } from '../categorySlice/types';
 import { Bill } from '../billSlice/types';
@@ -149,8 +151,14 @@ export const transactionSlice = apiSlice.injectEndpoints({
       },
       keepUnusedDataFor: 60 * 30 // 30 minutes
     }),
-    getRecurringTransactions: builder.query<GetTransactionsResponse, void>({
-      query: () => ({ url: 'transactions/recurring' })
+    getRecurringTransactions: builder.query<TransformedRecurringTransaction[], void>({
+      query: () => ({ url: 'transactions/recurring' }),
+      transformResponse: (response: RecurringTransaction[]) => {
+        return response.map((item) => ({
+          ...item,
+          name: item.transactions[0].name
+        }));
+      }
     }),
     getTransactionsCount: builder.query<
       { count: number },

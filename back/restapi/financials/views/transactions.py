@@ -42,6 +42,7 @@ from financials.serializers.transactions import (
     NoteSerializer,
     MerchantSerializer
 )
+from financials.serializers.recurring_transaction import RecurringTransaction
 from financials.serializers.plaid import PlaidTransactionSerializer
 from financials.models import PlaidItem, Note
 from budget.models import Category, TransactionCategory
@@ -270,7 +271,10 @@ class TransactionViewSet(ModelViewSet):
             response = plaid_client.transactions_recurring_get(request).to_dict()
             recurring_transactions.extend(response['outflow_streams'])
 
-        return Response([], HTTP_200_OK)
+        serializer = RecurringTransaction(data=recurring_transactions, many=True)
+        serializer.is_valid(raise_exception=True)
+
+        return Response(serializer.data, status=HTTP_200_OK)
 
     @action(detail=False, methods=['post'], url_path='sync', url_name='sync',
             permission_classes=[IsAuthedVerifiedSubscriber, HasObjectAccessLooseWrite])

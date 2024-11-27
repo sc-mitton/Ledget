@@ -8,7 +8,7 @@ type Error = {
 
 export type TInput = 'single' | 'range';
 
-type BaseMoneyInputProps<T extends TInput> = {
+type BaseMoneyInputProps = {
   name?: string
   label?: string
   error?: Error
@@ -22,10 +22,10 @@ export type MoneyInputProps<T extends TInput> =
     defaultValue?: [number, number]
     limits?: [[number | undefined, number | undefined], [number | undefined, number | undefined]]
     onChange?: (value?: [number | undefined, number | undefined]) => void
-  } & BaseMoneyInputProps<T>
+  } & BaseMoneyInputProps
   : {
     inputType?: T
     defaultValue?: number
     onChange?: (value?: number) => void
     limits?: [number | undefined, number | undefined]
-  } & BaseMoneyInputProps<T>
+  } & BaseMoneyInputProps

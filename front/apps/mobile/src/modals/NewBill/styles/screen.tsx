@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-
   closeButton: {
     zIndex: 10,
     position: 'absolute',

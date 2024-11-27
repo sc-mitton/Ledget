@@ -4,7 +4,6 @@ export const billSchema = z
   .object({
     name: z
       .string()
-      .toLowerCase()
       .min(1, { message: 'required' })
       .max(50, { message: 'Name is too long.' }),
     range: z.boolean().optional(),

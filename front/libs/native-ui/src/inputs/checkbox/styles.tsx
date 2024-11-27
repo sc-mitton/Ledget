@@ -5,10 +5,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10
   },
-  checkbox: {
-    width: 24,
-    height: 24
-  },
   checkIconContainer: {
     position: 'absolute',
     width: 2,
@@ -19,6 +15,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   checkIcon: {
+    transform: [{ translateX: -.5 }],
     position: 'absolute',
   }
 });
