@@ -56,5 +56,6 @@ htmlcov
 **/.nx
 **/stats.html
 .envrc
+route53.csv
 
 note*.txt

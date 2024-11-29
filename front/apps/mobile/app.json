@@ -2,7 +2,7 @@
   "expo": {
     "jsEngine": "hermes",
     "name": "Ledget",
-    "slug": "ledget ",
+    "slug": "mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -35,7 +35,11 @@
         "backgroundColor": "#4149b0"
       },
       "softwareKeyboardLayoutMode": "pan",
-      "package": "com.ledget.mobile"
+      "package": "com.ledget.mobile",
+      "permissions": [
+        "android.permission.USE_BIOMETRIC",
+        "android.permission.USE_FINGERPRINT"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -86,6 +90,11 @@
           ]
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "9ce04f48-b47e-4d2a-9c9b-edf2a87b01d1"
+      }
+    }
   }
 }
