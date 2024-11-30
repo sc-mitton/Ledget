@@ -3,6 +3,7 @@ import { View, ScrollView, Dimensions, FlatList } from 'react-native'
 import { Emoji, Edit, Edit2 } from 'geist-native-icons';
 import Swipeable, { SwipeableMethods } from 'react-native-gesture-handler/ReanimatedSwipeable';
 import { Modal } from 'react-native';
+import Reanimated, { FadeIn } from 'react-native-reanimated';
 import { LinearGradient, Canvas, Rect, vec } from '@shopify/react-native-skia';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -152,7 +153,7 @@ const AddBills = (props: OnboardingScreenProps<'AddBills'>) => {
               data={flatListData}
               renderItem={({ item, index }) => {
                 return (
-                  <View style={[styles.suggestionOptionContainer]}>
+                  <Reanimated.View style={[styles.suggestionOptionContainer]} entering={FadeIn}>
                     <Swipeable
                       ref={swipeables[index]}
                       friction={2}
@@ -221,7 +222,7 @@ const AddBills = (props: OnboardingScreenProps<'AddBills'>) => {
                         </Button>
                       </Box>
                     </Swipeable>
-                  </View>
+                  </Reanimated.View>
                 )
               }}
               keyExtractor={(b, index) => isBill(b) ? b.id : `${index}-recurring-transaction`}

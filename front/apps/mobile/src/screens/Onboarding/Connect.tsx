@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { View } from 'react-native'
 import { Plus } from 'geist-native-icons';
 import { useSprings } from '@react-spring/web';
+import Animated, { StretchInX } from 'react-native-reanimated';
 
 import sharedStyles from './styles/shared';
 import styles from '@/components/bill-cat-select/styles';
@@ -72,13 +73,13 @@ const Connect = (props: OnboardingScreenProps<'Connect'>) => {
         </Box>
         <Box variant='nestedContainer'>
           {(plaidItems?.length || 0) > 0 &&
-            <View style={styles.logos}>
+            <Animated.View style={styles.logos} entering={StretchInX.withInitialValues({ opacity: 0 })}>
               {plaidItems?.map((item) => (
                 <Box style={styles.logo} borderWidth={3} borderColor='nestedContainer' borderRadius='circle'>
                   <InstitutionLogo institution={item.institution?.id} size={32} />
                 </Box>
               ))}
-            </View>}
+            </Animated.View>}
           <View style={styles.addAccountButtonContainer}>
             <Button
               icon={<Icon icon={Plus} size={16} strokeWidth={2} color='blueText' />}

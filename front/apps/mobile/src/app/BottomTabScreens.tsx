@@ -31,6 +31,7 @@ const BottomTabScreens = () => {
           descriptors={descriptors}
           navigation={navigation}
         />}>
+
       <Tab.Screen
         name="Home"
         component={Home}

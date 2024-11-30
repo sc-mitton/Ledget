@@ -38,14 +38,20 @@ export default function ({ children }: { children: React.ReactNode }) {
   }));
 
   useEffect(() => {
-    api.start((i) => {
-      const isActive = i + 1 === index;
-      const isBefore = i < index;
-      return {
-        width: isActive ? WIDTH * 2.25 : WIDTH,
-        opacity: isBefore || isActive ? 1 : .3
+    api.start((i) => ({
+      to: async (next) => {
+        const isActive = i + 1 === index;
+        const isBefore = i < index;
+        await next({
+          width: isActive ? WIDTH * 2.25 : WIDTH,
+          opacity: isBefore || isActive ? 1 : .3
+        });
+        await next({
+          width: WIDTH,
+          opacity: isBefore || isActive ? 1 : .3
+        });
       }
-    })
+    }));
   }, [index, size]);
 
   return (
@@ -62,7 +68,7 @@ export default function ({ children }: { children: React.ReactNode }) {
             style={styles.headerBox}
           >
             <View style={styles.backButton}>
-              <BackButton onPress={() => navigation.goBack()} />
+              {index !== 0 && <BackButton onPress={() => navigation.goBack()} />}
             </View>
             <View style={[styles.progressContainer]}>
               {springs.map((style, i) => (
