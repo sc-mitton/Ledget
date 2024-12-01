@@ -27,7 +27,7 @@ export default StyleSheet.create({
     marginVertical: 2
   },
   logo: {
-    marginLeft: -4
+    marginLeft: -8
   },
   removeButton: {
     alignItems: 'center',

@@ -23,8 +23,7 @@ const BottomTabScreens = () => {
           : (['Home', 'Budget', 'Accounts', 'Profile'] as const)[lastTab]
       }
       backBehavior='history'
-      sceneContainerStyle={styles.sceneContainer}
-      screenOptions={{ headerShown: false }}
+      screenOptions={{ headerShown: false, animation: 'fade' }}
       tabBar={({ state, descriptors, navigation }: any) =>
         <BottomNav
           state={state}

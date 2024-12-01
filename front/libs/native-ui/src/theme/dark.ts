@@ -90,7 +90,7 @@ export const darkTheme = createTheme({
     toast: palette.gray850,
     creditCardGradientStart: `hsl(${blueH}, ${blueS}%, 30%)`,
     creditCardGradientEnd: `hsl(${blueH}, ${blueS}%, 42%)`,
-    widgetPickerBackground: palette.gray875,
+    widgetPickerBackground: palette.gray900,
     widget: palette.gray850,
 
     // Borders
@@ -113,7 +113,7 @@ export const darkTheme = createTheme({
     containerDragBar: palette.gray200,
 
     // Shadows
-    navShadow: palette.gray900,
+    navShadow: palette.gray1000,
     modalShadow: palette.gray1000,
     tabsShadow: palette.gray1000,
     activeSwitchShadow: 'hsl(144, 80%, 17%)',
@@ -169,8 +169,8 @@ export const darkTheme = createTheme({
     redButton: palette.faintRed,
 
     // Category and Bill Colors
-    monthBackground: `hsl(${blueH}, 50%, 20%)`,
-    monthBorder: `hsl(${blueH}, 50%, 31%)`,
+    monthBackground: `hsl(${blueH}, 50%, 15%)`,
+    monthBorder: `hsl(${blueH}, 50%, 26%)`,
     monthColor: palette.blue100,
     monthBorder2: `hsl(${blueH}, 50%, 60%)`,
     yearBackground: `hsl(${greenH}, 58%, 17%)`,

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { CartesianChart, Area, Line, useChartPressState } from 'victory-native'
 import {
   useFont,
@@ -29,18 +29,28 @@ const windows = [
 
 interface Props {
   category: Category
-  data: {
+  data?: {
     date: string
     amount_spent: number
   }[],
-  usingFakeData: boolean
   notEnoughData: boolean
 }
+
+const tempChartData = [
+  { date: dayjs().startOf('month').subtract(3, 'month').format('YYYY-MM-DD'), amount_spent: 15 },
+  { date: dayjs().startOf('month').subtract(2, 'month').format('YYYY-MM-DD'), amount_spent: 25 },
+  { date: dayjs().startOf('month').subtract(1, 'month').format('YYYY-MM-DD'), amount_spent: 20 },
+  { date: dayjs().startOf('month').format('YYYY-MM-DD'), amount_spent: 35 },
+  { date: dayjs().format('YYYY-MM-DD'), amount_spent: 30 },
+]
 
 const Chart = (props: Props) => {
 
   const [window, setWindow] = useState<typeof windows[number]['key']>(windows[0].key)
   const { state, isActive } = useChartPressState({ x: '0', y: { amount_spent: 0 } })
+  const [xLabelFormat, setXLabelFormat] = useState('')
+  const [chartData, setChartData] = useState(tempChartData)
+  const [usingTempData, setUsingTempData] = useState(true)
 
   const font = useFont(SourceSans3Regular, 14)
   const theme = useTheme()
@@ -73,24 +83,39 @@ const Chart = (props: Props) => {
     );
   }, [value, font, fetchedSpendingData]);
 
+  useEffect(() => {
+    if (props.data && props.data.length > 1) {
+      setChartData(props.data)
+      setUsingTempData(false)
+    }
+  }, [props.data])
+
+  useEffect(() => {
+    const numberOfMonths = dayjs(props.data?.[0]?.date).diff(dayjs(props.data?.[props.data.length - 1]?.date), 'month')
+    if (numberOfMonths > 6) {
+      setXLabelFormat('MMM YYYY')
+    } else {
+      setXLabelFormat('MMM')
+    }
+  }, [chartData])
+
   return (
     <View style={styles.chartContainer}>
       <CartesianChart
         chartPressState={state}
-        data={props.data}
+        data={chartData}
         xKey={'date'}
         yKeys={['amount_spent']}
         xAxis={{
           font,
           lineWidth: 0,
-          tickCount: window.endsWith('M') ? 4 : 5,
           labelColor:
-            !props.usingFakeData
+            !usingTempData
               ? theme.colors.faintBlueText
               : theme.colors.quaternaryText,
-          formatXLabel: (date) => window.endsWith('M')
-            ? `      ${dayjs(date).format('MMM')}`
-            : `         ${dayjs(date).format('MMM YY')}`,
+          formatXLabel: (date) => dayjs(date).isSame(chartData[0].date, 'month')
+            ? '' : dayjs(date).format(xLabelFormat),
+          tickCount: 5
         }}
         yAxis={[{
           font,
@@ -102,10 +127,10 @@ const Chart = (props: Props) => {
         domainPadding={{ left: 6, right: 6 }}
         domain={{
           y: [
-            props.data.reduce((acc, h) => Math.min(acc, h.amount_spent), 0) * 1.5 -
-            (props.data.reduce((acc, h) => Math.max(acc, h.amount_spent), 0) * 1.5
-              - props.data.reduce((acc, h) => Math.min(acc, h.amount_spent), 0) * 1.5) * .2,
-            props.data.reduce((acc, h) => Math.max(acc, h.amount_spent), 0) * 1.5
+            chartData.reduce((acc, h) => Math.min(acc, h.amount_spent), 0) * 1.5 -
+            (chartData.reduce((acc, h) => Math.max(acc, h.amount_spent), 0) * 1.5
+              - chartData.reduce((acc, h) => Math.min(acc, h.amount_spent), 0) * 1.5) * .2,
+            chartData.reduce((acc, h) => Math.max(acc, h.amount_spent), 0) * 1.5
           ]
         }}
       >
@@ -114,18 +139,18 @@ const Chart = (props: Props) => {
             <Line
               animate={{ type: 'spring', duration: 300 }}
               points={points.amount_spent}
-              color={!props.usingFakeData ? theme.colors.blueChartColor : theme.colors.quaternaryText}
+              color={!usingTempData ? theme.colors.blueChartColor : theme.colors.quaternaryText}
               strokeWidth={3}
-              curveType='natural'
+              curveType='linear'
             />
             <Area
               y0={chartBounds.bottom}
               points={points.amount_spent}
               animate={{ type: 'spring', duration: 300 }}
-              curveType='natural'
+              curveType='linear'
             >
               <LinearGradient
-                colors={!props.usingFakeData
+                colors={!usingTempData
                   ? [theme.colors.blueChartGradientStart, theme.colors.mainBackground]
                   : [theme.colors.emptyChartGradientStart, theme.colors.mainBackground]
                 }
@@ -133,7 +158,7 @@ const Chart = (props: Props) => {
                 end={vec(chartBounds.bottom, chartBounds.bottom)}
               />
             </Area>
-            {props.usingFakeData && props.notEnoughData && (
+            {usingTempData && props.notEnoughData && (
               <SkText
                 x={chartBounds.right / 3}
                 y={chartBounds.bottom / 1.375}
@@ -142,7 +167,7 @@ const Chart = (props: Props) => {
                 text='Not enough data yet'
               />
             )}
-            {isActive && !props.usingFakeData && (
+            {isActive && !usingTempData && (
               <SkText
                 x={textXPosition}
                 y={textYPosition}
@@ -151,7 +176,7 @@ const Chart = (props: Props) => {
                 text={value}
               />
             )}
-            {isActive && !props.usingFakeData && (
+            {isActive && !usingTempData && (
               <Circle
                 cx={state.x.position}
                 cy={state.y.amount_spent.position}

@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   },
   menuButtonContainer: {
     position: 'absolute',
-    top: 8,
+    top: 0,
     right: 24,
     zIndex: 10,
   },

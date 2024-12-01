@@ -33,7 +33,7 @@ const EmojiHeader = ({ category }: { category: Category }) => {
               {category.name.charAt(0).toUpperCase() + category.name.slice(1)}
             </Header>
             <View style={styles.spendingData}>
-              <DollarCents withCents={false} color='secondaryText' value={category.amount_spent} />
+              <DollarCents withCents={false} color='secondaryText' value={category.amount_spent || 0} />
               <Text color='secondaryText' >spent of</Text>
               <DollarCents withCents={false} color='secondaryText' value={category.limit_amount} />
             </View>
@@ -45,11 +45,11 @@ const EmojiHeader = ({ category }: { category: Category }) => {
           tint={mode === 'dark' ? 'dark' : 'light'}
         />
         <Canvas style={StyleSheet.absoluteFill}>
-          <Rect x={0} y={0} width={Dimensions.get('window').width} height={150}>
+          <Rect x={0} y={0} width={Dimensions.get('window').width} height={125}>
             <LinearGradient
               colors={[
-                mode === 'dark' ? 'hsla(0, 0%, 0%, 0)' : 'hsla(0, 0%, 100%, 0)',
-                theme.colors.nestedContainer
+                mode === 'dark' ? 'hsla(0, 0%, 0%, 0)' : theme.colors.mainBackground,
+                theme.colors.mainBackground
               ]}
               start={vec(0, 0)}
               end={vec(0, 150)}
@@ -62,9 +62,6 @@ const EmojiHeader = ({ category }: { category: Category }) => {
         ]}>
           {category.emoji}
         </Text>
-        <View style={styles.seperator}>
-          <Seperator backgroundColor='mainScreenSeperator' variant='bare' height={2} />
-        </View>
       </Box>
     </>
   )

@@ -50,7 +50,7 @@ export default function BakedMenu(props: BudgetScreenProps<'Bill'>) {
         ]}
       >
         <Box padding='xxs' borderRadius={'circle'}>
-          <Icon icon={MoreHorizontal} size={28} strokeWidth={2} color='secondaryText' />
+          <Icon icon={MoreHorizontal} size={24} strokeWidth={2} color='secondaryText' />
         </Box>
       </Menu>
     </View>

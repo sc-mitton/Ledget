@@ -16,18 +16,10 @@ import Chart from './Chart'
 import HistoryBox from './HistoryBox'
 import AlertsBox from './AlertsBox'
 
-const tempChartData = [
-  { date: dayjs().startOf('month').subtract(3, 'month').format('YYYY-MM-DD'), amount_spent: 15 },
-  { date: dayjs().startOf('month').subtract(2, 'month').format('YYYY-MM-DD'), amount_spent: 25 },
-  { date: dayjs().startOf('month').subtract(1, 'month').format('YYYY-MM-DD'), amount_spent: 20 },
-  { date: dayjs().startOf('month').format('YYYY-MM-DD'), amount_spent: 35 },
-  { date: dayjs().format('YYYY-MM-DD'), amount_spent: 30 },
-]
+
 
 const Category = (props: BudgetScreenProps<'Category'>) => {
   const [tabIndex, setTabIndex] = useState(0);
-  const [chartData, setChartData] = useState(tempChartData);
-  const [usingFakeData, setUsingFakeData] = useState(true);
 
   const { data: fetchedSpendingData } = useGetCategorySpendingHistoryQuery({
     categoryId: props.route.params.category.id,
@@ -39,26 +31,20 @@ const Category = (props: BudgetScreenProps<'Category'>) => {
     })
   }, [])
 
-  useEffect(() => {
-    if ((fetchedSpendingData?.length || 0) > 3) {
-      setChartData(fetchedSpendingData?.map((item) => ({
-        date: dayjs(`${item.year}-${item.month}-01`).format('MM-DD-YYYY'),
-        amount_spent: Big(item.amount_spent).toNumber()
-      })) || [])
-      setUsingFakeData(false);
-    }
-  }, [fetchedSpendingData])
-
   return (
-    <Box variant='nestedScreen'>
+    <Box variant='nestedScreen' paddingHorizontal='none'>
       <EmojiHeader category={props.route.params.category} />
       <Chart
-        data={chartData}
-        usingFakeData={usingFakeData}
+        data={
+          fetchedSpendingData?.map((item) => ({
+            date: dayjs(`${item.year}-${item.month}-01`).format('MM-DD-YYYY'),
+            amount_spent: Big(item.amount_spent).toNumber()
+          }))
+        }
         notEnoughData={(fetchedSpendingData?.length || 0) < 3}
         category={props.route.params.category}
       />
-      <Box style={styles.boxesContainer} marginBottom='navHeight'>
+      <Box style={styles.boxesContainer} marginBottom='navHeight' paddingHorizontal='pagePadding'>
         <View style={styles.tabButtons}>
           <TabsTrack
             containerStyle={styles.tabsTrack}

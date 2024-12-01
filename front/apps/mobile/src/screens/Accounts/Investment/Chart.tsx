@@ -127,7 +127,7 @@ const Chart = () => {
             ),
             {
               label: 'All Accounts',
-              icon: () => <Icon icon={Check} size={16} strokeWidth={2} color={accounts ? 'transparent' : 'blueText'} />,
+              icon: () => <Icon icon={Check} strokeWidth={2} color={accounts ? 'transparent' : 'blueText'} />,
               onSelect: () => dispatch(setInvestmentsScreenAccounts(undefined))
             }
           ]}

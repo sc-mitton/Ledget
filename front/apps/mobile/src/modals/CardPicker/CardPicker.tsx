@@ -90,7 +90,7 @@ const AccountPicker = (props: ModalScreenProps<'PickerCard'>) => {
           </Text>
         </View>
       </View>
-      <Seperator backgroundColor='modalSeperator' variant='bare' />
+      <Seperator backgroundColor='modalSeperator' variant='s' />
       <View style={styles.cardsContainer}>
         {accounts &&
           <GridSortableList

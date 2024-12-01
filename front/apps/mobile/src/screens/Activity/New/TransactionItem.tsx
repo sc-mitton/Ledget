@@ -162,7 +162,7 @@ const Item = (props: Props) => {
                     p.accounts.find((account) => account.id === item.account))?.institution?.logo
                 } />
                 <View style={styles.transactionInfo}>
-                  <Text style={styles.transactionName}>
+                  <Text style={styles.transactionName} variant='bold'>
                     {focused
                       ? item.name.length > 32 ? `${item.name.slice(0, 32)} ...` : item.name
                       : item.name.length > 17 ? `${item.name.slice(0, 17)} ...` : item.name}

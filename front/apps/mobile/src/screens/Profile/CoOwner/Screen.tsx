@@ -67,13 +67,19 @@ const Screen = (props: ProfileScreenProps<'CoOwner'>) => {
             :
             <View style={styles.accounts}>
               {plaidItems?.filter((item) => item.user === user?.id).map((item) => (
-                <View style={styles.logo} key={`logo-${item.id}`}>
+                <Box
+                  borderColor='nestedContainer'
+                  borderWidth={2.5}
+                  borderRadius='circle'
+                  style={styles.logo}
+                  key={`logo-${item.id}`}
+                >
                   <InstitutionLogo
                     size={26}
                     key={item.id}
                     data={item.institution?.logo}
                   />
-                </View>
+                </Box>
               ))}
             </View>
           }
