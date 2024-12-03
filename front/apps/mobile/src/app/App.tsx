@@ -1,9 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { StatusBar } from 'expo-status-bar';
-import { Platform, LogBox } from 'react-native';
+import { Platform, LogBox, UIManager } from 'react-native';
 import { useFonts } from 'expo-font';
 import { MMKV } from 'react-native-mmkv'
+import {
+  configureReanimatedLogger,
+  ReanimatedLogLevel,
+} from 'react-native-reanimated';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as NavigationBar from 'expo-navigation-bar';
 import * as SplashScreen from 'expo-splash-screen';
@@ -14,7 +18,9 @@ import {
   setSession,
   setDeviceToken,
   selectSession,
-  selectDeviceToken
+  selectDeviceToken,
+  selectEnvironment,
+  setEnvironment
 } from '@ledget/shared-features';
 import styles from './styles/app';
 import { Box } from '@ledget/native-ui'
@@ -23,7 +29,6 @@ import { ENV, IOS_LEDGET_API_URI, ANDROID_LEDGET_API_URI } from '@env';
 import { useAppearance } from '@features/appearanceSlice';
 import { RootStackParamList } from '@types';
 import { useModalStyleInterpolator, useAppDispatch, useAppSelector } from '@hooks';
-import { selectEnvironment, setEnvironment } from '@ledget/shared-features';
 import Authentication from './Authentication';
 import BottomTabScreens from './BottomTabScreens';
 import Onboarding from '../screens/Onboarding/Stack';
@@ -40,16 +45,27 @@ import Toast from './Toast';
 
 export const storage = new MMKV();
 
-LogBox.ignoreAllLogs();
+LogBox.ignoreAllLogs(false);
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
 SplashScreen.preventAutoHideAsync();
 
-// SplashScreen.setOptions({
-//   duration: 1000,
-//   fade: true,
-// });
+SplashScreen.setOptions({
+  duration: 500,
+  fade: true,
+});
+
+if (Platform.OS === 'android') {
+  if (UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
+}
+
+configureReanimatedLogger({
+  level: ReanimatedLogLevel.warn,
+  strict: false
+});
 
 const useAuthLogic = () => {
   const dispatch = useAppDispatch();
