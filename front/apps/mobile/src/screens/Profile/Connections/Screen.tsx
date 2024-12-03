@@ -10,6 +10,7 @@ import { usePlaidLink } from '@hooks';
 import { BackHeader, Box } from '@ledget/native-ui';
 import { useCardStyleInterpolator } from "@/hooks";
 import Connection from './Connection/Screen';
+import { Fragment } from 'react';
 
 const Stack = createStackNavigator<ConnectionsStackParamList>();
 
@@ -36,8 +37,8 @@ const Connections = ({
           {plaidItems?.length || 0 > 0
             ?
             plaidItems?.filter((item) => item.user === user?.id).map((item, i) => (
-              <>
-                <View style={styles.row} key={`connection-${i}`}>
+              <Fragment key={`connection-${i}`}>
+                <View style={styles.row}>
                   <ChevronTouchable onPress={() => navigation.navigate('Connection', { item: item.id })}>
                     {item.login_required
                       ? <Icon icon={AlertCircleFill} color='alert' borderColor='mainText' />
@@ -49,7 +50,7 @@ const Connections = ({
                 </View>
                 {i < plaidItems?.filter((item) => item.user === user?.id).length - 1 &&
                   <Seperator variant='bare' backgroundColor='nestedContainerSeperator' />}
-              </>
+              </Fragment>
             ))
             : <Text color='quinaryText'>No connections</Text>
           }
@@ -66,15 +67,15 @@ const Connections = ({
             >
               <Box width='100%'>
                 {plaidItems?.filter((item) => item.user === coOwner?.id).map((item, i) => (
-                  <>
-                    <View style={styles.row} key={`connection-${i}`}>
+                  <Fragment key={`connection-${i}`}>
+                    <View style={styles.row}>
                       <ChevronTouchable onPress={() => navigation.navigate('Connection', { item: item.id })}>
                         <InstitutionLogo data={item.institution?.logo} />
                         <Text>{item.institution?.name}</Text>
                       </ChevronTouchable>
                     </View>
                     <Seperator variant='bare' backgroundColor='nestedContainerSeperator' />
-                  </>
+                  </Fragment>
                 ))}
                 {plaidItems?.filter((item) => item.user === coOwner?.id).length === 0 && (
                   <Text color='quinaryText'>No connections</Text>
@@ -115,7 +116,6 @@ const ConnectionsStack = () => {
         header: (props) => <BackHeader {...props} />,
         cardStyleInterpolator,
       }}
-      id='connections'
     >
       <Stack.Screen options={{ headerShown: false }} name='All' component={Connections} />
       <Stack.Screen name='Connection' component={Connection} />
