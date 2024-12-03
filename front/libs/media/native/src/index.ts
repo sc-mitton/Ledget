@@ -15,3 +15,5 @@ export { default as TourBills } from './images/TourBills';
 export { default as TourActivity } from './images/TourActivity';
 export { default as TourAccounts } from './images/TourAccounts';
 export { default as LinkGraphic } from './images/LinkGraphic';
+export { default as WidgetsGraphicDark } from './images/WidgetsGraphicDark';
+export { default as WidgetsGraphicLight } from './images/WidgetsGraphicLight';

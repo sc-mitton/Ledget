@@ -3,24 +3,29 @@ import { StyleSheet, Dimensions, View } from "react-native"
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated"
 import { Canvas, Rect, vec, LinearGradient } from '@shopify/react-native-skia';
 import { useTheme } from "@shopify/restyle";
-import { Edit2 } from "geist-native-icons";
+import { Edit2, Plus } from "geist-native-icons";
 
 import styles from "../styles/main"
 import { HomeScreenProps } from "@types"
 import { useAppDispatch } from "@hooks"
-import { Button, Icon, Header2, Box } from "@ledget/native-ui"
+import { Button, Icon, Header2, Box, Text } from "@ledget/native-ui"
 import { Widgets as WidgetsIcon } from '@ledget/media/native';
 import { useEffect } from "react"
 import { hideBottomTabs } from "@/features/uiSlice"
 import { useGetMeQuery } from "@ledget/shared-features"
+import { selectWidgets } from "@/features/widgetsSlice";
+import { useAppSelector } from '@hooks'
+import { WidgetsGraphicDark, WidgetsGraphicLight } from "@ledget/media/native";
 import WidgetsBento from "./WidgetsBento"
+import { useAppearance } from "@/features/appearanceSlice";
 
 const MainScreen = (props: HomeScreenProps<'Main'>) => {
   const { data: user } = useGetMeQuery();
   const dispatch = useAppDispatch()
   const [showOverlay, setShowOverlay] = useState(false)
   const theme = useTheme()
-
+  const { mode } = useAppearance()
+  const selectedStoredWidgets = useAppSelector(selectWidgets);
 
   useEffect(() => {
     if (props.route.params?.state === 'dropping') {
@@ -65,12 +70,13 @@ const MainScreen = (props: HomeScreenProps<'Main'>) => {
                 />}
               {['dropping', 'idle'].includes(props.route.params?.state) &&
                 <>
-                  <Button
-                    onPress={() => { props.navigation.setParams({ state: 'editing' }) }}
-                    variant='square'
-                    backgroundColor='grayButton'
-                    icon={<Icon icon={Edit2} color='mainText' size={18} />}
-                  />
+                  {selectedStoredWidgets.length > 0 &&
+                    <Button
+                      onPress={() => { props.navigation.setParams({ state: 'editing' }) }}
+                      variant='square'
+                      backgroundColor='grayButton'
+                      icon={<Icon icon={Edit2} color='mainText' size={18} />}
+                    />}
                   <Button
                     onPress={() => {
                       props.navigation.setParams({ state: 'picking' })
@@ -117,6 +123,33 @@ const MainScreen = (props: HomeScreenProps<'Main'>) => {
           />
         </Animated.View>
       )}
+      {props.route.params?.state === 'idle' && selectedStoredWidgets.length === 0 &&
+        <View style={styles.graphicContainer}>
+          <View style={styles.graphic}>
+            {mode === 'dark'
+              ? <WidgetsGraphicDark />
+              : <WidgetsGraphicLight />
+            }
+            <View style={styles.message}>
+              <Text color='tertiaryText' textAlign="center">
+                Welcome to your custom dashboard where you can
+                add widgets to track all your financial activity.
+              </Text>
+              <Button
+                label="Add Widget"
+                textColor='blueText'
+                labelPlacement="left"
+                onPress={() => {
+                  props.navigation.setParams({ state: 'picking' })
+                  dispatch(hideBottomTabs(true))
+                  setShowOverlay(true)
+                }}
+                icon={<Icon icon={Plus} color='blueText' size={18} strokeWidth={2} />}
+              />
+            </View>
+          </View>
+        </View>
+      }
       <WidgetsBento {...props} />
     </>
   )

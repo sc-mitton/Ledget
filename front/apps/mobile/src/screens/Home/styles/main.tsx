@@ -37,6 +37,25 @@ const styles = StyleSheet.create({
     right: 0,
     height: 28,
     transform: [{ translateY: 28 }]
+  },
+  graphicContainer: {
+    zIndex: 1,
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  graphic: {
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  message: {
+    width: 300,
+    transform: [{ translateY: -75 }],
+    gap: 12,
+    alignItems: 'center'
   }
 });
 
