@@ -14,9 +14,9 @@ const PickerOption = ({ loading }: { loading: boolean }) => {
   return (
     <Box padding='xxs' style={styles.box}>
       <View style={styles.title}>
-        <View style={[{ backgroundColor: theme.colors.yearColor, borderColor: theme.colors.whiteText }, styles.dot]} />
+        <View style={[{ backgroundColor: theme.colors.yearColor, borderColor: theme.colors.nestedContainer }, styles.dot]} />
         <View style={styles.overlappingDot}>
-          <View style={[{ backgroundColor: theme.colors.monthColor, borderColor: theme.colors.whiteText }, styles.dot]} />
+          <View style={[{ backgroundColor: theme.colors.monthColor, borderColor: theme.colors.nestedContainer }, styles.dot]} />
         </View>
         <Text color='secondaryText' fontSize={13}>
           {dayjs(`${year}-${month}-01`).format('MMM')}&nbsp;Spending
@@ -28,14 +28,14 @@ const PickerOption = ({ loading }: { loading: boolean }) => {
       <Box style={styles.bottomRow} paddingHorizontal='xxxs'>
         <View style={styles.bottomRowCell}>
           <View style={styles.bottomTitle}>
-            <View style={[{ backgroundColor: theme.colors.monthColor, borderColor: theme.colors.whiteText }, styles.dot]} />
+            <View style={[{ backgroundColor: theme.colors.monthColor, borderColor: theme.colors.nestedContainer }, styles.dot]} />
             <Text fontSize={12} color='secondaryText'>Month</Text>
           </View>
           <Box style={styles.dollarPlaceholder} backgroundColor='transactionShimmer' />
         </View>
         <View style={styles.bottomRowCell}>
           <View style={styles.bottomTitle}>
-            <View style={[{ backgroundColor: theme.colors.yearColor, borderColor: theme.colors.whiteText }, styles.dot]} />
+            <View style={[{ backgroundColor: theme.colors.yearColor, borderColor: theme.colors.nestedContainer }, styles.dot]} />
             <Text fontSize={12} color='secondaryText'>Year</Text>
           </View>
           <Box style={styles.dollarPlaceholder} backgroundColor='transactionShimmer' />

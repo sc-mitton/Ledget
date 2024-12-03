@@ -23,10 +23,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dot: {
-    width: 10,
-    height: 10,
-    borderRadius: 120,
-    borderWidth: 1.5
+    width: 11,
+    height: 11,
+    borderRadius: 5.5,
+    borderWidth: 2
   },
   smallDot: {
     width: 6,
