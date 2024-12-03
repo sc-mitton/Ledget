@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
 import { useTheme } from '@shopify/restyle';
+import { View, ScrollView } from 'react-native';
 
 import styles from './styles/screen';
 import { Box } from '@ledget/native-ui';
@@ -9,11 +9,12 @@ import Categories from './categories/Categories';
 import CategoriesHeader from './categories/Header';
 import Bills from './bills/Bills';
 import BillsHeader from './bills/Header';
+import Context from './context';
 
 const MainScreen = (props: BudgetScreenProps<'Main'>) => {
   const theme = useTheme()
-  const [categoriesIndex, setCategoriesIndex] = useState(0)
-  const [billsIndex, setBillsIndex] = useState(0)
+  const [stickyIndices, setStickyIndices] = useState([0, 2])
+  const topOfBillsYPosition = useRef(0)
 
   return (
     <Box variant='screen'>
@@ -21,16 +22,29 @@ const MainScreen = (props: BudgetScreenProps<'Main'>) => {
         style={styles.scrollView}
         contentContainerStyle={[{ paddingBottom: theme.spacing.navHeight * 1 }]}
         showsVerticalScrollIndicator={false}
-        stickyHeaderIndices={[0, 2, 3]}
+        stickyHeaderIndices={stickyIndices}
+        onScrollBeginDrag={() => { setStickyIndices([0, 2, 3]) }}
+        onMomentumScrollEnd={({ nativeEvent: ne }) => {
+          if (ne.contentOffset.y < (topOfBillsYPosition.current - 100)) {
+            setStickyIndices([0, 2])
+          }
+        }}
+      // Sticky headers mess up layout transitions and this is the only fix
       >
-        <CategoriesHeader index={categoriesIndex} />
-        <Categories {...props} setIndex={setCategoriesIndex} />
-        <View style={styles.scrollViewSpacer} />
-        <BillsHeader index={billsIndex} />
-        <Bills {...props} setIndex={setBillsIndex} />
+        <CategoriesHeader />
+        <Categories {...props} />
+        <View
+          onLayout={(e) => {
+            topOfBillsYPosition.current = e.nativeEvent.layout.y
+          }}
+          style={styles.scrollViewSpacer} />
+        <BillsHeader />
+        <Bills {...props} />
       </ScrollView>
     </Box>
   )
 }
 
-export default MainScreen
+export default function (props: BudgetScreenProps<'Main'>) {
+  return <Context><MainScreen {...props} /></Context>
+}

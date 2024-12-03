@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, memo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
 import { SlotText } from 'react-native-slot-text';
@@ -8,10 +8,11 @@ import Big from 'big.js';
 import styles from './styles/categories';
 import sharedStyles from '../styles/shared-styles';
 import { useAppSelector } from '@/hooks';
-import { selectCategoryMetaData, Category } from '@ledget/shared-features';
+import { selectCategoryMetaData } from '@ledget/shared-features';
 import { Box, CarouselDots, Text } from '@ledget/native-ui';
+import { useBudgetContext } from '../context';
 
-const Progress = ({ period }: { period: Category['period'] }) => {
+const Progress = () => {
   const {
     monthly_spent,
     yearly_spent,
@@ -21,61 +22,60 @@ const Progress = ({ period }: { period: Category['period'] }) => {
   const theme = useTheme();
 
   const width = useSharedValue(0);
+  const { categoriesIndex } = useBudgetContext();
 
   useEffect(() => {
-    width.value = withSpring(period === 'month'
+    width.value = withSpring(categoriesIndex === 1
       ? (monthly_spent / limit_amount_monthly) * 100
       : (yearly_spent / limit_amount_yearly) * 100
     );
-  }, [period]);
+  }, [categoriesIndex]);
 
   return (
     <View>
       <View style={styles.progressHeader}>
         <SlotText
           fontStyle={[
-            { color: period === 'month' ? theme.colors.monthColor : theme.colors.yearColor },
+            { color: categoriesIndex === 0 ? theme.colors.monthColor : theme.colors.yearColor },
             styles.fontStyle
           ]}
-          value={
-            period === 'month'
-              ? `${monthly_spent}`
-              : `${yearly_spent}`
-          }
+          value={categoriesIndex === 0 ? monthly_spent : yearly_spent}
           includeComma={true}
-          animationDuration={200}
+          animationDuration={300}
           prefix={'$'}
         />
-        <Text color={period === 'month' ? 'monthColor' : 'yearColor'} style={styles.spentOf}>
+        <Text color={categoriesIndex === 0 ? 'monthColor' : 'yearColor'} style={styles.spentOf}>
           spent of
         </Text>
         <SlotText
           fontStyle={[
-            { color: period === 'month' ? theme.colors.monthColor : theme.colors.yearColor },
+            { color: categoriesIndex === 0 ? theme.colors.monthColor : theme.colors.yearColor },
             styles.fontStyle
           ]}
+          prefix={'$'}
+          animationDuration={300}
           value={
-            period === 'month'
-              ? `${Big(limit_amount_monthly).div(100).toNumber()}`
-              : `${Big(limit_amount_yearly).div(100).toNumber()}`
+            categoriesIndex === 1
+              ? Big(limit_amount_monthly).div(100).toNumber()
+              : Big(limit_amount_yearly).div(100).toNumber()
           }
           includeComma={true}
-          animationDuration={200}
-          prefix={'$'}
         />
       </View>
       <View style={styles.progressBarContainer}>
         <Animated.View style={[styles.progressBar, { width: width }]} />
         <Box
           style={styles.progressBarBack}
-          backgroundColor={period === 'month' ? 'monthColor' : 'yearColor'}
+          backgroundColor={categoriesIndex === 0 ? 'monthColor' : 'yearColor'}
         />
       </View>
     </View>
   )
 }
 
-const Header = ({ index }: { index: number }) => {
+const Header = () => {
+  const { categoriesIndex } = useBudgetContext();
+
   return (
     <View style={styles.headerContainer}>
       <Box backgroundColor='mainBackground' style={[StyleSheet.absoluteFill, styles.backPanel]} />
@@ -86,16 +86,16 @@ const Header = ({ index }: { index: number }) => {
         style={sharedStyles.boxTopHalf}
       >
         <View style={sharedStyles.carouselDots}>
-          <CarouselDots length={2} currentIndex={index} />
+          <CarouselDots length={2} currentIndex={categoriesIndex} />
         </View>
         <View style={styles.header}>
           <Text>
-            {index === 0 ? 'Monthly' : 'Yearly'} Spending
+            {categoriesIndex === 0 ? 'Monthly' : 'Yearly'} Spending
           </Text>
-          <Progress period={index === 0 ? 'month' : 'year'} />
+          <Progress />
         </View>
       </Box>
     </View>
   )
 }
-export default Header
+export default memo(Header);

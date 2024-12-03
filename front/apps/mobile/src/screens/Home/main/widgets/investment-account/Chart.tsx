@@ -33,11 +33,11 @@ const ChartSkeleton = (props: Props) => {
   const font = useFont(SourceSans3Regular, 14)
   const tempFont = useFont(SourceSans3Regular, 13)
   const tipOpacity = useSharedValue(0);
-  const [slotsValue, setSlotsValue] = useState<`${number}`>();
+  const [slotsValue, setSlotsValue] = useState<number>(0);
 
   useAnimatedReaction(() => state.y.balance.value.value, (value) => {
-    const newValue = `${value}`.split('.')[0];
-    runOnJS(setSlotsValue)(newValue as `${number}`);
+    const newValue = parseInt(`${value}`.split('.')[0]);
+    runOnJS(setSlotsValue)(newValue);
   });
 
   useAnimatedReaction(() => isActive, (active) => {
@@ -68,7 +68,7 @@ const ChartSkeleton = (props: Props) => {
                 styles.fontStyle
               ]}
               prefix='$'
-              value={slotsValue as any}
+              value={slotsValue}
               animationDuration={200}
               includeComma={true}
             />

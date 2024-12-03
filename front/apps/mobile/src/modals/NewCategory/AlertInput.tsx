@@ -92,7 +92,7 @@ const AlertInput = (props: Props) => {
             <View style={styles.animatedNumbersContainer}>
               <SlotText
                 fontStyle={[styles.animatedNumbers, { color: theme.colors.mainText }]}
-                value={`${value}`}
+                value={value}
                 prefix='$'
                 animationDuration={200}
                 includeComma={true}

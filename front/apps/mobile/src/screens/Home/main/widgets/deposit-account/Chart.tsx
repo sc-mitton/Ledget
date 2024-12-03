@@ -22,13 +22,13 @@ const ChartSkeleton = (props: Props) => {
   const theme = useTheme();
   const { state, isActive } = useChartPressState({ x: '0', y: { balance: 0 } })
   const font = useFont(SourceSans3Regular, 14)
-  const [slotsValue, setSlotsValue] = useState<`${number}`>();
+  const [slotsValue, setSlotsValue] = useState<number>();
   const tipOpacity = useSharedValue(0);
   const [chartData, setChartData] = useState(tempDepositBalanceChartData);
 
   useAnimatedReaction(() => state.y.balance.value.value, (value) => {
-    const newValue = `${value}`.split('.')[0];
-    runOnJS(setSlotsValue)(newValue as `${number}`);
+    const newValue = parseInt(`${value}`.split('.')[0]);
+    runOnJS(setSlotsValue)(newValue);
   });
 
   useAnimatedReaction(() => isActive, (active) => {

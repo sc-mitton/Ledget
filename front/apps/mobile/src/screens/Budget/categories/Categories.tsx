@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { View } from 'react-native';
+import { LinearTransition } from 'react-native-reanimated';
 
 import sharedStyles from '../styles/shared-styles';
 import { Box, PagerView } from '@ledget/native-ui';
@@ -9,20 +10,18 @@ import { BudgetScreenProps } from '@types'
 import { useAppSelector } from '@hooks';
 import { selectBillCatSort } from '@/features/uiSlice';
 import { useGetCategoriesQuery, selectBudgetMonthYear, Category } from '@ledget/shared-features';
+import { useBudgetContext } from '../context';
 
-const Categories = (props: BudgetScreenProps<'Main'> & { setIndex: (n: number) => void }) => {
-  const [index, setIndex] = useState(0);
+const Categories = (props: BudgetScreenProps<'Main'>) => {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [dragging, setDragging] = useState(false);
   const { month, year } = useAppSelector(selectBudgetMonthYear)
   const billCatSort = useAppSelector(selectBillCatSort)
   const { data: categoriesData } = useGetCategoriesQuery(
     { month, year },
     { skip: !month || !year }
   );
-
-  useEffect(() => {
-    props.setIndex(index)
-  }, [index])
+  const { setCategoriesIndex } = useBudgetContext()
 
   useEffect(() => {
     if (categoriesData) {
@@ -51,12 +50,13 @@ const Categories = (props: BudgetScreenProps<'Main'> & { setIndex: (n: number) =
       paddingHorizontal='nestedContainerHPadding'
       backgroundColor='nestedContainer'
       style={sharedStyles.boxBottomHalf}
+      layout={LinearTransition}
     >
       <PagerView
         pageMargin={24}
         style={sharedStyles.pagerView}
-        initialPage={index}
-        onPageSelected={(e) => setIndex(e.nativeEvent.position)}
+        initialPage={0}
+        onPageSelected={(e) => setCategoriesIndex(e.nativeEvent.position)}
       >
         <View style={sharedStyles.page} key='1'>
           {categories.length
@@ -87,4 +87,4 @@ const Categories = (props: BudgetScreenProps<'Main'> & { setIndex: (n: number) =
   )
 }
 
-export default Categories;
+export default memo(Categories);

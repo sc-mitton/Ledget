@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
   },
   boxBottomHalf: {
     zIndex: -1,
+    overflow: 'hidden',
     paddingHorizontal: 0,
     justifyContent: 'flex-start',
     gap: 12,

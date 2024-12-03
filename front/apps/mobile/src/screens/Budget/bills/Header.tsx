@@ -1,21 +1,31 @@
+import { memo } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { LinearTransition } from 'react-native-reanimated';
 
 import styles from './styles/header';
 import sharedStyles from '../styles/shared-styles';
 import { Box, CarouselDots, Seperator, Text } from '@ledget/native-ui';
+import { useBudgetContext } from '../context';
 
-const Header = ({ index }: { index: number }) => {
+const Header = () => {
+  const { billsIndex } = useBudgetContext();
+
   return (
-    <View>
-      <Box backgroundColor='mainBackground' style={[StyleSheet.absoluteFill, styles.backPanel]} />
+    <>
+      <Box
+        backgroundColor='mainBackground'
+        layout={LinearTransition}
+        style={[StyleSheet.absoluteFill, styles.backPanel]}
+      />
       <Box
         paddingTop='nestedContainerVPadding'
         paddingHorizontal='nestedContainerHPadding'
         backgroundColor='nestedContainer'
+        layout={LinearTransition}
         style={sharedStyles.boxTopHalf}
       >
         <View style={sharedStyles.carouselDots}>
-          <CarouselDots length={2} currentIndex={index} />
+          <CarouselDots length={2} currentIndex={billsIndex} />
         </View>
         <View style={styles.header}>
           <Text>Bills</Text>
@@ -24,7 +34,7 @@ const Header = ({ index }: { index: number }) => {
           </View>
         </View>
       </Box>
-    </View>
+    </>
   )
 }
-export default Header
+export default memo(Header);

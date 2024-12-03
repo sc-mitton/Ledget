@@ -1,6 +1,7 @@
 import { forwardRef } from "react";
 import { createBox } from "@shopify/restyle";
 import { ViewProps, View } from "react-native";
+import Animated, { LinearTransition, BaseAnimationBuilder, LayoutAnimationFunction } from 'react-native-reanimated';
 import {
   useRestyle,
   createVariant,
@@ -8,6 +9,7 @@ import {
   spacing,
   layout,
   shadow,
+  border,
   ShadowProps,
   SpacingProps,
   BorderProps,
@@ -26,7 +28,7 @@ type RestyleProps = SpacingProps<Theme> &
   BackgroundColorProps<Theme> &
   BorderProps<Theme> &
   ShadowProps<Theme> &
-  LayoutProps<Theme>;
+  LayoutProps<Theme>
 
 const variant = createVariant({ themeKey: 'boxVariants' });
 
@@ -36,12 +38,15 @@ const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([
   spacing,
   layout,
   shadow,
+  border
 ]);
 
-export type BoxProps = RestyleProps & ViewProps;
+export type BoxProps = RestyleProps & ViewProps & {
+  layout?: LayoutAnimationFunction | typeof BaseAnimationBuilder | BaseAnimationBuilder
+}
 
-export const Box = forwardRef<View, BoxProps>(({ children, ...rest }, ref) => {
+export const Box = forwardRef<View, BoxProps>(({ children, layout, ...rest }, ref) => {
   const props = useRestyle(restyleFunctions, rest);
 
-  return <BaseBox ref={ref} {...props}>{children}</BaseBox>;
+  return <Animated.View ref={ref} {...props} layout={layout}>{children}</Animated.View>;
 });

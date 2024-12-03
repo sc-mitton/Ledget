@@ -217,7 +217,7 @@ const Selector = (widget: WidgetProps<{ accounts: string[] }>) => {
                   { color: theme.colors.mainText },
                   styles.fontStyle
                 ]}
-                value={`${Big(accounts[carouselIndex].balances?.current || 0).toNumber()}`}
+                value={Big(accounts[carouselIndex].balances?.current || 0).toNumber()}
                 animationDuration={200}
                 prefix={'$'}
                 includeComma={true}

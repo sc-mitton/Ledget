@@ -23,8 +23,6 @@ export type TContext = {
 export interface PagerViewProps extends ViewProps {
   initialPage?: number;
   pageMargin?: number;
-  onPageScroll?: (e: { nativeEvent: { position: number, offset: number, direction: 1 | -1 } }) => void;
-  onPageScrollStateChanged?: (e: { nativeEvent: { pageScrollState: 'idle' | 'dragging' | 'settling' } }) => void;
   onPageSelected?: (e: { nativeEvent: { position: number } }) => void;
 }
 

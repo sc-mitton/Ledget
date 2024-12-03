@@ -2,213 +2,165 @@ import {
   forwardRef,
   useImperativeHandle,
   useRef,
-  useEffect,
-  Children
+  Children,
+  useState,
+  useEffect
 } from 'react';
-import { View, Animated, PanResponder, Dimensions } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import Reanimated, {
-  interpolate,
   useSharedValue,
-  withTiming
+  withTiming,
+  runOnJS,
+  useAnimatedStyle
 } from 'react-native-reanimated';
+import {
+  Gesture,
+  GestureDetector
+} from 'react-native-gesture-handler';
 
 import styles from './styles/pager-view';
-import type { PagerViewProps, TPagerViewRef, DragState } from './types';
+import type { PagerViewProps, TPagerViewRef } from './types';
 
-const DURATION = 250;
+const DURATION = 300;
+const ESCAPE_VELOCITY = 1500;
+const GAP = 36;
+const ESCAPE_DISTANCE = Dimensions.get('window').width / 3;
 
 export const PagerView = forwardRef<TPagerViewRef, PagerViewProps>((props, ref) => {
   const {
-    onPageScroll,
-    onPageScrollStateChanged,
     onPageSelected,
     initialPage,
     children,
     ...rest
   } = props;
 
-  const dragState = useRef<DragState>('idle');
-  const page = useRef(initialPage ?? 0);
-  const x = useRef(new Animated.Value(0)).current;
-  const height = useSharedValue(Dimensions.get('window').height);
-  const tabSizes = useRef<{ width: number, height: number }[]>([]);
+  const page = useSharedValue(initialPage ?? 0);
+  const x = useSharedValue(Dimensions.get('window').width * page.value * -1);
+  const height = useSharedValue(0);
+  const [tabSizes, setTabSizes] = useState<{ width: number, height: number }[]>([]);
+  const [measured, setMeasured] = useState(false);
+  const initialMeasureRef = useRef<View>(null);
 
-  const panResponder = useRef(
-    PanResponder.create({
-      // Ask to be the responder:
-      onStartShouldSetPanResponder: (evt, gestureState) => {
-        return Math.abs(gestureState.dx) > 4;
-      },
-      onStartShouldSetPanResponderCapture: (evt, gestureState) => {
-        return Math.abs(gestureState.dx) > 4;
-      },
-      onMoveShouldSetPanResponder: (evt, gestureState) => {
-        return Math.abs(gestureState.dx) > 4;
-      },
-      onMoveShouldSetPanResponderCapture: (evt, gestureState) => {
-        return Math.abs(gestureState.dx) > 4;
-      },
-      onPanResponderGrant: (evt, gestureState) => {
-        dragState.current = 'dragging';
-        onPageScrollStateChanged?.({ nativeEvent: { pageScrollState: 'dragging' } });
-      },
-      onPanResponderMove: (evt, gs) => {
-        if (dragState.current !== 'dragging') return;
+  const pan = Gesture.Pan()
+    .failOffsetY([0, 0])
+    .onStart(({ translationX: tx, velocityX: vx }) => {
+      x.value = withTiming(
+        Math.min(
+          Math.pow(Math.abs(tx), .7),
+          Math.max(
+            tabSizes.slice(0, page.value).reduce((acc, curr) => acc + curr.width, 0) * -1 + tx,
+            tabSizes.slice(0, tabSizes.length - 1).reduce((acc, curr) => acc + curr.width, 0) * -1 - Math.pow(Math.abs(tx), .7)
+          )
+        ), { duration: 200 });
 
-        // x.setValue(Dimensions.get('window').width * page.current * -1 + gs.dx / 2);
-        x.setValue(
-          tabSizes.current.slice(0, page.current).reduce((acc, curr) => acc + curr.width, 0) * -1 + gs.dx
-        )
-        height.value = withTiming(
-          tabSizes.current.reduce((acc, curr, i) => Math.max(acc, curr.height), 0),
+      const direction = tx < 0 ? 1 : -1;
+
+      const pagePanningTo = direction > 0
+        ? Math.min(page.value + 1, (children as any).length - 1)
+        : Math.max(page.value - 1, 0);
+      height.value = withTiming(
+        Math.max(tabSizes[pagePanningTo].height, tabSizes[page.value].height),
+        { duration: DURATION * (1 - (Math.abs(vx) / 2000)) }
+      );
+    })
+    .onChange(({ translationX: tx, changeX: chx, velocityX: vx }) => {
+
+      // On page scroll event
+      if (Math.abs(vx) > ESCAPE_VELOCITY || Math.abs(tx) > ESCAPE_DISTANCE) {
+        const nextPage = tx > 0
+          ? Math.max(page.value - 1, 0)
+          : Math.min(page.value + 1, (children as any).length - 1);
+        x.value = withTiming(
+          tabSizes.slice(0, nextPage).reduce((acc, curr) => acc + curr.width, 0) * -1,
+          { duration: DURATION },
+        );
+        page.value = nextPage;
+        onPageSelected && runOnJS(onPageSelected)({ nativeEvent: { position: nextPage } });
+      } else {
+        x.value = Math.min(
+          Math.pow(Math.abs(tx), .7),
+          Math.max(
+            tabSizes.slice(0, page.value).reduce((acc, curr) => acc + curr.width, 0) * -1 + tx,
+            tabSizes.slice(0, tabSizes.length - 1).reduce((acc, curr) => acc + curr.width, 0) * -1 - Math.pow(Math.abs(tx), .7)
+          )
+        );
+      }
+
+    })
+    .onEnd((e) => {
+      let updatedX = 0;
+      // Revert
+      if (Math.abs(e.velocityX) < ESCAPE_VELOCITY && Math.abs(e.translationX) < ESCAPE_DISTANCE) {
+        updatedX = tabSizes.slice(0, page.value).reduce((acc, curr) => acc + curr.width, 0) * -1;
+        x.value = withTiming(
+          updatedX,
           { duration: DURATION }
         );
-
-        const nextPage = gs.dx > 0
-          ? Math.max(page.current - 1, 0)
-          : Math.min(page.current + 1, (children as any).length - 1);
-
-        if (nextPage === page.current) {
-          x.setValue(
-            tabSizes.current.slice(0, page.current).reduce((acc, curr) => acc + curr.width, 0) * -1 + gs.dx
-          )
-        } else if (Math.abs(gs.vx) > 1.5 || Math.abs(gs.dx) > Dimensions.get('window').width / 3) {
-
-          dragState.current = 'settling';
-          page.current = nextPage;
-
-          onPageScrollStateChanged?.({ nativeEvent: { pageScrollState: 'settling' } });
-          onPageSelected?.({ nativeEvent: { position: nextPage } });
-
-          Animated.timing(x, {
-            toValue: tabSizes.current.slice(0, nextPage).reduce((acc, curr) => acc + curr.width, 0) * -1,
-            duration: DURATION,
-            useNativeDriver: true
-          }).start(() => {
-            dragState.current = 'idle';
-            onPageScrollStateChanged?.({ nativeEvent: { pageScrollState: 'idle' } });
-            height.value = withTiming(
-              tabSizes.current[page.current].height,
-              { duration: DURATION }
-            );
-          })
-        }
-      },
-      onPanResponderTerminationRequest: (evt, gestureState) => {
-        // Animate to the initial position
-        if (dragState.current === 'dragging') {
-          dragState.current = 'settling';
-          Animated.timing(x, {
-            toValue: tabSizes.current.slice(0, page.current).reduce((acc, curr) => acc + curr.width, 0) * -1,
-            duration: DURATION,
-            useNativeDriver: true
-          }).start(() => {
-            dragState.current = 'idle';
-            onPageScrollStateChanged?.({ nativeEvent: { pageScrollState: 'idle' } });
-            height.value = withTiming(
-              tabSizes.current[page.current].height,
-              { duration: DURATION }
-            );
-          })
-        }
-        return true;
-      },
-      onPanResponderRelease: (evt, gestureState) => {
-        // Animate to the initial position
-        if (dragState.current === 'dragging') {
-          dragState.current = 'settling';
-          Animated.timing(x, {
-            toValue: tabSizes.current.slice(0, page.current).reduce((acc, curr) => acc + curr.width, 0) * -1,
-            duration: DURATION,
-            useNativeDriver: true
-          }).start(() => {
-            dragState.current = 'idle';
-            onPageScrollStateChanged?.({ nativeEvent: { pageScrollState: 'idle' } });
-            height.value = withTiming(
-              tabSizes.current[page.current].height,
-              { duration: DURATION }
-            );
-
-          })
-        }
-      },
-      onShouldBlockNativeResponder: (evt, gestureState) => true,
-    }),
-  ).current;
+      }
+      height.value = withTiming(tabSizes[page.value].height, { duration: DURATION });
+    });
 
   useImperativeHandle(ref, () => {
     return {
       setPage: (p: number) => {
-        page.current = p;
+        page.value = p;
         onPageSelected?.({ nativeEvent: { position: p } });
-        height.value = withTiming(
-          tabSizes.current.reduce((acc, curr, i) => Math.max(acc, curr.height), 0),
+        height.value = withTiming(tabSizes[p]?.height, { duration: DURATION });
+        x.value = withTiming(
+          tabSizes.slice(0, p).reduce((acc, curr) => acc + curr.width, 0) * -1,
           { duration: DURATION }
         );
-        Animated.timing(x, {
-          toValue: tabSizes.current.slice(0, p).reduce((acc, curr) => acc + curr.width, 0) * -1,
-          duration: DURATION,
-          useNativeDriver: true
-        }).start(() => {
-          height.value = withTiming(
-            tabSizes.current[page.current].height,
-            { duration: DURATION }
-          );
-        });
       }
     };
   });
 
-  useEffect(() => {
-    const listener = x.addListener(({ value }) => {
-      if (dragState.current === 'idle') return;
-
-      const direction = value < Dimensions.get('window').width * page.current * -1 ? 1 : -1;
-      const inputRange = direction > 0
-        ? [
-          tabSizes.current.slice(0, page.current).reduce((acc, curr) => acc + curr.width, 0) * -1,
-          tabSizes.current.slice(0, page.current + 1).reduce((acc, curr) => acc + curr.width, 0) * -1
-        ]
-        : [
-          tabSizes.current.slice(0, page.current - 1).reduce((acc, curr) => acc + curr.width, 0) * -1,
-          tabSizes.current.slice(0, page.current).reduce((acc, curr) => acc + curr.width, 0) * -1
-        ];
-
-      onPageScroll?.({
-        nativeEvent: {
-          position: page.current,
-          direction,
-          offset: interpolate(value, inputRange, [0, 1])
-        }
-      });
-    });
-
-    return () => {
-      x.removeListener(listener);
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      height: height.value || 'auto',
+      transform: [{ translateX: x.value }]
     }
-  }, []);
+  });
+
+  useEffect(() => {
+    if (tabSizes.length) {
+      height.value = tabSizes[page.value].height
+    }
+  }, [tabSizes])
 
   return (
-    <View {...rest} {...panResponder.panHandlers}>
-      <Reanimated.View style={[{ height }]} >
-        <Animated.View style={[styles.pages, { transform: [{ translateX: x }] }]}>
+    <View {...rest}>
+      <GestureDetector gesture={pan} >
+        <Reanimated.View style={[styles.pages, { gap: GAP }, animatedStyle]}>
           {Children.map(children, (child, index) => {
-            return (
-              <View style={[styles.pageContainer]}>
+            return ((measured || index === 0) &&
+              <View
+                key={index}
+                style={[styles.pageContainer]}
+              >
                 <View
                   style={styles.page}
-                  key={index}
-                  onLayout={({ nativeEvent }) => {
-                    tabSizes.current[index] = nativeEvent.layout;
-                    height.value = tabSizes.current[page.current].height;
+                  ref={index === 0 ? initialMeasureRef : undefined}
+                  onLayout={({ nativeEvent: ne }) => {
+                    if (index === 0 && !measured) {
+                      height.value = ne.layout.height;
+                      setMeasured(true);
+                    }
+                    setTabSizes((prev) => {
+                      const updated = [...prev];
+                      updated[index] = {
+                        width: ne.layout.width + GAP,
+                        height: ne.layout.height
+                      };
+                      return updated;
+                    });
                   }}
                 >
                   {child}
                 </View>
               </View>)
           })}
-        </Animated.View>
-      </Reanimated.View>
+        </Reanimated.View>
+      </GestureDetector>
     </View >
   )
 });

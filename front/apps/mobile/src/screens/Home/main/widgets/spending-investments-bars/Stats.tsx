@@ -14,16 +14,16 @@ import { useGetBreakdownHistoryQuery } from "@ledget/shared-features";
 export const HorizontalStats = ({ index }: { index: number }) => {
   const { data } = useGetBreakdownHistoryQuery();
   const theme = useTheme();
-  const [saved, setSaved] = useState(`${0}`);
+  const [saved, setSaved] = useState(0);
   const [negativeSaved, setNegativeSaved] = useState(false);
-  const [invested, setInvested] = useState(`${0}`);
+  const [invested, setInvested] = useState(0);
 
   useEffect(() => {
     if (data) {
       const { spending, investment_transfer_out, income } = data[index]
       setNegativeSaved(Big(income).minus(spending).minus(investment_transfer_out).lt(0));
-      setSaved(Big(income).minus(spending).minus(investment_transfer_out).abs().toFixed(0));
-      setInvested(`${investment_transfer_out}`);
+      setSaved(Big(income).minus(spending).minus(investment_transfer_out).abs().round(0).toNumber());
+      setInvested(investment_transfer_out);
     }
   }, [data, index]);
 
@@ -40,7 +40,7 @@ export const HorizontalStats = ({ index }: { index: number }) => {
           </View>
           <View style={sharedStyles.currencyContainer}>
             <SlotText
-              value={saved as `${number}`}
+              value={saved}
               fontStyle={[
                 { color: theme.colors.mainText },
                 styles.fontStyle
@@ -58,7 +58,7 @@ export const HorizontalStats = ({ index }: { index: number }) => {
           </View>
           <View style={sharedStyles.currencyContainer}>
             <SlotText
-              value={invested as `${number}`}
+              value={invested}
               fontStyle={[
                 { color: theme.colors.mainText },
                 styles.fontStyle
@@ -77,18 +77,18 @@ export const HorizontalStats = ({ index }: { index: number }) => {
 export const VerticalStats = ({ index }: { index: number }) => {
   const theme = useTheme();
   const { data } = useGetBreakdownHistoryQuery();
-  const [saved, setSaved] = useState(`${0}`);
+  const [saved, setSaved] = useState(0);
   const [negativeSaved, setNegativeSaved] = useState(false);
-  const [invested, setInvested] = useState(`${0}`);
-  const [income, setIncome] = useState(`${0}`);
+  const [invested, setInvested] = useState(0);
+  const [income, setIncome] = useState(0);
 
   useEffect(() => {
     if (data) {
       const { spending, investment_transfer_out, income } = data[index]
       setNegativeSaved(Big(income).minus(spending).minus(investment_transfer_out).lt(0));
-      setSaved(Big(income).minus(spending).minus(investment_transfer_out).abs().toFixed(0));
-      setInvested(`${investment_transfer_out}`);
-      setIncome(`${income}`);
+      setSaved(Big(income).minus(spending).minus(investment_transfer_out).abs().round(0).toNumber());
+      setInvested(investment_transfer_out);
+      setIncome(income);
     }
   }, [data, index]);
 
@@ -106,7 +106,7 @@ export const VerticalStats = ({ index }: { index: number }) => {
           <Text color='tertiaryText' fontSize={15}>Income</Text>
         </View>
         <SlotText
-          value={income as `${number}`}
+          value={income}
           fontStyle={[
             { color: theme.colors.mainText },
             styles.largeFontStyle
@@ -126,7 +126,7 @@ export const VerticalStats = ({ index }: { index: number }) => {
             <Text fontSize={13} lineHeight={24} color='tertiaryText'>Saved</Text>
           </View>
           <SlotText
-            value={saved as `${number}`}
+            value={saved}
             fontStyle={[
               { color: theme.colors.mainText },
               styles.fontStyle
@@ -142,7 +142,7 @@ export const VerticalStats = ({ index }: { index: number }) => {
             <Text fontSize={13} lineHeight={24} color='tertiaryText'>Invested</Text>
           </View>
           <SlotText
-            value={invested as `${number}`}
+            value={invested}
             fontStyle={[
               { color: theme.colors.mainText },
               styles.fontStyle

@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, memo } from 'react';
 import { View } from 'react-native';
+import { LinearTransition } from 'react-native-reanimated';
 
 import styles from './styles/bills';
 import sharedStyles from '../styles/shared-styles';
@@ -7,22 +8,27 @@ import { Box, TPagerViewRef, PagerView } from '@ledget/native-ui';
 import { BudgetScreenProps } from '@types';
 import List from './List';
 import Calendar from './Calendar';
+import { useBudgetContext } from '../context';
+import { useLoaded } from '@ledget/helpers';
 
-const Bills = (props: BudgetScreenProps<'Main'> & { setIndex: (index: number) => void }) => {
+const Bills = (props: BudgetScreenProps<'Main'>) => {
+  const loaded = useLoaded();
   const [index, setIndex] = useState(0);
   const ref = useRef<TPagerViewRef>(null);
+  const { setBillsIndex } = useBudgetContext();
 
   useEffect(() => {
     ref.current?.setPage(index);
-    props.setIndex(index);
+    setBillsIndex(index);
   }, [index]);
 
   return (
     <Box
-      paddingBottom='nestedContainerVPadding'
+      paddingBottom='nestedContainerHPadding'
       paddingHorizontal='nestedContainerHPadding'
       backgroundColor='nestedContainer'
       style={sharedStyles.boxBottomHalf}
+      layout={LinearTransition}
     >
       <PagerView
         ref={ref}
@@ -43,4 +49,4 @@ const Bills = (props: BudgetScreenProps<'Main'> & { setIndex: (index: number) =>
   )
 }
 
-export default Bills;
+export default memo(Bills);
