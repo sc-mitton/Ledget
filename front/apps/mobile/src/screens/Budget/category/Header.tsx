@@ -48,7 +48,7 @@ const EmojiHeader = ({ category }: { category: Category }) => {
           <Rect x={0} y={0} width={Dimensions.get('window').width} height={125}>
             <LinearGradient
               colors={[
-                mode === 'dark' ? 'hsla(0, 0%, 0%, 0)' : theme.colors.mainBackground,
+                mode === 'dark' ? 'hsla(0, 0%, 0%, 0)' : 'hsla(0, 0%, 100%, 0)',
                 theme.colors.mainBackground
               ]}
               start={vec(0, 0)}

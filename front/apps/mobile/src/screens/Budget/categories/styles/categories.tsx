@@ -17,15 +17,14 @@ const styles = StyleSheet.create({
   },
   spentOf: {
     marginTop: 2,
-    marginLeft: -3,
-    marginRight: 6,
+    marginHorizontal: 6,
     fontSize: 18,
   },
   progressHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 4,
-    paddingTop: 4
+    paddingTop: 8
   },
   progressBarContainer: {
     position: 'relative',

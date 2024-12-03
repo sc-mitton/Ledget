@@ -41,7 +41,7 @@ const EmojihHeader = ({ bill }: { bill: Bill }) => {
             <LinearGradient
               colors={[
                 mode === 'dark' ? 'hsla(0, 0%, 0%, 0)' : 'hsla(0, 0%, 100%, 0)',
-                theme.colors.nestedContainer
+                theme.colors.mainBackground
               ]}
               start={vec(0, 0)}
               end={vec(0, 150)}
@@ -49,9 +49,6 @@ const EmojihHeader = ({ bill }: { bill: Bill }) => {
           </Rect>
         </Canvas>
         <Text style={styles.blurEmoji}>{bill.emoji}</Text>
-        <View style={styles.seperator}>
-          <Seperator backgroundColor='mainScreenSeperator' variant='bare' height={2} />
-        </View>
       </Box>
     </>
   )

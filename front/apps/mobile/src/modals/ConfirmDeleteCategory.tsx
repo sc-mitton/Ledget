@@ -43,7 +43,7 @@ const ConfirmDeleteCategory = (props: ModalScreenProps<'ConfirmDeleteCategory'>)
             backgroundColor='transparent'
           />
         </View>
-        <Box variant='divider' backgroundColor='quinaryText' />
+        <Box variant='divider' backgroundColor='modalSeperator' />
         <View style={sharedStyles.splitButton}>
           <SubmitButton
             variant='main'

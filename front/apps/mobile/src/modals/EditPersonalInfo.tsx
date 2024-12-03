@@ -7,7 +7,7 @@ import { z } from 'zod';
 import styles from './styles/edit-personal-info';
 import {
   Header,
-  SubHeader2,
+  Text,
   SubmitButton,
   Modal,
   TextInput,
@@ -61,9 +61,9 @@ const EditPersonalInfo = (props: ModalScreenProps<'EditPersonalInfo'>) => {
         <View>
           <View style={styles.headerContainer}>
             <Header>Edit</Header>
-            <SubHeader2>
+            <Text color='secondaryText'>
               Edit your personal information
-            </SubHeader2>
+            </Text>
           </View>
           <Seperator backgroundColor='modalSeperator' />
           <Box marginVertical='l'>

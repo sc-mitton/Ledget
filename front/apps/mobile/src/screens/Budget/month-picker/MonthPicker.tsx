@@ -96,6 +96,7 @@ export default function DatePicker() {
                           <View style={styles.column} key={`month-${y}-${c}`}>
                             {months.map((m, r) => (
                               <Button
+                                key={`month-${y}-${m}`}
                                 backgroundColor={
                                   m === month && parseInt(y) === year ? 'blueButton' : 'transparent'
                                 }

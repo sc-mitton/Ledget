@@ -47,7 +47,7 @@ const ConfirmRemoveCoOwner = (props: ModalScreenProps<'ConfirmRemoveCoowner'>) =
             label='Cancel'
           />
         </View>
-        <Box variant='divider' backgroundColor='quinaryText' />
+        <Box variant='divider' backgroundColor='modalSeperator' />
         <View style={sharedStyles.splitButton}>
           <SubmitButton
             variant='main'

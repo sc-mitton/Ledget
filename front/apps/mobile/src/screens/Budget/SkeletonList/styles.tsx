@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
   skeletonContainer: {
     gap: 20,
     width: '100%',
-    paddingVertical: 8,
+    paddingVertical: 12,
   },
   bonesContainer: {
     flexDirection: 'row',

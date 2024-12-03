@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
   },
   rows: {
     width: '100%',
+    paddingTop: 6
   },
   rowsWithOverflow: {
     marginBottom: 24,

@@ -72,7 +72,7 @@ const Logout = (props: ModalScreenProps<'Logout'>) => {
             textColor='secondaryText'
           />
         </View>
-        <Box backgroundColor='quinaryText' variant='divider' />
+        <Box backgroundColor='modalSeperator' variant='divider' />
         <View style={sharedStyles.splitButton}>
           <SubmitButton
             backgroundColor='transparent'
