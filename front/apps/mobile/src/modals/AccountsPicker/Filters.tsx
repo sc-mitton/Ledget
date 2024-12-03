@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { ScrollView, View, StyleSheet } from 'react-native';
+import React, { useState, useEffect, Fragment } from 'react';
+import { ScrollView, View } from 'react-native';
 import {
   LinearGradient,
   Rect,
@@ -108,7 +108,7 @@ const Filters = (props: FiltersP) => {
       <View style={filters?.length ? styles.filters : undefined}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterScroll}>
           {filters.map((filter, i) => (
-            <>
+            <Fragment key={`filter-${i}`}>
               {i !== 0 && filters[i - 1].group !== filter.group &&
                 <Box style={styles.groupDelimiter} backgroundColor='borderedGrayButton' />}
               <Button
@@ -128,7 +128,7 @@ const Filters = (props: FiltersP) => {
                 {filter.dotColor &&
                   <View style={[styles.filterDot, { backgroundColor: filter.dotColor }]} />}
               </Button>
-            </>
+            </Fragment>
           ))}
         </ScrollView>
         <Canvas style={[styles.leftMask, styles.mask]}>

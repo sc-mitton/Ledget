@@ -8,6 +8,7 @@ import { Text, Header, InstitutionLogo, DollarCents } from '@ledget/native-ui';
 import { useAppSelector } from '@/hooks';
 import { selectAccountsTabDepositAccounts, selectAccountsTabCreditAccounts } from '@/features/uiSlice';
 import { Account } from '@ledget/shared-features';
+import { useId } from 'react';
 
 const headerMap = {
   'Depository': 'Accounts',
@@ -18,6 +19,7 @@ const headerMap = {
 
 export const AccountHeader = ({ accountType }: { accountType: Account['type'] }) => {
   const theme = useTheme()
+  const id = useId()
 
   const depositAccounts = useAppSelector(selectAccountsTabDepositAccounts)
   const creditAccounts = useAppSelector(selectAccountsTabCreditAccounts)
@@ -30,7 +32,7 @@ export const AccountHeader = ({ accountType }: { accountType: Account['type'] })
     >
       <View style={styles.logos}>
         {(accountType === 'depository' ? depositAccounts : creditAccounts)?.map(a => (
-          <View style={styles.logo}>
+          <View style={styles.logo} key={`${a.id}-${id}`}>
             <InstitutionLogo key={a.id} account={a.id} />
           </View>
         ))}
