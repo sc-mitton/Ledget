@@ -97,7 +97,7 @@ function SvgComponent(props: SvgProps & { size?: number }) {
         d="M91.6 179.8L107.8 179.8"
       />
       <Path
-        fill="#d1d1d1"
+        fill="#d5d5d5"
         d="M215.3 203.5h-61.8c-3.9 0-7.1-3.2-7.1-7.1V153c0-3.9 3.2-7.1 7.1-7.1h61.8c3.9 0 7.1 3.2 7.1 7.1v43.4c0 3.9-3.2 7.1-7.1 7.1z"
       />
       <Circle
