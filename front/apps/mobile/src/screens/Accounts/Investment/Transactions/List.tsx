@@ -183,6 +183,7 @@ const Transactions = (props: PTransactions) => {
               onScroll={handleScroll}
               renderSectionHeader={({ section }) => (
                 <Pressable
+                  key={`section-${section.index}`}
                   onPress={() =>
                     props.navigation.navigate('Transaction', { transaction: section.data[0] })
                   }
@@ -209,10 +210,9 @@ const Transactions = (props: PTransactions) => {
                   setStuckTitle(viewableItems[1]?.section.title)
                 }
               }}
-              keyExtractor={(item, index) => item.transaction_id}
+              keyExtractor={(_, index) => `transaction-${index}`}
               renderItem={({ item: transaction, index: i, section }) => (
                 <View
-                  key={transaction.transaction_id}
                   style={[
                     {
                       marginTop: i === 0 && section.index === 0
