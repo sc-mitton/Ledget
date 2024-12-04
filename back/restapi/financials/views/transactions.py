@@ -132,15 +132,16 @@ def sync_transactions(plaid_item: PlaidItem, default_category: Category) -> dict
         plaid_item.save()
 
     except plaid.ApiException as e:
-        if json.loads(e.body).get('error_code') == 'ITEM_LOGIN_REQUIRED':
+        error_message = json.loads(e.body).get('error_message')
+        error_code = json.loads(e.body).get('error_code')
+        if error_code == 'ITEM_LOGIN_REQUIRED':
             plaid_item.login_required = True
             plaid_item.save()
-        logger.error(e)
         raise ValidationError(
-            {'plaid': 'error syncing transactions'},
+            {'error': error_message.__str__(), 'code': error_code},
             code=HTTP_400_BAD_REQUEST
         )
-    except Exception as e:
+    except Exception as e:  # pragma: no cover
         logger.error(e)
         # Print stack trace
         import traceback

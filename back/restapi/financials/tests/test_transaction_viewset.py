@@ -1,11 +1,12 @@
 import time
 import json
-from unittest.mock import patch
-from django.conf import settings
+from unittest.mock import patch, MagicMock
 
+from django.conf import settings
 from restapi.utils import reverse
 from restapi.tests.mixins import ViewTestsMixin
 from django.utils import timezone
+from plaid import ApiException
 
 from financials.models import Transaction, PlaidItem, Note
 from budget.models import Category, Bill
@@ -227,3 +228,21 @@ class TestTransactionViewSet(ViewTestsMixin):
         self.assertEqual(response.status_code, 200)
         self.transaction.refresh_from_db()
         self.assertEqual(self.transaction.preferred_name, preferred_name)
+
+    @patch.object(plaid_client, 'transactions_sync')
+    def test_item_login_required(self, mock_sync):
+        # Make sync throw an ITEM_LOGIN_REQUIRED error
+        mock_sync.side_effect = ApiException(http_resp=MagicMock(data=json.dumps({
+            'error_code': 'ITEM_LOGIN_REQUIRED',
+            'error_message': 'Item login required'
+        })))
+
+        plaid_item = PlaidItem.objects.filter(user=self.user).first()
+
+        response = self.client.post(
+            reverse('transactions-sync'),
+            data={'item': plaid_item.id},
+            format='json'
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.data['code'], 'ITEM_LOGIN_REQUIRED')

@@ -1,7 +1,9 @@
 from unittest.mock import patch, MagicMock
+from datetime import datetime
 
-from django.urls import reverse
+from django.utils import timezone
 
+from restapi.utils import reverse
 from restapi.tests.mixins import ViewTestsMixin
 from financials.views.account import plaid_client
 from financials.models import Account
@@ -73,3 +75,23 @@ class TestPlaidItemView(ViewTestsMixin):
 
         response = self.client.get(reverse('accounts-breakdown-history'))
         self.assertEqual(response.status_code, 200)
+
+    @patch.object(plaid_client, 'accounts_get')
+    def test_get_balance_history(self, mock_accounts_get):
+        '''
+        Test the balance history endpoint
+        '''
+        mock_accounts_get.return_value = \
+            self._get_mock_accounts_get_return_response()
+
+        start = timezone.now() - timezone.timedelta(days=90)
+        start = int(start.timestamp())
+
+        end = int(datetime.now().timestamp())
+
+        response = self.client.get(
+            reverse('accounts-balance-history'),
+            {'start': start, 'end': end}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNotNone(response.data)
