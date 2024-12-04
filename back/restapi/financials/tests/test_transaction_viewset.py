@@ -150,7 +150,10 @@ class TestTransactionViewSet(ViewTestsMixin):
         )
         self.assertEqual(response.status_code, 400)
 
-    def test_get_transactions_recurring(self):
+    @patch.object(plaid_client, 'transactions_recurring_get')
+    def test_get_transactions_recurring(self, mock_recurring):
+        mock_response = mock_recurring.return_value
+        mock_response.to_dict.return_value = {'outflow_streams': []}
         response = self.client.get(reverse('transactions-recurring'))
         self.assertEqual(response.status_code, 200)
         self.assertIsNotNone(response.data)
