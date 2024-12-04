@@ -71,7 +71,10 @@ const Filled = (props: Props) => {
 
   useEffect(() => {
     if (!history || (history[0]?.balances?.length || 0) < 7) return
-    // setChartData(history[0].balances.map(v => ({ date: v.date, balance: v.value })))
+    setChartData(history[0].balances.map(v => ({
+      date: dayjs(v.date).unix(),
+      balance: v.value
+    })))
   }, [history])
 
   return (

@@ -13,7 +13,7 @@ const Screen = () => {
   const cardStyleInterpolator = useCardStyleInterpolator()
 
   return (
-    <Stack.Navigator id='accounts' initialRouteName='AccountsTabs'>
+    <Stack.Navigator initialRouteName='AccountsTabs'>
       <Stack.Group
         screenOptions={{
           header: (props) => <BackHeader {...props} pagesWithTitle={['Split']} />,

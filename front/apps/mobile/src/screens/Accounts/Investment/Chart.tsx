@@ -68,7 +68,7 @@ const Chart = () => {
 
   const [chartData, setChartData] = useState(tempChartData)
   const [useingFakeData, setUseingFakeData] = useState(true)
-  const [showWindowMenu, setShowWindowMenu] = useState(false)
+  const [blurView, setBlurView] = useState<number>()
 
   const font = useFont(SourceSans3Regular, 14)
   const theme = useTheme()
@@ -106,12 +106,31 @@ const Chart = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.accountMenu}>
+      <View style={[styles.windowMenu, { zIndex: blurView === 1 ? 20 : 0 }]}>
+        <ChartWindowsMenu
+          windows={windows}
+          onShowChange={(show) => show ? setBlurView(1) : setBlurView(undefined)}
+          onSelect={(w) => {
+            dispatch(setInvestmentsScreenWindow({
+              period: windows.find(win => win.key === w)?.period || 'year',
+              amount: windows.find(win => win.key === w)?.number || 5
+            }))
+          }}
+          defaultWindow={
+            window
+              ? windows.find(w => w.period === window?.period && w.number === window?.amount)?.key
+              || windows[windows.length - 1].key
+              : windows[0].key
+          }
+          closeOption={false}
+        />
+      </View>
+      <View style={[styles.accountMenu, { zIndex: blurView === 2 ? 20 : 0 }]}>
         <Menu
           as='menu'
           placement='left'
           closeOnSelect={true}
-          onShowChange={setShowWindowMenu}
+          onShowChange={(show) => show ? setBlurView(2) : setBlurView(undefined)}
           items={[
             ...(
               investmentsData?.results.filter(a => isInvestmentSupported(a)).map(a => ({
@@ -163,29 +182,18 @@ const Chart = () => {
             </View>}
         </View>
       </View>
-      <View style={styles.windowMenu}>
-        <ChartWindowsMenu
-          windows={windows}
-          onShowChange={setShowWindowMenu}
-          onSelect={(w) => {
-            dispatch(setInvestmentsScreenWindow({
-              period: windows.find(win => win.key === w)?.period || 'year',
-              amount: windows.find(win => win.key === w)?.number || 5
-            }))
-          }}
-          defaultWindow={
-            window
-              ? windows.find(w => w.period === window?.period && w.number === window?.amount)?.key
-              || windows[windows.length - 1].key
-              : windows[0].key
-          }
-          closeOption={false}
-        />
-      </View>
-      {showWindowMenu &&
-        <Animated.View entering={FadeIn} exiting={FadeOut} style={[StyleSheet.absoluteFill, styles.blurViewContainer]}>
+      {Number.isFinite(blurView) &&
+        <Animated.View
+          entering={FadeIn}
+          exiting={FadeOut}
+          style={[
+            StyleSheet.absoluteFill,
+            styles.blurViewContainer,
+            { zIndex: blurView }
+          ]}
+        >
           <BlurView
-            intensity={8}
+            intensity={16}
             style={[StyleSheet.absoluteFill]}
             tint={mode === 'dark' ? 'dark' : 'light'}
           />
@@ -222,53 +230,56 @@ const Chart = () => {
           padding={{ left: 0 }}
           domainPadding={{ left: 6, right: 6, top: 50, bottom: BOTTOM_PADDING }}
         >
-          {({ points, chartBounds }) => (
-            <>
-              <Area
-                y0={chartBounds.bottom}
-                points={points.balance}
-                animate={{ type: 'spring', duration: 300 }}
-                curveType='natural'
-              >
-                <LinearGradient
-                  colors={useingFakeData
-                    ? [
-                      theme.colors.emptyChartGradientStart,
-                      theme.colors.blueChartGradientEnd
-                    ]
-                    : [
-                      theme.colors.blueChartGradientStart,
-                      theme.colors.blueChartGradientStart,
-                      theme.colors.blueChartGradientEnd
-                    ]
-                  }
-                  start={vec(chartBounds.bottom, 0)}
-                  end={vec(chartBounds.bottom, chartBounds.bottom)}
+          {({ points, chartBounds }) => {
+
+            return (
+              <>
+                <Area
+                  y0={chartBounds.bottom}
+                  points={points.balance}
+                  animate={{ type: 'spring', duration: 300 }}
+                  curveType='natural'
+                >
+                  <LinearGradient
+                    colors={useingFakeData
+                      ? [
+                        theme.colors.emptyChartGradientStart,
+                        theme.colors.blueChartGradientEnd
+                      ]
+                      : [
+                        theme.colors.blueChartGradientStart,
+                        theme.colors.blueChartGradientStart,
+                        theme.colors.blueChartGradientEnd
+                      ]
+                    }
+                    start={vec(chartBounds.bottom, 0)}
+                    end={vec(chartBounds.bottom, chartBounds.bottom)}
+                  />
+                </Area>
+                <Line
+                  animate={{ type: 'spring', duration: 300 }}
+                  points={points.balance}
+                  color={useingFakeData ? theme.colors.quinaryText : theme.colors.blueChartColor}
+                  strokeWidth={2}
+                  strokeCap='round'
+                  curveType='natural'
                 />
-              </Area>
-              <Line
-                animate={{ type: 'spring', duration: 300 }}
-                points={points.balance}
-                color={useingFakeData ? theme.colors.quinaryText : theme.colors.blueChartColor}
-                strokeWidth={2}
-                strokeCap='round'
-                curveType='natural'
-              />
-              {isActive && !useingFakeData && (
-                <VictoryTooltip
-                  state={state}
-                  isActive={state.isActive}
-                  font={font}
-                  chartBounds={chartBounds}
-                  color={theme.colors.mainText}
-                  xAxisTipColor={theme.colors.tertiaryText}
-                  dotColor={theme.colors.blueText}
-                  borderColor={theme.colors.lightBlueButton}
-                  backgroundColor={theme.colors.grayButton}
-                  lineOffset={-20}
-                />)}
-            </>
-          )}
+                {isActive && !useingFakeData && (
+                  <VictoryTooltip
+                    state={state}
+                    isActive={state.isActive}
+                    font={font}
+                    chartBounds={chartBounds}
+                    color={theme.colors.mainText}
+                    xAxisTipColor={theme.colors.tertiaryText}
+                    dotColor={theme.colors.blueText}
+                    borderColor={theme.colors.lightBlueButton}
+                    backgroundColor={theme.colors.grayButton}
+                    lineOffset={-20}
+                  />)}
+              </>
+            )
+          }}
         </CartesianChart>
       </View>
     </View>

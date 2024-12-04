@@ -55,33 +55,36 @@ const Shadow = () => {
           padding={{ left: 0 }}
           domainPadding={{ left: 6, right: 6, top: 20, bottom: 100 }}
         >
-          {({ points, chartBounds }) => (
-            <>
-              <Area
-                y0={chartBounds.bottom}
-                points={points.balance}
-                animate={{ type: 'spring', duration: 300 }}
-                curveType='natural'
-              >
-                <LinearGradient
-                  colors={[
-                    theme.colors.emptyChartGradientStart,
-                    theme.colors.blueChartGradientEnd
-                  ]}
-                  start={vec(chartBounds.bottom, 0)}
-                  end={vec(chartBounds.bottom, chartBounds.bottom)}
+          {({ points, chartBounds }) => {
+
+            return (
+              <>
+                <Area
+                  y0={chartBounds.bottom}
+                  points={points.balance}
+                  animate={{ type: 'spring', duration: 300 }}
+                  curveType='linear'
+                >
+                  <LinearGradient
+                    colors={[
+                      theme.colors.emptyChartGradientStart,
+                      theme.colors.blueChartGradientEnd
+                    ]}
+                    start={vec(chartBounds.bottom, 0)}
+                    end={vec(chartBounds.bottom, chartBounds.bottom)}
+                  />
+                </Area>
+                <Line
+                  animate={{ type: 'spring', duration: 300 }}
+                  points={points.balance}
+                  color={theme.colors.quinaryText}
+                  strokeWidth={2}
+                  strokeCap='round'
+                  curveType='linear'
                 />
-              </Area>
-              <Line
-                animate={{ type: 'spring', duration: 300 }}
-                points={points.balance}
-                color={theme.colors.quinaryText}
-                strokeWidth={2}
-                strokeCap='round'
-                curveType='natural'
-              />
-            </>
-          )}
+              </>
+            )
+          }}
         </CartesianChart>
       </View>
     </View>

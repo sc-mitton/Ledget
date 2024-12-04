@@ -45,15 +45,16 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
 
   useEffect(() => {
     if (balanceHistory) {
-      const chartData = balanceHistory.reduce((acc, balance) => {
-        return acc.map((h, i) => ({
-          date: h.date,
-          balance: Big(h.balance || 0).plus(balance.history[i]?.balance || 0).toNumber()
-        }))
-      }, balanceHistory[0].history.map(h => ({ date: h.month, balance: 0 }))).reverse();
-      if (chartData.length < 2) {
-        return
-      }
+      const chartData = balanceHistory.reduce(
+        (acc, balance) => {
+          return acc.map((h, i) => ({
+            date: h.date,
+            balance: Big(h.balance || 0).plus(balance.history[i]?.balance || 0).toNumber()
+          }))
+        },
+        balanceHistory[0].history.map(h => ({ date: h.month, balance: 0 }))
+      ).reverse();
+      if (chartData.length < 2) return;
       setBalanceHistoryChartData(chartData);
     }
   }, [balanceHistory])
@@ -94,19 +95,19 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
     switch (window) {
       case '3M':
         setDateWindow({
-          start: dayjs().startOf('day').subtract(3, 'month').unix(),
+          start: dayjs().startOf('day').subtract(4, 'month').unix(),
           end: dayjs().startOf('day').unix()
         });
         break;
       case '6M':
         setDateWindow({
-          start: dayjs().startOf('day').subtract(6, 'month').unix(),
+          start: dayjs().startOf('day').subtract(7, 'month').unix(),
           end: dayjs().startOf('day').unix()
         });
         break;
       case '1Y':
         setDateWindow({
-          start: dayjs().startOf('day').subtract(1, 'year').unix(),
+          start: dayjs().startOf('day').subtract(1, 'year').subtract(1, 'month').unix(),
           end: dayjs().startOf('day').unix()
         });
         break;
@@ -124,7 +125,7 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
       {showMenu &&
         <Animated.View entering={FadeIn} exiting={FadeOut} style={[StyleSheet.absoluteFill, styles.blurViewContainer]}>
           <BlurView
-            intensity={8}
+            intensity={16}
             style={[StyleSheet.absoluteFill]}
             tint={mode === 'dark' ? 'dark' : 'light'}
           />

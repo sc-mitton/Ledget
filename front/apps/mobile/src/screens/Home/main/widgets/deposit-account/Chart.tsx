@@ -92,55 +92,58 @@ const ChartSkeleton = (props: Props) => {
         padding={{ left: -2 }}
         domainPadding={{ left: 6, right: 6, top: 20, bottom: 50 }}
       >
-        {({ points, chartBounds }) => (
-          <>
-            <Area
-              y0={chartBounds.bottom}
-              points={points.balance}
-              animate={{ type: 'timing', duration: 300 }}
-              curveType='natural'
-            >
-              <LinearGradient
-                colors={[
-                  props.data ? theme.colors.blueChartColorSecondary : theme.colors.emptyChartGradientStart,
-                  theme.colors.blueChartGradientEnd
-                ]}
-                start={vec(chartBounds.bottom, 0)}
-                end={vec(chartBounds.bottom, chartBounds.bottom)}
+        {({ points, chartBounds }) => {
+
+          return (
+            <>
+              <Area
+                y0={chartBounds.bottom}
+                points={points.balance}
+                animate={{ type: 'timing', duration: 300 }}
+                curveType='natural'
+              >
+                <LinearGradient
+                  colors={[
+                    props.data ? theme.colors.blueChartColorSecondary : theme.colors.emptyChartGradientStart,
+                    theme.colors.blueChartGradientEnd
+                  ]}
+                  start={vec(chartBounds.bottom, 0)}
+                  end={vec(chartBounds.bottom, chartBounds.bottom)}
+                />
+              </Area>
+              <Line
+                animate={{ type: 'timing', duration: 300 }}
+                points={points.balance}
+                color={theme.colors.quinaryText}
+                strokeWidth={2}
+                strokeCap='round'
+                curveType='natural'
               />
-            </Area>
-            <Line
-              animate={{ type: 'timing', duration: 300 }}
-              points={points.balance}
-              color={theme.colors.quinaryText}
-              strokeWidth={2}
-              strokeCap='round'
-              curveType='natural'
-            />
-            <Line
-              animate={{ type: 'timing', duration: 300 }}
-              points={points.balance}
-              color={props.data ? theme.colors.blueChartColor : theme.colors.quinaryText}
-              strokeWidth={2}
-              strokeCap='round'
-              curveType='natural'
-            />
-            {isActive && props.data && (
-              <VictoryTooltip
-                state={state}
-                isActive={state.isActive}
-                font={font}
-                chartBounds={chartBounds}
-                color={theme.colors.mainText}
-                xAxisTipColor={theme.colors.tertiaryText}
-                dotColor={theme.colors.blueText}
-                borderColor={theme.colors.blueChartColor}
-                backgroundColor={theme.colors.nestedContainerSeperator}
-                lineOffset={-20}
-                hidden={['tip']}
-              />)}
-          </>
-        )}
+              <Line
+                animate={{ type: 'timing', duration: 300 }}
+                points={points.balance}
+                color={props.data ? theme.colors.blueChartColor : theme.colors.quinaryText}
+                strokeWidth={2}
+                strokeCap='round'
+                curveType='natural'
+              />
+              {isActive && props.data && (
+                <VictoryTooltip
+                  state={state}
+                  isActive={state.isActive}
+                  font={font}
+                  chartBounds={chartBounds}
+                  color={theme.colors.mainText}
+                  xAxisTipColor={theme.colors.tertiaryText}
+                  dotColor={theme.colors.blueText}
+                  borderColor={theme.colors.blueChartColor}
+                  backgroundColor={theme.colors.nestedContainerSeperator}
+                  lineOffset={-20}
+                  hidden={['tip']}
+                />)}
+            </>
+          )
+        }}
       </CartesianChart>
     </View>
   )

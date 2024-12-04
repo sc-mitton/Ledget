@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { CartesianChart, Area, Line, useChartPressState } from 'victory-native';
 import {
   LinearGradient,
@@ -53,8 +53,15 @@ const Chart = (props: ChartProps) => {
           usingTempData
             ? theme.colors.transparent
             : theme.colors.faintBlueText,
-        formatXLabel: (date) => dayjs(date).isSame(chartData[0].date, 'month')
-          ? '' : dayjs(date).format(xLabelFormat),
+        formatXLabel: (date) => {
+          return date === undefined
+            ? ''
+            : dayjs(date).isSame(chartData[0].date, 'month')
+              ? ' '.repeat(16) + `${dayjs(date).format(xLabelFormat)}`
+              : dayjs(date).isSame(chartData[chartData.length - 1].date)
+                ? ''
+                : dayjs(date).format(xLabelFormat)
+        },
         tickCount: 5
       }}
       yAxis={[{
@@ -63,56 +70,58 @@ const Chart = (props: ChartProps) => {
         tickCount: 0,
         formatYLabel: () => '',
       }]}
-      padding={{ left: 0, bottom: 24 }}
-      domainPadding={{ left: 3, right: 3, top: 65, bottom: 100 }}
+      padding={{ left: 0, bottom: 20, right: -48 }}
+      domainPadding={{ top: 65, bottom: 100, right: 48 }}
     >
-      {({ points, chartBounds }) => (
-        <>
-          <Area
-            y0={chartBounds.bottom}
-            points={points.balance}
-            animate={{ type: 'spring', duration: 300 }}
-            curveType='linear'
-          >
-            <LinearGradient
-              colors={usingTempData
-                ? [
-                  theme.colors.emptyChartGradientStart,
-                  theme.colors.mainBackground
-                ]
-                : [
-                  theme.colors.blueChartGradientStart,
-                  theme.colors.blueChartGradientStart,
-                  theme.colors.blueChartGradientEnd
-                ]
-              }
-              start={vec(chartBounds.bottom, 0)}
-              end={vec(chartBounds.bottom, chartBounds.bottom)}
+      {({ points, chartBounds, xScale }) => {
+        return (
+          <>
+            <Area
+              y0={chartBounds.bottom}
+              points={points.balance}
+              animate={{ type: 'spring', duration: 300 }}
+              curveType='linear'
+            >
+              <LinearGradient
+                colors={usingTempData
+                  ? [
+                    theme.colors.emptyChartGradientStart,
+                    theme.colors.mainBackground
+                  ]
+                  : [
+                    theme.colors.blueChartGradientStart,
+                    theme.colors.blueChartGradientStart,
+                    theme.colors.blueChartGradientEnd
+                  ]
+                }
+                start={vec(chartBounds.bottom, 0)}
+                end={vec(chartBounds.bottom, chartBounds.bottom)}
+              />
+            </Area>
+            <Line
+              animate={{ type: 'spring', duration: 300 }}
+              points={points.balance.slice(0, undefined)}
+              color={usingTempData ? theme.colors.quinaryText : theme.colors.blueChartColor}
+              strokeWidth={2}
+              strokeCap='round'
+              curveType='linear'
             />
-          </Area>
-          <Line
-            animate={{ type: 'spring', duration: 300 }}
-            points={points.balance}
-            color={usingTempData ? theme.colors.quinaryText : theme.colors.blueChartColor}
-            strokeWidth={2}
-            strokeCap='round'
-            curveType='linear'
-          />
-          <VictoryTooltip
-            state={state}
-            isActive={state.isActive}
-            font={font}
-            chartBounds={chartBounds}
-            color={theme.colors.mainText}
-            xAxisTipColor={theme.colors.tertiaryText}
-            dotColor={theme.colors.blueText}
-            borderColor={theme.colors.blueChartColor}
-            backgroundColor={theme.colors.nestedContainerSeperator}
-            lineOffset={-20}
-            hidden={['verticalCrossHair', 'xTip']}
-          />
-        </>
-      )}
+            <VictoryTooltip
+              state={state}
+              isActive={state.isActive}
+              font={font}
+              chartBounds={chartBounds}
+              color={theme.colors.mainText}
+              xAxisTipColor={theme.colors.tertiaryText}
+              dotColor={theme.colors.blueText}
+              borderColor={theme.colors.blueChartColor}
+              backgroundColor={theme.colors.nestedContainerSeperator}
+              lineOffset={-20}
+              hidden={['verticalCrossHair', 'xTip']}
+            />
+          </>
+        )
+      }}
     </CartesianChart>
   )
 }

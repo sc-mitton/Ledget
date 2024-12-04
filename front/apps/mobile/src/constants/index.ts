@@ -7,13 +7,14 @@ export const chartWindows = [
 
 import dayjs from 'dayjs'
 
-export const tempDepositBalanceChartData = [
-  { date: dayjs().startOf('month').subtract(3, 'month').format('YYYY-MM-DD'), balance: 1200 },
-  { date: dayjs().startOf('month').subtract(2, 'month').format('YYYY-MM-DD'), balance: 2700 },
-  { date: dayjs().startOf('month').subtract(1, 'month').format('YYYY-MM-DD'), balance: 3700 },
-  { date: dayjs().startOf('month').format('YYYY-MM-DD'), balance: 4300 },
-  { date: dayjs().format('YYYY-MM-DD'), balance: 4500 },
-]
+export const tempDepositBalanceChartData = [1200, 2700, 3700, 4300, 4500,].map(
+  (balance, index) => ({
+    balance,
+    date: index > 0
+      ? dayjs().subtract(index, 'month').format('YYYY-MM-DD')
+      : dayjs().format('YYYY-MM-DD')
+  })
+)
 
 export const tempInvestmentsBalanceChartData = [
   5567.19,

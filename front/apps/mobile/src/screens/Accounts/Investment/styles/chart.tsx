@@ -25,18 +25,17 @@ const styles = StyleSheet.create({
   accountMenu: {
     position: 'absolute',
     top: 12,
-    left: 8,
-    zIndex: 20
+    left: 8
   },
   windowMenu: {
     position: 'absolute',
     top: 16,
-    right: 4,
-    zIndex: 20
+    right: 4
   },
   blurViewContainer: {
-    zIndex: 10,
-    borderRadius: 12
+    borderRadius: 12,
+    width: '200%',
+    transform: [{ translateX: -100 }],
   },
   balanceContainer: {
     flexDirection: 'row',

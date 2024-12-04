@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTheme } from '@shopify/restyle';
 import { View } from 'react-native';
 import { CartesianChart, Area, Line, useChartPressState } from 'victory-native';
@@ -27,12 +27,13 @@ interface Props {
   emptyMessage: boolean
 }
 
-const ChartSkeleton = (props: Props) => {
+const Chart = (props: Props) => {
   const theme = useTheme();
   const { state, isActive } = useChartPressState({ x: '0', y: { balance: 0 } })
   const font = useFont(SourceSans3Regular, 14)
   const tempFont = useFont(SourceSans3Regular, 13)
   const tipOpacity = useSharedValue(0);
+  const [chartData, setChartData] = useState(tempChartData);
   const [slotsValue, setSlotsValue] = useState<number>(0);
 
   useAnimatedReaction(() => state.y.balance.value.value, (value) => {
@@ -45,6 +46,12 @@ const ChartSkeleton = (props: Props) => {
       tipOpacity.value = active ? 1 : 0;
     }
   });
+
+  useEffect(() => {
+    if (props.data) {
+      setChartData(props.data)
+    }
+  }, [props.data]);
 
   const tipStyle = useAnimatedStyle(() => ({ opacity: tipOpacity.value }));
 
@@ -76,7 +83,7 @@ const ChartSkeleton = (props: Props) => {
         </Animated.View>
       </View>
       <CartesianChart
-        data={props.data || tempChartData}
+        data={chartData}
         xKey={'date'}
         yKeys={['balance']}
         chartPressState={state}
@@ -163,4 +170,4 @@ const ChartSkeleton = (props: Props) => {
     </View>
   )
 }
-export default ChartSkeleton
+export default Chart

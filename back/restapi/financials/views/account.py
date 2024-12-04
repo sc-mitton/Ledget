@@ -1,6 +1,7 @@
 from decimal import Decimal
 import json
 from datetime import datetime
+import dateutil.relativedelta
 from typing import List
 
 import plaid.exceptions
@@ -230,9 +231,11 @@ class AccountsViewSet(ViewSet):
         }
 
         for item in qset:
+            month = datetime.strptime(item['month'].strftime('%Y-%m-%d'), '%Y-%m-%d') \
+                + dateutil.relativedelta.relativedelta(months=1)
             balance = data[item['account']][-1]['balance'] + item['total']
             data[item['account']].append({
-                'month': f"{item['month']}",
+                'month': f"{month}",
                 'balance': balance
             })
 
