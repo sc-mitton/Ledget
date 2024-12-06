@@ -32,7 +32,7 @@ const LogoutAllDevices = (props: ModalScreenProps<'LogoutAllDevices'>) => {
   }, [isError]);
 
   return (
-    <Modal position='centerFloat'>
+    <Modal position='centerFloat' hasExitButton={false}>
       <View style={sharedStyles.header}>
         <Text variant='bold' fontSize={20}>Log out of all devices?</Text>
         <Text color='secondaryText'>
@@ -45,19 +45,18 @@ const LogoutAllDevices = (props: ModalScreenProps<'LogoutAllDevices'>) => {
           <Button
             onPress={() => props.navigation.goBack()}
             variant='mediumGrayMain'
+            backgroundColor='modalSeperator'
             label='Cancel'
             textColor='secondaryText'
-            backgroundColor='transparent'
           />
         </View>
-        <Box variant='divider' backgroundColor='modalSeperator' />
         <View style={sharedStyles.splitButton}>
           <SubmitButton
             onPress={() => disableAllSessions()}
             isSubmitting={isLoading}
             isSuccess={isSuccess}
             variant='mediumGrayMain'
-            backgroundColor='transparent'
+            backgroundColor='modalSeperator'
             textColor='alert'
             label="Logout"
           />

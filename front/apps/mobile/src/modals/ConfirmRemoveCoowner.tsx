@@ -42,18 +42,17 @@ const ConfirmRemoveCoOwner = (props: ModalScreenProps<'ConfirmRemoveCoowner'>) =
         <View style={sharedStyles.splitButton}>
           <Button
             variant='mediumGrayMain'
+            backgroundColor='modalSeperator'
             onPress={props.navigation.goBack}
-            backgroundColor='transparent'
             label='Cancel'
           />
         </View>
-        <Box variant='divider' backgroundColor='modalSeperator' />
         <View style={sharedStyles.splitButton}>
           <SubmitButton
-            variant='main'
+            variant='mediumGrayMain'
+            backgroundColor='modalSeperator'
             label='Remove'
             textColor='alert'
-            backgroundColor='transparent'
             isSubmitting={isDeletingItem}
             isSuccess={isDeleteSuccess}
             onPress={() => deleteCoOwner()} />

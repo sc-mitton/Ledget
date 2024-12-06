@@ -52,7 +52,7 @@ const MonthlyBillHistory = ({ bill }: { bill: Bill }) => {
       >
         {Object.keys(instances).map((year, index) => (
           <Button
-            key={`year-${year}-button`}
+            key={`year-${index}-button`}
             variant='borderedPill'
             textColor={page === index ? 'secondaryText' : 'quinaryText'}
             onPress={() => pagerViewRef.current?.setPage(index)}

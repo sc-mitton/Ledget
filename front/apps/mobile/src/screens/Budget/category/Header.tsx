@@ -19,51 +19,49 @@ const EmojiHeader = ({ category }: { category: Category }) => {
   const theme = useTheme()
 
   return (
-    <>
-      <Box style={styles.headerBox}>
-        <View style={styles.header}>
-          <View>
-            <BillCatEmoji
-              emoji={category.emoji}
-              period={category.period}
-            />
-          </View>
-          <View>
-            <Header>
-              {category.name.charAt(0).toUpperCase() + category.name.slice(1)}
-            </Header>
-            <View style={styles.spendingData}>
-              <DollarCents withCents={false} color='secondaryText' value={category.amount_spent || 0} />
-              <Text color='secondaryText' >spent of</Text>
-              <DollarCents withCents={false} color='secondaryText' value={category.limit_amount} />
-            </View>
+    <Box style={styles.headerBox}>
+      <View style={styles.header}>
+        <View>
+          <BillCatEmoji
+            emoji={category.emoji}
+            period={category.period}
+          />
+        </View>
+        <View>
+          <Header>
+            {category.name.charAt(0).toUpperCase() + category.name.slice(1)}
+          </Header>
+          <View style={styles.spendingData}>
+            <DollarCents withCents={false} color='secondaryText' value={category.amount_spent || 0} />
+            <Text color='secondaryText' >spent of</Text>
+            <DollarCents withCents={false} color='secondaryText' value={category.limit_amount} />
           </View>
         </View>
-        <BlurView
-          intensity={100}
-          style={[StyleSheet.absoluteFill, styles.blurView]}
-          tint={mode === 'dark' ? 'dark' : 'light'}
-        />
-        <Canvas style={StyleSheet.absoluteFill}>
-          <Rect x={0} y={0} width={Dimensions.get('window').width} height={125}>
-            <LinearGradient
-              colors={[
-                mode === 'dark' ? 'hsla(0, 0%, 0%, 0)' : 'hsla(0, 0%, 100%, 0)',
-                theme.colors.mainBackground
-              ]}
-              start={vec(0, 0)}
-              end={vec(0, 150)}
-            />
-          </Rect>
-        </Canvas>
-        <Text style={[
-          styles.blurEmoji,
-          { opacity: mode === 'dark' ? 0.7 : 0.5 }
-        ]}>
-          {category.emoji}
-        </Text>
-      </Box>
-    </>
+      </View>
+      <BlurView
+        intensity={100}
+        style={[StyleSheet.absoluteFill, styles.blurView]}
+        tint={mode === 'dark' ? 'dark' : 'light'}
+      />
+      <Canvas style={StyleSheet.absoluteFill}>
+        <Rect x={0} y={0} width={Dimensions.get('window').width} height={125}>
+          <LinearGradient
+            colors={[
+              mode === 'dark' ? 'hsla(0, 0%, 0%, 0)' : 'hsla(0, 0%, 100%, 0)',
+              theme.colors.mainBackground
+            ]}
+            start={vec(0, 0)}
+            end={vec(0, 125)}
+          />
+        </Rect>
+      </Canvas>
+      <Text style={[
+        styles.blurEmoji,
+        { opacity: mode === 'dark' ? 0.7 : 0.5 }
+      ]}>
+        {category.emoji}
+      </Text>
+    </Box>
   )
 }
 

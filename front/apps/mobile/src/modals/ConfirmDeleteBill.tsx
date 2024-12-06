@@ -58,6 +58,7 @@ const ConfirmDeleteCategory = (props: ModalScreenProps<'ConfirmDeleteBill'>) => 
         <View style={sharedStyles.splitButton}>
           <Button
             variant='mediumGrayMain'
+            backgroundColor='modalSeperator'
             onPress={() => props.navigation.goBack()}
             label='Cancel'
             textColor='secondaryText'
@@ -66,6 +67,7 @@ const ConfirmDeleteCategory = (props: ModalScreenProps<'ConfirmDeleteBill'>) => 
         <View style={sharedStyles.splitButton}>
           <SubmitButton
             variant='mediumGrayMain'
+            backgroundColor='modalSeperator'
             label='Delete'
             textColor='alert'
             isSubmitting={isDeletingItem}

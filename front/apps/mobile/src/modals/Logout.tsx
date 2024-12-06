@@ -55,7 +55,7 @@ const Logout = (props: ModalScreenProps<'Logout'>) => {
   }, [quedLogout]);
 
   return (
-    <Modal position='centerFloat'>
+    <Modal position='centerFloat' hasExitButton={false}>
       <View style={sharedStyles.header}>
         <Text variant='bold' fontSize={20}>Sign Out</Text>
         <Text color='secondaryText'>{`You will be automatically logged out in ${seconds} seconds`}</Text>
@@ -64,7 +64,8 @@ const Logout = (props: ModalScreenProps<'Logout'>) => {
       <View style={sharedStyles.splitButtons}>
         <View style={sharedStyles.splitButton}>
           <Button
-            backgroundColor='transparent'
+            variant='mediumGrayMain'
+            backgroundColor='modalSeperator'
             onPress={() => props.navigation.goBack()}
             justifyContent='center'
             alignItems='center'
@@ -72,10 +73,10 @@ const Logout = (props: ModalScreenProps<'Logout'>) => {
             textColor='secondaryText'
           />
         </View>
-        <Box backgroundColor='modalSeperator' variant='divider' />
         <View style={sharedStyles.splitButton}>
           <SubmitButton
-            backgroundColor='transparent'
+            variant='mediumGrayMain'
+            backgroundColor='modalSeperator'
             onPress={() => setQuedLogout(true)}
             isSubmitting={isLoggingOut}
             justifyContent='center'

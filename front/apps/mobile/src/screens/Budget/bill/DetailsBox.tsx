@@ -10,7 +10,7 @@ import { getScheduleDescription } from "@helpers";
 const DetailsBox = ({ bill }: { bill: Bill }) => {
 
   return (
-    <View>
+    <View style={styles.container}>
       <BoxHeader>
         <View style={styles.infoIcon}>
           <Icon icon={Info} size={16} color='tertiaryText' />

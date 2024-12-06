@@ -39,22 +39,22 @@ const ConfirmDeletePlaidItem = (props: ModalScreenProps<'ConfirmDeletePlaidItem'
       <View style={sharedStyles.splitButtons}>
         <View style={sharedStyles.splitButton}>
           <Button
-            justifyContent='center'
+            variant='mediumGrayMain'
+            backgroundColor='modalSeperator'
             alignItems='center'
             onPress={() => props.navigation.goBack()}
             label='Cancel'
             textColor='secondaryText'
-            backgroundColor='transparent'
           />
         </View>
-        <Box variant='divider' backgroundColor='modalSeperator' />
         <View style={sharedStyles.splitButton}>
           <SubmitButton
+            variant='mediumGrayMain'
+            backgroundColor='modalSeperator'
             justifyContent='center'
             alignItems='center'
             label='Disconnect'
             textColor='alert'
-            backgroundColor='transparent'
             isSubmitting={isDeletingItem}
             isSuccess={isDeleteSuccess}
             onPress={() => deletePlaidItem(props.route.params.id)} />

@@ -59,9 +59,7 @@ export function Modal(props: ModalProps) {
   const keyboardPaddingY = useSharedValue(position.includes('bottom') ? 64 : 0);
 
   const avoidKeyboardAnimation = useAnimatedStyle(() => {
-    return {
-      paddingBottom: withSpring(keyboardPaddingY.value, defaultSpringConfig)
-    }
+    return { paddingBottom: keyboardPaddingY.value }
   });
 
   useEffect(() => {

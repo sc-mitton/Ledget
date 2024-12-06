@@ -7,7 +7,7 @@ export const chartWindows = [
 
 import dayjs from 'dayjs'
 
-export const tempDepositBalanceChartData = [1200, 2700, 3700, 4300, 4500,].map(
+export const tempDepositBalanceChartData = [1200, 3000, 3700, 3700, 4500,].map(
   (balance, index) => ({
     balance,
     date: index > 0

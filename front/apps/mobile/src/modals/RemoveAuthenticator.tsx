@@ -44,11 +44,18 @@ const RemoveAuthenticator = (props: ModalScreenProps<'RemoveAuthenticator'>) => 
       </Box>
       <View style={sharedStyles.splitButtons}>
         <View style={sharedStyles.splitButton}>
-          <Button variant='mediumGrayMain' onPress={props.navigation.goBack} label='Cancel' />
+          <Button
+            variant='mediumGrayMain'
+            backgroundColor='modalSeperator'
+            onPress={props.navigation.goBack}
+            label='Cancel'
+          />
         </View>
         <View style={sharedStyles.splitButton}>
           <SubmitButton
-            variant='main'
+            variant='mediumGrayMain'
+            backgroundColor='modalSeperator'
+            textColor='alert'
             label="Ok"
             isSubmitting={flowStatus.isCompletingFlow}
             isSuccess={flowStatus.isCompleteSuccess}
