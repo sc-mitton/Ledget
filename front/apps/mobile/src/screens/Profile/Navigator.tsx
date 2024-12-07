@@ -101,7 +101,6 @@ export default function Navigator() {
         },
         cardStyleInterpolator
       }}
-      id='profile'
       initialRouteName='Main'
     >
       <Stack.Screen options={{ headerShown: false }} name='Main' component={Profile} />

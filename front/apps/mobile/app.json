@@ -1,6 +1,5 @@
 {
   "expo": {
-    "jsEngine": "hermes",
     "name": "Ledget",
     "slug": "mobile",
     "version": "1.0.0",
@@ -24,13 +23,11 @@
       "**/*"
     ],
     "ios": {
-      "jsEngine": "hermes",
       "supportsTablet": true,
       "bundleIdentifier": "com.ledget.mobile"
     },
     "userInterfaceStyle": "automatic",
     "android": {
-      "jsEngine": "hermes",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#4149b0"
@@ -94,7 +91,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "9ce04f48-b47e-4d2a-9c9b-edf2a87b01d1"
+        "projectId": "b647e6fd-db3e-4afe-ba9e-202205dd2709"
       }
     }
   }

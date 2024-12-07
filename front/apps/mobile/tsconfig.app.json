@@ -9,7 +9,9 @@
     "jest.config.ts",
     "**/*.spec.ts",
     "**/*.spec.tsx",
-    "src/test-setup.ts"
+    "src/test-setup.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts"
   ],
   "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"]
 }

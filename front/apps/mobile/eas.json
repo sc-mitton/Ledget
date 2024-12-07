@@ -1,4 +1,7 @@
 {
+  "cli": {
+    "version": ">=10.2.4"
+  },
   "build": {
     "production": {
       "android": {
@@ -9,7 +12,7 @@
       "developmentClient": true,
       "distribution": "internal",
       "ios": {
-        "buildType": "simulator"
+        "simulator": true
       }
     },
     "development": {

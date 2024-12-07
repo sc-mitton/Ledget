@@ -1,7 +1,7 @@
 const { withPodfile } = require('@expo/config-plugins')
 
 function applyPlaidVersion(appPodFile) {
-    const plaidImplementation = `pod 'Plaid', '~> 5.6.0'`;
+    const plaidImplementation = `pod 'Plaid', '~> 5.6.1'`;
     const deploymentTarget = '16.0';
 
     if (!appPodFile.includes(plaidImplementation)) {
