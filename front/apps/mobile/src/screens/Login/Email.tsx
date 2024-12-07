@@ -47,7 +47,7 @@ export default function Email({ navigation, route }: LoginScreenProps<'Email'>) 
         <View style={styles.logoContainer}>
           <LogoIconGrayscale dark={mode === 'dark'} size={32} />
         </View>
-        <Header fontSize={30} lineHeight={54} style={styles.header}>Welcome Back</Header>
+        <Header fontSize={32} lineHeight={54} style={styles.header}>Welcome Back</Header>
         <SubHeader2 style={styles.header} color='blueText'>
           Please login to continue
         </SubHeader2>

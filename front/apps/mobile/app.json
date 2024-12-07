@@ -5,15 +5,9 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "splash": {
-      "android": {
-        "image": "./assets/splash-android.png",
-        "resizeMode": "contain"
-      },
-      "ios": {
-        "image": "./assets/splash-ios.png",
-        "resizeMode": "contain"
-      }
+    "notification": {
+      "icon": "./assets/notification-icon.png",
+      "color": "#4149b0"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -22,14 +16,26 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.ledget.mobile"
+      "supportsTablet": false,
+      "bundleIdentifier": "com.ledget.mobile",
+      "splash": {
+        "image": "./assets/splash-ios.png",
+        "resizeMode": "contain",
+        "dark": {
+          "image": "./assets/splash-ios-dark.png",
+          "backgroundColor": "#111113"
+        }
+      }
     },
     "userInterfaceStyle": "automatic",
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#4149b0"
+      },
+      "splash": {
+        "image": "./assets/splash-android.png",
+        "resizeMode": "contain"
       },
       "softwareKeyboardLayoutMode": "pan",
       "package": "com.ledget.mobile",
