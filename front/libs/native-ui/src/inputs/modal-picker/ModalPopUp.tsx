@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Fragment } from 'react';
 import { TouchableOpacity, View, TextInput as NativeTextInput, Modal as NativeModal, ScrollView } from 'react-native';
 import { Search } from 'geist-native-icons';
 import { Check } from 'geist-native-icons';
@@ -113,7 +113,8 @@ function ModalPopUp<O extends PickerOption, TMultiple extends boolean>(
               onContentSizeChange={(_, height) => setScrollHeight(height)}
               style={styles.scrollView}>
               {localOptions?.map((option, index) => {
-                const label = typeof option === 'object' ? option['label' || props.labelKey] : option;
+                const labelKey = props.labelKey as string || 'label';
+                const label = typeof option === 'object' ? option[labelKey] : option;
                 const selected = Array.isArray(props.value) ? props.value.some(v => dequal(v, option)) : dequal(props.value, option);
 
                 if (props.renderOption) {
@@ -144,10 +145,9 @@ function ModalPopUp<O extends PickerOption, TMultiple extends boolean>(
                   )
                 }
                 return (
-                  <>
+                  <Fragment >
                     <TouchableOpacity
                       activeOpacity={.6}
-                      key={`${label}-${Math.random().toString().slice(2, 6)}`}
                       style={styles.option}
                       onPress={() => {
                         const inCluded = Array.isArray(props.value) ? props.value.includes(option) : props.value === option;
@@ -166,7 +166,7 @@ function ModalPopUp<O extends PickerOption, TMultiple extends boolean>(
                       </View>
                     </TouchableOpacity>
                     {index !== (props.options?.length || 0) - 1 && <Seperator variant='bare' backgroundColor='modalSeperator' />}
-                  </>
+                  </Fragment>
                 );
               })}
             </CustomScrollView>

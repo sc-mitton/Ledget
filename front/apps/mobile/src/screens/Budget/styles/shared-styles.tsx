@@ -11,8 +11,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   boxTopHalf: {
-    borderRadius: 12,
-    paddingBottom: 12
+    borderRadius: 16,
+    paddingBottom: 16
   },
   boxBottomHalf: {
     zIndex: -1,
@@ -22,8 +22,8 @@ const styles = StyleSheet.create({
     gap: 12,
     transform: [{ translateY: -12 }],
     flexDirection: 'row',
-    borderBottomLeftRadius: 12,
-    borderBottomRightRadius: 12,
+    borderBottomLeftRadius: 16,
+    borderBottomRightRadius: 16,
   },
   carouselDots: {
     alignItems: 'center',

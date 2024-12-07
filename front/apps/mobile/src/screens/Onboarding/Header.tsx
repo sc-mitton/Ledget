@@ -1,12 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useTheme } from "@shopify/restyle";
 import { useSprings } from "@react-spring/native";
-import { useNavigation } from '@react-navigation/native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import styles from './styles/progress';
 import { View } from "react-native";
 import { Box, AnimatedView, BackButton } from '@ledget/native-ui';
+import { navigationRef } from "@/types";
 
 interface ContextT {
   setIndex: React.Dispatch<React.SetStateAction<number>>;
@@ -29,7 +29,6 @@ export default function ({ children }: { children: React.ReactNode }) {
   const [index, setIndex] = useState(0);
   const [size, setSize] = useState(0);
   const theme = useTheme();
-  const navigation = useNavigation();
 
   const [springs, api] = useSprings(size, () => ({
     width: WIDTH,
@@ -68,11 +67,11 @@ export default function ({ children }: { children: React.ReactNode }) {
             style={styles.headerBox}
           >
             <View style={styles.backButton}>
-              {index !== 0 && <BackButton onPress={() => navigation.goBack()} />}
+              {index !== 0 && <BackButton onPress={() => navigationRef.goBack()} />}
             </View>
             <View style={[styles.progressContainer]}>
               {springs.map((style, i) => (
-                <AnimatedView style={[styles.pill, style]} >
+                <AnimatedView style={[styles.pill, style]} key={`pill-${i}`}>
                   <Box style={[styles.pillFill]} backgroundColor="mainText" />
                 </AnimatedView>
               ))}

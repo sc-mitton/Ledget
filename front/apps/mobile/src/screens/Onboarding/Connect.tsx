@@ -50,7 +50,7 @@ const Connect = (props: OnboardingScreenProps<'Connect'>) => {
           </View>
           <View style={styles.dots}>
             {dots.map((props, index) => (
-              <AnimatedView style={props}>
+              <AnimatedView style={props} key={`dot-${index}`}>
                 <Box backgroundColor={index >= 4 ? 'mainText' : 'blueText'} style={styles.dot} />
               </AnimatedView>
             ))}
@@ -75,7 +75,7 @@ const Connect = (props: OnboardingScreenProps<'Connect'>) => {
           {(plaidItems?.length || 0) > 0 &&
             <Animated.View style={styles.logos} entering={StretchInX.withInitialValues({ opacity: 0 })}>
               {plaidItems?.map((item) => (
-                <Box style={styles.logo} borderWidth={3} borderColor='nestedContainer' borderRadius='circle'>
+                <Box style={styles.logo} borderWidth={3} borderColor='nestedContainer' borderRadius='circle' key={item.id}>
                   <InstitutionLogo institution={item.institution?.id} size={32} />
                 </Box>
               ))}
