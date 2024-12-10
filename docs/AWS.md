@@ -56,7 +56,7 @@ integration request path paramter is proxy: method.request.path.proxy
 
 VPC integration
 
-2. /v1/{proxy+} - OPTIONS
+2. /v1/{proxy+} - ANY
 
 Authorization - oathkeeper
 
@@ -71,7 +71,7 @@ VPC integration
 
 Headers: Authorization, X-User
 
-Integration Request Path Parameters:
+Integration Request Header Parameters:
 name: Authorization     Mapped From: context.authorization
 name: X-User            Mapped From: context.x-user
 
@@ -104,22 +104,22 @@ Access-Control-Max-Age
 4. Make sure to skip the tls verification between the api gateway and the elastic beanstalk endpoint
 
 ```
-aws apigateway get-resources --rest-api-id b4ul11js3d
+aws apigateway get-resources --rest-api-id p8fln1tvp1
 
 aws apigateway update-integration \
-    --rest-api-id b4ul11js3d \
-    --resource-id j89139 \
+    --rest-api-id p8fln1tvp1 \
+    --resource-id b0gn6g \
     --http-method ANY \
     --patch-operations "op='replace' ,path='/tlsConfig/insecureSkipVerification' ,value='true'"
 
 aws apigateway update-integration \
-    --rest-api-id b4ul11js3d \
-    --resource-id 62fwk7 \
+    --rest-api-id p8fln1tvp1 \
+    --resource-id z3rkt1 \
     --http-method ANY \
     --patch-operations "op='replace' ,path='/tlsConfig/insecureSkipVerification' ,value='true'"
 
 aws apigateway create-deployment \
-    --rest-api-id b4ul11js3d \
+    --rest-api-id p8fln1tvp1 \
     --stage-name prod
 ```
 
