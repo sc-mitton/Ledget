@@ -5,16 +5,15 @@ This is the list of AWS Resources in order to Run Ledget and how to set up each 
 ## ASM
 - sparkpost_key
 - ledget-restapi-rds-credentials
-- db credentials
-- oathkeeper_jwks_test
 - oathkeeper_jwks
 - ory_hook_api_key
 - django_secret_key
 - stripe_api_key
 - stripe_webhook_secret
 - ory_api_key
-- plaid_api_key
-- plaid_client_id
+- plaid_secret
+  - api_key
+  - client_id
 
 ## Lambda
 
@@ -57,7 +56,7 @@ integration request path paramter is proxy: method.request.path.proxy
 
 VPC integration
 
-2. /hooks/{proxy+} - ANY
+2. /v1/{proxy+} - OPTIONS
 
 Authorization - oathkeeper
 
@@ -178,7 +177,7 @@ oathkeeper - no role
 ### Custom domain name
 
 Domain name: api.ledget.app
-ACM Certificate ARN: arn:aws:acm:us-west-2:905418323334:certificate/9d219be8-65b0-48ea-853e-cb5b04c4c570
+ACM Certificate ARN: arn:aws:acm:us-west-2:905418323334:certificate9d219be8-65b0-48ea-853e-cb5b04c4c570
 API Endpoint Type: Regional
 
 API Mappings
@@ -194,7 +193,7 @@ Target nlb: the nlb set up by eb
 
 ## RDS
 
-Name: database-3
+Name: database
 
 VPC: Custom (vpc-041408005a5077dc6)
 
@@ -226,14 +225,14 @@ sg-076f896a4cee95c8c,nlb,vpc-041408005a5077dc6,Network load balancer coms,905418
 sg-0e9134b06dc36c485,psql-connect,vpc-041408005a5077dc6,Access postgres services,905418323334,0,1,
 sg-02fbc6ae85bbe6097,eb-restapi,vpc-041408005a5077dc6,VPC Security Group,905418323334,2,1,"Name:ledget-restapi-prod,aws:cloudformation:stack-name:awseb-e-fcsmgeyfh2-stack,aws:cloudformation:stack-id:arn:aws:cloudformation:us-west-2:905418323334:stack/awseb-e-fcsmgeyfh2-stack/c92320f0-083b-11ef-be91-0673b48fe34d,elasticbeanstalk:environment-id:e-fcsmgeyfh2,elasticbeanstalk:environment-name:ledget-restapi-prod,aws:cloudformation:logical-id:AWSEBSecurityGroup"
 sg-01af89bf51a3b4086,default,vpc-0ae3bd634ed820212,default VPC security group,905418323334,2,1,
-sg-0219c9f9a6ff828f3,third-party-access,vpc-041408005a5077dc6,Allow access to third party services,905418323334,0,2,
+sg-0219c9f9a6ff828f3,third-party-access,vpc-041408005a5077dc6,Allow access to third party services,905418323334,0,2
 
 ## Elastic Beanstalk
 
 1. Create eb environmet if not already up
 This will create an environment and deploy to it
 
-`eb create ledget-restapi-prod`
+`eb create ledget-restapi-prod -c `
 
 2. Deploy to environment
 Deploy to a specific eb environment

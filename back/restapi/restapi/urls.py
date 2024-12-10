@@ -5,7 +5,7 @@ API_VERSION = settings.API_VERSION
 SUPPORTED_API_VERSION_CUTOFF = settings.SUPPORTED_API_VERSION_CUTOFF
 
 urlpatterns = [
-    path('hooks/', include('hooks.urls')),
+    path('hooks/', include('hooks.urls'))
 ]
 
 for i in range(SUPPORTED_API_VERSION_CUTOFF, API_VERSION + 1):

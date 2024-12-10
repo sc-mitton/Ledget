@@ -16,7 +16,6 @@ from core.views.device import (
     DeviceView,
     DestroyDeviceView,
 )
-from core.views.health import HealthView
 from core.views import service as service_views
 
 
@@ -37,8 +36,6 @@ urlpatterns = [
 
     path('device/<str:id>', DestroyDeviceView.as_view(), name='device'),
     path('devices', DeviceView.as_view(), name='devices'),
-
-    path('health', HealthView.as_view(), name='health'),
 
     path('prices', service_views.PriceView.as_view(), name='prices'),
     path('default-payment-method', service_views.PaymentMethodView.as_view(),

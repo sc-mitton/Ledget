@@ -57,8 +57,9 @@ SPARKPOST_API_KEY = get_secret('sparkpost_key')
 
 # Plaid
 PLAID_ENVIRONMENT = 'Production'
-PLAID_API_KEY = get_secret('plaid_api_key')
-PLAID_CLIENT_ID = get_secret('plaid_client_id')
+PLAID_SECRET = get_secret('plaid_secret')
+PLAID_API_KEY = json.loads(PLAID_SECRET)['api_key']
+PLAID_CLIENT_ID = json.loads(PLAID_SECRET)['client_id']
 PLAID_REDIRECT_URI_ONBOARDING = 'https://ledget.app/welcome/connect'
 PLAID_REDIRECT_URI = 'https://leddget.app/settings/connections'
 PLAID_WEBHOOK_ENDPOINT = 'https://api.ledget.app/hooks/plaid/item'
