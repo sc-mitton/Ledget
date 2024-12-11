@@ -14,15 +14,24 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   name: {
-    flexGrow: 1,
-    marginLeft: 8
+    flexGrow: 3,
+    flex: 3,
+    flexShrink: 1,
+    marginLeft: 16,
+  },
+  amountSpent: {
+    marginRight: 8
+  },
+  limitAmount: {
+    alignItems: 'flex-end',
+    marginLeft: 8,
+    marginRight: 8
   },
   row: {
     flexDirection: 'row',
     paddingLeft: 8,
-    gap: 12,
     alignItems: 'center',
-    marginVertical: 12
+    marginVertical: 14
   },
   seperator: {
     paddingLeft: 48

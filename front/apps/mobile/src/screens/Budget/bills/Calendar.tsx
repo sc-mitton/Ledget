@@ -69,7 +69,6 @@ const Calendar = (props: BudgetScreenProps<'Main'> & { onPress: () => void }) =>
 
   return (
     <View style={styles.calendar}>
-      <Text fontSize={20}>{dayjs(`${year}-${month}-01`).format('MMMM YYYY')}</Text>
       <View style={styles.grid}>
         {days.map((weekDays, weekDay) => (
           <View style={styles.column} key={`calendar-week-${weekDay}`}>
@@ -80,7 +79,7 @@ const Calendar = (props: BudgetScreenProps<'Main'> & { onPress: () => void }) =>
               return (
                 <Fragment key={`calendar-day-${day}`}>
                   {i === 0 &&
-                    <Text color='tertiaryText' variant='bold'>
+                    <Text color='tertiaryText'>
                       {dayjs(`${year}-${month}-${weekDay}`).format('dd')}
                     </Text>}
                   <TouchableOpacity

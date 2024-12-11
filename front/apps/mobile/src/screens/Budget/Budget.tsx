@@ -20,7 +20,7 @@ const MainScreen = (props: BudgetScreenProps<'Main'>) => {
     <Box variant='screen'>
       <ScrollView
         style={styles.scrollView}
-        contentContainerStyle={[{ paddingBottom: theme.spacing.navHeight * 1 }]}
+        contentContainerStyle={[{ paddingBottom: theme.spacing.navHeight * .875 }]}
         showsVerticalScrollIndicator={false}
         stickyHeaderIndices={stickyIndices}
         onScrollBeginDrag={() => { setStickyIndices([0, 2, 3]) }}

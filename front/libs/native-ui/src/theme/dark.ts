@@ -5,7 +5,7 @@ import { lightTheme } from "./light";
 import basePalette from './base-palette';
 
 const grayH = 240;
-const grayS = 5;
+const grayS = 3;
 
 const blueH = 230;
 const blueS = 65;
@@ -25,20 +25,20 @@ const palette = {
   purpleText: 'hsl(250, 100%, 70%)',
 
   gray1000: `hsl(${grayH}, ${grayS}%, 0%)`,
-  gray900: `hsl(${grayH}, ${grayS}%, 7%)`,
-  gray875: `hsl(${grayH}, ${grayS}%, 9.5%)`,
-  gray850: `hsl(${grayH}, ${grayS}%, 11%)`,
-  gray800: `hsl(${grayH}, ${grayS}%, 14%)`,
-  gray775: `hsl(${grayH}, ${grayS}%, 15%)`,
-  gray750: `hsl(${grayH}, ${grayS}%, 17%)`,
-  gray700: `hsl(${grayH}, ${grayS}%, 20%)`,
-  gray650: `hsl(${grayH}, ${grayS}%, 22%)`,
-  gray600: `hsl(${grayH}, ${grayS}%, 25%)`,
-  gray500: `hsl(${grayH}, ${grayS}%, 30%)`,
-  gray400: `hsl(${grayH}, ${grayS}%, 35%)`,
-  gray300: `hsl(${grayH}, ${grayS}%, 40%)`,
-  gray200: `hsl(${grayH}, ${grayS}%, 45%)`,
-  gray100: `hsl(${grayH}, ${grayS}%, 50%)`,
+  gray900: `hsl(${grayH}, ${grayS}%, 5%)`,
+  gray875: `hsl(${grayH}, ${grayS}%, 7.5%)`,
+  gray850: `hsl(${grayH}, ${grayS}%, 9%)`,
+  gray800: `hsl(${grayH}, ${grayS}%, 12%)`,
+  gray775: `hsl(${grayH}, ${grayS}%, 13%)`,
+  gray750: `hsl(${grayH}, ${grayS}%, 15%)`,
+  gray700: `hsl(${grayH}, ${grayS}%, 18%)`,
+  gray650: `hsl(${grayH}, ${grayS}%, 20%)`,
+  gray600: `hsl(${grayH}, ${grayS}%, 23%)`,
+  gray500: `hsl(${grayH}, ${grayS}%, 28%)`,
+  gray400: `hsl(${grayH}, ${grayS}%, 33%)`,
+  gray300: `hsl(${grayH}, ${grayS}%, 38%)`,
+  gray200: `hsl(${grayH}, ${grayS}%, 43%)`,
+  gray100: `hsl(${grayH}, ${grayS}%, 48%)`,
 
   blue900: `hsl(${blueH}, ${blueS}%, 10%)`,
   blue800: `hsl(${blueH}, ${blueS}%, 15%)`,
@@ -75,7 +75,7 @@ export const darkTheme = createTheme({
     accountsMainBackground: palette.gray900,
     bottomNavBackground: palette.gray900,
     androidNavBar: palette.gray850,
-    bottomNavCover: `hsl(${grayH}, ${grayS}%, 10%)`,
+    bottomNavCover: `hsl(${grayH}, ${grayS}%, 8%)`,
     nestedContainer: palette.gray850,
     lightGrayCard: palette.gray850,
     inputBackground: palette.gray800,
@@ -88,11 +88,11 @@ export const darkTheme = createTheme({
     newTransaction: palette.gray750,
     contextMenu: palette.gray700,
     toast: palette.gray850,
-    creditCardGradientStart: `hsl(${blueH}, ${blueS}%, 30%)`,
-    creditCardGradientEnd: `hsl(${blueH}, ${blueS}%, 42%)`,
+    creditCardGradientStart: `hsl(${blueH}, ${blueS}%, 28%)`,
+    creditCardGradientEnd: `hsl(${blueH}, ${blueS}%, 40%)`,
     widgetPickerBackground: palette.gray900,
     widget: palette.gray850,
-    tooltip: palette.gray850,
+    tooltip: palette.gray800,
 
     // Borders
     inputBorder: palette.gray775,
@@ -158,10 +158,10 @@ export const darkTheme = createTheme({
     lightGrayButton: palette.gray800,
     darkGrayButton: palette.gray800,
     grayButton: palette.gray800,
-    grayButtonBorder: `hsl(${grayH}, ${grayS}%, 12%)`,
+    grayButtonBorder: `hsl(${grayH}, ${grayS}%, 10%)`,
     mediumGrayButton: palette.gray700,
     mediumGrayButtonBorder: palette.gray650,
-    borderedGrayButton: palette.gray800,
+    borderedGrayButton: palette.gray750,
     dragBar: palette.gray750,
     tabsTrack: palette.gray800,
     tabsBackground: palette.gray700,
@@ -180,7 +180,7 @@ export const darkTheme = createTheme({
     yearColor: `hsl(${greenH}, 90%, 50%)`,
 
     // Switch
-    enabledSwitchPill: `hsl(${grayH}, ${grayS}%, 80%)`,
+    enabledSwitchPill: `hsl(${grayH}, ${grayS}%, 78%)`,
     enabledSwitchCrib: 'hsl(144, 85%, 23%)',
     disabledSwitchPill: palette.gray200,
     disabledSwitchCrib: palette.gray600,

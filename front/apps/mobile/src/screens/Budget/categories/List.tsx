@@ -22,6 +22,8 @@ const COLLAPSED_MAX = 5;
 
 const List = (props: Props) => {
   const [expanded, setExpanded] = useState(false)
+  const [maxAmountSpentSize, setMaxAmountSpentSize] = useState(0)
+  const [maxLimitAmountSize, setMaxLimitAmountSize] = useState(0)
 
   const hasOverflow = useMemo(() => {
     return (props.categories?.filter(c => c.period === props.period).length || 0) > COLLAPSED_MAX
@@ -35,7 +37,7 @@ const List = (props: Props) => {
           .map((item, index) =>
             <Animated.View key={item.id} entering={FadeIn} exiting={FadeOut}>
               <TouchableOpacity
-                activeOpacity={0.7}
+                activeOpacity={0.5}
                 style={styles.row}
                 onPress={() => props.navigation.navigate('Category', { category: item })}
               >
@@ -50,11 +52,21 @@ const List = (props: Props) => {
                 <View style={styles.name}>
                   <Text>{item.name.charAt(0).toUpperCase() + item.name.slice(1)}</Text>
                 </View>
-                <View>
+                <View
+                  style={[styles.amountSpent, { width: maxAmountSpentSize || 'auto' }]}
+                  onLayout={({ nativeEvent }) => {
+                    setMaxAmountSpentSize(Math.max(nativeEvent.layout.width, maxAmountSpentSize))
+                  }}
+                >
                   <DollarCents value={Big(item.amount_spent || 0).times(100).toNumber()} withCents={false} />
                 </View>
                 <Text>/</Text>
-                <View>
+                <View
+                  style={[styles.limitAmount, { width: maxLimitAmountSize || 'auto' }]}
+                  onLayout={({ nativeEvent }) => {
+                    setMaxLimitAmountSize(Math.max(nativeEvent.layout.width, maxLimitAmountSize))
+                  }}
+                >
                   <DollarCents value={Big(item.limit_amount || 0).toNumber()} withCents={false} />
                 </View>
                 <Icon icon={ChevronRight} color='quinaryText' />
@@ -72,7 +84,7 @@ const List = (props: Props) => {
             label={
               expanded
                 ? 'View Less'
-                : `+${(props.categories?.filter(c => c.period === props.period).length || 0) - COLLAPSED_MAX}  View All`
+                : `View More +${(props.categories?.filter(c => c.period === props.period).length || 0) - COLLAPSED_MAX}`
             }
             textColor='quinaryText'
           />

@@ -23,7 +23,7 @@ function FilledList(props: BudgetScreenProps<'Main'> & { bills: TransformedBill[
   }, [props.bills,])
 
   return (
-    <View style={styles.list}>
+    <View>
       <View style={[styles.rows, hasOverflow && styles.rowsWithOverflow]}>
         {props.bills?.filter(c => c.period === (billsIndex === 0 ? 'month' : 'year'))
           .slice(0, expanded ? undefined : COLLAPSED_MAX)

@@ -10,6 +10,11 @@ declare module '*.ttf' {
     export default value;
 }
 
+declare module '*otf' {
+    const value: string;
+    export default value;
+}
+
 
 declare module '*.png' {
     const value: ImageSourcePropType;

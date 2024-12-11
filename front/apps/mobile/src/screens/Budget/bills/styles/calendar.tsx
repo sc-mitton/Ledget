@@ -4,8 +4,9 @@ const styles = StyleSheet.create({
   grid: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: 24,
     marginHorizontal: -6
+  },
+  title: {
   },
   column: {
     height: '100%',
@@ -13,8 +14,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   calendar: {
-    marginTop: 12,
-    marginBottom: 8,
+    marginTop: 8,
     paddingHorizontal: 4,
     paddingVertical: 8,
     gap: 12,

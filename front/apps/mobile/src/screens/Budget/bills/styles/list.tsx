@@ -1,9 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  list: {
-    paddingBottom: 8,
-  },
   rows: {
     width: '100%',
   },

@@ -22,7 +22,7 @@ const Bills = (props: BudgetScreenProps<'Main'>) => {
 
   return (
     <Box
-      paddingBottom='nestedContainerHPadding'
+      paddingBottom='s'
       paddingHorizontal='nestedContainerHPadding'
       backgroundColor='nestedContainer'
       style={sharedStyles.boxBottomHalf}

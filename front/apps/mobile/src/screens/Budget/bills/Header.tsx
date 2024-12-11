@@ -1,14 +1,18 @@
 import { memo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { LinearTransition } from 'react-native-reanimated';
+import dayjs from 'dayjs';
 
 import styles from './styles/header';
 import sharedStyles from '../styles/shared-styles';
+import { selectBudgetMonthYear } from '@ledget/shared-features';
 import { Box, CarouselDots, Seperator, Text } from '@ledget/native-ui';
+import { useAppSelector } from '@/hooks';
 import { useBudgetContext } from '../context';
 
 const Header = () => {
   const { billsIndex } = useBudgetContext();
+  const { month, year } = useAppSelector(selectBudgetMonthYear)
 
   return (
     <>
@@ -18,7 +22,7 @@ const Header = () => {
         style={[StyleSheet.absoluteFill, styles.backPanel]}
       />
       <Box
-        paddingTop='nestedContainerVPadding'
+        paddingTop='nestedContainerHPadding'
         paddingHorizontal='nestedContainerHPadding'
         backgroundColor='nestedContainer'
         layout={LinearTransition}
@@ -27,8 +31,16 @@ const Header = () => {
         <View style={sharedStyles.carouselDots}>
           <CarouselDots length={2} currentIndex={billsIndex} />
         </View>
-        <View style={styles.header}>
-          <Text fontSize={18}>Bills</Text>
+        <View style={styles.headerContainer}>
+          <View style={styles.header}>
+            {billsIndex === 0
+              ? <Text fontSize={18}>Bills</Text>
+              :
+              <Text fontSize={18}>
+                {dayjs(`${year}-${month}-01`).format('MMMM YYYY')}
+              </Text>
+            }
+          </View>
           <View style={styles.seperator}>
             <Seperator backgroundColor='nestedContainerSeperator' variant='bare' />
           </View>

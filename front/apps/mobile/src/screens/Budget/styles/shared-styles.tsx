@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   },
   boxTopHalf: {
     borderRadius: 16,
-    paddingBottom: 16
+    paddingBottom: 8
   },
   boxBottomHalf: {
     zIndex: -1,

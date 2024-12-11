@@ -6,8 +6,11 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
   },
-  header: {
+  headerContainer: {
     flex: 1
+  },
+  header: {
+    flexDirection: "row"
   },
   seperator: {
     marginTop: 8

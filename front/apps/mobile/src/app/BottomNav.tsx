@@ -2,12 +2,14 @@ import { useEffect } from 'react';
 import { BlurView } from 'expo-blur';
 import { TouchableOpacity, View, Platform } from 'react-native';
 import { ParamListBase, TabNavigationState, CommonActions } from '@react-navigation/native';
-import { Home, DollarSign, Activity, User } from 'geist-native-icons';
+import { Home, Activity, User } from 'geist-native-icons';
 import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
 import { useGetTransactionsCountQuery } from '@ledget/shared-features';
+import { useTheme } from '@shopify/restyle';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 import styles from './styles/bottom-nav';
-import { Box, Icon, defaultSpringConfig } from '@ledget/native-ui';
+import { Box, Icon, defaultSpringConfig, Text } from '@ledget/native-ui';
 import { useAppearance } from '@features/appearanceSlice';
 import { selectHideBottomTabs, updateLastTab } from '@/features/uiSlice';
 import { Institution } from '@ledget/media/native';
@@ -30,6 +32,7 @@ const Button = (props: ButtonProps) => {
   const { route, index, state, descriptors, navigation } = props;
   const isFocused = state.index === index;
   const des = descriptors[route.key];
+  const theme = useTheme();
 
   const onPress = () => {
 
@@ -74,7 +77,7 @@ const Button = (props: ButtonProps) => {
       {route.key.includes('Home')
         ? <Icon strokeWidth={1.75} icon={Home} color={isFocused ? 'blueText' : 'secondaryText'} />
         : route.key.includes('Budget')
-          ? <Icon strokeWidth={1.75} icon={DollarSign} color={isFocused ? 'blueText' : 'secondaryText'} />
+          ? <FontAwesome6 name="dollar" size={19} color={isFocused ? theme.colors.blueText : theme.colors.secondaryText} />
           : route.key.includes('Accounts')
             ? <Icon strokeWidth={1.75} icon={Institution} color={isFocused ? 'blueText' : 'secondaryText'} />
             : route.key.includes('Activity')
