@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "Ledget",
+    "jsEngine": "hermes",
     "slug": "mobile",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -25,7 +26,8 @@
           "image": "./assets/splash-ios-dark.png",
           "backgroundColor": "#111113"
         }
-      }
+      },
+      "jsEngine": "hermes"
     },
     "userInterfaceStyle": "automatic",
     "android": {

@@ -54,7 +54,6 @@ const Aal2RecoveryCode = ({ navigation, route }: LoginScreenProps<'Aal2RecoveryC
         <SubHeader2>Enter one of your saved recovery codes to login</SubHeader2>
         <View style={styles.graphicContainer}>
           <RecoveryCode fill={theme.colors.accountsMainBackground} stroke={theme.colors.grayIcon} />
-          <Pulse success={isCompleteSuccess} />
         </View>
         <JiggleView style={styles.centeredForm} jiggle={isCompleteError}>
           <Controller

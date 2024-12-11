@@ -79,7 +79,7 @@ export const lightTheme = createTheme({
     androidNavBar: palette.gray200,
     bottomNavBackground: Platform.OS === 'ios' ? palette.gray100 : palette.white,
     lightGrayCard: palette.gray250,
-    inputBackground: palette.gray200,
+    inputBackground: palette.gray250,
     nestedContainer: palette.white,
     avatar: palette.gray500,
     modalOverlay: palette.gray900.replace(`${grayS}`, '0'),
@@ -93,6 +93,7 @@ export const lightTheme = createTheme({
     creditCardGradientEnd: `hsl(${blueH}, 75%, 62%)`,
     widgetPickerBackground: palette.gray150,
     widget: palette.white,
+    tooltip: palette.black,
 
     // Borders
     inputBorder: palette.gray250,
@@ -480,7 +481,7 @@ export const lightTheme = createTheme({
       borderRadius: 'circle',
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: 'mediumGrayButton',
+      backgroundColor: 'grayButton',
     },
     defaults: {
       padding: 's',

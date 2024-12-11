@@ -28,7 +28,7 @@ const Header = () => {
           <CarouselDots length={2} currentIndex={billsIndex} />
         </View>
         <View style={styles.header}>
-          <Text>Bills</Text>
+          <Text fontSize={18}>Bills</Text>
           <View style={styles.seperator}>
             <Seperator backgroundColor='nestedContainerSeperator' variant='bare' />
           </View>

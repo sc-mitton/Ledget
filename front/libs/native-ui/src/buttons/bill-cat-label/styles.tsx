@@ -4,8 +4,8 @@ export default StyleSheet.create({
   billCatLabel: {
     borderRadius: 10,
     paddingHorizontal: 8,
-    paddingVertical: 2,
     flexDirection: 'row',
+    alignItems: 'center',
     gap: 4
   },
   billCatEmojiContainer: {

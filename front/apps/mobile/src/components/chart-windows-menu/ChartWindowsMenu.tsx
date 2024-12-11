@@ -34,15 +34,7 @@ export const ChartWindowsMenu = <W extends Windows>(props: Props<W>) => {
             setWindow(w.key)
             props.onSelect(w.key)
           }
-        })),
-        ...(closeOption ? [{
-          label: 'Close',
-          icon: () => <Icon icon={CornerDownLeft} size={16} color='secondaryText' strokeWidth={2} />,
-          onSelect: () => {
-            props.onClose?.()
-          },
-          newSection: true
-        }] : [])
+        }))
       ]}
       placement='right'
       closeOnSelect={true}

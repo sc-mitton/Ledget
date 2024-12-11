@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native'
 import { ArrowDownRight, ArrowUpRight } from 'geist-native-icons';
 import Big from 'big.js';
 import dayjs from 'dayjs';
-import Animated, { FadeIn, FadeOut, StretchInY, StretchOutY } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { BlurView } from 'expo-blur';
 
 import styles from './styles/summary';
@@ -170,10 +170,9 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
           </View>
         </View>
       </View>
-      {showChart &&
-        <Animated.View style={[styles.graphContainer]} entering={StretchInY} exiting={StretchOutY}>
-          <Chart data={balanceHistoryChartData} />
-        </Animated.View>}
+      <View style={[styles.graphContainer]}>
+        <Chart data={balanceHistoryChartData} />
+      </View>
     </Box>
   )
 }

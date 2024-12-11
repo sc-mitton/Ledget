@@ -34,13 +34,11 @@ function FilledList(props: BudgetScreenProps<'Main'> & { bills: TransformedBill[
                 activeOpacity={0.7}
                 onPress={() => props.navigation.navigate('Bill', { bill: item })}
               >
-                <View>
-                  <BillCatLabel emoji={item.emoji} period={item.period} name={item.name} >
-                    <Text fontSize={15} color='monthColor'>
-                      &nbsp;{dayjs(item.date).format('M-D')}
-                    </Text>
-                  </BillCatLabel>
-                </View>
+                <BillCatLabel emoji={item.emoji} period={item.period} name={item.name}>
+                  <Text color='monthColor'>
+                    &nbsp;{dayjs(item.date).format('M-D')}
+                  </Text>
+                </BillCatLabel>
                 <View style={styles.amount}>
                   <DollarCents value={item.upper_amount} withCents={false} />
                 </View>

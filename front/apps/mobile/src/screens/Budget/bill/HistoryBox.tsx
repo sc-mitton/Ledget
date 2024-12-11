@@ -75,6 +75,7 @@ const MonthlyBillHistory = ({ bill }: { bill: Bill }) => {
 
               return (
                 <TouchableOpacity
+                  key={`history-${month}-${year}`}
                   disabled={!transactionId}
                   onPress={() => {
                     if (transactionId) {
@@ -84,7 +85,7 @@ const MonthlyBillHistory = ({ bill }: { bill: Bill }) => {
                   style={styles.monthCell}>
                   {transactionId
                     ? <Icon icon={CheckInCircle} size={16} color={'successIcon'} />
-                    : <Icon icon={XCircle} size={16} color={'tertiaryText'} />
+                    : <Icon icon={XCircle} size={16} color={'secondaryText'} />
                   }
                   <Text>{dayjs(month).format('MMM')}</Text>
                 </TouchableOpacity>

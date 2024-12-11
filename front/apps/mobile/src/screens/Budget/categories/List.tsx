@@ -41,6 +41,7 @@ const List = (props: Props) => {
               >
                 <View>
                   <ProgressEmoji
+                    size={20}
                     progress={Math.max(Big(item.amount_spent || 0).div(item.limit_amount || 1).toNumber(), .02)}
                     emoji={item.emoji}
                     period={item.period}

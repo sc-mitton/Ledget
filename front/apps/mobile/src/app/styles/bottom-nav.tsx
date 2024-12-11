@@ -53,8 +53,8 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   indicator: {
-    width: 5,
-    height: 5,
+    width: 4,
+    height: 4,
     position: 'absolute',
     top: -2,
     right: -2,

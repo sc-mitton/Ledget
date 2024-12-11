@@ -89,9 +89,7 @@ const Header = () => {
           <CarouselDots length={2} currentIndex={categoriesIndex} />
         </View>
         <View style={styles.header}>
-          <Text>
-            {categoriesIndex === 0 ? 'Monthly' : 'Yearly'} Spending
-          </Text>
+          <Text fontSize={18}>{categoriesIndex === 0 ? 'Monthly' : 'Yearly'} Spending</Text>
           <Progress />
         </View>
       </Box>

@@ -92,6 +92,7 @@ export const darkTheme = createTheme({
     creditCardGradientEnd: `hsl(${blueH}, ${blueS}%, 42%)`,
     widgetPickerBackground: palette.gray900,
     widget: palette.gray850,
+    tooltip: palette.gray850,
 
     // Borders
     inputBorder: palette.gray775,
@@ -156,11 +157,11 @@ export const darkTheme = createTheme({
     blueButtonBorder: palette.blue400,
     lightGrayButton: palette.gray800,
     darkGrayButton: palette.gray800,
-    grayButton: palette.gray850,
+    grayButton: palette.gray800,
     grayButtonBorder: `hsl(${grayH}, ${grayS}%, 12%)`,
     mediumGrayButton: palette.gray700,
     mediumGrayButtonBorder: palette.gray650,
-    borderedGrayButton: palette.gray700,
+    borderedGrayButton: palette.gray800,
     dragBar: palette.gray750,
     tabsTrack: palette.gray800,
     tabsBackground: palette.gray700,
@@ -169,10 +170,10 @@ export const darkTheme = createTheme({
     redButton: palette.faintRed,
 
     // Category and Bill Colors
-    monthBackground: `hsl(${blueH}, 50%, 25%)`,
-    monthBorder: `hsl(${blueH}, 50%, 26%)`,
-    monthColor: `hsl(${blueH}, ${blueS + 30}%, 70%)`,
-    monthBorder2: `hsl(${blueH}, 50%, 60%)`,
+    monthBackground: `hsl(${blueH}, 60%, 25%)`,
+    monthBorder: `hsl(${blueH}, 60%, 26%)`,
+    monthColor: `hsl(${blueH}, ${blueS + 40}%, 70%)`,
+    monthBorder2: `hsl(${blueH}, 60%, 60%)`,
     yearBackground: `hsl(${greenH}, 58%, 17%)`,
     yearBorder: `hsl(${greenH}, 58%, 24%)`,
     yearBorder2: `hsl(${greenH}, 58%, 37%)`,

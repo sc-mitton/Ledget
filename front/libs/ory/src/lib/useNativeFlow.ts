@@ -78,6 +78,7 @@ export const useNativeFlow = <E extends EndpointRootNames>(
 
   return {
     flow,
+    flowId,
     fetchFlow,
     submitFlow,
     result,

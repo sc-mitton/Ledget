@@ -85,7 +85,7 @@ const Logout = (props: ModalScreenProps<'Logout'>) => {
             label='Log Out'
             labelPlacement='right'
           >
-            <Icon icon={LogOut} color='alert' />
+            {({ isSubmitting }) => !isSubmitting && <Icon icon={LogOut} color='alert' />}
           </SubmitButton>
         </View>
       </View>

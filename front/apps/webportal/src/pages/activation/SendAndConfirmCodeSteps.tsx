@@ -50,9 +50,9 @@ const SendAndConfirmCodeSteps = () => {
                         <SendCodeForm submit={submit} csrf_token={flow?.csrf_token} />
                     </SlideMotionDiv>
                 }
-                {searchParams.get('step') === 'confirm-code' &&
+                {searchParams.get('step') === 'confirm-code' && flow &&
                     <SlideMotionDiv key='confirm-code' position='last'>
-                        <ConfirmCodeForm submit={submit} csrf_token={flow?.csrf_token} />
+                        <ConfirmCodeForm submit={submit} csrf_token={flow.csrf_token} />
                     </SlideMotionDiv>
                 }
             </AnimatePresence>

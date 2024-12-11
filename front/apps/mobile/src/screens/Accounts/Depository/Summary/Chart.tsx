@@ -111,11 +111,11 @@ const Chart = (props: ChartProps) => {
               isActive={state.isActive}
               font={font}
               chartBounds={chartBounds}
-              color={theme.colors.mainText}
               xAxisTipColor={theme.colors.tertiaryText}
               dotColor={theme.colors.blueText}
               borderColor={theme.colors.blueChartColor}
-              backgroundColor={theme.colors.nestedContainerSeperator}
+              backgroundColor={theme.colors.tooltip}
+              color={theme.colors.whiteText}
               lineOffset={-20}
               hidden={['verticalCrossHair', 'xTip']}
             />

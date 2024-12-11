@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, Fragment } from 'react'
 
 import { View, TextInput, Keyboard } from 'react-native'
 
@@ -74,7 +74,7 @@ export const Otc = (props: Props) => {
     <View style={styles.otcContainer}>
       {
         Array(codeLength).fill('').map((_, index) => (
-          <>
+          <Fragment key={`otc-${index}`}>
             <Box
               key={`otc-${index}`}
               borderColor={focused === index ? 'focusedInputBorderSecondary' : 'transparent'}
@@ -109,7 +109,7 @@ export const Otc = (props: Props) => {
             </Box>
             {codeLength / 2 === (index + 1) &&
               <Box key={`otc-dash-${index}`} backgroundColor='authScreenSeperator' style={styles.dash} />}
-          </>
+          </Fragment>
         ))
       }
     </View>

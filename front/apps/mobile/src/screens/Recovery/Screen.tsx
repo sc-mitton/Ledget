@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { View, KeyboardAvoidingView, Platform, Keyboard } from 'react-native';
+import { View, KeyboardAvoidingView, Platform } from 'react-native';
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod';
@@ -8,22 +8,21 @@ import { Lock, Unlock } from 'geist-native-icons';
 import styles from './styles';
 import { useNativeFlow } from '@ledget/ory';
 import { useLazyGetRecoveryFlowQuery, useCompleteRecoveryFlowMutation } from '@features/orySlice'
-import { Header, NestedScreenWOFeedback, SubHeader2, Button, Pulse, Otc, Box, Icon } from '@ledget/native-ui'
+import { Header, NestedScreenWOFeedback, SubHeader2, Button, Otc, Box, Icon } from '@ledget/native-ui'
 import { RecoveryScreenProps } from '@types'
 import { useFlowProgress } from '@hooks';
-import { useAppearance } from '@/features/appearanceSlice';
 
 const schema = z.object({
   code: z.string().length(6, { message: 'Invalid code' })
 })
 
 export default function Recovery({ navigation, route }: RecoveryScreenProps) {
-  const [keyboardVisible, setKeyboardVisible] = React.useState(false);
   const { control, handleSubmit, formState: { errors } } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: 'onSubmit',
   });
-  const { fetchFlow, submitFlow, flowStatus: { isCompleteSuccess }, result } = useNativeFlow(
+  const [hasSubmitted, setHasSubmitted] = React.useState(false);
+  const { flowId, fetchFlow, submitFlow, flowStatus: { isCompleteSuccess, isGetFlowSuccess }, result } = useNativeFlow(
     useLazyGetRecoveryFlowQuery,
     useCompleteRecoveryFlowMutation,
     'recovery'
@@ -31,26 +30,23 @@ export default function Recovery({ navigation, route }: RecoveryScreenProps) {
 
   useEffect(() => { fetchFlow() }, [])
 
-  // Add a listener to the keyboard
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => setKeyboardVisible(true));
-    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => setKeyboardVisible(false));
-    return () => {
-      keyboardDidHideListener.remove();
-      keyboardDidShowListener.remove();
-    };
-  }, []);
-
   useFlowProgress({
     navigation,
     route,
-    updateProgress: isCompleteSuccess,
+    updateProgress: isCompleteSuccess && hasSubmitted,
     token: result?.session_token,
-    id: result?.session.id
+    id: result?.session?.id
   });
 
+  useEffect(() => {
+    if (isGetFlowSuccess && flowId) {
+      submitFlow({ method: 'code', email: route.params.identifier });
+    }
+  }, [isGetFlowSuccess, flowId])
+
   const onSubmit = (data: z.infer<typeof schema>) => {
-    submitFlow({ ...data, email: route.params.identifier, method: 'code' });
+    submitFlow({ ...data, method: 'code' });
+    setTimeout(() => setHasSubmitted(true), 500);
   }
 
   return (
@@ -66,16 +62,14 @@ export default function Recovery({ navigation, route }: RecoveryScreenProps) {
         <View style={styles.graphicContainer}>
           <View style={styles.icon}>
             <Icon
-              icon={isCompleteSuccess ? Unlock : Lock}
-              size={keyboardVisible ? 48 : 54}
+              size={48}
+              icon={isCompleteSuccess && hasSubmitted ? Unlock : Lock}
               strokeWidth={1.25}
-              color={isCompleteSuccess ? 'successIcon' : 'tertiaryText'}
+              color={isCompleteSuccess && hasSubmitted ? 'successIcon' : 'secondaryText'}
             />
-            <Box style={styles.iconBackgroundContainer} backgroundColor='mainBackground' />
           </View>
-          <Pulse success={isCompleteSuccess} size={keyboardVisible ? 'm' : 'l'} />
         </View>
-        <View style={styles.form}>
+        <Box style={styles.form}>
           <Controller
             control={control}
             name='code'
@@ -100,7 +94,7 @@ export default function Recovery({ navigation, route }: RecoveryScreenProps) {
               'Login',
               { screen: 'Aal2RecoveryCode', params: { identifier: route.params.identifier } })}
           />
-        </View>
+        </Box>
       </KeyboardAvoidingView>
     </NestedScreenWOFeedback>
   )

@@ -1,5 +1,5 @@
+import { useEffect } from 'react';
 import { View } from 'react-native';
-import Svg, { Defs, Stop, RadialGradient as SVGRadialGradient, Circle as SvgCircle } from "react-native-svg"
 import Animated, {
   useSharedValue,
   withRepeat,
@@ -8,8 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import styles from './styles';
-import { useTheme } from '@shopify/restyle';
-import { useEffect } from 'react';
+import { Box } from '../../restyled/Box';
 
 type Size = 's' | 'm' | 'l'
 
@@ -30,51 +29,23 @@ const sizes = {
   l: 84,
 };
 
-const inactiveInnerPulseLength = 2000;
+const inactiveInnerPulseLength = 4000;
 const inactiveInnerPulseDelay = 500;
-const inactiveOuterPulseLength = 2000;
+const inactiveOuterPulseLength = 4000;
 
 const Circle = ({ green = false, size = 'l', position }: CircleProps) => {
-  const theme = useTheme();
 
   return (
-    <Svg
-      viewBox={`0 0 ${sizes[size]} ${sizes[size]}`}
-      transform={[{ translateY: -sizes[size] / 2 }, { translateX: -sizes[size] / 2 }]}
+    <Box
+      backgroundColor={green ? 'pulseGreen' : 'pulseWaiting'}
+      borderRadius='circle'
       width={sizes[size]}
       height={sizes[size]}
-      style={styles.svg}
-    >
-      <SvgCircle
-        cx={'50%'}
-        cy={'50%'}
-        r={sizes[size] / 2}
-        fill="url(#grad)"
-      />
-      <Defs>
-        <SVGRadialGradient
-          id="grad"
-          cx="50%"
-          cy="50%"
-          r={sizes[size] / 2}
-          gradientUnits="userSpaceOnUse"
-        >
-          <Stop stopColor={theme.colors.accountsMainBackground} />
-          <Stop
-            stopColor={theme.colors.accountsMainBackground}
-            offset={
-              green
-                ? position === 'inner' ? .3 : .4
-                : position === 'inner' ? .85 : .9
-            }
-          />
-          <Stop
-            stopColor={green ? theme.colors.pulseGreen : theme.colors.pulseWaiting}
-            offset={1.5}
-          />
-        </SVGRadialGradient>
-      </Defs>
-    </Svg>
+      style={[
+        styles.svg,
+        { transform: [{ translateY: -sizes[size] / 2 }, { translateX: -sizes[size] / 2 }] }
+      ]}
+    />
   )
 }
 
@@ -85,8 +56,8 @@ export const Pulse = ({ size = 'm', success }: PulseProps) => {
   const inactiveOuterPulse = useSharedValue(1.3);
   const activeInnerPulse = useSharedValue(0);
   const activeOuterPulse = useSharedValue(0);
-  const opacityOuter = useSharedValue(.1);
-  const opacityInner = useSharedValue(.2);
+  const opacityOuter = useSharedValue(.05);
+  const opacityInner = useSharedValue(.1);
 
   const successOpacity = useSharedValue(1);
 

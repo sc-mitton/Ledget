@@ -55,15 +55,14 @@ const Aal2Authenticator = ({ navigation, route }: LoginScreenProps<'Aal2Authenti
         style={{ flex: 1 }}
       >
         <View style={sharedStyles.header}>
-          <Header>One Time Code</Header>
+          <Header variant='geistBold'>One Time Code</Header>
           <SubHeader2>Enter the code from your authenticator app or use a saved recovery code</SubHeader2>
         </View>
         <View style={sharedStyles.graphicContainer}>
           <Authenticator
             fill={theme.colors.accountsMainBackground}
-            stroke={isCompleteSuccess ? theme.colors.successIcon : theme.colors.grayIcon}
+            stroke={isCompleteSuccess ? theme.colors.successIcon : theme.colors.secondaryText}
           />
-          <Pulse success={isCompleteSuccess} />
         </View>
         <JiggleView style={sharedStyles.form} jiggle={isCompleteError}>
           <Controller

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import {
   View,
-  PanResponder,
   TouchableOpacity,
   Dimensions,
   Pressable,
@@ -11,8 +10,13 @@ import {
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
-  withSpring
+  withSpring,
+  runOnJS
 } from 'react-native-reanimated';
+import {
+  GestureDetector,
+  Gesture
+} from 'react-native-gesture-handler';
 import dayjs from 'dayjs';
 import { groupBy } from 'lodash-es';
 import { useTheme } from '@shopify/restyle';
@@ -32,7 +36,7 @@ const DRAG_THRESHOLD = Dimensions.get('window').height * 0.2
 const ESCAPE_VELOCITY = 1.5
 
 const Transactions = (props: PTransactions) => {
-  const state = useRef<ListState>('neutral')
+  const state = useSharedValue(0) // 0 = neutral, 1 = expanded
   const propTop = useRef(props.collapsedTop)
   const top = useSharedValue(props.collapsedTop)
   const theme = useTheme()
@@ -87,54 +91,42 @@ const Transactions = (props: PTransactions) => {
     propTop.current = props.collapsedTop
   }, [props.collapsedTop])
 
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: () => true,
-      onPanResponderMove: (e, gs) => {
-        if ((gs.dy > 0 && state.current === 'neutral') || (gs.dy < 0 && state.current === 'expanded')) {
-          return
-        }
 
-        top.value = state.current === 'neutral'
-          ? propTop.current + gs.dy
-          : props.expandedTop + gs.dy
-      },
-      onPanResponderRelease: (e, gs) => {
-        if ((gs.dy > 0 && state.current === 'neutral') || (gs.dy < 0 && state.current === 'expanded')) {
-          return
-        }
-        if ((Math.abs(gs.dy) > DRAG_THRESHOLD) || (Math.abs(gs.vy) > ESCAPE_VELOCITY)) {
-          top.value = state.current === 'expanded'
-            ? withSpring(propTop.current, defaultSpringConfig)
-            : withSpring(props.expandedTop, defaultSpringConfig)
-          props.onStateChange?.(state.current === 'expanded' ? 'neutral' : 'expanded')
-          state.current = state.current === 'expanded' ? 'neutral' : 'expanded'
-        } else {
-          top.value = state.current === 'expanded'
-            ? withSpring(props.expandedTop, defaultSpringConfig)
-            : withSpring(propTop.current, defaultSpringConfig)
-        }
-        return true
-      },
-      onPanResponderTerminationRequest: (e, gs) => {
-        if ((gs.dy > 0 && state.current === 'neutral') || (gs.dy < 0 && state.current === 'expanded')) {
-          return true
-        }
-        if ((Math.abs(gs.dy) > DRAG_THRESHOLD) || (Math.abs(gs.vy) > ESCAPE_VELOCITY)) {
-          top.value = state.current === 'expanded'
-            ? withSpring(propTop.current, defaultSpringConfig)
-            : withSpring(props.expandedTop, defaultSpringConfig)
-          props.onStateChange?.(state.current === 'expanded' ? 'neutral' : 'expanded')
-          state.current = state.current === 'expanded' ? 'neutral' : 'expanded'
-        } else {
-          top.value = state.current === 'expanded'
-            ? withSpring(props.expandedTop, defaultSpringConfig)
-            : withSpring(propTop.current, defaultSpringConfig)
-        }
+  const gesture = Gesture.Pan()
+    .onStart(({ translationY: ty }) => {
+      if ((ty > 0 && state.value === 0) || (ty < 0 && state.value === 1)) {
+        return
+      }
+
+      top.value = state.value === 0
+        ? withSpring(propTop.current + ty)
+        : withSpring(props.expandedTop + ty)
+    })
+    .onChange(({ translationY: ty }) => {
+      if ((ty > 0 && state.value === 0) || (ty < 0 && state.value === 1)) {
+        return
+      }
+
+      top.value = state.value === 0
+        ? propTop.current + ty
+        : props.expandedTop + ty
+    })
+    .onEnd(({ translationY: ty, velocityY: vy }) => {
+      if ((ty > 0 && state.value === 0) || (ty < 0 && state.value === 1)) {
         return true
       }
-    })).current
+      if ((Math.abs(ty) > DRAG_THRESHOLD) || (Math.abs(vy) > ESCAPE_VELOCITY)) {
+        top.value = state.value === 1
+          ? withSpring(propTop.current, defaultSpringConfig)
+          : withSpring(props.expandedTop, defaultSpringConfig)
+        props.onStateChange && runOnJS(props.onStateChange)(state.value === 1 ? 'neutral' : 'expanded')
+        state.value = state.value === 1 ? 0 : 1
+      } else {
+        top.value = state.value === 1
+          ? withSpring(props.expandedTop, defaultSpringConfig)
+          : withSpring(propTop.current, defaultSpringConfig)
+      }
+    })
 
   // Fetch more
   const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -166,9 +158,11 @@ const Transactions = (props: PTransactions) => {
           borderWidth={1}
           backgroundColor='nestedContainer'>
           {(transactionsData?.length || 0) > 0 &&
-            <View style={styles.dragBarContainer} {...panResponder.panHandlers}>
-              <Box style={styles.dragBar} borderRadius='circle' backgroundColor='dragBar' />
-            </View>}
+            <GestureDetector gesture={gesture}>
+              <View style={styles.dragBarContainer}>
+                <Box style={styles.dragBar} borderRadius='circle' backgroundColor='dragBar' />
+              </View>
+            </GestureDetector>}
           {(transactionsData?.length || 0) <= 0 || isLoadingInvestmentsData
             ?
             <SkeletonTransactions height={SKELETON_HEIGHT} />

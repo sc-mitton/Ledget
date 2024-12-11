@@ -37,10 +37,10 @@ export const Seperator = ({ label, ...rest }: Props) => {
     flex = 1,
   } = rest;
 
-  const restyledprops = useRestyle((restyleFunctions as any), { ...rest, variant, backgroundColor, flex } as any);
+  const restyledprops = useRestyle((restyleFunctions), { ...rest, variant, backgroundColor, flex } as any);
 
   return (
-    <BaseBox flexDirection='row' alignItems='center'>
+    <BaseBox flexDirection='row' alignItems='center' justifyContent='center'>
       <BaseBox {...restyledprops} />
       {label &&
         <Text paddingHorizontal='m'>

@@ -27,5 +27,5 @@ export const {
   useLazyGetVerificationFlowQuery,
   useCompleteVerificationFlowMutation,
   useLazyGetRecoveryFlowQuery,
-  useCompleteRecoveryFlowMutation,
+  useCompleteRecoveryFlowMutation
 } = orySlice;

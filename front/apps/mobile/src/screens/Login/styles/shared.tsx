@@ -3,8 +3,7 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   form: {
     justifyContent: 'flex-end',
-    flex: 1,
-    marginBottom: 80,
+    flex: 1
   },
   centeredForm: {
     justifyContent: 'center',

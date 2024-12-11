@@ -273,7 +273,7 @@ const BillInfo = ({ bill }: { bill: TransformedBill }) => {
           {bill.reminders && bill.reminders?.length > 0 ? (
             <>
               {bill.reminders.map((reminder, i) => (
-                <span>
+                <span key={`reminder-${i}`}>
                   {`${reminder.offset} `}
                   {`${reminder.period}${reminder.offset > 1 ? 's' : ''} before`}
                 </span>
@@ -405,7 +405,7 @@ const EditBill = ({
       } else {
         const payload = { id: bill?.id } as any;
         let k: keyof typeof data;
-        for (k in data) if (data[k] !== bill?.[k]) payload[k] = data[k];
+        for (k in data) if (data[k] !== (bill as any)?.[k]) payload[k] = data[k];
         updateBill(payload as UpdateBill);
       }
     })(e);
@@ -444,7 +444,7 @@ const EditBill = ({
                 month: bill.month
               }}
               billPeriod={bill.period}
-              error={errors.day}
+              error={errors.schedule?.day}
               register={register}
             />
             <AddReminder

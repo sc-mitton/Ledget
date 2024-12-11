@@ -3,7 +3,7 @@ import { Svg, Circle } from 'react-native-svg';
 import { useTheme } from '@shopify/restyle';
 
 import styles from './styles';
-import { Box } from '../../restyled/Box';
+import { Box, BoxProps } from '../../restyled/Box';
 import { Text } from '../../restyled/Text';
 
 interface BillCatEmojiProps {
@@ -17,6 +17,8 @@ interface BillCatLabelProps extends BillCatEmojiProps {
   name: string;
   children?: React.ReactNode;
   selected?: boolean;
+  padding?: number;
+  fontSize?: number;
 }
 
 interface ProgressEmojiProps extends BillCatEmojiProps {
@@ -87,21 +89,20 @@ export function BillCatEmoji(props: BillCatEmojiProps) {
 }
 
 export function BillCatLabel(props: BillCatLabelProps) {
-  const { name, emoji, period } = props;
+  const { name, emoji, period, padding = 2, fontSize = 16 } = props;
 
   return (
     <Box
-      style={styles.billCatLabel}
+      style={[styles.billCatLabel, { paddingVertical: padding }]}
       borderWidth={1}
       borderColor={props.selected
         ? period === 'year' ? 'yearBorder2' : 'monthBorder2'
         : period === 'year' ? 'yearBackground' : 'monthBackground'
       }
-      backgroundColor={period === 'year' ? 'yearBackground' : 'monthBackground'}>
-      <Text fontSize={14}>{emoji}</Text>
-      <Text
-        color={period === 'year' ? 'yearColor' : 'monthColor'}
-        fontSize={14}>
+      backgroundColor={period === 'year' ? 'yearBackground' : 'monthBackground'}
+    >
+      <Text>{emoji}</Text>
+      <Text fontSize={fontSize} color={period === 'year' ? 'yearColor' : 'monthColor'}>
         {`${name.charAt(0).toUpperCase()}${name.slice(1)}`}
       </Text>
       {props.children}

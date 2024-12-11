@@ -133,11 +133,11 @@ const ChartSkeleton = (props: Props) => {
                   isActive={state.isActive}
                   font={font}
                   chartBounds={chartBounds}
-                  color={theme.colors.mainText}
+                  backgroundColor={theme.colors.tooltip}
+                  color={theme.colors.whiteText}
                   xAxisTipColor={theme.colors.tertiaryText}
                   dotColor={theme.colors.blueText}
                   borderColor={theme.colors.blueChartColor}
-                  backgroundColor={theme.colors.nestedContainerSeperator}
                   lineOffset={-20}
                   hidden={['tip']}
                 />)}

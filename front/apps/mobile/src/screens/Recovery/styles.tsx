@@ -6,8 +6,7 @@ const styles = StyleSheet.create({
   },
   form: {
     flex: 1,
-    justifyContent: 'flex-end',
-    marginBottom: 40,
+    justifyContent: 'flex-end'
   },
   graphicContainer: {
     alignItems: 'center',

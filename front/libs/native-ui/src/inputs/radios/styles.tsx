@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   radios: {
-    gap: 12,
+    gap: 4,
     marginVertical: 8
   },
   horizontalRadios: {
@@ -31,9 +31,8 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   radioCircleInner: {
-    margin: 3,
-    width: 6,
-    height: 6,
+    width: 12,
+    height: 12,
     borderRadius: 100,
   }
 });

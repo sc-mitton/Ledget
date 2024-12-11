@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import { Trash } from 'geist-native-icons';
 
 import sharedStyles from './styles/shared';
-import { Text, Seperator, Button, SubmitButton, Icon, Modal, Radios } from '@ledget/native-ui'
+import { Text, Seperator, Button, SubmitButton, Icon, Modal, Radios, Box } from '@ledget/native-ui'
 import { useDeleteBillMutation } from '@ledget/shared-features';
 import { ModalScreenProps } from '@types';
 
@@ -44,10 +44,9 @@ const ConfirmDeleteCategory = (props: ModalScreenProps<'ConfirmDeleteBill'>) => 
 
   return (
     <Modal position='centerFloat'>
-      <View style={sharedStyles.header}>
+      <Box style={sharedStyles.header} marginBottom='m'>
         <Text fontSize={20} variant='bold'>Delete Bill</Text>
-      </View>
-      <Seperator variant='m' backgroundColor='modalSeperator' />
+      </Box>
       <Radios
         onChange={setRadiosValue}
         options={options}

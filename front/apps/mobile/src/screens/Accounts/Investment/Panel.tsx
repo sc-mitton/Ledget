@@ -26,10 +26,10 @@ export default function Panel(props: AccountsTabsScreenProps<'Investment'>) {
             <View style={styles.transactionsHeader}>
               <Text color='tertiaryText'>Transactions</Text>
             </View>
-            <Icon color='quinaryText' icon={ArrowDownLeft} size={14} strokeWidth={2} />
-            <Text color='quinaryText' fontSize={15} >Buy</Text>
-            <Icon color='quinaryText' icon={ArrowUpRight} size={14} strokeWidth={2} />
-            <Text color='quinaryText' fontSize={15}>Sell</Text>
+            <Icon color='tertiaryText' icon={ArrowDownLeft} size={14} strokeWidth={2} />
+            <Text color='tertiaryText' fontSize={15} >Buy</Text>
+            <Icon color='tertiaryText' icon={ArrowUpRight} size={14} strokeWidth={2} />
+            <Text color='tertiaryText' fontSize={15}>Sell</Text>
           </View>
         </View>
         <Transactions

@@ -270,11 +270,11 @@ const Chart = () => {
                     isActive={state.isActive}
                     font={font}
                     chartBounds={chartBounds}
-                    color={theme.colors.mainText}
                     xAxisTipColor={theme.colors.tertiaryText}
                     dotColor={theme.colors.blueText}
                     borderColor={theme.colors.lightBlueButton}
-                    backgroundColor={theme.colors.grayButton}
+                    backgroundColor={theme.colors.tooltip}
+                    color={theme.colors.whiteText}
                     lineOffset={-20}
                   />)}
               </>

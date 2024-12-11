@@ -162,7 +162,7 @@ const Item = (props: Props) => {
                     p.accounts.find((account) => account.id === item.account))?.institution?.logo
                 } />
                 <View style={styles.transactionInfo}>
-                  <Text style={styles.transactionName} variant='bold'>
+                  <Text style={styles.transactionName}>
                     {focused
                       ? item.name.length > 32 ? `${item.name.slice(0, 32)} ...` : item.name
                       : item.name.length > 17 ? `${item.name.slice(0, 17)} ...` : item.name}
@@ -178,6 +178,7 @@ const Item = (props: Props) => {
               <View style={styles.rightColumn}>
                 <View style={[styles.billCatLabelContainer, { opacity: focused ? .2 : 1 }]}>
                   <BillCatLabel
+                    fontSize={14}
                     name={
                       item.categories?.[0]?.name ||
                       item.bill?.name ||

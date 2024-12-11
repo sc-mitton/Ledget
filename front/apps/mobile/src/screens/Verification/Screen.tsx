@@ -67,8 +67,7 @@ const Verification = ({ navigation, route }: VerificationScreenProps) => {
           <SubHeader2>To verify your account, please enter the code sent to your email</SubHeader2>
         </View>
         <View style={styles.graphicContainer}>
-          <Icon icon={Mail} color={isCompleteSuccess ? 'successIcon' : 'grayIcon'} size={54} />
-          <Pulse success={isCompleteSuccess} />
+          <Icon icon={Mail} color={isCompleteSuccess ? 'successIcon' : 'secondaryText'} size={54} />
         </View>
         <JiggleView style={styles.form} jiggle={jiggle}>
           <Controller
