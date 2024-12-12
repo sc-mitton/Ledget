@@ -33,5 +33,8 @@ export default StyleSheet.create({
     width: 24,
     position: 'absolute',
     opacity: 0.2
+  },
+  seperator: {
+    transform: [{ translateY: 2 }]
   }
 });

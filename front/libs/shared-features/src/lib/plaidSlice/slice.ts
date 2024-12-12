@@ -43,7 +43,7 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
         method: 'POST',
         body: data
       }),
-      invalidatesTags: ['PlaidItem', 'Liability', 'Investment', 'Account'],
+      invalidatesTags: ['PlaidItem', 'Liability', 'Investment', 'Account', 'AccountBalanceHistory'],
       extraOptions: { maxRetries: 3 }
     }),
     updatePlaidItem: builder.mutation<any, { itemId: string; data: { itemId: string, data: Partial<PlaidItem> } }>(

@@ -13,20 +13,16 @@ const styles = StyleSheet.create({
     bottom: 0
   },
   iosNavBlurViewSpacing: {
-    paddingBottom: 32,
-    paddingTop: 20,
     left: -24,
     right: -24,
-    paddingLeft: 40,
-    paddingRight: 40,
+    paddingLeft: 20,
+    paddingRight: 20,
   },
   androidNavBlurViewSpacing: {
-    paddingBottom: 34,
-    paddingTop: 26,
     left: -64,
     right: -64,
-    paddingLeft: 84,
-    paddingRight: 84,
+    paddingLeft: 64,
+    paddingRight: 64,
   },
   navBack: {
     position: 'absolute',
@@ -48,6 +44,16 @@ const styles = StyleSheet.create({
   },
   tabButton: {
     alignItems: 'center',
+    height: '100%',
+    paddingHorizontal: 16
+  },
+  iosTabButton: {
+    paddingTop: 20,
+    paddingBottom: 32
+  },
+  androidTabButton: {
+    paddingTop: 26,
+    paddingBottom: 34
   },
   activityButtonContainer: {
     position: 'relative',
@@ -56,8 +62,8 @@ const styles = StyleSheet.create({
     width: 4,
     height: 4,
     position: 'absolute',
-    top: -2,
-    right: -2,
+    top: 18,
+    right: 14,
     borderRadius: 4
   }
 });

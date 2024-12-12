@@ -5,10 +5,9 @@ import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import { LogOut } from 'geist-native-icons';
 
-import styles from './styles/logout';
 import sharedStyles from './styles/shared';
-import { Text, Header2, Button, SubmitButton, Modal, Icon, Seperator, Box } from '@ledget/native-ui';
-import { selectSession, apiSlice, setSession } from '@ledget/shared-features';
+import { Text, Button, SubmitButton, Modal, Icon, Seperator } from '@ledget/native-ui';
+import { apiSlice, selectSession, setSession } from '@ledget/shared-features';
 import { useAppSelector, useAppDispatch } from '@hooks';
 import { IOS_ORY_API_URI, ANDROID_ORY_API_URI } from '@env';
 import { ModalScreenProps } from '@types';

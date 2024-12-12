@@ -9,8 +9,8 @@ import styles from './styles/spinner';
 type RestyleProps = ColorProps<Theme>;
 const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([color]);
 
-export const Spinner = (props: RestyleProps) => {
-  const restyledProps = useRestyle(restyleFunctions, props);
+export const Spinner = ({ fill, ...rest }: RestyleProps & { fill?: string }) => {
+  const restyledProps = useRestyle(restyleFunctions, rest);
   const rawColor = (restyledProps as any).style[0].color
   const theme = useTheme();
 
@@ -24,19 +24,19 @@ export const Spinner = (props: RestyleProps) => {
           colorFilters={[
             {
               keypath: '360spin slow',
-              color: rawColor || theme.colors.quaternaryText
+              color: fill || rawColor || theme.colors.quaternaryText
             },
             {
               keypath: '720spin',
-              color: rawColor || theme.colors.quaternaryText
+              color: fill || rawColor || theme.colors.quaternaryText
             },
             {
               keypath: '360spin',
-              color: rawColor || theme.colors.quaternaryText
+              color: fill || rawColor || theme.colors.quaternaryText
             },
             {
               keypath: '360 spin',
-              color: rawColor || theme.colors.quaternaryText
+              color: fill || rawColor || theme.colors.quaternaryText
             }
           ]}
           source={require('../../assets/loading.json')}

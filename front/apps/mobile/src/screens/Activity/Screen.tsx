@@ -10,7 +10,7 @@ const Screen = (props: ModalScreenProps<'Activity'>) => {
   const [index, setIndex] = useState(props.route.params?.tab || 0);
 
   return (
-    <BottomDrawerModal defaultExpanded={props.route.params?.expanded} >
+    <BottomDrawerModal defaultExpanded={props.route.params?.expanded}>
       {({ expanded }) => (
         <>
           <Header setIndex={setIndex} index={index} />

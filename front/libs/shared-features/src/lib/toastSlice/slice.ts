@@ -17,11 +17,8 @@ export const toastSlice = createSlice({
         ...action.payload
       };
 
-      const shouldAdd = [
-        !state.freshToast.some(t => t.messageId === newToast.messageId),
-        !state.freshToast.includes(newToast)
-      ]
-      if (shouldAdd.every(Boolean)) {
+      const shouldAdd = state.freshToast.every(t => t.messageId !== newToast.messageId)
+      if (shouldAdd) {
         state.freshToast = [...state.freshToast, newToast]
       };
     },
@@ -45,7 +42,7 @@ export const toastErrorMiddleware: Middleware = (api: MiddlewareAPI) => (next) =
       api.dispatch(popToast({
         message: `Account connection broken`,
         messageId: 'toast-connection-broken',
-        actionLink: ['Profile', { screen: 'Connections' }],
+        actionLink: ['BottomTabs', { screen: 'Profile', params: { screen: 'Connections' } }],
         actionMessage: 'Reconnect',
         type: 'error',
         timer: 7000

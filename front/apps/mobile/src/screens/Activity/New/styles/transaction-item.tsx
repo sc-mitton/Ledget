@@ -8,10 +8,10 @@ export default StyleSheet.create({
     padding: 16
   },
   androidContentSpacing: {
-    padding: 18
+    padding: 18,
   },
   iosContentSpacing: {
-    padding: 16
+    padding: 16,
   },
   leftColumn: {
     flexDirection: 'row',
@@ -20,20 +20,21 @@ export default StyleSheet.create({
     flexShrink: 1
   },
   rightColumn: {
-    flexDirection: 'row',
     position: 'absolute',
     right: 16,
-    top: '75%',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    left: 0,
+    top: 0,
+    bottom: 0,
+    paddingRight: 16,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
   },
   billCatLabelContainer: {
-    position: 'absolute',
-    alignItems: 'center'
+    position: 'absolute'
   },
   bottomRow: {
     flexDirection: 'row',
-    gap: 8
+    gap: 4
   },
   leftCheckContainer: {
     position: 'absolute',

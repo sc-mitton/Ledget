@@ -4,8 +4,8 @@ export default StyleSheet.create({
   transactionsContainer: {
     padding: 0,
     marginTop: 8,
-    paddingBottom: 16,
     position: 'relative',
+    zIndex: 1
   },
   transactionItem: {
     width: '100%',
@@ -30,12 +30,12 @@ export default StyleSheet.create({
   },
   scrollView: {
     position: 'relative',
-    width: '100%',
     minHeight: '100%',
-    marginBottom: -32,
-    paddingTop: 16
+    paddingTop: 16,
+    marginHorizontal: -16
   },
   scrollViewContent: {
+    paddingHorizontal: 16,
     zIndex: 1,
     position: 'relative',
   },
@@ -43,11 +43,25 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'relative',
-    marginTop: 48
+    position: 'relative'
+  },
+  overlayView: {
+    zIndex: 199
+  },
+  overlayContainer: {
+    transform: [{ translateY: -24 }],
+    marginHorizontal: -16,
   },
   overlay: {
-    zIndex: 1,
-    opacity: 0.8
+    opacity: 0.6
+  },
+  mask: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    left: 0,
+    right: 0,
+    height: 28,
+    zIndex: 0
   }
 });

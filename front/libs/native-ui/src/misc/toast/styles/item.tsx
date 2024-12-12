@@ -5,6 +5,7 @@ export default StyleSheet.create({
     position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
+    width: '100%'
   },
   toastItem: {
     flexDirection: 'row',

@@ -105,7 +105,7 @@ export const lightTheme = createTheme({
     bottomNavBorder: Platform.OS === 'ios' ? palette.gray200 : palette.white,
     nestedContainerBorder: `hsl(${grayH}, ${grayS}%, 94%)`,
     tabNavBorder: palette.gray250,
-    newTransactionBorder: palette.gray200,
+    newTransactionBorder: palette.gray150,
     contextMenuBorder: palette.gray250,
     modalBorder: palette.gray200,
     toastBorder: palette.gray100,

@@ -26,9 +26,12 @@ export interface MenuProps {
   onShowChange?: (show: boolean) => void;
   disabled?: boolean;
   placement?: 'center' | 'left' | 'right';
+  hasShadow?: boolean;
 }
 
 export function Menu(props: MenuProps) {
+  const { hasShadow = true } = props;
+
   const [show, setShow] = useState(false);
   const theme = useTheme();
   const touchRef = React.useRef<View>(null);
@@ -81,14 +84,15 @@ export function Menu(props: MenuProps) {
                 exiting={ZoomOut.duration(150).easing(Easing.ease)}>
                 <Box
                   shadowColor='menuShadowColor'
-                  shadowOpacity={1}
+                  shadowOpacity={hasShadow ? 1 : 0}
                   shadowRadius={20}
                   elevation={15}
                   shadowOffset={{ width: 0, height: 6 }}
                   style={styles.menuOptions}
                 >
                   <BlurView
-                    style={styles.menuClipper} intensity={40}
+                    style={styles.menuClipper}
+                    intensity={50}
                     tint={theme.colors.mode === 'dark' ? 'dark' : 'light'}
                   >
                     <Box style={styles.menuBackground} />
@@ -100,7 +104,7 @@ export function Menu(props: MenuProps) {
                               variant='bare'
                               height={item.newSection ? 4 : undefined}
                               backgroundColor={item.newSection
-                                ? theme.colors.mode === 'dark' ? 'mainBackground' : 'menuSeperator'
+                                ? theme.colors.mode === 'dark' ? 'nestedContainerSeperator' : 'menuSeperator'
                                 : 'menuSeperator'}
                             />
                           </View>}
@@ -116,10 +120,11 @@ export function Menu(props: MenuProps) {
                             item.onSelect()
                           }}
                           key={`context-menu-item-${item.label.replace(' ', '-')}`}>
-                          <Box backgroundColor='contextMenu' style={styles.row}>
+                          <View style={styles.row}>
                             <Text fontSize={15}>{item.label}</Text>
                             {item.icon && <View style={styles.icon}><item.icon /></View>}
-                          </Box>
+                            <Box backgroundColor='contextMenu' style={styles.rowBackground} />
+                          </View>
                         </TouchableHighlight>
                       </Fragment>
                     ))}

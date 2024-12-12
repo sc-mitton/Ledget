@@ -3,11 +3,10 @@ import { useEffect } from 'react';
 import { View, Alert } from 'react-native'
 import * as SecureStore from 'expo-secure-store';
 
-import styles from './styles/logout';
 import sharedStyles from './styles/shared';
-import { Text, Header2, Button, SubmitButton, Modal, Seperator, Box } from '@ledget/native-ui';
+import { Text, Button, SubmitButton, Modal, Seperator } from '@ledget/native-ui';
 import { useDisableAllSessionsMutation, apiSlice } from '@ledget/shared-features';
-import { setSession } from '@ledget/shared-features';
+import { setSession } from '@features/authSlice';
 import { useAppDispatch } from '@hooks';
 import { ModalScreenProps } from '@types';
 

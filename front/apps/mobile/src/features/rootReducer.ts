@@ -12,7 +12,8 @@ import {
   budgetItemMetaDataSlice,
   environmentSlice,
   investmentsSlice,
-  institutionsSlice
+  institutionsSlice,
+  mobileAuthSlice
 } from '@ledget/shared-features';
 import { createMigrate, persistReducer } from "redux-persist";
 import storage from "./storage";
@@ -64,7 +65,8 @@ const rootReducer = combineReducers({
   investments: investmentsSlice.reducer,
   ui: uiSlice.reducer,
   widgets: widgetsSlice.reducer,
-  institutions: institutionsSlice.reducer
+  institutions: institutionsSlice.reducer,
+  mobileAuth: mobileAuthSlice.reducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

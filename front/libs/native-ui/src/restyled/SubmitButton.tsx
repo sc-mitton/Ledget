@@ -11,7 +11,7 @@ import { Check } from 'geist-native-icons';
 
 import { Button } from './Button';
 import type { ButtonProps } from './Button';
-import { UnstyledSpinner } from '../animated/loading-indicators/Spinner';
+import { Spinner } from '../animated/loading-indicators/Spinner';
 import { Icon } from './Icon';
 
 interface ExtraProps {
@@ -58,7 +58,7 @@ export const SubmitButton = (props: Omit<ButtonProps, 'children'> & ExtraProps) 
     >
       {({ color }) => (
         <>
-          {isSubmitting && <UnstyledSpinner color={color} />}
+          {isSubmitting && <Spinner fill={color} />}
           <Animated.View style={[animation, styles.checkContainer]}>
             {isSuccess &&
               <View style={styles.check}>

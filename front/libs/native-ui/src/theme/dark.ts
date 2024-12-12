@@ -40,7 +40,7 @@ const palette = {
   gray200: `hsl(${grayH}, ${grayS}%, 43%)`,
   gray100: `hsl(${grayH}, ${grayS}%, 48%)`,
 
-  blue900: `hsl(${blueH}, ${blueS}%, 10%)`,
+  blue900: `hsl(${blueH}, ${blueS}%, 7%)`,
   blue800: `hsl(${blueH}, ${blueS}%, 15%)`,
   blue700: `hsl(${blueH}, ${blueS}%, 20%)`,
   blue650: `hsl(${blueH}, ${blueS}%, 22%)`,
@@ -204,7 +204,7 @@ export const darkTheme = createTheme({
     screenHeader: palette.gray800,
 
     blueChartGradientStart: palette.blue900.replace(`${blueS}`, `${blueS - 20}`),
-    blueChartGradientEnd: `hsla(${grayH}, ${grayS}%, 10%, 0)`,
+    blueChartGradientEnd: `hsla(${grayH}, ${grayS}%, 7%, 0)`,
     blueChartColor: palette.blue500,
     blueChartColorSecondary: palette.blue700,
     emptyChartGradientStart: palette.gray750,

@@ -6,8 +6,10 @@ import type { MenuProps } from '@ledget/native-ui';
 import { ModalScreenProps } from '@types';
 import { View } from 'react-native';
 import { Transaction } from '@ledget/shared-features';
+import { useAppearance } from '@/features/appearanceSlice';
+import { useNavigation } from '@react-navigation/native';
 
-interface Props extends Omit<MenuProps, 'items'>, ModalScreenProps<'Activity'> {
+interface Props extends Omit<MenuProps, 'items'> {
   transaction: Transaction;
 }
 
@@ -18,15 +20,28 @@ const TransactionMenu = (props: Props) => {
     ...rest
   } = props;
 
+  const { mode } = useAppearance();
+  const { navigation } = useNavigation<ModalScreenProps<'Activity'>>();
+
   return (
     <Menu
       as='context-menu'
+      hasShadow={mode === 'light'}
       onShowChange={props.onShowChange}
       items={[
         {
           label: 'Details',
           icon: () => <Icon icon={Info} size={16} strokeWidth={2} />,
-          onSelect: () => props.navigation.navigate('Accounts', { screen: 'Transaction', params: { transaction } })
+          onSelect: () => navigation.navigate(
+            'BottomTabs',
+            {
+              screen: 'Accounts',
+              params: {
+                screen: 'Transaction',
+                params: { transaction }
+              }
+            }
+          )
         },
         {
           label: 'Split',
@@ -35,17 +50,26 @@ const TransactionMenu = (props: Props) => {
               <Icon icon={ArrowLeft} size={12} strokeWidth={2.5} />
               <Icon icon={ArrowRight} size={12} strokeWidth={2.5} />
             </View>,
-          onSelect: () => props.navigation.navigate('Modals', { screen: 'Split', params: { transaction } })
+          onSelect: () => navigation.navigate(
+            'Modals',
+            { screen: 'Split', params: { transaction } }
+          )
         },
         {
           label: 'New Monthly Bill',
           icon: () => <Icon icon={Plus} size={16} strokeWidth={2} />,
-          onSelect: () => props.navigation.navigate('Modals', { screen: 'NewBill', params: { transaction, period: 'month' } })
+          onSelect: () => navigation.navigate(
+            'Modals',
+            { screen: 'NewBill', params: { transaction, period: 'month' } }
+          )
         },
         {
           label: 'New Yearly Bill',
           icon: () => <Icon icon={Plus} size={16} strokeWidth={2} />,
-          onSelect: () => props.navigation.navigate('Modals', { screen: 'NewBill', params: { transaction, period: 'year' } })
+          onSelect: () => navigation.navigate(
+            'Modals',
+            { screen: 'NewBill', params: { transaction, period: 'year' } }
+          )
         },
       ]}
       {...rest}

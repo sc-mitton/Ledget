@@ -1,9 +1,9 @@
+import { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import styles from './styles/bottom-tab-screens';
 import BottomNav from './BottomNav';
 import { Budget, Accounts, Profile, Home } from '@screens';
-import { BottomTabNavParamList } from '@types';
+import { BottomTabNavParamList, RootStackScreenProps } from '@types';
 import { selectLastTab, selectSettings } from '@/features/uiSlice';
 import { useAppSelector } from '@/hooks';
 
@@ -11,9 +11,16 @@ const Tab = createBottomTabNavigator<BottomTabNavParamList>();
 
 // Transition spec coming soon, update it when that comes out for bottom tabs
 
-const BottomTabScreens = () => {
+const BottomTabScreens = (props: RootStackScreenProps<'BottomTabs'>) => {
   const lastTab = useAppSelector(selectLastTab);
   const settings = useAppSelector(selectSettings);
+
+  useEffect(() => {
+    props.navigation.preload(
+      'Modals',
+      { screen: 'Activity', params: { tab: 0 } }
+    )
+  }, [])
 
   return (
     <Tab.Navigator

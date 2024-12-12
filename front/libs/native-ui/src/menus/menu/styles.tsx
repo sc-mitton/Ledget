@@ -57,18 +57,26 @@ export default StyleSheet.create({
     bottom: 0,
     right: 0,
     opacity: 0,
-    borderRadius: 10,
+    borderRadius: 10
   },
   rowContainer: {
     flex: 1,
+  },
+  rowBackground: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    zIndex: -1,
+    opacity: .7
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 8,
     paddingHorizontal: 16,
-    gap: 20,
-    opacity: .8
+    gap: 20
   },
   icon: {
     minWidth: 28,

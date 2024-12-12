@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { ChevronRight } from 'geist-native-icons';
 import dayjs from 'dayjs';
@@ -157,11 +157,16 @@ const History = (props: ModalScreenProps<'Activity'>) => {
     }
   }, [collapsed]);
 
+  const onClose = useCallback(() => {
+    props.navigation.goBack();
+  }, []);
+
   return (
     <BottomDrawerModal.Content
       defaultExpanded={isTransactionsSuccess && transactionsData.length > 0}
       onExpand={() => setCollapsed(false)}
       onCollapse={() => setCollapsed(true)}
+      onClose={onClose}
     >
       {showFilters
         ? <Animated.View exiting={FadeOut} entering={FadeIn} style={styles.animatedView}>

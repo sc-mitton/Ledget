@@ -45,8 +45,8 @@ const DRAG_THRESHOLD = 100
 const BottomDrawerModal = (props: BottomDrawerModalProps) => {
   const {
     children,
-    collapsedHeight = 150,
-    expandedHeight = Platform.OS === 'ios' ? Dimensions.get('window').height - 250 : Dimensions.get('window').height - 225,
+    collapsedHeight = 175,
+    expandedHeight = Platform.OS === 'ios' ? Dimensions.get('window').height - 175 : Dimensions.get('window').height - 175,
   } = props
   const state = useRef<'collapsed' | 'expanded' | 'closed'>(props.defaultExpanded ? 'expanded' : 'collapsed')
   const [expanded, setExpanded] = useState<boolean>(props.defaultExpanded || false)
@@ -69,7 +69,7 @@ const Content = (props: ContentProps) => {
   const scrollViewHeight = useSharedValue(state.current === 'expanded' ? expandedHeight : collapsedHeight)
 
   const scrollViewAnimation = useAnimatedStyle(() => ({
-    height: scrollViewHeight.value
+    height: scrollViewHeight.value,
   }));
 
   const updateExpanded = (expanded: boolean) => {

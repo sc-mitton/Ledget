@@ -15,12 +15,12 @@ import * as SecureStore from 'expo-secure-store';
 
 import {
   useGetMeQuery,
+  selectEnvironment,
+  setEnvironment,
   setSession,
   setDeviceToken,
   selectSession,
-  selectDeviceToken,
-  selectEnvironment,
-  setEnvironment
+  selectDeviceToken
 } from '@ledget/shared-features';
 import styles from './styles/app';
 import { Box } from '@ledget/native-ui'
@@ -75,7 +75,7 @@ const useAuthLogic = () => {
   const deviceToken = useAppSelector(selectDeviceToken);
   const {
     data: user,
-    isError: isGetMeError
+    isError: isGetMeError,
   } = useGetMeQuery(undefined, { skip: !session || !deviceToken });
 
   useEffect(() => {

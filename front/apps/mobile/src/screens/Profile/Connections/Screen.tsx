@@ -1,5 +1,5 @@
 import { View, TouchableOpacity, ScrollView } from 'react-native';
-import { Plus, AlertCircleFill } from 'geist-native-icons';
+import { Plus, AlertCircle } from 'geist-native-icons';
 import { createStackNavigator } from "@react-navigation/stack";
 
 import styles from './styles/screen'
@@ -41,7 +41,7 @@ const Connections = ({
                 <View style={styles.row}>
                   <ChevronTouchable onPress={() => navigation.navigate('Connection', { item: item.id })}>
                     {item.login_required
-                      ? <Icon icon={AlertCircleFill} color='alert' borderColor='mainText' />
+                      ? <Icon icon={AlertCircle} color='alert' strokeWidth={2} />
                       : <InstitutionLogo data={item.institution?.logo} />}
                     <Text color={item.login_required ? 'alert' : 'mainText'}>
                       {item.institution?.name}
@@ -56,7 +56,7 @@ const Connections = ({
           }
         </ShimmerBox>
         {user?.co_owner && (
-          <>
+          <Fragment>
             <BoxHeader>{coOwner?.name.first}'s Connections</BoxHeader>
             <ShimmerBox
               shimmering={isLoading}
@@ -82,7 +82,7 @@ const Connections = ({
                 )}
               </Box>
             </ShimmerBox>
-          </>
+          </Fragment>
         )}
         <Box variant='nestedContainer' backgroundColor='nestedContainer' style={styles.addButtonContainer}>
           <View style={[styles.row]}>

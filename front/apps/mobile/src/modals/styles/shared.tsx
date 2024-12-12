@@ -7,7 +7,7 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     gap: 10,
     marginTop: -8,
-    marginBottom: -28
+    marginBottom: -12
   },
   splitButton: {
     flex: 1,

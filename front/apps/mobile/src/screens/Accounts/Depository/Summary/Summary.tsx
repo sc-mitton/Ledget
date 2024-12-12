@@ -125,10 +125,11 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
       {showMenu &&
         <Animated.View entering={FadeIn} exiting={FadeOut} style={[StyleSheet.absoluteFill, styles.blurViewContainer]}>
           <BlurView
-            intensity={16}
+            intensity={12}
             style={[StyleSheet.absoluteFill]}
-            tint={mode === 'dark' ? 'dark' : 'light'}
+            tint={mode === 'dark' ? 'systemUltraThinMaterialDark' : 'light'}
           />
+          <Box backgroundColor='mainBackground' style={[StyleSheet.absoluteFill, { opacity: .8 }]} />
         </Animated.View>}
       <View style={styles.menuButtonContainer}>
         {showChart

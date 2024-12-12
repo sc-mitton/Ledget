@@ -16,7 +16,6 @@ import {
   Box,
   InstitutionLogo,
   Text,
-  DollarCents,
   defaultSpringConfig,
   Icon,
   BillCatLabel
@@ -29,25 +28,29 @@ import {
   confirmAndUpdateMetaData
 } from "@ledget/shared-features";
 import { useAppearance } from "@features/appearanceSlice";
-import { ModalScreenProps } from "@types";
 import TransactionMenu from "./TransactionMenu";
 
-interface Props extends ModalScreenProps<'Activity'> {
+interface Props {
   item: Transaction
   style?: ViewStyle
   contentStyle?: ViewStyle
-  setFocused?: React.Dispatch<React.SetStateAction<string | undefined>>
+  onShowMenu: (show: boolean) => void
 }
 
 const SWIPE_THRESHOLD = Dimensions.get('window').width / 3;
 const SWIPE_VELOCITY_THRESHOLD = 1.5;
 
+const formater = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  minimumFractionDigits: 2
+});
+
 const Item = (props: Props) => {
   const {
     item,
     style,
-    contentStyle,
-    setFocused: setFocusedProp
+    contentStyle
   } = props;
 
   const dispatch = useAppDispatch();
@@ -126,10 +129,9 @@ const Item = (props: Props) => {
   return (
     <View {...panResponder.panHandlers}>
       <TransactionMenu
-        {...props}
         onShowChange={(show) => {
           setFocused(show)
-          setFocusedProp && setFocusedProp(show ? item.transaction_id : undefined);
+          props.onShowMenu(show);
         }}
         transaction={item}
         touchableStyle={styles.newTransaction}
@@ -145,64 +147,72 @@ const Item = (props: Props) => {
             />
           </Animated.View>
           <Box
-            backgroundColor='newTransaction'
-            borderColor='newTransactionBorder'
-            borderWidth={1}
-            shadowColor='newTransactionShadow'
-            shadowOpacity={1}
-            shadowRadius={mode === 'dark' ? 32 : 8}
-            shadowOffset={{ width: 0, height: 8 }}
-            elevation={7}
-            style={[styles.newTransaction, style]}
+            shadowColor='blackText'
+            shadowOpacity={.05}
+            shadowOffset={{ width: 0, height: 2 }}
+            shadowRadius={2}
           >
-            <View style={[Platform.OS === 'ios' ? styles.iosContentSpacing : styles.androidContentSpacing, contentStyle]}>
-              <View style={styles.leftColumn}>
-                <InstitutionLogo data={
-                  plaidItemsData?.find((p) =>
-                    p.accounts.find((account) => account.id === item.account))?.institution?.logo
-                } />
-                <View style={styles.transactionInfo}>
-                  <Text style={styles.transactionName}>
-                    {focused
-                      ? item.name.length > 32 ? `${item.name.slice(0, 32)} ...` : item.name
-                      : item.name.length > 17 ? `${item.name.slice(0, 17)} ...` : item.name}
-                  </Text>
-                  <View style={styles.bottomRow}>
-                    <DollarCents value={item.amount} color='secondaryText' fontSize={16} />
-                    <Text color='secondaryText' fontSize={15}>
-                      {formatDateOrRelativeDate(dayjs(item.datetime! || item.date).valueOf())}
+            <Box
+              backgroundColor='newTransaction'
+              borderColor='newTransactionBorder'
+              shadowColor='newTransactionShadow'
+              shadowOpacity={mode === 'dark' ? 1 : .3}
+              shadowRadius={mode === 'dark' ? 12 : 8}
+              shadowOffset={{ width: 0, height: 8 }}
+              elevation={7}
+              style={[styles.newTransaction, style]}
+            >
+              <View style={[Platform.OS === 'ios' ? styles.iosContentSpacing : styles.androidContentSpacing, contentStyle]}>
+                <View style={styles.leftColumn}>
+                  <InstitutionLogo data={
+                    plaidItemsData?.find((p) =>
+                      p.accounts.find((account) => account.id === item.account))?.institution?.logo
+                  } />
+                  <View style={styles.transactionInfo}>
+                    <Text style={styles.transactionName}>
+                      {focused
+                        ? item.name.length > 32 ? `${item.name.slice(0, 32)} ...` : item.name
+                        : item.name.length > 17 ? `${item.name.slice(0, 17)} ...` : item.name}
                     </Text>
+                    <View style={styles.bottomRow}>
+                      <Text color='secondaryText' fontSize={15}>
+                        {formater.format(item.amount)}
+                      </Text>
+                      <Text color='tertiaryText' fontSize={15}>
+                        {formatDateOrRelativeDate(dayjs(item.datetime! || item.date).valueOf())}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+                <View style={styles.rightColumn}>
+                  <View style={[styles.billCatLabelContainer, { opacity: focused ? .5 : 1 }]}>
+                    <BillCatLabel
+                      fontSize={14}
+                      name={
+                        item.categories?.[0]?.name ||
+                        item.bill?.name ||
+                        item?.predicted_category?.name ||
+                        item.predicted_bill?.name ||
+                        'Uncategorized'
+                      }
+                      emoji={
+                        item.categories?.[0]?.emoji ||
+                        item.bill?.emoji ||
+                        item?.predicted_category?.emoji ||
+                        item.predicted_bill?.emoji ||
+                        null
+                      }
+                      period={
+                        item.categories?.[0]?.period ||
+                        item.bill?.period ||
+                        item?.predicted_category?.period ||
+                        item.predicted_bill?.period ||
+                        'month'
+                      } />
                   </View>
                 </View>
               </View>
-              <View style={styles.rightColumn}>
-                <View style={[styles.billCatLabelContainer, { opacity: focused ? .2 : 1 }]}>
-                  <BillCatLabel
-                    fontSize={14}
-                    name={
-                      item.categories?.[0]?.name ||
-                      item.bill?.name ||
-                      item?.predicted_category?.name ||
-                      item.predicted_bill?.name ||
-                      'Uncategorized'
-                    }
-                    emoji={
-                      item.categories?.[0]?.emoji ||
-                      item.bill?.emoji ||
-                      item?.predicted_category?.emoji ||
-                      item.predicted_bill?.emoji ||
-                      null
-                    }
-                    period={
-                      item.categories?.[0]?.period ||
-                      item.bill?.period ||
-                      item?.predicted_category?.period ||
-                      item.predicted_bill?.period ||
-                      'month'
-                    } />
-                </View>
-              </View>
-            </View>
+            </Box>
           </Box>
           <Animated.View style={[styles.rightCheckContainer, { right: rightCheckX, opacity: checkOpacity }]}>
             <Icon

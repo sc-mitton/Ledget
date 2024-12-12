@@ -14,6 +14,7 @@ export * from './lib/environmentSlice/slice';
 export * from './lib/pricesSlice/slice';
 export * from './lib/liabilitiesSlice/slice';
 export * from './lib/investments/slice';
+export * from './lib/mobileAuth/slice';
 
 export * from './lib/accountsSlice/types';
 export * from './lib/billSlice/types';

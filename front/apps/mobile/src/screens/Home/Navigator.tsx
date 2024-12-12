@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { BottomTabScreenProps, HomeStackParamList } from '@types';
 import Main from './main/Main';
 import { useCardStyleInterpolator } from '@/hooks';
+import { useEffect } from 'react';
 
 const Stack = createStackNavigator<HomeStackParamList>();
 

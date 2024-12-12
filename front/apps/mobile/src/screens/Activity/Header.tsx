@@ -5,6 +5,7 @@ import styles from './styles/header';
 import { Box, Button, Seperator, Text } from '@ledget/native-ui';
 import { useAppSelector } from '@hooks';
 import { useGetTransactionsCountQuery, selectBudgetMonthYear } from '@ledget/shared-features';
+import { useAppearance } from '@/features/appearanceSlice';
 
 const Header = ({ index, setIndex }: { index: number, setIndex: (index: number) => void }) => {
   const { month, year } = useAppSelector(selectBudgetMonthYear);
@@ -12,6 +13,7 @@ const Header = ({ index, setIndex }: { index: number, setIndex: (index: number) 
     { confirmed: false, month, year },
     { skip: !month || !year }
   );
+  const { mode } = useAppearance();
 
   return (
     <View style={styles.headerContainer}>
@@ -43,7 +45,12 @@ const Header = ({ index, setIndex }: { index: number, setIndex: (index: number) 
           textColor={index === 1 ? 'blueText' : 'secondaryText'}
         />
       </View>
-      <Seperator variant='bare' backgroundColor={'modalSeperator'} />
+      <View style={mode === 'light' && styles.seperator}>
+        <Seperator
+          variant={'bare'}
+          backgroundColor={'modalSeperator'}
+        />
+      </View>
     </View>
   )
 }

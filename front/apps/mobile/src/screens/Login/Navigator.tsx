@@ -19,7 +19,6 @@ export default function () {
         header: (props) => <BackHeader {...props} authenticationScreens={true} />,
         cardStyleInterpolator,
       }}
-      id='LoginStack'
     >
       <Stack.Screen
         options={{ headerShown: false }}

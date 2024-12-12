@@ -1,9 +1,17 @@
 import { useCallback, useEffect } from 'react';
-import { Check, AlertCircle } from 'geist-native-icons';
+import { Check, AlertCircle, Info } from 'geist-native-icons';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
-import Animated, { runOnJS, useSharedValue, useAnimatedStyle, withTiming, SlideInUp, SlideOutUp } from 'react-native-reanimated';
+import Animated, {
+  runOnJS,
+  Easing,
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  SlideInUp,
+  SlideOutUp
+} from 'react-native-reanimated';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 
 import styles from './styles/item';
@@ -43,19 +51,24 @@ export const ToastItem = (props: TToastItem & { index: number }) => {
   })
 
   return (
-    <Animated.View style={[styles.toastItemContainer, style]} entering={SlideInUp} exiting={SlideOutUp}>
+    <Animated.View
+      style={[styles.toastItemContainer, style]}
+      entering={SlideInUp.duration(600).easing(Easing.bezier(.17, .67, .47, .99).factory())}
+      exiting={SlideOutUp.duration(600)}
+    >
       <GestureDetector gesture={pan}>
         <Box
           backgroundColor="toast"
           style={styles.toastItem}
           borderColor='toastBorder'
           borderWidth={1}
-          shadowColor='mainBackground'
-          shadowOffset={{ width: 0, height: 6 }}
+          shadowColor='menuShadowColor'
           shadowOpacity={1}
-          shadowRadius={12}
+          shadowRadius={20}
+          elevation={15}
         >
           <View style={styles.iconContainer}>
+            {props.type === 'info' && <Icon icon={Info} color='mainText' />}
             {props.type === 'success' && <Icon icon={Check} color='successIcon' />}
             {props.type === 'error' && <Icon icon={AlertCircle} color="alert" />}
           </View>

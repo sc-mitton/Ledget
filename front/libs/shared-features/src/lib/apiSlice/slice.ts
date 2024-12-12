@@ -7,7 +7,9 @@ import type {
 import Cookies from 'js-cookie';
 
 import { tagTypes } from './types';
-import { selectApiUrl, selectSessionToken, selectDeviceToken } from '../environmentSlice/slice'
+import { selectApiUrl } from '../environmentSlice/slice'
+import { selectSessionToken, selectDeviceToken } from '../mobileAuth/slice';
+import type { RootStateWithMobileAuth } from '../mobileAuth/slice'
 import type { RootStateWithEnvironment } from '../environmentSlice/slice'
 
 const rawBaseQuery = retry(
@@ -15,8 +17,8 @@ const rawBaseQuery = retry(
     baseUrl: '',
     credentials: 'include',
     prepareHeaders: async (headers, { getState }) => {
-      const sessionToken = selectSessionToken(getState() as RootStateWithEnvironment);
-      const deviceToken = selectDeviceToken(getState() as RootStateWithEnvironment);
+      const sessionToken = selectSessionToken(getState() as RootStateWithMobileAuth);
+      const deviceToken = selectDeviceToken(getState() as RootStateWithMobileAuth);
 
       if (sessionToken) {
         headers.set('Authorization', `Bearer ${sessionToken}`);

@@ -11,7 +11,6 @@ import {
   OryAxiosQueryConfig
 } from './types';
 import {
-  selectApiUrl,
   selectSessionToken,
   selectDeviceToken
 } from '@ledget/shared-features';

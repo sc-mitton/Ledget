@@ -3,13 +3,9 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export type EnvironmentName = 'dev' | 'prod'
 type Platform = 'browser' | 'mobile'
 
-type Session = { id: string, token: string }
-
 type State = {
   name?: EnvironmentName
   platform?: Platform
-  session?: Session,
-  deviceToken?: string,
   apiUrl?: string
 }
 
@@ -21,9 +17,7 @@ export type RootStateWithEnvironment = {
 const initialState: State = {
   name: undefined,
   apiUrl: undefined,
-  platform: undefined,
-  session: undefined,
-  deviceToken: undefined
+  platform: undefined
 }
 
 export const environmentSlice = createSlice({
@@ -34,24 +28,14 @@ export const environmentSlice = createSlice({
       state.name = action.payload.name
       state.apiUrl = action.payload.apiUrl
       state.platform = action.payload.platform
-    },
-    setSession: (state, action: PayloadAction<Session | undefined>) => {
-      state.session = action.payload
-    },
-    setDeviceToken: (state, action: PayloadAction<string>) => {
-      state.deviceToken = action.payload
     }
   }
 })
 
-export const { setEnvironment, setSession, setDeviceToken } = environmentSlice.actions
+export const { setEnvironment } = environmentSlice.actions
 
 export const selectEnvironment = (state: RootStateWithEnvironment) => state.environment.name
 export const selectApiUrl = (state: RootStateWithEnvironment) => state.environment.apiUrl
 export const selectPlatform = (state: RootStateWithEnvironment) => state.environment.platform
-export const selectSessionToken = (state: RootStateWithEnvironment) => state.environment.session?.token
-export const selectSessionId = (state: RootStateWithEnvironment) => state.environment.session?.id
-export const selectSession = (state: RootStateWithEnvironment) => state.environment.session
-export const selectDeviceToken = (state: RootStateWithEnvironment) => state.environment.deviceToken
 
 export default environmentSlice.reducer

@@ -32,7 +32,13 @@ const ModalScreens = () => {
 
   return (
     <RootStack.Navigator screenOptions={{ headerShown: false }}>
-      <RootStack.Screen name="Activity" component={Activity} options={{ cardStyleInterpolator: modalStyleInterpolator }} />
+      <RootStack.Screen
+        name="Activity"
+        component={Activity}
+        options={{
+          cardStyleInterpolator: modalStyleInterpolator
+        }}
+      />
       <RootStack.Screen name='Logout' component={Logout} />
       <RootStack.Screen name='ConfirmDeletePlaidItem' component={ConfirmDeletePlaidItem} />
       <RootStack.Screen name='EditPersonalInfo' component={EditPersonalInfo} />

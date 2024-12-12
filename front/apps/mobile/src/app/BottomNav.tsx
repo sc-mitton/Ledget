@@ -65,7 +65,11 @@ const Button = (props: ButtonProps) => {
 
   return (
     <TouchableOpacity
-      style={styles.tabButton}
+      style={[
+        styles.tabButton, Platform.OS === 'ios'
+          ? styles.iosTabButton
+          : styles.androidTabButton
+      ]}
       key={route.key}
       accessibilityRole="button"
       accessibilityState={isFocused ? { selected: true } : {}}
@@ -77,7 +81,7 @@ const Button = (props: ButtonProps) => {
       {route.key.includes('Home')
         ? <Icon strokeWidth={1.75} icon={Home} color={isFocused ? 'blueText' : 'secondaryText'} />
         : route.key.includes('Budget')
-          ? <FontAwesome6 name="dollar" size={19} color={isFocused ? theme.colors.blueText : theme.colors.secondaryText} />
+          ? <FontAwesome6 name="dollar" size={theme.colors.mode === 'dark' ? 19 : 18} color={isFocused ? theme.colors.blueText : theme.colors.secondaryText} />
           : route.key.includes('Accounts')
             ? <Icon strokeWidth={1.75} icon={Institution} color={isFocused ? 'blueText' : 'secondaryText'} />
             : route.key.includes('Activity')

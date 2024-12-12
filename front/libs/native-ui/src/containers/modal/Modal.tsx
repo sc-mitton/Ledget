@@ -56,7 +56,7 @@ export function Modal(props: ModalProps) {
   const keyboardHeight = useKeyboardHeight()
 
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-  const keyboardPaddingY = useSharedValue(position.includes('bottom') ? 64 : 0);
+  const keyboardPaddingY = useSharedValue(0);
 
   const avoidKeyboardAnimation = useAnimatedStyle(() => {
     return { paddingBottom: keyboardPaddingY.value }
@@ -89,7 +89,7 @@ export function Modal(props: ModalProps) {
     if (isKeyboardVisible) {
       keyboardPaddingY.value = withSpring(keyboardHeight, defaultSpringConfig)
     } else {
-      keyboardPaddingY.value = withSpring(position === 'bottom' ? 64 : 24, defaultSpringConfig)
+      keyboardPaddingY.value = withSpring(0, defaultSpringConfig)
     }
   }, [isKeyboardVisible]);
 
