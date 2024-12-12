@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { KeyboardAvoidingView, View, Platform } from 'react-native';
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod';
-import { Mail } from 'geist-native-icons';
+import { useTheme } from '@shopify/restyle';
+import LottieView from 'lottie-react-native';
 
 import styles from './styles';
 import { Header, SubHeader2, Otc, SubmitButton, Pulse, NestedScreenWOFeedback, Icon, JiggleView, FormError } from '@ledget/native-ui'
@@ -18,7 +19,9 @@ const schema = z.object({
 })
 
 const Verification = ({ navigation, route }: VerificationScreenProps) => {
+  const theme = useTheme()
   const [isResending, setIsResending] = useState(false)
+  const animation = useRef<LottieView>(null)
 
   const { control, handleSubmit, formState: { errors } } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -47,6 +50,22 @@ const Verification = ({ navigation, route }: VerificationScreenProps) => {
     }
   }, [isCompleteSuccess])
 
+  useEffect(() => {
+    animation.current?.reset()
+    animation.current?.play()
+    setTimeout(() => {
+      animation.current?.play(25, 0)
+    }, 2000);
+    const i = setInterval(() => {
+      animation.current?.reset()
+      animation.current?.play()
+      setTimeout(() => {
+        animation.current?.play(25, 0)
+      }, 2000);
+    }, 5000)
+    return () => clearInterval(i)
+  }, [])
+
   const onSubmit = (data: z.infer<typeof schema>) => {
     submitFlow({ ...data, method: 'code' })
   }
@@ -67,7 +86,18 @@ const Verification = ({ navigation, route }: VerificationScreenProps) => {
           <SubHeader2>To verify your account, please enter the code sent to your email</SubHeader2>
         </View>
         <View style={styles.graphicContainer}>
-          <Icon icon={Mail} color={isCompleteSuccess ? 'successIcon' : 'secondaryText'} size={54} />
+          <LottieView
+            ref={animation}
+            loop={false}
+            autoPlay={false}
+            source={require('../../../assets/lotties/mail.json')}
+            colorFilters={[{
+              keypath: 'mail', color: isCompleteSuccess
+                ? theme.colors.successIcon
+                : theme.colors.secondaryText
+            }]}
+            style={{ width: 54, height: 54 }}
+          />
         </View>
         <JiggleView style={styles.form} jiggle={jiggle}>
           <Controller

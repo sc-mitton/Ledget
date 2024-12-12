@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { View, KeyboardAvoidingView, Platform } from 'react-native';
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod';
-import { Lock, Unlock } from 'geist-native-icons';
+import { useTheme } from '@shopify/restyle';
+import LottieView from 'lottie-react-native';
 
 import styles from './styles';
 import { useNativeFlow } from '@ledget/ory';
@@ -27,6 +28,8 @@ export default function Recovery({ navigation, route }: RecoveryScreenProps) {
     useCompleteRecoveryFlowMutation,
     'recovery'
   )
+  const theme = useTheme();
+  const animation = useRef<LottieView>(null);
 
   useEffect(() => { fetchFlow() }, [])
 
@@ -43,6 +46,12 @@ export default function Recovery({ navigation, route }: RecoveryScreenProps) {
       submitFlow({ method: 'code', email: route.params.identifier });
     }
   }, [isGetFlowSuccess, flowId])
+
+  useEffect(() => {
+    if (isCompleteSuccess && hasSubmitted) {
+      animation.current?.play();
+    }
+  }, [isCompleteSuccess, hasSubmitted])
 
   const onSubmit = (data: z.infer<typeof schema>) => {
     submitFlow({ ...data, method: 'code' });
@@ -61,11 +70,17 @@ export default function Recovery({ navigation, route }: RecoveryScreenProps) {
         </View>
         <View style={styles.graphicContainer}>
           <View style={styles.icon}>
-            <Icon
-              size={48}
-              icon={isCompleteSuccess && hasSubmitted ? Unlock : Lock}
-              strokeWidth={1.25}
-              color={isCompleteSuccess && hasSubmitted ? 'successIcon' : 'secondaryText'}
+            <LottieView
+              style={{ width: 54, height: 54 }}
+              colorFilters={[{
+                keypath: "lock",
+                color: isCompleteSuccess && hasSubmitted
+                  ? theme.colors.success.successIcon
+                  : theme.colors.secondaryText
+              }]}
+              loop={false}
+              ref={animation}
+              source={require('../../../assets/lotties/lock.json')}
             />
           </View>
         </View>

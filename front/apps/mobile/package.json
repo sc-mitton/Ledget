@@ -106,7 +106,9 @@
     "@miblanchard/react-native-slider": "*",
     "react-native-slot-text": "*",
     "underscore": "*",
-    "expo@52": "*"
+    "expo@52": "*",
+    "picocolors": "*",
+    "lottie-react-native": "*"
   },
   "devDependencies": {},
   "expo": {

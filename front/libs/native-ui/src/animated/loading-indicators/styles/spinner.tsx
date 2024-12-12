@@ -14,30 +14,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center'
-  },
-  outerRingContainer: {
-    position: 'absolute',
-    width: 20,
-    height: 20,
-  },
-  ringContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    transformOrigin: 'center',
-    position: 'absolute',
-    width: 20,
-    height: 20
-  },
-  animatedRingContainer: {
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
-  },
-  ring: {
-    width: '100%',
-    height: '100%',
-    borderWidth: 1.5,
-    borderRadius: 20,
   }
 });
 

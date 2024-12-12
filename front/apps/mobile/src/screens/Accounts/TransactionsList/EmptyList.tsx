@@ -1,38 +1,21 @@
-import { useEffect } from 'react';
-import { RefreshControl, ScrollView, View } from 'react-native';
-import Animated, {
-  useSharedValue,
-  withRepeat,
-  withSequence,
-  withSpring
-} from 'react-native-reanimated';
+import { RefreshControl, ScrollView } from 'react-native';
 import { useTheme } from '@shopify/restyle';
 import { ArrowDown } from 'geist-native-icons';
 
 import styles from './styles/empty-list';
 import { useTransactionsSyncMutation } from '@ledget/shared-features';
-import { defaultSpringConfig, Text, Icon } from '@ledget/native-ui';
+import { Text, Icon } from '@ledget/native-ui';
 import { useAppSelector } from '@/hooks';
 import { selectAccountsTabCreditAccounts, selectAccountsTabDepositAccounts } from '@/features/uiSlice';
 import { AccountsTabsScreenProps } from '@types';
+import LottieView from 'lottie-react-native';
 
 const EmptyList = (props: AccountsTabsScreenProps<'Depository' | 'Credit'>) => {
   const accounts = useAppSelector(
     props.route.name === 'Depository' ? selectAccountsTabDepositAccounts : selectAccountsTabCreditAccounts)
 
-  const arrowIconY = useSharedValue(5)
   const theme = useTheme()
   const [syncTransactions, { isLoading: isSyncing }] = useTransactionsSyncMutation()
-
-  useEffect(() => {
-    arrowIconY.value = withRepeat(
-      withSequence(
-        withSpring(3, defaultSpringConfig),
-        withSpring(8, defaultSpringConfig)
-      ),
-      -1, true
-    );
-  }, [])
 
   return (
     <ScrollView
@@ -51,9 +34,16 @@ const EmptyList = (props: AccountsTabsScreenProps<'Depository' | 'Credit'>) => {
       <Text color='quaternaryText'>
         No Transactions
       </Text>
-      <Animated.View style={{ transform: [{ translateY: arrowIconY }] }}>
-        <Icon icon={ArrowDown} color='quinaryText' strokeWidth={2} />
-      </Animated.View>
+      <LottieView
+        autoPlay
+        loop
+        style={{ width: 24, height: 24 }}
+        colorFilters={[{
+          keypath: 'arrow-down',
+          color: theme.colors.quaternaryText
+        }]}
+        source={require('../../../../assets/lotties/arrowDown.json')}
+      />
     </ScrollView>
   )
 }

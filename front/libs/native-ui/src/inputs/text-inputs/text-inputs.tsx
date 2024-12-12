@@ -1,4 +1,4 @@
-import { useState, forwardRef, useEffect } from 'react';
+import { useState, forwardRef, useEffect, useRef } from 'react';
 import {
   TextInputProps,
   Platform,
@@ -8,8 +8,8 @@ import {
   TextInputFocusEventData,
   Keyboard
 } from "react-native";
-import { Eye, EyeOff } from 'geist-native-icons';
 import { useTheme } from '@shopify/restyle';
+import LottieView from 'lottie-react-native';
 import OutsidePressHandler from 'react-native-outside-press';
 
 import { Box } from '../../restyled/Box';
@@ -100,6 +100,9 @@ export const PasswordInput = (props: PasswordInputProps) => {
     ...rest
   } = props
 
+  const animation = useRef<LottieView>(null)
+  const theme = useTheme();
+
   useEffect(() => {
     if (setShowPasswordProp) setShowPasswordProp(showPassword)
   }, [showPassword])
@@ -124,13 +127,35 @@ export const PasswordInput = (props: PasswordInputProps) => {
         {...rest}
       >
         {!confirmer && <TouchableHighlight
-          onPress={() => setShowPassword(!showPassword)}
+          onPress={() => {
+            setShowPassword(!showPassword)
+            if (showPassword) {
+              animation.current?.play(25, 0)
+              setTimeout(() => animation.current?.reset(), 800)
+            } else {
+              animation.current?.play()
+            }
+          }}
           underlayColor='transparent'
           style={styles.visibilityButton}
         >
-          {showPassword
-            ? <Icon icon={EyeOff} color='quaternaryText' size={26} />
-            : <Icon icon={Eye} color='quaternaryText' size={26} />}
+          <LottieView
+            ref={animation}
+            style={{ width: 28, height: 28 }}
+            colorFilters={[
+              {
+                keypath: 'eye',
+                color: theme.colors.placeholderText
+              }
+            ]}
+            autoPlay={false}
+            loop={false}
+            source={
+              theme.colors.mode === 'light'
+                ? require('../../assets/visibilityV2Light.json')
+                : require('../../assets/visibilityV2Dark.json')
+            }
+          />
         </TouchableHighlight>}
       </TextInput>
     </Box>
