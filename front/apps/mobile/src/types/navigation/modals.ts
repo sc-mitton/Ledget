@@ -3,6 +3,7 @@ import type { CompositeScreenProps } from '@react-navigation/native';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
 import type { BottomTabNavParamList } from './bottomNav';
+import type { AccountsStackParamList } from './accounts';
 import type { RootStackParamList } from './root';
 import type { Transaction, Account, AccountType, Bill, Category } from '@ledget/shared-features';
 
@@ -23,6 +24,9 @@ export type ModalStackParamList = {
   RemoveAuthenticator: undefined;
   ChangePassword: undefined;
   Split: {
+    transaction: Transaction
+  };
+  SplitModal: {
     transaction: Transaction
   };
   CardPicker: {
@@ -46,12 +50,17 @@ export type ModalStackParamList = {
   },
   NewBill: {
     transaction?: Transaction;
-    period: Bill['period'];
-    edit?: Bill
+    bill?: Partial<Bill>;
+    options?: {
+      title?: string
+    }
   } | undefined;
   NewCategory: {
     period?: Category['period'];
-    edit?: Category
+    category?: Category;
+    options?: {
+      title?: string
+    }
   } | undefined;
   ConfirmDeleteCategory: {
     category: Category
@@ -63,7 +72,8 @@ export type ModalStackParamList = {
   BillsCalendar: {
     month: number;
     year: number;
-  }
+  },
+  Transaction: AccountsStackParamList['Transaction']
 };
 
 export type ModalScreenProps<T extends keyof ModalStackParamList> =

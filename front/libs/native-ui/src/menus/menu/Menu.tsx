@@ -39,44 +39,44 @@ export function Menu(props: MenuProps) {
 
   return (
     <>
-      <OutsidePressHandler onOutsidePress={() => {
-        setShow(false);
-        props.onShowChange && props.onShowChange(false);
-      }}>
-        <View style={styles.container}>
-          {props.as === 'context-menu'
-            ?
-            <TouchableHighlight
-              ref={touchRef}
-              key={touchableKey}
-              underlayColor={theme.colors.whiteText}
-              activeOpacity={.97}
-              disabled={props.disabled}
-              style={props.touchableStyle}
-              onLongPress={(e) => {
-                Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
-                props.onShowChange && props.onShowChange(!show);
-                setShow(!show);
-                setTouchableKey(touchableKey + 1);
-              }}>
-              {props.children}
-            </TouchableHighlight>
-            :
-            <TouchableOpacity
-              ref={touchRef}
-              key={touchableKey}
-              disabled={props.disabled}
-              activeOpacity={.7}
-              style={props.touchableStyle}
-              onPress={(e) => {
-                props.onShowChange && props.onShowChange(!show);
-                setShow(!show);
-                setTouchableKey(touchableKey + 1);
-              }}>
-              {props.children}
-            </TouchableOpacity>
-          }
-          {show &&
+      <View style={styles.container}>
+        {props.as === 'context-menu'
+          ?
+          <TouchableHighlight
+            ref={touchRef}
+            key={touchableKey}
+            underlayColor={theme.colors.whiteText}
+            activeOpacity={.97}
+            disabled={props.disabled}
+            style={props.touchableStyle}
+            onLongPress={(e) => {
+              Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+              props.onShowChange && props.onShowChange(!show);
+              setShow(!show);
+              setTouchableKey(touchableKey + 1);
+            }}>
+            {props.children}
+          </TouchableHighlight>
+          :
+          <TouchableOpacity
+            ref={touchRef}
+            key={touchableKey}
+            disabled={props.disabled}
+            activeOpacity={.7}
+            style={props.touchableStyle}
+            onPress={(e) => {
+              props.onShowChange && props.onShowChange(!show);
+              setShow(!show);
+              setTouchableKey(touchableKey + 1);
+            }}>
+            {props.children}
+          </TouchableOpacity>
+        }
+        {show &&
+          <OutsidePressHandler onOutsidePress={() => {
+            setShow(false);
+            props.onShowChange && props.onShowChange(false);
+          }}>
             <View style={[styles.menuContainer, placementStyles[props.placement || 'center']]}>
               <Animated.View
                 style={[styles.menu, menuPlacementStyles[props.placement || 'center']]}
@@ -85,7 +85,7 @@ export function Menu(props: MenuProps) {
                 <Box
                   shadowColor='menuShadowColor'
                   shadowOpacity={hasShadow ? 1 : 0}
-                  shadowRadius={20}
+                  shadowRadius={8}
                   elevation={15}
                   shadowOffset={{ width: 0, height: 6 }}
                   style={styles.menuOptions}
@@ -110,8 +110,8 @@ export function Menu(props: MenuProps) {
                           </View>}
                         <TouchableHighlight
                           style={styles.rowContainer}
-                          underlayColor={theme.colors.mainText}
-                          activeOpacity={0.9}
+                          underlayColor={theme.colors.menuSeperator}
+                          activeOpacity={0.93}
                           onPress={() => {
                             if (props.closeOnSelect) {
                               setShow(false);
@@ -131,9 +131,10 @@ export function Menu(props: MenuProps) {
                   </BlurView>
                 </Box>
               </Animated.View>
-            </View>}
-        </View>
-      </OutsidePressHandler >
+            </View>
+          </OutsidePressHandler>
+        }
+      </View>
     </>
   );
 }

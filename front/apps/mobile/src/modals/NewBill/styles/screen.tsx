@@ -1,18 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  closeButton: {
-    zIndex: 10,
-    position: 'absolute',
-    top: 16,
-    right: 16,
-  },
-  formHeader: {
-    padding: 16
-  },
-  saveButton: {
-    marginTop: 12
-  },
   form: {
     paddingHorizontal: 16
   },

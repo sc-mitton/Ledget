@@ -27,7 +27,9 @@ const BakedMenu = (props: RootStackScreenProps<'Transaction'> & { transaction: T
         {
           label: 'Rename',
           icon: () => <Icon icon={Edit2} size={16} strokeWidth={2} />,
-          onSelect: () => props.navigation.setParams({ options: { rename: true } })
+          onSelect: () => props.navigation.setParams({
+            options: { ...props.route.params.options, rename: true }
+          })
         },
         {
           label: 'Split',
@@ -40,7 +42,7 @@ const BakedMenu = (props: RootStackScreenProps<'Transaction'> & { transaction: T
             { screen: "Split", params: { transaction: props.transaction } })
         },
         {
-          label: props.transaction.detail !== 'spending' ? 'Mark not spending' : 'Mark as spending',
+          label: props.transaction.detail === 'spending' ? 'Mark not spending' : 'Mark as spending',
           newSection: true,
           icon: () =>
             <Box marginRight='xxs'>

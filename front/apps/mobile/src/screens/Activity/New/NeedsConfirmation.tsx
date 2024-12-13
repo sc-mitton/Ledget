@@ -1,8 +1,10 @@
-import { useCallback, useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { shallowEqual } from 'react-redux';
-import { View, TouchableOpacity, StyleSheet, RefreshControl, SafeAreaView } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, RefreshControl, Dimensions } from 'react-native';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useTransition, useSpringRef } from '@react-spring/native';
 import { useTheme } from '@shopify/restyle';
+import { LinearGradient } from 'expo-linear-gradient';
 import dayjs from 'dayjs';
 
 import styles from '../styles/screen';
@@ -42,6 +44,7 @@ import {
 } from './helpers';
 import { ModalScreenProps } from '@types';
 import { EmptyBox } from '@ledget/media/native';
+import { BlurView } from 'expo-blur';
 
 const springConfig = {
   tension: 180,
@@ -59,7 +62,7 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
 
   const [itemHeightSet, setItemHeightSet] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [focusedItem, setFocusedItem] = useState<string | undefined>(undefined);
+  const [menuIsFocused, setMenuIsFocused] = useState(false);
   const [expanded, setExpanded] = useState(props.expanded || false);
 
   const [confirmTransactions] = useConfirmTransactionsMutation();
@@ -86,26 +89,26 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
   );
 
   const itemsApi = useSpringRef();
-  const itemTransitions = useTransition(unconfirmedTransactions, {
+  const itemTransitions = useTransition(unconfirmedTransactions.slice(0, loaded ? undefined : 3), {
     from: (item, index) => ({
       top: _getY(index, expanded, false, itemHeight.current),
+      zIndex: unconfirmedTransactions!.length - index,
     }),
     enter: (item, index) => ({
       top: _getY(index, expanded, true, itemHeight.current),
-      zIndex: unconfirmedTransactions!.length - index,
-      opacity: itemHeightSet ? _getOpacity(index, expanded) : 0
+      opacity: itemHeightSet ? _getOpacity(index, expanded) : 0,
     }),
     update: (item, index) => ({
       top: _getY(index, expanded, true, itemHeight.current),
-      zIndex: unconfirmedTransactions!.length - index,
-      opacity: itemHeightSet ? _getOpacity(index, expanded) : 0
+      opacity: itemHeightSet ? _getOpacity(index, expanded) : 0,
+      // zIndex: expanded ? index : unconfirmedTransactions!.length - index
     }),
     config: springConfig,
-    immediate: !loaded && expanded,
+    immediate: (!loaded && expanded),
     ref: itemsApi
   });
 
-  const onClose = useCallback(() => {
+  const onClose = () => {
     props.navigation.goBack();
     // Flush the queue
 
@@ -123,9 +126,9 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
         }))
       );
     }
-  }, []);
+  };
 
-  const confirmAll = useCallback(() => {
+  const confirmAll = () => {
     itemsApi.start((index: any, item: any) => ({
       x: 100,
       opacity: 0,
@@ -178,24 +181,33 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
         }))
       );
     }, 130 + unconfirmedTransactions.length * 50);
-  }, []);
+  };
 
-  const onDrag = useCallback((dy: number, expanded: boolean) => {
-    if (Math.abs(dy) > 100 || (!expanded && dy > 0) || (expanded && dy < 0)) return;
-    else if (dy === 0) {
+  const onDrag = (dy: number, expanded: boolean) => {
+    if (Math.abs(dy) > 100 || (!expanded && dy > 0) || (expanded && dy < 0)) {
+      return
+    } else if (dy === 0) {
       itemsApi.start((index: any, item: any) => {
-        return { top: _getY(index, expanded, true, itemHeight.current) };
+        return {
+          top: _getY(index, expanded, true, itemHeight.current),
+          zIndex: expanded ? index : unconfirmedTransactions!.length - index
+        };
       });
     } else if (dy < 0) {
       itemsApi.start((index: any, item: any) => {
-        return { top: _getY(index, false, true, itemHeight.current) + Math.pow(Math.abs(dy) * index, .8) };
+        return {
+          top: _getY(index, false, true, itemHeight.current) + Math.pow(Math.abs(dy) * index, .8),
+        };
       });
     } else {
       itemsApi.start((index: any, item: any) => {
-        return { top: _getY(index, true, true, itemHeight.current) - Math.pow(Math.abs(dy) * index, .6) };
+        return {
+          top: _getY(index, true, true, itemHeight.current) - Math.pow(Math.abs(dy) * index, .6),
+          zIndex: unconfirmedTransactions!.length - index
+        };
       });
     }
-  }, [expanded]);
+  };
 
   /**** Effects *****/
 
@@ -231,19 +243,13 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
   }, [isLoadingTransactions]);
 
   useEffect(() => {
-    if (!expanded) return;
-    if (focusedItem) {
-      itemsApi.start((index: any, item: any) => ({
-        zIndex: item._item.transaction_id === focusedItem ? 200 : 0,
-        immediate: true
-      }))
-    } else {
-      itemsApi.start((index: any, item: any) => ({
-        zIndex: unconfirmedTransactions.length - index,
-        immediate: true
-      }))
+    if (!menuIsFocused && expanded) {
+      itemsApi.start((index: number, item: any) => ({
+        zIndex: expanded ? index : unconfirmedTransactions!.length - index,
+        congif: { duration: 0, delay: menuIsFocused ? 500 : 0 }
+      }));
     }
-  }, [focusedItem]);
+  }, [menuIsFocused, expanded]);
 
   return (
     <BottomDrawerModal.Content
@@ -251,7 +257,7 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
       onExpand={() => setExpanded(true)}
       onCollapse={() => setExpanded(false)}
       onClose={onClose}
-      height={focusedItem && !expanded ? 250 : undefined}
+      height={menuIsFocused && !expanded ? 325 : undefined}
     >
       {unconfirmedTransactions.length === 0
         ?
@@ -263,60 +269,101 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
               : null}
         </View>
         :
-        <SafeAreaView>
-          <CustomScrollView
-            refreshControl={
-              <RefreshControl
-                refreshing={refreshing}
-                style={{ transform: [{ scaleY: .7 }, { scaleX: .7 }] }}
-                colors={[theme.colors.blueText]}
-                progressBackgroundColor={theme.colors.modalBox}
-                tintColor={theme.colors.secondaryText}
-                onRefresh={() => { setRefreshing(true) }}
-              />}
-            overScrollMode='always'
-            scrollEnabled={expanded}
-            scrollIndicatorInsets={{ right: -4 }}
-            showsVerticalScrollIndicator={expanded && loaded}
-            contentContainerStyle={[styles.scrollViewContent]}
-            style={[styles.scrollView]}>
-            <View style={[
-              styles.transactionsContainer,
-              {
-                height: expanded
-                  ? (itemHeight.current + EXPANDED_GAP) * unconfirmedTransactions.length + itemHeight.current
-                  : itemHeight.current * 2
-              }
-            ]}>
-              <Box style={[StyleSheet.absoluteFillObject, styles.overlay]} backgroundColor='modalBox' />
-              {itemTransitions((style, item, _, index) => (
-                <AnimatedView
-                  onLayout={(e) => {
-                    itemHeight.current = e.nativeEvent.layout.height
-                    setItemHeightSet(true)
+        <CustomScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              style={{ transform: [{ scaleY: .7 }, { scaleX: .7 }] }}
+              colors={[theme.colors.blueText]}
+              progressBackgroundColor={theme.colors.modalBox}
+              tintColor={theme.colors.secondaryText}
+              onRefresh={() => { setRefreshing(true) }}
+            />}
+          overScrollMode='always'
+          scrollEnabled={expanded}
+          scrollIndicatorInsets={{ right: -4 }}
+          showsVerticalScrollIndicator={expanded && loaded}
+          contentContainerStyle={[styles.scrollViewContent]}
+          style={[styles.scrollView]}>
+          <View style={[
+            styles.transactionsContainer,
+            {
+              height: expanded
+                ? (itemHeight.current + EXPANDED_GAP) * unconfirmedTransactions.length + itemHeight.current
+                : itemHeight.current * 2
+            }
+          ]}>
+            {menuIsFocused && expanded &&
+              <Animated.View
+                pointerEvents={'none'}
+                entering={FadeIn.delay(100)}
+                style={[StyleSheet.absoluteFill, styles.overlayView]}
+              >
+                <BlurView
+                  pointerEvents='none'
+                  intensity={mode === 'dark' ? 40 : 30}
+                  style={styles.overlayContainer}
+                  tint={mode === 'dark' ? 'dark' : 'systemUltraThinMaterialDark'}
+                >
+                  <Box
+                    style={[StyleSheet.absoluteFillObject, styles.overlay]}
+                    backgroundColor={mode === 'dark' ? 'nestedContainer' : 'modalSeperator'}
+                  />
+                </BlurView>
+              </Animated.View>}
+            {itemTransitions((style, item, _, index) => (
+              <AnimatedView
+                onLayout={(e) => {
+                  itemHeight.current = e.nativeEvent.layout.height
+                  setItemHeightSet(true)
+                }}
+                style={[
+                  style,
+                  styles.transactionItem,
+                  { transform: [{ scale: _getScale(index, expanded, true) }] }
+                ]}
+              >
+                <View
+                  onTouchStart={() => {
+                    itemsApi.start((i: number, value: any) => ({
+                      zIndex: expanded
+                        ? value._item.transaction_id === item.transaction_id ? 200 : i
+                        : unconfirmedTransactions!.length - i,
+                      congif: { duration: 0, delay: menuIsFocused ? 500 : 0 }
+                    }));
                   }}
-                  style={[styles.transactionItem, { transform: [{ scale: _getScale(index, expanded, true) }] }, style]}>
+                  pointerEvents='box-none'
+                >
                   <TransactionItem
                     item={item}
-                    setFocused={setFocusedItem}
                     contentStyle={{ opacity: expanded || index == 0 ? 1 : .2 }}
-                    {...props}
+                    onShowMenu={(show) => setMenuIsFocused(show)}
                   />
-                </AnimatedView>
-              ))}
-              {expanded && itemHeightSet &&
-                <View style={styles.checkAllButtonContainer}>
-                  <TouchableOpacity
-                    style={styles.checkAllButton}
-                    activeOpacity={0.7}
-                    onPress={confirmAll}>
-                    <Text color='tertiaryText'>Confirm All</Text>
-                    <Icon color='tertiaryText' icon={CheckAll} size={24} />
-                  </TouchableOpacity>
-                </View>}
-            </View>
-          </CustomScrollView>
-        </SafeAreaView>}
+                </View>
+              </AnimatedView>
+            ))}
+            {expanded && itemHeightSet &&
+              <View style={styles.checkAllButtonContainer}>
+                <TouchableOpacity
+                  style={styles.checkAllButton}
+                  activeOpacity={0.7}
+                  onPress={confirmAll}>
+                  <Text color='tertiaryText'>Confirm All</Text>
+                  <Icon color='tertiaryText' icon={CheckAll} size={24} />
+                </TouchableOpacity>
+              </View>}
+          </View>
+        </CustomScrollView>
+      }
+      {!menuIsFocused &&
+        <Animated.View style={styles.mask} entering={FadeIn} exiting={FadeOut}>
+          <LinearGradient
+            style={styles.mask}
+            colors={[theme.colors.modalBox, theme.colors.modalShadowMaskEnd]}
+            start={{ x: 0, y: 1 }}
+            end={{ x: 0, y: 0 }}
+          />
+        </Animated.View>}
     </BottomDrawerModal.Content>
   )
 }

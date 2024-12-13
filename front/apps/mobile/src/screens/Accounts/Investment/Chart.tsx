@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { View, StyleSheet } from 'react-native'
 import { CartesianChart, Area, Line, useChartPressState } from 'victory-native';
 import {
@@ -16,7 +16,7 @@ import dayjs from 'dayjs';
 import styles from './styles/chart';
 import SourceSans3Regular from '../../../../assets/fonts/SourceSans3Regular.ttf';
 import tempDataValues from './tempChartData';
-import { VictoryTooltip, Text, Menu, DollarCents, Icon } from '@ledget/native-ui';
+import { VictoryTooltip, Text, Menu, DollarCents, Icon, Box } from '@ledget/native-ui';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import {
   useGetInvestmentsBalanceHistoryQuery,
@@ -193,10 +193,11 @@ const Chart = () => {
           ]}
         >
           <BlurView
-            intensity={16}
+            intensity={12}
             style={[StyleSheet.absoluteFill]}
-            tint={mode === 'dark' ? 'dark' : 'light'}
+            tint={mode === 'dark' ? 'systemUltraThinMaterialDark' : 'light'}
           />
+          <Box backgroundColor='mainBackground' style={[StyleSheet.absoluteFill, { opacity: .8 }]} />
         </Animated.View>}
       {useingFakeData &&
         <View style={styles.emptyTextContainer}>

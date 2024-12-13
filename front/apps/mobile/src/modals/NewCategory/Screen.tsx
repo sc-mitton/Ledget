@@ -33,7 +33,7 @@ const Screen = (props: ModalScreenProps<'NewCategory'>) => {
     resolver: zodResolver(categorySchema),
     defaultValues: {
       period: props.route.params?.period || 'month',
-      ...props.route.params?.edit
+      ...props.route.params?.category
     }
   });
   const [addNewCategory, { isLoading, isSuccess }] = useAddNewCategoryMutation();
@@ -46,6 +46,19 @@ const Screen = (props: ModalScreenProps<'NewCategory'>) => {
   }
 
   useEffect(() => {
+    props.navigation.setOptions({
+      headerRight: () => (
+        <Button
+          label='Done'
+          variant='bold'
+          textColor='blueText'
+          onPress={() => handleSubmit(onSubmit)()}
+        />
+      )
+    })
+  }, [])
+
+  useEffect(() => {
     if (isSuccess) {
       props.navigation.goBack();
     }
@@ -55,25 +68,13 @@ const Screen = (props: ModalScreenProps<'NewCategory'>) => {
 
   return (
     <Box backgroundColor='modalBox100' style={styles.modalContent}>
-      <Button
-        onPress={() => props.navigation.goBack()}
-        variant='circleButton'
-        style={styles.closeButton}>
-        <Icon icon={X} color='secondaryText' />
-      </Button>
-      <View style={styles.formHeader}>
-        <Header2>
-          {props.route.params?.edit ? 'Edit Category' : 'New Category'}
-        </Header2>
-        <Seperator />
-      </View>
       <ScrollView
         contentContainerStyle={styles.form}
         showsVerticalScrollIndicator={false}
       >
         <View>
           <InputLabel>Name</InputLabel>
-          <EmojiPicker value={emoji} onChange={onEmojiChange} title='Emoji'>
+          <EmojiPicker value={emoji} onChange={onEmojiChange} title='Emoji' as='modal'>
             <View style={styles.emojiButton}>
               <EmojiPicker.Trigger>
                 <TextInputbase>

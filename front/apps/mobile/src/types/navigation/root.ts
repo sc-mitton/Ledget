@@ -15,6 +15,7 @@ export type RootStackParamList = {
   Transaction: {
     transaction: Transaction | string
     options?: {
+      asModal?: boolean
       rename?: boolean
     }
   }

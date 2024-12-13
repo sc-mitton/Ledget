@@ -1,8 +1,8 @@
-import { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { View } from 'react-native';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Animated, { StretchOutY, SlideInLeft } from 'react-native-reanimated';
+import Animated, { SlideInLeft, LinearTransition } from 'react-native-reanimated';
 import { z } from 'zod';
 import Big from 'big.js';
 
@@ -39,6 +39,10 @@ const schema = z.object({
       amount: z.number().min(0, { message: 'required' })
     })
   )
+}).transform((data) => {
+  return {
+    splits: data.splits.filter((split) => split.category && split.amount)
+  }
 });
 
 type SplitsSchemaT = z.infer<typeof schema>;
@@ -52,7 +56,8 @@ function getTotal(splits: SplitsSchemaT['splits']) {
     .toNumber();
 }
 
-const Screen = (props: ModalScreenProps<'Split'>) => {
+const Screen = (props: ModalScreenProps<'Split' | 'SplitModal'>) => {
+  const Wrapper = props.route.name === 'Split' ? Modal : Box;
   const loaded = useLoaded(1000);
   const { month, year } = useAppSelector(selectBudgetMonthYear);
   const item = useMemo(() => props.route.params.transaction, [props.route.params.transaction]);
@@ -119,38 +124,73 @@ const Screen = (props: ModalScreenProps<'Split'>) => {
         }))
       }])
     };
+    props.navigation.goBack();
   };
 
   return (
-    <Modal>
-      <Box
-        shadowColor='tabsShadow'
-        shadowOpacity={.7}
-        shadowRadius={4}
-        shadowOffset={{ width: 0, height: 4 }}
-        style={styles.header}
-      >
-        <Header2>Split Transaction</Header2>
-        <Text>
-          <Text color='quaternaryText'>Name        </Text>
-          <Text color='secondaryText'>
-            {props.route.params.transaction.preferred_name
-              ? props.route.params.transaction.preferred_name.length > 25
-                ? props.route.params.transaction.preferred_name.slice(0, 25) + '...'
-                : props.route.params.transaction.preferred_name
-              : props.route.params.transaction.name.length > 25
-                ? props.route.params.transaction.name.slice(0, 25) + '...'
-                : props.route.params.transaction.name}
-          </Text>
-        </Text>
-        <Text>
-          <Text color='quaternaryText'>Amount    </Text>
-          <DollarCents
-            color='secondaryText'
-            value={props.route.params.transaction.amount}
-            fontSize={18}
+    <Wrapper
+      style={styles.container}
+      padding={props.route.name === 'Split' ? 'none' : 'pagePadding'}
+      backgroundColor={props.route.name === 'Split' ? 'transparent' : 'modalBox'}
+    >
+      {props.route.name === 'SplitModal' &&
+        <View style={styles.headerButtons}>
+          <Button
+            label='Cancel'
+            textColor='blueText'
+            onPress={props.navigation.goBack}
           />
-        </Text>
+          <Button
+            label='Done'
+            onPress={() => handleSubmit(onSubmit)}
+            textColor='blueText'
+          />
+        </View>}
+      <Box>
+        {props.route.name === 'SplitModal'
+          ?
+          <View style={styles.splitModalHeader}>
+            <DollarCents
+              variant='bold'
+              value={props.route.params.transaction.amount}
+              fontSize={34}
+            />
+            <Text color='secondaryText'>
+              {props.route.params.transaction.preferred_name
+                ? props.route.params.transaction.preferred_name.length > 25
+                  ? props.route.params.transaction.preferred_name.slice(0, 25) + '...'
+                  : props.route.params.transaction.preferred_name
+                : props.route.params.transaction.name.length > 25
+                  ? props.route.params.transaction.name.slice(0, 25) + '...'
+                  : props.route.params.transaction.name}
+            </Text>
+          </View>
+          :
+          <View style={styles.header}>
+            <Header2>Split Transaction</Header2>
+            <Text>
+              <Text color='quaternaryText'>Name        </Text>
+              <Text color='secondaryText'>
+                {props.route.params.transaction.preferred_name
+                  ? props.route.params.transaction.preferred_name.length > 25
+                    ? props.route.params.transaction.preferred_name.slice(0, 25) + '...'
+                    : props.route.params.transaction.preferred_name
+                  : props.route.params.transaction.name.length > 25
+                    ? props.route.params.transaction.name.slice(0, 25) + '...'
+                    : props.route.params.transaction.name}
+              </Text>
+            </Text>
+            <Text>
+              <Text color='quaternaryText'>Amount    </Text>
+              <DollarCents
+                color='secondaryText'
+                value={props.route.params.transaction.amount}
+                fontSize={18}
+              />
+            </Text>
+          </View>
+        }
+        <Seperator variant='m' backgroundColor='modalSeperator' height={2} />
         {Object.keys(dirtyFields).length > 0 && totalLeft !== 0 && (
           <Text>
             <Text color={totalLeft < 0 ? 'alert' : 'quaternaryText'}>
@@ -164,84 +204,97 @@ const Screen = (props: ModalScreenProps<'Split'>) => {
             />
           </Text>
         )}
-        <Seperator variant='m' backgroundColor='modalSeperator' />
       </Box>
+      <View style={styles.inputLabels}>
+        <View style={styles.categoryInput}>
+          <Text color='tertiaryText' fontSize={15}>Category</Text>
+        </View>
+        <View style={styles.amountInputContainer}>
+          <Text color='tertiaryText' fontSize={15}>Amount</Text>
+        </View>
+      </View>
       <FormError error={(errors as any).totalSum?.message} />
       <View>
         {fields.map((field, index) => (
-          <SwipeDelete
-            disabled={index === 0}
-            key={field.id}
-            onDeleted={() => { setTimeout(() => { remove(index) }, 200) }}
+          <Animated.View
+            key={`split-${field.id}`}
+            layout={LinearTransition}
+            entering={SlideInLeft.withInitialValues({ originX: loaded ? -200 : 0 })}
           >
-            <Animated.View
-              key={field.id}
-              style={styles.field}
-              entering={SlideInLeft.withInitialValues({ originX: loaded ? -200 : 0 })}
-              exiting={StretchOutY}
+            <SwipeDelete
+              disabled={index === 0}
+              onDeleted={() => {
+                remove(index)
+              }}
             >
-              <View style={styles.categoryInput}>
-                <Controller
-                  control={control}
-                  name={`splits.${index}.category`}
-                  render={({ field }) => (
-                    <BillCatSelect
-                      closeOnSelect
-                      multiple={false}
-                      defaultValue={field.value}
-                      onChange={field.onChange}
-                      label={''}
-                      error={errors.splits?.[index]?.category}
-                      items='categories'
-                      chevronDirection='down'
-                    />
-                  )}
-                />
+              <View style={styles.field}>
+                <View style={styles.categoryInput}>
+                  <Controller
+                    control={control}
+                    name={`splits.${index}.category`}
+                    render={({ field: f }) => (
+                      <BillCatSelect
+                        key={field.id}
+                        closeOnSelect
+                        multiple={false}
+                        defaultValue={f.value}
+                        onChange={f.onChange}
+                        label={''}
+                        error={errors.splits?.[index]?.category}
+                        items='categories'
+                        chevronDirection='down'
+                      />
+                    )}
+                  />
+                </View>
+                <View style={styles.amountInputContainer}>
+                  <Controller
+                    control={control}
+                    name={`splits.${index}.amount`}
+                    render={({ field }) => (
+                      <MoneyInput
+                        style={[
+                          { paddingVertical: getValues().splits[index].category ? 4 : 1 }
+                        ]}
+                        defaultValue={field.value}
+                        onChange={(v) => {
+                          field.onChange(Big(v || 0).times(100).toNumber());
+                          setTotalLeft(
+                            Big(item.amount).times(100).minus(getTotal(getValues().splits)).toNumber())
+                        }}
+                        inputType='single'
+                        error={errors.splits?.[index]?.amount}
+                        accuracy={2}
+                      />
+                    )}
+                  />
+                </View>
               </View>
-              <View style={styles.amountInput}>
-                <Controller
-                  control={control}
-                  name={`splits.${index}.amount`}
-                  render={({ field }) => (
-                    <MoneyInput
-                      style={{ paddingVertical: getValues().splits[index].category ? 3 : .5 }}
-                      defaultValue={field.value}
-                      onChange={(v) => {
-                        field.onChange(Big(v || 0).times(100).toNumber());
-                        setTotalLeft(
-                          Big(item.amount).times(100).minus(getTotal(getValues().splits)).toNumber())
-                      }}
-                      inputType='single'
-                      error={errors.splits?.[index]?.amount}
-                      accuracy={2}
-                    />
-                  )}
-                />
-              </View>
-            </Animated.View>
-          </SwipeDelete>
+            </SwipeDelete>
+          </Animated.View>
         ))}
-        {fields.length < 4 &&
+        <Animated.View layout={LinearTransition}>
           <View style={styles.addSplitButton}>
             <Button
-              label='Add Split'
-              variant='main'
+              variant='circleButton'
               backgroundColor='transparent'
-              textColor='quaternaryText'
+              borderColor='grayButton'
+              borderWidth={1.5}
+              textColor={fields.length > 3 ? 'quinaryText' : 'secondaryText'}
+              disabled={fields.length > 3}
               onPress={() => append({ category: '', amount: 0 })}
-            >
-              <Icon icon={Plus} color='quaternaryText' size={16} strokeWidth={2} />
-            </Button>
-          </View>}
-        <SubmitButton
-          isSubmitting={isConfirming}
-          style={styles.saveButton}
-          label='Save'
-          variant='main'
-          onPress={handleSubmit(onSubmit)}
-        />
+              icon={
+                <Icon
+                  icon={Plus}
+                  color={fields.length > 3 ? 'quinaryText' : 'blueText'}
+                  size={18}
+                  strokeWidth={2}
+                />}
+            />
+          </View>
+        </Animated.View>
       </View>
-    </Modal>
+    </Wrapper>
   )
 }
 

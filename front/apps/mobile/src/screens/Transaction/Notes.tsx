@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   TextInput,
   View,
@@ -10,7 +10,8 @@ import {
 import { useTheme } from "@shopify/restyle";
 import Animated, {
   SlideOutDown,
-  SlideInDown
+  SlideInDown,
+  LinearTransition
 } from 'react-native-reanimated';
 import { useTransition } from '@react-spring/web';
 import dayjs from 'dayjs';
@@ -145,7 +146,7 @@ const NoteRow = ({ note, onPress, onDelete, disabled }: { note: Note, onPress: (
   );
 };
 
-const Notes = ({ transaction }: { transaction: Transaction }) => {
+const Notes = ({ transaction, isInModal }: { transaction: Transaction, isInModal?: boolean }) => {
   const [addNote, { isLoading: isAddingNote, data: addedNote, reset }] = useAddNoteMutation();
   const [updateDeleteNote, { isLoading: isUpdatingNote }] = useUpdateDeleteNoteMutation();
   const theme = useTheme();
@@ -216,7 +217,7 @@ const Notes = ({ transaction }: { transaction: Transaction }) => {
     });
 
   return (
-    <>
+    <Animated.View layout={LinearTransition} style={styles.notesBoxContainer}>
       <BoxHeader>Notes</BoxHeader>
       <View
         style={styles.notesBoxContainer}
@@ -224,7 +225,11 @@ const Notes = ({ transaction }: { transaction: Transaction }) => {
       >
         {(focusedNote !== undefined) &&
           <NoteModal note={focusedNote} onSubmit={handleSubmit} onClose={() => setFocusedNote(undefined)} />}
-        <Box variant='nestedContainer' style={[styles.notesBox, { maxHeight }]}>
+        <Box
+          variant='nestedContainer'
+          backgroundColor={isInModal ? 'modalSeperator' : undefined}
+          style={[styles.notesBox, { maxHeight }]}
+        >
           <CustomScrollView style={styles.notesContainer}>
             <TouchableOpacity style={styles.addNoteButton} activeOpacity={.6} onPress={() => setFocusedNote(null)}>
               <Text color='placeholderText'>Add a note...</Text>
@@ -249,7 +254,7 @@ const Notes = ({ transaction }: { transaction: Transaction }) => {
           </CustomScrollView>
         </Box>
       </View>
-    </>
+    </Animated.View>
   )
 }
 

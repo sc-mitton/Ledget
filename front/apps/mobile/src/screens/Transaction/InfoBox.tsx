@@ -1,26 +1,32 @@
 import { View } from 'react-native'
 import dayjs from 'dayjs';
+import Animated, { LinearTransition } from 'react-native-reanimated';
 
 import styles from './styles/screen';
 import { Text, InstitutionLogo, BoxHeader, ShimmerBox } from '@ledget/native-ui'
 import type { Transaction as TransactionT, Account as AccountT } from '@ledget/shared-features';
+import { Fragment } from 'react';
 
-const InfoBox = (props: { item?: TransactionT, account: AccountT }) => (
-  <>
+const InfoBox = (props: { item?: TransactionT, account: AccountT, isInModal?: boolean }) => (
+  <Animated.View layout={LinearTransition}>
     <BoxHeader>Details</BoxHeader>
-    <ShimmerBox variant='nestedContainer' shimmering={!props.item}>
+    <ShimmerBox
+      variant='nestedContainer'
+      backgroundColor={props.isInModal ? 'modalSeperator' : undefined}
+      shimmering={!props.item}
+    >
       {props.item &&
-        <>
+        <Fragment>
           <View style={[styles.tableLabels, styles.tableColumn]}>
             <Text color='tertiaryText'>Account</Text>
             <Text color='tertiaryText'>Date</Text>
             {props.item.merchant_name &&
               <Text color='tertiaryText'>Merchant</Text>}
             {(props.item.address || props.item.city || props.item.region) &&
-              <>
+              <Fragment>
                 <Text color='tertiaryText'>Location</Text>
                 <Text color='transparent'>Address</Text>
-              </>}
+              </Fragment>}
           </View>
           <View style={[styles.tableColumn]}>
             <View style={styles.accountData}>
@@ -34,15 +40,15 @@ const InfoBox = (props: { item?: TransactionT, account: AccountT }) => (
             {props.item.merchant_name &&
               <Text>{props.item.merchant_name}</Text>}
             {(props.item.address || props.item.city || props.item.region) &&
-              <>
+              <Fragment>
                 <Text>{props.item.city}, {props.item.region}</Text>
                 <Text>{props.item.address}</Text>
-              </>}
+              </Fragment>}
           </View>
-        </>
+        </Fragment>
       }
     </ShimmerBox>
-  </>
+  </Animated.View>
 )
 
 export default InfoBox;

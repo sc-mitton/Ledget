@@ -8,14 +8,21 @@ import { Text } from '../restyled/Text';
 
 const { StatusBarManager } = NativeModules;
 
-export function BackHeader(props: StackHeaderProps & { pagesWithTitle?: string[], authenticationScreens?: boolean }) {
-  const { navigation, route, options, pagesWithTitle } = props;
+interface Props extends StackHeaderProps {
+  pagesWithTitle?: string[];
+  authenticationScreens?: boolean;
+  height?: number;
+  top?: number;
+}
+
+export function BackHeader(props: Props) {
+  const { navigation, route, options, pagesWithTitle, top, height = 44 } = props;
 
   return (
     <Box
       style={[
         styles.headerContainer,
-        { top: StatusBarManager.HEIGHT + 8 }
+        { top: top || StatusBarManager.HEIGHT + 8, height }
       ]}
       backgroundColor={props.authenticationScreens ? 'accountsMainBackground' : 'mainBackground'}
     >

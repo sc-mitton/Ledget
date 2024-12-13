@@ -145,7 +145,7 @@ function ModalPopUp<O extends PickerOption, TMultiple extends boolean>(
                   )
                 }
                 return (
-                  <Fragment >
+                  <Fragment key={`${label}-${Math.random().toString().slice(2, 6)}`}>
                     <TouchableOpacity
                       activeOpacity={.6}
                       style={styles.option}

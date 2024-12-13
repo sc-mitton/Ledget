@@ -1,5 +1,4 @@
-import { createContext, useContext, useState, useMemo, useRef } from 'react';
-import { Portal } from "@gorhom/portal";
+import { createContext, useContext, useState, useMemo, useRef, useEffect } from 'react';
 import { View, TouchableOpacity, Modal, FlatList, SectionList, StyleSheet } from 'react-native';
 import { useTheme } from '@shopify/restyle';
 import { Search } from 'geist-native-icons';
@@ -198,16 +197,14 @@ function EmojiPickerModal(props: NativeEmojiPickerProps) {
     <>
       {props.children}
       {visible &&
-        <Portal hostName='EmojiPicker'>
-          <Modal
-            presentationStyle='fullScreen'
-            animationType='slide'
-            visible={visible}
-            style={styles.modal}
-          >
-            <EmojiPickerContent {...props} />
-          </Modal>
-        </Portal>}
+        <Modal
+          presentationStyle='fullScreen'
+          animationType='slide'
+          visible={visible}
+          style={styles.modal}
+        >
+          <EmojiPickerContent {...props} />
+        </Modal>}
     </>
   );
 }

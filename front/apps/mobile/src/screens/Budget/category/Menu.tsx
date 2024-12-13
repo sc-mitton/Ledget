@@ -18,7 +18,7 @@ export default function BakedMenu(props: BudgetScreenProps<'Category'>) {
             onSelect: () =>
               props.navigation.navigate('Modals', {
                 screen: 'NewCategory',
-                params: { edit: props.route.params.category }
+                params: { category: props.route.params.category, options: { title: 'Edit' } }
               })
           },
           {

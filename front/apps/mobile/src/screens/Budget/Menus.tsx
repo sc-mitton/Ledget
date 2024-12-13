@@ -20,7 +20,7 @@ const EllipseMenu = ({ navigation }: { navigation: BottomTabScreenProps<any>['na
           icon: () => <Icon icon={Plus} size={16} strokeWidth={2} />,
           onSelect: () => navigation.navigate(
             'Modals',
-            { screen: "NewBill" }
+            { screen: 'NewBill', params: { options: { title: 'New Bill' } } }
           )
         },
         {
@@ -28,7 +28,7 @@ const EllipseMenu = ({ navigation }: { navigation: BottomTabScreenProps<any>['na
           icon: () => <Icon icon={Plus} size={16} strokeWidth={2} />,
           onSelect: () => navigation.navigate(
             'Modals',
-            { screen: "NewCategory" })
+            { screen: 'NewCategory', params: { options: { title: 'New Category' } } })
         },
         {
           label: 'View All Categories',

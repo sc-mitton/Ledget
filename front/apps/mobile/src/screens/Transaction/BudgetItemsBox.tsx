@@ -1,5 +1,6 @@
-import { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { TouchableOpacity, View } from 'react-native'
+import Animated, { LinearTransition } from 'react-native-reanimated';
 
 import styles from './styles/screen';
 import { Text, Box, BoxHeader, BillCatLabel } from '@ledget/native-ui'
@@ -9,15 +10,19 @@ import { isCategory, isBill } from '@ledget/shared-features';
 import type { RootStackScreenProps } from '@types'
 import type { Transaction as TransactionT } from '@ledget/shared-features';
 
-const BudgetItemsBox = (props: { item: TransactionT } & RootStackScreenProps<'Transaction'>) => {
+interface Props extends RootStackScreenProps<'Transaction'> {
+  item: TransactionT
+  isInModal?: boolean
+}
+
+const BudgetItemsBox = (props: Props) => {
   const [confirmTransactions] = useConfirmTransactionsMutation();
   const [updateTransaction] = useUpdateTransactionMutation();
-  const items = useRef(
-    props.item.categories?.length
-      ? props.item.categories : props.item.bill || props.item.predicted_bill || props.item.predicted_category).current
+  const items = props.item.categories?.length
+    ? props.item.categories : props.item.bill || props.item.predicted_bill || props.item.predicted_category
 
   return (
-    <>
+    <Animated.View layout={LinearTransition}>
       {items &&
         <>
           <View style={[styles.tableLabels, styles.tableColumn]}>
@@ -27,7 +32,10 @@ const BudgetItemsBox = (props: { item: TransactionT } & RootStackScreenProps<'Tr
                 ? <BoxHeader>Category</BoxHeader>
                 : <BoxHeader>Bill</BoxHeader>}
           </View>
-          <Box variant='nestedContainer'>
+          <Box
+            variant='nestedContainer'
+            backgroundColor={props.isInModal ? 'modalSeperator' : undefined}
+          >
             <View style={[styles.budgetItemsContainer]}>
               {Array.isArray(items)
                 ?
@@ -74,7 +82,7 @@ const BudgetItemsBox = (props: { item: TransactionT } & RootStackScreenProps<'Tr
           </Box>
         </>
       }
-    </>
+    </Animated.View>
   )
 }
 

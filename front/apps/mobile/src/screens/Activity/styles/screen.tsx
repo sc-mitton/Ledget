@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 export default StyleSheet.create({
   transactionsContainer: {
@@ -51,6 +51,10 @@ export default StyleSheet.create({
   overlayContainer: {
     transform: [{ translateY: -24 }],
     marginHorizontal: -16,
+    position: 'absolute',
+    top: 0,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height
   },
   overlay: {
     opacity: 0.6

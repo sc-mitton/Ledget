@@ -202,6 +202,7 @@ export const lightTheme = createTheme({
 
     blueChartGradientStart: palette.blue50,
     blueChartGradientEnd: palette.gray200.replace('hsl', 'hsla').replace(')', ', 0)'),
+    modalShadowMaskEnd: `hsla(${grayH}, ${grayS}%, 95%, 0)`,
     blueChartColor: palette.blue300,
     blueChartColorSecondary: palette.blue200,
     emptyChartGradientStart: palette.gray300,

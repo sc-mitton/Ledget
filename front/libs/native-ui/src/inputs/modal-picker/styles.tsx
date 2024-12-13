@@ -43,6 +43,7 @@ export default StyleSheet.create({
   },
   searchIcon: {
     position: 'absolute',
+    transform: [{ translateY: 12 }, { translateX: 20 }]
   },
   option: {
     paddingVertical: 10,

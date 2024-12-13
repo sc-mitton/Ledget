@@ -21,7 +21,7 @@ const TransactionMenu = (props: Props) => {
   } = props;
 
   const { mode } = useAppearance();
-  const { navigation } = useNavigation<ModalScreenProps<'Activity'>>();
+  const navigation = useNavigation<any>();
 
   return (
     <Menu
@@ -33,13 +33,10 @@ const TransactionMenu = (props: Props) => {
           label: 'Details',
           icon: () => <Icon icon={Info} size={16} strokeWidth={2} />,
           onSelect: () => navigation.navigate(
-            'BottomTabs',
+            'Modals',
             {
-              screen: 'Accounts',
-              params: {
-                screen: 'Transaction',
-                params: { transaction }
-              }
+              screen: 'Transaction',
+              params: { transaction, options: { asModal: true } }
             }
           )
         },
@@ -52,25 +49,28 @@ const TransactionMenu = (props: Props) => {
             </View>,
           onSelect: () => navigation.navigate(
             'Modals',
-            { screen: 'Split', params: { transaction } }
+            { screen: 'SplitModal', params: { transaction } }
           )
         },
         {
-          label: 'New Monthly Bill',
+          label: 'New Bill',
           icon: () => <Icon icon={Plus} size={16} strokeWidth={2} />,
           onSelect: () => navigation.navigate(
             'Modals',
-            { screen: 'NewBill', params: { transaction, period: 'month' } }
+            {
+              screen: 'NewBill',
+              params: {
+                bill: {
+                  name: transaction.name,
+                  upper_amount: transaction.amount
+                },
+                options: {
+                  title: 'New Bill'
+                }
+              }
+            }
           )
-        },
-        {
-          label: 'New Yearly Bill',
-          icon: () => <Icon icon={Plus} size={16} strokeWidth={2} />,
-          onSelect: () => navigation.navigate(
-            'Modals',
-            { screen: 'NewBill', params: { transaction, period: 'year' } }
-          )
-        },
+        }
       ]}
       {...rest}
     >
