@@ -105,8 +105,16 @@ const ModalScreens = () => {
           cardStyleInterpolator: defaultModalStyleInterpolator
         }}
       >
-        <RootStack.Screen name='NewCategory' component={NewCategory} />
-        <RootStack.Screen name='NewBill' component={NewBill} />
+        <RootStack.Screen
+          name='NewCategory'
+          component={NewCategory}
+          options={({ route }) => ({ title: route.params?.options?.title })}
+        />
+        <RootStack.Screen
+          name='NewBill'
+          component={NewBill}
+          options={({ route }) => ({ title: route.params?.options?.title })}
+        />
       </RootStack.Group>
       <RootStack.Group
         screenOptions={{

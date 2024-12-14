@@ -95,19 +95,19 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
     switch (window) {
       case '3M':
         setDateWindow({
-          start: dayjs().startOf('day').subtract(4, 'month').unix(),
+          start: dayjs().startOf('day').subtract(3, 'month').startOf('month').unix(),
           end: dayjs().startOf('day').unix()
         });
         break;
       case '6M':
         setDateWindow({
-          start: dayjs().startOf('day').subtract(7, 'month').unix(),
+          start: dayjs().startOf('day').subtract(6, 'month').startOf('month').unix(),
           end: dayjs().startOf('day').unix()
         });
         break;
       case '1Y':
         setDateWindow({
-          start: dayjs().startOf('day').subtract(1, 'year').subtract(1, 'month').unix(),
+          start: dayjs().startOf('day').subtract(1, 'year').startOf('month').unix(),
           end: dayjs().startOf('day').unix()
         });
         break;

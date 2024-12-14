@@ -131,7 +131,7 @@ const Screen = (props: ModalScreenProps<'Split' | 'SplitModal'>) => {
     <Wrapper
       style={styles.container}
       padding={props.route.name === 'Split' ? 'none' : 'pagePadding'}
-      backgroundColor={props.route.name === 'Split' ? 'transparent' : 'modalBox'}
+      backgroundColor={'modalBox'}
     >
       {props.route.name === 'SplitModal' &&
         <View style={styles.headerButtons}>
@@ -294,6 +294,15 @@ const Screen = (props: ModalScreenProps<'Split' | 'SplitModal'>) => {
           </View>
         </Animated.View>
       </View>
+      {props.route.name === 'Split' &&
+        <Button
+          label="Save"
+          textColor='blueText'
+          variant='grayMain'
+          marginVertical='xxl'
+          onPress={handleSubmit(onSubmit)}
+        />
+      }
     </Wrapper>
   )
 }

@@ -37,7 +37,7 @@ const SquareFilled = (props: WidgetProps & { loading: boolean }) => {
       <View style={sharedStyles.calendarButtonContainer}>
         <Button
           variant='square'
-          backgroundColor='mediumGrayButton'
+          backgroundColor='grayButton'
           padding='xs'
           onPress={onCalendarPress}
           icon={<Icon icon={Calendar} color='secondaryText' />}

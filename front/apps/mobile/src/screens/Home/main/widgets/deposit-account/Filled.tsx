@@ -60,13 +60,13 @@ const Filled = (props: WidgetProps<{ account: string }>) => {
     switch (window) {
       case '3M':
         setDateWindow({
-          start: dayjs().startOf('day').subtract(3, 'month').unix(),
+          start: dayjs().startOf('day').subtract(3, 'month').startOf('month').unix(),
           end: dayjs().startOf('day').unix()
         });
         break;
       case '6M':
         setDateWindow({
-          start: dayjs().startOf('day').subtract(6, 'month').unix(),
+          start: dayjs().startOf('day').subtract(6, 'month').startOf('month').unix(),
           end: dayjs().startOf('day').unix()
         });
         break;

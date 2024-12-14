@@ -20,7 +20,7 @@ const SpendingVsIncome = ({ loading }: { loading: boolean }) => {
       <View style={styles.calendarButtonContainer}>
         <Button
           variant='square'
-          backgroundColor='mediumGrayButton'
+          backgroundColor='grayButton'
           padding='xs'
           icon={<Icon icon={Calendar} color='secondaryText' />}
         />

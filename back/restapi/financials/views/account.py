@@ -1,7 +1,8 @@
 from decimal import Decimal
 import json
 from datetime import datetime
-import dateutil.relativedelta
+from itertools import groupby
+from dateutil import relativedelta
 from typing import List
 
 import plaid.exceptions
@@ -19,6 +20,7 @@ import plaid
 
 from restapi.permissions.auth import IsAuthedVerifiedSubscriber
 from restapi.permissions.objects import HasObjectAccess
+from restapi.utils import months_between
 from core.clients import create_plaid_client
 from financials.models import Account, UserAccount, Transaction
 from financials.serializers.account import (
@@ -221,25 +223,56 @@ class AccountsViewSet(ViewSet):
              .values('month', 'year', 'account') \
              .annotate(total=Sum('amount')) \
              .order_by('account', '-month')
+        grouped_qset = groupby(qset, key=lambda x: x['account'])
 
-        data = {
+        result = {
             a['account_id']: [{
-                'month': f"{datetime.now().strftime('%Y-%m-%d')}",
+                'month': datetime.now(),
                 'balance': Decimal(a['balances']['current'])
             }]
             for a in accounts_balance.values()
         }
 
-        for item in qset:
-            month = datetime.strptime(item['month'].strftime('%Y-%m-%d'), '%Y-%m-%d') \
-                + dateutil.relativedelta.relativedelta(months=1)
-            balance = data[item['account']][-1]['balance'] + item['total']
-            data[item['account']].append({
-                'month': f"{month}",
-                'balance': balance
-            })
+        for account_id, data in grouped_qset:
+            listed_data = list(data)
 
-        return data
+            # note: month_data steps backwards in time
+            # 2020-07-01, 2020-06-01, 2020-05-01, ...
+            for month_data in listed_data:
+                point = result[account_id][-1]['balance'] + month_data['total']
+                months_delta = months_between(
+                    month_data['month'],
+                    result[account_id][-1]['month']
+                )
+                months_delta = max(1, months_delta)
+
+                # If there's more than a 1 month gap between the last point and
+                # the current fill in the gap with the last point (it wont matter
+                # which point you choose in the gap since the balance is the same
+                # given that there were no transactions)
+                # Example:
+                # result[account_id] = [{month: 2020-07-01, balance: 100}]
+                # point = 100, month_data['month'] = 2020-05-01, delta = 2
+                # new_points =
+                # [{month: 2020-06-01, balance: 100}, {month: 2020-05-01, balance: 100}]
+                new_points = [{
+                    'month': month_data['month'] +
+                    relativedelta.relativedelta(months=j),
+                    'balance': point
+                } for j in range(months_delta - 1, -1, -1)]
+
+                result[account_id].extend(new_points)
+
+        # Extend the end for each account if it ends before
+        # window start by repeating the last balance
+        args_window_length = months_between(start, end)
+        for account_id in result.keys():
+            result[account_id].extend(
+                [result[account_id][-1]] *
+                max(0, args_window_length - len(result[account_id]))
+            )
+
+        return result
 
     def _get_balance_trend(self, accounts: list, days: int):
 

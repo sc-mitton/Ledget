@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.utils.http import urlencode
 from django.urls import reverse as django_reverse
 
@@ -13,3 +15,8 @@ def reverse(view, urlconf=None, args=None, kwargs=None, current_app=None,
     if query_kwargs:
         return '{}?{}'.format(base_url, urlencode(query_kwargs))
     return base_url
+
+
+def months_between(start: datetime, end: datetime) -> int:
+    '''Return the number of months between two dates'''
+    return (end.year - start.year) * 12 + end.month - start.month
