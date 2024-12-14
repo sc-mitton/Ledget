@@ -129,7 +129,7 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
               })
             }
           >
-            <Icon icon={Grid} size={20} color='secondaryText' />
+            <Icon icon={Grid} size={18} color='secondaryText' strokeWidth={2} />
           </Button>
         </View>
         {accounts

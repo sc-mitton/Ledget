@@ -9,13 +9,12 @@ import styles from "../styles/main"
 import { HomeScreenProps } from "@types"
 import { useAppDispatch } from "@hooks"
 import { Button, Icon, Header2, Box, Text } from "@ledget/native-ui"
-import { Widgets as WidgetsIcon } from '@ledget/media/native';
 import { useEffect } from "react"
 import { hideBottomTabs } from "@/features/uiSlice"
 import { useGetMeQuery } from "@ledget/shared-features"
 import { selectWidgets } from "@/features/widgetsSlice";
 import { useAppSelector } from '@hooks'
-import { WidgetsGraphicDark, WidgetsGraphicLight } from "@ledget/media/native";
+import { WidgetsGraphicDark, WidgetsGraphicLight, Widgets as WidgetsIcon } from "@ledget/media/native";
 import WidgetsBento from "./WidgetsBento"
 import { useAppearance } from "@/features/appearanceSlice";
 
@@ -105,7 +104,7 @@ const MainScreen = (props: HomeScreenProps<'Main'>) => {
             </Canvas>}
         </Animated.View>,
     })
-  }, [])
+  }, [mode])
 
   return (
     <>

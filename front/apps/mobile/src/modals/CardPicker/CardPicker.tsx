@@ -121,7 +121,6 @@ const AccountPicker = (props: ModalScreenProps<'PickerCard'>) => {
                     account={account}
                     size='small'
                     hue={account.cardHue}
-                    hasShadow={false}
                     onPress={() => {
                       if (account.id !== props.route.params.currentAccount) {
                         props.navigation.navigate('Accounts', {

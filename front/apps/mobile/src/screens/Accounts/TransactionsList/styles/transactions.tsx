@@ -21,7 +21,7 @@ export default StyleSheet.create({
   },
   dragBar: {
     width: 40,
-    height: 7,
+    height: 6,
     position: 'absolute',
     top: 8,
     left: '50%',
