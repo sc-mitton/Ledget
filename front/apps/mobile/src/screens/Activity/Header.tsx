@@ -1,8 +1,8 @@
 import { View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import styles from './styles/header';
-import { Box, Button, Seperator, Text } from '@ledget/native-ui';
+import { Box, Button, Seperator, Text, TabsTrack } from '@ledget/native-ui';
 import { useAppSelector } from '@hooks';
 import { useGetTransactionsCountQuery, selectBudgetMonthYear } from '@ledget/shared-features';
 import { useAppearance } from '@/features/appearanceSlice';
@@ -18,34 +18,23 @@ const Header = ({ index, setIndex }: { index: number, setIndex: (index: number) 
   return (
     <View style={styles.headerContainer}>
       <View style={styles.header}>
-        <Button
-          label="New"
-          labelPlacement='left'
-          onPress={() => setIndex(0)}
-          textColor={index === 0 ? 'blueText' : 'secondaryText'}
-        >
-          <View style={styles.countCountainer}>
-            <View style={styles.countBackgroundOuterContainer}>
-              <View style={styles.countBackgroundContainer}>
-                <Box
-                  backgroundColor={index === 0 ? 'blueText' : 'tertiaryText'}
-                  style={styles.countBackground} />
+        <TabsTrack onIndexChange={setIndex} >
+          <TabsTrack.Tab index={0}>
+            <View style={styles.countCountainer}>
+              <View style={styles.countBackgroundOuterContainer}>
+                <Text variant='bold' fontSize={14} color={'secondaryText'}>
+                  {24}
+                </Text>
               </View>
-              <Text fontSize={14} color={index === 0 ? 'blueText' : 'secondaryText'}>
-                {data?.count}
-              </Text>
             </View>
-          </View>
-        </Button>
-        <Box backgroundColor='menuSeperator' variant='divider' />
-        <Button
-          label="History"
-          labelPlacement='left'
-          onPress={() => setIndex(1)}
-          textColor={index === 1 ? 'blueText' : 'secondaryText'}
-        />
+            <Text color={index === 0 ? 'mainText' : 'secondaryText'}>New</Text>
+          </TabsTrack.Tab>
+          <TabsTrack.Tab index={1}>
+            <Text color={index === 1 ? 'mainText' : 'secondaryText'}>History</Text>
+          </TabsTrack.Tab>
+        </TabsTrack>
       </View>
-      <View style={mode === 'light' && styles.seperator}>
+      <View style={[styles.seperator, mode === 'light' && styles.lightModeSeperator]}>
         <Seperator
           variant={'bare'}
           backgroundColor={'modalSeperator'}

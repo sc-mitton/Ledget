@@ -3,11 +3,13 @@ import { StyleSheet } from "react-native";
 export default StyleSheet.create({
   headerContainer: {
     marginBottom: 0,
-    marginTop: 12
+    marginTop: 12,
+    alignItems: 'center',
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'center',
+    width: '66%',
     alignItems: 'center',
     gap: 12,
     marginRight: 4,
@@ -15,7 +17,7 @@ export default StyleSheet.create({
   },
   countCountainer: {
     position: 'relative',
-    marginRight: 6,
+    marginRight: 4,
   },
   countBackgroundOuterContainer: {
     position: 'relative'
@@ -28,13 +30,16 @@ export default StyleSheet.create({
     top: '50%',
   },
   countBackground: {
-    borderRadius: 100,
-    height: 24,
-    width: 24,
+    borderRadius: 5,
+    height: 20,
+    width: 20,
     position: 'absolute',
-    opacity: 0.2
+    opacity: .1
   },
   seperator: {
+    width: '200%'
+  },
+  lightModeSeperator: {
     transform: [{ translateY: 2 }]
   }
 });

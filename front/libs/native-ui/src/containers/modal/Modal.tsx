@@ -15,6 +15,8 @@ import {
   composeRestyleFunctions,
   useRestyle
 } from '@shopify/restyle';
+import { BlurView } from 'expo-blur';
+import { useTheme } from '@shopify/restyle';
 
 import styles from './styles';
 import { Box } from '../../restyled/Box';
@@ -52,6 +54,7 @@ export function Modal(props: ModalProps) {
 
   const restyleProps = useRestyle(restyleFunctions, rest);
 
+  const theme = useTheme<Theme>();
   const navigation = useNavigation();
   const keyboardHeight = useKeyboardHeight()
 
@@ -97,49 +100,53 @@ export function Modal(props: ModalProps) {
     <>
       <Pressable
         onPress={() => hasOverlayExit && onClose ? onClose() : navigation.goBack()}
-        style={StyleSheet.absoluteFillObject}
+        style={[StyleSheet.absoluteFillObject]}
       />
-      {hasOverlay &&
-        <Pressable
-          onPress={() => hasOverlayExit && onClose ? onClose() : navigation.goBack()}
-          style={StyleSheet.absoluteFillObject}
-        >
-          <Box backgroundColor='modalOverlay' style={styles.overlay} />
-        </Pressable>}
-      <Animated.View
-        style={[styles[`${position}ModalContainer`]]}
-        entering={
-          props.animation === 'slideDown'
-            ? SlideInUp.springify().damping(35).stiffness(315).mass(1).overshootClamping(0)
-            : props.animation === 'slideUp'
-              ? SlideInDown.springify().damping(35).stiffness(315).mass(1).overshootClamping(0)
-              : undefined
-        }
+      <BlurView
+        intensity={10}
+        tint={theme.colors.mode === 'dark' ? 'dark' : 'light'}
+        style={StyleSheet.absoluteFillObject}
       >
-        <Box
-          style={[styles[`${position}Modal`], (restyleProps as any).style[0]]}
-          borderColor='modalBorder'
-          borderWidth={1}
-          backgroundColor={'modalBox'}
-          {...(hasOverlay ? {
-            shadowColor: 'modalShadow',
-            shadowOffset: { width: 0, height: 4 },
-            shadowOpacity: 1,
-            shadowRadius: 12,
-          } : {})}
+        {hasOverlay &&
+          <Pressable
+            onPress={() => hasOverlayExit && onClose ? onClose() : navigation.goBack()}
+            style={StyleSheet.absoluteFillObject}
+          >
+            <Box backgroundColor='modalOverlay' style={styles.overlay} />
+          </Pressable>}
+        <Animated.View
+          style={[styles[`${position}ModalContainer`]]}
+          entering={
+            props.animation === 'slideDown'
+              ? SlideInUp.springify().damping(35).stiffness(315).mass(1).overshootClamping(0)
+              : props.animation === 'slideUp'
+                ? SlideInDown.springify().damping(35).stiffness(315).mass(1).overshootClamping(0)
+                : undefined
+          }
         >
-          {hasExitButton && <View style={styles.closeButton}>
-            <Button
-              onPress={() => onClose ? onClose() : navigation.goBack()}
-              variant='circleButton'
-              icon={<Icon icon={X} size={20} color='secondaryText' strokeWidth={1.75} />}
-            />
-          </View>}
-          <Animated.View style={[avoidKeyboardAnimation]}>
-            {children}
-          </Animated.View>
-        </Box>
-      </Animated.View>
+          <Box
+            style={[styles[`${position}Modal`], (restyleProps as any).style[0]]}
+            backgroundColor={'modalBox'}
+            {...(hasOverlay ? {
+              shadowColor: 'modalShadow',
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 1,
+              shadowRadius: 12,
+            } : {})}
+          >
+            {hasExitButton && <View style={styles.closeButton}>
+              <Button
+                onPress={() => onClose ? onClose() : navigation.goBack()}
+                variant='circleButton'
+                icon={<Icon icon={X} size={20} color='secondaryText' strokeWidth={1.75} />}
+              />
+            </View>}
+            <Animated.View style={[avoidKeyboardAnimation]}>
+              {children}
+            </Animated.View>
+          </Box>
+        </Animated.View>
+      </BlurView>
     </>
   );
 }

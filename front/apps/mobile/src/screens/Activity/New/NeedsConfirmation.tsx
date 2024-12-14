@@ -89,19 +89,18 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
   );
 
   const itemsApi = useSpringRef();
-  const itemTransitions = useTransition(unconfirmedTransactions.slice(0, loaded ? undefined : 3), {
+  const itemTransitions = useTransition(unconfirmedTransactions.slice(0, loaded || expanded ? undefined : 3), {
     from: (item, index) => ({
       top: _getY(index, expanded, false, itemHeight.current),
-      zIndex: unconfirmedTransactions!.length - index,
+      zIndex: unconfirmedTransactions!.length - index
     }),
     enter: (item, index) => ({
       top: _getY(index, expanded, true, itemHeight.current),
-      opacity: itemHeightSet ? _getOpacity(index, expanded) : 0,
+      opacity: itemHeightSet ? _getOpacity(index, expanded) : 0
     }),
     update: (item, index) => ({
       top: _getY(index, expanded, true, itemHeight.current),
-      opacity: itemHeightSet ? _getOpacity(index, expanded) : 0,
-      // zIndex: expanded ? index : unconfirmedTransactions!.length - index
+      opacity: itemHeightSet ? _getOpacity(index, expanded) : 0
     }),
     config: springConfig,
     immediate: (!loaded && expanded),

@@ -38,7 +38,10 @@ export function Menu(props: MenuProps) {
   const [touchableKey, setTouchableKey] = useState(0);
 
   return (
-    <>
+    <OutsidePressHandler onOutsidePress={() => {
+      setShow(false);
+      props.onShowChange && props.onShowChange(false);
+    }}>
       <View style={styles.container}>
         {props.as === 'context-menu'
           ?
@@ -73,69 +76,64 @@ export function Menu(props: MenuProps) {
           </TouchableOpacity>
         }
         {show &&
-          <OutsidePressHandler onOutsidePress={() => {
-            setShow(false);
-            props.onShowChange && props.onShowChange(false);
-          }}>
-            <View style={[styles.menuContainer, placementStyles[props.placement || 'center']]}>
-              <Animated.View
-                style={[styles.menu, menuPlacementStyles[props.placement || 'center']]}
-                entering={ZoomIn.withInitialValues({ transform: [{ scale: .5 }], opacity: 0 }).duration(300).easing(Easing.elastic(.9))}
-                exiting={ZoomOut.duration(150).easing(Easing.ease)}>
-                <Box
-                  shadowColor='menuShadowColor'
-                  shadowOpacity={hasShadow ? 1 : 0}
-                  shadowRadius={8}
-                  elevation={15}
-                  shadowOffset={{ width: 0, height: 6 }}
-                  style={styles.menuOptions}
+          <View style={[styles.menuContainer, placementStyles[props.placement || 'center']]}>
+            <Animated.View
+              style={[styles.menu, menuPlacementStyles[props.placement || 'center']]}
+              entering={ZoomIn.withInitialValues({ transform: [{ scale: .5 }], opacity: 0 }).duration(300).easing(Easing.elastic(.9))}
+              exiting={ZoomOut.duration(150).easing(Easing.ease)}>
+              <Box
+                shadowColor='menuShadowColor'
+                shadowOpacity={hasShadow ? 1 : 0}
+                shadowRadius={8}
+                elevation={15}
+                shadowOffset={{ width: 0, height: 6 }}
+                style={styles.menuOptions}
+              >
+                <BlurView
+                  style={styles.menuClipper}
+                  intensity={50}
+                  tint={theme.colors.mode === 'dark' ? 'dark' : 'light'}
                 >
-                  <BlurView
-                    style={styles.menuClipper}
-                    intensity={50}
-                    tint={theme.colors.mode === 'dark' ? 'dark' : 'light'}
-                  >
-                    <Box style={styles.menuBackground} />
-                    {props.items.map((item, index) => (
-                      <Fragment key={`context-menu-item-${item.label.replace(' ', '-')}`}>
-                        {index !== 0 &&
-                          <View style={styles.seperator}>
-                            <Seperator
-                              variant='bare'
-                              height={item.newSection ? 4 : undefined}
-                              backgroundColor={item.newSection
-                                ? theme.colors.mode === 'dark' ? 'nestedContainerSeperator' : 'menuSeperator'
-                                : 'menuSeperator'}
-                            />
-                          </View>}
-                        <TouchableHighlight
-                          style={styles.rowContainer}
-                          underlayColor={theme.colors.menuSeperator}
-                          activeOpacity={0.93}
-                          onPress={() => {
-                            if (props.closeOnSelect) {
-                              setShow(false);
-                              props.onShowChange && props.onShowChange(false);
-                            }
-                            item.onSelect()
-                          }}
-                          key={`context-menu-item-${item.label.replace(' ', '-')}`}>
-                          <View style={styles.row}>
-                            <Text fontSize={15}>{item.label}</Text>
-                            {item.icon && <View style={styles.icon}><item.icon /></View>}
-                            <Box backgroundColor='contextMenu' style={styles.rowBackground} />
-                          </View>
-                        </TouchableHighlight>
-                      </Fragment>
-                    ))}
-                  </BlurView>
-                </Box>
-              </Animated.View>
-            </View>
-          </OutsidePressHandler>
+                  <Box style={styles.menuBackground} />
+                  {props.items.map((item, index) => (
+                    <Fragment key={`context-menu-item-${item.label.replace(' ', '-')}`}>
+                      {index !== 0 &&
+                        <View style={styles.seperator}>
+                          <Seperator
+                            variant='bare'
+                            height={item.newSection ? 4 : undefined}
+                            backgroundColor={item.newSection
+                              ? theme.colors.mode === 'dark' ? 'nestedContainerSeperator' : 'menuSeperator'
+                              : 'menuSeperator'}
+                          />
+                        </View>}
+                      <TouchableHighlight
+                        style={styles.rowContainer}
+                        underlayColor={theme.colors.menuSeperator}
+                        activeOpacity={0.93}
+                        onPress={() => {
+                          if (props.closeOnSelect) {
+                            setShow(false);
+                            props.onShowChange && props.onShowChange(false);
+                          }
+                          item.onSelect()
+                        }}
+                        key={`context-menu-item-${item.label.replace(' ', '-')}`}>
+                        <View style={styles.row}>
+                          <Text fontSize={15}>{item.label}</Text>
+                          {item.icon && <View style={styles.icon}><item.icon /></View>}
+                          <Box backgroundColor='contextMenu' style={styles.rowBackground} />
+                        </View>
+                      </TouchableHighlight>
+                    </Fragment>
+                  ))}
+                </BlurView>
+              </Box>
+            </Animated.View>
+          </View>
         }
       </View>
-    </>
+    </OutsidePressHandler>
   );
 }
 
