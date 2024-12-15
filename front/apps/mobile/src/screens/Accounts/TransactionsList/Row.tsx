@@ -1,4 +1,5 @@
 import { View } from 'react-native';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import dayjs from 'dayjs';
 
 import styles from './styles/transactions';
@@ -13,7 +14,7 @@ import {
 
 const Row = (props: Partial<Transaction> & { section: Section, index: number }) => {
   return (
-    <View style={styles.transactionRow}>
+    <Animated.View style={styles.transactionRow} entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)}>
       <View style={styles.leftColumn}>
         <View style={styles.nameContainer}>
           {props.pending && <Icon icon={Hourglass} size={16} />}
@@ -41,7 +42,7 @@ const Row = (props: Partial<Transaction> & { section: Section, index: number }) 
           color={(props.amount || 0) < 0 ? 'greenText' : 'mainText'}
         />
       </View>
-    </View>
+    </Animated.View>
   )
 }
 

@@ -27,11 +27,10 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
 
   const storedAccounts = useAppSelector(selectAccountsTabDepositAccounts)
   const [window, setWindow] = useState<typeof chartWindows[number]['key']>(chartWindows[0].key)
-  const [showMenu, setShowMenu] = useState(false)
+  const [isShowingMenu, setIsShowingMenu] = useState(false)
   const [dateWindow, setDateWindow] = useState<{ start: number, end: number }>({ start: 0, end: 0 })
   const [calculatedTrend, setCalculatedTrend] = useState(0)
   const [balanceHistoryChartData, setBalanceHistoryChartData] = useState<typeof tempDepositBalanceChartData>()
-  const [showChart, setShowChart] = useState(true)
 
   const totalBalance = useMemo(
     () =>
@@ -122,7 +121,7 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
 
   return (
     <Box style={styles.container}>
-      {showMenu &&
+      {isShowingMenu &&
         <Animated.View entering={FadeIn} exiting={FadeOut} style={[StyleSheet.absoluteFill, styles.blurViewContainer]}>
           <BlurView
             intensity={12}
@@ -132,29 +131,14 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
           <Box backgroundColor='mainBackground' style={[StyleSheet.absoluteFill, { opacity: .8 }]} />
         </Animated.View>}
       <View style={styles.menuButtonContainer}>
-        {showChart
-          ?
-          <ChartWindowsMenu
-            windows={chartWindows}
-            onSelect={(w) => {
-              setWindow(w);
-              setShowMenu(false);
-            }}
-            onShowChange={(show) => {
-              setShowMenu(show)
-            }}
-            onClose={() => {
-              setShowChart(false)
-            }}
-          />
-          :
-          <Button
-            onPress={() => { setShowChart(true) }}
-            backgroundColor='grayButton'
-            variant='square'
-            icon={<Icon icon={Graph} color='secondaryText' />}
-          />
-        }
+        <ChartWindowsMenu
+          windows={chartWindows}
+          onSelect={(w) => {
+            setWindow(w);
+            setIsShowingMenu(false);
+          }}
+          onShowChange={setIsShowingMenu}
+        />
       </View>
       <View style={styles.chartHeader}>
         <Text color='secondaryText'>Total Balance</Text>

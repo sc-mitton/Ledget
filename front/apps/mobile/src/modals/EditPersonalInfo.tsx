@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { View, Keyboard, TouchableWithoutFeedback } from 'react-native'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { X } from 'geist-native-icons';
 import { z } from 'zod';
 
 import styles from './styles/edit-personal-info';
@@ -9,7 +10,8 @@ import {
   Header,
   Text,
   SubmitButton,
-  Modal,
+  Icon,
+  Button,
   TextInput,
   Box,
   Seperator,
@@ -56,70 +58,79 @@ const EditPersonalInfo = (props: ModalScreenProps<'EditPersonalInfo'>) => {
   }
 
   return (
-    <Modal>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View>
-          <View style={styles.headerContainer}>
-            <Header>Edit</Header>
-            <Text color='secondaryText'>
-              Edit your personal information
-            </Text>
-          </View>
-          <Seperator backgroundColor='modalSeperator' />
-          <Box marginVertical='l'>
-            <View style={styles.splitInputs}>
-              <View style={styles.splitInput}>
-                <Controller
-                  control={control}
-                  name="first"
-                  render={({ field: { onChange, value } }) => (
-                    <TextInput
-                      label="First Name"
-                      value={value}
-                      onChangeText={onChange}
-                      error={errors.first}
-                    />
-                  )}
-                />
-              </View>
-              <View style={styles.splitInput}>
-                <Controller
-                  control={control}
-                  name="last"
-                  render={({ field: { onChange, value } }) => (
-                    <TextInput
-                      label="Last Name"
-                      value={value}
-                      onChangeText={onChange}
-                      error={errors.last}
-                    />
-                  )}
-                />
-              </View>
-            </View>
-            <Controller
-              control={control}
-              name="email"
-              render={({ field: { onChange, value } }) => (
-                <TextInput
-                  label="Email"
-                  value={value}
-                  onChangeText={onChange}
-                  error={errors.email}
-                />
-              )}
-            />
-          </Box>
-          <SubmitButton
-            label="Save"
-            isSubmitting={isLoading}
-            isSuccess={isSuccess}
-            variant='main'
-            onPress={onSave}
-          />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <Box
+        paddingBottom='xxl'
+        backgroundColor='modalBox100'
+        paddingHorizontal='pagePadding'
+        style={styles.modalBackground}
+      >
+        <Button
+          variant='circleButton'
+          onPress={props.navigation.goBack}
+          style={styles.closeButton}
+          icon={<Icon icon={X} color='secondaryText' strokeWidth={2} />}
+        />
+        <View style={styles.headerContainer}>
+          <Header>Edit</Header>
+          <Text color='secondaryText'>
+            Edit your personal information
+          </Text>
         </View>
-      </TouchableWithoutFeedback>
-    </Modal>
+        <Seperator backgroundColor='modalSeperator' />
+        <Box marginVertical='l'>
+          <View style={styles.splitInputs}>
+            <View style={styles.splitInput}>
+              <Controller
+                control={control}
+                name="first"
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    label="First Name"
+                    value={value}
+                    onChangeText={onChange}
+                    error={errors.first}
+                  />
+                )}
+              />
+            </View>
+            <View style={styles.splitInput}>
+              <Controller
+                control={control}
+                name="last"
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    label="Last Name"
+                    value={value}
+                    onChangeText={onChange}
+                    error={errors.last}
+                  />
+                )}
+              />
+            </View>
+          </View>
+          <Controller
+            control={control}
+            name="email"
+            render={({ field: { onChange, value } }) => (
+              <TextInput
+                label="Email"
+                value={value}
+                onChangeText={onChange}
+                error={errors.email}
+              />
+            )}
+          />
+        </Box>
+        <SubmitButton
+          label="Save"
+          isSubmitting={isLoading}
+          isSuccess={isSuccess}
+          variant='main'
+          onPress={onSave}
+        />
+      </Box>
+    </TouchableWithoutFeedback>
   )
 };
 

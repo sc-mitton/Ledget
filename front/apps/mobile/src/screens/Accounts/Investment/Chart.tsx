@@ -7,7 +7,7 @@ import {
   vec
 } from '@shopify/react-native-skia';
 import { useTheme } from '@shopify/restyle';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeOut, useAnimatedStyle, withTiming, withDelay, useSharedValue } from 'react-native-reanimated';
 import { BlurView } from 'expo-blur';
 import { ChevronDown, ArrowUpRight, ArrowDownRight, Check } from 'geist-native-icons';
 import { Big } from 'big.js';
@@ -69,10 +69,20 @@ const Chart = () => {
   const [chartData, setChartData] = useState(tempChartData)
   const [useingFakeData, setUseingFakeData] = useState(true)
   const [blurView, setBlurView] = useState<number>()
+  const chartMenuZindex = useSharedValue(0)
+  const accountMenuZindex = useSharedValue(0)
 
   const font = useFont(SourceSans3Regular, 14)
   const theme = useTheme()
   const { state, isActive } = useChartPressState({ x: '0', y: { balance: 0 } })
+
+  const chartMenuAnimation = useAnimatedStyle(() => ({
+    zIndex: chartMenuZindex.value
+  }))
+
+  const accountMenuAnimation = useAnimatedStyle(() => ({
+    zIndex: accountMenuZindex.value
+  }))
 
   const trend = useMemo(() => {
     if (fetchedData?.length === 0 || !fetchedData) return undefined
@@ -88,6 +98,19 @@ const Chart = () => {
       }, Big(0))
     return last.minus(second2Last).times(100).toNumber()
   }, [fetchedData])
+
+  useEffect(() => {
+    if (blurView === 1) {
+      chartMenuZindex.value = 20
+      accountMenuZindex.value = 0
+    } else if (blurView === 2) {
+      accountMenuZindex.value = 20
+      chartMenuZindex.value = 0
+    } else {
+      chartMenuZindex.value = withDelay(withTiming(0, { duration: 0 }), 0)
+      accountMenuZindex.value = withDelay(withTiming(0, { duration: 0 }), 0)
+    }
+  }, [blurView])
 
   useEffect(() => {
     if (fetchedData && fetchedData.length > 0) {
@@ -106,7 +129,7 @@ const Chart = () => {
 
   return (
     <View style={styles.container}>
-      <View style={[styles.windowMenu, { zIndex: blurView === 1 ? 20 : 0 }]}>
+      <Animated.View style={[styles.windowMenu, chartMenuAnimation]}>
         <ChartWindowsMenu
           windows={windows}
           onShowChange={(show) => show ? setBlurView(1) : setBlurView(undefined)}
@@ -122,10 +145,9 @@ const Chart = () => {
               || windows[windows.length - 1].key
               : windows[0].key
           }
-          closeOption={false}
         />
-      </View>
-      <View style={[styles.accountMenu, { zIndex: blurView === 2 ? 20 : 0 }]}>
+      </Animated.View>
+      <Animated.View style={[styles.accountMenu, accountMenuAnimation]}>
         <Menu
           as='menu'
           placement='left'
@@ -181,7 +203,7 @@ const Chart = () => {
                 color={trend >= 0 ? 'greenText' : 'alert'} />
             </View>}
         </View>
-      </View>
+      </Animated.View>
       {Number.isFinite(blurView) &&
         <Animated.View
           entering={FadeIn}

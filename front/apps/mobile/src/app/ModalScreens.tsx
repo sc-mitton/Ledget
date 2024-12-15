@@ -45,7 +45,6 @@ const ModalScreens = () => {
       />
       <RootStack.Screen name='Logout' component={Logout} />
       <RootStack.Screen name='ConfirmDeletePlaidItem' component={ConfirmDeletePlaidItem} />
-      <RootStack.Screen name='EditPersonalInfo' component={EditPersonalInfo} />
       <RootStack.Screen name='ConfirmRemoveCoowner' component={ConfirmRemoveCoowner} />
       <RootStack.Screen name='AddCoOwner' component={AddCoOwner} />
       <RootStack.Screen name='AuthenticatorAppSetup' component={AuthenticatorAppSetup} />
@@ -125,6 +124,7 @@ const ModalScreens = () => {
           gestureResponseDistance: 70,
           cardStyleInterpolator: defaultModalStyleInterpolator
         }}>
+        <RootStack.Screen name='EditPersonalInfo' component={EditPersonalInfo} />
         <RootStack.Screen name='SplitModal' component={SplitTransaction} />
         <RootStack.Screen name='PickerCard' component={CardPicker} />
         <RootStack.Screen name='PickAccount' component={AccountsPicker} />

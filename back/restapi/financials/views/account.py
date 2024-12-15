@@ -1,4 +1,5 @@
 from decimal import Decimal
+import math
 import json
 from datetime import datetime
 from itertools import groupby
@@ -178,6 +179,7 @@ class AccountsViewSet(ViewSet):
 
         data = {a.id: None for a in accounts}
         for account in accounts:
+
             if account.plaid_item.access_token in already_fetched_tokens:
                 continue
             request = AccountsGetRequest(
@@ -239,38 +241,51 @@ class AccountsViewSet(ViewSet):
             # note: month_data steps backwards in time
             # 2020-07-01, 2020-06-01, 2020-05-01, ...
             for month_data in listed_data:
-                point = result[account_id][-1]['balance'] + month_data['total']
+
                 months_delta = months_between(
                     month_data['month'],
-                    result[account_id][-1]['month']
+                    result[account_id][-1]['month'],
+                    1
                 )
-                months_delta = max(1, months_delta)
+                months_delta = max(1, math.ceil(months_delta))
 
                 # If there's more than a 1 month gap between the last point and
-                # the current fill in the gap with the last point (it wont matter
-                # which point you choose in the gap since the balance is the same
-                # given that there were no transactions)
+                # the current, fill in the gap with the last point
                 # Example:
                 # result[account_id] = [{month: 2020-07-01, balance: 100}]
-                # point = 100, month_data['month'] = 2020-05-01, delta = 2
+                # point = 200, month_data['month'] = 2020-05-01, delta = 2
                 # new_points =
-                # [{month: 2020-06-01, balance: 100}, {month: 2020-05-01, balance: 100}]
-                new_points = [{
-                    'month': month_data['month'] +
+                # [{month: 2020-06-01, balance: 100}, {month: 2020-05-01, balance: 200}]
+                back_fill = [{
+                    'month': result[account_id][-1]['month'].replace(day=1) -
                     relativedelta.relativedelta(months=j),
-                    'balance': point
-                } for j in range(months_delta - 1, -1, -1)]
+                    'balance': result[account_id][-1]['balance']
+                } for j in range(months_delta - 1)]
 
-                result[account_id].extend(new_points)
+                result[account_id].extend(back_fill)
 
-        # Extend the end for each account if it ends before
+                # Append new point
+                result[account_id].append({
+                    'month': month_data['month'].replace(day=1),
+                    'balance': result[account_id][-1]['balance'] + month_data['total']
+                })
+
+        # Backfill the end for each account if it ends before
         # window start by repeating the last balance
-        args_window_length = months_between(start, end)
+        num_data_points = math.ceil(months_between(start, end, 1)) + 1
         for account_id in result.keys():
-            result[account_id].extend(
-                [result[account_id][-1]] *
-                max(0, args_window_length - len(result[account_id]))
-            )
+            iter_start = 0 if result[account_id][-1]['month'].day > 0 else 1
+            num_missing_points = max(
+                0, num_data_points - len(result[account_id])) + iter_start
+            extended_data = [
+                {
+                    'month': result[account_id][-1]['month'].replace(day=1)
+                    - relativedelta.relativedelta(months=j),
+                    'balance': result[account_id][-1]['balance']
+                }
+                for j in range(iter_start, num_missing_points, 1)
+            ]
+            result[account_id].extend(extended_data)
 
         return result
 

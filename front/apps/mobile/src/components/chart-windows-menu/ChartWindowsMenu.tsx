@@ -19,7 +19,6 @@ type Props<W extends Windows> = {
 }
 
 export const ChartWindowsMenu = <W extends Windows>(props: Props<W>) => {
-  const { closeOption = true } = props
   const [window, setWindow] = useState<typeof props.windows[number]['key']>(props.defaultWindow ?? props.windows[0].key)
 
   return (
