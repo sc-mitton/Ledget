@@ -89,7 +89,7 @@ export const lightTheme = createTheme({
     newTransaction: palette.gray100,
     contextMenu: palette.gray100,
     toast: palette.white,
-    creditCardGradientStart: `hsl(${blueH}, 75%, 35%)`,
+    creditCardGradientStart: `hsl(${blueH}, 75%, 44%)`,
     creditCardGradientEnd: `hsl(${blueH}, 75%, 62%)`,
     widgetPickerBackground: palette.gray150,
     widget: palette.white,
@@ -607,6 +607,14 @@ export const lightTheme = createTheme({
       backgroundColor: 'dragBar',
       width: 32,
       height: 5,
+      borderRadius: 'circle',
+      position: 'absolute',
+      top: 6
+    },
+    largerDragBar: {
+      backgroundColor: 'dragBar',
+      width: 38,
+      height: 7,
       borderRadius: 'circle',
       position: 'absolute',
       top: 6

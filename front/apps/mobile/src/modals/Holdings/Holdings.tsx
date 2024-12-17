@@ -59,7 +59,7 @@ const AccountPicker = (props: ModalScreenProps<'Holdings'>) => {
       backgroundColor='modalBox100'
       style={styles.modalBackground}>
       <Box variant='dragBarContainer'>
-        <Box variant='dragBar' />
+        <Box variant='largerDragBar' />
       </Box>
       <Box
         paddingHorizontal='pagePadding'

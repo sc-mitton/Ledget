@@ -32,13 +32,15 @@ const TransactionMenu = (props: Props) => {
         {
           label: 'Details',
           icon: () => <Icon icon={Info} size={16} strokeWidth={2} />,
-          onSelect: () => navigation.navigate(
-            'Modals',
-            {
-              screen: 'Transaction',
-              params: { transaction, options: { asModal: true } }
-            }
-          )
+          onSelect: () => {
+            navigation.navigate(
+              'Modals',
+              {
+                screen: 'Transaction',
+                params: { transaction, options: { asModal: true } }
+              }
+            )
+          }
         },
         {
           label: 'Split',
@@ -72,6 +74,7 @@ const TransactionMenu = (props: Props) => {
           )
         }
       ]}
+      closeOnSelect={true}
       {...rest}
     >
       {children}

@@ -46,6 +46,15 @@ const formater = new Intl.NumberFormat('en-US', {
   minimumFractionDigits: 2
 });
 
+const springConfig = {
+  mass: .5,
+  damping: 11,
+  stiffness: 200,
+  overshootClamping: false,
+  restDisplacementThreshold: 0.01,
+  restSpeedThreshold: .001
+}
+
 const Item = (props: Props) => {
   const {
     item,
@@ -61,6 +70,7 @@ const Item = (props: Props) => {
   const checkOpacity = useSharedValue(0);
   const scale = useSharedValue(1);
   const x = useSharedValue(0);
+  const y = useSharedValue(0);
   const paddingVertical = useSharedValue(0);
   const leftCheckX = useSharedValue(24);
   const rightCheckX = useSharedValue(24);
@@ -112,17 +122,19 @@ const Item = (props: Props) => {
 
   const buttonAnimation = useAnimatedStyle(() => {
     return {
-      transform: [{ translateX: x.value }, { scale: scale.value }],
+      transform: [{ translateX: x.value }, { scale: scale.value }, { translateY: y.value }],
     }
   });
 
   useEffect(() => {
     if (focused) {
       paddingVertical.value = withTiming(16, { duration: 200 });
-      scale.value = withSpring(1.04, defaultSpringConfig);
+      scale.value = withSpring(1.04, springConfig);
+      y.value = withSpring(-4, springConfig);
     } else {
       paddingVertical.value = withTiming(0, { duration: 200 });
-      scale.value = withSpring(1, defaultSpringConfig);
+      scale.value = withSpring(1, springConfig);
+      y.value = withSpring(0, springConfig);
     }
   }, [focused]);
 

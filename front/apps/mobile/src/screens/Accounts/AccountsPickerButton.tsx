@@ -55,7 +55,9 @@ const AccountsPickerButton = (props: AccountsTabsScreenProps<any>) => {
               <View style={styles.balanceContainer}>
                 <DollarCents
                   variant='bold'
-                  value={accounts?.reduce((acc, a) => Big(acc).plus(a.balances.current), Big(0)).times(100).toNumber() || 0}
+                  color='secondaryText'
+                  value={accounts?.reduce((acc, a) =>
+                    Big(acc).plus(a.balances.current), Big(0)).times(100).toNumber() || 0}
                 />
               </View>
               <Icon

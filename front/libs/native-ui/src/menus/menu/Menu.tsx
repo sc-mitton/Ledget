@@ -34,24 +34,30 @@ export function Menu(props: MenuProps) {
 
   const [show, setShow] = useState(false);
   const theme = useTheme();
-  const touchRef = React.useRef<View>(null);
   const [touchableKey, setTouchableKey] = useState(0);
 
   return (
-    <OutsidePressHandler onOutsidePress={() => {
-      setShow(false);
-      props.onShowChange && props.onShowChange(false);
-    }}>
+    <OutsidePressHandler
+      onOutsidePress={() => {
+        if (!show) return;
+        setShow(false);
+        props.onShowChange && props.onShowChange(false);
+      }}>
       <View style={styles.container}>
         {props.as === 'context-menu'
           ?
           <TouchableHighlight
-            ref={touchRef}
             key={touchableKey}
             underlayColor={theme.colors.whiteText}
             activeOpacity={.97}
             disabled={props.disabled}
             style={props.touchableStyle}
+            onPress={() => {
+              if (show) {
+                setShow(false);
+                props.onShowChange && props.onShowChange(false);
+              }
+            }}
             onLongPress={(e) => {
               Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
               props.onShowChange && props.onShowChange(!show);
@@ -62,7 +68,6 @@ export function Menu(props: MenuProps) {
           </TouchableHighlight>
           :
           <TouchableOpacity
-            ref={touchRef}
             key={touchableKey}
             disabled={props.disabled}
             activeOpacity={.7}

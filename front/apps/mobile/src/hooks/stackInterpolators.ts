@@ -38,7 +38,7 @@ export const useCardStyleInterpolator = (app?: 'main' | 'authentication') => {
               }),
               inverted
             ),
-          },
+          }
         ],
       },
       containerStyle: {

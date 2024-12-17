@@ -17,9 +17,11 @@ import { CARD_WIDTH, CARD_HEIGHT } from '@components/card/constants'
 import { DefaultHeader, AccountHeader } from '../Header';
 import { useAppDispatch } from '@/hooks';
 import CarouselItem from './Carouseltem';
+import { useLoaded } from '@ledget/helpers';
 
 export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
   const dispatch = useAppDispatch()
+  const loaded = useLoaded(500)
   const [bottomOfContentPos, setBottomOfContentPos] = useState(0)
   const [accounts, setAccounts] = useState<Account[]>()
   const [account, setAccount] = useState<Account>()
@@ -51,13 +53,13 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
   const [cardTransparencies, cardsApi] = useSprings(accounts?.length || 0, (i) => ({
     from: { opacity: 1 },
     to: { opacity: i === carouselIndex ? 1 : 0.25 },
-    config: { duration: 200 }
+    config: { duration: loaded ? 200 : 0 }
   }));
 
   useEffect(() => {
     cardsApi.start((i) => ({
       to: { opacity: i === carouselIndex ? 1 : 0.25 },
-      config: { duration: 200 }
+      config: { duration: loaded ? 200 : 0 }
     }))
   }, [carouselIndex])
 
@@ -108,15 +110,15 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
       >
         <View style={styles.totalBalanceContainer}>
           <View style={styles.totalBalance}>
-            <Text color='tertiaryText' fontSize={15} style={styles.totalBalanceText}>
-              Total Card Balance
-            </Text>
             <DollarCents
               fontSize={22}
               variant='bold'
               value={accounts?.reduce((acc, account) =>
                 Big(acc).plus(account.balances.current), Big(0)).times(100).toNumber() || 0}
             />
+            <Text color='tertiaryText' fontSize={15} style={styles.totalBalanceText}>
+              Total Card Balance
+            </Text>
           </View>
           <Button
             backgroundColor='grayButton'
@@ -129,7 +131,7 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
               })
             }
           >
-            <Icon icon={Grid} size={18} color='secondaryText' strokeWidth={2} />
+            <Icon icon={Grid} size={18} color='secondaryText' strokeWidth={1.75} />
           </Button>
         </View>
         {accounts

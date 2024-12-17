@@ -23,10 +23,10 @@ const styles = StyleSheet.create({
   },
   cardWrapperBorderOuter: {
     position: 'absolute',
-    top: -11.5,
+    top: -11,
     left: -11,
     right: -11,
-    bottom: -11.5,
+    bottom: -11,
     borderRadius: 22
   },
   cardWrapperBorderInner: {

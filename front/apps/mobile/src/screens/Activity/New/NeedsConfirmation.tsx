@@ -62,7 +62,7 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
 
   const [itemHeightSet, setItemHeightSet] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [menuIsFocused, setMenuIsFocused] = useState(false);
+  const [itemWithFocus, setItemWithFocus] = useState<string>();
   const [expanded, setExpanded] = useState(props.expanded || false);
 
   const [confirmTransactions] = useConfirmTransactionsMutation();
@@ -242,13 +242,16 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
   }, [isLoadingTransactions]);
 
   useEffect(() => {
-    if (!menuIsFocused && expanded) {
-      itemsApi.start((index: number, item: any) => ({
-        zIndex: expanded ? index : unconfirmedTransactions!.length - index,
-        congif: { duration: 0, delay: menuIsFocused ? 500 : 0 }
-      }));
+    if (!itemWithFocus && expanded) {
+      const timeout = setTimeout(() => {
+        itemsApi.start((index: number, item: any) => ({
+          zIndex: expanded ? index : unconfirmedTransactions!.length - index,
+          immediate: true
+        }))
+      }, 500);
+      return () => clearTimeout(timeout);
     }
-  }, [menuIsFocused, expanded]);
+  }, [itemWithFocus, expanded]);
 
   return (
     <BottomDrawerModal.Content
@@ -256,7 +259,7 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
       onExpand={() => setExpanded(true)}
       onCollapse={() => setExpanded(false)}
       onClose={onClose}
-      height={menuIsFocused && !expanded ? 325 : undefined}
+      height={itemWithFocus && !expanded ? 325 : undefined}
     >
       {unconfirmedTransactions.length === 0
         ?
@@ -292,10 +295,11 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
                 : itemHeight.current * 2
             }
           ]}>
-            {menuIsFocused && expanded &&
+            {itemWithFocus && expanded &&
               <Animated.View
                 pointerEvents={'none'}
-                entering={FadeIn.delay(100)}
+                entering={FadeIn}
+                exiting={FadeOut}
                 style={[StyleSheet.absoluteFill, styles.overlayView]}
               >
                 <BlurView
@@ -324,11 +328,12 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
               >
                 <View
                   onTouchStart={() => {
+                    if (itemWithFocus) return;
                     itemsApi.start((i: number, value: any) => ({
                       zIndex: expanded
                         ? value._item.transaction_id === item.transaction_id ? 200 : i
                         : unconfirmedTransactions!.length - i,
-                      congif: { duration: 0, delay: menuIsFocused ? 500 : 0 }
+                      congif: { duration: 0, delay: 500 }
                     }));
                   }}
                   pointerEvents='box-none'
@@ -336,7 +341,14 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
                   <TransactionItem
                     item={item}
                     contentStyle={{ opacity: expanded || index == 0 ? 1 : .2 }}
-                    onShowMenu={(show) => setMenuIsFocused(show)}
+                    onShowMenu={(show) => {
+                      console.log('show', show);
+                      if (show) {
+                        setItemWithFocus(item.transaction_id);
+                      } else {
+                        setItemWithFocus('');
+                      }
+                    }}
                   />
                 </View>
               </AnimatedView>
@@ -354,7 +366,7 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
           </View>
         </CustomScrollView>
       }
-      {!menuIsFocused &&
+      {!itemWithFocus &&
         <Animated.View style={styles.mask} entering={FadeIn} exiting={FadeOut}>
           <LinearGradient
             style={styles.mask}
