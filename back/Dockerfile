@@ -40,4 +40,3 @@ USER python
 
 EXPOSE 8000
 
-CMD /restapi/restapi_startup.sh
