@@ -22,6 +22,11 @@ on:
         required: false
         type: boolean
         default: false
+      version:
+        description: "Version to deploy"
+        required: true
+        type: number
+        default: 1
       environment:
         description: "Environment to deploy to"
         required: true
@@ -39,7 +44,7 @@ jobs:
     uses: ./.github/workflows/deploy-rest-api.yml
     with:
       force_run_all: ${{ inputs.deployments_to_run == 'force-run-all' || inputs.force_run == true }}
-      version: 1
+      version: ${{ inputs.version }}
       environment: ${{ inputs.environment }}
       role: 'arn:aws:iam::905418323334:role/gh-actions'
     secrets: inherit
@@ -48,7 +53,7 @@ jobs:
     uses: ./.github/workflows/deploy-web-app.yml
     with:
       app: "webhome"
-      version: 1
+      version: ${{ inputs.version }}
       s3-bucket: ${{ inputs.environment == 'uat' && 'uat.ledget.app' || 'ledget.app' }}
       role: 'arn:aws:iam::905418323334:role/gh-actions'
       environment: ${{ inputs.environment }}
@@ -58,7 +63,7 @@ jobs:
     uses: ./.github/workflows/deploy-web-app.yml
     with:
       app: "webportal"
-      version: 1
+      version: ${{ inputs.version }}
       s3-bucket: ${{ inputs.environment == 'uat' && 'uataccounts.ledget.app' || 'accounts.ledget.app' }}
       role: 'arn:aws:iam::905418323334:role/gh-actions'
       environment: ${{ inputs.environment }}
@@ -74,7 +79,7 @@ jobs:
     with:
       environment: ${{ inputs.environment }}
       role: 'arn:aws:iam::905418323334:role/gh-actions'
-      version: 1
+      version: ${{ inputs.version }}
   deploy-dynamic-router:
     if: ${{ contains('all dynamic-router force-run-all', inputs.deployments_to_run) }}
     uses: ./.github/workflows/deploy-dynamic-routing-lambda.yml
