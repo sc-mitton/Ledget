@@ -1,6 +1,10 @@
 local version = "v0.36.0-beta.4";
 local base_url =  "https://" + std.extVar("domain");
-local base_versioned_url = base_url + "/v" + std.extVar("version");
+local v = std.parseInt(std.extVar('version'));
+local api_version_regex =  if v > 1
+  then std.format("<%s|", v - 1) + std.format("%s>", v)
+  else std.format("<%s>", v);
+local base_versioned_url = base_url + "/v" + api_version_regex;
 
 /* Authenticators */
 local anonymous_authenticator = {
