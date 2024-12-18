@@ -9,6 +9,8 @@ if [ $ENVIRONMENT == "dev" ]; then
     python manage.py migrate &&
     python manage.py runserver 0.0.0.0:8000
 else
-    python manage.py migrate &&
-    gunicorn -c gunicorn.conf.py restapi.wsgi
+    mkdir -p /var/app/staging/logs &&
+    touch /var/app/staging/logs/ledget_logs && chmod 666 /var/app/staging/logs/ledget_logs &&
+    touch /var/app/staging/logs/gunicorn_logs && chmod 666 /var/app/staging/logs/gunicorn_logs &&
+    touch /var/app/staging/logs/stripe_logs && chmod 666 /var/app/staging/logs/stripe_logs
 fi
