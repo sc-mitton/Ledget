@@ -4,15 +4,15 @@ export const useLoaded = (time?: number, initialLoaded: boolean = false) => {
   const [loaded, setLoaded] = useState(initialLoaded)
 
   useEffect(() => {
+    let timeout: NodeJS.Timeout
     if (time && !loaded) {
-      const timeout = setTimeout(() => {
+      timeout = setTimeout(() => {
         setLoaded(true)
       }, time)
-
-      return () => clearTimeout(timeout)
     } else if (!time) {
       setLoaded(true)
     }
+    return () => clearTimeout(timeout)
   }, [time, initialLoaded])
 
   return loaded
