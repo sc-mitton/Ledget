@@ -15,7 +15,6 @@ on:
           - "webportal"
           - "landing"
           - "rest-api"
-          - "lambda functions"
           - "oathkeeper"
           - "dynamic-router"
       force_run:

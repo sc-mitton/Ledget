@@ -52,19 +52,11 @@ jobs:
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.1.21
-      - name: Get bun store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(bun store path --silent)" >> $GITHUB_ENV
-      - name: Setup bun cache
-        uses: actions/cache@v4
-        env:
-          STORE_PATH: ${{ env.STORE_PATH }}
+      - uses: actions/cache@v4
         with:
-          path: ${{env.STORE_PATH}}
-          key: ${{ runner.os }}-bun-store-${{ hashFiles('**/bun-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-bun-store-
+          path: |
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Build ${{ inputs.app }}
