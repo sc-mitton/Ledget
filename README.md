@@ -207,4 +207,6 @@ You can run the tests manually with
 docker-compose run --rm restapi sh -c "python manage.py test"
 ```
 
+Coverage for the unit tests is required to be > 90%
+
 ### Versioning
