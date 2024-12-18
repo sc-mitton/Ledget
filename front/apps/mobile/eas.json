@@ -30,6 +30,11 @@
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "companyName": "Ledget LLC",
+        "usesNonExempEncryption": false
+      }
+    }
   }
 }
