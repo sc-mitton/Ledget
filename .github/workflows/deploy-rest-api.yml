@@ -46,27 +46,12 @@ jobs:
     with:
       force_run_all: ${{ inputs.force_run_all }}
     secrets: inherit
-  build:
-    name: "Build and Push to ECR"
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-      - name: Build and push
-        uses: ./.github/actions/build-and-push
-        with:
-          tag: ledget-rest-api
-          version: ${{ inputs.version }}
-          context: ./back
-          role: ${{ inputs.role }}
-          environment: ${{ inputs.environment }}
   deploy:
     name: "Deploy Elastic Beanstalk Environment"
     defaults:
       run:
         working-directory: ./back/restapi
-    needs: build
+    needs: test
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 2
