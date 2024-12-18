@@ -1,9 +1,0 @@
-*/logs
-**/__pycache__
-**/env
-.DS_Store
-**/.enextensions
-**/.elasticbeanstalk
-Dockerrun.aws.json
-env.yml
-black.config.toml

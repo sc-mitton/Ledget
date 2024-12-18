@@ -6,18 +6,13 @@ RUN apt-get update && \
     build-essential \
     libpq-dev
 
-COPY requirements.prod.txt .
-COPY requirements.dev.txt .
+COPY ./restapi/requirements.dev.txt .
 
 RUN pip install --upgrade pi
 ARG ENVIRONMENT
 ARG VERSION
 
-RUN if [ $ENVIRONMENT = "dev" ]; then \
-    pip install -r requirements.dev.txt; \
-    else \
-    pip install -r requirements.prod.txt; \
-    fi
+RUN pip install -r requirements.dev.txt;
 
 ###
 FROM python:3.11-slim-bullseye
@@ -31,11 +26,10 @@ COPY --from=base /usr/local/lib/python3.11/site-packages/ /usr/local/lib/python3
 COPY --from=base /usr/local/bin/ /usr/local/bin/
 
 # Set VERSION env variable
-ARG ENVIRONMENT
-ARG VERSION
+ARG API_VERSION
 
-ENV ENVIRONMENT=$ENVIRONMENT
-ENV API_VERSION=$VERSION
+ENV ENVIRONMENT=dev
+ENV API_VERSION=$API_VERSION
 
 WORKDIR /restapi
 COPY ./restapi .

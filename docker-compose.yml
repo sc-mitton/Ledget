@@ -67,7 +67,7 @@ services:
   restapi:
     build:
       args:
-        - VERSION=1
+        - API_VERSION=1
         - ENVIRONMENT=dev
       context: ./back
     labels:
@@ -109,6 +109,7 @@ services:
       - DEBUG=true
       - SILK_DEBUG=true
       - PLAID_ENV=Sandbox
+      - DJANGO_SETTINGS_MODULE=restapi.settings.dev
     volumes:
       - ./back/restapi:/restapi
     secrets:
@@ -131,6 +132,8 @@ services:
   celery:
     build:
       context: ./back
+      args:
+        - API_VERSION=1
     entrypoint: sh -c "/restapi/celery_startup.sh"
     volumes:
       - ./back/restapi:/restapi
@@ -141,6 +144,7 @@ services:
       - DB_PORT=5432
       - PLAID_ENV=Sandbox
       - ENVIRONMENT=dev
+      - DJANGO_SETTINGS_MODULE=restapi.settings.dev
     depends_on:
       - rabbitmq
       - restapi
