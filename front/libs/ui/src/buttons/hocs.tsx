@@ -5,14 +5,14 @@ import styles from './styles.module.scss'
 import { LoadingRing } from '../pieces/loading-indicators/loading-indicators'
 import { TranslucentShimmerDiv } from '../pieces/shimmers/shimmers'
 
-interface LoadingButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+type LoadingButtonProps = {
     loading?: boolean;
     submitting?: boolean;
     success?: boolean;
     stroke?: string;
     disabledHover?: boolean;
     rotate?: number;
-}
+} & ButtonHTMLAttributes<HTMLButtonElement>
 
 export const withArrow = (Component: FC<React.HTMLAttributes<HTMLButtonElement>>) => {
 
@@ -37,7 +37,7 @@ export const withArrow = (Component: FC<React.HTMLAttributes<HTMLButtonElement>>
                 {children}
                 <ChevronRight
                     size={'1.25em'}
-                    stroke={'currentColor' || stroke}
+                    stroke={stroke || 'currentColor'}
                 />
             </Component>
         )

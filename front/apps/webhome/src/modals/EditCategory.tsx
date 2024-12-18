@@ -15,7 +15,7 @@ import {
 } from '@components/inputs';
 import SubmitForm from '@components/pieces/SubmitForm';
 import { FormErrorTip } from '@ledget/ui';
-import { schema as categoryFormSchema } from './CreateCategory';
+import { categorySchema } from '@ledget/form-schemas';
 
 export const EditCategory = (props: {
   category: Category;
@@ -32,8 +32,8 @@ export const EditCategory = (props: {
     handleSubmit,
     formState: { errors },
     control
-  } = useForm<z.infer<typeof categoryFormSchema>>({
-    resolver: zodResolver(categoryFormSchema),
+  } = useForm<z.infer<typeof categorySchema>>({
+    resolver: zodResolver(categorySchema),
     mode: 'onSubmit',
     reValidateMode: 'onBlur',
     defaultValues: {
@@ -59,7 +59,7 @@ export const EditCategory = (props: {
     if (props.category.emoji) setEmoji(props.category.emoji);
   }, []);
 
-  const onSubmit = (data: z.infer<typeof categoryFormSchema>) => {
+  const onSubmit = (data: z.infer<typeof categorySchema>) => {
     const payload = { id: props.category.id } as any;
     if (
       data.limit_amount !== props.category.limit_amount &&
