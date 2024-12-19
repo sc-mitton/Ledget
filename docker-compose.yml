@@ -140,7 +140,7 @@ services:
       context: ./back
       args:
         - VERSION=1
-    entrypoint: sh -c "/restapi/celery_startup.sh"
+    entrypoint: sh -c "celery -A restapi beat -l info & celery -A restapi worker -l info"
     volumes:
       - ./back/restapi:/restapi
     environment:
