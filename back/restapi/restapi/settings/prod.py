@@ -82,5 +82,4 @@ DATABASES = {
 
 # ---------------------------------- Celery ---------------------------------- #
 
-CELERY_BROKER_URL = os.getenv('celery_broker_url')
-CELERY_RESULT_BACKEND = os.getenv('celery_result_backend')
+CELERY_BROKER_URL = os.getenv('WORKERQUEUE')
