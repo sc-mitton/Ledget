@@ -1,7 +1,10 @@
 Dockerfile
 celerybeat-schedule
-celery_startup.schedule
 __pycache__
 .flake8
 .coveragerc
 .coverage
+logs
+.nx
+.gitigonre
+.dockerignore

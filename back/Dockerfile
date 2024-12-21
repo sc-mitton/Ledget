@@ -9,7 +9,7 @@ RUN apt-get update && \
 COPY ./restapi/requirements.dev.txt .
 
 RUN pip install --upgrade pi
-ARG ENVIRONMENT
+ARG ENV
 ARG VERSION
 
 RUN pip install -r requirements.dev.txt;
@@ -28,7 +28,7 @@ COPY --from=base /usr/local/bin/ /usr/local/bin/
 # Set VERSION env variable
 ARG VERSION
 
-ENV ENVIRONMENT=dev
+ENV ENV=dev
 ENV API_VERSION=$VERSION
 
 WORKDIR /restapi

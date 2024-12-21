@@ -8,7 +8,7 @@ from .get_aws_secret import get_secret
 ALLOWED_HOSTS = [
     'ledget.app',
     '*.ledget.app',
-    'ledget-restapi-prod-9ef56a.us-west-2.elasticbeanstalk.com',
+    'restapi-prod-kufky.us-west-2.elasticbeanstalk.com',
 ]
 DOMAIN_URL = "https://api.ledget.app/"
 DOMAIN = 'api.ledget.app'
@@ -82,4 +82,4 @@ DATABASES = {
 
 # ---------------------------------- Celery ---------------------------------- #
 
-CELERY_BROKER_URL = os.getenv('WORKERQUEUE')
+CELERY_BROKER_URL = os.getenv('WORKERQUEUE', os.getenv('CELERY_BROKER_URL'))

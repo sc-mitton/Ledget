@@ -78,6 +78,6 @@ jobs:
         run: API_VERSION=$(eb printenv | grep API_VERSION | cut -d'=' -f2);
           if [ "$API_VERSION" -ne "${{ inputs.version }}" ]; then eb setenv API_VERSION=${{ inputs.version }}; fi
       - name: Deploy to Elastic Beanstalk
-        env:
-          REGION: "us-west-2"
-        run: eb deploy ledget-restapi-${{ inputs.environment }} -l v${{ inputs.version }}
+        run: eb deploy restapi-${{ inputs.environment }} -l restapi-v${{ inputs.version }}-$(date "+%Y-%m-%d-%H:%M:%S")
+      - name: Deploy Celery Environment
+        run: eb deploy celery-worker-${{ inputs.environment }} -l celery-v${{ inputs.version }}-$(date "+%Y-%m-%d-%H:%M:%S")

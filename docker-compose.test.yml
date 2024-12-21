@@ -32,7 +32,7 @@ services:
   restapi:
     build:
       args:
-        - ENVIRONMENT=dev
+        - ENV=dev
         - VERSION=1
       context: ./back
     environment:

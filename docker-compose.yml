@@ -68,7 +68,7 @@ services:
     build:
       args:
         - VERSION=1
-        - ENVIRONMENT=dev
+        - ENV=dev
       context: ./back
     command: >
       sh -c "
@@ -149,7 +149,7 @@ services:
       - DB_NAME=devdb
       - DB_PORT=5432
       - PLAID_ENV=Sandbox
-      - ENVIRONMENT=dev
+      - ENV=dev
       - DJANGO_SETTINGS_MODULE=restapi.settings.dev
     depends_on:
       - rabbitmq

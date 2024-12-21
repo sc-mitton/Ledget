@@ -9,6 +9,10 @@ from django.apps import apps
 # In production, make sure ssl is enabled
 app = Celery("restapi")
 app.config_from_object("django.conf:settings", namespace="CELERY")
+app.conf.update(
+    broker_connection_retry_on_startup=True,
+    broker_connection_retry_interval=1,
+)
 
 app.conf.beat_schedule = {
     'fetch_investments_balance': {

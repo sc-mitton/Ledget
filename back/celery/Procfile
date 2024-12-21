@@ -1,1 +1,2 @@
-worker: celery -A restapi beat -l info & celery -A restapi worker -l info
+celery_beat: /var/app/venv/staging-LQM1lest/bin/celery -A restapi beat -l info
+celery_worker: /var/app/venv/staging-LQM1lest/bin/celery -A restapi worker -l info --concurrency=1

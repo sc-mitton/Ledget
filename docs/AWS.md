@@ -229,15 +229,17 @@ sg-0219c9f9a6ff828f3,third-party-access,vpc-041408005a5077dc6,Allow access to th
 
 ## Elastic Beanstalk
 
-1. Create eb environmet if not already up
-This will create an environment and deploy to it
+1. Create eb environmets if not already up
 
-`eb create ledget-restapi-prod -c `
+```
+eb create --modules restapi celery --env-group-suffix prod --tags version=1
+```
+
 
 2. Deploy to environment
 Deploy to a specific eb environment
 
-`eb deploy ledget-restapi-prod`
+`eb deploy --env-group-suffix suffix`
 
 ## VPC
 
