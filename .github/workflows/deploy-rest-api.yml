@@ -11,7 +11,7 @@ on:
       version:
         description: "Version of the API"
         required: true
-        type: "number"
+        type: "string"
       environment:
         description: "Environment to deploy to"
         required: true
@@ -77,11 +77,11 @@ jobs:
       - name: Update VERSION for restapi if needed
         working-directory: ./back/restapi
         run: VERSION=$(eb printenv | grep VERSION | cut -d'=' -f2);
-          if [ "$VERSION" -ne "${{ inputs.version }}" ]; then eb setenv VERSION=${{ inputs.version }}; fi
+          if [ "$VERSION" -ne "${{ inputs.version }}" ]; then eb setenv VERSION="${{ inputs.version }}"; fi
       - name: Update VERSION for celery if needed
         working-directory: ./back/celery
         run: VERSION=$(eb printenv | grep VERSION | cut -d'=' -f2);
-            if [ "$VERSION" -ne "${{ inputs.version }}" ]; then eb setenv VERSION=${{ inputs.version }}; fi
+            if [ "$VERSION" -ne "${{ inputs.version }}" ]; then eb setenv VERSION="${{ inputs.version }}"; fi
       - name: Deploy to Elastic Beanstalk
         working-directory: ./back
         run: eb deploy --modules restapi celery --env-group-suffix ${{ inputs.environment }} -l restapi-v${{ inputs.version }}-$(date "+%Y-%m-%d-%H:%M:%S")
