@@ -74,14 +74,14 @@ jobs:
           REGION: ${{ matrix.region }}
         run: |
           echo N | eb init restapi --region $REGION
-      - name: Update API_VERSION for restapi if needed
+      - name: Update VERSION for restapi if needed
         working-directory: ./back/restapi
-        run: API_VERSION=$(eb printenv | grep API_VERSION | cut -d'=' -f2);
-          if [ "$API_VERSION" -ne "${{ inputs.version }}" ]; then eb setenv API_VERSION=${{ inputs.version }}; fi
-      - name: Update API_VERSION for celery if needed
+        run: VERSION=$(eb printenv | grep VERSION | cut -d'=' -f2);
+          if [ "$VERSION" -ne "${{ inputs.version }}" ]; then eb setenv VERSION=${{ inputs.version }}; fi
+      - name: Update VERSION for celery if needed
         working-directory: ./back/celery
-        run: API_VERSION=$(eb printenv | grep API_VERSION | cut -d'=' -f2);
-            if [ "$API_VERSION" -ne "${{ inputs.version }}" ]; then eb setenv API_VERSION=${{ inputs.version }}; fi
+        run: VERSION=$(eb printenv | grep VERSION | cut -d'=' -f2);
+            if [ "$VERSION" -ne "${{ inputs.version }}" ]; then eb setenv VERSION=${{ inputs.version }}; fi
       - name: Deploy to Elastic Beanstalk
         working-directory: ./back
         run: eb deploy --modules restapi celery --env-group-suffix ${{ inputs.environment }} -l restapi-v${{ inputs.version }}-$(date "+%Y-%m-%d-%H:%M:%S")
