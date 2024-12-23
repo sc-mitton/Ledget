@@ -73,7 +73,7 @@ jobs:
         env:
           REGION: ${{ matrix.region }}
         run: >
-          echo N | eb init ledget-restapi
+          eb init ledget-restapi
           --modules restapi celery
           --region $REGION
           --platform "64bit Amazon Linux 2023 v4.3.2 running Python 3.11"
