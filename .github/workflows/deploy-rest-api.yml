@@ -78,8 +78,9 @@ jobs:
           --region $REGION
           --platform "64bit Amazon Linux 2023 v4.3.2 running Python 3.11"
       - name: Nullify profile in eb configs
+        working-directory: ./back
         run: >
-          find ./back -name config.yml
+          find . -name config.yml
           -exec sed -i 's/profile: eb-cli/profile: null/g' {} \;
       - name: Update VERSION for restapi if needed
         working-directory: ./back/restapi
