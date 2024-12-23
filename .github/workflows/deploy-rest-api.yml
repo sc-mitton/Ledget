@@ -79,4 +79,6 @@ jobs:
             if [ "$VERSION" -ne "${{ inputs.version }}" ]; then eb setenv VERSION="${{ inputs.version }}"; fi
       - name: Deploy to Elastic Beanstalk
         working-directory: ./back
-        run: eb deploy --modules restapi celery --env-group-suffix ${{ inputs.environment }}
+        env:
+          AWS_EB_PROFILE: ${{ inputs.environment }}
+        run: aws configure list-profiles && eb deploy --modules restapi celery --env-group-suffix ${{ inputs.environment }}
