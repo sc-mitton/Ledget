@@ -80,7 +80,7 @@ jobs:
       - name: Nullify profile in eb configs
         run: >
           find ./back -name config.yml
-          -exec sed -i '' 's/profile: eb-cli/profile: null/g' {} \;
+          -exec sed -i 's/profile: eb-cli/profile: null/g' {} \;
       - name: Update VERSION for restapi if needed
         working-directory: ./back/restapi
         run: VERSION=$(eb printenv | grep VERSION | cut -d'=' -f2);
