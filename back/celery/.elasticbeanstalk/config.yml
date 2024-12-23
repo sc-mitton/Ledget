@@ -1,17 +1,18 @@
 branch-defaults:
   default:
-    environment: celery-worker-prod
-    group_suffix: prod
+    environment: restapi-prod
+environment-defaults:
+  restapi-prod:
+    branch: null
+    repository: null
 global:
   application_name: ledget-restapi
-  branch: null
-  default_ec2_keyname: null
-  default_platform: Python 3.11 running on 64bit Amazon Linux 2023
+  default_ec2_keyname: ledget-restapi
+  default_platform: Python 3.11
   default_region: us-west-2
   instance_profile: null
   platform_name: null
   platform_version: null
   profile: eb-cli
-  repository: null
   sc: null
   workspace_type: Application

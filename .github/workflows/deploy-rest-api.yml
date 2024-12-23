@@ -69,6 +69,14 @@ jobs:
         run: |
           sudo apt-get install python3-pip
           pip3 install awsebcli --upgrade
+      - name: Initialize EB CLI
+        env:
+          REGION: ${{ matrix.region }}
+        run: >
+          eb init ledget-restapi
+            --modules restapi celery
+            --region $REGION
+            --platform "64bit Amazon Linux 2023 v4.3.2 running Python 3.11"
       - name: Update VERSION for restapi if needed
         working-directory: ./back/restapi
         run: VERSION=$(eb printenv | grep VERSION | cut -d'=' -f2);
@@ -79,6 +87,4 @@ jobs:
             if [ "$VERSION" -ne "${{ inputs.version }}" ]; then eb setenv VERSION="${{ inputs.version }}"; fi
       - name: Deploy to Elastic Beanstalk
         working-directory: ./back
-        env:
-          AWS_EB_PROFILE: default
         run: eb deploy --modules restapi celery --env-group-suffix ${{ inputs.environment }}
