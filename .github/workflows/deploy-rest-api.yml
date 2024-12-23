@@ -65,6 +65,11 @@ jobs:
         with:
           role-to-assume: ${{ inputs.role }}
           aws-region: "us-west-2"
+      - name: Configure AWS Profile
+        env:
+          AWS_PROFILE: eb-cli
+          REGION: ${{ matrix.region }}
+        run: aws configure set --profile $AWS_PROFILE region $REGION
       - name: Install EB CLI
         run: |
           sudo apt-get install python3-pip
@@ -77,9 +82,6 @@ jobs:
             --modules restapi celery \
             --region $REGION \
             --platform "64bit Amazon Linux 2023 v4.3.2 running Python 3.11"
-      - name: Replace aws profile to null
-        run: >
-          find . -type f -name "config.yml" -exec sed -i 's/profile: eb-cli/profile: null/g' {} +
       - name: Update VERSION for restapi if needed
         working-directory: ./back/restapi
         run: VERSION=$(eb printenv | grep VERSION | cut -d'=' -f2);
