@@ -77,7 +77,7 @@ jobs:
             --modules restapi celery \
             --region $REGION \
             --platform "64bit Amazon Linux 2023 v4.3.2 running Python 3.11" \
-            --profile default
+            --profile null
       - name: Update VERSION for restapi if needed
         working-directory: ./back/restapi
         run: VERSION=$(eb printenv | grep VERSION | cut -d'=' -f2);
