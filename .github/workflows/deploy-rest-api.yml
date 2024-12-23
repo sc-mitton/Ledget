@@ -65,7 +65,7 @@ jobs:
         with:
           role-to-assume: ${{ inputs.role }}
           aws-region: "us-west-2"
-      - name: Install EB CLI
+      - name: Install EB CLIe
         run: |
           sudo apt-get install python3-pip
           pip3 install awsebcli --upgrade
@@ -81,4 +81,4 @@ jobs:
         working-directory: ./back
         env:
           AWS_EB_PROFILE: ${{ inputs.environment }}
-        run: aws configure list-profiles && eb deploy --modules restapi celery --env-group-suffix ${{ inputs.environment }}
+        run: aws configure list-profiles
