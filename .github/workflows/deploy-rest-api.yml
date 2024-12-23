@@ -7,19 +7,19 @@ on:
         description: "Run all jobs"
         required: false
         default: false
-        type: boolean
+        type: "boolean"
       version:
         description: "Version of the API"
         required: true
-        type: number
+        type: "number"
       environment:
         description: "Environment to deploy to"
         required: true
-        type: string
+        type: "string"
       role:
         description: "Role to assume"
         required: true
-        type: string
+        type: "string"
     secrets:
       DOCKERHUB_USER:
         required: true
