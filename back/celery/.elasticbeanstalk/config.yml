@@ -1,6 +1,6 @@
 branch-defaults:
   default:
-    environment: restapi-prod
+    environment: celery-worker-prod
 environment-defaults:
   restapi-prod:
     branch: null
