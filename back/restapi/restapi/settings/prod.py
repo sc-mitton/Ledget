@@ -5,7 +5,7 @@ import json
 from .get_aws_secret import get_secret
 
 
-ALLOWED_HOSTS = ['ledget.app', '*.ledget.app']
+ALLOWED_HOSTS = ['ledget.app', '.ledget.app']
 USE_X_FORWARDED_HOST=True
 DOMAIN_URL = "https://api.ledget.app/"
 DOMAIN = 'api.ledget.app'
@@ -27,6 +27,7 @@ SECRET_KEY = get_secret('django_secret_key')
 # Stripe
 STRIPE_API_KEY = get_secret('stripe_api_key')
 STRIPE_WEBHOOK_SECRET = get_secret('stripe_webhook_secret')
+STRIPE_PRICE_ID = 'prod_RScVCxS4pGI5Ws'
 
 # Ory
 ORY_HOST = 'https://auth.ledget.app'

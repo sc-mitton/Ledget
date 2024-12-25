@@ -50,7 +50,7 @@ class PriceView(APIView):
         keys = ['id', 'nickname', 'unit_amount',
                 'unit_amount', 'currency', 'metadata']
         prices = stripe.Price.search(
-            query="product:'prod_NStMoPQOCocj2H' AND active:'true'",
+            query=f"product:'{settings.STRIPE_PRICE_ID}' AND active:'true'",
         ).data
 
         filtered_data = []

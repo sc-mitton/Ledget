@@ -41,6 +41,7 @@ SECRET_KEY = get_secret('django_secret_key')
 # Stripe
 STRIPE_API_KEY = get_secret('stripe_api_key')
 STRIPE_WEBHOOK_SECRET = get_secret('stripe_webhook_secret')
+STRIPE_PRICE_ID = 'prod_NStMoPQOCocj2H'
 
 # Ory
 ORY_HOST = 'https://reverent-lewin-bqqp1o2zws.projects.oryapis.com'
