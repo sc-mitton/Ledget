@@ -92,4 +92,4 @@ jobs:
             if [ "$VERSION" -ne "${{ inputs.version }}" ]; then eb setenv VERSION="${{ inputs.version }}"; fi
       - name: Deploy to Elastic Beanstalk
         working-directory: ./back
-        run: eb deploy --modules restapi celery --env-group-suffix ${{ inputs.environment }} -l restapi-${{ inputs.environment }}-$(date +"%Y-%m-%d-%H:%M")
+        run: eb deploy --modules restapi celery --env-group-suffix ${{ inputs.environment }}
