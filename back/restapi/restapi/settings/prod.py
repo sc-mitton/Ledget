@@ -10,6 +10,7 @@ ALLOWED_HOSTS = [
     '*.ledget.app',
     'restapi-prod.eba-dwzivq5p.us-west-2.elasticbeanstalk.com',
 ]
+USE_X_FORWARDED_HOST=True
 DOMAIN_URL = "https://api.ledget.app/"
 DOMAIN = 'api.ledget.app'
 ACCOUNTS_APP_DOMAIN = 'accounts.ledget.app'
