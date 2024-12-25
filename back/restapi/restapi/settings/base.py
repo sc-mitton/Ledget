@@ -125,7 +125,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ---------------------------------- Logging --------------------------------- #
 
-LOG_LEVEL = 'DEBUG'
+LOG_LEVEL = 'DEBUG' if os.environ.get('DEBUG', '').lower() == 'DEBUG' else 'INFO'
 
 LOGGING = {
     'version': 1,

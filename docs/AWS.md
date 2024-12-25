@@ -104,22 +104,22 @@ Access-Control-Max-Age
 4. Make sure to skip the tls verification between the api gateway and the elastic beanstalk endpoint
 
 ```
-aws apigateway get-resources --rest-api-id p8fln1tvp1
+aws apigateway get-resources --rest-api-id d6wzi1587h
 
 aws apigateway update-integration \
-    --rest-api-id p8fln1tvp1 \
-    --resource-id b0gn6g \
+    --rest-api-id d6wzi1587h \
+    --resource-id 0lute7 \
     --http-method ANY \
     --patch-operations "op='replace' ,path='/tlsConfig/insecureSkipVerification' ,value='true'"
 
 aws apigateway update-integration \
-    --rest-api-id p8fln1tvp1 \
-    --resource-id z3rkt1 \
+    --rest-api-id d6wzi1587h \
+    --resource-id 2ytllt \
     --http-method ANY \
     --patch-operations "op='replace' ,path='/tlsConfig/insecureSkipVerification' ,value='true'"
 
 aws apigateway create-deployment \
-    --rest-api-id p8fln1tvp1 \
+    --rest-api-id d6wzi1587h \
     --stage-name prod
 ```
 

@@ -5,11 +5,7 @@ import json
 from .get_aws_secret import get_secret
 
 
-ALLOWED_HOSTS = [
-    'ledget.app',
-    '*.ledget.app',
-    'restapi-prod.eba-dwzivq5p.us-west-2.elasticbeanstalk.com',
-]
+ALLOWED_HOSTS = ['ledget.app', '*.ledget.app']
 USE_X_FORWARDED_HOST=True
 DOMAIN_URL = "https://api.ledget.app/"
 DOMAIN = 'api.ledget.app'
