@@ -61,7 +61,6 @@
                             "interval_count": 1,
                             "livemode": false,
                             "metadata": {
-                                "renews": "yearly",
                                 "trial_period_days": "30"
                             },
                             "meter": null,
@@ -83,7 +82,6 @@
                             "livemode": false,
                             "lookup_key": null,
                             "metadata": {
-                                "renews": "yearly",
                                 "trial_period_days": "30"
                             },
                             "nickname": "Year",
@@ -142,7 +140,6 @@
                 "interval_count": 1,
                 "livemode": false,
                 "metadata": {
-                    "renews": "yearly",
                     "trial_period_days": "30"
                 },
                 "meter": null,

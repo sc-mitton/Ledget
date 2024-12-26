@@ -4,5 +4,6 @@ export type Price = {
   unit_amount: number
   metadata: {
     trial_period_days: number
-  }
+  },
+  interval: 'month' | 'year'
 }
