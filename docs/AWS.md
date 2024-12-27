@@ -49,11 +49,14 @@ All in us-west-2 except for the dynamic router which is in us-east-1
 
 No authorization
 
-endpoint url https://ledget-restapi-prod-qlkrq0u.us-west-2.elasticbeanstalk.com/hooks/{proxy}
+endpoint url https://eb.api.ledget.app/hooks/{proxy}
 
 integration request path paramter is proxy: method.request.path.proxy
 
 VPC integration
+
+Integration Request Header Parameters:
+name: X-Forwarded-Host  mapped from: method.request.header.Host
 
 2. /v1/{proxy+} - ANY
 
@@ -62,20 +65,22 @@ Authorization - oathkeeper
 Integration Request
 -------------------
 
-endpoint url https://ledget-restapi-prod-qlkrq0u.us-west-2.elasticbeanstalk.com/v1/{proxy}
+endpoint url https://eb.api.ledget.app/v1/{proxy}
 
 paths: proxy
 
 VPC integration
 
-Headers: Authorization, X-User
-
-Integration Request Header Parameters:
-name: Authorization     Mapped From: context.authorization
-name: X-User            Mapped From: context.x-user
+Method Request: Http Request Headers
+Host, Required: False
 
 Integration Request URL Path Parameters:
 proxy:  method.request.path.proxy
+
+Integration Request Header Parameters:
+Name: Authorization     Mapped From: context.authorization
+Name: X-Forwarded-Host  Mapped From: method.request.header.Host
+Name: X-User            Mapped From: context.x-user
 
 3. /v1/{proxy+} - OPTIONS
 
@@ -98,29 +103,6 @@ Access-Control-Allow-Headers
 Access-Control-Allow-Methods
 Access-Control-Allow-Origin
 Access-Control-Max-Age
-
-
-4. Make sure to skip the tls verification between the api gateway and the elastic beanstalk endpoint
-
-```
-aws apigateway get-resources --rest-api-id d6wzi1587h
-
-aws apigateway update-integration \
-    --rest-api-id d6wzi1587h \
-    --resource-id 0lute7 \
-    --http-method ANY \
-    --patch-operations "op='replace' ,path='/tlsConfig/insecureSkipVerification' ,value='true'"
-
-aws apigateway update-integration \
-    --rest-api-id d6wzi1587h \
-    --resource-id 2ytllt \
-    --http-method ANY \
-    --patch-operations "op='replace' ,path='/tlsConfig/insecureSkipVerification' ,value='true'"
-
-aws apigateway create-deployment \
-    --rest-api-id d6wzi1587h \
-    --stage-name prod
-```
 
 ### Resource Policies
 
@@ -215,30 +197,47 @@ Make sure to export credentials to AWSM
 
 ## Security Groups
 
-GroupId,GroupName,VpcId,Description,OwnerId,InboundRulesCount,OutboundRulesCount,Tags
-sg-0f60e0743fe07779f,default,vpc-041408005a5077dc6,default VPC security group,905418323334,2,1,
-sg-01ec7a3ea2e2c8270,ec2-connect-point-ssh,vpc-041408005a5077dc6,Allow sshing from ec2 connect point,905418323334,0,1,
-sg-0fae96ff7eb2f1809,jumpserver,vpc-041408005a5077dc6,Allow ssh access from vpc connector,905418323334,1,3,
-sg-0b61f14c07c17c937,psql-group,vpc-041408005a5077dc6,Allow postgres traffic,905418323334,1,0,
-sg-076f896a4cee95c8c,nlb,vpc-041408005a5077dc6,Network load balancer coms,905418323334,1,1,
-sg-0e9134b06dc36c485,psql-connect,vpc-041408005a5077dc6,Access postgres services,905418323334,0,1,
-sg-02fbc6ae85bbe6097,eb-restapi,vpc-041408005a5077dc6,VPC Security Group,905418323334,2,1,"Name:ledget-restapi-prod,aws:cloudformation:stack-name:awseb-e-fcsmgeyfh2-stack,aws:cloudformation:stack-id:arn:aws:cloudformation:us-west-2:905418323334:stack/awseb-e-fcsmgeyfh2-stack/c92320f0-083b-11ef-be91-0673b48fe34d,elasticbeanstalk:environment-id:e-fcsmgeyfh2,elasticbeanstalk:environment-name:ledget-restapi-prod,aws:cloudformation:logical-id:AWSEBSecurityGroup"
-sg-01af89bf51a3b4086,default,vpc-0ae3bd634ed820212,default VPC security group,905418323334,2,1,
-sg-0219c9f9a6ff828f3,third-party-access,vpc-041408005a5077dc6,Allow access to third party services,905418323334,0,2
+ec2-connect-point-ssh
+outbound:
+type: SSH, proto: TCP, port range: 22, destination: jumpserver
+
+psql-group
+inbound:
+type: PostgreSQL, proto: TCP, port range: 5432, source: psql-connect
+
+third-party-access
+outbound:
+type: HTTPS, destination: 0.0.0.0/0
+
+jumpserver
+inbound:
+type: ssh, proto: TCP, port range: 22, source: ec2-connect-point-ssh
+outbound:
+type: All ICMP - IPv4, proto: ICMP, port: All, destination: 0.0.0.0/0
+type: HTTP, proto: TCP, port: 80, destination: 0.0.0.0/0
+type: SSH, proto: TCP, port: 22, destination: 10.192.0.0/16
+type: HTTPS, proto: TCP, port: 443, destination: 0.0.0.0/0
+
+psql-connect
+outbound:
+type: PostgreSQL, proto: TCP, port: 5432, destination: psql-group
+
+nlb
+inbound:
+type: HTTPS, proto: TCP, port: 443, destination: 10.192.0.0/16
+outbound:
+type: HTTPS, proto: TCP, port: 443, destination: 10.192.0.0/16
 
 ## Elastic Beanstalk
 
 1. Create eb environmets if not already up
 
-```
-eb create --modules restapi celery --env-group-suffix prod --tags version=1
-```
-
+`eb create --modules restapi celery --env-group-suffix prod`
 
 2. Deploy to environment
 Deploy to a specific eb environment
 
-`eb deploy --env-group-suffix suffix`
+`eb deploy --modules restapi celery --env-group-suffix prod`
 
 ## VPC
 
@@ -278,65 +277,57 @@ Public: 10.192.12.0/24, 10.192.11.0/24, 10.192.10.0/24
 
 Hosted zone: ledget.app
 
-ledget.app
-A
+ledget.app, A, d1ow7bjjovd6n4.cloudfront.net.
 
-ledget.app
-MX
+ledget.app, MX, 1 SMTP.GOOGLE.COM.
 
-ledget.app
-NS
+ledget.app, NS, ns-221.awsdns-27.com. ns-1816.awsdns-35.co.uk. ns-1210.awsdns-23.org.
+ns-938.awsdns-53.net.
 
-ledget.app
-SOA
+ledget.app, SOA, ns-221.awsdns-27.com. awsdns-hostmaster.amazon.com. 1 7200 900 1209600 86400
+900
 
-ledget.app
-SPF
+ledget.app, SPF, "v=spf1 include:_spf.google.com ~all"
 
-ledget.app
-TXT
+ledget.app, TXT,"stripe-verification=d0942a91f10ce636c55e2a01d6fc908f1b42902e36718580f7188eb7884f4286"
 
-_1913a34200cf9c209e64f62b8a63f8ee.ledget.app
-CNAME
+_1913a34200cf9c209e64f62b8a63f8ee.ledget.app, CNAME, _c8b782799ca12c4ec6710621b2a2cb90.mhbtsbpdnt.acm-validations.aws
 
-_dmarc.ledget.app
-TXT
+_dmarc.ledget.app, TXT, "v=DMARC1; p=none; rua=mailto:reports@ledget.app"
 
-3ljwwvs7uroopnu2usal6n3cf7izy67k._domainkey.ledget.app
-CNAME
+3ljwwvs7uroopnu2usal6n3cf7izy67k._domainkey.ledget.app, CNAME,
+3ljwwvs7uroopnu2usal6n3cf7izy67k.dkim.custom-email-domain.stripe.com
 
-akq2x7v4rs5bp4n6nuefhrnjzpno3v6l._domainkey.ledget.app
-CNAME
+akq2x7v4rs5bp4n6nuefhrnjzpno3v6l._domainkey.ledget.app, CNAME
+akq2x7v4rs5bp4n6nuefhrnjzpno3v6l.dkim.custom-email-domain.stripe.com
 
-google._domainkey.ledget.app
-TXT
+google._domainkey.ledget.app, TXT
+"v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5mxFNivwBq93hMCU7le0Y/1Jo/HwX0V4gNtMjsQVm6Nh61DiF3Q2rdC83nDKBXwXNV4ETsKB8mTjCmb5Ivv/e2E4PaleIV69i3NNKFPdfPtGHo7ya7ScH+sow6haa+G6I+mushw2I8EbWooO9kMtiIH6nRT7VMo6mrfknYrGOUodS"
+"w6cNKkm05nZNmkEm/7J7HdclW+3N9XPCEDl6/Fx99GlswJu7VCnXJbJIAA/t7I9zwUYW8JlKQ0PJmAkRZXK6iDXRnuYbAoqxgD8MvGPT+xHNHh9AxO8J1OTt/s6txIoObYBe28JFq8WvrOOlGJAr9t954cg5bD0Yb0Lc3ObOQIDAQAB"
 
-jb5wsjyk6tt6wumwd62v3m47hqlsymjj._domainkey.ledget.app
-CNAME
+jb5wsjyk6tt6wumwd62v3m47hqlsymjj._domainkey.ledget.app, CNAME
+jb5wsjyk6tt6wumwd62v3m47hqlsymjj.dkim.custom-email-domain.stripe.com.
 
-rq7btzgwzdfgunw7dgl22qnp2pqcjkyl._domainkey.ledget.app
-CNAME
+rq7btzgwzdfgunw7dgl22qnp2pqcjkyl._domainkey.ledget.app, CNAME
+rq7btzgwzdfgunw7dgl22qnp2pqcjkyl.dkim.custom-email-domain.stripe.com
 
-sk226cwg3wytmtrds2xjsveij5wz6x7p._domainkey.ledget.app
-CNAME
+sk226cwg3wytmtrds2xjsveij5wz6x7p._domainkey.ledget.app, CNAME
+sk226cwg3wytmtrds2xjsveij5wz6x7p.dkim.custom-email-domain.stripe.com
 
-zfeuenpnx7gof7kg5xunepgci36wzkuw._domainkey.ledget.app
-CNAME
+zfeuenpnx7gof7kg5xunepgci36wzkuw._domainkey.ledget.app, CNAME
+zfeuenpnx7gof7kg5xunepgci36wzkuw.dkim.custom-email-domain.stripe.com
 
-accounts.ledget.app
-A
+accounts.ledget.app, A, d30pnpxz39z3p1.cloudfront.net.
 
-_bd85f36b2abf368cc629c959f50935ce.accounts.ledget.app
-CNAME
+_bd85f36b2abf368cc629c959f50935ce.accounts.ledget.app, CNAME
+_a8bffa794ab78bbf7805bf427be894d2.mhbtsbpdnt.acm-validations.aws
 
-api.ledget.app
-A
+api.ledget.app, A, d-wkgg5jdn5b.execute-api.us-west-2.amazonaws.com.
 
-auth.ledget.app
-CNAME
+eb.api.ledget.app, CNAME, restapi-prod.eba-dwzivq5p.us-west-2.elasticbeanstalk.com
 
-bounce.ledget.app
-CNAME
+auth.ledget.app, CNAME, relaxed-bassi-eqk8kfge8r.projects.oryapis.com
 
-www.ledget.app
-CNAME
+bounce.ledget.app, CNAME, custom-email-domain.stripe.com
+
+www.ledget.app, CNAME, ledget.app
