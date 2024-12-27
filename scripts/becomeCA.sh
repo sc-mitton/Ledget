@@ -14,6 +14,6 @@ DOMAIN=$1
 # Become local CA
 openssl genrsa -des3 -out ${DOMAIN}CA.key 2048 # generate private key for local CA, fill out passphrase
 sleep 1
-openssl req -x509 -new -nodes -key ${DOMAIN}CA.key -sha256 -days 1825 -out ${DOMAIN}CA.pem # generate root cert
+openssl req -x509 -new -nodes -key ${DOMAIN}CA.key -sha256 -days 730 -out ${DOMAIN}CA.pem # generate root cert
 sleep 1
 sudo security add-trusted-cert -d -r trustRoot -k "/Library/Keychains/System.keychain" ${DOMAIN}CA.pem # add root cert to system keychain

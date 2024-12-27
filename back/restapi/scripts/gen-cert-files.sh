@@ -27,7 +27,4 @@ openssl x509 -req -in nginx.csr -CA nginxCA.pem -CAkey nginxCA.key -out public.c
 # Create full chain
 cat public.crt nginxCA.pem > fullchain.pem
 
-# Move files into right directoty
-sudo mv fullchain.pem /etc/pki/tls/certs/fullchain.pem
-sudo mv privatekey.pem /etc/pki/tls/certs/server.key
-rm -f nginx* public.crt privatekey.pem
+rm nginx* public.crt

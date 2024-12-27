@@ -3,7 +3,6 @@
 This is the list of AWS Resources in order to Run Ledget and how to set up each of them
 
 ## ASM
-- sparkpost_key
 - ledget-restapi-rds-credentials
 - oathkeeper_jwks
 - ory_hook_api_key

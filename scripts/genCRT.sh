@@ -53,8 +53,7 @@ DNS.1 = $DOMAIN
 EOF
 
 # Create the signed certificate from the request
-openssl x509 -req -in $DOMAIN.csr -CA $CAPEM -CAkey $CAKEY -CAcreateserial \
--out $DOMAIN.crt -days 825 -sha256 -extfile $DOMAIN.ext
+openssl x509 -req -in $DOMAIN.csr -CA $CAPEM -CAkey $CAKEY -out $DOMAIN.crt -days 825 -sha256 -extfile $DOMAIN.ext
 
 rm $DOMAIN.csr
 rm $DOMAIN.ext
