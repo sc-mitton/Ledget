@@ -10,7 +10,7 @@ openssl genrsa -out nginxCA.key 2048;
 # -new: Generates a new certificate request
 # -key nginxCA.key: Specifies the private key file to use
 # -sha256: Uses SHA-256 for the signature algorithm
-openssl req -x509 -new -key nginxCA.key -sha256 -days 360 -out nginxCA.pem -subj "/C=US/ST=Utah/L=Provo/O=Ledget/OU= /CN=$SUBDOMAIN.ledget.app";
+openssl req -x509 -new -key nginxCA.key -sha256 -days 730 -out nginxCA.pem -subj "/C=US/ST=Utah/L=Provo/O=Ledget/OU= /CN=$SUBDOMAIN.ledget.app";
 
 # Create private key
 openssl genrsa -out privatekey.pem 2048;
@@ -22,7 +22,7 @@ openssl req \
  -subj "/C=US/ST=Utah/L=Provo/O=Ledget/OU= /CN=$SUBDOMAIN.ledget.app";
 
 # Sign the request with the CA
-openssl x509 -req -in nginx.csr -CA nginxCA.pem -CAkey nginxCA.key -out public.crt -days 360 -sha256;
+openssl x509 -req -in nginx.csr -CA nginxCA.pem -CAkey nginxCA.key -out public.crt -days 730 -sha256;
 
 # Create full chain
 cat public.crt nginxCA.pem > fullchain.pem
