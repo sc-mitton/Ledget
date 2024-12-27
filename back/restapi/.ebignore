@@ -8,3 +8,4 @@ logs
 .nx
 .gitigonre
 .dockerignore
+gen-cert-files.sh
