@@ -163,7 +163,7 @@ export const lightTheme = createTheme({
     tabNavPill: palette.blue100,
     borderedGrayButton: palette.gray200,
     dragBar: palette.gray300,
-    tabsTrack: palette.gray200,
+    tabsTrack: palette.gray250,
     tabsBackground: palette.gray100,
     radioCardSelected: palette.gray200,
     radioCardUnselected: palette.gray150,

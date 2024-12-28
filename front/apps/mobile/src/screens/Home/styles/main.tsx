@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     zIndex: 10,
     flex: 1,
-    height: '100%'
+    height: '100%',
   },
   headerRight: {
     flexDirection: 'row',
@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
     width: '100%',
     left: 0,
     right: 0,
-    height: 28,
-    transform: [{ translateY: 28 }]
+    height: 44,
+    transform: [{ translateY: 44 }]
   },
   graphicContainer: {
     zIndex: 1,

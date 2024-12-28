@@ -160,7 +160,7 @@ const Item = (props: Props) => {
           </Animated.View>
           <Box
             shadowColor='blackText'
-            shadowOpacity={.05}
+            shadowOpacity={.08}
             shadowOffset={{ width: 0, height: 2 }}
             shadowRadius={2}
           >

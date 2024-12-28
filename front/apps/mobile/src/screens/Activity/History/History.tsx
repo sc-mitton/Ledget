@@ -87,7 +87,7 @@ const Transactions = (props: ModalScreenProps<'Activity'> & { showFilters: React
       {transactionsData.length === 0
         ?
         <View style={styles.emptyBoxGraphic}>
-          {isLoadingTransactions ? <Spinner color='blueText' /> : isTransactionsSuccess
+          {isLoadingTransactions ? <Spinner color='mainText' /> : isTransactionsSuccess
             ? <EmptyBox dark={mode === 'dark'} />
             : null}
         </View>

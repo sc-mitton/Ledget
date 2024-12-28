@@ -91,14 +91,14 @@ const MainScreen = (props: HomeScreenProps<'Main'>) => {
           </Box>
           {props.route.params?.state === 'picking' &&
             <Canvas style={[styles.mask]}>
-              <Rect x={0} y={0} width={Dimensions.get('window').width} height={28}>
+              <Rect x={0} y={0} width={Dimensions.get('window').width} height={44}>
                 <LinearGradient
                   colors={[
                     theme.colors.widgetPickerBackground,
                     theme.colors.blueChartGradientEnd
                   ]}
                   start={vec(0, 0)}
-                  end={vec(0, 28)}
+                  end={vec(0, 44)}
                 />
               </Rect>
             </Canvas>}

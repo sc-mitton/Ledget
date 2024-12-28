@@ -186,10 +186,10 @@ const Transactions = (props: PTransactions) => {
                   onLayout={(e) => setSectionHeaderHeight(e.nativeEvent.layout.height)}
                   style={styles.sectionHeader}
                 >
-                  <Text fontSize={15} color='quinaryText'>
+                  <Text fontSize={15} color='tertiaryText'>
                     {dayjs(section.title).format('MMM')}
                   </Text>
-                  <Text fontSize={15} color='quinaryText' style={{ opacity: section.title === stuckTitle ? 1 : 0 }}>
+                  <Text fontSize={15} color='tertiaryText' style={{ opacity: section.title === stuckTitle ? 1 : 0 }}>
                     {dayjs(section.title).format('YYYY')}
                   </Text>
                 </Pressable>

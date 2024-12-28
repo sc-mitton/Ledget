@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
   },
   tabsTrackBox: {
     padding: 4,
-    borderRadius: 10,
+    borderRadius: 12,
   },
   tabsTrack: {
     width: '100%'

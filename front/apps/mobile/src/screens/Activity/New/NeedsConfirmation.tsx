@@ -259,13 +259,13 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
       onExpand={() => setExpanded(true)}
       onCollapse={() => setExpanded(false)}
       onClose={onClose}
-      height={itemWithFocus && !expanded ? 325 : undefined}
+      height={itemWithFocus && !expanded ? 275 : undefined}
     >
       {unconfirmedTransactions.length === 0
         ?
         <View style={styles.emptyBoxGraphic}>
           {isLoadingTransactions
-            ? <Spinner color='blueText' />
+            ? <Spinner color='mainText' />
             : isTransactionsSuccess
               ? <EmptyBox dark={mode === 'dark'} />
               : null}

@@ -26,7 +26,7 @@ import { useTheme } from '@shopify/restyle';
 import styles from './styles/transactions';
 import { Account, useLazyGetTransactionsQuery, useTransactionsSyncMutation } from '@ledget/shared-features';
 import { Box, defaultSpringConfig, Text, CustomSectionList } from '@ledget/native-ui';
-import type { PTransactions, Section, ListState } from './types';
+import type { PTransactions, Section } from './types';
 import SkeletonTransactions from './SkeletonTransactions';
 import Row from './Row';
 import EmptyList from './EmptyList';
@@ -219,10 +219,10 @@ const Transactions = (props: PTransactions & { account?: Account }) => {
                   onLayout={(e) => setSectionHeaderHeight(e.nativeEvent.layout.height)}
                   style={styles.sectionHeader}
                 >
-                  <Text fontSize={15} color='quinaryText'>
+                  <Text fontSize={14} color='tertiaryText' >
                     {dayjs(section.title).format('MMM')}
                   </Text>
-                  <Text fontSize={15} color='quinaryText' style={{ opacity: section.title === stuckTitle ? 1 : 0 }}>
+                  <Text fontSize={14} color='tertiaryText' style={{ opacity: section.title === stuckTitle ? 1 : 0 }}>
                     {dayjs(section.title).format('YYYY')}
                   </Text>
                 </Pressable>
