@@ -3,13 +3,13 @@ import { BlurView } from 'expo-blur';
 import { TouchableOpacity, View, Platform } from 'react-native';
 import { ParamListBase, TabNavigationState, CommonActions } from '@react-navigation/native';
 import { Home, Activity, User } from 'geist-native-icons';
-import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
+import Animated, { useSharedValue, withTiming, Easing } from 'react-native-reanimated';
 import { useGetTransactionsCountQuery } from '@ledget/shared-features';
 import { useTheme } from '@shopify/restyle';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 import styles from './styles/bottom-nav';
-import { Box, Icon, defaultSpringConfig, Text } from '@ledget/native-ui';
+import { Box, Icon } from '@ledget/native-ui';
 import { useAppearance } from '@features/appearanceSlice';
 import { selectHideBottomTabs, updateLastTab } from '@/features/uiSlice';
 import { Institution } from '@ledget/media/native';
@@ -103,7 +103,7 @@ export default function Nav({ state, descriptors, navigation }: Props) {
   const y = useSharedValue(0);
 
   useEffect(() => {
-    y.value = withSpring(hidden ? 150 : 0, defaultSpringConfig);
+    y.value = withTiming(hidden ? 150 : 0, { easing: Easing.bezier(0, .9, .5, .9).factory() });
   }, [hidden])
 
   return (

@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { Trash } from "geist-native-icons";
 import Big from "big.js";
 
@@ -21,7 +22,7 @@ const Alerts = ({ category }: { category: Category }) => {
         {category.alerts.length > 0
           ?
           category.alerts.sort((a, b) => a.percent_amount - b.percent_amount).map((alert, index) => (
-            <>
+            <Fragment key={`alert-${index}`}>
               {index !== 0 &&
                 <Seperator backgroundColor='nestedContainerSeperator' />}
               <View style={styles.alert}>
@@ -52,7 +53,7 @@ const Alerts = ({ category }: { category: Category }) => {
                   </SubmitButton>
                 </View>
               </View>
-            </>
+            </Fragment>
           ))
           :
           <Text color='tertiaryText'>No alerts set</Text>

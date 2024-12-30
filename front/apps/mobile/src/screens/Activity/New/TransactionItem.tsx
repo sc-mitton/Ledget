@@ -48,8 +48,8 @@ const formater = new Intl.NumberFormat('en-US', {
 
 const springConfig = {
   mass: .5,
-  damping: 11,
-  stiffness: 200,
+  damping: 15,
+  stiffness: 280,
   overshootClamping: false,
   restDisplacementThreshold: 0.01,
   restSpeedThreshold: .001
@@ -183,7 +183,7 @@ const Item = (props: Props) => {
                   <View style={styles.transactionInfo}>
                     <Text style={styles.transactionName}>
                       {focused
-                        ? item.name.length > 32 ? `${item.name.slice(0, 32)} ...` : item.name
+                        ? item.name.length > 40 ? `${item.name.slice(0, 40)} ...` : item.name
                         : item.name.length > 17 ? `${item.name.slice(0, 17)} ...` : item.name}
                     </Text>
                     <View style={styles.bottomRow}>
@@ -197,7 +197,7 @@ const Item = (props: Props) => {
                   </View>
                 </View>
                 <View style={styles.rightColumn}>
-                  <View style={[styles.billCatLabelContainer, { opacity: focused ? .5 : 1 }]}>
+                  <View style={[styles.billCatLabelContainer, { opacity: focused ? .2 : 1 }]}>
                     <BillCatLabel
                       fontSize={14}
                       name={

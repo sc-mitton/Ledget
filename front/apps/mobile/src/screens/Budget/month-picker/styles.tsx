@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
   },
   arrowButton: {
     transform: [{ scaleY: 1.2 }],
+    opacity: .5
   }
 });
 

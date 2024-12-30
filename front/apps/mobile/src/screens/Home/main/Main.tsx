@@ -59,7 +59,7 @@ const MainScreen = (props: HomeScreenProps<'Main'>) => {
                   marginTop='xs'
                   paddingHorizontal="l"
                   paddingVertical="xs"
-                  backgroundColor={showOverlay ? 'transparent' : 'grayButton'}
+                  backgroundColor={'transparent'}
                   textColor={props.route.params?.state === 'picking' ? 'blueText' : 'secondaryText'}
                   onPress={() => {
                     props.navigation.setParams({ state: 'idle' })

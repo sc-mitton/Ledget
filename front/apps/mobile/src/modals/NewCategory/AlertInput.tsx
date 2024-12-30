@@ -86,12 +86,13 @@ const AlertInput = (props: Props) => {
         animationType='slide'
       >
         <Modal position='centerFloat' onClose={handleClose} hasOverlay={true}>
-          <View style={styles.modalContent}>
+          <View>
             <Header2>Add Alert</Header2>
             <Seperator />
             <View style={styles.animatedNumbersContainer}>
               <SlotText
                 fontStyle={[styles.animatedNumbers, { color: theme.colors.mainText }]}
+                animateIntermediateValues
                 value={value}
                 prefix='$'
                 animationDuration={200}

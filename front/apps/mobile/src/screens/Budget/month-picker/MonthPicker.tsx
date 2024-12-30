@@ -79,9 +79,9 @@ export default function DatePicker() {
                 style={styles.arrowButton}
               >
                 <Icon
-                  strokeWidth={2}
+                  strokeWidth={1.75}
                   icon={ChevronsLeft}
-                  color={pagerIndex > 0 ? 'mainText' : 'quinaryText'}
+                  color={pagerIndex > 0 ? 'quinaryText' : 'transparent'}
                 />
               </Button>
               {options &&
@@ -137,8 +137,8 @@ export default function DatePicker() {
                 <View style={styles.calendarIcon}>
                   <Icon
                     icon={ChevronsRight}
-                    strokeWidth={2}
-                    color={pagerIndex < (options?.length || 1) - 1 ? 'mainText' : 'quinaryText'}
+                    strokeWidth={1.75}
+                    color={pagerIndex < (options?.length || 1) - 1 ? 'quinaryText' : 'transparent'}
                   />
                 </View>
               </Button>
