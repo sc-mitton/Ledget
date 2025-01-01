@@ -5,7 +5,7 @@ import { Plus } from 'geist-native-icons';
 import { useTheme } from '@shopify/restyle';
 import { Control, useFieldArray, useWatch } from 'react-hook-form';
 import { z } from 'zod';
-import { SlotText } from 'react-native-slot-text';
+import { SlotText } from './components';
 import { X } from 'geist-native-icons';
 import Big from 'big.js';
 
@@ -95,6 +95,7 @@ const AlertInput = (props: Props) => {
                 animateIntermediateValues
                 value={value}
                 prefix='$'
+                easing='out'
                 animationDuration={200}
                 includeComma={true}
               />

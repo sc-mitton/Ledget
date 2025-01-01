@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { View } from 'react-native';
 
 import styles from './styles';
@@ -8,11 +8,13 @@ import type { RadiosProps, Option } from './types';
 
 export function Radios<T extends Option>(props: RadiosProps<T>) {
   const [value, setValue] = useState(props.defaultValue);
+  const id = useId()
 
   return (
     <View style={[styles.radios, props.horizontal ? styles.horizontalRadios : undefined]}>
-      {props.options.map((radio) => (
+      {props.options.map(((radio, i) => (
         <Box
+          key={`radio-${id}-${i}`}
           borderRadius='m'
           backgroundColor={
             props.cardStyle
@@ -23,7 +25,6 @@ export function Radios<T extends Option>(props: RadiosProps<T>) {
           <Box
             borderColor={value === radio.value ? 'faintBlueText' : 'tertiaryText'}
             style={value === radio.value ? styles.selectedRadioCircleOuter : styles.radioCircleOuter}
-
           >
             <Box
               backgroundColor={value === radio.value ? 'blueText' : 'transparent'}
@@ -39,7 +40,7 @@ export function Radios<T extends Option>(props: RadiosProps<T>) {
             textColor={value === radio.value ? 'mainText' : 'secondaryText'}
           />
         </Box>
-      ))}
+      )))}
     </View>
   );
 }

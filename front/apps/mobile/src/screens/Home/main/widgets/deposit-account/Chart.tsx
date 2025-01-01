@@ -60,7 +60,7 @@ const ChartSkeleton = (props: Props) => {
             shadowOffset={{ width: 0, height: 0 }}
           >
             <SlotText
-              animateIntermediateValues
+              easing='in-out'
               fontStyle={[
                 { color: theme.colors.mainText },
                 styles.fontStyle

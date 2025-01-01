@@ -213,6 +213,7 @@ const Selector = (widget: WidgetProps<{ accounts: string[] }>) => {
             ?
             <View style={styles.bottomRow}>
               <SlotText
+                easing='in-out'
                 fontStyle={[
                   { color: theme.colors.mainText },
                   styles.fontStyle

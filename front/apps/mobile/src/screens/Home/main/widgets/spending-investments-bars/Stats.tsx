@@ -45,6 +45,7 @@ export const HorizontalStats = ({ index }: { index: number }) => {
                 { color: theme.colors.mainText },
                 styles.fontStyle
               ]}
+              easing='in-out'
               animationDuration={200}
               prefix={negativeSaved ? '-$' : '$'}
               includeComma={true}

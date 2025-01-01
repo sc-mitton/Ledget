@@ -74,7 +74,7 @@ const Chart = (props: Props) => {
                 { color: theme.colors.mainText },
                 styles.fontStyle
               ]}
-              animateIntermediateValues
+              easing='in-out'
               prefix='$'
               value={slotsValue}
               animationDuration={200}

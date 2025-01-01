@@ -35,6 +35,7 @@ const Progress = () => {
     <View>
       <View style={styles.progressHeader}>
         <SlotText
+          easing='in-out'
           fontStyle={[
             { color: categoriesIndex === 0 ? theme.colors.monthColor : theme.colors.yearColor },
             styles.fontStyle
@@ -48,6 +49,7 @@ const Progress = () => {
           spent of
         </Text>
         <SlotText
+          easing='in-out'
           fontStyle={[
             { color: categoriesIndex === 0 ? theme.colors.monthColor : theme.colors.yearColor },
             styles.fontStyle
