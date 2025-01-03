@@ -1,15 +1,14 @@
-import { useState, useEffect, useMemo } from "react";
-import { View } from "react-native";
-import { SlotText } from "react-native-slot-text";
-import Big from "big.js";
-import { useTheme } from "@shopify/restyle";
+import { useState, useEffect, useMemo } from 'react';
+import { View } from 'react-native';
+import { SlotText } from 'react-native-slot-numbers';
+import Big from 'big.js';
+import { useTheme } from '@shopify/restyle';
 
 import styles from './styles/filled';
 import rectangleStyles from './styles/rectangleStyles';
-import sharedStyles from "./styles/sharedStyles";
-import { Box, Text } from "@ledget/native-ui";
-import { useGetBreakdownHistoryQuery } from "@ledget/shared-features";
-
+import sharedStyles from './styles/sharedStyles';
+import { Box, Text } from '@ledget/native-ui';
+import { useGetBreakdownHistoryQuery } from '@ledget/shared-features';
 
 export const HorizontalStats = ({ index }: { index: number }) => {
   const { data } = useGetBreakdownHistoryQuery();
@@ -20,9 +19,18 @@ export const HorizontalStats = ({ index }: { index: number }) => {
 
   useEffect(() => {
     if (data) {
-      const { spending, investment_transfer_out, income } = data[index]
-      setNegativeSaved(Big(income).minus(spending).minus(investment_transfer_out).lt(0));
-      setSaved(Big(income).minus(spending).minus(investment_transfer_out).abs().round(0).toNumber());
+      const { spending, investment_transfer_out, income } = data[index];
+      setNegativeSaved(
+        Big(income).minus(spending).minus(investment_transfer_out).lt(0)
+      );
+      setSaved(
+        Big(income)
+          .minus(spending)
+          .minus(investment_transfer_out)
+          .abs()
+          .round(0)
+          .toNumber()
+      );
       setInvested(investment_transfer_out);
     }
   }, [data, index]);
@@ -36,16 +44,15 @@ export const HorizontalStats = ({ index }: { index: number }) => {
               style={sharedStyles.dot}
               backgroundColor={negativeSaved ? 'redText' : 'greenText'}
             />
-            <Text fontSize={13} lineHeight={24} color='tertiaryText'>Saved</Text>
+            <Text fontSize={13} lineHeight={24} color="tertiaryText">
+              Saved
+            </Text>
           </View>
           <View style={sharedStyles.currencyContainer}>
             <SlotText
               value={saved}
-              fontStyle={[
-                { color: theme.colors.mainText },
-                styles.fontStyle
-              ]}
-              easing='in-out'
+              fontStyle={[{ color: theme.colors.mainText }, styles.fontStyle]}
+              easing="in-out"
               animationDuration={200}
               prefix={negativeSaved ? '-$' : '$'}
               includeComma={true}
@@ -54,16 +61,15 @@ export const HorizontalStats = ({ index }: { index: number }) => {
         </View>
         <View>
           <View style={sharedStyles.topRowHeader}>
-            <Box backgroundColor='purpleText' style={sharedStyles.dot} />
-            <Text fontSize={13} lineHeight={24} color='tertiaryText'>Invested</Text>
+            <Box backgroundColor="purpleText" style={sharedStyles.dot} />
+            <Text fontSize={13} lineHeight={24} color="tertiaryText">
+              Invested
+            </Text>
           </View>
           <View style={sharedStyles.currencyContainer}>
             <SlotText
               value={invested}
-              fontStyle={[
-                { color: theme.colors.mainText },
-                styles.fontStyle
-              ]}
+              fontStyle={[{ color: theme.colors.mainText }, styles.fontStyle]}
               animationDuration={200}
               prefix={'$'}
               includeComma={true}
@@ -72,8 +78,8 @@ export const HorizontalStats = ({ index }: { index: number }) => {
         </View>
       </View>
     </>
-  )
-}
+  );
+};
 
 export const VerticalStats = ({ index }: { index: number }) => {
   const theme = useTheme();
@@ -85,9 +91,18 @@ export const VerticalStats = ({ index }: { index: number }) => {
 
   useEffect(() => {
     if (data) {
-      const { spending, investment_transfer_out, income } = data[index]
-      setNegativeSaved(Big(income).minus(spending).minus(investment_transfer_out).lt(0));
-      setSaved(Big(income).minus(spending).minus(investment_transfer_out).abs().round(0).toNumber());
+      const { spending, investment_transfer_out, income } = data[index];
+      setNegativeSaved(
+        Big(income).minus(spending).minus(investment_transfer_out).lt(0)
+      );
+      setSaved(
+        Big(income)
+          .minus(spending)
+          .minus(investment_transfer_out)
+          .abs()
+          .round(0)
+          .toNumber()
+      );
       setInvested(investment_transfer_out);
       setIncome(income);
     }
@@ -96,7 +111,7 @@ export const VerticalStats = ({ index }: { index: number }) => {
   return (
     <Box
       backgroundColor={'nestedContainerSeperator'}
-      borderRadius='l'
+      borderRadius="l"
       paddingHorizontal={'l'}
       paddingVertical={'s'}
       style={styles.rectangleLeftSide}
@@ -104,14 +119,13 @@ export const VerticalStats = ({ index }: { index: number }) => {
       <View style={rectangleStyles.statsTopRow}>
         <View style={sharedStyles.topRowHeader}>
           <Box style={sharedStyles.dot} backgroundColor={'quinaryText'} />
-          <Text color='tertiaryText' fontSize={15}>Income</Text>
+          <Text color="tertiaryText" fontSize={15}>
+            Income
+          </Text>
         </View>
         <SlotText
           value={income}
-          fontStyle={[
-            { color: theme.colors.mainText },
-            styles.largeFontStyle
-          ]}
+          fontStyle={[{ color: theme.colors.mainText }, styles.largeFontStyle]}
           animationDuration={200}
           prefix={'$'}
           includeComma={true}
@@ -124,14 +138,13 @@ export const VerticalStats = ({ index }: { index: number }) => {
               style={sharedStyles.dot}
               backgroundColor={negativeSaved ? 'redText' : 'greenText'}
             />
-            <Text fontSize={13} lineHeight={24} color='tertiaryText'>Saved</Text>
+            <Text fontSize={13} lineHeight={24} color="tertiaryText">
+              Saved
+            </Text>
           </View>
           <SlotText
             value={saved}
-            fontStyle={[
-              { color: theme.colors.mainText },
-              styles.fontStyle
-            ]}
+            fontStyle={[{ color: theme.colors.mainText }, styles.fontStyle]}
             animationDuration={200}
             prefix={negativeSaved ? '-$' : '$'}
             includeComma={true}
@@ -139,15 +152,14 @@ export const VerticalStats = ({ index }: { index: number }) => {
         </View>
         <View style={rectangleStyles.bottomRowCell}>
           <View style={sharedStyles.topRowHeader}>
-            <Box backgroundColor='purpleText' style={sharedStyles.dot} />
-            <Text fontSize={13} lineHeight={24} color='tertiaryText'>Invested</Text>
+            <Box backgroundColor="purpleText" style={sharedStyles.dot} />
+            <Text fontSize={13} lineHeight={24} color="tertiaryText">
+              Invested
+            </Text>
           </View>
           <SlotText
             value={invested}
-            fontStyle={[
-              { color: theme.colors.mainText },
-              styles.fontStyle
-            ]}
+            fontStyle={[{ color: theme.colors.mainText }, styles.fontStyle]}
             animationDuration={200}
             prefix={'$'}
             includeComma={true}
@@ -155,5 +167,5 @@ export const VerticalStats = ({ index }: { index: number }) => {
         </View>
       </View>
     </Box>
-  )
-}
+  );
+};

@@ -5,7 +5,7 @@ import { Plus } from 'geist-native-icons';
 import { useTheme } from '@shopify/restyle';
 import { Control, useFieldArray, useWatch } from 'react-hook-form';
 import { z } from 'zod';
-import { SlotText } from './components';
+import { SlotText } from 'react-native-slot-numbers';
 import { X } from 'geist-native-icons';
 import Big from 'big.js';
 

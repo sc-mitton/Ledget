@@ -3,39 +3,50 @@ import { useTheme } from '@shopify/restyle';
 import { View } from 'react-native';
 import { CartesianChart, Area, Line, useChartPressState } from 'victory-native';
 import { LinearGradient, vec, useFont } from '@shopify/react-native-skia';
-import Animated, { useAnimatedReaction, runOnJS, useSharedValue, useAnimatedStyle } from 'react-native-reanimated';
-import { SlotText } from 'react-native-slot-text';
+import Animated, {
+  useAnimatedReaction,
+  runOnJS,
+  useSharedValue,
+  useAnimatedStyle,
+} from 'react-native-reanimated';
+import { SlotText } from 'react-native-slot-numbers';
 
 import styles from './styles/chart-skeleton';
 import { VictoryTooltip, Box } from '@ledget/native-ui';
 import { tempDepositBalanceChartData } from '@constants';
-import SourceSans3Regular from '../../../../../../assets/fonts/SourceSans3Regular.ttf'
+import SourceSans3Regular from '../../../../../../assets/fonts/SourceSans3Regular.ttf';
 
 interface Props {
   data?: {
-    date: string,
-    balance: number,
-  }[]
+    date: string;
+    balance: number;
+  }[];
 }
 
 const ChartSkeleton = (props: Props) => {
   const theme = useTheme();
-  const { state, isActive } = useChartPressState({ x: '0', y: { balance: 0 } })
-  const font = useFont(SourceSans3Regular, 14)
+  const { state, isActive } = useChartPressState({ x: '0', y: { balance: 0 } });
+  const font = useFont(SourceSans3Regular, 14);
   const [slotsValue, setSlotsValue] = useState<number>();
   const tipOpacity = useSharedValue(0);
   const [chartData, setChartData] = useState(tempDepositBalanceChartData);
 
-  useAnimatedReaction(() => state.y.balance.value.value, (value) => {
-    const newValue = parseInt(`${value}`.split('.')[0]);
-    runOnJS(setSlotsValue)(newValue);
-  });
-
-  useAnimatedReaction(() => isActive, (active) => {
-    if (props.data) {
-      tipOpacity.value = active ? 1 : 0;
+  useAnimatedReaction(
+    () => state.y.balance.value.value,
+    (value) => {
+      const newValue = parseInt(`${value}`.split('.')[0]);
+      runOnJS(setSlotsValue)(newValue);
     }
-  });
+  );
+
+  useAnimatedReaction(
+    () => isActive,
+    (active) => {
+      if (props.data) {
+        tipOpacity.value = active ? 1 : 0;
+      }
+    }
+  );
 
   const tipStyle = useAnimatedStyle(() => ({ opacity: tipOpacity.value }));
 
@@ -50,22 +61,19 @@ const ChartSkeleton = (props: Props) => {
       <View style={styles.tipContainer}>
         <Animated.View style={[styles.tip, tipStyle]}>
           <Box
-            backgroundColor='nestedContainerSeperator'
-            paddingHorizontal='s'
-            paddingVertical='xs'
-            borderRadius='s'
-            shadowColor='mainText'
-            shadowOpacity={.3}
+            backgroundColor="nestedContainerSeperator"
+            paddingHorizontal="s"
+            paddingVertical="xs"
+            borderRadius="s"
+            shadowColor="mainText"
+            shadowOpacity={0.3}
             shadowRadius={5}
             shadowOffset={{ width: 0, height: 0 }}
           >
             <SlotText
-              easing='in-out'
-              fontStyle={[
-                { color: theme.colors.mainText },
-                styles.fontStyle
-              ]}
-              prefix='$'
+              easing="in-out"
+              fontStyle={[{ color: theme.colors.mainText }, styles.fontStyle]}
+              prefix="$"
               value={slotsValue as any}
               animationDuration={200}
               includeComma={true}
@@ -83,30 +91,33 @@ const ChartSkeleton = (props: Props) => {
           labelOffset: -20,
           tickCount: 0,
           labelColor: theme.colors.quaternaryText,
-          formatXLabel: (date) => ''
+          formatXLabel: (date) => '',
         }}
-        yAxis={[{
-          lineWidth: 0,
-          tickCount: 0,
-          formatYLabel: () => '',
-        }]}
+        yAxis={[
+          {
+            lineWidth: 0,
+            tickCount: 0,
+            formatYLabel: () => '',
+          },
+        ]}
         padding={{ left: -2 }}
         domainPadding={{ left: 6, right: 6, top: 20, bottom: 50 }}
       >
         {({ points, chartBounds }) => {
-
           return (
             <>
               <Area
                 y0={chartBounds.bottom}
                 points={points.balance}
                 animate={{ type: 'timing', duration: 300 }}
-                curveType='natural'
+                curveType="natural"
               >
                 <LinearGradient
                   colors={[
-                    props.data ? theme.colors.blueChartColorSecondary : theme.colors.emptyChartGradientStart,
-                    theme.colors.blueChartGradientEnd
+                    props.data
+                      ? theme.colors.blueChartColorSecondary
+                      : theme.colors.emptyChartGradientStart,
+                    theme.colors.blueChartGradientEnd,
                   ]}
                   start={vec(chartBounds.bottom, 0)}
                   end={vec(chartBounds.bottom, chartBounds.bottom)}
@@ -117,16 +128,20 @@ const ChartSkeleton = (props: Props) => {
                 points={points.balance}
                 color={theme.colors.quinaryText}
                 strokeWidth={2}
-                strokeCap='round'
-                curveType='natural'
+                strokeCap="round"
+                curveType="natural"
               />
               <Line
                 animate={{ type: 'timing', duration: 300 }}
                 points={points.balance}
-                color={props.data ? theme.colors.blueChartColor : theme.colors.quinaryText}
+                color={
+                  props.data
+                    ? theme.colors.blueChartColor
+                    : theme.colors.quinaryText
+                }
                 strokeWidth={2}
-                strokeCap='round'
-                curveType='natural'
+                strokeCap="round"
+                curveType="natural"
               />
               {isActive && props.data && (
                 <VictoryTooltip
@@ -141,12 +156,13 @@ const ChartSkeleton = (props: Props) => {
                   borderColor={theme.colors.blueChartColor}
                   lineOffset={-20}
                   hidden={['tip']}
-                />)}
+                />
+              )}
             </>
-          )
+          );
         }}
       </CartesianChart>
     </View>
-  )
-}
-export default ChartSkeleton
+  );
+};
+export default ChartSkeleton;

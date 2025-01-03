@@ -1,7 +1,7 @@
 import { useEffect, memo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
-import { SlotText } from 'react-native-slot-text';
+import { SlotText } from 'react-native-slot-numbers';
 import { useTheme } from '@shopify/restyle';
 import Big from 'big.js';
 
@@ -17,7 +17,7 @@ const Progress = () => {
     monthly_spent,
     yearly_spent,
     limit_amount_monthly,
-    limit_amount_yearly
+    limit_amount_yearly,
   } = useAppSelector(selectCategoryMetaData);
   const theme = useTheme();
 
@@ -25,9 +25,10 @@ const Progress = () => {
   const { categoriesIndex } = useBudgetContext();
 
   useEffect(() => {
-    width.value = withSpring(categoriesIndex === 1
-      ? (monthly_spent / limit_amount_monthly) * 100
-      : (yearly_spent / limit_amount_yearly) * 100
+    width.value = withSpring(
+      categoriesIndex === 1
+        ? (monthly_spent / limit_amount_monthly) * 100
+        : (yearly_spent / limit_amount_yearly) * 100
     );
   }, [categoriesIndex]);
 
@@ -35,24 +36,37 @@ const Progress = () => {
     <View>
       <View style={styles.progressHeader}>
         <SlotText
-          easing='in-out'
+          easing="in-out"
           fontStyle={[
-            { color: categoriesIndex === 0 ? theme.colors.monthColor : theme.colors.yearColor },
-            styles.fontStyle
+            {
+              color:
+                categoriesIndex === 0
+                  ? theme.colors.monthColor
+                  : theme.colors.yearColor,
+            },
+            styles.fontStyle,
           ]}
           value={categoriesIndex === 0 ? monthly_spent : yearly_spent}
           includeComma={true}
           animationDuration={300}
           prefix={'$'}
         />
-        <Text color={categoriesIndex === 0 ? 'monthColor' : 'yearColor'} style={styles.spentOf}>
+        <Text
+          color={categoriesIndex === 0 ? 'monthColor' : 'yearColor'}
+          style={styles.spentOf}
+        >
           spent of
         </Text>
         <SlotText
-          easing='in-out'
+          easing="in-out"
           fontStyle={[
-            { color: categoriesIndex === 0 ? theme.colors.monthColor : theme.colors.yearColor },
-            styles.fontStyle
+            {
+              color:
+                categoriesIndex === 0
+                  ? theme.colors.monthColor
+                  : theme.colors.yearColor,
+            },
+            styles.fontStyle,
           ]}
           prefix={'$'}
           animationDuration={300}
@@ -72,30 +86,35 @@ const Progress = () => {
         />
       </View>
     </View>
-  )
-}
+  );
+};
 
 const Header = () => {
   const { categoriesIndex } = useBudgetContext();
 
   return (
     <View style={styles.headerContainer}>
-      <Box backgroundColor='mainBackground' style={[StyleSheet.absoluteFill, styles.backPanel]} />
       <Box
-        paddingTop='nestedContainerHPadding'
-        paddingHorizontal='nestedContainerHPadding'
-        backgroundColor='nestedContainer'
+        backgroundColor="mainBackground"
+        style={[StyleSheet.absoluteFill, styles.backPanel]}
+      />
+      <Box
+        paddingTop="nestedContainerHPadding"
+        paddingHorizontal="nestedContainerHPadding"
+        backgroundColor="nestedContainer"
         style={sharedStyles.boxTopHalf}
       >
         <View style={sharedStyles.carouselDots}>
           <CarouselDots length={2} currentIndex={categoriesIndex} />
         </View>
         <View style={styles.header}>
-          <Text fontSize={18}>{categoriesIndex === 0 ? 'Monthly' : 'Yearly'} Spending</Text>
+          <Text fontSize={18}>
+            {categoriesIndex === 0 ? 'Monthly' : 'Yearly'} Spending
+          </Text>
           <Progress />
         </View>
       </Box>
     </View>
-  )
-}
+  );
+};
 export default memo(Header);
