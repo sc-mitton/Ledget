@@ -79,7 +79,6 @@
     "react-native-device-info": "*",
     "react-native-draggable-flatlist": "*",
     "react-native-draggable-grid": "*",
-    "react-native-gesture-handler": "*",
     "react-native-ios-context-menu": "*",
     "react-native-mmkv": "*",
     "react-native-outside-press": "*",
@@ -111,7 +110,8 @@
     "react-native-easing-gradient": "*",
     "@react-native-masked-view/masked-view": "*",
     "expo-system-ui": "*",
-    "react-native-ios-utilities": "*"
+    "react-native-ios-utilities": "*",
+    "react-native-gesture-handler": "*"
   },
   "devDependencies": {},
   "expo": {

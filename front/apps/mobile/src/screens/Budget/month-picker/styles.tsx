@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 2
+    gap: 2,
   },
   pagerContainer: {
     flexDirection: 'row',
@@ -20,12 +20,15 @@ const styles = StyleSheet.create({
   },
   calendarIcon: {
     marginRight: 0,
-    marginBottom: 2
+    marginBottom: 2,
   },
   grid: {
-    width: '100%',
+    flex: 1,
+    marginHorizontal: -16,
     flexDirection: 'row',
-    padding: 12,
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    paddingBottom: 12,
     justifyContent: 'space-between',
   },
   column: {
@@ -34,12 +37,12 @@ const styles = StyleSheet.create({
   },
   title: {
     alignItems: 'center',
-    marginBottom: 4
+    marginBottom: 4,
   },
   arrowButton: {
     transform: [{ scaleY: 1.2 }],
-    opacity: .5
-  }
+    opacity: 0.5,
+  },
 });
 
 export default styles;

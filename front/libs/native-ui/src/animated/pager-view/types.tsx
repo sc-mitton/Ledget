@@ -16,7 +16,7 @@ export type TContext = {
   height: SharedValue<number>;
   ref: React.RefObject<TPagerViewRef>;
   dragState: React.MutableRefObject<DragState>;
-  layouts: React.MutableRefObject<{ width: number, x: number }[]>;
+  layouts: React.MutableRefObject<{ width: number; x: number }[]>;
   length?: number;
 } & Omit<TPanels<any>, 'children'>;
 

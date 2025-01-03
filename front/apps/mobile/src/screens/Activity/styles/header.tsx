@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   headerContainer: {
@@ -13,14 +13,14 @@ export default StyleSheet.create({
     alignItems: 'center',
     gap: 12,
     marginRight: 4,
-    marginBottom: 12
+    marginBottom: 12,
   },
   countCountainer: {
     position: 'relative',
     marginRight: 4,
   },
   countBackgroundOuterContainer: {
-    position: 'relative'
+    position: 'relative',
   },
   countBackgroundContainer: {
     position: 'absolute',
@@ -34,12 +34,12 @@ export default StyleSheet.create({
     height: 20,
     width: 20,
     position: 'absolute',
-    opacity: .1
+    opacity: 0.1,
   },
   seperator: {
-    width: '200%'
+    width: '200%',
   },
   lightModeSeperator: {
-    transform: [{ translateY: 2 }]
-  }
+    transform: [{ translateY: 8 }],
+  },
 });

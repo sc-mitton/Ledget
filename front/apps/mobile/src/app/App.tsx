@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Platform, LogBox, UIManager } from 'react-native';
 import { useFonts } from 'expo-font';
-import { MMKV } from 'react-native-mmkv'
+import { MMKV } from 'react-native-mmkv';
 import {
   configureReanimatedLogger,
   ReanimatedLogLevel,
@@ -20,15 +20,19 @@ import {
   setSession,
   setDeviceToken,
   selectSession,
-  selectDeviceToken
+  selectDeviceToken,
 } from '@ledget/shared-features';
 import styles from './styles/app';
-import { Box } from '@ledget/native-ui'
+import { Box } from '@ledget/native-ui';
 import { withProviders } from './Providers';
 import { ENV, IOS_LEDGET_API_URI, ANDROID_LEDGET_API_URI } from '@env';
 import { useAppearance } from '@features/appearanceSlice';
 import { RootStackParamList } from '@types';
-import { useModalStyleInterpolator, useAppDispatch, useAppSelector } from '@hooks';
+import {
+  useModalStyleInterpolator,
+  useAppDispatch,
+  useAppSelector,
+} from '@hooks';
 import Authentication from './Authentication';
 import BottomTabScreens from './BottomTabScreens';
 import Onboarding from '../screens/Onboarding/Stack';
@@ -64,7 +68,7 @@ if (Platform.OS === 'android') {
 
 configureReanimatedLogger({
   level: ReanimatedLogLevel.warn,
-  strict: false
+  strict: false,
 });
 
 const useAuthLogic = () => {
@@ -73,10 +77,9 @@ const useAuthLogic = () => {
   const [continueToMainApp, setContinueToMainApp] = useState(false);
   const session = useAppSelector(selectSession);
   const deviceToken = useAppSelector(selectDeviceToken);
-  const {
-    data: user,
-    isError: isGetMeError,
-  } = useGetMeQuery(undefined, { skip: !session || !deviceToken });
+  const { data: user, isError: isGetMeError } = useGetMeQuery(undefined, {
+    skip: !session || !deviceToken,
+  });
 
   useEffect(() => {
     SecureStore.getItemAsync('session').then((session) => {
@@ -120,7 +123,7 @@ const useAuthLogic = () => {
   }, [isGetMeError]);
 
   return { continueToMainApp, appIsReady };
-}
+};
 
 export const App = withProviders(() => {
   const dispatch = useAppDispatch();
@@ -132,14 +135,14 @@ export const App = withProviders(() => {
   const modalStyleInterpolator = useModalStyleInterpolator();
 
   const [fontsLoaded, fontError] = useFonts({
-    'SourceSans3Regular': SourceSans3Regular,
-    'SourceSans3Medium': SourceSans3Medium,
-    'SourceSans3SemiBold': SourceSans3SemiBold,
-    'SourceSans3Bold': SourceSans3Bold,
-    'GeistMedium': GeistMedium,
-    'GeistRegular': GeistRegular,
-    'GeistSemiBold': GeistSemiBold,
-    'GeistBold': GeistBold,
+    SourceSans3Regular: SourceSans3Regular,
+    SourceSans3Medium: SourceSans3Medium,
+    SourceSans3SemiBold: SourceSans3SemiBold,
+    SourceSans3Bold: SourceSans3Bold,
+    GeistMedium: GeistMedium,
+    GeistRegular: GeistRegular,
+    GeistSemiBold: GeistSemiBold,
+    GeistBold: GeistBold,
   });
 
   const { appIsReady, continueToMainApp } = useAuthLogic();
@@ -152,7 +155,9 @@ export const App = withProviders(() => {
   }, [appIsReady]);
 
   useEffect(() => {
-    if (fontsLoaded && !fontError) { setFontsGood(true) }
+    if (fontsLoaded && !fontError) {
+      setFontsGood(true);
+    }
   }, [fontsLoaded]);
 
   // Set the necessary environment variables
@@ -160,22 +165,26 @@ export const App = withProviders(() => {
     let timeout: NodeJS.Timeout;
     if (Platform.OS === 'android' && ENV === 'dev') {
       timeout = setTimeout(() => {
-        dispatch(setEnvironment({
-          name: ENV,
-          apiUrl: Platform.OS === 'ios'
-            ? IOS_LEDGET_API_URI
-            : ANDROID_LEDGET_API_URI,
-          platform: 'mobile'
-        }));
+        dispatch(
+          setEnvironment({
+            name: ENV,
+            apiUrl:
+              Platform.OS === 'ios'
+                ? IOS_LEDGET_API_URI
+                : ANDROID_LEDGET_API_URI,
+            platform: 'mobile',
+          })
+        );
       }, 1000);
     } else {
-      dispatch(setEnvironment({
-        name: ENV,
-        apiUrl: Platform.OS === 'ios'
-          ? IOS_LEDGET_API_URI
-          : ANDROID_LEDGET_API_URI,
-        platform: 'mobile'
-      }));
+      dispatch(
+        setEnvironment({
+          name: ENV,
+          apiUrl:
+            Platform.OS === 'ios' ? IOS_LEDGET_API_URI : ANDROID_LEDGET_API_URI,
+          platform: 'mobile',
+        })
+      );
     }
     return () => clearTimeout(timeout);
   }, [dispatch, ANDROID_LEDGET_API_URI]);
@@ -183,9 +192,11 @@ export const App = withProviders(() => {
   // Set the navigation bar color and button style based on the theme
   useEffect(() => {
     if (Platform.OS !== 'android') return;
-    NavigationBar.setPositionAsync("absolute");
-    NavigationBar.setBackgroundColorAsync("#ffffff01");
-    NavigationBar.setButtonStyleAsync(appearance.mode === 'dark' ? 'light' : 'dark');
+    NavigationBar.setPositionAsync('absolute');
+    NavigationBar.setBackgroundColorAsync('#ffffff01');
+    NavigationBar.setButtonStyleAsync(
+      appearance.mode === 'dark' ? 'light' : 'dark'
+    );
   }, [appearance.mode, continueToMainApp]);
 
   if (!appIsReady || !environment || !fontsGood) {
@@ -194,21 +205,25 @@ export const App = withProviders(() => {
 
   return (
     <Box
-      backgroundColor={continueToMainApp ? 'mainBackground' : 'accountsMainBackground'}
+      backgroundColor={
+        continueToMainApp ? 'mainBackground' : 'accountsMainBackground'
+      }
       onLayout={onLayoutRootView}
-      style={styles.root}>
+      style={styles.root}
+    >
       <StatusBar
         backgroundColor={'transparent'}
         translucent
         style={appearance.mode === 'dark' ? 'light' : 'dark'}
       />
       <Toast />
-      {continueToMainApp
-        ?
-        <RootStack.Navigator initialRouteName={user?.is_onboarded ? 'BottomTabs' : 'Onboarding'}>
+      {continueToMainApp ? (
+        <RootStack.Navigator
+          initialRouteName={user?.is_onboarded ? 'BottomTabs' : 'Onboarding'}
+        >
           <RootStack.Group screenOptions={{ headerShown: false }}>
-            <RootStack.Screen name='BottomTabs' component={BottomTabScreens} />
-            <RootStack.Screen name='Onboarding' component={Onboarding} />
+            <RootStack.Screen name="BottomTabs" component={BottomTabScreens} />
+            <RootStack.Screen name="Onboarding" component={Onboarding} />
           </RootStack.Group>
           <RootStack.Group
             screenOptions={{
@@ -216,12 +231,14 @@ export const App = withProviders(() => {
               cardStyleInterpolator: modalStyleInterpolator,
               headerShown: false,
               cardOverlayEnabled: true,
-            }}>
-            <RootStack.Screen name='Modals' component={ModalScreens} />
+            }}
+          >
+            <RootStack.Screen name="Modals" component={ModalScreens} />
           </RootStack.Group>
         </RootStack.Navigator>
-        :
-        <Authentication />}
+      ) : (
+        <Authentication />
+      )}
     </Box>
   );
 });
