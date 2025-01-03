@@ -26,9 +26,8 @@ export interface Account {
 }
 
 export type UpdateAccount =
-  { order: number } & { account: string } |
-  { cardHue: number } & { account: string }
-
+  | ({ order: number } & { account: string })
+  | ({ cardHue: number } & { account: string });
 
 export interface GetAccountsResponse {
   institutions: Institution[];
@@ -73,4 +72,4 @@ export type GetBreakdownHistoryResponse = {
   spending: number;
   income: number;
   investment_transfer_out: number;
-}[]
+}[];

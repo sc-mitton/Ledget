@@ -1,26 +1,26 @@
 .filter {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: .5em;
-    position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5em;
+  position: relative;
 
-    &>div>div {
-        border-radius: var(--border-radius4);
-        padding: .15em .6em;
-        min-width: 100%;
-    }
+  & > div > div {
+    border-radius: var(--border-radius4);
+    padding: 0.15em 0.6em;
+    min-width: 100%;
+  }
 }
 
 .activefilterButton {
-    transition: color .2s;
+  transition: color 0.2s;
 
-    &:hover * {
-        color: var(--blue-light-hover);
-        transition: color .2s;
-    }
+  &:hover * {
+    color: var(--blue-light-hover);
+    transition: color 0.2s;
+  }
 
-    * {
-        color: var(--blue-light);
-    }
+  * {
+    color: var(--blue-light);
+  }
 }

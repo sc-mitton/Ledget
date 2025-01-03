@@ -5,7 +5,7 @@ import DatePicker from './DatePicker';
 
 describe('DatePicker', () => {
   it('should render successfully', () => {
-    const { root } = render(< DatePicker />);
+    const { root } = render(<DatePicker />);
     expect(root).toBeTruthy();
   });
 });

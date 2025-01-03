@@ -1,19 +1,20 @@
 .accountBalanceTrend {
-    display: flex;
-    align-items: center;
-    gap: .25em;
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
 
-    &[data-trend='positive'] {
-        color: var(--green-text);
-    }
+  &[data-trend='positive'] {
+    color: var(--green-text);
+  }
 
-    &[data-trend='negative'] {
-        color: var(--mute-red);
-    }
+  &[data-trend='negative'] {
+    color: var(--mute-red);
+  }
 
-    &>div {
-        font-size: 1rem;
-    }
+  & > div {
+    font-size: 1rem;
+  }
 
-    &>div span:not([role='tooltip']) {}
+  & > div span:not([role='tooltip']) {
+  }
 }

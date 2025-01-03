@@ -18,7 +18,7 @@ export interface Bill {
   month?: number;
   year?: number;
   expires?: string;
-  transactions?: { date: string, id: string }[];
+  transactions?: { date: string; id: string }[];
 }
 
 export type NewBill = Omit<

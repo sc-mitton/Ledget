@@ -1,8 +1,8 @@
 import { View, NativeModules } from 'react-native';
 
 import styles from './styles/stack';
-import { ToastItem as TToastItem } from "@ledget/shared-features";
-import ToastItem from "./Item";
+import { ToastItem as TToastItem } from '@ledget/shared-features';
+import ToastItem from './Item';
 
 const { StatusBarManager } = NativeModules;
 
@@ -13,5 +13,5 @@ export const ToastStack = ({ stack }: { stack: TToastItem[] }) => {
         <ToastItem {...item} index={index} key={item.id} />
       ))}
     </View>
-  )
-}
+  );
+};

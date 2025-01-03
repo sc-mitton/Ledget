@@ -43,6 +43,6 @@ export type RootStateWithInstitutions = {
   institutions: {
     map: { [key: string]: string };
     institutions: { [key: string]: Institution };
-  },
+  };
   [key: string]: any;
-}
+};

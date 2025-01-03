@@ -1,28 +1,28 @@
-const { withPodfile } = require('@expo/config-plugins')
+const { withPodfile } = require('@expo/config-plugins');
 
 function applyPlaidVersion(appPodFile) {
-    const plaidImplementation = `pod 'Plaid', '~> 5.6.1'`;
-    const deploymentTarget = '16.0';
+  const plaidImplementation = `pod 'Plaid', '~> 5.6.1'`;
+  const deploymentTarget = '16.0';
 
-    if (!appPodFile.includes(plaidImplementation)) {
-        appPodFile = appPodFile.replace(
-            /target\s'Ledget'\sdo/,
-            `target 'Ledget' do\n  ${plaidImplementation}`
-        );
-    };
+  if (!appPodFile.includes(plaidImplementation)) {
+    appPodFile = appPodFile.replace(
+      /target\s'Ledget'\sdo/,
+      `target 'Ledget' do\n  ${plaidImplementation}`
+    );
+  }
 
-    const r = /(platform.*:ios.*)'[0-9.]+'/;
-    appPodFile = appPodFile.replace(r, `$1'${deploymentTarget}'`);
-    return appPodFile;
+  const r = /(platform.*:ios.*)'[0-9.]+'/;
+  appPodFile = appPodFile.replace(r, `$1'${deploymentTarget}'`);
+  return appPodFile;
 }
 
 const withAndroidPlaid = (expoConfig) => {
-    expoConfig = withPodfile(expoConfig, (config) => {
-        config.modResults.contents = applyPlaidVersion(config.modResults.contents)
-        return config
-    })
+  expoConfig = withPodfile(expoConfig, (config) => {
+    config.modResults.contents = applyPlaidVersion(config.modResults.contents);
+    return config;
+  });
 
-    return expoConfig
-}
+  return expoConfig;
+};
 
-module.exports = withAndroidPlaid
+module.exports = withAndroidPlaid;

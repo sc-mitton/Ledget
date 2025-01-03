@@ -5,11 +5,11 @@ const styles = StyleSheet.create({
     top: 24,
     height: '80%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   refreshControl: {
-    transform: [{ scaleY: .7 }, { scaleX: .7 }, { translateY: -24 }],
-  }
+    transform: [{ scaleY: 0.7 }, { scaleX: 0.7 }, { translateY: -24 }],
+  },
 });
 
 export default styles;

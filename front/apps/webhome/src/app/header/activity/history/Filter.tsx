@@ -13,7 +13,7 @@ import {
   selectConfirmedTransactionFilter,
   setConfirmedTransactionFilter,
   clearConfirmedTransactionFilter,
-  useLazyGetCategoriesQuery
+  useLazyGetCategoriesQuery,
 } from '@ledget/shared-features';
 import { FullSelectCategoryBill } from '@components/inputs';
 import { LimitAmountInput } from '@components/inputs';
@@ -25,7 +25,7 @@ import {
   SecondaryButtonSlim,
   DeleteButton,
   useColorScheme,
-  DatePicker
+  DatePicker,
 } from '@ledget/ui';
 import { useFilterFormContext } from '../context';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
@@ -37,7 +37,7 @@ const filterSchema = z.object({
   limit_amount_upper: z.number().optional(),
   items: z.array(z.string()).optional(),
   merchants: z.array(z.string()).optional(),
-  accounts: z.array(z.string()).optional()
+  accounts: z.array(z.string()).optional(),
 });
 
 export type TransactionFilterSchema = z.infer<typeof filterSchema>;
@@ -58,7 +58,7 @@ export const FilterForm = () => {
       resolver: zodResolver(filterSchema),
       mode: 'onSubmit',
       reValidateMode: 'onBlur',
-      defaultValues: filter
+      defaultValues: filter,
     });
 
   const merchantsFieldValue = useWatch({ control, name: 'merchants' });
@@ -69,7 +69,7 @@ export const FilterForm = () => {
   );
   const [resetAccountMerchantKeys, setResetAccountMerchantKeys] = useState([
     Math.random().toString(36).slice(2, 9),
-    Math.random().toString(36).slice(2, 9)
+    Math.random().toString(36).slice(2, 9),
   ]);
 
   useEffect(() => {
@@ -92,7 +92,7 @@ export const FilterForm = () => {
             ...rest,
             start: date_range?.[0],
             end: date_range?.[1],
-            confirmed: true
+            confirmed: true,
           };
           getLazyTransactions(newData);
           setShowFilterForm(false);
@@ -107,9 +107,9 @@ export const FilterForm = () => {
             defaultValue={
               filter?.date_range
                 ? [
-                  dayjs.unix(filter.date_range[0]),
-                  dayjs.unix(filter.date_range[1])
-                ]
+                    dayjs.unix(filter.date_range[0]),
+                    dayjs.unix(filter.date_range[1]),
+                  ]
                 : [dayjs.unix(start), dayjs.unix(end)]
             }
             onChange={(v) => {
@@ -203,8 +203,9 @@ export const FilterForm = () => {
           </div>
           <div>
             {merchantsFieldValue?.map((merchant, index) => (
-              <span>{`${merchant}${index !== merchantsFieldValue?.length - 1 ? ', ' : ''
-                }`}</span>
+              <span>{`${merchant}${
+                index !== merchantsFieldValue?.length - 1 ? ', ' : ''
+              }`}</span>
             ))}
             {merchantsFieldValue && (
               <DeleteButton
@@ -213,7 +214,7 @@ export const FilterForm = () => {
                 onClick={() => {
                   setResetAccountMerchantKeys((prev) => [
                     Math.random().toString(36).slice(2, 9),
-                    prev[1]
+                    prev[1],
                   ]);
                   resetField('merchants');
                 }}
@@ -224,9 +225,8 @@ export const FilterForm = () => {
             {accountsFieldValue?.map((account, index) => (
               <span>
                 {
-                  accountsData?.accounts?.find(
-                    (acc: any) => acc.id === account
-                  )?.name
+                  accountsData?.accounts?.find((acc: any) => acc.id === account)
+                    ?.name
                 }
                 {index !== accountsFieldValue?.length - 1 ? ', ' : ''}
               </span>
@@ -238,7 +238,7 @@ export const FilterForm = () => {
                 onClick={() => {
                   setResetAccountMerchantKeys((prev) => [
                     prev[0],
-                    Math.random().toString(36).slice(2, 9)
+                    Math.random().toString(36).slice(2, 9),
                   ]);
                   resetField('accounts');
                 }}

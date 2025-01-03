@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     gap: 24,
   },
   totalAmount: {
-    marginTop: -4
+    marginTop: -4,
   },
   dots: {
     flexDirection: 'row',
@@ -21,10 +21,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexGrow: 3,
     flex: 3,
-    paddingLeft: 0
+    paddingLeft: 0,
   },
   rectangleLeftInner: {
-    minWidth: 75
+    minWidth: 75,
   },
   rectangleRight: {
     flexGrow: 1,
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
   rectangleRightColumn: {
     justifyContent: 'space-evenly',
-    gap: 4
+    gap: 4,
   },
   cell: {
     flexDirection: 'row',
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 8,
     transform: [{ translateX: -18 }],
-  }
+  },
 });
 
 export default styles;

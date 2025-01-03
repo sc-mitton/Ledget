@@ -4,19 +4,19 @@ const styles = StyleSheet.create({
   cell: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 24
+    gap: 24,
   },
   emojiContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    height: '100%'
+    height: '100%',
   },
   rectangleContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     height: '100%',
-    paddingLeft: 24
+    paddingLeft: 24,
   },
   squareContainer: {
     flexDirection: 'row',
@@ -26,19 +26,19 @@ const styles = StyleSheet.create({
   rectangleCell: {
     height: '50%',
     width: '50%',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   squareCell: {
     height: '50%',
     width: '50%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   amountsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4
-  }
+    gap: 4,
+  },
 });
 
 export default styles;

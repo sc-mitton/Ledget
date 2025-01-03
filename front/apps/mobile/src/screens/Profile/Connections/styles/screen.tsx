@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   row: {
@@ -6,7 +6,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
   },
   addButtonContainer: {
-    marginTop: 24
+    marginTop: 24,
   },
   addButton: {
     flexDirection: 'row',
@@ -21,5 +21,5 @@ export default StyleSheet.create({
     gap: 12,
     flexDirection: 'column',
     alignItems: 'flex-start',
-  }
-})
+  },
+});

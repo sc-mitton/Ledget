@@ -8,18 +8,24 @@ import {
   border,
   backgroundColor,
   shadow,
-  useRestyle
+  useRestyle,
 } from '@shopify/restyle';
 import { Theme } from '../../theme';
 
-const restyleFunctions = composeRestyleFunctions([border, shadow, backgroundColor])
+const restyleFunctions = composeRestyleFunctions([
+  border,
+  shadow,
+  backgroundColor,
+]);
 
 export type Props = {
   data?: string;
   alt?: string;
   size?: number;
   style?: StyleProp<ViewStyle>;
-} & BorderProps<Theme> & ShadowProps<Theme> & BackgroundColorProps<Theme>;
+} & BorderProps<Theme> &
+  ShadowProps<Theme> &
+  BackgroundColorProps<Theme>;
 
 export const Base64Image = ({ data, alt, size = 20, ...rest }: Props) => {
   const props = useRestyle(restyleFunctions as any, rest);
@@ -29,9 +35,9 @@ export const Base64Image = ({ data, alt, size = 20, ...rest }: Props) => {
       <Image
         style={{ width: size, height: size }}
         source={{ uri: `data:image/png;base64,${data}` }}
-        resizeMode='contain'
+        resizeMode="contain"
         alt={alt}
       />
     </Box>
-  )
-}
+  );
+};

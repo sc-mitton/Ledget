@@ -1,32 +1,32 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   billCatEmojiContainer: {
-    position: 'relative'
+    position: 'relative',
   },
   billCatEmoji: {
     position: 'absolute',
     top: '50%',
     left: '50%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   background: {
     position: 'absolute',
     borderRadius: 16,
     padding: 4,
     width: 40,
-    height: 40
+    height: 40,
   },
   backgroundContainer: {
-    position: 'absolute'
+    position: 'absolute',
   },
   absEmojiContainer: {
     position: 'absolute',
     top: '50%',
     left: '50%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   absEmoji: {
     position: 'absolute',
@@ -37,6 +37,6 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
-    margin: 2
+    margin: 2,
   },
 });

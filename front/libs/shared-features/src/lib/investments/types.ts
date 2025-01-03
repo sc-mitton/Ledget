@@ -1,9 +1,8 @@
-
 type Security = {
   name?: string | null;
   ticker_symbol?: string | null;
   security_id: string;
-}
+};
 
 export type Holding = {
   cost_basis?: number;
@@ -14,7 +13,7 @@ export type Holding = {
   vested_value?: number;
   security_id?: string;
   security: Security;
-}
+};
 
 export type InvestmentTransaction = {
   amount?: number;
@@ -27,7 +26,7 @@ export type InvestmentTransaction = {
   name: string | null;
   security_id?: string;
   security: Security;
-}
+};
 
 export type InvestmentWithProductSupport = {
   account_name: string;
@@ -43,16 +42,20 @@ type InvestmentWithoutProductSupport = {
   product_not_supported: boolean;
 };
 
-export type Investment = InvestmentWithProductSupport | InvestmentWithoutProductSupport;
+export type Investment =
+  | InvestmentWithProductSupport
+  | InvestmentWithoutProductSupport;
 
-export function isInvestmentSupported(obj: any): obj is InvestmentWithProductSupport {
+export function isInvestmentSupported(
+  obj: any
+): obj is InvestmentWithProductSupport {
   return !('product_not_supported' in obj);
 }
 
 export type InvestmentsResponse = {
   cursor?: string;
-  results: Investment[]
-}
+  results: Investment[];
+};
 
 export type InvestmentsBalanceHistory = {
   account_id: string;
@@ -60,8 +63,8 @@ export type InvestmentsBalanceHistory = {
   balances: {
     date: string;
     value: string;
-  }[]
-}[]
+  }[];
+}[];
 
 export type TransformedInvestmentsBalanceHistory = {
   account_id: string;
@@ -69,13 +72,23 @@ export type TransformedInvestmentsBalanceHistory = {
   balances: {
     date: string;
     value: number;
-  }[]
-}[]
+  }[];
+}[];
 
 export type InvestmentsState = {
-  holdingsHistory: { [key: string]: { institution_value: number, date: string }[] }
-}
+  holdingsHistory: {
+    [key: string]: { institution_value: number; date: string }[];
+  };
+};
 
-export type GetInvestmentsQuery = { start: string, end: string, cursor?: string } | void
+export type GetInvestmentsQuery = {
+  start: string;
+  end: string;
+  cursor?: string;
+} | void;
 
-export type InvestmentsBalanceQuery = { start: string, end: string, accounts?: string[] }
+export type InvestmentsBalanceQuery = {
+  start: string;
+  end: string;
+  accounts?: string[];
+};

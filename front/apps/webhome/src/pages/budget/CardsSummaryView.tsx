@@ -10,7 +10,7 @@ import {
   selectCategoryMetaData,
   selectBillMetaData,
   useGetCategoriesQuery,
-  useGetBillsQuery
+  useGetBillsQuery,
 } from '@ledget/shared-features';
 import { useColorScheme } from '@ledget/ui';
 
@@ -29,13 +29,13 @@ export const BudgetSummary = () => {
     monthly_spent,
     yearly_spent,
     limit_amount_monthly,
-    limit_amount_yearly
+    limit_amount_yearly,
   } = useAppSelector(selectCategoryMetaData);
   const {
     monthly_bills_paid,
     yearly_bills_paid,
     number_of_monthly_bills,
-    number_of_yearly_bills
+    number_of_yearly_bills,
   } = useAppSelector(selectBillMetaData);
 
   const { isDark } = useColorScheme();

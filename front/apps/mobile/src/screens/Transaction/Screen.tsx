@@ -1,11 +1,15 @@
 import React, { useMemo, useLayoutEffect, useEffect, useState } from 'react';
-import { View, ScrollView } from 'react-native'
+import { View, ScrollView } from 'react-native';
 
 import styles from './styles/screen';
-import { Box, DollarCents } from '@ledget/native-ui'
-import { useGetAccountsQuery, useLazyGetTransactionsQuery, Transaction as TransactionT } from '@ledget/shared-features';
+import { Box, DollarCents } from '@ledget/native-ui';
+import {
+  useGetAccountsQuery,
+  useLazyGetTransactionsQuery,
+  Transaction as TransactionT,
+} from '@ledget/shared-features';
 import { BackHeader } from '@ledget/native-ui';
-import type { RootStackScreenProps } from '@types'
+import type { RootStackScreenProps } from '@types';
 import InfoBox from './InfoBox';
 import BudgetItemsBox from './BudgetItemsBox';
 import Notes from './Notes';
@@ -14,58 +18,67 @@ import TransactionName from './TransactionName';
 
 const Transaction = (props: RootStackScreenProps<'Transaction'>) => {
   const [transaction, setTransaction] = useState<TransactionT>();
-  const [fetchTransaction, { data: transactionData }] = useLazyGetTransactionsQuery();
+  const [fetchTransaction, { data: transactionData }] =
+    useLazyGetTransactionsQuery();
   const { data: accountsData } = useGetAccountsQuery();
 
   useEffect(() => {
     if (transactionData) {
-      setTransaction(transactionData.results[0])
+      setTransaction(transactionData.results[0]);
     }
-  }, [transactionData])
+  }, [transactionData]);
 
   useEffect(() => {
     if (typeof props.route.params.transaction === 'string') {
       fetchTransaction({
-        id: props.route.params.transaction
-      })
+        id: props.route.params.transaction,
+      });
     } else {
-      setTransaction(props.route.params.transaction)
+      setTransaction(props.route.params.transaction);
     }
-  }, [props.route.params.transaction])
+  }, [props.route.params.transaction]);
 
   const account = useMemo(() => {
-    return accountsData?.accounts.find(account => account.id === transaction?.account)
-  }, [accountsData, transaction?.account])
+    return accountsData?.accounts.find(
+      (account) => account.id === transaction?.account
+    );
+  }, [accountsData, transaction?.account]);
 
   useLayoutEffect(() => {
     if (!transaction) return;
     props.navigation.setOptions({
-      headerRight: () => <Menu {...props} transaction={transaction} />
-    })
+      headerRight: () => <Menu {...props} transaction={transaction} />,
+    });
     if (props.route.params.options?.asModal) {
       props.navigation.setOptions({
-        header: (props) => <BackHeader {...props} top={36} height={0} />
-      })
+        header: (props) => <BackHeader {...props} top={36} height={0} />,
+      });
     }
-  }, [account])
+  }, [account]);
 
   return (
     <>
       <Box
-        variant={props.route.params.options?.asModal ? 'screen' : 'nestedScreen'}
+        variant={
+          props.route.params.options?.asModal ? 'screen' : 'nestedScreen'
+        }
         flex={1}
-        borderRadius='xl'
-        backgroundColor={props.route.params.options?.asModal ? 'modalBox' : 'mainBackground'}
+        borderRadius="xl"
+        backgroundColor={
+          props.route.params.options?.asModal ? 'modalBox' : 'mainBackground'
+        }
       >
-        {account &&
+        {account && (
           <ScrollView contentContainerStyle={styles.scrollContent}>
             <View style={styles.header}>
               <DollarCents
-                variant='bold'
+                variant="bold"
                 value={transaction?.amount || 0}
                 fontSize={36}
               />
-              {transaction && <TransactionName {...props} transaction={transaction} />}
+              {transaction && (
+                <TransactionName {...props} transaction={transaction} />
+              )}
             </View>
             <InfoBox
               item={transaction}
@@ -75,21 +88,24 @@ const Transaction = (props: RootStackScreenProps<'Transaction'>) => {
             {(transaction?.categories ||
               transaction?.bill ||
               transaction?.predicted_bill ||
-              transaction?.predicted_category) &&
+              transaction?.predicted_category) && (
               <BudgetItemsBox
-                item={transaction} {...props}
+                item={transaction}
+                {...props}
                 isInModal={props.route.params.options?.asModal}
-              />}
-            {transaction &&
+              />
+            )}
+            {transaction && (
               <Notes
                 transaction={transaction}
                 isInModal={props.route.params.options?.asModal}
-              />}
+              />
+            )}
           </ScrollView>
-        }
+        )}
       </Box>
     </>
-  )
-}
+  );
+};
 
-export default Transaction
+export default Transaction;

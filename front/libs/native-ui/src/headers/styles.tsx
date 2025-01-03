@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -9,22 +9,22 @@ const styles = StyleSheet.create({
     right: 0,
   },
   title: {
-    position: 'absolute'
+    position: 'absolute',
   },
   backButton: {
     left: 16,
-    position: 'absolute'
+    position: 'absolute',
   },
   seperator: {
     position: 'absolute',
     bottom: 0,
     left: 0,
-    right: 0
+    right: 0,
   },
   menuContainer: {
     position: 'absolute',
-    right: 20
-  }
+    right: 20,
+  },
 });
 
 export default styles;

@@ -91,19 +91,20 @@ export const Card = (props: Props) => {
                     style={{ width: 20, height: 20 }}
                     resizeMode="contain"
                     source={{
-                      uri: `data:image/png;base64,${plaidItemsData?.find((p) =>
-                        p.accounts.find(
-                          (account) => account.id === props.account?.id
-                        )
-                      )?.institution?.logo
-                        }`,
+                      uri: `data:image/png;base64,${
+                        plaidItemsData?.find((p) =>
+                          p.accounts.find(
+                            (account) => account.id === props.account?.id
+                          )
+                        )?.institution?.logo
+                      }`,
                     }}
                   />
                 </Box>
                 <View style={styles.cardTopHalf}>
                   <DollarCents
                     color="whiteText"
-                    variant='bold'
+                    variant="bold"
                     fontSize={size === 'regular' ? 18 : 16}
                     value={Big(props.account?.balances.current || 0)
                       .times(100)

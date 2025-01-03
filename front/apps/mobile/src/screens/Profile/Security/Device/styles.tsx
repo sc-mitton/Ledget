@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   container: {
@@ -13,11 +13,11 @@ export default StyleSheet.create({
     marginTop: 74,
   },
   pcIcon: {
-    marginTop: -8
+    marginTop: -8,
   },
   mobileIcon: {
     marginTop: 4,
-    marginBottom: 8
+    marginBottom: 8,
   },
   header: {
     alignItems: 'center',
@@ -31,7 +31,7 @@ export default StyleSheet.create({
   mobileLocation: {
     flexDirection: 'row',
     marginBottom: 8,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   pcLocation: {
     flexDirection: 'row',
@@ -45,7 +45,7 @@ export default StyleSheet.create({
   sessions: {
     flexDirection: 'column',
     alignItems: 'flex-start',
-    maxHeight: '60%'
+    maxHeight: '60%',
   },
   sessionsScroll: {
     width: '107%',

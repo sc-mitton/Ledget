@@ -1,9 +1,5 @@
 import { useState, forwardRef, useRef, useEffect } from 'react';
-import {
-  ScrollViewProps,
-  ScrollView,
-  View
-} from 'react-native';
+import { ScrollViewProps, ScrollView, View } from 'react-native';
 import { useTheme } from '@shopify/restyle';
 import Animated, {
   useSharedValue,
@@ -35,7 +31,7 @@ export const CustomScrollView = forwardRef<ScrollView, Props>((props, ref) => {
     wholeHeight: 0,
     wholeWidth: 0,
     visibleWidth: 0,
-    visibleHeight: 0
+    visibleHeight: 0,
   });
 
   const opacity = useSharedValue(100);
@@ -44,15 +40,19 @@ export const CustomScrollView = forwardRef<ScrollView, Props>((props, ref) => {
 
   const indicatorSize = props.horizontal
     ? state.wholeWidth > state.visibleWidth
-      ? state.visibleWidth * state.visibleWidth / state.wholeWidth
+      ? (state.visibleWidth * state.visibleWidth) / state.wholeWidth
       : state.visibleWidth
     : state.wholeHeight > state.visibleHeight
-      ? state.visibleHeight * state.visibleHeight / state.wholeHeight
-      : state.visibleHeight;
+    ? (state.visibleHeight * state.visibleHeight) / state.wholeHeight
+    : state.visibleHeight;
 
   const difference = props.horizontal
-    ? state.visibleWidth > indicatorSize ? state.visibleWidth - indicatorSize : 1
-    : state.visibleHeight > indicatorSize ? state.visibleHeight - indicatorSize : 1;
+    ? state.visibleWidth > indicatorSize
+      ? state.visibleWidth - indicatorSize
+      : 1
+    : state.visibleHeight > indicatorSize
+    ? state.visibleHeight - indicatorSize
+    : 1;
 
   useEffect(() => {
     if (peekabooScrollIndicator) {
@@ -89,13 +89,15 @@ export const CustomScrollView = forwardRef<ScrollView, Props>((props, ref) => {
               e.nativeEvent.contentOffset.x,
               [0, state.wholeWidth - state.visibleWidth],
               [0, difference],
-              Extrapolation.CLAMP);
+              Extrapolation.CLAMP
+            );
           } else {
             y.value = interpolate(
               e.nativeEvent.contentOffset.y,
               [0, state.wholeHeight - state.visibleHeight],
               [0, difference],
-              Extrapolation.CLAMP);
+              Extrapolation.CLAMP
+            );
           }
           onScroll && onScroll(e);
         }}
@@ -106,34 +108,29 @@ export const CustomScrollView = forwardRef<ScrollView, Props>((props, ref) => {
           setTimeout(() => {
             opacity.value = withDelay(
               1000,
-              withTiming(
-                peekabooScrollIndicator ? 0 : 1,
-                { duration: 200 }
-              )
+              withTiming(peekabooScrollIndicator ? 0 : 1, { duration: 200 })
             );
           }, 2000);
         }}
         ref={ref}
-      >
-      </ScrollView >
-      {
-        showsVerticalScrollIndicator &&
-        < Animated.View
+      ></ScrollView>
+      {showsVerticalScrollIndicator && (
+        <Animated.View
           style={[
-            props.horizontal ? styles.horizontalScrollIndicator : styles.verticalscrollIndicator,
+            props.horizontal
+              ? styles.horizontalScrollIndicator
+              : styles.verticalscrollIndicator,
             {
               height: props.horizontal ? 4 : indicatorSize,
               width: props.horizontal ? indicatorSize : 4,
               opacity,
               backgroundColor: theme.colors.scrollbar,
-              transform: [
-                { translateY: y },
-                { translateX: x }
-              ],
-            }]}
+              transform: [{ translateY: y }, { translateX: x }],
+            },
+          ]}
         />
-      }
-    </ >
+      )}
+    </>
   );
 });
 

@@ -10,18 +10,18 @@ import {
   RefreshButton2,
   IconButtonHalfGray,
   Tooltip,
-  TabNavListUnderlined
+  TabNavListUnderlined,
 } from '@ledget/ui';
 import { CheckAll } from '@ledget/media';
 import {
   selectNotificationsTabIndex,
-  setNotificationsTabIndex
+  setNotificationsTabIndex,
 } from '@features/uiSlice';
 import {
   useGetTransactionsCountQuery,
   useTransactionsSyncMutation,
   popToast,
-  selectBudgetMonthYear
+  selectBudgetMonthYear,
 } from '@ledget/shared-features';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
 import { NeedsConfirmationStack } from './needs-confirmation/Stack';
@@ -43,8 +43,8 @@ const ActivityDropdown = (props: HTMLProps<HTMLDivElement>) => {
       isLoading: isSyncing,
       isSuccess: isSyncSuccess,
       isError: isSyncError,
-      data: syncResult
-    }
+      data: syncResult,
+    },
   ] = useTransactionsSyncMutation();
   const dispatch = useAppDispatch();
   const { setConfirmAll, setShowFilterForm, showFilterForm } =
@@ -55,7 +55,7 @@ const ActivityDropdown = (props: HTMLProps<HTMLDivElement>) => {
   useCloseDropdown({
     refs: [dropdownRef, buttonRef],
     visible: showDropdown,
-    setVisible: setShowDropdown
+    setVisible: setShowDropdown,
   });
 
   // Dispatch synced toast
@@ -68,7 +68,7 @@ const ActivityDropdown = (props: HTMLProps<HTMLDivElement>) => {
             syncResult?.added
               ? `, ${syncResult?.added} new transactions`
               : ' successfully'
-          }`
+          }`,
         })
       );
     }
@@ -80,7 +80,7 @@ const ActivityDropdown = (props: HTMLProps<HTMLDivElement>) => {
       dispatch(
         popToast({
           type: 'error',
-          message: 'There was an error syncing your transactions'
+          message: 'There was an error syncing your transactions',
         })
       );
     }

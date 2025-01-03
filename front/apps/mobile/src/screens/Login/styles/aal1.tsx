@@ -1,9 +1,9 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   form: {
     justifyContent: 'center',
-    flex: 1
+    flex: 1,
   },
   bottomButton: {
     justifyContent: 'center',
@@ -15,11 +15,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 4,
     left: 8,
-    transform: [{ scale: 0.6 }]
+    transform: [{ scale: 0.6 }],
   },
   forgotIconContainer: {
-    position: 'relative'
-  }
-})
+    position: 'relative',
+  },
+});
 
 export default styles;

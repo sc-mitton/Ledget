@@ -10,13 +10,13 @@ import {
   Tooltip,
   BillCatEmojiLabel,
   DollarCents,
-  ProgressBar
+  ProgressBar,
 } from '@ledget/ui';
 import {
   useGetMeQuery,
   selectBudgetMonthYear,
   useGetCategoriesQuery,
-  Category
+  Category,
 } from '@ledget/shared-features';
 import { setCategoryModal, setModal } from '@features/modalSlice';
 import { Plus, Edit2 } from '@geist-ui/icons';

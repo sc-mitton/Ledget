@@ -8,17 +8,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     position: 'relative',
-    zIndex: 10
+    zIndex: 10,
   },
   modalBackground: {
     flex: 1,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
-    position: 'relative'
+    position: 'relative',
   },
   accountsListContainer: {
     position: 'relative',
-    flex: 1
+    flex: 1,
   },
   accountsList: {
     position: 'absolute',
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     paddingLeft: 0,
-    paddingRight: 0
+    paddingRight: 0,
   },
   draggableListContent: {
     paddingBottom: 16,

@@ -2,27 +2,27 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   modalContent: {
-    flex: 1
+    flex: 1,
   },
   closeButton: {
     position: 'absolute',
     top: 16,
     right: 16,
-    zIndex: 10
+    zIndex: 10,
   },
   formHeader: {
-    padding: 16
+    padding: 16,
   },
   form: {
-    paddingHorizontal: 16
+    paddingHorizontal: 16,
   },
   row: {
     flexDirection: 'row',
-    gap: 8
+    gap: 8,
   },
   nameInput: {
     marginLeft: 72,
-    marginTop: 8
+    marginTop: 8,
   },
   emojiButton: {
     position: 'absolute',
@@ -34,11 +34,11 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   splitInput: {
-    flex: 1
+    flex: 1,
   },
   saveButton: {
-    marginTop: 20
-  }
+    marginTop: 20,
+  },
 });
 
 export default styles;

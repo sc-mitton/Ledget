@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   otcContainer: {
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   dash: {
     width: 8,
     height: 4,
-  }
+  },
 });
 
 export default styles;

@@ -9,30 +9,33 @@ import {
   apiSlice,
   selectSession,
   setDeviceToken,
-  setSession
+  setSession,
 } from '@ledget/shared-features';
 import { hasErrorCode } from '@ledget/helpers';
 import { useAppSelector, useAppDispatch } from './store';
 
 interface Props {
-  navigation?: StackNavigationProp<any>
-  route?: RouteProp<any, any>
-  updateProgress?: boolean,
-  token?: string,
-  id?: string,
+  navigation?: StackNavigationProp<any>;
+  route?: RouteProp<any, any>;
+  updateProgress?: boolean;
+  token?: string;
+  id?: string;
 }
 
-export const useFlowProgress = ({ navigation, route, updateProgress, token, id }: Props) => {
+export const useFlowProgress = ({
+  navigation,
+  route,
+  updateProgress,
+  token,
+  id,
+}: Props) => {
   const dispatch = useAppDispatch();
   const [authFlowStarted, setAuthFlowStarted] = useState(false);
-  const { error: getMeError, data: user } = useGetMeQuery(undefined, { skip: !authFlowStarted });
-  const [
-    refreshDevices,
-    {
-      isSuccess: isRefreshSuccess,
-      data: device
-    }
-  ] = useRefreshDevicesMutation({ fixedCacheKey: 'refreshDevices' })
+  const { error: getMeError, data: user } = useGetMeQuery(undefined, {
+    skip: !authFlowStarted,
+  });
+  const [refreshDevices, { isSuccess: isRefreshSuccess, data: device }] =
+    useRefreshDevicesMutation({ fixedCacheKey: 'refreshDevices' });
 
   const session = useAppSelector(selectSession);
 
@@ -43,15 +46,15 @@ export const useFlowProgress = ({ navigation, route, updateProgress, token, id }
     if (getMeError && hasErrorCode('AAL2_TOTP_REQUIRED', getMeError)) {
       navigation.navigate('Login', {
         screen: 'Aal2Authenticator',
-        identifier: route.params?.identifier
-      })
+        identifier: route.params?.identifier,
+      });
     } else if (user && !user.is_verified) {
       navigation.navigate('Login', {
         screen: 'Verification',
         params: {
-          identifier: route.params?.identifier
-        }
-      })
+          identifier: route.params?.identifier,
+        },
+      });
     }
   }, [getMeError, user, updateProgress]);
 
@@ -70,10 +73,10 @@ export const useFlowProgress = ({ navigation, route, updateProgress, token, id }
 
   useEffect(() => {
     if (token && id) {
-      SecureStore.setItemAsync('session', JSON.stringify({ token, id }))
-      dispatch(setSession({ token, id }))
+      SecureStore.setItemAsync('session', JSON.stringify({ token, id }));
+      dispatch(setSession({ token, id }));
     }
-  }, [token])
+  }, [token]);
 
   useEffect(() => {
     if (updateProgress) {
@@ -81,5 +84,4 @@ export const useFlowProgress = ({ navigation, route, updateProgress, token, id }
       dispatch(apiSlice.util.invalidateTags(['User']));
     }
   }, [updateProgress, session]);
-
 };

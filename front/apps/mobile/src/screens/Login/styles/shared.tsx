@@ -1,9 +1,9 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   form: {
     justifyContent: 'flex-end',
-    flex: 1
+    flex: 1,
   },
   centeredForm: {
     justifyContent: 'center',
@@ -17,8 +17,8 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   header: {
-    marginTop: 16
-  }
-})
+    marginTop: 16,
+  },
+});
 
 export default styles;

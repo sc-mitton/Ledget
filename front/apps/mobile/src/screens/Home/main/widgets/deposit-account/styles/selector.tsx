@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   grayBack: {
-    zIndex: -1
+    zIndex: -1,
   },
   optionBoxOuter: {
     borderRadius: 10,
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8
+    gap: 8,
   },
   selectorButton: {
     flex: 1,
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   touchable: {
     justifyContent: 'center',
     zIndex: 100,
-    paddingHorizontal: 12
+    paddingHorizontal: 12,
   },
 });
 

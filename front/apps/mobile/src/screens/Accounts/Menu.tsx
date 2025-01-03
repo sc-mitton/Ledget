@@ -9,20 +9,29 @@ export default function BakedMenu(props: AccountsScreenProps<'AccountsTabs'>) {
   return (
     <View style={styles.menu}>
       <Menu
-        as='menu'
-        placement='right'
+        as="menu"
+        placement="right"
         items={[
           {
             label: 'Connect account',
             icon: () => <Icon icon={Plus} size={16} strokeWidth={2} />,
-            onSelect: () => props.navigation.navigate('Profile', { screen: 'Connections', params: { screen: 'All' } })
-          }
+            onSelect: () =>
+              props.navigation.navigate('Profile', {
+                screen: 'Connections',
+                params: { screen: 'All' },
+              }),
+          },
         ]}
       >
-        <Box padding='xxs' backgroundColor='alert' borderRadius={'circle'}>
-          <Icon icon={MoreHorizontal} size={24} strokeWidth={2} color='secondaryText' />
+        <Box padding="xxs" backgroundColor="alert" borderRadius={'circle'}>
+          <Icon
+            icon={MoreHorizontal}
+            size={24}
+            strokeWidth={2}
+            color="secondaryText"
+          />
         </Box>
       </Menu>
     </View>
-  )
+  );
 }

@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
   grid: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: -6
+    marginHorizontal: -6,
   },
   column: {
     height: '100%',
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     paddingVertical: 4,
     gap: 10,
-    height: Dimensions.get('window').width * .625,
+    height: Dimensions.get('window').width * 0.625,
   },
   calendarCell: {
     paddingHorizontal: 10,
@@ -27,21 +27,21 @@ const styles = StyleSheet.create({
   cell: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%'
+    width: '100%',
   },
   header: {
-    marginBottom: 12
+    marginBottom: 12,
   },
   day: {
     position: 'relative',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   markersContainer: {
     position: 'absolute',
     left: '50%',
     bottom: -6,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   markers: {
     position: 'absolute',
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     width: 4,
     height: 4,
     borderRadius: 2,
-  }
+  },
 });
 
 export default styles;

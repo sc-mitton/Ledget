@@ -1,11 +1,11 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const AUTH_FRESHNESS_THRESHOLD = 1000 * 60 * 60 * 24 * 7;
 
 type AuthSliceStateT = {
   last_authed_at: number;
   authIsFresh: boolean;
-}
+};
 
 const initialState: AuthSliceStateT = {
   last_authed_at: 0,
@@ -13,7 +13,7 @@ const initialState: AuthSliceStateT = {
 };
 
 export const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
   reducers: {
     updateIsAuthed: (state, action: PayloadAction<void>) => {
@@ -24,8 +24,14 @@ export const authSlice = createSlice({
 
 export const { updateIsAuthed } = authSlice.actions;
 
-export const selectAuthIsFresh = (state: { auth: AuthSliceStateT, [key: string]: any }) => {
+export const selectAuthIsFresh = (state: {
+  auth: AuthSliceStateT;
+  [key: string]: any;
+}) => {
   return Date.now() - state.auth.last_authed_at < AUTH_FRESHNESS_THRESHOLD;
 };
 
-export const selectLastAuthedAt = (state: { auth: AuthSliceStateT, [key: string]: any }) => state.auth.last_authed_at;
+export const selectLastAuthedAt = (state: {
+  auth: AuthSliceStateT;
+  [key: string]: any;
+}) => state.auth.last_authed_at;

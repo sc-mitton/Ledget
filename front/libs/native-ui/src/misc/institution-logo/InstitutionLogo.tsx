@@ -1,53 +1,65 @@
-import { useEffect, useMemo, useState } from "react";
-import { Platform } from "react-native";
-import { useSelector } from "react-redux";
+import { useEffect, useMemo, useState } from 'react';
+import { Platform } from 'react-native';
+import { useSelector } from 'react-redux';
 
-import { Base64Image } from "../base64-image/Base64Image"
-import type { Props } from "../base64-image/Base64Image"
-import { selectInstitution, useLazyGetPlaidItemsQuery } from '@ledget/shared-features';
+import { Base64Image } from '../base64-image/Base64Image';
+import type { Props } from '../base64-image/Base64Image';
+import {
+  selectInstitution,
+  useLazyGetPlaidItemsQuery,
+} from '@ledget/shared-features';
 
 interface InstitutionLogoProps extends Props {
-  account?: string
-  institution?: string
-  hasShadow?: boolean
-  hasBorder?: boolean
+  account?: string;
+  institution?: string;
+  hasShadow?: boolean;
+  hasBorder?: boolean;
 }
 
 export const InstitutionLogo = (props: InstitutionLogoProps) => {
   const { hasShadow = true, hasBorder = true } = props;
 
-  const institution = useSelector((state: any) => selectInstitution(state, props.account || props.institution || ''));
+  const institution = useSelector((state: any) =>
+    selectInstitution(state, props.account || props.institution || '')
+  );
   const [getPlaidItems, { data: plaidItemsData }] = useLazyGetPlaidItemsQuery();
   const [logoData, setLogoData] = useState<string>();
 
   useEffect(() => {
     if (!institution) {
-      getPlaidItems()
+      getPlaidItems();
     } else {
-      setLogoData(institution?.logo)
+      setLogoData(institution?.logo);
     }
-  }, [institution])
+  }, [institution]);
 
   useEffect(() => {
     if (plaidItemsData) {
       if (props.institution && !institution) {
-        setLogoData(plaidItemsData?.find((p) => p.institution?.id === props.institution)?.institution?.logo)
+        setLogoData(
+          plaidItemsData?.find((p) => p.institution?.id === props.institution)
+            ?.institution?.logo
+        );
       } else if (props.account && !institution) {
-        setLogoData(plaidItemsData?.find((p) => p.accounts.find((account) => account.id === props.account))?.institution?.logo)
+        setLogoData(
+          plaidItemsData?.find((p) =>
+            p.accounts.find((account) => account.id === props.account)
+          )?.institution?.logo
+        );
       }
     }
-  }, [plaidItemsData])
+  }, [plaidItemsData]);
 
   return (
     <Base64Image
       borderRadius={'circle'}
       elevation={2}
-      borderColor='modalSeperator'
-      backgroundColor='modalSeperator'
-      borderWidth={hasBorder ? .5 : 0}
+      borderColor="modalSeperator"
+      backgroundColor="modalSeperator"
+      borderWidth={hasBorder ? 0.5 : 0}
       size={props.size || Platform.OS === 'ios' ? 22 : 24}
       data={logoData}
       {...props}
     />
-  )
-}
+  );
+};

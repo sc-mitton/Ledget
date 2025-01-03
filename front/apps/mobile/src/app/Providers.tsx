@@ -2,12 +2,19 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { Appearance } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { EventProvider } from 'react-native-outside-press';
-import { PersistGate } from "redux-persist/integration/react";
+import { PersistGate } from 'redux-persist/integration/react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 
 import styles from './styles/providers';
-import { ThemeProvider as RestyleThemeProvider, ModalPickerProvider } from '@ledget/native-ui';
-import { useAppearance, setDeviceMode, selectUseDeviceAppearance } from '@features/appearanceSlice';
+import {
+  ThemeProvider as RestyleThemeProvider,
+  ModalPickerProvider,
+} from '@ledget/native-ui';
+import {
+  useAppearance,
+  setDeviceMode,
+  selectUseDeviceAppearance,
+} from '@features/appearanceSlice';
 import store, { persistor } from '@features/store';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useEffect } from 'react';
@@ -17,11 +24,17 @@ const navTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: 'transparent'
-  }
+    background: 'transparent',
+  },
 };
 
-const ThemeProvider = ({ children }: { children: (({ mode }: { mode: 'light' | 'dark' }) => React.ReactNode) | React.ReactNode }) => {
+const ThemeProvider = ({
+  children,
+}: {
+  children:
+    | (({ mode }: { mode: 'light' | 'dark' }) => React.ReactNode)
+    | React.ReactNode;
+}) => {
   const { mode } = useAppearance();
   const dispatch = useAppDispatch();
   const useDeviceAppearance = useAppSelector(selectUseDeviceAppearance);
@@ -37,7 +50,7 @@ const ThemeProvider = ({ children }: { children: (({ mode }: { mode: 'light' | '
           Appearance.setColorScheme(null);
         }
       }, 2000);
-    }
+    };
 
     const listener = Appearance.addChangeListener(appearanceListener);
 
@@ -55,10 +68,10 @@ const ThemeProvider = ({ children }: { children: (({ mode }: { mode: 'light' | '
   // Track the device appearance in the redux store
   useEffect(() => {
     const appearanceListener = () => {
-      const newDeviceMode = Appearance.getColorScheme() || "light";
+      const newDeviceMode = Appearance.getColorScheme() || 'light';
       dispatch(setDeviceMode(newDeviceMode));
     };
-    dispatch(setDeviceMode(Appearance.getColorScheme() || "light"));
+    dispatch(setDeviceMode(Appearance.getColorScheme() || 'light'));
 
     const listener = Appearance.addChangeListener(appearanceListener);
     return () => listener.remove();
@@ -68,23 +81,24 @@ const ThemeProvider = ({ children }: { children: (({ mode }: { mode: 'light' | '
     <RestyleThemeProvider mode={mode}>
       {typeof children === 'function' ? children({ mode }) : children}
     </RestyleThemeProvider>
-  )
-}
+  );
+};
 
-export const withProviders = (App: React.FC) => () => (
-  <ReduxProvider store={store}>
-    <PersistGate persistor={persistor}>
-      <EventProvider style={styles.fullWidth}>
-        <ThemeProvider>
-          <GestureHandlerRootView>
-            <NavigationContainer theme={navTheme} ref={navigationRef}>
-              <ModalPickerProvider>
-                <App />
-              </ModalPickerProvider>
-            </NavigationContainer>
-          </GestureHandlerRootView>
-        </ThemeProvider>
-      </EventProvider>
-    </PersistGate>
-  </ReduxProvider>
-);
+export const withProviders = (App: React.FC) => () =>
+  (
+    <ReduxProvider store={store}>
+      <PersistGate persistor={persistor}>
+        <EventProvider style={styles.fullWidth}>
+          <ThemeProvider>
+            <GestureHandlerRootView>
+              <NavigationContainer theme={navTheme} ref={navigationRef}>
+                <ModalPickerProvider>
+                  <App />
+                </ModalPickerProvider>
+              </NavigationContainer>
+            </GestureHandlerRootView>
+          </ThemeProvider>
+        </EventProvider>
+      </PersistGate>
+    </ReduxProvider>
+  );

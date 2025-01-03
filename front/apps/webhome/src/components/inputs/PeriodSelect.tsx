@@ -1,55 +1,57 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 
-import { Control } from 'react-hook-form'
+import { Control } from 'react-hook-form';
 
-import { FormInputButton2, BakedListBox } from '@ledget/ui'
+import { FormInputButton2, BakedListBox } from '@ledget/ui';
 
 const baseopts = [
-    { id: 1, value: 'month', label: 'Monthly', disabled: false, default: true },
-    { id: 2, value: 'year', label: 'Yearly', disabled: false, default: false },
-    { id: 3, value: 'once', label: 'Once', disabled: true, default: false }
-]
+  { id: 1, value: 'month', label: 'Monthly', disabled: false, default: true },
+  { id: 2, value: 'year', label: 'Yearly', disabled: false, default: false },
+  { id: 3, value: 'once', label: 'Once', disabled: true, default: false },
+];
 
 interface P {
-    hasLabel?: boolean
-    labelPrefix?: string
-    enableAll?: boolean
-    default?: typeof baseopts[number]['value']
-    control: Control<any>
-    name?: string
+  hasLabel?: boolean;
+  labelPrefix?: string;
+  enableAll?: boolean;
+  default?: (typeof baseopts)[number]['value'];
+  control: Control<any>;
+  name?: string;
 }
 
 const PeriodSelect = (props: P) => {
-    const {
-        hasLabel,
-        enableAll,
-        default: defaultValue,
-        labelPrefix,
-        control,
-        name
-    } = props
+  const {
+    hasLabel,
+    enableAll,
+    default: defaultValue,
+    labelPrefix,
+    control,
+    name,
+  } = props;
 
-    const [options, setOptions] = useState<typeof baseopts>(baseopts)
+  const [options, setOptions] = useState<typeof baseopts>(baseopts);
 
-    useEffect(() => {
-        const newOptions = baseopts.map(op => enableAll ? { ...op, disabled: false } : op)
-        setOptions(newOptions)
-    }, [enableAll, defaultValue])
+  useEffect(() => {
+    const newOptions = baseopts.map((op) =>
+      enableAll ? { ...op, disabled: false } : op
+    );
+    setOptions(newOptions);
+  }, [enableAll, defaultValue]);
 
-    return (
-        <>
-            {hasLabel && <label htmlFor="period">Refreshes</label>}
-            <BakedListBox
-                placement='left'
-                control={control as any}
-                name={name}
-                as={FormInputButton2}
-                options={options}
-                defaultValue={options.find(op => op.value === defaultValue)}
-                labelPrefix={labelPrefix}
-            />
-        </>
-    )
-}
+  return (
+    <>
+      {hasLabel && <label htmlFor="period">Refreshes</label>}
+      <BakedListBox
+        placement="left"
+        control={control as any}
+        name={name}
+        as={FormInputButton2}
+        options={options}
+        defaultValue={options.find((op) => op.value === defaultValue)}
+        labelPrefix={labelPrefix}
+      />
+    </>
+  );
+};
 
-export default PeriodSelect
+export default PeriodSelect;

@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     gap: 6,
     alignItems: 'center',
     justifyContent: 'space-between',
-  }
+  },
 });
 
 export default styles;

@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 import { useTheme } from '@shopify/restyle';
 import Big from 'big.js';
 
@@ -11,7 +15,7 @@ import {
   DollarCents,
   InstitutionLogo,
   Icon,
-  Seperator
+  Seperator,
 } from '@ledget/native-ui';
 import type { Account } from '@ledget/shared-features';
 import { useAppearance } from '@/features/appearanceSlice';
@@ -45,7 +49,7 @@ const AccountRow = (props: AccountP) => {
 
   const animation = useAnimatedStyle(() => {
     return {
-      height: maskViewHeight.value
+      height: maskViewHeight.value,
     };
   });
 
@@ -57,19 +61,17 @@ const AccountRow = (props: AccountP) => {
 
   return (
     <>
-      {props.index !== 0 && !props.detailedView &&
+      {props.index !== 0 && !props.detailedView && (
         <View style={styles.seperator}>
-          <Seperator
-            variant='bare'
-            backgroundColor={'modalSeperator'}
-          />
-        </View>}
+          <Seperator variant="bare" backgroundColor={'modalSeperator'} />
+        </View>
+      )}
       <Box
         borderColor={props.detailedView ? 'modalBorder' : 'transparent'}
         borderWidth={1.5}
-        shadowColor='navShadow'
+        shadowColor="navShadow"
         borderRadius={'l'}
-        shadowOpacity={props.detailedView ? mode === 'dark' ? 1 : 0.5 : 0}
+        shadowOpacity={props.detailedView ? (mode === 'dark' ? 1 : 0.5) : 0}
         shadowRadius={props.detailedView ? 16 : 0}
         shadowOffset={{ width: 0, height: 4 }}
         elevation={props.detailedView ? 10 : 0}
@@ -77,7 +79,7 @@ const AccountRow = (props: AccountP) => {
       >
         <TouchableOpacity
           onPress={props.onPress}
-          activeOpacity={.99}
+          activeOpacity={0.99}
           onPressIn={() => setPressed(true)}
           onPressOut={() => setPressed(false)}
           onLongPress={() => {
@@ -86,19 +88,14 @@ const AccountRow = (props: AccountP) => {
           }}
         >
           <Box
-            backgroundColor='modalBox100'
-            style={[styles.accountCardInfo, { opacity: pressed ? .7 : 1 }]}
+            backgroundColor="modalBox100"
+            style={[styles.accountCardInfo, { opacity: pressed ? 0.7 : 1 }]}
           >
             <View style={styles.institutionLogoContainer}>
-              {props.selected &&
-                <Box
-                  style={styles.selectedIndicator}
-                  borderColor='blueText'
-                />}
-              <InstitutionLogo
-                account={props.account.id}
-                size={22}
-              />
+              {props.selected && (
+                <Box style={styles.selectedIndicator} borderColor="blueText" />
+              )}
+              <InstitutionLogo account={props.account.id} size={22} />
             </View>
             <View style={styles.accountInfo}>
               <Text color={props.isSelected ? 'blueTextSecondary' : 'mainText'}>
@@ -107,7 +104,12 @@ const AccountRow = (props: AccountP) => {
                   : props.account.name}
               </Text>
               <Animated.View style={animation}>
-                <Text color={props.isSelected ? 'blueTextSecondary' : 'secondaryText'} fontSize={14}>
+                <Text
+                  color={
+                    props.isSelected ? 'blueTextSecondary' : 'secondaryText'
+                  }
+                  fontSize={14}
+                >
                   &bull;&nbsp;&bull;&nbsp;{props.account.mask}
                 </Text>
               </Animated.View>
@@ -115,14 +117,17 @@ const AccountRow = (props: AccountP) => {
             <View style={styles.balance}>
               <DollarCents
                 color={props.isSelected ? 'blueTextSecondary' : 'mainText'}
-                value={Big(props.account.balances.current).times(100).toNumber()} />
-              <Icon icon={ChevronRight} color='quinaryText' strokeWidth={2} />
+                value={Big(props.account.balances.current)
+                  .times(100)
+                  .toNumber()}
+              />
+              <Icon icon={ChevronRight} color="quinaryText" strokeWidth={2} />
             </View>
           </Box>
-        </TouchableOpacity >
+        </TouchableOpacity>
       </Box>
     </>
-  )
-}
+  );
+};
 
 export default AccountRow;

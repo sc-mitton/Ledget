@@ -1,5 +1,9 @@
 import { ScrollView, View } from 'react-native';
-import { ParamListBase, TabNavigationState, CommonActions } from '@react-navigation/native';
+import {
+  ParamListBase,
+  TabNavigationState,
+  CommonActions,
+} from '@react-navigation/native';
 import { Clock, CreditCard, TrendingUp } from 'geist-native-icons';
 import { LinearGradient, Canvas, Rect, vec } from '@shopify/react-native-skia';
 import { useTheme } from '@shopify/restyle';
@@ -9,11 +13,11 @@ import { CurrencyNote } from '@ledget/media/native';
 import { Icon, Button, Seperator } from '@ledget/native-ui';
 
 const labelMap = {
-  'Depository': 'Accounts',
-  'Credit': 'Cards',
-  'Investment': 'Investments',
-  'Loan': 'Loans'
-}
+  Depository: 'Accounts',
+  Credit: 'Cards',
+  Investment: 'Investments',
+  Loan: 'Loans',
+};
 
 interface Props {
   state: TabNavigationState<ParamListBase>;
@@ -22,8 +26,8 @@ interface Props {
 }
 
 interface ButtonProps extends Props {
-  index?: number,
-  route: { key: string, name: string, params?: any }
+  index?: number;
+  route: { key: string; name: string; params?: any };
 }
 
 const TabButton = (props: ButtonProps) => {
@@ -41,7 +45,7 @@ const TabButton = (props: ButtonProps) => {
     if (!isFocused && !event.defaultPrevented) {
       navigation.dispatch((state: any) => {
         return CommonActions.navigate({
-          name: route.name
+          name: route.name,
         });
       });
     }
@@ -61,7 +65,7 @@ const TabButton = (props: ButtonProps) => {
       variant={isFocused ? 'bluePill' : 'grayPill'}
       key={route.key}
       fontSize={15}
-      labelPlacement='right'
+      labelPlacement="right"
       accessibilityRole="button"
       accessibilityState={isFocused ? { selected: true } : {}}
       accessibilityLabel={des?.options?.tabBarAccessibilityLabel}
@@ -70,19 +74,39 @@ const TabButton = (props: ButtonProps) => {
       disabled={isFocused}
       onLongPress={onLongPress}
       icon={
-        route.name.toLowerCase() === 'depository'
-          ? <Icon size={16} strokeWidth={1.75} icon={CurrencyNote} color={isFocused ? 'whiteText' : 'secondaryText'} />
-          : route.name.toLowerCase() === 'credit'
-            ? <Icon size={16} strokeWidth={1.75} icon={CreditCard} color={isFocused ? 'whiteText' : 'secondaryText'} />
-            : route.name.toLowerCase() === 'investment'
-              ? <Icon size={16} strokeWidth={1.75} icon={TrendingUp} color={isFocused ? 'whiteText' : 'secondaryText'} />
-              : route.name.toLowerCase() === 'loan'
-                ? <Icon size={16} strokeWidth={1.75} icon={Clock} color={isFocused ? 'whiteText' : 'secondaryText'} />
-                : null
+        route.name.toLowerCase() === 'depository' ? (
+          <Icon
+            size={16}
+            strokeWidth={1.75}
+            icon={CurrencyNote}
+            color={isFocused ? 'whiteText' : 'secondaryText'}
+          />
+        ) : route.name.toLowerCase() === 'credit' ? (
+          <Icon
+            size={16}
+            strokeWidth={1.75}
+            icon={CreditCard}
+            color={isFocused ? 'whiteText' : 'secondaryText'}
+          />
+        ) : route.name.toLowerCase() === 'investment' ? (
+          <Icon
+            size={16}
+            strokeWidth={1.75}
+            icon={TrendingUp}
+            color={isFocused ? 'whiteText' : 'secondaryText'}
+          />
+        ) : route.name.toLowerCase() === 'loan' ? (
+          <Icon
+            size={16}
+            strokeWidth={1.75}
+            icon={Clock}
+            color={isFocused ? 'whiteText' : 'secondaryText'}
+          />
+        ) : null
       }
     />
-  )
-}
+  );
+};
 
 const Tabs = ({ state, descriptors, navigation }: Props) => {
   const theme = useTheme();
@@ -112,7 +136,7 @@ const Tabs = ({ state, descriptors, navigation }: Props) => {
             colors={[
               theme.colors.blueChartGradientEnd,
               theme.colors.mainBackground,
-              theme.colors.mainBackground
+              theme.colors.mainBackground,
             ]}
             start={vec(32, 0)}
             end={vec(0, 0)}
@@ -125,7 +149,7 @@ const Tabs = ({ state, descriptors, navigation }: Props) => {
             colors={[
               theme.colors.blueChartGradientEnd,
               theme.colors.mainBackground,
-              theme.colors.mainBackground
+              theme.colors.mainBackground,
             ]}
             start={vec(0, 0)}
             end={vec(32, 0)}
@@ -133,10 +157,10 @@ const Tabs = ({ state, descriptors, navigation }: Props) => {
         </Rect>
       </Canvas>
       <View style={styles.seperator}>
-        <Seperator backgroundColor='mainScreenSeperator' height={2} />
+        <Seperator backgroundColor="mainScreenSeperator" height={2} />
       </View>
     </View>
-  )
-}
+  );
+};
 
-export default Tabs
+export default Tabs;

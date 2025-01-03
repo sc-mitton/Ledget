@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     alignItems: 'center',
     gap: 16,
-    paddingTop: 4
+    paddingTop: 4,
   },
   indexCircle: {
     borderRadius: 24,
@@ -18,39 +18,39 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   indexText: {
-    transform: [{ translateY: -1 }]
+    transform: [{ translateY: -1 }],
   },
   plusIcon: {
-    marginLeft: 4
+    marginLeft: 4,
   },
   sliderContainer: {
     marginVertical: 16,
-    paddingHorizontal: 6
+    paddingHorizontal: 6,
   },
   animatedNumbersContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 16
+    marginTop: 16,
   },
   animatedNumbers: {
     fontFamily: 'SourceSans3-Regular',
-    fontSize: 36
+    fontSize: 36,
   },
   container: {
     gap: 8,
   },
   alert: {
     flexDirection: 'row',
-    marginRight: 2
+    marginRight: 2,
   },
   addButton: {
     marginTop: 12,
     flexDirection: 'row',
-    gap: 8
+    gap: 8,
   },
   clearButton: {
     justifyContent: 'flex-end',
-  }
+  },
 });
 
 export default styles;

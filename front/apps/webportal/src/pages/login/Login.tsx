@@ -13,17 +13,17 @@ import {
   PortalWindow,
   useScreenContext,
   WindowLoadingBar,
-  Checkbox
+  Checkbox,
 } from '@ledget/ui';
 import { useFlow } from '@ledget/ory';
 import {
   useGetMeQuery,
-  useRefreshDevicesMutation
+  useRefreshDevicesMutation,
 } from '@ledget/shared-features';
 import { hasErrorCode } from '@ledget/helpers';
 import {
   useLazyGetLoginFlowQuery,
-  useCompleteLoginFlowMutation
+  useCompleteLoginFlowMutation,
 } from '@features/orySlice';
 import OryFormWrapper from './FormWrapper';
 import EmailForm from './EmailForm';
@@ -47,8 +47,8 @@ const Login = () => {
     {
       isLoading: isRefreshingDevices,
       isSuccess: devicesRefreshedSuccess,
-      error: refreshDevicesError
-    }
+      error: refreshDevicesError,
+    },
   ] = useRefreshDevicesMutation();
 
   const { flow, fetchFlow, submit, flowStatus } = useFlow(
@@ -63,7 +63,7 @@ const Login = () => {
     isCompleteSuccess,
     isCompleteError,
     errId,
-    errMsg
+    errMsg,
   } = flowStatus;
 
   // In the event that a user has logged in with their first factor,
@@ -155,7 +155,7 @@ const Login = () => {
     errMsg,
     setEmail,
     email: email || '',
-    onSubmit: handleSubmit
+    onSubmit: handleSubmit,
   };
 
   return (
@@ -176,7 +176,7 @@ const Login = () => {
               visible={[
                 isGettingFlow,
                 isCompletingFlow,
-                isRefreshingDevices
+                isRefreshingDevices,
               ].some(Boolean)}
             />
             <LegalLinks />
@@ -208,7 +208,7 @@ const Login = () => {
                   visible={[
                     isGettingFlow,
                     isCompletingFlow,
-                    isRefreshingDevices
+                    isRefreshingDevices,
                   ].some(Boolean)}
                 />
                 <LegalLinks />
@@ -230,7 +230,7 @@ const Login = () => {
                   visible={[
                     isGettingFlow,
                     isCompletingFlow,
-                    isRefreshingDevices
+                    isRefreshingDevices,
                   ].some(Boolean)}
                 />
                 <LegalLinks />
@@ -252,7 +252,7 @@ const Login = () => {
                   visible={[
                     isGettingFlow,
                     isCompletingFlow,
-                    isRefreshingDevices
+                    isRefreshingDevices,
                   ].some(Boolean)}
                 />
                 <LegalLinks />

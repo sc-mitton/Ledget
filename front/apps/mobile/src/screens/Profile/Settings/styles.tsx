@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   radios: {
@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     gap: 20,
     paddingTop: 16,
-    paddingBottom: 48
+    paddingBottom: 48,
   },
   phoneImageContainer: {
     paddingHorizontal: 12,
@@ -58,8 +58,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 1,
     right: 1,
-    opacity: .7
-  }
+    opacity: 0.7,
+  },
 });
 
 export default styles;

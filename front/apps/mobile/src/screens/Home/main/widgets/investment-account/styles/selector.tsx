@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     height: '100%',
-    marginHorizontal: -8
+    marginHorizontal: -8,
   },
   mask: {
     position: 'absolute',
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   accountsCarousel: {
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   skeletonContainer: {
     flexDirection: 'row',
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
 });
 
 export default styles;

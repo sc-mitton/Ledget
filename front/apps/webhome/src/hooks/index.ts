@@ -1,1 +1,1 @@
-export * from './utilHooks'
+export * from './utilHooks';

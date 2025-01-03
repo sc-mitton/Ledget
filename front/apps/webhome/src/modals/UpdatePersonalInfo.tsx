@@ -13,10 +13,7 @@ import {
   useCompleteSettingsFlowMutation,
   useLazyGetSettingsFlowQuery,
 } from '@features/orySlice';
-import {
-  extendedApiSlice,
-  useGetMeQuery
-} from '@ledget/shared-features';
+import { extendedApiSlice, useGetMeQuery } from '@ledget/shared-features';
 import { PlainTextInput } from '@ledget/ui';
 import { SubmitForm } from '@components/pieces';
 import { withReAuth } from '@utils/withReAuth';
@@ -25,10 +22,13 @@ const schema = z.object({
   traits: z.object({
     name: z.object({
       first: z.string().min(1, { message: 'required' }),
-      last: z.string().min(1, { message: 'required' })
+      last: z.string().min(1, { message: 'required' }),
     }),
-    email: z.string().email().transform(value => value.trim())
-  })
+    email: z
+      .string()
+      .email()
+      .transform((value) => value.trim()),
+  }),
 });
 
 const UpdatePersonalInfo = withReAuth(
@@ -44,18 +44,18 @@ const UpdatePersonalInfo = withReAuth(
     const {
       register,
       handleSubmit,
-      formState: { errors }
+      formState: { errors },
     } = useForm<z.infer<typeof schema>>({
       resolver: zodResolver(schema),
       defaultValues: {
         traits: {
           name: {
             first: user?.name.first,
-            last: user?.name.last
+            last: user?.name.last,
           },
-          email: user?.email
-        }
-      }
+          email: user?.email,
+        },
+      },
     });
     const dispatch = useAppDispatch();
 
@@ -92,9 +92,9 @@ const UpdatePersonalInfo = withReAuth(
               data: {
                 ...data,
                 csrf_token: flow?.csrf_token,
-                method: 'profile'
+                method: 'profile',
               },
-              params: { flow: flow?.id }
+              params: { flow: flow?.id },
             })
           )}
           className={styles.updatePersonalInfoForm}

@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
   focusedNote: {
     width: '100%',
-    height: '100%'
+    height: '100%',
   },
   editedFootnote: {
     position: 'absolute',
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '100%',
     height: '300%',
-  }
+  },
 });
 
 export default styles;

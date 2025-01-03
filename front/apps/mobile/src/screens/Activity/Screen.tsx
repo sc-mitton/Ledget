@@ -14,14 +14,15 @@ const Screen = (props: ModalScreenProps<'Activity'>) => {
       {({ expanded }) => (
         <>
           <Header setIndex={setIndex} index={index} />
-          {index === 0
-            ? <NeedsConfirmation {...props} expanded={expanded} />
-            : <History {...props} />
-          }
+          {index === 0 ? (
+            <NeedsConfirmation {...props} expanded={expanded} />
+          ) : (
+            <History {...props} />
+          )}
         </>
       )}
     </BottomDrawerModal>
-  )
-}
+  );
+};
 
-export default Screen
+export default Screen;

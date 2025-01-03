@@ -4,7 +4,7 @@ import {
   ButtonHTMLAttributes,
   useState,
   useEffect,
-  useRef
+  useRef,
 } from 'react';
 
 import { Combobox } from '@headlessui/react';
@@ -17,13 +17,13 @@ import {
   useLazyGetCategoriesQuery,
   Bill,
   useLazyGetBillsQuery,
-  selectBudgetMonthYear
+  selectBudgetMonthYear,
 } from '@ledget/shared-features';
 import {
   LoadingRingDiv,
   DropdownDiv,
   useCloseDropdown,
-  BillCatLabel
+  BillCatLabel,
 } from '@ledget/ui';
 import { useAppSelector } from '@hooks/store';
 
@@ -59,8 +59,8 @@ function SelectCategoryBillBody(props: I) {
     {
       data: categoryData,
       isLoading: isFetchingCategories,
-      isSuccess: isFetchCategoriesSuccess
-    }
+      isSuccess: isFetchCategoriesSuccess,
+    },
   ] = useLazyGetCategoriesQuery();
   const [getBills, { data: billData, isSuccess: isFetchBillsSuccess }] =
     useLazyGetBillsQuery();
@@ -75,7 +75,7 @@ function SelectCategoryBillBody(props: I) {
       getCategories({ month, year, spending: false });
       getBills({
         month: new Date(props.activeBeginning).getMonth() + 1,
-        year: new Date(props.activeBeginning).getFullYear()
+        year: new Date(props.activeBeginning).getFullYear(),
       });
     } else {
       getCategories({ month, year, spending: false });
@@ -227,7 +227,7 @@ export const FullSelectCategoryBill = ({
   useCloseDropdown({
     refs: [dropdownRef, buttonRef],
     visible: showBillCatSelect,
-    setVisible: setShowBillCatSelect
+    setVisible: setShowBillCatSelect,
   });
 
   return (

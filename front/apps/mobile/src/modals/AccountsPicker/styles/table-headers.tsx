@@ -13,8 +13,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   icon: {
-    marginLeft: 4
-  }
+    marginLeft: 4,
+  },
 });
 
 export default styles;

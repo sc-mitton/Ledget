@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     paddingTop: 68,
     zIndex: 0,
-  }
+  },
 });
 
 export default styles;

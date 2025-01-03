@@ -1,19 +1,27 @@
-
-import styles from './switch.module.scss'
-import { Switch } from '@headlessui/react'
+import styles from './switch.module.scss';
+import { Switch } from '@headlessui/react';
 
 interface DefaultSwitchProps {
-  checked?: boolean
-  onChange?: React.Dispatch<React.SetStateAction<boolean>>
-  children: React.ReactNode
-  className?: string
-  as?: 'div' | 'li'
+  checked?: boolean;
+  onChange?: React.Dispatch<React.SetStateAction<boolean>>;
+  children: React.ReactNode;
+  className?: string;
+  as?: 'div' | 'li';
 }
 
-export const BakedSwitch = ({ checked, className, onChange, children, as = 'div', ...rest }: DefaultSwitchProps) => {
-
+export const BakedSwitch = ({
+  checked,
+  className,
+  onChange,
+  children,
+  as = 'div',
+  ...rest
+}: DefaultSwitchProps) => {
   return (
-    <Switch.Group className={[styles.switchContainer, className].join(' ')} as={as}>
+    <Switch.Group
+      className={[styles.switchContainer, className].join(' ')}
+      as={as}
+    >
       <Switch.Label>{children}</Switch.Label>
       <Switch
         checked={checked}
@@ -27,6 +35,5 @@ export const BakedSwitch = ({ checked, className, onChange, children, as = 'div'
         )}
       </Switch>
     </Switch.Group>
-  )
-}
-
+  );
+};

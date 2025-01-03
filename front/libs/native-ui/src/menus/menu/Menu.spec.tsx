@@ -5,7 +5,7 @@ import Menu from './';
 
 describe('Menu', () => {
   it('should render successfully', () => {
-    const { root } = render(< Menu />);
+    const { root } = render(<Menu />);
     expect(root).toBeTruthy();
   });
 });

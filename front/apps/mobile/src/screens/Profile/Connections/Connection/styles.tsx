@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   screen: {
@@ -30,19 +30,18 @@ export default StyleSheet.create({
   },
   accountsBox: {
     marginTop: 12,
-    maxHeight: '60%'
+    maxHeight: '60%',
   },
   accounts: {
     paddingHorizontal: 8,
     flexDirection: 'row',
-    width: '100%'
+    width: '100%',
   },
   nameColumn: {
     flex: 1,
-    flexGrow: 1
+    flexGrow: 1,
   },
-  maskColumn: {
-  },
+  maskColumn: {},
   cell: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -56,9 +55,9 @@ export default StyleSheet.create({
     paddingRight: 4,
   },
   maskCell: {
-    paddingHorizontal: 24
+    paddingHorizontal: 24,
   },
   icon: {
-    marginRight: 8
-  }
+    marginRight: 8,
+  },
 });

@@ -16,10 +16,11 @@ export type BottomTabNavParamList = {
   Profile: NavigatorScreenParams<ProfileStackParamList>;
 };
 
-export type BottomTabScreenProps<T extends keyof BottomTabNavParamList> = CompositeScreenProps<
-  StackScreenProps<BottomTabNavParamList, T>,
+export type BottomTabScreenProps<T extends keyof BottomTabNavParamList> =
   CompositeScreenProps<
-    StackScreenProps<RootStackParamList>,
-    StackScreenProps<ModalStackParamList>
-  >
->;
+    StackScreenProps<BottomTabNavParamList, T>,
+    CompositeScreenProps<
+      StackScreenProps<RootStackParamList>,
+      StackScreenProps<ModalStackParamList>
+    >
+  >;

@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import styles from './styles/calendar.module.scss';
 import {
   selectBudgetMonthYear,
-  useGetBillsQuery
+  useGetBillsQuery,
 } from '@ledget/shared-features';
 
 const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>(
@@ -22,7 +22,7 @@ const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>(
     const selectedDate = dayjs()
       .month(
         parseInt(searchParams.get('month') || `${new Date().getMonth() + 1}`) -
-        1
+          1
       )
       .year(
         parseInt(searchParams.get('year') || `${new Date().getFullYear()}`)
@@ -82,7 +82,7 @@ const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>(
               }
               data-selected={
                 searchParams.get('day') &&
-                  searchParams.get('day') === `${djs.date()}`
+                searchParams.get('day') === `${djs.date()}`
                   ? true
                   : false
               }
@@ -99,7 +99,7 @@ const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>(
               aria-label={`${djs.format('MMMM YYYY')} bills`}
               onClick={() => {
                 searchParams.get('day') &&
-                  searchParams.get('day') === `${djs.date()}`
+                searchParams.get('day') === `${djs.date()}`
                   ? searchParams.delete('day')
                   : searchParams.set('day', `${djs.date()}`);
                 setSearchParams(searchParams);
@@ -108,36 +108,36 @@ const Calendar = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>(
               <span>{djs.date()}</span>
               {(monthlyBillCountEachDay[i] > 1 ||
                 yearlyBillCountEachDay[i] > 1) && (
-                  <div role="tooltip" className={styles.billDotTip}>
-                    {monthlyBillCountEachDay[i] > 0 && (
-                      <>
-                        <span data-period='month' />
-                        <span>{monthlyBillCountEachDay[i]}</span>
-                      </>
-                    )}
-                    {yearlyBillCountEachDay[i] > 0 && (
-                      <>
-                        <span data-period='year' />
-                        <span>{yearlyBillCountEachDay[i]}</span>
-                      </>
-                    )}
-                  </div>
-                )}
+                <div role="tooltip" className={styles.billDotTip}>
+                  {monthlyBillCountEachDay[i] > 0 && (
+                    <>
+                      <span data-period="month" />
+                      <span>{monthlyBillCountEachDay[i]}</span>
+                    </>
+                  )}
+                  {yearlyBillCountEachDay[i] > 0 && (
+                    <>
+                      <span data-period="year" />
+                      <span>{yearlyBillCountEachDay[i]}</span>
+                    </>
+                  )}
+                </div>
+              )}
               {/* Below cell */}
               {(monthlyBillCountEachDay[i] > 0 ||
                 yearlyBillCountEachDay[i] > 0) && (
-                  <div className={styles.billDotContainer}>
-                    {monthlyBillCountEachDay[i] > 0 && (
-                      <span data-period="month" className={styles.billDot} />
-                    )}
-                    {yearlyBillCountEachDay[i] > 0 && <span data-period="year" />}
-                  </div>
-                )}
+                <div className={styles.billDotContainer}>
+                  {monthlyBillCountEachDay[i] > 0 && (
+                    <span data-period="month" className={styles.billDot} />
+                  )}
+                  {yearlyBillCountEachDay[i] > 0 && <span data-period="year" />}
+                </div>
+              )}
             </div>
           );
         })}
         {Array.from({
-          length: 6 - selectedDate.date(selectedDate.daysInMonth()).day()
+          length: 6 - selectedDate.date(selectedDate.daysInMonth()).day(),
         }).map((_, i) => (
           <div key={i} className={styles.bookendDays}>
             {i + 1}

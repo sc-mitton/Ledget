@@ -14,8 +14,8 @@ export const Switch = (props: SwitchProps & { label: string }) => {
       {label && <Text>{label}</Text>}
       <View style={[rest.disabled ? styles.disabled : undefined]}>
         <NativeSwitch
-          activeText=''
-          inActiveText=''
+          activeText=""
+          inActiveText=""
           circleSize={22}
           barHeight={26}
           switchRightPx={2.5}
@@ -24,19 +24,29 @@ export const Switch = (props: SwitchProps & { label: string }) => {
           switchWidthMultiplier={2.25}
           outerCircleStyle={{
             shadowColor: rest.value
-              ? rest.disabled ? theme.colors.disabledSwitchShadow : theme.colors.activeSwitchShadow
+              ? rest.disabled
+                ? theme.colors.disabledSwitchShadow
+                : theme.colors.activeSwitchShadow
               : theme.colors.disabledSwitchShadow,
             shadowOffset: { width: 0, height: 1 },
             shadowOpacity: 1,
             shadowRadius: 2,
           }}
-          circleActiveColor={rest.disabled ? theme.colors.disabledSwitchPill : theme.colors.enabledSwitchPill}
+          circleActiveColor={
+            rest.disabled
+              ? theme.colors.disabledSwitchPill
+              : theme.colors.enabledSwitchPill
+          }
           circleInActiveColor={theme.colors.disabledSwitchPill}
-          backgroundActive={rest.disabled ? theme.colors.disabledSwitchCrib : theme.colors.enabledSwitchCrib}
+          backgroundActive={
+            rest.disabled
+              ? theme.colors.disabledSwitchCrib
+              : theme.colors.enabledSwitchCrib
+          }
           backgroundInactive={theme.colors.disabledSwitchCrib}
           {...rest}
         />
       </View>
     </View>
-  )
-}
+  );
+};

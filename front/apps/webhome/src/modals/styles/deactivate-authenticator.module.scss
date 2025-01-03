@@ -1,14 +1,13 @@
 .deactivateAuthenticatorContent {
-    &>div {
-        margin-top: 1em;
-        display: flex;
-        flex-direction: column;
-        gap: 1em;
-    }
+  & > div {
+    margin-top: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+  }
 
-    &>div>div:last-child {
-        display: flex;
-        justify-content: flex-end;
-    }
-
+  & > div > div:last-child {
+    display: flex;
+    justify-content: flex-end;
+  }
 }

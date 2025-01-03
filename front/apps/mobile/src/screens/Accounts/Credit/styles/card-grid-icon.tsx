@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   },
   cardIconRow: {
     flexDirection: 'row',
-  }
+  },
 });
 
 export default styles;

@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   },
   overlappingDot: {
     marginLeft: -10,
-  }
+  },
 });
 
 export default styles;

@@ -13,7 +13,7 @@ import {
   EmojiComboText,
   LimitAmountInput,
   PeriodSelect,
-  emoji
+  emoji,
 } from '@components/inputs';
 import { withModal } from '@ledget/ui';
 import SubmitForm from '@components/pieces/SubmitForm';
@@ -29,11 +29,11 @@ const CreateCategoryModal = withModal((props) => {
     register,
     control,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
   } = useForm<z.infer<typeof categorySchema>>({
     resolver: zodResolver(categorySchema),
     mode: 'onSubmit',
-    reValidateMode: 'onBlur'
+    reValidateMode: 'onBlur',
   });
   const watchLimitAmount = useWatch({ control, name: 'limit_amount' });
 

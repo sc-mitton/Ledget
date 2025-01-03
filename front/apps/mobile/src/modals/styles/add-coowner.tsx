@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   header: {
@@ -9,7 +9,7 @@ export default StyleSheet.create({
     marginHorizontal: 4,
   },
   footer: {
-    marginHorizontal: 4
+    marginHorizontal: 4,
   },
   icon: {
     marginTop: 8,
@@ -17,7 +17,6 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   pagerView: {
-    flex: 1
+    flex: 1,
   },
-
 });

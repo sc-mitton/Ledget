@@ -1,11 +1,15 @@
 import { useState } from 'react';
-import Animated, { FadeIn, FadeOut, useSharedValue } from 'react-native-reanimated';
-import OutsidePressHandler from "react-native-outside-press";
+import Animated, {
+  FadeIn,
+  FadeOut,
+  useSharedValue,
+} from 'react-native-reanimated';
+import OutsidePressHandler from 'react-native-outside-press';
 
 import styles from './styles/carousel-item';
 import { Box } from '@ledget/native-ui';
-import { Card, HueSliderCard } from "@/components";
-import { Account } from "@ledget/shared-features";
+import { Card, HueSliderCard } from '@/components';
+import { Account } from '@ledget/shared-features';
 import { useAppearance } from '@/features/appearanceSlice';
 
 interface Props {
@@ -19,55 +23,60 @@ const CarouselItem = (props: Props) => {
   const hue = useSharedValue(props.account.cardHue);
 
   return (
-    <OutsidePressHandler onOutsidePress={() => setShowSlider(false)} >
+    <OutsidePressHandler onOutsidePress={() => setShowSlider(false)}>
       <Box style={[styles.container]}>
-        {showSlider
-          ?
+        {showSlider ? (
           <Animated.View entering={FadeIn} exiting={FadeOut}>
             <Box
-              shadowColor='blackText'
-              shadowOpacity={mode === 'dark' ? 1 : .2}
+              shadowColor="blackText"
+              shadowOpacity={mode === 'dark' ? 1 : 0.2}
               shadowRadius={mode === 'dark' ? 12 : 8}
               shadowOffset={{ width: 0, height: 8 }}
               elevation={7}
             >
               <Box
-                shadowColor='blackText'
-                shadowOpacity={.2}
+                shadowColor="blackText"
+                shadowOpacity={0.2}
                 shadowOffset={{ width: 0, height: 2 }}
                 shadowRadius={2}
               >
                 <HueSliderCard
                   account={props.account.id}
-                  onChange={(newHue) => { hue.value = newHue }}
+                  onChange={(newHue) => {
+                    hue.value = newHue;
+                  }}
                   hue={props.account.cardHue}
                 />
               </Box>
             </Box>
           </Animated.View>
-          :
+        ) : (
           <Animated.View entering={FadeIn} exiting={FadeOut}>
             <Box
-              shadowColor='blackText'
-              shadowOpacity={mode === 'dark' ? 1 : .2}
+              shadowColor="blackText"
+              shadowOpacity={mode === 'dark' ? 1 : 0.2}
               shadowRadius={mode === 'dark' ? 12 : 8}
               shadowOffset={{ width: 0, height: 8 }}
               elevation={7}
             >
               <Box
-                shadowColor='blackText'
-                shadowOpacity={.2}
+                shadowColor="blackText"
+                shadowOpacity={0.2}
                 shadowOffset={{ width: 0, height: 2 }}
                 shadowRadius={2}
               >
-                <Card {...props} onLongPress={() => setShowSlider(true)} hue={hue} />
+                <Card
+                  {...props}
+                  onLongPress={() => setShowSlider(true)}
+                  hue={hue}
+                />
               </Box>
             </Box>
           </Animated.View>
-        }
+        )}
       </Box>
     </OutsidePressHandler>
-  )
-}
+  );
+};
 
 export default CarouselItem;

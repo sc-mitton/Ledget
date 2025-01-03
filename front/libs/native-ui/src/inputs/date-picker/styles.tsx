@@ -1,10 +1,10 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   mainContainer: {
     width: '100%',
     flexDirection: 'column',
-    marginTop: 4
+    marginTop: 4,
   },
   textInput: {
     flexDirection: 'row',
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   bottomBorderIndicator: {
     position: 'absolute',
     bottom: -2,
-    left: 0
+    left: 0,
   },
   bottomBorderIndicatorBar: {
     height: 5,
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '50%',
     left: '50%',
-  }
+  },
 });
 
 export default styles;

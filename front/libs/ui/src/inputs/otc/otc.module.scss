@@ -1,64 +1,63 @@
 .otc {
-    fieldset {
-        border: 0;
-        padding: 0;
-        margin: 0;
-        margin: 1rem 0;
+  fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    margin: 1rem 0;
 
-        div {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+    div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
+  }
 
-    input[type="text"] {
-        flex: 1;
-        line-height: 1;
-        margin: .25em;
-        padding: .25em 0;
-        min-width: 1.5em;
-        font-size: 1.5em;
-        text-align: center;
-        appearance: textfield;
-        -webkit-appearance: textfield;
-        border-radius: var(--border-radius3);
-        background-color: var(--input-background);
-        border: var(--input-border);
-        color: var(--m-text);
-    }
+  input[type='text'] {
+    flex: 1;
+    line-height: 1;
+    margin: 0.25em;
+    padding: 0.25em 0;
+    min-width: 1.5em;
+    font-size: 1.5em;
+    text-align: center;
+    appearance: textfield;
+    -webkit-appearance: textfield;
+    border-radius: var(--border-radius3);
+    background-color: var(--input-background);
+    border: var(--input-border);
+    color: var(--m-text);
+  }
 
-    input[type="text"]:focus {
-        border: var(--input-border-focus);
-        box-shadow: var(--input-focus-drop-shadow);
-    }
+  input[type='text']:focus {
+    border: var(--input-border-focus);
+    box-shadow: var(--input-focus-drop-shadow);
+  }
 
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 
-    input[type="text"]:first-child {
-        margin-left: 0;
-    }
+  input[type='text']:first-child {
+    margin-left: 0;
+  }
 
-    input[type="text"]:last-child {
-        margin-right: 0;
-    }
+  input[type='text']:last-child {
+    margin-right: 0;
+  }
 
-    /* 2 group of 3 items */
-    input[type="text"]:nth-child(n+4) {
-        order: 2;
-    }
+  /* 2 group of 3 items */
+  input[type='text']:nth-child(n + 4) {
+    order: 2;
+  }
 
-    div::before {
-        width: .625rem;
-        content: '';
-        height: .25rem;
-        margin: 0 .2em;
-        order: 1;
-        background: var(--border-color);
-    }
-
+  div::before {
+    width: 0.625rem;
+    content: '';
+    height: 0.25rem;
+    margin: 0 0.2em;
+    order: 1;
+    background: var(--border-color);
+  }
 }

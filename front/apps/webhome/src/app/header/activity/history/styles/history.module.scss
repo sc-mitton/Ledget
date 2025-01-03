@@ -3,164 +3,162 @@ $scroll-bar-padding: 1em;
 @import '@styles/table-mixins.scss';
 
 .allItemsWindow {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: 1;
-    gap: 1em;
-    border-radius: var(--border-radius6);
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  gap: 1em;
+  border-radius: var(--border-radius6);
 }
 
 .transactionsHistoryTableContainer {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  justify-content: center;
+  z-index: 0;
+  width: 100%;
+  background-color: inherit;
+
+  .left-info {
+    overflow: hidden;
+    white-space: nowrap;
+    mask-image: linear-gradient(to right, black, black 85%, transparent 100%);
     flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    justify-content: center;
-    z-index: 0;
-    width: 100%;
-    background-color: inherit;
 
-    .left-info {
-        overflow: hidden;
-        white-space: nowrap;
-        mask-image: linear-gradient(to right, black, black 85%, transparent 100%);
-        flex-grow: 1;
+    & > div:last-child {
+      display: flex;
+      gap: 0.5em;
 
-        &>div:last-child {
-            display: flex;
-            gap: .5em;
-
-            &>span:first-child {
-                font-size: .75rem;
-                font-weight: var(--fw-regular);
-                color: var(--m-text-secondary);
-            }
-        }
+      & > span:first-child {
+        font-size: 0.75rem;
+        font-weight: var(--fw-regular);
+        color: var(--m-text-secondary);
+      }
     }
+  }
 }
 
 .transactionsHistoryTable {
-    padding: $scroll-bar-padding;
-    overflow-y: auto;
-    overflow-x: hidden;
-    display: grid;
-    grid-template-columns: auto 1fr 1fr 1fr 1fr;
-    row-gap: .25em;
-    grid-auto-rows: min-content;
+  padding: $scroll-bar-padding;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: grid;
+  grid-template-columns: auto 1fr 1fr 1fr 1fr;
+  row-gap: 0.25em;
+  grid-auto-rows: min-content;
+  background-color: inherit;
+
+  &[data-skeleton='true'] {
+    grid-template-columns: 1fr;
+
+    & > div > div:last-child {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  &[data-skeleton='false'] > div {
+    &:not(:first-child) svg {
+      scale: 0;
+      width: 0;
+      margin-left: 0;
+      transition: all 0.2s ease-in-out;
+    }
+
+    &:hover:not(:first-child) {
+      cursor: pointer;
+
+      svg {
+        scale: 1;
+        width: 1em;
+        margin-left: 0.25em;
+        transition: all 0.2s ease-in-out;
+      }
+    }
+  }
+
+  & > div {
+    display: contents;
     background-color: inherit;
 
-    &[data-skeleton='true'] {
-        grid-template-columns: 1fr;
+    &[role='button'] > div {
+      align-self: stretch;
+      padding: 0.5em 0;
+      transition: background-color 0.2s ease-in-out;
+      position: relative;
 
+      &:last-child {
+        border-radius: 0 var(--border-radius3) var(--border-radius3) 0;
+      }
 
-        &>div>div:last-child {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+      &:first-child {
+        border-radius: var(--border-radius3) 0 0 var(--border-radius3);
+        display: flex;
+        align-items: center;
+        padding-right: 0.625em;
+        flex-wrap: nowrap;
+      }
+
+      &:nth-child(2) {
+        padding-right: 1em;
+      }
+
+      &:nth-child(3) {
+        color: var(--m-text-secondary);
+        text-align: center;
+      }
+
+      @mixin background-circle($color) {
+        &::after {
+          content: '';
+          position: absolute;
+          z-index: -1;
+          border-radius: 12px;
+          left: 50%;
+          bottom: 55%;
+          transform: translate(-50%, 50%);
+          width: 2.5em;
+          height: 1.5em;
+          background-color: $color;
         }
+      }
+
+      &:nth-child(4) {
+        display: flex;
+        justify-content: center;
+      }
     }
 
-    &[data-skeleton='false']>div {
-        &:not(:first-child) svg {
-            scale: 0;
-            width: 0;
-            margin-left: 0;
-            transition: all .2s ease-in-out;
-        }
-
-        &:hover:not(:first-child) {
-            cursor: pointer;
-
-            svg {
-                scale: 1;
-                width: 1em;
-                margin-left: .25em;
-                transition: all .2s ease-in-out;
-            }
-        }
+    // Amount
+    & > div:last-child {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-right: 0.125em;
     }
-
-    &>div {
-        display: contents;
-        background-color: inherit;
-
-        &[role='button']>div {
-            align-self: stretch;
-            padding: .5em 0;
-            transition: background-color .2s ease-in-out;
-            position: relative;
-
-            &:last-child {
-                border-radius: 0 var(--border-radius3) var(--border-radius3) 0;
-            }
-
-            &:first-child {
-                border-radius: var(--border-radius3) 0 0 var(--border-radius3);
-                display: flex;
-                align-items: center;
-                padding-right: .625em;
-                flex-wrap: nowrap;
-            }
-
-            &:nth-child(2) {
-                padding-right: 1em;
-            }
-
-            &:nth-child(3) {
-                color: var(--m-text-secondary);
-                text-align: center;
-            }
-
-            @mixin background-circle($color) {
-                &::after {
-                    content: '';
-                    position: absolute;
-                    z-index: -1;
-                    border-radius: 12px;
-                    left: 50%;
-                    bottom: 55%;
-                    transform: translate(-50%, 50%);
-                    width: 2.5em;
-                    height: 1.5em;
-                    background-color: $color;
-                }
-            }
-
-            &:nth-child(4) {
-                display: flex;
-                justify-content: center;
-            }
-        }
-
-        // Amount
-        &>div:last-child {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding-right: .125em
-        }
-    }
+  }
 }
 
-
 .monthHeader {
-    &>div {
-        grid-column: 1 / span 5;
-        justify-self: left;
-        padding: 0;
-        background-color: inherit;
-        margin: 0;
-        cursor: default;
-        color: var(--m-text-secondary);
-        position: sticky;
-        top: 0;
-    }
+  & > div {
+    grid-column: 1 / span 5;
+    justify-self: left;
+    padding: 0;
+    background-color: inherit;
+    margin: 0;
+    cursor: default;
+    color: var(--m-text-secondary);
+    position: sticky;
+    top: 0;
+  }
 }
 
 .greenText {
-    color: var(--green-text)
+  color: var(--green-text);
 }

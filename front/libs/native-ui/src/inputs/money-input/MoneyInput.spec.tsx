@@ -5,7 +5,7 @@ import MoneyInput from './MoneyInput';
 
 describe('MoneyInput', () => {
   it('should render successfully', () => {
-    const { root } = render(< MoneyInput />);
+    const { root } = render(<MoneyInput />);
     expect(root).toBeTruthy();
   });
 });

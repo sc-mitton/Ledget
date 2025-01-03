@@ -9,7 +9,7 @@ import { setTransactionModal } from '@features/modalSlice';
 import {
   useLazyGetTransactionsQuery,
   useGetTransactionsQuery,
-  selectFilteredFetchedConfirmedTransactions
+  selectFilteredFetchedConfirmedTransactions,
 } from '@ledget/shared-features';
 import { InsitutionLogo, ZeroConfig } from '@components/pieces';
 import {
@@ -17,7 +17,7 @@ import {
   InfiniteScrollDiv,
   LoadingRingDiv,
   BillCatEmojiLabel,
-  ShadowedContainer
+  ShadowedContainer,
 } from '@ledget/ui';
 import { useAppSelector, useAppDispatch } from '@hooks/store';
 import { useFilterFormContext } from '../context';
@@ -36,7 +36,8 @@ export function History() {
     selectFilteredFetchedConfirmedTransactions
   );
   const dispatch = useAppDispatch();
-  const [getTransactions, { data: fetchedTransactionData, isLoading }] = useLazyGetTransactionsQuery();
+  const [getTransactions, { data: fetchedTransactionData, isLoading }] =
+    useLazyGetTransactionsQuery();
   let monthholder: number | undefined;
   let newMonth = false;
 
@@ -57,7 +58,7 @@ export function History() {
         offset: fetchedTransactionData.next,
         limit: fetchedTransactionData.limit,
         start,
-        end
+        end,
       });
     }
     setFetchingMore(false);
@@ -94,7 +95,7 @@ export function History() {
                           <div>
                             {date.toLocaleString('default', {
                               month: 'short',
-                              year: 'numeric'
+                              year: 'numeric',
                             })}
                           </div>
                         )}
@@ -114,12 +115,13 @@ export function History() {
                         <div>
                           {transaction.preferred_name?.slice(0, 20) ||
                             transaction.name.slice(0, 20)}
-                          {`${(transaction.preferred_name &&
-                            transaction.preferred_name?.length > 20) ||
+                          {`${
+                            (transaction.preferred_name &&
+                              transaction.preferred_name?.length > 20) ||
                             transaction.name.length > 20
-                            ? '...'
-                            : ''
-                            }`}
+                              ? '...'
+                              : ''
+                          }`}
                         </div>
                         <div>
                           {dayjs(

@@ -1,148 +1,157 @@
 .prices {
-    background: linear-gradient(to top right, var(--blue-light-medium) 0%, color-mix(in srgb, var(--blue-medium), var(--blue-light) 40%) 100%);
-    border-top-left-radius: var(--border-radius5);
-    border-top-right-radius: var(--border-radius5);
-    border-bottom-left-radius: .25em;
-    border-bottom-right-radius: .25em;
-    position: relative;
-    border: 2px solid var(--blue-light);
-    z-index: 1000;
+  background: linear-gradient(
+    to top right,
+    var(--blue-light-medium) 0%,
+    color-mix(in srgb, var(--blue-medium), var(--blue-light) 40%) 100%
+  );
+  border-top-left-radius: var(--border-radius5);
+  border-top-right-radius: var(--border-radius5);
+  border-bottom-left-radius: 0.25em;
+  border-bottom-right-radius: 0.25em;
+  position: relative;
+  border: 2px solid var(--blue-light);
+  z-index: 1000;
 
-    &[data-size='extra-small'][data-dark='true'] {
-        border-radius: 0;
-        background: linear-gradient(to top right, var(--btn-feather-light-gray), var(--btn-feather-light-gray));
-        border: none;
+  &[data-size='extra-small'][data-dark='true'] {
+    border-radius: 0;
+    background: linear-gradient(
+      to top right,
+      var(--btn-feather-light-gray),
+      var(--btn-feather-light-gray)
+    );
+    border: none;
+  }
+
+  &[data-dark='false'] {
+    background: linear-gradient(
+      to top right,
+      var(--btn-dark-gray) 0%,
+      color-mix(in srgb, var(--btn-dark-gray), var(--btn-light-gray) 10%) 100%
+    );
+    border: none;
+    border-bottom: 2px solid var(--btn-medium-gray);
+
+    &[data-size='extra-small'] {
+      border: none;
+      border-radius: 0;
     }
-
-    &[data-dark='false'] {
-        background: linear-gradient(to top right, var(--btn-dark-gray) 0%, color-mix(in srgb, var(--btn-dark-gray), var(--btn-light-gray) 10%) 100%);
-        border: none;
-        border-bottom: 2px solid var(--btn-medium-gray);
-
-        &[data-size='extra-small'] {
-            border: none;
-            border-radius: 0;
-        }
-    }
+  }
 }
 
 .pricesHeader {
-    padding: 1.5em 3.25em 0 3.25em;
-    display: flex;
-    justify-content: start;
+  padding: 1.5em 3.25em 0 3.25em;
+  display: flex;
+  justify-content: start;
+
+  svg {
+    height: 0em;
+  }
+
+  &[data-size='extra-small'] {
+    height: 3.5em;
 
     svg {
-        height: 0em;
+      height: 2.25em;
+      position: absolute;
+      top: 1em;
+      left: 1em;
     }
-
-
-    &[data-size='extra-small'] {
-        height: 3.5em;
-
-        svg {
-            height: 2.25em;
-            position: absolute;
-            top: 1em;
-            left: 1em;
-        }
-    }
+  }
 }
 
 .subscriptionRadios {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    padding: 1.75em 4em 2em 4em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  padding: 1.75em 4em 2em 4em;
 
-    &[data-size='extra-small'] {
-        padding: 0em 1em 2em 1em;
-    }
+  &[data-size='extra-small'] {
+    padding: 0em 1em 2em 1em;
+  }
 
-    span {
-        color: var(--white);
-    }
+  span {
+    color: var(--white);
+  }
 
-    input[type="radio"] {
-        display: none;
-    }
+  input[type='radio'] {
+    display: none;
+  }
 
-    input[type="radio"]:checked+div {
-        box-shadow: inset 0 0 0 1.25px var(--white);
-    }
+  input[type='radio']:checked + div {
+    box-shadow: inset 0 0 0 1.25px var(--white);
+  }
 
-    input[type="radio"]:not(:checked)+div {
-        box-shadow: inset 0 0 0 1.25px var(--white);
-        opacity: .5;
-        transition: opacity .2s ease-in-out;
-    }
+  input[type='radio']:not(:checked) + div {
+    box-shadow: inset 0 0 0 1.25px var(--white);
+    opacity: 0.5;
+    transition: opacity 0.2s ease-in-out;
+  }
 
-    input[type="radio"]:not(:checked)+div:hover {
-        opacity: .4;
-        transition: opacity .2s ease-in-out;
-    }
+  input[type='radio']:not(:checked) + div:hover {
+    opacity: 0.4;
+    transition: opacity 0.2s ease-in-out;
+  }
 
+  input[type='radio']:checked + div > div {
+    opacity: 1;
+  }
 
-    input[type="radio"]:checked+div>div {
-        opacity: 1;
-    }
-
-    input[type="radio"]:not(:checked)+div>div {
-        background-color: var(--white);
-    }
+  input[type='radio']:not(:checked) + div > div {
+    background-color: var(--white);
+  }
 }
 
 .subscriptionRadio {
-    margin: 0 .75em;
-    text-align: center;
-    flex: .5;
-    position: relative;
-    overflow: hidden;
-    border-radius: var(--border-radius3);
-    padding: .375em 1em;
-    min-width: 7.5rem;
-    cursor: pointer;
+  margin: 0 0.75em;
+  text-align: center;
+  flex: 0.5;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--border-radius3);
+  padding: 0.375em 1em;
+  min-width: 7.5rem;
+  cursor: pointer;
 }
 
-
 .dogEar {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  background-color: var(--white);
+  width: 2.875rem;
+  height: 2.875rem;
+  z-index: -1;
+  transform: translate(50%, -50%) rotate(42deg);
+
+  svg {
+    color: var(--btn-dark-gray);
     position: absolute;
-    top: -1px;
-    right: -1px;
-    background-color: var(--white);
-    width: 2.875rem;
-    height: 2.875rem;
-    z-index: -1;
-    transform: translate(50%, -50%) rotate(42deg);
+    top: 2em;
+    left: 1em;
+    transform: rotate(-42deg);
+  }
 
+  &[data-dark='true'] svg {
+    color: var(--blue-medium);
+  }
+
+  &[data-dark='true'][data-size='extra-small'] {
     svg {
-        color: var(--btn-dark-gray);
-        position: absolute;
-        top: 2em;
-        left: 1em;
-        transform: rotate(-42deg);
+      color: var(--btn-feather-light-gray);
     }
-
-    &[data-dark='true'] svg {
-        color: var(--blue-medium);
-    }
-
-    &[data-dark='true'][data-size='extra-small'] {
-        svg {
-            color: var(--btn-feather-light-gray);
-        }
-    }
+  }
 }
 
 .nickname {
-    margin-right: .5em;
-    font-size: 1.1em;
+  margin-right: 0.5em;
+  font-size: 1.1em;
 }
 
 .unitAmount {
-    font-size: 1.4em;
+  font-size: 1.4em;
 
-    span {
-        font-size: .6em;
-    }
+  span {
+    font-size: 0.6em;
+  }
 }

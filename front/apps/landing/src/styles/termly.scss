@@ -1,9 +1,9 @@
 .termly {
-    width: calc(100% - 4em);
-    max-width: 50em;
-    height: min-content;
+  width: calc(100% - 4em);
+  max-width: 50em;
+  height: min-content;
 }
 
 body.dark .termly iframe {
-    filter: invert(1) hue-rotate(180deg) brightness(1.1);
+  filter: invert(1) hue-rotate(180deg) brightness(1.1);
 }

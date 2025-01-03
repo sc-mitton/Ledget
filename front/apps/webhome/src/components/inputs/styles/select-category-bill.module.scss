@@ -1,73 +1,77 @@
 .selectBillCategory {
-    position: relative;
-    width: 100%;
+  position: relative;
+  width: 100%;
 
-    span {
-        color: inherit;
+  span {
+    color: inherit;
+  }
+
+  & > div {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+
+    & > div:first-child svg {
+      position: absolute;
+      left: 0.65em;
+      top: 0.7em;
+      opacity: 0.7;
     }
 
-    &>div {
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        align-items: center;
-
-        &>div:first-child svg {
-            position: absolute;
-            left: .65em;
-            top: .7em;
-            opacity: .7;
-        }
-
-        &>div,
-        &>ul {
-            width: 100%;
-            display: flex;
-            box-sizing: border-box;
-        }
-
-        input {
-            margin: 0.5em .375em;
-            flex: 1;
-        }
-
-
-        input {
-            background-color: var(--input-background);
-            padding: .125em 0em;
-            padding-left: 1.75em;
-        }
-
-        input {
-            border-radius: var(--border-radius2);
-        }
-
+    & > div,
+    & > ul {
+      width: 100%;
+      display: flex;
+      box-sizing: border-box;
     }
+
+    input {
+      margin: 0.5em 0.375em;
+      flex: 1;
+    }
+
+    input {
+      background-color: var(--input-background);
+      padding: 0.125em 0em;
+      padding-left: 1.75em;
+    }
+
+    input {
+      border-radius: var(--border-radius2);
+    }
+  }
 }
 
 .options {
-    display: flex;
-    flex-direction: column;
-    gap: 0.625em;
-    max-height: 10em;
-    overflow-y: auto;
-    width: calc(100% - .75em);
-    padding: 0.5em .75em;
-    mask-image: linear-gradient(to bottom, transparent, black .5em, black calc(100% - .5em), transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 0.625em;
+  max-height: 10em;
+  overflow-y: auto;
+  width: calc(100% - 0.75em);
+  padding: 0.5em 0.75em;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 0.5em,
+    black calc(100% - 0.5em),
+    transparent
+  );
 }
 
 .billCatSelectContainer {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  & > button {
     display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
+    justify-content: space-between;
+    overflow: visible;
+  }
 
-    &>button {
-        display: flex;
-        justify-content: space-between;
-        overflow: visible;
-    }
-
-    &>div:last-child {
-        position: relative;
-    }
+  & > div:last-child {
+    position: relative;
+  }
 }

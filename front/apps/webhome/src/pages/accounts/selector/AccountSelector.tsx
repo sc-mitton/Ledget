@@ -43,9 +43,8 @@ const AccountSelector = () => {
   const { accounts } = useAccountsContext();
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedAccount, setSelectedAccount] = useState<Account | undefined>(
-    accounts?.find(
-      (account) => account.id === searchParams.get('account')
-    ) || accounts?.[0]
+    accounts?.find((account) => account.id === searchParams.get('account')) ||
+      accounts?.[0]
   );
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -61,16 +60,14 @@ const AccountSelector = () => {
 
   useEffect(() => {
     setSelectedAccount(
-      accounts?.find(
-        (account) => account.id === searchParams.get('account')
-      )
+      accounts?.find((account) => account.id === searchParams.get('account'))
     );
   }, [location.pathname, accounts]);
 
   useCloseDropdown({
     refs: [buttonRef, containerRef],
     visible: open,
-    setVisible: setOpen
+    setVisible: setOpen,
   });
 
   useEffect(() => {

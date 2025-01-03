@@ -80,10 +80,13 @@ export type RecurringTransaction = {
     transaction_id: string;
     date: string;
     name: string;
-  }[]
-} & Pick<Bill, 'day' | 'week' | 'week_day' | 'month' | 'year'> & Partial<Pick<Bill, 'period'>>
+  }[];
+} & Pick<Bill, 'day' | 'week' | 'week_day' | 'month' | 'year'> &
+  Partial<Pick<Bill, 'period'>>;
 
-export type TransformedRecurringTransaction = RecurringTransaction & { name: string }
+export type TransformedRecurringTransaction = RecurringTransaction & {
+  name: string;
+};
 
 export interface TransactionsSyncResponse {
   added: number;
@@ -91,13 +94,17 @@ export interface TransactionsSyncResponse {
   removed: number;
 }
 
-export type TransactionsSyncParams = {
-  account?: string
-} | {
-  item?: string
-} | {
-  accounts?: string[]
-} | void;
+export type TransactionsSyncParams =
+  | {
+      account?: string;
+    }
+  | {
+      item?: string;
+    }
+  | {
+      accounts?: string[];
+    }
+  | void;
 
 interface SimpleTransaction {
   transaction: Transaction;
@@ -144,7 +151,7 @@ export type TransactionsFilter = {
   items?: string[];
   accounts?: string[];
   merchants?: string[];
-}
+};
 
 export type TransactionsFilterState = {
   filter: TransactionsFilter;

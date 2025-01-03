@@ -13,13 +13,13 @@ export type RootStackParamList = {
   Modals: NavigatorScreenParams<ModalStackParamList>;
   Onboarding: NavigatorScreenParams<OnboardingStackParamList>;
   Transaction: {
-    transaction: Transaction | string
+    transaction: Transaction | string;
     options?: {
-      asModal?: boolean
-      rename?: boolean
-    }
-  }
-}
+      asModal?: boolean;
+      rename?: boolean;
+    };
+  };
+};
 
 export type RootAuthenticationStackParamList = {
   Login: NavigatorScreenParams<LoginStackParamList>;
@@ -31,8 +31,15 @@ export type RootAuthenticationStackParamList = {
   };
 };
 
-export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<RootStackParamList, T>;
-export type RecoveryScreenProps = StackScreenProps<RootAuthenticationStackParamList, 'Recovery'>
-export type VerificationScreenProps = StackScreenProps<RootAuthenticationStackParamList, 'Verification'>
+export type RootStackScreenProps<T extends keyof RootStackParamList> =
+  StackScreenProps<RootStackParamList, T>;
+export type RecoveryScreenProps = StackScreenProps<
+  RootAuthenticationStackParamList,
+  'Recovery'
+>;
+export type VerificationScreenProps = StackScreenProps<
+  RootAuthenticationStackParamList,
+  'Verification'
+>;
 
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();

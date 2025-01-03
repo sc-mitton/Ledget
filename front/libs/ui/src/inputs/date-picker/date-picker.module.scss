@@ -1,324 +1,324 @@
 .ledgetDatePickerContainer {
-    position: relative;
-    display: flex;
-    flex-direction: column;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 
-    &>div input {
-        width: 100%;
-        width: unset;
+  & > div input {
+    width: 100%;
+    width: unset;
 
-        &:last-of-type {
-            margin-left: .375em;
-        }
+    &:last-of-type {
+      margin-left: 0.375em;
     }
+  }
 
-    &>div>button {
-        position: absolute;
-        right: .5em;
-    }
+  & > div > button {
+    position: absolute;
+    right: 0.5em;
+  }
 
-    &[data-filled='false'],
-    &[data-filled='false']>div {
-        color: var(--input-placeholder2);
-    }
+  &[data-filled='false'],
+  &[data-filled='false'] > div {
+    color: var(--input-placeholder2);
+  }
 
-    // Arrow Icon
-    &>svg:nth-last-of-type(2) {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-    }
+  // Arrow Icon
+  & > svg:nth-last-of-type(2) {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
 
-    // Calendar Icon
-    &>div>svg:last-of-type {
-        position: absolute;
-        right: .75em;
-        top: 50%;
-        transform: translateY(calc(-50%));
-        min-height: 50%;
-        opacity: 1;
-        transition: opacity .2s ease-in-out;
-    }
+  // Calendar Icon
+  & > div > svg:last-of-type {
+    position: absolute;
+    right: 0.75em;
+    top: 50%;
+    transform: translateY(calc(-50%));
+    min-height: 50%;
+    opacity: 1;
+    transition: opacity 0.2s ease-in-out;
+  }
 }
 
 @mixin transition-background($value) {
-    background-color: $value;
-    transition: background-color .2s ease-in-out;
+  background-color: $value;
+  transition: background-color 0.2s ease-in-out;
 }
 
 @mixin transition-color($value) {
-    color: $value;
-    transition: color .2s ease-in-out;
+  color: $value;
+  transition: color 0.2s ease-in-out;
 }
 
 @mixin transition-border-top-bottom($value) {
-    border-bottom: 1.5px solid $value;
-    border-top: 1.5px solid $value;
-    transition: border-color .2s ease-in-out;
+  border-bottom: 1.5px solid $value;
+  border-top: 1.5px solid $value;
+  transition: border-color 0.2s ease-in-out;
 }
 
 .ledgetDatePicker {
-    display: flex;
-    align-items: center;
-    gap: 2em;
-    position: relative;
-    color: var(--input-placeholder2);
+  display: flex;
+  align-items: center;
+  gap: 2em;
+  position: relative;
+  color: var(--input-placeholder2);
 
-    &[data-filled='true'] {
-        color: var(--m-text);
-    }
+  &[data-filled='true'] {
+    color: var(--m-text);
+  }
 
-    &[data-pickertype='range']::after {
-        content: '';
-        position: absolute;
-        width: calc(50% - 3em);
-        height: 1.5px;
-        left: 0;
-        bottom: 0;
-        background-color: transparent;
-        border-radius: 2px;
-        transition: left .2s linear, height .2s ease-in-out, background-color .2s ease-in-out, ;
-    }
+  &[data-pickertype='range']::after {
+    content: '';
+    position: absolute;
+    width: calc(50% - 3em);
+    height: 1.5px;
+    left: 0;
+    bottom: 0;
+    background-color: transparent;
+    border-radius: 2px;
+    transition: left 0.2s linear, height 0.2s ease-in-out,
+      background-color 0.2s ease-in-out;
+  }
 
-    &[data-pickertype='range'][data-focused='0']::after {
-        background-color: var(--blue);
-        left: 1em;
-        transition: left .2s linear;
-    }
+  &[data-pickertype='range'][data-focused='0']::after {
+    background-color: var(--blue);
+    left: 1em;
+    transition: left 0.2s linear;
+  }
 
-    &[data-pickertype='range'][data-focused='1']::after {
-        background-color: var(--blue);
-        left: calc(50% + 1.5em);
-        transition: left .2s linear;
-    }
+  &[data-pickertype='range'][data-focused='1']::after {
+    background-color: var(--blue);
+    left: calc(50% + 1.5em);
+    transition: left 0.2s linear;
+  }
 
-    &:hover>svg:nth-last-child(2) {
-        opacity: 0;
-        transition: opacity .2s ease-in-out;
-    }
+  &:hover > svg:nth-last-child(2) {
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+  }
 
-    &>button {
-        position: absolute;
-        right: .75em;
-        top: 50%;
-        transform: translateY(-50%);
-    }
+  & > button {
+    position: absolute;
+    right: 0.75em;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 
-    &>button {
-        z-index: 2;
-        opacity: 0;
-        transition: opacity .2s ease-in-out;
-    }
+  & > button {
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+  }
 
-    &:hover>button {
-        opacity: 1;
-        transition: opacity .2s ease-in-out;
-    }
+  &:hover > button {
+    opacity: 1;
+    transition: opacity 0.2s ease-in-out;
+  }
 
-    &:hover.clear-input-button>svg {
-        z-index: 1;
-        opacity: 1;
-    }
+  &:hover.clear-input-button > svg {
+    z-index: 1;
+    opacity: 1;
+  }
 }
 
 .ledgetDatePickerCalendar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+  padding: 0.5em;
+
+  & > div:first-of-type {
     display: flex;
-    flex-direction: column;
-    gap: .25em;
-    padding: .5em;
+    justify-content: space-between;
+    padding-bottom: 0.625em;
+    border-bottom: 1.5px solid var(--border-color-super-dim);
 
-    &>div:first-of-type {
-        display: flex;
-        justify-content: space-between;
-        padding-bottom: .625em;
-        border-bottom: 1.5px solid var(--border-color-super-dim);
+    & > div:not(:first-child):not(:last-child) {
+      flex-grow: 1;
 
-        &>div:not(:first-child):not(:last-child) {
-            flex-grow: 1;
-
-            button:hover {
-                color: var(--blue-sat);
-            }
-        }
-
-        &>div {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: .5em;
-        }
+      button:hover {
+        color: var(--blue-sat);
+      }
     }
 
-    &>div:nth-of-type(2) {
-        display: flex;
-        gap: 2em;
-        margin-top: 1em;
+    & > div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5em;
     }
+  }
 
-    &>div:last-child {
-        display: flex;
-        justify-content: center;
-    }
+  & > div:nth-of-type(2) {
+    display: flex;
+    gap: 2em;
+    margin-top: 1em;
+  }
 
+  & > div:last-child {
+    display: flex;
+    justify-content: center;
+  }
 }
 
 .cell {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    padding: .5em .75em;
-    width: 100%;
-    box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0.5em 0.75em;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: default;
+  transition: color 0.2s ease-in-out;
+
+  &[data-empty='true'] {
+    opacity: 0;
+  }
+
+  &[data-extra-padded='true'] {
+    padding: 0.75em 1.75em;
+  }
+
+  &[data-disabled='false'] {
+    cursor: pointer;
+  }
+
+  &[data-disabled='true'] * {
     cursor: default;
-    transition: color .2s ease-in-out;
+  }
 
-    &[data-empty='true'] {
-        opacity: 0;
-    }
+  &[data-window-start='true'] *,
+  &[data-window-end='true'] * {
+    color: var(--blue-medium-dark);
+    @include transition-color(var(--blue));
+  }
 
-    &[data-extra-padded='true'] {
-        padding: .75em 1.75em;
-    }
+  &::after {
+    position: absolute;
+    content: '';
+    top: 0.375em;
+    bottom: 0.375em;
+    left: 0em;
+    right: 0em;
+    z-index: -1;
+    background-color: transparent;
+  }
 
-    &[data-disabled='false'] {
-        cursor: pointer;
-    }
+  &:hover[data-active='false'][data-disabled='false'][data-active-window-start='false'][data-active-window-end='false'][data-window-start='false'][data-window-end='false']::after {
+    @include transition-background(var(--btn-light-gray));
+    border-radius: var(--border-radius3);
+    left: 0.375em;
+    right: 0.375em;
+  }
 
-    &[data-disabled='true'] * {
-        cursor: default;
-    }
+  &[data-active='true'][data-window-start='false'][data-window-end='false'][data-disabled='false'][data-today='false'][data-selected='false']::after {
+    border-top: 1px dashed var(--blue-medium);
+    border-bottom: 1px dashed var(--blue-medium);
+  }
 
-    &[data-window-start='true'] *,
-    &[data-window-end='true'] * {
-        color: var(--blue-medium-dark);
-        @include transition-color(var(--blue));
+  &[data-active-window-end='true'][data-window-end='false'][data-window-start='false'][data-disabled='false'][data-today='false'][data-selected='false']::after {
+    border: 1px dashed var(--blue-medium);
+    border-left: none;
+    border-top-right-radius: var(--border-radius3);
+    border-bottom-right-radius: var(--border-radius3);
+  }
+
+  &[data-active-window-start='true'][data-window-end='false'][data-window-start='false'][data-disabled='false'][data-today='false'][data-selected='false']::after {
+    border: 1px dashed var(--blue-medium);
+    border-right: none;
+    border-top-left-radius: var(--border-radius3);
+    border-bottom-left-radius: var(--border-radius3);
+  }
+
+  &[data-today='true'][data-window-end='false'][data-window-start='false']::before {
+    position: absolute;
+    top: 0.375em;
+    bottom: 0.375em;
+    left: 0.375em;
+    right: 0.375em;
+    content: '';
+    border: 1px solid var(--blue);
+    border-radius: var(--border-radius3);
+  }
+
+  &[data-disabled='true'][data-dissabled-style='highlighted'][data-overflow='true']::after {
+    @include transition-background(var(--btn-light-gray));
+  }
+
+  &[data-disabled='true'][data-disabled-style='muted'][data-overflow='false'] {
+    opacity: 0.3;
+  }
+
+  &[data-disabled='true'][data-disabled-style='highlighted'][data-overflow='false']::after {
+    background-color: var(--btn-feather-light-gray);
+  }
+
+  &[data-selected='true']::after {
+    opacity: 0.4;
+    transition: opacity 0.2s ease-in-out 0.3s;
+  }
+
+  &[data-selected='true'][data-active='true']::after {
+    opacity: 0.7;
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  &[data-window-start='true'],
+  &[data-window-end='true'] {
+    color: var(--blue-medium-dark);
+    font-weight: var(--fw-bold);
+
+    * {
+      color: var(--blue-medium-dark);
     }
 
     &::after {
-        position: absolute;
-        content: '';
-        top: .375em;
-        bottom: .375em;
-        left: 0em;
-        right: 0em;
-        z-index: -1;
-        background-color: transparent;
+      @include transition-background(var(--blue-light));
     }
+  }
 
-    &:hover[data-active='false'][data-disabled='false'][data-active-window-start='false'][data-active-window-end='false'][data-window-start='false'][data-window-end='false']::after {
-        @include transition-background(var(--btn-light-gray));
-        border-radius: var(--border-radius3);
-        left: .375em;
-        right: .375em;
-    }
+  &[data-selected='true']::after {
+    @include transition-background(var(--blue-light));
+  }
 
-    &[data-active='true'][data-window-start='false'][data-window-end='false'][data-disabled='false'][data-today='false'][data-selected='false']::after {
-        border-top: 1px dashed var(--blue-medium);
-        border-bottom: 1px dashed var(--blue-medium);
-    }
+  &[data-window-start='true']::after {
+    border-top-left-radius: var(--border-radius3);
+    border-bottom-left-radius: var(--border-radius3);
+    left: 0em;
+  }
 
-    &[data-active-window-end='true'][data-window-end='false'][data-window-start='false'][data-disabled='false'][data-today='false'][data-selected='false']::after {
-        border: 1px dashed var(--blue-medium);
-        border-left: none;
-        border-top-right-radius: var(--border-radius3);
-        border-bottom-right-radius: var(--border-radius3);
-    }
+  &[data-window-end='true']::after {
+    border-top-right-radius: var(--border-radius3);
+    border-bottom-right-radius: var(--border-radius3);
+    right: 0em;
+  }
 
-    &[data-active-window-start='true'][data-window-end='false'][data-window-start='false'][data-disabled='false'][data-today='false'][data-selected='false']::after {
-        border: 1px dashed var(--blue-medium);
-        border-right: none;
-        border-top-left-radius: var(--border-radius3);
-        border-bottom-left-radius: var(--border-radius3);
-    }
-
-    &[data-today='true'][data-window-end='false'][data-window-start='false']::before {
-        position: absolute;
-        top: .375em;
-        bottom: .375em;
-        left: .375em;
-        right: .375em;
-        content: '';
-        border: 1px solid var(--blue);
-        border-radius: var(--border-radius3);
-    }
-
-    &[data-disabled='true'][data-dissabled-style='highlighted'][data-overflow='true']::after {
-        @include transition-background(var(--btn-light-gray));
-    }
-
-    &[data-disabled='true'][data-disabled-style='muted'][data-overflow='false'] {
-        opacity: .3;
-    }
-
-    &[data-disabled='true'][data-disabled-style='highlighted'][data-overflow='false']::after {
-        background-color: var(--btn-feather-light-gray);
-    }
-
-    &[data-selected='true']::after {
-        opacity: .4;
-        transition: opacity .2s ease-in-out .3s;
-    }
-
-    &[data-selected='true'][data-active='true']::after {
-        opacity: .7;
-        transition: opacity .2s ease-in-out;
-    }
-
-    &[data-window-start='true'],
-    &[data-window-end='true'] {
-        color: var(--blue-medium-dark);
-        font-weight: var(--fw-bold);
-
-        * {
-            color: var(--blue-medium-dark);
-        }
-
-        &::after {
-            @include transition-background(var(--blue-light));
-        }
-    }
-
-    &[data-selected='true']::after {
-        @include transition-background(var(--blue-light));
-    }
-
-    &[data-window-start='true']::after {
-        border-top-left-radius: var(--border-radius3);
-        border-bottom-left-radius: var(--border-radius3);
-        left: 0em;
-    }
-
-    &[data-window-end='true']::after {
-        border-top-right-radius: var(--border-radius3);
-        border-bottom-right-radius: var(--border-radius3);
-        right: 0em;
-    }
-
-    &[data-overflow='true'],
-    &[data-overflow='true'] * {
-        color: var(--m-text-quinary);
-    }
+  &[data-overflow='true'],
+  &[data-overflow='true'] * {
+    color: var(--m-text-quinary);
+  }
 }
 
 .dayCalendar {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
 
-    &>div:nth-child(-n+7) {
-        background-color: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: default
-    }
+  & > div:nth-child(-n + 7) {
+    background-color: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+  }
 }
 
 .monthCalendar,
 .yearCalendar {
-    display: grid;
-    grid-column: 1 / span 2;
-    grid-template-columns: 1fr 1fr 1fr;
-    row-gap: .75em;
+  display: grid;
+  grid-column: 1 / span 2;
+  grid-template-columns: 1fr 1fr 1fr;
+  row-gap: 0.75em;
 }

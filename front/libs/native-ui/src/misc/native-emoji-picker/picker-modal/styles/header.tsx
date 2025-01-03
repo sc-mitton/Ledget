@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   headerContainer: {
-    marginBottom: 10
+    marginBottom: 10,
   },
   header: {
     flexDirection: 'row',
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   seperator: {
     width: '200%',
     transform: [{ translateX: -300 }],
-  }
+  },
 });
 
 export default styles;

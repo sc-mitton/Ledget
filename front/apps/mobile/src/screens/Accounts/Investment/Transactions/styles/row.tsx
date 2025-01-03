@@ -8,8 +8,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   amount: {
-    marginTop: 4
-  }
+    marginTop: 4,
+  },
 });
 
 export default styles;

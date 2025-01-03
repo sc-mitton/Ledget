@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   rightContainer: {
     flexGrow: 1,
     alignItems: 'flex-end',
-    gap: 6
+    gap: 6,
   },
   amountSkeleton: {
     height: 9,
@@ -26,8 +26,8 @@ const styles = StyleSheet.create({
   },
   nameSkeleton: {
     height: 10,
-    width: 72
-  }
+    width: 72,
+  },
 });
 
 export default styles;

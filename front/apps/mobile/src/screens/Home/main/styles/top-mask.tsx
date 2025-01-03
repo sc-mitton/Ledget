@@ -8,8 +8,8 @@ const styles = StyleSheet.create({
     right: 0,
     height: 40,
     width: '300%',
-    zIndex: 100
-  }
+    zIndex: 100,
+  },
 });
 
 export default styles;

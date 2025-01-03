@@ -1,9 +1,5 @@
 import { useRef, forwardRef } from 'react';
-import {
-  SectionListProps,
-  SectionList,
-  View
-} from 'react-native';
+import { SectionListProps, SectionList, View } from 'react-native';
 import { useTheme } from '@shopify/restyle';
 import Animated, {
   useSharedValue,
@@ -12,21 +8,27 @@ import Animated, {
   withTiming,
   cancelAnimation,
   withDelay,
-  useDerivedValue
+  useDerivedValue,
 } from 'react-native-reanimated';
 
 import styles from './styles';
 
-type CustomSectionListProps<ItemT, SectionT> = SectionListProps<ItemT, SectionT> & {
+type CustomSectionListProps<ItemT, SectionT> = SectionListProps<
+  ItemT,
+  SectionT
+> & {
   showsVerticalScrollIndicator?: boolean;
   scrollIndicatorPadding?: [number, number];
 };
 
-export const CustomSectionList = forwardRef<SectionList, CustomSectionListProps<any, any>>((props, ref) => {
+export const CustomSectionList = forwardRef<
+  SectionList,
+  CustomSectionListProps<any, any>
+>((props, ref) => {
   const {
     onContentSizeChange,
     onScroll,
-    showsVerticalScrollIndicator = true
+    showsVerticalScrollIndicator = true,
   } = props;
   const theme = useTheme();
 
@@ -42,7 +44,9 @@ export const CustomSectionList = forwardRef<SectionList, CustomSectionListProps<
   }, [wholeHeight, visibleHeight]);
 
   const difference = useDerivedValue(() => {
-    return visibleHeight.value > indicatorSize.value ? visibleHeight.value - indicatorSize.value : 1;
+    return visibleHeight.value > indicatorSize.value
+      ? visibleHeight.value - indicatorSize.value
+      : 1;
   }, [visibleHeight, indicatorSize]);
 
   return (
@@ -83,9 +87,13 @@ export const CustomSectionList = forwardRef<SectionList, CustomSectionListProps<
           style={[
             styles.verticalScrollIndicator,
             {
-              top: props.scrollIndicatorPadding ? props.scrollIndicatorPadding?.[0] : 0,
-              bottom: props.scrollIndicatorPadding ? props.scrollIndicatorPadding?.[1] : 0,
-            }
+              top: props.scrollIndicatorPadding
+                ? props.scrollIndicatorPadding?.[0]
+                : 0,
+              bottom: props.scrollIndicatorPadding
+                ? props.scrollIndicatorPadding?.[1]
+                : 0,
+            },
           ]}
         >
           <Animated.View
@@ -95,8 +103,8 @@ export const CustomSectionList = forwardRef<SectionList, CustomSectionListProps<
                 height: indicatorSize,
                 opacity,
                 backgroundColor: theme.colors.scrollbar,
-                transform: [{ translateY: y }]
-              }
+                transform: [{ translateY: y }],
+              },
             ]}
           />
         </View>

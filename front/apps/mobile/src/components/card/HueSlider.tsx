@@ -1,22 +1,32 @@
-import { useEffect, useRef, useState } from "react";
-import { View } from "react-native";
-import { useTheme } from "@shopify/restyle";
-import { Canvas, Rect, vec, LinearGradient, interpolate } from '@shopify/react-native-skia';
-import { ChevronDown } from "geist-native-icons";
+import { useEffect, useRef, useState } from 'react';
+import { View } from 'react-native';
+import { useTheme } from '@shopify/restyle';
+import {
+  Canvas,
+  Rect,
+  vec,
+  LinearGradient,
+  interpolate,
+} from '@shopify/react-native-skia';
+import { ChevronDown } from 'geist-native-icons';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 import {
   useSharedValue,
   SharedValue,
   useDerivedValue,
-  runOnJS
-} from "react-native-reanimated";
+  runOnJS,
+} from 'react-native-reanimated';
 
 import styles from './styles/hue-slider';
-import { Box, Icon } from "@ledget/native-ui";
-import { Card } from "./Card";
-import { useUpdateAccountsMutation } from "@ledget/shared-features";
+import { Box, Icon } from '@ledget/native-ui';
+import { Card } from './Card';
+import { useUpdateAccountsMutation } from '@ledget/shared-features';
 
-interface SliderProps { hue: SharedValue<number>, width: number, onChange: (val: number) => void }
+interface SliderProps {
+  hue: SharedValue<number>;
+  width: number;
+  onChange: (val: number) => void;
+}
 
 const Slider = (props: SliderProps) => {
   const gradientColors = useDerivedValue(() => {
@@ -24,7 +34,7 @@ const Slider = (props: SliderProps) => {
       const intHue = Number(props.hue.value);
       const iHue = interpolate(i, [0, 180], [intHue - 90, intHue + 90]);
       return `hsl(${iHue}, 50%, 50%)`;
-    })
+    });
   });
 
   const pan = Gesture.Pan()
@@ -43,18 +53,14 @@ const Slider = (props: SliderProps) => {
           <View style={styles.chevronIcon}>
             <Icon
               icon={ChevronDown}
-              color='whiteText'
-              borderColor='whiteText'
+              color="whiteText"
+              borderColor="whiteText"
               strokeWidth={3.5}
               size={20}
             />
           </View>
         </View>
-        <Box
-          borderWidth={1.75}
-          borderColor='whiteText'
-          style={styles.slider}
-        >
+        <Box borderWidth={1.75} borderColor="whiteText" style={styles.slider}>
           <Canvas style={styles.canvas}>
             <Rect x={0} y={0} width={180} height={30}>
               <LinearGradient
@@ -67,10 +73,14 @@ const Slider = (props: SliderProps) => {
         </Box>
       </View>
     </GestureDetector>
-  )
-}
+  );
+};
 
-export const HueSliderCard = (props: { account: string, onChange: (val: number) => void, hue?: number }) => {
+export const HueSliderCard = (props: {
+  account: string;
+  onChange: (val: number) => void;
+  hue?: number;
+}) => {
   const [size, setSize] = useState<{ width: number; height: number }>();
   const ref = useRef<View>(null);
   const [updateAccount] = useUpdateAccountsMutation();
@@ -79,7 +89,7 @@ export const HueSliderCard = (props: { account: string, onChange: (val: number) 
 
   useEffect(() => {
     ref.current?.measure((x, y, width, height) => {
-      setSize({ width, height })
+      setSize({ width, height });
     });
   }, []);
 
@@ -92,18 +102,18 @@ export const HueSliderCard = (props: { account: string, onChange: (val: number) 
   const handleChangedHue = (newValue: number) => {
     props.onChange(newValue);
     updateAccount([{ account: props.account, cardHue: newValue }]);
-  }
+  };
 
   return (
     <Box style={[styles.container, { height: size?.height }]}>
-      {size?.width &&
-        <Slider hue={hue} width={size.width} onChange={handleChangedHue} />}
+      {size?.width && (
+        <Slider hue={hue} width={size.width} onChange={handleChangedHue} />
+      )}
       <View ref={ref}>
         <Card empty hue={hue} />
       </View>
     </Box>
   );
 };
-
 
 export default HueSliderCard;

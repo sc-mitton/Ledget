@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -13,8 +13,8 @@ const styles = StyleSheet.create({
   spinnerContainer: {
     position: 'absolute',
     justifyContent: 'center',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });
 
 export default styles;

@@ -5,7 +5,7 @@ import {
   useSpring,
   animated,
   useTransition,
-  useSpringRef
+  useSpringRef,
 } from '@react-spring/web';
 import { shallowEqual } from 'react-redux';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
@@ -20,7 +20,7 @@ import {
   ExpandButton,
   AbsPosMenu,
   useColorScheme,
-  LoadingRingDiv
+  LoadingRingDiv,
 } from '@ledget/ui';
 import { useLoaded } from '@ledget/helpers';
 import { setTransactionModal } from '@features/modalSlice';
@@ -40,7 +40,7 @@ import {
   selectBudgetMonthYear,
   isCategory,
   SplitCategory,
-  updateTransaction
+  updateTransaction,
 } from '@ledget/shared-features';
 import type { Transaction, Bill, Category } from '@ledget/shared-features';
 import { useFilterFormContext } from '../context';
@@ -50,24 +50,30 @@ import {
   _getOpacity,
   _getScale,
   _getY,
-  _getBackGroundColor
+  _getBackGroundColor,
 } from './helpers';
 
 export const NeedsConfirmationStack = () => {
   const loaded = useLoaded(1000);
   const [showMenu, setShowMenu] = useState(false);
   const [showBillCatSelect, setShowBillCatSelect] = useState(false);
-  const [billCatSelectVal, setBillCatSelectVal] = useState<Category | Bill | undefined>();
+  const [billCatSelectVal, setBillCatSelectVal] = useState<
+    Category | Bill | undefined
+  >();
   const [focusedItem, setFocusedItem] = useState<Transaction | undefined>();
-  const [menuPos, setMenuPos] = useState<{ x: number; y: number } | undefined>();
-  const [billCatSelectPos, setBillCatSelectPos] = useState<{ x: number; y: number } | undefined>();
+  const [menuPos, setMenuPos] = useState<
+    { x: number; y: number } | undefined
+  >();
+  const [billCatSelectPos, setBillCatSelectPos] = useState<
+    { x: number; y: number } | undefined
+  >();
   const { month, year } = useAppSelector(selectBudgetMonthYear);
   const {
     setShowFilterForm,
     unconfirmedStackExpanded,
     setUnconfirmedStackExpanded,
     confirmAll,
-    setConfirmAll
+    setConfirmAll,
   } = useFilterFormContext();
   const { isDark } = useColorScheme();
   const navigate = useNavigate();
@@ -83,7 +89,7 @@ export const NeedsConfirmationStack = () => {
     (state) =>
       selectUnconfirmedTransactions(state, {
         month: month || new Date().getMonth(),
-        year: year || new Date().getFullYear()
+        year: year || new Date().getFullYear(),
       }),
     shallowEqual
   );
@@ -91,7 +97,7 @@ export const NeedsConfirmationStack = () => {
     (state) =>
       selectConfirmedTransactions(state, {
         month: month || new Date().getMonth(),
-        year: year || new Date().getFullYear()
+        year: year || new Date().getFullYear(),
       }),
     shallowEqual
   );
@@ -99,7 +105,7 @@ export const NeedsConfirmationStack = () => {
 
   const [
     fetchTransactions,
-    { data: transactionsData, isSuccess, isLoading: isFetchingTransactions }
+    { data: transactionsData, isSuccess, isLoading: isFetchingTransactions },
   ] = useLazyGetUnconfirmedTransactionsQuery();
   const newItemsRef = useRef<HTMLDivElement>(null);
 
@@ -112,17 +118,17 @@ export const NeedsConfirmationStack = () => {
 
   const [containerProps, containerApi] = useSpring(
     () =>
-    ({
-      position: 'relative',
-      left: '50%',
-      transform: 'translateX(-50%)',
-      height: _getContainerHeight(
-        unconfirmedTransactions?.length || 0,
-        unconfirmedStackExpanded
-      ),
-      overflowX: 'hidden',
-      overflowY: 'hidden'
-    } as React.CSSProperties)
+      ({
+        position: 'relative',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        height: _getContainerHeight(
+          unconfirmedTransactions?.length || 0,
+          unconfirmedStackExpanded
+        ),
+        overflowX: 'hidden',
+        overflowY: 'hidden',
+      } as React.CSSProperties)
   );
 
   const itemsApi = useSpringRef();
@@ -135,7 +141,7 @@ export const NeedsConfirmationStack = () => {
         index,
         unconfirmedStackExpanded,
         isDark
-      )
+      ),
     }),
     enter: (item, index) => ({
       y: _getY(index, unconfirmedStackExpanded, true),
@@ -144,7 +150,7 @@ export const NeedsConfirmationStack = () => {
       opacity: _getOpacity(index, unconfirmedStackExpanded),
       x: 0,
       left: 0,
-      right: 0
+      right: 0,
     }),
     update: (item, index) => ({
       y: _getY(index, unconfirmedStackExpanded),
@@ -155,7 +161,7 @@ export const NeedsConfirmationStack = () => {
         index,
         unconfirmedStackExpanded,
         isDark
-      )
+      ),
     }),
     onRest: () => {
       unconfirmedStackExpanded
@@ -165,10 +171,10 @@ export const NeedsConfirmationStack = () => {
     config: {
       tension: 180,
       friction: loaded ? 22 : 40,
-      mass: 1
+      mass: 1,
     },
     immediate: !loaded && unconfirmedStackExpanded,
-    ref: itemsApi
+    ref: itemsApi,
   });
 
   // Initial animate container expanding
@@ -189,7 +195,7 @@ export const NeedsConfirmationStack = () => {
           unconfirmedTransactions.length,
           unconfirmedStackExpanded
         ),
-        immediate: !loaded
+        immediate: !loaded,
       });
     }
     setShowFilterForm(false);
@@ -200,11 +206,15 @@ export const NeedsConfirmationStack = () => {
   // the focused item and selected value
   useEffect(() => {
     if (focusedItem && billCatSelectVal) {
-      dispatch(updateTransaction({
-        transaction: focusedItem,
-        categories: isCategory(billCatSelectVal) ? [{ ...billCatSelectVal, fraction: 1 }] : undefined,
-        bill: isCategory(billCatSelectVal) ? undefined : billCatSelectVal
-      }));
+      dispatch(
+        updateTransaction({
+          transaction: focusedItem,
+          categories: isCategory(billCatSelectVal)
+            ? [{ ...billCatSelectVal, fraction: 1 }]
+            : undefined,
+          bill: isCategory(billCatSelectVal) ? undefined : billCatSelectVal,
+        })
+      );
       setFocusedItem(undefined);
       setBillCatSelectVal(undefined);
     }
@@ -223,7 +233,7 @@ export const NeedsConfirmationStack = () => {
           config: { duration: 130 },
           onStart: () => {
             dispatch(confirmAndUpdateMetaData(transaction));
-          }
+          },
         };
       }
     });
@@ -238,16 +248,16 @@ export const NeedsConfirmationStack = () => {
         x: 100,
         opacity: 0,
         delay: index * 50,
-        config: { duration: 130 }
+        config: { duration: 130 },
       }));
 
       // Dispatch confirm for all items
       setTimeout(() => {
         const confirmed: ConfirmedQueue = [];
         for (let transaction of unconfirmedTransactions) {
-          const ready2ConfirmItem: (QueueItemWithCategory | QueueItemWithBill) = {
+          const ready2ConfirmItem: QueueItemWithCategory | QueueItemWithBill = {
             transaction: transaction,
-            bill: transaction.predicted_bill?.id
+            bill: transaction.predicted_bill?.id,
           };
 
           // Update meta data for immediate ui updates
@@ -255,7 +265,7 @@ export const NeedsConfirmationStack = () => {
             dispatch(
               addTransaction2Bill({
                 billId: ready2ConfirmItem.bill,
-                amount: ready2ConfirmItem.transaction.amount
+                amount: ready2ConfirmItem.transaction.amount,
               })
             );
           } else if (ready2ConfirmItem.categories) {
@@ -264,7 +274,7 @@ export const NeedsConfirmationStack = () => {
                 addTransaction2Cat({
                   categoryId: category.id,
                   amount: ready2ConfirmItem.transaction.amount,
-                  period: category.period
+                  period: category.period,
                 })
               );
             }
@@ -277,11 +287,11 @@ export const NeedsConfirmationStack = () => {
             transaction_id: item.transaction.transaction_id,
             splits: item.categories
               ? item.categories.map((cat) => ({
-                category: cat.id,
-                fraction: cat.fraction
-              }))
+                  category: cat.id,
+                  fraction: cat.fraction,
+                }))
               : undefined,
-            bill: item.bill
+            bill: item.bill,
           }))
         );
       }, 130 + unconfirmedTransactions.length * 50);
@@ -298,11 +308,11 @@ export const NeedsConfirmationStack = () => {
           transaction_id: item.transaction.transaction_id,
           splits: item.categories
             ? item.categories.map((cat) => ({
-              category: cat.id,
-              fraction: cat.fraction
-            }))
+                category: cat.id,
+                fraction: cat.fraction,
+              }))
             : undefined,
-          bill: item.bill
+          bill: item.bill,
         }))
       );
     }
@@ -313,11 +323,11 @@ export const NeedsConfirmationStack = () => {
     setMenuPos({
       x:
         buttonRect.right -
-        newItemsRef.current!.getBoundingClientRect().left +
-        14 || 0,
+          newItemsRef.current!.getBoundingClientRect().left +
+          14 || 0,
       y:
         buttonRect.top - newItemsRef.current!.getBoundingClientRect().top - 4 ||
-        0
+        0,
     });
     setFocusedItem(item);
     setShowBillCatSelect(false);
@@ -331,8 +341,8 @@ export const NeedsConfirmationStack = () => {
         0,
       y:
         buttonRect.top -
-        newItemsRef.current!.getBoundingClientRect().top -
-        12 || 0
+          newItemsRef.current!.getBoundingClientRect().top -
+          12 || 0,
     });
     setFocusedItem(item);
     setShowMenu(false);
@@ -416,7 +426,7 @@ export const NeedsConfirmationStack = () => {
                     dispatch(
                       setTransactionModal({
                         item: focusedItem,
-                        splitMode: true
+                        splitMode: true,
                       })
                     );
                 },
@@ -424,7 +434,7 @@ export const NeedsConfirmationStack = () => {
                   navigate(
                     {
                       pathname: '/budget/new-bill',
-                      search: location.search
+                      search: location.search,
                     },
                     {
                       state: {
@@ -433,8 +443,8 @@ export const NeedsConfirmationStack = () => {
                         name: focusedItem?.name,
                         day: dayjs(
                           focusedItem?.datetime || focusedItem?.date
-                        ).date()
-                      }
+                        ).date(),
+                      },
                     }
                   ),
                     setShowMenu(false);
@@ -443,7 +453,7 @@ export const NeedsConfirmationStack = () => {
                   navigate(
                     {
                       pathname: '/budget/new-bill',
-                      search: location.search
+                      search: location.search,
                     },
                     {
                       state: {
@@ -456,8 +466,8 @@ export const NeedsConfirmationStack = () => {
                         month:
                           dayjs(
                             focusedItem?.datetime || focusedItem?.date
-                          ).month() + 1
-                      }
+                          ).month() + 1,
+                      },
                     }
                   ),
                     setShowMenu(false);
@@ -465,7 +475,7 @@ export const NeedsConfirmationStack = () => {
                 () => {
                   focusedItem &&
                     dispatch(setTransactionModal({ item: focusedItem }));
-                }
+                },
               ]}
             />
           </AbsPosMenu>

@@ -9,11 +9,11 @@ import {
   Trash2,
   Edit2,
   Maximize2,
-  MoreHorizontal
+  MoreHorizontal,
 } from '@geist-ui/icons';
 
 import styles from './styles/transaction-item.module.scss';
-import { } from '@ledget/shared-features';
+import {} from '@ledget/shared-features';
 import { withModal, Base64Logo, DollarCents, BillCatLabel } from '@ledget/ui';
 import { SelectCategoryBill } from '@components/inputs';
 import {
@@ -22,13 +22,13 @@ import {
   useUpdateDeleteNoteMutation,
   useUpdateTransactionMutation,
   useGetAccountsQuery,
-  isCategory
+  isCategory,
 } from '@ledget/shared-features';
 import type {
   Transaction,
   Note,
   Category,
-  Bill
+  Bill,
 } from '@ledget/shared-features';
 import { SplitTransactionInput } from '@components/split';
 import {
@@ -42,14 +42,14 @@ import {
   TextArea,
   NestedWindow2,
   WindowCorner,
-  IconButtonHalfGray
+  IconButtonHalfGray,
 } from '@ledget/ui';
 import { useLoaded } from '@ledget/helpers';
 
 type Action = 'split';
 
 const Actions = ({
-  setAction
+  setAction,
 }: {
   setAction: React.Dispatch<React.SetStateAction<Action | undefined>>;
 }) => {
@@ -157,8 +157,8 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
           prev === 0
             ? undefined
             : prev === undefined
-              ? undefined
-              : Math.max(0, prev - 1)
+            ? undefined
+            : Math.max(0, prev - 1)
         );
       } else if (e.key === 'ArrowDown') {
         e.stopPropagation();
@@ -202,7 +202,7 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
 
         addNote({
           transactionId: item.transaction_id,
-          text: note.text
+          text: note.text,
         });
       }, 100);
       return () => clearTimeout(timeout);
@@ -219,7 +219,7 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
     updateDeleteNote({
       transactionId: item.transaction_id,
       noteId: noteId,
-      ...(options?.delete ? {} : { text: text })
+      ...(options?.delete ? {} : { text: text }),
     });
     // If note is empty, remove it from state
     if (text === '' || options?.delete) {
@@ -243,11 +243,11 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
         prev
           ? { ...prev, text: text }
           : {
-            id: `new-${Math.random().toString(36).substring(2, 10)}`,
-            text: text,
-            is_current_users: true,
-            datetime: new Date().toISOString()
-          }
+              id: `new-${Math.random().toString(36).substring(2, 10)}`,
+              text: text,
+              is_current_users: true,
+              datetime: new Date().toISOString(),
+            }
       );
     }
     // Otherwise, then we need to update the note in the state
@@ -257,10 +257,10 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
           prev.map((note) =>
             note.id === noteId
               ? {
-                ...note,
-                text: text,
-                datetime: new Date().toISOString()
-              }
+                  ...note,
+                  text: text,
+                  datetime: new Date().toISOString(),
+                }
               : note
           )
         );
@@ -269,10 +269,10 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
           prev.map((note) =>
             note.id === noteId
               ? {
-                ...note,
-                text: text,
-                datetime: new Date().toISOString()
-              }
+                  ...note,
+                  text: text,
+                  datetime: new Date().toISOString(),
+                }
               : note
           )
         );
@@ -301,7 +301,7 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
         setNotes((prev) => [...prev, newNote]);
         addNote({
           transactionId: item.transaction_id,
-          text: newNote.text
+          text: newNote.text,
         });
       }
       setNewNote(undefined);
@@ -394,7 +394,7 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
             >
               <TextArea.Text
                 value={newNote?.text || ''}
-                onChange={() => { }}
+                onChange={() => {}}
                 placeholder="Add a note..."
                 tabIndex={-1}
                 readOnly
@@ -478,8 +478,8 @@ const InfoTableInnerWindow = ({ item }: { item: Transaction }) => {
               {item.city && item.region
                 ? `${item.city}, ${item.region}`
                 : item.city
-                  ? `${item.city}`
-                  : `${item.region}`}
+                ? `${item.city}`
+                : `${item.region}`}
             </span>
           </div>
         </>
@@ -508,10 +508,10 @@ function CategoriesBillInnerWindow({ item }: { item: Transaction }) {
         item?.categories?.length
           ? item.categories[0]
           : item.bill
-            ? item.bill
-            : item.predicted_category
-              ? item.predicted_category
-              : item.predicted_bill
+          ? item.bill
+          : item.predicted_category
+          ? item.predicted_category
+          : item.predicted_bill
       );
     }
   }, [item]);
@@ -519,7 +519,7 @@ function CategoriesBillInnerWindow({ item }: { item: Transaction }) {
   useCloseDropdown({
     refs: [buttonContainerRef, dropdownRef],
     visible: showBillCatSelect,
-    setVisible: setShowBillCatSelect
+    setVisible: setShowBillCatSelect,
   });
 
   useEffect(() => {
@@ -529,8 +529,8 @@ function CategoriesBillInnerWindow({ item }: { item: Transaction }) {
           transaction_id: item.transaction_id,
           ...(isCategory(billCat)
             ? { splits: [{ category: billCat.id, fraction: 1 }] }
-            : { bill: billCat.id })
-        }
+            : { bill: billCat.id }),
+        },
       ]);
       setShowBillCatSelect(false);
     }
@@ -588,7 +588,7 @@ function CategoriesBillInnerWindow({ item }: { item: Transaction }) {
 
 export const TransactionModalContent = ({
   item,
-  splitMode
+  splitMode,
 }: {
   item: Transaction;
   splitMode?: boolean;
@@ -629,7 +629,7 @@ export const TransactionModalContent = ({
                 nameIsDirty &&
                   updateTransaction({
                     transactionId: item.transaction_id,
-                    data: { preferred_name: e.target.value }
+                    data: { preferred_name: e.target.value },
                   });
                 setEdit(false);
               }}
@@ -667,8 +667,8 @@ export const TransactionModalContent = ({
                 item.predicted_category ||
                 item.bill ||
                 (item.categories?.length || 0) > 0) && (
-                  <CategoriesBillInnerWindow item={item} />
-                )}
+                <CategoriesBillInnerWindow item={item} />
+              )}
               <InfoTableInnerWindow item={item} />
               <NoteInnerWindow item={item} />
             </div>

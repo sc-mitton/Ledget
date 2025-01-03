@@ -57,7 +57,8 @@ export const formatCurrency = (
   val: number | string | undefined,
   withCents = true
 ) => {
-  if (!val || (typeof val === 'string' && !parseInt(val))) return withCents ? '$0.00' : '$0';
+  if (!val || (typeof val === 'string' && !parseInt(val)))
+    return withCents ? '$0.00' : '$0';
 
   const currencyAmount =
     typeof val === 'string' ? makeIntCurrencyFromStr(val) : val;
@@ -65,12 +66,12 @@ export const formatCurrency = (
   const noCentsFormatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
-    minimumFractionDigits: 0
+    minimumFractionDigits: 0,
   });
   const withCentsFormatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
-    minimumFractionDigits: 2
+    minimumFractionDigits: 2,
   });
 
   return withCents
@@ -88,8 +89,8 @@ export const makeIntCurrencyFromStr = (s: string) => {
   return s.includes('.') ? newVal : newVal * 100;
 };
 
-type Reducable = { reduce: (acc: any, curr: any) => any;[index: number]: any };
-type Lengthy = { length: number;[index: string | number]: any };
+type Reducable = { reduce: (acc: any, curr: any) => any; [index: number]: any };
+type Lengthy = { length: number; [index: string | number]: any };
 
 // For list of objects, returns the length of the longest string
 // for the given key
@@ -117,7 +118,7 @@ export function shuffleArray(array: any[]) {
     // And swap it with the current element.
     [array[currentIndex], array[randomIndex]] = [
       array[randomIndex],
-      array[currentIndex]
+      array[currentIndex],
     ];
   }
 
@@ -143,7 +144,7 @@ export const formatDateOrRelativeDate = (unixTimestamp: number) => {
   } else {
     return inputDate.toLocaleDateString('en-US', {
       month: 'numeric',
-      day: 'numeric'
+      day: 'numeric',
     });
   }
 };

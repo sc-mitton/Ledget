@@ -16,29 +16,43 @@ interface Props extends StackHeaderProps {
 }
 
 export function BackHeader(props: Props) {
-  const { navigation, route, options, pagesWithTitle, top, height = 44 } = props;
+  const {
+    navigation,
+    route,
+    options,
+    pagesWithTitle,
+    top,
+    height = 44,
+  } = props;
 
   return (
     <Box
       style={[
         styles.headerContainer,
-        { top: top || StatusBarManager.HEIGHT + 8, height }
+        { top: top || StatusBarManager.HEIGHT + 8, height },
       ]}
-      backgroundColor={props.authenticationScreens ? 'accountsMainBackground' : 'mainBackground'}
+      backgroundColor={
+        props.authenticationScreens
+          ? 'accountsMainBackground'
+          : 'mainBackground'
+      }
     >
       <Box style={styles.backButton}>
-        <BackButton onPress={(e) => {
-          e.preventDefault();
-          navigation.goBack();
-        }} />
+        <BackButton
+          onPress={(e) => {
+            e.preventDefault();
+            navigation.goBack();
+          }}
+        />
       </Box>
-      {pagesWithTitle?.includes(route.name) &&
-        <Text fontSize={19} style={styles.title} color='highContrastText'>
+      {pagesWithTitle?.includes(route.name) && (
+        <Text fontSize={19} style={styles.title} color="highContrastText">
           {props.options.title || route.name}
-        </Text>}
+        </Text>
+      )}
       <View style={styles.menuContainer}>
         {options.headerRight && options.headerRight({})}
       </View>
     </Box>
-  )
+  );
 }

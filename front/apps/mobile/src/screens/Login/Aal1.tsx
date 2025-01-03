@@ -18,13 +18,13 @@ import {
   Icon,
   JiggleView,
   FormError,
-  NestedScreenWOFeedback
+  NestedScreenWOFeedback,
 } from '@ledget/native-ui';
 import { LoginScreenProps } from '@types';
 import { useNativeFlow } from '@ledget/ory';
 import {
   useLazyGetLoginFlowQuery,
-  useCompleteLoginFlowMutation
+  useCompleteLoginFlowMutation,
 } from '@features/orySlice';
 import { useFlowProgress } from '@hooks';
 
@@ -32,20 +32,20 @@ const schema = z.object({
   password: z
     .string()
     .min(1, { message: 'required' })
-    .transform((value) => value.trim())
+    .transform((value) => value.trim()),
 });
 
 const Aal1Authentication = ({
   navigation,
-  route
+  route,
 }: LoginScreenProps<'Aal1'>) => {
   const {
     control,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
   } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
-    mode: 'onSubmit'
+    mode: 'onSubmit',
   });
   const {
     fetchFlow,
@@ -54,9 +54,9 @@ const Aal1Authentication = ({
       isCompleteSuccess,
       isCompletingFlow,
       isCompleteError,
-      errMsg
+      errMsg,
     },
-    result
+    result,
   } = useNativeFlow(
     useLazyGetLoginFlowQuery,
     useCompleteLoginFlowMutation,
@@ -69,7 +69,7 @@ const Aal1Authentication = ({
     route,
     updateProgress: isCompleteSuccess,
     token: result?.session_token,
-    id: result?.session.id
+    id: result?.session.id,
   });
 
   // Submit the form
@@ -77,7 +77,7 @@ const Aal1Authentication = ({
     submitFlow({
       ...data,
       identifier: route.params.identifier,
-      method: 'password'
+      method: 'password',
     });
   };
 
@@ -111,7 +111,12 @@ const Aal1Authentication = ({
             isSuccess={isCompleteSuccess}
             onPress={handleSubmit(onSubmit)}
           />
-          <Seperator variant="l" label="Or" backgroundColor='authScreenSeperator' flex={.125} />
+          <Seperator
+            variant="l"
+            label="Or"
+            backgroundColor="authScreenSeperator"
+            flex={0.125}
+          />
           <Button
             label="Passkey"
             variant="grayMain"
@@ -127,7 +132,7 @@ const Aal1Authentication = ({
           variant="grayLinkButton"
           onPress={() =>
             navigation.navigate('Recovery', {
-              identifier: route.params.identifier
+              identifier: route.params.identifier,
             })
           }
         />

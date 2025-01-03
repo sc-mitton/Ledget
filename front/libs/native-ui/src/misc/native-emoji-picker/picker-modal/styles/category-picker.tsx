@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     height: 44,
     marginBottom: 16,
-  }
+  },
 });
 
 export default styles;

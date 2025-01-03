@@ -8,23 +8,26 @@ import { Bill, Category, Transaction } from '@ledget/shared-features';
 
 export type BudgetStackParamList = {
   Main: {
-    day: number
-  }
+    day: number;
+  };
   Category: {
-    category: Category
-  }
+    category: Category;
+  };
   Bill: {
-    bill: Bill
-  }
+    bill: Bill;
+  };
   Transaction: {
-    transaction: Transaction | string
-  },
-  EditCategories: undefined
-  EditBills: undefined
+    transaction: Transaction | string;
+  };
+  EditCategories: undefined;
+  EditBills: undefined;
 };
 
 export type BudgetScreenProps<T extends keyof BudgetStackParamList> =
   CompositeScreenProps<
     StackScreenProps<BudgetStackParamList, T>,
-    CompositeScreenProps<BottomTabScreenProps<BottomTabNavParamList>, StackScreenProps<RootStackParamList>>
+    CompositeScreenProps<
+      BottomTabScreenProps<BottomTabNavParamList>,
+      StackScreenProps<RootStackParamList>
+    >
   >;

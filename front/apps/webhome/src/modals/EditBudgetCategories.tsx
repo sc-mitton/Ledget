@@ -5,14 +5,14 @@ import {
   useTransition,
   useSpringRef,
   useSpring,
-  animated
+  animated,
 } from '@react-spring/web';
 
 import styles from './styles/edit-budget-items.module.scss';
 import {
   useGetCategoriesQuery,
   useReorderCategoriesMutation,
-  useRemoveCategoriesMutation
+  useRemoveCategoriesMutation,
 } from '@ledget/shared-features';
 import type { Category } from '@ledget/shared-features';
 import { SubmitForm } from '@components/pieces';
@@ -24,7 +24,7 @@ import {
   TabNavList,
   BillCatLabel,
   NestedWindow2,
-  GripButton
+  GripButton,
 } from '@ledget/ui';
 import { useLoaded } from '@ledget/helpers';
 
@@ -45,7 +45,7 @@ const useAnimations = (items: Item[] | undefined) => {
       ? (items.length - 0.25) * (itemHeight + itemPadding)
       : 0,
     maxHeight: 283,
-    immediate: !loaded
+    immediate: !loaded,
   });
 
   const transitions = useTransition(items, {
@@ -54,13 +54,13 @@ const useAnimations = (items: Item[] | undefined) => {
       opacity: 1,
       y: index * (itemHeight + itemPadding),
       maxHeight: itemHeight * 2,
-      scale: 1
+      scale: 1,
     }),
     update: (item, index) => ({
       y: index * (itemHeight + itemPadding),
-      maxHeight: itemHeight * 2
+      maxHeight: itemHeight * 2,
     }),
-    ref: itemsApi
+    ref: itemsApi,
   });
 
   // Initial animation
@@ -71,7 +71,7 @@ const useAnimations = (items: Item[] | undefined) => {
   return {
     itemsApi,
     containerProps,
-    transitions
+    transitions,
   };
 };
 
@@ -89,7 +89,7 @@ const useItems = (
       order.current = [
         ...itemsData
           .filter((item) => item.period === period)
-          .map((item) => item.id)
+          .map((item) => item.id),
       ];
     }
   }, [itemsData]);
@@ -97,7 +97,7 @@ const useItems = (
   return {
     items,
     setItems,
-    order
+    order,
   };
 };
 
@@ -116,7 +116,7 @@ const deleteButtonHandler = (
 
 const Categories = ({
   period,
-  setDeletedItems
+  setDeletedItems,
 }: {
   period: Category['period'];
   setDeletedItems: React.Dispatch<React.SetStateAction<Item[] | undefined>>;
@@ -147,8 +147,8 @@ const Categories = ({
     style: {
       padding: itemPadding,
       size: itemHeight,
-      axis: 'y'
-    }
+      axis: 'y',
+    },
   });
 
   return (
@@ -206,7 +206,7 @@ const EditCategoriesModal = withModal((props) => {
 
   const [
     removeCategories,
-    { isSuccess: categoriesAreDeleted, isLoading: submittingDeleteMutation }
+    { isSuccess: categoriesAreDeleted, isLoading: submittingDeleteMutation },
   ] = useRemoveCategoriesMutation();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

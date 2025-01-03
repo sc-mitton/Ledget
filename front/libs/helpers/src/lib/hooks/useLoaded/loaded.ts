@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 
 export const useLoaded = (time?: number, initialLoaded: boolean = false) => {
-  const [loaded, setLoaded] = useState(initialLoaded)
+  const [loaded, setLoaded] = useState(initialLoaded);
 
   useEffect(() => {
-    let timeout: NodeJS.Timeout
+    let timeout: NodeJS.Timeout;
     if (time && !loaded) {
       timeout = setTimeout(() => {
-        setLoaded(true)
-      }, time)
+        setLoaded(true);
+      }, time);
     } else if (!time) {
-      setLoaded(true)
+      setLoaded(true);
     }
-    return () => clearTimeout(timeout)
-  }, [time, initialLoaded])
+    return () => clearTimeout(timeout);
+  }, [time, initialLoaded]);
 
-  return loaded
-}
+  return loaded;
+};

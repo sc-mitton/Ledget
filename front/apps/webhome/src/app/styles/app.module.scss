@@ -1,29 +1,29 @@
 .app {
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-    margin: 0;
-    background-color: var(--main-background-color);
-    display: flex;
-    flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  margin: 0;
+  background-color: var(--main-background-color);
+  display: flex;
+  flex-direction: column;
 
-    &[data-size='extra-small'] {
-        background-color: var(--main-background-color-small-screen);
-    }
+  &[data-size='extra-small'] {
+    background-color: var(--main-background-color-small-screen);
+  }
 }
 
 .dashboard {
-    flex: 5 1 0;
-    margin: 0em auto;
-    gap: 1em;
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh - 3.5em);
-    max-height: 100%;
-    justify-content: flex-start;
-    align-items: center;
+  flex: 5 1 0;
+  margin: 0em auto;
+  gap: 1em;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 3.5em);
+  max-height: 100%;
+  justify-content: flex-start;
+  align-items: center;
 
-    overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-width: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
 }

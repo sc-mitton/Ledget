@@ -6,7 +6,7 @@ import {
   CategoryQueryParams,
   CategorySpendingHistory,
   NewCategory,
-  UpdateCategory
+  UpdateCategory,
 } from './types';
 
 export const categorySlice = apiSlice.injectEndpoints({
@@ -15,7 +15,7 @@ export const categorySlice = apiSlice.injectEndpoints({
       query: (params) => {
         const queryObj = {
           url: 'categories',
-          method: 'GET'
+          method: 'GET',
         };
         return params ? { ...queryObj, params } : queryObj;
       },
@@ -23,10 +23,10 @@ export const categorySlice = apiSlice.injectEndpoints({
       providesTags: (result, error, arg) =>
         result
           ? [
-            ...result.map(({ id }) => ({ type: 'Category', id } as const)),
-            { type: 'Category', id: 'LIST' }
-          ]
-          : [{ type: 'Category', id: 'LIST' }]
+              ...result.map(({ id }) => ({ type: 'Category', id } as const)),
+              { type: 'Category', id: 'LIST' },
+            ]
+          : [{ type: 'Category', id: 'LIST' }],
     }),
     getCategorySpendingHistory: builder.query<
       CategorySpendingHistory[],
@@ -34,31 +34,31 @@ export const categorySlice = apiSlice.injectEndpoints({
     >({
       query: ({ categoryId }) => ({
         url: `categories/${categoryId}/spending-history`,
-        method: 'GET'
+        method: 'GET',
       }),
       keepUnusedDataFor: 15 * 60,
       transformResponse: (response: CategorySpendingHistory[]) => {
         const spendingHistory = response.map((history) => ({
           ...history,
-          amount_spent: Big(history.amount_spent).times(100).toNumber()
+          amount_spent: Big(history.amount_spent).times(100).toNumber(),
         }));
         return spendingHistory;
       },
       providesTags: (result, error, arg) =>
         result
           ? [
-            { type: 'SpendingHistory', id: arg.categoryId },
-            { type: 'SpendingHistory', id: 'LIST' }
-          ]
-          : [{ type: 'SpendingHistory', id: 'LIST' }]
+              { type: 'SpendingHistory', id: arg.categoryId },
+              { type: 'SpendingHistory', id: 'LIST' },
+            ]
+          : [{ type: 'SpendingHistory', id: 'LIST' }],
     }),
     addNewCategory: builder.mutation<any, NewCategory[] | NewCategory>({
       query: (data) => ({
         url: 'categories',
         method: 'POST',
-        body: data
+        body: data,
       }),
-      invalidatesTags: [{ type: 'Category', id: 'LIST' }]
+      invalidatesTags: [{ type: 'Category', id: 'LIST' }],
     }),
     updateCategories: builder.mutation<any, UpdateCategory[] | UpdateCategory>({
       query: (data) => {
@@ -66,13 +66,13 @@ export const categorySlice = apiSlice.injectEndpoints({
           return {
             url: 'categories',
             method: 'PUT',
-            body: data
+            body: data,
           };
         } else {
           return {
             url: `categories/${data.id}`,
             method: data.limit_amount ? 'PUT' : 'PATCH',
-            body: data
+            body: data,
           };
         }
       },
@@ -86,15 +86,15 @@ export const categorySlice = apiSlice.injectEndpoints({
         return result
           ? [{ type: 'Category', id: 'LIST' }, ...spendingHistoryTags]
           : [{ type: 'Category', id: 'LIST' }];
-      }
+      },
     }),
     reorderCategories: builder.mutation<any, string[]>({
       query: (data) => ({
         url: 'categories/order',
         method: 'POST',
-        body: data
+        body: data,
       }),
-      invalidatesTags: [{ type: 'Category', id: 'LIST' }]
+      invalidatesTags: [{ type: 'Category', id: 'LIST' }],
     }),
     removeCategories: builder.mutation<any, string[]>({
       query: (data) => ({
@@ -102,16 +102,16 @@ export const categorySlice = apiSlice.injectEndpoints({
         method: 'DELETE',
         body: {
           categories: data,
-          tz: new Date().getTimezoneOffset()
-        }
+          tz: new Date().getTimezoneOffset(),
+        },
       }),
-      invalidatesTags: [{ type: 'Category', id: 'LIST' }]
-    })
-  })
+      invalidatesTags: [{ type: 'Category', id: 'LIST' }],
+    }),
+  }),
 });
 
 export function isCategory(obj: Object): obj is Category {
-  return 'alerts' in obj
+  return 'alerts' in obj;
 }
 
 export const {
@@ -121,7 +121,7 @@ export const {
   useLazyGetCategoriesQuery,
   useUpdateCategoriesMutation,
   useReorderCategoriesMutation,
-  useGetCategorySpendingHistoryQuery
+  useGetCategorySpendingHistoryQuery,
 } = categorySlice;
 
 export default categorySlice;

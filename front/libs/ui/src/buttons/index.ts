@@ -1,2 +1,2 @@
-export * from './styled-buttons'
-export * from './specialty-buttons'
+export * from './styled-buttons';
+export * from './specialty-buttons';

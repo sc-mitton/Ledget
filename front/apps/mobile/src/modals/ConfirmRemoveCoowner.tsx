@@ -1,18 +1,27 @@
 import { useEffect } from 'react';
-import { View } from 'react-native'
+import { View } from 'react-native';
 
 import sharedStyles from './styles/shared';
-import { Text, Modal, Button, SubmitButton, Box, Seperator } from '@ledget/native-ui'
-import { useGetCoOwnerQuery, useDeleteCoOwnerMutation } from '@ledget/shared-features';
+import {
+  Text,
+  Modal,
+  Button,
+  SubmitButton,
+  Box,
+  Seperator,
+} from '@ledget/native-ui';
+import {
+  useGetCoOwnerQuery,
+  useDeleteCoOwnerMutation,
+} from '@ledget/shared-features';
 import { ModalScreenProps } from '@types';
 
-const ConfirmRemoveCoOwner = (props: ModalScreenProps<'ConfirmRemoveCoowner'>) => {
+const ConfirmRemoveCoOwner = (
+  props: ModalScreenProps<'ConfirmRemoveCoowner'>
+) => {
   const [
     deleteCoOwner,
-    {
-      isLoading: isDeletingItem,
-      isSuccess: isDeleteSuccess
-    }
+    { isLoading: isDeletingItem, isSuccess: isDeleteSuccess },
   ] = useDeleteCoOwnerMutation();
   const { data: coOwner } = useGetCoOwnerQuery();
 
@@ -26,40 +35,44 @@ const ConfirmRemoveCoOwner = (props: ModalScreenProps<'ConfirmRemoveCoowner'>) =
   }, [isDeleteSuccess]);
 
   return (
-    <Modal position='centerFloat'>
+    <Modal position="centerFloat">
       <View style={sharedStyles.header}>
-        <Text variant='bold' fontSize={20}>
+        <Text variant="bold" fontSize={20}>
           Remove From Account
         </Text>
-        <Text color='tertiaryText'>
-          This action will remove {coOwner?.name.first} from your account. All of their data
-          will be deleted.
-          <Text variant='bold' color='secondaryText'> This action cannot be undone.</Text>
+        <Text color="tertiaryText">
+          This action will remove {coOwner?.name.first} from your account. All
+          of their data will be deleted.
+          <Text variant="bold" color="secondaryText">
+            {' '}
+            This action cannot be undone.
+          </Text>
         </Text>
       </View>
-      <Seperator variant='m' backgroundColor='modalSeperator' />
+      <Seperator variant="m" backgroundColor="modalSeperator" />
       <View style={sharedStyles.splitButtons}>
         <View style={sharedStyles.splitButton}>
           <Button
-            variant='mediumGrayMain'
-            backgroundColor='modalSeperator'
+            variant="mediumGrayMain"
+            backgroundColor="modalSeperator"
             onPress={props.navigation.goBack}
-            label='Cancel'
+            label="Cancel"
           />
         </View>
         <View style={sharedStyles.splitButton}>
           <SubmitButton
-            variant='mediumGrayMain'
-            backgroundColor='modalSeperator'
-            label='Remove'
-            textColor='alert'
+            variant="mediumGrayMain"
+            backgroundColor="modalSeperator"
+            label="Remove"
+            textColor="alert"
             isSubmitting={isDeletingItem}
             isSuccess={isDeleteSuccess}
-            onPress={() => deleteCoOwner()} />
+            onPress={() => deleteCoOwner()}
+          />
         </View>
       </View>
     </Modal>
-  )
+  );
 };
 
-export default ConfirmRemoveCoOwner
+export default ConfirmRemoveCoOwner;

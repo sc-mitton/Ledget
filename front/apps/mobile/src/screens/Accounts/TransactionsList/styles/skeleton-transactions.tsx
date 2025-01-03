@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   skeletonWrapper: {
@@ -21,13 +21,13 @@ export default StyleSheet.create({
   lctr: {
     width: '70%',
     height: 12,
-    borderRadius: 4
+    borderRadius: 4,
   },
   // Left column bottom row
   lcbr: {
     width: '33%',
     height: 12,
-    borderRadius: 4
+    borderRadius: 4,
   },
   // Right column top row
   rctr: {
@@ -37,6 +37,6 @@ export default StyleSheet.create({
   },
   rc: {
     flex: 1,
-    alignItems: 'flex-end'
-  }
+    alignItems: 'flex-end',
+  },
 });

@@ -1,64 +1,64 @@
 .personImage {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 2em 0 1em 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2em 0 1em 0;
 
-    &[data-dark='false'] {
-        img {
-            filter: brightness(.9);
-        }
+  &[data-dark='false'] {
+    img {
+      filter: brightness(0.9);
     }
+  }
 }
 
 .addUserForm {
-    display: flex;
-    flex-direction: column;
-    gap: .5em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
 }
 
 .createLinkedAccountQrCode {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  h4 {
+    margin: 1.75em 0 0.25em 0;
+  }
+
+  & > div {
+    position: relative;
     display: flex;
+    justify-content: center;
     align-items: center;
-    flex-direction: column;
 
-    h4 {
-        margin: 1.75em 0 .25em 0;
+    &:first-of-type {
+      margin: 2em 0 1em 0;
     }
 
-    &>div {
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        &:first-of-type {
-            margin: 2em 0 1em 0;
-        }
-
-        &:nth-of-type(2) {
-            gap: .5em;
-        }
+    &:nth-of-type(2) {
+      gap: 0.5em;
     }
+  }
 
-    &>div>img {
-        width: 50%;
-        height: 50%;
-        filter: contrast(.97);
-        z-index: 1;
-        position: relative;
-        border: 3px solid var(--blue-light);
-        border-radius: var(--border-radius5);
-    }
+  & > div > img {
+    width: 50%;
+    height: 50%;
+    filter: contrast(0.97);
+    z-index: 1;
+    position: relative;
+    border: 3px solid var(--blue-light);
+    border-radius: var(--border-radius5);
+  }
 
-    p {
-        color: var(--m-text-secondary);
-        font-size: .875rem;
-        text-align: center;
-        margin: .25em 0 0 0;
-    }
+  p {
+    color: var(--m-text-secondary);
+    font-size: 0.875rem;
+    text-align: center;
+    margin: 0.25em 0 0 0;
+  }
 
-    &[data-dark='true'] img {
-        filter: invert(1) hue-rotate(180deg) contrast(.97) brightness(.8);
-    }
+  &[data-dark='true'] img {
+    filter: invert(1) hue-rotate(180deg) contrast(0.97) brightness(0.8);
+  }
 }

@@ -1,26 +1,34 @@
 import apiSlice from '../apiSlice/slice';
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 
-import { PlaidItem, AddNewPlaidItemPayload, GetPlaidTokenResponse, Institution, RootStateWithInstitutions } from './types';
+import {
+  PlaidItem,
+  AddNewPlaidItemPayload,
+  GetPlaidTokenResponse,
+  Institution,
+  RootStateWithInstitutions,
+} from './types';
 
 const apiWithTags = apiSlice.enhanceEndpoints({
-  addTagTypes: ['PlaidItem', 'PlaidToken']
+  addTagTypes: ['PlaidItem', 'PlaidToken'],
 });
 
 export const extendedApiSlice = apiWithTags.injectEndpoints({
   endpoints: (builder) => ({
     getPlaidToken: builder.query<
       GetPlaidTokenResponse & { fulfilledTimeStamp: number },
-      { isOnboarding?: boolean; itemId?: string, androidPackage?: string }
+      { isOnboarding?: boolean; itemId?: string; androidPackage?: string }
     >({
       query: ({ isOnboarding, itemId, androidPackage }) => ({
-        url: `plaid-link-token${itemId ? `/${itemId}` : ''}${isOnboarding ? '?is_onboarding=true' : ''}${androidPackage ? `?android_package=${androidPackage}` : ''}`,
+        url: `plaid-link-token${itemId ? `/${itemId}` : ''}${
+          isOnboarding ? '?is_onboarding=true' : ''
+        }${androidPackage ? `?android_package=${androidPackage}` : ''}`,
       }),
       transformResponse: (response: GetPlaidTokenResponse) => {
         return {
           ...response,
-          fulfilledTimeStamp: Date.now()
-        }
+          fulfilledTimeStamp: Date.now(),
+        };
       },
       keepUnusedDataFor: 60 * 15, // 15 minutes
       providesTags: ['PlaidToken'],
@@ -28,46 +36,54 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
     getPlaidItems: builder.query<PlaidItem[], { userId?: string } | void>({
       query: (data) =>
         data ? `plaid-items?user=${data.userId}` : 'plaid-items',
-      providesTags: ['PlaidItem']
+      providesTags: ['PlaidItem'],
     }),
     deletePlaidItem: builder.mutation<void, string>({
       query: (itemId) => ({
         url: `plaid-item/${itemId}`,
-        method: 'DELETE'
+        method: 'DELETE',
       }),
-      invalidatesTags: ['PlaidItem']
+      invalidatesTags: ['PlaidItem'],
     }),
-    exchangePlaidToken: builder.mutation<any, { data: AddNewPlaidItemPayload }>({
-      query: ({ data }) => ({
-        url: 'plaid-token-exchange',
-        method: 'POST',
-        body: data
-      }),
-      invalidatesTags: ['PlaidItem', 'Liability', 'Investment', 'Account', 'AccountBalanceHistory'],
-      extraOptions: { maxRetries: 3 }
-    }),
-    updatePlaidItem: builder.mutation<any, { itemId: string; data: { itemId: string, data: Partial<PlaidItem> } }>(
+    exchangePlaidToken: builder.mutation<any, { data: AddNewPlaidItemPayload }>(
       {
-        query: ({ itemId, data }) => ({
-          url: `plaid-item/${itemId}`,
-          method: 'PATCH',
-          body: data
+        query: ({ data }) => ({
+          url: 'plaid-token-exchange',
+          method: 'POST',
+          body: data,
         }),
-        invalidatesTags: ['PlaidItem'],
-        extraOptions: { maxRetries: 3 }
+        invalidatesTags: [
+          'PlaidItem',
+          'Liability',
+          'Investment',
+          'Account',
+          'AccountBalanceHistory',
+        ],
+        extraOptions: { maxRetries: 3 },
       }
-    )
-  })
+    ),
+    updatePlaidItem: builder.mutation<
+      any,
+      { itemId: string; data: { itemId: string; data: Partial<PlaidItem> } }
+    >({
+      query: ({ itemId, data }) => ({
+        url: `plaid-item/${itemId}`,
+        method: 'PATCH',
+        body: data,
+      }),
+      invalidatesTags: ['PlaidItem'],
+      extraOptions: { maxRetries: 3 },
+    }),
+  }),
 });
-
 
 export const institutionsSlice = createSlice({
   name: 'institutions',
   initialState: {
     map: {} as { [key: string]: string },
-    institutions: {} as { [key: string]: Institution }
+    institutions: {} as { [key: string]: Institution },
   },
-  reducers: { foo: (state, action) => { } },
+  reducers: { foo: (state, action) => {} },
   extraReducers: (builder) => {
     builder.addMatcher(
       extendedApiSlice.endpoints.getPlaidItems.matchFulfilled,
@@ -79,14 +95,18 @@ export const institutionsSlice = createSlice({
               state.institutions[item.institution.id] = item.institution;
             }
           });
-        })
+        });
       }
     );
-  }
+  },
 });
 
-const selectInstitutionId = (state: RootStateWithInstitutions, accountId: string) => (state.institutions.map[accountId] || accountId);
-const selectInstitutions = (state: RootStateWithInstitutions) => state.institutions.institutions;
+const selectInstitutionId = (
+  state: RootStateWithInstitutions,
+  accountId: string
+) => state.institutions.map[accountId] || accountId;
+const selectInstitutions = (state: RootStateWithInstitutions) =>
+  state.institutions.institutions;
 export const selectInstitution = createSelector(
   [selectInstitutionId, selectInstitutions],
   (institutionId, institutions) => institutions[institutionId]

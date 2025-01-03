@@ -1,25 +1,24 @@
 .stripeLogoContainer {
-    position: absolute;
-    bottom: -2em;
+  position: absolute;
+  bottom: -2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  opacity: 0.3;
+  position: relative;
+  height: 0;
+  font-weight: var(--fw-regular);
+  gap: 0.125em;
+
+  a {
+    border: none;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    opacity: .3;
-    position: relative;
-    height: 0;
-    font-weight: var(--fw-regular);
-    gap: .125em;
+    align-items: baseline;
+    margin-bottom: -1px;
+  }
 
-    a {
-        border: none;
-        display: flex;
-        align-items: baseline;
-        margin-bottom: -1px;
-    }
-
-
-    a:hover {
-        border: none;
-    }
+  a:hover {
+    border: none;
+  }
 }

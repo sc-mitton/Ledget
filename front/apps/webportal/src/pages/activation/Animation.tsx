@@ -4,14 +4,14 @@ import { useColorScheme } from '@ledget/ui';
 import styles from './styles/animation.module.scss';
 
 export const Animation = () => {
-    const { isDark } = useColorScheme()
+  const { isDark } = useColorScheme();
 
-    return (
-        <div className={styles.animatedCircles}>
-            <Circle3d dark={isDark} />
-            <Circle3d dark={isDark} />
-        </div>
-    )
-}
+  return (
+    <div className={styles.animatedCircles}>
+      <Circle3d dark={isDark} />
+      <Circle3d dark={isDark} />
+    </div>
+  );
+};
 
-export default Animation
+export default Animation;

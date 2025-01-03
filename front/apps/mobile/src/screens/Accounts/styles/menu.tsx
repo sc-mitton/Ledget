@@ -5,8 +5,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 16,
     bottom: 16,
-    zIndex: 1000
-  }
+    zIndex: 1000,
+  },
 });
 
 export default styles;

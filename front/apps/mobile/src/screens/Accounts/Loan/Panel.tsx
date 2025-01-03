@@ -1,27 +1,23 @@
-import { ScrollView } from "react-native"
+import { ScrollView } from 'react-native';
 
-import styles from './styles/panel'
-import { AccountsTabsScreenProps } from "@types"
-import { Box } from "@ledget/native-ui"
-import { useGetLiabilitiesQuery } from "@ledget/shared-features"
-import LoanCard from "./LoanCard"
-import SkeletonLoanCard from "./SkeletonLoanCard"
+import styles from './styles/panel';
+import { AccountsTabsScreenProps } from '@types';
+import { Box } from '@ledget/native-ui';
+import { useGetLiabilitiesQuery } from '@ledget/shared-features';
+import LoanCard from './LoanCard';
+import SkeletonLoanCard from './SkeletonLoanCard';
 
 export default function Panel(props: AccountsTabsScreenProps<'Loan'>) {
-  const { data: liabilities } = useGetLiabilitiesQuery()
+  const { data: liabilities } = useGetLiabilitiesQuery();
 
   return (
-    <Box
-      padding='pagePadding'
-      style={styles.main}
-    >
+    <Box padding="pagePadding" style={styles.main}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.cardsScrollViewContainer}
       >
         <Box height={12} width={'100%'} />
-        {liabilities
-          ?
+        {liabilities ? (
           <>
             {liabilities.student
               .filter((liability) => !liability.product_not_supported)
@@ -44,13 +40,15 @@ export default function Panel(props: AccountsTabsScreenProps<'Loan'>) {
                 <LoanCard key={liability.account_id} liability={liability} />
               ))}
           </>
-          :
+        ) : (
           <>
-            {Array.from({ length: 2 }).map((_, i) => <SkeletonLoanCard key={i} />)}
+            {Array.from({ length: 2 }).map((_, i) => (
+              <SkeletonLoanCard key={i} />
+            ))}
           </>
-        }
-        <Box marginBottom='navHeight' width={'100%'} />
+        )}
+        <Box marginBottom="navHeight" width={'100%'} />
       </ScrollView>
     </Box>
-  )
+  );
 }

@@ -6,7 +6,7 @@ import styles from './styles/deactivate-authenticator.module.scss';
 import { useUpdateUserMutation } from '@ledget/shared-features';
 import {
   useCompleteSettingsFlowMutation,
-  useLazyGetSettingsFlowQuery
+  useLazyGetSettingsFlowQuery,
 } from '@features/orySlice';
 import { withSmallModal } from '@ledget/ui';
 import { BlueSubmitButton, SecondaryButton, FormError } from '@ledget/ui';
@@ -20,7 +20,7 @@ const DeactivateAuthenticator = (props) => {
 
   const [
     forgetRecoveryCodes,
-    { isSuccess: isCodesDeleted, isLoading: isDeletingCodes }
+    { isSuccess: isCodesDeleted, isLoading: isDeletingCodes },
   ] = useCompleteSettingsFlowMutation();
   const { flow, fetchFlow, submit, flowStatus } = useFlow(
     useLazyGetSettingsFlowQuery,
@@ -33,7 +33,7 @@ const DeactivateAuthenticator = (props) => {
     isCompletingFlow,
     errorFetchingFlow,
     isCompleteError,
-    errMsg
+    errMsg,
   } = flowStatus;
 
   useEffect(() => {
@@ -64,9 +64,9 @@ const DeactivateAuthenticator = (props) => {
         data: {
           csrf_token: flow?.csrf_token,
           method: 'lookup_secret',
-          lookup_secret_disable: true
+          lookup_secret_disable: true,
         },
-        params: { flow: searchParams.get('flow') }
+        params: { flow: searchParams.get('flow') },
       });
     }
   }, [isUnlinkSuccess]);

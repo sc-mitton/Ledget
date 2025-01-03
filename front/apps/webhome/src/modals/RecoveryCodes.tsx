@@ -9,14 +9,14 @@ import {
   BlueSubmitButton,
   BluePrimaryButton,
   SlideMotionDiv,
-  LoadingMessage
+  LoadingMessage,
 } from '@ledget/ui';
 import { withSmallModal, ExpandableContainer } from '@ledget/ui';
 import { withReAuth } from '@utils/index';
 import { useFlow } from '@ledget/ory';
 import {
   useCompleteSettingsFlowMutation,
-  useLazyGetSettingsFlowQuery
+  useLazyGetSettingsFlowQuery,
 } from '@features/orySlice';
 
 export const GenerateViewRecoveryCodes = (props: { onFinish: () => void }) => {
@@ -32,7 +32,7 @@ export const GenerateViewRecoveryCodes = (props: { onFinish: () => void }) => {
     flowStatus,
     completeFlow: completeSettingsFlow,
     resetCompleteFlow,
-    mutationCacheKey
+    mutationCacheKey,
   } = useFlow(
     useLazyGetSettingsFlowQuery,
     useCompleteSettingsFlowMutation,
@@ -68,8 +68,8 @@ export const GenerateViewRecoveryCodes = (props: { onFinish: () => void }) => {
       data: {
         csrf_token: csrf_token,
         method: 'lookup_secret',
-        lookup_secret_confirm: true
-      }
+        lookup_secret_confirm: true,
+      },
     });
   };
 
@@ -93,8 +93,8 @@ export const GenerateViewRecoveryCodes = (props: { onFinish: () => void }) => {
               : {}),
             ...(searchParams.get('lookup_secret_reveal')
               ? { lookup_secret_reveal: true }
-              : {})
-          }
+              : {}),
+          },
         });
     }
   }, [flowStatus.isGetFlowSuccess, mutationCacheKey]);
@@ -129,8 +129,8 @@ export const GenerateViewRecoveryCodes = (props: { onFinish: () => void }) => {
         data: {
           csrf_token: flow?.csrf_token,
           method: 'lookup_secret',
-          lookup_secret_regenerate: true
-        }
+          lookup_secret_regenerate: true,
+        },
       });
       setGeneratingNewCodes(true);
     } else if (errId) {
@@ -146,7 +146,7 @@ export const GenerateViewRecoveryCodes = (props: { onFinish: () => void }) => {
         style={{
           ...(location.pathname.includes('authenticator-setup')
             ? { marginBottom: '0' }
-            : {})
+            : {}),
         }}
       >
         <BlueSubmitButton

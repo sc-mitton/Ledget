@@ -1,19 +1,19 @@
 .sort {
-    position: absolute;
-    top: .375em;
-    right: 1em;
-    display: flex;
-    flex-direction: column;
+  position: absolute;
+  top: 0.375em;
+  right: 1em;
+  display: flex;
+  flex-direction: column;
 
-    &[data-selected='true'] {
-        color: var(--blue-sat);
-    }
+  &[data-selected='true'] {
+    color: var(--blue-sat);
+  }
 
-    &>div {
-        color: inherit;
-    }
+  & > div {
+    color: inherit;
+  }
 
-    button {
-        color: inherit;
-    }
+  button {
+    color: inherit;
+  }
 }

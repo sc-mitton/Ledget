@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   filled: {
-    flex: 1
+    flex: 1,
   },
   clipBox: {
     overflow: 'hidden',
@@ -21,21 +21,21 @@ const styles = StyleSheet.create({
   dragBar: {
     position: 'absolute',
     width: 0,
-    borderWidth: 3
+    borderWidth: 3,
   },
   deleteButtonContainer: {
     position: 'absolute',
     top: -6,
     left: -6,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   gestureArea: {
     position: 'absolute',
     top: 8,
     left: 8,
     right: 8,
-    bottom: 8
+    bottom: 8,
   },
   labelContainer: {
     position: 'absolute',
@@ -48,9 +48,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   overlay: {
-    opacity: .8,
-    zIndex: 100
-  }
+    opacity: 0.8,
+    zIndex: 100,
+  },
 });
 
 export default styles;

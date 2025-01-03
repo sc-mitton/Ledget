@@ -9,8 +9,19 @@ import { useTheme } from '@shopify/restyle';
 import styles from './styles/shared';
 import sharedStyles from './styles/shared';
 import { useNativeFlow } from '@ledget/ory';
-import { useLazyGetLoginFlowQuery, useCompleteLoginFlowMutation } from '@/features/orySlice';
-import { Header, NestedScreenWOFeedback, SubHeader2, TextInput, Button, Pulse, JiggleView } from '@ledget/native-ui';
+import {
+  useLazyGetLoginFlowQuery,
+  useCompleteLoginFlowMutation,
+} from '@/features/orySlice';
+import {
+  Header,
+  NestedScreenWOFeedback,
+  SubHeader2,
+  TextInput,
+  Button,
+  Pulse,
+  JiggleView,
+} from '@ledget/native-ui';
 import { RecoveryCode } from '@ledget/media/native';
 import { LoginScreenProps } from '@types';
 import { useFlowProgress } from '@hooks';
@@ -19,12 +30,24 @@ const schema = z.object({
   lookup_secret: z.string().min(1, 'Recovery code is required'),
 });
 
-const Aal2RecoveryCode = ({ navigation, route }: LoginScreenProps<'Aal2RecoveryCode'>) => {
+const Aal2RecoveryCode = ({
+  navigation,
+  route,
+}: LoginScreenProps<'Aal2RecoveryCode'>) => {
   const theme = useTheme();
-  const { control, handleSubmit, formState: { errors } } = useForm<z.infer<typeof schema>>({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
-  const { fetchFlow, submitFlow, flowStatus: { isCompleteSuccess, isCompleteError }, result } = useNativeFlow(
+  const {
+    fetchFlow,
+    submitFlow,
+    flowStatus: { isCompleteSuccess, isCompleteError },
+    result,
+  } = useNativeFlow(
     useLazyGetLoginFlowQuery,
     useCompleteLoginFlowMutation,
     'login'
@@ -39,8 +62,8 @@ const Aal2RecoveryCode = ({ navigation, route }: LoginScreenProps<'Aal2RecoveryC
       ...data,
       method: 'lookup_secret',
       identifier: route.params.identifier,
-    })
-  }
+    });
+  };
 
   return (
     <NestedScreenWOFeedback>
@@ -53,7 +76,10 @@ const Aal2RecoveryCode = ({ navigation, route }: LoginScreenProps<'Aal2RecoveryC
         </View>
         <SubHeader2>Enter one of your saved recovery codes to login</SubHeader2>
         <View style={styles.graphicContainer}>
-          <RecoveryCode fill={theme.colors.accountsMainBackground} stroke={theme.colors.grayIcon} />
+          <RecoveryCode
+            fill={theme.colors.accountsMainBackground}
+            stroke={theme.colors.grayIcon}
+          />
         </View>
         <JiggleView style={styles.centeredForm} jiggle={isCompleteError}>
           <Controller
@@ -70,14 +96,14 @@ const Aal2RecoveryCode = ({ navigation, route }: LoginScreenProps<'Aal2RecoveryC
             defaultValue=""
           />
           <Button
-            variant='main'
+            variant="main"
             label="Submit"
             onPress={handleSubmit(onSubmit)}
           />
         </JiggleView>
       </KeyboardAvoidingView>
     </NestedScreenWOFeedback>
-  )
-}
+  );
+};
 
-export default Aal2RecoveryCode
+export default Aal2RecoveryCode;

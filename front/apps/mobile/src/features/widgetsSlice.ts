@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const types = [
   { type: 'categories', shape: 'square' },
@@ -8,61 +8,80 @@ const types = [
   { type: 'spending-summary', shape: 'square' },
   { type: 'bills', shape: 'square' },
   { type: 'credit-cards', shape: 'square' },
-] as const
+] as const;
 
-export const widgetTypes = types.map(t => t as { type: (typeof types)[number]['type'], shape: (typeof types)[number]['shape'] })
+export const widgetTypes = types.map(
+  (t) =>
+    t as {
+      type: (typeof types)[number]['type'];
+      shape: (typeof types)[number]['shape'];
+    }
+);
 
 export type Widget = {
-  id?: string
-  shape: 'rectangle' | 'square'
-  minSize?: 'rectangle'
-  type: (typeof types)[number]['type']
-  args?: any
-}
+  id?: string;
+  shape: 'rectangle' | 'square';
+  minSize?: 'rectangle';
+  type: (typeof types)[number]['type'];
+  args?: any;
+};
 
-export type WidgetProps<T extends {} = {}> = Omit<Widget, 'args'> & { args?: T }
+export type WidgetProps<T extends {} = {}> = Omit<Widget, 'args'> & {
+  args?: T;
+};
 
-type WidgetsState = Widget[]
+type WidgetsState = Widget[];
 
-const initialState: WidgetsState = []
+const initialState: WidgetsState = [];
 
 export const widgetsSlice = createSlice({
   name: 'widgets',
   initialState,
   reducers: {
-    addWidget: (state, action: PayloadAction<{ widget: Omit<Widget, 'id'>, index?: number }>) => {
+    addWidget: (
+      state,
+      action: PayloadAction<{ widget: Omit<Widget, 'id'>; index?: number }>
+    ) => {
       if (action.payload.index === undefined) {
         state.push({
           ...action.payload.widget,
-          ...(action.payload.widget.shape === 'rectangle' ? { minSize: 'rectangle' } : {}),
-          id: Math.random().toString(36).substring(7)
-        })
+          ...(action.payload.widget.shape === 'rectangle'
+            ? { minSize: 'rectangle' }
+            : {}),
+          id: Math.random().toString(36).substring(7),
+        });
       } else {
-        state.splice(
-          action.payload.index,
-          0,
-          {
-            ...(action.payload.widget.shape === 'rectangle' ? { minSize: 'rectangle' } : {}),
-            ...action.payload.widget, id: Math.random().toString(36).substring(7)
-          }
-        )
+        state.splice(action.payload.index, 0, {
+          ...(action.payload.widget.shape === 'rectangle'
+            ? { minSize: 'rectangle' }
+            : {}),
+          ...action.payload.widget,
+          id: Math.random().toString(36).substring(7),
+        });
       }
     },
-    moveWidgets: (state, action: PayloadAction<{ widget: string, index: number }[]>) => {
-
+    moveWidgets: (
+      state,
+      action: PayloadAction<{ widget: string; index: number }[]>
+    ) => {
       action.payload.forEach(({ widget: widgetId, index }) => {
-        const widgetIndex = state.findIndex(w => w.id === widgetId)
-        const widget = state[widgetIndex]
-        state.splice(widgetIndex, 1)
-        state.splice(index, 0, widget)
-      })
+        const widgetIndex = state.findIndex((w) => w.id === widgetId);
+        const widget = state[widgetIndex];
+        state.splice(widgetIndex, 1);
+        state.splice(index, 0, widget);
+      });
     },
     removeWidget: (state, action: PayloadAction<Widget>) => {
-      const index = state.findIndex(w => w.id === action.payload.id)
-      state.splice(index, 1)
+      const index = state.findIndex((w) => w.id === action.payload.id);
+      state.splice(index, 1);
     },
-    updateWidget: (state, action: PayloadAction<{ widget: Widget, index?: number }>) => {
-      const widgetIndex = state.findIndex(w => w.id === action.payload.widget.id);
+    updateWidget: (
+      state,
+      action: PayloadAction<{ widget: Widget; index?: number }>
+    ) => {
+      const widgetIndex = state.findIndex(
+        (w) => w.id === action.payload.widget.id
+      );
 
       if (widgetIndex === -1) return;
 
@@ -70,18 +89,20 @@ export const widgetsSlice = createSlice({
 
       if (action.payload.index !== undefined) {
         const reordered = [...state];
-        reordered[widgetIndex] = reordered[action.payload.index];  // Swap the widgets
+        reordered[widgetIndex] = reordered[action.payload.index]; // Swap the widgets
         reordered[action.payload.index] = updatedWidget;
-        return reordered;  // Return new state array
+        return reordered; // Return new state array
       } else {
         state[widgetIndex] = updatedWidget;
       }
-    }
-  }
-})
+    },
+  },
+});
 
-export const { addWidget, removeWidget, moveWidgets, updateWidget } = widgetsSlice.actions
+export const { addWidget, removeWidget, moveWidgets, updateWidget } =
+  widgetsSlice.actions;
 
-export const selectWidgets = (state: { widgets: WidgetsState }) => state.widgets
+export const selectWidgets = (state: { widgets: WidgetsState }) =>
+  state.widgets;
 
-export default widgetsSlice.reducer
+export default widgetsSlice.reducer;

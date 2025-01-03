@@ -29,7 +29,8 @@ export function SwipeDelete(props: SwipeDeleteProps) {
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: (evt, gs) => false,
     onStartShouldSetPanResponderCapture: (evt, gs) => false,
-    onMoveShouldSetPanResponder: (evt, gs) => Math.abs(gs.vx) > Math.abs(gs.vy) && !props.disabled,
+    onMoveShouldSetPanResponder: (evt, gs) =>
+      Math.abs(gs.vx) > Math.abs(gs.vy) && !props.disabled,
     onMoveShouldSetPanResponderCapture: (evt, gs) => false,
     onShouldBlockNativeResponder: () => false,
     onPanResponderMove: (event, { vx, dx }) => {
@@ -51,7 +52,10 @@ export function SwipeDelete(props: SwipeDeleteProps) {
       }
     },
     onPanResponderRelease: (evt, gs) => {
-      if (Math.abs(gs.dx) < itemDimensions.current.width / 2 && Math.abs(gs.vx) < ESCAPE_VELOCITY) {
+      if (
+        Math.abs(gs.dx) < itemDimensions.current.width / 2 &&
+        Math.abs(gs.vx) < ESCAPE_VELOCITY
+      ) {
         Animated.timing(translateX, {
           toValue: 0,
           duration: 200,
@@ -70,20 +74,22 @@ export function SwipeDelete(props: SwipeDeleteProps) {
           useNativeDriver: false,
         }).start(() => {
           props.onDeleted();
-        })
+        });
         Animated.timing(iconOpacity, {
           toValue: 0,
           duration: 200,
           useNativeDriver: false,
         }).start();
       }
-    }
-  })
+    },
+  });
   return (
     <View {...panResponder.panHandlers}>
       <View
         style={styles.container}
-        onLayout={(event) => { itemDimensions.current = event.nativeEvent.layout }}
+        onLayout={(event) => {
+          itemDimensions.current = event.nativeEvent.layout;
+        }}
       >
         <Animated.View
           style={{
@@ -96,25 +102,27 @@ export function SwipeDelete(props: SwipeDeleteProps) {
       </View>
       <Animated.View
         style={[
-          styles.trashIconContainer, {
-            transform: [{
-              translateX:
-                translateX.interpolate({
-                  inputRange: [-1 * itemDimensions.current.width / 2, 0],
+          styles.trashIconContainer,
+          {
+            transform: [
+              {
+                translateX: translateX.interpolate({
+                  inputRange: [(-1 * itemDimensions.current.width) / 2, 0],
                   outputRange: [-20, 0],
-                  extrapolate: 'clamp'
-                })
-            }],
-            opacity: iconOpacity
-          }]}
+                  extrapolate: 'clamp',
+                }),
+              },
+            ],
+            opacity: iconOpacity,
+          },
+        ]}
       >
         <Box style={styles.trashIcon}>
-          <Icon icon={ChevronsLeft} color='alert' size={20}
-          />
-          <Shimmer direction='left' opacity={0.6}>
-            <Text color='alert'>Delete</Text>
+          <Icon icon={ChevronsLeft} color="alert" size={20} />
+          <Shimmer direction="left" opacity={0.6}>
+            <Text color="alert">Delete</Text>
           </Shimmer>
-        </Box >
+        </Box>
       </Animated.View>
     </View>
   );

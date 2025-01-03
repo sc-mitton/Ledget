@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    gap: 10
+    gap: 10,
   },
   checkIconContainer: {
     position: 'absolute',
@@ -15,9 +15,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   checkIcon: {
-    transform: [{ translateX: -.5 }],
+    transform: [{ translateX: -0.5 }],
     position: 'absolute',
-  }
+  },
 });
 
 export default styles;

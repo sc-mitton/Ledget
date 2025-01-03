@@ -1,21 +1,20 @@
 .updatePersonalInfoForm {
+  & > div:first-child {
+    margin: 1.5em 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1em;
 
-    &>div:first-child {
-        margin: 1.5em 0;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        column-gap: 1em;
-
-        label {
-            margin-left: .125em;
-        }
-
-        &>label:last-of-type {
-            grid-column: 1 /span 2;
-        }
-
-        &>div:last-of-type {
-            grid-column: 1 /span 2;
-        }
+    label {
+      margin-left: 0.125em;
     }
+
+    & > label:last-of-type {
+      grid-column: 1 / span 2;
+    }
+
+    & > div:last-of-type {
+      grid-column: 1 / span 2;
+    }
+  }
 }

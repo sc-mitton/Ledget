@@ -13,7 +13,7 @@ import {
   useMinimalistNivoResponsiveLineTheme,
   DollarCents,
   ChartTip,
-  BlueFadedSquareRadio
+  BlueFadedSquareRadio,
 } from '@ledget/ui';
 import { useAccountsContext } from '../context';
 import pathMappings from '../path-mappings';
@@ -30,15 +30,16 @@ import pathMappings from '../path-mappings';
 export const BalanceChart = () => {
   const { accounts } = useAccountsContext();
   const location = useLocation();
-  const [getAccountBalance, { data: balanceHistoryData }] = useLazyGetAccountBalanceHistoryQuery();
+  const [getAccountBalance, { data: balanceHistoryData }] =
+    useLazyGetAccountBalanceHistoryQuery();
   const nivoBaseProps = useMinimalistNivoResponsiveBaseProps({
     primaryColor: '--blue-medium',
     gradientColorStart: '--blue-light-medium',
     gradientColorEnd: '--window2',
-    borderColor: '--window2'
+    borderColor: '--window2',
   });
   const nivoTheme = useMinimalistNivoResponsiveLineTheme({
-    primaryColor: '--blue-medium'
+    primaryColor: '--blue-medium',
   });
   const [yBoundaries, setYBoundaries] = useState<[number, number]>([0, 0]);
   const [window, setWindow] = useState<'6M' | '1Y' | 'MAX'>('6M');
@@ -48,8 +49,8 @@ export const BalanceChart = () => {
       window === '6M'
         ? dayjs().subtract(6, 'months').startOf('month').unix()
         : window === '1Y'
-          ? dayjs().subtract(1, 'year').startOf('month').unix()
-          : dayjs().subtract(5, 'years').startOf('month').unix();
+        ? dayjs().subtract(1, 'year').startOf('month').unix()
+        : dayjs().subtract(5, 'years').startOf('month').unix();
 
     if (accounts?.length) {
       getAccountBalance({
@@ -58,7 +59,7 @@ export const BalanceChart = () => {
         type: pathMappings.getAccountType(location) as
           | 'depository'
           | 'investment',
-        accounts: accounts.map((account) => account.id)
+        accounts: accounts.map((account) => account.id),
       });
     }
   }, [location.pathname, window]);
@@ -104,10 +105,10 @@ export const BalanceChart = () => {
                       }, {} as Record<string, number>) || {}
                     ).map(([month, balance]) => ({
                       x: month,
-                      y: balance
-                    }))
+                      y: balance,
+                    })),
                     // data: fakeData
-                  }
+                  },
                 ]}
                 tooltip={({ point }) => {
                   return (
@@ -131,13 +132,13 @@ export const BalanceChart = () => {
                 yScale={{
                   type: 'linear',
                   min: yBoundaries[0] - (yBoundaries[1] - yBoundaries[0]) * 0.5,
-                  max: yBoundaries[1] + (yBoundaries[1] - yBoundaries[0]) * 0.5
+                  max: yBoundaries[1] + (yBoundaries[1] - yBoundaries[0]) * 0.5,
                 }}
                 xScale={{
                   type: 'time',
                   format: '%Y-%m-%d',
                   precision: 'minute',
-                  useUTC: false
+                  useUTC: false,
                 }}
                 margin={{ top: 8, right: 12, bottom: 32, left: 10 }}
                 {...nivoBaseProps}
@@ -149,8 +150,8 @@ export const BalanceChart = () => {
                     window === '6M'
                       ? 'every 1 month'
                       : window === '1Y'
-                        ? 'every 2 months'
-                        : 'every 4 months'
+                      ? 'every 2 months'
+                      : 'every 4 months',
                 }}
               />
             )}

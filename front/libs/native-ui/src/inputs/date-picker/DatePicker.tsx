@@ -1,9 +1,12 @@
-
 import React, { useEffect } from 'react';
-import NativeDatePicker from 'react-native-date-picker'
+import NativeDatePicker from 'react-native-date-picker';
 import { View, TouchableOpacity, Platform } from 'react-native';
 import dayjs, { Dayjs } from 'dayjs';
-import Animated, { withSpring, useSharedValue, useAnimatedStyle } from 'react-native-reanimated';
+import Animated, {
+  withSpring,
+  useSharedValue,
+  useAnimatedStyle,
+} from 'react-native-reanimated';
 import { useTheme } from '@shopify/restyle';
 import { Calendar } from 'geist-native-icons';
 
@@ -16,11 +19,13 @@ import { Text } from '../../restyled/Text';
 import { TPicker, DatePickerProps } from './types';
 import { defaultSpringConfig } from '../../animated/configs/configs';
 
-export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<PT>) {
+export function DatePicker<PT extends TPicker = 'date'>(
+  props: DatePickerProps<PT>
+) {
   const [value, setValue] = React.useState<typeof props.defaultValue>(
-    props.pickerType === 'range' ?
-      props.defaultValue || [undefined, undefined] :
-      props.defaultValue || undefined
+    props.pickerType === 'range'
+      ? props.defaultValue || [undefined, undefined]
+      : props.defaultValue || undefined
   );
   const [pickerWidth, setPickerWidth] = React.useState(0);
   const [index, setIndex] = React.useState<number>();
@@ -31,8 +36,8 @@ export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<P
   const bottomIndicatorStyle = useAnimatedStyle(() => {
     return {
       opacity: bottomIndicatorOpacity.value,
-      transform: [{ translateX: bottomIndicatorX.value }]
-    }
+      transform: [{ translateX: bottomIndicatorX.value }],
+    };
   });
 
   useEffect(() => {
@@ -63,40 +68,66 @@ export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<P
         onLayout={(e) => setPickerWidth(e.nativeEvent.layout.width)}
       >
         <Box
-          borderColor={props.error
-            ? 'inputBorderErrorSecondary' : index !== undefined ? 'focusedInputBorderSecondary'
-              : 'transparent'}
+          borderColor={
+            props.error
+              ? 'inputBorderErrorSecondary'
+              : index !== undefined
+              ? 'focusedInputBorderSecondary'
+              : 'transparent'
+          }
           borderWidth={1.75}
           style={styles.textInputContainer2}
         >
           <Box
-            backgroundColor='inputBackground'
-            borderColor={index !== undefined
-              ? props.error ? 'inputBorderErrorMain' : 'focusedInputBorderMain'
-              : 'inputBorder'}
+            backgroundColor="inputBackground"
+            borderColor={
+              index !== undefined
+                ? props.error
+                  ? 'inputBorderErrorMain'
+                  : 'focusedInputBorderMain'
+                : 'inputBorder'
+            }
             borderWidth={1.5}
             style={styles.textInputContainer1}
           >
             <TouchableOpacity
               onPress={() => setIndex(0)}
               style={styles.textInput}
-              activeOpacity={.7}
+              activeOpacity={0.7}
             >
-              {props.icon &&
+              {props.icon && (
                 <Icon
                   icon={Calendar}
-                  color={Array.isArray(value) ? value[0] ? 'mainText' : 'placeholderText' : value ? 'mainText' : 'placeholderText'}
-                />}
+                  color={
+                    Array.isArray(value)
+                      ? value[0]
+                        ? 'mainText'
+                        : 'placeholderText'
+                      : value
+                      ? 'mainText'
+                      : 'placeholderText'
+                  }
+                />
+              )}
               <Text
                 selectable={false}
-                color={Array.isArray(value) ? value[0] ? 'mainText' : 'placeholderText' : value ? 'mainText' : 'placeholderText'}
+                color={
+                  Array.isArray(value)
+                    ? value[0]
+                      ? 'mainText'
+                      : 'placeholderText'
+                    : value
+                    ? 'mainText'
+                    : 'placeholderText'
+                }
               >
                 {Array.isArray(value)
-                  ? value[0]?.format(props.format) || `${props.placeholder?.[0]}`
+                  ? value[0]?.format(props.format) ||
+                    `${props.placeholder?.[0]}`
                   : value?.format(props.format) || `${props.placeholder}`}
               </Text>
             </TouchableOpacity>
-            {props.pickerType === 'range' &&
+            {props.pickerType === 'range' && (
               <>
                 <View style={styles.middleIconContainer}>
                   <View style={styles.middleIcon}>
@@ -106,8 +137,12 @@ export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<P
                       strokeWidth={2}
                       color={
                         Array.isArray(value)
-                          ? value.every(i => i === undefined) ? 'placeholderText' : 'mainText'
-                          : value === undefined ? 'placeholderText' : 'mainText'
+                          ? value.every((i) => i === undefined)
+                            ? 'placeholderText'
+                            : 'mainText'
+                          : value === undefined
+                          ? 'placeholderText'
+                          : 'mainText'
                       }
                     />
                   </View>
@@ -115,35 +150,50 @@ export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<P
                 <TouchableOpacity
                   onPress={() => setIndex(1)}
                   style={styles.textInput}
-                  activeOpacity={.7}
+                  activeOpacity={0.7}
                 >
                   <Text
                     selectable={false}
-                    color={Array.isArray(value) ? value[1] ? 'mainText' : 'placeholderText' : value ? 'mainText' : 'placeholderText'}
+                    color={
+                      Array.isArray(value)
+                        ? value[1]
+                          ? 'mainText'
+                          : 'placeholderText'
+                        : value
+                        ? 'mainText'
+                        : 'placeholderText'
+                    }
                   >
                     {Array.isArray(value)
-                      ? value[1]?.format(props.format) || `${props.placeholder?.[1]}`
+                      ? value[1]?.format(props.format) ||
+                        `${props.placeholder?.[1]}`
                       : value?.format(props.format) || `${props.placeholder}`}
                   </Text>
                 </TouchableOpacity>
               </>
-            }
-            {props.pickerType === 'range' &&
-              <Animated.View style={[bottomIndicatorStyle, styles.bottomBorderIndicator]}>
+            )}
+            {props.pickerType === 'range' && (
+              <Animated.View
+                style={[bottomIndicatorStyle, styles.bottomBorderIndicator]}
+              >
                 <Box
-                  backgroundColor='focusedInputBorderMain'
-                  width={(pickerWidth / 2) - 24}
+                  backgroundColor="focusedInputBorderMain"
+                  width={pickerWidth / 2 - 24}
                   style={styles.bottomBorderIndicatorBar}
                 />
-              </Animated.View>}
+              </Animated.View>
+            )}
           </Box>
         </Box>
       </View>
       <NativeDatePicker
         modal
-        title={Platform.OS === 'ios'
-          ? Array.isArray(props.title) ? props.title[0] : props.title || 'Start Date'
-          : null
+        title={
+          Platform.OS === 'ios'
+            ? Array.isArray(props.title)
+              ? props.title[0]
+              : props.title || 'Start Date'
+            : null
         }
         theme={theme.colors.mode}
         dividerColor={theme.colors.tertiaryText}
@@ -178,12 +228,15 @@ export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<P
           setIndex(undefined);
         }}
       />
-      {Array.isArray(value) &&
+      {Array.isArray(value) && (
         <NativeDatePicker
           modal
-          title={Platform.OS === 'ios'
-            ? Array.isArray(props.title) ? props.title[1] : props.title || 'End Date'
-            : null
+          title={
+            Platform.OS === 'ios'
+              ? Array.isArray(props.title)
+                ? props.title[1]
+                : props.title || 'End Date'
+              : null
           }
           dividerColor={theme.colors.tertiaryText}
           buttonColor={theme.mode === 'dark' ? '#000000' : '#FFFFFF'}
@@ -210,7 +263,7 @@ export function DatePicker<PT extends TPicker = 'date'>(props: DatePickerProps<P
             setIndex(undefined);
           }}
         />
-      }
+      )}
     </>
   );
 }

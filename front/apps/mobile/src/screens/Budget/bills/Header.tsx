@@ -12,19 +12,19 @@ import { useBudgetContext } from '../context';
 
 const Header = () => {
   const { billsIndex } = useBudgetContext();
-  const { month, year } = useAppSelector(selectBudgetMonthYear)
+  const { month, year } = useAppSelector(selectBudgetMonthYear);
 
   return (
     <>
       <Box
-        backgroundColor='mainBackground'
+        backgroundColor="mainBackground"
         layout={LinearTransition}
         style={[StyleSheet.absoluteFill, styles.backPanel]}
       />
       <Box
-        paddingTop='nestedContainerHPadding'
-        paddingHorizontal='nestedContainerHPadding'
-        backgroundColor='nestedContainer'
+        paddingTop="nestedContainerHPadding"
+        paddingHorizontal="nestedContainerHPadding"
+        backgroundColor="nestedContainer"
         layout={LinearTransition}
         style={sharedStyles.boxTopHalf}
       >
@@ -33,20 +33,23 @@ const Header = () => {
         </View>
         <View style={styles.headerContainer}>
           <View style={styles.header}>
-            {billsIndex === 0
-              ? <Text fontSize={18}>Bills</Text>
-              :
+            {billsIndex === 0 ? (
+              <Text fontSize={18}>Bills</Text>
+            ) : (
               <Text fontSize={18}>
                 {dayjs(`${year}-${month}-01`).format('MMMM YYYY')}
               </Text>
-            }
+            )}
           </View>
           <View style={styles.seperator}>
-            <Seperator backgroundColor='nestedContainerSeperator' variant='bare' />
+            <Seperator
+              backgroundColor="nestedContainerSeperator"
+              variant="bare"
+            />
           </View>
         </View>
       </Box>
     </>
-  )
-}
+  );
+};
 export default memo(Header);

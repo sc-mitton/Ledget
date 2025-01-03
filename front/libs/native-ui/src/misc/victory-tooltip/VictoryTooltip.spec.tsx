@@ -5,7 +5,7 @@ import VictoryTooltip from './VictoryTooltip';
 
 describe('VictoryTooltip', () => {
   it('should render successfully', () => {
-    const { root } = render(< VictoryTooltip />);
+    const { root } = render(<VictoryTooltip />);
     expect(root).toBeTruthy();
   });
 });

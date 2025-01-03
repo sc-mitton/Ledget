@@ -7,19 +7,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   tabsTrackBoxContainer: {
-    width: '100%'
+    width: '100%',
   },
   tabsTrackBox: {
     padding: 4,
     borderRadius: 12,
   },
   tabsTrack: {
-    width: '100%'
+    width: '100%',
   },
   tab: {
     marginHorizontal: 16,
     paddingVertical: 2,
-    flex: 1
+    flex: 1,
   },
   indicatorContainer: {
     height: '100%',
@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
   },
   indicator: {
     height: '100%',
-    width: '100%'
-  }
+    width: '100%',
+  },
 });
 
 export default styles;

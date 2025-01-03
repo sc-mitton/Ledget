@@ -1,14 +1,14 @@
 .container {
-    button:last-child {
-        width: 100%;
-    }
+  button:last-child {
+    width: 100%;
+  }
 
-    button:first-of-type {
-        margin: 0 auto;
-        margin-top: 1em;
-    }
+  button:first-of-type {
+    margin: 0 auto;
+    margin-top: 1em;
+  }
 
-    span {
-        font-weight: var(--fw-regular);
-    }
+  span {
+    font-weight: var(--fw-regular);
+  }
 }

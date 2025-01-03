@@ -3,7 +3,7 @@ import React, {
   useState,
   useContext,
   createContext,
-  Fragment
+  Fragment,
 } from 'react';
 
 import { useSpring, animated } from '@react-spring/web';
@@ -13,7 +13,7 @@ import styles from './styles/connections.module.scss';
 import {
   useGetPlaidItemsQuery,
   useDeletePlaidItemMutation,
-  PlaidItem as TPlaidItem
+  PlaidItem as TPlaidItem,
 } from '@ledget/shared-features';
 import { useBakedPlaidLink, useBakedUpdatePlaidLink } from '@utils/hooks';
 import { withSmallModal } from '@ledget/ui';
@@ -28,7 +28,7 @@ import {
   BlueSlimButton2,
   Tooltip,
   Base64Logo,
-  ShadowedContainer
+  ShadowedContainer,
 } from '@ledget/ui';
 import { withReAuth } from '@utils/index';
 import { Edit2, Plus } from '@geist-ui/icons';
@@ -59,7 +59,8 @@ const useDeleteContext = () => {
 
 const ConnectionsContext = ({ children }: { children: React.ReactNode }) => {
   const [deleteQue, setDeleteQue] = useState<DeleteQueItem[]>([]);
-  const { data: plaidItems, isLoading: fetchingPlaidItems } = useGetPlaidItemsQuery();
+  const { data: plaidItems, isLoading: fetchingPlaidItems } =
+    useGetPlaidItemsQuery();
   const [editing, setEditing] = useState(false);
 
   useEffect(() => {
@@ -73,7 +74,7 @@ const ConnectionsContext = ({ children }: { children: React.ReactNode }) => {
     plaidItems,
     fetchingPlaidItems,
     editing,
-    setEditing
+    setEditing,
   };
 
   return (
@@ -165,8 +166,8 @@ const PlaidItem = ({ item }: { item: TPlaidItem }) => {
     maxHeight: removed ? 0 : 1000,
     config: {
       tension: removed ? 200 : 200,
-      friction: removed ? 30 : 100
-    }
+      friction: removed ? 30 : 100,
+    },
   });
 
   return (
@@ -204,7 +205,9 @@ const PlaidItem = ({ item }: { item: TPlaidItem }) => {
           </Fragment>
         ))}
       </div>
-      {(item.login_required || item.permission_revoked) && <ReconnectButton itemId={item.id} />}
+      {(item.login_required || item.permission_revoked) && (
+        <ReconnectButton itemId={item.id} />
+      )}
     </animated.div>
   );
 };
@@ -317,7 +320,7 @@ const Connections = () => {
     editing,
     setEditing,
     deleteQue,
-    setDeleteQue
+    setDeleteQue,
   } = useDeleteContext();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const { open } = useBakedPlaidLink();
@@ -368,7 +371,11 @@ const Connections = () => {
                     <input
                       key={index}
                       type="hidden"
-                      name={val.accountId ? `accounts[${index}][id]` : `items[${index}][id]`}
+                      name={
+                        val.accountId
+                          ? `accounts[${index}][id]`
+                          : `items[${index}][id]`
+                      }
                       value={val.accountId ? val.accountId : val.itemId}
                     />
                   ))}

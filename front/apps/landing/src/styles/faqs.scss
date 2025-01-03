@@ -1,71 +1,69 @@
 #faqs {
-
-    &>div {
-        display: flex;
-        flex-direction: column;
-        position: relative;
-    }
+  & > div {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
 }
 
 .faq {
-    position: relative;
-    padding: 1em 0;
+  position: relative;
+  padding: 1em 0;
 
-    &:not(:last-child)::after {
-        position: absolute;
-        content: '';
-        display: block;
-        width: 100%;
-        bottom: 0;
-        height: 1.25px;
-        background-color: var(--border-color-ultra-dim);
+  &:not(:last-child)::after {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 100%;
+    bottom: 0;
+    height: 1.25px;
+    background-color: var(--border-color-ultra-dim);
+  }
+
+  button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1em;
+    padding: 0;
+
+    span {
+      font-size: 1rem;
+      text-align: left;
     }
 
-    button {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1em;
-        padding: 0;
-
-        span {
-            font-size: 1rem;
-            text-align: left;
-        }
-
-        svg {
-            transition: transform .3s;
-        }
-
-        &[aria-expanded='true'] {
-            span {
-                color: var(--blue-sat);
-            }
-
-            svg {
-                transform: rotate(180deg);
-                transition: transform .3s;
-            }
-        }
+    svg {
+      transition: transform 0.3s;
     }
 
-    &>div {
-        font-size: 1rem;
-        color: var(--m-text-secondary);
-        font-weight: var(--fw-regular);
-        padding: 1em .3em;
-        animation: expand-on 2s;
+    &[aria-expanded='true'] {
+      span {
+        color: var(--blue-sat);
+      }
+
+      svg {
+        transform: rotate(180deg);
+        transition: transform 0.3s;
+      }
     }
+  }
+
+  & > div {
+    font-size: 1rem;
+    color: var(--m-text-secondary);
+    font-weight: var(--fw-regular);
+    padding: 1em 0.3em;
+    animation: expand-on 2s;
+  }
 }
 
-
 @keyframes expand-on {
-    0% {
-        max-height: 0;
-    }
+  0% {
+    max-height: 0;
+  }
 
-    100% {
-        max-height: 100vh;
-    }
+  100% {
+    max-height: 100vh;
+  }
 }

@@ -5,7 +5,7 @@ import ModalPicker from './ModalPicker';
 
 describe('ModalPicker', () => {
   it('should render successfully', () => {
-    const { root } = render(< ModalPicker />);
+    const { root } = render(<ModalPicker />);
     expect(root).toBeTruthy();
   });
 });

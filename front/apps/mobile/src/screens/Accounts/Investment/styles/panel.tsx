@@ -10,11 +10,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 8,
     marginTop: 8,
-    zIndex: -1
+    zIndex: -1,
   },
   transactionsHeader: {
-    flexGrow: 1
-  }
+    flexGrow: 1,
+  },
 });
 
 export default styles;

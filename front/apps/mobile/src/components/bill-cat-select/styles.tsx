@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   selectedBillCats: {
@@ -21,14 +21,14 @@ export default StyleSheet.create({
   downIcon: {
     position: 'absolute',
     top: '100%',
-    left: '50%'
+    left: '50%',
   },
   option: {
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 8,
     gap: 16,
-    marginVertical: 2
+    marginVertical: 2,
   },
   selectedOption: {
     marginVertical: 1,
@@ -36,7 +36,7 @@ export default StyleSheet.create({
   linkGraphic: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4
+    gap: 4,
   },
   ledgetLogo: {
     borderRadius: 36,
@@ -47,7 +47,7 @@ export default StyleSheet.create({
     gap: 6,
     flexWrap: 'wrap',
     justifyContent: 'center',
-    maxWidth: 36
+    maxWidth: 36,
   },
   dot: {
     width: 4,
@@ -63,9 +63,9 @@ export default StyleSheet.create({
   },
   addAccountButtonContainer: {
     alignItems: 'center',
-    flexGrow: 1
+    flexGrow: 1,
   },
   logo: {
     marginLeft: -12,
-  }
+  },
 });

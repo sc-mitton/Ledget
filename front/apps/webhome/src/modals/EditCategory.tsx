@@ -11,7 +11,7 @@ import {
   EmojiComboText,
   LimitAmountInput,
   PeriodSelect,
-  emoji
+  emoji,
 } from '@components/inputs';
 import SubmitForm from '@components/pieces/SubmitForm';
 import { FormErrorTip } from '@ledget/ui';
@@ -24,14 +24,14 @@ export const EditCategory = (props: {
   const [emoji, setEmoji] = useState<emoji>();
   const [
     updateCategory,
-    { isSuccess: categoryIsUpdated, isLoading: isUpdatingCategory }
+    { isSuccess: categoryIsUpdated, isLoading: isUpdatingCategory },
   ] = useUpdateCategoriesMutation();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    control
+    control,
   } = useForm<z.infer<typeof categorySchema>>({
     resolver: zodResolver(categorySchema),
     mode: 'onSubmit',
@@ -39,8 +39,8 @@ export const EditCategory = (props: {
     defaultValues: {
       name:
         props.category.name.charAt(0).toUpperCase() +
-        props.category.name.slice(1)
-    }
+        props.category.name.slice(1),
+    },
   });
   const watchLimitAmount = useWatch({ control, name: 'limit_amount' });
 
@@ -69,7 +69,7 @@ export const EditCategory = (props: {
       // a new category on the backend, so we pass all the data
       updateCategory({
         id: props.category.id,
-        ...data
+        ...data,
       });
     } else {
       let k: keyof typeof data;

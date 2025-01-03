@@ -1,61 +1,70 @@
-import { HTMLProps, forwardRef } from 'react'
+import { HTMLProps, forwardRef } from 'react';
 
 import stylesModule from './shimmer.module.scss';
-import { useTransition, animated } from '@react-spring/web'
-import { TextInputWrapper } from '../../inputs/text/text'
-import { useColorScheme } from '../../themes/hooks/use-color-scheme/use-color-scheme'
+import { useTransition, animated } from '@react-spring/web';
+import { TextInputWrapper } from '../../inputs/text/text';
+import { useColorScheme } from '../../themes/hooks/use-color-scheme/use-color-scheme';
 import React from 'react';
 
-
 interface ShimmerProps {
-  shimmering?: boolean
-  lightness?: number
-  darkMode?: boolean
-  shimmerColor?: string
+  shimmering?: boolean;
+  lightness?: number;
+  darkMode?: boolean;
+  shimmerColor?: string;
 }
 
 export const Shimmer = (props: ShimmerProps) => {
-  const { shimmering = false, lightness = 92, shimmerColor, darkMode = false } = props
+  const {
+    shimmering = false,
+    lightness = 92,
+    shimmerColor,
+    darkMode = false,
+  } = props;
   const transitions = useTransition(shimmering, {
     from: { opacity: 0 },
     enter: { opacity: 1 },
-    leave: { opacity: 0 }
-  })
-  const { isDark } = useColorScheme()
+    leave: { opacity: 0 },
+  });
+  const { isDark } = useColorScheme();
 
   return (
     <>
       {transitions(
-        (styles, item) => item &&
-          <animated.div
-            style={styles}
-            className={stylesModule.loadingShimmer}
-          >
-            <div
-              className={stylesModule.shimmer}
-              style={{
-                '--shimmer-color': shimmerColor
-                  ? shimmerColor
-                  : isDark || darkMode
-                    ? `hsl(var(--window-h), var(--window-s), ${100 - lightness}%)`
-                    : `hsl(var(--window-h), var(--window-s), ${lightness}%)`
-              } as React.CSSProperties}
-            />
-          </animated.div>
+        (styles, item) =>
+          item && (
+            <animated.div
+              style={styles}
+              className={stylesModule.loadingShimmer}
+            >
+              <div
+                className={stylesModule.shimmer}
+                style={
+                  {
+                    '--shimmer-color': shimmerColor
+                      ? shimmerColor
+                      : isDark || darkMode
+                      ? `hsl(var(--window-h), var(--window-s), ${
+                          100 - lightness
+                        }%)`
+                      : `hsl(var(--window-h), var(--window-s), ${lightness}%)`,
+                  } as React.CSSProperties
+                }
+              />
+            </animated.div>
+          )
       )}
     </>
-  )
-}
+  );
+};
 
 interface ColoredShimmerProps extends ShimmerProps {
-  length?: number
-  color?: 'blue' | 'green'
-  style?: React.CSSProperties
-  className?: string
+  length?: number;
+  color?: 'blue' | 'green';
+  style?: React.CSSProperties;
+  className?: string;
 }
 
 export const ColoredShimmer = (props: ColoredShimmerProps) => {
-
   const {
     shimmering = false,
     length = 12,
@@ -65,7 +74,7 @@ export const ColoredShimmer = (props: ColoredShimmerProps) => {
     darkMode,
     className,
     ...rest
-  } = props
+  } = props;
 
   return (
     <>
@@ -89,10 +98,12 @@ export const ColoredShimmer = (props: ColoredShimmerProps) => {
         />
       </div>
     </>
-  )
-}
+  );
+};
 
-export const ShimmerText = (props: Omit<ColoredShimmerProps, 'color'> & { backgroundColor?: string }) => {
+export const ShimmerText = (
+  props: Omit<ColoredShimmerProps, 'color'> & { backgroundColor?: string }
+) => {
   const {
     shimmering = false,
     length = 12,
@@ -100,7 +111,7 @@ export const ShimmerText = (props: Omit<ColoredShimmerProps, 'color'> & { backgr
     backgroundColor,
     darkMode,
     ...rest
-  } = props
+  } = props;
 
   return (
     <>
@@ -119,11 +130,14 @@ export const ShimmerText = (props: Omit<ColoredShimmerProps, 'color'> & { backgr
         <Shimmer shimmering={shimmering} darkMode={darkMode} {...rest} />
       </div>
     </>
-  )
-}
+  );
+};
 
 // export const ShimmerTextDiv = (props: HTMLProps<HTMLDivElement> & Omit<ColoredShimmerProps, 'color'>) => {
-export const ShimmerTextDiv = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement> & Omit<ColoredShimmerProps, 'color'>>((props, ref) => {
+export const ShimmerTextDiv = forwardRef<
+  HTMLDivElement,
+  HTMLProps<HTMLDivElement> & Omit<ColoredShimmerProps, 'color'>
+>((props, ref) => {
   const {
     shimmering = false,
     length = 12,
@@ -131,13 +145,12 @@ export const ShimmerTextDiv = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElemen
     darkMode,
     children,
     ...rest
-  } = props
+  } = props;
 
   return (
     <div {...rest}>
       <>
-        {shimmering
-          ?
+        {shimmering ? (
           <div
             style={{
               width: `${length}ch`,
@@ -152,33 +165,39 @@ export const ShimmerTextDiv = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElemen
           >
             <Shimmer shimmering={shimmering} darkMode={darkMode} {...rest} />
           </div>
-          : children
-        }
+        ) : (
+          children
+        )}
       </>
     </div>
-  )
-})
+  );
+});
 
-type TransactionShimmerProps = HTMLProps<HTMLDivElement> & Omit<ColoredShimmerProps, 'color'>
+type TransactionShimmerProps = HTMLProps<HTMLDivElement> &
+  Omit<ColoredShimmerProps, 'color'>;
 
-export const TransactionShimmer = ({ shimmering = true, ...rest }: TransactionShimmerProps) => (
+export const TransactionShimmer = ({
+  shimmering = true,
+  ...rest
+}: TransactionShimmerProps) => (
   <>
-    <div >
+    <div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '.125em' }}>
         <ShimmerText length={25} shimmering={shimmering} {...rest} />
-        <ShimmerText length={10} shimmering={shimmering}  {...rest} />
+        <ShimmerText length={10} shimmering={shimmering} {...rest} />
       </div>
       <div>
-        <ShimmerText length={10} shimmering={shimmering}  {...rest} />
+        <ShimmerText length={10} shimmering={shimmering} {...rest} />
       </div>
     </div>
   </>
-)
+);
 
-type ShimmerDivProps =
-  HTMLProps<HTMLDivElement> &
-  Pick<ShimmerProps, 'shimmering' | 'lightness' | 'darkMode' | 'shimmerColor'> &
-  { background?: string }
+type ShimmerDivProps = HTMLProps<HTMLDivElement> &
+  Pick<
+    ShimmerProps,
+    'shimmering' | 'lightness' | 'darkMode' | 'shimmerColor'
+  > & { background?: string };
 
 export const ShimmerDiv = (props: ShimmerDivProps) => {
   const {
@@ -190,7 +209,7 @@ export const ShimmerDiv = (props: ShimmerDivProps) => {
     lightness = 92,
     darkMode,
     ...rest
-  } = props
+  } = props;
 
   return (
     <div
@@ -202,26 +221,36 @@ export const ShimmerDiv = (props: ShimmerDivProps) => {
       }}
       {...rest}
     >
-      <Shimmer shimmering={shimmering} lightness={lightness} darkMode={darkMode} shimmerColor={shimmerColor} />
+      <Shimmer
+        shimmering={shimmering}
+        lightness={lightness}
+        darkMode={darkMode}
+        shimmerColor={shimmerColor}
+      />
       {!shimmering && children}
     </div>
-  )
-}
+  );
+};
 
 export const InputShimmerDiv = (props: Pick<ShimmerDivProps, 'darkMode'>) => {
-
   return (
     <TextInputWrapper>
       <span style={{ color: 'transparent' }}>Shimmering</span>
       <div className={stylesModule.blockShimmerContainer}>
-        <ShimmerDiv shimmering={true} lightness={92} darkMode={props.darkMode} />
+        <ShimmerDiv
+          shimmering={true}
+          lightness={92}
+          darkMode={props.darkMode}
+        />
       </div>
     </TextInputWrapper>
-  )
-}
+  );
+};
 
-export const TranslucentShimmerDiv = (props: Pick<ShimmerDivProps, 'darkMode'>) => (
+export const TranslucentShimmerDiv = (
+  props: Pick<ShimmerDivProps, 'darkMode'>
+) => (
   <div className={stylesModule.translucentShimmerDiv}>
     <ShimmerDiv shimmering={true} data-dark={props.darkMode} />
   </div>
-)
+);

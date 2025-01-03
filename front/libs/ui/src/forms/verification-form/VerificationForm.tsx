@@ -1,41 +1,41 @@
-
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react';
 
 import styles from './verification-form.module.scss';
-import { MainButton, ResendButton } from '../../buttons'
-import { Otc } from '../../inputs/otc/Otc'
+import { MainButton, ResendButton } from '../../buttons';
+import { Otc } from '../../inputs/otc/Otc';
 
 interface VerificationFormProps {
-  flow: any
-  submit: (event: React.FormEvent<HTMLFormElement>) => void
-  identifier: string
-  refreshSuccess: boolean
-  loading: boolean
-  submitting: boolean
+  flow: any;
+  submit: (event: React.FormEvent<HTMLFormElement>) => void;
+  identifier: string;
+  refreshSuccess: boolean;
+  loading: boolean;
+  submitting: boolean;
 }
 
 export const VerificationForm = (props: VerificationFormProps) => {
-  const { flow, submit, identifier, refreshSuccess, loading, submitting } = props
-  const [otcDisabled, setOtcDisabled] = useState(false)
-  const resendRef = useRef<HTMLButtonElement>(null)
-  const [hasInitialSent, setHasInitialSent] = useState(false)
+  const { flow, submit, identifier, refreshSuccess, loading, submitting } =
+    props;
+  const [otcDisabled, setOtcDisabled] = useState(false);
+  const resendRef = useRef<HTMLButtonElement>(null);
+  const [hasInitialSent, setHasInitialSent] = useState(false);
 
   useEffect(() => {
-    flow ? setOtcDisabled(false) : setOtcDisabled(true)
-  }, [flow])
+    flow ? setOtcDisabled(false) : setOtcDisabled(true);
+  }, [flow]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (flow && resendRef?.current) {
-        resendRef?.current.click()
+        resendRef?.current.click();
       }
-    }, 100)
-    return () => clearTimeout(timeout)
-  }, [flow])
+    }, 100);
+    return () => clearTimeout(timeout);
+  }, [flow]);
 
   useEffect(() => {
-    refreshSuccess && setHasInitialSent(true)
-  }, [])
+    refreshSuccess && setHasInitialSent(true);
+  }, []);
 
   return (
     <>
@@ -77,5 +77,5 @@ export const VerificationForm = (props: VerificationFormProps) => {
         </form>
       </div>
     </>
-  )
-}
+  );
+};

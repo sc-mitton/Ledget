@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 16,
     zIndex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   headerBox: {
     flexDirection: 'row',
@@ -28,15 +28,15 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 30,
     left: 20,
-    zIndex: -2
+    zIndex: -2,
   },
   seperator: {
     bottom: 0,
     left: 0,
     right: 0,
     position: 'absolute',
-    zIndex: 3
-  }
+    zIndex: 3,
+  },
 });
 
 export default styles;

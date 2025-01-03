@@ -5,7 +5,7 @@ import { useSearchParams, useLocation } from 'react-router-dom';
 import {
   useGetAccountsQuery,
   Account,
-  Institution
+  Institution,
 } from '@ledget/shared-features';
 import pathMappings from './path-mappings';
 
@@ -30,7 +30,7 @@ export const useAccountsContext = () => {
 };
 
 export const AccountsProvider = ({
-  children
+  children,
 }: {
   children: React.ReactNode;
 }) => {
@@ -67,7 +67,7 @@ export const AccountsProvider = ({
         setAccounts: setState,
         institutions: data?.institutions,
         isLoading,
-        isSuccess
+        isSuccess,
       }}
     >
       {children}

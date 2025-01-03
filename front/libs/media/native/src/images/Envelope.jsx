@@ -8,13 +8,13 @@ const EnvelopeImage = ({ dark, size = 84 }) => {
     <Image
       style={{ width: size, height: size }}
       source={envelopedark}
-      resizeMode='contain'
+      resizeMode="contain"
     />
   ) : (
     <Image
       style={{ width: size, height: size }}
       source={envelopelight}
-      resizeMode='contain'
+      resizeMode="contain"
     />
   );
 };

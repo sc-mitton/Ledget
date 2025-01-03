@@ -12,7 +12,7 @@ import { useEffect } from 'react';
 
 const schema = z.object({
   issue: z.string().min(1, { message: 'required' }),
-  detail: z.string().min(1, { message: 'required' })
+  detail: z.string().min(1, { message: 'required' }),
 });
 
 const IssueOptions = [
@@ -21,7 +21,7 @@ const IssueOptions = [
   { label: 'I have a question', value: 'QUESTION', id: 3 },
   { label: 'Report a bug', value: 'BUG', id: 4 },
   { label: 'Make a suggestion', value: 'SUGGESTION', id: 5 },
-  { label: 'Other', value: 'OTHER', id: 6 }
+  { label: 'Other', value: 'OTHER', id: 6 },
 ];
 
 const HelpModal = withModal((props) => {
@@ -30,11 +30,11 @@ const HelpModal = withModal((props) => {
     handleSubmit,
     formState: { errors },
     control,
-    clearErrors
+    clearErrors,
   } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: 'onSubmit',
-    reValidateMode: 'onBlur'
+    reValidateMode: 'onBlur',
   });
   const values = useWatch({ control, name: ['issue', 'detail'] });
   const [emailUser, { isLoading, isSuccess }] = useEmailUserMutation();

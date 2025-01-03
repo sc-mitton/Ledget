@@ -1,138 +1,137 @@
 .deviceList {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  width: auto;
+  height: auto;
+  max-height: 50vh;
+
+  section {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    overflow: auto;
-    width: auto;
-    height: auto;
-    max-height: 50vh;
+    position: relative;
 
-    section {
-        width: 100%;
+    & > button {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75em 0.5em;
+      margin: 0.25em 0;
+      gap: 1em;
+      transition: background-color 0.2s ease-in-out;
+      border-radius: var(--border-radius2);
+      position: relative;
+
+      & > div:nth-child(2) {
+        flex-grow: 1;
+        text-align: left;
+      }
+
+      // Icon (phone, computer)
+      & > div:first-child {
         display: flex;
-        flex-direction: column;
-        position: relative;
+        align-items: center;
 
-        &>button {
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            padding: .75em .5em;
-            margin: .25em 0;
-            gap: 1em;
-            transition: background-color 0.2s ease-in-out;
-            border-radius: var(--border-radius2);
-            position: relative;
-
-            &>div:nth-child(2) {
-                flex-grow: 1;
-                text-align: left;
-            }
-
-            // Icon (phone, computer)
-            &>div:first-child {
-                display: flex;
-                align-items: center;
-
-                img {
-                    width: 2.5rem;
-                    height: 2.5rem;
-                }
-
-                svg {
-                    width: 1.5rem;
-                    height: 1.5rem;
-                }
-            }
-
-            // Location Icon
-            &>div:nth-child(2)>div:last-child {
-                display: flex;
-                margin-left: -.125em;
-
-                svg {
-                    margin-left: -.25em;
-                    margin-right: .25em;
-                    padding-top: .125em;
-                }
-            }
-
-            // Arrow Icon
-            &>div:last-child {
-                transform: rotate(0deg);
-                padding: .125em;
-                margin-right: .25em;
-                transition: all 0.2s ease-in-out;
-                display: flex;
-                align-items: center;
-
-                &[data-open='true'] {
-                    transform: rotate(180deg);
-                    transition: transform 0.3s ease-in-out;
-                }
-            }
-
-            &:hover,
-            &[data-open='true'] {
-                background-color: var(--window);
-                transition: background-color 0.2s ease-in-out;
-            }
+        img {
+          width: 2.5rem;
+          height: 2.5rem;
         }
 
-        // Disclosure Panel
-        &>div {
-            background-color: var(--window);
-            border-bottom-left-radius: var(--border-radius3);
-            border-bottom-right-radius: var(--border-radius3);
-            padding: .5em .75em 0 .5em;
-            display: flex;
-            flex-direction: column;
-
-            &[data-open='true'] {
-                margin-top: -.75em;
-                margin-bottom: .25em;
-            }
-
-            &>div {
-                display: flex;
-                justify-content: space-between;
-                padding: 1em .5em;
-                padding-right: .1em;
-                position: relative;
-                border-top: 1.5px solid var(--border-color-ultra-dim);
-
-                &>div:first-child {
-                    display: grid;
-                    grid-template-columns: repeat(2, minmax(0, auto));
-                    column-gap: .75em;
-
-                    &>div:nth-child(2n + 1) {
-                        color: var(--m-text-secondary);
-                    }
-                }
-            }
+        svg {
+          width: 1.5rem;
+          height: 1.5rem;
         }
+      }
+
+      // Location Icon
+      & > div:nth-child(2) > div:last-child {
+        display: flex;
+        margin-left: -0.125em;
+
+        svg {
+          margin-left: -0.25em;
+          margin-right: 0.25em;
+          padding-top: 0.125em;
+        }
+      }
+
+      // Arrow Icon
+      & > div:last-child {
+        transform: rotate(0deg);
+        padding: 0.125em;
+        margin-right: 0.25em;
+        transition: all 0.2s ease-in-out;
+        display: flex;
+        align-items: center;
+
+        &[data-open='true'] {
+          transform: rotate(180deg);
+          transition: transform 0.3s ease-in-out;
+        }
+      }
+
+      &:hover,
+      &[data-open='true'] {
+        background-color: var(--window);
+        transition: background-color 0.2s ease-in-out;
+      }
     }
+
+    // Disclosure Panel
+    & > div {
+      background-color: var(--window);
+      border-bottom-left-radius: var(--border-radius3);
+      border-bottom-right-radius: var(--border-radius3);
+      padding: 0.5em 0.75em 0 0.5em;
+      display: flex;
+      flex-direction: column;
+
+      &[data-open='true'] {
+        margin-top: -0.75em;
+        margin-bottom: 0.25em;
+      }
+
+      & > div {
+        display: flex;
+        justify-content: space-between;
+        padding: 1em 0.5em;
+        padding-right: 0.1em;
+        position: relative;
+        border-top: 1.5px solid var(--border-color-ultra-dim);
+
+        & > div:first-child {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, auto));
+          column-gap: 0.75em;
+
+          & > div:nth-child(2n + 1) {
+            color: var(--m-text-secondary);
+          }
+        }
+      }
+    }
+  }
 }
 
-
 .logoutDevice {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-    z-index: 100;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  z-index: 100;
 }
 
 .currentDevice {
-    color: var(--blue);
-    font-size: .875rem;
-    margin-right: .25em;
+  color: var(--blue);
+  font-size: 0.875rem;
+  margin-right: 0.25em;
 }
 
 .smartPhoneIcon {
-    margin: 0 .625em;
+  margin: 0 0.625em;
 }

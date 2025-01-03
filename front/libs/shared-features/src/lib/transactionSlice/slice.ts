@@ -2,7 +2,7 @@ import {
   createSlice,
   createAsyncThunk,
   PayloadAction,
-  createSelector
+  createSelector,
 } from '@reduxjs/toolkit';
 import { PartialDeep } from 'type-fest';
 import dayjs from 'dayjs';
@@ -22,14 +22,14 @@ import {
   TransactionsFilterState,
   TransactionsSyncParams,
   RecurringTransaction,
-  TransformedRecurringTransaction
+  TransformedRecurringTransaction,
 } from './types';
 import { SplitCategory } from '../categorySlice/types';
 import { Bill } from '../billSlice/types';
 import {
   addTransaction2Cat,
   addTransaction2Bill,
-  budgetItemMetaDataSlice
+  budgetItemMetaDataSlice,
 } from '../budgetItemMetaDataSlice/slice';
 
 export const transactionSlice = apiSlice.injectEndpoints({
@@ -41,20 +41,21 @@ export const transactionSlice = apiSlice.injectEndpoints({
       query: (params) => ({
         url: 'transactions/sync',
         method: 'POST',
-        ...(params && { params })
+        ...(params && { params }),
       }),
       invalidatesTags: (result, error, arg) => {
-        return result && (result.added > 0 || result.modified > 0 || result.removed > 0)
+        return result &&
+          (result.added > 0 || result.modified > 0 || result.removed > 0)
           ? [
-            { type: 'Transaction', id: 'LIST' },
-            { type: 'UnconfirmedTransaction', id: 'LIST' },
-            'TransactionCount',
-            'AccountBalanceHistory',
-            'AccountBalanceTrend',
-            'AccountBreakdownHistory'
-          ]
+              { type: 'Transaction', id: 'LIST' },
+              { type: 'UnconfirmedTransaction', id: 'LIST' },
+              'TransactionCount',
+              'AccountBalanceHistory',
+              'AccountBalanceTrend',
+              'AccountBreakdownHistory',
+            ]
           : [];
-      }
+      },
     }),
     getUnconfirmedTransactions: builder.query<
       GetTransactionsResponse,
@@ -62,7 +63,7 @@ export const transactionSlice = apiSlice.injectEndpoints({
     >({
       query: (params) => ({
         url: 'transactions',
-        params: { ...params, confirmed: false }
+        params: { ...params, confirmed: false },
       }),
       providesTags: ['UnconfirmedTransaction'],
       // For merging in paginated responses to the cache
@@ -77,7 +78,7 @@ export const transactionSlice = apiSlice.injectEndpoints({
           const { results: newResults, ...newRest } = newItems;
           return {
             results: [...results, ...newResults],
-            ...newRest
+            ...newRest,
           };
         } else if (currentCache.results) {
           return newItems;
@@ -94,7 +95,7 @@ export const transactionSlice = apiSlice.injectEndpoints({
           return response;
         }
       },
-      keepUnusedDataFor: 60 * 30 // 30 minutes
+      keepUnusedDataFor: 60 * 30, // 30 minutes
     }),
     getTransactions: builder.query<
       GetTransactionsResponse,
@@ -102,16 +103,17 @@ export const transactionSlice = apiSlice.injectEndpoints({
     >({
       query: (params) => ({
         url: 'transactions',
-        params: params
+        params: params,
       }),
       providesTags: (result, error, arg) => {
         return result
           ? [
-            ...result.results.map(
-              (item) => ({ type: 'Transaction', id: item.transaction_id })
-            ),
-            { type: 'Transaction', id: 'LIST' }
-          ]
+              ...result.results.map((item) => ({
+                type: 'Transaction',
+                id: item.transaction_id,
+              })),
+              { type: 'Transaction', id: 'LIST' },
+            ]
           : [{ type: 'Transaction', id: 'LIST' }];
       },
       // For merging in paginated responses to the cache
@@ -133,8 +135,8 @@ export const transactionSlice = apiSlice.injectEndpoints({
                     (i) => i.transaction_id === item.transaction_id
                   )
               ),
-              ...newResults.map((t) => ({ ...t, amount: 100 }))
-            ]
+              ...newResults.map((t) => ({ ...t, amount: 100 })),
+            ],
           };
         }
         return currentCache;
@@ -149,16 +151,19 @@ export const transactionSlice = apiSlice.injectEndpoints({
           return response;
         }
       },
-      keepUnusedDataFor: 60 * 30 // 30 minutes
+      keepUnusedDataFor: 60 * 30, // 30 minutes
     }),
-    getRecurringTransactions: builder.query<TransformedRecurringTransaction[], void>({
+    getRecurringTransactions: builder.query<
+      TransformedRecurringTransaction[],
+      void
+    >({
       query: () => ({ url: 'transactions/recurring' }),
       transformResponse: (response: RecurringTransaction[]) => {
         return response.map((item) => ({
           ...item,
-          name: item.transactions[0].name
+          name: item.transactions[0].name,
         }));
-      }
+      },
     }),
     getTransactionsCount: builder.query<
       { count: number },
@@ -167,21 +172,21 @@ export const transactionSlice = apiSlice.injectEndpoints({
       query: (params) => ({
         url: 'transactions/count',
         params: params,
-        providesTags: ['TransactionCount']
-      })
+        providesTags: ['TransactionCount'],
+      }),
     }),
     getMerchants: builder.query<string[], void>({
       query: () => ({
         url: 'transactions/merchants',
-        params: {}
+        params: {},
       }),
-      keepUnusedDataFor: 60 * 30 // 30 minutes
+      keepUnusedDataFor: 60 * 30, // 30 minutes
     }),
     confirmTransactions: builder.mutation<any, ConfirmTransactionParams>({
       query: (data) => ({
         url: 'transactions/confirmation',
         method: 'POST',
-        body: data
+        body: data,
       }),
       invalidatesTags: (result, error, arg) => {
         const spendingHistoryTags: {
@@ -193,7 +198,7 @@ export const transactionSlice = apiSlice.injectEndpoints({
             item.splits.forEach((split) => {
               spendingHistoryTags.push({
                 type: 'SpendingHistory',
-                id: split.category
+                id: split.category,
               });
             });
           }
@@ -209,10 +214,10 @@ export const transactionSlice = apiSlice.injectEndpoints({
             : []),
           ...(arg.some((item) => item.bill)
             ? [{ type: 'Bill', id: 'LIST' } as const]
-            : [])
+            : []),
         ];
         return result ? [...otherTags, ...spendingHistoryTags] : otherTags;
-      }
+      },
     }),
     updateTransaction: builder.mutation<
       any,
@@ -221,21 +226,21 @@ export const transactionSlice = apiSlice.injectEndpoints({
       query: ({ transactionId, data }) => ({
         url: `transactions/${transactionId}`,
         method: 'PATCH',
-        body: data
+        body: data,
       }),
       invalidatesTags: (result, error, arg) => [
-        { type: 'Transaction', id: arg.transactionId } as const
-      ]
+        { type: 'Transaction', id: arg.transactionId } as const,
+      ],
     }),
     addNote: builder.mutation<Note, { transactionId: string; text: string }>({
       query: ({ transactionId, text }) => ({
         url: `transactions/${transactionId}/note`,
         method: 'POST',
-        body: { text }
+        body: { text },
       }),
       invalidatesTags: (result, error, arg) => [
-        { type: 'Transaction', id: arg.transactionId } as const
-      ]
+        { type: 'Transaction', id: arg.transactionId } as const,
+      ],
     }),
     updateDeleteNote: builder.mutation<
       any,
@@ -244,13 +249,13 @@ export const transactionSlice = apiSlice.injectEndpoints({
       query: ({ transactionId, noteId, text }) => ({
         url: `transactions/${transactionId}/note/${noteId}`,
         method: text ? 'PUT' : 'DELETE',
-        body: { text }
+        body: { text },
       }),
       invalidatesTags: (result, error, arg) => [
-        { type: 'Transaction', id: arg.transactionId } as const
-      ]
-    })
-  })
+        { type: 'Transaction', id: arg.transactionId } as const,
+      ],
+    }),
+  }),
 });
 
 // State Slices
@@ -259,28 +264,39 @@ export const confirmStack = createSlice({
   name: 'confirmStack',
   initialState: {
     unconfirmed: [] as Transaction[],
-    confirmedQue: [] as ConfirmedQueue
+    confirmedQue: [] as ConfirmedQueue,
   } as ConfirmStackInitialState,
   reducers: {
     confirmTransaction: (
       state,
       action: PayloadAction<Transaction['transaction_id']>
     ) => {
-      const index = state.unconfirmed.findIndex((item) => item.transaction_id === action.payload);
+      const index = state.unconfirmed.findIndex(
+        (item) => item.transaction_id === action.payload
+      );
 
       if (index > -1) {
         state.confirmedQue.push({ transaction: state.unconfirmed[index] });
         state.unconfirmed.splice(index, 1);
       }
     },
-    updateTransaction: (state, action: PayloadAction<{ transaction: Transaction, categories?: SplitCategory[], bill?: Bill }>) => {
+    updateTransaction: (
+      state,
+      action: PayloadAction<{
+        transaction: Transaction;
+        categories?: SplitCategory[];
+        bill?: Bill;
+      }>
+    ) => {
       if (action.payload.categories) {
         state.unconfirmed.find(
-          (item) => item.transaction_id === action.payload.transaction.transaction_id
+          (item) =>
+            item.transaction_id === action.payload.transaction.transaction_id
         )!.categories = action.payload.categories;
       } else if (action.payload.bill) {
         state.unconfirmed.find(
-          (item) => item.transaction_id === action.payload.transaction.transaction_id
+          (item) =>
+            item.transaction_id === action.payload.transaction.transaction_id
         )!.bill = action.payload.bill;
       }
     },
@@ -291,7 +307,7 @@ export const confirmStack = createSlice({
       if (index > -1) {
         state.unconfirmed.splice(index, 1);
       }
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -309,7 +325,7 @@ export const confirmStack = createSlice({
             ...state.unconfirmed,
             ...action.payload.results.filter(
               (item) => !currentIds[item.transaction_id]
-            )
+            ),
           ];
         }
       )
@@ -320,7 +336,7 @@ export const confirmStack = createSlice({
           state.confirmedQue.splice(0, state.confirmedQue.length);
         }
       );
-  }
+  },
 });
 
 export const filteredFetchedConfirmedTransactions = createSlice({
@@ -333,17 +349,20 @@ export const filteredFetchedConfirmedTransactions = createSlice({
         // The app starts out with the current month and year being the focus.
         // If the user moves through different months, the filter will be updated or over written.
         dayjs().startOf('month').unix(),
-        dayjs().endOf('month').unix()
-      ]
-    }
+        dayjs().endOf('month').unix(),
+      ],
+    },
   } as TransactionsFilterState,
   reducers: {
-    setConfirmedTransactionFilter: (state, action: PayloadAction<TransactionsFilter>) => {
+    setConfirmedTransactionFilter: (
+      state,
+      action: PayloadAction<TransactionsFilter>
+    ) => {
       state.filter = action.payload;
     },
     clearConfirmedTransactionFilter: (state) => {
       state.filter = {};
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -353,9 +372,13 @@ export const filteredFetchedConfirmedTransactions = createSlice({
           state.filter = {
             ...state.filter,
             date_range: [
-              dayjs(`${action.payload.year}-${action.payload.month}-01`).startOf('month').unix(),
-              dayjs(`${action.payload.year}-${action.payload.month}-01`).endOf('month').unix()
-            ]
+              dayjs(`${action.payload.year}-${action.payload.month}-01`)
+                .startOf('month')
+                .unix(),
+              dayjs(`${action.payload.year}-${action.payload.month}-01`)
+                .endOf('month')
+                .unix(),
+            ],
           };
         }
       )
@@ -370,8 +393,8 @@ export const filteredFetchedConfirmedTransactions = createSlice({
             state.unfiltered = action.payload.results;
           }
         }
-      )
-  }
+      );
+  },
 });
 
 // Confirm a single transaction and update the metadata
@@ -379,10 +402,7 @@ export const filteredFetchedConfirmedTransactions = createSlice({
 // with the transaction id and the confirmed categories/bills
 export const confirmAndUpdateMetaData = createAsyncThunk(
   'confirmStack/confirmAndDispatch',
-  async (
-    transaction: Transaction,
-    { dispatch }
-  ) => {
+  async (transaction: Transaction, { dispatch }) => {
     dispatch(
       confirmStack.actions.confirmTransaction(transaction.transaction_id)
     );
@@ -393,7 +413,7 @@ export const confirmAndUpdateMetaData = createAsyncThunk(
           addTransaction2Cat({
             categoryId: id,
             amount: transaction.amount * fraction,
-            period
+            period,
           })
         );
       }
@@ -401,7 +421,7 @@ export const confirmAndUpdateMetaData = createAsyncThunk(
       dispatch(
         addTransaction2Bill({
           billId: transaction.bill.id,
-          amount: transaction.amount
+          amount: transaction.amount,
         })
       );
     }
@@ -409,8 +429,12 @@ export const confirmAndUpdateMetaData = createAsyncThunk(
 );
 
 // Actions and hooks
-export const { removeUnconfirmedTransaction, updateTransaction } = confirmStack.actions;
-export const { setConfirmedTransactionFilter, clearConfirmedTransactionFilter } = filteredFetchedConfirmedTransactions.actions;
+export const { removeUnconfirmedTransaction, updateTransaction } =
+  confirmStack.actions;
+export const {
+  setConfirmedTransactionFilter,
+  clearConfirmedTransactionFilter,
+} = filteredFetchedConfirmedTransactions.actions;
 
 export const {
   useTransactionsSyncMutation,
@@ -423,19 +447,33 @@ export const {
   useUpdateDeleteNoteMutation,
   useGetMerchantsQuery,
   useGetTransactionsCountQuery,
-  useGetRecurringTransactionsQuery
+  useGetRecurringTransactionsQuery,
 } = transactionSlice;
 
-export const useGetTransactionQueryState = transactionSlice.endpoints.getTransactions.useQueryState;
+export const useGetTransactionQueryState =
+  transactionSlice.endpoints.getTransactions.useQueryState;
 
 // Selectors
-const selectUnconfirmed = (state: RootStateWithTransactions) => state.confirmStack.unconfirmed;
-const selectConfirmedQue = (state: RootStateWithTransactions) => state.confirmStack.confirmedQue;
-const selectDateYear = (state: RootStateWithTransactions, date: { year: number; month: number }) => date;
-const selectMonthYear = (state: RootStateWithTransactions, date: { year: number; month: number }) => date;
-export const selectFilteredFetchedConfirmedTransactions = (state: RootStateWithTransactions) => state.filteredFetchedonfirmedTransactions.filtered;
-export const selectConfirmedTransactionFilter = (state: RootStateWithTransactions) => state.filteredFetchedonfirmedTransactions.filter;
-export const selectConfirmedLength = (state: RootStateWithTransactions) => state.confirmStack.confirmedQue.length;
+const selectUnconfirmed = (state: RootStateWithTransactions) =>
+  state.confirmStack.unconfirmed;
+const selectConfirmedQue = (state: RootStateWithTransactions) =>
+  state.confirmStack.confirmedQue;
+const selectDateYear = (
+  state: RootStateWithTransactions,
+  date: { year: number; month: number }
+) => date;
+const selectMonthYear = (
+  state: RootStateWithTransactions,
+  date: { year: number; month: number }
+) => date;
+export const selectFilteredFetchedConfirmedTransactions = (
+  state: RootStateWithTransactions
+) => state.filteredFetchedonfirmedTransactions.filtered;
+export const selectConfirmedTransactionFilter = (
+  state: RootStateWithTransactions
+) => state.filteredFetchedonfirmedTransactions.filter;
+export const selectConfirmedLength = (state: RootStateWithTransactions) =>
+  state.confirmStack.confirmedQue.length;
 
 export const selectUnconfirmedTransactions = createSelector(
   [selectUnconfirmed, selectMonthYear],

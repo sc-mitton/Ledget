@@ -6,7 +6,7 @@ import {
   GetBalanceHistoryResponse,
   GetAccountBalanceTrendResponse,
   UpdateAccount,
-  GetBreakdownHistoryResponse
+  GetBreakdownHistoryResponse,
 } from './types';
 
 const apiWithTag = apiSlice.enhanceEndpoints({ addTagTypes: ['Accounts'] });
@@ -16,12 +16,12 @@ export const accountsSlice = apiWithTag.injectEndpoints({
     getAccounts: builder.query<GetAccountsResponse, void>({
       query: () => `accounts`,
       keepUnusedDataFor: 60 * 30, // 30 minutes
-      providesTags: ['Account']
+      providesTags: ['Account'],
     }),
     getBreakdownHistory: builder.query<GetBreakdownHistoryResponse, void>({
       query: () => `accounts/breakdown-history`,
       providesTags: ['AccountBreakdownHistory'],
-      keepUnusedDataFor: 60 * 30 // 30 minutes
+      keepUnusedDataFor: 60 * 30, // 30 minutes
     }),
     getAccountBalanceHistory: builder.query<
       GetBalanceHistoryResponse,
@@ -30,14 +30,15 @@ export const accountsSlice = apiWithTag.injectEndpoints({
       query: (params) => {
         const { accounts, ...rest } = params || {};
         const queryObj = {
-          url: `accounts/balance-history${accounts ? `?account=${accounts.join('&account=')}` : ''
-            }`,
-          method: 'GET'
+          url: `accounts/balance-history${
+            accounts ? `?account=${accounts.join('&account=')}` : ''
+          }`,
+          method: 'GET',
         };
         return rest ? { ...queryObj, params: rest } : queryObj;
       },
       providesTags: ['AccountBalanceHistory'],
-      keepUnusedDataFor: 60 * 30 // 30 minutes
+      keepUnusedDataFor: 60 * 30, // 30 minutes
     }),
     getAccountBalanceTrend: builder.query<
       GetAccountBalanceTrendResponse,
@@ -46,24 +47,25 @@ export const accountsSlice = apiWithTag.injectEndpoints({
       query: (params) => {
         const { accounts, ...rest } = params || {};
         const queryObj = {
-          url: `accounts/balance-trend${accounts ? `?account=${accounts.join('&account=')}` : ''
-            }`,
-          method: 'GET'
+          url: `accounts/balance-trend${
+            accounts ? `?account=${accounts.join('&account=')}` : ''
+          }`,
+          method: 'GET',
         };
         return rest ? { ...queryObj, params: rest } : queryObj;
       },
       providesTags: ['AccountBalanceTrend'],
-      keepUnusedDataFor: 60 * 30 // 30 minutes
+      keepUnusedDataFor: 60 * 30, // 30 minutes
     }),
     updateAccounts: builder.mutation<UpdateAccount[], UpdateAccount[]>({
       query: (data) => ({
         url: `accounts`,
         method: 'PATCH',
-        body: data
+        body: data,
       }),
-      invalidatesTags: ['Account']
-    })
-  })
+      invalidatesTags: ['Account'],
+    }),
+  }),
 });
 
 export const {
@@ -71,7 +73,7 @@ export const {
   useUpdateAccountsMutation,
   useLazyGetAccountBalanceHistoryQuery,
   useLazyGetAccountBalanceTrendQuery,
-  useGetBreakdownHistoryQuery
+  useGetBreakdownHistoryQuery,
 } = accountsSlice;
 
 export const useGetAccountsQueryState =

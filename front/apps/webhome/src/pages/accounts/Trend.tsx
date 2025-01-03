@@ -21,7 +21,7 @@ const Trend = () => {
       getBalanceTrend(
         {
           type: pathMappings.getAccountType(location) as any,
-          accounts: accounts?.map((account) => account.id)
+          accounts: accounts?.map((account) => account.id),
         },
         true
       );

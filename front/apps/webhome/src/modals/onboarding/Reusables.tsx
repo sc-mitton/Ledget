@@ -11,19 +11,19 @@ import {
   NewBill,
   useAddNewCategoryMutation,
   NewCategory,
-  apiSlice
+  apiSlice,
 } from '@ledget/shared-features';
 import {
   BlueSubmitWithArrow,
   BlueSlimButton2,
   TabNavList,
-  NestedWindow2
+  NestedWindow2,
 } from '@ledget/ui';
 import { useAppDispatch } from '@hooks/store';
 
 export const TabView = ({
   children,
-  item
+  item,
 }: {
   children: React.ReactNode;
   item: ItemS;
@@ -58,14 +58,14 @@ export const BottomButtons = ({ item }: { item: ItemS }) => {
     useAddnewBillMutation();
   const [
     addNewCategory,
-    { isLoading: isCategoryLoading, isSuccess: isCategorySuccess }
+    { isLoading: isCategoryLoading, isSuccess: isCategorySuccess },
   ] = useAddNewCategoryMutation();
   const [updateUser, { isSuccess: patchedUserSuccess }] =
     useUpdateUserMutation();
 
   const {
     month: { items: monthItems },
-    year: { items: yearItems }
+    year: { items: yearItems },
   } = useItemsContext(item);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -74,13 +74,13 @@ export const BottomButtons = ({ item }: { item: ItemS }) => {
     if (location.pathname.includes('connect')) {
       navigate({
         pathname: '/welcome/add-bills',
-        search: location.search
+        search: location.search,
       });
     } else if (location.pathname.includes('add-bills')) {
       if (monthItems.length === 0 && yearItems.length === 0) {
         navigate({
           pathname: '/welcome/add-categories',
-          search: location.search
+          search: location.search,
         });
       } else {
         addNewBill([...monthItems, ...yearItems] as NewBill[]);
@@ -98,7 +98,7 @@ export const BottomButtons = ({ item }: { item: ItemS }) => {
     if (isBillSuccess) {
       navigate({
         pathname: '/welcome/add-categories',
-        search: location.search
+        search: location.search,
       });
     }
   }, [isBillSuccess]);

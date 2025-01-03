@@ -1,7 +1,7 @@
-import { View } from 'react-native'
+import { View } from 'react-native';
 
 import sharedStyles from './styles/shared';
-import { OnboardingScreenProps } from '@/types'
+import { OnboardingScreenProps } from '@/types';
 import { Button, Box, Text } from '@ledget/native-ui';
 import { TourBills } from '@ledget/media/native';
 import { useAppearance } from '@/features/appearanceSlice';
@@ -11,29 +11,35 @@ const Tour = (props: OnboardingScreenProps<'TourBills'>) => {
   const { mode } = useAppearance();
 
   return (
-    <Box variant='screen'>
+    <Box variant="screen">
       <View style={sharedStyles.mainContainer}>
         <MaskedImageWrapper>
           <TourBills dark={mode === 'dark'} />
         </MaskedImageWrapper>
-        <Box paddingHorizontal='xs' marginTop='l'>
-          <Text fontSize={24} lineHeight={28} variant='geistSemiBold' marginVertical='m'>
+        <Box paddingHorizontal="xs" marginTop="l">
+          <Text
+            fontSize={24}
+            lineHeight={28}
+            variant="geistSemiBold"
+            marginVertical="m"
+          >
             Bills
           </Text>
-          <Text variant='geistRegular' color='secondaryText'>
-            All monthly recurring payments, or one-time payments, can be tracked here.
+          <Text variant="geistRegular" color="secondaryText">
+            All monthly recurring payments, or one-time payments, can be tracked
+            here.
           </Text>
         </Box>
       </View>
-      <Box paddingBottom='navHeight'>
+      <Box paddingBottom="navHeight">
         <Button
-          variant='grayMain'
-          label='Continue'
+          variant="grayMain"
+          label="Continue"
           onPress={() => props.navigation.navigate('TourActivity')}
         />
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default Tour
+export default Tour;

@@ -6,17 +6,17 @@ import {
   composeRestyleFunctions,
   color,
   border,
-  useRestyle
+  useRestyle,
 } from '@shopify/restyle';
 import { Theme } from '../theme';
 
-const restyleFunctions = composeRestyleFunctions([color, border])
+const restyleFunctions = composeRestyleFunctions([color, border]);
 
 export type IconProps = {
   size: number;
   stroke: string;
   fill: string;
-}
+};
 
 interface ExtraProps {
   strokeWidth?: number;
@@ -26,17 +26,28 @@ interface ExtraProps {
 }
 type Props = ColorProps<Theme> & BorderProps<Theme> & ExtraProps;
 
-export const Icon = ({ icon: Icon, size = 20, color = 'mainText', ...rest }: Props) => {
+export const Icon = ({
+  icon: Icon,
+  size = 20,
+  color = 'mainText',
+  ...rest
+}: Props) => {
   const props = useRestyle(restyleFunctions as any, { color, ...rest });
 
   return (
     <View style={{ transform: [{ rotate: `${rest.rotate || 0}deg` }] }}>
       <Icon
         size={size}
-        stroke={(props as any).style[0].borderColor || (props as any).style[0].color}
-        fill={(props as any).style[0].borderColor ? (props as any).style[0].borderColor : 'none'}
+        stroke={
+          (props as any).style[0].borderColor || (props as any).style[0].color
+        }
+        fill={
+          (props as any).style[0].borderColor
+            ? (props as any).style[0].borderColor
+            : 'none'
+        }
         {...props}
       />
     </View>
-  )
-}
+  );
+};

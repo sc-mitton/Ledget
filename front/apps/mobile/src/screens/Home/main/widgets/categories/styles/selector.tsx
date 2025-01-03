@@ -42,13 +42,13 @@ const styles = StyleSheet.create({
     bottom: '50%',
     left: '50%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   emojiLabel: {
     position: 'absolute',
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4
+    gap: 4,
   },
   skeletonContainer: {
     flexDirection: 'row',
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   selectedCategory: {
-    marginLeft: -4
+    marginLeft: -4,
   },
   checkContainer: {
     position: 'absolute',
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     right: -10,
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
 });
 
 export default styles;

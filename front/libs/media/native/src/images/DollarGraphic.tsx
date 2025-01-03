@@ -8,13 +8,13 @@ const DollarGraphic = ({ dark = false, size = 220 }) => {
     <Image
       style={{ width: size, height: size }}
       source={DollarDarkPng}
-      resizeMode='contain'
+      resizeMode="contain"
     />
   ) : (
     <Image
       style={{ width: size, height: size }}
       source={DollarLightPng}
-      resizeMode='contain'
+      resizeMode="contain"
     />
   );
 };

@@ -5,17 +5,21 @@ export const remindersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getReminders: builder.query<Reminder[], void>({
       query: () => 'reminders',
-      providesTags: ['Reminder']
+      providesTags: ['Reminder'],
     }),
-    addReminder: builder.mutation<Reminder, Partial<Reminder> & { bill: string }>({
+    addReminder: builder.mutation<
+      Reminder,
+      Partial<Reminder> & { bill: string }
+    >({
       query: (payload) => ({
         url: 'reminders',
         method: 'POST',
-        body: payload
+        body: payload,
       }),
-      invalidatesTags: ['Reminder']
+      invalidatesTags: ['Reminder'],
     }),
-  })
+  }),
 });
 
-export const { useGetRemindersQuery, useAddReminderMutation } = remindersApiSlice;
+export const { useGetRemindersQuery, useAddReminderMutation } =
+  remindersApiSlice;

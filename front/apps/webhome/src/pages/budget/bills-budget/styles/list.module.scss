@@ -2,100 +2,101 @@
 @import '@styles/table-mixins';
 
 .list {
-    flex: 2;
-    flex-shrink: 1;
-    overflow-y: hidden;
-    overflow-x: auto;
-    scrollbar-width: none;
-    max-height: clamp(calc(3 * (1em + $bill-flex-grid-gap*2)),
-            calc(5 * (1em + $bill-flex-grid-gap*2 + 1vh)),
-            calc(100% - $bill-flex-grid-gap * 2));
-    display: grid;
-    grid-auto-flow: column;
-    grid-template-rows: repeat($number-of-bill-rows, minmax(0, min-content));
-    grid-auto-columns: calc(50% - $item-column-gap);
-    row-gap: $item-row-gap;
-    column-gap: $item-column-gap;
-    transition: all .3s ease-in-out;
-    padding-right: .0625em;
+  flex: 2;
+  flex-shrink: 1;
+  overflow-y: hidden;
+  overflow-x: auto;
+  scrollbar-width: none;
+  max-height: clamp(
+    calc(3 * (1em + $bill-flex-grid-gap * 2)),
+    calc(5 * (1em + $bill-flex-grid-gap * 2 + 1vh)),
+    calc(100% - $bill-flex-grid-gap * 2)
+  );
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat($number-of-bill-rows, minmax(0, min-content));
+  grid-auto-columns: calc(50% - $item-column-gap);
+  row-gap: $item-row-gap;
+  column-gap: $item-column-gap;
+  transition: all 0.3s ease-in-out;
+  padding-right: 0.0625em;
 
-    &:not([data-size='extra-small']) {
-        scroll-snap-type: inline mandatory;
-        grid-auto-columns: calc(50% - $item-column-gap/2);
+  &:not([data-size='extra-small']) {
+    scroll-snap-type: inline mandatory;
+    grid-auto-columns: calc(50% - $item-column-gap/2);
 
-        &>div {
-            scroll-snap-align: start;
-        }
+    & > div {
+      scroll-snap-align: start;
+    }
+  }
+
+  &[data-size='extra-small'] {
+    grid-auto-flow: row;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-height: 15em;
+
+    & > div:not(:last-child) {
+      @include table-dividers(-0.5em);
     }
 
-    &[data-size='extra-small'] {
-        grid-auto-flow: row;
-        grid-template-columns: 1fr;
-        grid-template-rows: auto;
-        overflow-y: scroll;
-        overflow-x: hidden;
-        max-height: 15em;
+    & > div {
+      width: 100%;
+    }
+  }
 
-        &>div:not(:last-child) {
-            @include table-dividers(-.5em);
-        }
+  // Bill item (cell)
+  & > div {
+    cursor: pointer;
+    box-sizing: border-box;
+    border-radius: var(--border-radius2);
 
-        &>div {
-            width: 100%;
-        }
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    position: relative;
+    z-index: 0;
+    padding: 0.125em 0;
 
+    & > div:first-child {
+      display: inline-flex;
+      gap: 0.375em;
     }
 
-    // Bill item (cell)
-    &>div {
-        cursor: pointer;
-        box-sizing: border-box;
-        border-radius: var(--border-radius2);
-
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: relative;
-        position: relative;
-        z-index: 0;
-        padding: .125em 0;
-
-        &>div:first-child {
-            display: inline-flex;
-            gap: .375em;
-        }
-
-        &>div:nth-of-type(2) {
-            flex-grow: 1;
-            text-align: right;
-        }
-
-        &[role="button"]>div:nth-of-type(2) {
-            margin-right: .75em;
-        }
-
-        &>div:last-of-type {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    & > div:nth-of-type(2) {
+      flex-grow: 1;
+      text-align: right;
     }
+
+    &[role='button'] > div:nth-of-type(2) {
+      margin-right: 0.75em;
+    }
+
+    & > div:last-of-type {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
 }
 
 .check {
-    &[data-paid='true'] {
-        opacity: 1;
-    }
+  &[data-paid='true'] {
+    opacity: 1;
+  }
 
-    &[data-paid='false'] {
-        opacity: .6;
-    }
+  &[data-paid='false'] {
+    opacity: 0.6;
+  }
 
-    &[data-period='month'] {
-        color: var(--monthly-color2);
-    }
+  &[data-period='month'] {
+    color: var(--monthly-color2);
+  }
 
-    &[data-period='year'] {
-        color: var(--yearly-color2);
-    }
+  &[data-period='year'] {
+    color: var(--yearly-color2);
+  }
 }

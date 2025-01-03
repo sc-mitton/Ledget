@@ -6,7 +6,7 @@ import { getOrderSuffix } from '@ledget/helpers';
 
 const OrderSummary = ({
   unit_amount,
-  trial_period_days
+  trial_period_days,
 }: {
   unit_amount?: number;
   trial_period_days?: number;

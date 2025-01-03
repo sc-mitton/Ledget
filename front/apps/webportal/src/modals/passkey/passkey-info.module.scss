@@ -1,36 +1,36 @@
 .content {
-    text-align: left;
-    font-size: 1.125rem;
+  text-align: left;
+  font-size: 1.125rem;
+  font-weight: var(--fw-regular);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h2,
+  h3 {
+    color: var(--blue-medium);
     font-weight: var(--fw-regular);
+  }
+
+  h2 {
+    text-align: center;
+  }
+
+  svg {
+    margin: 0.5em 0 1em 0;
+  }
+
+  & > div:first-child {
+    height: 3.125rem;
+    margin: 0 auto;
     display: flex;
-    flex-direction: column;
     align-items: center;
-
-    h2,
-    h3 {
-        color: var(--blue-medium);
-        font-weight: var(--fw-regular);
-    }
-
-    h2 {
-        text-align: center;
-    }
-
-    svg {
-        margin: .5em 0 1em 0;
-    }
-
-    &>div:first-child {
-        height: 3.125rem;
-        margin: 0 auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+    justify-content: center;
+  }
 }
 
 .text {
-    max-height: 50vh;
-    overflow-y: auto;
-    padding: 0 1.25em;
+  max-height: 50vh;
+  overflow-y: auto;
+  padding: 0 1.25em;
 }

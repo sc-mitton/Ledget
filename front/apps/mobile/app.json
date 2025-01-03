@@ -13,9 +13,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.ledget.mobile",
@@ -75,15 +73,9 @@
           "faceIDPermission": "Allow $(PRODUCT_NAME) to access your Face ID biometric data."
         }
       ],
-      [
-        "./plugins/withAndroidNetworkSecurity.js"
-      ],
-      [
-        "./plugins/withAndroidPlaid.js"
-      ],
-      [
-        "./plugins/withIOSPlaid.js"
-      ],
+      ["./plugins/withAndroidNetworkSecurity.js"],
+      ["./plugins/withAndroidPlaid.js"],
+      ["./plugins/withIOSPlaid.js"],
       [
         "expo-font",
         {

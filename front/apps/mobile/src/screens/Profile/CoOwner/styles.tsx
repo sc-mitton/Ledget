@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   screen: { flex: 1 },
@@ -8,7 +8,7 @@ export default StyleSheet.create({
   },
   header: {
     marginTop: 16,
-    marginBottom: 0
+    marginBottom: 0,
   },
   container: {
     marginTop: 20,
@@ -24,10 +24,10 @@ export default StyleSheet.create({
     flexDirection: 'row',
   },
   emptyAccounts: {
-    marginVertical: 2
+    marginVertical: 2,
   },
   logo: {
-    marginLeft: -8
+    marginLeft: -8,
   },
   removeButton: {
     alignItems: 'center',
@@ -35,5 +35,5 @@ export default StyleSheet.create({
     marginLeft: 16,
     marginTop: 6,
     flexDirection: 'row',
-  }
+  },
 });

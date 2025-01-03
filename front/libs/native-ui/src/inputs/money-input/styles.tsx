@@ -1,8 +1,8 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%'
+    width: '100%',
   },
   textInput: {
     fontFamily: 'SourceSans3Regular',
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     position: 'relative',
-  }
+  },
 });
 
 export default styles;

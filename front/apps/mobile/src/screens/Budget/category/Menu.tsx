@@ -9,8 +9,8 @@ export default function BakedMenu(props: BudgetScreenProps<'Category'>) {
   return (
     <View style={styles.menu}>
       <Menu
-        as='menu'
-        placement='right'
+        as="menu"
+        placement="right"
         items={[
           {
             label: 'Edit',
@@ -18,23 +18,34 @@ export default function BakedMenu(props: BudgetScreenProps<'Category'>) {
             onSelect: () =>
               props.navigation.navigate('Modals', {
                 screen: 'NewCategory',
-                params: { category: props.route.params.category, options: { title: 'Edit' } }
-              })
+                params: {
+                  category: props.route.params.category,
+                  options: { title: 'Edit' },
+                },
+              }),
           },
           {
             label: 'Delete',
-            icon: () => <Icon icon={Trash} size={16} strokeWidth={2} color='alert' />,
-            onSelect: () => props.navigation.navigate('Modals', {
-              screen: 'ConfirmDeleteCategory',
-              params: { category: props.route.params.category }
-            })
-          }
+            icon: () => (
+              <Icon icon={Trash} size={16} strokeWidth={2} color="alert" />
+            ),
+            onSelect: () =>
+              props.navigation.navigate('Modals', {
+                screen: 'ConfirmDeleteCategory',
+                params: { category: props.route.params.category },
+              }),
+          },
         ]}
       >
-        <Box padding='xxs' borderRadius={'circle'}>
-          <Icon icon={MoreHorizontal} size={24} strokeWidth={2} color='secondaryText' />
+        <Box padding="xxs" borderRadius={'circle'}>
+          <Icon
+            icon={MoreHorizontal}
+            size={24}
+            strokeWidth={2}
+            color="secondaryText"
+          />
         </Box>
       </Menu>
     </View>
-  )
+  );
 }

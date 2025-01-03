@@ -1,5 +1,9 @@
-import { Account } from '@features/accountsSlice'
+import { Account } from '@features/accountsSlice';
 
-export type WaferStyle = 'credit' | 'deposit'
+export type WaferStyle = 'credit' | 'deposit';
 
-export type WaferProps = { account: Account, onClick: (arg: string) => void, styling: WaferStyle }
+export type WaferProps = {
+  account: Account;
+  onClick: (arg: string) => void;
+  styling: WaferStyle;
+};

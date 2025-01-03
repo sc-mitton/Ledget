@@ -1,416 +1,537 @@
 @mixin common {
-    /* Base Palet */
+  /* Base Palet */
 
-    --yellow: rgb(175, 175, 51);
-    --green-text: #3aae83;
-    --yearly-color1-alt: hsl(156, 31%, 62%);
-    --charcoal-rgb: 41, 41, 41;
+  --yellow: rgb(175, 175, 51);
+  --green-text: #3aae83;
+  --yearly-color1-alt: hsl(156, 31%, 62%);
+  --charcoal-rgb: 41, 41, 41;
 
-    /* Input Colors */
-    --input-border-focus: solid 1px var(--input-border-focus-color);
-    --input-border-hover: solid 1px var(--input-border-hover-color);
-    --input-focus-drop-shadow: 0 0 0px 1.5px var(--input-focus-dropshadow-color);
+  /* Input Colors */
+  --input-border-focus: solid 1px var(--input-border-focus-color);
+  --input-border-hover: solid 1px var(--input-border-hover-color);
+  --input-focus-drop-shadow: 0 0 0px 1.5px var(--input-focus-dropshadow-color);
 
-    /* Text */
-    --white: hsl(0, 0%, 100%);
-    --black: hsl(0, 0%, 0%);
+  /* Text */
+  --white: hsl(0, 0%, 100%);
+  --black: hsl(0, 0%, 0%);
 
-    /* Drop Shadows & Borders */
-    --window-portal-drop-shadow: var(--window-portal-drop-shadow-color) 0px 0px 4px;
-    --new-item-drop-shadow: var(--new-item-drop-shadow-color) 0px 0px 6px;
+  /* Drop Shadows & Borders */
+  --window-portal-drop-shadow: var(--window-portal-drop-shadow-color) 0px 0px
+    4px;
+  --new-item-drop-shadow: var(--new-item-drop-shadow-color) 0px 0px 6px;
 
-    --low-elevation-drop-shadow: var(--low-elevation-drop-shadow-color) 0px 1px 1px 1px;
-    --mid-elevation-drop-shadow: var(--mid-elevation-drop-shadow-color) 0px 3px 12px;
-    --input-drop-shadow: var(--input-drop-shadow-color) 0px 1px 0px .3px;
-    --dropdown-box-shadow: var(--dropdown-box-shadow-color) 0px 0px 24px;
-    --antd-drop-shadow: var(--antd-drop-shadow-color) 0 3px 12px;
+  --low-elevation-drop-shadow: var(--low-elevation-drop-shadow-color) 0px 1px
+    1px 1px;
+  --mid-elevation-drop-shadow: var(--mid-elevation-drop-shadow-color) 0px 3px
+    12px;
+  --input-drop-shadow: var(--input-drop-shadow-color) 0px 1px 0px 0.3px;
+  --dropdown-box-shadow: var(--dropdown-box-shadow-color) 0px 0px 24px;
+  --antd-drop-shadow: var(--antd-drop-shadow-color) 0 3px 12px;
 
-    --accessible-focus-drop-shadow: 0 0 0 1.5px var(--blue-light-medium);
+  --accessible-focus-drop-shadow: 0 0 0 1.5px var(--blue-light-medium);
 
-    --wafer-drop-shadow: var(--wafer-drop-shadow-color) 0px 1px 5px;
-    --active-wafer-drop-shadow: color-mix(in srgb, var(--monthly-hlight) 80%, var(--monthly-color1)) 0px 0px 12px;
+  --wafer-drop-shadow: var(--wafer-drop-shadow-color) 0px 1px 5px;
+  --active-wafer-drop-shadow: color-mix(
+      in srgb,
+      var(--monthly-hlight) 80%,
+      var(--monthly-color1)
+    )
+    0px 0px 12px;
 }
 
 :root {
-    div.dark {
-        @include common;
-
-        --mute-red: hsl(352, 98%, 90%);
-        --hover-red: hsl(352, 95%, 85%);
-        --alert-red: hsl(352, 86%, 69%);
-        --red-rgb: 243, 80, 80;
-        --dark-red: hsl(0, 59%, 34%);
-
-        // Secondary and Primary Base Values
-        --blue-h: 226;
-        --green-h: 170;
-
-        --monthly-background-color: hsl(var(--blue-h), 55%, 40%);
-        --monthly-hover-background-color: hsl(var(--blue-h), 55%, 48%);
-        --monthly-background-color-darker: hsl(var(--blue-h), 55%, 60%);
-        --monthly-color1: hsl(var(--blue-h), 45%, 100%);
-        --monthly-color2: hsl(var(--blue-h), 45%, 60%);
-
-        --yearly-background-color: hsl(var(--green-h), 40%, 27%);
-        --yearly-hover-background-color: hsl(var(--green-h), 40%, 23%);
-        --yearly-background-color-darker: hsl(var(--green-h), 50%, 40%);
-        --yearly-color1: hsl(var(--green-h), 30%, 100%);
-        --yearly-color2: hsl(var(--green-h), 30%, 50%);
-
-        // Blue Green Pallet
-        --blue-light: hsl(var(--blue-h), 45%, 17%);
-        --blue-light-hover: hsl(var(--blue-h), 45%, 23%);
-        --blue-light-medium: hsl(var(--blue-h), 45%, 35%);
-        --blue-light-medium-hover: hsl(var(--blue-h), 45%, 27%);
-        --blue-medium: hsl(var(--blue-h), 45%, 40%);
-        --blue-medium-hover: hsl(var(--blue-h), 45%, 45%);
-        --blue: hsl(var(--blue-h), 45%, 50%);
-        --blue-sat: hsl(var(--blue-h), 60%, 55%);
-        --blue-sat-hover: hsl(var(--blue-h), 55%, 65%);
-        --blue-medium-dark: hsl(var(--blue-h), 25%, 75%);
-        --blue-dark: hsl(var(--blue-h), 25%, 90%);
-        --blue-dark-hover: hsl(var(--blue-h), 25%, 85%);
-
-        // Buttons
-        --btn-chcl: hsl(0, 0%, 90%);
-        --btn-chcl-hover: hsl(0, 0%, 85%);
-        --btn-main: var(--blue-medium);
-        --btn-main-hover: var(--blue-medium-hover);
-
-        // Windows
-        --nested-window-background-color: hsl(0, 0%, 9%);
-        --nested-window-background-color-small-screen: hsl(0, 0%, 8%);
-        --modal-nested-window: hsl(0, 0%, 10%);
-
-        --window-h: 240;
-        --window-s: 3%;
-
-        --window-rgb: 28, 28, 28;
-        --window: hsl(var(--window-h), var(--window-s), 7%);
-        --window2: hsl(var(--window-h), calc(var(--window-s) + 10%), 10%);
-        --window-portal: hsl(var(--window-h), var(--window-s), 9%);
-
-        --window-background: linear-gradient(to bottom, var(--window), hsl(var(--window-h), var(--window-s), 7%));
-        --window2-background: linear-gradient(to bottom, var(--window2), color-mix(in srgb, var(--window2), var(--main-background-color) 20%));
-        --blue-window-background: linear-gradient(to top right,
-                hsl(var(--window-h), calc(var(--window-s) + 20%), 15%),
-                hsl(var(--window-h), calc(var(--window-s) + 20%), 15%));
-        --blue-window-box-shadow: 0 1px 0 1px hsl(var(--window-h), calc(var(--window-s) + 20%), 16%);
-
-        --main-background-color: hsl(var(--window-h), var(--window-s), 5%);
-        --main-background-color-small-screen: hsl(var(--window-h), var(--window-s), 5%);
-        --main-background-color-rgb: 5, 5, 5;
-        --main-background-color-portal: hsl(var(--window-h), var(--window-s), 2%);
-        --gradient-window-background: linear-gradient(to bottom,
-                hsl(var(--window-h), var(--window-s), 7%) 0%,
-                hsl(var(--window-h), var(--window-s), 5%) 100%);
-        --gradient-window-background-small-screen: linear-gradient(to bottom, rgb(28, 28, 28) -20%, rgba(0, 0, 0, 1) 100%);
-
-        --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
-        --window-portal-drop-shadow-color: hsl(var(--window-h), var(--window-s), 7%);
-
-        // Side Nav
-        --sidenav-drop-shadow: 0 0px 4px hsl(var(--window-h), var(--window-s), 12%);
-        --side-window: hsl(var(--window-h), var(--window-s), 6%);
-
-        // Wafers
-        --wafer-background-color: hsl(var(--window-h), calc(var(--window-s) + 5%), 18%);
-        --wafer-background: linear-gradient(to bottom left, color-mix(in srgb, var(--wafer-background-color), white 8%) 0%, var(--wafer-background-color) 50%, var(--wafer-background-color)100%);
-        --skeleton-wafer-background: hsl(var(--window-h), calc(var(--window-s) + 10%), 14%);
-        --skeleton-wafer-shimmer: hsl(var(--window-h), calc(var(--window-s) + 10%), 11%);
-        --wafer-drop-shadow-color: hsl(var(--window-h), calc(var(--window-s) + 10%), 7%);
-        --active-wafer-indicator: var(--blue-medium);
-
-        // New Item
-        // --new-item-border: hsl(0, 0%, 11%);
-        --new-item-drop-shadow-color: hsl(var(--window-h), var(--window-s), 5%);
-
-        // Header
-        --header-background: hsl(240, 38%, 3%);
-        --header-pill: hsl(0, 0%, 98%);
-        --header-pill-hover: rgb(255, 255, 255, 15%);
-
-        // Inputs
-        --input-background-rgb: 31, 31, 31;
-        --input-background: hsl(0, 0%, 12%);
-        --input-border: solid 1px var(--btn-feather-light-gray);
-        --input-border-hover-color: hsl(0, 0%, 20%);
-        --input-border-focus-color: var(--blue-medium);
-        --input-focus-dropshadow-color: color-mix(in srgb, var(--blue), var(--window) 50%);
-        --input-placeholder-focus: color-mix(in srgb, var(--blue-sat), var(--blue-dark) 50%);
-
-        // Shimmer
-        --shimmer-text-background: hsl(0, 0%, 11%);
-
-        // Text
-        --m-header-text: hsl(0, 0%, 100%);
-        --m-text: hsl(0, 0%, 100%);
-        --m-invert-text: hsl(0, 0%, 10%);
-        --m-text-secondary: color-mix(in srgb, var(--m-text), black 27%);
-        --m-text-tirtiary: color-mix(in srgb, var(--m-text), black 40%);
-        --m-text-quaternary: color-mix(in srgb, var(--m-text), black 50%);
-        --m-text-quinary: color-mix(in srgb, var(--m-text), black 60%);
-
-        --input-placeholder: hsl(0, 0%, 66%);
-        --input-placeholder2: rgb(115, 115, 117);
-
-        /* Font Weights */
-        --fw-regular: 300;
-        --fw-bold: 400;
-        --fw-extra-bold: 500;
-        --letter-spacing: .45px;
-
-        // Icons & Buttons
-        --icon-full: var(--m-text);
-        --btn-feather-light-gray: hsl(0, 0%, 14%);
-        --btn-feather-light-gray-hover: hsl(0, 0%, 19%);
-        --btn-light-gray: hsl(0, 0%, 18%);
-        --btn-light-gray-hover: hsl(0, 0%, 23%);
-        --btn-medium-gray: hsl(0, 0%, 28%);
-        --btn-medium-gray-hover: hsl(0, 0%, 33%);
-        --btn-gray: hsl(0, 0%, 50%);
-        --btn-gray-hover: hsl(0, 0%, 55%);
-        --btn-dark-gray: hsl(0, 0%, 80%);
-        --btn-dark-gray-hover: hsl(0, 0%, 86%);
-        --btn-black: hsl(0, 0%, 100%);
-
-        --default-pill-background: hsl(0, 0%, 21%);
-        --default-tab-background: hsl(0, 0%, 13%);
-
-        --switch-crib-enabled: var(--blue-light-hover);
-        --switch-crib-disabled: var(--btn-medium-gray);
-        --switch-pill-enabled: var(--blue-sat-hover);
-        --switch-pill-disabled: var(--btn-gray-hover);
-        --switch-pill-shadow-enabled: hsl(var(--blue-h), 55%, 17%);
-        --switch-pill-shadow-disabled: var(--btn-light-gray);
-
-        --gray-hlight: hsl(0, 0%, 18%);
-
-        --pulse-rgb: 200, 200, 200;
-
-        --transaction-hover-background: hsl(var(--window-h), var(--window-s), 11%);
-        --transaction-hover-background-dim: hsl(0, 0%, 8%);
-
-        // Drop Shadows & Borders
-        --dropdown-background-rgb: 18, 18, 18;
-        --dropdown-background: var(--window);
-        --dropdown-item-background: hsl(var(--window-h), var(--window-s), 12%);
-        --dropdown-border: 1.5px solid hsl(var(--window-h), var(--window-s), 10%);
-
-        --window-drop-shadow-color: hsl(0, 0%, 18%);
-        --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
-
-        --header-box-shadow-color: hsl(0, 0%, 10%);
-        --dropdown-box-shadow-color: hsl(0, 0%, 0%);
-        --antd-drop-shadow-color: hsl(0, 0%, 0%);
-        --header-box-shadow: var(--header-box-shadow-color) 0px 1px 1px 1px;
-
-        --low-elevation-drop-shadow-color: rgba(255, 255, 255, 0.1);
-        --mid-elevation-drop-shadow-color: rgba(255, 255, 255, 0.15);
-        --input-drop-shadow-color: rgba(255, 255, 255, 0.07);
-
-        --border-color-ultra-dim: rgb(255, 255, 255, .03);
-        --border-color-super-dim: rgb(255, 255, 255, .05);
-        --border-color-dim: rgb(255, 255, 255, .11);
-        --border-color: rgb(255, 255, 255, .17);
-        --institution-logo-border: rgb(255, 255, 255, .3);
-        --toast-border: 1px solid var(--border-color-dim);
-        // --sidewindow-border-color: hsl(0, 0%, 12%);
-    }
-
-    div.light {
-        @include common;
-
-        --mute-red: hsl(352, 98%, 76%);
-        --hover-red: hsl(352, 95%, 70%);
-        --alert-red: hsl(0, 55%, 58%);
-        --red-rgb: 243, 80, 80;
-        --dark-red: hsl(0, 59%, 34%);
-
-        --steel-blue-h: 240;
-        --steel-blue-s: 10%;
-
-        --blue-h: 230;
-        --green-h: 130;
-
-        --monthly-h: 225;
-        --yearly-h: 150;
-
-        --window-h: 240;
-        --window-s: 7%;
-
-        // Budget Item Pallet
-        --monthly-background-color: hsl(var(--monthly-h), 80%, 87%);
-        --monthly-hover-background-color: hsl(var(--monthly-h), 80%, 93%);
-        --monthly-background-color-darker: hsl(var(--monthly-h), 80%, 73%);
-        --monthly-color1: hsl(var(--monthly-h), 50%, 40%);
-        --monthly-color2: hsl(var(--monthly-h), 50%, 60%);
-
-        --yearly-background-color: hsl(var(--yearly-h), 50%, 88%);
-        --yearly-hover-background-color: hsl(var(--yearly-h), 40%, 80%);
-        --yearly-background-color-darker: hsl(var(--yearly-h), 40%, 60%);
-        --yearly-color1: hsl(var(--yearly-h), 50%, 40%);
-        --yearly-color2: hsl(var(--yearly-h), 40%, 60%);
-
-        // Blue Green Pallet
-        --blue-light: hsl(var(--blue-h), 70%, 90%);
-        --blue-light-hover: hsl(var(--blue-h), 70%, 83%);
-        --blue-light-medium: hsl(var(--blue-h), 70%, 75%);
-        --blue-light-medium-hover: hsl(var(--blue-h), 70%, 85%);
-        --blue-medium: hsl(var(--blue-h), 50%, 60%);
-        --blue-medium-hover: hsl(var(--blue-h), 50%, 50%);
-        --blue: hsl(var(--blue-h), 50%, 52%);
-        --blue-hover: hsl(var(--blue-h), 50%, 60%);
-        --blue-sat: hsl(var(--blue-h), 82%, 60%);
-        --blue-sat-hover: hsl(var(--blue-h), 82%, 70%);
-        --blue-medium-dark: hsl(var(--blue-h), 32%, 37%);
-        --blue-dark: hsl(var(--blue-h), 32%, 22%);
-
-        // Buttons
-        --btn-chcl: hsl(0, 0%, 10%);
-        --btn-chcl-hover: hsl(0, 0%, 15%);
-        --btn-main: hsl(var(--blue-h), 50%, 57%);
-        --btn-main-hover: hsl(var(--blue-h), 40%, 53%);
-
-        // Windows
-        --main-background-color: hsl(var(--window-h), var(--window-s), 96%);
-        --main-background-color-small-screen: hsl(240, 7%, 96%);
-        --main-background-color-rgb: 250, 250, 250;
-        --main-background-color-portal: hsl(0, 0%, 95%);
-        --gradient-window-background:
-            radial-gradient(at 40% 20%, rgba(255, 255, 255, 1) 0px, transparent 50%),
-            radial-gradient(at 80% 0%, hsl(240, 17%, 94%) 0px, transparent 50%),
-            radial-gradient(at 50% 0%, hsl(240, 16%, 94%) 0px, transparent 50%),
-            radial-gradient(at 0% 0%, hsl(240, 17%, 94%) 0px, transparent 50%),
-            radial-gradient(at 0% 50%, hsl(210, 56%, 96%) 0px, transparent 50%),
-            radial-gradient(at 84% 31%, hsl(0, 0%, 100%) 0px, transparent 50%),
-            radial-gradient(at 0% 100%, hsl(206, 54%, 99%) 0px, transparent 50%),
-            radial-gradient(at 80% 100%, hsl(240, 47%, 99%) 0px, transparent 50%),
-            radial-gradient(at 0% 0%, hsl(0, 0%, 100%) 0px, transparent 50%);
-        --gradient-window-background-small-screen: var(--gradient-window-background);
-
-        --window-rgb: 244, 244, 246;
-        --window: hsl(var(--window-h), var(--window-s), 100%);
-        --window2: hsl(var(--window-h), calc(var(--window-s) + 22%), 94%);
-        --window-portal: hsl(var(--window-h), var(--window-s), 100%);
-
-        --window-background: linear-gradient(to bottom, var(--window), hsl(var(--window-h), var(--window-s), 99%));
-        --window2-background: linear-gradient(to bottom right, var(--window2), color-mix(in srgb, var(--window2), var(--main-background-color) 30%));
-        --window-drop-shadow-color: hsl(var(--window-h), var(--window-s), 96%);
-        --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 4px 0px;
-        --window-portal-drop-shadow-color: hsl(var(--window-h), var(--window-s), 88%);
-        --blue-window-background: linear-gradient(to top right,
-                hsl(var(--window-h), calc(var(--window-s) + 30%), 92%),
-                hsl(var(--window-h), calc(var(--window-s) + 30%), 93%));
-        --blue-window-box-shadow: 0 1px 0 1px hsl(var(--window-h), calc(var(--window-s) + 20%), 91%);
-
-
-        // Side Nav
-        --side-window: var(--window);
-        --sidenav-drop-shadow: 0 10px 20px 0 hsl(0, 0%, 93%);
-
-        --nested-window-background-color: hsl(var(--steel-blue-h), 9%, 96%);
-        --nested-window-background-color-small-screen: hsl(var(--steel-blue-h), 9%, 93%);
-        --modal-nested-window: hsl(var(--steel-blue-h), 8%, 95%);
-
-        // Wafers
-        --wafer-background-color: hsl(var(--window-h), calc(var(--window-s) + 8%), 65%);
-        --wafer-background: linear-gradient(to bottom left, color-mix(in srgb, var(--wafer-background-color), white 30%) 0%, var(--wafer-background-color) 50%, var(--wafer-background-color)100%);
-        --skeleton-wafer-background: hsl(var(--window-h), calc(var(--window-s) + 10%), 90%);
-        --skeleton-wafer-shimmer: hsl(var(--window-h), calc(var(--window-s) + 10%), 87%);
-        --wafer-drop-shadow-color: hsl(var(--window-h), calc(var(--window-s) + 22%), 84%);
-        --active-wafer-indicator: var(--blue-sat);
-
-        // Header
-        --header-background: hsl(0, 0%, 10%);
-        --header-pill: hsl(0, 0%, 10%);
-        --header-pill-hover: hsl(0, 0%, 20%);
-        --header-box-shadow-color: hsl(0, 0%, 90%);
-        --header-box-shadow: var(--header-box-shadow-color) 0px 1px 16px 0px;
-
-        // New Item
-        // --new-item-border: hsl(0, 0%, 93%);
-        --new-item-drop-shadow-color: hsl(var(--steel-blue-h), var(--steel-blue-s), 88%);
-
-        // Inputs
-        --input-background-rgb: 233, 233, 237;
-        --input-background: hsl(var(--window-h), var(--window-s), 94%);
-        --input-border: solid 1px var(--btn-light-gray);
-        --input-border-focus-color: var(--blue-light-medium);
-        --input-border-hover-color: hsl(0, 0%, 78%);
-        --input-focus-dropshadow-color: var(--blue-light);
-        --input-placeholder-focus: var(--blue-medium);
-
-        // Shimmer
-        --shimmer-text-background: hsl(0, 0%, 94%);
-
-        // Text
-        --m-header-text: hsl(var(--window-h), calc(var(--window-s) + 10%), 27%);
-        --m-text: hsl(var(--window-h), calc(var(--window-s) + 10%), 27%);
-        --m-invert-text: hsl(0, 0%, 97%);
-        --m-text-secondary: color-mix(in srgb, var(--m-text), white 40%);
-        --m-text-tirtiary: color-mix(in srgb, var(--m-text), white 60%);
-        --m-text-quaternary: color-mix(in srgb, var(--m-text), white 70%);
-        --m-text-quinary: color-mix(in srgb, var(--m-text), white 80%);
-
-        --input-placeholder: hsl(0, 0%, 38%);
-        --input-placeholder2: hsl(0, 0%, 65%);
-
-        /* Font Weights */
-        --fw-regular: 400;
-        --fw-bold: 400;
-        --fw-extra-bold: 500;
-        --letter-spacing: .2px;
-
-        // Icons & Buttons
-        --icon-full: var(--m-text);
-        --btn-feather-light-gray: hsl(var(--steel-blue-h), var(--steel-blue-s), 94%);
-        --btn-feather-light-gray-hover: hsl(var(--steel-blue-h), var(--steel-blue-s), 88%);
-        --btn-light-gray: hsl(var(--steel-blue-h), var(--steel-blue-s), 90%);
-        --btn-light-gray-hover: hsl(var(--steel-blue-h), var(--steel-blue-s), 84%);
-        --btn-medium-gray: hsl(var(--steel-blue-h), var(--steel-blue-s), 80%);
-        --btn-medium-gray-hover: hsl(var(--steel-blue-h), var(--steel-blue-s), 75%);
-        --btn-gray: hsl(var(--steel-blue-h), var(--steel-blue-s), 50%);
-        --btn-gray-hover: hsl(var(--steel-blue-h), var(--steel-blue-s), 45%);
-        --btn-dark-gray: hsl(0, 0%, 20%);
-        --btn-dark-gray-hover: hsl(0, 0%, 14%);
-        --btn-black: hsl(0, 0%, 15%);
-
-        --transaction-hover-background: hsl(var(--steel-blue-h), 8%, 96%);
-        --transaction-hover-background-dim: hsl(var(--steel-blue-h), 8%, 93%);
-
-        --default-pill-background: hsl(0, 0%, 95%);
-        --default-tab-background: hsl(var(--window-h), var(--window-s), 85%);
-
-        --pulse-rgb: 0, 0, 0;
-
-        --switch-crib-enabled: var(--blue-light);
-        --switch-crib-disabled: var(--btn-medium-gray);
-        --switch-pill-enabled: var(--blue-medium);
-        --switch-pill-disabled: var(--btn-feather-light-gray);
-        --switch-pill-shadow-enabled: color-mix(in srgb, var(--blue-light-hover), var(--blue-medium) 10%);
-        --switch-pill-shadow-disabled: var(--btn-medium-gray-hover);
-
-        // Misc Drop Shadows & Borders
-        --dropdown-background-rgb: 250, 250, 250;
-        --dropdown-background: hsl(0, 0%, 98%);
-        --dropdown-item-background: hsl(0, 0%, 93%);
-        // --dropdown-border: 1.5px solid hsl(var(--window-h), var(--window-s), 92%);
-
-        --dropdown-box-shadow-color: rgba(0, 0, 0, 0.2);
-        --antd-drop-shadow-color: var(--dropdown-box-shadow-color);
-        --low-elevation-drop-shadow-color: rgba(0, 0, 0, 0.1);
-        --mid-elevation-drop-shadow-color: rgba(0, 0, 0, 0.1);
-        --input-drop-shadow-color: rgba(0, 0, 0, 0.07);
-        --toast-box-shadow: var(--mid-elevation-drop-shadow);
-
-        --border-color-ultra-dim: rgb(0, 0, 0, .03);
-        --border-color-super-dim: rgb(0, 0, 0, .05);
-        --border-color-dim: rgb(0, 0, 0, .09);
-        --border-color: rgb(0, 0, 0, .1);
-        --institution-logo-border: rgb(0, 0, 0, .2);
-        --toast-border: transparent;
-        --sidewindow-border-color: hsl(0, 0%, 95%);
-    }
-
+  div.dark {
+    @include common;
+
+    --mute-red: hsl(352, 98%, 90%);
+    --hover-red: hsl(352, 95%, 85%);
+    --alert-red: hsl(352, 86%, 69%);
+    --red-rgb: 243, 80, 80;
+    --dark-red: hsl(0, 59%, 34%);
+
+    // Secondary and Primary Base Values
+    --blue-h: 226;
+    --green-h: 170;
+
+    --monthly-background-color: hsl(var(--blue-h), 55%, 40%);
+    --monthly-hover-background-color: hsl(var(--blue-h), 55%, 48%);
+    --monthly-background-color-darker: hsl(var(--blue-h), 55%, 60%);
+    --monthly-color1: hsl(var(--blue-h), 45%, 100%);
+    --monthly-color2: hsl(var(--blue-h), 45%, 60%);
+
+    --yearly-background-color: hsl(var(--green-h), 40%, 27%);
+    --yearly-hover-background-color: hsl(var(--green-h), 40%, 23%);
+    --yearly-background-color-darker: hsl(var(--green-h), 50%, 40%);
+    --yearly-color1: hsl(var(--green-h), 30%, 100%);
+    --yearly-color2: hsl(var(--green-h), 30%, 50%);
+
+    // Blue Green Pallet
+    --blue-light: hsl(var(--blue-h), 45%, 17%);
+    --blue-light-hover: hsl(var(--blue-h), 45%, 23%);
+    --blue-light-medium: hsl(var(--blue-h), 45%, 35%);
+    --blue-light-medium-hover: hsl(var(--blue-h), 45%, 27%);
+    --blue-medium: hsl(var(--blue-h), 45%, 40%);
+    --blue-medium-hover: hsl(var(--blue-h), 45%, 45%);
+    --blue: hsl(var(--blue-h), 45%, 50%);
+    --blue-sat: hsl(var(--blue-h), 60%, 55%);
+    --blue-sat-hover: hsl(var(--blue-h), 55%, 65%);
+    --blue-medium-dark: hsl(var(--blue-h), 25%, 75%);
+    --blue-dark: hsl(var(--blue-h), 25%, 90%);
+    --blue-dark-hover: hsl(var(--blue-h), 25%, 85%);
+
+    // Buttons
+    --btn-chcl: hsl(0, 0%, 90%);
+    --btn-chcl-hover: hsl(0, 0%, 85%);
+    --btn-main: var(--blue-medium);
+    --btn-main-hover: var(--blue-medium-hover);
+
+    // Windows
+    --nested-window-background-color: hsl(0, 0%, 9%);
+    --nested-window-background-color-small-screen: hsl(0, 0%, 8%);
+    --modal-nested-window: hsl(0, 0%, 10%);
+
+    --window-h: 240;
+    --window-s: 3%;
+
+    --window-rgb: 28, 28, 28;
+    --window: hsl(var(--window-h), var(--window-s), 7%);
+    --window2: hsl(var(--window-h), calc(var(--window-s) + 10%), 10%);
+    --window-portal: hsl(var(--window-h), var(--window-s), 9%);
+
+    --window-background: linear-gradient(
+      to bottom,
+      var(--window),
+      hsl(var(--window-h), var(--window-s), 7%)
+    );
+    --window2-background: linear-gradient(
+      to bottom,
+      var(--window2),
+      color-mix(in srgb, var(--window2), var(--main-background-color) 20%)
+    );
+    --blue-window-background: linear-gradient(
+      to top right,
+      hsl(var(--window-h), calc(var(--window-s) + 20%), 15%),
+      hsl(var(--window-h), calc(var(--window-s) + 20%), 15%)
+    );
+    --blue-window-box-shadow: 0 1px 0 1px
+      hsl(var(--window-h), calc(var(--window-s) + 20%), 16%);
+
+    --main-background-color: hsl(var(--window-h), var(--window-s), 5%);
+    --main-background-color-small-screen: hsl(
+      var(--window-h),
+      var(--window-s),
+      5%
+    );
+    --main-background-color-rgb: 5, 5, 5;
+    --main-background-color-portal: hsl(var(--window-h), var(--window-s), 2%);
+    --gradient-window-background: linear-gradient(
+      to bottom,
+      hsl(var(--window-h), var(--window-s), 7%) 0%,
+      hsl(var(--window-h), var(--window-s), 5%) 100%
+    );
+    --gradient-window-background-small-screen: linear-gradient(
+      to bottom,
+      rgb(28, 28, 28) -20%,
+      rgba(0, 0, 0, 1) 100%
+    );
+
+    --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
+    --window-portal-drop-shadow-color: hsl(
+      var(--window-h),
+      var(--window-s),
+      7%
+    );
+
+    // Side Nav
+    --sidenav-drop-shadow: 0 0px 4px hsl(var(--window-h), var(--window-s), 12%);
+    --side-window: hsl(var(--window-h), var(--window-s), 6%);
+
+    // Wafers
+    --wafer-background-color: hsl(
+      var(--window-h),
+      calc(var(--window-s) + 5%),
+      18%
+    );
+    --wafer-background: linear-gradient(
+      to bottom left,
+      color-mix(in srgb, var(--wafer-background-color), white 8%) 0%,
+      var(--wafer-background-color) 50%,
+      var(--wafer-background-color) 100%
+    );
+    --skeleton-wafer-background: hsl(
+      var(--window-h),
+      calc(var(--window-s) + 10%),
+      14%
+    );
+    --skeleton-wafer-shimmer: hsl(
+      var(--window-h),
+      calc(var(--window-s) + 10%),
+      11%
+    );
+    --wafer-drop-shadow-color: hsl(
+      var(--window-h),
+      calc(var(--window-s) + 10%),
+      7%
+    );
+    --active-wafer-indicator: var(--blue-medium);
+
+    // New Item
+    // --new-item-border: hsl(0, 0%, 11%);
+    --new-item-drop-shadow-color: hsl(var(--window-h), var(--window-s), 5%);
+
+    // Header
+    --header-background: hsl(240, 38%, 3%);
+    --header-pill: hsl(0, 0%, 98%);
+    --header-pill-hover: rgb(255, 255, 255, 15%);
+
+    // Inputs
+    --input-background-rgb: 31, 31, 31;
+    --input-background: hsl(0, 0%, 12%);
+    --input-border: solid 1px var(--btn-feather-light-gray);
+    --input-border-hover-color: hsl(0, 0%, 20%);
+    --input-border-focus-color: var(--blue-medium);
+    --input-focus-dropshadow-color: color-mix(
+      in srgb,
+      var(--blue),
+      var(--window) 50%
+    );
+    --input-placeholder-focus: color-mix(
+      in srgb,
+      var(--blue-sat),
+      var(--blue-dark) 50%
+    );
+
+    // Shimmer
+    --shimmer-text-background: hsl(0, 0%, 11%);
+
+    // Text
+    --m-header-text: hsl(0, 0%, 100%);
+    --m-text: hsl(0, 0%, 100%);
+    --m-invert-text: hsl(0, 0%, 10%);
+    --m-text-secondary: color-mix(in srgb, var(--m-text), black 27%);
+    --m-text-tirtiary: color-mix(in srgb, var(--m-text), black 40%);
+    --m-text-quaternary: color-mix(in srgb, var(--m-text), black 50%);
+    --m-text-quinary: color-mix(in srgb, var(--m-text), black 60%);
+
+    --input-placeholder: hsl(0, 0%, 66%);
+    --input-placeholder2: rgb(115, 115, 117);
+
+    /* Font Weights */
+    --fw-regular: 300;
+    --fw-bold: 400;
+    --fw-extra-bold: 500;
+    --letter-spacing: 0.45px;
+
+    // Icons & Buttons
+    --icon-full: var(--m-text);
+    --btn-feather-light-gray: hsl(0, 0%, 14%);
+    --btn-feather-light-gray-hover: hsl(0, 0%, 19%);
+    --btn-light-gray: hsl(0, 0%, 18%);
+    --btn-light-gray-hover: hsl(0, 0%, 23%);
+    --btn-medium-gray: hsl(0, 0%, 28%);
+    --btn-medium-gray-hover: hsl(0, 0%, 33%);
+    --btn-gray: hsl(0, 0%, 50%);
+    --btn-gray-hover: hsl(0, 0%, 55%);
+    --btn-dark-gray: hsl(0, 0%, 80%);
+    --btn-dark-gray-hover: hsl(0, 0%, 86%);
+    --btn-black: hsl(0, 0%, 100%);
+
+    --default-pill-background: hsl(0, 0%, 21%);
+    --default-tab-background: hsl(0, 0%, 13%);
+
+    --switch-crib-enabled: var(--blue-light-hover);
+    --switch-crib-disabled: var(--btn-medium-gray);
+    --switch-pill-enabled: var(--blue-sat-hover);
+    --switch-pill-disabled: var(--btn-gray-hover);
+    --switch-pill-shadow-enabled: hsl(var(--blue-h), 55%, 17%);
+    --switch-pill-shadow-disabled: var(--btn-light-gray);
+
+    --gray-hlight: hsl(0, 0%, 18%);
+
+    --pulse-rgb: 200, 200, 200;
+
+    --transaction-hover-background: hsl(var(--window-h), var(--window-s), 11%);
+    --transaction-hover-background-dim: hsl(0, 0%, 8%);
+
+    // Drop Shadows & Borders
+    --dropdown-background-rgb: 18, 18, 18;
+    --dropdown-background: var(--window);
+    --dropdown-item-background: hsl(var(--window-h), var(--window-s), 12%);
+    --dropdown-border: 1.5px solid hsl(var(--window-h), var(--window-s), 10%);
+
+    --window-drop-shadow-color: hsl(0, 0%, 18%);
+    --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
+
+    --header-box-shadow-color: hsl(0, 0%, 10%);
+    --dropdown-box-shadow-color: hsl(0, 0%, 0%);
+    --antd-drop-shadow-color: hsl(0, 0%, 0%);
+    --header-box-shadow: var(--header-box-shadow-color) 0px 1px 1px 1px;
+
+    --low-elevation-drop-shadow-color: rgba(255, 255, 255, 0.1);
+    --mid-elevation-drop-shadow-color: rgba(255, 255, 255, 0.15);
+    --input-drop-shadow-color: rgba(255, 255, 255, 0.07);
+
+    --border-color-ultra-dim: rgb(255, 255, 255, 0.03);
+    --border-color-super-dim: rgb(255, 255, 255, 0.05);
+    --border-color-dim: rgb(255, 255, 255, 0.11);
+    --border-color: rgb(255, 255, 255, 0.17);
+    --institution-logo-border: rgb(255, 255, 255, 0.3);
+    --toast-border: 1px solid var(--border-color-dim);
+    // --sidewindow-border-color: hsl(0, 0%, 12%);
+  }
+
+  div.light {
+    @include common;
+
+    --mute-red: hsl(352, 98%, 76%);
+    --hover-red: hsl(352, 95%, 70%);
+    --alert-red: hsl(0, 55%, 58%);
+    --red-rgb: 243, 80, 80;
+    --dark-red: hsl(0, 59%, 34%);
+
+    --steel-blue-h: 240;
+    --steel-blue-s: 10%;
+
+    --blue-h: 230;
+    --green-h: 130;
+
+    --monthly-h: 225;
+    --yearly-h: 150;
+
+    --window-h: 240;
+    --window-s: 7%;
+
+    // Budget Item Pallet
+    --monthly-background-color: hsl(var(--monthly-h), 80%, 87%);
+    --monthly-hover-background-color: hsl(var(--monthly-h), 80%, 93%);
+    --monthly-background-color-darker: hsl(var(--monthly-h), 80%, 73%);
+    --monthly-color1: hsl(var(--monthly-h), 50%, 40%);
+    --monthly-color2: hsl(var(--monthly-h), 50%, 60%);
+
+    --yearly-background-color: hsl(var(--yearly-h), 50%, 88%);
+    --yearly-hover-background-color: hsl(var(--yearly-h), 40%, 80%);
+    --yearly-background-color-darker: hsl(var(--yearly-h), 40%, 60%);
+    --yearly-color1: hsl(var(--yearly-h), 50%, 40%);
+    --yearly-color2: hsl(var(--yearly-h), 40%, 60%);
+
+    // Blue Green Pallet
+    --blue-light: hsl(var(--blue-h), 70%, 90%);
+    --blue-light-hover: hsl(var(--blue-h), 70%, 83%);
+    --blue-light-medium: hsl(var(--blue-h), 70%, 75%);
+    --blue-light-medium-hover: hsl(var(--blue-h), 70%, 85%);
+    --blue-medium: hsl(var(--blue-h), 50%, 60%);
+    --blue-medium-hover: hsl(var(--blue-h), 50%, 50%);
+    --blue: hsl(var(--blue-h), 50%, 52%);
+    --blue-hover: hsl(var(--blue-h), 50%, 60%);
+    --blue-sat: hsl(var(--blue-h), 82%, 60%);
+    --blue-sat-hover: hsl(var(--blue-h), 82%, 70%);
+    --blue-medium-dark: hsl(var(--blue-h), 32%, 37%);
+    --blue-dark: hsl(var(--blue-h), 32%, 22%);
+
+    // Buttons
+    --btn-chcl: hsl(0, 0%, 10%);
+    --btn-chcl-hover: hsl(0, 0%, 15%);
+    --btn-main: hsl(var(--blue-h), 50%, 57%);
+    --btn-main-hover: hsl(var(--blue-h), 40%, 53%);
+
+    // Windows
+    --main-background-color: hsl(var(--window-h), var(--window-s), 96%);
+    --main-background-color-small-screen: hsl(240, 7%, 96%);
+    --main-background-color-rgb: 250, 250, 250;
+    --main-background-color-portal: hsl(0, 0%, 95%);
+    --gradient-window-background: radial-gradient(
+        at 40% 20%,
+        rgba(255, 255, 255, 1) 0px,
+        transparent 50%
+      ),
+      radial-gradient(at 80% 0%, hsl(240, 17%, 94%) 0px, transparent 50%),
+      radial-gradient(at 50% 0%, hsl(240, 16%, 94%) 0px, transparent 50%),
+      radial-gradient(at 0% 0%, hsl(240, 17%, 94%) 0px, transparent 50%),
+      radial-gradient(at 0% 50%, hsl(210, 56%, 96%) 0px, transparent 50%),
+      radial-gradient(at 84% 31%, hsl(0, 0%, 100%) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, hsl(206, 54%, 99%) 0px, transparent 50%),
+      radial-gradient(at 80% 100%, hsl(240, 47%, 99%) 0px, transparent 50%),
+      radial-gradient(at 0% 0%, hsl(0, 0%, 100%) 0px, transparent 50%);
+    --gradient-window-background-small-screen: var(
+      --gradient-window-background
+    );
+
+    --window-rgb: 244, 244, 246;
+    --window: hsl(var(--window-h), var(--window-s), 100%);
+    --window2: hsl(var(--window-h), calc(var(--window-s) + 22%), 94%);
+    --window-portal: hsl(var(--window-h), var(--window-s), 100%);
+
+    --window-background: linear-gradient(
+      to bottom,
+      var(--window),
+      hsl(var(--window-h), var(--window-s), 99%)
+    );
+    --window2-background: linear-gradient(
+      to bottom right,
+      var(--window2),
+      color-mix(in srgb, var(--window2), var(--main-background-color) 30%)
+    );
+    --window-drop-shadow-color: hsl(var(--window-h), var(--window-s), 96%);
+    --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 4px 0px;
+    --window-portal-drop-shadow-color: hsl(
+      var(--window-h),
+      var(--window-s),
+      88%
+    );
+    --blue-window-background: linear-gradient(
+      to top right,
+      hsl(var(--window-h), calc(var(--window-s) + 30%), 92%),
+      hsl(var(--window-h), calc(var(--window-s) + 30%), 93%)
+    );
+    --blue-window-box-shadow: 0 1px 0 1px
+      hsl(var(--window-h), calc(var(--window-s) + 20%), 91%);
+
+    // Side Nav
+    --side-window: var(--window);
+    --sidenav-drop-shadow: 0 10px 20px 0 hsl(0, 0%, 93%);
+
+    --nested-window-background-color: hsl(var(--steel-blue-h), 9%, 96%);
+    --nested-window-background-color-small-screen: hsl(
+      var(--steel-blue-h),
+      9%,
+      93%
+    );
+    --modal-nested-window: hsl(var(--steel-blue-h), 8%, 95%);
+
+    // Wafers
+    --wafer-background-color: hsl(
+      var(--window-h),
+      calc(var(--window-s) + 8%),
+      65%
+    );
+    --wafer-background: linear-gradient(
+      to bottom left,
+      color-mix(in srgb, var(--wafer-background-color), white 30%) 0%,
+      var(--wafer-background-color) 50%,
+      var(--wafer-background-color) 100%
+    );
+    --skeleton-wafer-background: hsl(
+      var(--window-h),
+      calc(var(--window-s) + 10%),
+      90%
+    );
+    --skeleton-wafer-shimmer: hsl(
+      var(--window-h),
+      calc(var(--window-s) + 10%),
+      87%
+    );
+    --wafer-drop-shadow-color: hsl(
+      var(--window-h),
+      calc(var(--window-s) + 22%),
+      84%
+    );
+    --active-wafer-indicator: var(--blue-sat);
+
+    // Header
+    --header-background: hsl(0, 0%, 10%);
+    --header-pill: hsl(0, 0%, 10%);
+    --header-pill-hover: hsl(0, 0%, 20%);
+    --header-box-shadow-color: hsl(0, 0%, 90%);
+    --header-box-shadow: var(--header-box-shadow-color) 0px 1px 16px 0px;
+
+    // New Item
+    // --new-item-border: hsl(0, 0%, 93%);
+    --new-item-drop-shadow-color: hsl(
+      var(--steel-blue-h),
+      var(--steel-blue-s),
+      88%
+    );
+
+    // Inputs
+    --input-background-rgb: 233, 233, 237;
+    --input-background: hsl(var(--window-h), var(--window-s), 94%);
+    --input-border: solid 1px var(--btn-light-gray);
+    --input-border-focus-color: var(--blue-light-medium);
+    --input-border-hover-color: hsl(0, 0%, 78%);
+    --input-focus-dropshadow-color: var(--blue-light);
+    --input-placeholder-focus: var(--blue-medium);
+
+    // Shimmer
+    --shimmer-text-background: hsl(0, 0%, 94%);
+
+    // Text
+    --m-header-text: hsl(var(--window-h), calc(var(--window-s) + 10%), 27%);
+    --m-text: hsl(var(--window-h), calc(var(--window-s) + 10%), 27%);
+    --m-invert-text: hsl(0, 0%, 97%);
+    --m-text-secondary: color-mix(in srgb, var(--m-text), white 40%);
+    --m-text-tirtiary: color-mix(in srgb, var(--m-text), white 60%);
+    --m-text-quaternary: color-mix(in srgb, var(--m-text), white 70%);
+    --m-text-quinary: color-mix(in srgb, var(--m-text), white 80%);
+
+    --input-placeholder: hsl(0, 0%, 38%);
+    --input-placeholder2: hsl(0, 0%, 65%);
+
+    /* Font Weights */
+    --fw-regular: 400;
+    --fw-bold: 400;
+    --fw-extra-bold: 500;
+    --letter-spacing: 0.2px;
+
+    // Icons & Buttons
+    --icon-full: var(--m-text);
+    --btn-feather-light-gray: hsl(
+      var(--steel-blue-h),
+      var(--steel-blue-s),
+      94%
+    );
+    --btn-feather-light-gray-hover: hsl(
+      var(--steel-blue-h),
+      var(--steel-blue-s),
+      88%
+    );
+    --btn-light-gray: hsl(var(--steel-blue-h), var(--steel-blue-s), 90%);
+    --btn-light-gray-hover: hsl(var(--steel-blue-h), var(--steel-blue-s), 84%);
+    --btn-medium-gray: hsl(var(--steel-blue-h), var(--steel-blue-s), 80%);
+    --btn-medium-gray-hover: hsl(var(--steel-blue-h), var(--steel-blue-s), 75%);
+    --btn-gray: hsl(var(--steel-blue-h), var(--steel-blue-s), 50%);
+    --btn-gray-hover: hsl(var(--steel-blue-h), var(--steel-blue-s), 45%);
+    --btn-dark-gray: hsl(0, 0%, 20%);
+    --btn-dark-gray-hover: hsl(0, 0%, 14%);
+    --btn-black: hsl(0, 0%, 15%);
+
+    --transaction-hover-background: hsl(var(--steel-blue-h), 8%, 96%);
+    --transaction-hover-background-dim: hsl(var(--steel-blue-h), 8%, 93%);
+
+    --default-pill-background: hsl(0, 0%, 95%);
+    --default-tab-background: hsl(var(--window-h), var(--window-s), 85%);
+
+    --pulse-rgb: 0, 0, 0;
+
+    --switch-crib-enabled: var(--blue-light);
+    --switch-crib-disabled: var(--btn-medium-gray);
+    --switch-pill-enabled: var(--blue-medium);
+    --switch-pill-disabled: var(--btn-feather-light-gray);
+    --switch-pill-shadow-enabled: color-mix(
+      in srgb,
+      var(--blue-light-hover),
+      var(--blue-medium) 10%
+    );
+    --switch-pill-shadow-disabled: var(--btn-medium-gray-hover);
+
+    // Misc Drop Shadows & Borders
+    --dropdown-background-rgb: 250, 250, 250;
+    --dropdown-background: hsl(0, 0%, 98%);
+    --dropdown-item-background: hsl(0, 0%, 93%);
+    // --dropdown-border: 1.5px solid hsl(var(--window-h), var(--window-s), 92%);
+
+    --dropdown-box-shadow-color: rgba(0, 0, 0, 0.2);
+    --antd-drop-shadow-color: var(--dropdown-box-shadow-color);
+    --low-elevation-drop-shadow-color: rgba(0, 0, 0, 0.1);
+    --mid-elevation-drop-shadow-color: rgba(0, 0, 0, 0.1);
+    --input-drop-shadow-color: rgba(0, 0, 0, 0.07);
+    --toast-box-shadow: var(--mid-elevation-drop-shadow);
+
+    --border-color-ultra-dim: rgb(0, 0, 0, 0.03);
+    --border-color-super-dim: rgb(0, 0, 0, 0.05);
+    --border-color-dim: rgb(0, 0, 0, 0.09);
+    --border-color: rgb(0, 0, 0, 0.1);
+    --institution-logo-border: rgb(0, 0, 0, 0.2);
+    --toast-border: transparent;
+    --sidewindow-border-color: hsl(0, 0%, 95%);
+  }
 }

@@ -1,64 +1,64 @@
 .option {
+  display: flex;
+  align-items: center;
+  border-radius: var(--border-radius5);
+  border: 1.5px solid var(--btn-light-gray);
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: inherit;
+
+  & > button,
+  & > div {
+    z-index: 1;
+    position: relative;
+  }
+
+  &:hover {
+    border-color: var(--btn-light-gray-hover);
+  }
+
+  &:has(div[aria-selected='true']) {
+    border-color: var(--blue-light-medium);
+    box-shadow: 0 0 1px 1px var(--blue-light-hover);
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: var(--btn-feather-light-gray);
+      opacity: 0.3;
+      z-index: 0;
+      border-radius: inherit;
+    }
+  }
+
+  & > button {
+    margin: 1em 0.75em 1em 1em;
+  }
+
+  & > div {
+    margin: 1em 1em 1em 0;
+    flex-grow: 1;
     display: flex;
     align-items: center;
-    border-radius: var(--border-radius5);
-    border: 1.5px solid var(--btn-light-gray);
-    cursor: pointer;
-    width: 100%;
-    box-sizing: border-box;
-    background-color: inherit;
 
-    &>button,
-    &>div {
-        z-index: 1;
-        position: relative;
+    & > div:nth-of-type(2) {
+      display: flex;
+      margin-left: 1em;
+      flex-grow: 1;
+      flex-direction: column;
+      align-items: flex-start;
+
+      & > span:first-child {
+        width: 90%;
+        mask-image: linear-gradient(black 0%, black 95%, transparent 100%);
+      }
+
+      & > span:last-child {
+        color: var(--m-text-secondary);
+        font-size: 0.875em;
+      }
     }
-
-    &:hover {
-        border-color: var(--btn-light-gray-hover);
-    }
-
-    &:has(div[aria-selected=true]) {
-        border-color: var(--blue-light-medium);
-        box-shadow: 0 0 1px 1px var(--blue-light-hover);
-
-        &::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-color: var(--btn-feather-light-gray);
-            opacity: .3;
-            z-index: 0;
-            border-radius: inherit;
-        }
-    }
-
-    &>button {
-        margin: 1em .75em 1em 1em;
-    }
-
-    &>div {
-        margin: 1em 1em 1em 0;
-        flex-grow: 1;
-        display: flex;
-        align-items: center;
-
-        &>div:nth-of-type(2) {
-            display: flex;
-            margin-left: 1em;
-            flex-grow: 1;
-            flex-direction: column;
-            align-items: flex-start;
-
-            &>span:first-child {
-                width: 90%;
-                mask-image: linear-gradient(black 0%, black 95%, transparent 100%);
-            }
-
-            &>span:last-child {
-                color: var(--m-text-secondary);
-                font-size: .875em;
-            }
-        }
-    }
+  }
 }

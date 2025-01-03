@@ -1,237 +1,263 @@
 .progressCircle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+
+  &[data-color='green'] {
+    color: var(--yearly-background-color-darker);
+  }
+
+  &[data-color='blue'] {
+    color: var(--monthly-background-color-darker);
+  }
+
+  circle:first-child {
+    stroke: currentColor;
+    opacity: 0.3;
+  }
+
+  circle:last-child {
+    stroke: currentColor;
+    opacity: 0.9;
+  }
+}
+
+.billCatLabelEmoji {
+  padding: 0em 0.25em;
+  border-radius: 4em;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    position: relative;
+    z-index: 1;
+  }
+
+  &[data-size='extra-small'] {
+    * {
+      font-size: 0.75em;
+    }
+
+    &::after {
+      width: 1em;
+      height: 1em;
+    }
+  }
+
+  &[data-size='small'] {
+    * {
+      font-size: 1em;
+    }
+
+    &::after {
+      width: 1.5em;
+      height: 1.5em;
+    }
+  }
+
+  &[data-size='medium'] {
+    * {
+      font-size: 1.125rem;
+    }
+
+    &::after {
+      width: 2em;
+      height: 2em;
+    }
+  }
+
+  &::after {
+    content: '';
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 1;
+    border-radius: inherit;
+    transition: all 0.3s ease-in-out;
+  }
 
-    &[data-color='green'] {
-        color: var(--yearly-background-color-darker);
+  &:hover::after {
+    transition: all 0.3s ease-in-out;
+  }
+
+  &[data-color='blue']::after {
+    background-color: var(--monthly-background-color);
+    background: linear-gradient(
+      to bottom right,
+      var(--monthly-background-color) 0%,
+      var(--monthly-hover-background-color) 100%
+    );
+  }
+
+  &[data-color='green']::after {
+    background-color: var(--yearly-background-color);
+    background: linear-gradient(
+      to bottom right,
+      var(--yearly-background-color) 0%,
+      var(--yearly-hover-background-color) 100%
+    );
+  }
+
+  &[data-color='green-blue']::after {
+    background-color: var(--yearly-background-color);
+    background: linear-gradient(
+      to bottom right,
+      var(--yearly-background-color) 0%,
+      var(--yearly-hover-background-color) 100%
+    );
+  }
+
+  &[data-hoverable='true'] {
+    cursor: pointer;
+
+    &[data-color='blue']:hover::after {
+      background-color: var(--monthly-hover-background-color);
+      background: linear-gradient(
+        to bottom right,
+        var(--monthly-hover-background-color) 0%,
+        var(--monthly-hover-background-color) 100%
+      );
     }
 
-    &[data-color='blue'] {
-        color: var(--monthly-background-color-darker);
+    &[data-color='green']:hover::after {
+      background-color: var(--yearly-hover-background-color);
+      background: linear-gradient(
+        to bottom right,
+        var(--yearly-hover-background-color) 0%,
+        var(--yearly-hover-background-color) 100%
+      );
     }
 
-    circle:first-child {
-        stroke: currentColor;
-        opacity: .3;
+    &[data-color='green-blue']:hover::after {
+      background-color: var(--yearly-hover-background-color);
+      background: linear-gradient(
+        to bottom right,
+        var(--yearly-hover-background-color) 0%,
+        var(--yearly-hover-background-color) 100%
+      );
     }
-
-    circle:last-child {
-        stroke: currentColor;
-        opacity: .9;
-    }
-}
-
-.billCatLabelEmoji {
-    padding: 0em .25em;
-    border-radius: 4em;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    span {
-        position: relative;
-        z-index: 1;
-    }
-
-    &[data-size='extra-small'] {
-        * {
-            font-size: .75em;
-        }
-
-        &::after {
-            width: 1em;
-            height: 1em;
-        }
-    }
-
-    &[data-size='small'] {
-        * {
-            font-size: 1em;
-        }
-
-        &::after {
-            width: 1.5em;
-            height: 1.5em;
-        }
-    }
-
-    &[data-size='medium'] {
-        * {
-            font-size: 1.125rem;
-        }
-
-        &::after {
-            width: 2em;
-            height: 2em;
-        }
-    }
-
-    &::after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        border-radius: inherit;
-        transition: all .3s ease-in-out;
-    }
-
-    &:hover::after {
-        transition: all .3s ease-in-out;
-    }
-
-    &[data-color='blue']::after {
-        background-color: var(--monthly-background-color);
-        background: linear-gradient(to bottom right,
-                var(--monthly-background-color) 0%,
-                var(--monthly-hover-background-color) 100%)
-    }
-
-    &[data-color='green']::after {
-        background-color: var(--yearly-background-color);
-        background: linear-gradient(to bottom right,
-                var(--yearly-background-color) 0%,
-                var(--yearly-hover-background-color) 100%)
-    }
-
-    &[data-color='green-blue']::after {
-        background-color: var(--yearly-background-color);
-        background: linear-gradient(to bottom right,
-                var(--yearly-background-color) 0%,
-                var(--yearly-hover-background-color) 100%)
-    }
-
-    &[data-hoverable='true'] {
-        cursor: pointer;
-
-        &[data-color='blue']:hover::after {
-            background-color: var(--monthly-hover-background-color);
-            background: linear-gradient(to bottom right,
-                    var(--monthly-hover-background-color) 0%,
-                    var(--monthly-hover-background-color) 100%)
-        }
-
-        &[data-color='green']:hover::after {
-            background-color: var(--yearly-hover-background-color);
-            background: linear-gradient(to bottom right,
-                    var(--yearly-hover-background-color) 0%,
-                    var(--yearly-hover-background-color) 100%)
-        }
-
-        &[data-color='green-blue']:hover::after {
-            background-color: var(--yearly-hover-background-color);
-            background: linear-gradient(to bottom right,
-                    var(--yearly-hover-background-color) 0%,
-                    var(--yearly-hover-background-color) 100%)
-        }
-    }
+  }
 }
 
 .billCatLabel {
-    position: relative;
-    justify-content: space-between;
-    padding: .1875em .75em;
-    border-radius: var(--border-radius3);
+  position: relative;
+  justify-content: space-between;
+  padding: 0.1875em 0.75em;
+  border-radius: var(--border-radius3);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    transition: all 0.3s ease-in-out;
+  }
+
+  & > div {
     display: inline-flex;
     align-items: center;
     gap: 0.375rem;
-    transition: all .3s ease-in-out;
+    z-index: 1;
+    position: relative;
+  }
+
+  span {
+    font-weight: var(--fw-regular);
+  }
+
+  &[data-slim='true'] {
+    padding: 0em 0.5em;
+  }
+
+  &[data-hoverable='true'] {
+    cursor: pointer;
 
     &:hover {
-        transition: all .3s ease-in-out;
+      background-color: var(--);
+    }
+  }
+
+  &[data-color='blue'],
+  &[data-color='blue-split'] {
+    background: linear-gradient(
+      to bottom right,
+      var(--monthly-background-color) 0%,
+      var(--monthly-hover-background-color) 100%
+    );
+    border: 1px solid var(--monthly-hover-background-color);
+
+    * {
+      color: var(--monthly-color1);
     }
 
-    &>div {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.375rem;
-        z-index: 1;
-        position: relative;
+    &[data-hoverable='true']:hover {
+      background: linear-gradient(
+        to bottom right,
+        var(--monthly-hover-background-color) 0%,
+        var(--monthly-hover-background-color) 100%
+      );
+    }
+  }
+
+  &[data-color='green'],
+  &[data-color='green-split'] {
+    background: linear-gradient(
+      to bottom right,
+      var(--yearly-background-color) 0%,
+      var(--yearly-hover-background-color) 100%
+    );
+    border: 1px solid var(--yearly-hover-background-color);
+
+    * {
+      color: var(--yearly-color1);
     }
 
-    span {
-        font-weight: var(--fw-regular);
+    &[data-hoverable='true']:hover {
+      background: linear-gradient(
+        to bottom right,
+        var(--yearly-hover-background-color) 0%,
+        var(--yearly-hover-background-color) 100%
+      );
+    }
+  }
+
+  &[data-color='green-blue'],
+  &[data-color='green-blue-split'] {
+    background: linear-gradient(
+      to bottom right,
+      var(--yearly-background-color) 0%,
+      var(--yearly-hover-background-color) 100%
+    );
+    border: 1px solid var(--yearly-hover-background-color);
+
+    &[data-hoverable='true']:hover {
+      background: linear-gradient(
+        to bottom right,
+        var(--yearly-hover-background-color) 0%,
+        var(--yearly-hover-background-color) 100%
+      );
     }
 
-    &[data-slim='true'] {
-        padding: 0em .5em;
+    &::after {
+      content: '';
+      z-index: 0;
+      position: absolute;
+      border-radius: inherit;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      width: 50%;
+      background: linear-gradient(
+        to bottom right,
+        var(--monthly-background-color) 0%,
+        var(--monthly-hover-background-color) 100%
+      );
     }
-
-    &[data-hoverable='true'] {
-        cursor: pointer;
-
-        &:hover {
-            background-color: var(--);
-        }
-    }
-
-    &[data-color='blue'],
-    &[data-color='blue-split'] {
-        background: linear-gradient(to bottom right,
-                var(--monthly-background-color) 0%,
-                var(--monthly-hover-background-color) 100%);
-        border: 1px solid var(--monthly-hover-background-color);
-
-        * {
-            color: var(--monthly-color1);
-        }
-
-        &[data-hoverable='true']:hover {
-            background: linear-gradient(to bottom right,
-                    var(--monthly-hover-background-color) 0%,
-                    var(--monthly-hover-background-color) 100%);
-        }
-    }
-
-    &[data-color='green'],
-    &[data-color='green-split'] {
-        background: linear-gradient(to bottom right,
-                var(--yearly-background-color) 0%,
-                var(--yearly-hover-background-color) 100%);
-        border: 1px solid var(--yearly-hover-background-color);
-
-        * {
-            color: var(--yearly-color1);
-        }
-
-        &[data-hoverable='true']:hover {
-            background: linear-gradient(to bottom right,
-                    var(--yearly-hover-background-color) 0%,
-                    var(--yearly-hover-background-color) 100%);
-        }
-    }
-
-    &[data-color='green-blue'],
-    &[data-color='green-blue-split'] {
-        background: linear-gradient(to bottom right,
-                var(--yearly-background-color) 0%,
-                var(--yearly-hover-background-color) 100%);
-        border: 1px solid var(--yearly-hover-background-color);
-
-        &[data-hoverable='true']:hover {
-            background: linear-gradient(to bottom right,
-                    var(--yearly-hover-background-color) 0%,
-                    var(--yearly-hover-background-color) 100%);
-        }
-
-        &::after {
-            content: '';
-            z-index: 0;
-            position: absolute;
-            border-radius: inherit;
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-            top: 0;
-            bottom: 0;
-            right: 0;
-            width: 50%;
-            background: linear-gradient(to bottom right,
-                    var(--monthly-background-color) 0%,
-                    var(--monthly-hover-background-color) 100%);
-        }
-    }
+  }
 }

@@ -15,7 +15,7 @@ const _filterAccounts = (accounts: any[], location: Location) => {
 function useAnimate<A>({
   accounts,
   waferWidth,
-  waferPadding
+  waferPadding,
 }: {
   accounts?: A[];
   waferWidth: number;
@@ -36,14 +36,14 @@ function useAnimate<A>({
       scale: 1,
       width: waferWidth,
       opacity: 0,
-      zIndex: (accounts?.length || 0) - index
+      zIndex: (accounts?.length || 0) - index,
     }),
     enter: (item: any, index: number) => ({
       x: index * (waferWidth + waferPadding),
-      opacity: 1
+      opacity: 1,
     }),
     key: (item: any) => item.id,
-    immediate: freezeWaferAnimation
+    immediate: freezeWaferAnimation,
   }));
 
   const bind = useSpringDrag({
@@ -55,12 +55,12 @@ function useAnimate<A>({
         updateOrder(
           newOrder.map((id, index) => ({
             account: id,
-            order: index
+            order: index,
           }))
         );
       }
     },
-    api: waferApi
+    api: waferApi,
   });
 
   const click = useCallback(
@@ -72,7 +72,7 @@ function useAnimate<A>({
               await next({ scale: 0.95 });
               await next({ scale: 1 });
             },
-            config: { duration: 100 }
+            config: { duration: 100 },
           };
         }
       });

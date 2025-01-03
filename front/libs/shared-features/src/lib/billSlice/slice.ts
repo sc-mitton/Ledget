@@ -4,7 +4,7 @@ import {
   NewBill,
   UpdateBill,
   TransformedBill,
-  BillQueryParams
+  BillQueryParams,
 } from './types';
 
 export const billSlice = apiSlice.injectEndpoints({
@@ -13,7 +13,7 @@ export const billSlice = apiSlice.injectEndpoints({
       query: (params) => {
         const queryObj = {
           url: 'bills',
-          method: 'GET'
+          method: 'GET',
         };
         if (params) {
           return { ...queryObj, params };
@@ -45,7 +45,7 @@ export const billSlice = apiSlice.injectEndpoints({
                 new Date().getFullYear(),
                 new Date().getMonth(),
                 day || 1
-              ).toISOString()
+              ).toISOString(),
             });
           } else if (bill.period === 'month' && bill.day) {
             // monthly bills with day
@@ -55,7 +55,7 @@ export const billSlice = apiSlice.injectEndpoints({
                 new Date().getFullYear(),
                 new Date().getMonth(),
                 day || 1
-              ).toISOString()
+              ).toISOString(),
             });
           } else if (
             bill.period === 'once' &&
@@ -66,7 +66,7 @@ export const billSlice = apiSlice.injectEndpoints({
             // once bills
             bills.push({
               ...bill,
-              date: new Date(year!, month! - 1, day!).toISOString()
+              date: new Date(year!, month! - 1, day!).toISOString(),
             });
           } else if (bill.period === 'year' && bill.month && bill.day) {
             // yearly bills
@@ -76,28 +76,28 @@ export const billSlice = apiSlice.injectEndpoints({
                 today.getFullYear(),
                 month! - 1,
                 day!
-              ).toISOString()
+              ).toISOString(),
             });
           }
         });
         return bills.sort((a, b) => {
           return new Date(a.date).getTime() - new Date(b.date).getTime();
         });
-      }
+      },
     }),
     getBillRecommendations: builder.query<any, any>({
       query: () => ({
         url: 'bills/recommendations',
-        method: 'GET'
-      })
+        method: 'GET',
+      }),
     }),
     addnewBill: builder.mutation<any, NewBill | NewBill[]>({
       query: (data) => ({
         url: 'bills',
         method: 'POST',
-        body: data
+        body: data,
       }),
-      invalidatesTags: ['Bill']
+      invalidatesTags: ['Bill'],
     }),
     updateBills: builder.mutation<any, UpdateBill>({
       query: (data) => ({
@@ -107,9 +107,9 @@ export const billSlice = apiSlice.injectEndpoints({
           : data.upper_amount || data.lower_amount
           ? 'PUT'
           : 'PATCH',
-        body: data
+        body: data,
       }),
-      invalidatesTags: ['Bill']
+      invalidatesTags: ['Bill'],
     }),
     deleteBill: builder.mutation<
       any,
@@ -118,11 +118,11 @@ export const billSlice = apiSlice.injectEndpoints({
       query: (data) => ({
         url: `bills/${data.billId}`,
         params: data.data,
-        method: 'DELETE'
+        method: 'DELETE',
       }),
-      invalidatesTags: ['Bill']
-    })
-  })
+      invalidatesTags: ['Bill'],
+    }),
+  }),
 });
 
 export function isBill(obj: any | undefined): obj is Bill {
@@ -135,5 +135,5 @@ export const {
   useLazyGetBillsQuery,
   useGetBillRecommendationsQuery,
   useUpdateBillsMutation,
-  useDeleteBillMutation
+  useDeleteBillMutation,
 } = billSlice;

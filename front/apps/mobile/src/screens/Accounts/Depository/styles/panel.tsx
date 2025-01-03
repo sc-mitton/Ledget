@@ -19,8 +19,8 @@ const styles = StyleSheet.create({
   seperator: {
     width: '200%',
     zIndex: -1,
-    transform: [{ translateX: -1 * Dimensions.get('window').width / 2 }],
-  }
+    transform: [{ translateX: (-1 * Dimensions.get('window').width) / 2 }],
+  },
 });
 
 export default styles;

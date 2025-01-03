@@ -2,11 +2,11 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   saveButton: {
-    marginTop: 12
+    marginTop: 12,
   },
   nameInput: {
     marginLeft: 72,
-    marginTop: 8
+    marginTop: 8,
   },
   emojiButton: {
     position: 'absolute',
@@ -15,10 +15,10 @@ const styles = StyleSheet.create({
   },
   moneyInputs: {
     flexDirection: 'row',
-    gap: 12
+    gap: 12,
   },
   checkBoxContainer: {
-    marginLeft: 4
+    marginLeft: 4,
   },
   suggestionsFlatListContent: {
     marginTop: 19,
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     flexGrow: 1,
-    flex: 1
+    flex: 1,
   },
   name: {
     width: '100%',
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   suggestionOption: {
     flexGrow: 1,
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   loadingDotsContainer: {
     position: 'absolute',
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     left: '50%',
     justifyContent: 'center',
     alignItems: 'center',
-    transform: [{ translateX: -12 }]
+    transform: [{ translateX: -12 }],
   },
   loadingDots: {
     position: 'absolute',
@@ -83,18 +83,18 @@ const styles = StyleSheet.create({
     marginLeft: -12,
     justifyContent: 'center',
     paddingRight: 16,
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
   },
   swipeable: {
-    borderRadius: 12
+    borderRadius: 12,
   },
   bottomButtons: {
     flexDirection: 'row',
     width: '100%',
     paddingRight: 16,
     paddingLeft: 8,
-    justifyContent: 'space-between'
-  }
+    justifyContent: 'space-between',
+  },
 });
 
 export default styles;

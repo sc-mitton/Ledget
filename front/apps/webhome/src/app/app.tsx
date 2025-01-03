@@ -6,7 +6,7 @@ import {
   Route,
   useLocation,
   Navigate,
-  useNavigate
+  useNavigate,
 } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { Provider } from 'react-redux';
@@ -26,14 +26,14 @@ import {
   ColorSchemedDiv,
   useScreenContext,
   ColorSchemeProvider,
-  ScreenProvider
+  ScreenProvider,
 } from '@ledget/ui';
 import {
   CreateCategory,
   CreateBill,
   ForceVerification,
   OnboardingModal,
-  AccountErrorModal
+  AccountErrorModal,
 } from '@modals/index';
 import {
   useGetMeQuery,
@@ -41,12 +41,12 @@ import {
   toastStackSelector,
   tossToast,
   setEnvironment,
-  selectEnvironment
+  selectEnvironment,
 } from '@ledget/shared-features';
 import {
   selectLogoutModal,
   setLogoutModal,
-  refreshLogoutTimer
+  refreshLogoutTimer,
 } from '@features/modalSlice';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
 import store from '@features/store';
@@ -57,8 +57,9 @@ const PrivateRoute = () => {
 
   useEffect(() => {
     if (isError) {
-      window.location.href = `${import.meta.env.VITE_LOGOUT_REDIRECT_URL
-        }?redirect=${window.location.href}`;
+      window.location.href = `${
+        import.meta.env.VITE_LOGOUT_REDIRECT_URL
+      }?redirect=${window.location.href}`;
     }
   }, [isError]);
 
@@ -184,7 +185,10 @@ const App = () => {
           </ZoomMotionDiv>
         </AnimatePresence>
         <Modals />
-        <Toast toastStack={toastStack} cleanUp={(toastId) => dispatch(tossToast(toastId))} />
+        <Toast
+          toastStack={toastStack}
+          cleanUp={(toastId) => dispatch(tossToast(toastId))}
+        />
       </main>
     </ColorSchemedDiv>
   );
@@ -196,29 +200,31 @@ const PrivatizedApp = () => (
       <Route path="*" element={<App />} />
     </Route>
   </Routes>
-)
+);
 
 const AppWithEnvironment = () => {
   const dispatch = useAppDispatch();
   const environment = useAppSelector(selectEnvironment);
 
   useEffect(() => {
-    dispatch(setEnvironment({
-      name: import.meta.env.VITE_ENVIRONMENT as 'dev' | 'prod',
-      apiUrl: import.meta.env.VITE_LEDGET_API_URI,
-      platform: 'browser'
-    }));
+    dispatch(
+      setEnvironment({
+        name: import.meta.env.VITE_ENVIRONMENT as 'dev' | 'prod',
+        apiUrl: import.meta.env.VITE_LEDGET_API_URI,
+        platform: 'browser',
+      })
+    );
   }, []);
 
-  return environment
-    ? <ColorSchemeProvider>
+  return environment ? (
+    <ColorSchemeProvider>
       <ScreenProvider>
         <BrowserRouter>
           <PrivatizedApp />
         </BrowserRouter>
       </ScreenProvider>
     </ColorSchemeProvider>
-    : null;
+  ) : null;
 };
 
 const EnrichedApp = () => (

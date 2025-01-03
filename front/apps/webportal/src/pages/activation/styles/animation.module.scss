@@ -1,64 +1,64 @@
 @function getKeyframesAnimationName($side: 1) {
-    @return 'animate-#{$side}';
+  @return 'animate-#{$side}';
 }
 
 @mixin getKeyframesAnimation($side: 1) {
-    @keyframes #{getKeyframesAnimationName($side)} {
-        0% {
-            transform: translate(0, 0) rotate(0deg);
-            opacity: .7;
-        }
-
-        25% {
-            opacity: .8;
-        }
-
-        50% {
-            transform: translate(calc(2.5em * #{$side}), 0);
-            opacity: .5;
-        }
-
-        75% {
-            opacity: .8;
-        }
-
-        100% {
-            transform: translate(0, 0) rotate(0deg);
-            opacity: .7;
-        }
-    }
-}
-
-.animatedCircles {
-    margin: 7em 0 2.5em 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: .5em;
-
-    // Define the keyframes
-    @include getKeyframesAnimation(1);
-    @include getKeyframesAnimation(-1);
-
-    img {
-        filter: brightness(.95);
-    }
-
-    img:first-of-type {
-        animation: #{getKeyframesAnimationName(1)} 4s infinite;
-    }
-
-    img:last-of-type {
-        animation: #{getKeyframesAnimationName(-1)} 4s infinite;
-    }
-}
-
-@keyframes rotate {
+  @keyframes #{getKeyframesAnimationName($side)} {
     0% {
-        transform: rotate(0deg);
+      transform: translate(0, 0) rotate(0deg);
+      opacity: 0.7;
+    }
+
+    25% {
+      opacity: 0.8;
+    }
+
+    50% {
+      transform: translate(calc(2.5em * #{$side}), 0);
+      opacity: 0.5;
+    }
+
+    75% {
+      opacity: 0.8;
     }
 
     100% {
-        transform: rotate(180deg);
+      transform: translate(0, 0) rotate(0deg);
+      opacity: 0.7;
     }
+  }
+}
+
+.animatedCircles {
+  margin: 7em 0 2.5em 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+
+  // Define the keyframes
+  @include getKeyframesAnimation(1);
+  @include getKeyframesAnimation(-1);
+
+  img {
+    filter: brightness(0.95);
+  }
+
+  img:first-of-type {
+    animation: #{getKeyframesAnimationName(1)} 4s infinite;
+  }
+
+  img:last-of-type {
+    animation: #{getKeyframesAnimationName(-1)} 4s infinite;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(180deg);
+  }
 }

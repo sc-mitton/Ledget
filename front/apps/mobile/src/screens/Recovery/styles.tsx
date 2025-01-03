@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   screen: {
@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
   },
   form: {
     flex: 1,
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   graphicContainer: {
     alignItems: 'center',
@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   header: {
-    marginTop: 16
-  }
-})
+    marginTop: 16,
+  },
+});
 
 export default styles;

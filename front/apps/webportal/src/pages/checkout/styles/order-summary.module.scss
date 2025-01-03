@@ -1,34 +1,33 @@
 .orderSummary {
-    text-align: left;
-    display: flex;
-    justify-content: start;
-    padding: .125em .5em .75em .5em;
-    margin-bottom: 1em;
+  text-align: left;
+  display: flex;
+  justify-content: start;
+  padding: 0.125em 0.5em 0.75em 0.5em;
+  margin-bottom: 1em;
 
-    table {
-        border-collapse: collapse;
+  table {
+    border-collapse: collapse;
+  }
+
+  * {
+    font-size: 1em;
+  }
+
+  tr {
+    line-height: 1.5;
+
+    td {
+      text-align: left;
+
+      &:first-child {
+        color: var(--m-text-tirtiary);
+        font-size: 0.875rem;
+        padding-right: 1em;
+      }
+
+      &:last-child span {
+        font-size: 0.65em;
+      }
     }
-
-    * {
-        font-size: 1em
-    }
-
-    tr {
-        line-height: 1.5;
-
-        td {
-            text-align: left;
-
-            &:first-child {
-                color: var(--m-text-tirtiary);
-                font-size: .875rem;
-                padding-right: 1em;
-            }
-
-            &:last-child span {
-                font-size: .65em;
-            }
-        }
-    }
-
+  }
 }

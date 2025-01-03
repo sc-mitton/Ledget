@@ -7,19 +7,19 @@ import {
   selectBudgetMonthYear,
   useLazyGetBillsQuery,
   useLazyGetCategoriesQuery,
-  isCategory
+  isCategory,
 } from '@ledget/shared-features';
 import {
   BillCatEmoji,
   BillCatLabel,
   Text,
-  ModalPicker
+  ModalPicker,
 } from '@ledget/native-ui';
 
 type Error = {
-  message?: string,
-  type?: string
-}
+  message?: string;
+  type?: string;
+};
 
 interface Option {
   label: string;
@@ -37,25 +37,25 @@ interface BillCatSelectPropsBase {
   label?: string;
   modalPickerHeader?: string;
   closeOnSelect?: boolean;
-};
+}
 
-type BillCatSelectProps<M extends boolean = false> =
-  M extends true
+type BillCatSelectProps<M extends boolean = false> = M extends true
   ? {
-    multiple?: M;
-    onChange?: (value?: Option[]) => void
-    defaultValue?: string[]
-    onClose?: (value?: Option[]) => void
-  } & BillCatSelectPropsBase
+      multiple?: M;
+      onChange?: (value?: Option[]) => void;
+      defaultValue?: string[];
+      onClose?: (value?: Option[]) => void;
+    } & BillCatSelectPropsBase
   : {
-    multiple?: M;
-    onChange?: (value?: Option) => void
-    defaultValue?: string
-    onClose?: (value?: Option) => void
-  } & BillCatSelectPropsBase;
+      multiple?: M;
+      onChange?: (value?: Option) => void;
+      defaultValue?: string;
+      onClose?: (value?: Option) => void;
+    } & BillCatSelectPropsBase;
 
-
-export const BillCatSelect = <TMultiple extends boolean>(props: BillCatSelectProps<TMultiple>) => {
+export const BillCatSelect = <TMultiple extends boolean>(
+  props: BillCatSelectProps<TMultiple>
+) => {
   const {
     modalPickerHeader,
     onClose,
@@ -64,7 +64,7 @@ export const BillCatSelect = <TMultiple extends boolean>(props: BillCatSelectPro
     isFormInput = true,
     multiple = false,
     defaultValue,
-    chevronDirection = 'right'
+    chevronDirection = 'right',
   } = props;
 
   const { month, year } = useAppSelector(selectBudgetMonthYear);
@@ -81,18 +81,21 @@ export const BillCatSelect = <TMultiple extends boolean>(props: BillCatSelectPro
 
   useEffect(() => {
     if (categoryData && billData) {
-      const allBillCats = items === 'all'
-        ? [...categoryData, ...billData]
-        : items === 'bills'
+      const allBillCats =
+        items === 'all'
+          ? [...categoryData, ...billData]
+          : items === 'bills'
           ? billData
           : categoryData;
-      setBillCats(allBillCats.map(item => ({
-        label: item.name,
-        value: item.id,
-        emoji: item.emoji,
-        period: item.period,
-        group: isCategory(item) ? 'category' : 'bill'
-      })));
+      setBillCats(
+        allBillCats.map((item) => ({
+          label: item.name,
+          value: item.id,
+          emoji: item.emoji,
+          period: item.period,
+          group: isCategory(item) ? 'category' : 'bill',
+        }))
+      );
     }
   }, [categoryData, billData]);
 
@@ -110,9 +113,11 @@ export const BillCatSelect = <TMultiple extends boolean>(props: BillCatSelectPro
       chevronDirection={chevronDirection}
       options={billCats}
       onClose={onClose as any}
-      defaultValue={props.multiple
-        ? billCats.filter(b => defaultValue?.includes(b.value))
-        : billCats.find(b => b.value === defaultValue) as any}
+      defaultValue={
+        props.multiple
+          ? billCats.filter((b) => defaultValue?.includes(b.value))
+          : (billCats.find((b) => b.value === defaultValue) as any)
+      }
       multiple={multiple}
       onChange={setValue}
       renderSelected={(option) => {
@@ -124,7 +129,7 @@ export const BillCatSelect = <TMultiple extends boolean>(props: BillCatSelectPro
               period={option.period}
             />
           </View>
-        )
+        );
       }}
       renderOption={(option, _, selected) => (
         <View style={styles.option}>
@@ -132,17 +137,29 @@ export const BillCatSelect = <TMultiple extends boolean>(props: BillCatSelectPro
           <Text>{option.label}</Text>
         </View>
       )}
-      header={modalPickerHeader
-        ? modalPickerHeader
-        : items === 'all'
-          ? props.multiple ? 'Categories and Bills' : 'Category or Bill'
-          : items === 'bills' ? 'Bills' : 'Categories'}
-      label={label !== undefined
-        ? label
-        : items === 'all'
-          ? props.multiple ? 'Categories and Bills' : 'Category or Bill'
-          : items === 'bills' ? 'Bills' : 'Categories'}
+      header={
+        modalPickerHeader
+          ? modalPickerHeader
+          : items === 'all'
+          ? props.multiple
+            ? 'Categories and Bills'
+            : 'Category or Bill'
+          : items === 'bills'
+          ? 'Bills'
+          : 'Categories'
+      }
+      label={
+        label !== undefined
+          ? label
+          : items === 'all'
+          ? props.multiple
+            ? 'Categories and Bills'
+            : 'Category or Bill'
+          : items === 'bills'
+          ? 'Bills'
+          : 'Categories'
+      }
       error={props.error}
     />
-  )
-}
+  );
+};

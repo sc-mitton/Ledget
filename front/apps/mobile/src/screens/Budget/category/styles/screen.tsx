@@ -21,11 +21,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 0,
     marginTop: 24,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   tabPanel: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 
 export default styles;

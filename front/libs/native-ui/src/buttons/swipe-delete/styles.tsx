@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     zIndex: -1,
     right: 12,
-    top: '50%'
+    top: '50%',
   },
   trashIcon: {
     position: 'absolute',

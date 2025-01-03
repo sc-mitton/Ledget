@@ -12,7 +12,7 @@ import {
   useUpdateRestartSubscriptionMutation,
   useGetNextInvoiceQuery,
   useGetSubscriptionQuery,
-  Subscription
+  Subscription,
 } from '@ledget/shared-features';
 import {
   HalfTextSlimBlueButton,
@@ -23,7 +23,7 @@ import {
   BakedSwitch,
   useColorScheme,
   CircleIconButton,
-  NestedWindow
+  NestedWindow,
 } from '@ledget/ui';
 import { ConfirmRemoveCoOwner } from '@modals/index';
 import { UpdatePersonalInfo, AddUserModal } from '@modals/index';
@@ -34,7 +34,7 @@ const getStatusColor = (subscription: Subscription) => {
     active: 'var(--green-text)',
     trialing: 'var(--green-text)',
     paused: 'var(--yellow)',
-    default: 'var(--dark-red)'
+    default: 'var(--dark-red)',
   } as { [key: string]: string };
 
   if (subscription.cancel_at_period_end) {
@@ -90,14 +90,14 @@ const ChangePlanMenu = () => {
 
   const nickNameMap = {
     Year: 'Change to monthly billing',
-    Month: 'Change to yearly billing'
+    Month: 'Change to yearly billing',
   };
 
   const options = [
     {
       label: subscription ? nickNameMap[subscription.plan.nickname] : '',
       onClick: () => navigate('/settings/profile/change-bill-cycle'),
-      cancel_at_period_end: false
+      cancel_at_period_end: false,
     },
     {
       label: "Don't Cancel",
@@ -105,17 +105,17 @@ const ChangePlanMenu = () => {
         if (subscription) {
           updateSubscription({
             subId: subscription.id,
-            cancelAtPeriodEnd: false
+            cancelAtPeriodEnd: false,
           });
         }
       },
-      cancel_at_period_end: true
+      cancel_at_period_end: true,
     },
     {
       label: 'Cancel Subscription',
       onClick: () => navigate('/settings/profile/cancel-subscription'),
-      cancel_at_period_end: false
-    }
+      cancel_at_period_end: false,
+    },
   ];
 
   const Items = () => (
@@ -165,12 +165,12 @@ const Plan = () => {
   const nextTimeStamp = nextInvoice?.next_payment_date
     ? new Date(nextInvoice.next_payment_date * 1000)
     : subscription
-      ? new Date(subscription?.current_period_end * 1000)
-      : new Date();
+    ? new Date(subscription?.current_period_end * 1000)
+    : new Date();
   const nextDate = nextTimeStamp.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
-    day: 'numeric'
+    day: 'numeric',
   });
 
   return (
@@ -217,7 +217,7 @@ const Plan = () => {
               {
                 year: 'numeric',
                 month: 'short',
-                day: 'numeric'
+                day: 'numeric',
               }
             )}
           </div>
@@ -251,7 +251,7 @@ const PaymentMethod = () => {
           </div>
           <div>{`Exp. ${expDate.toLocaleDateString('en-US', {
             year: 'numeric',
-            month: 'short'
+            month: 'short',
           })}`}</div>
         </div>
         <HalfTextSlimBlueButton

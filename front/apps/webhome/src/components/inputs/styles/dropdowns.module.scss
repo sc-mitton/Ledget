@@ -1,70 +1,69 @@
 .selectContainer {
-    position: absolute;
-    z-index: 2000;
+  position: absolute;
+  z-index: 2000;
 
-    &>div {
-        margin-top: .25rem;
-    }
+  & > div {
+    margin-top: 0.25rem;
+  }
 }
 
 .addAlertBtn {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    gap: 1em;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
 
-    &[data-selected="true"] {
-        color: var(--m-text);
-    }
+  &[data-selected='true'] {
+    color: var(--m-text);
+  }
 }
 
 .addRemindeBtn {
-    gap: .5rem;
-    color: var(--m-text);
+  gap: 0.5rem;
+  color: var(--m-text);
 
-    &[data-unset="true"] {
-
-        span,
-        svg {
-            opacity: .5;
-        }
+  &[data-unset='true'] {
+    span,
+    svg {
+      opacity: 0.5;
     }
+  }
 }
 
 .selectItem {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-weight: var(--fw-regular);
-    width: auto;
-    padding: .25rem .75rem;
-    margin: .125rem 0;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: var(--fw-regular);
+  width: auto;
+  padding: 0.25rem 0.75rem;
+  margin: 0.125rem 0;
+  cursor: pointer;
 }
 
 .returnBtn {
-    opacity: 0;
-    border-radius: var(--border-radius1);
-    padding: 0 .375rem;
-    margin: .25rem;
+  opacity: 0;
+  border-radius: var(--border-radius1);
+  padding: 0 0.375rem;
+  margin: 0.25rem;
+  display: flex;
+
+  &[data-focused='true'] {
+    height: 0.8em;
     display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius1);
+    padding: 0.125rem;
+    margin: 0 0.125rem;
+    background-color: var(--btn-mid-gray);
 
-    &[data-focused='true'] {
-        height: .8em;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: var(--border-radius1);
-        padding: .125rem;
-        margin: 0 .125rem;
-        background-color: var(--btn-mid-gray);
-
-        svg {
-            padding: .125rem .25rem;
-        }
+    svg {
+      padding: 0.125rem 0.25rem;
     }
+  }
 }
 
 .customInput {
-    margin-top: .25em;
+  margin-top: 0.25em;
 }

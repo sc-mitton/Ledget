@@ -10,7 +10,7 @@ import {
   useGetPlaidItemsQuery,
   PlaidItem,
   useGetMeQuery,
-  useTransactionsSyncMutation
+  useTransactionsSyncMutation,
 } from '@ledget/shared-features';
 import {
   ExpandableContainer,
@@ -18,7 +18,7 @@ import {
   BlackPrimaryButtonWithArrow,
   Base64Logo,
   BluePrimaryButton,
-  Tooltip
+  Tooltip,
 } from '@ledget/ui';
 import { useLoaded } from '@ledget/helpers';
 
@@ -39,7 +39,7 @@ const InstitutionLogos = ({ plaidItems }: { plaidItems: PlaidItem[] }) => {
                   className={styles.institutionLogo}
                   style={{
                     marginLeft: index === 0 ? '0' : '-.5rem',
-                    zIndex: index
+                    zIndex: index,
                   }}
                 >
                   <Tooltip msg={item.institution?.name}>

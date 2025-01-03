@@ -1,40 +1,39 @@
 /* ------------------------------- Form Errors ------------------------------ */
 
 .errorTip {
-    position: absolute;
-    top: -.625em;
-    right: 0;
-    height: .75em;
-    width: .75em;
-    animation: pop .22s ease;
-    color: var(--alert-red);
+  position: absolute;
+  top: -0.625em;
+  right: 0;
+  height: 0.75em;
+  width: 0.75em;
+  animation: pop 0.22s ease;
+  color: var(--alert-red);
 }
 
 .formErrorContainer {
-    margin-left: -.375em;
-    display: flex;
-    align-items: center;
-    color: var(--mute-red);
+  margin-left: -0.375em;
+  display: flex;
+  align-items: center;
+  color: var(--mute-red);
 
-    &[data-inside='true'] {
-        margin-left: 0em;
-    }
+  &[data-inside='true'] {
+    margin-left: 0em;
+  }
 
-    svg {
-        color: currentColor;
-        height: 1.1em;
-        margin-left: .25em;
-        margin-right: .3125em;
-        position: relative;
-        text-align: left;
-        animation: pop .22s ease;
-    }
-
+  svg {
+    color: currentColor;
+    height: 1.1em;
+    margin-left: 0.25em;
+    margin-right: 0.3125em;
+    position: relative;
+    text-align: left;
+    animation: pop 0.22s ease;
+  }
 }
 
 .formError {
-    display: inline-block;
-    font-size: .875rem;
-    font-weight: var(--fw-regular);
-    color: var(--mute-red);
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: var(--fw-regular);
+  color: var(--mute-red);
 }

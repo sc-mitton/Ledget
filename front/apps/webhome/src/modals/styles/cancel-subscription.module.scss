@@ -1,24 +1,23 @@
 .cancelationContainer {
-    margin-top: .75em;
+  margin-top: 0.75em;
 
-    >div {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin: .5em 0;
-    }
+  > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.5em 0;
+  }
 
-    >div:last-child {
-        display: flex;
-        flex-direction: row;
-        margin: 1em 0 0 .125em;
-    }
-
+  > div:last-child {
+    display: flex;
+    flex-direction: row;
+    margin: 1em 0 0 0.125em;
+  }
 }
 
 .cancelationModalContainer {
-    &>div:first-of-type {
-        margin: .5em 0 1.25em 0;
-        color: var(--yearly-text-color);
-    }
+  & > div:first-of-type {
+    margin: 0.5em 0 1.25em 0;
+    color: var(--yearly-text-color);
+  }
 }

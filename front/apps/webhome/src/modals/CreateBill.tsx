@@ -15,7 +15,7 @@ import {
   AddReminder,
   BillScheduler,
   PeriodSelect,
-  emoji
+  emoji,
 } from '@components/inputs';
 import { Checkbox } from '@ledget/ui';
 import { useAddnewBillMutation } from '@ledget/shared-features';
@@ -60,12 +60,12 @@ const Form = withModal((props) => {
     register,
     handleSubmit,
     formState: { errors },
-    control
+    control,
   } = useForm<z.infer<typeof billSchema>>({
     resolver: zodResolver(billSchema),
     mode: 'onSubmit',
     reValidateMode: 'onBlur',
-    defaultValues: location.state
+    defaultValues: location.state,
   });
 
   useEffect(() => {
@@ -107,7 +107,7 @@ const Form = withModal((props) => {
                   day: location.state?.day,
                   week: location.state?.week,
                   weekDay: location.state?.weekDay,
-                  month: location.state?.month
+                  month: location.state?.month,
                 }}
                 billPeriod={billPeriod}
                 error={errors.schedule?.day}

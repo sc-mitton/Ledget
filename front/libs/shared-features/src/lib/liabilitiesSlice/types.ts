@@ -6,7 +6,7 @@ export type StudentLoan = {
     name: string;
     id: string;
     primary_color: string;
-  },
+  };
   name: string;
   product_not_supported: boolean;
   account_number: string;
@@ -43,7 +43,7 @@ export type Mortgage = {
     name: string;
     id: string;
     primary_color: string;
-  },
+  };
   name: string;
   product_not_supported: boolean;
   account_number: string;

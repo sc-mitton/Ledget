@@ -1,33 +1,32 @@
-import { RefObject } from 'react'
-import { ViewStyle } from 'react-native'
-import Animated, { AnimatedRef, SharedValue } from 'react-native-reanimated'
+import { RefObject } from 'react';
+import { ViewStyle } from 'react-native';
+import Animated, { AnimatedRef, SharedValue } from 'react-native-reanimated';
 
 type SharedProps = {
-  columns?: number
-  rowPadding?: number
+  columns?: number;
+  rowPadding?: number;
   onDragEnd?: (diffs: Positions) => void;
-}
+};
 
 export type Positions = {
   [id: string]: number;
-}
+};
 
-type Child = React.ReactElement<{ id: string }>
+type Child = React.ReactElement<{ id: string }>;
 
 export type ItemProps = {
   id: string;
-  children: Child,
+  children: Child;
   scrollView: AnimatedRef<Animated.ScrollView>;
   scrollHeight: number;
-  scrollY: SharedValue<number>
+  scrollY: SharedValue<number>;
   positions: SharedValue<Positions>;
-  size: SharedValue<{ width: number, height: number }>;
-} & Required<SharedProps>
+  size: SharedValue<{ width: number; height: number }>;
+} & Required<SharedProps>;
 
 export type GridSortableListProps<TData extends object> = {
-  data: TData[]
-  renderItem: ({ item, index }: { item: TData, index: number }) => Child
-  containerViewStyle?: ViewStyle | ViewStyle[]
-  idField?: keyof TData
-} & SharedProps
-
+  data: TData[];
+  renderItem: ({ item, index }: { item: TData; index: number }) => Child;
+  containerViewStyle?: ViewStyle | ViewStyle[];
+  idField?: keyof TData;
+} & SharedProps;

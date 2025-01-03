@@ -2,145 +2,145 @@
 @import '@styles/table-mixins.scss';
 
 .accountWafersContainer {
+  display: flex;
+  justify-content: space-between;
+
+  h1 {
+    margin-left: -0.125em;
+  }
+
+  & > div:first-child {
+    width: 100%;
+    padding: 0 1.5em;
     display: flex;
-    justify-content: space-between;
+    width: auto;
+    position: relative;
+    justify-content: flex-start;
+    gap: 2em;
+    flex: 1;
 
-    h1 {
-        margin-left: -.125em;
+    * {
+      scrollbar-width: none;
     }
 
-    &>div:first-child {
-        width: 100%;
-        padding: 0 1.5em;
+    & > div:first-child {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      margin-left: 1em;
+
+      & > div:first-child {
         display: flex;
-        width: auto;
-        position: relative;
-        justify-content: flex-start;
-        gap: 2em;
-        flex: 1;
+        gap: 0.5em;
+        align-items: center;
+      }
 
-        * {
-            scrollbar-width: none;
-        }
-
-        &>div:first-child {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            margin-left: 1em;
-
-            &>div:first-child {
-                display: flex;
-                gap: .5em;
-                align-items: center;
-            }
-
-            h1 * {
-                font-weight: var(--fw-bold);
-            }
-        }
-
-        h4 {
-            white-space: nowrap;
-            font-weight: var(--fw-regular);
-        }
+      h1 * {
+        font-weight: var(--fw-bold);
+      }
     }
 
-    &>div:last-child {
-        flex: 10;
-        max-width: 40%;
-        transition: max-width .5s ease-in-out, padding .5s ease-in-out, opacity .5s ease-in-out;
-        display: flex;
-        justify-content: center;
-        padding: .75em;
-        position: relative;
-        margin-left: 1em;
-
-        &>button {
-            position: absolute;
-            top: 1em;
-            right: 1em;
-        }
-
-        &[data-collapsed='true'] {
-            max-width: 0;
-            padding: 0;
-            margin: 0;
-            opacity: 0;
-            transition: all .5s ease-in-out;
-        }
+    h4 {
+      white-space: nowrap;
+      font-weight: var(--fw-regular);
     }
+  }
+
+  & > div:last-child {
+    flex: 10;
+    max-width: 40%;
+    transition: max-width 0.5s ease-in-out, padding 0.5s ease-in-out,
+      opacity 0.5s ease-in-out;
+    display: flex;
+    justify-content: center;
+    padding: 0.75em;
+    position: relative;
+    margin-left: 1em;
+
+    & > button {
+      position: absolute;
+      top: 1em;
+      right: 1em;
+    }
+
+    &[data-collapsed='true'] {
+      max-width: 0;
+      padding: 0;
+      margin: 0;
+      opacity: 0;
+      transition: all 0.5s ease-in-out;
+    }
+  }
 }
-
 
 /* --------------------------------- Wafers --------------------------------- */
 .accountWafers,
 .skeletonWafers {
-    width: 100%;
-    display: inline-flex;
-    height: calc($wafer-height + 2 * $wafer-container-padding + .25em);
-    gap: .75em;
-    overflow-x: hidden;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    animation: make-scroll 1s ease-in-out forwards;
-    animation-delay: 1s;
-    padding: 1.5em 0em .75em 0em;
+  width: 100%;
+  display: inline-flex;
+  height: calc($wafer-height + 2 * $wafer-container-padding + 0.25em);
+  gap: 0.75em;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  animation: make-scroll 1s ease-in-out forwards;
+  animation-delay: 1s;
+  padding: 1.5em 0em 0.75em 0em;
 }
 
 @keyframes make-scroll {
-    0% {
-        overflow-x: hidden;
-    }
+  0% {
+    overflow-x: hidden;
+  }
 
-    100% {
-        overflow-x: scroll;
-    }
+  100% {
+    overflow-x: scroll;
+  }
 }
 
 .accountWafers {
-    z-index: 0;
-    position: relative;
+  z-index: 0;
+  position: relative;
 
-    &::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        opacity: 0;
-        z-index: -1;
-        animation: fade-in-background-image .5s ease-in-out forwards;
-        animation-delay: 1.1s;
-    }
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    z-index: -1;
+    animation: fade-in-background-image 0.5s ease-in-out forwards;
+    animation-delay: 1.1s;
+  }
 }
 
 @keyframes fade-in-background-image {
-    0% {
-        animation: fade-in-background-image 2s ease-in-out forwards;
-        animation-delay: 1s;
-        opacity: 0;
-    }
+  0% {
+    animation: fade-in-background-image 2s ease-in-out forwards;
+    animation-delay: 1s;
+    opacity: 0;
+  }
 
-    100% {
-        opacity: 1;
-    }
+  100% {
+    opacity: 1;
+  }
 }
 
 /* Individual Wafers */
 .accountWaferContainer,
 .skeletonAccountWaferContainer {
-    padding-top: .525em;
-    padding-bottom: .525em;
-    height: $wafer-height;
-    border-radius: var(--border-radius5);
-    scroll-snap-align: start;
+  padding-top: 0.525em;
+  padding-bottom: 0.525em;
+  height: $wafer-height;
+  border-radius: var(--border-radius5);
+  scroll-snap-align: start;
 }
 
 .accountWaferContainer {
-    position: absolute;
+  position: absolute;
 }
 
 .skeletonAccountWaferContainer {
-    position: relative;
+  position: relative;
 }

@@ -19,7 +19,7 @@ const initialState: InitialState = {
   // Bills
   billIdPeriodMap: {},
   unsyncedConfirmedBills: [],
-  billsMetaData: {}
+  billsMetaData: {},
 };
 
 const emptyBillMetaData = {
@@ -30,14 +30,14 @@ const emptyBillMetaData = {
   monthly_bills_amount_remaining: 0,
   yearly_bills_amount_remaining: 0,
   total_monthly_bills_amount: 0,
-  total_yearly_bills_amount: 0
+  total_yearly_bills_amount: 0,
 };
 const emptyCategoryMetaData = {
   monthly_spent: 0,
   yearly_spent: 0,
   limit_amount_monthly: 0,
   limit_amount_yearly: 0,
-  oldest_yearly_category_created: ''
+  oldest_yearly_category_created: '',
 };
 
 export const budgetItemMetaDataSlice = createSlice({
@@ -73,7 +73,7 @@ export const budgetItemMetaDataSlice = createSlice({
 
       state.unsyncedConfirmedSpending[action.payload.categoryId] = {
         categoryPeriod: action.payload.period,
-        amount: action.payload.amount
+        amount: action.payload.amount,
       };
     },
 
@@ -97,7 +97,7 @@ export const budgetItemMetaDataSlice = createSlice({
           `${state.budgetMonth}-${state.budgetYear}`
         ].yearly_bills_amount_remaining -= action.payload.amount;
       }
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -138,7 +138,7 @@ export const budgetItemMetaDataSlice = createSlice({
               if (
                 oldestYearlyCategoryCreated === '' ||
                 new Date(oldestYearlyCategoryCreated) >
-                new Date(category.created)
+                  new Date(category.created)
               ) {
                 oldestYearlyCategoryCreated = category.created;
               }
@@ -152,7 +152,7 @@ export const budgetItemMetaDataSlice = createSlice({
             yearly_spent: yearlySpent.toNumber(),
             limit_amount_monthly: limitAmountMonthly,
             limit_amount_yearly: limitAmountYearly,
-            oldest_yearly_category_created: oldestYearlyCategoryCreated
+            oldest_yearly_category_created: oldestYearlyCategoryCreated,
           };
 
           // Clear unsynced spending
@@ -203,32 +203,32 @@ export const budgetItemMetaDataSlice = createSlice({
               : numberOfYearlyBills++;
             bill.period === 'month'
               ? (totalMonthlyBillsAmount = totalMonthlyBillsAmount.plus(
-                bill.upper_amount
-              ))
+                  bill.upper_amount
+                ))
               : (totalYearlyBillsAmount = totalYearlyBillsAmount.plus(
-                bill.upper_amount
-              ));
+                  bill.upper_amount
+                ));
           });
 
           state.billsMetaData[`${originalArgs?.month}-${originalArgs?.year}`] =
-          {
-            monthly_bills_paid: paidMonthlyBills,
-            yearly_bills_paid: paidYearlyBills,
-            number_of_monthly_bills: numberOfMonthlyBills,
-            number_of_yearly_bills: numberOfYearlyBills,
-            monthly_bills_amount_remaining:
-              monthlyBillsAmountRemaining.toNumber(),
-            yearly_bills_amount_remaining:
-              yearlyBillsAmountRemaining.toNumber(),
-            total_monthly_bills_amount: totalMonthlyBillsAmount.toNumber(),
-            total_yearly_bills_amount: totalYearlyBillsAmount.toNumber()
-          };
+            {
+              monthly_bills_paid: paidMonthlyBills,
+              yearly_bills_paid: paidYearlyBills,
+              number_of_monthly_bills: numberOfMonthlyBills,
+              number_of_yearly_bills: numberOfYearlyBills,
+              monthly_bills_amount_remaining:
+                monthlyBillsAmountRemaining.toNumber(),
+              yearly_bills_amount_remaining:
+                yearlyBillsAmountRemaining.toNumber(),
+              total_monthly_bills_amount: totalMonthlyBillsAmount.toNumber(),
+              total_yearly_bills_amount: totalYearlyBillsAmount.toNumber(),
+            };
 
           // Clear unsynced
           state.unsyncedConfirmedBills = [];
         }
       );
-  }
+  },
 });
 
 export const { addTransaction2Cat, addTransaction2Bill, setBudgetMonthYear } =

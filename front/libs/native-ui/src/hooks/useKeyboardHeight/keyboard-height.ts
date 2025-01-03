@@ -5,7 +5,8 @@ export const useKeyboardHeight = () => {
   const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   useEffect(() => {
-    function onKeyboardDidShow(e: KeyboardEvent) { // Remove type here if not using TypeScript
+    function onKeyboardDidShow(e: KeyboardEvent) {
+      // Remove type here if not using TypeScript
       setKeyboardHeight(e.endCoordinates.height);
     }
 
@@ -13,8 +14,14 @@ export const useKeyboardHeight = () => {
       setKeyboardHeight(0);
     }
 
-    const showSubscription = Keyboard.addListener('keyboardDidShow', onKeyboardDidShow);
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', onKeyboardDidHide);
+    const showSubscription = Keyboard.addListener(
+      'keyboardDidShow',
+      onKeyboardDidShow
+    );
+    const hideSubscription = Keyboard.addListener(
+      'keyboardDidHide',
+      onKeyboardDidHide
+    );
     return () => {
       showSubscription.remove();
       hideSubscription.remove();

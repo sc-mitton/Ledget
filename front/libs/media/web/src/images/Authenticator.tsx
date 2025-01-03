@@ -1,7 +1,7 @@
 const Authenticator = ({
   fill = 'var(--m-text)',
   fill2 = 'var(--window)',
-  size = '7em'
+  size = '7em',
 }) => {
   return (
     <svg

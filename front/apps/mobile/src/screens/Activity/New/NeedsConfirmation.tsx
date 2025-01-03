@@ -1,6 +1,12 @@
 import { useEffect, useState, useRef } from 'react';
 import { shallowEqual } from 'react-redux';
-import { View, TouchableOpacity, StyleSheet, RefreshControl, Dimensions } from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  RefreshControl,
+  Dimensions,
+} from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useTransition, useSpringRef } from '@react-spring/native';
 import { useTheme } from '@shopify/restyle';
@@ -23,8 +29,8 @@ import {
   QueueItemWithBill,
   removeUnconfirmedTransaction,
   addTransaction2Cat,
-  addTransaction2Bill
-} from "@ledget/shared-features";
+  addTransaction2Bill,
+} from '@ledget/shared-features';
 import { useAppearance } from '@features/appearanceSlice';
 import {
   BottomDrawerModal,
@@ -33,15 +39,10 @@ import {
   CustomScrollView,
   Spinner,
   AnimatedView,
-  Box
+  Box,
 } from '@ledget/native-ui';
 import { useLoaded } from '@ledget/helpers';
-import {
-  _getY,
-  _getScale,
-  _getOpacity,
-  EXPANDED_GAP,
-} from './helpers';
+import { _getY, _getScale, _getOpacity, EXPANDED_GAP } from './helpers';
 import { ModalScreenProps } from '@types';
 import { EmptyBox } from '@ledget/media/native';
 import { BlurView } from 'expo-blur';
@@ -49,10 +50,12 @@ import { BlurView } from 'expo-blur';
 const springConfig = {
   tension: 180,
   friction: 22,
-  mass: 1
+  mass: 1,
 };
 
-const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: boolean }) => {
+const NeedsConfirmation = (
+  props: ModalScreenProps<'Activity'> & { expanded?: boolean }
+) => {
   const itemHeight = useRef(0);
   const dispatch = useAppDispatch();
   const loaded = useLoaded(1000);
@@ -66,16 +69,16 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
   const [expanded, setExpanded] = useState(props.expanded || false);
 
   const [confirmTransactions] = useConfirmTransactionsMutation();
-  const [getUnconfirmedTransactions, {
-    isLoading: isLoadingTransactions,
-    isSuccess: isTransactionsSuccess,
-  }] = useLazyGetUnconfirmedTransactionsQuery();
+  const [
+    getUnconfirmedTransactions,
+    { isLoading: isLoadingTransactions, isSuccess: isTransactionsSuccess },
+  ] = useLazyGetUnconfirmedTransactionsQuery();
 
   const unconfirmedTransactions = useAppSelector(
     (state) =>
       selectUnconfirmedTransactions(state, {
         month: month || new Date().getMonth(),
-        year: year || new Date().getFullYear()
+        year: year || new Date().getFullYear(),
       }),
     shallowEqual
   );
@@ -83,29 +86,32 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
     (state) =>
       selectConfirmedTransactions(state, {
         month: month || new Date().getMonth(),
-        year: year || new Date().getFullYear()
+        year: year || new Date().getFullYear(),
       }),
     shallowEqual
   );
 
   const itemsApi = useSpringRef();
-  const itemTransitions = useTransition(unconfirmedTransactions.slice(0, loaded || expanded ? undefined : 3), {
-    from: (item, index) => ({
-      top: _getY(index, expanded, false, itemHeight.current),
-      zIndex: unconfirmedTransactions!.length - index
-    }),
-    enter: (item, index) => ({
-      top: _getY(index, expanded, true, itemHeight.current),
-      opacity: itemHeightSet ? _getOpacity(index, expanded) : 0
-    }),
-    update: (item, index) => ({
-      top: _getY(index, expanded, true, itemHeight.current),
-      opacity: itemHeightSet ? _getOpacity(index, expanded) : 0
-    }),
-    config: springConfig,
-    immediate: (!loaded && expanded),
-    ref: itemsApi
-  });
+  const itemTransitions = useTransition(
+    unconfirmedTransactions.slice(0, loaded || expanded ? undefined : 3),
+    {
+      from: (item, index) => ({
+        top: _getY(index, expanded, false, itemHeight.current),
+        zIndex: unconfirmedTransactions!.length - index,
+      }),
+      enter: (item, index) => ({
+        top: _getY(index, expanded, true, itemHeight.current),
+        opacity: itemHeightSet ? _getOpacity(index, expanded) : 0,
+      }),
+      update: (item, index) => ({
+        top: _getY(index, expanded, true, itemHeight.current),
+        opacity: itemHeightSet ? _getOpacity(index, expanded) : 0,
+      }),
+      config: springConfig,
+      immediate: !loaded && expanded,
+      ref: itemsApi,
+    }
+  );
 
   const onClose = () => {
     props.navigation.goBack();
@@ -117,11 +123,11 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
           transaction_id: item.transaction.transaction_id,
           splits: item.categories
             ? item.categories.map((cat) => ({
-              category: cat.id,
-              fraction: cat.fraction
-            }))
+                category: cat.id,
+                fraction: cat.fraction,
+              }))
             : undefined,
-          bill: item.bill
+          bill: item.bill,
         }))
       );
     }
@@ -132,17 +138,16 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
       x: 100,
       opacity: 0,
       delay: index * 50,
-      config: { duration: 130 }
+      config: { duration: 130 },
     }));
 
     // Dispatch confirm for all items
     setTimeout(() => {
       const confirmed: ConfirmedQueue = [];
       for (let transaction of unconfirmedTransactions) {
-
-        const ready2ConfirmItem: (QueueItemWithCategory | QueueItemWithBill) = {
+        const ready2ConfirmItem: QueueItemWithCategory | QueueItemWithBill = {
           transaction: transaction,
-          bill: transaction.predicted_bill?.id
+          bill: transaction.predicted_bill?.id,
         };
 
         // Update meta data for immediate ui updates
@@ -150,7 +155,7 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
           dispatch(
             addTransaction2Bill({
               billId: ready2ConfirmItem.bill,
-              amount: ready2ConfirmItem.transaction.amount
+              amount: ready2ConfirmItem.transaction.amount,
             })
           );
         } else if (ready2ConfirmItem.categories) {
@@ -159,7 +164,7 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
               addTransaction2Cat({
                 categoryId: category.id,
                 amount: ready2ConfirmItem.transaction.amount,
-                period: category.period
+                period: category.period,
               })
             );
           }
@@ -172,11 +177,11 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
           transaction_id: item.transaction.transaction_id,
           splits: item.categories
             ? item.categories.map((cat) => ({
-              category: cat.id,
-              fraction: cat.fraction
-            }))
+                category: cat.id,
+                fraction: cat.fraction,
+              }))
             : undefined,
-          bill: item.bill
+          bill: item.bill,
         }))
       );
     }, 130 + unconfirmedTransactions.length * 50);
@@ -184,25 +189,29 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
 
   const onDrag = (dy: number, expanded: boolean) => {
     if (Math.abs(dy) > 100 || (!expanded && dy > 0) || (expanded && dy < 0)) {
-      return
+      return;
     } else if (dy === 0) {
       itemsApi.start((index: any, item: any) => {
         return {
           top: _getY(index, expanded, true, itemHeight.current),
-          zIndex: expanded ? index : unconfirmedTransactions!.length - index
+          zIndex: expanded ? index : unconfirmedTransactions!.length - index,
         };
       });
     } else if (dy < 0) {
       itemsApi.start((index: any, item: any) => {
         return {
-          top: _getY(index, false, true, itemHeight.current) + Math.pow(Math.abs(dy) * index, .8),
+          top:
+            _getY(index, false, true, itemHeight.current) +
+            Math.pow(Math.abs(dy) * index, 0.8),
         };
       });
     } else {
       itemsApi.start((index: any, item: any) => {
         return {
-          top: _getY(index, true, true, itemHeight.current) - Math.pow(Math.abs(dy) * index, .6),
-          zIndex: unconfirmedTransactions!.length - index
+          top:
+            _getY(index, true, true, itemHeight.current) -
+            Math.pow(Math.abs(dy) * index, 0.6),
+          zIndex: unconfirmedTransactions!.length - index,
         };
       });
     }
@@ -212,11 +221,14 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
 
   useEffect(() => {
     if (month && year) {
-      getUnconfirmedTransactions({
-        confirmed: false,
-        start: dayjs(`${year}-${month}-01`).startOf('month').unix(),
-        end: dayjs(`${year}-${month}-01`).endOf('month').unix()
-      }, refreshing ? false : true);
+      getUnconfirmedTransactions(
+        {
+          confirmed: false,
+          start: dayjs(`${year}-${month}-01`).startOf('month').unix(),
+          end: dayjs(`${year}-${month}-01`).endOf('month').unix(),
+        },
+        refreshing ? false : true
+      );
     }
   }, [month, year, getUnconfirmedTransactions, refreshing]);
 
@@ -246,8 +258,8 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
       const timeout = setTimeout(() => {
         itemsApi.start((index: number, item: any) => ({
           zIndex: expanded ? index : unconfirmedTransactions!.length - index,
-          immediate: true
-        }))
+          immediate: true,
+        }));
       }, 500);
       return () => clearTimeout(timeout);
     }
@@ -261,41 +273,48 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
       onClose={onClose}
       height={itemWithFocus && !expanded ? 275 : undefined}
     >
-      {unconfirmedTransactions.length === 0
-        ?
+      {unconfirmedTransactions.length === 0 ? (
         <View style={styles.emptyBoxGraphic}>
-          {isLoadingTransactions
-            ? <Spinner color='mainText' />
-            : isTransactionsSuccess
-              ? <EmptyBox dark={mode === 'dark'} />
-              : null}
+          {isLoadingTransactions ? (
+            <Spinner color="mainText" />
+          ) : isTransactionsSuccess ? (
+            <EmptyBox dark={mode === 'dark'} />
+          ) : null}
         </View>
-        :
+      ) : (
         <CustomScrollView
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
-              style={{ transform: [{ scaleY: .7 }, { scaleX: .7 }] }}
+              style={{ transform: [{ scaleY: 0.7 }, { scaleX: 0.7 }] }}
               colors={[theme.colors.blueText]}
               progressBackgroundColor={theme.colors.modalBox}
               tintColor={theme.colors.secondaryText}
-              onRefresh={() => { setRefreshing(true) }}
-            />}
-          overScrollMode='always'
+              onRefresh={() => {
+                setRefreshing(true);
+              }}
+            />
+          }
+          overScrollMode="always"
           scrollEnabled={expanded}
           scrollIndicatorInsets={{ right: -4 }}
           showsVerticalScrollIndicator={expanded && loaded}
           contentContainerStyle={[styles.scrollViewContent]}
-          style={[styles.scrollView]}>
-          <View style={[
-            styles.transactionsContainer,
-            {
-              height: expanded
-                ? (itemHeight.current + EXPANDED_GAP) * unconfirmedTransactions.length + itemHeight.current
-                : itemHeight.current * 2
-            }
-          ]}>
-            {itemWithFocus && expanded &&
+          style={[styles.scrollView]}
+        >
+          <View
+            style={[
+              styles.transactionsContainer,
+              {
+                height: expanded
+                  ? (itemHeight.current + EXPANDED_GAP) *
+                      unconfirmedTransactions.length +
+                    itemHeight.current
+                  : itemHeight.current * 2,
+              },
+            ]}
+          >
+            {itemWithFocus && expanded && (
               <Animated.View
                 pointerEvents={'none'}
                 entering={FadeIn}
@@ -303,27 +322,32 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
                 style={[StyleSheet.absoluteFill, styles.overlayView]}
               >
                 <BlurView
-                  pointerEvents='none'
+                  pointerEvents="none"
                   intensity={mode === 'dark' ? 40 : 30}
                   style={styles.overlayContainer}
-                  tint={mode === 'dark' ? 'dark' : 'systemUltraThinMaterialDark'}
+                  tint={
+                    mode === 'dark' ? 'dark' : 'systemUltraThinMaterialDark'
+                  }
                 >
                   <Box
                     style={[StyleSheet.absoluteFillObject, styles.overlay]}
-                    backgroundColor={mode === 'dark' ? 'nestedContainer' : 'modalSeperator'}
+                    backgroundColor={
+                      mode === 'dark' ? 'nestedContainer' : 'modalSeperator'
+                    }
                   />
                 </BlurView>
-              </Animated.View>}
+              </Animated.View>
+            )}
             {itemTransitions((style, item, _, index) => (
               <AnimatedView
                 onLayout={(e) => {
-                  itemHeight.current = e.nativeEvent.layout.height
-                  setItemHeightSet(true)
+                  itemHeight.current = e.nativeEvent.layout.height;
+                  setItemHeightSet(true);
                 }}
                 style={[
                   style,
                   styles.transactionItem,
-                  { transform: [{ scale: _getScale(index, expanded, true) }] }
+                  { transform: [{ scale: _getScale(index, expanded, true) }] },
                 ]}
               >
                 <View
@@ -331,16 +355,18 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
                     if (itemWithFocus) return;
                     itemsApi.start((i: number, value: any) => ({
                       zIndex: expanded
-                        ? value._item.transaction_id === item.transaction_id ? 200 : i
+                        ? value._item.transaction_id === item.transaction_id
+                          ? 200
+                          : i
                         : unconfirmedTransactions!.length - i,
-                      congif: { duration: 0, delay: 500 }
+                      congif: { duration: 0, delay: 500 },
                     }));
                   }}
-                  pointerEvents='box-none'
+                  pointerEvents="box-none"
                 >
                   <TransactionItem
                     item={item}
-                    contentStyle={{ opacity: expanded || index == 0 ? 1 : .2 }}
+                    contentStyle={{ opacity: expanded || index == 0 ? 1 : 0.2 }}
                     onShowMenu={(show) => {
                       console.log('show', show);
                       if (show) {
@@ -353,20 +379,22 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
                 </View>
               </AnimatedView>
             ))}
-            {expanded && itemHeightSet &&
+            {expanded && itemHeightSet && (
               <View style={styles.checkAllButtonContainer}>
                 <TouchableOpacity
                   style={styles.checkAllButton}
                   activeOpacity={0.7}
-                  onPress={confirmAll}>
-                  <Text color='tertiaryText'>Confirm All</Text>
-                  <Icon color='tertiaryText' icon={CheckAll} size={24} />
+                  onPress={confirmAll}
+                >
+                  <Text color="tertiaryText">Confirm All</Text>
+                  <Icon color="tertiaryText" icon={CheckAll} size={24} />
                 </TouchableOpacity>
-              </View>}
+              </View>
+            )}
           </View>
         </CustomScrollView>
-      }
-      {!itemWithFocus &&
+      )}
+      {!itemWithFocus && (
         <Animated.View style={styles.mask} entering={FadeIn} exiting={FadeOut}>
           <LinearGradient
             style={styles.mask}
@@ -374,9 +402,10 @@ const NeedsConfirmation = (props: ModalScreenProps<'Activity'> & { expanded?: bo
             start={{ x: 0, y: 1 }}
             end={{ x: 0, y: 0 }}
           />
-        </Animated.View>}
+        </Animated.View>
+      )}
     </BottomDrawerModal.Content>
-  )
-}
+  );
+};
 
 export default NeedsConfirmation;

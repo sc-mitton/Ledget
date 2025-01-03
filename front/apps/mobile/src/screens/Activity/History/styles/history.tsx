@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   animatedView: {
@@ -7,7 +7,7 @@ export default StyleSheet.create({
   scrollView: {
     paddingTop: 16,
     paddingRight: 8,
-    marginBottom: -32
+    marginBottom: -32,
   },
   row: {
     alignItems: 'center',
@@ -24,15 +24,15 @@ export default StyleSheet.create({
     marginLeft: 8,
     marginRight: 16,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   leftColumn: {
-    gap: 2
+    gap: 2,
   },
   leftColumnBottomRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4
+    gap: 4,
   },
   emojis: {
     flexDirection: 'row',
@@ -48,18 +48,18 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   emoji: {
-    margin: 0
+    margin: 0,
   },
   dateColumn: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    paddingRight: 12
+    paddingRight: 12,
   },
   seperatorContainer: {
     width: '100%',
-    paddingLeft: 44
+    paddingLeft: 44,
   },
   emptyBoxGraphic: {
     flex: 1,
@@ -72,11 +72,11 @@ export default StyleSheet.create({
     paddingLeft: 6,
     marginBottom: 8,
     marginRight: 4,
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   filtersHeader: {
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   splitInputs: {
     justifyContent: 'space-between',
@@ -91,7 +91,7 @@ export default StyleSheet.create({
     marginTop: 32,
     flexGrow: 1,
     minHeight: '100%',
-    position: 'relative'
+    position: 'relative',
   },
   formHeader: {
     marginTop: 12,
@@ -112,6 +112,6 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 20,
-    marginTop: 12
-  }
+    marginTop: 12,
+  },
 });

@@ -1,26 +1,25 @@
+export { default as CancelSubscription } from './CancelSubscription';
+export { default as CreateBill } from './CreateBill';
+export { default as ChangeBillCycle } from './ChangeBillCycle';
+export { default as CreateCategory } from './CreateCategory';
+export { default as Help } from './Help';
+export { default as Logout } from './Logout';
+export { default as UpdatePayment } from './UpdatePayment';
+export { default as DeactivateAuthentictor } from './DeactivateAuthentictor';
+export { default as AuthenticatorSetup } from './AuthenticatorSetup';
+export { default as ChangePassword } from './ChangePassword';
+export { default as RecoveryCodes } from './RecoveryCodes';
+export { default as ForceVerification } from './ForceVerification';
+export { default as ForcePaymentMethod } from './ForcePaymentMethod';
+export { default as TransactionItem } from './TransactionItem';
+export { default as EditBudgetCategories } from './EditBudgetCategories';
+export { default as BillModal } from './Bill';
+export { default as UpdatePersonalInfo } from './UpdatePersonalInfo';
+export { default as OnboardingModal } from './onboarding/Main';
+export { default as EditBudgetBills } from './ViewBudgetBills';
+export { default as CategoryModal } from './CategoryModal';
+export { default as AddUserModal } from './AddUser';
+export { default as ConfirmRemoveCoOwner } from './ConfirmRemoveCoOwner';
+export { default as AccountErrorModal } from './AccountErrorModal';
 
-export { default as CancelSubscription } from './CancelSubscription'
-export { default as CreateBill } from './CreateBill'
-export { default as ChangeBillCycle } from './ChangeBillCycle'
-export { default as CreateCategory } from './CreateCategory'
-export { default as Help } from './Help'
-export { default as Logout } from './Logout'
-export { default as UpdatePayment } from './UpdatePayment'
-export { default as DeactivateAuthentictor } from './DeactivateAuthentictor'
-export { default as AuthenticatorSetup } from './AuthenticatorSetup'
-export { default as ChangePassword } from './ChangePassword'
-export { default as RecoveryCodes } from './RecoveryCodes'
-export { default as ForceVerification } from './ForceVerification'
-export { default as ForcePaymentMethod } from './ForcePaymentMethod'
-export { default as TransactionItem } from './TransactionItem'
-export { default as EditBudgetCategories } from './EditBudgetCategories'
-export { default as BillModal } from './Bill'
-export { default as UpdatePersonalInfo } from './UpdatePersonalInfo'
-export { default as OnboardingModal } from './onboarding/Main'
-export { default as EditBudgetBills } from './ViewBudgetBills'
-export { default as CategoryModal } from './CategoryModal'
-export { default as AddUserModal } from './AddUser'
-export { default as ConfirmRemoveCoOwner } from './ConfirmRemoveCoOwner'
-export { default as AccountErrorModal } from './AccountErrorModal'
-
-export * from './Bill'
+export * from './Bill';

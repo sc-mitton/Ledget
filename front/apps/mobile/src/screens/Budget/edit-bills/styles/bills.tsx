@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 8
+    paddingVertical: 8,
   },
   nameContainer: {
     flexGrow: 1,
@@ -12,10 +12,10 @@ const styles = StyleSheet.create({
   },
   amountContainer: {
     flexDirection: 'row',
-    gap: 6
+    gap: 6,
   },
   headerIcon: {
-    marginLeft: 4
+    marginLeft: 4,
   },
   header: {
     zIndex: 1,
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     paddingRight: 8,
     paddingLeft: 12,
     flexDirection: 'row',
-    gap: 8
+    gap: 8,
   },
   scrollViewContent: {
     marginTop: 40,
@@ -45,8 +45,8 @@ const styles = StyleSheet.create({
   emptyText: {
     position: 'absolute',
     alignItems: 'center',
-    gap: 8
-  }
+    gap: 8,
+  },
 });
 
 export default styles;

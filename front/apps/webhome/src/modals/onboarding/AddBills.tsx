@@ -14,7 +14,7 @@ import {
   LimitAmountInput,
   EmojiComboText,
   BillScheduler,
-  emoji
+  emoji,
 } from '@components/inputs';
 import { getLongestLength } from '@ledget/helpers';
 import {
@@ -24,7 +24,7 @@ import {
   DollarCents,
   FormErrorTip,
   IconButtonHalfGray,
-  TabNavListUnderlined
+  TabNavListUnderlined,
 } from '@ledget/ui';
 import { extractReminders } from '@modals/CreateBill';
 
@@ -35,7 +35,7 @@ const formSchema = z
     day: z.coerce.number().min(1).max(31).optional(),
     week: z.coerce.number().min(1).max(5).optional(),
     week_day: z.coerce.number().min(1).max(7).optional(),
-    month: z.coerce.number().min(1).max(12).optional()
+    month: z.coerce.number().min(1).max(12).optional(),
   })
   .refine(
     (data) => {
@@ -58,7 +58,7 @@ const BillsColumn = ({ period }: { period: 'month' | 'year' }) => {
 
   const {
     month: { setItems: setMonthItems },
-    year: { setItems: setYearItems }
+    year: { setItems: setYearItems },
   } = useItemsContext('bill');
 
   useEffect(() => {
@@ -110,7 +110,7 @@ const BillsColumn = ({ period }: { period: 'month' | 'year' }) => {
 const ListView = () => {
   const {
     year: { isEmpty: emptyYearItems },
-    month: { isEmpty: emptyMonthItems }
+    month: { isEmpty: emptyMonthItems },
   } = useItemsContext('bill');
 
   return (
@@ -141,7 +141,7 @@ const CutomTabPanel = () => {
   const {
     month: { items: monthItems, setItems: setMonthItems },
     year: { items: yearItems, setItems: setYearItems },
-    periodTabIndex
+    periodTabIndex,
   } = useItemsContext('bill');
 
   const [emoji, setEmoji] = useState<emoji>();
@@ -151,11 +151,11 @@ const CutomTabPanel = () => {
     handleSubmit,
     reset,
     formState: { errors },
-    control
+    control,
   } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: 'onSubmit',
-    reValidateMode: 'onChange'
+    reValidateMode: 'onChange',
   });
 
   useEffect(() => {
@@ -172,7 +172,7 @@ const CutomTabPanel = () => {
       const item = {
         ...data,
         reminders,
-        emoji: typeof emoji === 'string' ? emoji : emoji?.native
+        emoji: typeof emoji === 'string' ? emoji : emoji?.native,
       };
 
       if (periodTabIndex === 0) {

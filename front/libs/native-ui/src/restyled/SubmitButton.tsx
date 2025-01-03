@@ -4,7 +4,7 @@ import Animated, {
   withSequence,
   withTiming,
   withDelay,
-  useAnimatedStyle
+  useAnimatedStyle,
 } from 'react-native-reanimated';
 import { StyleSheet, View } from 'react-native';
 import { Check } from 'geist-native-icons';
@@ -18,24 +18,32 @@ interface ExtraProps {
   isLoading?: boolean;
   isSuccess?: boolean;
   isSubmitting?: boolean;
-  children?: React.ReactNode | ((props: { isSuccess?: boolean, isLoading?: boolean, isSubmitting?: boolean }) => React.ReactNode);
+  children?:
+    | React.ReactNode
+    | ((props: {
+        isSuccess?: boolean;
+        isLoading?: boolean;
+        isSubmitting?: boolean;
+      }) => React.ReactNode);
 }
 
-export const SubmitButton = (props: Omit<ButtonProps, 'children'> & ExtraProps) => {
+export const SubmitButton = (
+  props: Omit<ButtonProps, 'children'> & ExtraProps
+) => {
   const [showCheck, setShowCheck] = useState(false);
-  const { isLoading, isSuccess, isSubmitting, children, style, ...rest } = props;
-  const checkScale = useSharedValue(.9);
+  const { isLoading, isSuccess, isSubmitting, children, style, ...rest } =
+    props;
+  const checkScale = useSharedValue(0.9);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
     if (isSuccess) {
-
       setShowCheck(true);
 
       checkScale.value = withSequence(
         withTiming(1.3, { duration: 200 }),
         withTiming(1.2, { duration: 200 }),
-        withDelay(2000, withTiming(.7, { duration: 200 }))
+        withDelay(2000, withTiming(0.7, { duration: 200 }))
       );
 
       timeout = setTimeout(() => {
@@ -43,7 +51,6 @@ export const SubmitButton = (props: Omit<ButtonProps, 'children'> & ExtraProps) 
       }, 2600);
     }
     return () => clearTimeout(timeout);
-
   }, [isSuccess]);
 
   const animation = useAnimatedStyle(() => {
@@ -60,12 +67,15 @@ export const SubmitButton = (props: Omit<ButtonProps, 'children'> & ExtraProps) 
         <>
           {isSubmitting && <Spinner fill={color} />}
           <Animated.View style={[animation, styles.checkContainer]}>
-            {isSuccess &&
+            {isSuccess && (
               <View style={styles.check}>
                 <Icon icon={Check} color={'successIcon'} />
-              </View>}
+              </View>
+            )}
           </Animated.View>
-          {typeof children === 'function' ? children({ isSubmitting, isSuccess, isLoading }) : children}
+          {typeof children === 'function'
+            ? children({ isSubmitting, isSuccess, isLoading })
+            : children}
         </>
       )}
     </Button>
@@ -84,9 +94,9 @@ const styles = StyleSheet.create({
     right: 0,
   },
   check: {
-    position: 'absolute'
+    position: 'absolute',
   },
   button: {
     position: 'relative',
-  }
+  },
 });

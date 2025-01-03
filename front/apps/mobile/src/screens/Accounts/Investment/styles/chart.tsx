@@ -25,12 +25,12 @@ const styles = StyleSheet.create({
   accountMenu: {
     position: 'absolute',
     top: 12,
-    left: 8
+    left: 8,
   },
   windowMenu: {
     position: 'absolute',
     top: 16,
-    right: 4
+    right: 4,
   },
   blurViewContainer: {
     borderRadius: 12,
@@ -41,13 +41,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'baseline',
     gap: 12,
-    zIndex: -1
+    zIndex: -1,
   },
   trendContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4
-  }
+    gap: 4,
+  },
 });
 
 export default styles;

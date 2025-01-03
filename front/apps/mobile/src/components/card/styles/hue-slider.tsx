@@ -21,12 +21,12 @@ const styles = StyleSheet.create({
     width: '100%',
     borderRadius: 10,
     height: 16,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   canvas: {
     flex: 1,
     width: '100%',
-    height: '200%'
+    height: '200%',
   },
   sliderGradient: {
     borderRadius: 10,
@@ -37,22 +37,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
     left: '50%',
-    top: '50%'
+    top: '50%',
   },
   chevronIcon: {
     position: 'absolute',
-    zIndex: -1
+    zIndex: -1,
   },
   colorIndicator: {
     width: 20,
     height: 20,
     borderRadius: 10,
-    transform: [{ translateY: .3 }],
+    transform: [{ translateY: 0.3 }],
     bottom: '100%',
     borderColor: 'white',
     borderWidth: 2.5,
     position: 'absolute',
-  }
+  },
 });
 
 export default styles;

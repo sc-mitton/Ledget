@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8
+    gap: 8,
   },
   name: {
     transform: [{ translateY: 8 }],
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   grayBack: {
-    zIndex: -1
+    zIndex: -1,
   },
   selectorButton: {
     flex: 1,
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   },
   fontStyle: {
     fontFamily: 'SourceSans3SemiBold',
-    fontSize: 18
+    fontSize: 18,
   },
   balanceContainer: {
     width: '100%',
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   },
   carouselDotsContainer: {
     transform: [{ translateX: -2 }],
-  }
+  },
 });
 
 export default styles;

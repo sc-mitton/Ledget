@@ -22,9 +22,9 @@ const Bills = (props: BudgetScreenProps<'Main'>) => {
 
   return (
     <Box
-      paddingBottom='s'
-      paddingHorizontal='nestedContainerHPadding'
-      backgroundColor='nestedContainer'
+      paddingBottom="s"
+      paddingHorizontal="nestedContainerHPadding"
+      backgroundColor="nestedContainer"
       style={sharedStyles.boxBottomHalf}
       layout={LinearTransition}
     >
@@ -34,17 +34,17 @@ const Bills = (props: BudgetScreenProps<'Main'>) => {
         initialPage={index}
         onPageSelected={(e) => setIndex(e.nativeEvent.position)}
       >
-        <View style={sharedStyles.page} key='1'>
+        <View style={sharedStyles.page} key="1">
           <View style={styles.billsList}>
             <List {...props} />
           </View>
         </View>
-        <View style={sharedStyles.page} key='2'>
+        <View style={sharedStyles.page} key="2">
           <Calendar {...props} onPress={() => setIndex(0)} />
         </View>
       </PagerView>
     </Box>
-  )
-}
+  );
+};
 
 export default memo(Bills);

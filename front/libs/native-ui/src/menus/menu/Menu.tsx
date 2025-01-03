@@ -1,5 +1,10 @@
 import React, { Fragment, useState } from 'react';
-import { View, TouchableHighlight, TouchableOpacity, ViewStyle } from 'react-native';
+import {
+  View,
+  TouchableHighlight,
+  TouchableOpacity,
+  ViewStyle,
+} from 'react-native';
 import Animated, { ZoomOut, ZoomIn, Easing } from 'react-native-reanimated';
 import OutsidePressHandler from 'react-native-outside-press';
 import { useTheme } from '@shopify/restyle';
@@ -42,14 +47,14 @@ export function Menu(props: MenuProps) {
         if (!show) return;
         setShow(false);
         props.onShowChange && props.onShowChange(false);
-      }}>
+      }}
+    >
       <View style={styles.container}>
-        {props.as === 'context-menu'
-          ?
+        {props.as === 'context-menu' ? (
           <TouchableHighlight
             key={touchableKey}
             underlayColor={theme.colors.whiteText}
-            activeOpacity={.97}
+            activeOpacity={0.97}
             disabled={props.disabled}
             style={props.touchableStyle}
             onPress={() => {
@@ -59,35 +64,53 @@ export function Menu(props: MenuProps) {
               }
             }}
             onLongPress={(e) => {
-              Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+              Haptics.notificationAsync(
+                Haptics.NotificationFeedbackType.Warning
+              );
               props.onShowChange && props.onShowChange(!show);
               setShow(!show);
               setTouchableKey(touchableKey + 1);
-            }}>
+            }}
+          >
             {props.children}
           </TouchableHighlight>
-          :
+        ) : (
           <TouchableOpacity
             key={touchableKey}
             disabled={props.disabled}
-            activeOpacity={.7}
+            activeOpacity={0.7}
             style={props.touchableStyle}
             onPress={(e) => {
               props.onShowChange && props.onShowChange(!show);
               setShow(!show);
               setTouchableKey(touchableKey + 1);
-            }}>
+            }}
+          >
             {props.children}
           </TouchableOpacity>
-        }
-        {show &&
-          <View style={[styles.menuContainer, placementStyles[props.placement || 'center']]}>
+        )}
+        {show && (
+          <View
+            style={[
+              styles.menuContainer,
+              placementStyles[props.placement || 'center'],
+            ]}
+          >
             <Animated.View
-              style={[styles.menu, menuPlacementStyles[props.placement || 'center']]}
-              entering={ZoomIn.withInitialValues({ transform: [{ scale: .5 }], opacity: 0 }).duration(300).easing(Easing.elastic(.9))}
-              exiting={ZoomOut.duration(150).easing(Easing.ease)}>
+              style={[
+                styles.menu,
+                menuPlacementStyles[props.placement || 'center'],
+              ]}
+              entering={ZoomIn.withInitialValues({
+                transform: [{ scale: 0.5 }],
+                opacity: 0,
+              })
+                .duration(300)
+                .easing(Easing.elastic(0.9))}
+              exiting={ZoomOut.duration(150).easing(Easing.ease)}
+            >
               <Box
-                shadowColor='menuShadowColor'
+                shadowColor="menuShadowColor"
                 shadowOpacity={hasShadow ? 1 : 0}
                 shadowRadius={8}
                 elevation={15}
@@ -101,17 +124,24 @@ export function Menu(props: MenuProps) {
                 >
                   <Box style={styles.menuBackground} />
                   {props.items.map((item, index) => (
-                    <Fragment key={`context-menu-item-${item.label.replace(' ', '-')}`}>
-                      {index !== 0 &&
+                    <Fragment
+                      key={`context-menu-item-${item.label.replace(' ', '-')}`}
+                    >
+                      {index !== 0 && (
                         <View style={styles.seperator}>
                           <Seperator
-                            variant='bare'
+                            variant="bare"
                             height={item.newSection ? 4 : undefined}
-                            backgroundColor={item.newSection
-                              ? theme.colors.mode === 'dark' ? 'nestedContainerSeperator' : 'menuSeperator'
-                              : 'menuSeperator'}
+                            backgroundColor={
+                              item.newSection
+                                ? theme.colors.mode === 'dark'
+                                  ? 'nestedContainerSeperator'
+                                  : 'menuSeperator'
+                                : 'menuSeperator'
+                            }
                           />
-                        </View>}
+                        </View>
+                      )}
                       <TouchableHighlight
                         style={styles.rowContainer}
                         underlayColor={theme.colors.menuSeperator}
@@ -121,13 +151,24 @@ export function Menu(props: MenuProps) {
                             setShow(false);
                             props.onShowChange && props.onShowChange(false);
                           }
-                          item.onSelect()
+                          item.onSelect();
                         }}
-                        key={`context-menu-item-${item.label.replace(' ', '-')}`}>
+                        key={`context-menu-item-${item.label.replace(
+                          ' ',
+                          '-'
+                        )}`}
+                      >
                         <View style={styles.row}>
                           <Text fontSize={15}>{item.label}</Text>
-                          {item.icon && <View style={styles.icon}><item.icon /></View>}
-                          <Box backgroundColor='contextMenu' style={styles.rowBackground} />
+                          {item.icon && (
+                            <View style={styles.icon}>
+                              <item.icon />
+                            </View>
+                          )}
+                          <Box
+                            backgroundColor="contextMenu"
+                            style={styles.rowBackground}
+                          />
                         </View>
                       </TouchableHighlight>
                     </Fragment>
@@ -136,11 +177,10 @@ export function Menu(props: MenuProps) {
               </Box>
             </Animated.View>
           </View>
-        }
+        )}
       </View>
     </OutsidePressHandler>
   );
 }
-
 
 export default Menu;

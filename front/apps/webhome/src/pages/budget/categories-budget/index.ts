@@ -1,1 +1,1 @@
-export { default as SpendingCategories } from './Categories'
+export { default as SpendingCategories } from './Categories';

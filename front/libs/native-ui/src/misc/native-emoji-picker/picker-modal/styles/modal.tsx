@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   main: {
-    flex: 1
+    flex: 1,
   },
   searchInput: {
     paddingLeft: 28,
@@ -23,11 +23,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   sectionList: {
-    marginBottom: 24
+    marginBottom: 24,
   },
   sectionListContent: {
-    paddingBottom: 250
-  }
+    paddingBottom: 250,
+  },
 });
 
 export default styles;

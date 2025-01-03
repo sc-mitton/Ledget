@@ -8,30 +8,32 @@ import styles from './styles';
 
 export const ErrorTip = () => (
   <View style={styles.errorTip}>
-    <Icon icon={AlertCircle} color='alert' borderColor='invertedText' />
+    <Icon icon={AlertCircle} color="alert" borderColor="invertedText" />
   </View>
-)
+);
 
 export const FormError = ({ error }: { error?: string | string[] }) => {
   return (
     <>
-      {error && <View style={styles.formErrors}>
-        {typeof error === 'string'
-          ?
-          <View>
-            <View style={styles.formError}>
-              <Icon icon={AlertCircle} color='alert' />
-              <Text color='alert'>{error}</Text>
+      {error && (
+        <View style={styles.formErrors}>
+          {typeof error === 'string' ? (
+            <View>
+              <View style={styles.formError}>
+                <Icon icon={AlertCircle} color="alert" />
+                <Text color="alert">{error}</Text>
+              </View>
             </View>
-          </View>
-          : error?.map((er, i) => (
-            <View key={i} style={styles.formError}>
-              <Icon icon={AlertCircle} color='alert' />
-              <Text color='alert'>{er}</Text>
-            </View>
-          ))
-        }
-      </View>}
+          ) : (
+            error?.map((er, i) => (
+              <View key={i} style={styles.formError}>
+                <Icon icon={AlertCircle} color="alert" />
+                <Text color="alert">{er}</Text>
+              </View>
+            ))
+          )}
+        </View>
+      )}
     </>
-  )
-}
+  );
+};

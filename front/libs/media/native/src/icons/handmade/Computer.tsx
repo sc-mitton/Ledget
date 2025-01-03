@@ -17,7 +17,7 @@ function SvgComponent(props: SvgProps & { size?: number }) {
         strokeWidth={0.5}
         strokeLinecap="round"
         strokeMiterlimit={10}
-        fill='currentColor'
+        fill="currentColor"
         d="M21.4 18H2.6c-.3 0-.5-.2-.5-.4v-.1c0-.3.2-.4.4-.4h18.8c.4 0 .6.2.6.4v.1c.1.2-.2.4-.5.4z"
       />
       <Path

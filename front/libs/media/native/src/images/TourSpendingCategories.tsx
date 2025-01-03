@@ -8,13 +8,13 @@ const TourSpendingCategories = ({ dark = false, size = 425 }) => {
     <Image
       style={{ width: size, height: size }}
       source={tourSpendingCategoriesDark}
-      resizeMode='contain'
+      resizeMode="contain"
     />
   ) : (
     <Image
       style={{ width: size, height: size }}
       source={tourSpendingCategoriesLight}
-      resizeMode='contain'
+      resizeMode="contain"
     />
   );
 };

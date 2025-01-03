@@ -1,31 +1,30 @@
 .helpModal {
+  & > div {
+    margin: 0.75em 0 1.25em 0;
+    width: 85%;
+  }
 
-    &>div {
-        margin: .75em 0 1.25em 0;
-        width: 85%;
+  fieldset {
+    display: grid;
+    grid-template-columns: 1fr;
+    column-gap: 1em;
+    margin: 1em 0 1.5em 0;
+
+    label {
+      margin-top: 0.5em;
+      margin-left: 0.125em;
     }
 
-    fieldset {
-        display: grid;
-        grid-template-columns: 1fr;
-        column-gap: 1em;
-        margin: 1em 0 1.5em 0;
+    textarea {
+      width: 100%;
 
-        label {
-            margin-top: .5em;
-            margin-left: .125em;
-        }
-
-        textarea {
-            width: 100%;
-
-            &+span {
-                color: var(--input-placeholder);
-                opacity: .5;
-                position: absolute;
-                right: .5em;
-                bottom: .25em;
-            }
-        }
+      & + span {
+        color: var(--input-placeholder);
+        opacity: 0.5;
+        position: absolute;
+        right: 0.5em;
+        bottom: 0.25em;
+      }
     }
+  }
 }

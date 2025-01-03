@@ -5,45 +5,21 @@
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "types": [
-      "vite/client"
-    ],
+    "types": ["vite/client"],
     "baseUrl": ".",
     "paths": {
-      "@api/*": [
-        "src/api/*"
-      ],
-      "@features/*": [
-        "src/features/*"
-      ],
-      "@pages/*": [
-        "src/pages/*"
-      ],
-      "@components/*": [
-        "src/components/*"
-      ],
-      "@modals/*": [
-        "src/modals/*"
-      ],
-      "@hooks/*": [
-        "src/hooks/*"
-      ],
-      "@ledget/ui": [
-        "../../libs/ui/src"
-      ],
-      "@ledget/media": [
-        "../../libs/media/web/src"
-      ],
-      "@ledget/ory": [
-        "../../libs/ory/src"
-      ],
-      "@ledget/helpers": [
-        "../../libs/helpers/src"
-      ],
-      "@ledget/shared-features": [
-        "../../libs/shared-features/src"
-      ],
-    },
+      "@api/*": ["src/api/*"],
+      "@features/*": ["src/features/*"],
+      "@pages/*": ["src/pages/*"],
+      "@components/*": ["src/components/*"],
+      "@modals/*": ["src/modals/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@ledget/ui": ["../../libs/ui/src"],
+      "@ledget/media": ["../../libs/media/web/src"],
+      "@ledget/ory": ["../../libs/ory/src"],
+      "@ledget/helpers": ["../../libs/helpers/src"],
+      "@ledget/shared-features": ["../../libs/shared-features/src"]
+    }
   },
   "files": [],
   "include": [],

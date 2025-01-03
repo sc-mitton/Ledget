@@ -7,7 +7,7 @@ import { selectLogoutModal } from '@features/modalSlice';
 import { SecondaryButton, BlueSubmitButton } from '@ledget/ui';
 import {
   useGetLogoutFlowQuery,
-  useLazyGetUpdatedLogoutFlowQuery
+  useLazyGetUpdatedLogoutFlowQuery,
 } from '@features/orySlice';
 
 const LogoutModal = withSmallModal((props) => {
@@ -19,12 +19,12 @@ const LogoutModal = withSmallModal((props) => {
     data: flow,
     isSuccess: fetchedFlow,
     isLoading: fetchingFlow,
-    isError: errorFetchingFlow
+    isError: errorFetchingFlow,
   } = useGetLogoutFlowQuery({});
 
   const [
     updateLogoutFlow,
-    { isSuccess: logOutSuccess, isLoading: loggingOut }
+    { isSuccess: logOutSuccess, isLoading: loggingOut },
   ] = useLazyGetUpdatedLogoutFlowQuery();
 
   // Auto logout feature
@@ -67,7 +67,9 @@ const LogoutModal = withSmallModal((props) => {
       <div className={styles.countdown}>
         <span>You will be automatically logged out in {seconds} seconds</span>
       </div>
-      <div style={{ display: 'flex', justifyContent: 'end', marginTop: '.5em' }}>
+      <div
+        style={{ display: 'flex', justifyContent: 'end', marginTop: '.5em' }}
+      >
         <SecondaryButton onClick={() => props.closeModal()} aria-label="Cancel">
           Cancel
         </SecondaryButton>

@@ -5,7 +5,13 @@ import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import type { BottomTabNavParamList } from './bottomNav';
 import type { AccountsStackParamList } from './accounts';
 import type { RootStackParamList } from './root';
-import type { Transaction, Account, AccountType, Bill, Category } from '@ledget/shared-features';
+import type {
+  Transaction,
+  Account,
+  AccountType,
+  Bill,
+  Category,
+} from '@ledget/shared-features';
 
 export type ModalStackParamList = {
   Activity: {
@@ -24,56 +30,60 @@ export type ModalStackParamList = {
   RemoveAuthenticator: undefined;
   ChangePassword: undefined;
   Split: {
-    transaction: Transaction
+    transaction: Transaction;
   };
   SplitModal: {
-    transaction: Transaction
+    transaction: Transaction;
   };
   CardPicker: {
     selectedCard: Account;
-  },
+  };
   PickAccount: {
-    accountType: AccountType
+    accountType: AccountType;
     options?: {
-      title?: string,
-      reorder?: boolean,
-      order?: 'balance-asc' | 'balance-desc' | 'name-asc' | 'name-desc'
-    }
-  },
+      title?: string;
+      reorder?: boolean;
+      order?: 'balance-asc' | 'balance-desc' | 'name-asc' | 'name-desc';
+    };
+  };
   PickerCard: {
-    currentAccount?: string
+    currentAccount?: string;
     options?: {
-      title?: string,
-      reorder?: boolean,
-      order?: 'balance-asc' | 'balance-desc' | 'name-asc' | 'name-desc'
-    }
-  },
-  NewBill: {
-    transaction?: Transaction;
-    bill?: Partial<Bill>;
-    options?: {
-      title?: string
-    }
-  } | undefined;
-  NewCategory: {
-    period?: Category['period'];
-    category?: Category;
-    options?: {
-      title?: string
-    }
-  } | undefined;
+      title?: string;
+      reorder?: boolean;
+      order?: 'balance-asc' | 'balance-desc' | 'name-asc' | 'name-desc';
+    };
+  };
+  NewBill:
+    | {
+        transaction?: Transaction;
+        bill?: Partial<Bill>;
+        options?: {
+          title?: string;
+        };
+      }
+    | undefined;
+  NewCategory:
+    | {
+        period?: Category['period'];
+        category?: Category;
+        options?: {
+          title?: string;
+        };
+      }
+    | undefined;
   ConfirmDeleteCategory: {
-    category: Category
-  }
+    category: Category;
+  };
   ConfirmDeleteBill: {
-    bill: Bill
-  },
+    bill: Bill;
+  };
   Holdings: undefined;
   BillsCalendar: {
     month: number;
     year: number;
-  },
-  Transaction: AccountsStackParamList['Transaction']
+  };
+  Transaction: AccountsStackParamList['Transaction'];
 };
 
 export type ModalScreenProps<T extends keyof ModalStackParamList> =

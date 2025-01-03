@@ -12,20 +12,17 @@ const Shadow = () => {
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <InstitutionLogo
-          institution={accounts?.institutions[0].id}
-          size={16}
-        />
+        <InstitutionLogo institution={accounts?.institutions[0].id} size={16} />
         <View style={styles.rightContainer}>
           <Box
-            backgroundColor='transactionShimmer'
+            backgroundColor="transactionShimmer"
             style={styles.nameSkeleton}
-            borderRadius='xxs'
+            borderRadius="xxs"
           />
           <Box
-            backgroundColor='transactionShimmer'
+            backgroundColor="transactionShimmer"
             style={styles.amountSkeleton}
-            borderRadius='xxs'
+            borderRadius="xxs"
           />
         </View>
         <Icon
@@ -37,6 +34,6 @@ const Shadow = () => {
       </View>
       <ChartSkeleton emptyMessage={false} />
     </View>
-  )
-}
-export default Shadow
+  );
+};
+export default Shadow;

@@ -4,12 +4,8 @@
     "jsx": "react-jsx",
     "jsxImportSource": "react",
     "paths": {
-      "@ledget/ui": [
-        "../../libs/ui/src"
-      ],
-      "@ledget/media": [
-        "../../libs/media/src"
-      ],
+      "@ledget/ui": ["../../libs/ui/src"],
+      "@ledget/media": ["../../libs/media/src"]
     }
   }
 }

@@ -26,12 +26,11 @@ import DarkDeviceDefault from '../../../shared/images/dark-device-default.png';
 import DarkDeviceDefaultDark from '../../../shared/images/dark-device-dark.png';
 import DarkDeviceDefaultLight from '../../../shared/images/dark-device-light.png';
 
-
 interface TProps {
-  appearance: 'dynamic' | 'notch' | 'punch-hole'
-  imageMode: 'dark' | 'light' | 'default'
-  mode: 'dark' | 'light'
-  size?: number
+  appearance: 'dynamic' | 'notch' | 'punch-hole';
+  imageMode: 'dark' | 'light' | 'default';
+  mode: 'dark' | 'light';
+  size?: number;
 }
 
 const imageProps = {
@@ -39,54 +38,93 @@ const imageProps = {
   style: {
     height: 70,
     width: 40,
-  }
-} as const
+  },
+} as const;
 
 export const PhoneAppearance = (props: TProps) => (
   <>
-    {(props.appearance === 'dynamic' && props.mode === 'light') && (
+    {props.appearance === 'dynamic' && props.mode === 'light' && (
       <>
-        {props.imageMode === 'dark' && <Image {...imageProps} source={LightDeviceDefaultDynamicIslandDark} />}
-        {props.imageMode === 'light' && <Image {...imageProps} source={LightDeviceDefaultDynamicIslandLight} />}
-        {props.imageMode === 'default' && <Image {...imageProps} source={LightDeviceDefaultDynamicIsland} />}
+        {props.imageMode === 'dark' && (
+          <Image {...imageProps} source={LightDeviceDefaultDynamicIslandDark} />
+        )}
+        {props.imageMode === 'light' && (
+          <Image
+            {...imageProps}
+            source={LightDeviceDefaultDynamicIslandLight}
+          />
+        )}
+        {props.imageMode === 'default' && (
+          <Image {...imageProps} source={LightDeviceDefaultDynamicIsland} />
+        )}
       </>
     )}
-    {(props.appearance === 'notch' && props.mode === 'light') && (
+    {props.appearance === 'notch' && props.mode === 'light' && (
       <>
-        {props.imageMode === 'dark' && <Image {...imageProps} source={LightDeviceDefaultNotchDark} />}
-        {props.imageMode === 'light' && <Image {...imageProps} source={LightDeviceDefaultNotchLight} />}
-        {props.imageMode === 'default' && <Image {...imageProps} source={LightDeviceDefaultNotch} />}
+        {props.imageMode === 'dark' && (
+          <Image {...imageProps} source={LightDeviceDefaultNotchDark} />
+        )}
+        {props.imageMode === 'light' && (
+          <Image {...imageProps} source={LightDeviceDefaultNotchLight} />
+        )}
+        {props.imageMode === 'default' && (
+          <Image {...imageProps} source={LightDeviceDefaultNotch} />
+        )}
       </>
     )}
-    {(props.appearance === 'punch-hole' && props.mode === 'light') && (
+    {props.appearance === 'punch-hole' && props.mode === 'light' && (
       <>
-        {props.imageMode === 'dark' && <Image {...imageProps} source={LightDeviceDefaultDark} />}
-        {props.imageMode === 'light' && <Image {...imageProps} source={LightDeviceDefaultLight} />}
-        {props.imageMode === 'default' && <Image {...imageProps} source={LightDeviceDefault} />}
+        {props.imageMode === 'dark' && (
+          <Image {...imageProps} source={LightDeviceDefaultDark} />
+        )}
+        {props.imageMode === 'light' && (
+          <Image {...imageProps} source={LightDeviceDefaultLight} />
+        )}
+        {props.imageMode === 'default' && (
+          <Image {...imageProps} source={LightDeviceDefault} />
+        )}
       </>
     )}
-    {(props.appearance === 'dynamic' && props.mode === 'dark') && (
+    {props.appearance === 'dynamic' && props.mode === 'dark' && (
       <>
-        {props.imageMode === 'dark' && <Image {...imageProps} source={DarkDeviceDefaultDynamicIslandDark} />}
-        {props.imageMode === 'light' && <Image {...imageProps} source={DarkDeviceDefaultDynamicIslandLight} />}
-        {props.imageMode === 'default' && <Image {...imageProps} source={DarkDeviceDefaultDynamicIsland} />}
+        {props.imageMode === 'dark' && (
+          <Image {...imageProps} source={DarkDeviceDefaultDynamicIslandDark} />
+        )}
+        {props.imageMode === 'light' && (
+          <Image {...imageProps} source={DarkDeviceDefaultDynamicIslandLight} />
+        )}
+        {props.imageMode === 'default' && (
+          <Image {...imageProps} source={DarkDeviceDefaultDynamicIsland} />
+        )}
       </>
     )}
-    {(props.appearance === 'notch' && props.mode === 'dark') && (
+    {props.appearance === 'notch' && props.mode === 'dark' && (
       <>
-        {props.imageMode === 'dark' && <Image {...imageProps} source={DarkDeviceDefaultNotchDark} />}
-        {props.imageMode === 'light' && <Image {...imageProps} source={DarkDeviceDefaultNotchLight} />}
-        {props.imageMode === 'default' && <Image {...imageProps} source={DarkDeviceDefaultNotch} />}
+        {props.imageMode === 'dark' && (
+          <Image {...imageProps} source={DarkDeviceDefaultNotchDark} />
+        )}
+        {props.imageMode === 'light' && (
+          <Image {...imageProps} source={DarkDeviceDefaultNotchLight} />
+        )}
+        {props.imageMode === 'default' && (
+          <Image {...imageProps} source={DarkDeviceDefaultNotch} />
+        )}
       </>
     )}
-    {(props.appearance === 'punch-hole' && props.mode === 'dark') && (
+    {props.appearance === 'punch-hole' && props.mode === 'dark' && (
       <>
-        {props.imageMode === 'dark' && <Image {...imageProps} source={DarkDeviceDefaultDark} />}
-        {props.imageMode === 'light' && <Image {...imageProps} source={DarkDeviceDefaultLight} />}
-        {props.imageMode === 'default' && <Image {...imageProps} source={DarkDeviceDefault} />}
+        {props.imageMode === 'dark' && (
+          <Image {...imageProps} source={DarkDeviceDefaultDark} />
+        )}
+        {props.imageMode === 'light' && (
+          <Image {...imageProps} source={DarkDeviceDefaultLight} />
+        )}
+        {props.imageMode === 'default' && (
+          <Image {...imageProps} source={DarkDeviceDefault} />
+        )}
       </>
     )}
   </>
-)
+);
 
 export default PhoneAppearance;

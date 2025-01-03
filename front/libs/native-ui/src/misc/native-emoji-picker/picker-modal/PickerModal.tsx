@@ -1,12 +1,26 @@
-import { createContext, useContext, useState, useMemo, useRef, useEffect } from 'react';
-import { View, TouchableOpacity, Modal, FlatList, SectionList, StyleSheet } from 'react-native';
+import {
+  createContext,
+  useContext,
+  useState,
+  useMemo,
+  useRef,
+  useEffect,
+} from 'react';
+import {
+  View,
+  TouchableOpacity,
+  Modal,
+  FlatList,
+  SectionList,
+  StyleSheet,
+} from 'react-native';
 import { useTheme } from '@shopify/restyle';
 import { Search } from 'geist-native-icons';
 import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
 import { groupBy } from 'lodash-es';
 
 import styles from './styles/modal';
-import { charFromEmojiObject, emojis } from "../helpers";
+import { charFromEmojiObject, emojis } from '../helpers';
 import { Box } from '../../../restyled/Box';
 import { Text } from '../../../restyled/Text';
 import { Icon } from '../../../restyled/Icon';
@@ -27,26 +41,29 @@ const EmojiPicker = (props: NativeEmojiPickerProps) => {
 
   return (
     <pickerModalContext.Provider value={{ visible, setVisible }}>
-      {as === 'modal' ?
-        <EmojiPickerModal {...props} >
-          {props.children}
-        </EmojiPickerModal>
-        :
+      {as === 'modal' ? (
+        <EmojiPickerModal {...props}>{props.children}</EmojiPickerModal>
+      ) : (
         <>
           {props.children}
-          {visible &&
+          {visible && (
             <Animated.View
-              entering={SlideInDown.withInitialValues({ opacity: 0 }).duration(500)}
-              exiting={SlideOutDown.duration(500).withInitialValues({ opacity: 1 })}
+              entering={SlideInDown.withInitialValues({ opacity: 0 }).duration(
+                500
+              )}
+              exiting={SlideOutDown.duration(500).withInitialValues({
+                opacity: 1,
+              })}
               style={[StyleSheet.absoluteFill, styles.modal]}
             >
               <EmojiPickerContent {...props} />
-            </Animated.View>}
+            </Animated.View>
+          )}
         </>
-      }
+      )}
     </pickerModalContext.Provider>
   );
-}
+};
 
 function Trigger({ children }: { children: React.ReactNode }) {
   const { setVisible } = useEmojiPickerContext();
@@ -55,13 +72,15 @@ function Trigger({ children }: { children: React.ReactNode }) {
     <TouchableOpacity onPress={() => setVisible(true)}>
       {children}
     </TouchableOpacity>
-  )
+  );
 }
 
 export function useEmojiPickerContext() {
   const context = useContext(pickerModalContext);
   if (!context) {
-    throw new Error('useEmojiPickerContext must be used within a PickerModalProvider');
+    throw new Error(
+      'useEmojiPickerContext must be used within a PickerModalProvider'
+    );
   }
   return context;
 }
@@ -78,25 +97,37 @@ function EmojiPickerContent(props: NativeEmojiPickerProps) {
   const sections = useMemo(() => {
     const groupedEmojis = groupBy(emojis, 'category');
     return categories
-      .map(category => ({
+      .map((category) => ({
         category,
-        data: groupedEmojis[category] || []
+        data: groupedEmojis[category] || [],
       }))
-      .map(section => ({
+      .map((section) => ({
         ...section,
-        data: section.data.reduce((acc, emoji) => {
-          if (acc[acc.length - 1].length === numColumns) {
-            acc.push([]);
-          }
-          acc[acc.length - 1].push(emoji);
-          return acc;
-        }, [[]] as Emoji[][])
-      }))
-  }, [emojis])
+        data: section.data.reduce(
+          (acc, emoji) => {
+            if (acc[acc.length - 1].length === numColumns) {
+              acc.push([]);
+            }
+            acc[acc.length - 1].push(emoji);
+            return acc;
+          },
+          [[]] as Emoji[][]
+        ),
+      }));
+  }, [emojis]);
 
   return (
-    <Box style={styles.main} backgroundColor='modalBox' paddingHorizontal='pagePadding'>
-      <View style={[styles.main, { paddingTop: props.as === 'modal' ? theme.spacing.statusBar : 16 }]}>
+    <Box
+      style={styles.main}
+      backgroundColor="modalBox"
+      paddingHorizontal="pagePadding"
+    >
+      <View
+        style={[
+          styles.main,
+          { paddingTop: props.as === 'modal' ? theme.spacing.statusBar : 16 },
+        ]}
+      >
         <Header
           onRemove={() => {
             props.onChange && props.onChange('');
@@ -108,25 +139,36 @@ function EmojiPickerContent(props: NativeEmojiPickerProps) {
           }}
           title={props.title}
         />
-        <TextInput value={searchValue} onChangeText={setSearchValue} placeholder='Search...' style={styles.searchInput}>
+        <TextInput
+          value={searchValue}
+          onChangeText={setSearchValue}
+          placeholder="Search..."
+          style={styles.searchInput}
+        >
           <View style={styles.searchIcon}>
-            <Icon icon={Search} color='placeholderText' />
+            <Icon icon={Search} color="placeholderText" />
           </View>
         </TextInput>
-        {searchValue
-          ?
+        {searchValue ? (
           <FlatList
-            data={
-              emojis.filter((item) =>
-                item.name.split(' ').some((word) => word.toLowerCase().startsWith(searchValue.toLowerCase()))
-              ).reduce((acc, emoji) => {
-                if (acc[acc.length - 1].length === numColumns) {
-                  acc.push([]);
-                }
-                acc[acc.length - 1].push(emoji);
-                return acc;
-              }, [[]] as Emoji[][])
-            }
+            data={emojis
+              .filter((item) =>
+                item.name
+                  .split(' ')
+                  .some((word) =>
+                    word.toLowerCase().startsWith(searchValue.toLowerCase())
+                  )
+              )
+              .reduce(
+                (acc, emoji) => {
+                  if (acc[acc.length - 1].length === numColumns) {
+                    acc.push([]);
+                  }
+                  acc[acc.length - 1].push(emoji);
+                  return acc;
+                },
+                [[]] as Emoji[][]
+              )}
             renderItem={({ item }) => (
               <View style={styles.row}>
                 {item.map((emoji) => (
@@ -134,7 +176,8 @@ function EmojiPickerContent(props: NativeEmojiPickerProps) {
                     key={charFromEmojiObject(emoji)}
                     emoji={emoji}
                     onPress={() => {
-                      props.onChange && props.onChange(charFromEmojiObject(emoji));
+                      props.onChange &&
+                        props.onChange(charFromEmojiObject(emoji));
                       setVisible(false);
                     }}
                   />
@@ -143,7 +186,7 @@ function EmojiPickerContent(props: NativeEmojiPickerProps) {
             )}
             keyExtractor={(_, index) => index.toString()}
           />
-          :
+        ) : (
           <>
             <CategoryPicker
               selectedCategory={selectedCategory}
@@ -157,10 +200,12 @@ function EmojiPickerContent(props: NativeEmojiPickerProps) {
               sections={sections}
               stickySectionHeadersEnabled={true}
               bounces={true}
-              overScrollMode='always'
+              overScrollMode="always"
               renderSectionHeader={({ section: { category } }) => (
-                <Box backgroundColor='modalBox' style={styles.sectionHeader}>
-                  <Text variant='label' color='secondaryText'>{category}</Text>
+                <Box backgroundColor="modalBox" style={styles.sectionHeader}>
+                  <Text variant="label" color="secondaryText">
+                    {category}
+                  </Text>
                 </Box>
               )}
               onViewableItemsChanged={({ viewableItems, changed }) => {
@@ -175,7 +220,8 @@ function EmojiPickerContent(props: NativeEmojiPickerProps) {
                       key={charFromEmojiObject(emoji)}
                       emoji={emoji}
                       onPress={() => {
-                        props.onChange && props.onChange(charFromEmojiObject(emoji));
+                        props.onChange &&
+                          props.onChange(charFromEmojiObject(emoji));
                         setVisible(false);
                       }}
                     />
@@ -184,10 +230,11 @@ function EmojiPickerContent(props: NativeEmojiPickerProps) {
               )}
               keyExtractor={(_, index) => index.toString()}
             />
-          </>}
+          </>
+        )}
       </View>
     </Box>
-  )
+  );
 }
 
 function EmojiPickerModal(props: NativeEmojiPickerProps) {
@@ -196,15 +243,16 @@ function EmojiPickerModal(props: NativeEmojiPickerProps) {
   return (
     <>
       {props.children}
-      {visible &&
+      {visible && (
         <Modal
-          presentationStyle='fullScreen'
-          animationType='slide'
+          presentationStyle="fullScreen"
+          animationType="slide"
           visible={visible}
           style={styles.modal}
         >
           <EmojiPickerContent {...props} />
-        </Modal>}
+        </Modal>
+      )}
     </>
   );
 }

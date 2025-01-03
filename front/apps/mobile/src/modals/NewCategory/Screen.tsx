@@ -21,8 +21,8 @@ import {
   InputLabel,
   EmojiPicker,
   MoneyInput,
-  ModalPicker
-} from "@ledget/native-ui"
+  ModalPicker,
+} from '@ledget/native-ui';
 import { useAddNewCategoryMutation } from '@ledget/shared-features';
 import { ModalScreenProps } from '@types';
 import { categorySchema } from '@ledget/form-schemas';
@@ -33,54 +33,65 @@ const Screen = (props: ModalScreenProps<'NewCategory'>) => {
     resolver: zodResolver(categorySchema),
     defaultValues: {
       period: props.route.params?.period || 'month',
-      ...props.route.params?.category
-    }
+      ...props.route.params?.category,
+    },
   });
-  const [addNewCategory, { isLoading, isSuccess }] = useAddNewCategoryMutation();
+  const [addNewCategory, { isLoading, isSuccess }] =
+    useAddNewCategoryMutation();
 
   const emoji = useWatch({ control, name: 'emoji' });
   const limit_amount = useWatch({ control, name: 'limit_amount' });
 
   const onSubmit = (data: z.infer<typeof categorySchema>) => {
     addNewCategory(data);
-  }
+  };
 
   useEffect(() => {
     props.navigation.setOptions({
       headerRight: () => (
         <Button
-          label='Done'
-          variant='bold'
-          textColor='blueText'
+          label="Done"
+          variant="bold"
+          textColor="blueText"
           onPress={() => handleSubmit(onSubmit)()}
         />
-      )
-    })
-  }, [])
+      ),
+    });
+  }, []);
 
   useEffect(() => {
     if (isSuccess) {
       props.navigation.goBack();
     }
-  }, [isSuccess])
+  }, [isSuccess]);
 
-  const { field: { onChange: onEmojiChange }, formState: { errors } } = useController({ control, name: 'emoji' });
+  const {
+    field: { onChange: onEmojiChange },
+    formState: { errors },
+  } = useController({ control, name: 'emoji' });
 
   return (
-    <Box backgroundColor='modalBox100' style={styles.modalContent}>
+    <Box backgroundColor="modalBox100" style={styles.modalContent}>
       <ScrollView
         contentContainerStyle={styles.form}
         showsVerticalScrollIndicator={false}
       >
         <View>
           <InputLabel>Name</InputLabel>
-          <EmojiPicker value={emoji} onChange={onEmojiChange} title='Emoji' as='modal'>
+          <EmojiPicker
+            value={emoji}
+            onChange={onEmojiChange}
+            title="Emoji"
+            as="modal"
+          >
             <View style={styles.emojiButton}>
               <EmojiPicker.Trigger>
                 <TextInputbase>
-                  {emoji
-                    ? <Text>{emoji}</Text>
-                    : <Icon icon={Emoji} color='placeholderText' size={24} />}
+                  {emoji ? (
+                    <Text>{emoji}</Text>
+                  ) : (
+                    <Icon icon={Emoji} color="placeholderText" size={24} />
+                  )}
                 </TextInputbase>
               </EmojiPicker.Trigger>
             </View>
@@ -90,47 +101,54 @@ const Screen = (props: ModalScreenProps<'NewCategory'>) => {
               control={control}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  placeholder='Name'
+                  placeholder="Name"
                   value={value}
                   onChangeText={onChange}
                   onBlur={onBlur}
                   error={errors.name}
                 />
               )}
-              name='name'
+              name="name"
               rules={{ required: 'Category name is required' }}
             />
           </View>
         </View>
         <Controller
-          name='period'
+          name="period"
           render={({ field }) => (
             <ModalPicker
-              label='Period'
-              chevronDirection='down'
+              label="Period"
+              chevronDirection="down"
               isFormInput={true}
-              header='Period'
+              header="Period"
               valueKey={'value'}
-              defaultValue={{ value: field.value, label: field.value === 'month' ? 'Monthly' : 'Yearly' }}
+              defaultValue={{
+                value: field.value,
+                label: field.value === 'month' ? 'Monthly' : 'Yearly',
+              }}
               onChange={field.onChange}
               options={[
                 { label: 'Monthly', value: 'month' },
-                { label: 'Yearly', value: 'year' }
+                { label: 'Yearly', value: 'year' },
               ]}
             />
           )}
           control={control}
         />
         <Controller
-          name='limit_amount'
+          name="limit_amount"
           render={({ field }) => (
             <MoneyInput
-              label='Limit'
+              label="Limit"
               defaultValue={field.value}
               onChange={(v) => {
-                field.onChange(Big(v || 0).times(100).toNumber())
+                field.onChange(
+                  Big(v || 0)
+                    .times(100)
+                    .toNumber()
+                );
               }}
-              inputType='single'
+              inputType="single"
               error={errors.limit_amount}
               accuracy={2}
             />
@@ -140,8 +158,8 @@ const Screen = (props: ModalScreenProps<'NewCategory'>) => {
         {limit_amount && <AlertInput control={control} />}
         <View style={styles.saveButton}>
           <SubmitButton
-            variant='main'
-            label='Save'
+            variant="main"
+            label="Save"
             isSubmitting={isLoading}
             isSuccess={isSuccess}
             onPress={() => handleSubmit(onSubmit)()}
@@ -149,6 +167,6 @@ const Screen = (props: ModalScreenProps<'NewCategory'>) => {
         </View>
       </ScrollView>
     </Box>
-  )
-}
-export default Screen
+  );
+};
+export default Screen;

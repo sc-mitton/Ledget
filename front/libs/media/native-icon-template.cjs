@@ -1,8 +1,8 @@
 module.exports = (
-    { imports, interfaces, componentName, props, jsx, exports },
-    { tpl }
+  { imports, interfaces, componentName, props, jsx, exports },
+  { tpl }
 ) => {
-    return tpl`${imports}
+  return tpl`${imports}
       ${interfaces}
 
       function ${componentName}({size = 24, ...props}: SvgProps & {size?: string | number}) {

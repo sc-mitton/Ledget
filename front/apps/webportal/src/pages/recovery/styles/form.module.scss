@@ -1,14 +1,14 @@
 .recoveryForm {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    button {
-        margin-top: .5em;
-    }
+  button {
+    margin-top: 0.5em;
+  }
 }
 
 @media only screen and (max-width: 700px) {
-    .recoveryForm {
-        margin-bottom: 1.5em;
-    }
+  .recoveryForm {
+    margin-bottom: 1.5em;
+  }
 }

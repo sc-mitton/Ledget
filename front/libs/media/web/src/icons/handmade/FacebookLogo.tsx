@@ -1,7 +1,7 @@
 const FacebookLogo = ({
   width = '1.3em',
   height = '1.3em',
-  fill = '#039BE5'
+  fill = '#039BE5',
 }) => (
   <svg
     version="1.1"

@@ -5,7 +5,7 @@ import TabsTrack from './TabsTrack';
 
 describe('TabsTrack', () => {
   it('should render successfully', () => {
-    const { root } = render(< TabsTrack />);
+    const { root } = render(<TabsTrack />);
     expect(root).toBeTruthy();
   });
 });

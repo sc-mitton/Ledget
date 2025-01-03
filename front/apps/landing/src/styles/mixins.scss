@@ -1,22 +1,22 @@
 @mixin width-standard {
-    width: calc(100% - 2rem);
-    max-width: 70rem;
+  width: calc(100% - 2rem);
+  max-width: 70rem;
 }
 
 @mixin window {
+  position: relative;
+
+  &::after {
+    background-color: var(--window);
+    border-radius: 1em;
+    inset: 0;
+    content: '';
+    position: absolute;
+    z-index: 0;
+  }
+
+  & > div {
     position: relative;
-
-    &::after {
-        background-color: var(--window);
-        border-radius: 1em;
-        inset: 0;
-        content: '';
-        position: absolute;
-        z-index: 0;
-    }
-
-    &>div {
-        position: relative;
-        z-index: 1;
-    }
+    z-index: 1;
+  }
 }

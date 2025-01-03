@@ -11,7 +11,7 @@ import {
   FadedIconButton,
   TextInputWrapper,
   FormErrorTip,
-  FormError
+  FormError,
 } from '@ledget/ui';
 
 export const EmojiComboText = (
@@ -115,7 +115,7 @@ const IncrementDecrementButton = ({
   val,
   setVal,
   field,
-  withCents = true
+  withCents = true,
 }: IncrementDecrement) => (
   <div className={styles.incrementArrowsContainer}>
     <FadedIconButton
@@ -160,7 +160,7 @@ export const LimitAmountInput: FC<
   const { field } = useController({
     control,
     name: rest.name || 'limit_amount',
-    rules: { required }
+    rules: { required },
   });
 
   // set field value to default if present
@@ -239,7 +239,7 @@ export const DollarRangeInput = ({
   defaultUpperValue,
   errors,
   hasLabel = true,
-  rangeMode = false
+  rangeMode = false,
 }: {
   control: Control<any>;
   errors?: any;

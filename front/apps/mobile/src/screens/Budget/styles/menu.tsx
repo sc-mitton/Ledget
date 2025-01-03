@@ -11,8 +11,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 2,
-    marginLeft: 24
-  }
+    marginLeft: 24,
+  },
 });
 
 export default styles;

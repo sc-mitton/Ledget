@@ -1,11 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { ScrollView, View } from 'react-native';
-import {
-  LinearGradient,
-  Rect,
-  Canvas,
-  vec
-} from '@shopify/react-native-skia';
+import { LinearGradient, Rect, Canvas, vec } from '@shopify/react-native-skia';
 import { useTheme } from '@shopify/restyle';
 
 import styles from './styles/filters';
@@ -14,10 +9,10 @@ import { Account, useGetAccountsQuery } from '@ledget/shared-features';
 import { ModalScreenProps } from '@types';
 
 interface Filter {
-  label?: string,
-  value: string,
-  dotColor?: string,
-  group: string
+  label?: string;
+  value: string;
+  dotColor?: string;
+  group: string;
 }
 
 interface FiltersP extends ModalScreenProps<'PickAccount'> {
@@ -36,30 +31,35 @@ const Filters = (props: FiltersP) => {
   // Update the filters list when the accounts are fetched
   useEffect(() => {
     if (data) {
-      const accounts = data.accounts.filter(a => a.type === props.route.params.accountType);
+      const accounts = data.accounts.filter(
+        (a) => a.type === props.route.params.accountType
+      );
 
       const institutionFilters = data.institutions
-        .filter(i => accounts.some(a => a.institution_id === i.id))
-        .map(i => ({
+        .filter((i) => accounts.some((a) => a.institution_id === i.id))
+        .map((i) => ({
           label: i.name,
           value: i.id,
           group: 'institution',
-          dotColor: i.primary_color
-        }))
-      let subTypeFilters = accounts.map(a => ({
+          dotColor: i.primary_color,
+        }));
+      let subTypeFilters = accounts.map((a) => ({
         label: a.subtype,
         value: a.subtype,
-        group: 'subType'
-      }))
-      subTypeFilters = subTypeFilters.filter((filter, i) =>
-        subTypeFilters.findIndex(f => f.value === filter.value) === i);
+        group: 'subType',
+      }));
+      subTypeFilters = subTypeFilters.filter(
+        (filter, i) =>
+          subTypeFilters.findIndex((f) => f.value === filter.value) === i
+      );
 
       const filters = [
         ...(institutionFilters.length > 1 ? institutionFilters : []),
-        ...(subTypeFilters.length > 1 ? subTypeFilters : [])
-      ]
-      const dedupedFilters = filters.filter((filter, i) =>
-        filters.findIndex(f => f.value === filter.value) === i);
+        ...(subTypeFilters.length > 1 ? subTypeFilters : []),
+      ];
+      const dedupedFilters = filters.filter(
+        (filter, i) => filters.findIndex((f) => f.value === filter.value) === i
+      );
       setFilters(dedupedFilters);
       setLocalAccounts(accounts);
     }
@@ -68,32 +68,44 @@ const Filters = (props: FiltersP) => {
   // Update the accounts list when the order changes
   useEffect(() => {
     if (props.route.params.options?.order) {
-      setLocalAccounts([...(localAccounts || [])]?.sort((a, b) => {
-        switch (props.route.params.options?.order) {
-          case 'balance-asc':
-            return a.balances.current - b.balances.current;
-          case 'balance-desc':
-            return b.balances.current - a.balances.current;
-          case 'name-asc':
-            return a.name.localeCompare(b.name);
-          case 'name-desc':
-            return b.name.localeCompare(a.name);
-          default:
-            return 0;
-        }
-      }));
+      setLocalAccounts(
+        [...(localAccounts || [])]?.sort((a, b) => {
+          switch (props.route.params.options?.order) {
+            case 'balance-asc':
+              return a.balances.current - b.balances.current;
+            case 'balance-desc':
+              return b.balances.current - a.balances.current;
+            case 'name-asc':
+              return a.name.localeCompare(b.name);
+            case 'name-desc':
+              return b.name.localeCompare(a.name);
+            default:
+              return 0;
+          }
+        })
+      );
     } else {
-      setLocalAccounts(data?.accounts.filter(a => a.type === props.route.params.accountType));
+      setLocalAccounts(
+        data?.accounts.filter((a) => a.type === props.route.params.accountType)
+      );
     }
   }, [props.route.params.options?.order]);
 
   // Update the accounts list when the filters change
   useEffect(() => {
     if (selectedFilters?.length) {
-      setLocalAccounts(data?.accounts.filter(a => selectedFilters.some(f => f.value === a.subtype || f.value === a.institution_id)));
+      setLocalAccounts(
+        data?.accounts.filter((a) =>
+          selectedFilters.some(
+            (f) => f.value === a.subtype || f.value === a.institution_id
+          )
+        )
+      );
       props.onFiltered(true);
     } else {
-      setLocalAccounts(data?.accounts.filter(a => a.type === props.route.params.accountType));
+      setLocalAccounts(
+        data?.accounts.filter((a) => a.type === props.route.params.accountType)
+      );
       props.onFiltered(false);
     }
   }, [selectedFilters]);
@@ -106,27 +118,47 @@ const Filters = (props: FiltersP) => {
   return (
     <>
       <View style={filters?.length ? styles.filters : undefined}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterScroll}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.filterScroll}
+        >
           {filters.map((filter, i) => (
             <Fragment key={`filter-${i}`}>
-              {i !== 0 && filters[i - 1].group !== filter.group &&
-                <Box style={styles.groupDelimiter} backgroundColor='borderedGrayButton' />}
+              {i !== 0 && filters[i - 1].group !== filter.group && (
+                <Box
+                  style={styles.groupDelimiter}
+                  backgroundColor="borderedGrayButton"
+                />
+              )}
               <Button
                 style={styles.filter}
                 key={`filter-${i}`}
-                variant={selectedFilters.includes(filter) ? 'blueBorderedPill' : 'borderedPill'}
+                variant={
+                  selectedFilters.includes(filter)
+                    ? 'blueBorderedPill'
+                    : 'borderedPill'
+                }
                 onPress={() => {
                   if (selectedFilters.includes(filter)) {
-                    setSelectedFilters(selectedFilters.filter(f => f !== filter));
+                    setSelectedFilters(
+                      selectedFilters.filter((f) => f !== filter)
+                    );
                   } else {
                     setSelectedFilters([...selectedFilters, filter]);
                   }
                 }}
-                labelPlacement='left'
+                labelPlacement="left"
                 label={filter.label}
               >
-                {filter.dotColor &&
-                  <View style={[styles.filterDot, { backgroundColor: filter.dotColor }]} />}
+                {filter.dotColor && (
+                  <View
+                    style={[
+                      styles.filterDot,
+                      { backgroundColor: filter.dotColor },
+                    ]}
+                  />
+                )}
               </Button>
             </Fragment>
           ))}
@@ -137,7 +169,7 @@ const Filters = (props: FiltersP) => {
               colors={[
                 theme.colors.blueChartGradientEnd,
                 theme.colors.modalBox100,
-                theme.colors.modalBox100
+                theme.colors.modalBox100,
               ]}
               start={vec(32, 0)}
               end={vec(0, 0)}
@@ -150,7 +182,7 @@ const Filters = (props: FiltersP) => {
               colors={[
                 theme.colors.blueChartGradientEnd,
                 theme.colors.modalBox100,
-                theme.colors.modalBox100
+                theme.colors.modalBox100,
               ]}
               start={vec(0, 0)}
               end={vec(32, 0)}
@@ -158,9 +190,9 @@ const Filters = (props: FiltersP) => {
           </Rect>
         </Canvas>
       </View>
-      <Seperator variant='bare' backgroundColor='modalSeperator' />
+      <Seperator variant="bare" backgroundColor="modalSeperator" />
     </>
-  )
-}
+  );
+};
 
 export default Filters;

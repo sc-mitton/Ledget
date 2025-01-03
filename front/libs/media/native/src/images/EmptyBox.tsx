@@ -8,13 +8,13 @@ const EmptyBox = ({ dark = false, size = 72 }) => {
     <Image
       style={{ width: size, height: size }}
       source={emptyBoxDark}
-      resizeMode='contain'
+      resizeMode="contain"
     />
   ) : (
     <Image
       style={{ width: size, height: size }}
       source={emptyBoxLight}
-      resizeMode='contain'
+      resizeMode="contain"
     />
   );
 };

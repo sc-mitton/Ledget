@@ -1,1 +1,1 @@
-export { default as AccountsWindow } from './Window'
+export { default as AccountsWindow } from './Window';

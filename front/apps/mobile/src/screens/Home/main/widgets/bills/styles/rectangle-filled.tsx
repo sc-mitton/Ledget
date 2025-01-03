@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    height: '100%'
+    height: '100%',
   },
   leftColumnInner: {
     minWidth: 75,
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   },
   calendarCell: {
     borderRadius: 6,
-    marginTop: -1
+    marginTop: -1,
   },
   cell: {
     alignItems: 'center',
@@ -42,14 +42,14 @@ const styles = StyleSheet.create({
   },
   day: {
     position: 'relative',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   markersContainer: {
     position: 'absolute',
     left: '50%',
     bottom: 0,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   markers: {
     position: 'absolute',
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     width: 4,
     height: 4,
     borderRadius: 2,
-  }
+  },
 });
 
 export default styles;

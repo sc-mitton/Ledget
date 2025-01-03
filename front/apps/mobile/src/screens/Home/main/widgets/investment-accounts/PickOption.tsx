@@ -13,24 +13,26 @@ const Shadow = () => {
       {Array.from({ length: 3 }).map((_, i) => (
         <View style={styles.row}>
           <InstitutionLogo
-            institution={accounts?.institutions[i % (accounts.institutions.length)].id}
+            institution={
+              accounts?.institutions[i % accounts.institutions.length].id
+            }
             size={16}
           />
           <Box
-            backgroundColor='transactionShimmer'
+            backgroundColor="transactionShimmer"
             style={styles.nameSkeleton}
-            borderRadius='xxs'
+            borderRadius="xxs"
           />
           <Box
-            backgroundColor='transactionShimmer'
+            backgroundColor="transactionShimmer"
             style={styles.amountSkeleton}
-            borderRadius='xxs'
+            borderRadius="xxs"
           />
           <View style={styles.rightContainer}>
             <Box
-              backgroundColor='transactionShimmer'
+              backgroundColor="transactionShimmer"
               style={styles.amountSkeleton}
-              borderRadius='xxs'
+              borderRadius="xxs"
             />
           </View>
           <Icon
@@ -42,6 +44,6 @@ const Shadow = () => {
         </View>
       ))}
     </View>
-  )
-}
-export default Shadow
+  );
+};
+export default Shadow;

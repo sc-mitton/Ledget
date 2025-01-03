@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: -12,
     marginLeft: -4,
-  }
+  },
 });
 
 export default styles;

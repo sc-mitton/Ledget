@@ -64,7 +64,7 @@ const palette = {
   offBlack4: `hsl(${grayH}, ${grayS}%, 70%)`,
   offBlack5: `hsl(${grayH}, ${grayS}%, 80%)`,
   offBlack6: `hsl(${grayH}, ${grayS}%, 900%)`,
-}
+};
 
 export const lightTheme = createTheme({
   colors: {
@@ -77,7 +77,8 @@ export const lightTheme = createTheme({
     accountsMainBackground: palette.gray100,
     bottomNavCover: palette.gray250,
     androidNavBar: palette.gray200,
-    bottomNavBackground: Platform.OS === 'ios' ? palette.gray100 : palette.white,
+    bottomNavBackground:
+      Platform.OS === 'ios' ? palette.gray100 : palette.white,
     lightGrayCard: palette.gray250,
     inputBackground: palette.gray250,
     nestedContainer: palette.white,
@@ -120,7 +121,8 @@ export const lightTheme = createTheme({
     activeSwitchShadow: 'hsl(144, 70%, 50%)',
     disabledSwitchShadow: palette.gray500,
     logoShadow: palette.gray500,
-    newTransactionShadow: Platform.OS === 'ios' ? palette.gray200 : palette.gray300,
+    newTransactionShadow:
+      Platform.OS === 'ios' ? palette.gray200 : palette.gray300,
     menuShadowColor: palette.gray400,
     creditCardShadow: palette.gray300,
 
@@ -144,7 +146,6 @@ export const lightTheme = createTheme({
     footerText: palette.gray600,
     redText: palette.red,
     purpleText: palette.purpleText,
-
 
     // Buttons
     lightBlueButton: palette.blue100,
@@ -201,7 +202,9 @@ export const lightTheme = createTheme({
     transactionShimmer: palette.gray200,
 
     blueChartGradientStart: palette.blue50,
-    blueChartGradientEnd: palette.gray200.replace('hsl', 'hsla').replace(')', ', 0)'),
+    blueChartGradientEnd: palette.gray200
+      .replace('hsl', 'hsla')
+      .replace(')', ', 0)'),
     modalShadowMaskEnd: `hsla(${grayH}, ${grayS}%, 95%, 0)`,
     blueChartColor: palette.blue300,
     blueChartColorSecondary: palette.blue200,
@@ -313,7 +316,7 @@ export const lightTheme = createTheme({
       marginVertical: 's',
       fontFamily: 'SourceSans3Regular',
       color: 'footerText',
-    }
+    },
   },
   buttonVariants: {
     main: {
@@ -503,7 +506,7 @@ export const lightTheme = createTheme({
     },
     bold: {
       fontFamily: 'SourceSans3Medium',
-    }
+    },
   },
   seperatorVariants: {
     bare: {
@@ -530,21 +533,21 @@ export const lightTheme = createTheme({
       marginVertical: 'xxxl',
       backgroundColor: 'seperator',
     },
-    defaults: {}
+    defaults: {},
   },
   borderRadii: {
-    'none': 0,
-    'xxs': 4,
-    'xs': 6,
-    's': 8,
-    'm': 12,
-    'l': 16,
-    'xl': 20,
-    'circle': 9999,
+    none: 0,
+    xxs: 4,
+    xs: 6,
+    s: 8,
+    m: 12,
+    l: 16,
+    xl: 20,
+    circle: 9999,
   },
   boxVariants: {
     header: {
-      paddingHorizontal: 'l'
+      paddingHorizontal: 'l',
     },
     fullCentered: {
       flex: 1,
@@ -553,7 +556,7 @@ export const lightTheme = createTheme({
     },
     even: {
       flex: 1,
-      justifyContent: 'space-evenly'
+      justifyContent: 'space-evenly',
     },
     screen: {
       flex: 1,
@@ -564,7 +567,7 @@ export const lightTheme = createTheme({
       flex: 1,
       paddingHorizontal: 'l',
       paddingTop: 'statusBar',
-      marginTop: 'xxxl'
+      marginTop: 'xxxl',
     },
     screenContent: {
       flex: 1,
@@ -601,7 +604,7 @@ export const lightTheme = createTheme({
       right: 24,
       left: 24,
       bottom: 0,
-      zIndex: 100
+      zIndex: 100,
     },
     dragBar: {
       backgroundColor: 'dragBar',
@@ -609,7 +612,7 @@ export const lightTheme = createTheme({
       height: 5,
       borderRadius: 'circle',
       position: 'absolute',
-      top: 6
+      top: 6,
     },
     largerDragBar: {
       backgroundColor: 'dragBar',
@@ -617,13 +620,13 @@ export const lightTheme = createTheme({
       height: 7,
       borderRadius: 'circle',
       position: 'absolute',
-      top: 6
+      top: 6,
     },
     dragBarContainer: {
       justifyContent: 'center',
       alignItems: 'center',
       width: '100%',
-      height: 24
+      height: 24,
     },
     divider: {
       width: 2,
@@ -637,7 +640,7 @@ export const lightTheme = createTheme({
       borderRadius: 'circle',
       backgroundColor: 'mainText',
     },
-    defaults: {}
+    defaults: {},
   },
 });
 

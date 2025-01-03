@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   modalBackground: {
@@ -10,7 +10,7 @@ export default StyleSheet.create({
     position: 'absolute',
     top: 16,
     right: 16,
-    zIndex: 12
+    zIndex: 12,
   },
   headerContainer: {
     marginTop: 20,
@@ -20,9 +20,9 @@ export default StyleSheet.create({
   },
   splitInputs: {
     flexDirection: 'row',
-    gap: 8
+    gap: 8,
   },
   splitInput: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });

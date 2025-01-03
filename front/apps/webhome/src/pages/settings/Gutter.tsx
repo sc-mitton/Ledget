@@ -90,8 +90,8 @@ const Gutter = () => {
     find: (el, index) => el.getAttribute('data-current') === 'page',
     styles: {
       backgroundColor: backgroundColor,
-      borderRadius: '8px'
-    }
+      borderRadius: '8px',
+    },
   });
 
   // Observer to update pill size when screen size changes

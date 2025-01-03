@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   },
   alerts: {
     flexDirection: 'column',
-    gap: 4
+    gap: 4,
   },
   alert: {
     gap: 12,
@@ -25,11 +25,11 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   alertIndex: {
     lineHeight: 18,
-    transform: [{ translateY: 2 }, { translateX: .5 }]
+    transform: [{ translateY: 2 }, { translateX: 0.5 }],
   },
   trashButton: {
     flexGrow: 1,
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
     width: '100%',
-  }
+  },
 });
 
 export default styles;

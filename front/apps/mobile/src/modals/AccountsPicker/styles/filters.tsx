@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   filterDot: {
     width: 6,
     height: 6,
-    borderRadius: 8
+    borderRadius: 8,
   },
   iconFilter: {
     flexDirection: 'row',
@@ -24,20 +24,20 @@ const styles = StyleSheet.create({
   mask: {
     position: 'absolute',
     width: 32,
-    height: '103%'
+    height: '103%',
   },
   rightMask: {
     right: 0,
   },
   leftMask: {
-    left: -8
+    left: -8,
   },
   groupDelimiter: {
     height: 24,
     width: 2,
     borderRadius: 2,
     marginRight: 12,
-  }
+  },
 });
 
 export default styles;

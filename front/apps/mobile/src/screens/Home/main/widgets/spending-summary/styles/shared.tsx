@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   totalAmount: {
     flexDirection: 'row',
     gap: 6,
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
   },
   bottomRow: {
     alignItems: 'center',
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     width: 11,
     height: 11,
     borderRadius: 5.5,
-    borderWidth: 2
+    borderWidth: 2,
   },
   smallDot: {
     width: 6,
@@ -34,26 +34,26 @@ const styles = StyleSheet.create({
     borderRadius: 120,
   },
   overlappingDot: {
-    marginLeft: -7
+    marginLeft: -7,
   },
   bottomTitle: {
     flexDirection: 'row',
     gap: 3,
     alignItems: 'center',
-    marginBottom: -2
+    marginBottom: -2,
   },
   title: {
     flexDirection: 'row',
     gap: 4,
     alignItems: 'center',
-    marginBottom: -2
+    marginBottom: -2,
   },
   dollarPlaceholder: {
     height: 14,
     width: 50,
     marginTop: 4,
     borderRadius: 8,
-  }
+  },
 });
 
 export default styles;

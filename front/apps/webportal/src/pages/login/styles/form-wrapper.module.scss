@@ -1,35 +1,34 @@
 .loginAuthForm {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .email {
-    width: 100%;
-    text-align: left;
-    margin-bottom: 1.25em;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 1.25em;
 
-    h3 {
-        margin: 0;
-        margin-bottom: .125em;
-    }
+  h3 {
+    margin: 0;
+    margin-bottom: 0.125em;
+  }
 
-    div,
-    button {
-        display: flex;
-        align-items: center;
-        margin-left: -.25em;
-    }
+  div,
+  button {
+    display: flex;
+    align-items: center;
+    margin-left: -0.25em;
+  }
 
-    span,
-    button {
-        opacity: .9;
-    }
+  span,
+  button {
+    opacity: 0.9;
+  }
 
-    button:hover {
-        transition: all 0.3s ease-out;
-        opacity: 1;
-    }
+  button:hover {
+    transition: all 0.3s ease-out;
+    opacity: 1;
+  }
 }

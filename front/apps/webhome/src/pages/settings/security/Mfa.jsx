@@ -9,7 +9,7 @@ import {
   BlueSlimButton,
   Tooltip,
   TextButtonHalfBlue,
-  NestedWindow
+  NestedWindow,
 } from '@ledget/ui';
 import { Qr } from '@ledget/media';
 

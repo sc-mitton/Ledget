@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   floatingAmountInput: {
-    width: '100%'
+    width: '100%',
   },
   form: {
     flexDirection: 'column',
@@ -22,12 +22,12 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   suggestionsFlatListContainer: {
-    marginTop: -16
+    marginTop: -16,
   },
   tabsBox: {
     width: '100%',
     alignItems: 'center',
-    paddingBottom: 16
+    paddingBottom: 16,
   },
   suggestionsGrid: {
     width: '100%',
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     gap: 10,
-    zIndex: 20
+    zIndex: 20,
   },
   customButton: {
     marginTop: -12,
@@ -53,13 +53,13 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 16,
-    marginLeft: 4
+    marginLeft: 4,
   },
   flatList: {
     maxHeight: 375,
     paddingRight: 12,
     marginRight: -12,
-  }
+  },
 });
 
 export default styles;

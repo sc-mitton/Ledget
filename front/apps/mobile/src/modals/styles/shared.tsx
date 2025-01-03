@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   splitButtons: {
@@ -7,7 +7,7 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     gap: 10,
     marginTop: -8,
-    marginBottom: -12
+    marginBottom: -12,
   },
   splitButton: {
     flex: 1,
@@ -15,5 +15,5 @@ export default StyleSheet.create({
   header: {
     gap: 8,
     marginTop: 8,
-  }
+  },
 });

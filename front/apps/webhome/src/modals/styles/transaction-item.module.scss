@@ -3,266 +3,267 @@
 
 /* Header */
 .transactionInfoHeader {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 
-    &>div:first-child {
-        font-size: 2rem;
+  & > div:first-child {
+    font-size: 2rem;
+  }
+
+  & > div:nth-child(2),
+  & > button:nth-child(2) {
+    font-size: 1rem;
+    color: var(--m-text-secondary);
+  }
+
+  & > div:nth-child(2) {
+    input {
+      text-align: center;
+      width: 100%;
+      padding: 0;
+      mask-image: linear-gradient(
+        to right,
+        transparent,
+        black 1.25em,
+        black 100%
+      );
     }
-
-    &>div:nth-child(2),
-    &>button:nth-child(2) {
-        font-size: 1rem;
-        color: var(--m-text-secondary);
-    }
-
-    &>div:nth-child(2) {
-
-        input {
-            text-align: center;
-            width: 100%;
-            padding: 0;
-            mask-image: linear-gradient(to right, transparent, black 1.25em, black 100%);
-        }
-    }
+  }
 }
 
-
 .nameContainer {
-    max-width: 70%;
-    white-space: normal;
-    text-align: center;
-    position: relative;
-    border-radius: var(--border-radius2);
-    padding: 0 .25em;
-    display: flex;
-    justify-content: center;
-    gap: .5em;
-    cursor: pointer;
+  max-width: 70%;
+  white-space: normal;
+  text-align: center;
+  position: relative;
+  border-radius: var(--border-radius2);
+  padding: 0 0.25em;
+  display: flex;
+  justify-content: center;
+  gap: 0.5em;
+  cursor: pointer;
 
-    button {
-        position: absolute;
-        right: -1.25em;
-        top: 50%;
-        opacity: 0;
-        transform: scale(.9) translateY(-50%);
-        transition: all .2s ease-in-out;
-    }
+  button {
+    position: absolute;
+    right: -1.25em;
+    top: 50%;
+    opacity: 0;
+    transform: scale(0.9) translateY(-50%);
+    transition: all 0.2s ease-in-out;
+  }
 
-    &:not(:focus-within):hover button {
-        opacity: 1;
-        transform: scale(1) translateY(-50%);
-        transition: all .2s ease-in-out;
-    }
+  &:not(:focus-within):hover button {
+    opacity: 1;
+    transform: scale(1) translateY(-50%);
+    transition: all 0.2s ease-in-out;
+  }
 }
 
 .pending {
-    margin-top: .5em;
-    text-align: center;
-    font-size: .8rem;
-    background-color: var(--btn-light-gray);
-    border-radius: var(--border-radius2);
-    padding: 0 .5em;
-    color: var(--m-text-secondary);
+  margin-top: 0.5em;
+  text-align: center;
+  font-size: 0.8rem;
+  background-color: var(--btn-light-gray);
+  border-radius: var(--border-radius2);
+  padding: 0 0.5em;
+  color: var(--m-text-secondary);
 }
 
 /* All Info */
 .transactionInfoContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5em;
-    margin-top: 2em;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+  margin-top: 2em;
 
-    a {
-        text-decoration: underline;
-    }
+  a {
+    text-decoration: underline;
+  }
 }
 
 .transactionDetails {
+  &:not(:nth-child(3)) > div,
+  & > div a {
+    display: flex;
+    flex-wrap: wrap;
+  }
 
-    &:not(:nth-child(3))>div,
-    &>div a {
-        display: flex;
-        flex-wrap: wrap;
+  // Account and institution info
+  // accunt, merchant, date, etc. info
+  &:nth-last-child(2) {
+    display: grid;
+    column-gap: 1.5em;
+    row-gap: 0.5em;
+    grid-template-columns: minmax(0, auto) 1fr;
+
+    & > div {
+      display: flex;
     }
 
-    // Account and institution info
-    // accunt, merchant, date, etc. info
-    &:nth-last-child(2) {
-        display: grid;
-        column-gap: 1.5em;
-        row-gap: .5em;
-        grid-template-columns: minmax(0, auto) 1fr;
-
-        &>div {
-            display: flex;
-        }
-
-        &>div:nth-child(2n + 1),
-        &>div:nth-child(2n + 1) * {
-            color: var(--m-text-secondary);
-        }
+    & > div:nth-child(2n + 1),
+    & > div:nth-child(2n + 1) * {
+      color: var(--m-text-secondary);
     }
+  }
 }
 
 .accountInfoCell {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: .25em;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25em;
 
-    &>div {
-        display: flex;
-        align-items: center;
-        gap: .25em;
-    }
+  & > div {
+    display: flex;
+    align-items: center;
+    gap: 0.25em;
+  }
 }
 
 .billsAndCategories {
-    display: flex;
-    align-items: center;
-    gap: 1.375em;
-    position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1.375em;
+  position: relative;
 
-    &>div:first-of-type {
-        color: var(--m-text-secondary);
-    }
+  & > div:first-of-type {
+    color: var(--m-text-secondary);
+  }
 }
 
 .billCatSelectorContainer {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    &>div {
-        position: relative;
-        width: 100%;
+  & > div {
+    position: relative;
+    width: 100%;
 
-        &>div {
-            margin-top: .375em;
-        }
+    & > div {
+      margin-top: 0.375em;
     }
+  }
 }
 
 // Add a note container
 $maxHeight: 12.5em;
 
 .notesContainer {
+  h4 {
+    color: var(--m-text-secondary);
+  }
 
-    h4 {
-        color: var(--m-text-secondary);
+  & > div {
+    position: relative;
+    overflow-x: visible;
+    margin-top: 0.375em;
+    box-sizing: border-box;
+    background-color: inherit;
+
+    &[data-focused='true'] {
+      padding-bottom: 2em;
     }
 
-    &>div {
-        position: relative;
-        overflow-x: visible;
-        margin-top: .375em;
-        box-sizing: border-box;
-        background-color: inherit;
-
-        &[data-focused='true'] {
-            padding-bottom: 2em;
-        }
-
-        span {
-            white-space: nowrap;
-        }
-
-        &:focus-within {
-            outline: none;
-            box-shadow: none;
-
-            &>div:last-child>div[data-accessible-focused='true']::before {
-                content: '';
-                position: absolute;
-                width: .375em;
-                height: .375em;
-                border-radius: 50%;
-                right: 0em;
-                top: 50%;
-                transform: translateY(-50%);
-                background-color: var(--blue-medium);
-            }
-        }
-
-        &>div:last-child {
-            background-color: inherit;
-            overflow-y: auto;
-            overflow-x: visible;
-            padding-right: 1.125em;
-            width: 100%;
-            max-height: $maxHeight;
-            height: min-content;
-            display: flex;
-            flex-direction: column;
-            gap: .5em;
-            box-sizing: border-box;
-
-            &[data-focused='true'] {
-                margin-bottom: 1.75em;
-            }
-        }
+    span {
+      white-space: nowrap;
     }
+
+    &:focus-within {
+      outline: none;
+      box-shadow: none;
+
+      & > div:last-child > div[data-accessible-focused='true']::before {
+        content: '';
+        position: absolute;
+        width: 0.375em;
+        height: 0.375em;
+        border-radius: 50%;
+        right: 0em;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: var(--blue-medium);
+      }
+    }
+
+    & > div:last-child {
+      background-color: inherit;
+      overflow-y: auto;
+      overflow-x: visible;
+      padding-right: 1.125em;
+      width: 100%;
+      max-height: $maxHeight;
+      height: min-content;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+      box-sizing: border-box;
+
+      &[data-focused='true'] {
+        margin-bottom: 1.75em;
+      }
+    }
+  }
 }
 
 .lastChanged {
-    position: absolute;
-    z-index: 20;
-    left: 0;
-    bottom: -.125em;
-    color: var(--m-text-quaternary);
+  position: absolute;
+  z-index: 20;
+  left: 0;
+  bottom: -0.125em;
+  color: var(--m-text-quaternary);
 }
 
 .addNotePlaceholder {
-    color: var(--input-placeholder2);
+  color: var(--input-placeholder2);
 }
 
 .noteButton {
-    z-index: 20;
-    position: absolute;
-    bottom: -.125em;
-    right: 0em;
+  z-index: 20;
+  position: absolute;
+  bottom: -0.125em;
+  right: 0em;
 
-    &:not(:first-of-type) {
-        z-index: 20;
-        right: 2em;
-    }
+  &:not(:first-of-type) {
+    z-index: 20;
+    right: 2em;
+  }
 }
 
 .noteContainer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  padding: 0.25em 0;
+  display: flex;
+  cursor: text;
+
+  &[data-disabled='true'] {
+    cursor: default;
+  }
+
+  &:not([data-focused='true']):not(:last-child) {
+    @include table-dividers($bottom: -0.125em, $color: var(--border-color-dim));
+  }
+
+  textarea {
     width: 100%;
     height: 100%;
-    position: relative;
-    padding: .25em 0;
-    display: flex;
-    cursor: text;
+  }
 
-    &[data-disabled='true'] {
-        cursor: default;
-    }
-
-    &:not([data-focused='true']):not(:last-child) {
-        @include table-dividers($bottom: -.125em, $color: var(--border-color-dim));
-    }
+  &[data-focused='true'] {
+    background-color: inherit;
+    position: absolute;
+    min-height: calc(100% - 1.5em);
+    max-height: $maxHeight;
+    z-index: 10;
 
     textarea {
-        width: 100%;
-        height: 100%;
+      margin-right: -0.25em;
+      width: calc(100% + 20em);
+      min-height: calc(100% - 1.5em);
+      max-height: $maxHeight;
+      padding-right: 1.125em;
     }
-
-    &[data-focused='true'] {
-        background-color: inherit;
-        position: absolute;
-        min-height: calc(100% - 1.5em);
-        max-height: $maxHeight;
-        z-index: 10;
-
-        textarea {
-            margin-right: -.25em;
-            width: calc(100% + 20em);
-            min-height: calc(100% - 1.5em);
-            max-height: $maxHeight;
-            padding-right: 1.125em;
-        }
-    }
+  }
 }

@@ -11,12 +11,12 @@ import {
   RedButton,
   BluePrimaryButton,
   SlideMotionDiv,
-  BakedListBox
+  BakedListBox,
 } from '@ledget/ui';
 import { useLoaded } from '@ledget/helpers';
 import {
   useUpdateRestartSubscriptionMutation,
-  useGetSubscriptionQuery
+  useGetSubscriptionQuery,
 } from '@ledget/shared-features';
 
 export const CancelationWindow = (props) => {
@@ -27,10 +27,10 @@ export const CancelationWindow = (props) => {
   const [cancelationReason, setCancelationReason] = React.useState('');
 
   const [reasonSprings, reasonApi] = useSpring(() => ({
-    from: { transform: 'scale(1)' }
+    from: { transform: 'scale(1)' },
   }));
   const [feedbackSprings, feedbackApi] = useSpring(() => ({
-    from: { transform: 'scale(1)' }
+    from: { transform: 'scale(1)' },
   }));
 
   const pulseConfig = {
@@ -39,7 +39,7 @@ export const CancelationWindow = (props) => {
       await next({ transform: 'scale(1.1)' });
       await next({ transform: 'scale(1)' });
     },
-    config: { duration: 150 }
+    config: { duration: 150 },
   };
 
   useEffect(() => {
@@ -52,7 +52,7 @@ export const CancelationWindow = (props) => {
         subId: subscription.id,
         cancelAtPeriodEnd: true,
         cancelationReason: cancelationReason,
-        feedback: feedback
+        feedback: feedback,
       });
       return;
     }
@@ -76,7 +76,7 @@ export const CancelationWindow = (props) => {
             style={{
               position: 'relative',
               zIndex: 1,
-              ...reasonSprings
+              ...reasonSprings,
             }}
           >
             <BakedListBox
@@ -88,7 +88,7 @@ export const CancelationWindow = (props) => {
                 'Not enough features',
                 'Not using it enough',
                 'Using another product',
-                'Other'
+                'Other',
               ]}
             >
               <span>Reason</span>
@@ -103,7 +103,7 @@ export const CancelationWindow = (props) => {
             style={{
               position: 'relative',
               zIndex: 0,
-              ...feedbackSprings
+              ...feedbackSprings,
             }}
           >
             <BakedListBox
@@ -116,7 +116,7 @@ export const CancelationWindow = (props) => {
                 "It's fast",
                 'Syncs with my bank',
                 'Unique features',
-                'Other'
+                'Other',
               ]}
             >
               <span>Select&nbsp;&nbsp;</span>

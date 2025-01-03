@@ -38,7 +38,7 @@ export const Base64Logo = (props: Base64LogoProps) => {
         <img
           style={{
             height: size,
-            width: size
+            width: size,
           }}
           src={`data:image/png;base64,${data}`}
           alt={alt}
@@ -53,7 +53,7 @@ export const Base64Logo = (props: Base64LogoProps) => {
 export const DollarCents = ({
   value = 0,
   style = {},
-  withCents = true
+  withCents = true,
 }: {
   value: string | number;
   isDebit?: boolean;
@@ -101,7 +101,7 @@ export const AnimatedDollarCents = ({
       return {
         maxWidth: loaded ? '0ch' : '1ch',
         opacity: loaded ? 0 : 1,
-        y: y
+        y: y,
       };
     },
     enter: (item) => {
@@ -112,18 +112,18 @@ export const AnimatedDollarCents = ({
         opacity: 1,
         maxWidth: '1ch',
         y: y,
-        config: { mass: 1, tension: 150, friction: 25 }
+        config: { mass: 1, tension: 150, friction: 25 },
       };
     },
     update: (item: any) => ({
       y: !isNaN(Number(slotRefs.current[item]))
         ? `-${100 - (Number(slotRefs.current[item]) + 1) * 10}%`
-        : '0em'
+        : '0em',
     }),
     leave: { maxWidth: '0ch', opacity: 0 },
     config: { mass: 1, tension: 150, friction: 25 },
     ref: slotsApi,
-    immediate: !loaded
+    immediate: !loaded,
   });
 
   useEffect(() => {
@@ -146,7 +146,7 @@ export const AnimatedDollarCents = ({
 
       slotRefs.current = {
         ...newChars,
-        ...updatedChars
+        ...updatedChars,
       };
 
       setSlots([...Object.keys({ ...newChars, ...updatedChars })]);
@@ -211,7 +211,7 @@ export const AnimatedDollarCents = ({
 
 export const DollarCentsRange = ({
   lower,
-  upper
+  upper,
 }: {
   lower?: number | undefined;
   upper: number;
@@ -234,7 +234,7 @@ export const StaticProgressCircle = ({
   value = 0,
   size = '1.1rem',
   strokeWidth = 3,
-  noProgress = false
+  noProgress = false,
 }: {
   color?: 'green' | 'blue';
   value?: number;
@@ -265,8 +265,9 @@ export const StaticProgressCircle = ({
           fill="transparent"
           transform="rotate(-90 18 18)"
           strokeLinecap="round"
-          strokeDasharray={`${value ? parseFloat(Math.min(1, value).toFixed(2)) * 88 : 0
-            }, 88`}
+          strokeDasharray={`${
+            value ? parseFloat(Math.min(1, value).toFixed(2)) * 88 : 0
+          }, 88`}
         />
       </svg>
     </div>

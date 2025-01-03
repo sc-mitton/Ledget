@@ -1,4 +1,3 @@
-
 export interface Device {
   id: string;
   location: string;

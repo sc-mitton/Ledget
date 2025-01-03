@@ -20,14 +20,17 @@ export const JiggleView = (props: ViewProps & { jiggle: boolean }) => {
         withTiming(7, { duration: 100 }),
         withTiming(-3, { duration: 100 }),
         withTiming(3, { duration: 100 }),
-        withTiming(0, { duration: 100 }),
-      )
+        withTiming(0, { duration: 100 })
+      );
     }
   }, [jiggle]);
 
   return (
-    <Animated.View style={[{ transform: [{ translateX: x }] }, style]} {...rest}>
+    <Animated.View
+      style={[{ transform: [{ translateX: x }] }, style]}
+      {...rest}
+    >
       {props.children}
     </Animated.View>
-  )
-}
+  );
+};

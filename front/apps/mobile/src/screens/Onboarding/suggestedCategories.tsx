@@ -6,8 +6,8 @@ export const yearRecommendations = [
   { emoji: '👨‍💻', name: 'Work' },
   { emoji: '🎓', name: 'Education' },
   { emoji: '🎉', name: 'Entertainment' },
-  { emoji: '💇🏽‍♀️', name: 'Hair' }
-]
+  { emoji: '💇🏽‍♀️', name: 'Hair' },
+];
 
 export const monthRecommendations = [
   { emoji: '🥕', name: 'Groceries' },
@@ -22,5 +22,5 @@ export const monthRecommendations = [
   { emoji: '💄', name: 'Cosmetics' },
   { emoji: '💈', name: 'Haircuts' },
   { emoji: '🎨', name: 'Hobbies' },
-  { emoji: '💘', name: 'Dates' }
-]
+  { emoji: '💘', name: 'Dates' },
+];

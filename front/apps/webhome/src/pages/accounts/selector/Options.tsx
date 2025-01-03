@@ -4,7 +4,7 @@ import {
   animated,
   useTransition,
   useSpring,
-  useSpringRef
+  useSpringRef,
 } from '@react-spring/web';
 
 import styles from './styles/options.module.scss';
@@ -39,7 +39,7 @@ const Options = (props: Props) => {
 
   const containerStyles = useSpring({
     opacity: open ? 1 : 0,
-    height: open ? 'calc(100% + 2em)' : '0%'
+    height: open ? 'calc(100% + 2em)' : '0%',
   });
 
   const optionsApi = useSpringRef();
@@ -47,19 +47,19 @@ const Options = (props: Props) => {
     from: (item, index) => ({
       opacity: 0,
       zIndex: index,
-      y: index * (optionHeight + optionPadding) - 25 * index ** 2
+      y: index * (optionHeight + optionPadding) - 25 * index ** 2,
     }),
     enter: (item: any, index: any) => ({
       opacity: 1,
-      y: index * (optionHeight + optionPadding)
+      y: index * (optionHeight + optionPadding),
     }),
     leave: (item, index) => ({
       opacity: 0,
-      y: index * (optionHeight + optionPadding) - 25 * index ** 2
+      y: index * (optionHeight + optionPadding) - 25 * index ** 2,
     }),
     update: (item: any, index: any) => ({ opacity: 1 }),
     config: { mass: 1, tension: 300, friction: 20 },
-    ref: optionsApi
+    ref: optionsApi,
   });
 
   const bind = useSpringDrag({
@@ -71,22 +71,19 @@ const Options = (props: Props) => {
         updateOrder(
           newOrder.map((id, index) => ({
             account: id,
-            order: index
+            order: index,
           }))
         );
       }
       setAccounts((prev) =>
-        prev?.sort(
-          (a, b) =>
-            newOrder.indexOf(a.id) - newOrder.indexOf(b.id)
-        )
+        prev?.sort((a, b) => newOrder.indexOf(a.id) - newOrder.indexOf(b.id))
       );
     },
     style: {
       padding: optionPadding,
       size: optionHeight,
-      axis: 'y'
-    }
+      axis: 'y',
+    },
   });
 
   useEffect(() => {
@@ -99,7 +96,7 @@ const Options = (props: Props) => {
         y: index * (optionHeight + optionPadding) - 25 * index ** 2,
         onRest: () => {
           setLocalOpen(false);
-        }
+        },
       }));
     }
   }, [open]);

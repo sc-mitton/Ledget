@@ -1,4 +1,3 @@
-
 export * from './misc/avatar/Avatar';
 
 export * from './themes/use-bill-cat-tab-theme/use-bill-cat-tab-theme';
@@ -23,7 +22,7 @@ export * from './animations/use-pill-animation/use-pill-animation';
 
 export { default as TextArea } from './pieces/containers/AutoResizeTextArea';
 
-export * from './inputs'
-export * from './pieces'
-export * from './containers'
+export * from './inputs';
+export * from './pieces';
+export * from './containers';
 export * from './buttons';

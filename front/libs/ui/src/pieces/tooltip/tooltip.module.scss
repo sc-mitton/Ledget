@@ -1,115 +1,111 @@
 // $placement: top | left | right | bottom
 @mixin transform($placement, $hovering) {
-    $scale: .8;
+  $scale: 0.8;
 
-    @if $hovering {
-        $scale: 1;
-    }
+  @if $hovering {
+    $scale: 1;
+  }
 
-    @if $placement ==top {
-        bottom: calc(100% + .125em);
-        left: 50%;
-        transform: translateX(-50%) scale($scale);
-    }
-
-    @else if $placement ==left {
-        bottom: calc(0% - .5em);
-        left: calc(0% - .5em);
-        transform: translateX(-100%) scale($scale);
-    }
-
-    @else if $placement ==right {
-        bottom: -50%;
-        right: 0%;
-        transform: translateX(calc(100% + .125em)) scale($scale);
-    }
+  @if $placement ==top {
+    bottom: calc(100% + 0.125em);
+    left: 50%;
+    transform: translateX(-50%) scale($scale);
+  } @else if $placement ==left {
+    bottom: calc(0% - 0.5em);
+    left: calc(0% - 0.5em);
+    transform: translateX(-100%) scale($scale);
+  } @else if $placement ==right {
+    bottom: -50%;
+    right: 0%;
+    transform: translateX(calc(100% + 0.125em)) scale($scale);
+  }
 }
 
 .tooltip {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    cursor: pointer;
-    white-space: nowrap;
-    z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  white-space: nowrap;
+  z-index: 1;
 
-    &:hover>span:last-child {
-        visibility: visible;
-        transform: scale(1);
-        transition-delay: var(--delay);
-        opacity: 1;
-
-        &[data-type='top'] {
-            @include transform(top, true);
-        }
-
-        &[data-type='left'] {
-            @include transform(left, true);
-        }
-
-        &[data-type='right'] {
-            @include transform(right, true);
-        }
-    }
-}
-
-.tooltipText {
-    position: absolute;
-    visibility: hidden;
-    z-index: 1100;
-    margin-bottom: .5em;
-    background-color: var(--m-header-text);
-    color: var(--m-invert-text);
-    padding: .25em .75em;
-    border-radius: 6px;
-    font-size: .75rem;
-    opacity: 0;
-    transition: transform 0.2s, opacity 0.2s;
-    font-weight: var(--fw-bold);
+  &:hover > span:last-child {
+    visibility: visible;
+    transform: scale(1);
+    transition-delay: var(--delay);
+    opacity: 1;
 
     &[data-type='top'] {
-        @include transform(top, false);
-
-        &::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -.3125em;
-            border-width: .3125em;
-            border-style: solid;
-            border-color: var(--m-header-text) transparent transparent transparent;
-        }
+      @include transform(top, true);
     }
 
     &[data-type='left'] {
-        @include transform(left, false);
-
-        &::after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            right: 100%;
-            margin-top: -.25em;
-            border-width: .25em;
-            border-style: solid;
-            border-color: transparent var(--m-header-text) transparent transparent;
-        }
+      @include transform(left, true);
     }
 
     &[data-type='right'] {
-        @include transform(right, false);
-
-        &::after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            right: 100%;
-            margin-top: -.25em;
-            border-width: .25em;
-            border-style: solid;
-            border-color: transparent var(--m-header-text) transparent transparent;
-        }
+      @include transform(right, true);
     }
+  }
+}
+
+.tooltipText {
+  position: absolute;
+  visibility: hidden;
+  z-index: 1100;
+  margin-bottom: 0.5em;
+  background-color: var(--m-header-text);
+  color: var(--m-invert-text);
+  padding: 0.25em 0.75em;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  opacity: 0;
+  transition: transform 0.2s, opacity 0.2s;
+  font-weight: var(--fw-bold);
+
+  &[data-type='top'] {
+    @include transform(top, false);
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -0.3125em;
+      border-width: 0.3125em;
+      border-style: solid;
+      border-color: var(--m-header-text) transparent transparent transparent;
+    }
+  }
+
+  &[data-type='left'] {
+    @include transform(left, false);
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 100%;
+      margin-top: -0.25em;
+      border-width: 0.25em;
+      border-style: solid;
+      border-color: transparent var(--m-header-text) transparent transparent;
+    }
+  }
+
+  &[data-type='right'] {
+    @include transform(right, false);
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 100%;
+      margin-top: -0.25em;
+      border-width: 0.25em;
+      border-style: solid;
+      border-color: transparent var(--m-header-text) transparent transparent;
+    }
+  }
 }

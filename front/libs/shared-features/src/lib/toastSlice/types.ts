@@ -3,7 +3,7 @@ export type ToastType = 'success' | 'info' | 'error';
 type ScreenRoute = {
   screen: string;
   params?: ScreenRoute | { [key: string]: any };
-}
+};
 
 type NavigationRoute = [string, ScreenRoute];
 
@@ -18,7 +18,7 @@ export interface ToastItem {
   hasLoadingBar?: boolean;
 }
 
-export interface NewToast extends Omit<ToastItem, 'id'> { }
+export interface NewToast extends Omit<ToastItem, 'id'> {}
 
 export interface RootStateWithToast {
   toast: {

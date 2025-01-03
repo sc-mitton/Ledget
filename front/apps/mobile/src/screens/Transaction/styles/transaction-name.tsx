@@ -14,8 +14,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   saveButton: {
-    position: 'absolute'
-  }
+    position: 'absolute',
+  },
 });
 
 export default styles;

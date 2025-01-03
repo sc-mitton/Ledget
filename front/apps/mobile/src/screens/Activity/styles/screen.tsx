@@ -1,11 +1,11 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions } from 'react-native';
 
 export default StyleSheet.create({
   transactionsContainer: {
     padding: 0,
     marginTop: 8,
     position: 'relative',
-    zIndex: 1
+    zIndex: 1,
   },
   transactionItem: {
     width: '100%',
@@ -26,13 +26,13 @@ export default StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     bottom: 24,
-    gap: 8
+    gap: 8,
   },
   scrollView: {
     position: 'relative',
     minHeight: '100%',
     paddingTop: 16,
-    marginHorizontal: -16
+    marginHorizontal: -16,
   },
   scrollViewContent: {
     paddingHorizontal: 16,
@@ -43,10 +43,10 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'relative'
+    position: 'relative',
   },
   overlayView: {
-    zIndex: 199
+    zIndex: 199,
   },
   overlayContainer: {
     transform: [{ translateY: -24 }],
@@ -54,10 +54,10 @@ export default StyleSheet.create({
     position: 'absolute',
     top: 0,
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height
+    height: Dimensions.get('window').height,
   },
   overlay: {
-    opacity: 0.6
+    opacity: 0.6,
   },
   mask: {
     position: 'absolute',
@@ -66,6 +66,6 @@ export default StyleSheet.create({
     left: 0,
     right: 0,
     height: 28,
-    zIndex: 0
-  }
+    zIndex: 0,
+  },
 });

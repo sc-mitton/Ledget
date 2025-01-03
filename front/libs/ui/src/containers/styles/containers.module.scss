@@ -1,50 +1,50 @@
 .dropdownItem {
-    overflow: hidden;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 0.875em;
+  width: auto;
+  padding: 0.25em 0.75em;
+  margin: 0.125em 0;
+  transition: background-color 0.3s ease-out;
+  border-radius: var(--border-radius2);
+  width: 100%;
+  box-sizing: border-box;
+
+  & > div {
     display: flex;
     align-items: center;
-    gap: .875em;
-    width: auto;
-    padding: .25em .75em;
-    margin: .125em 0;
+  }
+
+  &[data-selected='true'] {
+    background-color: var(--blue-light);
+  }
+
+  &[data-selected='true']:hover {
+    background-color: var(--blue-light-hover);
+  }
+
+  &[data-selected='true'][data-active='true'] {
+    background-color: var(--blue-light-hover);
+  }
+
+  &[data-active='true'] {
+    outline: none;
+    background-color: var(--dropdown-item-background);
+    box-shadow: none;
+  }
+
+  &:focus-visible {
+    outline: none;
+    background-color: var(--dropdown-item-background);
+    box-shadow: none;
+  }
+
+  &:hover {
+    background-color: var(--dropdown-item-background);
     transition: background-color 0.3s ease-out;
-    border-radius: var(--border-radius2);
-    width: 100%;
-    box-sizing: border-box;
-
-    &>div {
-        display: flex;
-        align-items: center;
-    }
-
-    &[data-selected="true"] {
-        background-color: var(--blue-light);
-    }
-
-    &[data-selected="true"]:hover {
-        background-color: var(--blue-light-hover);
-    }
-
-    &[data-selected='true'][data-active='true'] {
-        background-color: var(--blue-light-hover);
-    }
-
-    &[data-active='true'] {
-        outline: none;
-        background-color: var(--dropdown-item-background);
-        box-shadow: none;
-    }
-
-    &:focus-visible {
-        outline: none;
-        background-color: var(--dropdown-item-background);
-        box-shadow: none;
-    }
-
-    &:hover {
-        background-color: var(--dropdown-item-background);
-        transition: background-color 0.3s ease-out;
-        cursor: pointer;
-        height: 100%;
-        box-shadow: none;
-    }
+    cursor: pointer;
+    height: 100%;
+    box-shadow: none;
+  }
 }

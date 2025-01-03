@@ -1,9 +1,9 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   header: {
     marginVertical: 8,
-    marginLeft: 4
+    marginLeft: 4,
   },
   modalWrapper: {
     position: 'absolute',
@@ -26,7 +26,7 @@ export default StyleSheet.create({
     gap: 6,
   },
   searchContainer: {
-    marginTop: 8
+    marginTop: 8,
   },
   searchInput: {
     width: '100%',
@@ -39,11 +39,11 @@ export default StyleSheet.create({
     top: '50%',
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: 1
+    zIndex: 1,
   },
   searchIcon: {
     position: 'absolute',
-    transform: [{ translateY: 12 }, { translateX: 20 }]
+    transform: [{ translateY: 12 }, { translateX: 20 }],
   },
   option: {
     paddingVertical: 10,
@@ -55,7 +55,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    paddingRight: 8
+    paddingRight: 8,
   },
   emptyScrollView: {
     height: 250,
@@ -87,13 +87,13 @@ export default StyleSheet.create({
     bottom: 0,
   },
   modalOverlay: {
-    opacity: .7,
+    opacity: 0.7,
     zIndex: 1000,
   },
   clearButton: {
     marginTop: 8,
     marginBottom: -16,
     width: '100%',
-    flexDirection: 'row'
-  }
+    flexDirection: 'row',
+  },
 });

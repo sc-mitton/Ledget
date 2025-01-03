@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Login, Recovery, Verification } from '@screens';
 import { RootAuthenticationStackParamList } from '@types';
 import { BackHeader } from '@ledget/native-ui';
-import { useCardStyleInterpolator } from "@/hooks";
+import { useCardStyleInterpolator } from '@/hooks';
 
 const Stack = createStackNavigator<RootAuthenticationStackParamList>();
 
@@ -13,7 +13,9 @@ const Authentication = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        header: (props) => <BackHeader {...props} authenticationScreens={true} />,
+        header: (props) => (
+          <BackHeader {...props} authenticationScreens={true} />
+        ),
         cardStyleInterpolator,
       }}
     >

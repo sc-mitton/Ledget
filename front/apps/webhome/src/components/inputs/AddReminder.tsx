@@ -10,7 +10,7 @@ import { useGetRemindersQuery, Reminder } from '@ledget/shared-features';
 const AddReminder = ({
   value,
   onChange,
-  defaultSelected
+  defaultSelected,
 }: {
   value?: Reminder[];
   defaultSelected?: string[];
@@ -30,7 +30,7 @@ const AddReminder = ({
   const Option = ({
     value,
     active,
-    selected
+    selected,
   }: {
     value: Reminder;
     active: boolean;
@@ -53,7 +53,7 @@ const AddReminder = ({
               style={{
                 opacity: active ? '.5' : '0',
                 padding: '0 .5em',
-                fontWeight: '400'
+                fontWeight: '400',
               }}
             >
               before

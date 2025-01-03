@@ -4,10 +4,9 @@ const styles = StyleSheet.create({
   grid: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: -6
+    marginHorizontal: -6,
   },
-  title: {
-  },
+  title: {},
   column: {
     height: '100%',
     alignItems: 'center',
@@ -18,7 +17,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     paddingVertical: 8,
     gap: 12,
-    height: Dimensions.get('window').width * .75,
+    height: Dimensions.get('window').width * 0.75,
   },
   calendarCell: {
     paddingHorizontal: 10,
@@ -51,7 +50,7 @@ const styles = StyleSheet.create({
     width: 4,
     height: 4,
     borderRadius: 2,
-  }
+  },
 });
 
 export default styles;

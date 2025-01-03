@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 const Stack = createStackNavigator<HomeStackParamList>();
 
 const Screen = (props: BottomTabScreenProps<'Home'>) => {
-  const cardStyleInterpolator = useCardStyleInterpolator()
+  const cardStyleInterpolator = useCardStyleInterpolator();
 
   return (
     <Stack.Navigator
@@ -18,9 +18,13 @@ const Screen = (props: BottomTabScreenProps<'Home'>) => {
         headerTitle: () => '',
       }}
     >
-      <Stack.Screen name='Main' component={Main} initialParams={{ state: 'idle' }} />
+      <Stack.Screen
+        name="Main"
+        component={Main}
+        initialParams={{ state: 'idle' }}
+      />
     </Stack.Navigator>
-  )
-}
+  );
+};
 
-export default Screen
+export default Screen;

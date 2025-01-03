@@ -7,13 +7,13 @@ const styles = StyleSheet.create({
   },
   fontStyle: {
     fontFamily: 'SourceSans3Regular',
-    fontSize: 18
+    fontSize: 18,
   },
   headerContainer: {
-    zIndex: 10
+    zIndex: 10,
   },
   header: {
-    flex: 1
+    flex: 1,
   },
   spentOf: {
     marginTop: 2,
@@ -24,20 +24,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 4,
-    paddingTop: 8
+    paddingTop: 8,
   },
   progressBarContainer: {
     position: 'relative',
     marginVertical: 8,
     borderRadius: 8,
     height: 5,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   progressBar: {
     position: 'absolute',
     left: 0,
     height: '100%',
-    borderRadius: 8
+    borderRadius: 8,
   },
   progressBarBack: {
     position: 'absolute',
@@ -45,11 +45,11 @@ const styles = StyleSheet.create({
     right: 0,
     height: '100%',
     borderRadius: 8,
-    opacity: .2
+    opacity: 0.2,
   },
   fadedText: {
-    opacity: .6
-  }
+    opacity: 0.6,
+  },
 });
 
 export default styles;

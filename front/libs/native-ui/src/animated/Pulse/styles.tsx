@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   pulseContainer: {
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   },
   circle: {
     borderRadius: 100,
-  }
+  },
 });
 
 export default styles;

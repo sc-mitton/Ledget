@@ -5,7 +5,7 @@ import { useAppSelector } from '@hooks/store';
 import styles from './styles/bills.module.scss';
 import {
   useGetBillsQuery,
-  selectBudgetMonthYear
+  selectBudgetMonthYear,
 } from '@ledget/shared-features';
 import { EditBudgetBills } from '@modals/index';
 import { useScreenContext, TextButtonBlue, Window } from '@ledget/ui';

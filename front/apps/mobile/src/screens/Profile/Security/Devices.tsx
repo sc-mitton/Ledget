@@ -3,7 +3,14 @@ import { useState, useEffect, Fragment } from 'react';
 import { groupBy } from 'lodash-es';
 
 import styles from './styles/devices';
-import { BoxHeader, Seperator, Icon, Text, ShimmerBox, ChevronTouchable } from '@ledget/native-ui';
+import {
+  BoxHeader,
+  Seperator,
+  Icon,
+  Text,
+  ShimmerBox,
+  ChevronTouchable,
+} from '@ledget/native-ui';
 import { Computer, MapPin2 } from '@ledget/media/native';
 import { Smartphone } from 'geist-native-icons';
 import { useGetDevicesQuery, Device as TDevice } from '@ledget/shared-features';
@@ -25,22 +32,31 @@ const Device = ({ device, info }: { device: string; info: TDevice[] }) => {
       <View style={styles.deviceSummary}>
         <View style={styles.sessionsRow}>
           <Text>{device.split(',')[0]}&nbsp;</Text>
-          <Text>{` - ${info.length} session${info.length > 1 ? 's' : ''}`}</Text>
+          <Text>{` - ${info.length} session${
+            info.length > 1 ? 's' : ''
+          }`}</Text>
         </View>
         <View style={styles.location}>
           <View style={styles.locationIcon}>
-            <Icon icon={MapPin2} size={11} strokeWidth={2} color='tertiaryText' />
+            <Icon
+              icon={MapPin2}
+              size={11}
+              strokeWidth={2}
+              color="tertiaryText"
+            />
           </View>
-          <Text fontSize={14} color='tertiaryText' >
+          <Text fontSize={14} color="tertiaryText">
             {device.split(',')[2] === undefined
-              ? device.split(',')[1] ? device.split(',')[1] : 'Unknown'
+              ? device.split(',')[1]
+                ? device.split(',')[1]
+                : 'Unknown'
               : device.split(',')[1] + ', ' + device.split(',')[2]}
           </Text>
         </View>
       </View>
     </View>
-  )
-}
+  );
+};
 
 const Devices = (props: SecurityScreenProps<'Main'>) => {
   const { data: devices } = useGetDevicesQuery();
@@ -60,25 +76,34 @@ const Devices = (props: SecurityScreenProps<'Main'>) => {
       <BoxHeader>Devices</BoxHeader>
       <ShimmerBox
         shimmering={!devices}
-        variant='nestedContainer'
+        variant="nestedContainer"
         numberOfLines={3}
         style={styles.devices}
-        backgroundColor='nestedContainer'>
+        backgroundColor="nestedContainer"
+      >
         {groupedDevices?.map(([device, info], index) => (
           <Fragment key={`device${index}`}>
-            <ChevronTouchable onPress={() =>
-              props.navigation.navigate('Device', { key: [info[0].device_family || '', info[0].location] })}>
+            <ChevronTouchable
+              onPress={() =>
+                props.navigation.navigate('Device', {
+                  key: [info[0].device_family || '', info[0].location],
+                })
+              }
+            >
               <Device key={device} device={device} info={info} />
             </ChevronTouchable>
-            {(index !== groupedDevices.length - 1) &&
+            {index !== groupedDevices.length - 1 && (
               <Seperator
-                backgroundColor='nestedContainerSeperator'
-                key={`device-seperator${index}`} variant='s' />}
+                backgroundColor="nestedContainerSeperator"
+                key={`device-seperator${index}`}
+                variant="s"
+              />
+            )}
           </Fragment>
         ))}
       </ShimmerBox>
     </>
-  )
-}
+  );
+};
 
-export default Devices
+export default Devices;

@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   content: {
@@ -17,5 +17,5 @@ export default StyleSheet.create({
   },
   button: {
     width: '100%',
-  }
-})
+  },
+});

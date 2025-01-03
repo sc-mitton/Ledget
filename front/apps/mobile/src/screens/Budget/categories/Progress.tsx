@@ -10,7 +10,7 @@ const Progress = ({ period }: { period: Category['period'] }) => {
     monthly_spent,
     yearly_spent,
     limit_amount_monthly,
-    limit_amount_yearly
+    limit_amount_yearly,
   } = useAppSelector(selectCategoryMetaData);
 
   return (
@@ -25,7 +25,9 @@ const Progress = ({ period }: { period: Category['period'] }) => {
           spent of
         </Text>
         <DollarCents
-          value={period === 'month' ? limit_amount_monthly : limit_amount_yearly}
+          value={
+            period === 'month' ? limit_amount_monthly : limit_amount_yearly
+          }
           color={period === 'month' ? 'monthColor' : 'yearColor'}
           withCents={false}
         />
@@ -36,10 +38,11 @@ const Progress = ({ period }: { period: Category['period'] }) => {
           style={[
             styles.progressBar,
             {
-              width: period === 'month'
-                ? `${(monthly_spent / limit_amount_monthly) * 100}%`
-                : `${(yearly_spent / limit_amount_yearly) * 100}%`
-            }
+              width:
+                period === 'month'
+                  ? `${(monthly_spent / limit_amount_monthly) * 100}%`
+                  : `${(yearly_spent / limit_amount_yearly) * 100}%`,
+            },
           ]}
         />
         <Box
@@ -48,7 +51,7 @@ const Progress = ({ period }: { period: Category['period'] }) => {
         />
       </View>
     </View>
-  )
-}
+  );
+};
 
 export default Progress;

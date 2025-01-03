@@ -9,27 +9,27 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     gap: 4,
     marginTop: 4,
-    marginLeft: 6
+    marginLeft: 6,
   },
   rectangleTitleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
     marginVertical: 4,
-    marginHorizontal: 6
+    marginHorizontal: 6,
   },
   squareTitle: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    marginLeft: -4
+    marginLeft: -4,
   },
   rectangleTitle: {
     marginTop: 2,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    gap: 8
+    gap: 8,
   },
   windowButtons: {
     flexDirection: 'row',
@@ -42,12 +42,12 @@ const styles = StyleSheet.create({
   amountContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8
+    gap: 8,
   },
   percent: {
     flexDirection: 'row',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });
 
 export default styles;

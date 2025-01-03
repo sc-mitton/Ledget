@@ -14,4 +14,3 @@ because then the hook (useCloseDropdown) that closes the dropdown wont close the
 on the new item which the dropdown is opened for. The hack for this, is to check the new position being passed
 to the abs-pos-menu component and if it's the same, this means to close the button. If not, then it means to reposition
 the component.
-

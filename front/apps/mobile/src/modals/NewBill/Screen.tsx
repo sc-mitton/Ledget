@@ -17,7 +17,7 @@ import {
   Text,
   MoneyInput,
   Checkbox,
-} from "@ledget/native-ui"
+} from '@ledget/native-ui';
 import { billSchema } from '@ledget/form-schemas';
 import { useAddnewBillMutation } from '@ledget/shared-features';
 import { ModalScreenProps } from '@types';
@@ -27,46 +27,69 @@ import { useEffect } from 'react';
 
 const Screen = (props: ModalScreenProps<'NewBill'>) => {
   const [addNewBill, { isLoading, isSuccess }] = useAddnewBillMutation();
-  const { control, handleSubmit, resetField } = useForm<z.infer<typeof billSchema>>({
+  const { control, handleSubmit, resetField } = useForm<
+    z.infer<typeof billSchema>
+  >({
     resolver: zodResolver(billSchema),
-    defaultValues: props.route.params?.bill || { period: 'month' }
+    defaultValues: props.route.params?.bill || { period: 'month' },
   });
 
   const onSubmit = (data: z.infer<typeof billSchema>) => {
     addNewBill(data);
-  }
+  };
 
   useEffect(() => {
     props.navigation.setOptions({
       headerRight: () => (
         <Button
-          label='Done'
-          variant='bold'
-          textColor='blueText'
+          label="Done"
+          variant="bold"
+          textColor="blueText"
           onPress={() => handleSubmit(onSubmit)()}
         />
-      )
-    })
-  }, [])
+      ),
+    });
+  }, []);
 
   const emoji = useWatch({ control, name: 'emoji' });
   const isRange = useWatch({ control, name: 'range' });
-  const { field: { onChange: onEmojiChange }, formState: { errors } } = useController({ control, name: 'emoji' });
-  const { field: { onChange: onLowerAmountChange } } = useController({ control, name: 'lower_amount' });
-  const { field: { onChange: onUpperAmountChange } } = useController({ control, name: 'upper_amount' });
+  const {
+    field: { onChange: onEmojiChange },
+    formState: { errors },
+  } = useController({ control, name: 'emoji' });
+  const {
+    field: { onChange: onLowerAmountChange },
+  } = useController({ control, name: 'lower_amount' });
+  const {
+    field: { onChange: onUpperAmountChange },
+  } = useController({ control, name: 'upper_amount' });
 
   return (
-    <Box backgroundColor='modalBox100' style={sharedStyles.modalContent} paddingTop='xxl'>
-      <ScrollView contentContainerStyle={styles.form} showsVerticalScrollIndicator={false} >
+    <Box
+      backgroundColor="modalBox100"
+      style={sharedStyles.modalContent}
+      paddingTop="xxl"
+    >
+      <ScrollView
+        contentContainerStyle={styles.form}
+        showsVerticalScrollIndicator={false}
+      >
         <View>
           <InputLabel>Name</InputLabel>
-          <EmojiPicker value={emoji} onChange={onEmojiChange} title='Emoji' as='modal'>
+          <EmojiPicker
+            value={emoji}
+            onChange={onEmojiChange}
+            title="Emoji"
+            as="modal"
+          >
             <View style={styles.emojiButton}>
               <EmojiPicker.Trigger>
                 <TextInputbase>
-                  {emoji
-                    ? <Text>{emoji}</Text>
-                    : <Icon icon={Emoji} color='placeholderText' size={24} />}
+                  {emoji ? (
+                    <Text>{emoji}</Text>
+                  ) : (
+                    <Icon icon={Emoji} color="placeholderText" size={24} />
+                  )}
                 </TextInputbase>
               </EmojiPicker.Trigger>
             </View>
@@ -76,21 +99,21 @@ const Screen = (props: ModalScreenProps<'NewBill'>) => {
               control={control}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  placeholder='Name'
+                  placeholder="Name"
                   value={value}
                   onChangeText={onChange}
                   onBlur={onBlur}
                   error={errors.name}
                 />
               )}
-              name='name'
+              name="name"
               rules={{ required: 'Category name is required' }}
             />
           </View>
         </View>
         <Box style={styles.moneyInputs}>
           <MoneyInput
-            label='Amount'
+            label="Amount"
             accuracy={2}
             inputType={isRange ? 'range' : undefined}
             error={errors.lower_amount || errors.upper_amount}
@@ -106,10 +129,10 @@ const Screen = (props: ModalScreenProps<'NewBill'>) => {
         </Box>
         <View style={styles.checkBoxContainer}>
           <Controller
-            name='range'
+            name="range"
             render={({ field }) => (
               <Checkbox
-                label='Range'
+                label="Range"
                 default={field.value ? 'checked' : 'unchecked'}
                 onChange={() => field.onChange(!field.value)}
               />
@@ -125,6 +148,6 @@ const Screen = (props: ModalScreenProps<'NewBill'>) => {
         <RemindersModal control={control} resetField={resetField} />
       </ScrollView>
     </Box>
-  )
-}
-export default Screen
+  );
+};
+export default Screen;

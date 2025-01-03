@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   pillFill: {
     width: '100%',
     height: '100%',
-  }
+  },
 });
 
 export default styles;

@@ -1,41 +1,41 @@
 .app-download-button {
-    background-color: var(--btn-light-gray);
-    border-radius: .75em;
+  background-color: var(--btn-light-gray);
+  border-radius: 0.75em;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0.5em 1em;
+  gap: 0.5em;
+  min-width: 11rem;
+  transition: all 0.3s;
+
+  &:hover {
+    background-color: var(--btn-light-gray-hover);
+    transition: all 0.3s;
+  }
+
+  img {
+    height: 1.75rem;
+    width: 1.75rem;
+  }
+
+  & > div {
     display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding: .5em 1em;
-    gap: .5em;
-    min-width: 11rem;
-    transition: all .3s;
+    flex-direction: column;
+    align-items: flex-start;
 
-    &:hover {
-        background-color: var(--btn-light-gray-hover);
-        transition: all .3s;
+    & > span:last-child {
+      font-weight: 600;
     }
+  }
 
-    img {
-        height: 1.75rem;
-        width: 1.75rem;
-    }
-
-    &>div {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-
-        &>span:last-child {
-            font-weight: 600;
-        }
-    }
-
-    path {
-        fill: var(--m-text);
-    }
+  path {
+    fill: var(--m-text);
+  }
 }
 
 @media (max-width: 768px) {
-    .app-download-button {
-        padding: .375em 1em;
-    }
+  .app-download-button {
+    padding: 0.375em 1em;
+  }
 }

@@ -9,7 +9,7 @@ import {
   backgroundColor,
   color,
   layout,
-  createBox
+  createBox,
 } from '@shopify/restyle';
 
 import { Text } from './Text';
@@ -19,35 +19,35 @@ const BaseBox = createBox<Theme>();
 
 const variant = createVariant({ themeKey: 'seperatorVariants' });
 
-type RestyleProps =
-  VariantProps<Theme, 'seperatorVariants'> &
+type RestyleProps = VariantProps<Theme, 'seperatorVariants'> &
   BackgroundColorProps<Theme> &
   ColorProps<Theme> &
   LayoutProps<Theme>;
 
-type Props = RestyleProps & { label?: string, color?: string };
+type Props = RestyleProps & { label?: string; color?: string };
 
-const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([variant, backgroundColor, color, layout]);
-
+const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([
+  variant,
+  backgroundColor,
+  color,
+  layout,
+]);
 
 export const Seperator = ({ label, ...rest }: Props) => {
-  const {
-    variant = 's',
-    backgroundColor = 'seperator',
-    flex = 1,
-  } = rest;
+  const { variant = 's', backgroundColor = 'seperator', flex = 1 } = rest;
 
-  const restyledprops = useRestyle((restyleFunctions), { ...rest, variant, backgroundColor, flex } as any);
+  const restyledprops = useRestyle(restyleFunctions, {
+    ...rest,
+    variant,
+    backgroundColor,
+    flex,
+  } as any);
 
   return (
-    <BaseBox flexDirection='row' alignItems='center' justifyContent='center'>
+    <BaseBox flexDirection="row" alignItems="center" justifyContent="center">
       <BaseBox {...restyledprops} />
-      {label &&
-        <Text paddingHorizontal='m'>
-          {label}
-        </Text>
-      }
+      {label && <Text paddingHorizontal="m">{label}</Text>}
       <BaseBox {...restyledprops} />
     </BaseBox>
   );
-}
+};

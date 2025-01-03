@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   },
   measure: {
     width: '100%',
-  }
+  },
 });
 
 export default styles;

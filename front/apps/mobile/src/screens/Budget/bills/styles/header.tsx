@@ -7,14 +7,14 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 20,
   },
   headerContainer: {
-    flex: 1
+    flex: 1,
   },
   header: {
-    flexDirection: "row"
+    flexDirection: 'row',
   },
   seperator: {
-    marginTop: 8
-  }
+    marginTop: 8,
+  },
 });
 
 export default styles;

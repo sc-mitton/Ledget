@@ -1,51 +1,50 @@
 @import '@styles/table-mixins.scss';
 
 .window {
-    flex: 6;
+  flex: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  gap: 2em;
+
+  & > div:not(:first-child) {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    position: relative;
+    width: 100%;
+  }
+
+  & > div:last-child {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
     gap: 2em;
+  }
 
-    &>div:not(:first-child) {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-    }
+  &[data-size='extra-small'] h2 {
+    font-size: 1.25em;
+  }
 
-    &>div:last-child {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 2em;
-    }
+  h4 {
+    font-size: 0.9rem;
+  }
 
-    &[data-size='extra-small'] h2 {
-        font-size: 1.25em;
-    }
+  h2 {
+    margin-left: 0.375em;
+  }
 
-    h4 {
-        font-size: .9rem;
-    }
-
-    h2 {
-        margin-left: .375em;
-    }
-
-    &[data-size='extra-small'] .window {
-        padding: 1em;
-    }
+  &[data-size='extra-small'] .window {
+    padding: 1em;
+  }
 }
 
 .items {
-    flex-grow: 1;
-    flex-shrink: 1;
+  flex-grow: 1;
+  flex-shrink: 1;
 
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: minmax(0, 1fr) minmax(0, max-content);
-    row-gap: 1.75em;
-    margin-top: 1.75em;
-
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: minmax(0, 1fr) minmax(0, max-content);
+  row-gap: 1.75em;
+  margin-top: 1.75em;
 }

@@ -14,7 +14,7 @@ interface StatusPulseProps {
 export const StatusPulse = ({
   positive,
   colorDefaultPositive = false,
-  size = 'medium'
+  size = 'medium',
 }: StatusPulseProps) => (
   <>
     <div
@@ -70,7 +70,7 @@ export const KeyPadGraphic = ({ finished = false }) => {
           key={index}
           style={
             {
-              '--key-animation-delay': `${shuffledNums[index]} * 100ms`
+              '--key-animation-delay': `${shuffledNums[index]} * 100ms`,
             } as React.CSSProperties
           }
         >
@@ -83,7 +83,7 @@ export const KeyPadGraphic = ({ finished = false }) => {
 
 export const VerificationStatusGraphic = ({
   finished = false,
-  dark = false
+  dark = false,
 }) => {
   return (
     <div className={styles.verifyGraphicContainer}>

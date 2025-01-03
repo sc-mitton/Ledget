@@ -9,8 +9,8 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    transform: [{ translateY: 6 }]
-  }
+    transform: [{ translateY: 6 }],
+  },
 });
 
 export default styles;

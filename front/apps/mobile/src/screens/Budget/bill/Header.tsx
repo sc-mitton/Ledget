@@ -1,11 +1,6 @@
-import { View, Dimensions, StyleSheet } from 'react-native'
+import { View, Dimensions, StyleSheet } from 'react-native';
 import { BlurView } from 'expo-blur';
-import {
-  Canvas,
-  Rect,
-  LinearGradient,
-  vec
-} from '@shopify/react-native-skia';
+import { Canvas, Rect, LinearGradient, vec } from '@shopify/react-native-skia';
 import { useTheme } from '@shopify/restyle';
 
 import styles from './styles/header';
@@ -14,17 +9,14 @@ import { useAppearance } from '@/features/appearanceSlice';
 import { Bill } from '@ledget/shared-features';
 
 const EmojihHeader = ({ bill }: { bill: Bill }) => {
-  const { mode } = useAppearance()
-  const theme = useTheme()
+  const { mode } = useAppearance();
+  const theme = useTheme();
 
   return (
     <Box style={styles.headerBox}>
       <View style={styles.header}>
         <View>
-          <BillCatEmoji
-            emoji={bill.emoji}
-            period={bill.period}
-          />
+          <BillCatEmoji emoji={bill.emoji} period={bill.period} />
         </View>
         <View>
           <Header>
@@ -42,21 +34,20 @@ const EmojihHeader = ({ bill }: { bill: Bill }) => {
           <LinearGradient
             colors={[
               mode === 'dark' ? 'hsla(0, 0%, 0%, 0)' : 'hsla(0, 0%, 100%, 0)',
-              theme.colors.mainBackground
+              theme.colors.mainBackground,
             ]}
             start={vec(0, 0)}
             end={vec(0, 125)}
           />
         </Rect>
       </Canvas>
-      <Text style={[
-        styles.blurEmoji,
-        { opacity: mode === 'dark' ? 0.7 : 0.5 }
-      ]}>
+      <Text
+        style={[styles.blurEmoji, { opacity: mode === 'dark' ? 0.7 : 0.5 }]}
+      >
         {bill.emoji}
       </Text>
     </Box>
-  )
-}
+  );
+};
 
-export default EmojihHeader
+export default EmojihHeader;

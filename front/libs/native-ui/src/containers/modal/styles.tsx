@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   closeButton: {
@@ -27,13 +27,13 @@ export default StyleSheet.create({
     right: 16,
     top: '50%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   topModalContainer: {
     position: 'absolute',
     top: 0,
     left: 0,
-    right: 0
+    right: 0,
   },
   bottomModal: {
     width: '100%',
@@ -68,5 +68,5 @@ export default StyleSheet.create({
     bottom: '-100%',
     left: 0,
     right: 0,
-  }
+  },
 });

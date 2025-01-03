@@ -12,7 +12,7 @@ import {
   MainButton,
   FormError,
   SlideMotionDiv,
-  CopyButton
+  CopyButton,
 } from '@ledget/ui';
 import { useAddUserToAccountMutation } from '@ledget/shared-features';
 import { withReAuth } from '@utils/index';
@@ -25,19 +25,19 @@ const schema = z.object({
     .string()
     .min(1, 'Email is required')
     .email('Invalid email address')
-    .transform((value) => value.trim())
+    .transform((value) => value.trim()),
 });
 
 const Slide1 = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
   } = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema)
+    resolver: zodResolver(schema),
   });
   const [linkUser, { error, isLoading }] = useAddUserToAccountMutation({
-    fixedCacheKey: 'addUserToAccount'
+    fixedCacheKey: 'addUserToAccount',
   });
   const { isDark } = useColorScheme();
 
@@ -77,7 +77,7 @@ const Slide1 = () => {
 
 const Slide2 = () => {
   const [, { data, reset }] = useAddUserToAccountMutation({
-    fixedCacheKey: 'addUserToAccount'
+    fixedCacheKey: 'addUserToAccount',
   });
   const { isDark } = useColorScheme();
   const [expiresIn, setExpiresIn] = useState<number | null>(null);
@@ -116,8 +116,10 @@ const Slide2 = () => {
           <div>
             <CopyButton target={data.recovery_link} />
           </div>
-          <h4>To finish, have your new account member
-            scan the qr code or follow the link</h4>
+          <h4>
+            To finish, have your new account member scan the qr code or follow
+            the link
+          </h4>
           <p>
             If the new household member has not completed the process within{' '}
             {expiresIn} minutes, you will need to start the process over.
@@ -132,7 +134,7 @@ const AddUserModal = withReAuth(
   withSmallModal((props) => {
     const isLoaded = useLoaded(1000);
     const [, { isSuccess }] = useAddUserToAccountMutation({
-      fixedCacheKey: 'addUserToAccount'
+      fixedCacheKey: 'addUserToAccount',
     });
 
     return (

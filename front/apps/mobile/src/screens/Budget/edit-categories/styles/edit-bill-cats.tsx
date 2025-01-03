@@ -8,11 +8,11 @@ const styles = StyleSheet.create({
   nestedContainer: {
     width: '100%',
     maxHeight: '70%',
-    marginVertical: 8
+    marginVertical: 8,
   },
   panel: {
     width: '100%',
-  }
+  },
 });
 
 export default styles;

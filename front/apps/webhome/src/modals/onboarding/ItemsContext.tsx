@@ -6,7 +6,7 @@ import {
   useSpringRef,
   useSpring,
   useTransition,
-  useChain
+  useChain,
 } from '@react-spring/web';
 
 import type { NewBill, NewCategory } from '@ledget/shared-features';
@@ -78,18 +78,18 @@ const transitionConfig = {
   from: () => ({ opacity: 0, zIndex: 0, scale: 1 }),
   enter: (item: any, index: number) => ({
     opacity: 1,
-    y: index * (itemHeight + itemPadding)
+    y: index * (itemHeight + itemPadding),
   }),
   update: (item: any, index: number) => ({
-    y: index * (itemHeight + itemPadding)
+    y: index * (itemHeight + itemPadding),
   }),
   leave: () => ({ opacity: 0 }),
-  config: { duration: 100 }
+  config: { duration: 100 },
 };
 
 export const ItemsProvider = ({
   children,
-  itemType
+  itemType,
 }: {
   children: React.ReactNode;
   itemType: ItemS;
@@ -113,11 +113,11 @@ export const ItemsProvider = ({
 
   const monthTransitions = useTransition(monthItems, {
     ...transitionConfig,
-    ref: monthApi
+    ref: monthApi,
   });
   const yearTransitions = useTransition(yearItems, {
     ...transitionConfig,
-    ref: yearApi
+    ref: yearApi,
   });
 
   const monthContainerProps = useSpring({
@@ -126,7 +126,7 @@ export const ItemsProvider = ({
     ref: monthContainerApi,
     config: { duration: 100 },
     position: 'relative',
-    width: '100%'
+    width: '100%',
   });
   const yearContainerProps = useSpring({
     height: yearItems.length * (itemHeight + itemPadding),
@@ -134,7 +134,7 @@ export const ItemsProvider = ({
     ref: yearContainerApi,
     position: 'relative',
     width: '100%',
-    config: { duration: 100 }
+    config: { duration: 100 },
   });
 
   useChain([monthApi, monthContainerApi], [0, 0]);
@@ -167,7 +167,7 @@ export const ItemsProvider = ({
     api: monthApi,
     containerProps: monthContainerProps,
     containerApi: monthContainerApi,
-    isEmpty: emptyMonthItems
+    isEmpty: emptyMonthItems,
   };
 
   const yearContext = {
@@ -177,7 +177,7 @@ export const ItemsProvider = ({
     api: yearApi,
     containerProps: yearContainerProps,
     containerApi: yearContainerApi,
-    isEmpty: emptyYearItems
+    isEmpty: emptyYearItems,
   };
 
   const vals = {
@@ -187,7 +187,7 @@ export const ItemsProvider = ({
     month: monthContext,
     year: yearContext,
     periodTabIndex,
-    setPeriodTabIndex
+    setPeriodTabIndex,
   };
 
   return itemType === 'bill' ? (

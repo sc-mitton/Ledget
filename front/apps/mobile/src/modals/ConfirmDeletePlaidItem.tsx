@@ -1,18 +1,24 @@
 import { useEffect } from 'react';
-import { View } from 'react-native'
+import { View } from 'react-native';
 
 import sharedStyles from './styles/shared';
-import { Text, Seperator, Button, SubmitButton, Box, Modal } from '@ledget/native-ui'
+import {
+  Text,
+  Seperator,
+  Button,
+  SubmitButton,
+  Box,
+  Modal,
+} from '@ledget/native-ui';
 import { useDeletePlaidItemMutation } from '@ledget/shared-features';
 import { ModalScreenProps } from '@types';
 
-const ConfirmDeletePlaidItem = (props: ModalScreenProps<'ConfirmDeletePlaidItem'>) => {
+const ConfirmDeletePlaidItem = (
+  props: ModalScreenProps<'ConfirmDeletePlaidItem'>
+) => {
   const [
     deletePlaidItem,
-    {
-      isLoading: isDeletingItem,
-      isSuccess: isDeleteSuccess
-    }
+    { isLoading: isDeletingItem, isSuccess: isDeleteSuccess },
   ] = useDeletePlaidItemMutation();
 
   useEffect(() => {
@@ -25,43 +31,45 @@ const ConfirmDeletePlaidItem = (props: ModalScreenProps<'ConfirmDeletePlaidItem'
   }, [isDeleteSuccess]);
 
   return (
-    <Modal position='centerFloat'>
-      <Box
-        paddingHorizontal='xs'
-        style={sharedStyles.header}
-      >
-        <Text fontSize={20} variant='bold'>Disconnect</Text>
-        <Text color='secondaryText'>This will remove the connection to your bank account and all of the data associated with this bank.
-          <Text variant='bold'> This action cannot be undone.</Text>
+    <Modal position="centerFloat">
+      <Box paddingHorizontal="xs" style={sharedStyles.header}>
+        <Text fontSize={20} variant="bold">
+          Disconnect
+        </Text>
+        <Text color="secondaryText">
+          This will remove the connection to your bank account and all of the
+          data associated with this bank.
+          <Text variant="bold"> This action cannot be undone.</Text>
         </Text>
       </Box>
-      <Seperator variant='m' backgroundColor='modalSeperator' />
+      <Seperator variant="m" backgroundColor="modalSeperator" />
       <View style={sharedStyles.splitButtons}>
         <View style={sharedStyles.splitButton}>
           <Button
-            variant='mediumGrayMain'
-            backgroundColor='modalSeperator'
-            alignItems='center'
+            variant="mediumGrayMain"
+            backgroundColor="modalSeperator"
+            alignItems="center"
             onPress={() => props.navigation.goBack()}
-            label='Cancel'
-            textColor='secondaryText'
+            label="Cancel"
+            textColor="secondaryText"
           />
         </View>
         <View style={sharedStyles.splitButton}>
           <SubmitButton
-            variant='mediumGrayMain'
-            backgroundColor='modalSeperator'
-            justifyContent='center'
-            alignItems='center'
-            label='Disconnect'
-            textColor='alert'
+            variant="mediumGrayMain"
+            backgroundColor="modalSeperator"
+            justifyContent="center"
+            alignItems="center"
+            label="Disconnect"
+            textColor="alert"
             isSubmitting={isDeletingItem}
             isSuccess={isDeleteSuccess}
-            onPress={() => deletePlaidItem(props.route.params.id)} />
+            onPress={() => deletePlaidItem(props.route.params.id)}
+          />
         </View>
       </View>
     </Modal>
-  )
+  );
 };
 
-export default ConfirmDeletePlaidItem
+export default ConfirmDeletePlaidItem;

@@ -5,7 +5,7 @@ import Checkbox from './Checkbox';
 
 describe('Checkbox', () => {
   it('should render successfully', () => {
-    const { root } = render(< Checkbox />);
+    const { root } = render(<Checkbox />);
     expect(root).toBeTruthy();
   });
 });

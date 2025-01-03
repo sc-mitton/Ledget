@@ -2,7 +2,10 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { View } from 'react-native';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Animated, { SlideInLeft, LinearTransition } from 'react-native-reanimated';
+import Animated, {
+  SlideInLeft,
+  LinearTransition,
+} from 'react-native-reanimated';
 import { z } from 'zod';
 import Big from 'big.js';
 
@@ -12,7 +15,7 @@ import { useAppSelector } from '@hooks';
 import {
   selectBudgetMonthYear,
   useConfirmTransactionsMutation,
-  useGetCategoriesQuery
+  useGetCategoriesQuery,
 } from '@ledget/shared-features';
 import {
   DollarCents,
@@ -26,24 +29,26 @@ import {
   Text,
   Header2,
   FormError,
-  SubmitButton
+  SubmitButton,
 } from '@ledget/native-ui';
 import { BillCatSelect } from '@/components';
 import { Plus } from 'geist-native-icons';
 import { useLoaded, formatCurrency } from '@ledget/helpers';
 
-const schema = z.object({
-  splits: z.array(
-    z.object({
-      category: z.string().min(1, { message: 'required' }),
-      amount: z.number().min(0, { message: 'required' })
-    })
-  )
-}).transform((data) => {
-  return {
-    splits: data.splits.filter((split) => split.category && split.amount)
-  }
-});
+const schema = z
+  .object({
+    splits: z.array(
+      z.object({
+        category: z.string().min(1, { message: 'required' }),
+        amount: z.number().min(0, { message: 'required' }),
+      })
+    ),
+  })
+  .transform((data) => {
+    return {
+      splits: data.splits.filter((split) => split.category && split.amount),
+    };
+  });
 
 type SplitsSchemaT = z.infer<typeof schema>;
 
@@ -60,14 +65,20 @@ const Screen = (props: ModalScreenProps<'Split' | 'SplitModal'>) => {
   const Wrapper = props.route.name === 'Split' ? Modal : Box;
   const loaded = useLoaded(1000);
   const { month, year } = useAppSelector(selectBudgetMonthYear);
-  const item = useMemo(() => props.route.params.transaction, [props.route.params.transaction]);
-  const [confirmTransactions, { isSuccess: isConfirmSuccess, isLoading: isConfirming }] = useConfirmTransactionsMutation();
+  const item = useMemo(
+    () => props.route.params.transaction,
+    [props.route.params.transaction]
+  );
+  const [
+    confirmTransactions,
+    { isSuccess: isConfirmSuccess, isLoading: isConfirming },
+  ] = useConfirmTransactionsMutation();
   const [totalLeft, setTotalLeft] = useState(0);
 
   const { data: categoriesData } = useGetCategoriesQuery({
     month,
     year,
-    spending: false
+    spending: false,
   });
 
   useEffect(() => {
@@ -80,50 +91,67 @@ const Screen = (props: ModalScreenProps<'Split' | 'SplitModal'>) => {
     handleSubmit,
     formState: { errors, dirtyFields },
     getValues,
-    control
+    control,
   } = useForm<SplitsSchemaT>({
     mode: 'onSubmit',
     resolver: zodResolver(
-      schema.refine((data) => {
-        const totalAmount = data.splits.reduce((acc, split) => acc + split.amount, 0);
-        return Math.abs(totalAmount - item.amount * 100) === 0;
-      }, {
-        message: `Make sure everything adds up to ${formatCurrency(item.amount)}`,
-        path: ['totalSum']
-      })),
+      schema.refine(
+        (data) => {
+          const totalAmount = data.splits.reduce(
+            (acc, split) => acc + split.amount,
+            0
+          );
+          return Math.abs(totalAmount - item.amount * 100) === 0;
+        },
+        {
+          message: `Make sure everything adds up to ${formatCurrency(
+            item.amount
+          )}`,
+          path: ['totalSum'],
+        }
+      )
+    ),
     reValidateMode: 'onBlur',
     defaultValues: {
       splits: item.categories?.length
         ? item.categories.map((c) => ({
-          category: c.id,
-          amount: Big(item.amount)
-            .times(c.fraction || 1)
-            .times(100)
-            .toNumber()
-        }))
-        : [{
-          category:
-            item.predicted_category?.id ||
-            (categoriesData
-              ? categoriesData.find((c) => c.is_default)?.id || ''
-              : ''),
-          amount: Big(item.amount).times(100).toNumber()
-        }]
-    }
+            category: c.id,
+            amount: Big(item.amount)
+              .times(c.fraction || 1)
+              .times(100)
+              .toNumber(),
+          }))
+        : [
+            {
+              category:
+                item.predicted_category?.id ||
+                (categoriesData
+                  ? categoriesData.find((c) => c.is_default)?.id || ''
+                  : ''),
+              amount: Big(item.amount).times(100).toNumber(),
+            },
+          ],
+    },
   });
   const { fields, append, remove } = useFieldArray({ control, name: 'splits' });
 
   const onSubmit = (data: SplitsSchemaT) => {
     // Only submit if any of the data is dirty
     if (Object.keys(dirtyFields).length > 0) {
-      confirmTransactions([{
-        transaction_id: item.transaction_id,
-        splits: data.splits.map((split) => ({
-          category: split.category,
-          fraction: Big(split.amount).div(item.amount).div(100).round(2).toNumber()
-        }))
-      }])
-    };
+      confirmTransactions([
+        {
+          transaction_id: item.transaction_id,
+          splits: data.splits.map((split) => ({
+            category: split.category,
+            fraction: Big(split.amount)
+              .div(item.amount)
+              .div(100)
+              .round(2)
+              .toNumber(),
+          })),
+        },
+      ]);
+    }
     props.navigation.goBack();
   };
 
@@ -133,64 +161,68 @@ const Screen = (props: ModalScreenProps<'Split' | 'SplitModal'>) => {
       padding={props.route.name === 'Split' ? 'none' : 'pagePadding'}
       backgroundColor={'modalBox'}
     >
-      {props.route.name === 'SplitModal' &&
+      {props.route.name === 'SplitModal' && (
         <View style={styles.headerButtons}>
           <Button
-            label='Cancel'
-            textColor='blueText'
+            label="Cancel"
+            textColor="blueText"
             onPress={props.navigation.goBack}
           />
           <Button
-            label='Done'
+            label="Done"
             onPress={() => handleSubmit(onSubmit)}
-            textColor='blueText'
+            textColor="blueText"
           />
-        </View>}
+        </View>
+      )}
       <Box>
-        {props.route.name === 'SplitModal'
-          ?
+        {props.route.name === 'SplitModal' ? (
           <View style={styles.splitModalHeader}>
             <DollarCents
-              variant='bold'
+              variant="bold"
               value={props.route.params.transaction.amount}
               fontSize={34}
             />
-            <Text color='secondaryText'>
+            <Text color="secondaryText">
               {props.route.params.transaction.preferred_name
                 ? props.route.params.transaction.preferred_name.length > 25
-                  ? props.route.params.transaction.preferred_name.slice(0, 25) + '...'
+                  ? props.route.params.transaction.preferred_name.slice(0, 25) +
+                    '...'
                   : props.route.params.transaction.preferred_name
                 : props.route.params.transaction.name.length > 25
-                  ? props.route.params.transaction.name.slice(0, 25) + '...'
-                  : props.route.params.transaction.name}
+                ? props.route.params.transaction.name.slice(0, 25) + '...'
+                : props.route.params.transaction.name}
             </Text>
           </View>
-          :
+        ) : (
           <View style={styles.header}>
             <Header2>Split Transaction</Header2>
             <Text>
-              <Text color='quaternaryText'>Name        </Text>
-              <Text color='secondaryText'>
+              <Text color="quaternaryText">Name </Text>
+              <Text color="secondaryText">
                 {props.route.params.transaction.preferred_name
                   ? props.route.params.transaction.preferred_name.length > 25
-                    ? props.route.params.transaction.preferred_name.slice(0, 25) + '...'
+                    ? props.route.params.transaction.preferred_name.slice(
+                        0,
+                        25
+                      ) + '...'
                     : props.route.params.transaction.preferred_name
                   : props.route.params.transaction.name.length > 25
-                    ? props.route.params.transaction.name.slice(0, 25) + '...'
-                    : props.route.params.transaction.name}
+                  ? props.route.params.transaction.name.slice(0, 25) + '...'
+                  : props.route.params.transaction.name}
               </Text>
             </Text>
             <Text>
-              <Text color='quaternaryText'>Amount    </Text>
+              <Text color="quaternaryText">Amount </Text>
               <DollarCents
-                color='secondaryText'
+                color="secondaryText"
                 value={props.route.params.transaction.amount}
                 fontSize={18}
               />
             </Text>
           </View>
-        }
-        <Seperator variant='m' backgroundColor='modalSeperator' height={2} />
+        )}
+        <Seperator variant="m" backgroundColor="modalSeperator" height={2} />
         {Object.keys(dirtyFields).length > 0 && totalLeft !== 0 && (
           <Text>
             <Text color={totalLeft < 0 ? 'alert' : 'quaternaryText'}>
@@ -207,10 +239,14 @@ const Screen = (props: ModalScreenProps<'Split' | 'SplitModal'>) => {
       </Box>
       <View style={styles.inputLabels}>
         <View style={styles.categoryInput}>
-          <Text color='tertiaryText' fontSize={15}>Category</Text>
+          <Text color="tertiaryText" fontSize={15}>
+            Category
+          </Text>
         </View>
         <View style={styles.amountInputContainer}>
-          <Text color='tertiaryText' fontSize={15}>Amount</Text>
+          <Text color="tertiaryText" fontSize={15}>
+            Amount
+          </Text>
         </View>
       </View>
       <FormError error={(errors as any).totalSum?.message} />
@@ -219,12 +255,14 @@ const Screen = (props: ModalScreenProps<'Split' | 'SplitModal'>) => {
           <Animated.View
             key={`split-${field.id}`}
             layout={LinearTransition}
-            entering={SlideInLeft.withInitialValues({ originX: loaded ? -200 : 0 })}
+            entering={SlideInLeft.withInitialValues({
+              originX: loaded ? -200 : 0,
+            })}
           >
             <SwipeDelete
               disabled={index === 0}
               onDeleted={() => {
-                remove(index)
+                remove(index);
               }}
             >
               <View style={styles.field}>
@@ -241,8 +279,8 @@ const Screen = (props: ModalScreenProps<'Split' | 'SplitModal'>) => {
                         onChange={f.onChange}
                         label={''}
                         error={errors.splits?.[index]?.category}
-                        items='categories'
-                        chevronDirection='down'
+                        items="categories"
+                        chevronDirection="down"
                       />
                     )}
                   />
@@ -254,15 +292,27 @@ const Screen = (props: ModalScreenProps<'Split' | 'SplitModal'>) => {
                     render={({ field }) => (
                       <MoneyInput
                         style={[
-                          { paddingVertical: getValues().splits[index].category ? 4 : 1 }
+                          {
+                            paddingVertical: getValues().splits[index].category
+                              ? 4
+                              : 1,
+                          },
                         ]}
                         defaultValue={field.value}
                         onChange={(v) => {
-                          field.onChange(Big(v || 0).times(100).toNumber());
+                          field.onChange(
+                            Big(v || 0)
+                              .times(100)
+                              .toNumber()
+                          );
                           setTotalLeft(
-                            Big(item.amount).times(100).minus(getTotal(getValues().splits)).toNumber())
+                            Big(item.amount)
+                              .times(100)
+                              .minus(getTotal(getValues().splits))
+                              .toNumber()
+                          );
                         }}
-                        inputType='single'
+                        inputType="single"
                         error={errors.splits?.[index]?.amount}
                         accuracy={2}
                       />
@@ -276,9 +326,9 @@ const Screen = (props: ModalScreenProps<'Split' | 'SplitModal'>) => {
         <Animated.View layout={LinearTransition}>
           <View style={styles.addSplitButton}>
             <Button
-              variant='circleButton'
-              backgroundColor='transparent'
-              borderColor='grayButton'
+              variant="circleButton"
+              backgroundColor="transparent"
+              borderColor="grayButton"
               borderWidth={1.5}
               textColor={fields.length > 3 ? 'quinaryText' : 'secondaryText'}
               disabled={fields.length > 3}
@@ -289,22 +339,23 @@ const Screen = (props: ModalScreenProps<'Split' | 'SplitModal'>) => {
                   color={fields.length > 3 ? 'quinaryText' : 'blueText'}
                   size={18}
                   strokeWidth={2}
-                />}
+                />
+              }
             />
           </View>
         </Animated.View>
       </View>
-      {props.route.name === 'Split' &&
+      {props.route.name === 'Split' && (
         <Button
           label="Save"
-          textColor='blueText'
-          variant='grayMain'
-          marginVertical='xxl'
+          textColor="blueText"
+          variant="grayMain"
+          marginVertical="xxl"
           onPress={handleSubmit(onSubmit)}
         />
-      }
+      )}
     </Wrapper>
-  )
-}
+  );
+};
 
 export default Screen;

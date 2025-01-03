@@ -8,13 +8,13 @@ const LinkGraphic = ({ dark = false, size = 104 }) => {
     <Image
       style={{ width: size, height: size }}
       source={LinkDarkPng}
-      resizeMode='contain'
+      resizeMode="contain"
     />
   ) : (
     <Image
       style={{ width: size, height: size }}
       source={LinkLightPng}
-      resizeMode='contain'
+      resizeMode="contain"
     />
   );
 };

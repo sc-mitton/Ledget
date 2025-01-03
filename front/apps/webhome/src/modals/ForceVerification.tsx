@@ -6,13 +6,10 @@ import styles from './styles/force-verification.module.scss';
 import { withModal } from '@ledget/ui';
 import { FormError, JiggleDiv, VerificationForm } from '@ledget/ui';
 import { useFlow, useVerificationCodeHandler } from '@ledget/ory';
-import {
-  apiSlice,
-  useGetMeQuery,
-} from '@ledget/shared-features';
+import { apiSlice, useGetMeQuery } from '@ledget/shared-features';
 import {
   useLazyGetVerificationFlowQuery,
-  useCompleteVerificationFlowMutation
+  useCompleteVerificationFlowMutation,
 } from '@features/orySlice';
 import { useAppDispatch } from '@hooks/store';
 
@@ -24,16 +21,20 @@ export const ForceVerification = ({ onSuccess }: { onSuccess: () => void }) => {
     useCompleteVerificationFlowMutation,
     'verification'
   );
-  const { errMsg, isGettingFlow, isCompletingFlow, isCompleteSuccess } = flowStatus;
+  const { errMsg, isGettingFlow, isCompletingFlow, isCompleteSuccess } =
+    flowStatus;
 
-  useEffect(() => { fetchFlow() }, []);
+  useEffect(() => {
+    fetchFlow();
+  }, []);
 
-  const { jiggle, unhandledIdMessage, refreshSuccess } = useVerificationCodeHandler({
-    dependencies: [isCompleteSuccess],
-    onExpired: () => navigate(0),
-    onSuccess,
-    result
-  });
+  const { jiggle, unhandledIdMessage, refreshSuccess } =
+    useVerificationCodeHandler({
+      dependencies: [isCompleteSuccess],
+      onExpired: () => navigate(0),
+      onSuccess,
+      result,
+    });
 
   return (
     <>

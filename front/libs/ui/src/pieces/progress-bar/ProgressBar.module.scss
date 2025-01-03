@@ -1,34 +1,34 @@
 .container {
-    position: relative;
-    color: inherit;
+  position: relative;
+  color: inherit;
 
-    &::before {
-        position: absolute;
-        width: var(--progress);
-        content: '';
-        height: 2px;
-        left: 0;
-        right: 0;
-        border-radius: 2em;
-        bottom: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 1;
-        opacity: .8;
-        background-color: currentColor;
-    }
+  &::before {
+    position: absolute;
+    width: var(--progress);
+    content: '';
+    height: 2px;
+    left: 0;
+    right: 0;
+    border-radius: 2em;
+    bottom: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    opacity: 0.8;
+    background-color: currentColor;
+  }
 
-    &::after {
-        position: absolute;
-        width: 100%;
-        content: '';
-        height: 2px;
-        border-radius: 2em;
-        bottom: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        opacity: .3;
-        z-index: 0;
-        background-color: currentColor;
-    }
+  &::after {
+    position: absolute;
+    width: 100%;
+    content: '';
+    height: 2px;
+    border-radius: 2em;
+    bottom: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.3;
+    z-index: 0;
+    background-color: currentColor;
+  }
 }

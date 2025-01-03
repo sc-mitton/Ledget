@@ -13,10 +13,10 @@ import {
   environmentSlice,
   investmentsSlice,
   institutionsSlice,
-  mobileAuthSlice
+  mobileAuthSlice,
 } from '@ledget/shared-features';
-import { createMigrate, persistReducer } from "redux-persist";
-import storage from "./storage";
+import { createMigrate, persistReducer } from 'redux-persist';
+import storage from './storage';
 import { RootState } from './store';
 
 const migrations = {
@@ -25,30 +25,37 @@ const migrations = {
     ui: {
       ...state.ui,
       settings: {
-        startOnHome: true
-      }
-    }
+        startOnHome: true,
+      },
+    },
   }),
   2: (state: RootState) => ({
     ...state,
     ui: {
       ...state.ui,
-      hideBottomTabs: false
-    }
+      hideBottomTabs: false,
+    },
   }),
   3: (state: RootState) => ({
     ...state,
-    ui: state.ui
-  })
+    ui: state.ui,
+  }),
 } as any;
 
 const persistConfig = {
-  key: "root",
+  key: 'root',
   version: 3,
   storage,
   timeout: 0,
   migrate: createMigrate(migrations),
-  whitelist: ['appearance', 'budgetItemMetaData', 'ui', 'investments', 'widgets', 'institutions']
+  whitelist: [
+    'appearance',
+    'budgetItemMetaData',
+    'ui',
+    'investments',
+    'widgets',
+    'institutions',
+  ],
 };
 
 const rootReducer = combineReducers({
@@ -66,7 +73,7 @@ const rootReducer = combineReducers({
   ui: uiSlice.reducer,
   widgets: widgetsSlice.reducer,
   institutions: institutionsSlice.reducer,
-  mobileAuth: mobileAuthSlice.reducer
+  mobileAuth: mobileAuthSlice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

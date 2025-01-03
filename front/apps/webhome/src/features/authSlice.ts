@@ -9,28 +9,28 @@ export const authSlice = createSlice({
   initialState: {
     reAuthed: {
       level: 'none' as User['session']['aal'],
-      at: null as number | null
-    }
+      at: null as number | null,
+    },
   },
   reducers: {
     aal1ReAuthed: (state) => {
       state.reAuthed = {
         level: 'aal1',
-        at: Date.now()
+        at: Date.now(),
       };
     },
     aal15ReAuthed: (state) => {
       state.reAuthed = {
         level: 'aal15',
-        at: Date.now()
+        at: Date.now(),
       };
     },
     aal2ReAuthed: (state) => {
       state.reAuthed = {
         level: 'aal2',
-        at: Date.now()
+        at: Date.now(),
       };
-    }
+    },
   },
   extraReducers: (builder) => {
     builder.addMatcher(
@@ -41,11 +41,13 @@ export const authSlice = createSlice({
           1000 * 60 * 9
         ) {
           state.reAuthed.level = action.payload?.session?.aal || 'none';
-          state.reAuthed.at = dayjs(action.payload?.session?.auth_completed_at).valueOf();
-        };
+          state.reAuthed.at = dayjs(
+            action.payload?.session?.auth_completed_at
+          ).valueOf();
+        }
       }
     );
-  }
+  },
 });
 
 export const { aal1ReAuthed, aal15ReAuthed, aal2ReAuthed } = authSlice.actions;

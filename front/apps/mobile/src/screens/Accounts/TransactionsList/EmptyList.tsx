@@ -6,45 +6,56 @@ import styles from './styles/empty-list';
 import { useTransactionsSyncMutation } from '@ledget/shared-features';
 import { Text, Icon } from '@ledget/native-ui';
 import { useAppSelector } from '@/hooks';
-import { selectAccountsTabCreditAccounts, selectAccountsTabDepositAccounts } from '@/features/uiSlice';
+import {
+  selectAccountsTabCreditAccounts,
+  selectAccountsTabDepositAccounts,
+} from '@/features/uiSlice';
 import { AccountsTabsScreenProps } from '@types';
 import LottieView from 'lottie-react-native';
 
 const EmptyList = (props: AccountsTabsScreenProps<'Depository' | 'Credit'>) => {
   const accounts = useAppSelector(
-    props.route.name === 'Depository' ? selectAccountsTabDepositAccounts : selectAccountsTabCreditAccounts)
+    props.route.name === 'Depository'
+      ? selectAccountsTabDepositAccounts
+      : selectAccountsTabCreditAccounts
+  );
 
-  const theme = useTheme()
-  const [syncTransactions, { isLoading: isSyncing }] = useTransactionsSyncMutation()
+  const theme = useTheme();
+  const [syncTransactions, { isLoading: isSyncing }] =
+    useTransactionsSyncMutation();
 
   return (
     <ScrollView
       refreshControl={
         <RefreshControl
           onRefresh={() => {
-            if (accounts) { syncTransactions() }
+            if (accounts) {
+              syncTransactions();
+            }
           }}
           refreshing={isSyncing}
           style={styles.refreshControl}
           colors={[theme.colors.blueText]}
           progressBackgroundColor={theme.colors.modalBox}
           tintColor={theme.colors.secondaryText}
-        />}
-      contentContainerStyle={styles.emptyBoxContainer}>
-      <Text color='quaternaryText'>
-        No Transactions
-      </Text>
+        />
+      }
+      contentContainerStyle={styles.emptyBoxContainer}
+    >
+      <Text color="quaternaryText">No Transactions</Text>
       <LottieView
         autoPlay
         loop
         style={{ width: 24, height: 24 }}
-        colorFilters={[{
-          keypath: 'arrow-down',
-          color: theme.colors.quaternaryText
-        }]}
+        colorFilters={[
+          {
+            keypath: 'arrow-down',
+            color: theme.colors.quaternaryText,
+          },
+        ]}
         source={require('../../../../assets/lotties/arrowDown.json')}
       />
     </ScrollView>
-  )
-}
-export default EmptyList
+  );
+};
+export default EmptyList;

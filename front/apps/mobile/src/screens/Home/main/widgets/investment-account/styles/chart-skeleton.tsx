@@ -3,12 +3,12 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   chartContainer: {
     flexGrow: 2,
-    marginHorizontal: -13
+    marginHorizontal: -13,
   },
   fontStyle: {
     fontFamily: 'SourceSans3Regular',
     fontSize: 16,
-    transform: [{ translateX: 3 }]
+    transform: [{ translateX: 3 }],
   },
   tipContainer: {
     left: '50%',
@@ -16,13 +16,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    zIndex: 100
+    zIndex: 100,
   },
   tip: {
     position: 'absolute',
     justifyContent: 'center',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });
 
 export default styles;

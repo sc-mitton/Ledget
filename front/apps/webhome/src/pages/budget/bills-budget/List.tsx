@@ -6,7 +6,7 @@ import styles from './styles/list.module.scss';
 import { useAppDispatch } from '@hooks/store';
 import {
   selectBudgetMonthYear,
-  useGetBillsQuery
+  useGetBillsQuery,
 } from '@ledget/shared-features';
 import { setBillModal } from '@features/modalSlice';
 import { DollarCents, BillCatLabel, useScreenContext } from '@ledget/ui';
@@ -32,7 +32,7 @@ const List = ({ collapsed }: { collapsed: boolean }) => {
       style={
         {
           '--number-of-bills': bills?.length! / 2 || 0,
-          ...(bills?.length || 0 <= 10 ? {} : {})
+          ...(bills?.length || 0 <= 10 ? {} : {}),
         } as React.CSSProperties
       }
     >
@@ -77,7 +77,7 @@ const List = ({ collapsed }: { collapsed: boolean }) => {
                   {new Date(bill.date)
                     .toLocaleString('en-us', {
                       month: 'numeric',
-                      day: 'numeric'
+                      day: 'numeric',
                     })
                     .replace('/', '-')}
                 </span>

@@ -9,8 +9,8 @@ import {
   PURGE,
   REGISTER,
   REHYDRATE,
-  persistStore
-} from "redux-persist";
+  persistStore,
+} from 'redux-persist';
 
 const store = configureStore({
   reducer: rootReducer,
@@ -19,12 +19,10 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat([
-      apiSlice.middleware,
-      toastErrorMiddleware
-    ]),
+    }).concat([apiSlice.middleware, toastErrorMiddleware]),
   devTools: false,
-  enhancers: (getDefaultEnhancers) => getDefaultEnhancers.concat(devToolsEnhancer()),
+  enhancers: (getDefaultEnhancers) =>
+    getDefaultEnhancers.concat(devToolsEnhancer()),
 });
 
 export default store;

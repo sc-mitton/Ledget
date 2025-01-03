@@ -10,7 +10,9 @@ import { Text } from '../../restyled/Text';
 import { Icon } from '../../restyled/Icon';
 
 export function Checkbox(props: CheckboxProps) {
-  const [checked, setChecked] = useState(props.default === 'checked' ? true : false);
+  const [checked, setChecked] = useState(
+    props.default === 'checked' ? true : false
+  );
   const { size = 24 } = props;
 
   useEffect(() => {
@@ -20,7 +22,10 @@ export function Checkbox(props: CheckboxProps) {
     <TouchableOpacity
       style={styles.container}
       activeOpacity={0.7}
-      onPress={() => { setChecked(!checked); props.onChange(!checked); }}
+      onPress={() => {
+        setChecked(!checked);
+        props.onChange(!checked);
+      }}
     >
       <Box
         backgroundColor={checked ? 'blueButton' : 'inputBackground'}
@@ -29,24 +34,37 @@ export function Checkbox(props: CheckboxProps) {
         borderRadius={size < 20 ? 'xxs' : 'xs'}
         style={{
           width: size,
-          height: size
+          height: size,
         }}
       >
-        <View style={styles.checkIconContainer} pointerEvents='none'>
-          {checked &&
+        <View style={styles.checkIconContainer} pointerEvents="none">
+          {checked && (
             <Animated.View
               style={styles.checkIcon}
-              entering={ZoomIn.springify().damping(5).stiffness(200).mass(.2).overshootClamping(0)}
-              exiting={ZoomOut.springify().damping(5).stiffness(200).mass(.2).overshootClamping(0)}
+              entering={ZoomIn.springify()
+                .damping(5)
+                .stiffness(200)
+                .mass(0.2)
+                .overshootClamping(0)}
+              exiting={ZoomOut.springify()
+                .damping(5)
+                .stiffness(200)
+                .mass(0.2)
+                .overshootClamping(0)}
             >
-              <Icon icon={Check} color='whiteText' strokeWidth={3} size={size - 4} />
-            </Animated.View>}
+              <Icon
+                icon={Check}
+                color="whiteText"
+                strokeWidth={3}
+                size={size - 4}
+              />
+            </Animated.View>
+          )}
         </View>
       </Box>
       <Text>{props.label}</Text>
     </TouchableOpacity>
   );
 }
-
 
 export default Checkbox;

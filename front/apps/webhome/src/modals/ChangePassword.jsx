@@ -12,7 +12,7 @@ import { withReAuth } from '@utils';
 import { useFlow } from '@ledget/ory';
 import {
   useLazyGetSettingsFlowQuery,
-  useCompleteSettingsFlowMutation
+  useCompleteSettingsFlowMutation,
 } from '@features/orySlice';
 
 const schema = z
@@ -21,11 +21,11 @@ const schema = z
       .string()
       .min(1, { message: 'required' })
       .min(10, { message: 'Password must be at least 10 characters' }),
-    confirmPassword: z.string().min(1, { message: 'required' })
+    confirmPassword: z.string().min(1, { message: 'required' }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Passwords must match',
-    path: ['confirmPassword']
+    path: ['confirmPassword'],
   });
 
 const ChangePassword = (props) => {
@@ -39,7 +39,7 @@ const ChangePassword = (props) => {
     errorFetchingFlow,
     isCompleteError,
     isCompleteSuccess,
-    isCompletingFlow
+    isCompletingFlow,
   } = flowStatus;
 
   useEffect(() => {
@@ -59,11 +59,11 @@ const ChangePassword = (props) => {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
   } = useForm({
     resolver: zodResolver(schema),
     mode: 'onSubmit',
-    reValidateMode: 'onBlur'
+    reValidateMode: 'onBlur',
   });
   const [pwdVisible, setPwdVisible] = useState(false);
 
@@ -79,7 +79,7 @@ const ChangePassword = (props) => {
             margin: '1em 0',
             display: 'flex',
             flexDirection: 'column',
-            gap: '.25em'
+            gap: '.25em',
           }}
         >
           <div>

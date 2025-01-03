@@ -8,13 +8,13 @@ const TourActivity = ({ dark = false, size = 425 }) => {
     <Image
       style={{ width: size, height: size }}
       source={tourActivityDark}
-      resizeMode='contain'
+      resizeMode="contain"
     />
   ) : (
     <Image
       style={{ width: size, height: size }}
       source={tourActivityLight}
-      resizeMode='contain'
+      resizeMode="contain"
     />
   );
 };

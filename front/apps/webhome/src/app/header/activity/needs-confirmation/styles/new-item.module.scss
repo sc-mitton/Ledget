@@ -1,92 +1,91 @@
 @import './stack.module.scss';
 
 .newItem {
-    position: absolute;
-    border-radius: var(--border-radius5);
-    box-shadow: var(--new-item-drop-shadow);
-    border: 1.25px solid var(--new-item-border);
-    padding: $new-item-padding;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    margin-right: $scrollbar-padding;
-    margin-left: $scrollbar-padding;
+  position: absolute;
+  border-radius: var(--border-radius5);
+  box-shadow: var(--new-item-drop-shadow);
+  border: 1.25px solid var(--new-item-border);
+  padding: $new-item-padding;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  margin-right: $scrollbar-padding;
+  margin-left: $scrollbar-padding;
 
-    &::after {
-        content: '';
-        display: block;
-        opacity: 0;
-        position: absolute;
-        bottom: -.625em;
-        width: 100%;
-        height: .625em;
-    }
+  &::after {
+    content: '';
+    display: block;
+    opacity: 0;
+    position: absolute;
+    bottom: -0.625em;
+    width: 100%;
+    height: 0.625em;
+  }
 }
 
 .newItemData {
+  display: flex;
+  mask-image: linear-gradient(to right, black, black 72%, transparent 80%);
+  flex-grow: 1;
+
+  // Logo
+  div:first-child {
     display: flex;
-    mask-image: linear-gradient(to right, black, black 72%, transparent 80%);
-    flex-grow: 1;
+    align-items: center;
+    margin-right: 0.375em;
+    margin-left: 0.0625em;
 
-    // Logo
-    div:first-child {
-        display: flex;
-        align-items: center;
-        margin-right: .375em;
-        margin-left: .0625em;
+    @include invert-image;
+  }
 
-        @include invert-image;
+  // Name, date, amount
+  & > div:last-child {
+    // Name
+    & > div:first-child {
+      white-space: nowrap;
+      overflow: hidden;
+      width: 100%;
     }
 
-    // Name, date, amount
-    &>div:last-child {
+    // amount, date
+    & > div:last-child {
+      display: flex;
+      align-items: baseline;
 
-        // Name
-        &>div:first-child {
-            white-space: nowrap;
-            overflow: hidden;
-            width: 100%;
+      // amount
+      span:nth-child(-n + 2) {
+        font-size: 0.75rem;
+      }
+
+      // date
+      & > span:last-child {
+        color: var(--m-text-secondary);
+        font-size: 0.75rem;
+        font-weight: var(--fw-regula);
+
+        &:last-child {
+          margin-left: 0.625em;
         }
-
-        // amount, date
-        &>div:last-child {
-            display: flex;
-            align-items: baseline;
-
-            // amount
-            span:nth-child(-n+2) {
-                font-size: .75rem;
-            }
-
-            // date
-            &>span:last-child {
-                color: var(--m-text-secondary);
-                font-size: .75rem;
-                font-weight: var(--fw-regula);
-
-                &:last-child {
-                    margin-left: .625em;
-                }
-            }
-        }
+      }
     }
+  }
 }
 
 .greenText {
-    color: var(--green-text);
+  color: var(--green-text);
 }
 
 .newItemIcons {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    gap: .5em;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5em;
 
-    button {
-        margin: 0;
-    }
+  button {
+    margin: 0;
+  }
 }
 
 .confirmButton {
-    margin-left: .25em;
+  margin-left: 0.25em;
 }

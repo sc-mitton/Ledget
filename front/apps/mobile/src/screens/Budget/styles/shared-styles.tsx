@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   page: {
     paddingHorizontal: 16,
-    width: '100%'
+    width: '100%',
   },
   pagerView: {
     width: '100%',
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   },
   boxTopHalf: {
     borderRadius: 16,
-    paddingBottom: 8
+    paddingBottom: 8,
   },
   boxBottomHalf: {
     zIndex: -1,
@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
     top: 10,
     right: -6,
     height: 20,
-    paddingHorizontal: 24
-  }
+    paddingHorizontal: 24,
+  },
 });
 
 export default styles;

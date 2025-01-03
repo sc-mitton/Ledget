@@ -16,7 +16,7 @@ import {
   DeactivateAuthentictor,
   ChangePassword,
   AuthenticatorSetup,
-  RecoveryCodes
+  RecoveryCodes,
 } from '@modals/index';
 import { useGetMeQuery } from '@ledget/shared-features';
 import { ShimmerDiv, useScreenContext, UnPaddedWindow } from '@ledget/ui';

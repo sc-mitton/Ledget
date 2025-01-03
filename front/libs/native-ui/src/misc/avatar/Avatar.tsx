@@ -9,7 +9,7 @@ interface Props {
   name?: {
     first: string;
     last: string;
-  }
+  };
 }
 
 export const Avatar = (props: Props) => {
@@ -20,7 +20,12 @@ export const Avatar = (props: Props) => {
       <Text
         style={[
           styles[props.size],
-          { color: props.name?.first[0] ? theme.colors.whiteText : 'transparent', fontFamily: 'SourceSans3Regular' },
+          {
+            color: props.name?.first[0]
+              ? theme.colors.whiteText
+              : 'transparent',
+            fontFamily: 'SourceSans3Regular',
+          },
         ]}
       >
         {`${props.name?.first[0] || 'A'}`}
@@ -28,14 +33,20 @@ export const Avatar = (props: Props) => {
       <Text
         style={[
           styles[props.size],
-          { color: props.name?.last[0] ? theme.colors.whiteText : 'transparent', fontFamily: 'SourceSans3Regular' },
+          {
+            color: props.name?.last[0] ? theme.colors.whiteText : 'transparent',
+            fontFamily: 'SourceSans3Regular',
+          },
         ]}
       >
         {`${props.name?.last[0] || 'B'}`}
       </Text>
       <View style={styles.backgroundContainer}>
-        <Box backgroundColor='avatar' style={[styles.background, styles[`${props.size}Circle`]]} />
+        <Box
+          backgroundColor="avatar"
+          style={[styles.background, styles[`${props.size}Circle`]]}
+        />
       </View>
     </View>
-  )
-}
+  );
+};

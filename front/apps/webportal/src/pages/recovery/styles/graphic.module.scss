@@ -1,13 +1,13 @@
 .imageContainer {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    margin: 3em 0;
-    position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 3em 0;
+  position: relative;
 
-    img {
-        position: relative;
-        z-index: 10;
-        filter: contrast(.97);
-    }
+  img {
+    position: relative;
+    z-index: 10;
+    filter: contrast(0.97);
+  }
 }

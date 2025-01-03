@@ -1,11 +1,11 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   toastItemContainer: {
     position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%'
+    width: '100%',
   },
   toastItem: {
     flexDirection: 'row',
@@ -15,7 +15,7 @@ export default StyleSheet.create({
     padding: 16,
     marginHorizontal: 24,
     position: 'absolute',
-    opacity: .99
+    opacity: 0.99,
   },
   iconContainer: {
     justifyContent: 'center',
@@ -28,5 +28,5 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-  }
+  },
 });

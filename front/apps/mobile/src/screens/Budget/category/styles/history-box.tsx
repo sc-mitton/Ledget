@@ -3,12 +3,12 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   transactionsList: {
     gap: 18,
-    padding: 0
+    padding: 0,
   },
   transactionsListBox: {
     minHeight: 50,
     flexGrow: 1,
-    marginTop: 12
+    marginTop: 12,
   },
   amountContainer: {
     flexDirection: 'row',
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     width: '100%',
     transform: [{ translateX: 16 }],
     alignItems: 'center',
-    position: 'absolute'
+    position: 'absolute',
   },
   row: {
     flexDirection: 'row',
@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
   },
   clockIcon: {
     marginRight: 5,
-    marginBottom: -2
-  }
+    marginBottom: -2,
+  },
 });
 
 export default styles;

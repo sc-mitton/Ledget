@@ -5,16 +5,14 @@ import Options from './Options';
 // import Notifications from './Notifications';
 
 const Screen = (props: ProfileScreenProps<'Settings'>) => (
-  <Box variant='nestedScreen'>
+  <Box variant="nestedScreen">
     <Appearance />
     <Options />
     {/* <Notifications /> */}
   </Box>
-)
+);
 
-export default Screen
-
-
+export default Screen;
 
 /*
 

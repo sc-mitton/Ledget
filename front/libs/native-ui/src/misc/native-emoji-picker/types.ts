@@ -1,13 +1,13 @@
 export type Key =
-  | "Smileys & Emotion"
-  | "People & Body"
-  | "Animals & Nature"
-  | "Food & Drink"
-  | "Activities"
-  | "Travel & Places"
-  | "Objects"
-  | "Symbols"
-  | "Flags";
+  | 'Smileys & Emotion'
+  | 'People & Body'
+  | 'Animals & Nature'
+  | 'Food & Drink'
+  | 'Activities'
+  | 'Travel & Places'
+  | 'Objects'
+  | 'Symbols'
+  | 'Flags';
 
 export type Category = {
   symbol: string;

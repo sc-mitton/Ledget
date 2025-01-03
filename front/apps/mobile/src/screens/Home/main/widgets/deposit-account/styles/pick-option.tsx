@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 12,
     padding: 8,
-    flex: 1
+    flex: 1,
   },
   logoSkeleton: {
     width: 18,
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   rightContainer: {
     flexGrow: 1,
     alignItems: 'flex-start',
-    gap: 6
+    gap: 6,
   },
   amountSkeleton: {
     height: 9,
@@ -27,12 +27,12 @@ const styles = StyleSheet.create({
   },
   nameSkeleton: {
     height: 10,
-    width: 72
+    width: 72,
   },
   chartContainer: {
     flexGrow: 2,
     marginHorizontal: -14,
-  }
+  },
 });
 
 export default styles;

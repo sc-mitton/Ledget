@@ -1,30 +1,38 @@
-@mixin table-dividers($bottom: -0.5em, $dashed: false, $width: 1.4px, $color: var(--border-color-ultra-dim)) {
-    &:not(.month-header)::after {
-        content: '';
-        position: absolute;
-        bottom: $bottom;
-        left: 0em;
-        right: 0em;
-        height: 1px;
+@mixin table-dividers(
+  $bottom: -0.5em,
+  $dashed: false,
+  $width: 1.4px,
+  $color: var(--border-color-ultra-dim)
+) {
+  &:not(.month-header)::after {
+    content: '';
+    position: absolute;
+    bottom: $bottom;
+    left: 0em;
+    right: 0em;
+    height: 1px;
 
-        @if $dashed {
-            border-bottom: $width dashed $color;
-        }
-
-        @else {
-            border-bottom: $width solid $color;
-        }
+    @if $dashed {
+      border-bottom: $width dashed $color;
+    } @else {
+      border-bottom: $width solid $color;
     }
+  }
 }
 
 @mixin table-header-mask-image {
-    mask-image: linear-gradient(to bottom, black 8px, black calc(100% - 8px), transparent);
+  mask-image: linear-gradient(
+    to bottom,
+    black 8px,
+    black calc(100% - 8px),
+    transparent
+  );
 }
 
 @mixin invert-image {
-    img {
-        // filter: invert(1) contrast(3.5);
-        // opacity: .7;
-        transform: scale(1.2);
-    }
+  img {
+    // filter: invert(1) contrast(3.5);
+    // opacity: .7;
+    transform: scale(1.2);
+  }
 }

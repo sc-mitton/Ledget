@@ -4,8 +4,8 @@ const styles = StyleSheet.create({
   menu: {
     position: 'absolute',
     right: 0,
-    top: -16
-  }
+    top: -16,
+  },
 });
 
 export default styles;

@@ -32,20 +32,24 @@ export function ProgressEmoji(props: ProgressEmojiProps) {
     <View style={styles.progressEmoji}>
       <View style={styles.absEmojiContainer}>
         <Box
-          backgroundColor={props.period === 'year' ? 'yearBackground' : 'monthBackground'}
-          borderRadius='circle'
-          style={styles.absEmoji}>
-          <Svg
-            viewBox="0 0 100 100"
-            style={styles.billCatEmojiContainer}
-          >
+          backgroundColor={
+            props.period === 'year' ? 'yearBackground' : 'monthBackground'
+          }
+          borderRadius="circle"
+          style={styles.absEmoji}
+        >
+          <Svg viewBox="0 0 100 100" style={styles.billCatEmojiContainer}>
             <Circle
               cx={50}
               cy={50}
               r={48}
               fill="none"
               opacity={1}
-              stroke={props.period === 'year' ? theme.colors.yearBorder : theme.colors.monthBorder}
+              stroke={
+                props.period === 'year'
+                  ? theme.colors.yearBorder
+                  : theme.colors.monthBorder
+              }
               strokeWidth={5}
             />
             <Circle
@@ -53,18 +57,26 @@ export function ProgressEmoji(props: ProgressEmojiProps) {
               cy={50}
               r={48}
               fill="none"
-              stroke={props.period === 'year' ? theme.colors.yearColor : theme.colors.monthColor}
-              strokeLinecap='round'
+              stroke={
+                props.period === 'year'
+                  ? theme.colors.yearColor
+                  : theme.colors.monthColor
+              }
+              strokeLinecap="round"
               strokeWidth={5}
               transform="rotate(-90 50 50)"
-              strokeDasharray={`${props.progress ? parseFloat((Math.min(1, props.progress)).toFixed(2)) * 300 : 0}, 300`}
+              strokeDasharray={`${
+                props.progress
+                  ? parseFloat(Math.min(1, props.progress).toFixed(2)) * 300
+                  : 0
+              }, 300`}
             />
           </Svg>
         </Box>
       </View>
       <Text>{props.emoji}</Text>
     </View>
-  )
+  );
 }
 
 export function BillCatEmoji(props: BillCatEmojiProps) {
@@ -74,18 +86,20 @@ export function BillCatEmoji(props: BillCatEmojiProps) {
     <View style={styles.billCatEmojiContainer}>
       <View style={styles.billCatEmoji}>
         <Box
-          backgroundColor={props.period === 'year' ? 'yearBackground' : 'monthBackground'}
+          backgroundColor={
+            props.period === 'year' ? 'yearBackground' : 'monthBackground'
+          }
           borderColor={props.period === 'year' ? 'yearBorder' : 'monthBorder'}
           borderWidth={hasBorder ? 1.5 : 0}
           style={[
             styles.background,
-            { width: size, height: size, borderRadius: size / 2 }
+            { width: size, height: size, borderRadius: size / 2 },
           ]}
         />
       </View>
       <Text>{props.emoji}</Text>
     </View>
-  )
+  );
 }
 
 export function BillCatLabel(props: BillCatLabelProps) {
@@ -95,14 +109,22 @@ export function BillCatLabel(props: BillCatLabelProps) {
     <Box
       style={[styles.billCatLabel, { paddingVertical: padding }]}
       borderWidth={1}
-      borderColor={props.selected
-        ? period === 'year' ? 'yearBorder2' : 'monthBorder2'
-        : period === 'year' ? 'yearBackground' : 'monthBackground'
+      borderColor={
+        props.selected
+          ? period === 'year'
+            ? 'yearBorder2'
+            : 'monthBorder2'
+          : period === 'year'
+          ? 'yearBackground'
+          : 'monthBackground'
       }
       backgroundColor={period === 'year' ? 'yearBackground' : 'monthBackground'}
     >
       <Text>{emoji}</Text>
-      <Text fontSize={fontSize} color={period === 'year' ? 'yearColor' : 'monthColor'}>
+      <Text
+        fontSize={fontSize}
+        color={period === 'year' ? 'yearColor' : 'monthColor'}
+      >
         {`${name.charAt(0).toUpperCase()}${name.slice(1)}`}
       </Text>
       {props.children}

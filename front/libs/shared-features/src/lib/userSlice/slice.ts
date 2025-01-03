@@ -7,11 +7,11 @@ import {
   UpdateSubscription,
   User,
   NextInvoice,
-  Settings
+  Settings,
 } from './types';
 
 const apiWithTags = apiSlice.enhanceEndpoints({
-  addTagTypes: ['User', 'PaymentMethod', 'Invoice']
+  addTagTypes: ['User', 'PaymentMethod', 'Invoice'],
 });
 
 export const userSlice = apiWithTags.injectEndpoints({
@@ -19,31 +19,31 @@ export const userSlice = apiWithTags.injectEndpoints({
     getMe: builder.query<User, void>({
       query: () => 'user/me',
       providesTags: ['User'],
-      extraOptions: { maxRetries: 1 }
+      extraOptions: { maxRetries: 1 },
     }),
     getCoOwner: builder.query<User, void>({
       query: () => 'user/co-owner',
-      providesTags: ['User']
+      providesTags: ['User'],
     }),
     getSubscription: builder.query<Subscription, void>({
-      query: () => 'subscription'
+      query: () => 'subscription',
     }),
     getPaymentMethod: builder.query<PaymentMethod, void>({
       query: () => 'default-payment-method',
-      providesTags: ['PaymentMethod']
+      providesTags: ['PaymentMethod'],
     }),
     getSetupIntent: builder.query<{ client_secret: string }, void>({
       query: () => ({
         url: 'setup-intent',
-        method: 'GET'
-      })
+        method: 'GET',
+      }),
     }),
     getNextInvoice: builder.query<NextInvoice, void>({
       query: () => ({
         url: 'next-invoice',
-        method: 'GET'
+        method: 'GET',
       }),
-      providesTags: ['Invoice']
+      providesTags: ['Invoice'],
     }),
     updateDefaultPaymentMethod: builder.mutation<any, UpdatePaymentMethod>({
       query: ({ paymentMethodId, oldPaymentMethodId }) => ({
@@ -51,33 +51,33 @@ export const userSlice = apiWithTags.injectEndpoints({
         method: 'POST',
         body: {
           payment_method_id: paymentMethodId,
-          old_payment_method_id: oldPaymentMethodId
-        }
+          old_payment_method_id: oldPaymentMethodId,
+        },
       }),
-      invalidatesTags: ['PaymentMethod']
+      invalidatesTags: ['PaymentMethod'],
     }),
     updateUser: builder.mutation<any, Partial<User>>({
       query: (data) => ({
         url: 'user/me',
         method: 'PATCH',
-        body: data
+        body: data,
       }),
-      invalidatesTags: ['User']
+      invalidatesTags: ['User'],
     }),
     updateUserSettings: builder.mutation<any, Partial<Settings>>({
       query: (data) => ({
         url: 'user/settings',
         method: 'PATCH',
-        body: data
+        body: data,
       }),
-      invalidatesTags: ['User']
+      invalidatesTags: ['User'],
     }),
     emailUser: builder.mutation<any, { issue: string; detail: string }>({
       query: (data) => ({
         url: 'user/email',
         method: 'POST',
-        body: data
-      })
+        body: data,
+      }),
     }),
     updateRestartSubscription: builder.mutation<any, UpdateSubscription>({
       query: ({ subId, cancelAtPeriodEnd, cancelationReason, feedback }) => ({
@@ -86,46 +86,46 @@ export const userSlice = apiWithTags.injectEndpoints({
         body: {
           cancel_at_period_end: cancelAtPeriodEnd,
           cancelation_reason: cancelationReason,
-          feedback: feedback
-        }
+          feedback: feedback,
+        },
       }),
-      invalidatesTags: ['User']
+      invalidatesTags: ['User'],
     }),
     updateSubscriptionItems: builder.mutation<any, { priceId: string }>({
       query: ({ priceId }) => ({
         url: 'subscription-item',
         method: 'PUT',
-        body: { price: priceId }
+        body: { price: priceId },
       }),
-      invalidatesTags: ['Invoice']
+      invalidatesTags: ['Invoice'],
     }),
     extendSession: builder.mutation<any, void>({
       query: () => ({
         url: 'user/session/extend',
-        method: 'PATCH'
+        method: 'PATCH',
       }),
-      extraOptions: { maxRetries: 3 }
+      extraOptions: { maxRetries: 3 },
     }),
     disableSession: builder.mutation<any, void>({
       query: () => ({
         url: 'user/session',
-        method: 'DELETE'
+        method: 'DELETE',
       }),
-      extraOptions: { maxRetries: 3 }
+      extraOptions: { maxRetries: 3 },
     }),
     disableAllSessions: builder.mutation<any, void>({
       query: () => ({
         url: 'user/sessions',
-        method: 'DELETE'
+        method: 'DELETE',
       }),
-      extraOptions: { maxRetries: 3 }
+      extraOptions: { maxRetries: 3 },
     }),
     extendTokenSession: builder.mutation<any, { session_id: string }>({
       query: ({ session_id }) => ({
         url: `user/token-session/${session_id}/extend`,
-        method: 'PATCH'
+        method: 'PATCH',
       }),
-      extraOptions: { maxRetries: 3 }
+      extraOptions: { maxRetries: 3 },
     }),
     addUserToAccount: builder.mutation<
       { recovery_link: string; recovery_link_qr: string; expires_at: string },
@@ -134,17 +134,17 @@ export const userSlice = apiWithTags.injectEndpoints({
       query: ({ email }) => ({
         url: 'user/account',
         method: 'POST',
-        body: { email }
-      })
+        body: { email },
+      }),
     }),
     deleteCoOwner: builder.mutation<any, void>({
       query: () => ({
         url: 'user/co-owner',
-        method: 'DELETE'
+        method: 'DELETE',
       }),
-      invalidatesTags: ['User']
-    })
-  })
+      invalidatesTags: ['User'],
+    }),
+  }),
 });
 
 export const {
@@ -166,5 +166,5 @@ export const {
   useDeleteCoOwnerMutation,
   useUpdateUserSettingsMutation,
   useDisableSessionMutation,
-  useDisableAllSessionsMutation
+  useDisableAllSessionsMutation,
 } = userSlice;

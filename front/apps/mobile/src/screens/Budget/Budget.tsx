@@ -12,39 +12,48 @@ import BillsHeader from './bills/Header';
 import Context from './context';
 
 const MainScreen = (props: BudgetScreenProps<'Main'>) => {
-  const theme = useTheme()
-  const [stickyIndices, setStickyIndices] = useState([0, 2])
-  const topOfBillsYPosition = useRef(0)
+  const theme = useTheme();
+  const [stickyIndices, setStickyIndices] = useState([0, 2]);
+  const topOfBillsYPosition = useRef(0);
 
   return (
-    <Box variant='screen'>
+    <Box variant="screen">
       <ScrollView
         style={styles.scrollView}
-        contentContainerStyle={[{ paddingBottom: theme.spacing.navHeight * .875 }]}
+        contentContainerStyle={[
+          { paddingBottom: theme.spacing.navHeight * 0.875 },
+        ]}
         showsVerticalScrollIndicator={false}
         stickyHeaderIndices={stickyIndices}
-        onScrollBeginDrag={() => { setStickyIndices([0, 2, 3]) }}
+        onScrollBeginDrag={() => {
+          setStickyIndices([0, 2, 3]);
+        }}
         onMomentumScrollEnd={({ nativeEvent: ne }) => {
-          if (ne.contentOffset.y < (topOfBillsYPosition.current - 100)) {
-            setStickyIndices([0, 2])
+          if (ne.contentOffset.y < topOfBillsYPosition.current - 100) {
+            setStickyIndices([0, 2]);
           }
         }}
-      // Sticky headers mess up layout transitions and this is the only fix
+        // Sticky headers mess up layout transitions and this is the only fix
       >
         <CategoriesHeader />
         <Categories {...props} />
         <View
           onLayout={(e) => {
-            topOfBillsYPosition.current = e.nativeEvent.layout.y
+            topOfBillsYPosition.current = e.nativeEvent.layout.y;
           }}
-          style={styles.scrollViewSpacer} />
+          style={styles.scrollViewSpacer}
+        />
         <BillsHeader />
         <Bills {...props} />
       </ScrollView>
     </Box>
-  )
-}
+  );
+};
 
 export default function (props: BudgetScreenProps<'Main'>) {
-  return <Context><MainScreen {...props} /></Context>
+  return (
+    <Context>
+      <MainScreen {...props} />
+    </Context>
+  );
 }

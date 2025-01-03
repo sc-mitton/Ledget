@@ -1,53 +1,51 @@
 .recoveryCodesContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  & > div:nth-of-type(2) {
     display: flex;
     flex-direction: column;
-    width: 100%;
-
-    &>div:nth-of-type(2) {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-top: 1em;
-    }
+    align-items: center;
+    margin-top: 1em;
+  }
 }
 
-
 .recoveryCodesSaveContainer {
+  display: flex;
+  justify-content: center;
+  gap: 0.525em;
+  width: 100%;
+  margin-top: 1.5em;
+
+  span {
+    margin: 1em 0;
+  }
+
+  button {
     display: flex;
-    justify-content: center;
-    gap: .525em;
-    width: 100%;
-    margin-top: 1.5em;
+    align-items: center;
+    flex: 1;
+    max-width: 8em;
+  }
 
-    span {
-        margin: 1em 0;
-    }
+  button svg {
+    margin-left: 0.375em;
+  }
 
-    button {
-        display: flex;
-        align-items: center;
-        flex: 1;
-        max-width: 8em;
-    }
-
-    button svg {
-        margin-left: .375em;
-    }
-
-    button {
-        float: center;
-    }
+  button {
+    float: center;
+  }
 }
 
 .selectCodeActionContainer {
+  margin-top: 1em;
+  display: flex;
+  gap: 0.5em;
+  justify-content: center;
+  width: 100%;
 
-    margin-top: 1em;
-    display: flex;
-    gap: .5em;
-    justify-content: center;
-    width: 100%;
-
-    &>button {
-        min-width: 40%;
-    }
+  & > button {
+    min-width: 40%;
+  }
 }

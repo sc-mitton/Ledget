@@ -17,4 +17,4 @@ export type OnboardingScreenProps<T extends keyof OnboardingStackParamList> =
   CompositeScreenProps<
     StackScreenProps<OnboardingStackParamList, T>,
     StackScreenProps<RootStackParamList>
-  >
+  >;

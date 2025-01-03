@@ -12,7 +12,7 @@ import {
   IconButtonHalfGray,
   Tooltip,
   DollarCents,
-  BillCatLabel
+  BillCatLabel,
 } from '@ledget/ui';
 import { SplitCategory, Bill, isBill } from '@ledget/shared-features';
 import type { Transaction } from '@ledget/shared-features';
@@ -33,7 +33,7 @@ const NewItem: FC<{
     onEllipsis,
     onBillCat,
     handleConfirm,
-    tabIndex
+    tabIndex,
   } = props;
   const [name, setName] = useState<string>(
     item.predicted_category

@@ -18,14 +18,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 6,
   },
   buttonIcon: {
-    marginRight: 8
+    marginRight: 8,
   },
   seperator: {
     width: '200%',
     left: -200,
     alignItems: 'center',
     justifyContent: 'center',
-    zIndex: 21
+    zIndex: 21,
   },
   mask: {
     position: 'absolute',
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     right: -16,
   },
   leftMask: {
-    left: -24
+    left: -24,
   },
 });
 

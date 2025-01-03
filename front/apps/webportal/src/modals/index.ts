@@ -1,1 +1,1 @@
-export { default as PasskeyInfoModal } from './passkey/PassKeyInfo'
+export { default as PasskeyInfoModal } from './passkey/PassKeyInfo';

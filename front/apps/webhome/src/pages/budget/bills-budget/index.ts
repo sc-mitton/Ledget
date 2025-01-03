@@ -1,1 +1,1 @@
-export { default as Bills } from './Bills'
+export { default as Bills } from './Bills';

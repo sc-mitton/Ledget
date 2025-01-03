@@ -1,69 +1,68 @@
 .fullScreen {
-    height: 100%;
-    width: 100%;
-    display: grid;
-    place-items: center;
+  height: 100%;
+  width: 100%;
+  display: grid;
+  place-items: center;
 }
 
 .passwordAuth {
-    display: flex;
-    flex-direction: column;
-    gap: .5em;
-    margin-top: .25em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  margin-top: 0.25em;
 }
 
 .recover {
-    position: relative;
-    bottom: 0em;
-    width: 100%;
-    display: flex;
-    margin-top: 1.75em;
-    margin-bottom: -.5em;
-    justify-content: center;
-    color: var(--m-text-secondary);
+  position: relative;
+  bottom: 0em;
+  width: 100%;
+  display: flex;
+  margin-top: 1.75em;
+  margin-bottom: -0.5em;
+  justify-content: center;
+  color: var(--m-text-secondary);
 
-    &[data-size='extra-small'] {
-        color: var(--blue-sat);
-    }
+  &[data-size='extra-small'] {
+    color: var(--blue-sat);
+  }
 
-    button {
-        font-size: .875rem;
-    }
+  button {
+    font-size: 0.875rem;
+  }
 }
 
 .trustDevice {
-    margin-top: 2em;
-    margin-bottom: -.5em;
-    display: flex;
-    justify-content: center;
+  margin-top: 2em;
+  margin-bottom: -0.5em;
+  display: flex;
+  justify-content: center;
 
-    * {
-        font-size: .95em;
-        color: var(--m-text-secondary);
-    }
+  * {
+    font-size: 0.95em;
+    color: var(--m-text-secondary);
+  }
 }
 
 .recover {
-
-    span {
-        color: var(--m-text-secondary);
-    }
+  span {
+    color: var(--m-text-secondary);
+  }
 }
 
 .loginInfoWindow {
-    &>div:first-child {
-        flex-grow: 2;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: flex-end;
-    }
+  & > div:first-child {
+    flex-grow: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+  }
 
-    &>form {
-        flex-grow: 1
-    }
+  & > form {
+    flex-grow: 1;
+  }
 
-    &>div:nth-last-child(2) {
-        flex-grow: 1;
-    }
+  & > div:nth-last-child(2) {
+    flex-grow: 1;
+  }
 }

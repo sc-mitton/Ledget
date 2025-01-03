@@ -3,10 +3,7 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "jsx": "react-jsx",
-    "lib": [
-      "dom",
-      "esnext"
-    ],
+    "lib": ["dom", "esnext"],
     "moduleResolution": "bundler",
     "skipLibCheck": true,
     "resolveJsonModule": true,
@@ -14,58 +11,24 @@
     "declaration": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "@screens": [
-        "src/screens",
-      ],
-      "@features/*": [
-        "src/features/*"
-      ],
-      "@helpers": [
-        "src/helpers/index.ts"
-      ],
-      "@hooks": [
-        "src/hooks/index.ts"
-      ],
-      "@constants": [
-        "src/constants/index.ts"
-      ],
-      "@components": [
-        "src/components/index.ts"
-      ],
-      "@components/*": [
-        "src/components/*"
-      ],
-      "@modals": [
-        "src/modals/index.ts"
-      ],
-      "@types": [
-        "src/types"
-      ],
-      "@ledget/ory": [
-        "../../libs/ory/src"
-      ],
-      "@ledget/media/native": [
-        "../../libs/media/native/src/index.ts"
-      ],
-      "@ledget/shared-features": [
-        "../../libs/shared-features/src/index.ts"
-      ],
-      "@ledget/native-ui": [
-        "../../libs/native-ui/src/index.ts"
-      ],
-      "@ledget/helpers": [
-        "../../libs/helpers/src"
-      ],
-      "@ledget/form-schemas": [
-        "../../libs/form-schemas/src"
-      ],
-      "@ledget/slot-text": [
-        "../../libs/slot-text/src"
-      ],
-    },
+      "@/*": ["src/*"],
+      "@screens": ["src/screens"],
+      "@features/*": ["src/features/*"],
+      "@helpers": ["src/helpers/index.ts"],
+      "@hooks": ["src/hooks/index.ts"],
+      "@constants": ["src/constants/index.ts"],
+      "@components": ["src/components/index.ts"],
+      "@components/*": ["src/components/*"],
+      "@modals": ["src/modals/index.ts"],
+      "@types": ["src/types"],
+      "@ledget/ory": ["../../libs/ory/src"],
+      "@ledget/media/native": ["../../libs/media/native/src/index.ts"],
+      "@ledget/shared-features": ["../../libs/shared-features/src/index.ts"],
+      "@ledget/native-ui": ["../../libs/native-ui/src/index.ts"],
+      "@ledget/helpers": ["../../libs/helpers/src"],
+      "@ledget/form-schemas": ["../../libs/form-schemas/src"],
+      "@ledget/slot-text": ["../../libs/slot-text/src"]
+    }
   },
   "files": [],
   "include": [],

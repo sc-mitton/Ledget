@@ -10,7 +10,7 @@ import {
   selectBudgetMonthYear,
   Transaction,
   useConfirmTransactionsMutation,
-  useGetCategoriesQuery
+  useGetCategoriesQuery,
 } from '@ledget/shared-features';
 import { SubmitForm } from '@components/pieces';
 import { FormInputButton } from '@ledget/ui';
@@ -20,7 +20,7 @@ import {
   FormErrorTip,
   AnimatedDollarCents,
   DeleteButton,
-  PlusButton
+  PlusButton,
 } from '@ledget/ui';
 import styles from './split.module.scss';
 
@@ -28,9 +28,9 @@ const schema = z.object({
   splits: z.array(
     z.object({
       category: z.string().min(1, { message: 'required' }),
-      amount: z.number().min(1, { message: 'required' })
+      amount: z.number().min(1, { message: 'required' }),
     })
-  )
+  ),
 });
 
 type SplitsSchema = z.infer<typeof schema>;
@@ -47,7 +47,7 @@ function getTotal(splits: SplitsSchema['splits']) {
 const TotalLeft = ({
   control,
   amount,
-  error
+  error,
 }: {
   control: Control<SplitsSchema>;
   amount: number;
@@ -78,27 +78,27 @@ const TotalLeft = ({
 
 export function SplitTransactionInput({
   item,
-  onCancel
+  onCancel,
 }: {
   item: Transaction;
   onCancel: () => void;
 }) {
   const [
     confirmTransactions,
-    { isSuccess: isUpdateSuccess, isLoading: isUpdating }
+    { isSuccess: isUpdateSuccess, isLoading: isUpdating },
   ] = useConfirmTransactionsMutation();
   const { month, year } = useAppSelector(selectBudgetMonthYear);
 
   const { data: categoriesData } = useGetCategoriesQuery({
     month,
     year,
-    spending: false
+    spending: false,
   });
 
   const {
     handleSubmit,
     formState: { errors },
-    control
+    control,
   } = useForm<SplitsSchema>({
     mode: 'onSubmit',
     resolver: zodResolver(
@@ -112,7 +112,7 @@ export function SplitTransactionInput({
         },
         {
           message: 'All of the dollar amounts must add up to the total',
-          path: ['totalSum']
+          path: ['totalSum'],
         }
       )
     ),
@@ -124,7 +124,7 @@ export function SplitTransactionInput({
             amount: Big(item.amount)
               .times(c.fraction || 1)
               .times(100)
-              .toNumber()
+              .toNumber(),
           }))
         : [
             {
@@ -133,10 +133,10 @@ export function SplitTransactionInput({
                 (categoriesData
                   ? categoriesData.find((c) => c.is_default)?.id || ''
                   : ''),
-              amount: Big(item.amount).times(100).toNumber()
-            }
-          ]
-    }
+              amount: Big(item.amount).times(100).toNumber(),
+            },
+          ],
+    },
   });
   const { fields, append, remove } = useFieldArray({ control, name: 'splits' });
 
@@ -146,9 +146,9 @@ export function SplitTransactionInput({
         transaction_id: item.transaction_id,
         splits: data.splits.map((split) => ({
           category: split.category,
-          fraction: Math.round(split.amount / item.amount) / 100
-        }))
-      }
+          fraction: Math.round(split.amount / item.amount) / 100,
+        })),
+      },
     ]);
   };
 

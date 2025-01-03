@@ -8,7 +8,7 @@ export interface NativeEmojiPickerProps {
   title?: string;
   children?: React.ReactNode;
   numColumns?: number;
-  as?: 'modal' | 'inline'
+  as?: 'modal' | 'inline';
 }
 
 export interface ISearchProps extends React.ComponentProps<typeof TextInput> {
@@ -18,14 +18,14 @@ export interface ISearchProps extends React.ComponentProps<typeof TextInput> {
 export type Section = {
   category: string;
   data: Emoji[][];
-}
+};
 
 export type Context = {
   visible: boolean;
   setVisible: (visible: boolean) => void;
-}
+};
 
 export type CategoryPickerProps = {
   selectedCategory: string;
-  setSelectedCategory: (category: string) => void
-}
+  setSelectedCategory: (category: string) => void;
+};

@@ -16,14 +16,14 @@ import {
   Seperator,
   Spinner,
   Button,
-  Box
+  Box,
 } from '@ledget/native-ui';
 import {
   selectFilteredFetchedConfirmedTransactions,
   Transaction,
   useLazyGetTransactionsQuery,
   selectCurrentBudgetWindow,
-  selectConfirmedTransactionFilter
+  selectConfirmedTransactionFilter,
 } from '@ledget/shared-features';
 import { useAppearance } from '@features/appearanceSlice';
 import { formatDateOrRelativeDate } from '@ledget/helpers';
@@ -40,19 +40,25 @@ const TransactionRow = ({ transaction }: { transaction: Transaction }) => {
       </View>
       <View style={styles.leftColumn}>
         <Text>
-          {transaction.name.length > 20 ? `${transaction.name.slice(0, 20)} ...` : transaction.name}
+          {transaction.name.length > 20
+            ? `${transaction.name.slice(0, 20)} ...`
+            : transaction.name}
         </Text>
         <View style={styles.leftColumnBottomRow}>
           <Box style={styles.emojis}>
-            {[...(transaction.categories || []), transaction.bill].map(i =>
-              i &&
-              <Box
-                style={styles.emojiContainer}>
-                <Text style={styles.emoji}>{i.emoji}</Text>
-              </Box>)}
+            {[...(transaction.categories || []), transaction.bill].map(
+              (i) =>
+                i && (
+                  <Box style={styles.emojiContainer}>
+                    <Text style={styles.emoji}>{i.emoji}</Text>
+                  </Box>
+                )
+            )}
           </Box>
-          <Text color='tertiaryText'>
-            {formatDateOrRelativeDate(dayjs(transaction.datetime! || transaction.date).valueOf())}
+          <Text color="tertiaryText">
+            {formatDateOrRelativeDate(
+              dayjs(transaction.datetime! || transaction.date).valueOf()
+            )}
           </Text>
         </View>
       </View>
@@ -63,18 +69,24 @@ const TransactionRow = ({ transaction }: { transaction: Transaction }) => {
         <Icon icon={ChevronRight} color={'quinaryText'} />
       </View>
     </View>
-  )
-}
+  );
+};
 
-const Transactions = (props: ModalScreenProps<'Activity'> & { showFilters: React.Dispatch<React.SetStateAction<boolean>> }) => {
+const Transactions = (
+  props: ModalScreenProps<'Activity'> & {
+    showFilters: React.Dispatch<React.SetStateAction<boolean>>;
+  }
+) => {
   const { mode } = useAppearance();
   const { start, end } = useAppSelector(selectCurrentBudgetWindow);
 
-  const transactionsData = useAppSelector(selectFilteredFetchedConfirmedTransactions);
-  const [getTransactions, {
-    isLoading: isLoadingTransactions,
-    isSuccess: isTransactionsSuccess
-  }] = useLazyGetTransactionsQuery();
+  const transactionsData = useAppSelector(
+    selectFilteredFetchedConfirmedTransactions
+  );
+  const [
+    getTransactions,
+    { isLoading: isLoadingTransactions, isSuccess: isTransactionsSuccess },
+  ] = useLazyGetTransactionsQuery();
 
   // Initial transaction fetch
   useEffect(() => {
@@ -84,66 +96,89 @@ const Transactions = (props: ModalScreenProps<'Activity'> & { showFilters: React
 
   return (
     <>
-      {transactionsData.length === 0
-        ?
+      {transactionsData.length === 0 ? (
         <View style={styles.emptyBoxGraphic}>
-          {isLoadingTransactions ? <Spinner color='mainText' /> : isTransactionsSuccess
-            ? <EmptyBox dark={mode === 'dark'} />
-            : null}
+          {isLoadingTransactions ? (
+            <Spinner color="mainText" />
+          ) : isTransactionsSuccess ? (
+            <EmptyBox dark={mode === 'dark'} />
+          ) : null}
         </View>
-        :
+      ) : (
         <CustomScrollView
           stickyHeaderIndices={[0]}
-          scrollIndicatorInsets={{ right: -8 }} style={styles.scrollView}>
+          scrollIndicatorInsets={{ right: -8 }}
+          style={styles.scrollView}
+        >
           <View>
             <View style={styles.filterButtonContainer}>
               <Button
-                shadowColor='modalBox'
+                shadowColor="modalBox"
                 onPress={() => props.showFilters(true)}
                 shadowOffset={{ width: 0, height: 0 }}
                 shadowOpacity={1}
                 shadowRadius={12}
-                padding='s'
-                labelPlacement='left'
+                padding="s"
+                labelPlacement="left"
                 fontSize={14}
                 borderRadius={'m'}
-                backgroundColor='mediumGrayButton'
-                textColor='secondaryText'>
-                <Icon icon={Filter2} color='secondaryText' size={18} strokeWidth={2} />
+                backgroundColor="mediumGrayButton"
+                textColor="secondaryText"
+              >
+                <Icon
+                  icon={Filter2}
+                  color="secondaryText"
+                  size={18}
+                  strokeWidth={2}
+                />
               </Button>
             </View>
           </View>
-          {transactionsData.map((transaction, index) =>
+          {transactionsData.map((transaction, index) => (
             <View style={styles.row}>
               <TouchableOpacity
                 style={styles.touchableTransacton}
                 onPress={() =>
-                  props.navigation.navigate('Accounts', { screen: 'Transaction', params: { transaction }, initial: false })
+                  props.navigation.navigate('Accounts', {
+                    screen: 'Transaction',
+                    params: { transaction },
+                    initial: false,
+                  })
                 }
-                activeOpacity={.7}>
+                activeOpacity={0.7}
+              >
                 <TransactionRow
                   key={transaction.transaction_id}
-                  transaction={transaction} />
+                  transaction={transaction}
+                />
               </TouchableOpacity>
               <View style={styles.seperatorContainer}>
                 <Seperator
                   backgroundColor={
-                    index === transactionsData.length - 1 ? 'transparent' : 'modalSeperator'} />
+                    index === transactionsData.length - 1
+                      ? 'transparent'
+                      : 'modalSeperator'
+                  }
+                />
               </View>
             </View>
-          )}
-        </CustomScrollView>}
+          ))}
+        </CustomScrollView>
+      )}
     </>
-  )
-}
+  );
+};
 
 const History = (props: ModalScreenProps<'Activity'>) => {
   const [showFilters, setShowFilters] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
 
   const filter = useAppSelector(selectConfirmedTransactionFilter);
-  const transactionsData = useAppSelector(selectFilteredFetchedConfirmedTransactions);
-  const [getTransactions, { isSuccess: isTransactionsSuccess }] = useLazyGetTransactionsQuery();
+  const transactionsData = useAppSelector(
+    selectFilteredFetchedConfirmedTransactions
+  );
+  const [getTransactions, { isSuccess: isTransactionsSuccess }] =
+    useLazyGetTransactionsQuery();
 
   // Initial transaction fetch
   useEffect(() => {
@@ -168,15 +203,25 @@ const History = (props: ModalScreenProps<'Activity'>) => {
       onCollapse={() => setCollapsed(true)}
       onClose={onClose}
     >
-      {showFilters
-        ? <Animated.View exiting={FadeOut} entering={FadeIn} style={styles.animatedView}>
+      {showFilters ? (
+        <Animated.View
+          exiting={FadeOut}
+          entering={FadeIn}
+          style={styles.animatedView}
+        >
           <HistoryFilters showFilters={setShowFilters} />
         </Animated.View>
-        : <Animated.View exiting={FadeOut} entering={FadeIn} style={styles.animatedView}>
+      ) : (
+        <Animated.View
+          exiting={FadeOut}
+          entering={FadeIn}
+          style={styles.animatedView}
+        >
           <Transactions {...props} showFilters={setShowFilters} />
-        </Animated.View>}
+        </Animated.View>
+      )}
     </BottomDrawerModal.Content>
-  )
-}
+  );
+};
 
-export default History
+export default History;

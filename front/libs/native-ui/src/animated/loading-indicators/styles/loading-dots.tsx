@@ -8,13 +8,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 8,
     paddingHorizontal: 12,
-    borderRadius: 24
+    borderRadius: 24,
   },
   dot: {
     width: 6,
     height: 6,
-    borderRadius: 16
-  }
+    borderRadius: 16,
+  },
 });
 
 export default styles;

@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from 'react';
 import Svg, {
   LinearGradient,
   Stop,
@@ -7,11 +7,11 @@ import Svg, {
   Use,
   ClipPath,
   Circle,
-  SvgProps
-} from "react-native-svg";
+  SvgProps,
+} from 'react-native-svg';
 
 function SvgComponent(props: SvgProps & { size?: number }) {
-  const { size = 312, ...rest } = props
+  const { size = 312, ...rest } = props;
   return (
     <Svg
       x="0px"
@@ -48,7 +48,7 @@ function SvgComponent(props: SvgProps & { size?: number }) {
       <Defs>
         <Path
           id="b"
-          fill='#242424'
+          fill="#242424"
           d="M128.2 298.9H79.6c-6.2 0-11.3-5.1-11.3-11.3v-48.5c0-6.2 5.1-11.3 11.3-11.3h48.6c6.2 0 11.3 5.1 11.3 11.3v48.5c0 6.2-5.1 11.3-11.3 11.3z"
         />
       </Defs>
@@ -148,7 +148,7 @@ function SvgComponent(props: SvgProps & { size?: number }) {
         d="M212.2 238c5.6 0 10.2 4.6 10.2 10.2 0 2.8-1.1 5.3-3 7.2M181.1 238c5.6 0 10.2 4.6 10.2 10.2s-4.6 10.2-10.2 10.2c-3.7 0-6.9-2-8.7-4.9M181 267.6c5.6 0 10.2 4.6 10.2 10.2 0 2.3-.8 4.5-2.1 6.2M212.2 267.6c5.6 0 10.2 4.6 10.2 10.2s-4.6 10.2-10.2 10.2c-2.8 0-5.4-1.1-7.2-3"
       />
     </Svg>
-  )
+  );
 }
 
-export default SvgComponent
+export default SvgComponent;

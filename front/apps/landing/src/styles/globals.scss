@@ -2,101 +2,108 @@
 @import './mixins.scss';
 
 html {
-    overflow: auto;
-    overflow-x: hidden;
-    scrollbar-width: none;
+  overflow: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
 }
 
 body {
-    margin: 0;
-    position: relative;
+  margin: 0;
+  position: relative;
 }
 
 .body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-    &.light {
-        background:
-            radial-gradient(at 40% 20%, rgba(255, 255, 255, 1) 0px, transparent 50%),
-            radial-gradient(at 80% 0%, hsl(240, 17%, 94%) 0px, transparent 50%),
-            radial-gradient(at 50% 0%, hsl(240, 16%, 94%) 0px, transparent 50%),
-            radial-gradient(at 0% 0%, hsl(240, 17%, 94%) 0px, transparent 50%),
-            radial-gradient(at 0% 50%, hsl(210, 56%, 96%) 0px, transparent 50%),
-            radial-gradient(at 84% 31%, hsl(0, 0%, 100%) 0px, transparent 50%),
-            radial-gradient(at 0% 100%, hsl(206, 54%, 99%) 0px, transparent 50%),
-            radial-gradient(at 80% 100%, hsl(240, 47%, 99%) 0px, transparent 50%),
-            radial-gradient(at 0% 0%, hsl(0, 0%, 100%) 0px, transparent 50%);
+  &.light {
+    background: radial-gradient(
+        at 40% 20%,
+        rgba(255, 255, 255, 1) 0px,
+        transparent 50%
+      ),
+      radial-gradient(at 80% 0%, hsl(240, 17%, 94%) 0px, transparent 50%),
+      radial-gradient(at 50% 0%, hsl(240, 16%, 94%) 0px, transparent 50%),
+      radial-gradient(at 0% 0%, hsl(240, 17%, 94%) 0px, transparent 50%),
+      radial-gradient(at 0% 50%, hsl(210, 56%, 96%) 0px, transparent 50%),
+      radial-gradient(at 84% 31%, hsl(0, 0%, 100%) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, hsl(206, 54%, 99%) 0px, transparent 50%),
+      radial-gradient(at 80% 100%, hsl(240, 47%, 99%) 0px, transparent 50%),
+      radial-gradient(at 0% 0%, hsl(0, 0%, 100%) 0px, transparent 50%);
+  }
+
+  &.dark {
+    background: linear-gradient(
+      to bottom,
+      hsl(240, 4%, 9%) 0%,
+      hsl(240, 4%, 4%) 50%,
+      hsl(240, 4%, 6%) 100%
+    );
+    // radial-gradient(at 100% 0%, rgba(26, 26, 26, 1) 0px, transparent 50%),
+    // radial-gradient(at 0% 10%, rgba(31, 31, 31, 1) 0px, transparent 50%),
+    // radial-gradient(at 25% 10%, rgba(31, 31, 31, 1) 0px, transparent 50%),
+    // radial-gradient(at 0% 20%, rgba(35, 33, 31, 1) 0px, transparent 50%),
+    // radial-gradient(at 0% 50%, rgb(35, 35, 36) 0px, transparent 50%),
+    // radial-gradient(at 0% 100%, rgba(14, 13, 12, 1) 0px, transparent 50%),
+    // radial-gradient(at 100% 100%, rgb(12, 12, 14) 0px, transparent 50%);
+
+    // Firefox noise background
+    @-moz-document url-prefix() {
+      background: hsl(240, 4%, 8%);
     }
-
-    &.dark {
-        background:
-            linear-gradient(to bottom, hsl(240, 4%, 9%) 0%, hsl(240, 4%, 4%) 50%, hsl(240, 4%, 6%) 100%);
-        // radial-gradient(at 100% 0%, rgba(26, 26, 26, 1) 0px, transparent 50%),
-        // radial-gradient(at 0% 10%, rgba(31, 31, 31, 1) 0px, transparent 50%),
-        // radial-gradient(at 25% 10%, rgba(31, 31, 31, 1) 0px, transparent 50%),
-        // radial-gradient(at 0% 20%, rgba(35, 33, 31, 1) 0px, transparent 50%),
-        // radial-gradient(at 0% 50%, rgb(35, 35, 36) 0px, transparent 50%),
-        // radial-gradient(at 0% 100%, rgba(14, 13, 12, 1) 0px, transparent 50%),
-        // radial-gradient(at 100% 100%, rgb(12, 12, 14) 0px, transparent 50%);
-
-        // Firefox noise background
-        @-moz-document url-prefix() {
-            background: hsl(240, 4%, 8%)
-        }
-    }
+  }
 }
 
 header {
-    overscroll-behavior: none;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    position: fixed;
-    top: 0;
-    z-index: 200;
+  overscroll-behavior: none;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  z-index: 200;
 }
 
 main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-    margin-top: 4em;
-    height: 100%;
-    width: 100%;
-    overflow-x: hidden;
-    scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 4em;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  scrollbar-width: none;
 }
 
 .section {
-    @include width-standard;
-    padding: 1.5rem 1.5rem;
-    box-sizing: border-box;
+  @include width-standard;
+  padding: 1.5rem 1.5rem;
+  box-sizing: border-box;
 
-    h1,
-    h1 {
-        margin: .25em 0;
-    }
+  h1,
+  h1 {
+    margin: 0.25em 0;
+  }
 
-    h1 {
-        font-weight: 600;
-    }
+  h1 {
+    font-weight: 600;
+  }
 
-    h2 {
-        font-weight: 500;
-    }
+  h2 {
+    font-weight: 500;
+  }
 }
 
 .main-background {
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-width: none;
-    background-color: var(--main-background-color);
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  background-color: var(--main-background-color);
 }
 
 div,
@@ -109,9 +116,9 @@ button,
 textarea,
 select,
 option {
-    font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
-    font-size: .875rem;
-    color: var(--m-text);
+  font-family: 'Source Sans 3', 'Roboto', sans-serif, 'Arial', Helvetica;
+  font-size: 0.875rem;
+  color: var(--m-text);
 }
 
 h1,
@@ -120,99 +127,99 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
-    color: var(--m-header-text);
+  font-family: 'Source Sans 3', 'Roboto', sans-serif, 'Arial', Helvetica;
+  color: var(--m-header-text);
 }
 
 h3,
 h4,
 h5 {
-    margin: 0;
-    font-weight: var(--fw-regular);
+  margin: 0;
+  font-weight: var(--fw-regular);
 }
 
 a {
-    text-decoration: none;
-    cursor: pointer;
-    font-weight: var(--fw-regular);
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: var(--fw-regular);
 }
 
 * {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 button {
-    cursor: pointer;
-    background-color: transparent;
-    border: none;
-    outline: none;
-    font-weight: var(--fw-regular);
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-weight: var(--fw-regular);
 }
 
 input {
-    border: none;
-    outline: none;
-    box-shadow: none;
-    padding: .75em 1.5em;
-    border-radius: .5em;
-    background-color: var(--input-background);
-    --webkit-appearance: none;
-    border: var(--input-border);
-    transition: all .25s ease;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  padding: 0.75em 1.5em;
+  border-radius: 0.5em;
+  background-color: var(--input-background);
+  --webkit-appearance: none;
+  border: var(--input-border);
+  transition: all 0.25s ease;
 
-    &:focus {
-        border: var(--input-border-focus);
-        box-shadow: var(--input-focus-drop-shadow);
-        color: var(--input-placeholder-focus);
-        transition: all .25s ease;
-    }
+  &:focus {
+    border: var(--input-border-focus);
+    box-shadow: var(--input-focus-drop-shadow);
+    color: var(--input-placeholder-focus);
+    transition: all 0.25s ease;
+  }
 
-    &:hover:not(:focus) {
-        border: var(--input-border-hover);
-        transition: all .25s ease;
-    }
+  &:hover:not(:focus) {
+    border: var(--input-border-hover);
+    transition: all 0.25s ease;
+  }
 }
 
 footer {
-    width: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 2em 0;
+  border-top: 1.5px solid var(--border-color-ultra-dim);
+
+  & > div {
+    @include width-standard;
+    padding: 1.5rem 2rem;
     display: flex;
-    justify-content: center;
-    padding: 2em 0;
-    border-top: 1.5px solid var(--border-color-ultra-dim);
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 2em;
+  }
 
-    &>div {
-        @include width-standard;
-        padding: 1.5rem 2rem;
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 2em;
-    }
+  & > div > div:last-child {
+    display: flex;
+    gap: 0.25rem;
+    flex-direction: column;
 
-    &>div>div:last-child {
-        display: flex;
-        gap: .25rem;
-        flex-direction: column;
-
-        &>div {
-            display: flex;
-            gap: 1em;
-        }
-
-        a {
-            display: inline-block;
-            color: var(--m-text);
-            color: var(--blue-sat);
-
-            &:hover {
-                text-decoration: underline;
-            }
-        }
+    & > div {
+      display: flex;
+      gap: 1em;
     }
 
     a {
-        display: flex;
-        align-items: center;
-        gap: .25em;
+      display: inline-block;
+      color: var(--m-text);
+      color: var(--blue-sat);
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: 0.25em;
+  }
 }

@@ -1,5 +1,5 @@
-import { View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { View } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -16,18 +16,22 @@ import {
   SlideView,
   SubmitButton,
   Icon,
-  Box
-} from '@ledget/native-ui'
+  Box,
+} from '@ledget/native-ui';
 import {
   useLazyGetSettingsFlowQuery,
   useCompleteSettingsFlowMutation,
   useLazyGetLoginFlowQuery,
-  useCompleteLoginFlowMutation
+  useCompleteLoginFlowMutation,
 } from '@/features/orySlice';
 import { useNativeFlow } from '@ledget/ory';
 import { useGetMeQuery } from '@ledget/shared-features';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { selectAuthIsFresh, updateIsAuthed, selectLastAuthedAt } from '@/features/authSlice';
+import {
+  selectAuthIsFresh,
+  updateIsAuthed,
+  selectLastAuthedAt,
+} from '@/features/authSlice';
 import { ModalScreenProps } from '@types';
 
 const changeSchema = z
@@ -36,65 +40,67 @@ const changeSchema = z
       .string()
       .min(1, { message: 'required' })
       .min(10, { message: 'Password must be at least 10 characters' }),
-    confirmPassword: z.string().min(1, { message: 'required' })
+    confirmPassword: z.string().min(1, { message: 'required' }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Passwords must match',
-    path: ['confirmPassword']
+    path: ['confirmPassword'],
   });
 
 const ChangePassword = ({ closeModal }: { closeModal: () => void }) => {
   const [showPassword, setShowPassword] = useState(false);
 
-  const { control, handleSubmit, formState: { errors } } = useForm<z.infer<typeof changeSchema>>({
-    resolver: zodResolver(changeSchema)
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<z.infer<typeof changeSchema>>({
+    resolver: zodResolver(changeSchema),
   });
 
-  const {
-    submitFlow,
-    flowStatus,
-    fetchFlow
-  } = useNativeFlow(
+  const { submitFlow, flowStatus, fetchFlow } = useNativeFlow(
     useLazyGetSettingsFlowQuery,
     useCompleteSettingsFlowMutation,
     'settings'
-  )
+  );
 
-  useEffect(() => { fetchFlow() }, [])
+  useEffect(() => {
+    fetchFlow();
+  }, []);
 
   useEffect(() => {
     if (flowStatus.isCompleteSuccess) {
       const timeout = setTimeout(() => {
-        closeModal()
-      }, 1500)
-      return () => clearTimeout(timeout)
+        closeModal();
+      }, 1500);
+      return () => clearTimeout(timeout);
     }
-  }, [flowStatus.isCompleteSuccess])
+  }, [flowStatus.isCompleteSuccess]);
 
   const onSubmit = () => {
     handleSubmit((data) =>
       submitFlow({
         method: 'password',
-        ...data
+        ...data,
       })
-    )()
-  }
+    )();
+  };
 
   return (
     <View style={styles.content}>
       <View style={styles.header}>
-        <Box marginVertical='s'>
+        <Box marginVertical="s">
           <Icon icon={Lock} size={24} />
         </Box>
         <Header2>Change Password</Header2>
-        <Text color='secondaryText'>
+        <Text color="secondaryText">
           Choose a new password for your account
         </Text>
       </View>
-      <Seperator backgroundColor='modalSeperator' variant='l' />
+      <Seperator backgroundColor="modalSeperator" variant="l" />
       <Controller
         control={control}
-        name='password'
+        name="password"
         render={({ field: { onChange, value } }) => (
           <PasswordInput
             value={value}
@@ -108,7 +114,7 @@ const ChangePassword = ({ closeModal }: { closeModal: () => void }) => {
       />
       <Controller
         control={control}
-        name='confirmPassword'
+        name="confirmPassword"
         render={({ field: { onChange, value } }) => (
           <PasswordInput
             placeholder="Confirm password"
@@ -123,78 +129,84 @@ const ChangePassword = ({ closeModal }: { closeModal: () => void }) => {
       />
       <SubmitButton
         onPress={onSubmit}
-        label='Save'
-        variant='main'
+        label="Save"
+        variant="main"
         isLoading={flowStatus.isCompletingFlow}
         isSuccess={flowStatus.isCompleteSuccess}
       />
-      <Seperator backgroundColor='modalSeperator' variant='s' />
-      <Text variant='footer' marginHorizontal='m'>
+      <Seperator backgroundColor="modalSeperator" variant="s" />
+      <Text variant="footer" marginHorizontal="m">
         Once your password is updated, all other devices will be logged out.
       </Text>
     </View>
-  )
+  );
 };
 
 const confirmSchema = z.object({
-  password: z.string().min(1, 'Password is required')
+  password: z.string().min(1, 'Password is required'),
 });
 
-const ConfirmPassword = ({ setPasswordConfirmed }: { setPasswordConfirmed: (value: boolean) => void }) => {
-  const dispatch = useAppDispatch()
+const ConfirmPassword = ({
+  setPasswordConfirmed,
+}: {
+  setPasswordConfirmed: (value: boolean) => void;
+}) => {
+  const dispatch = useAppDispatch();
 
-  const { data: user } = useGetMeQuery()
-  const { control, handleSubmit, formState: { errors } } = useForm<z.infer<typeof confirmSchema>>({
-    resolver: zodResolver(confirmSchema)
-  });
+  const { data: user } = useGetMeQuery();
   const {
-    submitFlow,
-    flowStatus,
-    fetchFlow
-  } = useNativeFlow(
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<z.infer<typeof confirmSchema>>({
+    resolver: zodResolver(confirmSchema),
+  });
+  const { submitFlow, flowStatus, fetchFlow } = useNativeFlow(
     useLazyGetLoginFlowQuery,
     useCompleteLoginFlowMutation,
     'login'
-  )
+  );
 
-  useEffect(() => { fetchFlow({ refresh: true, aal: 'aal1' }) }, [])
+  useEffect(() => {
+    fetchFlow({ refresh: true, aal: 'aal1' });
+  }, []);
 
   useEffect(() => {
     if (flowStatus.isCompleteSuccess) {
       const timeout = setTimeout(() => {
-        setPasswordConfirmed(true)
-        dispatch(updateIsAuthed())
-      }, 1500)
-      return () => clearTimeout(timeout)
+        setPasswordConfirmed(true);
+        dispatch(updateIsAuthed());
+      }, 1500);
+      return () => clearTimeout(timeout);
     }
-  }, [flowStatus.isCompleteSuccess])
+  }, [flowStatus.isCompleteSuccess]);
 
   const onSubmit = () => {
     handleSubmit((data) =>
       submitFlow({
         method: 'password',
         identifier: user?.email,
-        ...data
+        ...data,
       })
-    )()
+    )();
   };
 
   return (
     <View style={styles.content}>
       <View style={styles.header}>
         <Header2>Confirm Password</Header2>
-        <Text color='secondaryText'>
+        <Text color="secondaryText">
           First, confirm your current password to continue.
         </Text>
       </View>
-      <Seperator backgroundColor='modalSeperator' variant='l' />
+      <Seperator backgroundColor="modalSeperator" variant="l" />
       <JiggleView jiggle={flowStatus.isCompleteError}>
         <Controller
           control={control}
-          name='password'
+          name="password"
           render={({ field: { onChange, value } }) => (
             <PasswordInput
-              placeholder='Password...'
+              placeholder="Password..."
               value={value}
               onChangeText={onChange}
               error={errors.password}
@@ -202,16 +214,16 @@ const ConfirmPassword = ({ setPasswordConfirmed }: { setPasswordConfirmed: (valu
           )}
         />
         <SubmitButton
-          variant='main'
+          variant="main"
           onPress={onSubmit}
-          label='Confirm'
+          label="Confirm"
           isSubmitting={flowStatus.isCompletingFlow}
           isSuccess={flowStatus.isCompleteSuccess}
         />
       </JiggleView>
     </View>
-  )
-}
+  );
+};
 
 const ChangePasswordModal = (props: ModalScreenProps<'ChangePassword'>) => {
   const [passwordConfirmed, setPasswordConfirmed] = React.useState(false);
@@ -220,19 +232,21 @@ const ChangePasswordModal = (props: ModalScreenProps<'ChangePassword'>) => {
 
   return (
     <Modal>
-      {passwordConfirmed || authIsFresh
-        ? <SlideView
+      {passwordConfirmed || authIsFresh ? (
+        <SlideView
           position={1}
           skipExit={true}
-          skipEnter={(Date.now() - lastAuthedAt > 3000) && authIsFresh}
+          skipEnter={Date.now() - lastAuthedAt > 3000 && authIsFresh}
         >
           <ChangePassword closeModal={props.navigation.goBack} />
         </SlideView>
-        : <SlideView position={0} skipEnter={true}>
+      ) : (
+        <SlideView position={0} skipEnter={true}>
           <ConfirmPassword setPasswordConfirmed={setPasswordConfirmed} />
-        </SlideView>}
+        </SlideView>
+      )}
     </Modal>
-  )
+  );
 };
 
-export default ChangePasswordModal
+export default ChangePasswordModal;

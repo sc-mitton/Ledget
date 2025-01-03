@@ -9,7 +9,7 @@ import styles from './styles/edit-budget-items.module.scss';
 import {
   TransformedBill,
   useGetBillsQuery,
-  selectBudgetMonthYear
+  selectBudgetMonthYear,
 } from '@ledget/shared-features';
 import { BillModalContent } from '@modals/index';
 import { getOrderSuffix } from '@ledget/helpers';
@@ -21,7 +21,7 @@ import {
   SlideMotionDiv,
   BackButton,
   FilterPillButton,
-  NestedWindow2
+  NestedWindow2,
 } from '@ledget/ui';
 import { useAppSelector } from '@hooks/store';
 
@@ -55,7 +55,7 @@ const getScheduleDescription = (
 const Bills = ({
   period,
   onBillClick,
-  billOrder
+  billOrder,
 }: {
   period: 'month' | 'year';
   onBillClick: (bill: TransformedBill) => void;
@@ -184,8 +184,8 @@ const EditBills = withModal((props) => {
                 order === 'amount-desc'
                   ? setOrder('amount-asc')
                   : order === 'amount-asc'
-                    ? setOrder(undefined)
-                    : setOrder('amount-desc');
+                  ? setOrder(undefined)
+                  : setOrder('amount-desc');
               }}
               selected={order === 'amount-desc' || order === 'amount-asc'}
             >
@@ -202,8 +202,8 @@ const EditBills = withModal((props) => {
                 order === 'alpha-desc'
                   ? setOrder(undefined)
                   : order === 'alpha-asc'
-                    ? setOrder('alpha-desc')
-                    : setOrder('alpha-asc');
+                  ? setOrder('alpha-desc')
+                  : setOrder('alpha-asc');
               }}
             >
               {order === 'alpha-desc' ? 'z-a' : 'a-z'}

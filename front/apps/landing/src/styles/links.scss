@@ -1,44 +1,44 @@
 .arrow-link {
-    padding: .375em .5em .375em 1em;
-    border-radius: 1.5em;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    font-weight: var(--fw-bold);
+  padding: 0.375em 0.5em 0.375em 1em;
+  border-radius: 1.5em;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  font-weight: var(--fw-bold);
 
-    &::after {
-        inset: 0;
-        content: '';
-        background-color: var(--btn-light-gray);
-        opacity: .7;
-        z-index: -1;
-        position: absolute;
+  &::after {
+    inset: 0;
+    content: '';
+    background-color: var(--btn-light-gray);
+    opacity: 0.7;
+    z-index: -1;
+    position: absolute;
+  }
+
+  svg {
+    path:first-child {
+      stroke-dasharray: 50;
+      stroke-dashoffset: 50;
+      transition: stroke-dashoffset 0.2s ease-in;
+      transition: all 0.2s ease-in;
     }
 
-    svg {
-        path:first-child {
-            stroke-dasharray: 50;
-            stroke-dashoffset: 50;
-            transition: stroke-dashoffset 0.2s ease-in;
-            transition: all 0.2s ease-in;
-        }
+    path:not(:first-child) {
+      transition: all 0.2s ease-in 0.1s;
+    }
+  }
 
-        path:not(:first-child) {
-            transition: all 0.2s ease-in .1s;
-        }
+  &:hover svg {
+    path:first-child {
+      stroke-dashoffset: 0;
+      transition: all 0.2s ease-in 0.1s;
     }
 
-    &:hover svg {
-        path:first-child {
-            stroke-dashoffset: 0;
-            transition: all 0.2s ease-in .1s;
-        }
-
-        path:not(:first-child) {
-            transform: translateX(.1875em);
-            transition: all 0.2s ease-in;
-        }
+    path:not(:first-child) {
+      transform: translateX(0.1875em);
+      transition: all 0.2s ease-in;
     }
+  }
 }

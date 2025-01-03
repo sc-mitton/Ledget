@@ -1,4 +1,3 @@
-
 import { View } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,13 +12,13 @@ import {
   DatePicker,
   ModalPicker,
   InstitutionLogo,
-  Box
+  Box,
 } from '@ledget/native-ui';
 import {
   useGetAccountsQuery,
   selectConfirmedTransactionFilter,
   setConfirmedTransactionFilter,
-  clearConfirmedTransactionFilter
+  clearConfirmedTransactionFilter,
 } from '@ledget/shared-features';
 import { useAppearance } from '@features/appearanceSlice';
 import { BillCatSelect } from '@components';
@@ -27,57 +26,63 @@ import { useAppSelector, useAppDispatch } from '@hooks';
 
 const schema = z.object({
   date_range: z.array(z.number()).optional(),
-  amount: z.object({
-    min: z.number().optional(),
-    max: z.number().optional()
-  }).optional(),
+  amount: z
+    .object({
+      min: z.number().optional(),
+      max: z.number().optional(),
+    })
+    .optional(),
   items: z.array(z.string()).optional(),
-  accounts: z.array(z.string()).optional()
+  accounts: z.array(z.string()).optional(),
 });
 
-const HistoryFilters = ({ showFilters }: { showFilters: React.Dispatch<React.SetStateAction<boolean>> }) => {
+const HistoryFilters = ({
+  showFilters,
+}: {
+  showFilters: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const dispatch = useAppDispatch();
   const filter = useAppSelector(selectConfirmedTransactionFilter);
 
   const { control, handleSubmit } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
-    defaultValues: filter
+    defaultValues: filter,
   });
   const { mode } = useAppearance();
   const { data: accountsData } = useGetAccountsQuery();
 
   const onSubmit = () => {
-    handleSubmit(data => {
+    handleSubmit((data) => {
       showFilters(false);
       const { amount, ...rest } = data;
       const filter = {
         limit_amount_lower: amount?.min,
         limit_amount_upper: amount?.max,
-        ...rest
-      }
+        ...rest,
+      };
       dispatch(setConfirmedTransactionFilter(filter));
     })();
-  }
+  };
 
   return (
-    <View style={styles.filtersForm} >
+    <View style={styles.filtersForm}>
       <Controller
         control={control}
-        name='date_range'
+        name="date_range"
         render={({ field: { onChange, value } }) => (
           <DatePicker
-            pickerType='range'
-            mode='date'
-            format='MM/DD/YYYY'
-            label='Date'
+            pickerType="range"
+            mode="date"
+            format="MM/DD/YYYY"
+            label="Date"
             theme={mode === 'dark' ? 'dark' : 'light'}
             disabled={[
               [undefined, dayjs()],
-              [undefined, dayjs()]
+              [undefined, dayjs()],
             ]}
             placeholder={['Start Date', 'End Date']}
             onChange={(value) => {
-              const v = value?.map(i => i?.valueOf());
+              const v = value?.map((i) => i?.valueOf());
               onChange(v);
             }}
           />
@@ -85,11 +90,11 @@ const HistoryFilters = ({ showFilters }: { showFilters: React.Dispatch<React.Set
       />
       <Controller
         control={control}
-        name='amount'
+        name="amount"
         render={({ field: { onChange, value } }) => (
           <MoneyInput
-            inputType='range'
-            label='Amount'
+            inputType="range"
+            label="Amount"
             onChange={onChange}
             accuracy={2}
           />
@@ -129,27 +134,22 @@ const HistoryFilters = ({ showFilters }: { showFilters: React.Dispatch<React.Set
           />
         )}
       /> */}
-      <Button
-        variant='main'
-        marginTop='l'
-        label='Save'
-        onPress={onSubmit}
-      />
+      <Button variant="main" marginTop="l" label="Save" onPress={onSubmit} />
       <View style={styles.bottomButtons}>
         <Button
-          label='Clear'
-          textColor='blueText'
+          label="Clear"
+          textColor="blueText"
           onPress={() => dispatch(clearConfirmedTransactionFilter())}
         />
-        <Box backgroundColor='menuSeperator' variant='divider' />
+        <Box backgroundColor="menuSeperator" variant="divider" />
         <Button
-          label='Cancel'
-          textColor='blueText'
+          label="Cancel"
+          textColor="blueText"
           onPress={() => showFilters(false)}
         />
       </View>
     </View>
-  )
-}
+  );
+};
 
 export default HistoryFilters;

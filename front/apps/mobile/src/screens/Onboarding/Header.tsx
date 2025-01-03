@@ -1,19 +1,19 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { useTheme } from "@shopify/restyle";
-import { useSprings } from "@react-spring/native";
+import { createContext, useContext, useEffect, useState } from 'react';
+import { useTheme } from '@shopify/restyle';
+import { useSprings } from '@react-spring/native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import styles from './styles/progress';
-import { View } from "react-native";
+import { View } from 'react-native';
 import { Box, AnimatedView, BackButton } from '@ledget/native-ui';
-import { navigationRef } from "@/types";
+import { navigationRef } from '@/types';
 
 interface ContextT {
   setIndex: React.Dispatch<React.SetStateAction<number>>;
   setSize: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const context = createContext<ContextT | undefined>(undefined)
+const context = createContext<ContextT | undefined>(undefined);
 
 export const useProgress = () => {
   const ctx = useContext(context);
@@ -21,7 +21,7 @@ export const useProgress = () => {
     throw new Error('useProgress must be used within a ProgressProvider');
   }
   return ctx;
-}
+};
 
 const WIDTH = 6;
 
@@ -33,7 +33,7 @@ export default function ({ children }: { children: React.ReactNode }) {
   const [springs, api] = useSprings(size, () => ({
     width: WIDTH,
     height: WIDTH,
-    opacity: .3
+    opacity: 0.3,
   }));
 
   useEffect(() => {
@@ -43,31 +43,37 @@ export default function ({ children }: { children: React.ReactNode }) {
         const isBefore = i < index;
         await next({
           width: isActive ? WIDTH * 2.25 : WIDTH,
-          opacity: isBefore || isActive ? 1 : .3
+          opacity: isBefore || isActive ? 1 : 0.3,
         });
         await next({
           width: WIDTH,
-          opacity: isBefore || isActive ? 1 : .3
+          opacity: isBefore || isActive ? 1 : 0.3,
         });
-      }
+      },
     }));
   }, [index, size]);
 
   return (
     <context.Provider value={{ setIndex, setSize }}>
-      {index !== 0 &&
-        <Animated.View style={[styles.header, { height: theme.spacing.statusbar }]} entering={FadeIn} exiting={FadeOut}>
+      {index !== 0 && (
+        <Animated.View
+          style={[styles.header, { height: theme.spacing.statusbar }]}
+          entering={FadeIn}
+          exiting={FadeOut}
+        >
           <Box
             backgroundColor="mainBackground"
-            paddingTop='statusBar'
-            shadowColor='mainBackground'
+            paddingTop="statusBar"
+            shadowColor="mainBackground"
             shadowOffset={{ width: 0, height: 0 }}
             shadowOpacity={1}
             shadowRadius={16}
             style={styles.headerBox}
           >
             <View style={styles.backButton}>
-              {index !== 0 && <BackButton onPress={() => navigationRef.goBack()} />}
+              {index !== 0 && (
+                <BackButton onPress={() => navigationRef.goBack()} />
+              )}
             </View>
             <View style={[styles.progressContainer]}>
               {springs.map((style, i) => (
@@ -77,8 +83,9 @@ export default function ({ children }: { children: React.ReactNode }) {
               ))}
             </View>
           </Box>
-        </Animated.View>}
+        </Animated.View>
+      )}
       {children}
     </context.Provider>
-  )
+  );
 }

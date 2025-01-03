@@ -4,7 +4,7 @@ import React, {
   useEffect,
   useRef,
   useContext,
-  createContext
+  createContext,
 } from 'react';
 
 import { UseFormRegister, FieldError } from 'react-hook-form';
@@ -24,7 +24,7 @@ import {
   FormErrorTip,
   DropdownDiv,
   useSchemeVar,
-  TabNavList
+  TabNavList,
 } from '@ledget/ui';
 
 interface Context extends Pick<Bill, 'day' | 'week' | 'month'> {
@@ -49,7 +49,7 @@ const usePickerContext = () => {
 };
 
 const useResponsiveDropdownPlacement = ({
-  ref
+  ref,
 }: {
   ref: React.RefObject<HTMLDivElement>;
 }) => {
@@ -89,7 +89,7 @@ const Scheduler = (
     setWeek,
     weekDay,
     setWeekDay,
-    children
+    children,
   } = props;
   const [open, setOpen] = useState(false);
   const buttonRef = useRef(null);
@@ -105,7 +105,7 @@ const Scheduler = (
     setWeekDay,
     month,
     setMonth,
-    buttonRef
+    buttonRef,
   };
 
   return (
@@ -158,7 +158,7 @@ const Button: FC<
         aria-expanded={`${open}`}
         aria-controls="schedule-dropdown"
         style={{
-          color: placeholder ? 'var(--m-text)' : 'var(--input-placeholder2)'
+          color: placeholder ? 'var(--m-text)' : 'var(--input-placeholder2)',
         }}
         {...props}
       >
@@ -194,7 +194,7 @@ const DayPicker = () => {
       <div
         className={[
           schedulerStyles.pickerItem,
-          schedulerStyles.dayPickerItem
+          schedulerStyles.dayPickerItem,
         ].join(' ')}
         data-selected={day === dayNumber}
         data-active={activeDay === dayNumber}
@@ -319,7 +319,7 @@ const WeekPicker = () => {
     setWeek: setWeekNumber,
     weekDay,
     setWeekDay,
-    setOpen
+    setOpen,
   } = usePickerContext();
 
   const [activeWeekNumber, setActiveWeekNumber] = useState<typeof weekNumber>();
@@ -371,7 +371,7 @@ const WeekPicker = () => {
       <div
         className={[
           schedulerStyles.pickerItem,
-          schedulerStyles.weekPickerItem
+          schedulerStyles.weekPickerItem,
         ].join(' ')}
         data-selected={week === weekNumber}
         data-active={week === activeWeekNumber}
@@ -388,7 +388,7 @@ const WeekPicker = () => {
         {week > 4 && 'Last'}
         <span
           style={{
-            fontSize: '.8em'
+            fontSize: '.8em',
           }}
         >
           {formatWeek(week)}
@@ -398,7 +398,7 @@ const WeekPicker = () => {
   );
 
   const WeekDay = ({
-    dayNumber
+    dayNumber,
   }: {
     dayNumber: NonNullable<typeof weekDay>;
   }) => (
@@ -406,7 +406,7 @@ const WeekPicker = () => {
       <div
         className={[
           schedulerStyles.pickerItem,
-          schedulerStyles.weekDayPickerItem
+          schedulerStyles.weekDayPickerItem,
         ].join(' ')}
         data-selected={weekDay === dayNumber}
         data-active={activeWeekDay === dayNumber}
@@ -520,7 +520,7 @@ const WeekPicker = () => {
       </ul>
       <hr
         style={{
-          width: '100%'
+          width: '100%',
         }}
       />
       <ul
@@ -553,7 +553,7 @@ const DayWeekPicker = () => {
     setWeek,
     weekDay,
     setWeekDay,
-    setDay
+    setDay,
   } = usePickerContext();
 
   const ref = useRef<HTMLDivElement>(null);
@@ -566,7 +566,7 @@ const DayWeekPicker = () => {
   useClickClose({
     refs: [ref, buttonRef],
     visible: open,
-    setVisible: setOpen
+    setVisible: setOpen,
   });
 
   // Clear other inputs different
@@ -587,7 +587,7 @@ const DayWeekPicker = () => {
   }, [weekDay, week]);
 
   const { placement, verticlePlacement } = useResponsiveDropdownPlacement({
-    ref
+    ref,
   });
 
   return (
@@ -607,7 +607,7 @@ const DayWeekPicker = () => {
               theme={{
                 pillBackgroundColor: pillBackgroundColor || 'black',
                 tabColor: 'inherit',
-                tabBackgroundColor: 'transparent'
+                tabBackgroundColor: 'transparent',
               }}
             />
             <Tab.Panels>
@@ -686,7 +686,7 @@ const MonthPicker = () => {
       Escape: () => {
         setOpen(false);
       },
-      default: () => { }
+      default: () => {},
     };
     const action = actions[key as keyof typeof actions] || actions['default'];
     action();
@@ -741,7 +741,7 @@ const MonthDayPicker = () => {
   useClickClose({
     refs: [ref, buttonRef],
     visible: open,
-    setVisible: setOpen
+    setVisible: setOpen,
   });
 
   useEffect(() => {
@@ -755,7 +755,7 @@ const MonthDayPicker = () => {
   }, [month, day]);
 
   const { placement, verticlePlacement } = useResponsiveDropdownPlacement({
-    ref
+    ref,
   });
 
   return (
@@ -813,12 +813,20 @@ export const BillScheduler = (props: BSP) => {
 
   return (
     <>
-      {month && <input type="hidden" value={month} {...register('location.month')} />}
+      {month && (
+        <input type="hidden" value={month} {...register('location.month')} />
+      )}
       {day && <input type="hidden" value={day} {...register('location.day')} />}
       {weekDay && (
-        <input type="hidden" value={weekDay} {...register('location.week_day')} />
+        <input
+          type="hidden"
+          value={weekDay}
+          {...register('location.week_day')}
+        />
       )}
-      {week && <input type="hidden" value={week} {...register('location.week')} />}
+      {week && (
+        <input type="hidden" value={week} {...register('location.week')} />
+      )}
       <Scheduler
         day={day}
         setDay={setDay}

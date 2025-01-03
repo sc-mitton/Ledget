@@ -17,17 +17,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   currentWidgetsScrollView: {
-    marginTop: 12
+    marginTop: 12,
   },
   pickerWidgetsScrollView: {
     marginTop: 8,
-    marginBottom: 144
+    marginBottom: 144,
   },
   widgetsContainer: {
     width: '100%',
   },
   pickerBoxOuter: {
-    zIndex: 100
+    zIndex: 100,
   },
 });
 

@@ -1,1 +1,1 @@
-export { default as ActivityDropdown } from './Dropdown'
+export { default as ActivityDropdown } from './Dropdown';

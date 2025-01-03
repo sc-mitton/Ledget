@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   },
   scrollViewSpacer: {
     height: 16,
-  }
+  },
 });
 
 export default styles;

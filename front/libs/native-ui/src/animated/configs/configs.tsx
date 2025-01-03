@@ -8,4 +8,4 @@ export const defaultSpringConfig = {
   restDisplacementThreshold: 0.01,
   restSpeedThreshold: 0.01,
   reduceMotion: ReduceMotion.System,
-}
+};

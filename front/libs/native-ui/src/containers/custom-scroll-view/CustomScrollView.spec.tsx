@@ -5,7 +5,7 @@ import CustomScrollView from './CustomScrollView';
 
 describe('CustomScrollView', () => {
   it('should render successfully', () => {
-    const { root } = render(< CustomScrollView />);
+    const { root } = render(<CustomScrollView />);
     expect(root).toBeTruthy();
   });
 });

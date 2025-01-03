@@ -9,8 +9,12 @@ interface Args {
   onSuccess: () => void;
 }
 
-export const useVerificationCodeHandler = ({ result, dependencies, onExpired, onSuccess }: Args) => {
-
+export const useVerificationCodeHandler = ({
+  result,
+  dependencies,
+  onExpired,
+  onSuccess,
+}: Args) => {
   const [jiggle, setJiggle] = useState(false);
   const [codeIsCorrect, setCodeIsCorrect] = useState(false);
   const [unhandledIdMessage, setUnhandledIdMessage] = useState('');
@@ -74,4 +78,4 @@ export const useVerificationCodeHandler = ({ result, dependencies, onExpired, on
   }, [...dependencies]);
 
   return { jiggle, codeIsCorrect, unhandledIdMessage, refreshSuccess };
-}
+};

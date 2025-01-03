@@ -1,23 +1,23 @@
 .recoveryCodeFormContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
 
-    h2 {
-        margin-bottom: .5em;
-    }
+  h2 {
+    margin-bottom: 0.5em;
+  }
 }
 
 .recoveryForm {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
 }
 
 .verificationButton {
-    width: 100%;
-    z-index: 1;
-    position: relative;
+  width: 100%;
+  z-index: 1;
+  position: relative;
 }

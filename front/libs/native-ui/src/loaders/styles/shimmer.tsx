@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   container: {
@@ -13,7 +13,7 @@ export default StyleSheet.create({
     width: '33%',
     height: '200%',
     left: '50%',
-    top: '-50%'
+    top: '-50%',
   },
   filled: {
     position: 'absolute',
@@ -22,5 +22,5 @@ export default StyleSheet.create({
   },
   rotated: {
     transform: [{ rotate: '30deg' }],
-  }
+  },
 });

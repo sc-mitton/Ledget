@@ -7,12 +7,12 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   accountCardOverlay: {
-    opacity: .02,
+    opacity: 0.02,
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0
+    bottom: 0,
   },
   accountCardInfo: {
     flexDirection: 'row',
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     alignItems: 'center',
     position: 'relative',
-    zIndex: 0
+    zIndex: 0,
   },
   accountInfo: {
     flexGrow: 1,
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    gap: 8
+    gap: 8,
   },
   institutionLogoContainer: {
     position: 'relative',
@@ -45,11 +45,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     borderWidth: 1.5,
     borderRadius: 40,
-    opacity: .6
+    opacity: 0.6,
   },
   seperator: {
     paddingLeft: 40,
-  }
+  },
 });
 
 export default styles;

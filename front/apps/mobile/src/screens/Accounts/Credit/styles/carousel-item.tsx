@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
 });
 
 export default styles;

@@ -49,8 +49,8 @@ function Window() {
       setConfirmedTransactionFilter({
         date_range: [
           Math.floor(new Date(year, month - 1, 1).getTime() / 1000),
-          Math.floor(new Date(year, month, 0).getTime() / 1000)
-        ]
+          Math.floor(new Date(year, month, 0).getTime() / 1000),
+        ],
       })
     );
   }, [searchParams.get('year'), searchParams.get('month')]);

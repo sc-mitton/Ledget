@@ -10,42 +10,20 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
+    "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ledget/form-schemas": [
-        "libs/form-schemas/src/index.ts"
-      ],
-      "@ledget/helpers": [
-        "libs/helpers/src/index.ts"
-      ],
-      "@ledget/media": [
-        "libs/media/web/src/index.ts"
-      ],
-      "@ledget/media/native": [
-        "libs/media/native/src/index.ts"
-      ],
-      "@ledget/native-ui": [
-        "libs/native-ui/src/index.ts"
-      ],
-      "@ledget/ory": [
-        "libs/ory/src/index.ts"
-      ],
-      "@ledget/shared-features": [
-        "libs/shared-features/src/index.ts"
-      ],
-      "@ledget/ui": [
-        "libs/ui/src/index.ts"
-      ]
+      "@ledget/form-schemas": ["libs/form-schemas/src/index.ts"],
+      "@ledget/helpers": ["libs/helpers/src/index.ts"],
+      "@ledget/media": ["libs/media/web/src/index.ts"],
+      "@ledget/media/native": ["libs/media/native/src/index.ts"],
+      "@ledget/native-ui": ["libs/native-ui/src/index.ts"],
+      "@ledget/ory": ["libs/ory/src/index.ts"],
+      "@ledget/shared-features": ["libs/shared-features/src/index.ts"],
+      "@ledget/ui": ["libs/ui/src/index.ts"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "exclude": ["node_modules", "tmp"]
 }

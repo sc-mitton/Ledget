@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   scrollIndicator: {
@@ -7,6 +7,5 @@ export default StyleSheet.create({
     borderRadius: 12,
     right: 0,
   },
-  container: {
-  }
+  container: {},
 });

@@ -1,11 +1,11 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   boxContainer: {
     position: 'absolute',
     left: 0,
     right: 0,
-    bottom: 0
+    bottom: 0,
   },
   mainBackgroundBox: {
     paddingHorizontal: 16,
@@ -25,10 +25,7 @@ export default StyleSheet.create({
     position: 'absolute',
     top: 8,
     left: '50%',
-    transform: [
-      { translateX: -18 },
-      { translateY: -1.5 }
-    ]
+    transform: [{ translateX: -18 }, { translateY: -1.5 }],
   },
   dragBarContainer: {
     justifyContent: 'center',
@@ -65,7 +62,7 @@ export default StyleSheet.create({
   emojis: {
     gap: 6,
     marginLeft: 8,
-    opacity: .7,
+    opacity: 0.7,
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: 12,
@@ -78,5 +75,5 @@ export default StyleSheet.create({
     flexGrow: 1,
     marginTop: 2,
     alignItems: 'flex-end',
-  }
+  },
 });

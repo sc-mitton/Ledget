@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 16,
     top: 4,
-    zIndex: 10
+    zIndex: 10,
   },
   header: {
     flexDirection: 'row',
@@ -19,15 +19,15 @@ const styles = StyleSheet.create({
   headerRight: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8
+    gap: 8,
   },
   pickerBackground: {
     position: 'absolute',
-    zIndex: 100
+    zIndex: 100,
   },
   headerLeft: {
     position: 'absolute',
-    left: 12
+    left: 12,
   },
   mask: {
     position: 'absolute',
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 44,
-    transform: [{ translateY: 44 }]
+    transform: [{ translateY: 44 }],
   },
   graphicContainer: {
     zIndex: 1,
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     left: '50%',
     top: '50%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   graphic: {
     position: 'absolute',
@@ -55,8 +55,8 @@ const styles = StyleSheet.create({
     width: 300,
     transform: [{ translateY: -75 }],
     gap: 12,
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });
 
 export default styles;

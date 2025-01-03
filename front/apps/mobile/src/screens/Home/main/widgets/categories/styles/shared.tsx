@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    margin: 2
+    margin: 2,
   },
   columns: {
     justifyContent: 'space-evenly',
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   image: {
     width: 20,
     height: 20,
-  }
+  },
 });
 
 export default styles;

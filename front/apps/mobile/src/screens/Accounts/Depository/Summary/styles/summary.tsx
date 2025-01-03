@@ -9,14 +9,14 @@ const styles = StyleSheet.create({
     position: 'relative',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    zIndex: 100
+    zIndex: 100,
   },
   graphContainer: {
     width: '100%',
-    height: 155
+    height: 155,
   },
   nestedContainerBox: {
-    padding: 0
+    padding: 0,
   },
   selectWindowButtons: {
     flexDirection: 'row',
@@ -25,16 +25,16 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
     marginTop: -2,
     flexDirection: 'row',
-    gap: 8
+    gap: 8,
   },
   trendContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 2,
-    marginTop: -2
+    marginTop: -2,
   },
   trendIcon: {
-    marginLeft: 2
+    marginLeft: 2,
   },
   chartHeader: {
     marginTop: 12,
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
   tooltipText: {
     position: 'absolute',
-    top: -8
+    top: -8,
   },
   menuButtonContainer: {
     position: 'absolute',
@@ -52,8 +52,8 @@ const styles = StyleSheet.create({
   },
   blurViewContainer: {
     zIndex: 10,
-    borderRadius: 12
-  }
+    borderRadius: 12,
+  },
 });
 
 export default styles;

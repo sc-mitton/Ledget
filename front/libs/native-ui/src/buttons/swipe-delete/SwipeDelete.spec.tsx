@@ -5,7 +5,7 @@ import SwipeDelete from './SwipeDelete';
 
 describe('SwipeDelete', () => {
   it('should render successfully', () => {
-    const { root } = render(< SwipeDelete />);
+    const { root } = render(<SwipeDelete />);
     expect(root).toBeTruthy();
   });
 });

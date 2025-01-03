@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { View, Keyboard, TouchableWithoutFeedback } from 'react-native'
-import { Controller, useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { View, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { X } from 'geist-native-icons';
 import { z } from 'zod';
 
@@ -15,9 +15,12 @@ import {
   TextInput,
   Box,
   Seperator,
-} from '@ledget/native-ui'
-import { useLazyGetSettingsFlowQuery, useCompleteSettingsFlowMutation } from '@/features/orySlice';
-import { useUpdateUserMutation, useGetMeQuery } from '@ledget/shared-features'
+} from '@ledget/native-ui';
+import {
+  useLazyGetSettingsFlowQuery,
+  useCompleteSettingsFlowMutation,
+} from '@/features/orySlice';
+import { useUpdateUserMutation, useGetMeQuery } from '@ledget/shared-features';
 import { useNativeFlow } from '@ledget/ory';
 import { ModalScreenProps } from '@types';
 
@@ -25,60 +28,64 @@ const schema = z.object({
   first: z.string().min(1, { message: 'First name is required' }),
   last: z.string().min(1, { message: 'Last name is required' }),
   email: z.string().email().min(1, { message: 'Email is required' }),
-})
+});
 
 const EditPersonalInfo = (props: ModalScreenProps<'EditPersonalInfo'>) => {
-  const [updateUser, { isSuccess, isLoading }] = useUpdateUserMutation()
-  const { data: user } = useGetMeQuery()
+  const [updateUser, { isSuccess, isLoading }] = useUpdateUserMutation();
+  const { data: user } = useGetMeQuery();
   const { fetchFlow, flowStatus, submitFlow } = useNativeFlow(
     useLazyGetSettingsFlowQuery,
     useCompleteSettingsFlowMutation,
     'settings'
   );
 
-  const { control, handleSubmit, formState: { errors, dirtyFields } } = useForm<z.infer<typeof schema>>({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, dirtyFields },
+  } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
       first: user?.name.first,
       last: user?.name.last,
-      email: user?.email
-    }
-  })
+      email: user?.email,
+    },
+  });
 
-  useEffect(() => { fetchFlow() }, [])
+  useEffect(() => {
+    fetchFlow();
+  }, []);
 
   const onSave = () => {
     handleSubmit((data) => {
-      const { email, ...rest } = data
+      const { email, ...rest } = data;
       if (dirtyFields.email) {
-        submitFlow({ email, method: 'profile' })
+        submitFlow({ email, method: 'profile' });
       }
-      updateUser({ name: rest })
-    })()
-  }
+      updateUser({ name: rest });
+    })();
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <Box
-        paddingBottom='xxl'
-        backgroundColor='modalBox100'
-        paddingHorizontal='pagePadding'
+        paddingBottom="xxl"
+        backgroundColor="modalBox100"
+        paddingHorizontal="pagePadding"
         style={styles.modalBackground}
       >
         <Button
-          variant='circleButton'
+          variant="circleButton"
           onPress={props.navigation.goBack}
           style={styles.closeButton}
-          icon={<Icon icon={X} color='secondaryText' strokeWidth={2} />}
+          icon={<Icon icon={X} color="secondaryText" strokeWidth={2} />}
         />
         <View style={styles.headerContainer}>
           <Header>Edit</Header>
-          <Text color='secondaryText'>
-            Edit your personal information
-          </Text>
+          <Text color="secondaryText">Edit your personal information</Text>
         </View>
-        <Seperator backgroundColor='modalSeperator' />
-        <Box marginVertical='l'>
+        <Seperator backgroundColor="modalSeperator" />
+        <Box marginVertical="l">
           <View style={styles.splitInputs}>
             <View style={styles.splitInput}>
               <Controller
@@ -126,12 +133,12 @@ const EditPersonalInfo = (props: ModalScreenProps<'EditPersonalInfo'>) => {
           label="Save"
           isSubmitting={isLoading}
           isSuccess={isSuccess}
-          variant='main'
+          variant="main"
           onPress={onSave}
         />
       </Box>
     </TouchableWithoutFeedback>
-  )
+  );
 };
 
-export default EditPersonalInfo
+export default EditPersonalInfo;

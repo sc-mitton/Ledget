@@ -13,15 +13,20 @@ const Shadow = () => {
       {Array.from({ length: 3 }).map((_, i) => (
         <View style={styles.row} key={`credit-card-shadow-${i}`}>
           <View
-            style={[{
-              backgroundColor: accounts?.institutions[i % (accounts.institutions.length)].primary_color,
-            },
-            sharedStyles.card
+            style={[
+              {
+                backgroundColor:
+                  accounts?.institutions[i % accounts.institutions.length]
+                    .primary_color,
+              },
+              sharedStyles.card,
             ]}
           >
             <View style={styles.logoContainer}>
               <InstitutionLogo
-                institution={accounts?.institutions[i % (accounts.institutions.length)].id}
+                institution={
+                  accounts?.institutions[i % accounts.institutions.length].id
+                }
                 hasBorder={false}
                 hasShadow={false}
                 size={16}
@@ -30,19 +35,19 @@ const Shadow = () => {
           </View>
           <View style={styles.rightContainer}>
             <Box
-              backgroundColor='transactionShimmer'
+              backgroundColor="transactionShimmer"
               style={styles.nameSkeleton}
-              borderRadius='xxs'
+              borderRadius="xxs"
             />
             <Box
-              backgroundColor='transactionShimmer'
+              backgroundColor="transactionShimmer"
               style={styles.amountSkeleton}
-              borderRadius='xxs'
+              borderRadius="xxs"
             />
           </View>
         </View>
       ))}
     </View>
-  )
-}
-export default Shadow
+  );
+};
+export default Shadow;

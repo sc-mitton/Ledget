@@ -1,7 +1,7 @@
 export type Option = {
   label: string;
   value: string | number;
-}
+};
 
 export type RadiosProps<T extends Option> = {
   options: Readonly<T[]>;
@@ -9,4 +9,4 @@ export type RadiosProps<T extends Option> = {
   defaultValue?: T[][number]['value'];
   horizontal?: true;
   cardStyle?: true;
-}
+};

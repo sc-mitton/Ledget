@@ -1,12 +1,12 @@
 .subheader {
-    display: flex;
-    flex-direction: column;
-    margin: 1em 0;
-    width: 90%;
+  display: flex;
+  flex-direction: column;
+  margin: 1em 0;
+  width: 90%;
 }
 
 .forceVerification {
-    &>div:last-child {
-        margin-top: 2em;
-    }
+  & > div:last-child {
+    margin-top: 2em;
+  }
 }

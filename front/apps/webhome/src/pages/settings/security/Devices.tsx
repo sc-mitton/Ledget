@@ -6,7 +6,7 @@ import styles from './styles/devices.module.scss';
 import { Disclosure } from '@headlessui/react';
 import {
   useRemoveRememberedDeviceMutation,
-  Device as DeviceType
+  Device as DeviceType,
 } from '@ledget/shared-features';
 import { IconButtonSubmit, Tooltip, NestedWindowSlimmer } from '@ledget/ui';
 
@@ -21,7 +21,7 @@ const formatDateTime = (date: string | number) => {
     day: 'numeric',
     year: 'numeric',
     hour: 'numeric',
-    minute: 'numeric'
+    minute: 'numeric',
   });
 };
 
@@ -67,8 +67,9 @@ const Device = (props: { device: string; info: DeviceType[] }) => {
               <div>
                 <div>
                   <span>{device.split(',')[0]}</span>&ndash;
-                  <span>{`${info.length} session${info.length > 1 ? 's' : ''
-                    }`}</span>
+                  <span>{`${info.length} session${
+                    info.length > 1 ? 's' : ''
+                  }`}</span>
                 </div>
                 <div>
                   <MapPin2 size={'1em'} />
@@ -87,15 +88,19 @@ const Device = (props: { device: string; info: DeviceType[] }) => {
               {info.map((session) => (
                 <div key={session.id}>
                   <div>
-                    {session.is_pc &&
-                      <><div>Browser</div>
-                        <div>{session.browser_family}</div></>}
+                    {session.is_pc && (
+                      <>
+                        <div>Browser</div>
+                        <div>{session.browser_family}</div>
+                      </>
+                    )}
                     <div>Last Login </div>
                     <div>{formatDateTime(session.last_login)}</div>
                   </div>
                   <div
-                    className={`${session.current_device ? '' : styles.logoutDevice
-                      }`}
+                    className={`${
+                      session.current_device ? '' : styles.logoutDevice
+                    }`}
                   >
                     {session.current_device ? (
                       <span className={styles.currentDevice}>This Device</span>

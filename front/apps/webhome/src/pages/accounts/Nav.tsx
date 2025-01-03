@@ -15,12 +15,12 @@ import {
   FilterPillButton,
   RefreshButton,
   useColorScheme,
-  Tooltip
+  Tooltip,
 } from '@ledget/ui';
 import {
   popToast,
   useGetAccountsQuery,
-  useTransactionsSyncMutation
+  useTransactionsSyncMutation,
 } from '@ledget/shared-features';
 import { useAppDispatch } from '@hooks/store';
 import { CurrencyNote, Filter2 } from '@ledget/media';
@@ -84,8 +84,8 @@ const TabButtons = ({ showFilters = false }) => {
     styles: {
       backgroundColor: isDark ? lightBlue : blue,
       ...(isDark ? { borderColor: blue } : {}),
-      borderRadius: 'var(--border-radius5)'
-    }
+      borderRadius: 'var(--border-radius5)',
+    },
   });
 
   // Resize observer to update nav pill when responsive layout changes
@@ -141,7 +141,7 @@ type SelectOption = {
 
 const Filters = ({
   visible = false,
-  close
+  close,
 }: {
   visible: boolean;
   close: () => void;
@@ -161,7 +161,7 @@ const Filters = ({
       const totalOption = {
         value: 'all',
         filterType: 'meta',
-        label: 'All Accounts'
+        label: 'All Accounts',
       } as const;
 
       const depositTypes = data.accounts
@@ -173,20 +173,20 @@ const Filters = ({
           value: account.subtype,
           filterType: 'deposit-type' as const,
           label:
-            account.subtype.charAt(0).toUpperCase() + account.subtype.slice(1)
+            account.subtype.charAt(0).toUpperCase() + account.subtype.slice(1),
         }));
       const institutionOptions = data.institutions
         .map((institution: any) => ({
           value: institution.id,
           filterType: 'institution' as const,
-          label: institution.name
+          label: institution.name,
         }))
         .filter((i) => data.accounts.find((a) => a.institution_id === i.value));
 
       setAccountsFilterOptions((prev) => [
         totalOption,
         ...(institutionOptions || []),
-        ...(depositTypes.length > 1 ? depositTypes : [])
+        ...(depositTypes.length > 1 ? depositTypes : []),
       ]);
     }
   }, [location.pathname, data]);
@@ -261,8 +261,8 @@ export const Nav = () => {
       isSuccess: isTransactionsSyncSuccess,
       isError: isTransactionsSyncError,
       data: syncResult,
-      isLoading: isSyncing
-    }
+      isLoading: isSyncing,
+    },
   ] = useTransactionsSyncMutation();
   const dispatch = useAppDispatch();
   const [showFilters, setShowFilters] = useState(false);
@@ -274,10 +274,11 @@ export const Nav = () => {
       dispatch(
         popToast({
           type: 'success',
-          message: `Synced${syncResult?.added
+          message: `Synced${
+            syncResult?.added
               ? `, ${syncResult?.added} new transactions`
               : ' successfully'
-            }`
+          }`,
         })
       );
     }
@@ -289,7 +290,7 @@ export const Nav = () => {
       dispatch(
         popToast({
           type: 'error',
-          message: 'There was an error syncing your transactions'
+          message: 'There was an error syncing your transactions',
         })
       );
     }

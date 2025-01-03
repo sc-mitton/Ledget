@@ -12,7 +12,7 @@ import {
   CheckInCircle,
   Circle,
   BellOff,
-  MoreHorizontal
+  MoreHorizontal,
 } from '@geist-ui/icons';
 import { startCase, toLower } from 'lodash-es';
 
@@ -24,7 +24,7 @@ import {
   useUpdateBillsMutation,
   UpdateBill,
   Reminder,
-  selectBudgetMonthYear
+  selectBudgetMonthYear,
 } from '@ledget/shared-features';
 import { SubmitForm } from '@components/pieces';
 import { getOrderSuffix } from '@ledget/helpers';
@@ -38,7 +38,7 @@ import {
   DropdownItem,
   DatePicker,
   NestedWindow2,
-  WindowCorner
+  WindowCorner,
 } from '@ledget/ui';
 import { useLoaded } from '@ledget/helpers';
 import { extractReminders } from '@modals/CreateBill';
@@ -47,7 +47,7 @@ import {
   DollarRangeInput,
   BillScheduler,
   AddReminder,
-  emoji
+  emoji,
 } from '@components/inputs';
 import { useAppSelector } from '@hooks/store';
 import { billSchema } from '@ledget/form-schemas';
@@ -57,7 +57,7 @@ const getRepeatsDescription = ({
   week,
   week_day,
   month,
-  year
+  year,
 }: {
   day: number | undefined;
   week: number | undefined;
@@ -73,7 +73,7 @@ const getRepeatsDescription = ({
   } else if (month) {
     return `Yearly on ${new Date(2000, month, day).toLocaleDateString('en-US', {
       month: 'short',
-      day: 'numeric'
+      day: 'numeric',
     })}`;
   } else if (week_day && week) {
     return `The ${week_day}${getOrderSuffix(week_day)} ${mapWeekDayNumberToName(
@@ -91,7 +91,7 @@ const getNextBillDate = ({
   week,
   week_day,
   month,
-  year
+  year,
 }: {
   day: number | undefined;
   week: number | undefined;
@@ -105,7 +105,7 @@ const getNextBillDate = ({
     return new Date(year, month, day).toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
-      year: 'numeric'
+      year: 'numeric',
     });
   } else if (month && day) {
     date.setMonth(month);
@@ -114,7 +114,7 @@ const getNextBillDate = ({
     return date.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
-      year: 'numeric'
+      year: 'numeric',
     });
   } else if (week_day && week) {
     date.setMonth(date.getMonth() + 1);
@@ -123,7 +123,7 @@ const getNextBillDate = ({
     return date.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
-      year: 'numeric'
+      year: 'numeric',
     });
   } else if (day) {
     date.setMonth(date.getMonth() + 1);
@@ -131,13 +131,13 @@ const getNextBillDate = ({
     return date.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
-      year: 'numeric'
+      year: 'numeric',
     });
   } else {
     return date.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
-      year: 'numeric'
+      year: 'numeric',
     });
   }
 };
@@ -145,7 +145,7 @@ const getNextBillDate = ({
 type Action = 'delete' | 'edit' | 'none';
 
 const Actions = ({
-  setAction
+  setAction,
 }: {
   setAction: React.Dispatch<React.SetStateAction<Action>>;
 }) => {
@@ -237,24 +237,24 @@ const BillInfo = ({ bill }: { bill: TransformedBill }) => {
             week: bill?.week,
             week_day: bill?.week_day,
             month: bill?.month,
-            year: bill?.year
+            year: bill?.year,
           })}
         </div>
         <div>Next</div>
         <div>
           {bill?.is_paid
             ? `${getNextBillDate({
-              day: bill?.day,
-              week: bill?.week,
-              week_day: bill?.week_day,
-              month: bill?.month,
-              year: bill?.year
-            })}`
+                day: bill?.day,
+                week: bill?.week,
+                week_day: bill?.week_day,
+                month: bill?.month,
+                year: bill?.year,
+              })}`
             : `${new Date(bill.date).toLocaleDateString('en-US', {
-              month: 'short',
-              day: 'numeric',
-              year: 'numeric'
-            })}`}
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+              })}`}
         </div>
         {bill?.expires && (
           <>
@@ -263,7 +263,7 @@ const BillInfo = ({ bill }: { bill: TransformedBill }) => {
               {`${new Date(bill.expires).toLocaleDateString('en-US', {
                 month: 'short',
                 day: 'numeric',
-                year: 'numeric'
+                year: 'numeric',
               })}`}
             </div>
           </>
@@ -291,7 +291,7 @@ const BillInfo = ({ bill }: { bill: TransformedBill }) => {
 const DeleteBill = ({
   bill,
   onCancel,
-  onDelete
+  onDelete,
 }: {
   bill?: TransformedBill;
   onCancel: () => void;
@@ -305,7 +305,7 @@ const DeleteBill = ({
     e.preventDefault();
     deleteBill({
       billId: bill?.id || '',
-      data: { instances: value }
+      data: { instances: value },
     });
   };
 
@@ -325,8 +325,9 @@ const DeleteBill = ({
         <RadioGroup.Label className={bill?.period}>
           <h3>
             Delete{' '}
-            {`${bill?.name.charAt(0).toUpperCase()}${bill?.name.slice(1) || ''
-              }`}{' '}
+            {`${bill?.name.charAt(0).toUpperCase()}${
+              bill?.name.slice(1) || ''
+            }`}{' '}
             Bill
           </h3>
         </RadioGroup.Label>
@@ -368,7 +369,7 @@ const DeleteBill = ({
 const EditBill = ({
   bill,
   onCancel,
-  onUpdateSuccess
+  onUpdateSuccess,
 }: {
   bill: TransformedBill;
   onCancel: () => void;
@@ -380,10 +381,10 @@ const EditBill = ({
     register,
     handleSubmit,
     formState: { errors },
-    control
+    control,
   } = useForm<z.infer<typeof billSchema>>({
     resolver: zodResolver(billSchema),
-    defaultValues: { name: startCase(toLower(bill?.name)) }
+    defaultValues: { name: startCase(toLower(bill?.name)) },
   });
 
   const [emoji, setEmoji] = useState<emoji>();
@@ -400,12 +401,13 @@ const EditBill = ({
         updateBill({
           id: bill?.id,
           reminders: reminders,
-          ...data
+          ...data,
         });
       } else {
         const payload = { id: bill?.id } as any;
         let k: keyof typeof data;
-        for (k in data) if (data[k] !== (bill as any)?.[k]) payload[k] = data[k];
+        for (k in data)
+          if (data[k] !== (bill as any)?.[k]) payload[k] = data[k];
         updateBill(payload as UpdateBill);
       }
     })(e);
@@ -441,7 +443,7 @@ const EditBill = ({
                 day: bill.day,
                 week: bill.week,
                 weekDay: bill.week_day,
-                month: bill.month
+                month: bill.month,
               }}
               billPeriod={bill.period}
               error={errors.schedule?.day}

@@ -14,22 +14,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   plusIcon: {
-    marginLeft: 4
+    marginLeft: 4,
   },
   inputButton: {
     paddingTop: 4,
-    marginTop: 2
+    marginTop: 2,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   centerHeader: {
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
-    gap: 6
+    gap: 6,
   },
   pickers: {
     flexDirection: 'row',
@@ -38,13 +38,13 @@ const styles = StyleSheet.create({
   pickerContainer: {
     flex: 1,
     overflow: 'hidden',
-    marginBottom: -64
+    marginBottom: -64,
   },
   pickerItem: {
-    fontFamily: 'SourceSans3Regular'
+    fontFamily: 'SourceSans3Regular',
   },
   picker: {
-    transform: [{ translateY: -32 }]
+    transform: [{ translateY: -32 }],
   },
   buttons: {
     paddingHorizontal: 0,
@@ -52,11 +52,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 40,
     marginBottom: -12,
-    gap: 12
+    gap: 12,
   },
   button: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 
 export default styles;

@@ -8,13 +8,13 @@ const TourBills = ({ dark = false, size = 425 }) => {
     <Image
       style={{ width: size, height: size }}
       source={TourBillsDark}
-      resizeMode='contain'
+      resizeMode="contain"
     />
   ) : (
     <Image
       style={{ width: size, height: size }}
       source={TourBillsLight}
-      resizeMode='contain'
+      resizeMode="contain"
     />
   );
 };

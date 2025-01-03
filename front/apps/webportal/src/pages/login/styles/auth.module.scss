@@ -1,37 +1,37 @@
 .mfa {
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: row;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
 
-    * {
-        margin-top: .5em;
-        font-size: .9375rem;
+  * {
+    margin-top: 0.5em;
+    font-size: 0.9375rem;
+  }
+
+  button {
+    color: var(--blue-medium-dark);
+    position: relative;
+
+    &:before {
+      content: '';
+      position: absolute;
+      width: 0%;
+      height: 2px;
+      bottom: -1px;
+      left: 0;
+      background-color: var(--blue-medium-dark);
     }
 
-    button {
-        color: var(--blue-medium-dark);
-        position: relative;
-
-        &:before {
-            content: "";
-            position: absolute;
-            width: 0%;
-            height: 2px;
-            bottom: -1px;
-            left: 0;
-            background-color: var(--blue-medium-dark);
-        }
-
-        &:hover:before {
-            width: 100%;
-            transition: all 0.2s ease-out;
-        }
+    &:hover:before {
+      width: 100%;
+      transition: all 0.2s ease-out;
     }
+  }
 }
 
 .passwordAuth {
-    display: flex;
-    flex-direction: column;
-    gap: .5em;
-    margin-top: .5em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  margin-top: 0.5em;
 }

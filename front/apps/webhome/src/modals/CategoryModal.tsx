@@ -16,7 +16,7 @@ import {
   useLazyGetTransactionsQuery,
   Transaction,
   useGetCategorySpendingHistoryQuery,
-  selectBudgetMonthYear
+  selectBudgetMonthYear,
 } from '@ledget/shared-features';
 import type { Category } from '@ledget/shared-features';
 import { useAppSelector } from '@hooks/store';
@@ -38,12 +38,12 @@ import {
   DropdownItem,
   SlideMotionDiv,
   BackButton,
-  NestedWindow2
+  NestedWindow2,
 } from '@ledget/ui';
 
 const AmountSpentChart = ({
   data,
-  disabled = false
+  disabled = false,
 }: {
   data: Datum[];
   disabled?: boolean;
@@ -76,7 +76,7 @@ const AmountSpentChart = ({
     const fontStyle = {
       fontFamily: computedStyle.fontFamily,
       fontSize: computedStyle.fontSize,
-      fontWeight: computedStyle.fontWeight
+      fontWeight: computedStyle.fontWeight,
     };
 
     const tempSpan = document.createElement('span');
@@ -102,19 +102,19 @@ const AmountSpentChart = ({
       margin={chartMargin}
       axisBottom={{
         format: (value: number) =>
-          new Date(value).toLocaleString('default', { month: 'short' })
+          new Date(value).toLocaleString('default', { month: 'short' }),
       }}
       axisLeft={{
         tickValues: 4,
         tickPadding: xaxisPadding,
-        format: (value: number) => formatCurrency(value, false)
+        format: (value: number) => formatCurrency(value, false),
       }}
       areaBaselineValue={minY}
       tooltip={({ point }) => (
         <ChartTip position={point.index >= data.length / 2 ? 'left' : 'right'}>
           <span>
             {new Date(point.data.x).toLocaleString('default', {
-              month: 'short'
+              month: 'short',
             })}
           </span>
           &nbsp;&nbsp;
@@ -124,7 +124,7 @@ const AmountSpentChart = ({
       yScale={{
         type: 'linear',
         min: yScaleMin,
-        max: data.length > 0 ? 'auto' : maxY / 100
+        max: data.length > 0 ? 'auto' : maxY / 100,
       }}
       gridYValues={4}
       theme={nivoResponsiveLineTheme}
@@ -138,28 +138,28 @@ const fakeChartData = [
   {
     month: new Date(today.getFullYear(), today.getMonth() - 4).getMonth(),
     year: new Date(today.getFullYear(), today.getMonth() - 4).getFullYear(),
-    amount_spent: 2000
+    amount_spent: 2000,
   },
   {
     month: new Date(today.getFullYear(), today.getMonth() - 3).getMonth(),
     year: new Date(today.getFullYear(), today.getMonth() - 3).getFullYear(),
-    amount_spent: 2400
+    amount_spent: 2400,
   },
   {
     month: new Date(today.getFullYear(), today.getMonth() - 2).getMonth(),
     year: new Date(today.getFullYear(), today.getMonth() - 2).getFullYear(),
-    amount_spent: 2200
+    amount_spent: 2200,
   },
   {
     month: new Date(today.getFullYear(), today.getMonth() - 1).getMonth(),
     year: new Date(today.getFullYear(), today.getMonth() - 1).getFullYear(),
-    amount_spent: 2600
-  }
+    amount_spent: 2600,
+  },
 ];
 
 const Options = ({
   onEdit,
-  onDelete
+  onDelete,
 }: {
   onEdit: () => void;
   onDelete: () => void;
@@ -216,11 +216,11 @@ const CategoryDetails = (props: {
   const { month, year } = useAppSelector(selectBudgetMonthYear);
   const { data: spendingSummaryData, isSuccess: spendingSummaryDataIsFetched } =
     useGetCategorySpendingHistoryQuery({
-      categoryId: props.category.id
+      categoryId: props.category.id,
     });
   const [
     getTransactions,
-    { data: transactionsData, isLoading: isLoadingTransactionsData }
+    { data: transactionsData, isLoading: isLoadingTransactionsData },
   ] = useLazyGetTransactionsQuery();
 
   const [chartData, setChartData] = useState<Datum[]>([]);
@@ -236,7 +236,7 @@ const CategoryDetails = (props: {
         {
           confirmed: true,
           ...(props.category.period === 'month' ? { month, year } : { year }),
-          category: props.category.id
+          category: props.category.id,
         },
         true
       );
@@ -265,14 +265,14 @@ const CategoryDetails = (props: {
           .filter((d) => new Date(d.year, d.month) > new Date(windowEnd))
           .map((d) => ({
             x: new Date(d.year, d.month).getTime(),
-            y: d.amount_spent
+            y: d.amount_spent,
           }))
       );
     } else {
       setChartData(
         fakeChartData.map((d) => ({
           x: new Date(d.year, d.month).getTime(),
-          y: d.amount_spent
+          y: d.amount_spent,
         }))
       );
     }
@@ -312,7 +312,7 @@ const CategoryDetails = (props: {
         ...(props.category.period === 'month' ? { month, year } : { year }),
         category: props.category.id,
         offset: transactionsData.next,
-        limit: transactionsData.limit
+        limit: transactionsData.limit,
       });
     }
   };

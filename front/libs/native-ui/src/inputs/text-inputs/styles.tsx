@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   textInput: {
@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
   visibilityButton: {
     position: 'absolute',
     right: 16,
-    top: '50%'
-  }
+    top: '50%',
+  },
 });
 
 export default styles;

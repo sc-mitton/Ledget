@@ -1,79 +1,79 @@
 .window {
-    width: 90%;
-    max-width: 31.25rem;
-    display: flex;
-    flex-direction: column;
-    margin: 2em 0;
+  width: 90%;
+  max-width: 31.25rem;
+  display: flex;
+  flex-direction: column;
+  margin: 2em 0;
 
-    h4 {
-        font-weight: var(--fw-regular);
-        margin-left: .5em;
-        font-size: 1.125rem;
-    }
+  h4 {
+    font-weight: var(--fw-regular);
+    margin-left: 0.5em;
+    font-size: 1.125rem;
+  }
 
-    hr {
-        width: calc(100% - 1em);
-        color: var(--border-color-dim);
-        margin-top: .25em;
-        margin-bottom: .625em;
-    }
+  hr {
+    width: calc(100% - 1em);
+    color: var(--border-color-dim);
+    margin-top: 0.25em;
+    margin-bottom: 0.625em;
+  }
 
-    &[data-size='extra-small'] {
-        inset: 0;
-        transform: none;
-        width: 100%;
-        top: 0;
-        margin: 0;
-        border-radius: 0;
-        padding: 0;
-        max-width: unset;
-        position: absolute;
-    }
+  &[data-size='extra-small'] {
+    inset: 0;
+    transform: none;
+    width: 100%;
+    top: 0;
+    margin: 0;
+    border-radius: 0;
+    padding: 0;
+    max-width: unset;
+    position: absolute;
+  }
 
-    label {
-        margin-top: .25em;
-        margin-left: .25em;
-        margin-bottom: .125em;
-        font-size: .875rem;
-        font-weight: var(--fw-bold);
-    }
+  label {
+    margin-top: 0.25em;
+    margin-left: 0.25em;
+    margin-bottom: 0.125em;
+    font-size: 0.875rem;
+    font-weight: var(--fw-bold);
+  }
 }
 
 .billingForm {
-    padding-bottom: 0;
-    display: flex;
+  padding-bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  height: 100%;
+
+  &[data-size='extra-small'] > div:first-of-type {
     justify-content: space-between;
+  }
+
+  & > div:nth-of-type(2) {
+    padding: 2em;
+    display: flex;
     flex-direction: column;
+    justify-content: space-evenly;
     height: 100%;
-
-    &[data-size='extra-small']>div:first-of-type {
-        justify-content: space-between;
-    }
-
-    &>div:nth-of-type(2) {
-        padding: 2em;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        height: 100%;
-    }
+  }
 }
 
 .textInputs {
-    margin: .5em 0 2.5em 0;
+  margin: 0.5em 0 2.5em 0;
 }
 
 .generalError {
-    margin-bottom: 1.5em;
-    text-align: center;
-    font-weight: var(--fw-regular);
+  margin-bottom: 1.5em;
+  text-align: center;
+  font-weight: var(--fw-regular);
 
-    img {
-        height: 1em;
-        margin-right: .5em;
-        position: relative;
-        top: .125em;
-        text-align: left;
-        animation: pop .22s ease;
-    }
+  img {
+    height: 1em;
+    margin-right: 0.5em;
+    position: relative;
+    top: 0.125em;
+    text-align: left;
+    animation: pop 0.22s ease;
+  }
 }

@@ -9,14 +9,14 @@ import { DatePicker } from '@ledget/ui';
 import {
   setBudgetMonthYear,
   selectBudgetMonthYear,
-  useGetMeQuery
+  useGetMeQuery,
 } from '@ledget/shared-features';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
 
 export const MonthPicker = ({
   darkMode = false,
   placement = 'middle',
-  size = 'small'
+  size = 'small',
 }: {
   darkMode?: boolean;
   placement?: 'left' | 'middle';

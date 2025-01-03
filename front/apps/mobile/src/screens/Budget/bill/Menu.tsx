@@ -18,8 +18,8 @@ export default function BakedMenu(props: BudgetScreenProps<'Bill'>) {
         setVisible={setShowReminderModal}
       />
       <Menu
-        as='menu'
-        placement='right'
+        as="menu"
+        placement="right"
         items={[
           {
             label: 'Edit',
@@ -27,32 +27,43 @@ export default function BakedMenu(props: BudgetScreenProps<'Bill'>) {
             onSelect: () =>
               props.navigation.navigate('Modals', {
                 screen: 'NewBill',
-                params: { edit: props.route.params.bill }
-              } as any)
+                params: { edit: props.route.params.bill },
+              } as any),
           },
           {
             label: 'Add Reminder',
-            icon: () =>
+            icon: () => (
               <View style={styles.reminderIcon}>
                 <Icon icon={Bell} size={16} strokeWidth={2} />
                 <Icon icon={Plus} size={10} strokeWidth={3} />
-              </View>,
-            onSelect: () => { setShowReminderModal(true) }
+              </View>
+            ),
+            onSelect: () => {
+              setShowReminderModal(true);
+            },
           },
           {
             label: 'Delete',
-            icon: () => <Icon icon={Trash} size={16} strokeWidth={2} color='alert' />,
-            onSelect: () => props.navigation.navigate('Modals', {
-              screen: 'ConfirmDeleteBill',
-              params: { bill: props.route.params.bill }
-            })
-          }
+            icon: () => (
+              <Icon icon={Trash} size={16} strokeWidth={2} color="alert" />
+            ),
+            onSelect: () =>
+              props.navigation.navigate('Modals', {
+                screen: 'ConfirmDeleteBill',
+                params: { bill: props.route.params.bill },
+              }),
+          },
         ]}
       >
-        <Box padding='xxs' borderRadius={'circle'}>
-          <Icon icon={MoreHorizontal} size={24} strokeWidth={2} color='secondaryText' />
+        <Box padding="xxs" borderRadius={'circle'}>
+          <Icon
+            icon={MoreHorizontal}
+            size={24}
+            strokeWidth={2}
+            color="secondaryText"
+          />
         </Box>
       </Menu>
     </View>
-  )
+  );
 }

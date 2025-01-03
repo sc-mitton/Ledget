@@ -10,25 +10,25 @@ const styles = StyleSheet.create({
     gap: 16,
     paddingRight: 16,
     paddingLeft: 20,
-    padding: 12
+    padding: 12,
   },
   nameContainer: {
     flex: 2,
     flexDirection: 'row',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
   },
   tickerSymbol: {
-    marginTop: -2
+    marginTop: -2,
   },
   amountContainer: {
     flex: 1,
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
   },
   holdingTrend: {
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 4,
-    gap: 2
+    gap: 2,
   },
   seperator: {
     position: 'absolute',
@@ -42,15 +42,15 @@ const styles = StyleSheet.create({
     paddingRight: 24,
     paddingLeft: 16,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   pinButton: {
     borderRadius: 100,
   },
   pinBox: {
     transform: [{ translateX: 8 }],
-    marginLeft: -16
-  }
+    marginLeft: -16,
+  },
 });
 
 export default styles;

@@ -1,143 +1,142 @@
 .accountsPage {
-    h4 {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-start;
-        gap: .5em;
-        padding: 0 .25em;
+  h4 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5em;
+    padding: 0 0.25em;
 
-        span {
-            display: flex;
-            gap: .5em;
-            align-items: baseline;
-        }
+    span {
+      display: flex;
+      gap: 0.5em;
+      align-items: baseline;
     }
+  }
 
-    &>div:last-child {
-        display: flex;
-        flex-direction: column;
-        gap: 2em;
-    }
+  & > div:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+  }
 }
 
 .avatar {
-    background-color: var(--btn-light-gray);
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    margin: 0 auto;
-    margin-top: 0;
-    width: 2.5em;
-    height: 2.5em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    font-weight: var(--fw-regular);
-    letter-spacing: -2px;
+  background-color: var(--btn-light-gray);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  margin: 0 auto;
+  margin-top: 0;
+  width: 2.5em;
+  height: 2.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: var(--fw-regular);
+  letter-spacing: -2px;
 }
 
 .info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: .75em 2em 0 2em;
-    margin-bottom: 30;
-    position: relative;
-    width: min-content;
-    margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75em 2em 0 2em;
+  margin-bottom: 30;
+  position: relative;
+  width: min-content;
+  margin: 0 auto;
 
-    &>button {
-        transform: scale(0);
-        position: absolute;
-        right: -.25em;
-        bottom: .75em;
-        transition: transform .2s ease-in-out;
-    }
+  & > button {
+    transform: scale(0);
+    position: absolute;
+    right: -0.25em;
+    bottom: 0.75em;
+    transition: transform 0.2s ease-in-out;
+  }
 
-    &:hover>button {
-        transform: scale(1);
-        transition: transform .2s ease-in-out;
-    }
+  &:hover > button {
+    transform: scale(1);
+    transition: transform 0.2s ease-in-out;
+  }
 
-    &>div:last-of-type span {
-        color: var(--m-text-secondary);
-    }
+  & > div:last-of-type span {
+    color: var(--m-text-secondary);
+  }
 }
 
 .paymentMethod {
+  display: flex;
+  justify-content: space-between;
+
+  & > div {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    gap: 0.75em;
+  }
 
-    &>div {
-        display: flex;
-        align-items: center;
-        gap: .75em;
-    }
-
-    @media (max-width: 550) {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: .25em;
-    }
+  @media (max-width: 550) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25em;
+  }
 }
 
-
 .changePlan {
-    top: .5em;
+  top: 0.5em;
 }
 
 .changePlanMenu {
-    position: relative;
+  position: relative;
 }
 
 .invoice {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-    &>div:first-child {
-        display: grid;
-        grid-template-columns: minmax(auto, max-content) 1fr;
-        gap: .25em;
-        column-gap: 1em;
-        row-gap: .5em;
+  & > div:first-child {
+    display: grid;
+    grid-template-columns: minmax(auto, max-content) 1fr;
+    gap: 0.25em;
+    column-gap: 1em;
+    row-gap: 0.5em;
 
-        &>div:nth-child(2n + 1) {
-            color: var(--m-text-secondary);
-        }
-
-        &>div {
-            white-space: nowrap;
-        }
+    & > div:nth-child(2n + 1) {
+      color: var(--m-text-secondary);
     }
+
+    & > div {
+      white-space: nowrap;
+    }
+  }
 }
 
 .household {
-    display: flex;
-    align-items: center;
-    gap: 1em;
-    position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  position: relative;
 
-    span {
-        margin: .25em 0;
+  span {
+    margin: 0.25em 0;
 
-        &:first-of-type {
-            color: var(--m-text-secondary);
-        }
+    &:first-of-type {
+      color: var(--m-text-secondary);
     }
+  }
 
-    span:nth-of-type(2)+button {
-        right: 1em;
-    }
+  span:nth-of-type(2) + button {
+    right: 1em;
+  }
 
-    span:nth-of-type(1)+button {
-        right: 1.75em;
-    }
+  span:nth-of-type(1) + button {
+    right: 1.75em;
+  }
 
-    button {
-        position: absolute;
-    }
+  button {
+    position: absolute;
+  }
 }

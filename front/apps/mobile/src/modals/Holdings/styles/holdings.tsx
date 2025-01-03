@@ -7,13 +7,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     position: 'relative',
-    zIndex: 10
+    zIndex: 10,
   },
   modalBackground: {
     flex: 1,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
-    position: 'relative'
+    position: 'relative',
   },
   headerSeperator: {
     width: '200%',
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     width: '103%',
     flexDirection: 'row',
     justifyContent: 'space-between',
-  }
+  },
 });
 
 export default styles;

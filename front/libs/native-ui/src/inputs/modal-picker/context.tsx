@@ -16,9 +16,15 @@ export function useModalPicker() {
   return context;
 }
 
-export function ModalPickerProvider({ children }: { children: React.ReactNode }) {
+export function ModalPickerProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [showModalOverlay, setShowModalOverlay] = useState(false);
-  const [modalKey, setModalKey] = useState(Math.random().toString().slice(2, 6));
+  const [modalKey, setModalKey] = useState(
+    Math.random().toString().slice(2, 6)
+  );
   const opacity = useSharedValue(0);
 
   useEffect(() => {
@@ -32,10 +38,17 @@ export function ModalPickerProvider({ children }: { children: React.ReactNode })
 
   return (
     <ModalPickerContext.Provider value={{ setShowModalOverlay }}>
-      {showModalOverlay &&
-        <Animated.View style={[{ opacity }, styles.modalOverlayContainer]} key={modalKey}>
-          <Box backgroundColor='modalOverlay' style={[StyleSheet.absoluteFillObject, styles.modalOverlay]} />
-        </Animated.View>}
+      {showModalOverlay && (
+        <Animated.View
+          style={[{ opacity }, styles.modalOverlayContainer]}
+          key={modalKey}
+        >
+          <Box
+            backgroundColor="modalOverlay"
+            style={[StyleSheet.absoluteFillObject, styles.modalOverlay]}
+          />
+        </Animated.View>
+      )}
       {children}
     </ModalPickerContext.Provider>
   );

@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     marginVertical: 8,
     flexDirection: 'row',
-  }
+  },
 });
 
 export default styles;

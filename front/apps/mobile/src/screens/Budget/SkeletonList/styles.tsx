@@ -15,12 +15,12 @@ const styles = StyleSheet.create({
   leftBone: {
     width: '50%',
     height: '100%',
-    borderRadius: 6
+    borderRadius: 6,
   },
   rightBone: {
     width: '20%',
     height: '100%',
-    borderRadius: 6
+    borderRadius: 6,
   },
 });
 

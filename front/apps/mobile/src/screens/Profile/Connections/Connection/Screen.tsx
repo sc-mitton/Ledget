@@ -9,7 +9,7 @@ import {
   Text,
   Icon,
   Button,
-  CustomScrollView
+  CustomScrollView,
 } from '@ledget/native-ui';
 import { Trash2, Repeat } from 'geist-native-icons';
 import { ConnectionsScreenProps } from '@types';
@@ -17,7 +17,10 @@ import { useGetPlaidItemsQuery, useGetMeQuery } from '@ledget/shared-features';
 
 import styles from './styles';
 
-const Screen = ({ navigation, route }: ConnectionsScreenProps<'Connection'>) => {
+const Screen = ({
+  navigation,
+  route,
+}: ConnectionsScreenProps<'Connection'>) => {
   const { data: plaidItems } = useGetPlaidItemsQuery();
   const { data: user } = useGetMeQuery();
   const [skip, setSkip] = useState(true);
@@ -34,21 +37,34 @@ const Screen = ({ navigation, route }: ConnectionsScreenProps<'Connection'>) => 
   }, [plaidItem]);
 
   return (
-    <Box variant='nestedScreen'>
+    <Box variant="nestedScreen">
       <Button
         style={styles.headerContainer}
-        labelPlacement='left'
+        labelPlacement="left"
         fontSize={26}
         lineHeight={36}
-        variant='bold'
-        label={plaidItems?.find((item) => item.id === route.params.item)?.institution?.name}
-        onPress={() => { WebBrowser.openBrowserAsync(plaidItems?.find((item) => item.id === route.params.item)?.institution?.url || '') }}
+        variant="bold"
+        label={
+          plaidItems?.find((item) => item.id === route.params.item)?.institution
+            ?.name
+        }
+        onPress={() => {
+          WebBrowser.openBrowserAsync(
+            plaidItems?.find((item) => item.id === route.params.item)
+              ?.institution?.url || ''
+          );
+        }}
       >
         <View style={styles.logo}>
-          <InstitutionLogo data={plaidItems?.find((item) => item.id === route.params.item)?.institution?.logo} />
+          <InstitutionLogo
+            data={
+              plaidItems?.find((item) => item.id === route.params.item)
+                ?.institution?.logo
+            }
+          />
         </View>
       </Button>
-      <Box variant='nestedContainer' style={styles.accountsBox}>
+      <Box variant="nestedContainer" style={styles.accountsBox}>
         <CustomScrollView>
           <View style={styles.accounts}>
             <View style={styles.nameColumn}>
@@ -57,26 +73,40 @@ const Screen = ({ navigation, route }: ConnectionsScreenProps<'Connection'>) => 
                   key={`${account.id}name`}
                   style={styles.cell}
                   borderBottomWidth={1}
-                  borderBottomColor={i !== plaidItem?.accounts?.length - 1 ? 'nestedContainerSeperator' : 'transparent'}
+                  borderBottomColor={
+                    i !== plaidItem?.accounts?.length - 1
+                      ? 'nestedContainerSeperator'
+                      : 'transparent'
+                  }
                 >
                   <Text fontSize={15}>
-                    {(account.name?.length || 0) > 17 ?
-                      `${account.name?.slice(0, 17)}...` :
-                      account.name}
+                    {(account.name?.length || 0) > 17
+                      ? `${account.name?.slice(0, 17)}...`
+                      : account.name}
                   </Text>
-                </Box>))}
+                </Box>
+              ))}
             </View>
             <View style={styles.maskColumn}>
               {plaidItem?.accounts?.map((account, i) => (
                 <Box
                   key={`${account.id}mask`}
-                  borderBottomColor={i !== plaidItem?.accounts?.length - 1 ? 'nestedContainerSeperator' : 'transparent'}
+                  borderBottomColor={
+                    i !== plaidItem?.accounts?.length - 1
+                      ? 'nestedContainerSeperator'
+                      : 'transparent'
+                  }
                   borderBottomWidth={1}
                   style={[styles.cell, styles.maskCell]}
                 >
-                  <Text textAlign='center' color='secondaryText' fontSize={13}>&#8226;&nbsp;&#8226;&nbsp;</Text>
-                  <Text textAlign='center' color='secondaryText' fontSize={13}>{account.mask}</Text>
-                </Box>))}
+                  <Text textAlign="center" color="secondaryText" fontSize={13}>
+                    &#8226;&nbsp;&#8226;&nbsp;
+                  </Text>
+                  <Text textAlign="center" color="secondaryText" fontSize={13}>
+                    {account.mask}
+                  </Text>
+                </Box>
+              ))}
             </View>
             <View>
               {plaidItem?.accounts?.map((account, i) => (
@@ -84,15 +114,22 @@ const Screen = ({ navigation, route }: ConnectionsScreenProps<'Connection'>) => 
                   key={`${account.id}type`}
                   style={[styles.cell, styles.typeCell]}
                   borderBottomWidth={1}
-                  borderBottomColor={i !== plaidItem?.accounts?.length - 1 ? 'nestedContainerSeperator' : 'transparent'}
+                  borderBottomColor={
+                    i !== plaidItem?.accounts?.length - 1
+                      ? 'nestedContainerSeperator'
+                      : 'transparent'
+                  }
                 >
-                  <Text color='secondaryText' fontSize={14}>{account.type}</Text>
-                </Box>))}
+                  <Text color="secondaryText" fontSize={14}>
+                    {account.type}
+                  </Text>
+                </Box>
+              ))}
             </View>
           </View>
         </CustomScrollView>
       </Box>
-      {plaidItem?.user === user?.id &&
+      {plaidItem?.user === user?.id && (
         <View style={styles.buttons}>
           <Button
             style={styles.button}
@@ -100,28 +137,29 @@ const Screen = ({ navigation, route }: ConnectionsScreenProps<'Connection'>) => 
               navigation.navigate('Modals', {
                 screen: 'ConfirmDeletePlaidItem',
                 params: {
-                  id: route.params.item
-                }
-              })
+                  id: route.params.item,
+                },
+              });
             }}
-            textColor='blueText'
-            label='Disconnect'
-            labelPlacement='right'
-            icon={<Icon color='blueText' icon={Trash2} size={18} />}
+            textColor="blueText"
+            label="Disconnect"
+            labelPlacement="right"
+            icon={<Icon color="blueText" icon={Trash2} size={18} />}
           />
-          {(plaidItem?.login_required || plaidItem?.pending_expiration) &&
+          {(plaidItem?.login_required || plaidItem?.pending_expiration) && (
             <Button
               style={styles.button}
-              textColor='blueText'
+              textColor="blueText"
               onPress={openLink}
-              label='Reconnect'
-              labelPlacement='right'
-              icon={<Icon color='blueText' icon={Repeat} size={18} />}
-            />}
+              label="Reconnect"
+              labelPlacement="right"
+              icon={<Icon color="blueText" icon={Repeat} size={18} />}
+            />
+          )}
         </View>
-      }
+      )}
     </Box>
-  )
-}
+  );
+};
 
-export default Screen
+export default Screen;

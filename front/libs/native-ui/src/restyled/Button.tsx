@@ -4,7 +4,7 @@ import {
   StyleProp,
   ViewStyle,
   LayoutChangeEvent,
-  PressableProps
+  PressableProps,
 } from 'react-native';
 import {
   useRestyle,
@@ -49,16 +49,19 @@ const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([
   shadow,
 ]);
 
-export type ButtonProps = RestyleProps & Omit<PressableProps, 'children'> & {
-  onPress?: () => void;
-  label?: string;
-  children?: React.ReactNode | ((props: { color: string }) => React.ReactNode);
-  labelPlacement?: 'left' | 'right';
-  textColor?: string;
-  transparent?: boolean;
-  style?: StyleProp<ViewStyle>;
-  icon?: React.ReactNode;
-};
+export type ButtonProps = RestyleProps &
+  Omit<PressableProps, 'children'> & {
+    onPress?: () => void;
+    label?: string;
+    children?:
+      | React.ReactNode
+      | ((props: { color: string }) => React.ReactNode);
+    labelPlacement?: 'left' | 'right';
+    textColor?: string;
+    transparent?: boolean;
+    style?: StyleProp<ViewStyle>;
+    icon?: React.ReactNode;
+  };
 
 export const Button = (props: ButtonProps) => {
   const {
@@ -82,32 +85,34 @@ export const Button = (props: ButtonProps) => {
   return (
     <TouchableOpacity
       onPress={onPress}
-      activeOpacity={.6}
+      activeOpacity={0.6}
       style={style}
       onLayout={onLayout}
       disabled={props.disabled ? true : false}
     >
       <View {...restyledProps}>
-        <Box
-          flexDirection='row'
-          gap='s'
-          alignItems='center'
-        >
+        <Box flexDirection="row" gap="s" alignItems="center">
           {labelPlacement === 'left'
             ? typeof children === 'function'
               ? children({ color })
               : children
             : null}
           {labelPlacement === 'right' && icon}
-          {label &&
+          {label && (
             <Text
               fontFamily={fontFamily}
               color={transparent ? 'transparent' : textColor}
               fontSize={fontSize}
               lineHeight={lineHeight}
-              style={textColor ? {} : { color: transparent ? 'transparent' : color ? color : '' }}>
+              style={
+                textColor
+                  ? {}
+                  : { color: transparent ? 'transparent' : color ? color : '' }
+              }
+            >
               {label}
-            </Text>}
+            </Text>
+          )}
           {!labelPlacement || labelPlacement === 'right'
             ? typeof children === 'function'
               ? children({ color })

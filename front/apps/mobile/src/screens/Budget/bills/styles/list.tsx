@@ -16,24 +16,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 12,
     alignItems: 'center',
-    marginVertical: 10
+    marginVertical: 10,
   },
   seperator: {
-    paddingLeft: 48
+    paddingLeft: 48,
   },
   arrowIcon: {
-    marginLeft: 4
+    marginLeft: 4,
   },
   expandButtonContainer: {
     position: 'absolute',
     bottom: 6,
     justifyContent: 'center',
     alignItems: 'center',
-    left: '50%'
+    left: '50%',
   },
   expandButton: {
     position: 'absolute',
-  }
+  },
 });
 
 export default styles;

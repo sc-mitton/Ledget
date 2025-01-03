@@ -3,7 +3,7 @@ import { generateEndpoints } from '@ledget/ory';
 
 export const orySlice = apiSlice.injectEndpoints({
   endpoints: (builder) =>
-    generateEndpoints(builder, 'browser', import.meta.env.VITE_ORY_API_URI)
+    generateEndpoints(builder, 'browser', import.meta.env.VITE_ORY_API_URI),
 });
 
 export const {
@@ -16,5 +16,5 @@ export const {
   useCompleteLogoutFlowMutation,
   useLazyGetUpdatedLogoutFlowQuery,
   useLazyGetVerificationFlowQuery,
-  useCompleteVerificationFlowMutation
+  useCompleteVerificationFlowMutation,
 } = orySlice;

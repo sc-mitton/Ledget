@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -24,
     left: 4,
-  }
+  },
 });
 
 export default styles;

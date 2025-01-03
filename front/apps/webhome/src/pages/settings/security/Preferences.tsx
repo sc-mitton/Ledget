@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { BakedSwitch, NestedWindow, useIsMount } from '@ledget/ui';
 import {
   useGetMeQuery,
-  useUpdateUserSettingsMutation
+  useUpdateUserSettingsMutation,
 } from '@ledget/shared-features';
 
 const Preferences = () => {

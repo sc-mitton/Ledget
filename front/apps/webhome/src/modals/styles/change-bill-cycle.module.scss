@@ -1,20 +1,20 @@
 .newPlainContainer {
-    display: inline-flex;
-    align-items: center;
-    margin-top: .125em;
-    margin-bottom: .75em;
-    border-radius: var(--border-radius3);
+  display: inline-flex;
+  align-items: center;
+  margin-top: 0.125em;
+  margin-bottom: 0.75em;
+  border-radius: var(--border-radius3);
 
-    span:first-child {
-        font-weight: var(--fw-bold);
-    }
+  span:first-child {
+    font-weight: var(--fw-bold);
+  }
 
-    span:last-child {
-        color: var(--blue-dark);
-    }
+  span:last-child {
+    color: var(--blue-dark);
+  }
 
-    >div {
-        position: relative;
-        margin-left: .5em;
-    }
+  > div {
+    position: relative;
+    margin-left: 0.5em;
+  }
 }

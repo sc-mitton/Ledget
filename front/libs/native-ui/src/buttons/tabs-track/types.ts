@@ -13,6 +13,8 @@ export interface TabsTrackPropsContext {
 }
 
 export interface TabProps {
-  children: React.ReactNode | ((props: { selected: boolean }) => React.ReactNode);
+  children:
+    | React.ReactNode
+    | ((props: { selected: boolean }) => React.ReactNode);
   index: number;
 }

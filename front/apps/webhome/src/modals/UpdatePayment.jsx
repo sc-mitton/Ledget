@@ -15,24 +15,24 @@ import {
   CityStateZipInputs,
   baseBillingSchema as schema,
   FormError,
-  ErrorBanner
+  ErrorBanner,
 } from '@ledget/ui';
 import {
   useLazyGetSetupIntentQuery,
   useGetMeQuery,
   useGetPaymentMethodQuery,
-  useUpdateDefaultPaymentMethodMutation
+  useUpdateDefaultPaymentMethodMutation,
 } from '@ledget/shared-features';
 
 const Modal = withModal((props) => {
   const [
     getSetupIntent,
-    { data: setupIntent, isLoading: fetchingSetupIntent }
+    { data: setupIntent, isLoading: fetchingSetupIntent },
   ] = useLazyGetSetupIntentQuery();
   const { data: paymentMethodData } = useGetPaymentMethodQuery();
   const [
     updateDefaultPaymentMethod,
-    { isSuccess: updateSuccess, isLoading: isUpdatingPayment }
+    { isSuccess: updateSuccess, isLoading: isUpdatingPayment },
   ] = useUpdateDefaultPaymentMethodMutation();
   const { data: user } = useGetMeQuery();
 
@@ -49,11 +49,11 @@ const Modal = withModal((props) => {
     handleSubmit,
     formState: { errors },
     control,
-    clearErrors
+    clearErrors,
   } = useForm({
     resolver: zodResolver(schema),
     mode: 'onSubmit',
-    reValidateMode: 'onBlur'
+    reValidateMode: 'onBlur',
   });
 
   // Force fetch setup intent on mount
@@ -81,10 +81,10 @@ const Modal = withModal((props) => {
             city: data.city,
             state: data.state.value,
             postal_code: data.zip,
-            country: data.country
-          }
-        }
-      }
+            country: data.country,
+          },
+        },
+      },
     });
     if (result.setupIntent?.status === 'succeeded') {
       // Invalidate payment_methods cache
@@ -92,7 +92,7 @@ const Modal = withModal((props) => {
       // close modal
       updateDefaultPaymentMethod({
         paymentMethodId: result.setupIntent.payment_method,
-        oldPaymentMethodId: paymentMethodData.payment_method.id
+        oldPaymentMethodId: paymentMethodData.payment_method.id,
       });
     } else if (result.error) {
       setCardErrMsg(result.error?.message);
@@ -147,9 +147,9 @@ export const cardOptions = {
   fonts: [
     {
       cssSrc:
-        'https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap'
-    }
-  ]
+        'https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap',
+    },
+  ],
 };
 
 const UpdatePayment = (props) => {

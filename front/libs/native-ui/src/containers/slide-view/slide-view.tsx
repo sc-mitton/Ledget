@@ -2,7 +2,7 @@ import { ViewProps } from 'react-native';
 import Animated, {
   FadeInRight,
   FadeOutLeft,
-  LayoutAnimationConfig
+  LayoutAnimationConfig,
 } from 'react-native-reanimated';
 
 interface Props extends ViewProps {
@@ -26,13 +26,17 @@ export function SlideView(props: Props) {
     <LayoutAnimationConfig skipEntering={skipEnter} skipExiting={skipExit}>
       <Animated.View
         {...rest}
-        entering={FadeInRight.duration(config.duration).delay(position! > 0 ? config.duration + (config.delay || 0) : 0)}
-        exiting={FadeOutLeft.duration(config.duration).delay(position! > 0 ? config.duration + (config.delay || 0) : 0)}>
+        entering={FadeInRight.duration(config.duration).delay(
+          position! > 0 ? config.duration + (config.delay || 0) : 0
+        )}
+        exiting={FadeOutLeft.duration(config.duration).delay(
+          position! > 0 ? config.duration + (config.delay || 0) : 0
+        )}
+      >
         {children}
       </Animated.View>
     </LayoutAnimationConfig>
   );
 }
-
 
 export default SlideView;

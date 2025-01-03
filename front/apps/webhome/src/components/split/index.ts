@@ -1,1 +1,1 @@
-export { default as SplitTransactionInput } from './split'
+export { default as SplitTransactionInput } from './split';

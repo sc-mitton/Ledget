@@ -1,79 +1,112 @@
-import { Fragment, useEffect, useState } from 'react'
-import { View } from 'react-native'
-import Big from 'big.js'
-import dayjs from 'dayjs'
+import { Fragment, useEffect, useState } from 'react';
+import { View } from 'react-native';
+import Big from 'big.js';
+import dayjs from 'dayjs';
 
-import styles from './styles/filled'
-import { WidgetProps } from '@/features/widgetsSlice'
-import { windows } from "./constants"
-import { tempDepositBalanceChartData } from '@constants'
-import { Button, Box, InstitutionLogo, Text, DollarCents, PulseBox } from '@ledget/native-ui'
-import Chart from './Chart'
-import { Account, useGetAccountsQuery, useLazyGetAccountBalanceHistoryQuery } from '@ledget/shared-features'
+import styles from './styles/filled';
+import { WidgetProps } from '@/features/widgetsSlice';
+import { windows } from './constants';
+import { tempDepositBalanceChartData } from '@constants';
+import {
+  Button,
+  Box,
+  InstitutionLogo,
+  Text,
+  DollarCents,
+  PulseBox,
+} from '@ledget/native-ui';
+import Chart from './Chart';
+import {
+  Account,
+  useGetAccountsQuery,
+  useLazyGetAccountBalanceHistoryQuery,
+} from '@ledget/shared-features';
 
 const Filled = (props: WidgetProps<{ account: string }>) => {
-  const [window, setWindow] = useState<typeof windows[number]['key']>(windows[0].key)
-  const [account, setAccount] = useState<Account>()
-  const [dateWindow, setDateWindow] = useState<{ start: number, end: number }>({ start: 0, end: 0 })
-  const { data: accountsData } = useGetAccountsQuery()
-  const [getBalanceHistory, { data: balanceHistoryData, isFetching }] = useLazyGetAccountBalanceHistoryQuery()
-  const [balanceHistoryChartData, setBalanceHistoryChartData] = useState<typeof tempDepositBalanceChartData>()
+  const [window, setWindow] = useState<(typeof windows)[number]['key']>(
+    windows[0].key
+  );
+  const [account, setAccount] = useState<Account>();
+  const [dateWindow, setDateWindow] = useState<{ start: number; end: number }>({
+    start: 0,
+    end: 0,
+  });
+  const { data: accountsData } = useGetAccountsQuery();
+  const [getBalanceHistory, { data: balanceHistoryData, isFetching }] =
+    useLazyGetAccountBalanceHistoryQuery();
+  const [balanceHistoryChartData, setBalanceHistoryChartData] =
+    useState<typeof tempDepositBalanceChartData>();
 
   useEffect(() => {
     if (isFetching) {
-      setBalanceHistoryChartData(undefined)
+      setBalanceHistoryChartData(undefined);
     }
-  }, [isFetching])
+  }, [isFetching]);
 
   useEffect(() => {
     if (balanceHistoryData) {
       const chartData = balanceHistoryData
-        .find(a => a.account_id === props.args?.account)
-        ?.history
-        ?.map(d => ({ balance: d.balance, date: dayjs(d.month).format('YYYY-MM-DD') }))
-        .reverse()
+        .find((a) => a.account_id === props.args?.account)
+        ?.history?.map((d) => ({
+          balance: d.balance,
+          date: dayjs(d.month).format('YYYY-MM-DD'),
+        }))
+        .reverse();
       if (!chartData || chartData.length < 2) {
-        return
+        return;
       }
       setBalanceHistoryChartData(chartData);
     }
-  }, [balanceHistoryData])
+  }, [balanceHistoryData]);
 
   useEffect(() => {
     if (accountsData) {
-      setAccount(accountsData.accounts.find(a => a.id === props.args?.account))
+      setAccount(
+        accountsData.accounts.find((a) => a.id === props.args?.account)
+      );
     }
-  }, [accountsData])
+  }, [accountsData]);
 
   useEffect(() => {
     if (dateWindow.start && dateWindow.end && accountsData && account) {
-      getBalanceHistory({
-        start: dateWindow.start,
-        end: dateWindow.end,
-        type: account.type as any,
-        accounts: [account.id],
-      }, true);
+      getBalanceHistory(
+        {
+          start: dateWindow.start,
+          end: dateWindow.end,
+          type: account.type as any,
+          accounts: [account.id],
+        },
+        true
+      );
     }
-  }, [accountsData, dateWindow, account])
+  }, [accountsData, dateWindow, account]);
 
   useEffect(() => {
     switch (window) {
       case '3M':
         setDateWindow({
-          start: dayjs().startOf('day').subtract(3, 'month').startOf('month').unix(),
-          end: dayjs().startOf('day').unix()
+          start: dayjs()
+            .startOf('day')
+            .subtract(3, 'month')
+            .startOf('month')
+            .unix(),
+          end: dayjs().startOf('day').unix(),
         });
         break;
       case '6M':
         setDateWindow({
-          start: dayjs().startOf('day').subtract(6, 'month').startOf('month').unix(),
-          end: dayjs().startOf('day').unix()
+          start: dayjs()
+            .startOf('day')
+            .subtract(6, 'month')
+            .startOf('month')
+            .unix(),
+          end: dayjs().startOf('day').unix(),
         });
         break;
       case 'ALL':
         setDateWindow({
           start: dayjs().startOf('day').subtract(10, 'year').unix(),
-          end: dayjs().startOf('day').unix()
+          end: dayjs().startOf('day').unix(),
         });
         break;
     }
@@ -81,27 +114,47 @@ const Filled = (props: WidgetProps<{ account: string }>) => {
 
   return (
     <View style={styles.container}>
-      <View style={[props.shape === 'square' ? styles.squareTitleContainer : styles.rectangleTitleContainer]}>
-        <View style={[props.shape === 'square' ? styles.squareTitle : styles.rectangleTitle]}>
+      <View
+        style={[
+          props.shape === 'square'
+            ? styles.squareTitleContainer
+            : styles.rectangleTitleContainer,
+        ]}
+      >
+        <View
+          style={[
+            props.shape === 'square'
+              ? styles.squareTitle
+              : styles.rectangleTitle,
+          ]}
+        >
           <View>
-            <InstitutionLogo account={props.args?.account} size={props.shape === 'rectangle' ? 20 : 16} />
+            <InstitutionLogo
+              account={props.args?.account}
+              size={props.shape === 'rectangle' ? 20 : 16}
+            />
           </View>
-          {account?.name
-            ?
+          {account?.name ? (
             <Text
-              color='secondaryText'
+              color="secondaryText"
               fontSize={props.shape === 'rectangle' ? 15 : 13}
               lineHeight={props.shape === 'rectangle' ? 22 : 18}
             >
               {account?.name}
             </Text>
-            : <Box marginBottom='xs'><PulseBox width={70} height={'reg'} borderRadius='xs' /></Box>}
+          ) : (
+            <Box marginBottom="xs">
+              <PulseBox width={70} height={'reg'} borderRadius="xs" />
+            </Box>
+          )}
         </View>
         <DollarCents
-          value={Big(account?.balances.current || 0).times(100).toNumber()}
+          value={Big(account?.balances.current || 0)
+            .times(100)
+            .toNumber()}
           fontSize={16}
           lineHeight={24}
-          variant='bold'
+          variant="bold"
           withCents={props.shape === 'rectangle'}
         />
       </View>
@@ -109,11 +162,16 @@ const Filled = (props: WidgetProps<{ account: string }>) => {
       <View style={styles.windowButtons}>
         {windows.map((w, i) => (
           <Fragment key={`investment-widget-${w.key}`}>
-            {i !== 0 && <Box variant='divider' backgroundColor="nestedContainerSeperator" />}
+            {i !== 0 && (
+              <Box
+                variant="divider"
+                backgroundColor="nestedContainerSeperator"
+              />
+            )}
             <Button
               label={w.key}
               fontSize={13}
-              padding='none'
+              padding="none"
               textColor={window === w.key ? 'mainText' : 'tertiaryText'}
               onPress={() => setWindow(w.key)}
             />
@@ -121,7 +179,7 @@ const Filled = (props: WidgetProps<{ account: string }>) => {
         ))}
       </View>
     </View>
-  )
-}
+  );
+};
 
-export default Filled
+export default Filled;

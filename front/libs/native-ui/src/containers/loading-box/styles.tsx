@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   overlay: {
@@ -9,10 +9,10 @@ export default StyleSheet.create({
     bottom: 0,
     width: '100%',
     height: '100%',
-    opacity: 0.5
+    opacity: 0.5,
   },
   outerContainer: {
     width: '100%',
-    height: '100%'
-  }
+    height: '100%',
+  },
 });

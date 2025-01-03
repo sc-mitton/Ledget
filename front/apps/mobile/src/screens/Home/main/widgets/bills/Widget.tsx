@@ -1,10 +1,13 @@
-import PickerOption from './PickerOption'
-import { WidgetProps } from '@features/widgetsSlice'
-import { useAppSelector } from '@hooks'
-import { useGetBillsQuery, selectBudgetMonthYear } from '@ledget/shared-features'
+import PickerOption from './PickerOption';
+import { WidgetProps } from '@features/widgetsSlice';
+import { useAppSelector } from '@hooks';
+import {
+  useGetBillsQuery,
+  selectBudgetMonthYear,
+} from '@ledget/shared-features';
 
-import RectangleFilled from './RectangleFilled'
-import SquareFilled from './SquareFilled'
+import RectangleFilled from './RectangleFilled';
+import SquareFilled from './SquareFilled';
 
 const Bills = (widget: WidgetProps) => {
   const { month, year } = useAppSelector(selectBudgetMonthYear);
@@ -13,11 +16,15 @@ const Bills = (widget: WidgetProps) => {
     { skip: !month || !year }
   );
 
-  return widget.id
-    ? widget.shape === 'square'
-      ? <SquareFilled {...widget} loading={isLoading} />
-      : <RectangleFilled {...widget} loading={isLoading} />
-    : <PickerOption loading={isLoading} />
-}
+  return widget.id ? (
+    widget.shape === 'square' ? (
+      <SquareFilled {...widget} loading={isLoading} />
+    ) : (
+      <RectangleFilled {...widget} loading={isLoading} />
+    )
+  ) : (
+    <PickerOption loading={isLoading} />
+  );
+};
 
-export default Bills
+export default Bills;

@@ -1,61 +1,61 @@
 .smallScreenAccountsHeader {
-    padding: 1em;
+  padding: 1em;
 
-    h4 *,
-    h1 * {
-        color: var(--blue-dark);
+  h4 *,
+  h1 * {
+    color: var(--blue-dark);
+  }
+
+  h1 {
+    font-size: 1.75rem;
+    line-height: 1.75rem;
+    margin-top: 0.2em;
+
+    * {
+      font-weight: var(--fw-bold);
     }
-
-    h1 {
-        font-size: 1.75rem;
-        line-height: 1.75rem;
-        margin-top: .2em;
-
-        * {
-            font-weight: var(--fw-bold);
-        }
-    }
+  }
 }
 
 .accountsSelector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1em 0 -0.5em 0;
+  transition: border-color 0.25s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  border-radius: inherit;
+
+  & > button:hover {
+    * {
+      color: var(--blue-sat);
+    }
+
+    transition: border-color 0.25s;
+  }
+
+  & > div {
+    width: 100%;
+  }
+
+  & > button {
+    padding: 0.75em 0.5em 0em 0.5em;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin: 1em 0 -.5em 0;
-    transition: border-color .25s;
-    display: flex;
-    flex-direction: column;
-    gap: .5em;
     border-radius: inherit;
+    border: 1.5px solid transparent;
 
-    &>button:hover {
-        * {
-            color: var(--blue-sat);
-        }
-
-        transition: border-color .25s;
+    & > div:first-child {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
     }
 
-    &>div {
-        width: 100%;
+    & > div:last-child {
+      font-size: 1.125rem;
     }
-
-    &>button {
-        padding: .75em .5em 0em .5em;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        border-radius: inherit;
-        border: 1.5px solid transparent;
-
-        &>div:first-child {
-            display: flex;
-            align-items: center;
-            gap: .5em;
-        }
-
-        &>div:last-child {
-            font-size: 1.125rem;
-        }
-    }
+  }
 }

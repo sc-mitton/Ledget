@@ -14,18 +14,14 @@ interface Props extends Omit<MenuProps, 'items'> {
 }
 
 const TransactionMenu = (props: Props) => {
-  const {
-    transaction,
-    children,
-    ...rest
-  } = props;
+  const { transaction, children, ...rest } = props;
 
   const { mode } = useAppearance();
   const navigation = useNavigation<any>();
 
   return (
     <Menu
-      as='context-menu'
+      as="context-menu"
       hasShadow={mode === 'light'}
       onShowChange={props.onShowChange}
       items={[
@@ -33,46 +29,43 @@ const TransactionMenu = (props: Props) => {
           label: 'Details',
           icon: () => <Icon icon={Info} size={16} strokeWidth={2} />,
           onSelect: () => {
-            navigation.navigate(
-              'Modals',
-              {
-                screen: 'Transaction',
-                params: { transaction, options: { asModal: true } }
-              }
-            )
-          }
+            navigation.navigate('Modals', {
+              screen: 'Transaction',
+              params: { transaction, options: { asModal: true } },
+            });
+          },
         },
         {
           label: 'Split',
-          icon: () =>
+          icon: () => (
             <View style={styles.splitIcon}>
               <Icon icon={ArrowLeft} size={12} strokeWidth={2.5} />
               <Icon icon={ArrowRight} size={12} strokeWidth={2.5} />
-            </View>,
-          onSelect: () => navigation.navigate(
-            'Modals',
-            { screen: 'SplitModal', params: { transaction } }
-          )
+            </View>
+          ),
+          onSelect: () =>
+            navigation.navigate('Modals', {
+              screen: 'SplitModal',
+              params: { transaction },
+            }),
         },
         {
           label: 'New Bill',
           icon: () => <Icon icon={Plus} size={16} strokeWidth={2} />,
-          onSelect: () => navigation.navigate(
-            'Modals',
-            {
+          onSelect: () =>
+            navigation.navigate('Modals', {
               screen: 'NewBill',
               params: {
                 bill: {
                   name: transaction.name,
-                  upper_amount: transaction.amount
+                  upper_amount: transaction.amount,
                 },
                 options: {
-                  title: 'New Bill'
-                }
-              }
-            }
-          )
-        }
+                  title: 'New Bill',
+                },
+              },
+            }),
+        },
       ]}
       closeOnSelect={true}
       {...rest}
@@ -80,6 +73,6 @@ const TransactionMenu = (props: Props) => {
       {children}
     </Menu>
   );
-}
+};
 
 export default TransactionMenu;

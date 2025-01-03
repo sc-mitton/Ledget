@@ -9,12 +9,12 @@ import { useAppSelector, useAppDispatch } from '@hooks/store';
 import {
   selectSessionIsFreshAal1,
   aal1ReAuthed,
-  aal2ReAuthed
+  aal2ReAuthed,
 } from '@features/authSlice';
 import {
   useGetMeQuery,
   User,
-  useExtendSessionMutation
+  useExtendSessionMutation,
 } from '@ledget/shared-features';
 import {
   useLazyGetLoginFlowQuery,
@@ -33,7 +33,7 @@ import {
   TotpAppGraphic,
   RecoveryCodeGraphic,
   BackButton,
-  TextButtonHalfBlue
+  TextButtonHalfBlue,
 } from '@ledget/ui';
 import { useLoaded } from '@ledget/helpers';
 
@@ -57,7 +57,7 @@ const PassWord = ({ onCancel }: { onCancel: () => void }) => {
     isGetFlowError,
     isCompleteError,
     isCompletingFlow,
-    isCompleteSuccess
+    isCompleteSuccess,
   } = flowStatus;
 
   useEffect(() => {
@@ -119,7 +119,7 @@ const Totp = () => {
     isGetFlowError,
     isCompleteError,
     isCompletingFlow,
-    isCompleteSuccess
+    isCompleteSuccess,
   } = flowStatus;
 
   useEffect(() => {
@@ -234,7 +234,7 @@ interface WithReAuthI {
 
 const useReauthCheck = ({
   requiredAal,
-  onClose
+  onClose,
 }: Pick<WithReAuthI, 'requiredAal'> & { onClose?: () => void }) => {
   const { data: user } = useGetMeQuery();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -242,7 +242,7 @@ const useReauthCheck = ({
   const [extendSession] = useExtendSessionMutation();
   const [continueToComponent, setContinueToComponent] = useState(
     Date.now() - (reAuthed.at || 0) < 1000 * 60 * 9 &&
-    reAuthed.level === (requiredAal ?? user?.highest_aal)
+      reAuthed.level === (requiredAal ?? user?.highest_aal)
   );
 
   // Controller for checking if the user has reached the required
@@ -293,7 +293,7 @@ const useReauthCheck = ({
 export const ReAuthProtected = ({
   children,
   requiredAal,
-  onReAuth
+  onReAuth,
 }: {
   children: React.FC<{ reAuth: () => void; current: boolean }>;
   onReAuth: (...args: any) => void;
@@ -306,7 +306,7 @@ export const ReAuthProtected = ({
   const { data: user } = useGetMeQuery();
   // onClose callback not necessary since the protected action is executed immediately
   const isReAuthed = useReauthCheck({
-    requiredAal: requiredAal || user?.highest_aal || 'aal1'
+    requiredAal: requiredAal || user?.highest_aal || 'aal1',
   });
   const dispatch = useAppDispatch();
 
@@ -347,7 +347,7 @@ export const ReAuthProtected = ({
           setIsReAuthing(true);
           setCurrent(true);
         },
-        current
+        current,
       })}
     </>
   );
@@ -361,7 +361,7 @@ export function withReAuth<P>(Component: React.FC<P & Partial<WithReAuthI>>) {
       requiredAal: props.requiredAal || user?.highest_aal || 'aal1',
       onClose: () => {
         props.onClose && props.onClose();
-      }
+      },
     });
 
     return (

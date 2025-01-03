@@ -8,7 +8,7 @@ import {
   confirmStack,
   filteredFetchedConfirmedTransactions,
   budgetItemMetaDataSlice,
-  environmentSlice
+  environmentSlice,
 } from '@ledget/shared-features';
 
 const rootReducer = combineReducers({
@@ -21,7 +21,7 @@ const rootReducer = combineReducers({
   filteredFetchedonfirmedTransactions:
     filteredFetchedConfirmedTransactions.reducer,
   modal: modalSlice.reducer,
-  budgetItemMetaData: budgetItemMetaDataSlice.reducer
+  budgetItemMetaData: budgetItemMetaDataSlice.reducer,
 });
 
 export default rootReducer;

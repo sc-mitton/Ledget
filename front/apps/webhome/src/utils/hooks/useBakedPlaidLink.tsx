@@ -1,24 +1,27 @@
 import { useEffect, useState } from 'react';
 
-import { usePlaidLink as useLink, PlaidLinkOnSuccessMetadata } from 'react-plaid-link';
+import {
+  usePlaidLink as useLink,
+  PlaidLinkOnSuccessMetadata,
+} from 'react-plaid-link';
 
 import {
   useGetPlaidTokenQuery,
   useExchangePlaidTokenMutation,
   useTransactionsSyncMutation,
-  popToast
+  popToast,
 } from '@ledget/shared-features';
 import { useAppDispatch } from '@hooks/store';
 
 export function useBakedPlaidLink(onBoarding?: boolean) {
   const [isOauthRedirect, setIsOauthRedirect] = useState(false);
   const { data: fetchedToken, refetch: refetchToken } = useGetPlaidTokenQuery({
-    isOnboarding: onBoarding
+    isOnboarding: onBoarding,
   });
 
   const [
     addNewPlaidItem,
-    { data: newPlaidItem, isSuccess: newItemAddSuccess }
+    { data: newPlaidItem, isSuccess: newItemAddSuccess },
   ] = useExchangePlaidTokenMutation();
   const [syncTransactions] = useTransactionsSyncMutation();
 
@@ -45,18 +48,18 @@ export function useBakedPlaidLink(onBoarding?: boolean) {
     onSuccess: (public_token: string, metadata: PlaidLinkOnSuccessMetadata) => {
       const institution = {
         id: metadata?.institution?.institution_id,
-        name: metadata?.institution?.name
+        name: metadata?.institution?.name,
       };
       addNewPlaidItem({
         data: {
           public_token: public_token,
           accounts: metadata.accounts,
-          institution: institution
-        }
+          institution: institution,
+        },
       });
     },
     token: fetchedToken?.link_token || null,
-    ...(isOauthRedirect ? { receivedRedirectUri: window.location.href } : {})
+    ...(isOauthRedirect ? { receivedRedirectUri: window.location.href } : {}),
   };
 
   const { open, exit, ready } = useLink(config);
@@ -68,12 +71,12 @@ export const useBakedUpdatePlaidLink = ({ itemId }: { itemId: string }) => {
   const {
     data: plaidToken,
     isLoading: fetchingToken,
-    refetch: refetchToken
+    refetch: refetchToken,
   } = useGetPlaidTokenQuery({ itemId: itemId });
 
   const [
     exchangePlaidToken,
-    { data: newPlaidItem, isSuccess: newItemAddSuccess }
+    { data: newPlaidItem, isSuccess: newItemAddSuccess },
   ] = useExchangePlaidTokenMutation();
 
   const [syncTransactions] = useTransactionsSyncMutation();
@@ -94,21 +97,26 @@ export const useBakedUpdatePlaidLink = ({ itemId }: { itemId: string }) => {
 
   const config = {
     onSuccess: (public_token: string, metadata: PlaidLinkOnSuccessMetadata) => {
-      dispatch(popToast({ type: 'success', message: 'Connection updated successfully' }));
+      dispatch(
+        popToast({
+          type: 'success',
+          message: 'Connection updated successfully',
+        })
+      );
       const institution = {
         id: metadata.institution?.institution_id,
-        name: metadata.institution?.name
+        name: metadata.institution?.name,
       };
       exchangePlaidToken({
         data: {
           public_token,
           accounts: metadata.accounts,
-          institution: institution
-        }
+          institution: institution,
+        },
       });
     },
     token: plaidToken?.link_token || null,
-    ...(isOauthRedirect ? { receivedRedirectUri: window.location.href } : {})
+    ...(isOauthRedirect ? { receivedRedirectUri: window.location.href } : {}),
   };
   const { open, ready, exit } = useLink(config);
 

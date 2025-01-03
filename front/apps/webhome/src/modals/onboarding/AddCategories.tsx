@@ -13,7 +13,7 @@ import { EmojiComboText, LimitAmountInput, emoji } from '@components/inputs';
 import {
   formatCurrency,
   getLongestLength,
-  makeIntCurrencyFromStr
+  makeIntCurrencyFromStr,
 } from '@ledget/helpers';
 import {
   ShadowScrollDiv,
@@ -24,12 +24,12 @@ import {
   FormErrorTip,
   IconButtonHalfGray,
   TabNavListUnderlined,
-  GripButton
+  GripButton,
 } from '@ledget/ui';
 import { useItemsContext, ItemsProvider, Period } from './ItemsContext';
 import {
   monthRecommendations,
-  yearRecommendations
+  yearRecommendations,
 } from './categoryRecommendations';
 
 const itemHeight = 25;
@@ -47,7 +47,7 @@ const CategoriesColumn = ({ period }: { period: Period }) => {
 
   const {
     month: { setItems: setMonthItems },
-    year: { setItems: setYearItems }
+    year: { setItems: setYearItems },
   } = useItemsContext('category');
 
   let order = useRef<string[]>([]);
@@ -74,8 +74,8 @@ const CategoriesColumn = ({ period }: { period: Period }) => {
     style: {
       padding: itemPadding,
       size: itemHeight,
-      axis: 'y'
-    }
+      axis: 'y',
+    },
   });
 
   const handleEditAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -104,7 +104,7 @@ const CategoriesColumn = ({ period }: { period: Period }) => {
     <ShadowScrollDiv
       style={{
         overflowY: items.length > 6 ? 'auto' : 'hidden',
-        overflowX: 'hidden'
+        overflowX: 'hidden',
       }}
     >
       <animated.div style={containerProps}>
@@ -180,7 +180,7 @@ const CategoriesColumn = ({ period }: { period: Period }) => {
 const ListOfCategories = () => {
   const {
     year: { isEmpty: emptyYearItems },
-    month: { isEmpty: emptyMonthItems }
+    month: { isEmpty: emptyMonthItems },
   } = useItemsContext('category');
 
   return (
@@ -209,7 +209,7 @@ const ListOfCategories = () => {
 
 const categorySchema = z.object({
   name: z.string().min(1, { message: 'Category name required.' }),
-  limit_amount: z.number().min(1, { message: 'Limit amount required.' })
+  limit_amount: z.number().min(1, { message: 'Limit amount required.' }),
 });
 
 const CustomTabPanel = () => {
@@ -218,7 +218,7 @@ const CustomTabPanel = () => {
   const {
     month: { setItems: setMonthItems, items: monthItems },
     year: { setItems: setYearItems, items: yearItems },
-    periodTabIndex
+    periodTabIndex,
   } = useItemsContext('category');
 
   const {
@@ -226,11 +226,11 @@ const CustomTabPanel = () => {
     handleSubmit,
     reset,
     formState: { errors },
-    control
+    control,
   } = useForm<z.infer<typeof categorySchema>>({
     resolver: zodResolver(categorySchema),
     mode: 'onSubmit',
-    reValidateMode: 'onChange'
+    reValidateMode: 'onChange',
   });
 
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
@@ -239,7 +239,7 @@ const CustomTabPanel = () => {
       const item = {
         ...data,
         id: Math.random().toString(36).slice(2),
-        emoji: typeof emoji === 'string' ? emoji : emoji?.native
+        emoji: typeof emoji === 'string' ? emoji : emoji?.native,
       };
 
       if (periodTabIndex === 0) {
@@ -293,7 +293,7 @@ const SuggestedTabPanel = () => {
   const {
     periodTabIndex,
     month: { items: monthItems, setItems: setMonthItems },
-    year: { items: yearItems, setItems: setYearItems }
+    year: { items: yearItems, setItems: setYearItems },
   } = useItemsContext('category');
 
   return (
@@ -314,7 +314,7 @@ const SuggestedTabPanel = () => {
                       ...item,
                       period: 'month',
                       limit_amount: 100,
-                      id: Math.random().toString(36).slice(2)
+                      id: Math.random().toString(36).slice(2),
                     } as const;
                     setMonthItems((prev) => [...prev, newItem]);
                   }}
@@ -336,7 +336,7 @@ const SuggestedTabPanel = () => {
                       ...item,
                       period: 'year',
                       limit_amount: 100,
-                      id: Math.random().toString(36).slice(2)
+                      id: Math.random().toString(36).slice(2),
                     } as const;
                     setYearItems((prev) => [...prev, newItem]);
                   }}

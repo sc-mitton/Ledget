@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   verticalscrollIndicator: {
@@ -12,6 +12,6 @@ export default StyleSheet.create({
     bottom: -8,
   },
   container: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });

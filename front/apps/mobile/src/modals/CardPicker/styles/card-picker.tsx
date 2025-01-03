@@ -5,21 +5,21 @@ const styles = StyleSheet.create({
     flex: 1,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
-    position: 'relative'
+    position: 'relative',
   },
   header: {
     paddingHorizontal: 24,
     marginBottom: 6,
     alignItems: 'flex-start',
     position: 'relative',
-    zIndex: 10
+    zIndex: 10,
   },
   totalBalanceContainer: {
     flexDirection: 'row',
     alignItems: 'flex-end',
     marginLeft: 2,
     gap: 8,
-    marginTop: -4
+    marginTop: -4,
   },
   cardWrapperBorderOuter: {
     position: 'absolute',
@@ -27,13 +27,13 @@ const styles = StyleSheet.create({
     left: -11,
     right: -11,
     bottom: -11,
-    borderRadius: 22
+    borderRadius: 22,
   },
   cardWrapperBorderInner: {
     position: 'absolute',
     width: '100%',
     height: '100%',
-    borderRadius: 19
+    borderRadius: 19,
   },
   cardsContainer: {
     flex: 1,
@@ -43,11 +43,11 @@ const styles = StyleSheet.create({
     paddingVertical: 32,
   },
   gridContainer: {
-    paddingVertical: 0
+    paddingVertical: 0,
   },
   spacer: {
-    height: 0
-  }
+    height: 0,
+  },
 });
 
 export default styles;

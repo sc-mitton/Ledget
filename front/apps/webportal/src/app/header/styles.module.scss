@@ -1,84 +1,82 @@
 .header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: .75rem 1.25rem;
-    box-sizing: border-box;
-    width: 100%;
-    z-index: 100;
-    background-color: var(--window);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.25rem;
+  box-sizing: border-box;
+  width: 100%;
+  z-index: 100;
+  background-color: var(--window);
+  position: relative;
+
+  a {
+    outline: none;
+    text-decoration: none;
+    border-bottom: 1px solid var(--m-text-secondary);
+    text-decoration-skip-ink: none;
+    text-underline-offset: 1.75px;
+    cursor: pointer;
     position: relative;
+  }
 
+  a::before {
+    content: '';
+    display: block;
+    height: 1px;
+    background-color: var(--m-text);
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    transform: scaleX(0);
+    transition: transform 0.2s ease-in-out;
+    transition-delay: 0.1s;
+    transform-origin: bottom right;
+  }
+
+  a:focus-visible::before,
+  a:hover::before {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+    background-color: var(--m-text);
+    transition: transform 0.2s ease-in-out;
+    transition-delay: 0.2s;
+  }
+
+  &::after {
+    background-color: var(--btn-gray);
+    content: '';
+    inset: 0;
+    position: absolute;
+    z-index: -1;
+    opacity: 0.02;
+    backdrop-filter: blur(2px);
+  }
+
+  &[data-size='extra-small'] {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  button {
+    padding: 0.25em 1em;
+  }
+
+  & > div:first-child {
     a {
-        outline: none;
-        text-decoration: none;
-        border-bottom: 1px solid var(--m-text-secondary);
-        text-decoration-skip-ink: none;
-        text-underline-offset: 1.75px;
-        cursor: pointer;
-        position: relative;
+      border-bottom: none;
+
+      &:before {
+        height: 0;
+      }
     }
+  }
 
-    a::before {
-        content: "";
-        display: block;
-        height: 1px;
-        background-color: var(--m-text);
-        position: absolute;
-        bottom: -2px;
-        left: 0;
-        width: 100%;
-        transform: scaleX(0);
-        transition: transform .2s ease-in-out;
-        transition-delay: .1s;
-        transform-origin: bottom right;
-    }
+  * {
+    font-size: 0.875rem;
+  }
 
-    a:focus-visible::before,
-    a:hover::before {
-        transform: scaleX(1);
-        transform-origin: bottom left;
-        background-color: var(--m-text);
-        transition: transform .2s ease-in-out;
-        transition-delay: .2s;
-    }
-
-
-    &::after {
-        background-color: var(--btn-gray);
-        content: '';
-        inset: 0;
-        position: absolute;
-        z-index: -1;
-        opacity: .02;
-        backdrop-filter: blur(2px);
-    }
-
-    &[data-size='extra-small'] {
-        box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
-    }
-
-    button {
-        padding: .25em 1em;
-    }
-
-    &>div:first-child {
-        a {
-            border-bottom: none;
-
-            &:before {
-                height: 0;
-            }
-        }
-    }
-
-    * {
-        font-size: .875rem;
-    }
-
-    img {
-        height: 2.2em;
-    }
-
+  img {
+    height: 2.2em;
+  }
 }

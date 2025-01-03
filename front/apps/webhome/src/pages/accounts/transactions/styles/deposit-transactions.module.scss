@@ -1,7 +1,7 @@
 .transaction {
-    cursor: pointer;
+  cursor: pointer;
 
-    &:hover>div {
-        background-color: var(--transaction-hover-background);
-    }
+  &:hover > div {
+    background-color: var(--transaction-hover-background);
+  }
 }

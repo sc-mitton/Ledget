@@ -5,7 +5,7 @@ import SlideView from './slide-view';
 
 describe('SlideView', () => {
   it('should render successfully', () => {
-    const { root } = render(< SlideView />);
+    const { root } = render(<SlideView />);
     expect(root).toBeTruthy();
   });
 });

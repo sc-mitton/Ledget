@@ -1,8 +1,8 @@
-import * as React from "react"
-import Svg, { Path, Circle, SvgProps } from "react-native-svg"
+import * as React from 'react';
+import Svg, { Path, Circle, SvgProps } from 'react-native-svg';
 
 function SvgComponent(props: SvgProps & { size?: number }) {
-  const { fill, stroke, size = 58, ...rest } = props
+  const { fill, stroke, size = 58, ...rest } = props;
   return (
     <Svg
       x="0px"
@@ -24,7 +24,7 @@ function SvgComponent(props: SvgProps & { size?: number }) {
       <Circle fill={stroke} cx={63.5} cy={135.9} r={5.7} />
       <Circle fill={stroke} cx={90.1} cy={135.9} r={5.7} />
     </Svg>
-  )
+  );
 }
 
-export default SvgComponent
+export default SvgComponent;

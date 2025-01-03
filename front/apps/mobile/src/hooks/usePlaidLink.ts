@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react'
+import { useEffect, useCallback } from 'react';
 import {
   create,
   open,
@@ -7,27 +7,34 @@ import {
   LinkExit,
   LinkLogLevel,
   LinkIOSPresentationStyle,
-  LinkTokenConfiguration
-} from 'react-native-plaid-link-sdk'
+  LinkTokenConfiguration,
+} from 'react-native-plaid-link-sdk';
 
-import { Platform } from 'react-native'
+import { Platform } from 'react-native';
 import {
   useGetPlaidTokenQuery,
   useExchangePlaidTokenMutation,
   useTransactionsSyncMutation,
-  popToast
-} from '@ledget/shared-features'
-import { ANDROID_PACKAGE } from '@env'
-import { useAppDispatch } from './store'
+  popToast,
+} from '@ledget/shared-features';
+import { ANDROID_PACKAGE } from '@env';
+import { useAppDispatch } from './store';
 
-export const usePlaidLink = (args: { isOnboarding?: boolean, itemId?: string, skip?: boolean } | void) => {
-
-  const { data, refetch } = useGetPlaidTokenQuery({
-    isOnboarding: args?.isOnboarding,
-    itemId: args?.itemId,
-    androidPackage: Platform.OS === 'android' ? ANDROID_PACKAGE : undefined
-  }, { skip: args?.skip });
-  const [exchangePlaidToken, { data: newPlaidItem, isSuccess: newItemAddSuccess }] = useExchangePlaidTokenMutation();
+export const usePlaidLink = (
+  args: { isOnboarding?: boolean; itemId?: string; skip?: boolean } | void
+) => {
+  const { data, refetch } = useGetPlaidTokenQuery(
+    {
+      isOnboarding: args?.isOnboarding,
+      itemId: args?.itemId,
+      androidPackage: Platform.OS === 'android' ? ANDROID_PACKAGE : undefined,
+    },
+    { skip: args?.skip }
+  );
+  const [
+    exchangePlaidToken,
+    { data: newPlaidItem, isSuccess: newItemAddSuccess },
+  ] = useExchangePlaidTokenMutation();
   const [syncTransactions] = useTransactionsSyncMutation();
   const dispatch = useAppDispatch();
 
@@ -36,7 +43,7 @@ export const usePlaidLink = (args: { isOnboarding?: boolean, itemId?: string, sk
   }, [newItemAddSuccess]);
 
   useEffect(() => {
-    if (data && data.fulfilledTimeStamp < (Date.now() - 1000 * 60 * 15)) {
+    if (data && data.fulfilledTimeStamp < Date.now() - 1000 * 60 * 15) {
       refetch();
     }
   }, [data]);
@@ -45,8 +52,8 @@ export const usePlaidLink = (args: { isOnboarding?: boolean, itemId?: string, sk
     if (data) {
       const config: LinkTokenConfiguration = {
         token: data.link_token,
-        noLoadingState: false
-      }
+        noLoadingState: false,
+      };
       create(config);
     }
   }, [data]);
@@ -58,21 +65,26 @@ export const usePlaidLink = (args: { isOnboarding?: boolean, itemId?: string, sk
   const openLink = useCallback(() => {
     const openProps = {
       onSuccess: async (success: LinkSuccess) => {
-        const institution = success.metadata.institution &&
-        {
+        const institution = success.metadata.institution && {
           id: success.metadata.institution.id,
-          name: success.metadata.institution.name
-        }
+          name: success.metadata.institution.name,
+        };
 
         exchangePlaidToken({
           data: {
             public_token: success.publicToken,
             accounts: success.metadata.accounts,
-            institution
-          }
+            institution,
+          },
         });
         if (args && args.itemId) {
-          dispatch(popToast({ type: 'success', message: 'Connection updated successfully', timer: 3000 }));
+          dispatch(
+            popToast({
+              type: 'success',
+              message: 'Connection updated successfully',
+              timer: 3000,
+            })
+          );
         }
       },
       onExit: (linkExit: LinkExit) => {
@@ -85,5 +97,5 @@ export const usePlaidLink = (args: { isOnboarding?: boolean, itemId?: string, sk
     open(openProps);
   }, [data]);
 
-  return { openLink }
-}
+  return { openLink };
+};

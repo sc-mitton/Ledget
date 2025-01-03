@@ -3,7 +3,7 @@ import { Base64Logo, Tooltip } from '@ledget/ui';
 
 export const InsitutionLogo = ({
   accountId,
-  size
+  size,
 }: {
   accountId?: string;
   size?: string;
@@ -18,7 +18,7 @@ export const InsitutionLogo = ({
     size,
     data: item?.institution?.logo,
     alt: item ? `${item.institution?.name?.charAt(0).toUpperCase()}` : ' ',
-    ...(!item ? { backgroundColor: '#e0e0e0' } : {})
+    ...(!item ? { backgroundColor: '#e0e0e0' } : {}),
   };
 
   return (

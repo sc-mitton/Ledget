@@ -7,7 +7,7 @@ import { BlueSubmitButton, LoadingRing } from '@ledget/ui';
 import {
   useGetPricesQuery,
   useUpdateSubscriptionItemsMutation,
-  useGetSubscriptionQuery
+  useGetSubscriptionQuery,
 } from '@ledget/shared-features';
 
 const Modal = withSmallModal((props) => {

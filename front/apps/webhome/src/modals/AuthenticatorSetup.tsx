@@ -6,7 +6,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import styles from './styles/authenticator.module.scss';
 import {
   useUpdateUserSettingsMutation,
-  useAddRememberedDeviceMutation
+  useAddRememberedDeviceMutation,
 } from '@ledget/shared-features';
 import {
   useLazyGetSettingsFlowQuery,
@@ -31,7 +31,7 @@ import {
   SlideMotionDiv,
   TotpAppGraphic,
   useColorScheme,
-  SpacedHeader
+  SpacedHeader,
 } from '@ledget/ui';
 import { useLoaded } from '@ledget/helpers';
 
@@ -48,7 +48,7 @@ const SetupApp = ({
   isError,
   isLoading,
   codeMode,
-  setCodeMode
+  setCodeMode,
 }: SetupAppProps) => {
   const [qrNode, setQrNode] = useState<{ attributes: string }>();
   const [totpSecret, setTotpSecret] = useState('');
@@ -146,7 +146,7 @@ const Authenticator = withReAuth(
       isGetFlowError,
       isCompleteError,
       isCompleteSuccess,
-      isCompletingFlow
+      isCompletingFlow,
     } = flowStatus;
 
     const handleBack = () => {

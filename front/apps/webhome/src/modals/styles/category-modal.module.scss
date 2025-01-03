@@ -1,180 +1,180 @@
 .categoryModalHeader {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.5em;
+  margin-bottom: 1em;
+
+  & > span {
+    padding: 0em 0.5em;
+    border-radius: 0.5em;
+    margin-bottom: 0.25em;
+  }
+
+  & > span {
+    position: relative;
+    margin-left: 0.75em;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: -0.5em;
+      width: 0.5em;
+      height: 0.5em;
+      border-radius: 50%;
+      z-index: -1;
+    }
+  }
+
+  & > div {
+    font-size: 1.125rem;
     display: flex;
-    align-items: center;
-    flex-direction: column;
-    gap: .5em;
-    margin-bottom: 1em;
-
-    &>span {
-        padding: 0em .5em;
-        border-radius: .5em;
-        margin-bottom: .25em;
-    }
-
-    &>span {
-        position: relative;
-        margin-left: .75em;
-
-        &::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            left: -.5em;
-            width: .5em;
-            height: .5em;
-            border-radius: 50%;
-            z-index: -1;
-        }
-    }
-
-    &>div {
-        font-size: 1.125rem;
-        display: flex;
-        align-items: baseline;
-    }
+    align-items: baseline;
+  }
 }
 
 .month {
-    &::after {
-        background-color: var(--monthly-background-color-darker);
-    }
+  &::after {
+    background-color: var(--monthly-background-color-darker);
+  }
 }
 
 .year {
-    &::after {
-        background-color: var(--yearly-background-color-darker);
-    }
+  &::after {
+    background-color: var(--yearly-background-color-darker);
+  }
 }
 
 .graphAndDetails {
-    display: flex;
-    flex-direction: column;
-    gap: 2em;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  width: 100%;
 
-    &>div:first-child {
-        height: 13em;
-        width: 100%;
-        position: relative;
-    }
+  & > div:first-child {
+    height: 13em;
+    width: 100%;
+    position: relative;
+  }
 }
 
 .notEnoughDataMessage {
-    position: absolute;
-    top: calc(50% - .5em);
-    left: 50%;
-    text-align: center;
-    transform: translate(-50%, -50%);
-    color: var(--m-text-quaternary);
+  position: absolute;
+  top: calc(50% - 0.5em);
+  left: 50%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  color: var(--m-text-quaternary);
 }
 
 .categoryModal {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 .transactionsEmpty {
-    text-align: center;
-    color: var(--m-text-quaternary);
-    margin: .5em 0;
+  text-align: center;
+  color: var(--m-text-quaternary);
+  margin: 0.5em 0;
+  position: relative;
+  display: flex;
+  place-content: center;
+
+  div {
     position: relative;
     display: flex;
     place-content: center;
 
-    div {
-        position: relative;
-        display: flex;
-        place-content: center;
-
-        svg {
-            position: relative;
-            z-index: 1;
-        }
-
-        &::after {
-            background-color: var(--btn-light-gray);
-            content: '';
-            position: absolute;
-            border-radius: 50%;
-            width: 2em;
-            z-index: 0;
-            height: 2em;
-            left: 50%;
-            bottom: 50%;
-            transform: translate(-50%, 50%);
-        }
+    svg {
+      position: relative;
+      z-index: 1;
     }
+
+    &::after {
+      background-color: var(--btn-light-gray);
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      width: 2em;
+      z-index: 0;
+      height: 2em;
+      left: 50%;
+      bottom: 50%;
+      transform: translate(-50%, 50%);
+    }
+  }
 }
 
 .transactionsGrid {
+  display: flex;
+  flex-direction: column;
+
+  & > div {
     display: flex;
-    flex-direction: column;
+    cursor: pointer;
 
-    &>div {
-        display: flex;
-        cursor: pointer;
-
-        &>div:first-child {
-            padding-right: 1em;
-        }
-
-        &:hover>div:nth-child(4n+4) {
-            &>div:last-child {
-                width: 1.5em;
-                transition: width .3s;
-
-                svg {
-                    transform: scale(1);
-                    transition: transform .3s;
-                }
-            }
-        }
-
-        &>div {
-            display: flex;
-            align-items: center;
-            padding-right: .25em;
-
-            &:nth-child(4n+2) {
-                padding-right: .5em;
-            }
-
-            &:nth-child(4n+3) {
-                flex-grow: 1;
-                display: flex;
-                justify-content: center;
-
-                span {
-                    color: var(--m-text-secondary);
-                }
-            }
-
-            &:nth-child(4n+4) {
-                transition: padding-right .3s;
-
-                &>div:last-child {
-                    position: relative;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    width: 0;
-                    transition: width .3s;
-
-                    svg {
-                        transform: scale(0);
-                        transition: transform .3s;
-                    }
-                }
-            }
-        }
+    & > div:first-child {
+      padding-right: 1em;
     }
+
+    &:hover > div:nth-child(4n + 4) {
+      & > div:last-child {
+        width: 1.5em;
+        transition: width 0.3s;
+
+        svg {
+          transform: scale(1);
+          transition: transform 0.3s;
+        }
+      }
+    }
+
+    & > div {
+      display: flex;
+      align-items: center;
+      padding-right: 0.25em;
+
+      &:nth-child(4n + 2) {
+        padding-right: 0.5em;
+      }
+
+      &:nth-child(4n + 3) {
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+
+        span {
+          color: var(--m-text-secondary);
+        }
+      }
+
+      &:nth-child(4n + 4) {
+        transition: padding-right 0.3s;
+
+        & > div:last-child {
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 0;
+          transition: width 0.3s;
+
+          svg {
+            transform: scale(0);
+            transition: transform 0.3s;
+          }
+        }
+      }
+    }
+  }
 }
 
 .transactions {
-    display: flex;
-    flex-direction: column;
-    min-height: 2em;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 2em;
+  justify-content: center;
 }

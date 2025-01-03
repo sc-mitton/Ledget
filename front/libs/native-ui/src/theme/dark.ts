@@ -1,7 +1,7 @@
 import { createTheme } from '@shopify/restyle';
 import { Platform } from 'react-native';
 
-import { lightTheme } from "./light";
+import { lightTheme } from './light';
 import basePalette from './base-palette';
 
 const grayH = 240;
@@ -61,7 +61,7 @@ const palette = {
   offWhite5: `hsl(${grayH}, ${grayS}%, 50%)`,
   offWhite6: `hsl(${grayH}, ${grayS}%, 40%)`,
   offWhite7: `hsl(${grayH}, ${grayS}%, 30%)`,
-}
+};
 
 export const darkTheme = createTheme({
   ...lightTheme,
@@ -120,7 +120,8 @@ export const darkTheme = createTheme({
     activeSwitchShadow: 'hsl(144, 80%, 17%)',
     disabledSwitchShadow: palette.gray700,
     logoShadow: palette.gray900,
-    newTransactionShadow: Platform.OS === 'android' ? palette.gray900 : palette.gray850,
+    newTransactionShadow:
+      Platform.OS === 'android' ? palette.gray900 : palette.gray850,
     menuShadowColor: palette.gray900,
     creditCardShadow: palette.gray900,
 
@@ -203,11 +204,14 @@ export const darkTheme = createTheme({
     transactionShimmer: palette.gray750,
     screenHeader: palette.gray800,
 
-    blueChartGradientStart: palette.blue900.replace(`${blueS}`, `${blueS - 20}`),
+    blueChartGradientStart: palette.blue900.replace(
+      `${blueS}`,
+      `${blueS - 20}`
+    ),
     blueChartGradientEnd: `hsla(${grayH}, ${grayS}%, 7%, 0)`,
     modalShadowMaskEnd: `hsla(${grayH}, ${grayS}%, 9%, 0)`,
     blueChartColor: palette.blue500,
     blueChartColorSecondary: palette.blue700,
     emptyChartGradientStart: palette.gray750,
-  }
+  },
 });

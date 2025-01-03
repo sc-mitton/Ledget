@@ -1,11 +1,11 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   content: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 16
+    padding: 16,
   },
   androidContentSpacing: {
     padding: 18,
@@ -17,7 +17,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    flexShrink: 1
+    flexShrink: 1,
   },
   rightColumn: {
     position: 'absolute',
@@ -30,23 +30,23 @@ export default StyleSheet.create({
     alignItems: 'flex-end',
   },
   billCatLabelContainer: {
-    position: 'absolute'
+    position: 'absolute',
   },
   bottomRow: {
     flexDirection: 'row',
-    gap: 4
+    gap: 4,
   },
   leftCheckContainer: {
     position: 'absolute',
     top: '50%',
     transform: [{ translateY: -10 }],
-    zIndex: -1
+    zIndex: -1,
   },
   rightCheckContainer: {
     position: 'absolute',
     top: '50%',
     transform: [{ translateY: -10 }],
-    zIndex: -1
+    zIndex: -1,
   },
   transactionInfo: {
     flexShrink: 1,
@@ -55,9 +55,9 @@ export default StyleSheet.create({
   transactionName: {
     flexWrap: 'wrap',
     flexShrink: 1,
-    fontSize: 14
+    fontSize: 14,
   },
   newTransaction: {
-    borderRadius: 16
-  }
+    borderRadius: 16,
+  },
 });

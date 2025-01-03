@@ -17,8 +17,8 @@ import Budget from './Budget';
 const Stack = createStackNavigator<BudgetStackParamList>();
 
 const Screen = (props: BottomTabScreenProps<'Budget'>) => {
-  const cardStyleInterpolator = useCardStyleInterpolator()
-  const { month, year } = useAppSelector(selectBudgetMonthYear)
+  const cardStyleInterpolator = useCardStyleInterpolator();
+  const { month, year } = useAppSelector(selectBudgetMonthYear);
 
   return (
     <Stack.Navigator
@@ -27,48 +27,61 @@ const Screen = (props: BottomTabScreenProps<'Budget'>) => {
         headerTitle: () => '',
         headerRight: () => <Menus navigation={props.navigation} />,
         headerLeft: () => <DatePicker />,
-        cardStyleInterpolator
+        cardStyleInterpolator,
       }}
     >
-      <Stack.Screen name='Main' component={Budget} />
+      <Stack.Screen name="Main" component={Budget} />
       <Stack.Screen
         options={{
           title: 'Spending Categories',
-          header: (props) =>
-            <BackHeader pagesWithTitle={['EditCategories']} {...props} />,
-          headerRight: () => null
+          header: (props) => (
+            <BackHeader pagesWithTitle={['EditCategories']} {...props} />
+          ),
+          headerRight: () => null,
         }}
-        name='EditCategories'
+        name="EditCategories"
         component={EditCategories}
       />
       <Stack.Screen
         options={{
           title: 'Bills',
-          header: (props) =>
-            <BackHeader pagesWithTitle={['EditBills']} {...props} />,
-          headerRight: () => null
+          header: (props) => (
+            <BackHeader pagesWithTitle={['EditBills']} {...props} />
+          ),
+          headerRight: () => null,
         }}
-        name='EditBills'
+        name="EditBills"
         component={EditBills}
       />
       <Stack.Screen
         options={{
           title: dayjs(`${year}-${month}-01`).format('MMM YYYY'),
-          header: (props) => <BackHeader pagesWithTitle={['Category']} {...props} />,
-          headerRight: () => null
+          header: (props) => (
+            <BackHeader pagesWithTitle={['Category']} {...props} />
+          ),
+          headerRight: () => null,
         }}
-        name='Category' component={Category} />
+        name="Category"
+        component={Category}
+      />
       <Stack.Screen
         options={{
           header: (props) => <BackHeader {...props} />,
-          headerRight: () => null
+          headerRight: () => null,
         }}
-        name='Bill' component={Bill} />
+        name="Bill"
+        component={Bill}
+      />
       <Stack.Screen
-        options={{ header: (props) => <BackHeader {...props} />, headerRight: () => null }}
-        name='Transaction' component={Transaction} />
+        options={{
+          header: (props) => <BackHeader {...props} />,
+          headerRight: () => null,
+        }}
+        name="Transaction"
+        component={Transaction}
+      />
     </Stack.Navigator>
-  )
-}
+  );
+};
 
-export default Screen
+export default Screen;

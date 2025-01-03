@@ -5,7 +5,7 @@ import Radios from './Radios';
 
 describe('Radios', () => {
   it('should render successfully', () => {
-    const { root } = render(< Radios />);
+    const { root } = render(<Radios />);
     expect(root).toBeTruthy();
   });
 });

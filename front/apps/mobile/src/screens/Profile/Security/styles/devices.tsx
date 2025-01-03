@@ -4,20 +4,19 @@ const styles = StyleSheet.create({
   devices: {
     flexDirection: 'column',
     alignItems: 'flex-start',
-    gap: 6
+    gap: 6,
   },
   deviceIcon: {
     minWidth: 30,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   device: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 16
+    gap: 16,
   },
-  deviceSummary: {
-  },
+  deviceSummary: {},
   sessionsRow: {
     flexDirection: 'row',
   },
@@ -25,11 +24,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 2,
-    marginLeft: -4
+    marginLeft: -4,
   },
   locationIcon: {
-    marginBottom: 2
-  }
+    marginBottom: 2,
+  },
 });
 
 export default styles;

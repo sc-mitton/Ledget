@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    borderRadius: 13
+    borderRadius: 13,
   },
   smallTouchableContainer: {
     position: 'relative',
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    borderRadius: 13
+    borderRadius: 13,
   },
   skeletonCardTouchableContainer: {
     position: 'relative',
@@ -23,13 +23,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 2,
     overflow: 'hidden',
-    borderRadius: 13
+    borderRadius: 13,
   },
   cardBorder: {
     borderRadius: 13,
     zIndex: -1,
     position: 'absolute',
-    opacity: .8
+    opacity: 0.8,
   },
   smallCardBorder: {
     top: -1,
@@ -59,11 +59,11 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0
+    bottom: 0,
   },
   card: {
     justifyContent: 'space-between',
-    flex: 1
+    flex: 1,
   },
   smallCardPadding: {
     paddingTop: 6,
@@ -80,31 +80,31 @@ const styles = StyleSheet.create({
   cardTopHalf: {
     justifyContent: 'space-between',
     flex: 1,
-    paddingBottom: 8
+    paddingBottom: 8,
   },
   logo: {
     position: 'absolute',
     top: 8,
-    right: 6
+    right: 6,
   },
   logoTint: {
-    opacity: .9,
-    zIndex: 1
+    opacity: 0.9,
+    zIndex: 1,
   },
   accountName: {
-    opacity: .7
+    opacity: 0.7,
   },
   mask: {
     marginLeft: 6,
-    opacity: .35
+    opacity: 0.35,
   },
   bottomStripe: {
     height: '30%',
     width: '200%',
     position: 'absolute',
     bottom: 0,
-    opacity: .05
-  }
+    opacity: 0.05,
+  },
 });
 
 export default styles;

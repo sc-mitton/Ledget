@@ -19,4 +19,4 @@ export type LoginScreenProps<T extends keyof LoginStackParamList> =
   CompositeScreenProps<
     StackScreenProps<LoginStackParamList, T>,
     StackScreenProps<RootAuthenticationStackParamList>
-  >
+  >;

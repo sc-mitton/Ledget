@@ -13,7 +13,7 @@ import {
   Button,
   Seperator,
   Modal,
-  InputLabel
+  InputLabel,
 } from '@ledget/native-ui';
 import type { ModalProps } from './types';
 
@@ -21,40 +21,49 @@ const SchedulerModal = (props: ModalProps) => {
   const [period, setPeriod] = useState<'day' | 'week'>('day');
   const [offset, setOffset] = useState<string>('1');
   const [showModal, setShowModal] = useState(false);
-  const [dayOptions, setDayOptions] = useState<number[]>(Array.from({ length: 31 }, (_, i) => i + 1));
-  const [weekOptions, setWeekOptions] = useState<number[]>(Array.from({ length: 4 }, (_, i) => i + 1));
+  const [dayOptions, setDayOptions] = useState<number[]>(
+    Array.from({ length: 31 }, (_, i) => i + 1)
+  );
+  const [weekOptions, setWeekOptions] = useState<number[]>(
+    Array.from({ length: 4 }, (_, i) => i + 1)
+  );
 
   const theme = useTheme();
 
-  const { append, remove, fields } = useFieldArray({ control: props.control, name: 'reminders' });
+  const { append, remove, fields } = useFieldArray({
+    control: props.control,
+    name: 'reminders',
+  });
 
   const handleSave = () => {
     append({ period, offset: parseInt(offset) });
     setShowModal(false);
     if (period === 'day') {
-      const fiteredDays = dayOptions.filter(day => day !== parseInt(offset));
+      const fiteredDays = dayOptions.filter((day) => day !== parseInt(offset));
       setDayOptions(fiteredDays);
       setOffset(`${fiteredDays[0]}`);
     } else {
-      const fiteredWeeks = weekOptions.filter(week => week !== parseInt(offset));
+      const fiteredWeeks = weekOptions.filter(
+        (week) => week !== parseInt(offset)
+      );
       setWeekOptions([...fiteredWeeks]);
       setOffset(`${fiteredWeeks[0]}`);
     }
-  }
+  };
 
   const handleRemove = (index: number) => {
     const { period, offset } = fields[index];
     remove(index);
     if (period === 'day') {
-      setDayOptions(prev => [...prev, offset].sort((a, b) => a - b));
+      setDayOptions((prev) => [...prev, offset].sort((a, b) => a - b));
     } else {
-      setWeekOptions(prev => [...prev, offset].sort((a, b) => a - b));
+      setWeekOptions((prev) => [...prev, offset].sort((a, b) => a - b));
     }
-  }
+  };
 
   const handleCancel = () => {
     setShowModal(false);
-  }
+  };
 
   return (
     <View>
@@ -63,62 +72,82 @@ const SchedulerModal = (props: ModalProps) => {
         {fields.map((field, index) => (
           <>
             <View style={styles.field}>
-              <Text>{field.offset}  {`${field.period}${field.offset > 1 ? 's' : ''}`}</Text>
+              <Text>
+                {field.offset} {`${field.period}${field.offset > 1 ? 's' : ''}`}
+              </Text>
               <TouchableOpacity onPress={() => handleRemove(index)}>
-                <Icon icon={Trash} color='alert' />
+                <Icon icon={Trash} color="alert" />
               </TouchableOpacity>
             </View>
-            {index !== 3 && <Box variant='divider' backgroundColor='modalSeperator' />}
+            {index !== 3 && (
+              <Box variant="divider" backgroundColor="modalSeperator" />
+            )}
           </>
         ))}
-        {fields.length < 4 &&
+        {fields.length < 4 && (
           <Button
             style={styles.inputButton}
             onPress={() => setShowModal(true)}
-            label='Add'
-            paddingVertical='xs'
-            paddingHorizontal='m'
-            borderRadius='s'
-            backgroundColor='inputBackground'
-            borderColor='inputBorder'
+            label="Add"
+            paddingVertical="xs"
+            paddingHorizontal="m"
+            borderRadius="s"
+            backgroundColor="inputBackground"
+            borderColor="inputBorder"
             borderWidth={1.5}
-            textColor='placeholderText'
+            textColor="placeholderText"
           >
             <View style={styles.plusIcon}>
-              <Icon icon={Plus} color='placeholderText' size={16} strokeWidth={2} />
+              <Icon
+                icon={Plus}
+                color="placeholderText"
+                size={16}
+                strokeWidth={2}
+              />
             </View>
-          </Button>}
+          </Button>
+        )}
       </View>
       <NativeModal
         visible={showModal}
-        animationType='slide'
+        animationType="slide"
         transparent={true}
         onRequestClose={() => setShowModal(false)}
       >
         <Modal
-          position='centerFloat'
+          position="centerFloat"
           hasExitButton={false}
           hasOverlay={true}
           onClose={() => setShowModal(false)}
         >
           <View style={styles.header}>
-            <Button label='Cancel' textColor='blueText' onPress={() => handleCancel()} />
+            <Button
+              label="Cancel"
+              textColor="blueText"
+              onPress={() => handleCancel()}
+            />
             <View style={styles.centerHeader}>
               <Icon icon={Bell} size={16} />
               <Text>Reminder</Text>
             </View>
-            <Button label='Done' textColor='blueText' onPress={() => handleSave()} />
+            <Button
+              label="Done"
+              textColor="blueText"
+              onPress={() => handleSave()}
+            />
           </View>
-          <Seperator backgroundColor='modalSeperator' />
+          <Seperator backgroundColor="modalSeperator" />
           <View style={styles.pickers}>
             <View style={styles.pickerContainer}>
               <Picker
                 style={styles.picker}
-                itemStyle={[{ color: theme.colors.mainText }, styles.pickerItem]}
+                itemStyle={[
+                  { color: theme.colors.mainText },
+                  styles.pickerItem,
+                ]}
                 selectedValue={period}
-                onValueChange={(itemValue, itemIndex) =>
-                  setPeriod(itemValue)
-                }>
+                onValueChange={(itemValue, itemIndex) => setPeriod(itemValue)}
+              >
                 <Picker.Item label="Days" value="day" />
                 <Picker.Item label="Weeks" value="week" />
               </Picker>
@@ -126,24 +155,32 @@ const SchedulerModal = (props: ModalProps) => {
             <View style={styles.pickerContainer}>
               <Picker
                 style={styles.picker}
-                itemStyle={[{ color: theme.colors.mainText }, styles.pickerItem]}
+                itemStyle={[
+                  { color: theme.colors.mainText },
+                  styles.pickerItem,
+                ]}
                 selectedValue={offset}
-                onValueChange={(itemValue, itemIndex) =>
-                  setOffset(itemValue)
-                }>
-                {period === 'day' && dayOptions.map((day) => (
-                  <Picker.Item key={day} label={day.toString()} value={day} />
-                ))}
-                {period === 'week' && weekOptions.map((week) => (
-                  <Picker.Item key={week} label={week.toString()} value={week} />
-                ))}
+                onValueChange={(itemValue, itemIndex) => setOffset(itemValue)}
+              >
+                {period === 'day' &&
+                  dayOptions.map((day) => (
+                    <Picker.Item key={day} label={day.toString()} value={day} />
+                  ))}
+                {period === 'week' &&
+                  weekOptions.map((week) => (
+                    <Picker.Item
+                      key={week}
+                      label={week.toString()}
+                      value={week}
+                    />
+                  ))}
               </Picker>
             </View>
           </View>
         </Modal>
       </NativeModal>
     </View>
-  )
-}
+  );
+};
 
 export default SchedulerModal;

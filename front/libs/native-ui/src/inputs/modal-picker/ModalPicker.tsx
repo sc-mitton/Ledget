@@ -11,7 +11,9 @@ import { useLoaded } from '@ledget/helpers';
 import ModalPopUp from './ModalPopUp';
 import Selected from './Selected';
 
-export function ModalPicker<O extends PickerOption, TMultiple extends boolean>(props: ModalPickerProps<O, TMultiple>) {
+export function ModalPicker<O extends PickerOption, TMultiple extends boolean>(
+  props: ModalPickerProps<O, TMultiple>
+) {
   const { defaultValue, ...rest } = props;
   const loaded = useLoaded(2000);
 
@@ -29,9 +31,13 @@ export function ModalPicker<O extends PickerOption, TMultiple extends boolean>(p
     if (props.onChange) {
       props.onChange(
         Array.isArray(value)
-          ? value.map(item => typeof item === 'object' ? item[props.valueKey || 'value'] : item)
-          : typeof value === 'object' ? value[(props.valueKey as any) || 'value'] : value
-      )
+          ? value.map((item) =>
+              typeof item === 'object' ? item[props.valueKey || 'value'] : item
+            )
+          : typeof value === 'object'
+          ? value[(props.valueKey as any) || 'value']
+          : value
+      );
     }
   }, [value, defaultValue]);
 
@@ -44,37 +50,51 @@ export function ModalPicker<O extends PickerOption, TMultiple extends boolean>(p
 
   return (
     <>
-      {props.isFormInput
-        ?
+      {props.isFormInput ? (
         <TextInputbase
           label={props.label}
           error={props.error}
-          focused={openModal}>
+          focused={openModal}
+        >
           <TouchableOpacity
             style={styles.placeholderButton}
-            activeOpacity={.6}
+            activeOpacity={0.6}
             onPress={() => {
               setOpenModal(true);
               setShowModalOverlay(true);
             }}
           >
-            <Selected value={value} renderSelected={props.renderSelected} labelKey={props.labelKey} />
+            <Selected
+              value={value}
+              renderSelected={props.renderSelected}
+              labelKey={props.labelKey}
+            />
             <View style={styles.chevronIconContainer}>
               <View style={styles.chevronIcon}>
                 <Icon
-                  icon={props.chevronDirection === 'down' ? ChevronDown : ChevronRight}
+                  icon={
+                    props.chevronDirection === 'down'
+                      ? ChevronDown
+                      : ChevronRight
+                  }
                   strokeWidth={2}
-                  color={Array.isArray(value)
-                    ? value.length > 0 ? 'mainText' : 'placeholderText'
-                    : value ? 'mainText' : 'placeholderText'}
+                  color={
+                    Array.isArray(value)
+                      ? value.length > 0
+                        ? 'mainText'
+                        : 'placeholderText'
+                      : value
+                      ? 'mainText'
+                      : 'placeholderText'
+                  }
                 />
               </View>
             </View>
           </TouchableOpacity>
         </TextInputbase>
-        :
+      ) : (
         <TouchableOpacity
-          activeOpacity={.6}
+          activeOpacity={0.6}
           onPress={() => {
             setOpenModal(true);
             setShowModalOverlay(true);
@@ -87,18 +107,17 @@ export function ModalPicker<O extends PickerOption, TMultiple extends boolean>(p
             labelKey={props.labelKey}
           />
         </TouchableOpacity>
-      }
+      )}
       <ModalPopUp
         {...rest}
         open={openModal}
         value={value}
         setValue={setValue}
         onClose={() => {
-          setOpenModal(false)
-          setShowModalOverlay(false)
+          setOpenModal(false);
+          setShowModalOverlay(false);
         }}
       />
     </>
   );
 }
-

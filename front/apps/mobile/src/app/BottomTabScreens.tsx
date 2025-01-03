@@ -16,11 +16,11 @@ const BottomTabScreens = (props: RootStackScreenProps<'BottomTabs'>) => {
   const settings = useAppSelector(selectSettings);
 
   useEffect(() => {
-    props.navigation.preload(
-      'Modals',
-      { screen: 'Activity', params: { tab: 0 } }
-    )
-  }, [])
+    props.navigation.preload('Modals', {
+      screen: 'Activity',
+      params: { tab: 0 },
+    });
+  }, []);
 
   return (
     <Tab.Navigator
@@ -29,33 +29,22 @@ const BottomTabScreens = (props: RootStackScreenProps<'BottomTabs'>) => {
           ? 'Home'
           : (['Home', 'Budget', 'Accounts', 'Profile'] as const)[lastTab]
       }
-      backBehavior='history'
+      backBehavior="history"
       screenOptions={{ headerShown: false, animation: 'fade' }}
-      tabBar={({ state, descriptors, navigation }: any) =>
+      tabBar={({ state, descriptors, navigation }: any) => (
         <BottomNav
           state={state}
           descriptors={descriptors}
           navigation={navigation}
-        />}>
-
-      <Tab.Screen
-        name="Home"
-        component={Home}
-      />
-      <Tab.Screen
-        name="Budget"
-        component={Budget}
-      />
-      <Tab.Screen
-        name="Accounts"
-        component={Accounts}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={Profile}
-      />
+        />
+      )}
+    >
+      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Budget" component={Budget} />
+      <Tab.Screen name="Accounts" component={Accounts} />
+      <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
-  )
-}
+  );
+};
 
-export default BottomTabScreens
+export default BottomTabScreens;

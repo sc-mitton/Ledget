@@ -33,23 +33,34 @@ export function TabsTrack(props: TabsTrackProps) {
   }, [index]);
 
   return (
-    <View style={[styles.tabsTrackBoxContainer, styles.centeredRow, props.containerStyle]}>
-      <Box backgroundColor='tabsTrack' style={[styles.tabsTrackBox, styles.centeredRow]}>
+    <View
+      style={[
+        styles.tabsTrackBoxContainer,
+        styles.centeredRow,
+        props.containerStyle,
+      ]}
+    >
+      <Box
+        backgroundColor="tabsTrack"
+        style={[styles.tabsTrackBox, styles.centeredRow]}
+      >
         <View
           onLayout={(event) => {
-            tabsTrackWidth.current = event.nativeEvent.layout.width
+            tabsTrackWidth.current = event.nativeEvent.layout.width;
           }}
           style={[styles.tabsTrack, styles.centeredRow]}
         >
           <TabsTrackContext.Provider value={{ index, setIndex }}>
             {props.children}
           </TabsTrackContext.Provider>
-          <Animated.View style={[
-            styles.indicatorContainer,
-            { width: `${100 / props.children.length}%` },
-            { left: left }
-          ]} >
-            <Box backgroundColor='tabsBackground' style={styles.indicator} />
+          <Animated.View
+            style={[
+              styles.indicatorContainer,
+              { width: `${100 / props.children.length}%` },
+              { left: left },
+            ]}
+          >
+            <Box backgroundColor="tabsBackground" style={styles.indicator} />
           </Animated.View>
         </View>
       </Box>
@@ -63,13 +74,13 @@ function Tab(props: TabProps) {
   return (
     <TouchableOpacity
       onPress={() => setIndex(props.index)}
-      style={[styles.tab, styles.centeredRow,]}
+      style={[styles.tab, styles.centeredRow]}
     >
       {typeof props.children === 'function'
         ? props.children({ selected: index === props.index })
         : props.children}
     </TouchableOpacity>
-  )
+  );
 }
 
 TabsTrack.Tab = Tab;

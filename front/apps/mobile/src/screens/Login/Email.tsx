@@ -1,38 +1,43 @@
-import React from 'react'
+import React from 'react';
 
 import { TouchableWithoutFeedback, Keyboard, View } from 'react-native';
-import { useForm, Controller } from "react-hook-form"
-import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-import styles from './styles/email'
+import styles from './styles/email';
 import {
   Header,
   SubHeader2,
   TextInput,
   Button,
   Seperator,
-  Box
+  Box,
 } from '@ledget/native-ui';
-import {
-  FacebookLogo,
-  GoogleLogo,
-} from '@ledget/media/native';
+import { FacebookLogo, GoogleLogo } from '@ledget/media/native';
 import { LoginScreenProps } from '@types';
 import { LogoIconGrayscale } from '@ledget/media/native';
 import Legal from './Legal';
 import { useAppearance } from '@/features/appearanceSlice';
 
 const schema = z.object({
-  email: z.string()
+  email: z
+    .string()
     .min(1, { message: 'required' })
     .email({ message: 'Invalid email' })
-    .transform(value => value.trim())
+    .transform((value) => value.trim()),
 });
 
-export default function Email({ navigation, route }: LoginScreenProps<'Email'>) {
+export default function Email({
+  navigation,
+  route,
+}: LoginScreenProps<'Email'>) {
   const { mode } = useAppearance();
-  const { control, handleSubmit, formState: { errors } } = useForm<z.infer<typeof schema>>({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: 'onSubmit',
   });
@@ -43,12 +48,14 @@ export default function Email({ navigation, route }: LoginScreenProps<'Email'>) 
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <Box variant='fullCentered'>
+      <Box variant="fullCentered">
         <View style={styles.logoContainer}>
           <LogoIconGrayscale dark={mode === 'dark'} size={32} />
         </View>
-        <Header fontSize={32} lineHeight={44} style={styles.header}>Welcome Back</Header>
-        <SubHeader2 style={styles.header} color='blueText'>
+        <Header fontSize={32} lineHeight={44} style={styles.header}>
+          Welcome Back
+        </Header>
+        <SubHeader2 style={styles.header} color="blueText">
           Please log in to continue
         </SubHeader2>
         <View style={styles.form}>
@@ -57,13 +64,13 @@ export default function Email({ navigation, route }: LoginScreenProps<'Email'>) 
             rules={{ required: 'This is a required field' }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                label='Email'
-                placeholder='Email'
-                keyboardType='email-address'
-                textContentType='emailAddress'
-                autoCapitalize='none'
+                label="Email"
+                placeholder="Email"
+                keyboardType="email-address"
+                textContentType="emailAddress"
+                autoCapitalize="none"
                 autoCorrect={false}
-                returnKeyType='go'
+                returnKeyType="go"
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
@@ -80,15 +87,15 @@ export default function Email({ navigation, route }: LoginScreenProps<'Email'>) 
         </View>
         <View style={styles.socialForm}>
           <Seperator
-            label='Or Sign In With'
-            variant='l'
-            backgroundColor='authScreenSeperator'
+            label="Or Sign In With"
+            variant="l"
+            backgroundColor="authScreenSeperator"
           />
           <View style={styles.socialButtons}>
-            <Button variant='socialSignIn' onPress={() => { }}>
+            <Button variant="socialSignIn" onPress={() => {}}>
               <FacebookLogo />
             </Button>
-            <Button variant='socialSignIn' onPress={() => { }}>
+            <Button variant="socialSignIn" onPress={() => {}}>
               <GoogleLogo />
             </Button>
           </View>
@@ -96,5 +103,5 @@ export default function Email({ navigation, route }: LoginScreenProps<'Email'>) 
         <Legal />
       </Box>
     </TouchableWithoutFeedback>
-  )
+  );
 }

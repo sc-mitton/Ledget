@@ -1,8 +1,13 @@
-import * as React from "react"
-import Svg, { G, Path, SvgProps } from "react-native-svg"
+import * as React from 'react';
+import Svg, { G, Path, SvgProps } from 'react-native-svg';
 
 function SvgComponent(props: SvgProps & { size?: number }) {
-  const { fill = 'currentColor', stroke = 'currentColor', size = 78, ...rest } = props
+  const {
+    fill = 'currentColor',
+    stroke = 'currentColor',
+    size = 78,
+    ...rest
+  } = props;
 
   return (
     <Svg
@@ -29,7 +34,7 @@ function SvgComponent(props: SvgProps & { size?: number }) {
         d="M35.6 17.8c-1.4 0-2.5-1.1-2.5-2.5s1.1-2.5 2.5-2.5 2.5 1.1 2.5 2.5-1.1 2.5-2.5 2.5zM19 63.2c-1.4 0-2.5-1.1-2.5-2.5s1.1-2.5 2.5-2.5 2.5 1.1 2.5 2.5c0 1.3-1.1 2.5-2.5 2.5zM30 63.2c-1.4 0-2.5-1.1-2.5-2.5s1.1-2.5 2.5-2.5 2.5 1.1 2.5 2.5c0 1.3-1.1 2.5-2.5 2.5zM41 63.2c-1.4 0-2.5-1.1-2.5-2.5s1.1-2.5 2.5-2.5 2.5 1.1 2.5 2.5c0 1.3-1.1 2.5-2.5 2.5zM52 63.2c-1.4 0-2.5-1.1-2.5-2.5s1.1-2.5 2.5-2.5 2.5 1.1 2.5 2.5c0 1.3-1.1 2.5-2.5 2.5z"
       />
     </Svg>
-  )
+  );
 }
 
-export default SvgComponent
+export default SvgComponent;

@@ -1,14 +1,14 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   boxContainer: {
     position: 'absolute',
     left: -16,
     right: -16,
-    bottom: 0
+    bottom: 0,
   },
   mainBackgroundBox: {
-    paddingHorizontal: 0
+    paddingHorizontal: 0,
   },
   box: {
     borderTopLeftRadius: 20,
@@ -34,10 +34,7 @@ export default StyleSheet.create({
     position: 'absolute',
     top: 8,
     left: '50%',
-    transform: [
-      { translateX: -18 },
-      { translateY: -1.5 }
-    ]
+    transform: [{ translateX: -18 }, { translateY: -1.5 }],
   },
   dragBarContainer: {
     justifyContent: 'center',
@@ -62,9 +59,9 @@ export default StyleSheet.create({
     position: 'absolute',
     left: '50%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   loadingIndicator: {
-    position: 'absolute'
-  }
+    position: 'absolute',
+  },
 });

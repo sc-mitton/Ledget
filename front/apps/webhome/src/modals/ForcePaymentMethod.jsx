@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const ForcePaymentMethod = () => {
-    return (
-        <div>ForcePaymentMethod</div>
-    )
-}
+  return <div>ForcePaymentMethod</div>;
+};
 
-export default ForcePaymentMethod
+export default ForcePaymentMethod;

@@ -6,16 +6,16 @@ const styles = StyleSheet.create({
     left: '50%',
     top: '50%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   container: {
     justifyContent: 'center',
     alignItems: 'center',
   },
   circleNumber: {
-    position: "absolute",
+    position: 'absolute',
     borderRadius: 100,
-  }
+  },
 });
 
 export default styles;

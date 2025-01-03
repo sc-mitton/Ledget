@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   tabButtonsBox: {
     width: '60%',
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexGrow: 1,
     zIndex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   animatedTabBack: {
     position: 'absolute',
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     zIndex: 0,
-  }
+  },
 });
 
 export default styles;

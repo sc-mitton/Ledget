@@ -6,13 +6,13 @@ import { Dayjs } from 'dayjs';
 import styles from './styles/table.module.scss';
 import {
   useLazyGetTransactionsQuery,
-  GetTransactionsResponse
+  GetTransactionsResponse,
 } from '@ledget/shared-features';
 import {
   InfiniteScrollDiv,
   ShadowScrollDiv,
   useScreenContext,
-  Window
+  Window,
 } from '@ledget/ui';
 import { useLoaded } from '@ledget/helpers';
 
@@ -22,7 +22,7 @@ import Skeleton from './Skeleton';
 
 type Props = Omit<HTMLProps<HTMLDivElement>, 'children'> & {
   children: ({
-    transactionsData
+    transactionsData,
   }: {
     transactionsData?: GetTransactionsResponse;
   }) => React.ReactNode;
@@ -51,10 +51,10 @@ const Table = ({ children, ...rest }: Props) => {
           offset: 0,
           ...(dateRange
             ? {
-              start: Math.floor(dateRange[0].valueOf() / 1000),
-              end: Math.floor(dateRange[1].valueOf() / 1000)
-            }
-            : {})
+                start: Math.floor(dateRange[0].valueOf() / 1000),
+                end: Math.floor(dateRange[1].valueOf() / 1000),
+              }
+            : {}),
         },
         true
       );
@@ -74,10 +74,10 @@ const Table = ({ children, ...rest }: Props) => {
         limit: transactionsData.limit,
         ...(dateRange
           ? {
-            start_date: dateRange[0].format('YYYY-MM-DD'),
-            end_date: dateRange[1].format('YYYY-MM-DD')
-          }
-          : {})
+              start_date: dateRange[0].format('YYYY-MM-DD'),
+              end_date: dateRange[1].format('YYYY-MM-DD'),
+            }
+          : {}),
       });
 
       setTimeout(() => {

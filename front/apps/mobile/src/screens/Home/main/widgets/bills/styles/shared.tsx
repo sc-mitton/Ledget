@@ -5,13 +5,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: '100%',
-    gap: 12
+    gap: 12,
   },
   calendarButtonContainer: {
     marginTop: 12,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8
+    gap: 8,
   },
   dotContainer: {
     position: 'absolute',
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 10,
     position: 'absolute',
-    transform: [{ translateY: -2 }]
+    transform: [{ translateY: -2 }],
   },
   numbers: {
     flexDirection: 'row',
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   numberContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-  }
+  },
 });
 
 export default styles;

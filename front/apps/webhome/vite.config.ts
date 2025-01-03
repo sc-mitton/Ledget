@@ -1,54 +1,62 @@
 /// <reference types="vitest" />
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin'
-import path from 'path'
-import fs from 'fs'
-import { visualizer } from "rollup-plugin-visualizer";
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
+import path from 'path';
+import fs from 'fs';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 // root dir of nx monorepo
 const certsDir = __dirname + '/../../certs/';
-
-
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/webhome',
 
   ...(process.env.NODE_ENV === 'development'
     ? {
-      server: {
-        watch: {
-          usePolling: true,
-          interval: 100,
+        server: {
+          watch: {
+            usePolling: true,
+            interval: 100,
+          },
+          port: 3000,
+          host: 'localhost',
+          strictPort: true,
+          https: {
+            key: fs.existsSync(certsDir + 'localhost.key')
+              ? fs.readFileSync(certsDir + 'localhost.key')
+              : '',
+            cert: fs.existsSync(certsDir + 'localhost.crt')
+              ? fs.readFileSync(certsDir + 'localhost.crt')
+              : '',
+            ca: fs.existsSync(certsDir + 'ledgetca.pem')
+              ? fs.readFileSync(certsDir + 'ledgetca.pem')
+              : '',
+          },
         },
-        port: 3000,
-        host: 'localhost',
-        strictPort: true,
-        https: {
-          key: fs.existsSync(certsDir + 'localhost.key') ? fs.readFileSync(certsDir + 'localhost.key') : '',
-          cert: fs.existsSync(certsDir + 'localhost.crt') ? fs.readFileSync(certsDir + 'localhost.crt') : '',
-          ca: fs.existsSync(certsDir + 'ledgetca.pem') ? fs.readFileSync(certsDir + 'ledgetca.pem') : '',
-        }
       }
-    }
-    : {}
-  ),
+    : {}),
 
   ...(process.env.NODE_ENV === 'development'
     ? {
-      preview: {
-        port: 3300,
-        host: 'localhost',
-        strictPort: true,
-        https: {
-          key: fs.existsSync(certsDir + 'localhost.key') ? fs.readFileSync(certsDir + 'localhost.key') : '',
-          cert: fs.existsSync(certsDir + 'localhost.crt') ? fs.readFileSync(certsDir + 'localhost.crt') : '',
-          ca: fs.existsSync(certsDir + 'ledgetca.pem') ? fs.readFileSync(certsDir + 'ledgetca.pem') : '',
-        }
+        preview: {
+          port: 3300,
+          host: 'localhost',
+          strictPort: true,
+          https: {
+            key: fs.existsSync(certsDir + 'localhost.key')
+              ? fs.readFileSync(certsDir + 'localhost.key')
+              : '',
+            cert: fs.existsSync(certsDir + 'localhost.crt')
+              ? fs.readFileSync(certsDir + 'localhost.crt')
+              : '',
+            ca: fs.existsSync(certsDir + 'ledgetca.pem')
+              ? fs.readFileSync(certsDir + 'ledgetca.pem')
+              : '',
+          },
+        },
       }
-    }
-    : {}
-  ),
+    : {}),
 
   plugins: [react(), nxViteTsPaths(), visualizer()],
 
@@ -65,7 +73,7 @@ export default defineConfig({
       '@modals': path.resolve(__dirname, './src/modals'),
       '@hooks': path.resolve(__dirname, './src/hooks'),
       '@styles': path.resolve(__dirname, './src/styles'),
-    }
+    },
   },
 
   test: {
@@ -79,5 +87,5 @@ export default defineConfig({
 
   build: {
     chunkSizeWarningLimit: 1024 * 1024,
-  }
+  },
 });

@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   toastStack: {
@@ -7,6 +7,6 @@ export default StyleSheet.create({
     alignItems: 'center',
     right: 0,
     left: 0,
-    zIndex: 1000
-  }
+    zIndex: 1000,
+  },
 });

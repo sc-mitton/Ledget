@@ -1,1 +1,1 @@
-export { default as withReAuth } from './withReAuth'
+export { default as withReAuth } from './withReAuth';

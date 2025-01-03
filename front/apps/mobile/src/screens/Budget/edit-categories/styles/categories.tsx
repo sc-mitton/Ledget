@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 16,
     paddingVertical: 10,
-    paddingHorizontal: 4
+    paddingHorizontal: 4,
   },
   draggableList: {
     width: '100%',
@@ -31,10 +31,10 @@ const styles = StyleSheet.create({
   },
   amountContainer: {
     position: 'absolute',
-    right: 32
+    right: 32,
   },
   headerIcon: {
-    marginLeft: 4
+    marginLeft: 4,
   },
   header: {
     zIndex: 1,
@@ -47,8 +47,8 @@ const styles = StyleSheet.create({
     paddingRight: 12,
     paddingLeft: 36,
     flexDirection: 'row',
-    gap: 8
-  }
+    gap: 8,
+  },
 });
 
 export default styles;

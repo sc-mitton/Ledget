@@ -1,8 +1,8 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   full: {
-    flex: 1
+    flex: 1,
   },
   header: {
     paddingBottom: 8,
@@ -11,21 +11,21 @@ export default StyleSheet.create({
     position: 'relative',
   },
   animatedHeader: {
-    position: "absolute",
+    position: 'absolute',
     left: 0,
     right: 0,
     top: 0,
-    width: "100%",
-    overflow: "hidden",
+    width: '100%',
+    overflow: 'hidden',
   },
   userInfoContainer: {
     gap: 20,
-    paddingRight: 26
+    paddingRight: 26,
   },
   userInfo: {
     flex: 3,
     marginVertical: 0,
-    marginLeft: 8
+    marginLeft: 8,
   },
   optionsContainer: {
     flexDirection: 'column',
@@ -39,5 +39,5 @@ export default StyleSheet.create({
   },
   logoutIcon: {
     marginLeft: 8,
-  }
+  },
 });

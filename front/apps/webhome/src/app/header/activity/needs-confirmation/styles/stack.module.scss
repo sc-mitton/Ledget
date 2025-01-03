@@ -1,79 +1,83 @@
 $window-max-width: 27rem;
-$new-item-padding: 1.125em 1.125em 1.125em .875em;
+$new-item-padding: 1.125em 1.125em 1.125em 0.875em;
 
 @import '@styles/table-mixins';
 
-$scrollbar-padding: .75em;
+$scrollbar-padding: 0.75em;
 
 .needsConfirmationStack {
-    padding: 0em 1em 0em 1em;
-    min-height: 2em;
+  padding: 0em 1em 0em 1em;
+  min-height: 2em;
 }
 
 .newItems {
-    position: relative;
-    background: radial-gradient(ellipse, rgba(14, 7, 7, .02) 1%, transparent 50%);
-    overflow: visible;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  position: relative;
+  background: radial-gradient(
+    ellipse,
+    rgba(14, 7, 7, 0.02) 1%,
+    transparent 50%
+  );
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-    &>div:first-child {
-        max-width: $window-max-width;
-        width: calc(100% + 2 * $scrollbar-padding);
-    }
+  & > div:first-child {
+    max-width: $window-max-width;
+    width: calc(100% + 2 * $scrollbar-padding);
+  }
 
-    * {
-        scrollbar-color: var(--btn-medium-gray) transparent;
-    }
+  * {
+    scrollbar-color: var(--btn-medium-gray) transparent;
+  }
 }
 
 .newItemsExpandButtonContainer {
-    position: relative;
-    z-index: 0;
-    height: .75em;
-    transition: height .2s ease-out;
-    transition-delay: .2s;
-    width: 100%;
-    display: flex;
-    align-items: center;
+  position: relative;
+  z-index: 0;
+  height: 0.75em;
+  transition: height 0.2s ease-out;
+  transition-delay: 0.2s;
+  width: 100%;
+  display: flex;
+  align-items: center;
 
-    &:hover {
-        height: 2em;
-        transition: height .2s ease-out;
-        transition-delay: .1s;
-    }
+  &:hover {
+    height: 2em;
+    transition: height 0.2s ease-out;
+    transition-delay: 0.1s;
+  }
 
-    button {
-        opacity: 0;
-        transition: opacity .2s ease-out;
-        margin: 0 auto;
-    }
+  button {
+    opacity: 0;
+    transition: opacity 0.2s ease-out;
+    margin: 0 auto;
+  }
 
-    &:hover button {
-        opacity: 1;
-        transition: opacity .2s ease-out;
-        transition-delay: .1s;
-    }
+  &:hover button {
+    opacity: 1;
+    transition: opacity 0.2s ease-out;
+    transition-delay: 0.1s;
+  }
 }
 
 /* Category Icon */
 .categoryIcon {
-    transform: scale(1);
-    transition: all .2s ease-out;
-    padding: .125em .75em;
-    cursor: pointer;
-    border-radius: var(--border-radius3);
-    font-weight: var(--fw-regular);
+  transform: scale(1);
+  transition: all 0.2s ease-out;
+  padding: 0.125em 0.75em;
+  cursor: pointer;
+  border-radius: var(--border-radius3);
+  font-weight: var(--fw-regular);
 
-    &:hover {
-        transform: scale(1.1);
-        transition: all .2s ease-out;
-    }
+  &:hover {
+    transform: scale(1.1);
+    transition: all 0.2s ease-out;
+  }
 }
 
 .newItemsContainer {
-    &>div>div:last-child button {
-        margin-top: .25em;
-    }
+  & > div > div:last-child button {
+    margin-top: 0.25em;
+  }
 }

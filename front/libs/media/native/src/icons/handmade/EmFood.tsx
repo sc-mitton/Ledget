@@ -1,21 +1,15 @@
-import * as React from "react"
-import Svg, { Path, SvgProps } from "react-native-svg"
+import * as React from 'react';
+import Svg, { Path, SvgProps } from 'react-native-svg';
 
 function SvgComponent(props: SvgProps) {
   return (
-    <Svg
-      id="Layer_1"
-      x="0px"
-      y="0px"
-      viewBox="0 0 88 88"
-      {...props}
-    >
+    <Svg id="Layer_1" x="0px" y="0px" viewBox="0 0 88 88" {...props}>
       <Path
         d="M81.8 56.6c-.8 1.2-2 2.2-3.6 2.6l-28.6 7.2c-.6.2-1.2.2-1.8.2s-1.2 0-1.8-.2l-28.4-7.2c-1-.2-1.8-.8-2.6-1.4-.4.6-.8 1.2-.8 2v4.4c0 1.8 1.6 3.4 3.4 3.4h3c-1.6.4-2.8 2-2.8 3.8v6.4h-3.2L9.3 26.6h30.8l-.7 8.4c-12.4 1.4-23 5.4-23 12.2 0 1.4.4 2.6 1.2 3.8-3 1-3 4.8.6 5.8l28.6 7.4c.6.2 1.4.2 2.2 0l28.6-7.4c3.4-.8 3.6-4.4.6-5.8.8-1.2 1.4-2.4 1.4-3.8 0-8.2-15.8-12.6-31.6-12.6h-3.8l1.2-12.8h-8l2.4-11 11 4.2 1.8-4.4-16.4-6.3-3.8 17.4H4.1l6 60.9h9c.6.6 1.6 1 2.6 1h54.9c2.2 0 4-1.8 4-4v-8.2c0-1.8-1.2-3.4-2.8-3.8h2.6c1.8 0 3.4-1.6 3.4-3.4v-4.4c.2-1.4-.8-2.6-2-3.2zm-7-9.4c0 3.2-10.6 7.8-26.8 7.8s-26.8-4.8-26.8-7.8c0-3.2 10.6-7.8 26.8-7.8s26.8 4.6 26.8 7.8zm1 31.6H22.6v-6.6h53.3v6.6zm.8-6.6v-2.4 2.4z"
         fill="#c6c6c6"
       />
     </Svg>
-  )
+  );
 }
 
-export default SvgComponent
+export default SvgComponent;

@@ -1,4 +1,4 @@
-const itemHeight = 25
-const itemPadding = 8
+const itemHeight = 25;
+const itemPadding = 8;
 
-export { itemHeight, itemPadding }
+export { itemHeight, itemPadding };
