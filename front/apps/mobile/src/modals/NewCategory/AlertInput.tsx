@@ -5,7 +5,7 @@ import { Plus } from 'geist-native-icons';
 import { useTheme } from '@shopify/restyle';
 import { Control, useFieldArray, useWatch } from 'react-hook-form';
 import { z } from 'zod';
-import { SlotText } from 'react-native-slot-numbers';
+import { SlotNumbers } from './foo';
 import { X } from 'geist-native-icons';
 import Big from 'big.js';
 
@@ -121,7 +121,7 @@ const AlertInput = (props: Props) => {
             <Header2>Add Alert</Header2>
             <Seperator />
             <View style={styles.animatedNumbersContainer}>
-              <SlotText
+              <SlotNumbers
                 fontStyle={[
                   styles.animatedNumbers,
                   { color: theme.colors.mainText },

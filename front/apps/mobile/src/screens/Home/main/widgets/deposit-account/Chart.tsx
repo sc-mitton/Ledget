@@ -9,7 +9,7 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import { SlotText } from 'react-native-slot-numbers';
+import { SlotNumbers } from 'react-native-slot-numbers';
 
 import styles from './styles/chart-skeleton';
 import { VictoryTooltip, Box } from '@ledget/native-ui';
@@ -70,7 +70,7 @@ const ChartSkeleton = (props: Props) => {
             shadowRadius={5}
             shadowOffset={{ width: 0, height: 0 }}
           >
-            <SlotText
+            <SlotNumbers
               easing="in-out"
               fontStyle={[{ color: theme.colors.mainText }, styles.fontStyle]}
               prefix="$"

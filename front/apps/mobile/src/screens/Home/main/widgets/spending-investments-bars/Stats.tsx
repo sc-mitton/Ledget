@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { View } from 'react-native';
-import { SlotText } from 'react-native-slot-numbers';
+import { SlotNumbers } from 'react-native-slot-numbers';
 import Big from 'big.js';
 import { useTheme } from '@shopify/restyle';
 
@@ -49,7 +49,7 @@ export const HorizontalStats = ({ index }: { index: number }) => {
             </Text>
           </View>
           <View style={sharedStyles.currencyContainer}>
-            <SlotText
+            <SlotNumbers
               value={saved}
               fontStyle={[{ color: theme.colors.mainText }, styles.fontStyle]}
               easing="in-out"
@@ -67,7 +67,7 @@ export const HorizontalStats = ({ index }: { index: number }) => {
             </Text>
           </View>
           <View style={sharedStyles.currencyContainer}>
-            <SlotText
+            <SlotNumbers
               value={invested}
               fontStyle={[{ color: theme.colors.mainText }, styles.fontStyle]}
               animationDuration={200}
@@ -123,7 +123,7 @@ export const VerticalStats = ({ index }: { index: number }) => {
             Income
           </Text>
         </View>
-        <SlotText
+        <SlotNumbers
           value={income}
           fontStyle={[{ color: theme.colors.mainText }, styles.largeFontStyle]}
           animationDuration={200}
@@ -142,7 +142,7 @@ export const VerticalStats = ({ index }: { index: number }) => {
               Saved
             </Text>
           </View>
-          <SlotText
+          <SlotNumbers
             value={saved}
             fontStyle={[{ color: theme.colors.mainText }, styles.fontStyle]}
             animationDuration={200}
@@ -157,7 +157,7 @@ export const VerticalStats = ({ index }: { index: number }) => {
               Invested
             </Text>
           </View>
-          <SlotText
+          <SlotNumbers
             value={invested}
             fontStyle={[{ color: theme.colors.mainText }, styles.fontStyle]}
             animationDuration={200}

@@ -14,7 +14,7 @@ import Animated, {
   useAnimatedReaction,
   runOnJS,
 } from 'react-native-reanimated';
-import { SlotText } from 'react-native-slot-numbers';
+import { SlotNumbers } from 'react-native-slot-numbers';
 import dayjs from 'dayjs';
 
 import styles from './styles/chart-skeleton';
@@ -87,7 +87,7 @@ const Chart = (props: Props) => {
             shadowRadius={5}
             shadowOffset={{ width: 0, height: 0 }}
           >
-            <SlotText
+            <SlotNumbers
               fontStyle={[{ color: theme.colors.mainText }, styles.fontStyle]}
               easing="in-out"
               prefix="$"

@@ -1,7 +1,7 @@
 import { useEffect, memo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
-import { SlotText } from 'react-native-slot-numbers';
+import { SlotNumbers } from 'react-native-slot-numbers';
 import { useTheme } from '@shopify/restyle';
 import Big from 'big.js';
 
@@ -35,7 +35,7 @@ const Progress = () => {
   return (
     <View>
       <View style={styles.progressHeader}>
-        <SlotText
+        <SlotNumbers
           easing="in-out"
           fontStyle={[
             {
@@ -57,7 +57,7 @@ const Progress = () => {
         >
           spent of
         </Text>
-        <SlotText
+        <SlotNumbers
           easing="in-out"
           fontStyle={[
             {

@@ -9,7 +9,7 @@ import Animated, {
   useSharedValue,
   StretchOutY,
 } from 'react-native-reanimated';
-import { SlotText } from 'react-native-slot-numbers';
+import { SlotNumbers } from 'react-native-slot-numbers';
 
 import styles from './styles/widget';
 import { useAppDispatch } from '@/hooks';
@@ -285,7 +285,7 @@ const Selector = (widget: WidgetProps<{ accounts: string[] }>) => {
         <View style={styles.balanceContainer}>
           {accounts ? (
             <View style={styles.bottomRow}>
-              <SlotText
+              <SlotNumbers
                 easing="in-out"
                 fontStyle={[{ color: theme.colors.mainText }, styles.fontStyle]}
                 value={Big(
