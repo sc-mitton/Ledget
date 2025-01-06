@@ -222,7 +222,7 @@ const Screen = (props: ModalScreenProps<'Split' | 'SplitModal'>) => {
             </Text>
           </View>
         )}
-        <Seperator variant="m" backgroundColor="modalSeperator" height={2} />
+        <Seperator variant="m" backgroundColor="modalSeperator" height={1.75} />
         {Object.keys(dirtyFields).length > 0 && totalLeft !== 0 && (
           <Text>
             <Text color={totalLeft < 0 ? 'alert' : 'quaternaryText'}>

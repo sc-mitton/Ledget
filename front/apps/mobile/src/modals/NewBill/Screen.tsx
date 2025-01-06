@@ -20,12 +20,12 @@ import {
 } from '@ledget/native-ui';
 import { billSchema } from '@ledget/form-schemas';
 import { useAddnewBillMutation } from '@ledget/shared-features';
-import { ModalScreenProps } from '@types';
+import { PageSheetModalScreenProps } from '@types';
 import SchedulerModal from './SchedulerModal';
 import RemindersModal from './RemindersModal';
 import { useEffect } from 'react';
 
-const Screen = (props: ModalScreenProps<'NewBill'>) => {
+const Screen = (props: PageSheetModalScreenProps<'NewBill'>) => {
   const [addNewBill, { isLoading, isSuccess }] = useAddnewBillMutation();
   const { control, handleSubmit, resetField } = useForm<
     z.infer<typeof billSchema>

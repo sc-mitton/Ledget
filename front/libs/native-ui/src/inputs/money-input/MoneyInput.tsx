@@ -69,6 +69,7 @@ export function MoneyInput<T extends TInput>(props: MoneyInputProps<T>) {
   const input2Ref = useRef<ReactNativeTextInput>(null);
 
   const handleChange = (v: string) => {
+    // Make sure value stays within prop limits if provided
     const bounded =
       index === 0
         ? Array.isArray(limits[0])
@@ -84,24 +85,24 @@ export function MoneyInput<T extends TInput>(props: MoneyInputProps<T>) {
           )
         : Math.max(parseFloat(v.replace(/[^0-9]/g, '')), limits[1] || 0);
 
-    const vp = bounded / Math.pow(10, accuracy || 0);
+    const newVal = bounded / Math.pow(10, accuracy || 0);
 
     if (props.inputType === 'range' && onChange) {
       const newValue =
-        index === 0 ? [vp, (value as any)[1]] : [(value as any)[0], vp];
+        index === 0 ? [newVal, (value as any)[1]] : [(value as any)[0], newVal];
       onChange(newValue as any);
       setValue(newValue as any);
       if (Array.isArray(newValue)) {
         setFormatedValue([
-          newValue[0] > 0 ? formatter.format(newValue[0]) : '',
-          newValue[0] > 0 ? formatter.format(newValue[1]) : '',
+          newValue[0] > 0 ? formatter.format(newValue[0]) : formatter.format(0),
+          newValue[0] > 0 ? formatter.format(newValue[1]) : formatter.format(0),
         ]);
       }
     } else if (onChange) {
-      onChange(vp as any);
-      setValue(vp);
-      if (!Array.isArray(vp)) {
-        setFormatedValue(formatter.format(vp));
+      onChange(newVal as any);
+      setValue(newVal);
+      if (!Array.isArray(newVal)) {
+        setFormatedValue(newVal > 0 ? formatter.format(newVal) : '');
       }
     }
   };

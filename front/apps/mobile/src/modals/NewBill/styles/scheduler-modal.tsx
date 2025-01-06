@@ -31,8 +31,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 10,
-    marginTop: 12,
-    marginBottom: 12,
+    marginTop: 8,
   },
   column: {
     gap: 20,
@@ -41,6 +40,7 @@ const styles = StyleSheet.create({
   },
   dayCell: {
     width: '100%',
+    marginVertical: 6,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -61,8 +61,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginBottom: 16,
-    marginTop: 8,
+    marginBottom: 20,
   },
   month: {
     marginVertical: 4,

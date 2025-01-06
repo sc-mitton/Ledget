@@ -55,7 +55,10 @@ const SchedulerModal = (props: ModalProps) => {
 
   const handleClear = () => {
     props.resetField('schedule');
-    setShowModal(false);
+    const t = setTimeout(() => {
+      setShowModal(false);
+    }, 200);
+    return () => clearTimeout(t);
   };
 
   return (
@@ -148,7 +151,7 @@ const SchedulerModal = (props: ModalProps) => {
                   <>
                     <Box
                       borderRadius="m"
-                      paddingVertical="l"
+                      paddingBottom="l"
                       style={styles.dayCalendar}
                     >
                       {DAYS.map((column, index) => (
@@ -166,7 +169,7 @@ const SchedulerModal = (props: ModalProps) => {
                                 <View style={styles.dayIndicatorBoxContainer}>
                                   <Box
                                     style={styles.dayIndicatorBox}
-                                    backgroundColor="blueButton"
+                                    backgroundColor="faintBlueText"
                                     borderRadius="s"
                                   />
                                 </View>
@@ -184,6 +187,7 @@ const SchedulerModal = (props: ModalProps) => {
                 {periodValue === 'year' && (
                   <View>
                     <InputLabel>Month</InputLabel>
+                    <Seperator variant="s" />
                     <View style={styles.months}>
                       {Array.from({ length: 12 }, (_, i) => i + 1).map(
                         (month) => (
@@ -195,7 +199,7 @@ const SchedulerModal = (props: ModalProps) => {
                             style={styles.month}
                             backgroundColor={
                               scheduleValue?.month === month
-                                ? 'blueButton'
+                                ? 'faintBlueText'
                                 : 'transparent'
                             }
                             label={dayjs()
@@ -211,8 +215,8 @@ const SchedulerModal = (props: ModalProps) => {
                         )
                       )}
                     </View>
-                    <Seperator variant="s" />
                     <InputLabel>Day</InputLabel>
+                    <Seperator variant="s" />
                     <View style={styles.dayCalendar}>
                       {Array.from({
                         length: dayjs()
@@ -245,7 +249,7 @@ const SchedulerModal = (props: ModalProps) => {
                                   <View style={styles.dayIndicatorBoxContainer}>
                                     <Box
                                       style={styles.dayIndicatorBox}
-                                      backgroundColor="blueButton"
+                                      backgroundColor="faintBlueText"
                                       borderRadius="s"
                                     />
                                   </View>
@@ -270,7 +274,7 @@ const SchedulerModal = (props: ModalProps) => {
                               key={`${week}-week`}
                               backgroundColor={
                                 scheduleValue?.week === week
-                                  ? 'blueButton'
+                                  ? 'faintBlueText'
                                   : 'transparent'
                               }
                               label={`${week}${getOrderSuffix(week)}`}
@@ -294,7 +298,7 @@ const SchedulerModal = (props: ModalProps) => {
                               key={`${weekDay}-week`}
                               backgroundColor={
                                 scheduleValue?.week_day === weekDay
-                                  ? 'blueButton'
+                                  ? 'faintBlueText'
                                   : 'transparent'
                               }
                               label={dayjs().day(weekDay).format('dd')}

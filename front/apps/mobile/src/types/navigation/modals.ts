@@ -54,6 +54,21 @@ export type ModalStackParamList = {
       order?: 'balance-asc' | 'balance-desc' | 'name-asc' | 'name-desc';
     };
   };
+  ConfirmDeleteCategory: {
+    category: Category;
+  };
+  ConfirmDeleteBill: {
+    bill: Bill;
+  };
+  Holdings: undefined;
+  BillsCalendar: {
+    month: number;
+    year: number;
+  };
+  Transaction: AccountsStackParamList['Transaction'];
+};
+
+export type PageSheetModalParamList = {
   NewBill:
     | {
         transaction?: Transaction;
@@ -72,19 +87,16 @@ export type ModalStackParamList = {
         };
       }
     | undefined;
-  ConfirmDeleteCategory: {
-    category: Category;
-  };
-  ConfirmDeleteBill: {
-    bill: Bill;
-  };
-  Holdings: undefined;
-  BillsCalendar: {
-    month: number;
-    year: number;
-  };
-  Transaction: AccountsStackParamList['Transaction'];
 };
+
+export type PageSheetModalScreenProps<T extends keyof PageSheetModalParamList> =
+  CompositeScreenProps<
+    StackScreenProps<PageSheetModalParamList, T>,
+    CompositeScreenProps<
+      BottomTabScreenProps<BottomTabNavParamList>,
+      StackScreenProps<RootStackParamList>
+    >
+  >;
 
 export type ModalScreenProps<T extends keyof ModalStackParamList> =
   CompositeScreenProps<

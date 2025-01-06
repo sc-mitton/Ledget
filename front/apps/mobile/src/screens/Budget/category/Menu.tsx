@@ -16,7 +16,7 @@ export default function BakedMenu(props: BudgetScreenProps<'Category'>) {
             label: 'Edit',
             icon: () => <Icon icon={Edit2} size={16} strokeWidth={2} />,
             onSelect: () =>
-              props.navigation.navigate('Modals', {
+              props.navigation.navigate('PageSheetModals', {
                 screen: 'NewCategory',
                 params: {
                   category: props.route.params.category,

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { X } from 'geist-native-icons';
 import { ScrollView, View } from 'react-native';
 import { useForm, Controller, useController, useWatch } from 'react-hook-form';
+import Animated, { LinearTransition } from 'react-native-reanimated';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Emoji } from 'geist-native-icons';
@@ -13,8 +13,6 @@ import {
   Button,
   Icon,
   TextInput,
-  Header2,
-  Seperator,
   SubmitButton,
   Text,
   TextInputbase,
@@ -24,11 +22,11 @@ import {
   ModalPicker,
 } from '@ledget/native-ui';
 import { useAddNewCategoryMutation } from '@ledget/shared-features';
-import { ModalScreenProps } from '@types';
+import { PageSheetModalScreenProps } from '@types';
 import { categorySchema } from '@ledget/form-schemas';
 import AlertInput from './AlertInput';
 
-const Screen = (props: ModalScreenProps<'NewCategory'>) => {
+const Screen = (props: PageSheetModalScreenProps<'NewCategory'>) => {
   const { control, handleSubmit } = useForm<z.infer<typeof categorySchema>>({
     resolver: zodResolver(categorySchema),
     defaultValues: {
@@ -155,8 +153,8 @@ const Screen = (props: ModalScreenProps<'NewCategory'>) => {
           )}
           control={control}
         />
-        {limit_amount && <AlertInput control={control} />}
-        <View style={styles.saveButton}>
+        {limit_amount > 0 && <AlertInput control={control} />}
+        <Animated.View style={styles.saveButton} layout={LinearTransition}>
           <SubmitButton
             variant="main"
             label="Save"
@@ -164,7 +162,7 @@ const Screen = (props: ModalScreenProps<'NewCategory'>) => {
             isSuccess={isSuccess}
             onPress={() => handleSubmit(onSubmit)()}
           />
-        </View>
+        </Animated.View>
       </ScrollView>
     </Box>
   );

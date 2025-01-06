@@ -5,6 +5,8 @@ import Animated, {
   FadeIn,
   FadeOut,
   LinearTransition,
+  useAnimatedStyle,
+  useSharedValue,
 } from 'react-native-reanimated';
 import Big from 'big.js';
 
@@ -30,6 +32,20 @@ const List = (props: Props) => {
   const [expanded, setExpanded] = useState(false);
   const [maxAmountSpentSize, setMaxAmountSpentSize] = useState(0);
   const [maxLimitAmountSize, setMaxLimitAmountSize] = useState(0);
+
+  const maxAmountSpent = useMemo(
+    () =>
+      props.categories.reduce(
+        (acc, c) => Math.max(acc, c.amount_spent || 0),
+        0
+      ),
+    [props.categories]
+  );
+
+  const maxLimitAmount = useMemo(
+    () => props.categories.reduce((acc, c) => Math.max(acc, c.limit_amount), 0),
+    [props.categories]
+  );
 
   const hasOverflow = useMemo(() => {
     return (
@@ -74,12 +90,12 @@ const List = (props: Props) => {
                 <View
                   style={[
                     styles.amountSpent,
-                    { width: maxAmountSpentSize || 'auto' },
+                    { width: maxLimitAmountSize || 'auto' },
                   ]}
-                  onLayout={({ nativeEvent }) => {
-                    setMaxAmountSpentSize(
-                      Math.max(nativeEvent.layout.width, maxAmountSpentSize)
-                    );
+                  onLayout={({ nativeEvent: ne }) => {
+                    if (item.amount_spent === maxAmountSpent) {
+                      setMaxLimitAmountSize(ne.layout.width);
+                    }
                   }}
                 >
                   <DollarCents
@@ -93,12 +109,12 @@ const List = (props: Props) => {
                 <View
                   style={[
                     styles.limitAmount,
-                    { width: maxLimitAmountSize || 'auto' },
+                    { width: maxAmountSpentSize || 'auto' },
                   ]}
-                  onLayout={({ nativeEvent }) => {
-                    setMaxLimitAmountSize(
-                      Math.max(nativeEvent.layout.width, maxLimitAmountSize)
-                    );
+                  onLayout={({ nativeEvent: ne }) => {
+                    if (item.limit_amount === maxLimitAmount) {
+                      setMaxAmountSpentSize(ne.layout.width);
+                    }
                   }}
                 >
                   <DollarCents

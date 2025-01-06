@@ -46,6 +46,7 @@ import GeistSemiBold from '../../assets/fonts/Geist-SemiBold.ttf';
 import GeistBold from '../../assets/fonts/Geist-Bold.ttf';
 import ModalScreens from './ModalScreens';
 import Toast from './Toast';
+import PageSheetModals from './PageSheetModals';
 
 export const storage = new MMKV();
 
@@ -224,6 +225,18 @@ export const App = withProviders(() => {
           <RootStack.Group screenOptions={{ headerShown: false }}>
             <RootStack.Screen name="BottomTabs" component={BottomTabScreens} />
             <RootStack.Screen name="Onboarding" component={Onboarding} />
+          </RootStack.Group>
+          <RootStack.Group
+            screenOptions={{
+              presentation: 'modal',
+              headerShown: false,
+              cardOverlayEnabled: true,
+            }}
+          >
+            <RootStack.Screen
+              name="PageSheetModals"
+              component={PageSheetModals}
+            />
           </RootStack.Group>
           <RootStack.Group
             screenOptions={{

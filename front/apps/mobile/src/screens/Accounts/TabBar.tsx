@@ -157,7 +157,7 @@ const Tabs = ({ state, descriptors, navigation }: Props) => {
         </Rect>
       </Canvas>
       <View style={styles.seperator}>
-        <Seperator backgroundColor="mainScreenSeperator" height={2} />
+        <Seperator backgroundColor="mainScreenSeperator" height={1.75} />
       </View>
     </View>
   );

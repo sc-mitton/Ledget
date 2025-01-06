@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   header: {
-    marginVertical: 8,
+    marginBottom: 4,
     marginLeft: 4,
   },
   modalWrapper: {

@@ -30,11 +30,11 @@ const styles = StyleSheet.create({
   animatedNumbersContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 16,
+    marginBottom: 4,
   },
   animatedNumbers: {
     fontFamily: 'SourceSans3-Regular',
-    fontSize: 36,
+    fontSize: 44,
   },
   container: {
     gap: 8,

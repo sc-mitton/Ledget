@@ -3,7 +3,7 @@ import { createNavigationContainerRef } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 
 import type { LoginStackParamList } from './login';
-import type { ModalStackParamList } from './modals';
+import type { ModalStackParamList, PageSheetModalParamList } from './modals';
 import { Transaction } from '@ledget/shared-features';
 import { OnboardingStackParamList } from './onboarding';
 import { BottomTabNavParamList } from './bottomNav';
@@ -11,6 +11,7 @@ import { BottomTabNavParamList } from './bottomNav';
 export type RootStackParamList = {
   BottomTabs: NavigatorScreenParams<BottomTabNavParamList>;
   Modals: NavigatorScreenParams<ModalStackParamList>;
+  PageSheetModals: NavigatorScreenParams<PageSheetModalParamList>;
   Onboarding: NavigatorScreenParams<OnboardingStackParamList>;
   Transaction: {
     transaction: Transaction | string;

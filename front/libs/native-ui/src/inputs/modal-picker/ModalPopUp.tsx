@@ -85,15 +85,14 @@ function ModalPopUp<O extends PickerOption, TMultiple extends boolean>(
         transparent={true}
         animationType="slide"
       >
-        <Modal onClose={handleClose} position="centerFloat" hasOverlay={true}>
-          <></>
+        <Modal onClose={handleClose} position="centerFloat" hasOverlay={false}>
           {props.header && (
-            <>
-              <Text variant="bold" fontSize={18} style={styles.header}>
+            <View style={styles.header}>
+              <Text variant="bold" fontSize={18}>
                 {props.header}
               </Text>
               <Seperator variant="s" backgroundColor="modalSeperator" />
-            </>
+            </View>
           )}
           {props.searchable && (
             <OutsidePressHandler

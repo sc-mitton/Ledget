@@ -107,7 +107,7 @@ export function Modal(props: ModalProps) {
         style={[StyleSheet.absoluteFillObject]}
       />
       <BlurView
-        intensity={10}
+        intensity={7}
         tint={theme.colors.mode === 'dark' ? 'dark' : 'light'}
         style={StyleSheet.absoluteFillObject}
       >

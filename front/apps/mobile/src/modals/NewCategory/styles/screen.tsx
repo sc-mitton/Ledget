@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   form: {
+    marginTop: 16,
     paddingHorizontal: 16,
   },
   row: {
