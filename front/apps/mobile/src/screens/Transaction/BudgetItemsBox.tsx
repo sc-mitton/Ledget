@@ -42,7 +42,9 @@ const BudgetItemsBox = (props: Props) => {
           </View>
           <Box
             variant="nestedContainer"
-            backgroundColor={props.isInModal ? 'modalSeperator' : undefined}
+            backgroundColor={
+              props.isInModal ? 'modalNestedContainer' : undefined
+            }
           >
             <View style={[styles.budgetItemsContainer]}>
               {Array.isArray(items) ? (

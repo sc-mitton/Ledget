@@ -28,9 +28,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
   },
   animatedNumbersContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 4,
+    marginBottom: 16,
+    height: 54,
+    width: '100%',
   },
   animatedNumbers: {
     fontFamily: 'SourceSans3-Regular',

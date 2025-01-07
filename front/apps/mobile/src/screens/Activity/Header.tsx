@@ -1,14 +1,14 @@
 import { View } from 'react-native';
-import React, { useEffect, useState } from 'react';
 
 import styles from './styles/header';
-import { Box, Button, Seperator, Text, TabsTrack } from '@ledget/native-ui';
+import { Seperator, Text, TabsTrack } from '@ledget/native-ui';
 import { useAppSelector } from '@hooks';
 import {
   useGetTransactionsCountQuery,
   selectBudgetMonthYear,
 } from '@ledget/shared-features';
 import { useAppearance } from '@/features/appearanceSlice';
+import { useContext } from './context';
 
 const Header = ({
   index,
@@ -23,6 +23,7 @@ const Header = ({
     { skip: !month || !year }
   );
   const { mode } = useAppearance();
+  const { itemWithFocus } = useContext();
 
   return (
     <View style={styles.headerContainer}>
@@ -31,8 +32,8 @@ const Header = ({
           <TabsTrack.Tab index={0}>
             <View style={styles.countCountainer}>
               <View style={styles.countBackgroundOuterContainer}>
-                <Text variant="bold" fontSize={14} color={'secondaryText'}>
-                  {24}
+                <Text variant="bold" color={'secondaryText'}>
+                  {data?.count}
                 </Text>
               </View>
             </View>
@@ -53,8 +54,8 @@ const Header = ({
       >
         <Seperator
           height={1.75}
-          variant={'s'}
-          backgroundColor={'modalSeperator'}
+          variant={'bare'}
+          backgroundColor={itemWithFocus ? 'menuSeperator' : 'modalSeperator'}
         />
       </View>
     </View>

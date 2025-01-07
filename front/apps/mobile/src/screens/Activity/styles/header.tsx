@@ -5,6 +5,7 @@ export default StyleSheet.create({
     marginBottom: 0,
     marginTop: 12,
     alignItems: 'center',
+    zIndex: 100,
   },
   header: {
     flexDirection: 'row',
@@ -13,7 +14,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     gap: 12,
     marginRight: 4,
-    marginBottom: 12,
+    marginBottom: 8,
   },
   countCountainer: {
     position: 'relative',
@@ -38,6 +39,7 @@ export default StyleSheet.create({
   },
   seperator: {
     width: '200%',
+    marginBottom: 8,
   },
   lightModeSeperator: {
     transform: [{ translateY: 8 }],

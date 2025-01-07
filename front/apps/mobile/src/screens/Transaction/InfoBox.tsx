@@ -24,7 +24,7 @@ const InfoBox = (props: {
     <BoxHeader>Details</BoxHeader>
     <ShimmerBox
       variant="nestedContainer"
-      backgroundColor={props.isInModal ? 'modalSeperator' : undefined}
+      backgroundColor={props.isInModal ? 'modalNestedContainer' : undefined}
       shimmering={!props.item}
     >
       {props.item && (

@@ -177,7 +177,7 @@ const Item = (props: Props) => {
           </Animated.View>
           <Box
             shadowColor="blackText"
-            shadowOpacity={0.08}
+            shadowOpacity={0.09}
             shadowOffset={{ width: 0, height: 2 }}
             shadowRadius={2}
           >
@@ -185,8 +185,8 @@ const Item = (props: Props) => {
               backgroundColor="newTransaction"
               borderColor="newTransactionBorder"
               shadowColor="newTransactionShadow"
-              shadowOpacity={mode === 'dark' ? 1 : 0.3}
-              shadowRadius={mode === 'dark' ? 12 : 8}
+              shadowOpacity={mode === 'dark' ? 1 : 0.38}
+              shadowRadius={mode === 'dark' ? 12 : 12}
               shadowOffset={{ width: 0, height: 8 }}
               elevation={7}
               style={[styles.newTransaction, style]}

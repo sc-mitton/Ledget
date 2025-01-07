@@ -46,6 +46,7 @@ import { _getY, _getScale, _getOpacity, EXPANDED_GAP } from './helpers';
 import { ModalScreenProps } from '@types';
 import { EmptyBox } from '@ledget/media/native';
 import { BlurView } from 'expo-blur';
+import { useContext } from '../context';
 
 const springConfig = {
   tension: 180,
@@ -65,7 +66,7 @@ const NeedsConfirmation = (
 
   const [itemHeightSet, setItemHeightSet] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [itemWithFocus, setItemWithFocus] = useState<string>();
+  const { itemWithFocus, setItemWithFocus } = useContext();
   const [expanded, setExpanded] = useState(props.expanded || false);
 
   const [confirmTransactions] = useConfirmTransactionsMutation();

@@ -49,7 +49,7 @@ export default StyleSheet.create({
     zIndex: 199,
   },
   overlayContainer: {
-    transform: [{ translateY: -24 }],
+    transform: [{ translateY: -42 }],
     marginHorizontal: -16,
     position: 'absolute',
     top: 0,

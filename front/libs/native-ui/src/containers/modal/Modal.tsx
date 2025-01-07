@@ -141,7 +141,7 @@ export function Modal(props: ModalProps) {
         >
           <Box
             style={[styles[`${position}Modal`], (restyleProps as any).style[0]]}
-            backgroundColor={'modalBox'}
+            backgroundColor={'modalBox100'}
             {...(hasOverlay
               ? {
                   shadowColor: 'modalShadow',

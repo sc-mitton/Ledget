@@ -279,7 +279,7 @@ const Notes = ({
         )}
         <Box
           variant="nestedContainer"
-          backgroundColor={isInModal ? 'modalSeperator' : undefined}
+          backgroundColor={isInModal ? 'modalNestedContainer' : undefined}
           style={[styles.notesBox, { maxHeight }]}
         >
           <CustomScrollView style={styles.notesContainer}>

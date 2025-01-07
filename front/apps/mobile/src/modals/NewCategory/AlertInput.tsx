@@ -1,7 +1,8 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Modal as NativeModal } from 'react-native';
 import { Slider } from '@miblanchard/react-native-slider';
 import { Plus } from 'geist-native-icons';
+import Animated, { LinearTransition } from 'react-native-reanimated';
 import { useTheme } from '@shopify/restyle';
 import { Control, useFieldArray, useWatch } from 'react-hook-form';
 import { z } from 'zod';
@@ -28,10 +29,8 @@ interface Props {
 
 const AlertInput = (props: Props) => {
   const [value, setValue] = useState(0);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(0);
   const theme = useTheme();
-  const slotNumbersContainer = useRef<View>(null);
-  const [showSlotNums, setShowSlotNums] = useState(false);
 
   const { fields, append, remove } = useFieldArray({
     control: props.control,
@@ -43,7 +42,7 @@ const AlertInput = (props: Props) => {
   });
 
   const handleClose = () => {
-    setOpen(false);
+    setOpen(0);
     if (
       !fields.some(
         (field) =>
@@ -59,11 +58,16 @@ const AlertInput = (props: Props) => {
     setValue(0);
   };
 
+  // Slot Numbers were behavig wierd because of the modal, and weren't going
+  // to the initial values unless the view was touched. This is a hack to
+  // make it work
   useEffect(() => {
-    const t = setTimeout(() => {
-      setShowSlotNums(true);
-    }, 100);
-    return () => clearTimeout(t);
+    if (open > 0) {
+      const t = setTimeout(() => {
+        setOpen(2);
+      }, 100);
+      return () => clearTimeout(t);
+    }
   }, [open]);
 
   return (
@@ -105,23 +109,23 @@ const AlertInput = (props: Props) => {
         </>
       )}
       {fields.length <= 4 && (
-        <View style={styles.addButton}>
+        <Animated.View style={styles.addButton} layout={LinearTransition}>
           <Button
             label="Add Alert"
             backgroundColor="inputBackground"
             textColor="placeholderText"
             variant="rectangle"
-            onPress={() => setOpen(true)}
+            onPress={() => setOpen(1)}
           >
             <View style={styles.plusIcon}>
               <Icon icon={Plus} color="placeholderText" />
             </View>
           </Button>
-        </View>
+        </Animated.View>
       )}
       <NativeModal
         presentationStyle="overFullScreen"
-        visible={open}
+        visible={open > 0}
         transparent={true}
         animationType="slide"
       >
@@ -137,23 +141,18 @@ const AlertInput = (props: Props) => {
               Get a notification when you pass spending amounts
             </Text>
             <Seperator />
-            <View
-              style={styles.animatedNumbersContainer}
-              ref={slotNumbersContainer}
-            >
-              {showSlotNums && (
-                <SlotNumbers
-                  fontStyle={[
-                    styles.animatedNumbers,
-                    { color: theme.colors.mainText },
-                  ]}
-                  animateIntermediateValues
-                  value={value}
-                  easing="out"
-                  prefix="$"
-                  includeComma={true}
-                />
-              )}
+            <View style={styles.animatedNumbersContainer}>
+              <SlotNumbers
+                fontStyle={[
+                  styles.animatedNumbers,
+                  { color: theme.colors.mainText },
+                ]}
+                animateIntermediateValues
+                value={value}
+                easing="out"
+                prefix="$"
+                includeComma={true}
+              />
             </View>
             <View style={styles.sliderContainer}>
               <Slider

@@ -82,6 +82,7 @@ export const lightTheme = createTheme({
     lightGrayCard: palette.gray250,
     inputBackground: palette.gray250,
     nestedContainer: palette.white,
+    modalNestedContainer: palette.gray200,
     avatar: palette.gray500,
     modalOverlay: palette.gray900.replace(`${grayS}`, '0'),
     modalBox: palette.gray150,
@@ -164,7 +165,7 @@ export const lightTheme = createTheme({
     tabNavPill: palette.blue100,
     borderedGrayButton: palette.gray200,
     dragBar: palette.gray300,
-    tabsTrack: palette.gray250,
+    tabsTrack: palette.gray200,
     tabsBackground: palette.gray100,
     radioCardSelected: palette.gray200,
     radioCardUnselected: palette.gray150,
@@ -188,7 +189,7 @@ export const lightTheme = createTheme({
 
     // Seperators
     seperator: palette.gray200,
-    modalSeperator: palette.gray200,
+    modalSeperator: palette.gray150,
     menuSeperator: palette.gray200,
     mainScreenSeperator: palette.gray200,
     nestedContainerSeperator: palette.gray125,
