@@ -388,7 +388,12 @@ const NeedsConfirmation = (
                   onPress={confirmAll}
                 >
                   <Text color="tertiaryText">Confirm All</Text>
-                  <Icon color="tertiaryText" icon={CheckAll} size={24} />
+                  <Icon
+                    color="tertiaryText"
+                    icon={CheckAll}
+                    size={20}
+                    strokeWidth={1.75}
+                  />
                 </TouchableOpacity>
               </View>
             )}

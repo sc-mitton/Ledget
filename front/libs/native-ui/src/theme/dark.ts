@@ -77,7 +77,7 @@ export const darkTheme = createTheme({
     androidNavBar: palette.gray850,
     bottomNavCover: `hsl(${grayH}, ${grayS}%, 8%)`,
     nestedContainer: palette.gray850,
-    modalNestedContainer: palette.gray850,
+    modalNestedContainer: palette.gray800,
     lightGrayCard: palette.gray850,
     inputBackground: palette.gray800,
     tabNavPill: palette.blue800,

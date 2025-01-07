@@ -17,6 +17,9 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.ledget.mobile",
+      "config": {
+        "usesNonExempEncryption": false
+      },
       "splash": {
         "image": "./assets/splash-ios.png",
         "resizeMode": "contain",

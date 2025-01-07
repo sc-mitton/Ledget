@@ -40,8 +40,6 @@ export default StyleSheet.create({
   seperator: {
     width: '200%',
     marginBottom: 8,
-  },
-  lightModeSeperator: {
     transform: [{ translateY: 8 }],
   },
 });

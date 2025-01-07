@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { SlotNumbers } from 'react-native-slot-numbers';
 import Big from 'big.js';

@@ -128,7 +128,7 @@ export default function DatePicker() {
                                   key={`month-${y}-${r * 4 + c + 2}`}
                                   backgroundColor={
                                     m === month && parseInt(y) === year
-                                      ? 'blueButton'
+                                      ? 'grayButton'
                                       : 'transparent'
                                   }
                                   paddingHorizontal="l"

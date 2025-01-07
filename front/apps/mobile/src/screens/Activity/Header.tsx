@@ -46,16 +46,15 @@ const Header = ({
           </TabsTrack.Tab>
         </TabsTrack>
       </View>
-      <View
-        style={[
-          styles.seperator,
-          mode === 'light' && styles.lightModeSeperator,
-        ]}
-      >
+      <View style={[styles.seperator]}>
         <Seperator
           height={1.75}
           variant={'bare'}
-          backgroundColor={itemWithFocus ? 'menuSeperator' : 'modalSeperator'}
+          backgroundColor={
+            itemWithFocus && mode === 'light'
+              ? 'menuSeperator'
+              : 'modalSeperator'
+          }
         />
       </View>
     </View>

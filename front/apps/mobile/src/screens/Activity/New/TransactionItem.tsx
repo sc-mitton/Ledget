@@ -186,8 +186,8 @@ const Item = (props: Props) => {
               borderColor="newTransactionBorder"
               shadowColor="newTransactionShadow"
               shadowOpacity={mode === 'dark' ? 1 : 0.38}
-              shadowRadius={mode === 'dark' ? 12 : 12}
-              shadowOffset={{ width: 0, height: 8 }}
+              shadowRadius={12}
+              shadowOffset={{ width: 0, height: 0 }}
               elevation={7}
               style={[styles.newTransaction, style]}
             >

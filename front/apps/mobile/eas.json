@@ -32,8 +32,7 @@
   "submit": {
     "production": {
       "ios": {
-        "companyName": "Ledget LLC",
-        "usesNonExempEncryption": false
+        "companyName": "Ledget LLC"
       }
     }
   }
