@@ -11,7 +11,7 @@ import styled from 'styled-components';
 
 import styles from './styles.module.scss';
 import { FacebookLogo, GoogleLogo, Grip, CornerGrip } from '@ledget/media';
-import { Tooltip } from '../pieces/tooltip/Tooltip';
+import { Tooltip } from '../';
 import { LoadingRing } from '../pieces/loading-indicators/loading-indicators';
 import { withArrow, withLoading, withCheckMark } from './hocs';
 import {

@@ -21,12 +21,12 @@ import styles from './date-picker.module.scss';
 import { DropdownDiv } from '../../animations/dropdowndiv/dropdowndiv';
 import { HalfArrow } from '@ledget/media';
 import { TextInputWrapper } from '../text/text';
-import { Tooltip } from '../../pieces/tooltip/Tooltip';
 import {
   IconButtonBlue,
   IconButtonHalfBlue,
   CircleIconButton,
-} from '../../buttons';
+  Tooltip,
+} from '../../';
 import { useCloseDropdown } from '../../utils/hooks';
 import { useLoaded } from '@ledget/helpers';
 import type {
