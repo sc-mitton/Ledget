@@ -137,7 +137,7 @@ const AddCategories = (props: OnboardingScreenProps<'AddCategories'>) => {
     <Box variant="screen">
       <View style={[sharedStyles.mainContainer]}>
         <View style={sharedStyles.header}>
-          <Text fontSize={24} lineHeight={28} variant="geistSemiBold">
+          <Text fontSize={28} lineHeight={32} variant="bold">
             Add Categories
           </Text>
           <Text color="secondaryText">

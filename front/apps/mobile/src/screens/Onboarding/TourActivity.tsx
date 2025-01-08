@@ -13,18 +13,18 @@ const Tour = (props: OnboardingScreenProps<'TourActivity'>) => {
   return (
     <Box variant="screen">
       <View style={sharedStyles.mainContainer}>
-        <Box paddingHorizontal="xs" marginBottom="xxl" marginTop="xxxl">
-          <Text
-            fontSize={24}
-            lineHeight={28}
-            variant="geistSemiBold"
-            marginVertical="m"
-          >
+        <Box
+          marginBottom="xxl"
+          marginTop="xxxl"
+          width={'100%'}
+          paddingHorizontal="xxs"
+        >
+          <Text fontSize={28} lineHeight={32} variant="bold" marginVertical="m">
             Activity
           </Text>
-          <Text variant="geistRegular" color="secondaryText">
-            Get updates for any new spending from your accounts. Swipe to
-            confirm the transaction's spending category or bill.
+          <Text color="secondaryText">
+            Get updates on new spending from your accounts. Swipe to confirm the
+            transaction's spending category or bill.
           </Text>
         </Box>
         <MaskedImageWrapper maskPosition="top">

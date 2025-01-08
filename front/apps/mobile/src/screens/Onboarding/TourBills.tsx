@@ -17,12 +17,7 @@ const Tour = (props: OnboardingScreenProps<'TourBills'>) => {
           <TourBills dark={mode === 'dark'} />
         </MaskedImageWrapper>
         <Box paddingHorizontal="xs" marginTop="l">
-          <Text
-            fontSize={24}
-            lineHeight={28}
-            variant="geistSemiBold"
-            marginVertical="m"
-          >
+          <Text fontSize={28} lineHeight={32} variant="bold" marginVertical="m">
             Bills
           </Text>
           <Text variant="geistRegular" color="secondaryText">

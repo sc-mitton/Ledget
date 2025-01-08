@@ -171,19 +171,19 @@ const AddBills = (props: OnboardingScreenProps<'AddBills'>) => {
     <Box variant="screen">
       <View style={sharedStyles.mainContainer}>
         <View style={sharedStyles.header}>
-          <Text
-            fontSize={24}
-            lineHeight={28}
-            variant="geistSemiBold"
-            marginBottom="s"
-          >
+          <Text fontSize={24} lineHeight={28} marginBottom="s">
             Add Bills
           </Text>
           <Text color="secondaryText">
             Confirm any of your recurring payments, or enter them manually.
           </Text>
         </View>
-        <Box variant="nestedContainer" style={styles.form}>
+        <Box
+          variant="nestedContainer"
+          style={styles.form}
+          paddingVertical="xs"
+          paddingHorizontal="m"
+        >
           {isLoadingRecurringTransactions && (
             <View style={styles.loadingDotsContainer}>
               <LoadingDots visible={true} />
@@ -291,7 +291,7 @@ const AddBills = (props: OnboardingScreenProps<'AddBills'>) => {
                       )}
                     >
                       <Box
-                        paddingHorizontal="s"
+                        paddingHorizontal="m"
                         paddingVertical="xs"
                         borderWidth={1.5}
                         backgroundColor="nestedContainer"

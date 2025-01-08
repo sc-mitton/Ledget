@@ -17,18 +17,13 @@ const Tour = (props: OnboardingScreenProps<'TourSpending'>) => {
           <TourSpendingCategories dark={mode === 'dark'} />
         </MaskedImageWrapper>
         <Box paddingHorizontal="xs" marginTop="l">
-          <Text
-            fontSize={24}
-            lineHeight={28}
-            variant="geistSemiBold"
-            marginVertical="m"
-          >
+          <Text fontSize={28} lineHeight={32} variant="bold" marginVertical="m">
             Spending Categories
           </Text>
-          <Text variant="geistRegular" color="secondaryText">
+          <Text color="secondaryText">
             Track your spending with custom monthly and yearly categories.
           </Text>
-          <Text variant="geistRegular" color="secondaryText" marginTop="m">
+          <Text color="secondaryText" marginTop="m">
             Your yearly spending categories will refresh every year on the day
             you created your first yearly category.
           </Text>

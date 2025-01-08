@@ -65,11 +65,7 @@ const Welcome = (props: OnboardingScreenProps<'Welcome'>) => {
           <LogoIconGrayscale dark={mode === 'dark'} size={40} />
         </Animated.View>
         <Animated.View style={[textStyle]}>
-          <Text
-            variant={mode === 'dark' ? 'geistSemiBold' : 'geistBold'}
-            fontSize={30}
-            lineHeight={40}
-          >
+          <Text fontSize={36} lineHeight={44} variant="bold">
             Welcome to Ledget
           </Text>
         </Animated.View>

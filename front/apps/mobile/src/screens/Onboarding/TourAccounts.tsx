@@ -15,15 +15,10 @@ const TourAccounts = (props: OnboardingScreenProps<'TourAccounts'>) => {
       <Box style={sharedStyles.mainContainer} marginTop="xxxl">
         <TourAccountsGraphic dark={mode === 'dark'} />
         <Box paddingHorizontal="xs" marginTop="l">
-          <Text
-            fontSize={24}
-            lineHeight={28}
-            variant="geistSemiBold"
-            marginVertical="m"
-          >
+          <Text fontSize={28} lineHeight={32} marginVertical="m" variant="bold">
             Accounts
           </Text>
-          <Text variant="geistRegular" color="secondaryText">
+          <Text color="secondaryText">
             You can link your financial institutions to track all of your
             depository accounts, investments, and loans in one place.
           </Text>

@@ -79,12 +79,7 @@ const Connect = (props: OnboardingScreenProps<'Connect'>) => {
           </Box>
         </Box>
         <Box paddingHorizontal="xs" marginTop="xxl">
-          <Text
-            fontSize={24}
-            lineHeight={28}
-            variant="geistSemiBold"
-            marginVertical="m"
-          >
+          <Text fontSize={28} lineHeight={32} marginVertical="m" variant="bold">
             Connect
           </Text>
           <Text>
