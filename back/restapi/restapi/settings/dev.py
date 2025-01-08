@@ -23,7 +23,7 @@ MEDIA_ROOT = '/restapi/media'
 
 # ----------------------------------- Csrf ----------------------------------- #
 
-CSRF_TRUSTED_ORIGINS = ['https://localhost:3000', 'https://localhost:3001']
+CSRF_TRUSTED_ORIGINS = ['https://localhost:3300', 'https://localhost:3301']
 CSRF_COOKIE_DOMAIN = 'localhost'
 
 # ---------------------------------- 3rd Party Services --------------------------------- #
@@ -70,8 +70,8 @@ SPARKPOST_API_KEY = get_secret('sparkpost_api_key')
 PLAID_ENVIRONMENT = os.getenv('PLAID_ENVIRONMENT') or 'Sandbox'
 PLAID_API_KEY = get_secret('plaid_sand_api_key') if PLAID_ENVIRONMENT.lower() == 'sandbox' else get_secret('plaid_api_key')
 PLAID_CLIENT_ID = get_secret('plaid_client_id')
-PLAID_REDIRECT_URI_ONBOARDING = 'https://localhost:3000/welcome/connect'
-PLAID_REDIRECT_URI = 'https://localhost:3000/settings/connections'
+PLAID_REDIRECT_URI_ONBOARDING = 'https://localhost:3300/welcome/connect'
+PLAID_REDIRECT_URI = 'https://localhost:3300/settings/connections'
 
 # This webhook endpoint wont work since we have to use ngrok, but it has to be something for the code to work
 PLAID_WEBHOOK_ENDPOINT = os.getenv('PLAID_WEBHOOK_ENDPOINT') or 'https://localhost:8000/hooks/plaid/item'
