@@ -6,7 +6,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 export const LoadingRing = ({
   visible = false,
   style,
-  className = '',
 }: {
   visible?: boolean;
   style?: React.CSSProperties;
