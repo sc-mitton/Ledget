@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { View } from 'react-native';
-import { SlotNumbers } from 'react-native-slot-numbers';
+import SlotNumbers from 'react-native-slot-numbers';
 import Big from 'big.js';
 import { useTheme } from '@shopify/restyle';
 
