@@ -26,7 +26,7 @@ export const Toast = ({
   toastStack,
   cleanUp,
 }: {
-  toastStack: ToastItem[] | [];
+  toastStack: ToastItem[];
   cleanUp: toastCleanUp;
 }) => {
   const [uiToastStack, setUiToastStack] = useState<ToastItem[]>([]);

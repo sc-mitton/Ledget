@@ -186,7 +186,7 @@ const App = () => {
         </AnimatePresence>
         <Modals />
         <Toast
-          toastStack={toastStack}
+          toastStack={toastStack as any}
           cleanUp={(toastId) => dispatch(tossToast(toastId))}
         />
       </main>

@@ -4,7 +4,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { Helmet } from 'react-helmet-async';
 
 import '@styles/globals.scss';
-import App from './app/App';
+import App from './app/app';
 
 const root = ReactDOMClient.createRoot(
   document?.getElementById('root') as HTMLElement
