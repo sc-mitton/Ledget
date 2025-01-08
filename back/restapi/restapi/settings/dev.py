@@ -14,7 +14,7 @@ DEVELOPMENT = True
 DOMAIN_URL = "https://localhost:8000/"
 DOMAIN = 'localhost'
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '10.0.2.2']
-ACCOUNTS_APP_DOMAIN = 'localhost:3001'
+ACCOUNTS_APP_DOMAIN = 'localhost:3301'
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_BROWSER_XSS_FILTER = True
