@@ -11,7 +11,7 @@ import { ChevronDown, Check } from '@geist-ui/icons';
 
 import styles from './baked-selects.module.scss';
 import { DropdownDiv } from '../../animations/dropdowndiv/dropdowndiv';
-import { FormInputButton } from '../../buttons';
+import { FormInputButton } from '../../buttons/styled-buttons';
 import { DropdownItem } from '../../containers/specialty';
 import { LoadingRingDiv } from '../../pieces/loading-indicators/loading-indicators';
 import { FormErrorTip } from '../../pieces/form-errors/form-errors';

@@ -1,4 +1,4 @@
-export * from './misc/avatar/Avatar';
+export * from './misc/profile-avatar/Avatar';
 
 export * from './themes/use-bill-cat-tab-theme/use-bill-cat-tab-theme';
 export * from './themes/hooks/use-scheme-var/use-scheme-var';
@@ -27,9 +27,9 @@ export * from './inputs/baked-selects/BakedComboBox';
 export * from './inputs/baked-selects/BakedListBox';
 export * from './inputs/tab-nav-list/TabNavList';
 export * from './inputs/text/text';
-export * from './inputs/otc/Otc';
-export * from './inputs/switch/Switch';
-export * from './inputs/checkbox/Checkbox';
+export * from './inputs/one-time-code/Otc';
+export * from './inputs/toggle-switch/Switch';
+export * from './inputs/check-box/Checkbox';
 export * from './inputs/select-provence/SelectProvence';
 export { default as ComboSelect } from './inputs/combo-select/ComboSelect';
 
@@ -37,9 +37,9 @@ export * from './pieces/progress-bar/ProgressBar';
 export * from './pieces/containers/BillCatLabel';
 export * from './pieces/node-image/NodeImage';
 export * from './pieces/loading-indicators/loading-indicators';
-export * from './pieces/toast/Toast';
+export * from './pieces/toast-list/Toast';
 export * from './pieces/status-pulse/StatusPulse';
-export * from './pieces/tooltip/Tooltip';
+export * from './pieces/tool-tip/Tooltip';
 export * from './pieces/form-errors/form-errors';
 export * from './pieces/shimmers/shimmers';
 export * from './pieces/containers/ResponsiveLine';

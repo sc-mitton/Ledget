@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 
 import styles from './verification-form.module.scss';
-import { MainButton, ResendButton, Otc } from '../../';
+import { MainButton, ResendButton } from '../../buttons/specialty-buttons';
+import { Otc } from '../../inputs/one-time-code/Otc';
 
 interface VerificationFormProps {
   flow: any;

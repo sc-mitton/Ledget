@@ -1,7 +1,7 @@
 import React, { FC, useRef, useState, useEffect } from 'react';
 import { useTransition, animated } from '@react-spring/web';
 
-import { CloseButton } from '../../';
+import { CloseButton } from '../../buttons/specialty-buttons';
 import { useColorScheme } from '../../themes/hooks/use-color-scheme/use-color-scheme';
 import { useCloseDropdown } from '../../utils/hooks';
 
