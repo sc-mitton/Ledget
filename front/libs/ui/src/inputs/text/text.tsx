@@ -1,10 +1,9 @@
 import React, { forwardRef, useRef, useState } from 'react';
 import { FC } from 'react';
-import Lottie from 'react-lottie';
+import LottieView from 'react-lottie';
 
 import { CardElement } from '@stripe/react-stripe-js';
 import { z } from 'zod';
-import { EyeOff, Eye } from 'geist-native-icons';
 import { FieldError, Control } from 'react-hook-form';
 
 import textStyles from './text.module.scss';
@@ -14,6 +13,7 @@ import { SelectProvence } from '../select-provence/SelectProvence';
 import { InputShimmerDiv } from '../../pieces/shimmers/shimmers';
 import { useStripeCardTheme } from '../../themes/themes';
 import { useColorScheme } from '../../themes/hooks/use-color-scheme/use-color-scheme';
+import { visibilityV2Dark } from '@ledget/media/lotties';
 
 export interface TextInputWrapperProps extends React.HTMLProps<HTMLDivElement> {
   slim?: boolean;
@@ -286,6 +286,7 @@ interface PasswordProps extends React.HTMLProps<HTMLInputElement> {
   setVisible?: (visible: boolean) => void;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: any;
+  dark?: boolean;
 }
 
 export const PasswordInput = forwardRef<HTMLInputElement, PasswordProps>(
@@ -309,6 +310,15 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordProps>(
 
     const visible = propsVisible || localVis;
     const setVisible = propsSetVisible || setLocalVis;
+
+    const animationOptinos = {
+      loop: false,
+      autoplay: false,
+      animationData: visibilityV2Dark,
+      rendererSettings: {
+        preserveAspectRatio: 'xMidYMid slice',
+      },
+    };
 
     return (
       <>
@@ -337,7 +347,11 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordProps>(
                 className={passwordStyles.passwordVisibilityIcon}
                 tabIndex={0}
               >
-                {visible ? <EyeOff size={'1.25em'} /> : <Eye size={'1.25em'} />}
+                <LottieView
+                  direction={visible ? 1 : -1}
+                  style={{ width: 32, height: 32 }}
+                  options={animationOptinos}
+                />
               </div>
             )}
             {error &&

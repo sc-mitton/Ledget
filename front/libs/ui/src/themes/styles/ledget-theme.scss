@@ -7,9 +7,9 @@
   --charcoal-rgb: 41, 41, 41;
 
   /* Input Colors */
-  --input-border-focus: solid 1px var(--input-border-focus-color);
-  --input-border-hover: solid 1px var(--input-border-hover-color);
-  --input-focus-drop-shadow: 0 0 0px 1.5px var(--input-focus-dropshadow-color);
+  --input-border-focus: solid 1.5px var(--input-border-focus-color);
+  --input-border-hover: solid 1.5px var(--input-border-hover-color);
+  --input-focus-drop-shadow: 0 0 0px 2px var(--input-focus-dropshadow-color);
 
   /* Text */
   --white: hsl(0, 0%, 100%);
@@ -204,7 +204,7 @@
     --m-text: hsl(0, 0%, 100%);
     --m-invert-text: hsl(0, 0%, 10%);
     --m-text-secondary: color-mix(in srgb, var(--m-text), black 27%);
-    --m-text-tirtiary: color-mix(in srgb, var(--m-text), black 40%);
+    --m-text-tertiary: color-mix(in srgb, var(--m-text), black 40%);
     --m-text-quaternary: color-mix(in srgb, var(--m-text), black 50%);
     --m-text-quinary: color-mix(in srgb, var(--m-text), black 60%);
 
@@ -439,7 +439,7 @@
     // Inputs
     --input-background-rgb: 233, 233, 237;
     --input-background: hsl(var(--window-h), var(--window-s), 94%);
-    --input-border: solid 1px var(--input-background);
+    --input-border: solid 1.5px var(--input-background);
     --input-border-focus-color: var(--blue-light-medium);
     --input-border-hover-color: var(--btn-light-gray-hover);
     --input-focus-dropshadow-color: var(--blue-light);
@@ -453,7 +453,7 @@
     --m-text: hsl(var(--window-h), calc(var(--window-s) + 10%), 27%);
     --m-invert-text: hsl(0, 0%, 97%);
     --m-text-secondary: color-mix(in srgb, var(--m-text), white 40%);
-    --m-text-tirtiary: color-mix(in srgb, var(--m-text), white 60%);
+    --m-text-tertiary: color-mix(in srgb, var(--m-text), white 60%);
     --m-text-quaternary: color-mix(in srgb, var(--m-text), white 70%);
     --m-text-quinary: color-mix(in srgb, var(--m-text), white 80%);
 

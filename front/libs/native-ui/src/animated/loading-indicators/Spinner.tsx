@@ -6,6 +6,7 @@ import {
   composeRestyleFunctions,
   useRestyle,
 } from '@shopify/restyle';
+import { loading } from '@ledget/media/lotties';
 import LottieView from 'lottie-react-native';
 
 import { Theme } from '../../theme';
@@ -47,7 +48,7 @@ export const Spinner = ({
               color: fill || rawColor || theme.colors.quaternaryText,
             },
           ]}
-          source={require('../../../../media/shared/lotties/loading.json')}
+          source={loading}
         />
       </View>
     </View>

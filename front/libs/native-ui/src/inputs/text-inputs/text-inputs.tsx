@@ -13,8 +13,8 @@ import LottieView from 'lottie-react-native';
 import OutsidePressHandler from 'react-native-outside-press';
 
 import { Box } from '../../restyled/Box';
-import { Icon } from '../../restyled/Icon';
 import { InputLabel } from '../../restyled/Text';
+import { visibilityV2Dark, visibilityV2Light } from '@ledget/media/lotties';
 import styles from './styles';
 
 type Error = {
@@ -178,8 +178,8 @@ export const PasswordInput = (props: PasswordInputProps) => {
               loop={false}
               source={
                 theme.colors.mode === 'light'
-                  ? require('../../../../media/shared/lotties/visibilityV2Light.json')
-                  : require('../../../../media/shared/lotties/visibilityV2Dark.json')
+                  ? visibilityV2Light
+                  : visibilityV2Dark
               }
             />
           </TouchableHighlight>

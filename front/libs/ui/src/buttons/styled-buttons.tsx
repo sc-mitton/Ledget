@@ -110,10 +110,10 @@ export const TextButtonBlue = styled(SlimButton)`
 `;
 
 export const PrimaryTextButton = styled(PrimaryButton)`
-  color: var(--m-text-tirtiary);
+  color: var(--m-text-tertiary);
 
   * {
-    color: var(--m-text-tirtiary);
+    color: var(--m-text-tertiary);
   }
 
   &:hover {
