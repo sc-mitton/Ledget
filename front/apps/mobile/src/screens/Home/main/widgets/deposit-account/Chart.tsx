@@ -9,7 +9,7 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import { SlotNumbers } from 'react-native-slot-numbers';
+import SlotNumbers from 'react-native-slot-numbers';
 
 import styles from './styles/chart-skeleton';
 import { VictoryTooltip, Box } from '@ledget/native-ui';

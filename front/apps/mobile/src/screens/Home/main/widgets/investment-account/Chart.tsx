@@ -14,7 +14,7 @@ import Animated, {
   useAnimatedReaction,
   runOnJS,
 } from 'react-native-reanimated';
-import { SlotNumbers } from 'react-native-slot-numbers';
+import SlotNumbers from 'react-native-slot-numbers';
 import dayjs from 'dayjs';
 
 import styles from './styles/chart-skeleton';

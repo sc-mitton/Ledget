@@ -1,7 +1,7 @@
 import { useEffect, memo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
-import { SlotNumbers } from 'react-native-slot-numbers';
+import SlotNumbers from 'react-native-slot-numbers';
 import { useTheme } from '@shopify/restyle';
 import Big from 'big.js';
 

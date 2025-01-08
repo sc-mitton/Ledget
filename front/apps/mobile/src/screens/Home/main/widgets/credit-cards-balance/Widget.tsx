@@ -9,7 +9,7 @@ import Animated, {
   useSharedValue,
   StretchOutY,
 } from 'react-native-reanimated';
-import { SlotNumbers } from 'react-native-slot-numbers';
+import SlotNumbers from 'react-native-slot-numbers';
 
 import styles from './styles/widget';
 import { useAppDispatch } from '@/hooks';
