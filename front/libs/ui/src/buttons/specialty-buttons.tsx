@@ -18,9 +18,9 @@ import {
   SocialButton,
   BaseButton,
   WideButton,
-  GlossMini,
   gray,
   featherGray,
+  PillButton,
   main,
   blue,
 } from './base';
@@ -50,7 +50,16 @@ export const BlueCheckSubmitButton = withCheckMark(BlueSubmitButton);
 
 export const IconButtonSubmit = withLoading(IconButtonHalfGray);
 export const LinkArrowButton = withArrow(BaseButton);
-export const GlossMiniCta = withArrow(GlossMini);
+export const MiniCta = withArrow(
+  styled(PillButton)`
+    background-color: var(--btn-main);
+    color: var(--white);
+
+    * {
+      color: inherit;
+    }
+  `
+);
 
 export const GrayMainButton = withLoading(
   styled(WideButton)`
@@ -164,7 +173,7 @@ export const BackButton: FC<
           <path
             d="M5 10L14.5 10"
             stroke="currentColor"
-            strokeWidth="1"
+            strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
             fill="none"
@@ -172,7 +181,7 @@ export const BackButton: FC<
           <path
             d="M8 14L12 10"
             stroke="currentColor"
-            strokeWidth="1"
+            strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
             fill="none"
@@ -180,7 +189,7 @@ export const BackButton: FC<
           <path
             d="M12 10L8 6"
             stroke="currentColor"
-            strokeWidth="1"
+            strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
             fill="none"

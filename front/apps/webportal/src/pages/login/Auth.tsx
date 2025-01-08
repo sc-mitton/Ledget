@@ -70,9 +70,11 @@ export const LookupSecretMfa = ({ finished }: { finished: boolean }) => {
 
 export const Password = () => (
   <div className={styles.passwordAuth}>
-    <PasswordInput autoFocus required />
+    <div className={styles.passwordInputContainer}>
+      <PasswordInput autoFocus required />
+    </div>
     <MainButton name="method" value="password">
-      Sign In
+      Submit
     </MainButton>
     {typeof PublicKeyCredential != 'undefined' && <PasskeySignIn />}
   </div>

@@ -36,7 +36,11 @@ export const withArrow = (
         {...rest}
       >
         {children}
-        <ChevronRight size={'1.25em'} stroke={stroke || 'currentColor'} />
+        <ChevronRight
+          size={'1.25em'}
+          stroke={stroke || 'currentColor'}
+          strokeWidth={2}
+        />
       </Component>
     );
   };

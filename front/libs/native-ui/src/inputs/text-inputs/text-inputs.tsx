@@ -178,8 +178,8 @@ export const PasswordInput = (props: PasswordInputProps) => {
               loop={false}
               source={
                 theme.colors.mode === 'light'
-                  ? require('../../assets/visibilityV2Light.json')
-                  : require('../../assets/visibilityV2Dark.json')
+                  ? require('../../../../media/shared/lotties/visibilityV2Light.json')
+                  : require('../../../../media/shared/lotties/visibilityV2Dark.json')
               }
             />
           </TouchableHighlight>

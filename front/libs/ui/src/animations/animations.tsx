@@ -52,7 +52,7 @@ export const SlideMotionDiv = ({
       initial={initialMap[position ? position : 'default']}
       animate={{ opacity: 1, x: 0 }}
       exit={exitMap[position ? position : 'default']}
-      transition={{ duration: 0.1 }}
+      transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
       {...rest}
     >
       {children}

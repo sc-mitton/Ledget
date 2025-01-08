@@ -47,7 +47,7 @@ export const Spinner = ({
               color: fill || rawColor || theme.colors.quaternaryText,
             },
           ]}
-          source={require('../../assets/loading.json')}
+          source={require('../../../../media/shared/lotties/loading.json')}
         />
       </View>
     </View>

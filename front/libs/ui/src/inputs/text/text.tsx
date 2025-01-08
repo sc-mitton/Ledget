@@ -1,10 +1,11 @@
 import React, { forwardRef, useRef, useState } from 'react';
 import { FC } from 'react';
+import Lottie from 'react-lottie';
 
 import { CardElement } from '@stripe/react-stripe-js';
 import { z } from 'zod';
+import { EyeOff, Eye } from 'geist-native-icons';
 import { FieldError, Control } from 'react-hook-form';
-import { Eye, EyeOff } from '@geist-ui/icons';
 
 import textStyles from './text.module.scss';
 import passwordStyles from './password-input.module.scss';

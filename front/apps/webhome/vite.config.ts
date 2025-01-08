@@ -19,28 +19,7 @@ export default defineConfig({
             usePolling: true,
             interval: 100,
           },
-          port: 3300,
-          host: 'localhost',
-          strictPort: true,
-          https: {
-            key: fs.existsSync(certsDir + 'localhost.key')
-              ? fs.readFileSync(certsDir + 'localhost.key')
-              : '',
-            cert: fs.existsSync(certsDir + 'localhost.crt')
-              ? fs.readFileSync(certsDir + 'localhost.crt')
-              : '',
-            ca: fs.existsSync(certsDir + 'ledgetca.pem')
-              ? fs.readFileSync(certsDir + 'ledgetca.pem')
-              : '',
-          },
-        },
-      }
-    : {}),
-
-  ...(process.env.NODE_ENV === 'development'
-    ? {
-        preview: {
-          port: 3300,
+          port: 3000,
           host: 'localhost',
           strictPort: true,
           https: {

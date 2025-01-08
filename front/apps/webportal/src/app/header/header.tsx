@@ -1,6 +1,6 @@
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { LedgetLogo } from '@ledget/media';
-import { useColorScheme, GlossMiniCta, useScreenContext } from '@ledget/ui';
+import { useColorScheme, MiniCta, useScreenContext } from '@ledget/ui';
 import styles from './styles.module.scss';
 
 const Header = () => {
@@ -39,13 +39,13 @@ const Header = () => {
         {splitPath[splitPath.length - 1] === 'login' && (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             {screenSize !== 'extra-small' && `${text.login}`}
-            <GlossMiniCta
+            <MiniCta
               onClick={() => navigate('/register')}
               aria-label="Sign Up"
               style={{ marginLeft: '.5rem' }}
             >
               Sign Up
-            </GlossMiniCta>
+            </MiniCta>
           </div>
         )}
       </div>

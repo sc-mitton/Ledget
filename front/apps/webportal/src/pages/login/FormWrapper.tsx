@@ -26,9 +26,9 @@ const OryFormWrapper = ({
   return (
     <form onSubmit={onSubmit} className={styles.loginAuthForm}>
       <div className={styles.email}>
-        <h3>
+        <h2>
           {searchParams.get('mfa') ? '2-Step Verification' : 'Welcome Back'}
-        </h3>
+        </h2>
         {searchParams.get('mfa') !== 'totp' && (
           <BackButton
             type="button"
