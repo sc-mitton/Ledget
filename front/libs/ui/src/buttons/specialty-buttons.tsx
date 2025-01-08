@@ -20,6 +20,7 @@ import {
   WideButton,
   GlossMini,
   gray,
+  featherGray,
   main,
   blue,
 } from './base';
@@ -54,6 +55,11 @@ export const GlossMiniCta = withArrow(GlossMini);
 export const GrayMainButton = withLoading(
   styled(WideButton)`
     ${gray} justify-content: center;
+  `
+);
+export const FeatherGrayMainButton = withLoading(
+  styled(WideButton)`
+    ${featherGray} justify-content: center;
   `
 );
 export const MainButton = withLoading(

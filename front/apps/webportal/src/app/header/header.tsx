@@ -30,7 +30,7 @@ const Header = () => {
       <div>
         {splitPath[splitPath.length - 1] === 'register' && (
           <>
-            {screenSize !== 'extra-small' && `${text.register}`}&nbsp;
+            {screenSize !== 'extra-small' && `${text.register}`}&nbsp;&nbsp;
             <Link to="/login" tabIndex={0}>
               Login
             </Link>

@@ -25,7 +25,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
         <svg className={styles.symbol}>
           <symbol id="check" viewBox="0 0 12 10">
             <polyline
-              points="3 5.5 5.5 8 9.5 2"
+              points="3 5.5 5.5 7.5 9.5 2.2"
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth="1"

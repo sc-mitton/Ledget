@@ -42,7 +42,7 @@
   overflow: hidden;
   display: flex;
   align-items: center;
-  border-radius: var(--border-radius1);
+  border-radius: .375em;
 
   &:focus-visible {
     outline: none;
@@ -54,13 +54,13 @@
   }
 
   span:first-child {
-    width: 0.875rem;
-    height: 0.875rem;
+    width: 1.125rem;
+    height: 1.125rem;
     font-size: 0.75rem;
     transform: scale(1);
-    background-color: var(--btn-light-gray);
-    border: 1px solid var(--btn-light-gray-hover);
-    border-radius: var(--border-radius1);
+    background-color: var(--input-background);
+    border: var(--input-border);
+    border-radius: .375em;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;

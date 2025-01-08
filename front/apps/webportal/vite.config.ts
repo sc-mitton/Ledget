@@ -19,7 +19,7 @@ export default defineConfig({
             usePolling: true,
             interval: 100,
           },
-          port: 3300,
+          port: 3301,
           host: 'localhost',
           strictPort: true,
           https: {

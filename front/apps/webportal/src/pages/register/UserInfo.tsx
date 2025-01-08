@@ -88,7 +88,7 @@ const UserInfoWindow = ({
             <FormError msg={errors.email?.message as string} />
           </div>
         )}
-        <div style={{ marginTop: '1em' }}>
+        <div style={{ marginTop: '2em' }}>
           <MainButton type="submit" aria-label="Submit form">
             Continue
           </MainButton>

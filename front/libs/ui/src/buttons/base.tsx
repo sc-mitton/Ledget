@@ -44,7 +44,7 @@ export const PrimaryButton = styled(BaseButton)`
 `;
 
 export const WideButton = styled(BaseButton)`
-  border-radius: 0.5em;
+  border-radius: 0.75em;
   padding: 0.75em 1em;
   width: 100%;
 
@@ -112,7 +112,7 @@ export const featherGray = css`
   background-color: var(--btn-feather-light-gray);
 
   &:hover {
-    background-color: var(--btn-fether-light-gray-hover);
+    background-color: var(--btn-feather-light-gray-hover);
   }
 `;
 
@@ -232,12 +232,14 @@ export const hoverBlueText = css`
 `;
 
 export const SocialButton = styled(BaseButton)`
-  border-radius: 2em;
+  border-radius: 0.75em;
   padding: 0.375em;
-  border: 1.5px solid var(--btn-medium-gray);
+  border: 1.5px solid var(--btn-light-gray);
+  transition: all 0.3s;
 
   &:hover {
     border-color: var(--btn-gray);
+    transition: all 0.3s;
   }
 
   svg {

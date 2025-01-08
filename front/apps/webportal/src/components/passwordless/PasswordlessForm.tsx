@@ -8,7 +8,7 @@ import {
 import { HelpCircle, Key } from '@geist-ui/icons';
 
 import styles from './passwordless-form.module.scss';
-import { GrayMainButton } from '@ledget/ui';
+import { MainButton } from '@ledget/ui';
 
 const WrappedHelpIcon = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -69,10 +69,10 @@ const Nodes = ({ flow, helpIcon = true }: { flow: any; helpIcon: boolean }) => {
                   className={styles.passwordlessButtonContainer}
                   key={attrs.name}
                 >
-                  <GrayMainButton disabled={attrs.disabled} {...submit}>
+                  <MainButton disabled={attrs.disabled} {...submit}>
                     <Key className="icon" />
                     <div style={{ marginLeft: '.25em' }}>Passkey</div>
-                  </GrayMainButton>
+                  </MainButton>
                   {helpIcon && <WrappedHelpIcon />}
                 </div>
               );
@@ -151,10 +151,10 @@ export const PasskeySignIn = () => {
     <div className={styles.passwordlessFormSectionContainer}>
       <PasswordlessOptionsHeader />
       <div className={styles.passwordlessInputsContainer}>
-        <GrayMainButton name="webauthn_register_trigger" value="webauthn">
+        <MainButton name="webauthn_register_trigger" value="webauthn">
           <Key className="icon" />
           <div style={{ marginLeft: '.25em' }}>Passkey</div>
-        </GrayMainButton>
+        </MainButton>
       </div>
     </div>
   );

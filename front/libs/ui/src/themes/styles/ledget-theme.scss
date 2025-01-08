@@ -16,8 +16,6 @@
   --black: hsl(0, 0%, 0%);
 
   /* Drop Shadows & Borders */
-  --window-portal-drop-shadow: var(--window-portal-drop-shadow-color) 0px 0px
-    4px;
   --new-item-drop-shadow: var(--new-item-drop-shadow-color) 0px 0px 6px;
 
   --low-elevation-drop-shadow: var(--low-elevation-drop-shadow-color) 0px 1px
@@ -82,8 +80,8 @@
     // Buttons
     --btn-chcl: hsl(0, 0%, 90%);
     --btn-chcl-hover: hsl(0, 0%, 85%);
-    --btn-main: var(--blue-medium);
-    --btn-main-hover: var(--blue-medium-hover);
+    --btn-main: var(--btn-light-gray);
+    --btn-main-hover: var(--btn-light-gray-hover);
 
     // Windows
     --nested-window-background-color: hsl(0, 0%, 9%);
@@ -136,11 +134,7 @@
     );
 
     --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
-    --window-portal-drop-shadow-color: hsl(
-      var(--window-h),
-      var(--window-s),
-      7%
-    );
+    --window-portal-drop-shadow: rgba(0, 0, 0, .07) 0px 0px 32px;
 
     // Side Nav
     --sidenav-drop-shadow: 0 0px 4px hsl(var(--window-h), var(--window-s), 12%);
@@ -187,7 +181,7 @@
     // Inputs
     --input-background-rgb: 31, 31, 31;
     --input-background: hsl(0, 0%, 12%);
-    --input-border: solid 1px var(--btn-feather-light-gray);
+    --input-border: solid 1px hsl(0, 0%, 14%);
     --input-border-hover-color: hsl(0, 0%, 20%);
     --input-border-focus-color: var(--blue-medium);
     --input-focus-dropshadow-color: color-mix(
@@ -224,8 +218,8 @@
 
     // Icons & Buttons
     --icon-full: var(--m-text);
-    --btn-feather-light-gray: hsl(0, 0%, 14%);
-    --btn-feather-light-gray-hover: hsl(0, 0%, 19%);
+    --btn-feather-light-gray: hsl(0, 0%, 12%);
+    --btn-feather-light-gray-hover: hsl(0, 0%, 17%);
     --btn-light-gray: hsl(0, 0%, 18%);
     --btn-light-gray-hover: hsl(0, 0%, 23%);
     --btn-medium-gray: hsl(0, 0%, 28%);
@@ -331,8 +325,8 @@
     // Buttons
     --btn-chcl: hsl(0, 0%, 10%);
     --btn-chcl-hover: hsl(0, 0%, 15%);
-    --btn-main: hsl(var(--blue-h), 50%, 57%);
-    --btn-main-hover: hsl(var(--blue-h), 40%, 53%);
+    --btn-main: hsl(0, 0%, 25%);
+    --btn-main-hover: hsl(0, 0%, 35%);
 
     // Windows
     --main-background-color: hsl(var(--window-h), var(--window-s), 96%);
@@ -373,11 +367,9 @@
     );
     --window-drop-shadow-color: hsl(var(--window-h), var(--window-s), 96%);
     --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 4px 0px;
-    --window-portal-drop-shadow-color: hsl(
-      var(--window-h),
-      var(--window-s),
-      88%
-    );
+
+    --window-portal-drop-shadow: rgba(0, 0, 0, .04) 0px 0px 32px, rgba(0, 0, 0, .04) 0px 2px 4px;
+
     --blue-window-background: linear-gradient(
       to top right,
       hsl(var(--window-h), calc(var(--window-s) + 30%), 92%),
@@ -463,8 +455,8 @@
     --m-text-quaternary: color-mix(in srgb, var(--m-text), white 70%);
     --m-text-quinary: color-mix(in srgb, var(--m-text), white 80%);
 
-    --input-placeholder: hsl(0, 0%, 38%);
-    --input-placeholder2: hsl(0, 0%, 65%);
+    --input-placeholder: hsl(0, 0%, 70%);
+    --input-placeholder2: hsl(0, 0%, 60%);
 
     /* Font Weights */
     --fw-regular: 400;
