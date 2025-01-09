@@ -93,7 +93,7 @@ bun install
 docker-compose up -d --build
 cd front
 export NODE_ENV='development'
-pm2 start nx --name webhome -- run webhome:serve &&
+pm2 start nx --name web-app -- run web-app:serve &&
 pm2 start nx --name webportal -- run webportal:serve
 ```
 
@@ -102,7 +102,7 @@ pm2 start nx --name webportal -- run webportal:serve
 ```
 docker-compose down
 
-pm2 stop webhome &&
+pm2 stop web-app &&
 pm2 stop webportal &&
 pm2 delete all
 ```

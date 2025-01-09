@@ -1,9 +1,9 @@
 {
-  "name": "webhome",
+  "name": "web-app",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/webhome/src",
+  "sourceRoot": "apps/web-app/src",
   "projectType": "application",
   "tags": [],
-  "// targets": "to see all targets run: nx show project webhome --web",
+  "// targets": "to see all targets run: nx show project web-app --web",
   "targets": {}
 }

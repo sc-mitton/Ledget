@@ -24,14 +24,18 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return environment ? (
-    <Provider store={store}>
-      <ColorSchemeProvider>
-        <ScreenProvider>
-          <BrowserRouter>{children}</BrowserRouter>
-        </ScreenProvider>
-      </ColorSchemeProvider>
-    </Provider>
+    <ColorSchemeProvider>
+      <ScreenProvider>
+        <BrowserRouter>{children}</BrowserRouter>
+      </ScreenProvider>
+    </ColorSchemeProvider>
   ) : null;
 };
 
-export default Providers;
+export default function ({ children }: { children: React.ReactNode }) {
+  return (
+    <Provider store={store}>
+      <Providers>{children}</Providers>
+    </Provider>
+  );
+}

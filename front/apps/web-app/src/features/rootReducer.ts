@@ -9,6 +9,7 @@ import {
   filteredFetchedConfirmedTransactions,
   budgetItemMetaDataSlice,
   environmentSlice,
+  mobileAuthSlice,
 } from '@ledget/shared-features';
 
 const rootReducer = combineReducers({
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   filteredFetchedonfirmedTransactions:
     filteredFetchedConfirmedTransactions.reducer,
   modal: modalSlice.reducer,
+  mobileAuth: mobileAuthSlice.reducer,
   budgetItemMetaData: budgetItemMetaDataSlice.reducer,
 });
 

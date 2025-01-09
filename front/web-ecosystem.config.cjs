@@ -1,8 +1,8 @@
 module.exports = {
   apps: [
     {
-      name: 'webhome',
-      script: 'nx run webhome:serve',
+      name: 'web-app',
+      script: 'nx run web-app:serve',
     },
     {
       name: 'webportal',
