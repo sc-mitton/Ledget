@@ -94,7 +94,7 @@ docker-compose up -d --build
 cd front
 export NODE_ENV='development'
 pm2 start nx --name web-app -- run web-app:serve &&
-pm2 start nx --name webportal -- run webportal:serve
+pm2 start nx --name web-portal-app -- run web-portal-app:serve
 ```
 
 9. Stop the Environment
@@ -103,7 +103,7 @@ pm2 start nx --name webportal -- run webportal:serve
 docker-compose down
 
 pm2 stop web-app &&
-pm2 stop webportal &&
+pm2 stop web-portal-app &&
 pm2 delete all
 ```
 

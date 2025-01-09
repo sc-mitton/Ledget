@@ -1,11 +1,11 @@
 /* eslint-disable */
 export default {
-  displayName: 'webportal',
+  displayName: 'web-portal-app',
   preset: '../../jest.preset.js',
   transform: {
     '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': '@nx/react/plugins/jest',
     '^.+\\.[tj]sx?$': ['babel-jest', { presets: ['@nx/react/babel'] }],
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/apps/webportal',
+  coverageDirectory: '../../coverage/apps/web-portal-app',
 };

@@ -5,8 +5,8 @@ module.exports = {
       script: 'nx run web-app:serve',
     },
     {
-      name: 'webportal',
-      script: 'nx run webportal:serve',
+      name: 'web-portal-app',
+      script: 'nx run web-portal-app:serve',
     },
   ],
 };
