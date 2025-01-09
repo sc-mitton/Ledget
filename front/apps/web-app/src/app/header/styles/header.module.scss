@@ -10,12 +10,6 @@
   width: 100%;
   padding: 1em 0;
 
-  &[data-size='extra-small'] > div > div:first-child svg,
-  &[data-size='small'] > div > div:first-child svg,
-  &[data-size='medium'] > div > div:first-child svg {
-    opacity: 0;
-  }
-
   & > div {
     max-width: calc(100% - 2.75rem);
     margin: 0 auto;
@@ -78,14 +72,14 @@
     background-color: var(--btn-light-gray);
     transition: background-color 0.2s ease-in-out;
 
+    div:first-of-type {
+      opacity: .3;
+    }
+
     span:last-child {
       transform: translateX(0.95rem);
       transition: all 0.2s ease-in-out;
-      background: linear-gradient(
-        to bottom right,
-        var(--blue-medium),
-        var(--blue-light)
-      );
+      background: var(--btn-medium-gray-hover);
       opacity: 0.7;
     }
   }
@@ -95,14 +89,14 @@
     transition: background-color 0.2s ease-in-out;
     opacity: 1;
 
+    div:last-of-type {
+      opacity: .3;
+    }
+
     span:last-child {
       left: 0.25em;
       transform: translateX(0);
-      background: linear-gradient(
-        to bottom right,
-        var(--blue-medium),
-        var(--blue-light-medium)
-      );
+      background: var(--btn-gray);
       transition: all 0.2s ease-in-out;
     }
   }

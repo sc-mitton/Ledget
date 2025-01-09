@@ -153,7 +153,7 @@ const App = () => {
     <ColorSchemedDiv className={styles.app} data-size={screenSize}>
       <Header />
       <main>
-        <Sidenav />
+        {/* <Sidenav /> */}
         <AnimatePresence mode="wait">
           <ZoomMotionDiv
             key={location.pathname.split('/')[1]}

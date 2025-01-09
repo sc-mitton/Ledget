@@ -5,18 +5,19 @@ import { useSearchParams } from 'react-router-dom';
 
 import styles from './styles/window.module.scss';
 import { SpendingCategories } from './categories-budget';
-import { BudgetSummary as CarouselViewSummary } from './CarouselSummaryView';
-import { BudgetSummary as CardsView } from './CardsSummaryView';
+import { MonthPicker } from './MonthPicker';
 import { Bills } from './bills-budget';
 import { setConfirmedTransactionFilter } from '@ledget/shared-features';
 import { useAppDispatch } from '@hooks/store';
 import { useScreenContext, MainWindow } from '@ledget/ui';
 import { SortProvider } from './context';
+import { useColorScheme } from '@ledget/ui';
 
 function Window() {
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useAppDispatch();
   const { screenSize } = useScreenContext();
+  const { isDark } = useColorScheme();
 
   useEffect(() => {
     // On mount set month and date to current date and month
@@ -58,7 +59,7 @@ function Window() {
   return (
     <SortProvider>
       <MainWindow className={styles.window} data-size={screenSize}>
-        {window.innerWidth > 700 ? <CardsView /> : <CarouselViewSummary />}
+        <MonthPicker darkMode={isDark} placement="left" size="medium" />
         <div>
           <SpendingCategories />
           <Bills />

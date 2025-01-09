@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 import dayjs, { Dayjs } from 'dayjs';
-import { ChevronLeft, ChevronRight } from '@geist-ui/icons';
+import LottieView from 'react-lottie';
 
 import styles from './styles/month-picker.module.scss';
 import { DatePicker } from '@ledget/ui';
@@ -12,10 +12,9 @@ import {
   useGetMeQuery,
 } from '@ledget/shared-features';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
+import { calendar } from '@ledget/media/lotties';
 
 export const MonthPicker = ({
-  darkMode = false,
-  placement = 'middle',
   size = 'small',
 }: {
   darkMode?: boolean;
@@ -28,6 +27,7 @@ export const MonthPicker = ({
   const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [animateLottie, setAnimateLottie] = useState(false);
   const { month, year } = useAppSelector(selectBudgetMonthYear);
 
   // Initial mount
@@ -76,41 +76,35 @@ export const MonthPicker = ({
     }
   };
 
+  const animationOptions = {
+    loop: false,
+    autoplay: animateLottie,
+    animationData: calendar,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice',
+    },
+  };
+
   return (
     <div className={styles.picker}>
-      <div
-        className={styles.container}
-        data-size={size}
-        data-placement={placement}
-      >
-        {placement === 'middle' && (
-          <button onClick={() => seek(-1, 1)}>
-            <ChevronLeft size={'1.125em'} strokeWidth={2} />
-          </button>
-        )}
+      <div className={styles.container} data-size={size}>
         <button
           aria-haspopup="true"
+          onMouseEnter={() => setAnimateLottie(true)}
+          onMouseLeave={() => setAnimateLottie(false)}
           onClick={(e) => setShowDatePicker(!showDatePicker)}
         >
-          {date?.format('MMM YYYY')}
-        </button>
-        {placement === 'left' && (
-          <button
-            onClick={() => seek(-1, 1)}
-            disabled={date?.add(-1, 'month').isBefore(dayjs(user?.created_on))}
-          >
-            <ChevronLeft size={'1.125em'} strokeWidth={1.5} />
-          </button>
-        )}
-        <button
-          onClick={() => seek(1, 1)}
-          disabled={date?.add(1, 'month').isAfter(dayjs())}
-        >
-          <ChevronRight size={'1.125em'} strokeWidth={1.5} />
+          <LottieView
+            options={animationOptions}
+            direction={animateLottie ? 1 : -1}
+            speed={1}
+            style={{ width: 32, height: 32 }}
+          />
+          <h2>{date?.format('MMMM YYYY')}</h2>
         </button>
       </div>
       <DatePicker
-        placement={placement}
+        placement={'middle'}
         period="month"
         hideInputElement={true}
         dropdownVisible={showDatePicker}

@@ -69,10 +69,14 @@ const CategoriesList = ({ period }: { period: Category['period'] }) => {
                 : 'No yearly categories set yet'
             }
           >
-            <h4>{`${period.charAt(0).toUpperCase()}${period.slice(1)}ly`}</h4>
+            <h3>{`${period.charAt(0).toUpperCase()}${period.slice(
+              1
+            )}ly Spending`}</h3>
           </Tooltip>
         ) : (
-          <h4>{`${period.charAt(0).toUpperCase()}${period.slice(1)}ly`}</h4>
+          <h3>{`${period.charAt(0).toUpperCase()}${period.slice(
+            1
+          )}ly Spending`}</h3>
         )}
         <div>
           <Tooltip msg={`Edit Categories`}>

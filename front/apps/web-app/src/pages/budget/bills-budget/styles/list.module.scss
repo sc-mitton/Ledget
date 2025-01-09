@@ -86,17 +86,17 @@
 .check {
   &[data-paid='true'] {
     opacity: 1;
+
+    &[data-period='month'] {
+      color: var(--monthly-color2);
+    }
+
+    &[data-period='year'] {
+      color: var(--yearly-color2);
+    }
   }
 
   &[data-paid='false'] {
-    opacity: 0.6;
-  }
-
-  &[data-period='month'] {
-    color: var(--monthly-color2);
-  }
-
-  &[data-period='year'] {
-    color: var(--yearly-color2);
+    opacity: 0.4;
   }
 }

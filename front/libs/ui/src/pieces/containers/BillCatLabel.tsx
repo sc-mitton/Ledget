@@ -4,6 +4,7 @@ import { toLower as tolower, startCase as startcase } from 'lodash-es';
 
 import { ElementType, ComponentPropsWithoutRef } from 'react';
 import { PolymorphicComponentProps } from '../../types/helpers';
+import type { Category } from '@ledget/shared-features';
 
 import styles from './styles/bill-cat-label.module.scss';
 

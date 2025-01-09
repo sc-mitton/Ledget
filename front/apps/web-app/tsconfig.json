@@ -19,6 +19,7 @@
       "@context/*": ["src/context/*"],
       "@ledget/ui": ["../../libs/ui/src"],
       "@ledget/media": ["../../libs/media/web/src"],
+      "@ledget/media/lotties": ["../../libs/media/lotties/src"],
       "@ledget/ory": ["../../libs/ory/src"],
       "@ledget/helpers": ["../../libs/helpers/src"],
       "@ledget/shared-features": ["../../libs/shared-features/src"],

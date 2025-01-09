@@ -2,7 +2,6 @@ import Big from 'big.js';
 import { AlertCircle } from '@geist-ui/icons';
 
 import styles from './styles/cards-view.module.scss';
-import { MonthPicker } from './MonthPicker';
 import { useAppSelector } from '@hooks/store';
 import { AnimatedDollarCents } from '@ledget/ui';
 import {
@@ -12,7 +11,6 @@ import {
   useGetCategoriesQuery,
   useGetBillsQuery,
 } from '@ledget/shared-features';
-import { useColorScheme } from '@ledget/ui';
 
 export const BudgetSummary = () => {
   const { month, year } = useAppSelector(selectBudgetMonthYear);
@@ -38,14 +36,10 @@ export const BudgetSummary = () => {
     number_of_yearly_bills,
   } = useAppSelector(selectBillMetaData);
 
-  const { isDark } = useColorScheme();
-
   return (
     <>
       <div className={styles.summaryCards}>
-        <div className={styles.monthPicker}>
-          <MonthPicker darkMode={isDark} placement="left" size="medium" />
-        </div>
+        <div className={styles.monthPicker}></div>
         <div className={styles.cards}>
           <div>
             <div>
