@@ -311,7 +311,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordProps>(
     const visible = propsVisible || localVis;
     const setVisible = propsSetVisible || setLocalVis;
 
-    const animationOptinos = {
+    const animationOptions = {
       loop: false,
       autoplay: false,
       animationData: visibilityV2Dark,
@@ -349,8 +349,9 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordProps>(
               >
                 <LottieView
                   direction={visible ? 1 : -1}
+                  speed={2}
                   style={{ width: 32, height: 32 }}
-                  options={animationOptinos}
+                  options={animationOptions}
                 />
               </div>
             )}

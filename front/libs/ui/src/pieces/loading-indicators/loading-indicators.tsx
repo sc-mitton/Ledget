@@ -2,6 +2,9 @@ import { FC, HTMLAttributes } from 'react';
 import styles from './loading-indicators.module.scss';
 import { useTransition, animated } from '@react-spring/web';
 import { AnimatePresence, motion } from 'framer-motion';
+import LottieView from 'react-lottie';
+
+import { loading } from '@ledget/media/lotties';
 
 export const LoadingRing = ({
   visible = false,
@@ -61,21 +64,34 @@ export const LoadingMessage = ({ message = 'Loading' }) => {
   );
 };
 
-export const WindowLoadingBar = ({ visible }: { visible: boolean }) => (
-  <AnimatePresence initial={false}>
-    {visible && (
-      <motion.div
-        className={styles.loadingBarContainer}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: visible ? 1 : 0 }}
-        exit={{ opacity: 0 }}
-        transition={{ ease: 'easeInOut', duration: 0.2 }}
-      >
-        <div className={styles.loadingBar}>
-          <div></div>
-          <div></div>
-        </div>
-      </motion.div>
-    )}
-  </AnimatePresence>
-);
+export const WindowLoading = ({ visible }: { visible: boolean }) => {
+  const animationOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: loading,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice',
+    },
+  };
+
+  return (
+    <AnimatePresence initial={false}>
+      {visible && (
+        <motion.div
+          className={styles.loadingBarContainer}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: visible ? 1 : 0 }}
+          exit={{ opacity: 0 }}
+          transition={{ ease: 'easeInOut', duration: 0.2 }}
+        >
+          <div className={styles.animation}>
+            <LottieView
+              style={{ width: 36, height: 36 }}
+              options={animationOptions}
+            />
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};

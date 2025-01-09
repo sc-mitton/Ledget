@@ -12,7 +12,7 @@ import {
   LinkArrowButton,
   PortalWindow,
   useScreenContext,
-  WindowLoadingBar,
+  WindowLoading,
   Checkbox,
 } from '@ledget/ui';
 import { useFlow } from '@ledget/ory';
@@ -33,7 +33,7 @@ const Login = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const { screenSize } = useScreenContext();
-  const { error } = useGetMeQuery();
+  const { error, isSuccess: isGetMeSuccess } = useGetMeQuery();
 
   const [email, setEmail] = useState<string>();
   const [healthCheckResult, setHealthCheckResult] = useState<
@@ -121,6 +121,13 @@ const Login = () => {
     }
   }, [devicesRefreshedSuccess]);
 
+  // If already logged in
+  useEffect(() => {
+    if (isGetMeSuccess) {
+      setRedirectToApp(true);
+    }
+  }, [isGetMeSuccess]);
+
   // Watch for complete devices error indicating mfa is needed
   useEffect(() => {
     if (hasErrorCode('TOTP', refreshDevicesError)) {
@@ -131,18 +138,19 @@ const Login = () => {
 
   // Handle Redirecting to App
   useEffect(() => {
+    let timeout: NodeJS.Timeout;
     if (redirectToApp) {
       const redirectUrl =
         searchParams.get('redirect') || import.meta.env.VITE_LOGIN_REDIRECT;
       if (searchParams.get('mfa')) {
-        const timeout = setTimeout(() => {
+        timeout = setTimeout(() => {
           window.location.href = redirectUrl;
         }, 1000);
-        return () => clearTimeout(timeout);
       } else {
         window.location.href = redirectUrl;
       }
     }
+    return () => clearTimeout(timeout);
   }, [redirectToApp]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -172,7 +180,7 @@ const Login = () => {
                 Recover Account
               </LinkArrowButton>
             </div>
-            <WindowLoadingBar
+            <WindowLoading
               visible={[
                 isGettingFlow,
                 isCompletingFlow,
@@ -204,7 +212,7 @@ const Login = () => {
                     />
                   </div>
                 </OryFormWrapper>
-                <WindowLoadingBar
+                <WindowLoading
                   visible={[
                     isGettingFlow,
                     isCompletingFlow,
@@ -226,7 +234,7 @@ const Login = () => {
                 <OryFormWrapper {...oryFormArgs}>
                   <TotpMfa finished={devicesRefreshedSuccess} />
                 </OryFormWrapper>
-                <WindowLoadingBar
+                <WindowLoading
                   visible={[
                     isGettingFlow,
                     isCompletingFlow,
@@ -248,7 +256,7 @@ const Login = () => {
                 <OryFormWrapper {...oryFormArgs}>
                   <LookupSecretMfa finished={devicesRefreshedSuccess} />
                 </OryFormWrapper>
-                <WindowLoadingBar
+                <WindowLoading
                   visible={[
                     isGettingFlow,
                     isCompletingFlow,

@@ -5,7 +5,7 @@ import { AnimatePresence } from 'framer-motion';
 
 import styles from './styles/recovery.module.scss';
 import { ledgetapi } from '@api/index';
-import { SlideMotionDiv, PortalWindow, WindowLoadingBar } from '@ledget/ui';
+import { SlideMotionDiv, PortalWindow, WindowLoading } from '@ledget/ui';
 import {
   useLazyGetRecoveryFlowQuery,
   useCompleteRecoveryFlowMutation,
@@ -112,7 +112,7 @@ const RecoverAccount = () => {
   return (
     <div>
       <PortalWindow>
-        <WindowLoadingBar visible={isGettingFlow || isCompletingFlow} />
+        <WindowLoading visible={isGettingFlow || isCompletingFlow} />
         <AnimatePresence mode="wait">{renderPage()}</AnimatePresence>
       </PortalWindow>
     </div>

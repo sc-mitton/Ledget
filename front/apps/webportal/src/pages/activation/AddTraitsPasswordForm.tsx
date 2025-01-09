@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { useFlow } from '@ledget/ory';
-import { WindowLoadingBar, SlideMotionDiv } from '@ledget/ui';
+import { WindowLoading, SlideMotionDiv } from '@ledget/ui';
 import { useLoaded } from '@ledget/helpers';
 import {
   useLazyGetSettingsFlowQuery,
@@ -47,7 +47,7 @@ const AddTraitsAndPasswordSteps = () => {
 
   return (
     <>
-      <WindowLoadingBar visible={flowStatus.isCompletingFlow} />
+      <WindowLoading visible={flowStatus.isCompletingFlow} />
       <AnimatePresence mode="wait">
         {searchParams.get('step') === 'set-traits' && (
           <SlideMotionDiv

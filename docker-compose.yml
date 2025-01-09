@@ -39,7 +39,7 @@ services:
       - "traefik.http.services.oathkeeper.loadbalancer.server.port=4456"
       - "traefik.http.middlewares.oathkeeper.forwardauth.address=http://oathkeeper:4456/decisions"
       - "traefik.http.middlewares.oathkeeper.forwardauth.authResponseHeaders=X-Device-Token, Authorization, X-Session-Token"
-      - "traefik.http.middlewares.oathkeeper.forwardauth.authRequestHeaders=X-Device-Token, Authorization"
+      - "traefik.http.middlewares.oathkeeper.forwardauth.authRequestHeaders=X-Device-Token, Authorization, Cookie"
     secrets:
       - jwks.json
   proxy:
@@ -82,7 +82,7 @@ services:
       - "traefik.http.middlewares.hooksIpWhitelist.ipwhitelist.sourcerange=3.18.12.63, 3.130.192.231, 13.235.14.237, 13.235.122.149, 18.211.135.69, 35.154.171.200, 52.15.183.38, 54.88.130.119, 54.88.130.237, 54.187.174.169, 54.187.205.235, 54.187.216.72, 34.22.170.75, 35.242.228.133, 52.21.26.131, 52.21.47.157, 52.41.247.19, 52.88.82.239"
       - "traefik.http.middlewares.hooksIpWhitelist.ipwhitelist.ipstrategy.depth=1"
       - "traefik.http.middlewares.cors.headers.accessControlAllowMethods=GET,POST,PUT,PATCH,DELETE,OPTIONS"
-      - "traefik.http.middlewares.cors.headers.accessControlAllowOriginList=https://localhost:3300, https://localhost:3301, https://localhost, https://10.0.2.2"
+      - "traefik.http.middlewares.cors.headers.accessControlAllowOriginList=https://localhost:3000, https://localhost:3001, https://localhost, https://10.0.2.2"
       - "traefik.http.middlewares.cors.headers.accessControlAllowCredentials=true"
       - "traefik.http.middlewares.cors.headers.accessControlAllowHeaders=Content-Type, X-CsrfToken"
       - "traefik.http.middlewares.cors.headers.accessControlMaxAge=100"
@@ -171,7 +171,7 @@ services:
     command: >
       sh -c "
         export ORY_API_KEY=$$(cat /run/secrets/ory_tunnel_key) &&
-        ory tunnel --project reverent-lewin-bqqp1o2zws --allowed-cors-origins https://localhost:3300 https://localhost:3301 https://10.0.2.2"
+        ory tunnel --project reverent-lewin-bqqp1o2zws --allowed-cors-origins https://localhost:3000 https://localhost:3001 https://10.0.2.2"
 volumes:
   dev-db-data:
   doker-events:

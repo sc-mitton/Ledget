@@ -9,7 +9,7 @@ import {
   useLazyGetRecoveryFlowQuery,
   useCompleteRecoveryFlowMutation,
 } from '@features/orySlice';
-import { SlideMotionDiv, WindowLoadingBar } from '@ledget/ui';
+import { SlideMotionDiv, WindowLoading } from '@ledget/ui';
 import ConfirmCodeForm from './ConfirmCodeForm';
 import SendCodeForm from './SendCodeForm';
 
@@ -46,7 +46,7 @@ const SendAndConfirmCodeSteps = () => {
 
   return (
     <>
-      <WindowLoadingBar visible={flowStatus.isCompletingFlow} />
+      <WindowLoading visible={flowStatus.isCompletingFlow} />
       <AnimatePresence mode="wait">
         {searchParams.get('step') === 'send-code' && (
           <SlideMotionDiv key="send-code" position={loaded ? 'first' : 'fixed'}>

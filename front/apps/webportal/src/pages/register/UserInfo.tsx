@@ -9,7 +9,7 @@ import {
   FormError,
   MainButton,
   PlainTextInput,
-  WindowLoadingBar,
+  WindowLoading,
 } from '@ledget/ui';
 import { SocialAuth } from '@components/index';
 
@@ -50,7 +50,7 @@ const UserInfoWindow = ({
 
   return (
     <>
-      <WindowLoadingBar visible={flowStatus.isGettingFlow} />
+      <WindowLoading visible={flowStatus.isGettingFlow} />
       <ColumnWindowHeader>
         <h2>Create Account</h2>
         <span>Step 1 of 4</span>

@@ -19,7 +19,7 @@ import {
   CityStateZipInputs,
   MinimalPortalWindow,
   useScreenContext,
-  WindowLoadingBar,
+  WindowLoading,
 } from '@ledget/ui';
 import StripeFooter from './StripeFooter';
 import PriceRadios from './Prices';
@@ -148,7 +148,7 @@ const Form = (props: { id: string }) => {
 
   return (
     <>
-      <WindowLoadingBar visible={processing} />
+      <WindowLoading visible={processing} />
       <form
         onSubmit={submitBillingForm}
         {...props}

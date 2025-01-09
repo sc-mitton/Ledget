@@ -9,8 +9,6 @@ import {
   useNavigate,
 } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
-import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
 
 import '@styles/base.scss';
 import styles from './styles/app.module.scss';
@@ -25,8 +23,6 @@ import {
   Toast,
   ColorSchemedDiv,
   useScreenContext,
-  ColorSchemeProvider,
-  ScreenProvider,
 } from '@ledget/ui';
 import {
   CreateCategory,
@@ -40,8 +36,6 @@ import {
   useDisableSessionMutation,
   toastStackSelector,
   tossToast,
-  setEnvironment,
-  selectEnvironment,
 } from '@ledget/shared-features';
 import {
   selectLogoutModal,
@@ -49,8 +43,8 @@ import {
   refreshLogoutTimer,
 } from '@features/modalSlice';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
-import store from '@features/store';
 import Modals from './modals';
+import Providers from './providers';
 
 const PrivateRoute = () => {
   const { isSuccess, isError } = useGetMeQuery();
@@ -202,35 +196,10 @@ const PrivatizedApp = () => (
   </Routes>
 );
 
-const AppWithEnvironment = () => {
-  const dispatch = useAppDispatch();
-  const environment = useAppSelector(selectEnvironment);
-
-  useEffect(() => {
-    dispatch(
-      setEnvironment({
-        name: import.meta.env.VITE_ENVIRONMENT as 'dev' | 'prod',
-        apiUrl: import.meta.env.VITE_LEDGET_API_URI,
-        platform: 'browser',
-      })
-    );
-  }, []);
-
-  return environment ? (
-    <ColorSchemeProvider>
-      <ScreenProvider>
-        <BrowserRouter>
-          <PrivatizedApp />
-        </BrowserRouter>
-      </ScreenProvider>
-    </ColorSchemeProvider>
-  ) : null;
-};
-
 const EnrichedApp = () => (
-  <Provider store={store}>
-    <AppWithEnvironment />
-  </Provider>
+  <Providers>
+    <PrivatizedApp />
+  </Providers>
 );
 
 export default EnrichedApp;

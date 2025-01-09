@@ -168,6 +168,7 @@ export const PasswordInput = (props: PasswordInputProps) => {
             <LottieView
               ref={animation}
               style={{ width: 28, height: 28 }}
+              duration={500}
               colorFilters={[
                 {
                   keypath: 'eye',

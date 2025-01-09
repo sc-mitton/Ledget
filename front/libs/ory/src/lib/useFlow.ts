@@ -105,6 +105,7 @@ export const useFlow = <TFlow extends EndpointRootNames>(
   useEffect(() => {
     if (isGetFlowSuccess) {
       if (flow && 'id' in flow) {
+        searchParams.set('flow', flow?.id);
         setSearchParams(searchParams);
       }
     }

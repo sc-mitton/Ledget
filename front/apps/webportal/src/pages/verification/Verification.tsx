@@ -12,7 +12,7 @@ import {
   ColumnWindowHeader,
   PortalWindow,
   useScreenContext,
-  WindowLoadingBar,
+  WindowLoading,
 } from '@ledget/ui';
 import { useFlow } from '@ledget/ory';
 import {
@@ -100,7 +100,7 @@ const Verification = () => {
   return (
     <JiggleDiv className={styles.window} jiggle={jiggle} data-size={screenSize}>
       <PortalWindow maxWidth={26}>
-        <WindowLoadingBar visible={isGettingFlow || isCompletingFlow} />
+        <WindowLoading visible={isGettingFlow || isCompletingFlow} />
         <ColumnWindowHeader>
           <h2>Verify Email Address</h2>
           <div>Step 3 of 4</div>

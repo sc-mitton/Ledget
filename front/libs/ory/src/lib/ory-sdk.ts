@@ -20,6 +20,7 @@ const axiosBaseQuery = async ({
   try {
     const result = await axios({
       url,
+      withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',

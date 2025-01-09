@@ -41,8 +41,8 @@
   div.dark {
     @include common;
 
-    --mute-red: hsl(352, 98%, 90%);
-    --hover-red: hsl(352, 95%, 85%);
+    --mute-red: hsl(352, 98%, 70%);
+    --hover-red: hsl(352, 95%, 60%);
     --alert-red: hsl(352, 86%, 69%);
     --red-rgb: 243, 80, 80;
     --dark-red: hsl(0, 59%, 34%);
@@ -327,8 +327,8 @@
     // Buttons
     --btn-chcl: hsl(0, 0%, 10%);
     --btn-chcl-hover: hsl(0, 0%, 15%);
-    --btn-main: hsl(0, 0%, 25%);
-    --btn-main-hover: hsl(0, 0%, 33%);
+    --btn-main: hsl(0, 0%, 22%);
+    --btn-main-hover: hsl(0, 0%, 30%);
 
     // Windows
     --main-background-color: hsl(var(--window-h), var(--window-s), 96%);

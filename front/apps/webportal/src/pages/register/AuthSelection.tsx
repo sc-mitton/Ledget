@@ -11,7 +11,7 @@ import {
   PasswordInput,
   BackButton,
   ColumnWindowHeader,
-  WindowLoadingBar,
+  WindowLoading,
 } from '@ledget/ui';
 
 const passwordSchema = z.object({
@@ -37,7 +37,7 @@ const AuthSelectionWindow = ({
 
   return (
     <>
-      <WindowLoadingBar visible={flowStatus.isCompletingFlow} />
+      <WindowLoading visible={flowStatus.isCompletingFlow} />
       <ColumnWindowHeader>
         {typeof PublicKeyCredential != 'undefined' ? (
           <h2>Sign In Method</h2>
