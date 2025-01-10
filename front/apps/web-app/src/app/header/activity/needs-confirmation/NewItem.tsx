@@ -11,11 +11,16 @@ import {
   NarrowButton,
   IconButtonHalfGray,
   Tooltip,
-  DollarCents,
   BillCatLabel,
 } from '@ledget/ui';
 import { SplitCategory, Bill, isBill } from '@ledget/shared-features';
 import type { Transaction } from '@ledget/shared-features';
+
+const formatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  minimumFractionDigits: 2,
+});
 
 const NewItem: FC<{
   item: Transaction;
@@ -87,14 +92,14 @@ const NewItem: FC<{
     >
       <div className={styles.newItemData}>
         <div>
-          <InsitutionLogo accountId={item.account} />
+          <InsitutionLogo accountId={item.account} size={'1.25em'} />
         </div>
         <div>
           <div>
             <span>{item.name}</span>
           </div>
           <div className={item.amount! < 0 ? styles.greenText : ''}>
-            <DollarCents value={item.amount!} />
+            <span>{formatter.format(item.amount)}</span>
             <span>
               {formatDateOrRelativeDate(
                 dayjs(item.datetime! || item.date).valueOf()

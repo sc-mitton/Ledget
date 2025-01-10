@@ -147,7 +147,7 @@
     cursor: pointer;
 
     &:hover {
-      background-color: var(--);
+      background-color: var(--month-background-hover);
     }
   }
 
@@ -157,7 +157,7 @@
     border: 1.5px solid var(--month-border2);
 
     * {
-      color: var(--monthly-color1);
+      color: var(--month-color);
     }
 
     &[data-hoverable='true']:hover {
@@ -171,7 +171,7 @@
     border: 1.5px solid var(--year-border2);
 
     * {
-      color: var(--yearly-color1);
+      color: var(--year-color);
     }
 
     &[data-hoverable='true']:hover {

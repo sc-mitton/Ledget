@@ -108,7 +108,6 @@ const ActivityDropdown = (props: HTMLProps<HTMLDivElement>) => {
         <DropdownDiv
           ref={dropdownRef}
           placement="right"
-          arrow="right"
           className={styles.notificationsDropdownMenu}
           visible={showDropdown}
           style={{ borderRadius: '.75rem' }}

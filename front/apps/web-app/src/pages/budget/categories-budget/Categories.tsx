@@ -1,7 +1,8 @@
+import { Tag } from '@geist-ui/icons';
+
 import { Window } from '@ledget/ui';
 import List from './List';
 import styles from './styles.module.scss';
-import Sort from '../Sort';
 
 import { useScreenContext } from '@ledget/ui';
 
@@ -21,8 +22,10 @@ const ColumnView = () => {
 
 const SpendingCategories = () => (
   <div className={styles.container}>
-    <h2>Categories</h2>
-    <Sort type="categories" />
+    <h3>
+      <Tag className="icon" />
+      Categories
+    </h3>
     <ColumnView />
   </div>
 );

@@ -5,7 +5,6 @@ import { Plus } from '@geist-ui/icons';
 
 import styles from './styles/header.module.scss';
 import {
-  CircleIconButton,
   useCloseDropdown,
   Tooltip,
   ExpandButton,
@@ -82,19 +81,6 @@ const Header = ({
             aria-label={collapsed ? 'Expand' : 'Collapse'}
             flipped={collapsed}
           />
-        </Tooltip>
-        <Tooltip msg="Add bill">
-          <CircleIconButton
-            onClick={() => {
-              navigate({
-                pathname: '/budget/new-bill',
-                search: location.search,
-              });
-            }}
-            aria-label="Add bill"
-          >
-            <Plus size="1em" />
-          </CircleIconButton>
         </Tooltip>
       </div>
     </div>

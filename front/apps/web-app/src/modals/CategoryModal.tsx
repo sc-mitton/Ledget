@@ -170,7 +170,7 @@ const Options = ({
         <Menu.Button as={IconButtonHalfGray}>
           <MoreHorizontal className="icon" />
         </Menu.Button>
-        <DropdownDiv arrow="right" placement="right" visible={open}>
+        <DropdownDiv placement="right" visible={open}>
           <Menu.Items static>
             <Menu.Item as={Fragment}>
               {({ active }) => (

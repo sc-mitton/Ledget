@@ -15,6 +15,14 @@
   flex-direction: column;
   align-items: flex-start;
 
+  h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 6px;
+    color: var(--m-text-secondary);
+  }
+
   & > button:last-of-type {
     margin-top: -0.5em;
   }

@@ -1,6 +1,6 @@
 // Sizing (in ems)
 const translate = 1;
-const expandedTranslate = 6.125;
+const expandedTranslate = 6.25;
 const expandedHeight = 25;
 const collapsedHeight = 8;
 const scale = 0.1;

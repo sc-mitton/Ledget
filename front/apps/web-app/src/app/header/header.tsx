@@ -62,7 +62,7 @@ const ProfileDropdownMenu = () => {
           <Menu.Button className={styles.profileButton}>
             <User className="icon" stroke={'var(--white)'} />
           </Menu.Button>
-          <DropdownDiv placement="right" arrow="right" visible={open}>
+          <DropdownDiv placement="right" visible={open}>
             <Menu.Items static>
               <Wrapper onClick={() => dispatch(setModal('help'))}>
                 <LifeBuoy className="icon" />

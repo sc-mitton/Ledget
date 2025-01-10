@@ -161,12 +161,7 @@ const Actions = ({
           >
             <MoreHorizontal className="icon" />
           </Menu.Button>
-          <DropdownDiv
-            placement="right"
-            arrow="right"
-            className="right"
-            visible={open}
-          >
+          <DropdownDiv placement="right" className="right" visible={open}>
             <Menu.Items static>
               <Menu.Item>
                 {({ active }) => (

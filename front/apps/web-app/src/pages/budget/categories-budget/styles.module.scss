@@ -12,6 +12,14 @@ $background: var(--window);
 .container {
   position: relative;
   flex: 2 1 0;
+
+  &>h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 6px;
+    color: var(--m-text-secondary);
+  }
 }
 
 .columns {
@@ -108,7 +116,7 @@ $background: var(--window);
   width: calc(100% + 0.5em);
   padding: 1em 1em 0.5em 0.25em;
 
-  & > div:nth-child(4n + 1) {
+  & > button:nth-child(4n + 1) {
     display: flex;
     align-items: center;
     gap: 1em;

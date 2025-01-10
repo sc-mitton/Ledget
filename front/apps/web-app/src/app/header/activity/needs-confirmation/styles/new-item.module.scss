@@ -3,6 +3,7 @@
 .newItem {
   position: absolute;
   border-radius: var(--border-radius5);
+  background-color: var(--new-item-background);
   box-shadow: var(--new-item-drop-shadow);
   border: 1.25px solid var(--new-item-border);
   padding: $new-item-padding;
@@ -51,15 +52,10 @@
       display: flex;
       align-items: baseline;
 
-      // amount
-      span:nth-child(-n + 2) {
-        font-size: 0.75rem;
-      }
-
       // date
       & > span:last-child {
         color: var(--m-text-secondary);
-        font-size: 0.75rem;
+        font-size: 0.875rem;
         font-weight: var(--fw-regula);
 
         &:last-child {

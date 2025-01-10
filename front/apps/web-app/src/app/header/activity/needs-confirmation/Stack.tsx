@@ -39,19 +39,12 @@ import {
   addTransaction2Bill,
   selectBudgetMonthYear,
   isCategory,
-  SplitCategory,
   updateTransaction,
 } from '@ledget/shared-features';
 import type { Transaction, Bill, Category } from '@ledget/shared-features';
 import { useFilterFormContext } from '../context';
 import NewItem from './NewItem';
-import {
-  _getContainerHeight,
-  _getOpacity,
-  _getScale,
-  _getY,
-  _getBackGroundColor,
-} from './helpers';
+import { _getContainerHeight, _getOpacity, _getScale, _getY } from './helpers';
 
 export const NeedsConfirmationStack = () => {
   const loaded = useLoaded(1000);
@@ -75,7 +68,6 @@ export const NeedsConfirmationStack = () => {
     confirmAll,
     setConfirmAll,
   } = useFilterFormContext();
-  const { isDark } = useColorScheme();
   const navigate = useNavigate();
   const location = useLocation();
   const { data: tCountData, isSuccess: isGetTransactionsCountSuccess } =
@@ -137,11 +129,6 @@ export const NeedsConfirmationStack = () => {
       // top: getTop(index, false),
       y: _getY(index, unconfirmedStackExpanded, false),
       transform: `scale(${_getScale(index, unconfirmedStackExpanded, false)})`,
-      backgroundColor: _getBackGroundColor(
-        index,
-        unconfirmedStackExpanded,
-        isDark
-      ),
     }),
     enter: (item, index) => ({
       y: _getY(index, unconfirmedStackExpanded, true),
@@ -157,11 +144,6 @@ export const NeedsConfirmationStack = () => {
       transform: `scale(${_getScale(index, unconfirmedStackExpanded)})`,
       zIndex: `${unconfirmedTransactions!.length - index}`,
       opacity: _getOpacity(index, unconfirmedStackExpanded),
-      backgroundColor: _getBackGroundColor(
-        index,
-        unconfirmedStackExpanded,
-        isDark
-      ),
     }),
     onRest: () => {
       unconfirmedStackExpanded
@@ -401,7 +383,6 @@ export const NeedsConfirmationStack = () => {
             show={showBillCatSelect}
             setShow={setShowBillCatSelect}
             pos={billCatSelectPos}
-            topArrow={false}
             id="select-new-item-bill-category"
           >
             <SelectCategoryBill

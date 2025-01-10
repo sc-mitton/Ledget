@@ -104,7 +104,7 @@ export const MonthPicker = ({
         </button>
       </div>
       <DatePicker
-        placement={'middle'}
+        placement={'left'}
         period="month"
         hideInputElement={true}
         dropdownVisible={showDatePicker}

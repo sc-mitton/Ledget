@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 
 import { useAppSelector } from '@hooks/store';
+import { RotateCw } from '@geist-ui/icons';
 
 import styles from './styles/bills.module.scss';
 import {
@@ -8,12 +9,11 @@ import {
   selectBudgetMonthYear,
 } from '@ledget/shared-features';
 import { EditBudgetBills } from '@modals/index';
-import { useScreenContext, TextButtonBlue, Window } from '@ledget/ui';
+import { useScreenContext, Window } from '@ledget/ui';
 import Calendar from './Calendar';
 import Header from './Header';
 import SkeletonBills from './Skeleton';
 import List from './List';
-import Sort from '../Sort';
 
 const BillsWindow = () => {
   const { month, year } = useAppSelector(selectBudgetMonthYear);
@@ -46,8 +46,10 @@ const BillsWindow = () => {
   return (
     <>
       <div className={styles.bills} data-collapsed={collapsed} ref={ref}>
-        <h2>Bills</h2>
-        <Sort type="bills" />
+        <h3>
+          <RotateCw className="icon" />
+          Bills
+        </h3>
         <Window
           className={styles.container}
           data-collapsed={collapsed}
@@ -63,12 +65,6 @@ const BillsWindow = () => {
             {isLoading ? <SkeletonBills /> : <List collapsed={collapsed} />}
           </div>
         </Window>
-        <TextButtonBlue
-          onClick={() => setModal(true)}
-          aria-label="View all bills"
-        >
-          View All
-        </TextButtonBlue>
       </div>
       {modal && <EditBudgetBills onClose={() => setModal(false)} />}
     </>

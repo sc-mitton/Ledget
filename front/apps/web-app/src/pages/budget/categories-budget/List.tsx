@@ -1,12 +1,10 @@
 import { Fragment, useMemo } from 'react';
 
-import { useNavigate, useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 
 import styles from './styles.module.scss';
 import { useAppSelector, useAppDispatch } from '@hooks/store';
 import {
-  CircleIconButton,
   Tooltip,
   BillCatEmojiLabel,
   DollarCents,
@@ -18,8 +16,7 @@ import {
   useGetCategoriesQuery,
   Category,
 } from '@ledget/shared-features';
-import { setCategoryModal, setModal } from '@features/modalSlice';
-import { Plus, Edit2 } from '@geist-ui/icons';
+import { setCategoryModal } from '@features/modalSlice';
 import SkeletonCategories from './Skeleton';
 import { useSortContext } from '../context';
 
@@ -31,8 +28,6 @@ const CategoriesList = ({ period }: { period: Category['period'] }) => {
     { skip: !month || !year }
   );
   const { categoriesSort: sort } = useSortContext();
-  const location = useLocation();
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const totalSpent = useMemo(() => {
@@ -78,31 +73,6 @@ const CategoriesList = ({ period }: { period: Category['period'] }) => {
             1
           )}ly Spending`}</h3>
         )}
-        <div>
-          <Tooltip msg={`Edit Categories`}>
-            <CircleIconButton
-              onClick={() => {
-                dispatch(setModal('editCategories'));
-              }}
-              aria-label="Edit Categories"
-            >
-              <Edit2 size=".875em" />
-            </CircleIconButton>
-          </Tooltip>
-          <Tooltip msg={`Add ${period}ly category`}>
-            <CircleIconButton
-              onClick={() => {
-                navigate(
-                  `${location.pathname}/new-category/${location.search}`,
-                  { state: { period: period } }
-                );
-              }}
-              aria-label="Add new category"
-            >
-              <Plus size="1em" />
-            </CircleIconButton>
-          </Tooltip>
-        </div>
       </div>
       <div className={period === 'month' ? styles.month : styles.year}>
         <h4>
@@ -147,16 +117,17 @@ const CategoriesList = ({ period }: { period: Category['period'] }) => {
             })
             .map((category, i) => (
               <Fragment key={category.id}>
-                <div>
+                <button
+                  onClick={() => {
+                    dispatch(setCategoryModal({ category: category }));
+                  }}
+                >
                   <BillCatEmojiLabel
                     size="medium"
                     as="button"
                     emoji={category.emoji}
                     color={period === 'month' ? 'blue' : 'green'}
                     key={category.id}
-                    onClick={() => {
-                      dispatch(setCategoryModal({ category: category }));
-                    }}
                     progress={
                       Math.round(
                         ((category.amount_spent * 100) /
@@ -168,7 +139,7 @@ const CategoriesList = ({ period }: { period: Category['period'] }) => {
                   {`${category.name
                     .charAt(0)
                     .toUpperCase()}${category.name.slice(1)}`}
-                </div>
+                </button>
                 <div>
                   <DollarCents
                     value={category.amount_spent}

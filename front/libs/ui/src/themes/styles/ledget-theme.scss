@@ -16,8 +16,6 @@
   --black: hsl(0, 0%, 0%);
 
   /* Drop Shadows & Borders */
-  --new-item-drop-shadow: var(--new-item-drop-shadow-color) 0px 0px 6px;
-
   --low-elevation-drop-shadow: var(--low-elevation-drop-shadow-color) 0px 1px
     1px 1px;
   --mid-elevation-drop-shadow: var(--mid-elevation-drop-shadow-color) 0px 3px
@@ -134,9 +132,6 @@
       rgba(0, 0, 0, 1) 100%
     );
 
-    --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
-    --window-portal-drop-shadow: rgba(0, 0, 0, .07) 0px 0px 32px;
-
     // Side Nav
     --sidenav-drop-shadow: 0 0px 4px hsl(var(--window-h), var(--window-s), 12%);
     --side-window: hsl(var(--window-h), var(--window-s), 6%);
@@ -172,17 +167,19 @@
 
     // New Item
     // --new-item-border: hsl(0, 0%, 11%);
-    --new-item-drop-shadow-color: hsl(var(--window-h), var(--window-s), 5%);
-
+    --new-item-drop-shadow: hsl(var(--window-h), var(--window-s), 8%) 0px 1px 12px;
+    --new-item-background: hsl(var(--window-h), var(--window-s), 15%);
     // Header
-    --header-background: hsl(var(--window-h), var(--window-s), 10%);
+    // --header-background: hsl(var(--window-h), var(--window-s), 10%);
+    --header-box-shadow-color: hsl(0, 0%, 12%);
+    // --header-box-shadow: var(--header-box-shadow-color) 0px 1px 1px 0px;
     --header-pill: hsl(0, 0%, 98%);
     --header-pill-hover: rgb(255, 255, 255, 15%);
 
     // Inputs
     --input-background-rgb: 31, 31, 31;
     --input-background: hsl(0, 0%, 12%);
-    --input-border: solid 1px hsl(0, 0%, 12%);
+    --input-border: solid 1.5px hsl(0, 0%, 12%);
     --input-border-hover-color: hsl(0, 0%, 17%);
     --input-border-focus-color: var(--blue-medium);
     --input-focus-dropshadow-color: color-mix(
@@ -250,17 +247,16 @@
 
     // Drop Shadows & Borders
     --dropdown-background-rgb: 18, 18, 18;
-    --dropdown-background: var(--window);
+    --dropdown-background: hsl(var(--window-h), var(--window-s), 18%);
     --dropdown-item-background: hsl(var(--window-h), var(--window-s), 12%);
     --dropdown-border: 1.5px solid hsl(var(--window-h), var(--window-s), 10%);
 
     --window-drop-shadow-color: hsl(0, 0%, 18%);
     --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
+    --window-portal-drop-shadow: rgba(0, 0, 0, .07) 0px 0px 32px;
 
-    --header-box-shadow-color: hsl(0, 0%, 12%);
-    --dropdown-box-shadow-color: hsl(0, 0%, 0%);
+    --dropdown-box-shadow-color: hsl(0, 0%, 4%);
     --antd-drop-shadow-color: hsl(0, 0%, 0%);
-    --header-box-shadow: var(--header-box-shadow-color) 0px 1px 1px 0px;
 
     --low-elevation-drop-shadow-color: rgba(255, 255, 255, 0.1);
     --mid-elevation-drop-shadow-color: rgba(255, 255, 255, 0.15);
@@ -295,26 +291,14 @@
     --window-s: 3%;
 
     // Budget Item Pallet
-    --monthly-background-color: hsl(var(--monthly-h), 80%, 87%);
-    --monthly-hover-background-color: hsl(var(--monthly-h), 80%, 93%);
-    --monthly-background-color-darker: hsl(var(--monthly-h), 80%, 73%);
-    --monthly-color1: hsl(var(--monthly-h), 50%, 40%);
-    --monthly-color2: hsl(var(--monthly-h), 50%, 60%);
-
-    --yearly-background-color: hsl(var(--yearly-h), 50%, 88%);
-    --yearly-hover-background-color: hsl(var(--yearly-h), 40%, 80%);
-    --yearly-background-color-darker: hsl(var(--yearly-h), 40%, 60%);
-    --yearly-color1: hsl(var(--yearly-h), 50%, 40%);
-    --yearly-color2: hsl(var(--yearly-h), 40%, 60%);
-
     --month-background: hsl(var(--blue-h), 100%, 93%);
-    --month-background-hover: hsl(var(--blue-h), 100%, 86%);
+    --month-background-hover: hsl(var(--blue-h), 100%, 97%);
     --month-border: hsl(var(--blue-h), 100%, 61%);
     --month-color: hsl(var(--blue-h), 100%, 58%);
     --month-border2: hsl(var(--blue-h), 100%, 90%);
 
     --year-background: hsl(var(--green-h), 70%, 88%);
-    --year-background-hover: hsl(var(--green-h), 70%, 80%);
+    --year-background-hover: hsl(var(--green-h), 70%, 94%);
     --year-border: hsl(var(--green-h), 50%, 50%);
     --year-border2: hsl(var(--green-h), 70%, 85%);
     --year-color: hsl(var(--green-h), 80%, 38%);
@@ -376,8 +360,7 @@
       var(--window2),
       color-mix(in srgb, var(--window2), var(--main-background-color) 30%)
     );
-    --window-drop-shadow-color: hsl(var(--window-h), var(--window-s), 96%);
-    --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 4px 0px;
+    --window-drop-shadow: rgba(0, 0, 0, .04) 0px 0px 32px, rgba(0, 0, 0, .04) 0px 2px 4px;
 
     --window-portal-drop-shadow: rgba(0, 0, 0, .04) 0px 0px 32px, rgba(0, 0, 0, .04) 0px 2px 4px;
 
@@ -431,19 +414,16 @@
     --active-wafer-indicator: var(--blue-sat);
 
     // Header
-    --header-background: hsl(0, 0%, 10%);
+    --header-background: hsl(0, 0%, 13%);
     --header-pill: hsl(0, 0%, 10%);
     --header-pill-hover: hsl(0, 0%, 20%);
-    --header-box-shadow-color: hsl(0, 0%, 90%);
-    --header-box-shadow: var(--header-box-shadow-color) 0px 1px 16px 0px;
+    --header-box-shadow-color: hsl(0, 0%, 85%);
+    --header-box-shadow: var(--header-box-shadow-color) 0px 1px 2px 0px;
 
     // New Item
     // --new-item-border: hsl(0, 0%, 93%);
-    --new-item-drop-shadow-color: hsl(
-      var(--window-h),
-      var(--window-s),
-      88%
-    );
+    --new-item-drop-shadow: hsl(var(--window-h), var(--window-s), 88%) 0 0 12px;
+    --new-item-background: var(--window);
 
     // Inputs
     --input-background-rgb: 233, 233, 237;
