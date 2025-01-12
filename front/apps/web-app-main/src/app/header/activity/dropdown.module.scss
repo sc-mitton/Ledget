@@ -1,46 +1,144 @@
-.notificationsDropdownMenu {
-  min-width: 30em;
-  top: 2.125em;
-  margin-left: 1em;
-  background-color: var(--window);
-}
 
-.notificationsDropdownHeader {
+.activityDropdown {
+  position: absolute;
   display: flex;
-  position: relative;
-  position: relative;
+  flex-direction: column;
+  top: 2em;
+  right: 2em;
+  z-index: 110;
 
-  & > div:first-child {
-    padding: 0.45em 0.5em 0.75em 0.75em;
+  & > div:last-child {
     position: relative;
+    top: 0.5em;
+  }
 
-    button:first-child {
-      gap: 1em;
+  & > button {
+    padding: 0.25em;
+    border-radius: var(--border-radius2);
+    position: relative;
+    color: var(--m-text);
 
-      span {
-        position: relative;
-        color: var(--white);
-        font-size: 0.875em;
-        font-weight: var(--fw-bold);
+    svg path {
+      stroke: currentColor;
+    }
 
-        &::after {
-          content: '';
-          position: absolute;
-          z-index: -1;
-          border-radius: 50%;
-          left: 50%;
-          bottom: 52%;
-          transform: translate(-50%, 50%);
-          width: 1.625em;
-          height: 1.625em;
-          background-color: var(--blue-sat);
-        }
+    span {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      width: 1em;
+      height: 1em;
+      border-radius: 50%;
+      background-color: var(--main-background-color);
+
+      &::before {
+        content: '';
+        top: 50%;
+        left: 50%;
+        border-radius: 50%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        background-color: var(--blue-medium);
+        animation: pulse 2s ease-out infinite;
       }
+
+      &::after {
+        content: '';
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background-color: var(--blue-sat);
+      }
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 2.75em;
+      height: 2.75em;
+      top: 50%;
+      right: 50%;
+      transform: translate(50%, -50%);
+      background-color: var(--btn-feather-light-gray);
+      border: 1px solid var(--btn-light-gray);
+      z-index: -1;
+      border-radius: 50%;
+      transition: all .3s ease-in-out;
+    }
+
+    &:hover::before {
+      background-color: var(--btn-feather-light-gray-hover);
+      transition: all .3s ease-in-out;
     }
   }
 }
 
-.notificationsDropdownActions {
+@keyframes pulse {
+  0% {
+    width: 0px;
+    height: 0px;
+    opacity: 1;
+  }
+
+  100% {
+    width: 24px;
+    height: 24px;
+    opacity: 0;
+  }
+}
+
+.activityDropdownMenu {
+  min-width: 30em;
+  padding: 0;
+  top: 2.125em;
+  background-color: var(--window);
+  overflow: hidden;
+  border-radius: var(--border-radius5);
+}
+
+.activityDropdownHeader {
+  display: flex;
+  position: relative;
+  position: relative;
+  width: auto;
+  position: absolute;
+  top: 0;
+  width: 100%;
+
+  &::before {
+    position: absolute;
+    content: '';
+    inset: 0;
+    backdrop-filter: blur(4px);
+    z-index: 10;
+  }
+
+  &::after {
+    position: absolute;
+    content: '';
+    inset: 0;
+    background-color: var(--window);
+    opacity: .94;
+    z-index: 11;
+    box-shadow: var(--window) 0 0 8px;
+  }
+
+  & > div:first-child {
+    z-index: 12;
+    padding: 1em 1.5em .75em 1.5em;
+    position: relative;
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    border-bottom: 1.5px solid var(--border-color-dim);
+  }
+}
+
+.activityDropdownActions {
   position: absolute;
   right: 1.25em;
   top: 50%;
@@ -52,38 +150,5 @@
   & > div {
     display: flex;
     align-items: center;
-  }
-}
-
-.notificationsDropdown {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-
-  & > div:last-child {
-    position: relative;
-    top: 0.5em;
-  }
-
-  div[role='tabpanel'] {
-    margin-top: 0.5em;
-  }
-
-  & > button {
-    padding: 0.25em;
-    border-radius: var(--border-radius2);
-    position: relative;
-
-    &[data-active='true']::after {
-      content: '';
-      position: absolute;
-      top: -0.125em;
-      right: -0.125em;
-      width: 0.375em;
-      height: 0.375em;
-      border-radius: 50%;
-      border: var(--header-background) 1.75px solid;
-      background-color: var(--blue-sat);
-    }
   }
 }

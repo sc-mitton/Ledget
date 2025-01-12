@@ -131,6 +131,10 @@ export const IconButtonHalfGray = styled(BaseButton)`
   ${clearGray} border-radius: .375em;
   padding: 0.125em;
 `;
+export const IconButtonGray = styled(BaseButton)`
+  ${gray} border-radius: .375em;
+  padding: 0.125em;
+`;
 export const IconButtonBlue = styled(BaseButton)`
   ${hoverBlueText} border-radius: .25em;
 `;

@@ -109,7 +109,7 @@ export const ExpandButton = ({ flipped = false, size = '1.25em', ...rest }) => (
     {...rest}
   >
     <div>
-      <ChevronsDown size={size} />
+      <ChevronsDown size={size} strokeWidth={2} />
     </div>
   </BaseButton>
 );

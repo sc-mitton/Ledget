@@ -55,10 +55,10 @@
   visibility: hidden;
   z-index: 1100;
   margin-bottom: 0.5em;
-  background-color: var(--m-header-text);
+  background-color: var(--m-text);
   color: var(--m-invert-text);
   padding: 0.25em 0.75em;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 0.75rem;
   opacity: 0;
   transition: transform 0.2s, opacity 0.2s;
@@ -75,7 +75,7 @@
       margin-left: -0.3125em;
       border-width: 0.3125em;
       border-style: solid;
-      border-color: var(--m-header-text) transparent transparent transparent;
+      border-color: var(--m-text) transparent transparent transparent;
     }
   }
 
@@ -90,7 +90,7 @@
       margin-top: -0.25em;
       border-width: 0.25em;
       border-style: solid;
-      border-color: transparent var(--m-header-text) transparent transparent;
+      border-color: transparent var(--m-text) transparent transparent;
     }
   }
 
@@ -105,7 +105,7 @@
       margin-top: -0.25em;
       border-width: 0.25em;
       border-style: solid;
-      border-color: transparent var(--m-header-text) transparent transparent;
+      border-color: transparent var(--m-text) transparent transparent;
     }
   }
 }

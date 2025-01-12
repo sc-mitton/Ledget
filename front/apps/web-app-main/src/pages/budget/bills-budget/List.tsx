@@ -12,7 +12,7 @@ import { setBillModal } from '@features/modalSlice';
 import { DollarCents, BillCatLabel, useScreenContext } from '@ledget/ui';
 import { useSortContext } from '../context';
 
-const List = ({ collapsed }: { collapsed: boolean }) => {
+const List = () => {
   const { month, year } = useAppSelector(selectBudgetMonthYear);
   const { data: bills } = useGetBillsQuery(
     { month, year },
@@ -28,7 +28,6 @@ const List = ({ collapsed }: { collapsed: boolean }) => {
     <div
       className={styles.list}
       data-size={screenSize}
-      aria-expanded={!collapsed}
       style={
         {
           '--number-of-bills': bills?.length! / 2 || 0,

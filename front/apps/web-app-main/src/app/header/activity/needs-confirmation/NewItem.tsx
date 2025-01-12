@@ -29,17 +29,9 @@ const NewItem: FC<{
   onBillCat: (e: any, item: Transaction) => void;
   handleConfirm: (transaction: Transaction) => void;
   updatedBillCat?: SplitCategory[] | Bill;
-  tabIndex: number;
 }> = (props) => {
-  const {
-    item,
-    style,
-    updatedBillCat,
-    onEllipsis,
-    onBillCat,
-    handleConfirm,
-    tabIndex,
-  } = props;
+  const { item, style, updatedBillCat, onEllipsis, onBillCat, handleConfirm } =
+    props;
   const [name, setName] = useState<string>(
     item.predicted_category
       ? `${item.predicted_category?.name
@@ -115,7 +107,6 @@ const NewItem: FC<{
           as="button"
           color={color}
           aria-label="Choose budget category"
-          tabIndex={tabIndex}
           onClick={(e) => {
             onBillCat(e, item);
           }}
@@ -127,14 +118,12 @@ const NewItem: FC<{
               handleConfirm(item);
             }}
             aria-label="Confirm"
-            tabIndex={tabIndex}
             className={styles.confirmButton}
           >
             <Check className="icon" strokeWidth={2} />
           </IconButtonHalfGray>
         </Tooltip>
         <NarrowButton
-          tabIndex={tabIndex}
           onClick={(e) => {
             onEllipsis(e, item);
           }}

@@ -3,7 +3,19 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
-  position: relative;
+  transform: translate(-4px);
+
+  &[data-screen-size='small'],
+  &[data-screen-size='extra-small'],
+  &[data-screen-size='medium'] {
+    align-items: center;
+  }
+}
+
+.button {
+  flex-direction: row;
+  gap: 6px;
+  display: flex;
 }
 
 .container {
@@ -17,12 +29,11 @@
   }
 
   &[data-size='medium'] span {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     font-weight: 400;
   }
 
   button {
-    opacity: 1;
     display: flex;
     flex-direction: row;
     transition: opacity 0.2s ease-in-out;

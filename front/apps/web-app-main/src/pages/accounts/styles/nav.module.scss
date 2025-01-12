@@ -88,10 +88,6 @@
   z-index: 10;
   background-color: var(--main-background-color);
 
-  &[data-size='extra-small'] {
-    background-color: var(--main-background-color-small-screen);
-  }
-
   &[aria-expanded='true'] {
     visibility: visible;
     padding: 0.75em 0.25em 0.5em 0.75em;

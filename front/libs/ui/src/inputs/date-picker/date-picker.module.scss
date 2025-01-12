@@ -64,6 +64,7 @@
   gap: 2em;
   position: relative;
   color: var(--input-placeholder2);
+  transition: all .3s ease-in-out;
 
   &[data-filled='true'] {
     color: var(--m-text);
@@ -77,7 +78,7 @@
     left: 0;
     bottom: 0;
     background-color: transparent;
-    border-radius: 2px;
+    border-radius: 2px 2px 0 0;
     transition: left 0.2s linear, height 0.2s ease-in-out,
       background-color 0.2s ease-in-out;
   }
@@ -109,12 +110,12 @@
   & > button {
     z-index: 2;
     opacity: 0;
-    transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.3s ease-in-out;
   }
 
   &:hover > button {
     opacity: 1;
-    transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.3s ease-in-out;
   }
 
   &:hover.clear-input-button > svg {
@@ -128,12 +129,28 @@
   flex-direction: column;
   gap: 0.25em;
   padding: 0.5em;
+  padding-top: 2.25em;
+  overflow: hidden;
 
   & > div:first-of-type {
     display: flex;
     justify-content: space-between;
-    padding-bottom: 0.625em;
     border-bottom: 1.5px solid var(--border-color-super-dim);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: .75em;
+
+
+    &::after {
+      content: '';
+      inset: 0;
+      position: absolute;
+      background-color: var(--border-color-super-dim);
+      opacity: .5;
+      pointer-events: none;
+    }
 
     & > div:not(:first-child):not(:last-child) {
       flex-grow: 1;
@@ -158,6 +175,7 @@
   }
 
   & > div:last-child {
+    margin-top: .375em;
     display: flex;
     justify-content: center;
   }
@@ -192,7 +210,7 @@
 
   &[data-window-start='true'] *,
   &[data-window-end='true'] * {
-    color: var(--blue-medium-dark);
+    color: var(--blue-medium);
     @include transition-color(var(--blue));
   }
 
@@ -209,7 +227,7 @@
 
   &:hover[data-active='false'][data-disabled='false'][data-active-window-start='false'][data-active-window-end='false'][data-window-start='false'][data-window-end='false']::after {
     @include transition-background(var(--btn-light-gray));
-    border-radius: var(--border-radius3);
+    border-radius: var(--border-radius2);
     left: 0.375em;
     right: 0.375em;
   }
@@ -222,15 +240,15 @@
   &[data-active-window-end='true'][data-window-end='false'][data-window-start='false'][data-disabled='false'][data-today='false'][data-selected='false']::after {
     border: 1px dashed var(--blue-medium);
     border-left: none;
-    border-top-right-radius: var(--border-radius3);
-    border-bottom-right-radius: var(--border-radius3);
+    border-top-right-radius: var(--border-radius2);
+    border-bottom-right-radius: var(--border-radius2);
   }
 
   &[data-active-window-start='true'][data-window-end='false'][data-window-start='false'][data-disabled='false'][data-today='false'][data-selected='false']::after {
     border: 1px dashed var(--blue-medium);
     border-right: none;
-    border-top-left-radius: var(--border-radius3);
-    border-bottom-left-radius: var(--border-radius3);
+    border-top-left-radius: var(--border-radius2);
+    border-bottom-left-radius: var(--border-radius2);
   }
 
   &[data-today='true'][data-window-end='false'][data-window-start='false']::before {
@@ -241,7 +259,7 @@
     right: 0.375em;
     content: '';
     border: 1px solid var(--blue);
-    border-radius: var(--border-radius3);
+    border-radius: var(--border-radius2);
   }
 
   &[data-disabled='true'][data-dissabled-style='highlighted'][data-overflow='true']::after {
@@ -253,7 +271,7 @@
   }
 
   &[data-disabled='true'][data-disabled-style='highlighted'][data-overflow='false']::after {
-    background-color: var(--btn-feather-light-gray);
+    background-color: red;
   }
 
   &[data-selected='true']::after {
@@ -285,14 +303,14 @@
   }
 
   &[data-window-start='true']::after {
-    border-top-left-radius: var(--border-radius3);
-    border-bottom-left-radius: var(--border-radius3);
+    border-top-left-radius: var(--border-radius2);
+    border-bottom-left-radius: var(--border-radius2);
     left: 0em;
   }
 
   &[data-window-end='true']::after {
-    border-top-right-radius: var(--border-radius3);
-    border-bottom-right-radius: var(--border-radius3);
+    border-top-right-radius: var(--border-radius2);
+    border-bottom-right-radius: var(--border-radius2);
     right: 0em;
   }
 

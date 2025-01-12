@@ -1,19 +1,36 @@
+.welcome {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: center;
+  padding: 0em .75em 1em .75em;
+  font-size: 1rem;
+  color: var(--m-text-tertiary);
+}
+
+.logoIcon {
+  padding: .5em .75em 1em .75em;
+  margin-bottom: 1em;
+  border-bottom: var(--side-nav-border);
+}
+
 .legalLinks {
-  position: absolute;
-  bottom: 0.5em;
   display: flex;
   align-items: center;
+  justify-content: center;
+  padding: .25em 0;
+  border-top: var(--side-nav-border);
 
   a {
     font-size: 0.75rem;
-    opacity: 0.3;
+    color: var(--m-text-quinary);
     text-decoration: none;
     transition: all 0.2s;
     font-weight: var(--fw-bold);
     white-space: nowrap;
 
     &:hover {
-      opacity: 0.7;
+      color: var(--m-text-secondary);
       transition: all 0.2s;
     }
   }
@@ -40,11 +57,9 @@
 .hidingSidebar {
   display: flex;
   position: absolute;
-  z-index: 10;
+  z-index: 200;
   top: 0;
   bottom: 0;
-  background-color: var(--side-window);
-  border-right: 1px solid var(--window2);
   max-width: 0;
   padding: 0.75em 0;
   opacity: 0;
@@ -53,6 +68,8 @@
   flex-direction: column;
   gap: 2em;
   visibility: hidden;
+  background-color: var(--side-window);
+  border-right: var(--side-nav-border);
 
   & > img {
     margin-left: 0.375em;
@@ -61,7 +78,6 @@
   }
 
   &[data-open='true'] {
-    padding: 0.75em 1em;
     max-width: 500px;
     opacity: 1;
     visibility: visible;
@@ -80,9 +96,9 @@
 
 .hamburger {
   position: absolute;
-  top: 1.625em;
-  left: 1.6em;
-  z-index: 2;
+  top: 2.625em;
+  left: 2.25em;
+  z-index: 300;
   z-index: 100;
 
   svg {
@@ -101,22 +117,22 @@
 
 .sideNav {
   max-width: 100%;
-  height: 100%;
-  background-color: var(--side-window);
-  padding: 1.375em 1em;
-  flex: 1 0 0;
+  padding: 1.75em 0em;
+  flex: 2 0 0;
   font-size: 1.25rem;
-
-  &[data-size='large'],
-  &[data-size='extra-large'] {
-    box-shadow: var(--sidenav-drop-shadow);
-  }
+  background-color: var(--side-window);
+  border-right: var(--side-nav-border);
+  position: relative;
+  display: flex;
+  flex-direction: column;
 
   ul {
+    padding: 0 1em;
     position: relative;
     display: flex;
     flex-direction: column;
     gap: 0.5em;
+    flex: 10;
   }
 
   a {
@@ -130,16 +146,26 @@
     }
   }
 
+  &>div:first-of-type {
+    padding: 0 2.25em 1em 2.25em;
+  }
+
+  &>div:last-of-type {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+
   li {
     min-width: 12em;
     cursor: pointer;
-    border-radius: var(--border-radius3);
+    border-radius: var(--border-radius2);
     transition: background-color 0.3s ease-in-out;
     position: relative;
     z-index: 1;
 
     &:not([data-current='page']):hover {
-      background-color: var(--btn-light-gray);
+      background-color: var(--btn-feather-light-gray);
       opacity: 0.8;
       transition: all 0.3s ease-out;
     }

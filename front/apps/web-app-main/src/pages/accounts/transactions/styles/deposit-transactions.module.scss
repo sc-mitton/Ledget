@@ -1,7 +1,12 @@
 .transaction {
   cursor: pointer;
 
+  &>div {
+    transition: background-color .3s ease-in-out;
+  }
+
   &:hover > div {
     background-color: var(--transaction-hover-background);
+    transition: background-color .3s ease-in-out;
   }
 }

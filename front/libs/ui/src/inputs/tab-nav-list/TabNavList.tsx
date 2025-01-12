@@ -123,8 +123,8 @@ export function TabNavListUnderlined(
     to: {
       width: indicatorWidth,
       left: indicatorLeft,
-      height: '.125em',
-      borderRadius: '8px',
+      height: '.2em',
+      borderRadius: '8px 8px 0px 0px',
     },
     ref: api,
   });
@@ -136,8 +136,8 @@ export function TabNavListUnderlined(
   useEffect(() => {
     const activeTab = ref.current?.querySelector('[aria-selected=true]');
     if (activeTab) {
-      setIndicatorWidth(activeTab.clientWidth);
-      setIndicatorLeft((activeTab as any).offsetLeft);
+      setIndicatorWidth(activeTab.clientWidth + 12);
+      setIndicatorLeft((activeTab as any).offsetLeft - 6);
     }
   }, [selectedIndex]);
 

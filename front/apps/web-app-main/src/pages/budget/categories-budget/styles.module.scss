@@ -25,15 +25,11 @@ $background: var(--window);
 .columns {
   display: flex;
   gap: 2.25rem;
-  padding: 1em 0;
+  padding: 1em .125em;
   height: calc(100% - 1.75em);
   scrollbar-width: none;
   max-width: 100%;
-
-  &[data-size='small'],
-  &[data-size='extra-small'] {
-    overflow-x: auto;
-  }
+  overflow-x: auto;
 
   & > div {
     flex: 1;
@@ -80,10 +76,6 @@ $background: var(--window);
   & > div:nth-of-type(2) {
     display: flex;
     margin-top: 0.25em;
-
-    & > span {
-      margin: 0 0.5em;
-    }
   }
 
   & > div:nth-of-type(3) {

@@ -4,9 +4,9 @@
   justify-content: center;
   gap: 0.25rem;
   background-color: var(--default-tab-background);
-  border-radius: calc(var(--border-radius2) + 1px);
+  border-radius: calc(var(--border-radius2) + 4px);
   position: relative;
-  padding: 0.125em 0.3em 0.15em 0.25em;
+  padding: .25em .375em;
 
   &[data-size='sm'] > button {
     padding: 0 0.75rem;
@@ -18,7 +18,7 @@
     place-content: center;
     z-index: 2;
     position: relative;
-    padding: 0em 1.5rem;
+    padding: .125em 1.5rem;
     margin-bottom: 0.0625em;
 
     &:active,

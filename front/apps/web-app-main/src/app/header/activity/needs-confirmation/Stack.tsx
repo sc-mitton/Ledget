@@ -1,12 +1,7 @@
-import React, { useCallback, useState, useEffect, useRef } from 'react';
+import { useCallback, useState, useEffect, useRef } from 'react';
 
 import { useNavigate, useLocation } from 'react-router-dom';
-import {
-  useSpring,
-  animated,
-  useTransition,
-  useSpringRef,
-} from '@react-spring/web';
+import { useTransition, useSpringRef } from '@react-spring/web';
 import { shallowEqual } from 'react-redux';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
 import dayjs from 'dayjs';
@@ -14,13 +9,13 @@ import dayjs from 'dayjs';
 import styles from './styles/stack.module.scss';
 import { SelectCategoryBill } from '@components/inputs';
 import { ZeroConfig } from '@components/pieces';
+import { CheckAll } from '@ledget/media';
 import ItemOptions from './ItemOptions';
 import {
-  ExpandableContainer,
-  ExpandButton,
   AbsPosMenu,
   useColorScheme,
   LoadingRingDiv,
+  TextButton,
 } from '@ledget/ui';
 import { useLoaded } from '@ledget/helpers';
 import { setTransactionModal } from '@features/modalSlice';
@@ -42,9 +37,7 @@ import {
   updateTransaction,
 } from '@ledget/shared-features';
 import type { Transaction, Bill, Category } from '@ledget/shared-features';
-import { useFilterFormContext } from '../context';
 import NewItem from './NewItem';
-import { _getContainerHeight, _getOpacity, _getScale, _getY } from './helpers';
 
 export const NeedsConfirmationStack = () => {
   const loaded = useLoaded(1000);
@@ -57,18 +50,13 @@ export const NeedsConfirmationStack = () => {
   const [menuPos, setMenuPos] = useState<
     { x: number; y: number } | undefined
   >();
+  const [confirmAll, setConfirmAll] = useState(false);
   const [billCatSelectPos, setBillCatSelectPos] = useState<
     { x: number; y: number } | undefined
   >();
   const { month, year } = useAppSelector(selectBudgetMonthYear);
-  const {
-    setShowFilterForm,
-    unconfirmedStackExpanded,
-    setUnconfirmedStackExpanded,
-    confirmAll,
-    setConfirmAll,
-  } = useFilterFormContext();
   const navigate = useNavigate();
+  const { isDark } = useColorScheme();
   const location = useLocation();
   const { data: tCountData, isSuccess: isGetTransactionsCountSuccess } =
     useGetTransactionsCountQuery(
@@ -108,80 +96,18 @@ export const NeedsConfirmationStack = () => {
     }
   }, [month, year]);
 
-  const [containerProps, containerApi] = useSpring(
-    () =>
-      ({
-        position: 'relative',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        height: _getContainerHeight(
-          unconfirmedTransactions?.length || 0,
-          unconfirmedStackExpanded
-        ),
-        overflowX: 'hidden',
-        overflowY: 'hidden',
-      } as React.CSSProperties)
-  );
-
   const itemsApi = useSpringRef();
   const itemTransitions = useTransition(unconfirmedTransactions, {
-    from: (item, index) => ({
-      // top: getTop(index, false),
-      y: _getY(index, unconfirmedStackExpanded, false),
-      transform: `scale(${_getScale(index, unconfirmedStackExpanded, false)})`,
-    }),
-    enter: (item, index) => ({
-      y: _getY(index, unconfirmedStackExpanded, true),
-      transform: `scale(${_getScale(index, unconfirmedStackExpanded)})`,
-      zIndex: `${unconfirmedTransactions!.length - index}`,
-      opacity: _getOpacity(index, unconfirmedStackExpanded),
-      x: 0,
-      left: 0,
-      right: 0,
-    }),
-    update: (item, index) => ({
-      y: _getY(index, unconfirmedStackExpanded),
-      transform: `scale(${_getScale(index, unconfirmedStackExpanded)})`,
-      zIndex: `${unconfirmedTransactions!.length - index}`,
-      opacity: _getOpacity(index, unconfirmedStackExpanded),
-    }),
-    onRest: () => {
-      unconfirmedStackExpanded
-        ? containerApi.start({ overflowY: 'scroll', overflowX: 'hidden' })
-        : containerApi.start({ overflowY: 'hidden', overflowX: 'hidden' });
-    },
+    from: (item, index) => ({ x: 0, maxHeight: 300 }),
+    enter: (item, index) => ({ x: 0, maxHeight: 300 }),
     config: {
       tension: 180,
       friction: loaded ? 22 : 40,
       mass: 1,
     },
-    immediate: !loaded && unconfirmedStackExpanded,
+    immediate: !loaded,
     ref: itemsApi,
   });
-
-  // Initial animate container expanding
-  useEffect(() => {
-    containerApi.start();
-  }, []);
-
-  useEffect(() => {
-    containerApi.start({ overflowY: 'hidden', overflowX: 'hidden' });
-  }, [unconfirmedStackExpanded]);
-
-  // Animate the container shrinking when list gets smaller
-  useEffect(() => {
-    if (unconfirmedTransactions.length >= 0) {
-      itemsApi.start();
-      containerApi.start({
-        height: _getContainerHeight(
-          unconfirmedTransactions.length,
-          unconfirmedStackExpanded
-        ),
-        immediate: !loaded,
-      });
-    }
-    setShowFilterForm(false);
-  }, [unconfirmedStackExpanded, unconfirmedTransactions]);
 
   // When options are selected from the bill/category combo dropdown
   // update the list of updated bills/categories, then clean up
@@ -356,7 +282,7 @@ export const NeedsConfirmationStack = () => {
             onMouseLeave={() => flushConfirmedQue()}
           >
             <div>
-              <animated.div style={containerProps} onScroll={handleScroll}>
+              <div onScroll={handleScroll} className={styles.newItemsContainer}>
                 {isSuccess && unconfirmedTransactions && (
                   <>
                     {itemTransitions((style, item, obj, index) => {
@@ -368,15 +294,20 @@ export const NeedsConfirmationStack = () => {
                           onBillCat={(e, item) => handleBillCatClick(e, item)}
                           onEllipsis={(e, item) => handleEllipsis(e, item)}
                           handleConfirm={handleItemConfirm}
-                          tabIndex={
-                            unconfirmedStackExpanded || index === 0 ? 0 : -1
-                          }
                         />
                       );
                     })}
                   </>
                 )}
-              </animated.div>
+                <div className={styles.confirmAllButton}>
+                  <TextButton>
+                    <span>
+                      Confirm All
+                      <CheckAll className="icon" strokeWidth={2} />
+                    </span>
+                  </TextButton>
+                </div>
+              </div>
             </div>
           </div>
           <AbsPosMenu
@@ -460,22 +391,6 @@ export const NeedsConfirmationStack = () => {
               ]}
             />
           </AbsPosMenu>
-          <ExpandableContainer
-            className={styles.newItemsExpandButtonContainer}
-            expanded={
-              unconfirmedTransactions
-                ? unconfirmedTransactions?.length > 1
-                : false
-            }
-          >
-            <ExpandButton
-              hasBackground={false}
-              onClick={() =>
-                setUnconfirmedStackExpanded(!unconfirmedStackExpanded)
-              }
-              flipped={unconfirmedStackExpanded}
-            />
-          </ExpandableContainer>
         </>
       )}
     </LoadingRingDiv>

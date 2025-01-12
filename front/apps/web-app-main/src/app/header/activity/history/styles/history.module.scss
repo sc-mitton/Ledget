@@ -11,6 +11,7 @@ $scroll-bar-padding: 1em;
   position: relative;
   z-index: 1;
   gap: 1em;
+  margin-top: 4em;
   border-radius: var(--border-radius6);
 }
 
@@ -23,6 +24,7 @@ $scroll-bar-padding: 1em;
   z-index: 0;
   width: 100%;
   background-color: inherit;
+  margin: 1em 0;
 
   .left-info {
     overflow: hidden;

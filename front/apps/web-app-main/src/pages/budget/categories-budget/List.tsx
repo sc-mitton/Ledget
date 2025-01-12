@@ -78,7 +78,7 @@ const CategoriesList = ({ period }: { period: Category['period'] }) => {
         <h4>
           <DollarCents value={totalSpent} withCents={false} />
         </h4>
-        <span>spent of</span>
+        &nbsp;&nbsp;<span>spent of</span>&nbsp;&nbsp;
         <h4>
           <DollarCents value={totalLimit} withCents={false} />
         </h4>

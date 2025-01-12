@@ -1,7 +1,6 @@
 @import './stack.module.scss';
 
 .newItem {
-  position: absolute;
   border-radius: var(--border-radius5);
   background-color: var(--new-item-background);
   box-shadow: var(--new-item-drop-shadow);
@@ -9,8 +8,10 @@
   padding: $new-item-padding;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  margin-right: $scrollbar-padding;
-  margin-left: $scrollbar-padding;
+  margin-right: calc($scrollbar-padding * 2);
+  margin-left: calc($scrollbar-padding * 2);
+  margin-top: 1em;
+  margin-bottom: 1em;
 
   &::after {
     content: '';

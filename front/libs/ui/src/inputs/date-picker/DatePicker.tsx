@@ -841,7 +841,10 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
   // If the left side of the dropdown div is on the right
   // side of the screen, put it on the left, otherwise put it on the right
   useEffect(() => {
-    if (props.placement) return;
+    if (props.placement) {
+      setPlacement(props.placement);
+      return;
+    }
 
     if (inputContainerRef.current) {
       const rect = inputContainerRef.current.getBoundingClientRect();
@@ -852,7 +855,7 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
         ? setVerticlePlacement('top')
         : setVerticlePlacement('bottom');
     }
-  }, [inputContainerRef, showPicker]);
+  }, [inputContainerRef, showPicker, props.placement]);
 
   const handleBlur = (inputIndex: number) => {
     if (showPicker) {

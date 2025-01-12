@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 import dayjs, { Dayjs } from 'dayjs';
-import LottieView from 'react-lottie';
+import Lottie from 'react-lottie';
 
 import styles from './styles/month-picker.module.scss';
-import { DatePicker } from '@ledget/ui';
+import { DatePicker, useScreenContext } from '@ledget/ui';
 import {
   setBudgetMonthYear,
   selectBudgetMonthYear,
@@ -15,19 +15,20 @@ import { useAppDispatch, useAppSelector } from '@hooks/store';
 import { calendar } from '@ledget/media/lotties';
 
 export const MonthPicker = ({
+  placement,
   size = 'small',
 }: {
+  placement: 'left' | 'middle';
   darkMode?: boolean;
-  placement?: 'left' | 'middle';
   size?: 'small' | 'medium';
 }) => {
   const { data: user } = useGetMeQuery();
 
   const [date, setDate] = useState<Dayjs>();
+  const { screenSize } = useScreenContext();
   const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [animateLottie, setAnimateLottie] = useState(false);
   const { month, year } = useAppSelector(selectBudgetMonthYear);
 
   // Initial mount
@@ -78,7 +79,7 @@ export const MonthPicker = ({
 
   const animationOptions = {
     loop: false,
-    autoplay: animateLottie,
+    autoplay: showDatePicker,
     animationData: calendar,
     rendererSettings: {
       preserveAspectRatio: 'xMidYMid slice',
@@ -86,25 +87,30 @@ export const MonthPicker = ({
   };
 
   return (
-    <div className={styles.picker}>
+    <div className={styles.picker} data-screen-size={screenSize}>
       <div className={styles.container} data-size={size}>
         <button
+          className={styles.button}
           aria-haspopup="true"
-          onMouseEnter={() => setAnimateLottie(true)}
-          onMouseLeave={() => setAnimateLottie(false)}
-          onClick={(e) => setShowDatePicker(!showDatePicker)}
+          onClick={(e) => {
+            setShowDatePicker(!showDatePicker);
+          }}
         >
-          <LottieView
+          <Lottie
             options={animationOptions}
-            direction={animateLottie ? 1 : -1}
+            direction={showDatePicker ? 1 : -1}
             speed={1}
             style={{ width: 32, height: 32 }}
           />
-          <h2>{date?.format('MMMM YYYY')}</h2>
+          <span>
+            {['small', 'extra-small', 'medium'].includes(screenSize)
+              ? date?.format('MMM YYYY')
+              : date?.format('MMMM YYYY')}
+          </span>
         </button>
       </div>
       <DatePicker
-        placement={'left'}
+        placement={placement}
         period="month"
         hideInputElement={true}
         dropdownVisible={showDatePicker}

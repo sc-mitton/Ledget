@@ -1,6 +1,7 @@
 import React, { FC, useRef, useState, useEffect } from 'react';
 import { useTransition, animated } from '@react-spring/web';
 
+import styles from './styles.module.scss';
 import { CloseButton } from '../../buttons/specialty-buttons';
 import { useColorScheme } from '../../themes/hooks/use-color-scheme/use-color-scheme';
 import { useCloseDropdown } from '../../utils/hooks';
@@ -96,7 +97,6 @@ export function withModal<P>(
         from: {
           opacity: 0,
           scale: 0.92,
-          background: isDark ? 'hsl(0, 0%, 8%)' : 'hsl(0, 0%, 98%)',
           ...contentConfig,
         },
         enter: {
@@ -118,7 +118,11 @@ export function withModal<P>(
                 {modalContainerTransitions(
                   (scaleStyles: any, item2: boolean) =>
                     item2 && (
-                      <animated.div style={scaleStyles} ref={modalRef}>
+                      <animated.div
+                        style={scaleStyles}
+                        ref={modalRef}
+                        className={styles.modal}
+                      >
                         {hasExit && !disableClose && (
                           <CloseButton
                             onClick={() => setCloseAll(true)}

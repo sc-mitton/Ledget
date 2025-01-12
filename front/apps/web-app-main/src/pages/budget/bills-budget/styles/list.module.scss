@@ -22,11 +22,11 @@
   padding-right: 0.0625em;
 
   &:not([data-size='extra-small']) {
-    scroll-snap-type: inline mandatory;
-    grid-auto-columns: calc(50% - $item-column-gap/2);
+  scroll-snap-type: inline mandatory;
+  grid-auto-columns: calc(50% - $item-column-gap/2);
 
-    & > div {
-      scroll-snap-align: start;
+  & > div {
+    scroll-snap-align: start;
     }
   }
 
@@ -37,10 +37,6 @@
     overflow-y: scroll;
     overflow-x: hidden;
     max-height: 15em;
-
-    & > div:not(:last-child) {
-      @include table-dividers(-0.5em);
-    }
 
     & > div {
       width: 100%;
@@ -68,6 +64,7 @@
 
     & > div:nth-of-type(2) {
       flex-grow: 1;
+      margin-left: 4em;
       text-align: right;
     }
 

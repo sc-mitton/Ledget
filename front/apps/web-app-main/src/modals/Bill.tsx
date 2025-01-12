@@ -159,7 +159,7 @@ const Actions = ({
             as={IconButtonHalfGray}
             onClick={() => setOpenEllipsis(!openEllipsis)}
           >
-            <MoreHorizontal className="icon" />
+            <MoreHorizontal size={'1.5em'} />
           </Menu.Button>
           <DropdownDiv placement="right" className="right" visible={open}>
             <Menu.Items static>

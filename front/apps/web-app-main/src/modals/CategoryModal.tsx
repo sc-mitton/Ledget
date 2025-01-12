@@ -166,9 +166,9 @@ const Options = ({
 }) => (
   <Menu>
     {({ open }) => (
-      <div style={{ position: 'absolute', top: '1.125em', right: '3.5em' }}>
+      <div style={{ position: 'absolute', top: '1em', right: '3.5em' }}>
         <Menu.Button as={IconButtonHalfGray}>
-          <MoreHorizontal className="icon" />
+          <MoreHorizontal size={'1.5em'} />
         </Menu.Button>
         <DropdownDiv placement="right" visible={open}>
           <Menu.Items static>

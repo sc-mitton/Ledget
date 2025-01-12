@@ -8,7 +8,8 @@
 @import '@styles/table-mixins';
 
 .bills {
-  flex: 0 0 0;
+  flex: 2 0 0;
+  width: 100%;
   display: flex;
   position: relative;
   display: flex;
@@ -26,15 +27,13 @@
   & > button:last-of-type {
     margin-top: -0.5em;
   }
+}
 
-  &[data-collapsed='true'] {
-    flex: 0 1 0;
-
-    & > div:first-child button {
-      opacity: 1;
-      transition: opacity 0.2s ease-out 0.2s;
-    }
-  }
+.header {
+  display: flex;
+  position: relative;
+  align-items: center;
+  margin-bottom: 0.5em;
 }
 
 .container {
@@ -62,21 +61,6 @@
     transition: max-height 0.4s ease-out, opacity 0.2s ease-out 0.2s,
       z-index 0s ease-out 0s;
   }
-
-  &[data-collapsed='true'] {
-    gap: 0;
-    transition: gap 0.2s ease-out 0.2s;
-    overflow: hidden;
-
-    & > div:last-child {
-      max-height: 0px;
-      opacity: 0;
-      position: relative;
-      z-index: -1;
-      transition: max-height 0.3s ease-out, opacity 0.2s ease-out,
-        z-index 0s ease-out 0.3s;
-    }
-  }
 }
 
 .filter {
@@ -87,10 +71,5 @@
   span {
     color: inherit;
     margin-right: 0.125em;
-  }
-
-  &[data-collapsed='true'] {
-    opacity: 0.5;
-    transition: opacity 0.2s ease-out 0.2s;
   }
 }

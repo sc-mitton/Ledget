@@ -12,8 +12,8 @@ import {
   Shield,
 } from '@geist-ui/icons';
 
-import styles from './styles/sidenav.module.scss';
-import { Institution, LedgetLogo, Hamburger } from '@ledget/media';
+import styles from './side-nav.module.scss';
+import { Institution, Hamburger, LedgetLogoIcon2 } from '@ledget/media';
 import {
   usePillAnimation,
   useScreenContext,
@@ -21,6 +21,7 @@ import {
   useSchemeVar,
   useCloseDropdown,
 } from '@ledget/ui';
+import DarkSwitch from '../dark-switch/DarkSwitch';
 
 const SubSettingsSidebar = () => {
   const navigate = useNavigate();
@@ -99,6 +100,9 @@ const Nav = () => {
 
   return (
     <nav className={styles.sideNav} data-size={screenSize}>
+      <div className={styles.logoIcon}>
+        <LedgetLogoIcon2 size={'1.5em'} />
+      </div>
       <ul ref={ulRef} role="menu">
         <li data-current={location.pathname === '/' ? 'page' : ''}>
           <a onClick={() => {}} aria-disabled>
@@ -146,7 +150,10 @@ const Nav = () => {
         )}
         <animated.span style={props} />
       </ul>
-      <LegalLinks />
+      <div>
+        <DarkSwitch />
+        <LegalLinks />
+      </div>
     </nav>
   );
 };
@@ -182,7 +189,7 @@ const Sidebar = () => {
           aria-controls="hiding-sidebar"
           aria-haspopup="true"
         >
-          <Hamburger />
+          <Hamburger size={'1.5em'} />
         </button>
       </div>
       <div
@@ -191,7 +198,6 @@ const Sidebar = () => {
         ref={hidingSidebarRef}
         data-open={open}
       >
-        <LedgetLogo darkMode={isDark} />
         <Nav />
       </div>
       <div className={styles.hidingSidebarBackdrop} data-open={open} />

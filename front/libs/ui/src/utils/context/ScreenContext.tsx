@@ -28,7 +28,6 @@ export const ScreenProvider = ({ children }: { children: ReactNode }) => {
   const [screenWidth, setScreenWidth] = useState<number>();
 
   useEffect(() => {
-    let timeout: NodeJS.Timeout;
     const handleResize = () => {
       if (window.innerWidth < 600) {
         setScreenSize('extra-small');
@@ -47,7 +46,6 @@ export const ScreenProvider = ({ children }: { children: ReactNode }) => {
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
-      clearTimeout(timeout);
     };
   }, []);
 

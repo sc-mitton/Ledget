@@ -7,7 +7,6 @@ export const MainWindow = styled.div<{ size?: string }>`
   max-width: 55rem;
   width: ${(props) =>
     props.size === 'extra-small' ? 'calc(100% - 2em)' : 'calc(100% - 4em)'};
-  padding: 2em;
 `;
 
 export const Window = styled.div<{ size?: string }>`

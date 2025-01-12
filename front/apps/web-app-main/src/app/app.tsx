@@ -16,7 +16,7 @@ import NotFound from '@pages/notFound';
 import Budget from '@pages/budget/Window';
 import Profile from '@pages/settings/Window';
 import Accounts from '@pages/accounts/Window';
-import Sidenav from './sidenav';
+import SideNav from './side-nav/SideNav';
 import Header from './header/header';
 import {
   ZoomMotionDiv,
@@ -150,15 +150,15 @@ const App = () => {
   }, [user]);
 
   return (
-    <ColorSchemedDiv className={styles.app} data-size={screenSize}>
+    <ColorSchemedDiv className={styles.app}>
       <Header />
       <main>
-        {/* <Sidenav /> */}
+        <SideNav />
         <AnimatePresence mode="wait">
           <ZoomMotionDiv
             key={location.pathname.split('/')[1]}
             className={styles.dashboard}
-            data-size={screenSize}
+            data-screen-size={screenSize}
             ref={ref}
           >
             <Routes location={location} key={location.pathname.split('/')[1]}>
