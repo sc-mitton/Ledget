@@ -5,20 +5,23 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  gap: 1em;
-  padding: 0 2em 2em 2em;
+  padding: 0;
+  margin: 0 2em;
 
   & > div:not(:first-child) {
     display: flex;
     flex-direction: column;
     width: 100%;
+    overflow-y: scroll;
+    scrollbar-width: none;
   }
 
   & > div:last-child {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    gap: 2em;
+    gap: 1.25em;
+    padding: 0.5em 0 2em 0;
   }
 
   &[data-size='extra-small'] h2 {
@@ -28,7 +31,7 @@
   h4 {
     font-size: 1rem;
 
-    &+span {
+    & + span {
       font-size: 1rem;
     }
   }
@@ -43,15 +46,13 @@
 }
 
 .header {
-  background-color: var(--main-background-color);
-  box-shadow: 0 0 16px 8px var(--main-background-color);
   padding-top: 2em;
   padding-bottom: 1em;
   position: sticky;
   top: 0em;
-  z-index: 100;
+  z-index: 1;
   display: flex;
-  flex-direction: row;
+  box-shadow: 0 0 12px 6px var(--main-background-color);
 
   &[data-screen-size='small'],
   &[data-screen-size='extra-small'],

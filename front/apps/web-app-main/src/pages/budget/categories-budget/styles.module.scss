@@ -12,14 +12,6 @@ $background: var(--window);
 .container {
   position: relative;
   flex: 2 1 0;
-
-  & > h3 {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-left: 6px;
-    color: var(--m-text-secondary);
-  }
 }
 
 .columns {
@@ -57,6 +49,10 @@ $background: var(--window);
     margin: 0.75em 0 0.375em 0;
   }
 
+  h3 {
+    color: var(--m-text-secondary);
+  }
+
   & > div:first-child {
     display: flex;
     justify-content: space-between;
@@ -84,6 +80,40 @@ $background: var(--window);
 
   hr {
     border-top: 1px solid var(--border-color-super-dim);
+  }
+}
+
+.header {
+  display: flex;
+  position: relative;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5em;
+
+
+  & > h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 6px;
+  }
+}
+
+.headerButtons {
+  display: flex;
+  flex-direction: row;
+  gap: .5em;
+  align-items: center;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: .5em;
+
+    * {
+      color: var(--m-text-tertiary);
+    }
   }
 }
 

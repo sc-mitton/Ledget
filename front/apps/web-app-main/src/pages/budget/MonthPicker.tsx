@@ -109,18 +109,20 @@ export const MonthPicker = ({
           </span>
         </button>
       </div>
-      <DatePicker
-        placement={placement}
-        period="month"
-        hideInputElement={true}
-        dropdownVisible={showDatePicker}
-        disabled={[[undefined, dayjs(user?.created_on)]]}
-        hidden={[[dayjs().add(1, 'month'), undefined]]}
-        disabledStyle="muted"
-        setDropdownVisible={setShowDatePicker}
-        defaultValue={date}
-        onChange={(date) => date && setDate(date)}
-      />
+      <div>
+        <DatePicker
+          placement={placement}
+          period="month"
+          hideInputElement={true}
+          dropdownVisible={showDatePicker}
+          disabled={[[undefined, dayjs(user?.created_on)]]}
+          hidden={[[dayjs().add(1, 'month'), undefined]]}
+          disabledStyle="muted"
+          setDropdownVisible={setShowDatePicker}
+          defaultValue={date}
+          onChange={(date) => date && setDate(date)}
+        />
+      </div>
     </div>
   );
 };

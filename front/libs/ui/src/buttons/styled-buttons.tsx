@@ -11,6 +11,7 @@ import {
   charcoal,
   blue,
   gray,
+  borderedGray,
   featherGray,
   red,
   clearGray,
@@ -124,19 +125,29 @@ export const PrimaryTextButton = styled(PrimaryButton)`
     }
   }
 `;
+
 export const IconButtonHalfBlue = styled(BaseButton)`
   ${hoverHalfBlueText} border-radius: .25em;
 `;
+
 export const IconButtonHalfGray = styled(BaseButton)`
   ${clearGray} border-radius: .375em;
   padding: 0.125em;
 `;
+
 export const IconButtonGray = styled(BaseButton)`
   ${gray} border-radius: .375em;
   padding: 0.125em;
 `;
+
 export const IconButtonBlue = styled(BaseButton)`
   ${hoverBlueText} border-radius: .25em;
+`;
+
+export const IconButtonBorderedGray = styled(BaseButton)`
+  ${borderedGray}
+  border-radius: .5em;
+  padding: 0.25em;
 `;
 
 export const FadedIconButton = styled(BaseButton)`

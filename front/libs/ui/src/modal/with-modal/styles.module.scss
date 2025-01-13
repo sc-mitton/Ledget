@@ -1,14 +1,5 @@
 .modal {
     backdrop-filter: blur(4px);
     position: relative;
-    overflow: hidden;
-
-    &::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: var(--modal-window);
-        opacity: .95;
-        z-index: -1;
-    }
+    background: var(--modal-window);
 }

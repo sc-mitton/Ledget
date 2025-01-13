@@ -1,11 +1,10 @@
-
 .activityDropdown {
   position: absolute;
   display: flex;
   flex-direction: column;
   top: 2em;
-  right: 2em;
-  z-index: 110;
+  right: 1.875em;
+  z-index: 2;
 
   & > div:last-child {
     position: relative;
@@ -18,8 +17,28 @@
     position: relative;
     color: var(--m-text);
 
-    svg path {
-      stroke: currentColor;
+    &[data-screen-size='small'],
+    &[data-screen-size='extra-small'] {
+      &::before {
+        border-color: transparent;
+        background-color: unset;
+      }
+
+      &:hover::before {
+        background-color: unset;
+      }
+
+      span {
+        width: 0.375em;
+        height: 0.375em;
+        top: 0px;
+        right: 0px;
+
+        &::after {
+          width: 5px;
+          height: 5px;
+        }
+      }
     }
 
     span {
@@ -67,12 +86,16 @@
       border: 1px solid var(--btn-light-gray);
       z-index: -1;
       border-radius: 50%;
-      transition: all .3s ease-in-out;
+      transition: all 0.3s ease-in-out;
     }
 
     &:hover::before {
       background-color: var(--btn-feather-light-gray-hover);
-      transition: all .3s ease-in-out;
+      transition: all 0.3s ease-in-out;
+    }
+
+    svg path {
+      stroke: currentColor;
     }
   }
 }
@@ -122,14 +145,14 @@
     content: '';
     inset: 0;
     background-color: var(--window);
-    opacity: .94;
+    opacity: 0.94;
     z-index: 11;
     box-shadow: var(--window) 0 0 8px;
   }
 
   & > div:first-child {
     z-index: 12;
-    padding: 1em 1.5em .75em 1.5em;
+    padding: 1em 1.5em 0.75em 1.5em;
     position: relative;
     width: 100%;
     justify-content: center;

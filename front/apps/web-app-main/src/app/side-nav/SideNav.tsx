@@ -164,7 +164,6 @@ const Sidebar = () => {
   const buttonRef = useRef(null);
   const hidingSidebarRef = useRef(null);
   const location = useLocation();
-  const { isDark } = useColorScheme();
 
   useCloseDropdown({
     visible: open,

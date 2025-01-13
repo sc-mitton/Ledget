@@ -21,7 +21,6 @@
     align-items: center;
     gap: 10px;
     margin-left: 6px;
-    color: var(--m-text-secondary);
   }
 
   & > button:last-of-type {
@@ -32,8 +31,27 @@
 .header {
   display: flex;
   position: relative;
+  width: 100%;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 0.5em;
+}
+
+.headerButtons {
+  display: flex;
+  flex-direction: row;
+  gap: .5em;
+  align-items: center;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: .5em;
+
+    * {
+      color: var(--m-text-tertiary);
+    }
+  }
 }
 
 .container {
@@ -46,7 +64,6 @@
   transition: gap 0.2s ease-out 0.1s;
   height: min-content;
   margin-top: 0.75em;
-  margin-bottom: 1.5em;
 
   // Div around the calendar and bill items
   & > div:nth-child(2) {

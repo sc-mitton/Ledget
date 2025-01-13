@@ -4,7 +4,12 @@ import { Tab } from '@headlessui/react';
 import Lottie from 'react-lottie';
 
 import styles from './dropdown.module.scss';
-import { DropdownDiv, useCloseDropdown, TabNavList } from '@ledget/ui';
+import {
+  DropdownDiv,
+  useCloseDropdown,
+  TabNavList,
+  useScreenContext,
+} from '@ledget/ui';
 import { activity } from '@ledget/media/lotties';
 import {
   selectNotificationsTabIndex,
@@ -19,18 +24,21 @@ import { NeedsConfirmationStack } from './needs-confirmation/Stack';
 import { History } from './history/History';
 
 const ActivityDropdown = (props: HTMLProps<HTMLDivElement>) => {
+  const dispatch = useAppDispatch();
+
   const { month, year } = useAppSelector(selectBudgetMonthYear);
   const { data: tCountData } = useGetTransactionsCountQuery(
     { confirmed: false, month, year },
     { skip: !month || !year }
   );
+  const notificationTabIndex = useAppSelector(selectNotificationsTabIndex);
   const [animate, setAnimate] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [tabIndex, setTabIndex] = useState(notificationTabIndex);
+  const { screenSize } = useScreenContext();
+
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const dispatch = useAppDispatch();
-  const notificationTabIndex = useAppSelector(selectNotificationsTabIndex);
-  const [tabIndex, setTabIndex] = useState(notificationTabIndex);
 
   const animationOptions = {
     loop: false,
@@ -56,6 +64,7 @@ const ActivityDropdown = (props: HTMLProps<HTMLDivElement>) => {
     <div {...props} className={styles.activityDropdown}>
       <button
         ref={buttonRef}
+        data-screen-size={screenSize}
         onMouseEnter={() => setAnimate(true)}
         onMouseLeave={() => setAnimate(false)}
         data-active={Boolean(tCountData?.count)}
