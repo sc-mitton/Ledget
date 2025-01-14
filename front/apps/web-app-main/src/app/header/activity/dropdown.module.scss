@@ -2,8 +2,8 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  top: 2em;
-  right: 1.875em;
+  top: 1.5em;
+  right: 1.75em;
   z-index: 2;
 
   & > div:last-child {
@@ -82,7 +82,7 @@
       top: 50%;
       right: 50%;
       transform: translate(50%, -50%);
-      background-color: var(--btn-feather-light-gray);
+      background-color: var(--window);
       border: 1px solid var(--btn-light-gray);
       z-index: -1;
       border-radius: 50%;
@@ -90,7 +90,7 @@
     }
 
     &:hover::before {
-      background-color: var(--btn-feather-light-gray-hover);
+      background-color: var(--btn-feather-light-gray);
       transition: all 0.3s ease-in-out;
     }
 

@@ -137,7 +137,7 @@ export const IconButtonHalfGray = styled(BaseButton)`
 
 export const IconButtonGray = styled(BaseButton)`
   ${gray} border-radius: .375em;
-  padding: 0.125em;
+  padding: 0.25em;
 `;
 
 export const IconButtonBlue = styled(BaseButton)`

@@ -101,7 +101,7 @@ const Nav = () => {
   return (
     <nav className={styles.sideNav} data-size={screenSize}>
       <div className={styles.logoIcon}>
-        <LedgetLogoIcon2 size={'1.5em'} />
+        <LedgetLogoIcon2 darkMode={isDark} />
       </div>
       <ul ref={ulRef} role="menu">
         <li data-current={location.pathname === '/' ? 'page' : ''}>
@@ -164,6 +164,7 @@ const Sidebar = () => {
   const buttonRef = useRef(null);
   const hidingSidebarRef = useRef(null);
   const location = useLocation();
+  const { isDark } = useColorScheme();
 
   useCloseDropdown({
     visible: open,
@@ -188,7 +189,7 @@ const Sidebar = () => {
           aria-controls="hiding-sidebar"
           aria-haspopup="true"
         >
-          <Hamburger size={'1.5em'} />
+          <Hamburger size={'1.5em'} strokeWidth={2} />
         </button>
       </div>
       <div
@@ -199,7 +200,11 @@ const Sidebar = () => {
       >
         <Nav />
       </div>
-      <div className={styles.hidingSidebarBackdrop} data-open={open} />
+      <div
+        className={styles.hidingSidebarBackdrop}
+        data-open={open}
+        data-dark={isDark}
+      />
     </>
   ) : (
     <Nav />

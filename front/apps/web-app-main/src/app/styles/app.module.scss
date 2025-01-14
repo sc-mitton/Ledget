@@ -21,7 +21,7 @@
   align-items: flex-start;
 
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: visible;
   scrollbar-width: none;
 
   &[data-screen-size='small'],

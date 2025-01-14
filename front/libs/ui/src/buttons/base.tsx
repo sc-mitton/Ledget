@@ -40,7 +40,7 @@ export const SlimButton3 = styled(BaseButton)`
 
 export const PrimaryButton = styled(BaseButton)`
   padding: 0.375em 0.75em;
-  border-radius: 0.5em;
+  border-radius: 0.625em;
 `;
 
 export const WideButton = styled(BaseButton)`

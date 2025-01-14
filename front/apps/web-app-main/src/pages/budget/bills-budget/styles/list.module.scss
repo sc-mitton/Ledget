@@ -22,11 +22,11 @@
   padding-right: 0.0625em;
 
   &:not([data-size='extra-small']) {
-  scroll-snap-type: inline mandatory;
-  grid-auto-columns: calc(50% - $item-column-gap/2);
+    scroll-snap-type: inline mandatory;
+    grid-auto-columns: calc(50% - $item-column-gap/2);
 
-  & > div {
-    scroll-snap-align: start;
+    & > div {
+      scroll-snap-align: start;
     }
   }
 
@@ -35,7 +35,6 @@
     grid-template-columns: 1fr;
     grid-template-rows: auto;
     overflow-y: scroll;
-    overflow-x: hidden;
     max-height: 15em;
 
     & > div {

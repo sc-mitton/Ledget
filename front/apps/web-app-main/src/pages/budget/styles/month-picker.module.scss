@@ -34,7 +34,7 @@
 
   &[data-size='medium'] span {
     font-size: 1.5rem;
-    font-weight: 400;
+    font-weight: var(--fw-bold);
   }
 
   button {

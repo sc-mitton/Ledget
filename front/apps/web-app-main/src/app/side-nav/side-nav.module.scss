@@ -9,9 +9,13 @@
 }
 
 .logoIcon {
-  padding: 0.5em 0.75em 1em 0.75em;
   margin-bottom: 1em;
   border-bottom: var(--side-nav-border);
+
+  img {
+    height: 1.75em;
+    width: auto;
+  }
 }
 
 .legalLinks {
@@ -62,6 +66,10 @@
     transition: opacity 0.3s ease-in-out 0.3s, 0s visibility linear 0.6s;
   }
 
+  &[data-dark='true'][data-open='true']::before {
+    opacity: 0.1;
+  }
+
   &[data-open='true'] {
     &::after,
     &::before {
@@ -70,7 +78,7 @@
     }
 
     &::before {
-      opacity: 0.06;
+      opacity: 0.3;
     }
 
     &::after {
@@ -122,7 +130,7 @@
 
 .hamburger {
   position: absolute;
-  top: 2.25em;
+  top: 2em;
   left: 2.25em;
   z-index: 2;
 
@@ -133,10 +141,6 @@
   &:hover svg {
     transition: transform 0.3s ease-in-out;
     transform: scaleX(1.125);
-  }
-
-  * {
-    color: var(--white);
   }
 }
 
@@ -172,7 +176,7 @@
   }
 
   & > div:first-of-type {
-    padding: 1em 2.25em 0.75em 1.8em;
+    padding: 0.125em 2.25em 0.75em 1.8em;
   }
 
   & > div:last-of-type {
