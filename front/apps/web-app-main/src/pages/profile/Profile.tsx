@@ -16,13 +16,13 @@ import {
 import {
   HalfTextSlimBlueButton,
   HalfTextSlimBlueSubmitButton,
-  ShimmerDiv,
   BakedSwitch,
   useColorScheme,
   CircleIconButton,
   NestedWindow,
   useScreenContext,
   StyledMenu,
+  LoadingRingDiv,
 } from '@ledget/ui';
 import { edit } from '@ledget/media/lotties';
 import { ConfirmRemoveCoOwner } from '@modals/index';
@@ -340,10 +340,8 @@ const Account = () => {
       <h1 data-size={screenSize} className={styles.header}>
         Profile
       </h1>
-      <ShimmerDiv
-        shimmering={
-          loadingInvoice || loadingPaymentMethod || loadingSubscription
-        }
+      <LoadingRingDiv
+        loading={loadingInvoice || loadingPaymentMethod || loadingSubscription}
         style={{ borderRadius: 'var(--border-radius5)' }}
       >
         <div className={styles.accountsPage}>
@@ -361,7 +359,7 @@ const Account = () => {
             <Preferences />
           </div>
         </div>
-      </ShimmerDiv>
+      </LoadingRingDiv>
       <Outlet />
     </>
   );

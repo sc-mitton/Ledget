@@ -4,5 +4,12 @@
   align-self: center;
   max-width: 50rem;
   width: 100%;
+  flex: 1;
   position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.motionDiv {
+  flex: 1;
 }

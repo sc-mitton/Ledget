@@ -1,32 +1,40 @@
 import { FC, HTMLAttributes } from 'react';
+import Lottie from 'react-lottie';
+
 import styles from './loading-indicators.module.scss';
 import { useTransition, animated } from '@react-spring/web';
+import { loading } from '@ledget/media/lotties';
 import { AnimatePresence, motion } from 'framer-motion';
 import LottieView from 'react-lottie';
 
-import { loading } from '@ledget/media/lotties';
-
 export const LoadingRing = ({
   visible = false,
+  size = 26,
   style,
 }: {
   visible?: boolean;
   style?: React.CSSProperties;
+  size?: number;
   className?: string;
 }) => {
+  const animationOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: loading,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice',
+    },
+  };
+
   return (
-    <>
+    <div style={style} className={styles.ldsRingContainer}>
       {visible && (
-        <div style={style} className={styles.ldsRingContainer}>
-          <div className={styles.ldsRing}>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-        </div>
+        <Lottie
+          options={animationOptions}
+          style={{ width: size, height: size }}
+        />
       )}
-    </>
+    </div>
   );
 };
 
@@ -35,7 +43,7 @@ export const LoadingRingDiv: FC<
     loading: boolean;
     style?: React.CSSProperties;
   }
-> = ({ loading = false, style = {}, children, ...rest }) => {
+> = ({ loading = false, style = {}, children, className, ...rest }) => {
   const transition = useTransition(!loading, {
     from: { opacity: 0 },
     enter: { opacity: 1 },
@@ -43,8 +51,12 @@ export const LoadingRingDiv: FC<
   });
 
   return (
-    <div style={{ position: 'relative', ...style }} {...rest}>
-      <LoadingRing visible={loading} />
+    <div
+      style={{ position: 'relative', ...style }}
+      className={[className, styles.loadingRingDiv].join(' ')}
+      {...rest}
+    >
+      <LoadingRing visible={loading} size={36} />
       {transition(
         (style, item) =>
           item && <animated.div style={style}>{children}</animated.div>

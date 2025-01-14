@@ -25,6 +25,7 @@ function Profile() {
     <div className={styles.mainWindow}>
       <AnimatePresence mode="wait">
         <motion.div
+          className={styles.motionDiv}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

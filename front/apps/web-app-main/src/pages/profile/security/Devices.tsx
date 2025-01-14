@@ -57,12 +57,12 @@ const Device = (props: { device: string; info: DeviceType[] }) => {
         {({ open }) => (
           <>
             <Disclosure.Button ref={buttonRef} key={device} data-open={open}>
-              <div>
-                {iconKey === 'is_pc' && <Computer size="3em" />}
+              <div data-icon={iconKey}>
                 {iconKey === 'is_mobile' && (
                   <Smartphone className={styles.smartPhoneIcon} />
                 )}
-                {!iconKey && <Computer />}
+                {iconKey === 'is_pc' && <Computer size={'2em'} />}
+                {!iconKey && <Computer size={'2em'} />}
               </div>
               <div>
                 <div>
@@ -72,7 +72,7 @@ const Device = (props: { device: string; info: DeviceType[] }) => {
                   }`}</span>
                 </div>
                 <div>
-                  <MapPin2 size={'1em'} />
+                  <MapPin2 size={'0.875em'} />
                   <span>
                     {device.split(',')[2] === undefined
                       ? 'unknown'

@@ -17,13 +17,12 @@ import {
   PlaidItem as TPlaidItem,
 } from '@ledget/shared-features';
 import { useBakedPlaidLink, useBakedUpdatePlaidLink } from '@utils/hooks';
-import { useScreenContext, withSmallModal } from '@ledget/ui';
+import { LoadingRingDiv, useScreenContext, withSmallModal } from '@ledget/ui';
 import SubmitForm from '@components/pieces/SubmitForm';
 import {
   SecondaryButton,
   BlueSubmitButton,
   IconButtonBorderedGray,
-  ShimmerDiv,
   DeleteButton,
   TextButtonBlue,
   Tooltip,
@@ -353,8 +352,8 @@ const Connections = () => {
           }}
         />
       )}
-      <ShimmerDiv
-        shimmering={fetchingPlaidItems}
+      <LoadingRingDiv
+        loading={fetchingPlaidItems}
         className={styles.connectionsPage}
       >
         {plaidItems?.length === 0 ? (
@@ -393,7 +392,7 @@ const Connections = () => {
             </div>
           </>
         )}
-      </ShimmerDiv>
+      </LoadingRingDiv>
     </>
   );
 };

@@ -65,7 +65,7 @@ const Mfa = () => {
               onClick={() => navigate('/settings/security/authenticator-setup')}
               darker={true}
             >
-              <Plus size={'1em'} />
+              <Plus size={'.875em'} strokeWidth={2} />
             </CircleIconButton>
           </>
         )}

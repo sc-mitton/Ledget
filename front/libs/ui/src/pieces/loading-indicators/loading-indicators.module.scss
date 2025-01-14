@@ -1,5 +1,12 @@
 /* ------------------------------ Loading Ring ------------------------------ */
 
+.loadingRingDiv {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+}
+
 .ldsRingContainer {
   position: absolute;
   top: 50%;
