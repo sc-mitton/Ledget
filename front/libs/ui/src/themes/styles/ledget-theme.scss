@@ -354,7 +354,7 @@
       var(--window2),
       color-mix(in srgb, var(--window2), var(--main-background-color) 30%)
     );
-    --window-drop-shadow: rgba(0, 0, 0, 0.04) 0px 0px 32px,
+    --window-drop-shadow: rgba(0, 0, 0, 0.04) 0px 0px 24px,
       rgba(0, 0, 0, 0.04) 0px 2px 4px;
 
     --window-portal-drop-shadow: rgba(0, 0, 0, 0.04) 0px 0px 32px,
@@ -489,7 +489,7 @@
     // Misc Drop Shadows & Borders
     --dropdown-background-rgb: 250, 250, 250;
     --dropdown-background: hsl(var(--window-h), var(--window-s), 98%);
-    --dropdown-border: 1px solid var(--border-color-super-dim);
+    --dropdown-border: 0px solid var(--border-color);
     --dropdown-item-background: hsl(0, 0%, 93%);
 
     --dropdown-box-shadow-color: rgba(0, 0, 0, 0.2);

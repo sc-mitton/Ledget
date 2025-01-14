@@ -17,11 +17,12 @@ $background: var(--window);
 .columns {
   display: flex;
   gap: 2.25rem;
-  padding: 1em 0.125em;
+  padding: 1em 0em;
   height: calc(100% - 1.75em);
   scrollbar-width: none;
   max-width: 100%;
-  overflow-x: auto;
+  overflow-x: scroll;
+  overflow-y: visible;
 
   & > div {
     flex: 1;

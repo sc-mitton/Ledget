@@ -64,7 +64,7 @@
   gap: 2em;
   position: relative;
   color: var(--input-placeholder2);
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 
   &[data-filled='true'] {
     color: var(--m-text);
@@ -131,6 +131,7 @@
   padding: 0.5em;
   padding-top: 2.25em;
   overflow: hidden;
+  border-radius: inherit;
 
   & > div:first-of-type {
     display: flex;
@@ -140,15 +141,17 @@
     top: 0;
     left: 0;
     right: 0;
-    padding: .75em;
-
+    padding: 0.75em;
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+    overflow: hidden;
 
     &::after {
       content: '';
       inset: 0;
       position: absolute;
       background-color: var(--border-color-super-dim);
-      opacity: .5;
+      opacity: 0.5;
       pointer-events: none;
     }
 
@@ -175,7 +178,7 @@
   }
 
   & > div:last-child {
-    margin-top: .375em;
+    margin-top: 0.375em;
     display: flex;
     justify-content: center;
   }
