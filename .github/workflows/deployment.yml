@@ -11,8 +11,8 @@ on:
           - "all"
           - "force-run-all"
           - "webapps"
-          - "web-app"
-          - "web-portal-app"
+          - "web-app-main"
+          - "web-app-portal"
           - "landing"
           - "rest-api"
           - "oathkeeper"
@@ -40,18 +40,18 @@ jobs:
       environment: ${{ (github.head_ref == 'uat' || github.ref_name == 'uat') && 'uat' || 'prod' }}
       role: "arn:aws:iam::905418323334:role/gh-actions"
     secrets: inherit
-  deploy-web-app:
-    if: ${{ contains('all web-app force-run-all webapps', inputs.deployments_to_run) }}
+  deploy-web-app-main:
+    if: ${{ contains('all web-app-main force-run-all webapps', inputs.deployments_to_run) }}
     uses: ./.github/workflows/deploy-web-app.yml
     with:
-      app: "web-app"
+      app: "web-app-main"
       version: ${{ inputs.version }}
       s3-bucket: ${{ (github.head_ref == 'uat' || github.ref_name == 'uat') && 'uat.ledget.app' || 'ledget.app' }}
       role: "arn:aws:iam::905418323334:role/gh-actions"
       environment: ${{ (github.head_ref == 'uat' || github.ref_name == 'uat') && 'uat' || 'prod' }}
       force_run_all: ${{ inputs.deployments_to_run == 'force-run-all' || inputs.force_run == true }}
-  deploy-web-portal-app:
-    if: ${{ contains('all web-portal-app force-run-all webapps', inputs.deployments_to_run) }}
+  deploy-web-app-portal:
+    if: ${{ contains('all web-app-portal force-run-all webapps', inputs.deployments_to_run) }}
     uses: ./.github/workflows/deploy-web-app.yml
     with:
       app: "web-portal"

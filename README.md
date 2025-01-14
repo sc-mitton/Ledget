@@ -93,8 +93,8 @@ bun install
 docker-compose up -d --build
 cd front
 export NODE_ENV='development'
-pm2 start nx --name web-app -- run web-app:serve &&
-pm2 start nx --name web-portal-app -- run web-portal-app:serve
+pm2 start nx --name web-app-main -- run web-app-main:serve &&
+pm2 start nx --name web-app-portal -- run web-app-portal:serve
 ```
 
 9. Stop the Environment
@@ -102,8 +102,8 @@ pm2 start nx --name web-portal-app -- run web-portal-app:serve
 ```
 docker-compose down
 
-pm2 stop web-app &&
-pm2 stop web-portal-app &&
+pm2 stop web-app-main &&
+pm2 stop web-app-portal &&
 pm2 delete all
 ```
 

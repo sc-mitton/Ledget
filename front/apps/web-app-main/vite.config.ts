@@ -10,7 +10,7 @@ import { visualizer } from 'rollup-plugin-visualizer';
 const certsDir = __dirname + '/../../certs/';
 
 export default defineConfig({
-  cacheDir: '../../node_modules/.vite/web-app',
+  cacheDir: '../../node_modules/.vite/web-app-main',
 
   ...(process.env.NODE_ENV === 'development'
     ? {
