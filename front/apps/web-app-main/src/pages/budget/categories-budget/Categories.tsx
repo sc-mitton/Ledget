@@ -10,7 +10,7 @@ import OrderMenu from '../order-menu/OrderMenu';
 const ColumnView = () => {
   const { screenSize } = useScreenContext();
   return (
-    <div className={styles.columns} data-size={screenSize}>
+    <div className={styles.columns} data-screen-size={screenSize}>
       <Window>
         <List period="month" />
       </Window>

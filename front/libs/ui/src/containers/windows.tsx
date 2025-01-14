@@ -2,11 +2,10 @@ import styled from 'styled-components';
 import { useScreenContext } from '../utils/context/ScreenContext';
 
 export const MainWindow = styled.div<{ size?: string }>`
-  overflow: auto;
+  overflow-y: auto;
   scrollbar-width: none;
   max-width: 55rem;
-  width: ${(props) =>
-    props.size === 'extra-small' ? 'calc(100% - 2em)' : 'calc(100% - 4em)'};
+  width: 100%;
 `;
 
 export const Window = styled.div<{ size?: string }>`
@@ -14,8 +13,7 @@ export const Window = styled.div<{ size?: string }>`
   box-sizing: border-box;
   border: 1.25px solid var(--window-border);
 
-  box-shadow: ${(props) =>
-    props.size === 'extra-small' ? 'none' : 'var(--window-drop-shadow)'};
+  box-shadow: var(--window-drop-shadow);
   padding: 1em 1.5em;
   background: var(--window-background);
 

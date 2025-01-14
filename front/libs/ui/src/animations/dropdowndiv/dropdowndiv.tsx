@@ -1,6 +1,7 @@
 import {
   forwardRef,
   HTMLProps,
+  useEffect,
   useLayoutEffect,
   useRef,
   useState,
@@ -127,7 +128,13 @@ export const DropdownDiv = forwardRef<
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [placement]);
+
+  useEffect(() => {
+    if (placement !== 'auto') {
+      setDropdownPlacement([placement, verticlePlacement]);
+    }
+  }, [placement, verticlePlacement]);
 
   const transitions = useTransition(visible, {
     from: {

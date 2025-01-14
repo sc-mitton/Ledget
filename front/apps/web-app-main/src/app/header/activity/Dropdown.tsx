@@ -9,6 +9,7 @@ import {
   useCloseDropdown,
   TabNavList,
   useScreenContext,
+  useColorScheme,
 } from '@ledget/ui';
 import { activity } from '@ledget/media/lotties';
 import {
@@ -36,6 +37,7 @@ const ActivityDropdown = (props: HTMLProps<HTMLDivElement>) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [tabIndex, setTabIndex] = useState(notificationTabIndex);
   const { screenSize } = useScreenContext();
+  const { isDark } = useColorScheme();
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -68,6 +70,7 @@ const ActivityDropdown = (props: HTMLProps<HTMLDivElement>) => {
         onMouseEnter={() => setAnimate(true)}
         onMouseLeave={() => setAnimate(false)}
         data-active={Boolean(tCountData?.count)}
+        data-dark={isDark}
         onClick={() => setShowDropdown(!showDropdown)}
       >
         <Lottie
@@ -78,7 +81,7 @@ const ActivityDropdown = (props: HTMLProps<HTMLDivElement>) => {
         />
         <span />
       </button>
-      <div>
+      <div data-screen-size={screenSize}>
         <DropdownDiv
           ref={dropdownRef}
           placement="right"

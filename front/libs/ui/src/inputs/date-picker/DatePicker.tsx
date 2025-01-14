@@ -38,6 +38,7 @@ import type {
   CalendarCellProps,
   YearsMonthsProps,
   DaysProps,
+  TPlacement,
 } from './types';
 
 // Context
@@ -746,7 +747,7 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
   const [showPicker, setShowPicker] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputContainerRef = useRef<HTMLDivElement>(null);
-  const [placement, setPlacement] = useState<'left' | 'right' | 'middle'>(
+  const [placement, setPlacement] = useState<TPlacement>(
     props.placement || 'left'
   );
   const [verticlePlacement, setVerticlePlacement] = useState<'top' | 'bottom'>(

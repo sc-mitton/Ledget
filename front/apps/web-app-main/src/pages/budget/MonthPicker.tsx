@@ -14,14 +14,7 @@ import {
 import { useAppDispatch, useAppSelector } from '@hooks/store';
 import { calendar } from '@ledget/media/lotties';
 
-export const MonthPicker = ({
-  placement,
-  size = 'small',
-}: {
-  placement: 'left' | 'middle';
-  darkMode?: boolean;
-  size?: 'small' | 'medium';
-}) => {
+export const MonthPicker = () => {
   const { data: user } = useGetMeQuery();
 
   const [date, setDate] = useState<Dayjs>();
@@ -88,7 +81,7 @@ export const MonthPicker = ({
 
   return (
     <div className={styles.picker} data-screen-size={screenSize}>
-      <div className={styles.container} data-size={size}>
+      <div className={styles.container} data-screen-size={screenSize}>
         <button
           className={styles.button}
           aria-haspopup="true"
@@ -100,7 +93,11 @@ export const MonthPicker = ({
             options={animationOptions}
             direction={showDatePicker ? 1 : -1}
             speed={1}
-            style={{ width: 32, height: 32 }}
+            style={
+              ['small', 'extra-small'].includes(screenSize)
+                ? { width: 28, height: 28 }
+                : { width: 32, height: 32 }
+            }
           />
           <span>
             {['small', 'extra-small', 'medium'].includes(screenSize)
@@ -111,7 +108,11 @@ export const MonthPicker = ({
       </div>
       <div>
         <DatePicker
-          placement={placement}
+          placement={
+            ['small', 'extra-small', 'medium'].includes(screenSize)
+              ? 'middle'
+              : 'left'
+          }
           period="month"
           hideInputElement={true}
           dropdownVisible={showDatePicker}

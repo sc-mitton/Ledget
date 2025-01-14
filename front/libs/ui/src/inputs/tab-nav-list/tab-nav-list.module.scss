@@ -6,7 +6,7 @@
   background-color: var(--default-tab-background);
   border-radius: calc(var(--border-radius2) + 4px);
   position: relative;
-  padding: .25em .375em;
+  padding: 0.25em 0.4em;
 
   &[data-size='sm'] > button {
     padding: 0 0.75rem;
@@ -18,7 +18,7 @@
     place-content: center;
     z-index: 2;
     position: relative;
-    padding: .125em 1.5rem;
+    padding: 0.125em 1.5rem;
     margin-bottom: 0.0625em;
 
     &:active,

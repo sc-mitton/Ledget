@@ -9,6 +9,10 @@
   & > div:last-child {
     position: relative;
     top: 0.5em;
+
+    &[data-screen-size='extra-small'] {
+      margin-right: -0.75em;
+    }
   }
 
   & > button {
@@ -22,6 +26,7 @@
       &::before {
         border-color: transparent;
         background-color: unset;
+        border: unset;
       }
 
       &:hover::before {
@@ -43,10 +48,10 @@
 
     span {
       position: absolute;
-      top: -6px;
-      right: -6px;
-      width: 1em;
-      height: 1em;
+      top: -4px;
+      right: -4px;
+      width: 0.75em;
+      height: 0.75em;
       border-radius: 50%;
       background-color: var(--main-background-color);
 
@@ -58,7 +63,7 @@
         position: absolute;
         transform: translate(-50%, -50%);
         background-color: var(--blue-medium);
-        animation: pulse 2s ease-out infinite;
+        animation: lightPulse 2s ease-out infinite;
       }
 
       &::after {
@@ -68,10 +73,24 @@
         transform: translate(-50%, -50%);
         border-radius: 50%;
         position: absolute;
-        width: 8px;
-        height: 8px;
+        width: 7px;
+        height: 7px;
         background-color: var(--blue-sat);
       }
+    }
+
+    &[data-dark='true'] span::before {
+      animation: darkPulse 2s ease-out infinite;
+    }
+
+    &[data-dark='true']::before {
+      background-color: var(--btn-feather-light-gray);
+      border-color: var(--btn-feather-light-gray-hover);
+    }
+
+    &[data-dark='true']:hover::before {
+      background-color: var(--btn-feather-light-gray-hover);
+      border-color: var(--btn-light-gray-hover);
     }
 
     &::before {
@@ -101,11 +120,25 @@
   }
 }
 
-@keyframes pulse {
+@keyframes darkPulse {
   0% {
     width: 0px;
     height: 0px;
     opacity: 1;
+  }
+
+  100% {
+    width: 24px;
+    height: 24px;
+    opacity: 0;
+  }
+}
+
+@keyframes lightPulse {
+  0% {
+    width: 0px;
+    height: 0px;
+    opacity: 0.6;
   }
 
   100% {
@@ -158,7 +191,7 @@
     width: 100%;
     justify-content: center;
     display: flex;
-    border-bottom: 1.5px solid var(--border-color-dim);
+    border-bottom: 1.5px solid var(--border-color-super-dim);
   }
 }
 

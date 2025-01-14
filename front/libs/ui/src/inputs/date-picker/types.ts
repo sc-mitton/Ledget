@@ -3,6 +3,8 @@ import type { Dayjs } from 'dayjs';
 // Types
 export type TPicker = 'date' | 'range';
 
+export type TPlacement = 'left' | 'right' | 'middle' | 'auto';
+
 type TSelectedValue<T extends TPicker> = T extends 'range'
   ? [Dayjs | undefined, Dayjs | undefined]
   : Dayjs;
@@ -16,7 +18,7 @@ type BaseDatePickerProps = {
   hidden?: [Dayjs | undefined, Dayjs | undefined][];
   disabledStyle?: 'muted' | 'highlighted';
   autoFocus?: boolean;
-  placement?: 'left' | 'right' | 'middle';
+  placement?: TPlacement;
   verticlePlacement?: 'top' | 'bottom';
 } & (
   | {

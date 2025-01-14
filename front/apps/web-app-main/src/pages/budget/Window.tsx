@@ -59,15 +59,7 @@ function Window() {
     <>
       <MainWindow className={styles.window} data-size={screenSize}>
         <div className={styles.header} data-screen-size={screenSize}>
-          <MonthPicker
-            darkMode={isDark}
-            placement={
-              ['medium', 'small', 'extra-small'].includes(screenSize)
-                ? 'middle'
-                : 'left'
-            }
-            size="medium"
-          />
+          <MonthPicker />
         </div>
         <div>
           <SpendingCategories />

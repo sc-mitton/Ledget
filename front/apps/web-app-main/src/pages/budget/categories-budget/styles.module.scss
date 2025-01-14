@@ -12,17 +12,28 @@ $background: var(--window);
 .container {
   position: relative;
   flex: 2 1 0;
+  box-sizing: border-box;
 }
 
 .columns {
   display: flex;
-  gap: 2.25rem;
-  padding: 1em 0em;
+  gap: 2rem;
+  padding: 1em 2em;
   height: calc(100% - 1.75em);
   scrollbar-width: none;
   max-width: 100%;
-  overflow-x: scroll;
-  overflow-y: visible;
+  overflow: auto;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black calc(0% + 3em),
+    black calc(100% - 3em),
+    transparent 100%
+  );
+
+  &[data-screen-size='extra-small'] > div:last-of-type {
+    margin-right: 1.5em;
+  }
 
   & > div {
     flex: 1;
@@ -91,6 +102,8 @@ $background: var(--window);
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.5em;
+  padding: 0 2em;
+  box-sizing: border-box;
 
   & > h3 {
     display: flex;

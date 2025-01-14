@@ -10,10 +10,6 @@
   &[data-screen-size='medium'] {
     align-items: center;
   }
-
-  & > div:last-of-type {
-    margin-left: 4px;
-  }
 }
 
 .button {
@@ -28,13 +24,14 @@
   gap: 0.5em;
   border-radius: var(--border-radius6);
 
-  &[data-size='small'] span {
-    font-size: 1.125em;
-  }
-
-  &[data-size='medium'] span {
+  span {
     font-size: 1.5rem;
     font-weight: var(--fw-bold);
+  }
+
+  &[data-screen-size='small'],
+  &[data-screen-size='extra-small'] span {
+    font-size: 1.25rem;
   }
 
   button {
