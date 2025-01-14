@@ -11,12 +11,7 @@ import { SelectCategoryBill } from '@components/inputs';
 import { ZeroConfig } from '@components/pieces';
 import { CheckAll } from '@ledget/media';
 import ItemOptions from './ItemOptions';
-import {
-  AbsPosMenu,
-  useColorScheme,
-  LoadingRingDiv,
-  TextButton,
-} from '@ledget/ui';
+import { AbsPosMenu, LoadingRingDiv, TextButton } from '@ledget/ui';
 import { useLoaded } from '@ledget/helpers';
 import { setTransactionModal } from '@features/modalSlice';
 import {
@@ -56,7 +51,6 @@ export const NeedsConfirmationStack = () => {
   >();
   const { month, year } = useAppSelector(selectBudgetMonthYear);
   const navigate = useNavigate();
-  const { isDark } = useColorScheme();
   const location = useLocation();
   const { data: tCountData, isSuccess: isGetTransactionsCountSuccess } =
     useGetTransactionsCountQuery(

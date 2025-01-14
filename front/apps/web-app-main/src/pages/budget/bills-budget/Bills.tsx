@@ -9,12 +9,12 @@ import {
   useGetBillsQuery,
   selectBudgetMonthYear,
 } from '@ledget/shared-features';
-import { Filter2 } from '@ledget/media';
 import { EditBudgetBills } from '@modals/index';
 import { IconButtonBorderedGray, useScreenContext, Window } from '@ledget/ui';
 import Calendar from './Calendar';
 import SkeletonBills from './Skeleton';
 import List from './List';
+import OrderMenu from '../order-menu/OrderMenu';
 
 const BillsWindow = () => {
   const { month, year } = useAppSelector(selectBudgetMonthYear);
@@ -42,9 +42,7 @@ const BillsWindow = () => {
             Bills
           </h3>
           <div className={styles.headerButtons}>
-            <IconButtonBorderedGray>
-              <Filter2 className="icon" />
-            </IconButtonBorderedGray>
+            <OrderMenu itemType="bill" />
             <IconButtonBorderedGray
               onClick={() => navigate(`/budget/new-bill${location.search}`)}
             >

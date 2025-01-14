@@ -1,18 +1,18 @@
-import { forwardRef, HTMLProps } from 'react';
+import {
+  forwardRef,
+  HTMLProps,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import stylesModule from './dropdowndiv.module.scss';
 import { useTransition, animated } from '@react-spring/web';
-
-interface IDropdownDiv {
-  visible: boolean;
-  placement?: 'middle' | 'left' | 'right';
-  verticlePlacement?: 'top' | 'bottom';
-  transformOrigin?: 'center' | 'left' | 'right';
-  arrow?: 'right';
-}
-
-type VerticlePlacement = IDropdownDiv['verticlePlacement'];
-type HorizontalPlacement = IDropdownDiv['placement'];
+import type {
+  VerticlePlacement,
+  HorizontalPlacement,
+  IDropdownDiv,
+} from './types';
 
 const _get_verticle_positioning = (verticlePlacement: VerticlePlacement) => {
   if (verticlePlacement === 'top') {
@@ -48,8 +48,8 @@ const _get_horizontal_positioning = (placement: HorizontalPlacement) => {
 };
 
 const _get_transform_origin = (
-  verticlePlacement: VerticlePlacement,
-  placement: HorizontalPlacement
+  placement: HorizontalPlacement,
+  verticlePlacement: VerticlePlacement
 ) => {
   if (verticlePlacement === 'top') {
     if (placement === 'middle') {
@@ -70,6 +70,24 @@ const _get_transform_origin = (
   }
 };
 
+const _get_auto_placement_positioning = (pos: { x: number; y: number }) => {
+  let horizontalPlacement: HorizontalPlacement;
+  let verticlePlacement: VerticlePlacement;
+  if (pos.x > window.innerWidth / 2) {
+    horizontalPlacement = 'right';
+  } else {
+    horizontalPlacement = 'left';
+  }
+
+  if (pos.y > window.innerHeight / 2) {
+    verticlePlacement = 'bottom';
+  } else {
+    verticlePlacement = 'top';
+  }
+
+  return [horizontalPlacement, verticlePlacement] as const;
+};
+
 export const DropdownDiv = forwardRef<
   HTMLDivElement,
   HTMLProps<HTMLDivElement> & IDropdownDiv
@@ -86,14 +104,39 @@ export const DropdownDiv = forwardRef<
     ...rest
   } = props;
 
+  const measure = useRef<HTMLDivElement>(null);
+  const [dropdownPlacement, setDropdownPlacement] = useState<
+    [HorizontalPlacement, VerticlePlacement]
+  >([placement, verticlePlacement]);
+
+  useLayoutEffect(() => {
+    if (!measure.current || placement !== 'auto') return;
+
+    const handleResize = () => {
+      const [autoHorizontal, autoVertical] = _get_auto_placement_positioning({
+        x: measure.current?.getBoundingClientRect().left || 0,
+        y: measure.current?.getBoundingClientRect().top || 0,
+      });
+      setDropdownPlacement([autoHorizontal, autoVertical]);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   const transitions = useTransition(visible, {
     from: {
       opacity: 0,
-      ..._get_verticle_positioning(verticlePlacement),
-      ..._get_horizontal_positioning(placement),
+      ..._get_verticle_positioning(dropdownPlacement[1]),
+      ..._get_horizontal_positioning(dropdownPlacement[0]),
       transform: 'scale(0.85)',
       transformOrigin:
-        transformOrigin || _get_transform_origin(verticlePlacement, placement),
+        transformOrigin || _get_transform_origin(...dropdownPlacement),
     },
     enter: {
       opacity: 1,
@@ -115,12 +158,16 @@ export const DropdownDiv = forwardRef<
     (styles, item) =>
       item && (
         <div
+          ref={measure}
           className={stylesModule.dropdownContainer}
           data-verticle-position={verticlePlacement}
           data-position={placement}
         >
           <animated.div
-            className={[stylesModule.dropdown, `${className}`].join(' ')}
+            className={[
+              stylesModule.dropdown,
+              `${className || stylesModule.dropdownInner}`,
+            ].join(' ')}
             data-arrow={arrow}
             data-verticle-position={verticlePlacement}
             data-position={placement}

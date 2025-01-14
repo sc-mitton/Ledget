@@ -15,10 +15,10 @@ import {
   selectBudgetMonthYear,
   useGetCategoriesQuery,
   Category,
+  selectCategoryOrder,
 } from '@ledget/shared-features';
 import { setCategoryModal } from '@features/modalSlice';
 import SkeletonCategories from './Skeleton';
-import { useSortContext } from '../context';
 
 const CategoriesList = ({ period }: { period: Category['period'] }) => {
   const { month, year } = useAppSelector(selectBudgetMonthYear);
@@ -27,7 +27,7 @@ const CategoriesList = ({ period }: { period: Category['period'] }) => {
     { month, year },
     { skip: !month || !year }
   );
-  const { categoriesSort: sort } = useSortContext();
+  const order = useAppSelector(selectCategoryOrder);
   const dispatch = useAppDispatch();
 
   const totalSpent = useMemo(() => {
@@ -98,19 +98,15 @@ const CategoriesList = ({ period }: { period: Category['period'] }) => {
           {categories
             ?.filter((c) => c.period === period)
             .sort((a, b) => {
-              switch (sort) {
-                case 'alpha-asc':
+              switch (order) {
+                case 'nameAsc':
                   return a.name.localeCompare(b.name);
-                case 'alpha-des':
+                case 'nameDesc':
                   return b.name.localeCompare(a.name);
-                case 'limit-asc':
+                case 'amountAsc':
                   return a.limit_amount - b.limit_amount;
-                case 'limit-des':
+                case 'amountDesc':
                   return b.limit_amount - a.limit_amount;
-                case 'amount-asc':
-                  return a.amount_spent - b.amount_spent;
-                case 'amount-des':
-                  return b.amount_spent - a.amount_spent;
                 default:
                   return 0;
               }

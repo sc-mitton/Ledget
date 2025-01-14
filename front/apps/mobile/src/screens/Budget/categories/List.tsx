@@ -5,8 +5,6 @@ import Animated, {
   FadeIn,
   FadeOut,
   LinearTransition,
-  useAnimatedStyle,
-  useSharedValue,
 } from 'react-native-reanimated';
 import Big from 'big.js';
 
@@ -18,8 +16,9 @@ import {
   Text,
   Button,
 } from '@ledget/native-ui';
-import { Category } from '@ledget/shared-features';
+import { Category, selectBillCatOrder } from '@ledget/shared-features';
 import { BudgetScreenProps } from '@types';
+import { useAppSelector } from '@/hooks';
 
 type Props = {
   period: Category['period'];
@@ -32,6 +31,7 @@ const List = (props: Props) => {
   const [expanded, setExpanded] = useState(false);
   const [maxAmountSpentSize, setMaxAmountSpentSize] = useState(0);
   const [maxLimitAmountSize, setMaxLimitAmountSize] = useState(0);
+  const order = useAppSelector(selectBillCatOrder);
 
   const maxAmountSpent = useMemo(
     () =>
@@ -59,6 +59,20 @@ const List = (props: Props) => {
       <View style={[styles.rows, hasOverflow && styles.rowsWithOverflow]}>
         {props.categories
           ?.filter((c) => c.period === props.period)
+          .sort((a, b) => {
+            switch (order) {
+              case 'nameAsc':
+                return a.name.localeCompare(b.name);
+              case 'nameDesc':
+                return b.name.localeCompare(a.name);
+              case 'amountAsc':
+                return a.limit_amount - b.limit_amount;
+              case 'amountDesc':
+                return b.limit_amount - a.limit_amount;
+              default:
+                return 0;
+            }
+          })
           .slice(0, expanded ? undefined : COLLAPSED_MAX)
           .map((item, index) => (
             <Animated.View key={item.id} entering={FadeIn} exiting={FadeOut}>

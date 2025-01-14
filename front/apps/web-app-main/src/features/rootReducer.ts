@@ -10,6 +10,7 @@ import {
   budgetItemMetaDataSlice,
   environmentSlice,
   mobileAuthSlice,
+  budgetItemOrderSlice,
 } from '@ledget/shared-features';
 
 const rootReducer = combineReducers({
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   modal: modalSlice.reducer,
   mobileAuth: mobileAuthSlice.reducer,
   budgetItemMetaData: budgetItemMetaDataSlice.reducer,
+  budgetItemOrder: budgetItemOrderSlice.reducer,
 });
 
 export default rootReducer;

@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'web-app',
+      name: 'web-app-main',
       script: 'nx run web-app:serve',
     },
     {

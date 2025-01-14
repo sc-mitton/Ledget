@@ -187,3 +187,9 @@ export const mapWeekDayNumberToName = (day: number) => {
 export const stringLimit = (str: string, limit: number) => {
   return str.length > limit ? str.slice(0, limit) + '...' : str;
 };
+
+export function camelToSpaceWithCaps(str: string) {
+  return str
+    .replace(/([a-z])([A-Z])/g, '$1 $2') // Insert a space before each uppercase letter
+    .replace(/^./, (match) => match.toUpperCase()); // Capitalize the first letter of the string
+}

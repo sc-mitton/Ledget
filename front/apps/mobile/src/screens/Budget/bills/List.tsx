@@ -13,6 +13,7 @@ import {
   useGetBillsQuery,
   selectBudgetMonthYear,
   TransformedBill,
+  selectBillCatOrder,
 } from '@ledget/shared-features';
 import {
   DollarCents,
@@ -33,6 +34,7 @@ function FilledList(
 ) {
   const [expanded, setExpanded] = useState(false);
   const { billsIndex } = useBudgetContext();
+  const order = useAppSelector(selectBillCatOrder);
 
   const hasOverflow = useMemo(() => {
     return (props.bills?.length || 0) > COLLAPSED_MAX;
@@ -43,6 +45,20 @@ function FilledList(
       <View style={[styles.rows, hasOverflow && styles.rowsWithOverflow]}>
         {props.bills
           ?.filter((c) => c.period === (billsIndex === 0 ? 'month' : 'year'))
+          .sort((a, b) => {
+            switch (order) {
+              case 'nameAsc':
+                return a.name.localeCompare(b.name);
+              case 'nameDesc':
+                return b.name.localeCompare(a.name);
+              case 'amountAsc':
+                return a.upper_amount - b.upper_amount;
+              case 'amountDesc':
+                return b.upper_amount - a.upper_amount;
+              default:
+                return 0;
+            }
+          })
           .slice(0, expanded ? undefined : COLLAPSED_MAX)
           .map((item, index) => (
             <Animated.View key={item.id} exiting={FadeOut}>

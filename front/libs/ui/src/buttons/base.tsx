@@ -109,7 +109,7 @@ export const gray = css`
 
 export const borderedGray = css`
   box-shadow: var(--btn-drop-shadow);
-  border: 1.5px solid var(--btn-feather-light-gray);
+  border: 1.25px solid var(--btn-feather-light-gray);
 
   &:hover {
     border-color: var(--btn-light-gray);

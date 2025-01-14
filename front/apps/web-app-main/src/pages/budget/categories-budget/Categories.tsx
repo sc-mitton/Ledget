@@ -4,8 +4,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import List from './List';
 import styles from './styles.module.scss';
 import { Window } from '@ledget/ui';
-import { Filter2 } from '@ledget/media';
 import { useScreenContext, IconButtonBorderedGray } from '@ledget/ui';
+import OrderMenu from '../order-menu/OrderMenu';
 
 const ColumnView = () => {
   const { screenSize } = useScreenContext();
@@ -33,9 +33,7 @@ const SpendingCategories = () => {
           Categories
         </h3>
         <div className={styles.headerButtons}>
-          <IconButtonBorderedGray>
-            <Filter2 className="icon" />
-          </IconButtonBorderedGray>
+          <OrderMenu itemType="category" />
           <IconButtonBorderedGray
             onClick={() => navigate(`/budget/new-category${location.search}`)}
           >

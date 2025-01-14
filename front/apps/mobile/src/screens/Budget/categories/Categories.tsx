@@ -8,7 +8,7 @@ import List from './List';
 import SkeletonList from '../SkeletonList/SkeletonList';
 import { BudgetScreenProps } from '@types';
 import { useAppSelector } from '@hooks';
-import { selectBillCatSort } from '@/features/uiSlice';
+import { selectBillCatOrder } from '@ledget/shared-features';
 import {
   useGetCategoriesQuery,
   selectBudgetMonthYear,
@@ -18,9 +18,8 @@ import { useBudgetContext } from '../context';
 
 const Categories = (props: BudgetScreenProps<'Main'>) => {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [dragging, setDragging] = useState(false);
   const { month, year } = useAppSelector(selectBudgetMonthYear);
-  const billCatSort = useAppSelector(selectBillCatSort);
+  const billCatSort = useAppSelector(selectBillCatOrder);
   const { data: categoriesData } = useGetCategoriesQuery(
     { month, year },
     { skip: !month || !year }

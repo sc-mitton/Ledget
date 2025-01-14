@@ -1,5 +1,4 @@
 import { useSearchParams } from 'react-router-dom';
-import { useAppSelector } from '@hooks/store';
 import { CheckCircle, Circle } from '@geist-ui/icons';
 
 import styles from './styles/list.module.scss';
@@ -7,10 +6,11 @@ import { useAppDispatch } from '@hooks/store';
 import {
   selectBudgetMonthYear,
   useGetBillsQuery,
+  selectBillOrder,
 } from '@ledget/shared-features';
 import { setBillModal } from '@features/modalSlice';
 import { DollarCents, BillCatLabel, useScreenContext } from '@ledget/ui';
-import { useSortContext } from '../context';
+import { useAppSelector } from '@hooks/store';
 
 const List = () => {
   const { month, year } = useAppSelector(selectBudgetMonthYear);
@@ -18,7 +18,7 @@ const List = () => {
     { month, year },
     { skip: !month || !year }
   );
-  const { billsSort: sort } = useSortContext();
+  const order = useAppSelector(selectBillOrder);
 
   const { screenSize } = useScreenContext();
   const dispatch = useAppDispatch();
@@ -43,14 +43,14 @@ const List = () => {
               new Date(bill.date).getDate())
         )
         .sort((a, b) => {
-          switch (sort) {
-            case 'alpha-asc':
+          switch (order) {
+            case 'nameAsc':
               return a.name.localeCompare(b.name);
-            case 'alpha-des':
+            case 'nameDesc':
               return b.name.localeCompare(a.name);
-            case 'limit-asc':
+            case 'amountAsc':
               return a.upper_amount - b.upper_amount;
-            case 'limit-des':
+            case 'amountDesc':
               return b.upper_amount - a.upper_amount;
             default:
               return 0;

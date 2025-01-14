@@ -10,9 +10,15 @@ import {
 import { Filter2 } from '@ledget/media/native';
 import styles from './styles/menu';
 import { Menu, Box, Icon, Text } from '@ledget/native-ui';
-import { useAppDispatch } from '@hooks';
-import { setBillCatSort } from '@features/uiSlice';
+import { useAppDispatch, useAppSelector } from '@hooks';
+import {
+  setBillCatOrder,
+  OrderOptions,
+  OrderOptionT,
+  selectBillCatOrder,
+} from '@ledget/shared-features';
 import { BottomTabScreenProps } from '@types';
+import { camelToSpaceWithCaps } from '@ledget/helpers';
 
 const EllipseMenu = ({
   navigation,
@@ -58,10 +64,15 @@ const EllipseMenu = ({
         },
       ]}
     >
-      <Box padding="xs" backgroundColor="grayButton" borderRadius="xs">
+      <Box
+        padding="xs"
+        borderColor="lightGrayButton"
+        borderWidth={1.5}
+        borderRadius="xs"
+      >
         <Icon
           icon={MoreHorizontal}
-          size={22}
+          size={20}
           strokeWidth={2}
           color="secondaryText"
         />
@@ -70,58 +81,62 @@ const EllipseMenu = ({
   );
 };
 
+const OptionIcon = ({
+  str,
+  current,
+}: {
+  str: OrderOptionT;
+  current?: OrderOptionT;
+}) => {
+  const a = str.toLowerCase().includes('name') ? 'a-z' : '$';
+  const icon = str.toLowerCase().includes('asc') ? ArrowUp : ArrowDown;
+
+  return (
+    <View style={[current ? styles.iconWrapper : styles.buttonIconWrapper]}>
+      <Text color={str === current ? 'blueText' : 'mainText'}>{a}</Text>
+      <Icon
+        icon={icon}
+        size={14}
+        strokeWidth={2}
+        color={str === current ? 'blueText' : 'mainText'}
+      />
+    </View>
+  );
+};
+
 const FilterMenu = () => {
   const dispatch = useAppDispatch();
+  const order = useAppSelector(selectBillCatOrder);
+
   return (
     <Menu
       as="menu"
       placement="right"
       closeOnSelect={true}
-      items={[
-        {
-          label: 'Name Asc',
-          icon: () => (
-            <View style={styles.iconWrapper}>
-              <Text>a-z</Text>
-              <Icon icon={ArrowUp} size={16} strokeWidth={2} />
-            </View>
-          ),
-          onSelect: () => dispatch(setBillCatSort('nameAsc')),
-        },
-        {
-          label: 'Name Desc',
-          icon: () => (
-            <View style={styles.iconWrapper}>
-              <Text>a-z</Text>
-              <Icon icon={ArrowDown} size={16} strokeWidth={2} />
-            </View>
-          ),
-          onSelect: () => dispatch(setBillCatSort('nameDesc')),
-        },
-        {
-          label: 'Amount Asc',
-          icon: () => (
-            <View style={styles.iconWrapper}>
-              <Text>$</Text>
-              <Icon icon={ArrowUp} size={16} strokeWidth={2} />
-            </View>
-          ),
-          onSelect: () => dispatch(setBillCatSort('amountAsc')),
-        },
-        {
-          label: 'Amount Desc',
-          icon: () => (
-            <View style={styles.iconWrapper}>
-              <Text>$</Text>
-              <Icon icon={ArrowDown} size={16} strokeWidth={2} />
-            </View>
-          ),
-          onSelect: () => dispatch(setBillCatSort('amountDesc')),
-        },
-      ]}
+      items={OrderOptions.filter((o) => o !== 'default').map((o) => ({
+        label: camelToSpaceWithCaps(o),
+        icon: () => <OptionIcon str={o} current={order} />,
+        isSelected: o === order,
+        onSelect: () => dispatch(setBillCatOrder(order === o ? 'default' : o)),
+      }))}
     >
-      <Box padding="xs" backgroundColor="grayButton" borderRadius="xs">
-        <Icon icon={Filter2} size={22} strokeWidth={2} color="secondaryText" />
+      <Box
+        paddingHorizontal="xs"
+        paddingVertical={order !== 'default' ? 'xxs' : 'xs'}
+        borderColor="lightGrayButton"
+        borderWidth={1.5}
+        borderRadius="s"
+      >
+        {order !== 'default' ? (
+          <OptionIcon str={order} />
+        ) : (
+          <Icon
+            icon={Filter2}
+            size={20}
+            strokeWidth={2}
+            color="secondaryText"
+          />
+        )}
       </Box>
     </Menu>
   );

@@ -10,7 +10,6 @@ import { Bills } from './bills-budget';
 import { setConfirmedTransactionFilter } from '@ledget/shared-features';
 import { useAppDispatch } from '@hooks/store';
 import { useScreenContext, MainWindow } from '@ledget/ui';
-import { SortProvider } from './context';
 import { useColorScheme } from '@ledget/ui';
 
 function Window() {
@@ -57,7 +56,7 @@ function Window() {
   }, [searchParams.get('year'), searchParams.get('month')]);
 
   return (
-    <SortProvider>
+    <>
       <MainWindow className={styles.window} data-size={screenSize}>
         <div className={styles.header} data-screen-size={screenSize}>
           <MonthPicker
@@ -76,7 +75,7 @@ function Window() {
         </div>
       </MainWindow>
       <Outlet />
-    </SortProvider>
+    </>
   );
 }
 

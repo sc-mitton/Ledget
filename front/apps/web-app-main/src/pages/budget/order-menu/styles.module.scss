@@ -1,0 +1,24 @@
+.icon {
+  gap: 2px;
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  padding: 0 0.25em;
+}
+
+.button {
+  * {
+    color: var(--m-text-tertiary);
+  }
+
+  &[data-selected='true'] {
+    padding-top: 0.125em;
+    padding-bottom: 0.125em;
+  }
+}
+
+.item {
+  &[data-selected='true'] * {
+    color: var(--blue-text);
+  }
+}

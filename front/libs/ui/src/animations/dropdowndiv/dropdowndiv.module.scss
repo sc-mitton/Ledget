@@ -40,7 +40,6 @@
   box-sizing: border-box;
   border-radius: var(--border-radius3);
   transform-origin: top;
-  padding: 0.375em 0.375em;
   font-weight: var(--fw-regular);
   border: var(--dropdown-border);
   white-space: nowrap;
@@ -97,4 +96,8 @@
       content: '';
     }
   }
+}
+
+.dropdownInner {
+  padding: 0.375em 0.375em;
 }

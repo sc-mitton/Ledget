@@ -22,6 +22,7 @@ export interface MenuProps {
   items: {
     label: string;
     icon?: () => JSX.Element;
+    isSelected?: boolean;
     onSelect: () => void;
     newSection?: boolean;
   }[];
@@ -159,7 +160,12 @@ export function Menu(props: MenuProps) {
                         )}`}
                       >
                         <View style={styles.row}>
-                          <Text fontSize={15}>{item.label}</Text>
+                          <Text
+                            fontSize={15}
+                            color={item.isSelected ? 'blueText' : 'mainText'}
+                          >
+                            {item.label}
+                          </Text>
                           {item.icon && (
                             <View style={styles.icon}>
                               <item.icon />

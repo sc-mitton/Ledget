@@ -1,7 +1,6 @@
 import React, {
   ComponentPropsWithoutRef,
   ElementType,
-  FC,
   useRef,
   HTMLProps,
   useEffect,

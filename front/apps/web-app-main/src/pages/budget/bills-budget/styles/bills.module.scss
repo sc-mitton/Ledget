@@ -40,13 +40,13 @@
 .headerButtons {
   display: flex;
   flex-direction: row;
-  gap: .5em;
+  gap: 0.5em;
   align-items: center;
 
-  button {
+  & > button {
     display: flex;
     align-items: center;
-    gap: .5em;
+    gap: 0.5em;
 
     * {
       color: var(--m-text-tertiary);

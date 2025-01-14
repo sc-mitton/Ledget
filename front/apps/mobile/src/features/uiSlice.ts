@@ -3,7 +3,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // Null indicates all accounts
 type State = {
-  billCatSort?: 'amountDesc' | 'amountAsc' | 'nameDesc' | 'nameAsc' | 'default';
   investmentsScreen: {
     selectedAccounts?: { id: string; name: string }[];
     window?: {
@@ -24,7 +23,6 @@ type State = {
 };
 
 const initialState: State = {
-  billCatSort: 'default',
   investmentsScreen: {
     window: {
       period: 'month',
@@ -43,9 +41,6 @@ export const uiSlice = createSlice({
   name: 'ui',
   initialState,
   reducers: {
-    setBillCatSort: (state, action) => {
-      state.billCatSort = action.payload;
-    },
     setInvestmentsScreenAccounts: (
       state,
       action: PayloadAction<State['investmentsScreen']['selectedAccounts']>
@@ -105,7 +100,6 @@ export const uiSlice = createSlice({
 });
 
 export const {
-  setBillCatSort,
   setInvestmentsScreenAccounts,
   setAccountsTabDepositAccounts,
   setAccountsTabCreditAccounts,
@@ -117,7 +111,6 @@ export const {
   hideBottomTabs,
 } = uiSlice.actions;
 
-export const selectBillCatSort = (state: { ui: State }) => state.ui.billCatSort;
 export const selectInvestmentsScreenAccounts = (state: { ui: State }) =>
   state.ui.investmentsScreen?.selectedAccounts;
 export const selectAccountsTabDepositAccounts = (state: { ui: State }) =>

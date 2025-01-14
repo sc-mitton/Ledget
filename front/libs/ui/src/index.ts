@@ -1,3 +1,4 @@
+export { default as StyledMenu } from './containers/dropdowns/styled-menu/StyledMenu';
 export * from './misc/profile-avatar/Avatar';
 
 export * from './themes/use-bill-cat-tab-theme/use-bill-cat-tab-theme';
