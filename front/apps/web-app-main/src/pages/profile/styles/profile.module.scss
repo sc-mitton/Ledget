@@ -1,11 +1,13 @@
 .accountsPage {
+  padding-top: 2.75em;
+
   h4 {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
     gap: 0.5em;
-    padding: 0 0.25em;
+    padding: 0.5em 0.25em;
 
     span {
       display: flex;
@@ -21,8 +23,37 @@
   }
 }
 
+.header {
+  padding: 0.25em 0;
+  border-bottom: 1.5px solid var(--border-color-ultra-dim);
+  background-color: var(--main-background-color);
+  position: sticky;
+  top: 0.375em;
+  box-shadow: 0 0 16px 8px var(--main-background-color);
+  z-index: 2;
+  display: flex;
+  flex-direction: row;
+
+  &[data-size='small'],
+  &[data-size='medium'],
+  &[data-size='extra-small'] {
+    justify-content: center;
+    font-size: 1.25rem;
+    padding: 0.875em 0 0.5em 0;
+  }
+
+  &::before {
+    content: '';
+    inset: 0;
+    top: -1em;
+    position: absolute;
+    z-index: -1;
+    background-color: var(--main-background-color);
+  }
+}
+
 .avatar {
-  background-color: var(--btn-light-gray);
+  background-color: var(--btn-feather-light-gray);
   border-radius: 50%;
   border: none;
   cursor: pointer;
@@ -53,7 +84,7 @@
     transform: scale(0);
     position: absolute;
     right: -0.25em;
-    bottom: 0.75em;
+    bottom: 0.875em;
     transition: transform 0.2s ease-in-out;
   }
 
@@ -88,8 +119,39 @@
   top: 0.5em;
 }
 
-.changePlanMenu {
+.planLabel {
+  color: var(--dark-red);
+  margin-left: 0.75em;
   position: relative;
+
+  &::after {
+    position: absolute;
+    inset: 0.0625em -0.375em;
+    border-radius: 0.375em;
+    background-color: var(--dark-red);
+    opacity: 0.2;
+    content: '';
+  }
+
+  &[data-cancel-at-period-end='true'],
+  &[data-period='paused'] {
+    color: var(--yellow);
+
+    &::after {
+      background-color: var(--yellow);
+      opacity: 0.2;
+    }
+  }
+
+  &[data-period='trialing'],
+  &[data-period='active'] {
+    color: var(--green-text);
+
+    &::after {
+      background-color: var(--green-text);
+      opacity: 0.2;
+    }
+  }
 }
 
 .invoice {

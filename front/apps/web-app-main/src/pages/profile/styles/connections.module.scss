@@ -4,6 +4,49 @@
   height: 100%;
   flex-grow: 1;
   border-radius: inherit;
+  box-sizing: border-box;
+}
+
+.header {
+  padding: 0.75em 0;
+  border-bottom: 1.5px solid var(--border-color-ultra-dim);
+  background-color: var(--main-background-color);
+  position: sticky;
+  top: 0.375em;
+  box-shadow: 0 0 16px 8px var(--main-background-color);
+  z-index: 2;
+  display: flex;
+
+  & > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 0.5em;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &[data-size='small'],
+  &[data-size='medium'],
+  &[data-size='extra-small'] {
+    h1 {
+      font-size: 1.25rem;
+    }
+
+    justify-content: center;
+    padding: 1.25em 0 1em 0;
+  }
+
+  &::before {
+    content: '';
+    inset: 0;
+    top: -1em;
+    position: absolute;
+    z-index: -1;
+    background-color: var(--main-background-color);
+  }
 }
 
 .institution {
@@ -33,29 +76,14 @@
   }
 }
 
-.header {
-  margin-bottom: 0.75em;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-
-  & > div:last-child {
-    display: flex;
-    align-items: center;
-    gap: 1em;
-    margin-right: 0.8em;
-  }
-}
-
 .accountsList {
   display: flex;
   flex-direction: column;
   height: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
-  padding: 0 1em;
-  margin-left: -1em;
+  box-sizing: border-box;
+  padding: 1.5em 0;
 }
 
 .accounts {
@@ -134,8 +162,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgb(var(--window-rgb), 0.5);
   border-radius: var(--border-radius3);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--main-background-color);
+    opacity: 0.8;
+  }
+
+  button {
+    display: flex;
+    gap: 0.5em;
+  }
 
   &[data-wiggle='true'] button {
     animation: wiggle 4.5s infinite ease-out;

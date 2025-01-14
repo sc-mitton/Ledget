@@ -14,7 +14,7 @@ import '@styles/base.scss';
 import styles from './styles/app.module.scss';
 import NotFound from '@pages/notFound';
 import Budget from '@pages/budget/Window';
-import Profile from '@pages/settings/Window';
+import Profile from '@pages/profile/Window';
 import Accounts from '@pages/accounts/Window';
 import SideNav from './side-nav/SideNav';
 import Header from './header/header';
@@ -169,7 +169,7 @@ const App = () => {
                   <Route path="error" element={<AccountErrorModal />} />
                 </Route>
                 <Route path="accounts/*" element={<Accounts />} />
-                <Route path="settings/*" element={<Profile />} />
+                <Route path="profile/*" element={<Profile />} />
                 <Route path="*" element={<NotFound />} />
               </Route>
               <Route path="verify-email" element={<ForceVerification />} />

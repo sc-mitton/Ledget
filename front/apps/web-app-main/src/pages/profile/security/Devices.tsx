@@ -132,7 +132,7 @@ const Device = (props: { device: string; info: DeviceType[] }) => {
   );
 };
 
-const Devices = ({ devices }: { devices: DeviceType[] }) => {
+const Devices = ({ devices }: { devices?: DeviceType[] }) => {
   // Group by deviceFamily and location
   const groupedDevices = Object.entries(
     groupby(devices, (device) => [device.device_family, device.location])

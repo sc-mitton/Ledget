@@ -5,9 +5,8 @@ import { animated } from '@react-spring/web';
 import {
   DollarSign,
   Home,
-  Settings,
-  ChevronDown,
   User,
+  ChevronDown,
   Link,
   Shield,
 } from '@geist-ui/icons';
@@ -22,28 +21,51 @@ import {
   useCloseDropdown,
 } from '@ledget/ui';
 import DarkSwitch from '../dark-switch/DarkSwitch';
+import { useGetMeQuery } from '@ledget/shared-features';
 
-const SubSettingsSidebar = () => {
+const SubProfileSidebar = () => {
   const navigate = useNavigate();
+  const { data: user } = useGetMeQuery();
 
   return (
     <ul className={styles.subNav} role="menu">
-      <li data-current={location.pathname.includes('profile') ? 'page' : ''}>
-        <a onClick={() => navigate('/settings/profile')}>
-          <User className="icon" />
-          <span>Profile</span>
+      <li
+        data-current={
+          location.pathname.split('/')[
+            location.pathname.split('/').length - 1
+          ] === 'profile'
+            ? 'page'
+            : ''
+        }
+      >
+        <a onClick={() => navigate('/profile')}>
+          <div className={styles.avatar}>
+            <span>{user?.name.first.charAt(0).toUpperCase()}</span>
+            <span>{user?.name.last.charAt(0).toUpperCase()}</span>
+          </div>
+          <div className={styles.profileLinkUserInfo}>
+            <span>
+              {user &&
+                `${user.name.first
+                  .charAt(0)
+                  .toUpperCase()}${user.name.first.slice(1)} ${user.name.last
+                  .charAt(0)
+                  .toUpperCase()}${user.name.last.slice(1)}`}
+            </span>
+            <span>{user?.email}</span>
+          </div>
         </a>
       </li>
       <li
         data-current={location.pathname.includes('connections') ? 'page' : ''}
       >
-        <a onClick={() => navigate('/settings/connections')}>
+        <a onClick={() => navigate('/profile/connections')}>
           <Link className="icon" />
           <span>Connections</span>
         </a>
       </li>
       <li data-current={location.pathname.includes('security') ? 'page' : ''}>
-        <a onClick={() => navigate('/settings/security')}>
+        <a onClick={() => navigate('/profile/security')}>
           <Shield className="icon" />
           <span>Security</span>
         </a>
@@ -98,6 +120,10 @@ const Nav = () => {
     };
   }, [ulRef.current]);
 
+  useEffect(() => {
+    setSettingsSubOpen(location.pathname.includes('profile'));
+  }, [location.pathname]);
+
   return (
     <nav className={styles.sideNav} data-size={screenSize}>
       <div className={styles.logoIcon}>
@@ -130,24 +156,18 @@ const Nav = () => {
             <span>Accounts</span>
           </a>
         </li>
-        <li data-current={location.pathname.includes('settings') ? 'page' : ''}>
+        <li data-current={location.pathname.includes('profile') ? 'page' : ''}>
           <a
             onClick={() => {
-              !['large', 'extra-large'].includes(screenSize)
-                ? setSettingsSubOpen((prev) => !prev)
-                : navigate('/settings/profile');
+              navigate('/profile');
             }}
           >
-            <Settings className="icon" />
-            <span>Settings</span>
-            {!['large', 'extra-large'].includes(screenSize) && (
-              <ChevronDown className="icon" />
-            )}
+            <User className="icon" />
+            <span>Profile</span>
+            <ChevronDown className="icon" />
           </a>
         </li>
-        {!['large', 'extra-large'].includes(screenSize) && settingsSubOpen && (
-          <SubSettingsSidebar />
-        )}
+        {settingsSubOpen && <SubProfileSidebar />}
         <animated.span style={props} />
       </ul>
       <div>

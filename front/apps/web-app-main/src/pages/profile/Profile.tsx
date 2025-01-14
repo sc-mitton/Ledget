@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 
 import { Outlet, useNavigate } from 'react-router-dom';
-import { Menu } from '@headlessui/react';
-import { Edit2 } from '@geist-ui/icons';
+import Lottie from 'react-lottie';
 
-import styles from './styles/account.module.scss';
+import styles from './styles/profile.module.scss';
 import {
   useGetMeQuery,
   useGetCoOwnerQuery,
@@ -18,31 +17,17 @@ import {
   HalfTextSlimBlueButton,
   HalfTextSlimBlueSubmitButton,
   ShimmerDiv,
-  DropdownDiv,
-  DropdownItem,
   BakedSwitch,
   useColorScheme,
   CircleIconButton,
   NestedWindow,
+  useScreenContext,
+  StyledMenu,
 } from '@ledget/ui';
+import { edit } from '@ledget/media/lotties';
 import { ConfirmRemoveCoOwner } from '@modals/index';
 import { UpdatePersonalInfo, AddUserModal } from '@modals/index';
 import { CreditCard, UserPlus } from '@geist-ui/icons';
-
-const getStatusColor = (subscription: Subscription) => {
-  const statusColorMap = {
-    active: 'var(--green-text)',
-    trialing: 'var(--green-text)',
-    paused: 'var(--yellow)',
-    default: 'var(--dark-red)',
-  } as { [key: string]: string };
-
-  if (subscription.cancel_at_period_end) {
-    return statusColorMap.paused;
-  } else {
-    return statusColorMap[subscription.status] || statusColorMap.default;
-  }
-};
 
 const getStatus = (subscription: Subscription) => {
   if (subscription.cancel_at_period_end) {
@@ -57,6 +42,16 @@ const getStatus = (subscription: Subscription) => {
 const Info = () => {
   const { data: user } = useGetMeQuery();
   const [editPersonalInfoModal, setEditPersonalInfoModal] = useState(false);
+  const [animate, setAnimate] = useState(false);
+
+  const animationOptions = {
+    loop: false,
+    autoplay: animate,
+    animationData: edit,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice',
+    },
+  };
 
   return (
     <>
@@ -67,12 +62,19 @@ const Info = () => {
         <div>
           <span>{`${user?.email}`}</span>
         </div>
-        <CircleIconButton
+        <button
+          onMouseEnter={() => setAnimate(true)}
+          onMouseLeave={() => setAnimate(false)}
           onClick={() => setEditPersonalInfoModal(true)}
           aria-label="Edit personal info"
         >
-          <Edit2 className="icon small" />
-        </CircleIconButton>
+          <Lottie
+            options={animationOptions}
+            speed={animate ? 2 : 20000}
+            direction={animate ? 1 : -1}
+            style={{ width: 26, height: 26 }}
+          />
+        </button>
       </div>
       {editPersonalInfoModal && (
         <UpdatePersonalInfo onClose={() => setEditPersonalInfoModal(false)} />
@@ -119,42 +121,34 @@ const ChangePlanMenu = () => {
   ];
 
   const Items = () => (
-    <Menu.Items static>
+    <StyledMenu.Items>
       {options
         .filter(
           (op) => op.cancel_at_period_end === subscription?.cancel_at_period_end
         )
         .map((op, i) => (
-          <Menu.Item key={op.label} as={React.Fragment}>
-            {({ active }) => (
-              <DropdownItem active={active} as={'button'} onClick={op.onClick}>
-                <div>{op.label}</div>
-              </DropdownItem>
-            )}
-          </Menu.Item>
+          <StyledMenu.Item
+            key={op.label}
+            onClick={op.onClick}
+            label={op.label}
+          />
         ))}
-    </Menu.Items>
+    </StyledMenu.Items>
   );
 
   return (
-    <Menu>
-      {({ open }) => (
-        <div className={styles.changePlanMenu}>
-          <Menu.Button as={'div'}>
-            <HalfTextSlimBlueSubmitButton
-              submitting={isLoading}
-              rotate={0}
-              disabled={!user?.is_account_owner}
-            >
-              change
-            </HalfTextSlimBlueSubmitButton>
-          </Menu.Button>
-          <DropdownDiv visible={open} id="change-plan--menu" placement="right">
-            <Items />
-          </DropdownDiv>
-        </div>
-      )}
-    </Menu>
+    <StyledMenu>
+      <StyledMenu.Button>
+        <HalfTextSlimBlueSubmitButton
+          submitting={isLoading}
+          rotate={0}
+          disabled={!user?.is_account_owner}
+        >
+          change
+        </HalfTextSlimBlueSubmitButton>
+      </StyledMenu.Button>
+      <Items />
+    </StyledMenu>
   );
 };
 
@@ -178,10 +172,14 @@ const Plan = () => {
       <h4>
         Plan
         <span
-          className="indicator"
-          style={{ color: subscription ? getStatusColor(subscription) : '' }}
+          className={styles.planLabel}
+          data-cancel-at-period-end={subscription?.cancel_at_period_end}
+          data-status={subscription?.status}
         >
-          {subscription ? getStatus(subscription) : ''}
+          {subscription
+            ? getStatus(subscription).charAt(0).toUpperCase() +
+              getStatus(subscription).slice(1)
+            : ''}
         </span>
       </h4>
       <NestedWindow className={styles.invoice}>
@@ -335,9 +333,13 @@ const Account = () => {
   const { isLoading: loadingInvoice } = useGetNextInvoiceQuery();
   const { isLoading: loadingSubscription } = useGetSubscriptionQuery();
   const { data: user } = useGetMeQuery();
+  const { screenSize } = useScreenContext();
 
   return (
     <>
+      <h1 data-size={screenSize} className={styles.header}>
+        Profile
+      </h1>
       <ShimmerDiv
         shimmering={
           loadingInvoice || loadingPaymentMethod || loadingSubscription
@@ -345,7 +347,6 @@ const Account = () => {
         style={{ borderRadius: 'var(--border-radius5)' }}
       >
         <div className={styles.accountsPage}>
-          <h1>Account</h1>
           <div className={styles.avatar}>
             {user &&
               `${user.name.first.charAt(0).toUpperCase()} ${user.name.last

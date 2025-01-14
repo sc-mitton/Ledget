@@ -10,17 +10,25 @@
     padding: 0.15em 0.6em;
     min-width: 100%;
   }
+
+  svg path {
+    stroke: currentColor;
+  }
 }
 
-.activefilterButton {
-  transition: color 0.2s;
+.filterButton {
+  transition: color 0.3s;
 
   &:hover * {
-    color: var(--blue-light-hover);
-    transition: color 0.2s;
+    color: var(--m-text-secondary);
+    transition: color 0.3s;
   }
 
   * {
-    color: var(--blue-light);
+    color: var(--m-text-tertiary);
   }
+}
+
+.datePickerDropdown {
+  background-color: var(--dropdown-background-darker);
 }

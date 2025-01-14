@@ -18,16 +18,20 @@
   }
 
   &[data-size='small'] {
+    font-size: 0.75rem;
+  }
+
+  &[data-size='small']::after {
     width: 2.25em;
     height: 2.25em;
   }
 
-  &[data-size='medium'] {
+  &[data-size='medium']::after {
     width: 3.25em;
     height: 3.25em;
   }
 
-  &[data-size='large'] {
+  &[data-size='large']::after {
     width: 4.25em;
     height: 4.25em;
   }

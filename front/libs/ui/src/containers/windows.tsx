@@ -105,15 +105,11 @@ export const NestedWindow = ({
   children,
   ...rest
 }: React.HTMLAttributes<HTMLDivElement>) => {
-  const { screenSize } = useScreenContext();
   return (
     <StylesNestedWindow
       {...rest}
       style={{
-        backgroundColor:
-          screenSize === 'extra-small'
-            ? 'var(--nested-window-background-color-small-screen'
-            : 'var(--nested-window-background-color)',
+        backgroundColor: 'var(--nested-window-background-color)',
       }}
     >
       {children}

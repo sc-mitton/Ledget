@@ -4,7 +4,7 @@ export const Avatar = ({
   name,
   size = 'small',
 }: {
-  name: `${string} ${string}`;
+  name: string;
   size?: 'small' | 'medium' | 'large';
 }) => {
   const [first, last] = name.split(' ');

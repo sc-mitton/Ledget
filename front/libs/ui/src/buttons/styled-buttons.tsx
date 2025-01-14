@@ -83,10 +83,8 @@ export const RedSlimButton = styled(SlimButton)`
 export const HalfTextSlimBlueButton = styled(SlimButton)`
   ${clearBlue}
   color: var(--blue);
-  font-weight: var(--fw-bold);
   * {
     color: var(--blue);
-    font-weight: var(--fw-bold);
   }
 `;
 

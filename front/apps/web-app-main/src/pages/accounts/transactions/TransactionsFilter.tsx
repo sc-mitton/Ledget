@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
-
+import Lottie from 'react-lottie';
 import { Dayjs } from 'dayjs';
-import { Filter as FilterIcon } from '@geist-ui/icons';
 
+import { filter } from '@ledget/media/lotties';
 import styles from './styles/transactions-filter.module.scss';
 import {
   DatePicker,
@@ -22,6 +22,7 @@ const Filter = ({
   const ref = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [active, setActive] = useState(false);
+  const [animate, setAnimate] = useState(false);
 
   useCloseDropdown({
     refs: [ref, buttonRef],
@@ -35,27 +36,40 @@ const Filter = ({
     }
   }, [value]);
 
+  const animationOptions = {
+    loop: false,
+    autoplay: animate,
+    animationData: filter,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice',
+    },
+  };
+
   return (
     <div className={styles.filter} ref={ref}>
-      <TextButtonHalfBlue
+      <button
+        onMouseEnter={() => setAnimate(true)}
+        onMouseLeave={() => setAnimate(false)}
         onClick={() => setShowDropDown(!showDropDown)}
         aria-label="Filter transactions"
         aria-haspopup="true"
         aria-expanded={showDropDown}
         aria-controls="transactions-filter-dropdown"
-        className={active ? styles.activefilterButton : ''}
+        className={styles.filterButton}
         ref={buttonRef}
       >
-        <FilterIcon
-          className="icon"
-          fill={active ? 'currentColor' : 'transparent'}
-          stroke={active ? 'var(--blue-medium)' : 'currentColor'}
+        <Lottie
+          options={animationOptions}
+          speed={animate ? 2 : 20000}
+          direction={animate ? 1 : -1}
+          style={{ width: 24, height: 24 }}
         />
-      </TextButtonHalfBlue>
+      </button>
       <DropdownDiv
         placement="right"
         id="transactions-filter-dropdown"
         visible={showDropDown}
+        className={styles.datePickerDropdown}
       >
         <DatePicker
           pickerType="range"

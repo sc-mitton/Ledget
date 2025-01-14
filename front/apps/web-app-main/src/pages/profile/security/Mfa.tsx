@@ -17,23 +17,26 @@ const Mfa = () => {
   const { data: user } = useGetMeQuery();
   const navigate = useNavigate();
 
-  const formatDate = (date) => {
-    const d = new Date(date);
-    const options = { month: 'short', day: 'numeric', year: 'numeric' };
-    return d.toLocaleDateString('en-US', options);
+  const formatDate = (date?: string | null) => {
+    const d = new Date(date || '');
+    return d.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
   };
 
   return (
     <section>
       <h4>Multi-Factor</h4>
       <NestedWindow className={styles.container}>
-        {user.settings.mfa_method === 'totp' ? (
+        {user?.settings.mfa_method === 'totp' ? (
           <>
             <div>
               <Qr width={'1.3em'} height={'1.3em'} />
               <div>
                 <span>Authenticator App</span>
-                <span>Added {formatDate(user.settings.mfa_enabled_on)}</span>
+                <span>Added {formatDate(user?.settings?.mfa_enabled_on)}</span>
               </div>
             </div>
             <div>
@@ -67,7 +70,7 @@ const Mfa = () => {
           </>
         )}
       </NestedWindow>
-      {user.settings.mfa_method === 'totp' && (
+      {user?.settings.mfa_method === 'totp' && (
         <div>
           <Tooltip msg={'Recovery codes'} ariaLabel={'Recovery codes'}>
             <TextButtonHalfBlue

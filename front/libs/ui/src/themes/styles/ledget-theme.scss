@@ -71,7 +71,7 @@
     --blue-medium-hover: hsl(var(--blue-h), var(--blue-s), 45%);
     --blue: hsl(var(--blue-h), var(--blue-s), 50%);
     --blue-sat: hsl(var(--blue-h), calc(var(--blue-s) + 20%), 55%);
-    --blue-sat-hover: hsl(var(--blue-h), calc(var(--blue-s) + 20), 65%);
+    --blue-sat-hover: hsl(var(--blue-h), calc(var(--blue-s) + 20%), 65%);
     --blue-medium-dark: hsl(var(--blue-h), 25%, 75%);
     --blue-dark: hsl(var(--blue-h), 25%, 90%);
     --blue-dark-hover: hsl(var(--blue-h), 25%, 85%);
@@ -83,8 +83,7 @@
     --btn-main-hover: var(--btn-light-gray-hover);
 
     // Windows
-    --nested-window-background-color: hsl(0, 0%, 11%);
-    --nested-window-background-color-small-screen: hsl(0, 0%, 8%);
+    --nested-window-background-color: hsl(0, 0%, 9%);
     --modal-nested-window: hsl(0, 0%, 10%);
 
     --window-h: 240;
@@ -225,12 +224,14 @@
     --default-pill-background: hsl(0, 0%, 23%);
     --default-tab-background: hsl(0, 0%, 12%);
 
-    --switch-crib-enabled: var(--blue-light-hover);
+    // Switch
     --switch-crib-disabled: var(--btn-medium-gray);
-    --switch-pill-enabled: var(--blue-sat-hover);
     --switch-pill-disabled: var(--btn-gray-hover);
-    --switch-pill-shadow-enabled: hsl(var(--blue-h), 55%, 17%);
     --switch-pill-shadow-disabled: var(--btn-light-gray);
+
+    --switch-crib-enabled: hsl(144, 85%, 23%);
+    --switch-pill-enabled: var(--btn-dark-gray-hover);
+    --switch-pill-shadow-enabled: hsl(144, 85%, 13%);
 
     --gray-hlight: hsl(0, 0%, 18%);
 
@@ -242,6 +243,7 @@
     // Drop Shadows & Borders
     --dropdown-background-rgb: 18, 18, 18;
     --dropdown-background: hsl(var(--window-h), var(--window-s), 15%);
+    --dropdown-background-darker: hsl(var(--window-h), var(--window-s), 10%);
     --dropdown-item-background: hsl(var(--window-h), var(--window-s), 12%);
     --dropdown-border: 1px solid var(--border-color-ultra-dim);
 
@@ -306,8 +308,8 @@
     --blue-medium-hover: hsl(var(--blue-h), var(--blue-s), 50%);
     --blue: hsl(var(--blue-h), var(--blue-s), 52%);
     --blue-hover: hsl(var(--blue-h), var(--blue-s), 60%);
-    --blue-sat: hsl(var(--blue-h), calc(var(--blue-s) + 20%), 60%);
-    --blue-sat-hover: hsl(var(--blue-h), calc(var(--blue-s) + 20), 70%);
+    --blue-sat: hsl(var(--blue-h), calc(var(--blue-s) + 10%), 60%);
+    --blue-sat-hover: hsl(var(--blue-h), calc(var(--blue-s) + 10%), 70%);
     --blue-medium-dark: hsl(var(--blue-h), 32%, 37%);
     --blue-dark: hsl(var(--blue-h), 32%, 22%);
 
@@ -373,12 +375,7 @@
     --sidenav-drop-shadow: 0 10px 20px 0 hsl(0, 0%, 93%);
     --side-nav-border: 2px solid hsl(var(--window-h), var(--window-s), 95%);
 
-    --nested-window-background-color: hsl(var(--window-h), 9%, 96%);
-    --nested-window-background-color-small-screen: hsl(
-      var(--window-h),
-      9%,
-      93%
-    );
+    --nested-window-background-color: hsl(var(--window-h), 9%, 95%);
     --modal-nested-window: hsl(var(--window-h), 8%, 95%);
 
     // Wafers
@@ -475,8 +472,8 @@
 
     --pulse-rgb: 0, 0, 0;
 
-    --switch-crib-enabled: var(--blue-light);
-    --switch-crib-disabled: var(--btn-medium-gray);
+    --switch-crib-enabled: hsl(144, 70%, 65%);
+    --switch-crib-disabled: var(--btn-light-gray);
     --switch-pill-enabled: var(--blue-medium);
     --switch-pill-disabled: var(--btn-feather-light-gray);
     --switch-pill-shadow-enabled: color-mix(
@@ -484,7 +481,7 @@
       var(--blue-light-hover),
       var(--blue-medium) 10%
     );
-    --switch-pill-shadow-disabled: var(--btn-medium-gray-hover);
+    --switch-pill-shadow-disabled: var(--btn-light-gray-hover);
 
     // Misc Drop Shadows & Borders
     --dropdown-background-rgb: 250, 250, 250;

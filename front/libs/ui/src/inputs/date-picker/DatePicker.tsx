@@ -40,6 +40,7 @@ import type {
   DaysProps,
   TPlacement,
 } from './types';
+import { checkDisabled } from './helpers';
 
 // Context
 const datePickerContext = createContext<
@@ -139,34 +140,6 @@ const EmptyPickerCell = ({ period }: { period: 'day' | 'year' | 'month' }) => (
     {period === 'day' ? 1 : period === 'month' ? 'Jan' : '2020'}
   </div>
 );
-
-const checkDisabled = (
-  point: Dayjs,
-  period: DatePickerProps<TPicker>['period'],
-  disabled?: DatePickerProps<TPicker>['disabled']
-) => {
-  // Is range type if condition met
-  if (!disabled) return false;
-
-  return disabled.some((window) => {
-    if (window?.[0] && window?.[1]) {
-      return (
-        (point.isAfter(window[0], period) && point.isBefore(window[1]),
-        period) ||
-        point.isSame(window[0], period) ||
-        point.isSame(window[1], period)
-      );
-    } else if (window?.[1] === undefined) {
-      return (
-        point.isSame(window[0], period) || point.isAfter(window[0], period)
-      );
-    } else if (window?.[0] === undefined) {
-      return (
-        point.isSame(window[1], period) || point.isBefore(window[1], period)
-      );
-    }
-  });
-};
 
 const Years = ({ windowCenter, onSelect }: YearsMonthsProps) => {
   const {
@@ -449,10 +422,10 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
                 .date(date + 1);
 
         const isOverflow = day.month() !== month;
-        const ignoreUnSelectable =
-          pickerType === 'range' &&
-          (!selectedValue?.[focusedInputIndex || 0] ||
-            inputTouchCount[focusedInputIndex || 0] < 1);
+        // const ignoreUnSelectable =
+        //   pickerType === 'range' &&
+        //   (!selectedValue?.[focusedInputIndex || 0] ||
+        //     inputTouchCount[focusedInputIndex || 0] < 1);
         const unSelectable =
           pickerType === 'range'
             ? focusedInputIndex === 0
@@ -497,6 +470,21 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
             ? selectedValue?.[1] && day.isSame(selectedValue[1], 'day')
             : selectedValue && day.isSame(selectedValue, 'day');
 
+        // console.log(
+        //   '!selectedValue?.[focusedInputIndex || 0]',
+        //   !selectedValue?.[focusedInputIndex || 0],
+        //   '\n',
+        //   'inputTouchCount[focusedInputIndex || 0] < 1',
+        //   inputTouchCount[focusedInputIndex || 0] < 1,
+        //   '\n',
+        //   'inputTouchCount',
+        //   inputTouchCount,
+        //   '\n',
+        //   'focusedInputIndex',
+        //   focusedInputIndex,
+        //   '\n'
+        // );
+
         return isHidden ? (
           <EmptyPickerCell period="day" />
         ) : (
@@ -516,7 +504,7 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
                 ? selectedValue && setActiveDay(day)
                 : setActiveDay(undefined)
             }
-            isDisabled={(unSelectable || isDisabled) && !ignoreUnSelectable}
+            isDisabled={unSelectable || isDisabled}
             isActive={isActive}
             isActiveWindowEnd={!isOverflow && isActiveWindowEnd}
             isActiveWindowStart={!isOverflow && isActiveWindowStart}

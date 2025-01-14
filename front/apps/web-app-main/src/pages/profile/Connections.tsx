@@ -5,6 +5,7 @@ import React, {
   createContext,
   Fragment,
 } from 'react';
+import { Repeat } from '@geist-ui/icons';
 
 import { useSpring, animated } from '@react-spring/web';
 import { useSearchParams } from 'react-router-dom';
@@ -16,16 +17,15 @@ import {
   PlaidItem as TPlaidItem,
 } from '@ledget/shared-features';
 import { useBakedPlaidLink, useBakedUpdatePlaidLink } from '@utils/hooks';
-import { withSmallModal } from '@ledget/ui';
+import { useScreenContext, withSmallModal } from '@ledget/ui';
 import SubmitForm from '@components/pieces/SubmitForm';
-import { Relink } from '@ledget/media';
 import {
   SecondaryButton,
   BlueSubmitButton,
-  CircleIconButton,
+  IconButtonBorderedGray,
   ShimmerDiv,
   DeleteButton,
-  BlueSlimButton2,
+  TextButtonBlue,
   Tooltip,
   Base64Logo,
   ShadowedContainer,
@@ -120,12 +120,13 @@ const ReconnectButton = ({ itemId = '' }) => {
 
   return (
     <div className={styles.reconnect} data-wiggle={true}>
-      <BlueSlimButton2
+      <TextButtonBlue
         onClick={() => !fetchingToken && open()}
         aria-label="Reconnect"
       >
         Reconnect
-      </BlueSlimButton2>
+        <Repeat className="icon" />
+      </TextButtonBlue>
     </div>
   );
 };
@@ -279,36 +280,33 @@ const EmptyState = () => (
   </div>
 );
 
-const MainHeader = ({ onPlus }: { onPlus: () => void }) => {
+const Buttons = ({ onPlus }: { onPlus: () => void }) => {
   const { editing, setEditing, plaidItems } = useDeleteContext();
 
   return (
-    <div className={styles.header}>
-      <h1>Connections</h1>
-      <div>
-        {!editing && plaidItems!.length > 0 && (
-          <Tooltip
-            msg={'Edit connections'}
-            ariaLabel={'Edit Connections'}
-            type={'left'}
+    <div>
+      {!editing && (plaidItems?.length || 0) > 0 && (
+        <Tooltip
+          msg={'Edit connections'}
+          ariaLabel={'Edit Connections'}
+          type={'left'}
+        >
+          <IconButtonBorderedGray
+            onClick={() => setEditing(!editing)}
+            aria-label="Edit institution connections"
           >
-            <CircleIconButton
-              onClick={() => setEditing(!editing)}
-              aria-label="Edit institution connections"
-            >
-              <Edit2 className="icon small" />
-            </CircleIconButton>
-          </Tooltip>
-        )}
-        <Tooltip msg={'Add account'} ariaLabel={'Add Account'} type={'left'}>
-          <CircleIconButton
-            onClick={onPlus}
-            aria-label="Add institution connection"
-          >
-            <Plus className="icon small" />
-          </CircleIconButton>
+            <Edit2 className="icon" />
+          </IconButtonBorderedGray>
         </Tooltip>
-      </div>
+      )}
+      <Tooltip msg={'Add account'} ariaLabel={'Add Account'} type={'left'}>
+        <IconButtonBorderedGray
+          onClick={onPlus}
+          aria-label="Add institution connection"
+        >
+          <Plus className="icon" />
+        </IconButtonBorderedGray>
+      </Tooltip>
     </div>
   );
 };
@@ -324,6 +322,7 @@ const Connections = () => {
   } = useDeleteContext();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const { open } = useBakedPlaidLink();
+  const { screenSize } = useScreenContext();
 
   // if (import.meta.env.VITE_PLAID_REDIRECT_URI) {
   //     config.receivedRedirectUri = import.meta.env.VITE_PLAID_REDIRECT_URI
@@ -340,6 +339,10 @@ const Connections = () => {
 
   return (
     <>
+      <div data-size={screenSize} className={styles.header}>
+        <h1>Connections</h1>
+        <Buttons onPlus={() => open()} />
+      </div>
       {showConfirmModal && (
         <ConfirmModal
           blur={2}
@@ -354,7 +357,6 @@ const Connections = () => {
         shimmering={fetchingPlaidItems}
         className={styles.connectionsPage}
       >
-        <MainHeader onPlus={() => open()} />
         {plaidItems?.length === 0 ? (
           <EmptyState />
         ) : (
