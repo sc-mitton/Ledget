@@ -40,10 +40,10 @@
     @include common;
 
     --mute-red: hsl(352, 98%, 70%);
-    --hover-red: hsl(352, 95%, 60%);
-    --alert-red: hsl(352, 86%, 69%);
+    --mute-red-hover: hsl(352, 95%, 60%);
+    --red: hsl(352, 86%, 69%);
     --red-rgb: 243, 80, 80;
-    --dark-red: hsl(0, 59%, 34%);
+    --red-dark: hsl(0, 59%, 34%);
 
     // Secondary and Primary Base Values
     --blue-h: 230;
@@ -271,10 +271,10 @@
     @include common;
 
     --mute-red: hsl(352, 98%, 76%);
-    --hover-red: hsl(352, 95%, 70%);
-    --alert-red: hsl(0, 55%, 58%);
+    --mute-red-hover: hsl(352, 95%, 70%);
+    --red: hsl(0, 55%, 58%);
     --red-rgb: 243, 80, 80;
-    --dark-red: hsl(0, 59%, 34%);
+    --red-dark: hsl(0, 59%, 34%);
 
     --blue-h: 224;
     --blue-s: 65%;

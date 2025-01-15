@@ -22,7 +22,7 @@
 
 .toast {
   &[data-error='true'][data-loadingbar='true'] {
-    background-color: var(--alert-red);
+    background-color: var(--red);
     opacity: 0.5;
   }
 
@@ -45,11 +45,11 @@
 
   &[data-error='true'] {
     * {
-      color: var(--alert-red);
+      color: var(--red);
     }
 
     &::after {
-      background-color: var(--alert-red);
+      background-color: var(--red);
     }
   }
 

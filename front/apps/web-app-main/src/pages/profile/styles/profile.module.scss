@@ -120,7 +120,7 @@
 }
 
 .planLabel {
-  color: var(--alert-red);
+  color: var(--red);
   margin-left: 0.75em;
   position: relative;
 
@@ -128,7 +128,7 @@
     position: absolute;
     inset: 0.0625em -0.375em;
     border-radius: 0.375em;
-    background-color: var(--alert-red);
+    background-color: var(--red);
     opacity: 0.1;
     content: '';
   }

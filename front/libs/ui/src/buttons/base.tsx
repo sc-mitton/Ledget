@@ -157,7 +157,7 @@ export const red = css`
   margin: 0.25em 0;
 
   &:hover {
-    background-color: var(--hover-red);
+    background-color: var(--mute-red-hover);
   }
 `;
 
