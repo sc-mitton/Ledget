@@ -382,6 +382,7 @@ const Connections = () => {
         />
       )}
       <LoadingRingDiv
+        size={34}
         loading={fetchingPlaidItems}
         className={styles.connectionsPage}
       >

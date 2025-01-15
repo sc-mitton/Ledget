@@ -83,11 +83,11 @@
 
   &[data-color='gray'] {
     &::after {
-      background-color: var(--btn-light-gray);
+      background-color: var(--btn-feather-light-gray-hover);
     }
 
     &:hover::after {
-      background-color: var(--btn-light-gray-hover);
+      background-color: var(--btn-light-gray);
     }
   }
 

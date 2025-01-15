@@ -141,10 +141,12 @@ const Devices = ({ devices }: { devices?: DeviceType[] }) => {
   return (
     <section>
       <h4 className="header2">Devices</h4>
-      <NestedWindowSlimmer className={styles.deviceList}>
-        {groupedDevices.map(([device, info], index) => (
-          <Device key={device} device={device} info={info} />
-        ))}
+      <NestedWindowSlimmer className={styles.deviceListContainer}>
+        <div className={styles.deviceList}>
+          {groupedDevices.map(([device, info], index) => (
+            <Device key={device} device={device} info={info} />
+          ))}
+        </div>
       </NestedWindowSlimmer>
     </section>
   );

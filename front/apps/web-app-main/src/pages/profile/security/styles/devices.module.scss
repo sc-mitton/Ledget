@@ -1,16 +1,39 @@
+.deviceListContainer {
+  width: auto;
+  height: auto;
+}
+
 .deviceList {
   display: flex;
   flex-direction: column;
   overflow: auto;
-  width: auto;
-  height: auto;
   max-height: 50vh;
+  box-sizing: border-box;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 0.5em,
+    black calc(100% - 1em),
+    transparent 100%
+  );
 
   section {
+    padding: 0.25em;
+    box-sizing: border-box;
     width: 100%;
     display: flex;
     flex-direction: column;
     position: relative;
+
+    &:not(:first-of-type)::after {
+      position: absolute;
+      content: '';
+      left: 0.5em;
+      right: 0.5em;
+      top: -0.125em;
+      height: 1.5px;
+      background-color: var(--border-color-ultra-dim);
+    }
 
     & > button {
       width: 100%;
@@ -21,9 +44,22 @@
       padding: 0.75em 0.5em;
       margin: 0.25em 0;
       gap: 1em;
-      transition: background-color 0.2s ease-in-out;
       border-radius: var(--border-radius2);
       position: relative;
+
+      &::after {
+        position: absolute;
+        inset: 0;
+        content: '';
+        border-radius: inherit;
+        opacity: 0;
+        background-color: var(--m-text);
+      }
+
+      & > div {
+        position: relative;
+        z-index: 1;
+      }
 
       & > div:nth-child(2) {
         flex-grow: 1;
@@ -47,6 +83,10 @@
         align-items: baseline;
         margin-left: -0.125em;
 
+        * {
+          color: var(--m-text-secondary);
+        }
+
         svg {
           margin-right: 0.125em;
           padding-top: 0.125em;
@@ -68,21 +108,33 @@
         }
       }
 
-      &:hover,
+      &:hover:not([data-open='true'])::after {
+        opacity: 0.05;
+        transition: opacity 0.2s ease-in-out;
+      }
+
       &[data-open='true'] {
-        background-color: var(--window);
-        transition: background-color 0.2s ease-in-out;
+        background-color: var(--main-background-color);
       }
     }
 
     // Disclosure Panel
     & > div {
-      background-color: var(--window);
       border-bottom-left-radius: var(--border-radius2);
       border-bottom-right-radius: var(--border-radius2);
       padding: 0.5em 0.75em 0 0.5em;
       display: flex;
       flex-direction: column;
+      position: relative;
+
+      &::after {
+        position: absolute;
+        inset: 0;
+        content: '';
+        border-radius: inherit;
+        background-color: var(--main-background-color);
+        z-index: 0;
+      }
 
       &[data-open='true'] {
         margin-top: -0.75em;
@@ -90,6 +142,7 @@
       }
 
       & > div {
+        z-index: 1;
         display: flex;
         justify-content: space-between;
         padding: 1em 0.5em;

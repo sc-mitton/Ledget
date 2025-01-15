@@ -17,7 +17,7 @@ const Main = () => {
       <h1 data-size={screenSize} className={styles.header}>
         Security
       </h1>
-      <LoadingRingDiv loading={isLoading}>
+      <LoadingRingDiv loading={isLoading} size={34}>
         <div className={styles.securityPage}>
           <Devices devices={devices} />
           <Authentication />

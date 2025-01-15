@@ -341,6 +341,7 @@ const Account = () => {
         Profile
       </h1>
       <LoadingRingDiv
+        size={34}
         loading={loadingInvoice || loadingPaymentMethod || loadingSubscription}
         style={{ borderRadius: 'var(--border-radius5)' }}
       >
