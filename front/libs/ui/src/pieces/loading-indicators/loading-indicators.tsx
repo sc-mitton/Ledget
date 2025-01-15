@@ -42,8 +42,9 @@ export const LoadingRingDiv: FC<
   HTMLAttributes<HTMLDivElement> & {
     loading: boolean;
     style?: React.CSSProperties;
+    size?: number;
   }
-> = ({ loading = false, style = {}, children, className, ...rest }) => {
+> = ({ loading = false, style = {}, children, size, className, ...rest }) => {
   const transition = useTransition(!loading, {
     from: { opacity: 0 },
     enter: { opacity: 1 },
@@ -56,7 +57,7 @@ export const LoadingRingDiv: FC<
       className={[className, styles.loadingRingDiv].join(' ')}
       {...rest}
     >
-      <LoadingRing visible={loading} size={36} />
+      <LoadingRing visible={loading} size={size} />
       {transition(
         (style, item) =>
           item && <animated.div style={style}>{children}</animated.div>

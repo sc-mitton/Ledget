@@ -5,7 +5,7 @@ import React, {
   createContext,
   Fragment,
 } from 'react';
-import { Repeat } from '@geist-ui/icons';
+import { Repeat, Check } from '@geist-ui/icons';
 
 import { useSpring, animated } from '@react-spring/web';
 import { useSearchParams } from 'react-router-dom';
@@ -18,7 +18,6 @@ import {
 } from '@ledget/shared-features';
 import { useBakedPlaidLink, useBakedUpdatePlaidLink } from '@utils/hooks';
 import { LoadingRingDiv, useScreenContext, withSmallModal } from '@ledget/ui';
-import SubmitForm from '@components/pieces/SubmitForm';
 import {
   SecondaryButton,
   BlueSubmitButton,
@@ -44,6 +43,8 @@ interface DeleteContextProps {
   fetchingPlaidItems: boolean;
   editing: boolean;
   setEditing: React.Dispatch<React.SetStateAction<boolean>>;
+  showConfirmModal: boolean;
+  setShowConfirmModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const DeleteContext = createContext<DeleteContextProps | undefined>(undefined);
@@ -61,6 +62,7 @@ const ConnectionsContext = ({ children }: { children: React.ReactNode }) => {
   const { data: plaidItems, isLoading: fetchingPlaidItems } =
     useGetPlaidItemsQuery();
   const [editing, setEditing] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   useEffect(() => {
     setEditing(false);
@@ -74,6 +76,8 @@ const ConnectionsContext = ({ children }: { children: React.ReactNode }) => {
     fetchingPlaidItems,
     editing,
     setEditing,
+    showConfirmModal,
+    setShowConfirmModal,
   };
 
   return (
@@ -98,18 +102,12 @@ const DeleteAllButton = ({ onClick }: { onClick: () => void }) => {
 
   return (
     <div>
-      <Tooltip
-        msg={'Remove account'}
-        ariaLabel={'Remove Account'}
-        type={'left'}
-      >
-        <DeleteButton
-          className={deleteClass}
-          aria-label="Remove account"
-          onClick={() => onClick()}
-          visible={editing}
-        />
-      </Tooltip>
+      <DeleteButton
+        className={deleteClass}
+        aria-label="Remove account"
+        onClick={() => onClick()}
+        visible={editing}
+      />
     </div>
   );
 };
@@ -280,7 +278,23 @@ const EmptyState = () => (
 );
 
 const Buttons = ({ onPlus }: { onPlus: () => void }) => {
-  const { editing, setEditing, plaidItems } = useDeleteContext();
+  const {
+    editing,
+    setEditing,
+    plaidItems,
+    deleteQue,
+    setDeleteQue,
+    setShowConfirmModal,
+  } = useDeleteContext();
+
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (deleteQue.length > 0) {
+      setShowConfirmModal(true);
+    } else {
+      setEditing(false);
+    }
+  };
 
   return (
     <div>
@@ -298,14 +312,39 @@ const Buttons = ({ onPlus }: { onPlus: () => void }) => {
           </IconButtonBorderedGray>
         </Tooltip>
       )}
-      <Tooltip msg={'Add account'} ariaLabel={'Add Account'} type={'left'}>
-        <IconButtonBorderedGray
-          onClick={onPlus}
-          aria-label="Add institution connection"
-        >
-          <Plus className="icon" />
-        </IconButtonBorderedGray>
-      </Tooltip>
+      {editing && (
+        <form onSubmit={handleFormSubmit} className={styles.form}>
+          {deleteQue.map((val, index) => (
+            <input
+              key={index}
+              type="hidden"
+              name={
+                val.accountId ? `accounts[${index}][id]` : `items[${index}][id]`
+              }
+              value={val.accountId ? val.accountId : val.itemId}
+            />
+          ))}
+          <IconButtonBorderedGray
+            onClick={() => {
+              setDeleteQue([]);
+              setEditing(false);
+            }}
+          >
+            Cancel
+          </IconButtonBorderedGray>
+          <IconButtonBorderedGray type="submit">Delete</IconButtonBorderedGray>
+        </form>
+      )}
+      {!editing && (
+        <Tooltip msg={'Add account'} ariaLabel={'Add Account'} type={'left'}>
+          <IconButtonBorderedGray
+            onClick={onPlus}
+            aria-label="Add institution connection"
+          >
+            <Plus className="icon" />
+          </IconButtonBorderedGray>
+        </Tooltip>
+      )}
     </div>
   );
 };
@@ -314,27 +353,17 @@ const Connections = () => {
   const {
     plaidItems,
     fetchingPlaidItems,
-    editing,
     setEditing,
-    deleteQue,
     setDeleteQue,
+    showConfirmModal,
+    setShowConfirmModal,
   } = useDeleteContext();
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const { open } = useBakedPlaidLink();
   const { screenSize } = useScreenContext();
 
   // if (import.meta.env.VITE_PLAID_REDIRECT_URI) {
   //     config.receivedRedirectUri = import.meta.env.VITE_PLAID_REDIRECT_URI
   // }
-
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (deleteQue.length > 0) {
-      setShowConfirmModal(true);
-    } else {
-      setEditing(false);
-    }
-  };
 
   return (
     <>
@@ -365,31 +394,6 @@ const Connections = () => {
                 <PlaidItem key={item.id} item={item} />
               ))}
             </ShadowedContainer>
-            <div>
-              {editing && (
-                <form onSubmit={handleFormSubmit}>
-                  {deleteQue.map((val, index) => (
-                    <input
-                      key={index}
-                      type="hidden"
-                      name={
-                        val.accountId
-                          ? `accounts[${index}][id]`
-                          : `items[${index}][id]`
-                      }
-                      value={val.accountId ? val.accountId : val.itemId}
-                    />
-                  ))}
-                  <SubmitForm
-                    submitting={false}
-                    onCancel={() => {
-                      setDeleteQue([]);
-                      setEditing(false);
-                    }}
-                  />
-                </form>
-              )}
-            </div>
           </>
         )}
       </LoadingRingDiv>

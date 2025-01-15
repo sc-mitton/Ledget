@@ -568,11 +568,11 @@ const DayMonthYearPicker = () => {
       <div>
         <div>
           <IconButtonHalfBlue onClick={(e) => handleSeek(e, -1, 'fast')}>
-            <ChevronsLeft size="1.25em" />
+            <ChevronsLeft size="1.25em" strokeWidth={2} />
           </IconButtonHalfBlue>
           {view !== 'year' && (
             <IconButtonHalfBlue onClick={(e) => handleSeek(e, -1, 'normal')}>
-              <ChevronLeft size="1.25em" />
+              <ChevronLeft size="1.25em" strokeWidth={2} />
             </IconButtonHalfBlue>
           )}
         </div>
@@ -626,11 +626,11 @@ const DayMonthYearPicker = () => {
         <div>
           {view !== 'year' && (
             <IconButtonHalfBlue onClick={(e) => handleSeek(e, 1, 'normal')}>
-              <ChevronRight size="1.25em" />
+              <ChevronRight size="1.25em" strokeWidth={2} />
             </IconButtonHalfBlue>
           )}
           <IconButtonHalfBlue onClick={(e) => handleSeek(e, 1, 'fast')}>
-            <ChevronsRight size="1.25em" />
+            <ChevronsRight size="1.25em" strokeWidth={2} />
           </IconButtonHalfBlue>
         </div>
       </div>
@@ -934,7 +934,7 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
               />
             </>
           )}
-          <CalendarIcon size={'1em'} />
+          <CalendarIcon size={'1.125em'} strokeWidth={2} />
           {selectedValue && (
             <CircleIconButton
               className="clear-input-button"
@@ -944,7 +944,7 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
                 setSelectedValue(undefined);
               }}
             >
-              <X size={'.8em'} />
+              <X size={'.8em'} strokeWidth={2} />
             </CircleIconButton>
           )}
         </TextInputWrapper>

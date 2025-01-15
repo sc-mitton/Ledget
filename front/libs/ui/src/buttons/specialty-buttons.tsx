@@ -288,7 +288,7 @@ export const DeleteButton: FC<
       aria-label="Delete"
     >
       <line
-        strokeWidth={1.875}
+        strokeWidth={2}
         x1="3.22"
         y1="12"
         x2="20.78"
@@ -299,7 +299,7 @@ export const DeleteButton: FC<
         stroke-miterlimit="10"
       />
       <line
-        strokeWidth={1.875}
+        strokeWidth={2}
         x1="12"
         y1="3.22"
         x2="12"

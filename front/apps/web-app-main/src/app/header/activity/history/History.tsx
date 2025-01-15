@@ -64,7 +64,7 @@ export function History() {
   return (
     <div className={styles.allItemsWindow}>
       <ShadowedContainer className={styles.transactionsHistoryTableContainer}>
-        <LoadingRingDiv loading={isLoading}>
+        <LoadingRingDiv loading={isLoading} size={24}>
           {!transactionsData?.length && !isLoading && !isError ? (
             <ZeroConfig />
           ) : (

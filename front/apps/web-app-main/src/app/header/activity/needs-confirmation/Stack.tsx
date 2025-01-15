@@ -263,6 +263,7 @@ export const NeedsConfirmationStack = () => {
 
   return (
     <LoadingRingDiv
+      size={24}
       className={styles.needsConfirmationStack}
       loading={isFetchingTransactions}
     >

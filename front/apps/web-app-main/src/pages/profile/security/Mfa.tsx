@@ -63,7 +63,6 @@ const Mfa = () => {
             </div>
             <CircleIconButton
               onClick={() => navigate('/settings/security/authenticator-setup')}
-              darker={true}
             >
               <Plus size={'.875em'} strokeWidth={2} />
             </CircleIconButton>
