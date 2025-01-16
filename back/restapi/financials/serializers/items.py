@@ -1,5 +1,4 @@
 import logging
-import base64
 
 import plaid
 from plaid.model.item_public_token_exchange_request import \
@@ -7,7 +6,6 @@ from plaid.model.item_public_token_exchange_request import \
 from plaid.model.institutions_get_by_id_request import InstitutionsGetByIdRequest
 from plaid.model.country_code import CountryCode
 from rest_framework import serializers
-from django.core.files.base import ContentFile
 from django.conf import settings
 from django.db import transaction
 
@@ -61,12 +59,7 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
         resonse = self._get_plaid_institution(institution.id)
         data = resonse.to_dict()['institution']
 
-        if data.get('logo'):
-            decoded_logo = base64.b64decode(data['logo'])
-            filename = f"logo_{institution.id}.png"
-            image_file = ContentFile(decoded_logo, name=filename)
-            institution.logo = image_file
-
+        institution.logo = data.get('logo')
         institution.url = data.get('url')
         institution.oath = data.get('oath')
         institution.primary_color = data.get('primary_color')

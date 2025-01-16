@@ -271,9 +271,11 @@ const ConfirmModal = withReAuth(
 const EmptyState = () => (
   <div className={styles.noConnections}>
     <h2>No Connections</h2>
-    <span>Click the plus icon to get started </span>
-    <br />
-    <span>connecting your accounts</span>
+    <div>
+      <span>Click the plus icon to get started </span>
+      <br />
+      <span>connecting your accounts</span>
+    </div>
   </div>
 );
 
@@ -381,14 +383,14 @@ const Connections = () => {
           }}
         />
       )}
-      <LoadingRingDiv
-        size={34}
-        loading={fetchingPlaidItems}
-        className={styles.connectionsPage}
-      >
-        {plaidItems?.length === 0 ? (
-          <EmptyState />
-        ) : (
+      {plaidItems?.length === 0 ? (
+        <EmptyState />
+      ) : (
+        <LoadingRingDiv
+          size={34}
+          loading={fetchingPlaidItems}
+          className={styles.connectionsPage}
+        >
           <>
             <ShadowedContainer className={styles.accountsList}>
               {plaidItems?.map((item) => (
@@ -396,8 +398,8 @@ const Connections = () => {
               ))}
             </ShadowedContainer>
           </>
-        )}
-      </LoadingRingDiv>
+        </LoadingRingDiv>
+      )}
     </>
   );
 };

@@ -1,4 +1,3 @@
-import base64
 from itertools import groupby
 from datetime import datetime
 from decimal import Decimal
@@ -13,21 +12,7 @@ from financials.models import (
 )
 
 
-class CustomBase64LogoField(serializers.Field):
-    def to_representation(self, value):
-        if value and value.path:
-            try:
-                with open(value.path, "rb") as f:
-                    return base64.b64encode(f.read()).decode("utf-8")
-            except Exception:
-                return None
-        else:
-            return None
-
-
 class InstitutionSerializer(serializers.ModelSerializer):
-    logo = CustomBase64LogoField(required=False, read_only=True)
-    id = serializers.CharField()
 
     class Meta:
         model = Institution

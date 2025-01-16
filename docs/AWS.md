@@ -3,6 +3,7 @@
 This is the list of AWS Resources in order to Run Ledget and how to set up each of them
 
 ## ASM
+
 - ledget-restapi-rds-credentials
 - oathkeeper_jwks
 - ory_hook_api_key
@@ -35,7 +36,7 @@ Execution role is ledget-route-dynamic-origin-request-role-4duyiptu
 ## S3
 
 - Bucket for the code for the landing page, accounts web app, and main web appp
-    (accounts.ledget.app, ledget-landing, ledget.app)
+  (accounts.ledget.app, ledget-landing, ledget.app)
 - Bucket for the dynamic router code (ledget-dynamic-route-lambda)
 - Oathkeeper code (oathkeeper-authorization-prod and oathkeeper-authorization-uat)
 
@@ -56,14 +57,13 @@ integration request path paramter is proxy: method.request.path.proxy
 VPC integration
 
 Integration Request Header Parameters:
-name: X-Forwarded-Host  mapped from: method.request.header.Host
+name: X-Forwarded-Host mapped from: method.request.header.Host
 
 2. /v1/{proxy+} - ANY
 
 Authorization - oathkeeper
 
-Integration Request
--------------------
+## Integration Request
 
 endpoint url https://eb.api.ledget.app/v1/{proxy}
 
@@ -75,27 +75,25 @@ Method Request: Http Request Headers
 Host, Required: False
 
 Integration Request URL Path Parameters:
-proxy:  method.request.path.proxy
+proxy: method.request.path.proxy
 
 Integration Request Header Parameters:
-Name: Authorization     Mapped From: context.authorization
-Name: X-Forwarded-Host  Mapped From: method.request.header.Host
-Name: X-User            Mapped From: context.x-user
+Name: Authorization Mapped From: context.authorization
+Name: X-Forwarded-Host Mapped From: method.request.header.Host
+Name: X-User Mapped From: context.x-user
 
 3. /v1/{proxy+} - OPTIONS
 
-Integration Response
---------------------
+## Integration Response
 
 Header Mappings
 method.response.header.Access-Control-Allow-Credentials: 'true'
 method.response.header.Access-Control-Allow-Headers: 'Content-Type, Csrf-Token'
 method.response.header.Access-Control-Allow-Methods: 'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'
-method.response.header.Access-Control-Allow-Origin: '*'
+method.response.header.Access-Control-Allow-Origin: '\*'
 method.response.header.Access-Control-Max-Age: '100'
 
-Method Response
----------------
+## Method Response
 
 Response Headers:
 Access-Control-Allow-Credentials
@@ -186,14 +184,13 @@ Zone: (only 1 for now so it's free tier)
 
 Region: us-west-2a
 
-Security Groups:  psql-group
+Security Groups: psql-group
 
 Port: 5432
 
 Instance class: db.t3.micro
 
 Make sure to export credentials to AWSM
-
 
 ## Security Groups
 
@@ -230,12 +227,14 @@ type: HTTPS, proto: TCP, port: 443, destination: 10.192.0.0/16
 
 ## Elastic Beanstalk
 
+The ec2 instance iam role should have access to the necessary secrets in ASM, route 53 (full), s3 (full), sqs (full), eb web tier, and eb worker tier
+
 1. Create eb environmets if not already up
 
 `eb create --modules restapi celery --env-group-suffix prod`
 
 2. Deploy to environment
-Deploy to a specific eb environment
+   Deploy to a specific eb environment
 
 `eb deploy --modules restapi celery --env-group-suffix prod`
 
@@ -244,21 +243,21 @@ Deploy to a specific eb environment
 ### Route Tables
 
 1. CustomVPC Main
-Destination: 10.192.0.0/16    Target: local
+   Destination: 10.192.0.0/16 Target: local
 
 2. CustomVPC Private Routes (AZ2)
-Destination: 10.192.0.0/16    Target: local
+   Destination: 10.192.0.0/16 Target: local
 
 3. CustomVPC Private Routes (AZ1)
-Destination: 0.0.0.0/0        Target: nat-053a0e870f203850f
-Destination: 10.192.0.0/16    Target: local
+   Destination: 0.0.0.0/0 Target: nat-053a0e870f203850f
+   Destination: 10.192.0.0/16 Target: local
 
 4. CustomVPC Private Routes (AZ2)
-Destination: 10.192.0.0/16    Target: local
+   Destination: 10.192.0.0/16 Target: local
 
 5. CustomVPC Public Routes
-Destination: 0.0.0.0/0      Target: igw-0735d656b6e79ad59
-Destination: 10.192.0.0/16  Target: local
+   Destination: 0.0.0.0/0 Target: igw-0735d656b6e79ad59
+   Destination: 10.192.0.0/16 Target: local
 
 ### Subnets
 
@@ -287,40 +286,40 @@ ns-938.awsdns-53.net.
 ledget.app, SOA, ns-221.awsdns-27.com. awsdns-hostmaster.amazon.com. 1 7200 900 1209600 86400
 900
 
-ledget.app, SPF, "v=spf1 include:_spf.google.com ~all"
+ledget.app, SPF, "v=spf1 include:\_spf.google.com ~all"
 
 ledget.app, TXT,"stripe-verification=d0942a91f10ce636c55e2a01d6fc908f1b42902e36718580f7188eb7884f4286"
 
-_1913a34200cf9c209e64f62b8a63f8ee.ledget.app, CNAME, _c8b782799ca12c4ec6710621b2a2cb90.mhbtsbpdnt.acm-validations.aws
+\_1913a34200cf9c209e64f62b8a63f8ee.ledget.app, CNAME, \_c8b782799ca12c4ec6710621b2a2cb90.mhbtsbpdnt.acm-validations.aws
 
-_dmarc.ledget.app, TXT, "v=DMARC1; p=none; rua=mailto:reports@ledget.app"
+\_dmarc.ledget.app, TXT, "v=DMARC1; p=none; rua=mailto:reports@ledget.app"
 
-3ljwwvs7uroopnu2usal6n3cf7izy67k._domainkey.ledget.app, CNAME,
+3ljwwvs7uroopnu2usal6n3cf7izy67k.\_domainkey.ledget.app, CNAME,
 3ljwwvs7uroopnu2usal6n3cf7izy67k.dkim.custom-email-domain.stripe.com
 
-akq2x7v4rs5bp4n6nuefhrnjzpno3v6l._domainkey.ledget.app, CNAME
+akq2x7v4rs5bp4n6nuefhrnjzpno3v6l.\_domainkey.ledget.app, CNAME
 akq2x7v4rs5bp4n6nuefhrnjzpno3v6l.dkim.custom-email-domain.stripe.com
 
-google._domainkey.ledget.app, TXT
+google.\_domainkey.ledget.app, TXT
 "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5mxFNivwBq93hMCU7le0Y/1Jo/HwX0V4gNtMjsQVm6Nh61DiF3Q2rdC83nDKBXwXNV4ETsKB8mTjCmb5Ivv/e2E4PaleIV69i3NNKFPdfPtGHo7ya7ScH+sow6haa+G6I+mushw2I8EbWooO9kMtiIH6nRT7VMo6mrfknYrGOUodS"
 "w6cNKkm05nZNmkEm/7J7HdclW+3N9XPCEDl6/Fx99GlswJu7VCnXJbJIAA/t7I9zwUYW8JlKQ0PJmAkRZXK6iDXRnuYbAoqxgD8MvGPT+xHNHh9AxO8J1OTt/s6txIoObYBe28JFq8WvrOOlGJAr9t954cg5bD0Yb0Lc3ObOQIDAQAB"
 
-jb5wsjyk6tt6wumwd62v3m47hqlsymjj._domainkey.ledget.app, CNAME
+jb5wsjyk6tt6wumwd62v3m47hqlsymjj.\_domainkey.ledget.app, CNAME
 jb5wsjyk6tt6wumwd62v3m47hqlsymjj.dkim.custom-email-domain.stripe.com.
 
-rq7btzgwzdfgunw7dgl22qnp2pqcjkyl._domainkey.ledget.app, CNAME
+rq7btzgwzdfgunw7dgl22qnp2pqcjkyl.\_domainkey.ledget.app, CNAME
 rq7btzgwzdfgunw7dgl22qnp2pqcjkyl.dkim.custom-email-domain.stripe.com
 
-sk226cwg3wytmtrds2xjsveij5wz6x7p._domainkey.ledget.app, CNAME
+sk226cwg3wytmtrds2xjsveij5wz6x7p.\_domainkey.ledget.app, CNAME
 sk226cwg3wytmtrds2xjsveij5wz6x7p.dkim.custom-email-domain.stripe.com
 
-zfeuenpnx7gof7kg5xunepgci36wzkuw._domainkey.ledget.app, CNAME
+zfeuenpnx7gof7kg5xunepgci36wzkuw.\_domainkey.ledget.app, CNAME
 zfeuenpnx7gof7kg5xunepgci36wzkuw.dkim.custom-email-domain.stripe.com
 
 accounts.ledget.app, A, d30pnpxz39z3p1.cloudfront.net.
 
-_bd85f36b2abf368cc629c959f50935ce.accounts.ledget.app, CNAME
-_a8bffa794ab78bbf7805bf427be894d2.mhbtsbpdnt.acm-validations.aws
+\_bd85f36b2abf368cc629c959f50935ce.accounts.ledget.app, CNAME
+\_a8bffa794ab78bbf7805bf427be894d2.mhbtsbpdnt.acm-validations.aws
 
 api.ledget.app, A, d-wkgg5jdn5b.execute-api.us-west-2.amazonaws.com.
 

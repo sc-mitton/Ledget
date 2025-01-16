@@ -19,7 +19,7 @@ class Institution(models.Model):
                           primary_key=True)
     created = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=100, null=False, blank=False)
-    logo = models.ImageField(upload_to='logos', null=True, blank=True)
+    logo = models.TextField(null=True, blank=True)
     primary_color = models.CharField(max_length=100, null=True, blank=True)
     url = models.CharField(max_length=100, null=True, blank=True)
     oath = models.CharField(max_length=100, null=True, default=False)

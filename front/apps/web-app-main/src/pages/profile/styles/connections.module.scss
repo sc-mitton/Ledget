@@ -147,12 +147,22 @@
 
 .noConnections {
   font-weight: var(--fw-regular);
-  height: 100%;
+  height: calc(100% - 8em);
   display: flex;
   flex-direction: column;
+  gap: 0.375em;
   justify-content: center;
   align-items: center;
   color: var(--m-text-secondary);
+
+  div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    * {
+      color: var(--m-text-secondary);
+    }
+  }
 }
 
 .reconnect {

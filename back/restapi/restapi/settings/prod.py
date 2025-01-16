@@ -19,7 +19,7 @@ SECURE_BROWSER_XSS_FILTER = True
 CSRF_TRUSTED_ORIGINS = ['https://ledget.app', 'https://accounts.ledget.app']
 CSRF_COOKIE_DOMAIN = 'ledget.app'
 
-# ---------------------------------- 3rd Party Services --------------------------------- #
+# ---------------------------- 3rd Party Services ---------------------------- #
 
 # Django
 SECRET_KEY = get_secret('django_secret_key')
