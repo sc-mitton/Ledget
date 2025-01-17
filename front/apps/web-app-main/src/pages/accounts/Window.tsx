@@ -32,8 +32,12 @@ const Window = () => {
   const currentPath = location.pathname.split('/')[2];
 
   return (
-    <MainWindow size={screenSize} className={styles.window}>
-      <h2>{_getNavHeaderPhrase(currentPath)}</h2>
+    <MainWindow
+      size={screenSize}
+      className={styles.window}
+      data-screen-size={screenSize}
+    >
+      <h1>{_getNavHeaderPhrase(currentPath)}</h1>
       <Nav />
       <div>
         {!['extra-small'].includes(screenSize) && (

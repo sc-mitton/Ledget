@@ -66,7 +66,7 @@ const TabButtons = ({ showFilters = false }) => {
   const currentPath = location.pathname.split('/')[2];
   const { screenSize } = useScreenContext();
   const { isDark } = useColorScheme();
-  const [lightBlue, blue] = useSchemeVar(['--blue-light', '--blue']);
+  const [lightBlue, blue] = useSchemeVar(['--blue-light', '--blue-sat']);
   const [updatePill, setUpdatePill] = useState(false);
 
   useEffect(() => {
@@ -121,9 +121,7 @@ const TabButtons = ({ showFilters = false }) => {
               }
             >
               {_getNavIcon(path, currentPath === path)}
-              {screenSize !== 'extra-small' && (
-                <span>{_getNavLabel(path)}</span>
-              )}
+              <span>{_getNavLabel(path)}</span>
             </li>
           ))}
           <animated.span style={props} />
@@ -246,7 +244,7 @@ const Filters = ({
             )}
         </>
       ))}
-      <CircleIconButton onClick={() => close()} size="small">
+      <CircleIconButton onClick={() => close()}>
         <X size="1em" />
       </CircleIconButton>
     </ExpandableContainer>

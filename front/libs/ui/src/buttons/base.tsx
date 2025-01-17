@@ -138,7 +138,7 @@ export const clearGray = css`
   background-color: transparent;
 
   &:hover {
-    background-color: var(--btn-light-gray);
+    background-color: var(--btn-feather-light-gray);
   }
 `;
 

@@ -155,7 +155,7 @@ export const CloseButton = forwardRef<
       data-size={size}
       className={styles.close}
     >
-      <X size={size} stroke={'currentColor'} />
+      <X size={size} stroke={'currentColor'} strokeWidth={1.75} />
     </CircleIconButton>
   );
 });
@@ -270,7 +270,6 @@ export const DeleteButton: FC<
 }) => (
   <CircleIconButton
     className={styles.delete}
-    darker={true}
     data-pop={pop}
     data-visible={visible}
     data-animated={animated}
@@ -384,7 +383,7 @@ export const RefreshButton = ({
         aria-label="Refresh"
         {...rest}
       >
-        {!active && loading && <LoadingRing visible={true} />}
+        {!active && loading && <LoadingRing visible={true} size={16} />}
         {(active || !loading) && <RotateCw size={'.875em'} strokeWidth={2} />}
       </CircleIconButton>
     </Tooltip>

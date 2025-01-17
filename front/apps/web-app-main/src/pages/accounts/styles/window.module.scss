@@ -3,9 +3,23 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  padding: 1.75em 2em 2em 2em;
+  box-sizing: border-box;
 
-  h2 {
-    font-size: 1.5rem;
+  &[data-screen-size='extra-small'],
+  &[data-screen-size='small'],
+  &[data-screen-size='medium'] {
+    & > h1 {
+      text-align: center;
+      padding-bottom: 0.5em;
+    }
+  }
+
+  &[data-screen-size='extra-small'],
+  &[data-screen-size='small'] {
+    & > h1 {
+      font-size: 1.25rem;
+    }
   }
 
   & > div:last-child {

@@ -25,7 +25,7 @@
   justify-content: space-between;
   align-self: center;
   margin-top: -3.75em;
-  margin-left: -0.25em;
+  margin-left: -1em;
 
   &[data-size='extra-small'] {
     margin: 0;
@@ -34,7 +34,7 @@
 }
 
 /* Border bottom for all cells except last child */
-$subtleBorderColor: var(--border-color-ultra-dim);
+$dividerBorder: var(--transaction-hover-background);
 $borderRadius2: var(--border-radius3);
 
 .list {
@@ -48,7 +48,6 @@ $borderRadius2: var(--border-radius3);
   grid-template-columns: auto 1fr auto;
   grid-auto-rows: minmax(auto, 5rem);
   grid-template-rows: min-content;
-  row-gap: 0.75em;
   padding-right: 0.75em;
 
   & > div:nth-child(2n) {
@@ -83,8 +82,24 @@ $borderRadius2: var(--border-radius3);
     }
   }
 
-  & > div:nth-child(2n):not(:last-child) > div {
-    @include table-dividers(-0.375em, false, 1.5px);
+  & > div:nth-child(2n):not(:last-child) > div:not(.month-header) {
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      height: 1px;
+      border-bottom: 1.5px solid $dividerBorder;
+    }
+
+    &:first-of-type::after {
+      left: 0.5em;
+      right: 0;
+    }
+
+    &:last-of-type::after {
+      left: 0;
+      right: 0.5em;
+    }
   }
 
   & > div.transaction-shimmer:nth-child(2n + 3):hover > div {

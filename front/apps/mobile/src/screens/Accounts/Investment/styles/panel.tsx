@@ -15,6 +15,20 @@ const styles = StyleSheet.create({
   transactionsHeader: {
     flexGrow: 1,
   },
+  blurView: {
+    zIndex: 1,
+    transform: [{ translateY: 12 }],
+  },
+  addAccountButtonContainer: {
+    position: 'absolute',
+    top: '43%',
+    left: '50%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  addAccountButton: {
+    position: 'absolute',
+  },
 });
 
 export default styles;

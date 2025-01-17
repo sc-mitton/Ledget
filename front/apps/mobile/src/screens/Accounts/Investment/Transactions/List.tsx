@@ -210,7 +210,7 @@ const Transactions = (props: PTransactions) => {
               </View>
             </GestureDetector>
           )}
-          {(transactionsData?.length || 0) <= 0 || isLoadingInvestmentsData ? (
+          {isLoadingInvestmentsData ? (
             <SkeletonTransactions height={SKELETON_HEIGHT} />
           ) : (
             <CustomSectionList

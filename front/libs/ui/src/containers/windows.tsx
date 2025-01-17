@@ -4,7 +4,7 @@ import { useScreenContext } from '../utils/context/ScreenContext';
 export const MainWindow = styled.div<{ size?: string }>`
   overflow-y: auto;
   scrollbar-width: none;
-  max-width: 55rem;
+  max-width: 58rem;
   width: 100%;
 `;
 

@@ -38,6 +38,11 @@ const styles = StyleSheet.create({
     marginLeft: 4,
     gap: 2,
   },
+  emptyHoldingsMessage: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'center',
+  },
 });
 
 export default styles;

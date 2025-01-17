@@ -192,6 +192,7 @@ const Chart = () => {
     <View style={styles.container}>
       <Animated.View style={[styles.windowMenu, chartMenuAnimation]}>
         <ChartWindowsMenu
+          disabled={useingFakeData}
           windows={windows}
           onShowChange={(show) =>
             show ? setBlurView(1) : setBlurView(undefined)

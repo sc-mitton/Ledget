@@ -16,6 +16,7 @@ type Props<W extends Windows> = {
   closeOption?: boolean;
   windows: W;
   defaultWindow?: W[number]['key'];
+  disabled?: boolean;
 };
 
 export const ChartWindowsMenu = <W extends Windows>(props: Props<W>) => {
@@ -26,6 +27,7 @@ export const ChartWindowsMenu = <W extends Windows>(props: Props<W>) => {
   return (
     <Menu
       as="menu"
+      disabled={props.disabled}
       onShowChange={props.onShowChange}
       items={[
         ...props.windows.map((w) => ({
@@ -46,8 +48,13 @@ export const ChartWindowsMenu = <W extends Windows>(props: Props<W>) => {
       placement="right"
       closeOnSelect={true}
     >
-      <Box backgroundColor="lightBlueButton" style={styles.menuButton}>
-        <Text color="blueText">{window}</Text>
+      <Box
+        backgroundColor={props.disabled ? 'grayButton' : 'lightBlueButton'}
+        style={styles.menuButton}
+      >
+        <Text color={props.disabled ? 'tertiaryText' : 'blueText'}>
+          {window}
+        </Text>
       </Box>
     </Menu>
   );

@@ -1,21 +1,60 @@
 import { useState } from 'react';
-import { View } from 'react-native';
-import { ArrowUpRight, ArrowDownLeft } from 'geist-native-icons';
+import { View, StyleSheet } from 'react-native';
+import { ArrowUpRight, ArrowDownLeft, Plus } from 'geist-native-icons';
+import { BlurView } from 'expo-blur';
 
 import styles from './styles/panel';
 import { AccountsTabsScreenProps } from '@types';
-import { Box, Icon, Text } from '@ledget/native-ui';
+import { Box, Icon, Text, Button } from '@ledget/native-ui';
 import Chart from './Chart';
 import Holdings from './Holdings/Holdings';
 import Transactions from './Transactions/List';
+import { useGetAccountsQuery } from '@ledget/shared-features';
+import { useAppearance } from '@/features/appearanceSlice';
 
 export default function Panel(props: AccountsTabsScreenProps<'Investment'>) {
   const [bottomOfContentPos, setBottomOfContentPos] = useState(0);
   const [transactionsListExpanded, setTransactionsListExpanded] =
     useState(false);
+  const { data: accounts } = useGetAccountsQuery();
+  const { mode } = useAppearance();
 
   return (
     <Box padding="pagePadding" style={styles.main}>
+      {true && (
+        <BlurView
+          intensity={20}
+          tint={mode}
+          style={[StyleSheet.absoluteFill, styles.blurView]}
+        >
+          <Box
+            style={styles.addAccountButtonContainer}
+            shadowColor="mainText"
+            shadowOpacity={0.4}
+            shadowOffset={{ width: 0, height: 0 }}
+            shadowRadius={8}
+          >
+            <Button
+              style={styles.addAccountButton}
+              textColor="blueText"
+              label="Investment Account"
+              onPress={() =>
+                props.navigation.navigate('BottomTabs', {
+                  screen: 'Profile',
+                  params: {
+                    screen: 'Connections',
+                  },
+                } as any)
+              }
+              fontSize={18}
+              labelPlacement="left"
+              icon={
+                <Icon icon={Plus} size={20} strokeWidth={2} color="blueText" />
+              }
+            />
+          </Box>
+        </BlurView>
+      )}
       <Box style={styles.main}>
         <View
           onLayout={(event) => {

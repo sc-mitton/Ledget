@@ -5,6 +5,10 @@
   margin-bottom: 0.5em;
   transition: margin-bottom 0.2s ease-out;
 
+  h4 {
+    color: var(--m-text-secondary);
+  }
+
   & > div:first-child > div {
     padding: 1.25em;
   }

@@ -7,11 +7,7 @@
   overflow-y: hidden;
   overflow-x: auto;
   scrollbar-width: none;
-  max-height: clamp(
-    calc(3 * (1em + $bill-flex-grid-gap * 2)),
-    calc(5 * (1em + $bill-flex-grid-gap * 2 + 1vh)),
-    calc(100% - $bill-flex-grid-gap * 2)
-  );
+  max-height: 100%;
   display: grid;
   grid-auto-flow: column;
   grid-template-rows: repeat($number-of-bill-rows, minmax(0, min-content));
