@@ -5,7 +5,7 @@ import styles from './styles/panel';
 import { AccountsTabsScreenProps } from '@types';
 import { Account, useGetAccountsQuery } from '@ledget/shared-features';
 import { useAppDispatch, useAppSelector } from '@hooks';
-import { Box, Seperator } from '@ledget/native-ui';
+import { Box } from '@ledget/native-ui';
 import { DefaultHeader, AccountHeader } from '../Header';
 import Transactions from '../TransactionsList/Transactions';
 import AccountsPickerButton from '../AccountsPickerButton';
@@ -14,6 +14,7 @@ import {
   selectAccountsTabDepositAccounts,
   setAccountsTabDepositAccounts,
 } from '@/features/uiSlice';
+import LinkAccountPrompt from '../LinkAccountPrompt';
 
 const Panel = (
   props: AccountsTabsScreenProps<'Depository'> & { account?: Account }
@@ -59,6 +60,7 @@ const Panel = (
 
   return (
     <Box style={[styles.main]} paddingHorizontal="pagePadding">
+      <LinkAccountPrompt {...props} />
       <View
         onLayout={(event) => {
           setBottomOfContentPos(event.nativeEvent.layout.height);

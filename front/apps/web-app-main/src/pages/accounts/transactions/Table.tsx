@@ -87,22 +87,27 @@ const Table = ({ children, ...rest }: Props) => {
   };
 
   return (
-    <Window className={styles.table} ref={containerRef} data-size={screenSize}>
+    <div className={styles.container}>
       <div className={styles.header} data-size={screenSize}>
-        <h3>Transactions</h3>
         <Filter value={dateRange} onChange={setDateRange} />
       </div>
-      <InfiniteScrollDiv animate={loaded && fetchMorePulse} {...rest}>
-        <ShadowScrollDiv
-          className={styles.list}
-          data-size={screenSize}
-          onScroll={handleScroll}
-        >
-          {!transactionsData && <Skeleton ref={containerRef} />}
-          {children({ transactionsData })}
-        </ShadowScrollDiv>
-      </InfiniteScrollDiv>
-    </Window>
+      <Window
+        className={styles.table}
+        ref={containerRef}
+        data-size={screenSize}
+      >
+        <InfiniteScrollDiv animate={loaded && fetchMorePulse} {...rest}>
+          <ShadowScrollDiv
+            className={styles.list}
+            data-size={screenSize}
+            onScroll={handleScroll}
+          >
+            {!transactionsData && <Skeleton ref={containerRef} />}
+            {children({ transactionsData })}
+          </ShadowScrollDiv>
+        </InfiniteScrollDiv>
+      </Window>
+    </div>
   );
 };
 

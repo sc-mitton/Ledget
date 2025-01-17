@@ -30,6 +30,7 @@ import { DefaultHeader, AccountHeader } from '../Header';
 import { useAppDispatch } from '@/hooks';
 import CarouselItem from './Carouseltem';
 import { useLoaded } from '@ledget/helpers';
+import LinkAccountPrompt from '../LinkAccountPrompt';
 
 export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
   const dispatch = useAppDispatch();
@@ -124,6 +125,7 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
 
   return (
     <View style={styles.main}>
+      <LinkAccountPrompt {...props} />
       <View
         ref={ref}
         style={styles.topContainer}

@@ -6,12 +6,14 @@ import { Box } from '@ledget/native-ui';
 import { useGetLiabilitiesQuery } from '@ledget/shared-features';
 import LoanCard from './LoanCard';
 import SkeletonLoanCard from './SkeletonLoanCard';
+import LinkAccountPrompt from '../LinkAccountPrompt';
 
 export default function Panel(props: AccountsTabsScreenProps<'Loan'>) {
   const { data: liabilities } = useGetLiabilitiesQuery();
 
   return (
     <Box padding="pagePadding" style={styles.main}>
+      <LinkAccountPrompt {...props} />
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.cardsScrollViewContainer}
