@@ -4,12 +4,7 @@ import { Dayjs } from 'dayjs';
 
 import { filter } from '@ledget/media/lotties';
 import styles from './styles/transactions-filter.module.scss';
-import {
-  DatePicker,
-  DropdownDiv,
-  TextButtonHalfBlue,
-  useCloseDropdown,
-} from '@ledget/ui';
+import { DatePicker, DropdownDiv, useCloseDropdown } from '@ledget/ui';
 
 const Filter = ({
   value,
@@ -21,7 +16,7 @@ const Filter = ({
   const [showDropDown, setShowDropDown] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const [active, setActive] = useState(false);
+  const [isFiltered, setIsFiltered] = useState(false);
   const [animate, setAnimate] = useState(false);
 
   useCloseDropdown({
@@ -56,6 +51,7 @@ const Filter = ({
         aria-expanded={showDropDown}
         aria-controls="transactions-filter-dropdown"
         className={styles.filterButton}
+        data-filtered={isFiltered}
         ref={buttonRef}
       >
         <Lottie
@@ -80,7 +76,7 @@ const Filter = ({
           defaultValue={value}
           onChange={(date) => {
             onChange(date);
-            date && date.length ? setActive(true) : setActive(false);
+            date && date.length ? setIsFiltered(true) : setIsFiltered(false);
           }}
         />
       </DropdownDiv>

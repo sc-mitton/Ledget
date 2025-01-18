@@ -198,13 +198,23 @@ export const FilterPillButton = styled(BaseButton)<
   padding: 0.125em 1em;
   color: ${(props) =>
     props.selected ? 'var(--blue-sat)' : 'var(--m-text-secondary)'};
-  border: ${(props) =>
-    props.selected
-      ? '1px solid var(--blue-sat)'
-      : '1px solid var(--border-color)'};
   border-radius: 1em;
+  position: relative;
 
-  &:hover {
-    border-color: var(--m-text-secondary);
+  &::after {
+    position: absolute;
+    content: '';
+    inset: 0;
+    border-radius: inherit;
+    border: ${(props) =>
+      props.selected
+        ? '1.5px solid var(--blue-sat)'
+        : '1.5px solid var(--m-text)'};
+    opacity: ${(props) => (props.selected ? '0.7' : '0.1')};
+    transition: opacity .2s ease-in-out;
   }
+
+  &:hover::after {
+    opacity: ${(props) => (props.selected ? '0.9' : '0.2')};
+    transition: opacity .2s ease-in-out;
 `;

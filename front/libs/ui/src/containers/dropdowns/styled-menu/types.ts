@@ -5,8 +5,18 @@ export interface TContext {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export interface ItemProps extends MenuItemProps<'div'> {
+interface ItemPropsBase extends MenuItemProps<'div'> {
   onClick: () => void;
-  icon?: React.ReactNode;
-  label: string;
 }
+
+type XOR<T, U> =
+  | (T & { [K in keyof U]?: never })
+  | (U & { [K in keyof T]?: never });
+
+type LeftProps = XOR<{ label: string }, { renderLeft: () => JSX.Element }>;
+type RightProps = XOR<
+  { icon: React.ReactNode },
+  { renderRight: () => JSX.Element }
+>;
+
+export type ItemProps = ItemPropsBase & LeftProps & RightProps;

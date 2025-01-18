@@ -1,6 +1,6 @@
 import { HTMLProps, forwardRef } from 'react';
 
-import stylesModule from './shimmer.module.scss';
+import stylesModule from './loading-boxes.module.scss';
 import { useTransition, animated } from '@react-spring/web';
 import { TextInputWrapper } from '../../inputs/text/text';
 import { useColorScheme } from '../../themes/hooks/use-color-scheme/use-color-scheme';

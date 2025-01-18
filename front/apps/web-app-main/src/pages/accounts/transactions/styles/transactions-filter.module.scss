@@ -19,6 +19,14 @@
 .filterButton {
   transition: color 0.3s;
 
+  &[data-filtered='true'] * {
+    color: var(--blue-medium);
+  }
+
+  &[data-filtered='true']:hover * {
+    color: var(--blue);
+  }
+
   &:hover * {
     color: var(--m-text-secondary);
     transition: color 0.3s;

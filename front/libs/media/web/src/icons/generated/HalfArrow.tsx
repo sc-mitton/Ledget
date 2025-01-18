@@ -23,7 +23,6 @@ function SvgHalfArrow({
         stroke="currentColor"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={1.5}
         d="m13.8 6.3 7.9 7.9H2.3"
       />
     </svg>

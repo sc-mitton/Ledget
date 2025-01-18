@@ -6,7 +6,7 @@ import { Listbox } from '@headlessui/react';
 
 import styles from './styles/account-selector.module.scss';
 import { DollarCents, BlueWindow, useCloseDropdown } from '@ledget/ui';
-import { InsitutionLogo } from '@components/pieces';
+import { InstitutionLogo } from '@components/pieces';
 import { Account } from '@ledget/shared-features';
 import { useAccountsContext } from '../context';
 import { ChevronDown } from '@geist-ui/icons';
@@ -103,7 +103,7 @@ const AccountSelector = () => {
         <Listbox.Button ref={buttonRef} onClick={() => setOpen(!open)}>
           <div>
             {selectedAccount && (
-              <InsitutionLogo accountId={selectedAccount.id} />
+              <InstitutionLogo accountId={selectedAccount.id} />
             )}
             <span>{`${selectedAccount?.name || ''}`}</span>
             <ChevronDown className="icon" />

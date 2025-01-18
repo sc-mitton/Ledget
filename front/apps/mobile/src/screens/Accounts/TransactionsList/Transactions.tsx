@@ -57,7 +57,7 @@ const Transactions = (props: PTransactions & { account?: Account }) => {
   const storedAccounts = useAppSelector(selectAccountsTabDepositAccounts);
   const [
     getTransactions,
-    { data: transactionsData, isLoading: isLoadingTransactions },
+    { data: transactionsData, isFetching: isFetchingTransactions },
   ] = useLazyGetTransactionsQuery();
   const [syncTransactions, { isLoading: isSyncing }] =
     useTransactionsSyncMutation();
@@ -217,13 +217,11 @@ const Transactions = (props: PTransactions & { account?: Account }) => {
             </GestureDetector>
           )}
           {(transactionsData?.results.length || 0) <= 0 ||
-          isLoadingTransactions ? (
-            transactionsData?.results.length === 0 &&
-            !isLoadingTransactions &&
-            accounts ? (
-              <EmptyList {...props} />
-            ) : (
+          isFetchingTransactions ? (
+            isFetchingTransactions ? (
               <SkeletonTransactions height={SKELETON_HEIGHT} />
+            ) : (
+              <EmptyList {...props} />
             )
           ) : (
             <CustomSectionList

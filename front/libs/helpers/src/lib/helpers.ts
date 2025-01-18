@@ -193,3 +193,10 @@ export function camelToSpaceWithCaps(str: string) {
     .replace(/([a-z])([A-Z])/g, '$1 $2') // Insert a space before each uppercase letter
     .replace(/^./, (match) => match.toUpperCase()); // Capitalize the first letter of the string
 }
+
+export function capitalize(str: string) {
+  return str
+    .split(' ')
+    .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+    .join(' ');
+}

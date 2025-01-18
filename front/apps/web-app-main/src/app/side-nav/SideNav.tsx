@@ -164,7 +164,7 @@ const Nav = () => {
           >
             <User className="icon" />
             <span>Profile</span>
-            <ChevronDown className="icon" />
+            <ChevronDown className="icon" strokeWidth={2} />
           </a>
         </li>
         {settingsSubOpen && <SubProfileSidebar />}

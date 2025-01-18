@@ -8,6 +8,7 @@ import { Nav } from './Nav';
 import { DepositTransactions } from './transactions';
 import { NotImplimentedMessage } from '@components/pieces';
 import { useScreenContext, MainWindow } from '@ledget/ui';
+import AccountMenu from './account-menu/AccountMenu';
 
 const _getNavHeaderPhrase = (key = '') => {
   switch (key) {
@@ -37,6 +38,11 @@ const Window = () => {
     >
       <h1>{_getNavHeaderPhrase(currentPath)}</h1>
       <Nav />
+      <div className={styles.accountMenuContainer}>
+        <Routes location={location}>
+          <Route path="deposits" element={<AccountMenu />} />
+        </Routes>
+      </div>
       <div>
         <AnimatePresence mode="wait">
           <motion.div

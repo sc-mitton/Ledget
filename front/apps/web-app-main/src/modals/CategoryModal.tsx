@@ -20,7 +20,7 @@ import {
 } from '@ledget/shared-features';
 import type { Category } from '@ledget/shared-features';
 import { useAppSelector } from '@hooks/store';
-import { InsitutionLogo } from '@components/pieces';
+import { InstitutionLogo } from '@components/pieces';
 import { TransactionModalContent } from './TransactionItem';
 import { formatCurrency, stringLimit } from '@ledget/helpers';
 import {
@@ -387,7 +387,7 @@ const CategoryDetails = (props: {
                   }}
                 >
                   <div>
-                    <InsitutionLogo
+                    <InstitutionLogo
                       accountId={transaction.account}
                       size={'1.125em'}
                     />

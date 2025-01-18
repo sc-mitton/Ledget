@@ -2,7 +2,7 @@ import { useSearchParams } from 'react-router-dom';
 import Big from 'big.js';
 
 import styles from './styles/wafer.module.scss';
-import { InsitutionLogo } from '@components/pieces';
+import { InstitutionLogo } from '@components/pieces';
 import { DollarCents, CornerGripButton } from '@ledget/ui';
 import { WaferProps } from './types';
 
@@ -28,7 +28,7 @@ const Wafer = ({ account, onClick, styling }: WaferProps) => {
           onClick(account.id);
         }}
       >
-        <InsitutionLogo accountId={account.id} />
+        <InstitutionLogo accountId={account.id} />
         {/* <div className={`wafer-name ${nameIsLong ? 'marquee' : ''}`}> */}
         <div
           className={[styles.name, nameIsLong ? styles.marquee : ''].join(' ')}

@@ -1,4 +1,4 @@
-import { AccountType } from '@features/accountsSlice';
+import { AccountType } from '@ledget/shared-features';
 import { Location } from 'react-router-dom';
 
 const pathMappings = {

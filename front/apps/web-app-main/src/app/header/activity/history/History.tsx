@@ -10,7 +10,7 @@ import {
   useGetTransactionsQuery,
   selectFilteredFetchedConfirmedTransactions,
 } from '@ledget/shared-features';
-import { InsitutionLogo, ZeroConfig } from '@components/pieces';
+import { InstitutionLogo, ZeroConfig } from '@components/pieces';
 import {
   DollarCents,
   InfiniteScrollDiv,
@@ -99,7 +99,7 @@ export function History() {
                       }
                     >
                       <div>
-                        <InsitutionLogo
+                        <InstitutionLogo
                           accountId={transaction.account}
                           size={'1.25em'}
                         />

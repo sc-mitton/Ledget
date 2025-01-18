@@ -10,12 +10,8 @@ import {
   usePillAnimation,
   useSchemeVar,
   useScreenContext,
-  ExpandableContainer,
-  CircleIconButton,
-  FilterPillButton,
   RefreshButton,
   useColorScheme,
-  Tooltip,
 } from '@ledget/ui';
 import {
   popToast,
@@ -23,9 +19,8 @@ import {
   useTransactionsSyncMutation,
 } from '@ledget/shared-features';
 import { useAppDispatch } from '@hooks/store';
-import { CurrencyNote, Filter2 } from '@ledget/media';
+import { CurrencyNote } from '@ledget/media';
 import { useAccountsContext } from './context';
-import pathMappings from './path-mappings';
 
 const _getNavIcon = (key = '', isCurrent: boolean) => {
   switch (key) {
@@ -66,7 +61,7 @@ const TabButtons = ({ showFilters = false }) => {
   const currentPath = location.pathname.split('/')[2];
   const { screenSize } = useScreenContext();
   const { isDark } = useColorScheme();
-  const [lightBlue, blue] = useSchemeVar(['--blue-light', '--blue-sat']);
+  const [blueMedium, blueSat] = useSchemeVar(['--blue-medium', '--blue-sat']);
   const [updatePill, setUpdatePill] = useState(false);
 
   useEffect(() => {
@@ -82,8 +77,7 @@ const TabButtons = ({ showFilters = false }) => {
     querySelectall: '[role=link]',
     find: (element) => element.getAttribute('aria-current') === 'true',
     styles: {
-      backgroundColor: isDark ? lightBlue : blue,
-      ...(isDark ? { borderColor: blue } : {}),
+      backgroundColor: isDark ? blueMedium : blueSat,
       borderRadius: 'var(--border-radius5)',
     },
   });
@@ -135,120 +129,6 @@ type SelectOption = {
   value: string;
   filterType: 'institution' | 'deposit-type' | 'meta';
   label: string;
-};
-
-const Filters = ({
-  visible = false,
-  close,
-}: {
-  visible: boolean;
-  close: () => void;
-}) => {
-  const { setAccounts } = useAccountsContext();
-  const { data, error: getAccountsError } = useGetAccountsQuery();
-  const [accountsFilter, setAccountsFilter] = useState<SelectOption['value']>();
-  const [accountsFilterOptions, setAccountsFilterOptions] =
-    useState<SelectOption[]>();
-  const location = useLocation();
-  const dispatch = useAppDispatch();
-  const { screenSize } = useScreenContext();
-
-  // Set filter options
-  useEffect(() => {
-    if (data) {
-      const totalOption = {
-        value: 'all',
-        filterType: 'meta',
-        label: 'All Accounts',
-      } as const;
-
-      const depositTypes = data.accounts
-        .filter(
-          (account: any) =>
-            account.type === pathMappings.getAccountType(location)
-        )
-        .map((account: any) => ({
-          value: account.subtype,
-          filterType: 'deposit-type' as const,
-          label:
-            account.subtype.charAt(0).toUpperCase() + account.subtype.slice(1),
-        }));
-      const institutionOptions = data.institutions
-        .map((institution: any) => ({
-          value: institution.id,
-          filterType: 'institution' as const,
-          label: institution.name,
-        }))
-        .filter((i) => data.accounts.find((a) => a.institution_id === i.value));
-
-      setAccountsFilterOptions((prev) => [
-        totalOption,
-        ...(institutionOptions || []),
-        ...(depositTypes.length > 1 ? depositTypes : []),
-      ]);
-    }
-  }, [location.pathname, data]);
-
-  // Filter accounts
-  useEffect(() => {
-    setAccounts(
-      data?.accounts.filter((account) => {
-        const filter = accountsFilterOptions?.find(
-          (f) => f.value === accountsFilter
-        );
-        if (filter?.filterType === 'institution') {
-          return (
-            account.institution_id === accountsFilter &&
-            account.type === pathMappings.getAccountType(location)
-          );
-        } else if (filter?.filterType === 'deposit-type') {
-          return (
-            account.subtype === accountsFilter &&
-            account.type === pathMappings.getAccountType(location)
-          );
-        } else {
-          return account.type === pathMappings.getAccountType(location);
-        }
-      }) || []
-    );
-  }, [accountsFilter]);
-
-  // Set filter to first option on mount if not already set
-  useEffect(() => {
-    if (accountsFilterOptions && !accountsFilter) {
-      setAccountsFilter(accountsFilterOptions[0].value);
-    }
-  }, [accountsFilterOptions]);
-
-  return (
-    <ExpandableContainer
-      expanded={visible}
-      className={styles.accountFilters}
-      data-size={`${screenSize}`}
-      aria-expanded={visible}
-    >
-      {accountsFilterOptions?.map((option, i) => (
-        <>
-          <FilterPillButton
-            key={`fiter-button-${i}`}
-            selected={option.value === accountsFilter}
-            onClick={() => {
-              setAccountsFilter(option.value);
-            }}
-          >
-            {option.label}
-          </FilterPillButton>
-          {option.filterType !== accountsFilterOptions[i + 1]?.filterType &&
-            i !== accountsFilterOptions.length - 1 && (
-              <span className={styles.accountFiltersDivider} />
-            )}
-        </>
-      ))}
-      <CircleIconButton onClick={() => close()}>
-        <X size="1em" />
-      </CircleIconButton>
-    </ExpandableContainer>
-  );
 };
 
 export const Nav = () => {
@@ -306,19 +186,7 @@ export const Nav = () => {
             syncTransactions({});
           }}
         />
-        <Tooltip msg="Filter Accounts" ariaLabel="Filter Accounts">
-          <CircleIconButton
-            onClick={() => setShowFilters((prev) => !prev)}
-            aria-label="Filter Transactions"
-            aria-expanded={showFilters}
-            aria-controls="filter"
-            aria-haspopup="true"
-          >
-            <Filter2 size={'1em'} />
-          </CircleIconButton>
-        </Tooltip>
       </div>
-      <Filters visible={showFilters} close={() => setShowFilters(false)} />
     </div>
   );
 };

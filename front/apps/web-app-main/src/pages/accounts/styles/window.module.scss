@@ -31,3 +31,14 @@
     position: relative;
   }
 }
+
+.accountMenuContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-left: 0.75em;
+  margin-bottom: 0.75em;
+  position: relative;
+  z-index: 10;
+  width: 50%;
+}

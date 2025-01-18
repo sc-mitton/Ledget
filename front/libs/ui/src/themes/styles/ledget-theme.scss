@@ -21,7 +21,6 @@
   --mid-elevation-drop-shadow: var(--mid-elevation-drop-shadow-color) 0px 3px
     12px;
   --input-drop-shadow: var(--input-drop-shadow-color) 0px 1px 0px 0.3px;
-  --dropdown-box-shadow: var(--dropdown-box-shadow-color) 0px 0px 24px;
   --antd-drop-shadow: var(--antd-drop-shadow-color) 0 3px 12px;
 
   --accessible-focus-drop-shadow: 0 0 0 1.5px var(--blue-light-medium);
@@ -166,8 +165,6 @@
     // --header-background: hsl(var(--window-h), var(--window-s), 10%);
     --header-box-shadow-color: hsl(0, 0%, 12%);
     // --header-box-shadow: var(--header-box-shadow-color) 0px 1px 1px 0px;
-    --header-pill: hsl(0, 0%, 98%);
-    --header-pill-hover: rgb(255, 255, 255, 15%);
 
     // Inputs
     --input-background-rgb: 31, 31, 31;
@@ -196,7 +193,7 @@
     --m-text-tertiary: color-mix(in srgb, var(--m-text), black 40%);
     --m-text-quaternary: color-mix(in srgb, var(--m-text), black 50%);
     --m-text-quinary: color-mix(in srgb, var(--m-text), black 60%);
-    --blue-text: hsl(var(--blue-h), calc(var(--blue-s) + 40%), 58%);
+    --blue-text: hsl(var(--blue-h), calc(var(--blue-s) + 40%), 63%);
 
     --input-placeholder: hsl(0, 0%, 66%);
     --input-placeholder2: rgb(115, 115, 117);
@@ -251,7 +248,7 @@
     --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
     --window-portal-drop-shadow: rgba(0, 0, 0, 0.07) 0px 0px 32px;
 
-    --dropdown-box-shadow-color: hsl(0, 0%, 4%);
+    --dropdown-box-shadow: hsl(0, 0%, 4%) 0px 0px 24px;
     --emoji-picker-dropdown-shadow-color: hsl(0, 0%, 100%);
     --antd-drop-shadow-color: hsl(0, 0%, 0%);
 
@@ -262,6 +259,7 @@
     --border-color-ultra-dim: rgb(125, 125, 125, 0.03);
     --border-color-super-dim: rgb(125, 125, 125, 0.05);
     --border-color-dim: rgb(125, 125, 125, 0.04);
+    --border-color: rgb(125, 125, 125, 0.2);
     --dropdown-seperator: rgb(125, 125, 125, 0.08);
     --institution-logo-border: rgb(255, 255, 255, 0.3);
     --toast-border: 1px solid var(--border-color-dim);
@@ -409,8 +407,6 @@
 
     // Header
     --header-background: hsl(0, 0%, 13%);
-    --header-pill: hsl(0, 0%, 10%);
-    --header-pill-hover: hsl(0, 0%, 20%);
     --header-box-shadow-color: hsl(0, 0%, 85%);
     --header-box-shadow: var(--header-box-shadow-color) 0px 1px 2px 0px;
 
@@ -490,7 +486,8 @@
     --dropdown-border: 0px solid var(--border-color);
     --dropdown-item-background: hsl(0, 0%, 93%);
 
-    --dropdown-box-shadow-color: rgba(0, 0, 0, 0.2);
+    --dropdown-box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 24px,
+      rgba(0, 0, 0, 0.03) 0px 2px 4px;
     --emoji-picker-dropdown-shadow-color: hsl(0, 0%, 0%);
     --antd-drop-shadow-color: var(--dropdown-box-shadow-color);
     --low-elevation-drop-shadow-color: rgba(0, 0, 0, 0.1);

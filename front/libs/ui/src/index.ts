@@ -42,7 +42,7 @@ export * from './pieces/toast-list/Toast';
 export * from './pieces/status-pulse/StatusPulse';
 export * from './pieces/tool-tip/Tooltip';
 export * from './pieces/form-errors/form-errors';
-export * from './pieces/shimmers/shimmers';
+export * from './pieces/loading-boxes/loading-boxes';
 export * from './pieces/containers/ResponsiveLine';
 export * from './pieces/error-banner/ErrorBanner';
 export * from './pieces/charttip/ChartTip';

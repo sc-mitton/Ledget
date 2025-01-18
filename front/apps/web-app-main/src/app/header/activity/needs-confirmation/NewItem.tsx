@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { Check, MoreVertical } from '@geist-ui/icons';
 
 import styles from './styles/new-item.module.scss';
-import { InsitutionLogo } from '@components/pieces';
+import { InstitutionLogo } from '@components/pieces';
 import { formatDateOrRelativeDate } from '@ledget/helpers';
 import {
   NarrowButton,
@@ -84,7 +84,7 @@ const NewItem: FC<{
     >
       <div className={styles.newItemData}>
         <div>
-          <InsitutionLogo accountId={item.account} size={'1.25em'} />
+          <InstitutionLogo accountId={item.account} size={'1.25em'} />
         </div>
         <div>
           <div>

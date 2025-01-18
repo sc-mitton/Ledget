@@ -1,7 +1,7 @@
 import { useGetPlaidItemsQuery } from '@ledget/shared-features';
 import { Base64Logo, Tooltip } from '@ledget/ui';
 
-export const InsitutionLogo = ({
+export const InstitutionLogo = ({
   accountId,
   size,
 }: {
@@ -21,11 +21,7 @@ export const InsitutionLogo = ({
     ...(!item ? { backgroundColor: '#e0e0e0' } : {}),
   };
 
-  return (
-    <Tooltip msg={item?.institution?.name} type="right">
-      <Base64Logo {...args} />
-    </Tooltip>
-  );
+  return <Base64Logo {...args} />;
 };
 
-export default InsitutionLogo;
+export default InstitutionLogo;

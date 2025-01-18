@@ -80,7 +80,7 @@ const _get_auto_placement_positioning = (pos: { x: number; y: number }) => {
     horizontalPlacement = 'left';
   }
 
-  if (pos.y > window.innerHeight / 2) {
+  if (pos.y < window.innerHeight / 2) {
     verticlePlacement = 'bottom';
   } else {
     verticlePlacement = 'top';
@@ -110,8 +110,8 @@ export const DropdownDiv = forwardRef<
     [HorizontalPlacement, VerticlePlacement]
   >([placement, verticlePlacement]);
 
-  useLayoutEffect(() => {
-    if (!measure.current || placement !== 'auto') return;
+  useEffect(() => {
+    if (placement !== 'auto') return;
 
     const handleResize = () => {
       const [autoHorizontal, autoVertical] = _get_auto_placement_positioning({
@@ -123,9 +123,12 @@ export const DropdownDiv = forwardRef<
 
     window.addEventListener('resize', handleResize);
 
-    handleResize();
+    const t = setTimeout(() => {
+      handleResize();
+    }, 200);
 
     return () => {
+      clearTimeout(t);
       window.removeEventListener('resize', handleResize);
     };
   }, [placement]);

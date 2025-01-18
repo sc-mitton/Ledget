@@ -82,6 +82,12 @@
   }
 
   &[data-color='gray'] {
+    color: var(--m-text-secondary);
+
+    &:hover {
+      color: var(--m-text);
+    }
+
     &::after {
       background-color: var(--btn-feather-light-gray);
     }
@@ -92,6 +98,12 @@
   }
 
   &[data-color='gray-darker'] {
+    color: var(--m-text-secondary);
+
+    &:hover {
+      color: var(--m-text);
+    }
+
     &::after {
       background-color: var(--btn-light-gray);
     }

@@ -22,12 +22,10 @@
   }
 }
 
-.header {
-  display: flex;
-  justify-content: flex-end;
-  margin: 1em 0.5em;
-  z-index: 10;
-  position: relative;
+.filterContainer {
+  position: absolute;
+  top: -2.5em;
+  right: 0.5em;
 }
 
 /* Border bottom for all cells except last child */

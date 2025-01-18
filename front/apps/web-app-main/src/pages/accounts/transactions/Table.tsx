@@ -88,7 +88,7 @@ const Table = ({ children, ...rest }: Props) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header} data-size={screenSize}>
+      <div className={styles.filterContainer} data-size={screenSize}>
         <Filter value={dateRange} onChange={setDateRange} />
       </div>
       <Window

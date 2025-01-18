@@ -10,7 +10,7 @@ import textStyles from './text.module.scss';
 import passwordStyles from './password-input.module.scss';
 import { FormErrorTip, FormError } from '../../pieces/form-errors/form-errors';
 import { SelectProvence } from '../select-provence/SelectProvence';
-import { InputShimmerDiv } from '../../pieces/shimmers/shimmers';
+import { InputShimmerDiv } from '../../pieces/loading-boxes/loading-boxes';
 import { useStripeCardTheme } from '../../themes/themes';
 import { useColorScheme } from '../../themes/hooks/use-color-scheme/use-color-scheme';
 import { visibilityV2Dark } from '@ledget/media/lotties';

@@ -12,6 +12,7 @@ import {
   mobileAuthSlice,
   budgetItemOrderSlice,
 } from '@ledget/shared-features';
+import { accountsPageSlice } from './accountsPageSlice';
 
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   mobileAuth: mobileAuthSlice.reducer,
   budgetItemMetaData: budgetItemMetaDataSlice.reducer,
   budgetItemOrder: budgetItemOrderSlice.reducer,
+  accountsPage: accountsPageSlice.reducer,
 });
 
 export default rootReducer;
