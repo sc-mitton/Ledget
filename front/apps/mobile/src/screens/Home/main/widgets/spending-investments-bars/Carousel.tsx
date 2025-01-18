@@ -100,7 +100,7 @@ export const BakedCarousel = (props: CarouselProps) => {
                 />
                 <Box
                   style={[styles.bar, { height: `${incomePercent}%` }]}
-                  backgroundColor="transactionShimmer"
+                  backgroundColor="pulseBox"
                 />
               </View>
             );

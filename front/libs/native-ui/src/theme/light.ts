@@ -200,7 +200,7 @@ export const lightTheme = createTheme({
     pulseWaiting: palette.gray300,
     pulseGreen: palette.successGreenFaint,
     scrollbar: palette.gray250,
-    transactionShimmer: palette.gray200,
+    pulseBox: palette.gray200,
 
     blueChartGradientStart: palette.blue50,
     blueChartGradientEnd: palette.gray200

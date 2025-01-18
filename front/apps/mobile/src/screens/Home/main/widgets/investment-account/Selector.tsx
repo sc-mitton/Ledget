@@ -97,7 +97,7 @@ const Selector = (props: WidgetProps) => {
                     style={{ width: SELECT_OPTION_WIDTH }}
                   >
                     <Box
-                      backgroundColor="transactionShimmer"
+                      backgroundColor="pulseBox"
                       style={styles.optionBoxInner}
                     >
                       <View>
@@ -184,7 +184,7 @@ const Selector = (props: WidgetProps) => {
             <Box
               width={index === 1 ? 48 : 32}
               height={index === 1 ? 32 : 24}
-              backgroundColor="transactionShimmer"
+              backgroundColor="pulseBox"
               borderRadius="s"
             />
           ))}

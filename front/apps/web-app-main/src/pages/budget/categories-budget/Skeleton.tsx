@@ -1,4 +1,4 @@
-import { ColoredShimmer } from '@ledget/ui';
+import { ColoredPulse } from '@ledget/ui';
 
 const SkeletonCategories = ({
   length,
@@ -9,10 +9,7 @@ const SkeletonCategories = ({
 }) => (
   <>
     {Array.from({ length: length }).map((_, i) => (
-      <ColoredShimmer
-        shimmering={true}
-        color={period === 'month' ? 'blue' : 'green'}
-      />
+      <ColoredPulse color={period === 'month' ? 'blue' : 'green'} />
     ))}
   </>
 );

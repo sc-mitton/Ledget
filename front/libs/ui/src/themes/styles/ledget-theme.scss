@@ -24,14 +24,6 @@
   --antd-drop-shadow: var(--antd-drop-shadow-color) 0 3px 12px;
 
   --accessible-focus-drop-shadow: 0 0 0 1.5px var(--blue-light-medium);
-
-  --wafer-drop-shadow: var(--wafer-drop-shadow-color) 0px 1px 5px;
-  --active-wafer-drop-shadow: color-mix(
-      in srgb,
-      var(--monthly-hlight) 80%,
-      var(--monthly-color1)
-    )
-    0px 0px 12px;
 }
 
 :root {
@@ -127,35 +119,6 @@
     --side-window: hsl(var(--window-h), var(--window-s), 5%);
     --side-nav-border: 1.5px solid hsl(var(--window-h), var(--window-s), 7%);
 
-    // Wafers
-    --wafer-background-color: hsl(
-      var(--window-h),
-      calc(var(--window-s) + 5%),
-      18%
-    );
-    --wafer-background: linear-gradient(
-      to bottom left,
-      color-mix(in srgb, var(--wafer-background-color), white 8%) 0%,
-      var(--wafer-background-color) 50%,
-      var(--wafer-background-color) 100%
-    );
-    --skeleton-wafer-background: hsl(
-      var(--window-h),
-      calc(var(--window-s) + 10%),
-      14%
-    );
-    --skeleton-wafer-shimmer: hsl(
-      var(--window-h),
-      calc(var(--window-s) + 10%),
-      11%
-    );
-    --wafer-drop-shadow-color: hsl(
-      var(--window-h),
-      calc(var(--window-s) + 10%),
-      7%
-    );
-    --active-wafer-indicator: var(--blue-medium);
-
     // New Item
     // --new-item-border: hsl(0, 0%, 11%);
     --new-item-drop-shadow: hsl(var(--window-h), var(--window-s), 8%) 0px 1px
@@ -182,9 +145,6 @@
       var(--blue-sat),
       var(--blue-dark) 50%
     );
-
-    // Shimmer
-    --shimmer-text-background: hsl(0, 0%, 11%);
 
     // Text
     --m-text: hsl(0, 0%, 100%);
@@ -376,35 +336,6 @@
     --nested-window-background-color: hsl(var(--window-h), 9%, 95%);
     --modal-nested-window: hsl(var(--window-h), 8%, 95%);
 
-    // Wafers
-    --wafer-background-color: hsl(
-      var(--window-h),
-      calc(var(--window-s) + 8%),
-      65%
-    );
-    --wafer-background: linear-gradient(
-      to bottom left,
-      color-mix(in srgb, var(--wafer-background-color), white 30%) 0%,
-      var(--wafer-background-color) 50%,
-      var(--wafer-background-color) 100%
-    );
-    --skeleton-wafer-background: hsl(
-      var(--window-h),
-      calc(var(--window-s) + 10%),
-      90%
-    );
-    --skeleton-wafer-shimmer: hsl(
-      var(--window-h),
-      calc(var(--window-s) + 10%),
-      87%
-    );
-    --wafer-drop-shadow-color: hsl(
-      var(--window-h),
-      calc(var(--window-s) + 22%),
-      84%
-    );
-    --active-wafer-indicator: var(--blue-sat);
-
     // Header
     --header-background: hsl(0, 0%, 13%);
     --header-box-shadow-color: hsl(0, 0%, 85%);
@@ -424,9 +355,6 @@
     --input-border-hover-color: var(--btn-light-gray-hover);
     --input-focus-dropshadow-color: var(--blue-light);
     --input-placeholder-focus: var(--blue-medium);
-
-    // Shimmer
-    --shimmer-text-background: hsl(0, 0%, 94%);
 
     // Text
     --m-text: hsl(var(--window-h), var(--window-s), 20%);

@@ -19,18 +19,18 @@ const Shadow = () => {
             size={16}
           />
           <Box
-            backgroundColor="transactionShimmer"
+            backgroundColor="pulseBox"
             style={styles.nameSkeleton}
             borderRadius="xxs"
           />
           <Box
-            backgroundColor="transactionShimmer"
+            backgroundColor="pulseBox"
             style={styles.amountSkeleton}
             borderRadius="xxs"
           />
           <View style={styles.rightContainer}>
             <Box
-              backgroundColor="transactionShimmer"
+              backgroundColor="pulseBox"
               style={styles.amountSkeleton}
               borderRadius="xxs"
             />

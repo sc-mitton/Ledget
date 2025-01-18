@@ -18,12 +18,12 @@ const Shadow = () => {
         <InstitutionLogo institution={accounts?.institutions[0].id} size={16} />
         <View style={styles.rightContainer}>
           <Box
-            backgroundColor="transactionShimmer"
+            backgroundColor="pulseBox"
             style={styles.nameSkeleton}
             borderRadius="xxs"
           />
           <Box
-            backgroundColor="transactionShimmer"
+            backgroundColor="pulseBox"
             style={styles.amountSkeleton}
             borderRadius="xxs"
           />

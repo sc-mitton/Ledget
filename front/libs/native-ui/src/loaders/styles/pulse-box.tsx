@@ -1,12 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  boxShimmer: {
-    zIndex: 2,
-    position: 'absolute',
-    width: '200%',
-    height: '310%',
-  },
   box: {
     position: 'relative',
     overflow: 'hidden',

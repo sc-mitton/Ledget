@@ -3,7 +3,7 @@ import { ChevronRight, Check } from '@geist-ui/icons';
 
 import styles from './styles.module.scss';
 import { LoadingRing } from '../pieces/loading-indicators/loading-indicators';
-import { TranslucentShimmerDiv } from '../pieces/loading-boxes/loading-boxes';
+import { PulseDiv } from '../pieces/loading-boxes/loading-boxes';
 
 type LoadingButtonProps = {
   loading?: boolean;
@@ -89,7 +89,7 @@ export const withLoading = (Component: FC<any>) => {
         data-loading={loading || submitting}
         className={[styles.withLoading, className].join(' ')}
       >
-        {loading && <TranslucentShimmerDiv />}
+        {loading && <PulseDiv />}
         <LoadingRing visible={submitting} />
         {!submitting && success && (
           <Check className={styles.popCheck} size={'1em'} />

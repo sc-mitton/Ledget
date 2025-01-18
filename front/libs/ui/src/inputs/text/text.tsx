@@ -10,7 +10,7 @@ import textStyles from './text.module.scss';
 import passwordStyles from './password-input.module.scss';
 import { FormErrorTip, FormError } from '../../pieces/form-errors/form-errors';
 import { SelectProvence } from '../select-provence/SelectProvence';
-import { InputShimmerDiv } from '../../pieces/loading-boxes/loading-boxes';
+import { InputPulseDiv } from '../../pieces/loading-boxes/loading-boxes';
 import { useStripeCardTheme } from '../../themes/themes';
 import { useColorScheme } from '../../themes/hooks/use-color-scheme/use-color-scheme';
 import { visibilityV2Dark } from '@ledget/media/lotties';
@@ -52,7 +52,7 @@ export const PlainTextInput = forwardRef<HTMLInputElement, PlainTextInputProps>(
     return (
       <>
         {loading ? (
-          <InputShimmerDiv />
+          <InputPulseDiv />
         ) : (
           <TextInputWrapper>
             <input type="text" name={name} ref={ref} {...rest} />
@@ -114,7 +114,7 @@ export const CardInput = ({
   return (
     <>
       {loading ? (
-        <InputShimmerDiv />
+        <InputPulseDiv />
       ) : (
         <div className={textStyles.cardContainer} data-focused={cardFocus}>
           <CardElement
@@ -242,21 +242,21 @@ export const CityStateZipInputs = ({
       <div className={textStyles.locationInputsContainer}>
         <div className={textStyles.cityContainer}>
           {loading ? (
-            <InputShimmerDiv />
+            <InputPulseDiv />
           ) : (
             <CityInput {...register('city')} errors={errors} />
           )}
         </div>
         <div className={textStyles.stateContainer}>
           {loading ? (
-            <InputShimmerDiv />
+            <InputPulseDiv />
           ) : (
             <SelectProvence control={control} errors={errors} />
           )}
         </div>
         <div className={textStyles.zipContainer}>
           {loading ? (
-            <InputShimmerDiv />
+            <InputPulseDiv />
           ) : (
             <ZipInput {...register('zip')} errors={errors} />
           )}
@@ -323,7 +323,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordProps>(
     return (
       <>
         {props.loading ? (
-          <InputShimmerDiv />
+          <InputPulseDiv />
         ) : (
           <TextInputWrapper className={passwordStyles.passwordInputContainer}>
             <input

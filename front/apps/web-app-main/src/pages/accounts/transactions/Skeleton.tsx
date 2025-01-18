@@ -1,6 +1,6 @@
 import { Fragment, forwardRef } from 'react';
 
-import { TransactionShimmer } from '@ledget/ui';
+import { TextSkeletonDiv } from '@ledget/ui';
 
 const Skeleton = forwardRef<HTMLDivElement>((_, ref) => {
   return (
@@ -12,7 +12,15 @@ const Skeleton = forwardRef<HTMLDivElement>((_, ref) => {
           .map((_, index) => (
             <Fragment key={`transaction-${index}`}>
               <div />
-              <TransactionShimmer key={index} shimmering={true} />
+              <div>
+                <div>
+                  <TextSkeletonDiv isSkeleton={true} length={32} />
+                  <TextSkeletonDiv isSkeleton={true} length={16} />
+                </div>
+                <div>
+                  <TextSkeletonDiv isSkeleton={true} length={12} />
+                </div>
+              </div>
             </Fragment>
           ))}
     </>

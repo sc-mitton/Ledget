@@ -274,7 +274,7 @@ const Selector = (widget: WidgetProps<{ accounts: string[] }>) => {
                   styles.skeleton,
                   { transform: [{ scale: index !== 1 ? 0.9 : 1 }] },
                 ]}
-                backgroundColor="transactionShimmer"
+                backgroundColor="pulseBox"
                 borderRadius="s"
               />
             </View>

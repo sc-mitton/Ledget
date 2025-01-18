@@ -1,47 +1,38 @@
-import { useEffect } from 'react';
-import Animated, {
-  useSharedValue,
-  withTiming,
-  withDelay,
-  withRepeat,
-} from 'react-native-reanimated';
+import styles from './styles/pulse-box';
+import { Box } from '../restyled/Box';
+import type { BoxProps } from '../restyled/Box';
+import { Pulse } from './Pulse';
+import { Text } from 'react-native';
 
-import { Box, BoxProps } from '../restyled/Box';
+interface Props extends BoxProps {
+  pulsing?: boolean;
+  placeholder?: string;
+  numberOfLines?: number;
+}
 
-type PulseBoxProps = {
-  height?: 's' | 'reg' | 'm' | 'l';
-} & Omit<BoxProps, 'height'>;
-
-const heightMap = {
-  s: 10,
-  reg: 14,
-  m: 24,
-  l: 32,
-} as { [key: string]: number };
-
-export const PulseBox = (props: PulseBoxProps) => {
-  const { height, ...rest } = props;
-  const opacity = useSharedValue(1);
-
-  useEffect(() => {
-    opacity.value = withDelay(
-      Math.random() * 1500,
-      withRepeat(withTiming(0.5, { duration: 1000 }), -1, true)
-    );
-  }, []);
+export const PulseBox = (props: Props) => {
+  const {
+    pulsing = true,
+    placeholder,
+    numberOfLines,
+    children,
+    style,
+    backgroundColor,
+    ...rest
+  } = props;
 
   return (
-    <Animated.View
-      style={[{ opacity }, { height: heightMap[height || 'reg'] }]}
+    <Box
+      {...rest}
+      backgroundColor={pulsing ? 'transparent' : backgroundColor}
+      style={[
+        style,
+        styles.box,
+        numberOfLines && pulsing ? { minHeight: numberOfLines * 28 } : {},
+      ]}
     >
-      <Box
-        borderRadius="xxs"
-        backgroundColor="transactionShimmer"
-        height={'100%'}
-        {...rest}
-      />
-    </Animated.View>
+      {pulsing ? <Pulse /> : children}
+      {placeholder && pulsing && <Text>{placeholder}</Text>}
+    </Box>
   );
 };
-
-export default PulseBox;

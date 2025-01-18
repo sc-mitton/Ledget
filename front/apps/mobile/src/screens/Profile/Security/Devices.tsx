@@ -8,7 +8,7 @@ import {
   Seperator,
   Icon,
   Text,
-  ShimmerBox,
+  PulseBox,
   ChevronTouchable,
 } from '@ledget/native-ui';
 import { Computer, MapPin2 } from '@ledget/media/native';
@@ -74,8 +74,8 @@ const Devices = (props: SecurityScreenProps<'Main'>) => {
   return (
     <>
       <BoxHeader>Devices</BoxHeader>
-      <ShimmerBox
-        shimmering={!devices}
+      <PulseBox
+        pulsing={!devices}
         variant="nestedContainer"
         numberOfLines={3}
         style={styles.devices}
@@ -101,7 +101,7 @@ const Devices = (props: SecurityScreenProps<'Main'>) => {
             )}
           </Fragment>
         ))}
-      </ShimmerBox>
+      </PulseBox>
     </>
   );
 };

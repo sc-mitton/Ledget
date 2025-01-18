@@ -198,7 +198,7 @@ const Selector = (widget: WidgetProps<{ categories?: string[] }>) => {
               <Box
                 width={index === 1 ? 32 : 24}
                 height={index === 1 ? 32 : 24}
-                backgroundColor="transactionShimmer"
+                backgroundColor="pulseBox"
                 borderRadius="circle"
               />
             ))}

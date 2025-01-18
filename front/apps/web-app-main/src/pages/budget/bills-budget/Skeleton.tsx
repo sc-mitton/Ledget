@@ -1,4 +1,4 @@
-import { ShimmerText } from '@ledget/ui';
+import { TextSkeletonDiv } from '@ledget/ui';
 
 const SkeletonBills = () => (
   <div
@@ -7,11 +7,7 @@ const SkeletonBills = () => (
   >
     <>
       {Array.from(Array(8).keys()).map((i) => (
-        <ShimmerText
-          key={i}
-          shimmering={true}
-          style={{ width: '100', height: '1.25em' }}
-        />
+        <TextSkeletonDiv key={i} style={{ width: '100', height: '1.25em' }} />
       ))}
     </>
   </div>

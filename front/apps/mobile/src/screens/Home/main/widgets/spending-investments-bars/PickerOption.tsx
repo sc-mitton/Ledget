@@ -68,10 +68,7 @@ const PickerOption = () => {
                 height: -3,
               }}
             />
-            <Box
-              style={sharedStyles.incomeBar}
-              backgroundColor="transactionShimmer"
-            />
+            <Box style={sharedStyles.incomeBar} backgroundColor="pulseBox" />
           </View>
         ))}
       </View>

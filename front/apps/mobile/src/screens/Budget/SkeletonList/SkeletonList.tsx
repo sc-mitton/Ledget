@@ -31,8 +31,8 @@ const Skeleton = ({
         setSkeletonHeight && setSkeletonHeight(e.nativeEvent.layout.height)
       }
     >
-      <Box backgroundColor="transactionShimmer" style={styles.leftBone}></Box>
-      <Box backgroundColor="transactionShimmer" style={styles.rightBone}></Box>
+      <Box backgroundColor="pulseBox" style={styles.leftBone}></Box>
+      <Box backgroundColor="pulseBox" style={styles.rightBone}></Box>
     </Animated.View>
   );
 };

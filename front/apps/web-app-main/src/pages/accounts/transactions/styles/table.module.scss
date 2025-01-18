@@ -97,11 +97,6 @@ $borderRadius2: var(--border-radius3);
     }
   }
 
-  & > div.transaction-shimmer:nth-child(2n + 3):hover > div {
-    background-color: transparent;
-    cursor: default;
-  }
-
   & > div:nth-child(2n + 2) {
     padding: 0.25em 0;
     padding-right: 0.75em;

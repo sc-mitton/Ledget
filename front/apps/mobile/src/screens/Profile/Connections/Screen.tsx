@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import styles from './styles/screen';
 import {
-  ShimmerBox,
+  PulseBox,
   Text,
   Seperator,
   ChevronTouchable,
@@ -36,8 +36,8 @@ const Connections = ({ navigation, route }: ConnectionsScreenProps<'All'>) => {
     <ScrollView showsVerticalScrollIndicator={false}>
       <Box variant="nestedScreen">
         <BoxHeader>Your Connections</BoxHeader>
-        <ShimmerBox
-          shimmering={isLoading}
+        <PulseBox
+          pulsing={isLoading}
           numberOfLines={4}
           variant="nestedContainer"
           backgroundColor="nestedContainer"
@@ -82,12 +82,12 @@ const Connections = ({ navigation, route }: ConnectionsScreenProps<'All'>) => {
           ) : (
             <Text color="quinaryText">No connections</Text>
           )}
-        </ShimmerBox>
+        </PulseBox>
         {user?.co_owner && (
           <Fragment>
             <BoxHeader>{coOwner?.name.first}'s Connections</BoxHeader>
-            <ShimmerBox
-              shimmering={isLoading}
+            <PulseBox
+              pulsing={isLoading}
               numberOfLines={4}
               variant="nestedContainer"
               backgroundColor="nestedContainer"
@@ -119,7 +119,7 @@ const Connections = ({ navigation, route }: ConnectionsScreenProps<'All'>) => {
                   <Text color="quinaryText">No connections</Text>
                 )}
               </Box>
-            </ShimmerBox>
+            </PulseBox>
           </Fragment>
         )}
         <Box

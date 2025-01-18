@@ -36,11 +36,11 @@ const Skeleton = ({
       }
     >
       <View style={styles.lc}>
-        <Box backgroundColor="transactionShimmer" style={styles.lctr}></Box>
-        <Box backgroundColor="transactionShimmer" style={styles.lcbr}></Box>
+        <Box backgroundColor="pulseBox" style={styles.lctr}></Box>
+        <Box backgroundColor="pulseBox" style={styles.lcbr}></Box>
       </View>
       <View style={styles.rc}>
-        <Box backgroundColor="transactionShimmer" style={styles.rctr}></Box>
+        <Box backgroundColor="pulseBox" style={styles.rctr}></Box>
       </View>
     </Animated.View>
   );

@@ -54,7 +54,6 @@ export * from './misc/carousel-dots/CarouselDots';
 
 export * from './animated/loading-indicators/Spinner';
 export * from './animated/loading-indicators/LoadingDots';
-export * from './animated/pulse/Pulse';
 export * from './animated/views/JiggleView';
 export * from './animated/views/AnimatedView';
 export * from './animated/pager-view/PagerView';
@@ -64,6 +63,5 @@ export * from './headers/BackHeader';
 
 export * from './theme';
 
-export * from './loaders/ShimmerBox';
-export * from './loaders/Shimmer';
 export * from './loaders/PulseBox';
+export * from './loaders/Pulse';

@@ -9,7 +9,6 @@ import styles from './styles';
 import { Icon } from '../../restyled/Icon';
 import { Text } from '../../restyled/Text';
 import { Box } from '../../restyled/Box';
-import { defaultSpringConfig } from '../../animated/configs/configs';
 
 /* eslint-disable-next-line */
 export interface SwipeDeleteProps {

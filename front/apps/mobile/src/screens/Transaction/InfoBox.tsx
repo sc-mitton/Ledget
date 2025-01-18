@@ -3,12 +3,7 @@ import dayjs from 'dayjs';
 import Animated, { LinearTransition } from 'react-native-reanimated';
 
 import styles from './styles/screen';
-import {
-  Text,
-  InstitutionLogo,
-  BoxHeader,
-  ShimmerBox,
-} from '@ledget/native-ui';
+import { Text, InstitutionLogo, BoxHeader, PulseBox } from '@ledget/native-ui';
 import type {
   Transaction as TransactionT,
   Account as AccountT,
@@ -22,10 +17,10 @@ const InfoBox = (props: {
 }) => (
   <Animated.View layout={LinearTransition}>
     <BoxHeader>Details</BoxHeader>
-    <ShimmerBox
+    <PulseBox
       variant="nestedContainer"
       backgroundColor={props.isInModal ? 'modalNestedContainer' : undefined}
-      shimmering={!props.item}
+      pulsing={!props.item}
     >
       {props.item && (
         <Fragment>
@@ -65,7 +60,7 @@ const InfoBox = (props: {
           </View>
         </Fragment>
       )}
-    </ShimmerBox>
+    </PulseBox>
   </Animated.View>
 );
 

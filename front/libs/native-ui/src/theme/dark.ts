@@ -202,7 +202,7 @@ export const darkTheme = createTheme({
     successIcon: palette.successGreen,
     grayIcon: palette.gray100,
     scrollbar: palette.gray750,
-    transactionShimmer: palette.gray750,
+    pulseBox: palette.gray750,
     screenHeader: palette.gray800,
 
     blueChartGradientStart: palette.blue900.replace(

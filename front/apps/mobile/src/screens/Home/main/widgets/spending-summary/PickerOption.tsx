@@ -62,10 +62,7 @@ const PickerOption = ({ loading }: { loading: boolean }) => {
               Month
             </Text>
           </View>
-          <Box
-            style={styles.dollarPlaceholder}
-            backgroundColor="transactionShimmer"
-          />
+          <Box style={styles.dollarPlaceholder} backgroundColor="pulseBox" />
         </View>
         <View style={styles.bottomRowCell}>
           <View style={styles.bottomTitle}>
@@ -82,10 +79,7 @@ const PickerOption = ({ loading }: { loading: boolean }) => {
               Year
             </Text>
           </View>
-          <Box
-            style={styles.dollarPlaceholder}
-            backgroundColor="transactionShimmer"
-          />
+          <Box style={styles.dollarPlaceholder} backgroundColor="pulseBox" />
         </View>
       </Box>
     </Box>

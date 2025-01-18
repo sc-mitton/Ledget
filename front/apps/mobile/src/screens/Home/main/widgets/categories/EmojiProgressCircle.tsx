@@ -35,7 +35,7 @@ function EmojiProgressCircle(props: ProgressEmojiProps) {
                   ? theme.colors.yearBorder
                   : props.period === 'month'
                   ? theme.colors.monthBorder
-                  : theme.colors.transactionShimmer
+                  : theme.colors.pulseBox
               }
               strokeWidth={18}
             />
