@@ -1,7 +1,8 @@
 import styles from './styles.module.scss';
 import { useNavigate } from 'react-router-dom';
-import { BlackPrimaryButton } from '@ledget/ui';
+import { TextButtonBlue } from '@ledget/ui';
 import { MainWindow } from '@ledget/ui';
+import { ChevronRight } from '@geist-ui/icons';
 
 const NotFound = ({ hasBackground = true }) => {
   const navigate = useNavigate();
@@ -17,12 +18,13 @@ const NotFound = ({ hasBackground = true }) => {
     >
       <div>
         <h1>404 Not Found</h1>
-        <BlackPrimaryButton
+        <TextButtonBlue
           aria-label="Return home"
           onClick={() => navigate('/budget')}
         >
           Return home
-        </BlackPrimaryButton>
+          <ChevronRight size={'1em'} strokeWidth={2} />
+        </TextButtonBlue>
       </div>
     </MainWindow>
   );

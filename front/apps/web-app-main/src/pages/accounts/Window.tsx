@@ -3,7 +3,6 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 
 import styles from './styles/window.module.scss';
 import NotFound from '@pages/notFound';
-import { AccountsProvider } from './context';
 import { Nav } from './Nav';
 import { DepositTransactions } from './transactions';
 import { NotImplimentedMessage } from '@components/pieces';
@@ -70,10 +69,4 @@ const Window = () => {
   );
 };
 
-export default function () {
-  return (
-    <AccountsProvider>
-      <Window />
-    </AccountsProvider>
-  );
-}
+export default Window;

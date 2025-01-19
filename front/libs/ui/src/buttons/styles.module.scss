@@ -26,6 +26,10 @@
   font-size: 1rem;
   position: relative;
 
+  &:focus-visible {
+    border-color: transparent;
+  }
+
   &:focus-within::before {
     content: '';
     position: absolute;

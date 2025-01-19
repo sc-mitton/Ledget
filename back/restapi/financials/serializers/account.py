@@ -37,7 +37,8 @@ class AccountLS(serializers.ListSerializer):
                 updated.append(inst)
 
         if updated:
-            self.child.Meta.model.objects.bulk_update(updated, updated_keys.keys())
+            self.child.Meta.model.objects.bulk_update(
+                updated, updated_keys.keys())
 
         return updated
 
@@ -87,7 +88,8 @@ class BalanceSerializer(serializers.Serializer):
 
 class PlaidBalanceSerializer(serializers.Serializer):
     iso_currency_code = serializers.CharField(required=False, allow_null=True)
-    unofficial_currency_code = serializers.CharField(required=False, allow_null=True)
+    unofficial_currency_code = serializers.CharField(
+        required=False, allow_null=True)
     official_name = serializers.CharField(required=False, allow_null=True)
     balances = BalanceSerializer()
     account_id = serializers.CharField()
@@ -115,7 +117,8 @@ class BreakdownHistoryListSerializer(serializers.ListSerializer):
             detail_totals = {'date': date}
 
             for detail_total in detail_totals_list:
-                detail_totals[detail_total['detail']] = Decimal(detail_total['total'])
+                detail_totals[detail_total['detail']
+                              ] = Decimal(detail_total['total'])
             for choice in Transaction.Detail.choices:
                 if choice[1] not in detail_totals:
                     detail_totals[str(choice[1])] = 0

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { KeyboardAvoidingView, View, Platform } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
@@ -13,9 +13,7 @@ import {
   SubHeader2,
   Otc,
   SubmitButton,
-  Pulse,
   NestedScreenWOFeedback,
-  Icon,
   JiggleView,
   FormError,
 } from '@ledget/native-ui';

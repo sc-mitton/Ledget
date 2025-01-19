@@ -222,7 +222,11 @@
     --border-color: rgb(125, 125, 125, 0.2);
     --dropdown-seperator: rgb(125, 125, 125, 0.08);
     --institution-logo-border: rgb(255, 255, 255, 0.3);
+
+    // Toast box shadow
     --toast-border: 1px solid var(--border-color-dim);
+    --toast-box-shadow: rgba(0, 0, 0, 0.8) 0px 3px 16px,
+      rgba(0, 0, 0, 0.5) 0px 3px 4px;
   }
 
   div.light {

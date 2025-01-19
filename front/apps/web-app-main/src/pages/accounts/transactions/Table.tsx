@@ -42,10 +42,10 @@ const Table = ({ children, ...rest }: Props) => {
 
   // Initial fetch
   useEffect(() => {
-    if (searchParams.get('account')) {
+    if (searchParams.get('accounts')) {
       getTransactions(
         {
-          account: searchParams.get('account') || '',
+          accounts: searchParams.get('accounts')?.split(','),
           type: pathMappings.getTransactionType(location),
           limit: 25,
           offset: 0,
@@ -59,7 +59,7 @@ const Table = ({ children, ...rest }: Props) => {
         true
       );
     }
-  }, [searchParams.get('account'), dateRange]);
+  }, [searchParams.get('accounts'), dateRange]);
 
   // Fetch more transactions
   const handleScroll = (e: any) => {

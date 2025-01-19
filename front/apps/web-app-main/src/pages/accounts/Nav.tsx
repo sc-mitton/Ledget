@@ -20,7 +20,6 @@ import {
 } from '@ledget/shared-features';
 import { useAppDispatch } from '@hooks/store';
 import { CurrencyNote } from '@ledget/media';
-import { useAccountsContext } from './context';
 
 const _getNavIcon = (key = '', isCurrent: boolean) => {
   switch (key) {
@@ -132,7 +131,6 @@ type SelectOption = {
 };
 
 export const Nav = () => {
-  const { isSuccess } = useAccountsContext();
   const [
     syncTransactions,
     {
@@ -181,7 +179,6 @@ export const Nav = () => {
         <RefreshButton
           stroke={'var(--m-text)'}
           loading={isSyncing}
-          disabled={!isSuccess}
           onClick={() => {
             syncTransactions({});
           }}
