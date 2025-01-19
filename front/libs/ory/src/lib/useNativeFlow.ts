@@ -9,7 +9,6 @@ import {
   EndpointRootNames,
   OryGetFlowQueryDefinition,
   OryCompleteNativeFlowQueryDefinition,
-  NativeFlowResult,
 } from './types';
 
 export const useNativeFlow = <E extends EndpointRootNames>(
