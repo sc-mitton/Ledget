@@ -16,7 +16,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.ledget.mobile",
@@ -28,7 +30,8 @@
           "backgroundColor": "#111113"
         }
       },
-      "jsEngine": "hermes"
+      "jsEngine": "hermes",
+      "buildNumber": "2"
     },
     "userInterfaceStyle": "automatic",
     "android": {
@@ -76,9 +79,15 @@
           "faceIDPermission": "Allow $(PRODUCT_NAME) to access your Face ID biometric data."
         }
       ],
-      ["./plugins/withAndroidNetworkSecurity.js"],
-      ["./plugins/withAndroidPlaid.js"],
-      ["./plugins/withIOSPlaid.js"],
+      [
+        "./plugins/withAndroidNetworkSecurity.js"
+      ],
+      [
+        "./plugins/withAndroidPlaid.js"
+      ],
+      [
+        "./plugins/withIOSPlaid.js"
+      ],
       [
         "expo-font",
         {
@@ -93,7 +102,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "b647e6fd-db3e-4afe-ba9e-202205dd2709"
+        "projectId": "d83331f3-5801-4acb-9c4c-dba1e2311638"
       }
     }
   }

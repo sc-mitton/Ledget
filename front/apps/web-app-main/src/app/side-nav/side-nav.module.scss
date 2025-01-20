@@ -132,7 +132,10 @@
   position: relative;
   font-size: 0.625rem;
   margin: 0 0.25em;
-  font-weight: var(--fw-bold);
+
+  * {
+    font-weight: var(--fw-bold);
+  }
 
   &::after {
     z-index: -1;
@@ -141,7 +144,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     content: '';
-    border: 1.25px solid currentColor;
+    border: 1.5px solid currentColor;
     width: 1.875em;
     height: 1.875em;
     border-radius: 50%;
@@ -185,6 +188,10 @@
   position: relative;
   display: flex;
   flex-direction: column;
+
+  svg {
+    stroke-width: 2;
+  }
 
   ul {
     gap: 0.25em;

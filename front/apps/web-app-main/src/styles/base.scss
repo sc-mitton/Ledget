@@ -245,9 +245,14 @@ svg:focus-visible {
   box-shadow: var(--accessible-focus-drop-shadow);
 }
 
+.dark svg.icon {
+  stroke-width: 1.5;
+}
+
 svg.icon {
   width: 1.25em;
   height: 1.25em;
+  stroke-width: 2;
 }
 
 svg.icon.small {

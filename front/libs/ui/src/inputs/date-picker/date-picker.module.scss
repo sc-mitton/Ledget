@@ -216,11 +216,11 @@
 
   &[data-window-start='true'],
   &[data-window-end='true'] {
-    @include transition-color(var(--m-invert-text));
+    @include transition-color(var(--white-text));
     font-weight: var(--fw-bold);
 
     * {
-      @include transition-color(var(--m-invert-text));
+      @include transition-color(var(--white-text));
     }
 
     &::after {
