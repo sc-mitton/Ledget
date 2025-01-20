@@ -12,7 +12,7 @@ import {
 } from '@geist-ui/icons';
 
 import styles from './side-nav.module.scss';
-import { Institution, Hamburger, LedgetLogoIcon2 } from '@ledget/media';
+import { Institution, Hamburger, LedgetLogoIcon } from '@ledget/media';
 import {
   usePillAnimation,
   useScreenContext,
@@ -127,7 +127,7 @@ const Nav = () => {
   return (
     <nav className={styles.sideNav} data-size={screenSize}>
       <div className={styles.logoIcon}>
-        <LedgetLogoIcon2 darkMode={isDark} />
+        <LedgetLogoIcon darkMode={isDark} />
       </div>
       <ul ref={ulRef} role="menu">
         <li data-current={location.pathname === '/' ? 'page' : ''}>

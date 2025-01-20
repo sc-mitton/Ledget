@@ -123,6 +123,7 @@ export const DropdownDiv = forwardRef<
 
     window.addEventListener('resize', handleResize);
 
+    handleResize();
     const t = setTimeout(() => {
       handleResize();
     }, 200);
@@ -131,7 +132,7 @@ export const DropdownDiv = forwardRef<
       clearTimeout(t);
       window.removeEventListener('resize', handleResize);
     };
-  }, [placement]);
+  }, [placement, measure.current]);
 
   useEffect(() => {
     if (placement !== 'auto') {
@@ -164,30 +165,33 @@ export const DropdownDiv = forwardRef<
     },
   });
 
-  return transitions(
-    (styles, item) =>
-      item && (
-        <div
-          ref={measure}
-          className={stylesModule.dropdownContainer}
-          data-verticle-position={verticlePlacement}
-          data-position={placement}
-        >
-          <animated.div
-            className={[
-              stylesModule.dropdown,
-              `${className || stylesModule.dropdownInner}`,
-            ].join(' ')}
-            data-arrow={arrow}
+  return (
+    <>
+      <span ref={measure} />
+      {transitions((styles, item) =>
+        item ? (
+          <div
+            className={stylesModule.dropdownContainer}
             data-verticle-position={verticlePlacement}
             data-position={placement}
-            style={styles}
-            {...rest}
-            ref={ref}
           >
-            {children}
-          </animated.div>
-        </div>
-      )
+            <animated.div
+              className={[
+                stylesModule.dropdown,
+                className || stylesModule.dropdownInner,
+              ].join(' ')}
+              data-arrow={arrow}
+              data-verticle-position={verticlePlacement}
+              data-position={placement}
+              style={styles}
+              {...rest}
+              ref={ref}
+            >
+              {children}
+            </animated.div>
+          </div>
+        ) : null
+      )}
+    </>
   );
 });

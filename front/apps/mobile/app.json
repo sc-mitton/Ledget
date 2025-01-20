@@ -23,7 +23,7 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.ledget.mobile",
       "splash": {
-        "image": "./assets/splash-ios.png",
+        "image": "./assets/splash-ios-light.png",
         "resizeMode": "contain",
         "dark": {
           "image": "./assets/splash-ios-dark.png",

@@ -1,19 +1,19 @@
 import { Image } from 'react-native';
 
-import LogoIconGrayscaleDark from '../../../shared/brand-pngs/logoIconGrayscaleDark.png';
-import LogoIconGrayscaleLight from '../../../shared/brand-pngs/logoIconGrayscaleLight.png';
+import LogoIconDark from '../../../shared/brand-pngs/logo-icon-dark.png';
+import LogoIconLight from '../../../shared/brand-pngs/logo-icon-light.png';
 
 const LogoIconGrayscale = ({ dark = false, size = 64 }) => {
   return dark ? (
     <Image
       style={{ width: size, height: size }}
-      source={LogoIconGrayscaleDark}
+      source={LogoIconDark}
       resizeMode="contain"
     />
   ) : (
     <Image
       style={{ width: size, height: size }}
-      source={LogoIconGrayscaleLight}
+      source={LogoIconLight}
       resizeMode="contain"
     />
   );

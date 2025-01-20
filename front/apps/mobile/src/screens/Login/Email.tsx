@@ -16,7 +16,7 @@ import {
 } from '@ledget/native-ui';
 import { FacebookLogo, GoogleLogo } from '@ledget/media/native';
 import { LoginScreenProps } from '@types';
-import { LogoIconGrayscale } from '@ledget/media/native';
+import { LogoIcon } from '@ledget/media/native';
 import Legal from './Legal';
 import { useAppearance } from '@/features/appearanceSlice';
 
@@ -50,7 +50,7 @@ export default function Email({
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <Box variant="fullCentered">
         <View style={styles.logoContainer}>
-          <LogoIconGrayscale dark={mode === 'dark'} size={32} />
+          <LogoIcon dark={mode === 'dark'} size={32} />
         </View>
         <Header fontSize={32} lineHeight={44} style={styles.header}>
           Welcome Back

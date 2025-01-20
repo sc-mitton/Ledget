@@ -14,7 +14,7 @@ import Animated, {
   withDelay,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import { LogoIconGrayscale } from '@ledget/media/native';
+import { LogoIcon } from '@ledget/media/native';
 import { Text, Button, Box } from '@ledget/native-ui';
 import { useUpdateUserMutation } from '@ledget/shared-features';
 import { useProgress } from './Header';
@@ -62,7 +62,7 @@ const Welcome = (props: OnboardingScreenProps<'Welcome'>) => {
     <Box variant="screen">
       <View style={[styles.mainContainer, sharedStyles.mainContainer]}>
         <Animated.View style={[styles.image, graphicStyle]}>
-          <LogoIconGrayscale dark={mode === 'dark'} size={40} />
+          <LogoIcon dark={mode === 'dark'} size={40} />
         </Animated.View>
         <Animated.View style={[textStyle]}>
           <Text fontSize={36} lineHeight={44} variant="bold">
