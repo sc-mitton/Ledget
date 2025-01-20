@@ -10,6 +10,9 @@
       "icon": "./assets/notification-icon.png",
       "color": "#4149b0"
     },
+    "experiments": {
+      "tsconfigPaths": true
+    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -17,9 +20,6 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.ledget.mobile",
-      "config": {
-        "usesNonExempEncryption": false
-      },
       "splash": {
         "image": "./assets/splash-ios.png",
         "resizeMode": "contain",

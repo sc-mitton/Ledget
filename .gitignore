@@ -12,7 +12,7 @@ scratch.py
 ./project-configuration.*.yaml
 ./project-configuration.yaml
 foo*.json
-ory
+ory-project-configs
 
 # System Files
 .DS_Store
