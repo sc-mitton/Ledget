@@ -50,7 +50,7 @@ export default function Email({
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <Box variant="fullCentered">
         <View style={styles.logoContainer}>
-          <LogoIcon dark={mode === 'dark'} size={32} />
+          <LogoIcon dark={mode === 'dark'} size={64} />
         </View>
         <Header fontSize={32} lineHeight={44} style={styles.header}>
           Welcome Back
