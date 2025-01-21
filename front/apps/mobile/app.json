@@ -1,3 +1,4 @@
+
 {
   "expo": {
     "name": "Ledget",
@@ -33,7 +34,7 @@
         "useNonExempEncryption": false
       },
       "icon": {
-        "light": "./assets/icon-light.png",
+        "light": "./assets/icon-dark.png",
         "dark": "./assets/icon-dark.png",
         "tinted": "./assets/icon-tinted.png"
       },
