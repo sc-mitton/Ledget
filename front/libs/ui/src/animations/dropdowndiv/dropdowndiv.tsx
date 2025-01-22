@@ -1,11 +1,4 @@
-import {
-  forwardRef,
-  HTMLProps,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
+import { forwardRef, HTMLProps, useEffect, useRef, useState } from 'react';
 
 import stylesModule from './dropdowndiv.module.scss';
 import { useTransition, animated } from '@react-spring/web';

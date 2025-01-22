@@ -5,13 +5,19 @@
   width: 100%;
   gap: 1.5em;
   overflow-y: hidden;
-  min-height: 13.25em;
+  min-height: 15em;
   padding: 0.5em 0.125em 0.75em 0.125em;
   overflow-x: scroll;
   scrollbar-width: none;
 
+  h4 {
+    color: var(--m-text-tertiary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
   & > div:first-of-type {
-    height: 184px;
     min-width: 464px;
     position: relative;
     display: flex;
@@ -20,10 +26,6 @@
 
     h2 * {
       font-weight: var(--fw-bold);
-    }
-
-    h4 {
-      color: var(--m-text-tertiary);
     }
   }
 
@@ -42,7 +44,7 @@
   color: var(--red);
 
   span {
-    color: var(--m-text-tertiary);
+    color: var(--m-text-secondary);
     font-weight: var(--fw-bold);
   }
 

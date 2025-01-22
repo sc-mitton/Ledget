@@ -86,7 +86,9 @@
   }
 
   &[data-color='gray'] {
-    color: var(--m-text-secondary);
+    &[data-dark='true'] {
+      color: var(--m-text-secondary);
+    }
 
     &:hover {
       color: var(--m-text);

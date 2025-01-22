@@ -19,6 +19,7 @@ import {
   Help as HelpModal,
   Logout as LogoutModal,
   EditBudgetCategories,
+  PinAccounts,
 } from '@modals/index';
 import { ReAuthModal } from '@utils/withReAuth';
 
@@ -61,8 +62,12 @@ const Modals = () => {
           }}
         />
       )}
-
-      {modal === 'reAuth' && <ReAuthModal />}
+      {modal === 'pinAccounts' && (
+        <PinAccounts onClose={() => dispatch(clearModal())} />
+      )}
+      {modal === 'reAuth' && (
+        <ReAuthModal onClose={() => dispatch(clearModal())} />
+      )}
       {modal === 'editCategories' && (
         <EditBudgetCategories onClose={() => dispatch(clearModal())} />
       )}

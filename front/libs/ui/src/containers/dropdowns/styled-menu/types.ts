@@ -9,14 +9,18 @@ interface ItemPropsBase extends MenuItemProps<'div'> {
   onClick: () => void;
 }
 
-type XOR<T, U> =
-  | (T & { [K in keyof U]?: never })
-  | (U & { [K in keyof T]?: never });
-
-type LeftProps = XOR<{ label: string }, { renderLeft: () => JSX.Element }>;
-type RightProps = XOR<
-  { icon: React.ReactNode },
-  { renderRight: () => JSX.Element }
->;
-
-export type ItemProps = ItemPropsBase & LeftProps & RightProps;
+export type ItemProps = ItemPropsBase &
+  (
+    | {
+        label: string;
+        icon?: React.ReactNode;
+        renderLeft?: never;
+        renderRight?: never;
+      }
+    | {
+        label?: never;
+        icon?: never;
+        renderLeft: () => JSX.Element;
+        renderRight: () => JSX.Element;
+      }
+  );

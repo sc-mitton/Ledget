@@ -31,7 +31,11 @@ const Window = () => {
   const currentPath = location.pathname.split('/')[2];
 
   return (
-    <MainWindow size={screenSize} className={styles.window}>
+    <MainWindow
+      size={screenSize}
+      className={styles.window}
+      data-screen-size={screenSize}
+    >
       <div className={styles.header} data-screen-size={screenSize}>
         <h1>{_getNavHeaderPhrase(currentPath)}</h1>
         <Nav />

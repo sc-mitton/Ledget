@@ -9,6 +9,7 @@ import {
 } from '@ledget/shared-features';
 import { DollarCents, Window } from '@ledget/ui';
 import Chart from './Chart';
+import PinnedAccounts from './PinnedAccounts';
 
 const DepositorySummary = () => {
   const { data: accountsData } = useGetAccountsQuery();
@@ -75,7 +76,7 @@ const DepositorySummary = () => {
         </div>
         <Chart />
       </Window>
-      <Window></Window>
+      <PinnedAccounts />
     </div>
   );
 };

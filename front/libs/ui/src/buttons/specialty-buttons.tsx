@@ -33,6 +33,7 @@ import {
   IconButtonHalfGray,
   HalfTextSlimBlueButton,
 } from './styled-buttons';
+import { useColorScheme } from '../themes/hooks/use-color-scheme/use-color-scheme';
 
 export const BlackPillButtonWithArrow = withArrow(BlackPillButton);
 export const BlackPrimaryButtonWithArrow = withArrow(BlackPrimaryButton);
@@ -129,11 +130,14 @@ export const CircleIconButton = forwardRef<
     color = 'gray',
     ...rest
   } = props;
+  const { isDark } = useColorScheme();
+
   return (
     <BaseButton
       ref={ref}
       className={[className, styles.circleIconButton].join(' ')}
       data-size={size}
+      data-dark={isDark}
       data-color={darker ? `${color}-darker` : color}
       tabIndex={0}
       {...rest}
@@ -148,14 +152,17 @@ export const CloseButton = forwardRef<
   ButtonHTMLAttributes<HTMLButtonElement> & { size?: string }
 >((props, ref) => {
   const { size = '1.125em', ...rest } = props;
+  const { isDark } = useColorScheme();
+
   return (
     <CircleIconButton
       ref={ref}
       {...rest}
       data-size={size}
+      darker={isDark ? true : false}
       className={styles.close}
     >
-      <X size={size} stroke={'currentColor'} strokeWidth={1.75} />
+      <X size={size} stroke={'currentColor'} strokeWidth={2} />
     </CircleIconButton>
   );
 });

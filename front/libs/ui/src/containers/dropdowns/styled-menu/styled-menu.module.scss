@@ -47,6 +47,12 @@
   }
 }
 
+.itemIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .menu {
   display: flex;
   flex-direction: column;

@@ -16,7 +16,7 @@ interface InitialState {
   categoryModal: {
     category?: Category;
   };
-  modal: 'reAuth' | 'help' | 'editCategories' | undefined;
+  modal: 'reAuth' | 'help' | 'editCategories' | 'pinAccounts' | undefined;
   billModal: {
     bill?: TransformedBill;
   };
@@ -70,10 +70,7 @@ export const modalSlice = createSlice({
     clearBillModal: (state) => {
       state.billModal.bill = undefined;
     },
-    setModal: (
-      state,
-      action: PayloadAction<'reAuth' | 'help' | 'editCategories' | undefined>
-    ) => {
+    setModal: (state, action: PayloadAction<InitialState['modal']>) => {
       state.modal = action.payload;
     },
     clearModal: (state) => {

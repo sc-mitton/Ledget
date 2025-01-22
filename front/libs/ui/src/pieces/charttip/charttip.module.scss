@@ -1,5 +1,4 @@
 .tip {
-  background-color: var(--btn-feather-light-gray);
   border-radius: var(--border-radius2);
   padding: 0.125em 0.75em;
   font-size: 1em;
@@ -7,6 +6,7 @@
   align-items: baseline;
   font-weight: var(--fw-bold);
   position: relative;
+  background-color: var(--btn-feather-light-gray);
 
   &[data-dark='true'] {
     background-color: var(--btn-feather-light-gray-hover);

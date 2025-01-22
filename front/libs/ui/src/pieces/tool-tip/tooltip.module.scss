@@ -7,7 +7,7 @@
   }
 
   @if $placement ==top {
-    bottom: calc(100% + 0.125em);
+    bottom: calc(100% + 0.375em);
     left: 50%;
     transform: translateX(-50%) scale($scale);
   } @else if $placement ==left {
@@ -55,8 +55,6 @@
   visibility: hidden;
   z-index: 1100;
   margin-bottom: 0.5em;
-  background-color: var(--m-text);
-  color: var(--m-invert-text);
   padding: 0.25em 0.75em;
   border-radius: 8px;
   font-size: 0.75rem;
@@ -64,18 +62,32 @@
   transition: transform 0.2s, opacity 0.2s;
   font-weight: var(--fw-bold);
 
+  background-color: var(--btn-feather-light-gray);
+
+  &[data-dark='true'] {
+    background-color: var(--btn-feather-light-gray-hover);
+    border: 1.5px solid var(--border-color-dim);
+    box-shadow: 0 2px 8px rgb(0, 0, 0, 0.2);
+  }
+
   &[data-type='top'] {
     @include transform(top, false);
 
-    &::after {
+    &::after,
+    &::before {
       content: '';
       position: absolute;
-      top: 100%;
+      z-index: 2;
       left: 50%;
-      margin-left: -0.3125em;
-      border-width: 0.3125em;
-      border-style: solid;
-      border-color: var(--m-text) transparent transparent transparent;
+      bottom: 1px;
+      margin: auto 0;
+      width: 0.75em;
+      height: 0.75em;
+      background: inherit;
+      border: inherit;
+      transform: translate(-50%, 50%) rotate(45deg);
+      clip-path: polygon(100% 2%, 2% 100%, 100% 100%);
+      border-radius: 0 0 0.125em 0;
     }
   }
 

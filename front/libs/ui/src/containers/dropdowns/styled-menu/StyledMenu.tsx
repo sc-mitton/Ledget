@@ -79,7 +79,11 @@ const Item = ({
             data-active={active}
           >
             {renderLeft ? renderLeft() : <span>{label}</span>}
-            {renderRight ? renderRight() : <div>{icon}</div>}
+            {renderRight ? (
+              renderRight()
+            ) : (
+              <div className={styles.itemIcon}>{icon}</div>
+            )}
           </button>
         </div>
       )}
