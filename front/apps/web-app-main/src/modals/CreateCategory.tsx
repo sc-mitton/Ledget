@@ -74,6 +74,7 @@ const CreateCategoryModal = withModal((props) => {
             control={control}
             labelPrefix={'Resets'}
             default={location.state?.period}
+            excludeOnce={true}
           />
           <div>
             <AddAlert limitAmount={watchLimitAmount} control={control} />

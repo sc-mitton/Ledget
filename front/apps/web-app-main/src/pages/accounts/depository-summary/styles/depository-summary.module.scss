@@ -1,0 +1,59 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  margin: 1.5em 0 1.5em 0;
+  width: 100%;
+  gap: 1.5em;
+  overflow-y: hidden;
+  min-height: 13.25em;
+  padding: 0.5em 0.125em 0.75em 0.125em;
+  overflow-x: scroll;
+  scrollbar-width: none;
+
+  & > div:first-of-type {
+    height: 184px;
+    min-width: 464px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 3;
+
+    h2 * {
+      font-weight: var(--fw-bold);
+    }
+
+    h4 {
+      color: var(--m-text-tertiary);
+    }
+  }
+
+  & > div:last-of-type {
+    flex: 2;
+    min-width: 300px;
+  }
+}
+
+.trendContainer {
+  display: flex;
+  gap: 4px;
+  flex-direction: row;
+  align-items: center;
+  white-space: nowrap;
+  color: var(--red);
+
+  span {
+    color: var(--m-text-tertiary);
+    font-weight: var(--fw-bold);
+  }
+
+  &[data-trend='up'] {
+    color: var(--green-text);
+  }
+}
+
+.balanceData {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 12px;
+}

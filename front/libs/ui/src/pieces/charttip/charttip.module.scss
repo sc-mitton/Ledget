@@ -1,17 +1,39 @@
 .tip {
-  background-color: var(--m-text);
-  color: var(--m-invert-text);
+  background-color: var(--btn-feather-light-gray);
   border-radius: var(--border-radius2);
-  box-shadow: var(--low-elevation-drop-shadow);
-  padding: 0.125em 0.5em;
+  padding: 0.125em 0.75em;
   font-size: 1em;
   display: flex;
   align-items: baseline;
-  background-color: var(--m-text);
   font-weight: var(--fw-bold);
+  position: relative;
+
+  &[data-dark='true'] {
+    background-color: var(--btn-feather-light-gray-hover);
+    border: 1.5px solid var(--border-color-dim);
+    box-shadow: 0 2px 8px rgb(0, 0, 0, 0.2);
+  }
 
   * {
-    color: var(--m-invert-text);
     font-weight: var(--fw-bold);
+  }
+
+  &[data-position='center'] {
+    &::after,
+    &::before {
+      content: '';
+      position: absolute;
+      z-index: 2;
+      left: 50%;
+      bottom: 1px;
+      margin: auto 0;
+      width: 0.75em;
+      height: 0.75em;
+      background: inherit;
+      border: inherit;
+      transform: translate(-50%, 50%) rotate(45deg);
+      clip-path: polygon(100% 2%, 2% 100%, 100% 100%);
+      border-radius: 0 0 0.125em 0;
+    }
   }
 }

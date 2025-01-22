@@ -4,7 +4,42 @@
   flex-direction: column;
   flex-grow: 1;
   padding: 1.75em 2em 2em 2em;
+  overflow-x: hidden;
   box-sizing: border-box;
+
+  & > div:last-child {
+    flex-grow: 1;
+    flex-shrink: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    position: relative;
+  }
+}
+
+.header {
+  position: sticky;
+  top: 0em;
+  z-index: 2;
+  box-shadow: 0 0 12px 6px var(--main-background-color);
+  background-color: var(--main-background-color);
+
+  &::before {
+    position: absolute;
+    content: '';
+    z-index: 0;
+    background-color: var(--main-background-color);
+    inset: 0;
+    top: -100%;
+    bottom: 0;
+    right: 0;
+    left: 0;
+  }
+
+  h1 {
+    position: relative;
+    z-index: 1;
+  }
 
   &[data-screen-size='extra-small'],
   &[data-screen-size='small'],
@@ -21,24 +56,15 @@
       font-size: 1.25rem;
     }
   }
-
-  & > div:last-child {
-    flex-grow: 1;
-    flex-shrink: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5em;
-    position: relative;
-  }
 }
 
 .accountMenuContainer {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  margin-left: 0.75em;
+  margin-left: 0.25em;
   margin-bottom: 0.75em;
   position: relative;
-  z-index: 10;
+  z-index: 1;
   width: 50%;
 }

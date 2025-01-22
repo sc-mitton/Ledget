@@ -39,7 +39,13 @@ const StyledMenu = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-const Items = ({ children }: { children: React.ReactNode }) => {
+const Items = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
   const { open } = useContext();
 
   return (

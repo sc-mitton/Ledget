@@ -10,15 +10,15 @@ export const useNivoResponsiveBaseProps = ({
 }: {
   disabled?: boolean;
 }): NivoResponsiveLineBaseProps => {
-  const [mainColor, mainSat, window] = useSchemeVar([
+  const [mainColor, mainSat, transparent] = useSchemeVar([
     '--monthly-background-color-darker',
     '--blue',
-    '--window',
+    '--main-background-color',
   ]);
 
   return {
     enablePoints: true,
-    pointColor: window,
+    pointColor: transparent,
     pointSize: disabled ? 0 : 7,
     pointBorderColor: disabled ? 'transparent' : mainColor,
     pointBorderWidth: disabled ? 0 : 1,
@@ -35,7 +35,7 @@ export const useNivoResponsiveBaseProps = ({
         type: 'linearGradient',
         colors: [
           { offset: 0, color: mainSat, opacity: disabled ? 0 : 1 },
-          { offset: 100, color: window, opacity: disabled ? 0 : 1 },
+          { offset: 100, color: transparent, opacity: disabled ? 0 : 1 },
         ],
       },
     ],
@@ -103,19 +103,16 @@ export const useMinimalistNivoResponsiveBaseProps = ({
       ? [gradientColorStart, gradientColorEnd]
       : gradientColorStart
   );
-  const pointBorderColor = useSchemeVar(borderColor || '--m-text-invert');
 
   return {
     enablePoints: true,
     enableArea: true,
     pointColor: primary,
-    pointSize: 8,
-    pointBorderColor: pointBorderColor,
-    pointBorderWidth: 3,
+    pointSize: 0,
     enableGridY: false,
     enableGridX: true,
     lineWidth: 1.5,
-    curve: 'natural',
+    curve: 'linear',
     colors: [primary || 'transparent'],
     useMesh: true,
     motionConfig: {
@@ -178,11 +175,8 @@ export const useMinimalistNivoResponsiveLineTheme = ({
   return {
     grid: {
       line: {
-        stroke: primary,
-        opacity: 0.15,
-        strokeWidth: 1,
-        strokeDasharray: '2, 2',
-        fill: 'transparent',
+        opacity: 0,
+        strokeWidth: 0,
       },
     },
     text: {
@@ -198,7 +192,7 @@ export const useMinimalistNivoResponsiveLineTheme = ({
           fontSize: 12,
           fontFamily: 'inherit',
           fontWeight: 400,
-          fill: 'var(--m-text-secondary)',
+          fill: 'var(--m-text-quaternary)',
         },
       },
     },

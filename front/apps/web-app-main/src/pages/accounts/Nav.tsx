@@ -101,7 +101,7 @@ const TabButtons = ({ showFilters = false }) => {
     <>
       <div className={`${screenSize}`}>
         <ul ref={ref} data-screen-size={screenSize}>
-          {['deposits', 'credit', 'loans', 'investments'].map((path) => (
+          {['deposits', 'credit', 'investments', 'loans'].map((path) => (
             <li
               key={path}
               role="link"
@@ -122,12 +122,6 @@ const TabButtons = ({ showFilters = false }) => {
       </div>
     </>
   );
-};
-
-type SelectOption = {
-  value: string;
-  filterType: 'institution' | 'deposit-type' | 'meta';
-  label: string;
 };
 
 export const Nav = () => {

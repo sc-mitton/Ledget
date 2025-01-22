@@ -173,22 +173,19 @@ export const FormInputButton2 = styled(BaseButton)`
   border-radius: var(--border-radius3);
 `;
 
-export const BlueFadedSquareRadio = styled(BaseButton)<
-  React.HTMLProps<HTMLButtonElement> & { selected?: boolean }
->`
-  background-color: ${(props) =>
-    props.selected ? 'var(--blue-light)' : 'var(--btn-light-gray)'};
-  color: ${(props) =>
-    props.selected ? 'var(--blue-sat-hover)' : 'var(--btn-gray)'};
-  font-weight: ${(props) =>
-    props.selected ? 'var(--fw-bold)' : 'var(--fw-regular)'};
+export const BlueFadedSquareRadio = styled(BaseButton)`
+  background-color: var(--blue-light);
   border-radius: 0.375em;
-  padding: 0.125em 0.25em;
+  padding: 0.125em 0.375em;
   justify-content: center;
+  color: var(--blue);
+
+  * {
+    color: var(--blue-text);
+  }
 
   &:hover {
-    background-color: ${(props) =>
-      props.selected ? 'var(--blue-light)' : 'var(--btn-light-gray-hover)'};
+    background-color: var(--blue-light-hover);
   }
 `;
 

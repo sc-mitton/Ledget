@@ -125,10 +125,12 @@ const AccountMenu = () => {
         <span>{data?.accounts?.find((a) => a.id === accounts?.[0])?.name}</span>
         <span>
           <DollarCents
-            value={
+            value={Big(
               data?.accounts?.find((a) => a.id === accounts?.[0])?.balances
                 .current || 0
-            }
+            )
+              .times(100)
+              .toNumber()}
           />
         </span>
         <ChevronDown className="icon" strokeWidth={2} />

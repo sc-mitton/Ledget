@@ -16,6 +16,7 @@ interface P {
   enableAll?: boolean;
   default?: (typeof baseopts)[number]['value'];
   control: Control<any>;
+  excludeOnce?: boolean;
   name?: string;
 }
 
@@ -24,6 +25,7 @@ const PeriodSelect = (props: P) => {
     hasLabel,
     enableAll,
     default: defaultValue,
+    excludeOnce = false,
     labelPrefix,
     control,
     name,
@@ -46,7 +48,9 @@ const PeriodSelect = (props: P) => {
         control={control as any}
         name={name}
         as={FormInputButton2}
-        options={options}
+        options={options.filter((o) =>
+          excludeOnce ? o.value !== 'once' : true
+        )}
         defaultValue={options.find((op) => op.value === defaultValue)}
         labelPrefix={labelPrefix}
       />

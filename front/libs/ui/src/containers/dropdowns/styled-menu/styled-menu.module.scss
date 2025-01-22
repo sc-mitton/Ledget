@@ -42,7 +42,7 @@
   }
 
   &[data-active='true']::after {
-    opacity: 0.05;
+    opacity: 0.03;
     transition: opacity 0.1s ease-in-out;
   }
 }
@@ -50,6 +50,10 @@
 .menu {
   display: flex;
   flex-direction: column;
+
+  * {
+    scrollbar-color: var(--btn-medium-gray) transparent;
+  }
 
   &[data-side='left'] {
     align-items: flex-start;

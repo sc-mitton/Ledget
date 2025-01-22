@@ -942,6 +942,7 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
               darker={true}
               onClick={() => {
                 setSelectedValue(undefined);
+                startInputRef.current?.focus();
               }}
             >
               <X size={'.8em'} strokeWidth={2} />

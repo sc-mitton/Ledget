@@ -54,6 +54,7 @@ export const DollarCents = ({
   value = 0,
   style = {},
   withCents = true,
+  isDebit,
 }: {
   value: string | number;
   isDebit?: boolean;
@@ -63,12 +64,12 @@ export const DollarCents = ({
   const str = formatCurrency(
     typeof value === 'string' ? value.replace(/^-/, '') : Math.abs(value)
   );
-  const isDebit = Number(value) < 0;
+  const showPlus = Number(value) < 0;
 
   return (
     <>
       <span style={{ fontSize: 'inherit', ...style }}>
-        {`${isDebit ? '+' : ''}${str.split('.')[0]}`}
+        {`${isDebit && showPlus ? '+' : ''}${str.split('.')[0]}`}
       </span>
       {withCents && (
         <span style={{ fontSize: '.75em', ...style }}>

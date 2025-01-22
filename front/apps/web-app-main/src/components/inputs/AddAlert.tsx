@@ -212,6 +212,7 @@ const AddAlert = (props: {
             <DropdownDiv
               placement="left"
               visible={open}
+              className={styles.dropdown}
               style={{
                 minWidth: buttonRef.current?.offsetWidth,
               }}

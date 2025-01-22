@@ -8,6 +8,7 @@ import { DepositTransactions } from './transactions';
 import { NotImplimentedMessage } from '@components/pieces';
 import { useScreenContext, MainWindow } from '@ledget/ui';
 import AccountMenu from './account-menu/AccountMenu';
+import DepositorySummary from './depository-summary/DepositorySummary';
 
 const _getNavHeaderPhrase = (key = '') => {
   switch (key) {
@@ -30,13 +31,14 @@ const Window = () => {
   const currentPath = location.pathname.split('/')[2];
 
   return (
-    <MainWindow
-      size={screenSize}
-      className={styles.window}
-      data-screen-size={screenSize}
-    >
-      <h1>{_getNavHeaderPhrase(currentPath)}</h1>
-      <Nav />
+    <MainWindow size={screenSize} className={styles.window}>
+      <div className={styles.header} data-screen-size={screenSize}>
+        <h1>{_getNavHeaderPhrase(currentPath)}</h1>
+        <Nav />
+      </div>
+      <Routes location={location}>
+        <Route path="deposits" element={<DepositorySummary />} />
+      </Routes>
       <div className={styles.accountMenuContainer}>
         <Routes location={location}>
           <Route path="deposits" element={<AccountMenu />} />

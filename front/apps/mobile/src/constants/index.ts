@@ -12,7 +12,7 @@ export const tempDepositBalanceChartData = [1200, 3000, 3700, 3700, 4500].map(
     balance,
     date:
       index > 0
-        ? dayjs().subtract(index, 'month').format('YYYY-MM-DD')
+        ? dayjs().startOf('month').subtract(index, 'month').format('YYYY-MM-DD')
         : dayjs().format('YYYY-MM-DD'),
   })
 );

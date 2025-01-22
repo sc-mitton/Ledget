@@ -8,8 +8,7 @@ import { BlurView } from 'expo-blur';
 
 import styles from './styles/summary';
 import { AccountsTabsScreenProps } from '@types';
-import { Graph } from '@ledget/media/native';
-import { Box, DollarCents, Icon, Text, Button } from '@ledget/native-ui';
+import { Box, DollarCents, Icon, Text } from '@ledget/native-ui';
 import {
   useGetAccountsQuery,
   useLazyGetAccountBalanceHistoryQuery,
@@ -190,6 +189,7 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
             <View style={styles.trendIcon}>
               <Icon
                 size={18}
+                strokeWidth={2}
                 color={calculatedTrend < 0 ? 'alert' : 'greenText'}
                 icon={calculatedTrend < 0 ? ArrowDownRight : ArrowUpRight}
               />

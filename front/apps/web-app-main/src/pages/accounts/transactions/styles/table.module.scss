@@ -9,7 +9,7 @@
 .table {
   flex-grow: 1;
   position: relative;
-  min-height: 28em;
+  min-height: 44em;
 
   & > div:last-child {
     position: absolute;
@@ -25,7 +25,7 @@
 .filterContainer {
   position: absolute;
   top: -2.5em;
-  right: 0.5em;
+  right: 0.25em;
 }
 
 /* Border bottom for all cells except last child */

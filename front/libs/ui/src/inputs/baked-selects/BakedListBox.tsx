@@ -18,7 +18,6 @@ import { FormErrorTip } from '../../pieces/form-errors/form-errors';
 
 export interface BakedSelectPropsBase<O> {
   name?: string;
-  hideSelectedLabel?: boolean;
   options?: O[];
   labelKey?: string;
   subLabelKey?: string;
@@ -28,6 +27,7 @@ export interface BakedSelectPropsBase<O> {
   placement?: ComponentProps<typeof DropdownDiv>['placement'];
   placeholder?: string;
   withCheckMarkIndicator?: boolean;
+  withChevron?: boolean;
   as?: FC<React.HTMLAttributes<HTMLButtonElement>>;
   error?: FieldError;
   style?: React.CSSProperties;
@@ -44,7 +44,7 @@ interface BakedSelectProps1<TVal> {
   value?: TVal[];
   defaultValue?: TVal[];
   disabled?: TVal[];
-  onChange?: React.Dispatch<React.SetStateAction<TVal[] | undefined>>;
+  onChange?: React.Dispatch<React.SetStateAction<TVal | undefined>>;
 }
 
 interface BakedSelectProps2<TVal> {
@@ -185,26 +185,18 @@ export const BakedListBox = <O extends Option | string>(
 
               return (
                 <>
-                  {!props.hideSelectedLabel && (
-                    <>
-                      <div
-                        className={styles.buttonContainer}
-                        data-filled={Boolean(value)}
-                      >
-                        <span>{`${props.labelPrefix + ' '}${label}`}</span>
-                        {val ? (
-                          props.withCheckMarkIndicator ? (
-                            <Check size={'1.25em'} />
-                          ) : (
-                            <ChevronDown size={'1.25em'} />
-                          )
-                        ) : (
-                          <ChevronDown size={'1.25em'} />
-                        )}
-                      </div>
-                      <FormErrorTip error={props.error} />
-                    </>
-                  )}
+                  <div
+                    className={styles.buttonContainer}
+                    data-filled={Boolean(value)}
+                  >
+                    <span>{`${props.labelPrefix + ' '}${label}`}</span>
+                    {val && props.withCheckMarkIndicator && (
+                      <Check size={'1.25em'} />
+                    )}
+                    {(!val || !props.withCheckMarkIndicator) &&
+                      props.withChevron && <ChevronDown size={'1.25em'} />}
+                  </div>
+                  <FormErrorTip error={props.error} />
                 </>
               );
             }}
@@ -274,6 +266,10 @@ export const BakedListBox = <O extends Option | string>(
                                     }`}
                                 </span>
                               )}
+                              <Check
+                                className="icon"
+                                color={selected ? 'curentColor' : 'transparent'}
+                              />
                             </DropdownItem>
                           );
                         }}
@@ -301,6 +297,7 @@ BakedListBox.defaultProps = {
   labelPrefix: '',
   labelKey: 'label',
   valueKey: 'value',
+  withChevron: true,
 };
 
 export default BakedListBox;

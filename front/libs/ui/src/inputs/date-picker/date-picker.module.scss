@@ -84,14 +84,14 @@
   }
 
   // Text input box
-  &[data-pickertype='range'][data-focused='0']::after {
+  &[data-pickertype='range'][data-focused='0']:focus-within:after {
     background-color: var(--blue);
     left: 1em;
     transition: left 0.2s linear;
   }
 
   // Text input box
-  &[data-pickertype='range'][data-focused='1']::after {
+  &[data-pickertype='range'][data-focused='1']:focus-within::after {
     background-color: var(--blue);
     left: calc(50% + 1.5em);
     transition: left 0.2s linear;

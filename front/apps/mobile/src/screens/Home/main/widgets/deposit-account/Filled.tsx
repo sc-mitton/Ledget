@@ -144,7 +144,7 @@ const Filled = (props: WidgetProps<{ account: string }>) => {
             </Text>
           ) : (
             <Box marginBottom="xs">
-              <PulseBox width={70} height={'reg'} borderRadius="xs" />
+              <PulseBox width={70} numberOfLines={1} borderRadius="xs" />
             </Box>
           )}
         </View>

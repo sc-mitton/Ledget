@@ -1,8 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { RootState } from '@hooks/store';
-import { userSlice, User } from '@ledget/shared-features';
-
 interface StateT {
   accounts?: string[];
 }

@@ -1,0 +1,39 @@
+.history {
+  flex: 1;
+  flex-grow: 1;
+  margin: 0 -1.5em;
+  justify-content: center;
+  align-items: center;
+
+  h4 {
+    position: absolute;
+    top: 0.5em;
+    left: 50%;
+    transform: translateX(-75%);
+    color: var(--blue-light-medium);
+    font-weight: var(--fw-regular);
+  }
+}
+
+.windowSelect {
+  position: absolute;
+  top: 0.75em;
+  right: 0.75em;
+
+  * {
+    scrollbar-width: none;
+  }
+}
+
+.chart {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-color: inherit;
+  border-radius: inherit;
+  background: inherit;
+}

@@ -1,7 +1,7 @@
 from decimal import Decimal
 import math
 import json
-from datetime import datetime
+from datetime import datetime, date
 from itertools import groupby
 from dateutil import relativedelta
 from typing import List
@@ -229,7 +229,7 @@ class AccountsViewSet(ViewSet):
 
         result = {
             a['account_id']: [{
-                'month': datetime.now(),
+                'month': date.today(),
                 'balance': Decimal(a['balances']['current'])
             }]
             for a in accounts_balance.values()
