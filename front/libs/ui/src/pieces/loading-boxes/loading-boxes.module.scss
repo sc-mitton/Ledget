@@ -6,7 +6,7 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background-color: var(--m-text-quinary);
+  background-color: var(--btn-gray);
 }
 
 .pulseContainer {
@@ -14,6 +14,7 @@
   height: 100%;
   border-radius: inherit;
   position: relative;
+  flex-grow: 1;
 }
 
 .textSkeletonDiv {

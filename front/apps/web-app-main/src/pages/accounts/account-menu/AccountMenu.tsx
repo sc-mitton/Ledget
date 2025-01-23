@@ -9,7 +9,10 @@ import { StyledMenu, DollarCents, FilterPillButton } from '@ledget/ui';
 import { useGetAccountsQuery, Account } from '@ledget/shared-features';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
 import pathMappings from '../path-mappings';
-import { selectAccounts, setAccounts } from '@features/accountsPageSlice';
+import {
+  selectAccounts,
+  setAccounts,
+} from '@features/depositoryAccountsTabSlice';
 import { capitalize } from '@ledget/helpers';
 
 type SelectOption = {
@@ -90,7 +93,7 @@ const AccountMenu = () => {
   }, [accountsFilterOptions]);
 
   useEffect(() => {
-    if (data) {
+    if (data && !accounts) {
       const pageAccountType = pathMappings.getAccountType(location);
       dispatch(
         setAccounts(data.accounts?.find((a) => a.type === pageAccountType)?.id)

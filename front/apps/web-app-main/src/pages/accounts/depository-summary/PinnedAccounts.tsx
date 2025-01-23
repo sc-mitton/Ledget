@@ -1,4 +1,5 @@
 import { Edit2, MoreHorizontal, Pin } from '@geist-ui/icons';
+import Big from 'big.js';
 
 import styles from './styles/pinned-accounts.module.scss';
 import { DollarCents, Window, TextButton, StyledMenu } from '@ledget/ui';
@@ -10,7 +11,7 @@ import { setModal } from '@features/modalSlice';
 import {
   selectPinnedAccounts,
   setPinnedAccount,
-} from '@features/accountsPageSlice';
+} from '@features/depositoryAccountsTabSlice';
 
 const PinnedAccounts = () => {
   const dispatch = useAppDispatch();
@@ -63,7 +64,9 @@ const PinnedAccounts = () => {
                 <span>&nbsp;&bull;&nbsp;&bull;&nbsp;{a.mask}</span>
               </div>
               <div>
-                <DollarCents value={a.balances.current} />
+                <DollarCents
+                  value={Big(a.balances.current).times(100).toNumber()}
+                />
               </div>
             </>
           ))}

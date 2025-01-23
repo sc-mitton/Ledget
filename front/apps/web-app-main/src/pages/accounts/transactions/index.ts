@@ -1,1 +1,1 @@
-export { default as DepositTransactions } from './DepositTransactions';
+export { default as Transactions } from './Transactions';

@@ -4,18 +4,20 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import styles from './styles/window.module.scss';
 import NotFound from '@pages/notFound';
 import { Nav } from './Nav';
-import { DepositTransactions } from './transactions';
+import { Transactions } from './transactions';
 import { NotImplimentedMessage } from '@components/pieces';
 import { useScreenContext, MainWindow } from '@ledget/ui';
 import AccountMenu from './account-menu/AccountMenu';
 import DepositorySummary from './depository-summary/DepositorySummary';
+import CreditCards from './credit-cards/CreditCards';
+import SelectedCardHeader from './selected-card-header/SelectedCardHeader';
 
 const _getNavHeaderPhrase = (key = '') => {
   switch (key) {
     case 'deposits':
       return 'Your Accounts';
     case 'credit':
-      return 'Your Credit Cards';
+      return 'Your Cards';
     case 'investments':
       return 'Your Investments';
     case 'loans':
@@ -40,13 +42,42 @@ const Window = () => {
         <h1>{_getNavHeaderPhrase(currentPath)}</h1>
         <Nav />
       </div>
-      <Routes location={location}>
-        <Route path="deposits" element={<DepositorySummary />} />
-      </Routes>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={location.pathname.split('/')[2]}
+          initial={{
+            opacity: 0,
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <Routes location={location}>
+            <Route path="deposits" element={<DepositorySummary />} />
+            <Route path="credit" element={<CreditCards />} />
+          </Routes>
+        </motion.div>
+      </AnimatePresence>
       <div className={styles.accountMenuContainer}>
-        <Routes location={location}>
-          <Route path="deposits" element={<AccountMenu />} />
-        </Routes>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={location.pathname.split('/')[2]}
+            initial={{
+              opacity: 0,
+              display: 'flex',
+              flexDirection: 'column',
+              flexGrow: 1,
+            }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <Routes location={location}>
+              <Route path="deposits" element={<AccountMenu />} />
+              <Route path="credit" element={<SelectedCardHeader />} />
+            </Routes>
+          </motion.div>
+        </AnimatePresence>
       </div>
       <div>
         <AnimatePresence mode="wait">
@@ -62,8 +93,8 @@ const Window = () => {
             exit={{ opacity: 0 }}
           >
             <Routes location={location} key={location.pathname.split('/')[2]}>
-              <Route path="deposits" element={<DepositTransactions />} />
-              <Route path="credit" element={<DepositTransactions />} />
+              <Route path="deposits" element={<Transactions />} />
+              <Route path="credit" element={<Transactions />} />
               <Route path="investments" element={<NotImplimentedMessage />} />
               <Route path="loans" element={<NotImplimentedMessage />} />
               <Route path="*" element={<NotFound hasBackground={false} />} />

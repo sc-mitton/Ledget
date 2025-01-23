@@ -450,16 +450,3 @@ export const GripButton = (props: ButtonHTMLAttributes<HTMLButtonElement>) => (
     <Grip size="1em" />
   </BaseButton>
 );
-
-export const CornerGripButton = (
-  props: ButtonHTMLAttributes<HTMLButtonElement>
-) => (
-  <button
-    className={styles.cornerGrip}
-    aria-label="Move"
-    draggable-item="true"
-    {...props}
-  >
-    <CornerGrip size={'1em'} />
-  </button>
-);

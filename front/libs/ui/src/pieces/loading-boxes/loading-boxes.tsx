@@ -44,11 +44,16 @@ export const InputPulseDiv = () => (
 
 export const PulseDiv = ({
   children,
+  className,
   isSkeleton,
   ...rest
 }: Props & HTMLProps<HTMLDivElement>) => {
   return (
-    <div {...rest} className={styles.pulseContainer} {...rest}>
+    <div
+      {...rest}
+      className={[styles.pulseContainer, className].join(' ')}
+      {...rest}
+    >
       {isSkeleton ? <Pulse /> : children}
     </div>
   );

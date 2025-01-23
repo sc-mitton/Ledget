@@ -12,7 +12,8 @@ import {
   mobileAuthSlice,
   budgetItemOrderSlice,
 } from '@ledget/shared-features';
-import { accountsPageSlice } from './accountsPageSlice';
+import { creditCardsTabSlice } from './creditCardsTabSlice';
+import { depositoryAccountsTabSlice } from './depositoryAccountsTabSlice';
 
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
@@ -27,7 +28,8 @@ const rootReducer = combineReducers({
   mobileAuth: mobileAuthSlice.reducer,
   budgetItemMetaData: budgetItemMetaDataSlice.reducer,
   budgetItemOrder: budgetItemOrderSlice.reducer,
-  accountsPage: accountsPageSlice.reducer,
+  depositoryAccountsTab: depositoryAccountsTabSlice.reducer,
+  creditCardsTab: creditCardsTabSlice.reducer,
 });
 
 export default rootReducer;

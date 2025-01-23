@@ -259,8 +259,8 @@ export const lightTheme = createTheme({
       color: 'mainText',
     },
     header: {
-      fontSize: 26,
-      lineHeight: 30,
+      fontSize: 24,
+      lineHeight: 28,
       marginVertical: 'm',
       marginLeft: 'xs',
       marginBottom: 'xs',

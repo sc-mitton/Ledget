@@ -13,7 +13,7 @@ import {
   selectPinnedAccounts,
   setPinnedAccount,
   unPinAccount,
-} from '@features/accountsPageSlice';
+} from '@features/depositoryAccountsTabSlice';
 import { useLoaded } from '@ledget/helpers';
 
 const PinnedAccounts = withModal((props) => {

@@ -12,9 +12,12 @@
     padding: 1.625em 2em 2em 2em;
   }
 
+  h1 {
+    font-size: 1.625rem;
+  }
+
   & > div:last-child {
     flex-grow: 1;
-    flex-shrink: 1;
     display: flex;
     flex-direction: column;
     gap: 1.5em;

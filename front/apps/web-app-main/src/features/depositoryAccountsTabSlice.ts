@@ -7,8 +7,8 @@ interface StateT {
 
 const initialState: StateT = { pinnedAccounts: [] };
 
-export const accountsPageSlice = createSlice({
-  name: 'accountsPage',
+export const depositoryAccountsTabSlice = createSlice({
+  name: 'depositoryAccountsTab',
   initialState,
   reducers: {
     setAccounts: (
@@ -34,8 +34,9 @@ export const accountsPageSlice = createSlice({
 });
 
 export const { setAccounts, setPinnedAccount, unPinAccount } =
-  accountsPageSlice.actions;
-export const selectAccounts = (state: { accountsPage: StateT }) =>
-  state.accountsPage.accounts;
-export const selectPinnedAccounts = (state: { accountsPage: StateT }) =>
-  state.accountsPage.pinnedAccounts;
+  depositoryAccountsTabSlice.actions;
+export const selectAccounts = (state: { depositoryAccountsTab: StateT }) =>
+  state.depositoryAccountsTab.accounts;
+export const selectPinnedAccounts = (state: {
+  depositoryAccountsTab: StateT;
+}) => state.depositoryAccountsTab.pinnedAccounts;

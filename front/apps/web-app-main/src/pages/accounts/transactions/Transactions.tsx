@@ -7,12 +7,14 @@ import dayjs from 'dayjs';
 import styles from './styles/deposit-transactions.module.scss';
 import { setTransactionModal } from '@features/modalSlice';
 import { useAppDispatch } from '@hooks/store';
-import { Tooltip, DollarCents } from '@ledget/ui';
+import { EmptyBox } from '@ledget/media';
+import { Tooltip, DollarCents, useColorScheme } from '@ledget/ui';
 import { Hourglass } from '@ledget/media';
 import Table from './Table';
 
 const Transactions = () => {
   const dispatch = useAppDispatch();
+  const { isDark } = useColorScheme();
 
   return (
     <Table>
@@ -20,6 +22,7 @@ const Transactions = () => {
         return (
           <>
             {transactionsData &&
+              transactionsData.results.length > 0 &&
               transactionsData.results?.map((transaction, i) => {
                 const date = dayjs(transaction.date);
                 const previousDate =
@@ -79,6 +82,12 @@ const Transactions = () => {
                   </Fragment>
                 );
               })}
+            {transactionsData && transactionsData.results.length === 0 && (
+              <span className={styles.empty}>
+                <EmptyBox size={32} dark={isDark} />
+                <span>No Transactions</span>
+              </span>
+            )}
           </>
         );
       }}
