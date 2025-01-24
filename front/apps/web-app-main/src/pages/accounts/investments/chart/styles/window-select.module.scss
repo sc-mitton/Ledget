@@ -1,0 +1,12 @@
+.item {
+  &[data-selected='true'] {
+    color: var(--blue-text);
+    * {
+      color: var(--blue-text);
+    }
+  }
+
+  &[data-selected='false'] svg {
+    opacity: 0;
+  }
+}

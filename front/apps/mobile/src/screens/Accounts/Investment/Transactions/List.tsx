@@ -47,7 +47,6 @@ const ESCAPE_VELOCITY = 1.5;
 
 const Transactions = (props: PTransactions) => {
   const state = useSharedValue(0); // 0 = neutral, 1 = expanded
-  const propTop = useRef(props.collapsedTop);
   const top = useSharedValue(props.collapsedTop);
   const theme = useTheme();
   const accounts = useAppSelector(selectInvestmentsScreenAccounts);
@@ -119,7 +118,6 @@ const Transactions = (props: PTransactions) => {
 
   useEffect(() => {
     top.value = props.collapsedTop;
-    propTop.current = props.collapsedTop;
   }, [props.collapsedTop]);
 
   const gesture = Gesture.Pan()
@@ -130,7 +128,7 @@ const Transactions = (props: PTransactions) => {
 
       top.value =
         state.value === 0
-          ? withSpring(propTop.current + ty)
+          ? withSpring(props.collapsedTop + ty)
           : withSpring(props.expandedTop + ty);
     })
     .onChange(({ translationY: ty }) => {
@@ -139,7 +137,7 @@ const Transactions = (props: PTransactions) => {
       }
 
       top.value =
-        state.value === 0 ? propTop.current + ty : props.expandedTop + ty;
+        state.value === 0 ? props.collapsedTop + ty : props.expandedTop + ty;
     })
     .onEnd(({ translationY: ty, velocityY: vy }) => {
       if ((ty > 0 && state.value === 0) || (ty < 0 && state.value === 1)) {
@@ -148,7 +146,7 @@ const Transactions = (props: PTransactions) => {
       if (Math.abs(ty) > DRAG_THRESHOLD || Math.abs(vy) > ESCAPE_VELOCITY) {
         top.value =
           state.value === 1
-            ? withSpring(propTop.current, defaultSpringConfig)
+            ? withSpring(props.collapsedTop, defaultSpringConfig)
             : withSpring(props.expandedTop, defaultSpringConfig);
         props.onStateChange &&
           runOnJS(props.onStateChange)(
@@ -159,7 +157,7 @@ const Transactions = (props: PTransactions) => {
         top.value =
           state.value === 1
             ? withSpring(props.expandedTop, defaultSpringConfig)
-            : withSpring(propTop.current, defaultSpringConfig);
+            : withSpring(props.collapsedTop, defaultSpringConfig);
       }
     });
 

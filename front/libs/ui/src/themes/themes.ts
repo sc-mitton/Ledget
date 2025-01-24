@@ -6,36 +6,57 @@ import { useSchemeVar } from './hooks/use-scheme-var/use-scheme-var';
 type NivoResponsiveLineBaseProps = Omit<LineSvgProps, 'data'>;
 
 export const useNivoResponsiveBaseProps = ({
-  disabled = false,
+  primaryColor = '--blue',
+  gradientColorStart = '--blue',
+  gradientColorEnd,
+  borderColor,
+  curve = 'linear',
+  ...rest
 }: {
-  disabled?: boolean;
-}): NivoResponsiveLineBaseProps => {
-  const [mainColor, mainSat, transparent] = useSchemeVar([
-    '--monthly-background-color-darker',
-    '--blue',
-    '--main-background-color',
-  ]);
+  primaryColor?: `--${string}`;
+  gradientColorStart?: `--${string}`;
+  gradientColorEnd?: `--${string}`;
+  borderColor?: `--${string}`;
+  curve?: NivoResponsiveLineBaseProps['curve'];
+} & NivoResponsiveLineBaseProps): NivoResponsiveLineBaseProps => {
+  const primary = useSchemeVar(primaryColor);
+  const gradientColors = useSchemeVar(
+    gradientColorEnd
+      ? [gradientColorStart, gradientColorEnd]
+      : gradientColorStart
+  );
 
   return {
     enablePoints: true,
-    pointColor: transparent,
-    pointSize: disabled ? 0 : 7,
-    pointBorderColor: disabled ? 'transparent' : mainColor,
-    pointBorderWidth: disabled ? 0 : 1,
+    pointColor: 'transparent',
     enableArea: true,
     enableGridX: false,
     enableGridY: true,
-    lineWidth: 1,
+    lineWidth: 1.5,
     curve: 'natural',
-    colors: [!disabled ? mainColor : 'transparent'],
-    useMesh: !disabled,
+    colors: [primary || 'transparent'],
+    useMesh: true,
     defs: [
       {
         id: 'gradientC',
         type: 'linearGradient',
         colors: [
-          { offset: 0, color: mainSat, opacity: disabled ? 0 : 1 },
-          { offset: 100, color: transparent, opacity: disabled ? 0 : 1 },
+          {
+            offset: 0,
+            color: gradientColors
+              ? typeof gradientColors === 'string'
+                ? gradientColors
+                : gradientColors[0]
+              : 'transparent',
+          },
+          {
+            offset: 100,
+            color: gradientColors
+              ? typeof gradientColors === 'string'
+                ? gradientColors
+                : gradientColors[1]
+              : 'transparent',
+          },
         ],
       },
     ],
@@ -46,12 +67,12 @@ export const useNivoResponsiveBaseProps = ({
       tension: 400,
     },
     crosshairType: 'bottom',
+    ...rest,
   };
 };
 
 export const useNivoResponsiveLineTheme = (): Theme => {
-  const [mainHlightHover, borderColor, mTextSecondary] = useSchemeVar([
-    '--blue-light-hover',
+  const [borderColor, mTextSecondary] = useSchemeVar([
     '--border-color',
     '--m-text-secondary',
   ]);
@@ -59,7 +80,7 @@ export const useNivoResponsiveLineTheme = (): Theme => {
   return {
     crosshair: {
       line: {
-        stroke: mainHlightHover,
+        stroke: borderColor,
         strokeWidth: 1.5,
         strokeDasharray: 'solid',
       },
@@ -91,11 +112,13 @@ export const useMinimalistNivoResponsiveBaseProps = ({
   gradientColorStart = '--blue',
   gradientColorEnd,
   borderColor,
+  curve = 'linear',
 }: {
   primaryColor?: `--${string}`;
   gradientColorStart?: `--${string}`;
   gradientColorEnd?: `--${string}`;
   borderColor?: `--${string}`;
+  curve?: NivoResponsiveLineBaseProps['curve'];
 }): NivoResponsiveLineBaseProps => {
   const primary = useSchemeVar(primaryColor);
   const gradientColors = useSchemeVar(
@@ -112,7 +135,7 @@ export const useMinimalistNivoResponsiveBaseProps = ({
     enableGridY: false,
     enableGridX: true,
     lineWidth: 1.5,
-    curve: 'linear',
+    curve,
     colors: [primary || 'transparent'],
     useMesh: true,
     motionConfig: {

@@ -70,9 +70,9 @@ const CreditSummary = () => {
       const index = order.current.length > 0
           ? spread
             ? orderIndex
-            : firstCardIndex === orderIndex
+            : selectedCardIndex === orderIndex
               ? 0
-              : orderIndex > (firstCardIndex || 0) ? orderIndex : orderIndex + 1
+              : orderIndex >= (selectedCardIndex || 0) ? orderIndex : orderIndex + 1
           : i;
       const zIndex =
         order.current.length > 0
@@ -90,12 +90,12 @@ const CreditSummary = () => {
       const orderIndex = order.current.indexOf(item?.id || '');
       // prettier-ignore
       const index = order.current.length > 0
-          ? spread
-            ? orderIndex
-            : selectedCardIndex === orderIndex
-              ? 0
-              : orderIndex > selectedCardIndex ? orderIndex : orderIndex + 1
-          : i;
+        ? spread
+          ? orderIndex
+          : selectedCardIndex === orderIndex
+            ? 0
+            : orderIndex >= (selectedCardIndex || 0) ? orderIndex : orderIndex + 1
+        : i;
 
       return {
         x: spread
@@ -172,7 +172,7 @@ const CreditSummary = () => {
         ? orderIndex
         : selectedCardIndex === orderIndex
           ? 0
-          : orderIndex > selectedCardIndex ? orderIndex : orderIndex + 1
+          : orderIndex >= selectedCardIndex ? orderIndex : orderIndex + 1
       : i;
       const zIndex =
         order.current.length > 0

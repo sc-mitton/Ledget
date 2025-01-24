@@ -61,7 +61,7 @@ const Connections = ({ navigation, route }: ConnectionsScreenProps<'All'>) => {
                           strokeWidth={2}
                         />
                       ) : (
-                        <InstitutionLogo data={item.institution?.logo} />
+                        <InstitutionLogo institution={item.institution?.id} />
                       )}
                       <Text color={item.login_required ? 'alert' : 'mainText'}>
                         {item.institution?.name}

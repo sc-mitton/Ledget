@@ -11,6 +11,7 @@ import AccountMenu from './account-menu/AccountMenu';
 import DepositorySummary from './depository-summary/DepositorySummary';
 import CreditCards from './credit-cards/CreditCards';
 import SelectedCardHeader from './selected-card-header/SelectedCardHeader';
+import InvestmentsTab from './investments/Tab';
 
 const _getNavHeaderPhrase = (key = '') => {
   switch (key) {
@@ -95,7 +96,7 @@ const Window = () => {
             <Routes location={location} key={location.pathname.split('/')[2]}>
               <Route path="deposits" element={<Transactions />} />
               <Route path="credit" element={<Transactions />} />
-              <Route path="investments" element={<NotImplimentedMessage />} />
+              <Route path="investments" element={<InvestmentsTab />} />
               <Route path="loans" element={<NotImplimentedMessage />} />
               <Route path="*" element={<NotFound hasBackground={false} />} />
             </Routes>

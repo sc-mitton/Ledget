@@ -1,23 +1,25 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Platform } from 'react-native';
+import { Platform, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
+import styles from './styles';
 import { Base64Image } from '../base64-image/Base64Image';
 import type { Props } from '../base64-image/Base64Image';
 import {
   selectInstitution,
   useLazyGetPlaidItemsQuery,
 } from '@ledget/shared-features';
+import { Box } from '../../restyled/Box';
+import { Text } from '../../restyled/Text';
 
 interface InstitutionLogoProps extends Props {
   account?: string;
   institution?: string;
-  hasShadow?: boolean;
   hasBorder?: boolean;
 }
 
 export const InstitutionLogo = (props: InstitutionLogoProps) => {
-  const { hasShadow = true, hasBorder = true } = props;
+  const { hasBorder = true } = props;
 
   const institution = useSelector((state: any) =>
     selectInstitution(state, props.account || props.institution || '')
@@ -50,7 +52,9 @@ export const InstitutionLogo = (props: InstitutionLogoProps) => {
     }
   }, [plaidItemsData]);
 
-  return (
+  console.log('institution name: ', institution?.name, logoData !== null);
+
+  return logoData !== null ? (
     <Base64Image
       borderRadius={'circle'}
       elevation={2}
@@ -61,5 +65,23 @@ export const InstitutionLogo = (props: InstitutionLogoProps) => {
       data={logoData}
       {...props}
     />
+  ) : (
+    <Box
+      borderRadius={'circle'}
+      elevation={2}
+      borderColor="mediumGrayButton"
+      backgroundColor="mediumGrayButton"
+      justifyContent="center"
+      alignItems="center"
+      borderWidth={hasBorder ? 0.5 : 0}
+      width={props.size || Platform.OS === 'ios' ? 22 : 24}
+      height={props.size || Platform.OS === 'ios' ? 22 : 24}
+    >
+      <View style={styles.institutionInitialContainer}>
+        <Text style={styles.institutionInitial}>
+          {institution?.name?.charAt(0).toUpperCase()}
+        </Text>
+      </View>
+    </Box>
   );
 };

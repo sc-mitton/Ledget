@@ -53,6 +53,8 @@ export const transactionSlice = apiSlice.injectEndpoints({
               'AccountBalanceHistory',
               'AccountBalanceTrend',
               'AccountBreakdownHistory',
+              'Investment',
+              'InvestmentBalanceHistory',
             ]
           : [];
       },

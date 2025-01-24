@@ -1,0 +1,175 @@
+.container {
+  flex-grow: 1;
+  flex-shrink: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  h4 {
+    margin-bottom: 0.75em;
+    margin-left: 0.25em;
+    margin-right: 0.5em;
+    align-items: center;
+    display: flex;
+    gap: 0.25em;
+    color: var(--m-text-quaternary);
+  }
+}
+
+.table {
+  flex-grow: 1;
+  position: relative;
+  min-height: 20vh;
+
+  & > div:last-child {
+    position: absolute;
+    inset: 0;
+  }
+
+  &[data-size='extra-small'] {
+    margin-top: 0;
+    padding: 0;
+  }
+}
+
+.empty {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--m-text-quinary);
+  * {
+    color: var(--m-text-quinary);
+  }
+}
+
+/* Border bottom for all cells except last child */
+$dividerBorder: var(--transaction-hover-background);
+$borderRadius2: var(--border-radius3);
+
+.list {
+  position: absolute;
+  z-index: 0;
+  inset: 1.25em;
+  right: 0.125em;
+  overflow: auto;
+  scrollbar-gutter: stable;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-auto-rows: minmax(auto, 5rem);
+  grid-template-rows: min-content;
+  padding-right: 0.75em;
+
+  div[role='button']:hover > div {
+    cursor: pointer;
+    background-color: $dividerBorder;
+  }
+
+  & > div:nth-child(2n) {
+    display: contents;
+  }
+
+  // Month Delimiter
+  & > div:nth-child(2n + 1) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: sticky;
+    top: 0.375em;
+    background-color: var(--window);
+    height: min-content;
+
+    span {
+      padding: 0 0.75em 0 0.25em;
+      color: var(--m-text-tertiary);
+      background-color: inherit;
+
+      &:first-child {
+        position: relative;
+        z-index: 0;
+      }
+
+      &:last-child {
+        font-size: 0.875em;
+        position: relative;
+        z-index: 1;
+      }
+    }
+  }
+
+  & > div:nth-child(2n):not(:last-child) > div:not(.month-header) {
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      height: 1px;
+      border-bottom: 1.5px solid $dividerBorder;
+    }
+
+    &:first-of-type::after {
+      left: 0.5em;
+      right: 0;
+    }
+
+    &:last-of-type::after {
+      left: 0;
+      right: 0.5em;
+    }
+  }
+
+  & > div:nth-child(2n + 2) {
+    padding: 0.25em 0;
+    padding-right: 0.75em;
+    padding-left: 0.25em;
+  }
+
+  & > div:nth-child(2n) > div {
+    position: relative;
+    z-index: 0;
+
+    // Name, date, category, pending
+    &:first-child {
+      padding: 0.75em;
+      padding-left: 1em;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-top-left-radius: $borderRadius2;
+      border-bottom-left-radius: $borderRadius2;
+
+      & > span {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.25em;
+
+        &:last-of-type {
+          color: var(--m-text-secondary);
+        }
+      }
+    }
+
+    // Amount
+    &:last-child {
+      padding: 0.25em;
+      padding-right: 0.75em;
+      display: flex;
+      align-items: center;
+      border-top-right-radius: $borderRadius2;
+      border-bottom-right-radius: $borderRadius2;
+
+      &[data-debit='true'] * {
+        color: var(--green-text);
+      }
+    }
+  }
+}

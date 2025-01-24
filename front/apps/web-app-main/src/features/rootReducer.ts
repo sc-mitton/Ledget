@@ -14,6 +14,7 @@ import {
 } from '@ledget/shared-features';
 import { creditCardsTabSlice } from './creditCardsTabSlice';
 import { depositoryAccountsTabSlice } from './depositoryAccountsTabSlice';
+import { investmentsTabSlice } from './investmentsTabSlice';
 
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
   budgetItemOrder: budgetItemOrderSlice.reducer,
   depositoryAccountsTab: depositoryAccountsTabSlice.reducer,
   creditCardsTab: creditCardsTabSlice.reducer,
+  investmentsTab: investmentsTabSlice.reducer,
 });
 
 export default rootReducer;

@@ -178,7 +178,6 @@ export const Chart = () => {
       </div>
       <div className={styles.windowSelect}>
         <BakedListBox
-          placeholder="Select"
           placement="right"
           as={BlueFadedSquareRadio}
           value={window}

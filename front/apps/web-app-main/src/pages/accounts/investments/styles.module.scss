@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25em;
+  flex-grow: 1;
+
+  & > div:first-of-type {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    flex-grow: 1;
+    gap: 2em;
+    margin-top: 1em;
+    overflow-x: scroll;
+    scrollbar-width: none;
+  }
+}

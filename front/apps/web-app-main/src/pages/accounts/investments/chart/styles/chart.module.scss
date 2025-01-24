@@ -1,0 +1,92 @@
+.container {
+  flex: 3;
+  flex-grow: 3;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  min-width: 24em;
+}
+
+.windowMenu {
+  position: absolute;
+  top: 0.75em;
+  right: 0.75em;
+
+  & > div > button {
+    font-size: 1rem;
+  }
+
+  &[data-fake='true'] {
+    filter: grayscale(1);
+    pointer-events: none;
+  }
+}
+
+.trendContainer {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.25em;
+}
+
+.accountsSelect {
+  position: absolute;
+  top: 0.75em;
+  left: 1.25em;
+
+  h1 * {
+    font-weight: var(--fw-bold);
+  }
+}
+
+.item {
+  &[data-selected='true'] {
+    color: var(--blue-text);
+  }
+  &:not([data-selected='true']) svg {
+    opacity: 0;
+  }
+}
+
+.accountsSelectButton {
+  & > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5em;
+  }
+}
+
+.balanceContainer {
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.75em;
+  z-index: -1;
+}
+
+.chart {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: inherit;
+
+  &[data-fake='true'] {
+    filter: grayscale(1);
+  }
+
+  & > span:first-child {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--m-text-quinary);
+  }
+
+  div,
+  svg {
+    border-radius: inherit;
+  }
+}

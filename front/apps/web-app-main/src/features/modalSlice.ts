@@ -6,12 +6,16 @@ import {
   Transaction,
   Category,
   TransformedBill,
+  InvestmentTransaction,
 } from '@ledget/shared-features';
 
 interface InitialState {
   transactionModal: {
     item?: Transaction;
     splitMode?: boolean;
+  };
+  investmentTransactionModal: {
+    item?: InvestmentTransaction;
   };
   categoryModal: {
     category?: Category;
@@ -29,6 +33,7 @@ interface InitialState {
 
 const initialState: InitialState = {
   transactionModal: {},
+  investmentTransactionModal: {},
   categoryModal: {},
   billModal: {},
   modal: undefined,
@@ -54,6 +59,15 @@ export const modalSlice = createSlice({
     clearTransactionModal: (state) => {
       state.transactionModal.item = undefined;
       state.transactionModal.splitMode = false;
+    },
+    setInvestmentTransactionModal: (
+      state,
+      action: PayloadAction<{ item: InvestmentTransaction }>
+    ) => {
+      state.investmentTransactionModal.item = action.payload.item;
+    },
+    clearInvestmentTransactionModal: (state) => {
+      state.investmentTransactionModal.item = undefined;
     },
     setCategoryModal: (
       state,
@@ -107,6 +121,8 @@ export const selectModal = (state: RootState) => state.modal.modal;
 export const {
   setTransactionModal,
   clearTransactionModal,
+  setInvestmentTransactionModal,
+  clearInvestmentTransactionModal,
   setCategoryModal,
   clearCategoryModal,
   setBillModal,
