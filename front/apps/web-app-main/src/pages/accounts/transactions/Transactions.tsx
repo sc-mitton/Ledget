@@ -4,8 +4,8 @@ import { Outlet } from 'react-router-dom';
 import Big from 'big.js';
 import dayjs from 'dayjs';
 
-import styles from './styles/deposit-transactions.module.scss';
-import { setTransactionModal } from '@features/modalSlice';
+import styles from './styles/transactions.module.scss';
+import { setModal } from '@features/modalSlice';
 import { useAppDispatch } from '@hooks/store';
 import { EmptyBox } from '@ledget/media';
 import { Tooltip, DollarCents, useColorScheme } from '@ledget/ui';
@@ -48,7 +48,12 @@ const Transactions = () => {
                       key={transaction.transaction_id}
                       role="button"
                       onClick={() => {
-                        dispatch(setTransactionModal({ item: transaction }));
+                        dispatch(
+                          setModal({
+                            name: 'transaction',
+                            args: { item: transaction },
+                          })
+                        );
                       }}
                     >
                       <div>

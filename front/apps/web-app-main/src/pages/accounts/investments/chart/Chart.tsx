@@ -140,9 +140,12 @@ const Chart = () => {
 
   return (
     <div className={styles.container}>
-      <Window className={styles.chart} data-fake={useingFakeData}>
+      <Window className={styles.chartContainer}>
         {useingFakeData && <span>Not enough data yet</span>}
-        <ResponsiveLineContainer>
+        <ResponsiveLineContainer
+          className={styles.chart}
+          data-fake={useingFakeData}
+        >
           <ResponsiveLine
             {...nivoBaseProps}
             data={[{ id: 'balance', data: chartData }]}

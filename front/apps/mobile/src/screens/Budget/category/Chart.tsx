@@ -165,7 +165,7 @@ const Chart = (props: Props) => {
               color={
                 !usingTempData
                   ? theme.colors.blueChartColor
-                  : theme.colors.quaternaryText
+                  : theme.colors.emptyChartColor
               }
               strokeWidth={3}
               curveType="linear"

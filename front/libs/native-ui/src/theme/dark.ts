@@ -214,5 +214,6 @@ export const darkTheme = createTheme({
     blueChartColor: palette.blue500,
     blueChartColorSecondary: palette.blue700,
     emptyChartGradientStart: palette.gray750,
+    emptyChartColor: palette.gray600,
   },
 });

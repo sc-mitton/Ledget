@@ -2,18 +2,16 @@ import { useState, useEffect } from 'react';
 
 import styles from './styles/logout.module.scss';
 import { withSmallModal } from '@ledget/ui';
-import { useAppSelector } from '@hooks/store';
-import { selectLogoutModal } from '@features/modalSlice';
 import { SecondaryButton, BlueSubmitButton } from '@ledget/ui';
 import {
   useGetLogoutFlowQuery,
   useLazyGetUpdatedLogoutFlowQuery,
 } from '@features/orySlice';
 
-const LogoutModal = withSmallModal((props) => {
+const LogoutModal = withSmallModal<{ fromTimeout: boolean }>((props) => {
   const [quedLogout, setQuedLogout] = useState(false);
   const [seconds, setSeconds] = useState(30);
-  const { fromTimeout } = useAppSelector(selectLogoutModal);
+  const { fromTimeout = true } = props;
 
   const {
     data: flow,

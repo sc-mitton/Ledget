@@ -159,7 +159,7 @@ const Chart = (props: Props) => {
               color={
                 props.data
                   ? theme.colors.blueChartColor
-                  : theme.colors.quinaryText
+                  : theme.colors.emptyChartColor
               }
               strokeWidth={2}
               strokeCap="round"

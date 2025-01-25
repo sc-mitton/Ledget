@@ -14,10 +14,13 @@
 
   & > div > button {
     font-size: 1rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
   }
 
   &[data-fake='true'] {
     filter: grayscale(1);
+    opacity: 0.5;
     pointer-events: none;
   }
 }
@@ -63,7 +66,7 @@
   z-index: -1;
 }
 
-.chart {
+.chartContainer {
   height: 100%;
   width: 100%;
   position: relative;
@@ -72,10 +75,6 @@
   align-items: center;
   justify-content: center;
   border-radius: inherit;
-
-  &[data-fake='true'] {
-    filter: grayscale(1);
-  }
 
   & > span:first-child {
     position: absolute;
@@ -88,5 +87,12 @@
   div,
   svg {
     border-radius: inherit;
+  }
+}
+
+.chart {
+  &[data-fake='true'] {
+    filter: grayscale(1);
+    opacity: 0.5;
   }
 }

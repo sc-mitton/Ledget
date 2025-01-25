@@ -14,7 +14,7 @@ import {
 } from '@ledget/shared-features';
 import { EmptyBox } from '@ledget/media';
 import { DollarCents, useColorScheme, useScreenContext } from '@ledget/ui';
-import { setInvestmentTransactionModal } from '@features/modalSlice';
+import { setModal } from '@features/modalSlice';
 
 const List = ({ data: investmentsData }: { data: InvestmentsResponse }) => {
   const id = useId();
@@ -65,7 +65,7 @@ const List = ({ data: investmentsData }: { data: InvestmentsResponse }) => {
 
         return (
           <Fragment key={`${id}-${i}`}>
-            <div role="button">
+            <div>
               {!previousDate || date.month() !== previousDate.month() ? (
                 <span>{date.format('MMM')}</span>
               ) : (
@@ -80,7 +80,12 @@ const List = ({ data: investmentsData }: { data: InvestmentsResponse }) => {
             <div
               role="button"
               onClick={() => {
-                dispatch(setInvestmentTransactionModal({ item: transaction }));
+                dispatch(
+                  setModal({
+                    name: 'investmentTransaction',
+                    args: { item: transaction },
+                  })
+                );
               }}
             >
               <div>

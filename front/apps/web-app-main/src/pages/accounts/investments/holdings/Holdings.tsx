@@ -15,6 +15,7 @@ const Transactions = () => {
             </div>
           </TextButton>
         </div>
+        <div className={styles.list}></div>
       </Window>
     </div>
   );

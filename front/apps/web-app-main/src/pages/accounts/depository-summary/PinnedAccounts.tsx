@@ -45,7 +45,7 @@ const PinnedAccounts = () => {
           <StyledMenu.Items>
             <StyledMenu.Item
               label="Edit"
-              onClick={() => dispatch(setModal('pinAccounts'))}
+              onClick={() => dispatch(setModal({ name: 'pinAccounts' }))}
               icon={<Edit2 size={'.875rem'} />}
             />
           </StyledMenu.Items>

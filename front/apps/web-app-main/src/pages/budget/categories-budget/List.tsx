@@ -17,7 +17,7 @@ import {
   Category,
   selectCategoryOrder,
 } from '@ledget/shared-features';
-import { setCategoryModal } from '@features/modalSlice';
+import { setModal } from '@features/modalSlice';
 import SkeletonCategories from './Skeleton';
 
 const CategoriesList = ({ period }: { period: Category['period'] }) => {
@@ -115,7 +115,12 @@ const CategoriesList = ({ period }: { period: Category['period'] }) => {
               <Fragment key={category.id}>
                 <button
                   onClick={() => {
-                    dispatch(setCategoryModal({ category: category }));
+                    dispatch(
+                      setModal({
+                        name: 'category',
+                        args: { category: category },
+                      })
+                    );
                   }}
                 >
                   <BillCatEmojiLabel

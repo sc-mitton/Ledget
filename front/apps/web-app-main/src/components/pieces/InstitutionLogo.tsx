@@ -1,5 +1,5 @@
 import { useGetPlaidItemsQuery } from '@ledget/shared-features';
-import { Base64Logo, Tooltip } from '@ledget/ui';
+import { Base64Logo } from '@ledget/ui';
 
 export const InstitutionLogo = ({
   accountId,
@@ -14,11 +14,15 @@ export const InstitutionLogo = ({
     item.accounts.find((account) => account.id === accountId)
   );
 
+  console.log(item?.institution?.name, item?.institution?.primary_color);
+
   const args = {
     size,
     data: item?.institution?.logo,
     alt: item ? `${item.institution?.name?.charAt(0).toUpperCase()}` : ' ',
-    ...(!item ? { backgroundColor: '#e0e0e0' } : {}),
+    ...(!item?.institution?.logo
+      ? { backgroundColor: 'var(--btn-light-gray)' }
+      : {}),
   };
 
   return <Base64Logo {...args} />;

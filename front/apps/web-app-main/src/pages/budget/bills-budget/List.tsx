@@ -8,7 +8,7 @@ import {
   useGetBillsQuery,
   selectBillOrder,
 } from '@ledget/shared-features';
-import { setBillModal } from '@features/modalSlice';
+import { setModal } from '@features/modalSlice';
 import { DollarCents, BillCatLabel, useScreenContext } from '@ledget/ui';
 import { useAppSelector } from '@hooks/store';
 
@@ -63,7 +63,7 @@ const List = () => {
               className={`${bill.period}ly-bill`}
               role="button"
               onClick={() => {
-                dispatch(setBillModal({ bill: bill }));
+                dispatch(setModal({ name: 'bill', args: { bill: bill } }));
               }}
             >
               <BillCatLabel

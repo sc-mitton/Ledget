@@ -11,6 +11,9 @@ export const authSlice = createSlice({
       level: 'none' as User['session']['aal'],
       at: null as number | null,
     },
+    logoutTimerEnd:
+      new Date().getTime() +
+      Number(import.meta.env.VITE_AUTOMATIC_LOGOUT_LENGTH) * 1000,
   },
   reducers: {
     aal1ReAuthed: (state) => {
@@ -31,6 +34,11 @@ export const authSlice = createSlice({
         at: Date.now(),
       };
     },
+    refreshLogoutTimer: (state) => {
+      state.logoutTimerEnd =
+        new Date().getTime() +
+        Number(import.meta.env.VITE_AUTOMATIC_LOGOUT_LENGTH) * 1000;
+    },
   },
   extraReducers: (builder) => {
     builder.addMatcher(
@@ -50,7 +58,8 @@ export const authSlice = createSlice({
   },
 });
 
-export const { aal1ReAuthed, aal15ReAuthed, aal2ReAuthed } = authSlice.actions;
+export const { aal1ReAuthed, aal15ReAuthed, aal2ReAuthed, refreshLogoutTimer } =
+  authSlice.actions;
 export const authReducer = authSlice.reducer;
 
 export const selectSessionIsFreshAal1 = (state: RootState) => {
@@ -60,3 +69,5 @@ export const selectSessionIsFreshAal1 = (state: RootState) => {
   const aalGood = ['aal1', 'aal15', 'aal2'].includes(state.auth.reAuthed.level);
   return isFresh && aalGood;
 };
+export const selectLogoutTimerEnd = (state: RootState) =>
+  state.auth.logoutTimerEnd;

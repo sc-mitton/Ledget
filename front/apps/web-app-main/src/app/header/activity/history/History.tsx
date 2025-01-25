@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import { ChevronRight } from '@geist-ui/icons';
 
 import styles from './styles/history.module.scss';
-import { setTransactionModal } from '@features/modalSlice';
+import { setModal } from '@features/modalSlice';
 import {
   useLazyGetTransactionsQuery,
   useGetTransactionsQuery,
@@ -95,7 +95,12 @@ export function History() {
                     <div
                       role="button"
                       onClick={() =>
-                        dispatch(setTransactionModal({ item: transaction }))
+                        dispatch(
+                          setModal({
+                            name: 'transaction',
+                            args: { item: transaction },
+                          })
+                        )
                       }
                     >
                       <div>

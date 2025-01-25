@@ -210,6 +210,7 @@ export const lightTheme = createTheme({
     blueChartColor: palette.blue300,
     blueChartColorSecondary: palette.blue200,
     emptyChartGradientStart: palette.gray300,
+    emptyChartColor: palette.gray400,
 
     // Icons
     successIcon: palette.successGreen,

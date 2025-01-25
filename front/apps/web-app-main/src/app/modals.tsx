@@ -1,17 +1,6 @@
 import { useAppSelector, useAppDispatch } from '@hooks/store';
-import {
-  selectTransactionModal,
-  clearTransactionModal,
-  selectCategoryModal,
-  clearCategoryModal,
-  selectBillModal,
-  clearBillModal,
-  clearLogoutModal,
-  clearModal,
-  selectModal,
-  selectLogoutModal,
-  refreshLogoutTimer,
-} from '@features/modalSlice';
+import { selectModal, setModal } from '@features/modalSlice';
+import { refreshLogoutTimer } from '@features/authSlice';
 import {
   BillModal,
   TransactionItem,
@@ -27,53 +16,46 @@ import { ReAuthModal } from '@utils/withReAuth';
 const Modals = () => {
   const dispatch = useAppDispatch();
 
-  const transactionModal = useAppSelector(selectTransactionModal);
-  const categoryModal = useAppSelector(selectCategoryModal);
-  const billModal = useAppSelector(selectBillModal);
   const modal = useAppSelector(selectModal);
-  const logoutModal = useAppSelector(selectLogoutModal);
 
   return (
     <>
       {/* Modals */}
-      {transactionModal.item && (
-        <TransactionItem
-          item={transactionModal.item}
-          splitMode={transactionModal.splitMode}
-          onClose={() => dispatch(clearTransactionModal())}
+      {modal?.name === 'investmentTransaction' && (
+        <InvestmentTransaction
+          {...modal.args}
+          onClose={() => dispatch(setModal())}
         />
       )}
-      {categoryModal.category && (
-        <CategoryModal
-          category={categoryModal.category}
-          onClose={() => dispatch(clearCategoryModal())}
-        />
+      {modal?.name === 'transaction' && (
+        <TransactionItem {...modal.args} onClose={() => dispatch(setModal())} />
       )}
-      {billModal.bill && (
-        <BillModal
-          bill={billModal.bill}
-          onClose={() => dispatch(clearBillModal())}
-        />
+      {modal?.name === 'category' && (
+        <CategoryModal {...modal.args} onClose={() => dispatch(setModal())} />
       )}
-      {logoutModal.open && (
+      {modal?.name === 'bill' && (
+        <BillModal {...modal.args} onClose={() => dispatch(setModal())} />
+      )}
+      {modal?.name === 'logout' && (
         <LogoutModal
+          {...modal.args}
           onClose={() => {
-            dispatch(clearLogoutModal());
             dispatch(refreshLogoutTimer());
           }}
         />
       )}
-      {modal === 'pinAccounts' && (
-        <PinAccounts onClose={() => dispatch(clearModal())} />
+      {modal?.name === 'pinAccounts' && (
+        <PinAccounts onClose={() => dispatch(setModal())} />
       )}
-      {modal === 'reAuth' && (
-        <ReAuthModal onClose={() => dispatch(clearModal())} />
+      {modal?.name === 'reAuth' && (
+        <ReAuthModal onClose={() => dispatch(setModal())} />
       )}
-      {modal === 'editCategories' && (
-        <EditBudgetCategories onClose={() => dispatch(clearModal())} />
+      {modal?.name === 'editCategories' && (
+        <EditBudgetCategories onClose={() => dispatch(setModal())} />
       )}
-      {modal === 'help' && <HelpModal onClose={() => dispatch(clearModal())} />}
-      {}
+      {modal?.name === 'help' && (
+        <HelpModal onClose={() => dispatch(setModal())} />
+      )}
     </>
   );
 };

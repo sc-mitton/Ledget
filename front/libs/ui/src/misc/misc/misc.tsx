@@ -31,7 +31,9 @@ export const Base64Logo = (props: Base64LogoProps) => {
   return (
     <div
       className={styles.b64image}
-      style={size ? { width: size, height: size, ...style } : style}
+      style={
+        size ? { width: size, height: size, backgroundColor, ...style } : style
+      }
       {...rest}
     >
       {data ? (

@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-
 import { withSmallModal } from '@ledget/ui';
 
 const AccountErrorModal = withSmallModal(() => {

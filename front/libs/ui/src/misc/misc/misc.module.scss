@@ -6,8 +6,15 @@
   border: 1px solid var(--border-color-ultra-dim);
   border-radius: 50%;
 
-  &:has(span) {
-    border: 1px solid var(--btn-medium-gray);
+  &:has(span)::after {
+    background-color: var(--m-text);
+    border: 1px solid var(--m-text);
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.1;
+    border-radius: inherit;
   }
 
   img {

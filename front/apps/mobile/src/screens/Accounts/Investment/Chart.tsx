@@ -395,7 +395,7 @@ const Chart = () => {
                   points={points.balance}
                   color={
                     useingFakeData
-                      ? theme.colors.quinaryText
+                      ? theme.colors.emptyChartColor
                       : theme.colors.blueChartColor
                   }
                   strokeWidth={2}

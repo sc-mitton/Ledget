@@ -20,7 +20,7 @@ import {
   useLazyGetLoginFlowQuery,
   useCompleteLoginFlowMutation,
 } from '@features/orySlice';
-import { setModal, clearModal } from '@features/modalSlice';
+import { setModal } from '@features/modalSlice';
 import { useFlow } from '@ledget/ory';
 import {
   BlueSubmitWithArrow,
@@ -316,14 +316,14 @@ export const ReAuthProtected = ({
   useEffect(() => {
     if (isReAuthing) {
       if (!isReAuthed) {
-        dispatch(setModal('reAuth'));
+        dispatch(setModal({ name: 'reAuth' }));
       } else {
         onReAuth();
       }
     }
     return () => {
       setSearchParams({});
-      dispatch(clearModal());
+      dispatch(setModal());
     };
   }, [isReAuthing]);
 
@@ -332,11 +332,11 @@ export const ReAuthProtected = ({
     if (isReAuthed) {
       onReAuth();
       setIsReAuthing(false);
-      dispatch(clearModal());
+      dispatch(setModal());
     }
     return () => {
       setSearchParams({});
-      dispatch(clearModal());
+      dispatch(setModal());
     };
   }, [isReAuthed]);
 

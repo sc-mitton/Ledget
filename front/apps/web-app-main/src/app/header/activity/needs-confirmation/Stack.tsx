@@ -13,7 +13,7 @@ import { CheckAll } from '@ledget/media';
 import ItemOptions from './ItemOptions';
 import { AbsPosMenu, LoadingRingDiv, TextButton } from '@ledget/ui';
 import { useLoaded } from '@ledget/helpers';
-import { setTransactionModal } from '@features/modalSlice';
+import { setModal } from '@features/modalSlice';
 import {
   useLazyGetUnconfirmedTransactionsQuery,
   confirmAndUpdateMetaData,
@@ -331,9 +331,12 @@ export const NeedsConfirmationStack = () => {
                 () => {
                   focusedItem &&
                     dispatch(
-                      setTransactionModal({
-                        item: focusedItem,
-                        splitMode: true,
+                      setModal({
+                        name: 'transaction',
+                        args: {
+                          item: focusedItem,
+                          splitMode: true,
+                        },
                       })
                     );
                 },
@@ -381,7 +384,12 @@ export const NeedsConfirmationStack = () => {
                 },
                 () => {
                   focusedItem &&
-                    dispatch(setTransactionModal({ item: focusedItem }));
+                    dispatch(
+                      setModal({
+                        name: 'transaction',
+                        args: { item: focusedItem },
+                      })
+                    );
                 },
               ]}
             />

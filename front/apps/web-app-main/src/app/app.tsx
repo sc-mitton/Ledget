@@ -37,11 +37,8 @@ import {
   toastStackSelector,
   tossToast,
 } from '@ledget/shared-features';
-import {
-  selectLogoutModal,
-  setLogoutModal,
-  refreshLogoutTimer,
-} from '@features/modalSlice';
+import { setModal, selectModal } from '@features/modalSlice';
+import { refreshLogoutTimer, selectLogoutTimerEnd } from '@features/authSlice';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
 import Modals from './modals';
 import Providers from './providers';
@@ -77,7 +74,8 @@ const App = () => {
   const [isActivityDetected, setIsActivityDetected] = useState(false);
 
   const toastStack = useAppSelector(toastStackSelector);
-  const logoutModal = useAppSelector(selectLogoutModal);
+  const modal = useAppSelector(selectModal);
+  const logoutTimerEnd = useAppSelector(selectLogoutTimerEnd);
 
   // Automatically disable session on tab close
   useEffect(() => {
@@ -108,10 +106,10 @@ const App = () => {
         if (isActivityDetected) {
           dispatch(refreshLogoutTimer());
         } else if (
-          (logoutModal.logoutTimerEnd || 0) < new Date().getTime() &&
-          !logoutModal.open
+          (logoutTimerEnd || 0) < new Date().getTime() &&
+          modal?.name !== 'logout'
         ) {
-          dispatch(setLogoutModal({ open: true, fromTimeout: true }));
+          dispatch(setModal({ name: 'logout', args: { fromTimeout: true } }));
         }
         setIsActivityDetected(false);
       }, 3000); // Poll every 3 seconds
