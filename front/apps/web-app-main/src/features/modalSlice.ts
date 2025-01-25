@@ -15,7 +15,7 @@ interface ModalTypes {
     splitMode?: boolean;
   };
   investmentTransaction: {
-    item?: InvestmentTransaction;
+    item: InvestmentTransaction;
   };
   category: {
     category: Category;
@@ -30,6 +30,7 @@ interface ModalTypes {
   logout: {
     fromTimeout: boolean;
   };
+  holdings: undefined;
 }
 
 type StateT<T> = T extends keyof ModalTypes

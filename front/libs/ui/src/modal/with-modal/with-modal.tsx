@@ -39,7 +39,7 @@ export function withModal<P>(
       width = '70%',
       minWidth = '18.75rem',
       maxWidth = '28rem',
-      zIndex = 200,
+      zIndex = 100,
       blur = 1,
       style,
       ...rest

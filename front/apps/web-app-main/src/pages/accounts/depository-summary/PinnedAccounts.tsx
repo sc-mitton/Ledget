@@ -3,23 +3,23 @@ import Big from 'big.js';
 
 import styles from './styles/pinned-accounts.module.scss';
 import { DollarCents, Window, TextButton, StyledMenu } from '@ledget/ui';
-import { useGetAccountsQuery } from '@ledget/shared-features';
+import {
+  selectPinnedHoldings,
+  useGetAccountsQuery,
+} from '@ledget/shared-features';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
 import { useEffect } from 'react';
 import { InstitutionLogo } from '@components/pieces';
 import { setModal } from '@features/modalSlice';
-import {
-  selectPinnedAccounts,
-  setPinnedAccount,
-} from '@features/depositoryAccountsTabSlice';
+import { setPinnedAccount } from '@features/depositoryAccountsTabSlice';
 
 const PinnedAccounts = () => {
   const dispatch = useAppDispatch();
-  const pinnedAccounts = useAppSelector(selectPinnedAccounts);
+  const pinnedAccounts = useAppSelector(selectPinnedHoldings);
   const { data } = useGetAccountsQuery();
 
   useEffect(() => {
-    if (!pinnedAccounts.length) {
+    if (!pinnedAccounts?.length) {
       dispatch(
         setPinnedAccount(
           data?.accounts
@@ -53,7 +53,7 @@ const PinnedAccounts = () => {
       </div>
       <div className={styles.pinnedAccounts}>
         {data?.accounts
-          .filter((a) => pinnedAccounts.includes(a.id))
+          .filter((a) => pinnedAccounts?.some((p) => p.security_id === a.id))
           .map((a) => (
             <>
               <InstitutionLogo accountId={a.id} size={'1.5em'} />

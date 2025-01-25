@@ -1,7 +1,5 @@
-from itertools import groupby
-
 from rest_framework import serializers
-from financials.models import AccountBalance
+from financials.models import AccountBalance, HoldingPin
 
 
 class SecuritySerializer(serializers.Serializer):
@@ -72,39 +70,24 @@ class InvestmentSerializer(serializers.Serializer):
         return repr
 
 
-class InvestmenetBalanceListSerializer(serializers.ListSerializer):
-
-    def to_representation(self, instance):
-        repr = super().to_representation(instance)
-
-        grouped = groupby(repr, lambda x: x['account'])
-        final = []
-        for account_id, balances in grouped:
-            balances = list(balances)
-            balances = [
-                {
-                    'date': b['date'],
-                    'value': b['value']
-                }
-                for b in balances
-            ] if len(balances) > 7 else []
-
-            final.append({
-                'account_id': account_id,
-
-                'balances': balances
-            })
-
-        return final
-
-
 class InvestmentBalanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = AccountBalance
-        fields = '__all__'
-        list_serializer_class = InvestmenetBalanceListSerializer
+        exclude = ('id',)
 
     def to_representation(self, instance):
         repr = super().to_representation(instance)
         repr['account_name'] = instance.account.name
         return repr
+
+
+class HoldingPinSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = HoldingPin
+        exclude = ('user',)
+
+    def create(self, validated_data):
+        user = self.context["request"].user
+        validated_data["user"] = user
+        return super().create(validated_data)

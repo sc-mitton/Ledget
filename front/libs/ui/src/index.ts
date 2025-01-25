@@ -1,3 +1,4 @@
+export * from './trend-number/TrendNumber';
 export { default as StyledMenu } from './containers/dropdowns/styled-menu/StyledMenu';
 export * from './misc/profile-avatar/Avatar';
 

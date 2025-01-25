@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { ArrowDownRight, ArrowUpRight } from 'geist-native-icons';
 import Big from 'big.js';
 import dayjs from 'dayjs';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
@@ -8,7 +7,7 @@ import { BlurView } from 'expo-blur';
 
 import styles from './styles/summary';
 import { AccountsTabsScreenProps } from '@types';
-import { Box, DollarCents, Icon, Text } from '@ledget/native-ui';
+import { Box, DollarCents, Icon, Text, TrendNumber } from '@ledget/native-ui';
 import {
   useGetAccountsQuery,
   useLazyGetAccountBalanceHistoryQuery,
@@ -179,22 +178,11 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
         <Text color="secondaryText">Total Balance</Text>
         <View style={styles.balanceData}>
           <DollarCents value={totalBalance} fontSize={24} variant="bold" />
-          <View style={styles.trendContainer}>
-            <DollarCents
-              showSign={false}
-              color="secondaryText"
-              value={calculatedTrend}
-              withCents={false}
-            />
-            <View style={styles.trendIcon}>
-              <Icon
-                size={18}
-                strokeWidth={2}
-                color={calculatedTrend < 0 ? 'alert' : 'greenText'}
-                icon={calculatedTrend < 0 ? ArrowDownRight : ArrowUpRight}
-              />
-            </View>
-          </View>
+          <TrendNumber
+            value={Big(calculatedTrend).div(100).toNumber()}
+            color="secondaryText"
+            isCurrency={true}
+          />
         </View>
       </View>
       <View style={[styles.graphContainer]}>

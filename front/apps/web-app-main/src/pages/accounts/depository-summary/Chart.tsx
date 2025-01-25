@@ -27,6 +27,8 @@ const formatter = new Intl.NumberFormat('en-US', {
   minimumFractionDigits: 2,
 });
 
+const windowOptions = ['3M', '6M', '1Y', 'MAX'] as const;
+
 export const Chart = () => {
   const location = useLocation();
   const nivoBaseProps = useMinimalistNivoResponsiveBaseProps({
@@ -49,7 +51,9 @@ export const Chart = () => {
     start: 0,
     end: 0,
   });
-  const [window, setWindow] = useState<'3M' | '6M' | '1Y' | 'MAX'>();
+  const [window, setWindow] = useState<(typeof windowOptions)[number]>(
+    windowOptions[0]
+  );
 
   useEffect(() => {
     switch (window) {
@@ -178,14 +182,12 @@ export const Chart = () => {
       </div>
       <div className={styles.windowSelect}>
         <BakedListBox
-          placement="right"
           as={BlueFadedSquareRadio}
-          value={window}
-          withChevron={false}
+          options={windowOptions}
+          defaultValue={'3M'}
           multiple={false}
+          allowNoneSelected={true}
           onChange={setWindow}
-          defaultValue="3M"
-          options={['3M', '6M', '1Y', 'MAX']}
         />
       </div>
     </div>

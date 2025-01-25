@@ -7,6 +7,8 @@ import base64
 import logging
 
 from rest_framework.generics import GenericAPIView, ListAPIView
+from rest_framework import mixins
+from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST
 from rest_framework import status
@@ -28,11 +30,13 @@ import plaid
 
 from financials.serializers.investments import (
     InvestmentSerializer,
-    InvestmentBalanceSerializer
+    InvestmentBalanceSerializer,
+    HoldingPinSerializer
 )
-from financials.models import PlaidItem, Account, AccountBalance
+from financials.models import PlaidItem, Account, AccountBalance, HoldingPin
 from core.clients import create_plaid_client
 from restapi.permissions.auth import IsAuthedVerifiedSubscriber
+from restapi.permissions.objects import IsObjectOwner
 
 plaid_client = create_plaid_client()
 logger = logging.getLogger('ledget')
@@ -47,6 +51,7 @@ class InvestmentsView(GenericAPIView):
             'accounts',
             queryset=Account.objects.filter(
                 type__in=['investment']))
+
         plaid_items = PlaidItem.objects.filter(
                 investments_supported=True,
                 user__in=request.user.account.users.all()) \
@@ -163,13 +168,32 @@ class InvestmentsView(GenericAPIView):
             return groupby(investment_transactions, lambda x: x['account_id']), None
 
 
+class HoldingPinViewset(
+    mixins.DestroyModelMixin,
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    GenericViewSet
+):
+    permission_classes = [IsAuthedVerifiedSubscriber, IsObjectOwner]
+    serializer_class = HoldingPinSerializer
+
+    def get_object(self):
+        obj = HoldingPin.objects.get(id=self.kwargs.get('pk'))
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+    def get_querset(self):
+        queryset = HoldingPin.objects.filter(user=self.request.user).all()
+        return queryset
+
+
 class InvestmentsBalanceHistoryView(ListAPIView):
     permission_classes = [IsAuthedVerifiedSubscriber]
     serializer_class = InvestmentBalanceSerializer
 
     def get_queryset(self, *args, **kwargs):
         qset = AccountBalance.objects.filter(
-            account__plaid_item__user__in=self.request.user.account.users.all())
+            account__plaid_item__user__in=self.request.user.account.users.all()) \
 
         start = self.request.query_params.get('start', None)
         end = self.request.query_params.get('end', None)
@@ -178,7 +202,7 @@ class InvestmentsBalanceHistoryView(ListAPIView):
         start.replace(tzinfo=timezone.utc)
         end.replace(tzinfo=timezone.utc)
 
-        qset = qset.filter(date__gte=start, date__lte=end)
+        qset = qset.filter(date__gte=start, date__lte=end).order_by('account', 'date')
 
         accounts = self.request.query_params.getlist('accounts')
 

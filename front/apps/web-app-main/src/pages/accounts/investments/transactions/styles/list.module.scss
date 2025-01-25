@@ -38,6 +38,12 @@
   }
 }
 
+.amount {
+  &[data-positive='true'] * {
+    color: var(--green-text);
+  }
+}
+
 .empty {
   position: absolute;
   top: 50%;

@@ -13,7 +13,7 @@ import {
 import { Box } from './Box';
 import { Theme } from '../theme';
 
-type RestyledColorProps = ColorProps<Theme> & RestyledTextProps<Theme>;
+export type RestyledColorProps = ColorProps<Theme> & RestyledTextProps<Theme>;
 
 const restyledFunctions = composeRestyleFunctions<Theme, RestyledColorProps>([
   color,

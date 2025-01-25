@@ -35,7 +35,7 @@ export const useNivoResponsiveBaseProps = ({
     enableGridX: false,
     enableGridY: true,
     lineWidth: 2,
-    curve: 'natural',
+    curve,
     colors: [primary || 'transparent'],
     useMesh: !disabled,
     defs: [
@@ -45,7 +45,6 @@ export const useNivoResponsiveBaseProps = ({
         colors: [
           {
             offset: 0,
-            opacity: disabled ? 0 : 1,
             color: gradientColors
               ? typeof gradientColors === 'string'
                 ? gradientColors
@@ -54,7 +53,6 @@ export const useNivoResponsiveBaseProps = ({
           },
           {
             offset: 100,
-            opacity: disabled ? 0 : 1,
             color: gradientColors
               ? typeof gradientColors === 'string'
                 ? gradientColors

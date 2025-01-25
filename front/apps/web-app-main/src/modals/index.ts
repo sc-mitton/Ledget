@@ -17,11 +17,12 @@ export { default as BillModal } from './Bill';
 export { default as UpdatePersonalInfo } from './UpdatePersonalInfo';
 export { default as OnboardingModal } from './onboarding/Main';
 export { default as EditBudgetBills } from './ViewBudgetBills';
-export { default as CategoryModal } from './CategoryModal';
+export { default as CategoryModal } from './category/Modal';
 export { default as AddUserModal } from './AddUser';
 export { default as ConfirmRemoveCoOwner } from './ConfirmRemoveCoOwner';
 export { default as AccountErrorModal } from './AccountErrorModal';
 export { default as PinAccounts } from './PinAccounts';
 export { default as InvestmentTransaction } from './InvestmentTransaction';
+export { default as Holdings } from './Holdings';
 
 export * from './Bill';

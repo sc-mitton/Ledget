@@ -1,3 +1,4 @@
+export * from './misc/trend-number/TrendNumber';
 export * from './misc/victory-tooltip/VictoryTooltip';
 
 export * from './inputs/checkbox/Checkbox';

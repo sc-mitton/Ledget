@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { CartesianChart, Area, Line, useChartPressState } from 'victory-native';
 import { LinearGradient, useFont, vec } from '@shopify/react-native-skia';
@@ -12,12 +12,7 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import { BlurView } from 'expo-blur';
-import {
-  ChevronDown,
-  ArrowUpRight,
-  ArrowDownRight,
-  Check,
-} from 'geist-native-icons';
+import { ChevronDown, Check } from 'geist-native-icons';
 import { Big } from 'big.js';
 import dayjs from 'dayjs';
 
@@ -31,6 +26,7 @@ import {
   DollarCents,
   Icon,
   Box,
+  TrendNumber,
 } from '@ledget/native-ui';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import {
@@ -102,6 +98,7 @@ const Chart = () => {
     end: dayjs().format('YYYY-MM-DD'),
     start: dayjs()
       .subtract(window?.amount || 100, window?.period || 'year')
+      .startOf('month')
       .format('YYYY-MM-DD'),
   });
   const { data: investmentsData } = useGetInvestmentsQuery(
@@ -109,6 +106,7 @@ const Chart = () => {
       end: dayjs().format('YYYY-MM-DD'),
       start: dayjs()
         .subtract(window?.amount || 100, window?.period || 'year')
+        .startOf('month')
         .format('YYYY-MM-DD'),
     },
     {
@@ -293,19 +291,10 @@ const Chart = () => {
             }
           />
           {trend !== undefined && (
-            <View style={styles.trendContainer}>
-              <DollarCents
-                color="tertiaryText"
-                value={trend}
-                withCents={false}
-              />
-              <Icon
-                icon={trend >= 0 ? ArrowUpRight : ArrowDownRight}
-                size={16}
-                strokeWidth={2}
-                color={trend >= 0 ? 'greenText' : 'alert'}
-              />
-            </View>
+            <TrendNumber
+              value={Big(trend).div(100).toNumber()}
+              isCurrency={true}
+            />
           )}
         </View>
       </Animated.View>

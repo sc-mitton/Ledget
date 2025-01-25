@@ -2,17 +2,16 @@ import { useMemo } from 'react';
 import { View } from 'react-native';
 import Big from 'big.js';
 import dayjs from 'dayjs';
-import { ArrowUpRight, ArrowDownRight } from 'geist-native-icons';
 
 import styles from './styles/filled';
 import {
-  Icon,
   Text,
   InstitutionLogo,
   DollarCents,
   Button,
   Box,
   PulseBox,
+  TrendNumber,
 } from '@ledget/native-ui';
 import {
   useLazyGetInvestmentsBalanceHistoryQuery,
@@ -148,19 +147,7 @@ const Filled = (props: Props) => {
             withCents={props.shape === 'rectangle'}
           />
           {percentChange !== undefined && (
-            <View style={styles.percent}>
-              <Text
-                fontSize={15}
-                color={percentChange > 0 ? 'greenText' : 'alert'}
-              >
-                {`${2}%`}
-              </Text>
-              {percentChange > 0 ? (
-                <Icon icon={ArrowUpRight} size={15} color="greenText" />
-              ) : (
-                <Icon icon={ArrowDownRight} size={15} color="alert" />
-              )}
-            </View>
+            <TrendNumber value={percentChange} suffix="%" fontSize={15} />
           )}
         </View>
       </View>

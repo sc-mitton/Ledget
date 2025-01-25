@@ -11,6 +11,7 @@ interface Props {
   style?: React.CSSProperties;
   children: React.ReactNode;
   className?: string;
+  maxWidth?: number | string;
 }
 
 export const Tooltip = ({
@@ -20,6 +21,7 @@ export const Tooltip = ({
   children,
   type = 'top',
   delay = 1.2,
+  maxWidth,
   ...rest
 }: Props) => {
   const { isDark } = useColorScheme();
@@ -30,16 +32,20 @@ export const Tooltip = ({
       aria-label={ariaLabel}
     >
       {children}
-      <span
-        className={styles.tooltipText}
-        data-type={type}
-        role="tooltip"
-        data-dark={isDark}
-        style={{ '--delay': `${delay}s` } as React.CSSProperties}
-        {...rest}
-      >
-        {msg}
-      </span>
+      {msg && (
+        <span
+          className={styles.tooltipText}
+          style={
+            { '--delay': `${delay}s`, width: maxWidth } as React.CSSProperties
+          }
+          data-type={type}
+          role="tooltip"
+          data-dark={isDark}
+          {...rest}
+        >
+          {msg}
+        </span>
+      )}
     </div>
   );
 };

@@ -14,8 +14,6 @@ export const InstitutionLogo = ({
     item.accounts.find((account) => account.id === accountId)
   );
 
-  console.log(item?.institution?.name, item?.institution?.primary_color);
-
   const args = {
     size,
     data: item?.institution?.logo,

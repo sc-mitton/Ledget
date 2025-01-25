@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { ArrowUp, ArrowDown } from 'geist-native-icons';
 
@@ -17,15 +17,15 @@ import {
   useGetInvestmentsQuery,
   isInvestmentSupported,
   Holding,
+  selectPinnedHoldings,
 } from '@ledget/shared-features';
 import {
   selectInvestmentsScreenAccounts,
   selectInvestmentsScreenWindow,
-  selectPinnedHoldings,
 } from '@/features/uiSlice';
 import Row from './Row';
 
-const AccountPicker = (props: ModalScreenProps<'Holdings'>) => {
+const Holdings = (props: ModalScreenProps<'Holdings'>) => {
   const accounts = useAppSelector(selectInvestmentsScreenAccounts);
   const window = useAppSelector(selectInvestmentsScreenWindow);
   const pinnedHoldings = useAppSelector(selectPinnedHoldings);
@@ -62,13 +62,13 @@ const AccountPicker = (props: ModalScreenProps<'Holdings'>) => {
       }, [] as (Holding & { account: string })[])
       .sort((a, b) => {
         if (
-          pinnedHoldings?.includes(a.security_id || '') &&
-          !pinnedHoldings?.includes(b.security_id || '')
+          pinnedHoldings?.some((p) => p.security_id === a.security_id || '') &&
+          !pinnedHoldings?.some((p) => p.security_id === b.security_id || '')
         ) {
           return -1;
         } else if (
-          !pinnedHoldings?.includes(a.security_id || '') &&
-          pinnedHoldings?.includes(b.security_id || '')
+          !pinnedHoldings?.some((p) => p.security_id === a.security_id || '') &&
+          pinnedHoldings?.some((p) => p.security_id === b.security_id || '')
         ) {
           return 1;
         } else if (sort === 'amountAsc') {
@@ -177,4 +177,4 @@ const AccountPicker = (props: ModalScreenProps<'Holdings'>) => {
   );
 };
 
-export default AccountPicker;
+export default Holdings;

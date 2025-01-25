@@ -1,11 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { TouchableHighlight, View } from 'react-native';
-import {
-  Pin,
-  ArrowDownRight,
-  ArrowRight,
-  ArrowUpRight,
-} from 'geist-native-icons';
+import { Pin } from 'geist-native-icons';
 import Swipeable, {
   SwipeableMethods,
 } from 'react-native-gesture-handler/ReanimatedSwipeable';
@@ -15,19 +10,23 @@ import { useTheme } from '@shopify/restyle';
 import styles from './styles/row';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import {
-  selectPinnedHoldings,
-  pinHolding,
-  unPinHolding,
-} from '@/features/uiSlice';
-import {
   InstitutionLogo,
   Text,
   Box,
   DollarCents,
   Icon,
   Seperator,
+  TrendNumber,
 } from '@ledget/native-ui';
-import { selectTrackedHoldings, Holding } from '@ledget/shared-features';
+import {
+  selectTrackedHoldings,
+  Holding,
+  usePinHoldingMutation,
+  useUnPinHoldingMutation,
+  pinHolding,
+  unPinHolding,
+  selectPinnedHoldings,
+} from '@ledget/shared-features';
 
 const Row = ({
   holding,
@@ -39,10 +38,12 @@ const Row = ({
   index: number;
 }) => {
   const theme = useTheme();
-  const dispatch = useAppDispatch();
 
   const [isPinned, setIsPinned] = useState(false);
   const ref = useRef<SwipeableMethods>(null);
+  const [pinHoldingMutate] = usePinHoldingMutation();
+  const [unPinHoldingMutate] = useUnPinHoldingMutation();
+  const dispatch = useAppDispatch();
 
   const trackedHoldings = useAppSelector(selectTrackedHoldings);
   const pinnedHoldings = useAppSelector(selectPinnedHoldings);
@@ -77,7 +78,11 @@ const Row = ({
   }, []);
 
   useEffect(() => {
-    setIsPinned(pinnedHoldings?.includes(holding.security_id || '') || false);
+    setIsPinned(
+      pinnedHoldings?.some(
+        (p) => p.security_id === holding.security_id || ''
+      ) || false
+    );
   }, [pinnedHoldings]);
 
   return (
@@ -100,9 +105,13 @@ const Row = ({
               underlayColor={theme.colors.mainText}
               onPress={() => {
                 setTimeout(() => {
-                  isPinned
-                    ? dispatch(unPinHolding(holding.security_id || ''))
-                    : dispatch(pinHolding(holding.security_id || ''));
+                  if (isPinned) {
+                    pinHoldingMutate(holding.security_id || '');
+                    dispatch(pinHolding(holding.security_id || ''));
+                  } else {
+                    unPinHoldingMutate(holding.security_id || '');
+                    dispatch(unPinHolding(holding.security_id || ''));
+                  }
                 }, 500);
                 ref.current?.close();
               }}
@@ -142,7 +151,7 @@ const Row = ({
                   style={styles.pinButton}
                   underlayColor={theme.colors.mainText}
                   onPress={() => {
-                    dispatch(unPinHolding(holding.security_id || ''));
+                    unPinHolding(holding.security_id || '');
                     ref.current?.close();
                   }}
                 >
@@ -167,7 +176,7 @@ const Row = ({
                   <Box
                     style={styles.tickerSymbol}
                     backgroundColor="modalSeperator"
-                    borderRadius="circle"
+                    borderRadius="xs"
                     paddingHorizontal="s"
                     marginLeft="s"
                   >
@@ -186,34 +195,13 @@ const Row = ({
               ) : (
                 <Text>—</Text>
               )}
-              <View style={styles.holdingTrend}>
-                <Text
-                  fontSize={14}
-                  color={
-                    percentChange !== undefined
-                      ? percentChange < 0
-                        ? 'redText'
-                        : 'greenText'
-                      : 'tertiaryText'
-                  }
-                >
-                  {percentChange !== undefined ? `${percentChange}%` : '—'}
+              {percentChange === undefined ? (
+                <Text color="tertiaryText" fontSize={14}>
+                  &mdash;
                 </Text>
-                {percentChange !== undefined ? (
-                  <Icon
-                    icon={
-                      percentChange === 0
-                        ? ArrowRight
-                        : percentChange < 0
-                        ? ArrowDownRight
-                        : ArrowUpRight
-                    }
-                    size={13}
-                    color={percentChange < 0 ? 'redText' : 'greenText'}
-                    strokeWidth={2}
-                  />
-                ) : null}
-              </View>
+              ) : (
+                <TrendNumber value={percentChange} suffix="%" fontSize={14} />
+              )}
             </View>
           </Box>
         </Box>

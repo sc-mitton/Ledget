@@ -108,8 +108,14 @@ const List = ({ data: investmentsData }: { data: InvestmentsResponse }) => {
                 </span>
                 <span>{dayjs(transaction.date).format('M/D/YY')}</span>
               </div>
-              <div>
+              <div
+                className={styles.amount}
+                data-positive={
+                  transaction.amount ? transaction.amount < 0 : false
+                }
+              >
                 <DollarCents
+                  isDebit={transaction.amount ? transaction.amount < 0 : false}
                   color={
                     (transaction.amount || 0) < 0 ? 'greenText' : 'mainText'
                   }

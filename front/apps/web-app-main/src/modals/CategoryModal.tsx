@@ -3,10 +3,7 @@ import { useEffect, useState, useMemo, Fragment } from 'react';
 import Big from 'big.js';
 import { ResponsiveLine } from '@nivo/line';
 import type { Datum } from '@nivo/line';
-import { Menu } from '@headlessui/react';
-import { Edit2, Trash2, ChevronRight, MoreHorizontal } from '@geist-ui/icons';
 import dayjs from 'dayjs';
-import { ZeroConfig } from '@components/pieces';
 import { AnimatePresence } from 'framer-motion';
 
 import styles from './styles/category-modal.module.scss';
@@ -20,6 +17,7 @@ import {
 } from '@ledget/shared-features';
 import type { Category } from '@ledget/shared-features';
 import { useAppSelector } from '@hooks/store';
+import { EmptyBox } from '@ledget/media';
 import { InstitutionLogo } from '@components/pieces';
 import { TransactionModalContent } from './TransactionItem';
 import { formatCurrency, stringLimit } from '@ledget/helpers';
@@ -39,6 +37,7 @@ import {
   SlideMotionDiv,
   BackButton,
   NestedWindow2,
+  useColorScheme,
 } from '@ledget/ui';
 
 const AmountSpentChart = ({
@@ -133,80 +132,6 @@ const AmountSpentChart = ({
   );
 };
 
-const today = new Date();
-const fakeChartData = [
-  {
-    month: new Date(today.getFullYear(), today.getMonth() - 4).getMonth(),
-    year: new Date(today.getFullYear(), today.getMonth() - 4).getFullYear(),
-    amount_spent: 2000,
-  },
-  {
-    month: new Date(today.getFullYear(), today.getMonth() - 3).getMonth(),
-    year: new Date(today.getFullYear(), today.getMonth() - 3).getFullYear(),
-    amount_spent: 2400,
-  },
-  {
-    month: new Date(today.getFullYear(), today.getMonth() - 2).getMonth(),
-    year: new Date(today.getFullYear(), today.getMonth() - 2).getFullYear(),
-    amount_spent: 2200,
-  },
-  {
-    month: new Date(today.getFullYear(), today.getMonth() - 1).getMonth(),
-    year: new Date(today.getFullYear(), today.getMonth() - 1).getFullYear(),
-    amount_spent: 2600,
-  },
-];
-
-const Options = ({
-  onEdit,
-  onDelete,
-}: {
-  onEdit: () => void;
-  onDelete: () => void;
-}) => (
-  <Menu>
-    {({ open }) => (
-      <div style={{ position: 'absolute', top: '1em', right: '3.5em' }}>
-        <Menu.Button as={IconButtonHalfGray}>
-          <MoreHorizontal size={'1.5em'} />
-        </Menu.Button>
-        <DropdownDiv placement="right" visible={open}>
-          <Menu.Items static>
-            <Menu.Item as={Fragment}>
-              {({ active }) => (
-                <DropdownItem
-                  as="button"
-                  active={active}
-                  onClick={() => {
-                    onEdit();
-                  }}
-                >
-                  <Edit2 className="icon" />
-                  Edit
-                </DropdownItem>
-              )}
-            </Menu.Item>
-            <Menu.Item as={Fragment}>
-              {({ active }) => (
-                <DropdownItem
-                  as="button"
-                  active={active}
-                  onClick={() => {
-                    onDelete();
-                  }}
-                >
-                  <Trash2 className="icon" />
-                  Delete
-                </DropdownItem>
-              )}
-            </Menu.Item>
-          </Menu.Items>
-        </DropdownDiv>
-      </div>
-    )}
-  </Menu>
-);
-
 const CategoryDetails = (props: {
   category: Category;
   setTransactionItem: React.Dispatch<
@@ -222,6 +147,7 @@ const CategoryDetails = (props: {
     getTransactions,
     { data: transactionsData, isLoading: isLoadingTransactionsData },
   ] = useLazyGetTransactionsQuery();
+  const { isDark } = useColorScheme();
 
   const [chartData, setChartData] = useState<Datum[]>([]);
   const windowOptions = ['4 months', '1 year', '2 year', 'max'];
@@ -356,7 +282,10 @@ const CategoryDetails = (props: {
         </span>
       </div>
       <div className={styles.graphAndDetails}>
-        <div>
+        <div
+          className={styles.chart}
+          data-disabled={spendingSummaryData && spendingSummaryData.length < 2}
+        >
           <ResponsiveLineContainer>
             {window && <WindowSelection />}
             {spendingSummaryData && spendingSummaryData?.length < 2 && (
@@ -374,50 +303,6 @@ const CategoryDetails = (props: {
             )}
           </ResponsiveLineContainer>
         </div>
-        <NestedWindow2 className={styles.transactions} onScroll={handleScroll}>
-          {transactionsData?.results?.length === 0 ? (
-            !isLoadingTransactionsData && <ZeroConfig />
-          ) : (
-            <div className={styles.transactionsGrid}>
-              {transactionsData?.results?.map((transaction) => (
-                <div
-                  key={transaction.transaction_id}
-                  onClick={() => {
-                    props.setTransactionItem(transaction);
-                  }}
-                >
-                  <div>
-                    <InstitutionLogo
-                      accountId={transaction.account}
-                      size={'1.125em'}
-                    />
-                  </div>
-                  <div>
-                    {stringLimit(
-                      transaction.preferred_name || transaction.name,
-                      30
-                    )}
-                  </div>
-                  <div>
-                    <span>
-                      {dayjs(transaction.datetime || transaction.date).format(
-                        'MMM DD, YYYY'
-                      )}
-                    </span>
-                  </div>
-                  <div className={`${transaction.amount < 0 ? 'debit' : ''}`}>
-                    <div>
-                      <DollarCents value={transaction.amount} />
-                    </div>
-                    <div>
-                      <ChevronRight size={'1em'} />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </NestedWindow2>
       </div>
     </div>
   );
@@ -431,10 +316,6 @@ const CategoryModal = withModal<{ category: Category }>((props) => {
     <AnimatePresence mode="wait">
       {view === 'detail' && !transactionItem && (
         <SlideMotionDiv key="category-detail" position="first">
-          <Options
-            onEdit={() => setView('edit')}
-            onDelete={() => setView('delete')}
-          />
           <CategoryDetails
             category={props.category}
             setTransactionItem={setTransactionItem}

@@ -1,0 +1,21 @@
+.trendNumber {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.25em;
+
+  &[data-negative='true'] > span:last-of-type {
+    color: var(--red);
+  }
+
+  & > span {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    color: inherit;
+  }
+
+  & > span:last-of-type {
+    color: var(--green-text);
+  }
+}

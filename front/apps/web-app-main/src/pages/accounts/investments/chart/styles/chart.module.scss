@@ -25,10 +25,8 @@
   }
 }
 
-.trendContainer {
-  flex-direction: row;
-  align-items: center;
-  gap: 0.25em;
+.trend {
+  color: var(--m-text-secondary);
 }
 
 .accountsSelect {

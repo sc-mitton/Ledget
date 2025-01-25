@@ -2,7 +2,7 @@ import json
 
 from celery import shared_task, group
 from django.db import OperationalError
-from django.db.models import Subquery, Max, Q
+from django.db.models import Subquery, Max, Q, Prefetch
 from django.utils import timezone
 from plaid.model.investments_holdings_get_request import InvestmentsHoldingsGetRequest
 from plaid.model.investment_holdings_get_request_options import (
@@ -80,11 +80,17 @@ def fetch_investments_balance(*args, **kwargs) -> None:
             Account.objects
             .values('id')
             .annotate(max_date=Max('balances__date'))
-            .filter(Q(max_date__lt=timezone.now().date()) | Q(max_date=None))
+            .filter(
+                Q(max_date__lt=timezone.now().date()) | Q(max_date=None),
+                type='investment')
             .values('id')
         )
-    ).prefetch_related('accounts') \
-     .distinct('id')
+    ).prefetch_related(
+        Prefetch(
+            'accounts',
+            queryset=Account.objects.filter(type='investment')
+        )
+    ).distinct('id')
 
     batch_size = 1000
     tasks = []

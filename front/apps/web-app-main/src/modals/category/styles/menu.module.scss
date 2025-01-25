@@ -1,0 +1,13 @@
+.redText {
+  color: var(--red);
+
+  * {
+    color: var(--red);
+  }
+}
+
+.menu {
+  position: absolute;
+  top: 1em;
+  right: 4em;
+}

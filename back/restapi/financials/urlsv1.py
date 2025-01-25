@@ -13,7 +13,11 @@ from financials.views.transactions import (
     NoteViewSet
 )
 from financials.views.liabilities import LiabilitiesView
-from financials.views.investments import InvestmentsView, InvestmentsBalanceHistoryView
+from financials.views.investments import (
+    InvestmentsView,
+    InvestmentsBalanceHistoryView,
+    HoldingPinViewset
+)
 from financials.views.account import AccountsViewSet
 
 
@@ -53,6 +57,9 @@ note_router.register('note', NoteViewSet, basename='note')
 accounts_router = AccountsRouter(trailing_slash=False)
 accounts_router.register('accounts', AccountsViewSet, basename='accounts')
 
+holding_pin_router = SimpleRouter(trailing_slash=False)
+holding_pin_router.register('holding-pin', HoldingPinViewset, basename='holding-pin')
+
 urlpatterns = [
     path('plaid-items', PlaidItemsListView.as_view(), name='plaid-item'),
     path('plaid-item/<str:id>', PlaidItemView.as_view(), name='plaid-item-detail'), # noqa
@@ -61,6 +68,7 @@ urlpatterns = [
     path('plaid-token-exchange', PlaidTokenExchangeView.as_view(), name='plaid-token-exchange'), # noqa
     path('', include(accounts_router.urls)),
     path('', include(transactions_router.urls)),
+    path('', include(holding_pin_router.urls)),
     path('transactions/<str:id>/', include(note_router.urls)),
     path('liabilities', LiabilitiesView.as_view(), name='liabilities'),
     path('investments', InvestmentsView.as_view(), name='investments'),

@@ -470,21 +470,6 @@ const Days = ({ month, year, activeDay, setActiveDay }: DaysProps) => {
             ? selectedValue?.[1] && day.isSame(selectedValue[1], 'day')
             : selectedValue && day.isSame(selectedValue, 'day');
 
-        // console.log(
-        //   '!selectedValue?.[focusedInputIndex || 0]',
-        //   !selectedValue?.[focusedInputIndex || 0],
-        //   '\n',
-        //   'inputTouchCount[focusedInputIndex || 0] < 1',
-        //   inputTouchCount[focusedInputIndex || 0] < 1,
-        //   '\n',
-        //   'inputTouchCount',
-        //   inputTouchCount,
-        //   '\n',
-        //   'focusedInputIndex',
-        //   focusedInputIndex,
-        //   '\n'
-        // );
-
         return isHidden ? (
           <EmptyPickerCell period="day" />
         ) : (

@@ -1,0 +1,119 @@
+.tableHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1em 0.0625em;
+  position: relative;
+  z-index: 2000;
+
+  &::after {
+    position: absolute;
+    left: -100px;
+    right: -100px;
+    height: 1.5px;
+    content: '';
+    height: 1.5px;
+    bottom: 0;
+    background-color: var(--border-color-dim);
+  }
+
+  button > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.25em;
+  }
+
+  button {
+    transform: scale(1);
+    transition: all 0.2s ease-in-out;
+
+    * {
+      color: var(--m-text-tertiary);
+    }
+
+    &[data-sorted='true'] * {
+      color: var(--m-text);
+    }
+
+    &:hover {
+      transition: all 0.2s ease-in-out;
+      font-weight: var(--fw-bold);
+      transform: scale(1.03);
+    }
+  }
+}
+
+.list {
+  overflow-y: scroll;
+  max-height: 70vh;
+  padding-right: 1.5em;
+  width: calc(100% - 0.375em);
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  padding: 12px 0;
+
+  // Pin button
+  &:hover > button {
+    opacity: 1;
+    transition: 0.3s opacity 0.2s ease-in-out;
+  }
+}
+
+.nameContainer {
+  flex: 2;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.pinButton {
+  position: absolute;
+  left: 1px;
+  z-index: 1;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: 0.3s opacity 0.2s ease-in-out;
+}
+
+.tickerSymbol {
+  margin-top: 4px;
+
+  span {
+    background-color: var(--btn-feather-light-gray);
+    padding: 0.125em 0.375em;
+    border-radius: 0.375em;
+    color: var(--m-text-secondary);
+  }
+}
+
+.amountContainer {
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+}
+
+.seperator {
+  position: absolute;
+  top: 0;
+  left: 44px;
+  right: 0;
+  z-index: 10;
+}
+
+.pin-button {
+  border-radius: 100px;
+}
+
+.pin-box {
+  transform: translateX(8px);
+  margin-left: -16px;
+}

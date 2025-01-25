@@ -1,12 +1,7 @@
-import { useRef, useEffect, useState, useId, ComponentProps, FC } from 'react';
+import { useRef, useEffect, useState, useId } from 'react';
 
 import { Listbox } from '@headlessui/react';
-import {
-  Control,
-  useController,
-  UseControllerReturn,
-  FieldError,
-} from 'react-hook-form';
+import { useController, UseControllerReturn } from 'react-hook-form';
 import { ChevronDown, Check } from '@geist-ui/icons';
 
 import styles from './baked-selects.module.scss';
@@ -15,62 +10,10 @@ import { FormInputButton } from '../../buttons/styled-buttons';
 import { DropdownItem } from '../../containers/specialty';
 import { LoadingRingDiv } from '../../pieces/loading-indicators/loading-indicators';
 import { FormErrorTip } from '../../pieces/form-errors/form-errors';
-
-export interface BakedSelectPropsBase<O> {
-  name?: string;
-  options?: O[];
-  labelKey?: string;
-  subLabelKey?: string;
-  valueKey?: string;
-  labelPrefix?: string;
-  subLabelPrefix?: string;
-  placement?: ComponentProps<typeof DropdownDiv>['placement'];
-  placeholder?: string;
-  withCheckMarkIndicator?: boolean;
-  withChevron?: boolean;
-  as?: FC<React.HTMLAttributes<HTMLButtonElement>>;
-  error?: FieldError;
-  style?: React.CSSProperties;
-  dropdownStyle?: React.CSSProperties;
-  control?: Control<any>;
-  maxLength?: number;
-  buttonMaxWidth?: boolean;
-  dividerKey?: string;
-  showLabel?: boolean;
-}
-
-interface BakedSelectProps1<TVal> {
-  multiple?: true;
-  value?: TVal[];
-  defaultValue?: TVal[];
-  disabled?: TVal[];
-  onChange?: React.Dispatch<React.SetStateAction<TVal | undefined>>;
-}
-
-interface BakedSelectProps2<TVal> {
-  multiple?: false;
-  value?: TVal;
-  defaultValue?: TVal;
-  disabled?: TVal | TVal[];
-  onChange?: React.Dispatch<React.SetStateAction<TVal | undefined>>;
-}
-
-export type Option = {
-  label?: string;
-  value?: string | { [key: string]: any };
-  default?: boolean;
-  disabled?: boolean;
-  [key: string]: any;
-};
-
-export type BakedSelectProps<Val extends Option['value']> = (
-  | BakedSelectProps1<Val>
-  | BakedSelectProps2<Val>
-) &
-  BakedSelectPropsBase<Val extends string ? string | Option : Option>;
+import type { BakedSelectProps, Option } from './types';
 
 const useOptionalControl = (
-  props: Pick<BakedSelectProps<any>, 'control' | 'name'>
+  props: Pick<BakedSelectProps<any, any>, 'control' | 'name'>
 ): UseControllerReturn | { field: undefined } => {
   if (!props.control) return { field: undefined };
   return useController({
@@ -80,8 +23,11 @@ const useOptionalControl = (
 };
 
 // export function BakedListBox(props: BakedListBoxProps) {
-export const BakedListBox = <O extends Option | string>(
-  props: BakedSelectProps<O>
+export const BakedListBox = <
+  O extends Option[] | readonly string[] | string[],
+  AN extends boolean = false
+>(
+  props: BakedSelectProps<O, AN>
 ) => {
   const id = useId();
   const buttonRef = useRef<HTMLButtonElement | null>(null);
@@ -133,7 +79,7 @@ export const BakedListBox = <O extends Option | string>(
   const handleChange = (val: typeof props.defaultValue) => {
     if (props.multiple || val !== value) {
       onChange(val);
-    } else {
+    } else if (!props.allowNoneSelected) {
       setResetKey(Math.random().toString().slice(3, 10));
       onChange(undefined);
     }

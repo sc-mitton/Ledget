@@ -52,8 +52,6 @@ export const InstitutionLogo = (props: InstitutionLogoProps) => {
     }
   }, [plaidItemsData]);
 
-  console.log('institution name: ', institution?.name, logoData !== null);
-
   return logoData !== null ? (
     <Base64Image
       borderRadius={'circle'}

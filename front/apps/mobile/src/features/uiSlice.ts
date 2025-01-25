@@ -9,7 +9,6 @@ type State = {
       period: 'month' | 'year';
       amount: number;
     };
-    pinnedHoldings?: string[];
   };
   accountsTab: {
     selectedDepositsAccounts?: Account[];
@@ -69,21 +68,6 @@ export const uiSlice = createSlice({
       if (!state.accountsTab) state.accountsTab = {};
       state.accountsTab.selectedCreditAccounts = action.payload;
     },
-    pinHolding: (state, action: PayloadAction<string>) => {
-      if (!state.investmentsScreen) state.investmentsScreen = {};
-      if (!state.investmentsScreen.pinnedHoldings)
-        state.investmentsScreen.pinnedHoldings = [];
-      state.investmentsScreen.pinnedHoldings.push(action.payload);
-    },
-    unPinHolding: (state, action: PayloadAction<string>) => {
-      if (!state.investmentsScreen) state.investmentsScreen = {};
-      if (!state.investmentsScreen.pinnedHoldings)
-        state.investmentsScreen.pinnedHoldings = [];
-      state.investmentsScreen.pinnedHoldings =
-        state.investmentsScreen.pinnedHoldings.filter(
-          (h) => h !== action.payload
-        );
-    },
     updateSetting: (
       state,
       action: PayloadAction<{ key: keyof State['settings']; value: boolean }>
@@ -104,8 +88,6 @@ export const {
   setAccountsTabDepositAccounts,
   setAccountsTabCreditAccounts,
   setInvestmentsScreenWindow,
-  pinHolding,
-  unPinHolding,
   updateSetting,
   updateLastTab,
   hideBottomTabs,
@@ -119,8 +101,6 @@ export const selectAccountsTabCreditAccounts = (state: { ui: State }) =>
   state.ui.accountsTab?.selectedCreditAccounts;
 export const selectInvestmentsScreenWindow = (state: { ui: State }) =>
   state.ui.investmentsScreen?.window;
-export const selectPinnedHoldings = (state: { ui: State }) =>
-  state.ui.investmentsScreen?.pinnedHoldings;
 export const selectSettings = (state: { ui: State }) => state.ui.settings;
 export const selectLastTab = (state: { ui: State }) => state.ui.lastTab;
 export const selectHideBottomTabs = (state: { ui: State }) =>

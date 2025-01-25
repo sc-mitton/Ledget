@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowDownRight, ArrowUpRight } from '@geist-ui/icons';
 import Big from 'big.js';
 
 import styles from './styles/depository-summary.module.scss';
@@ -7,7 +6,7 @@ import {
   useGetAccountsQuery,
   useLazyGetAccountBalanceTrendQuery,
 } from '@ledget/shared-features';
-import { DollarCents, Window } from '@ledget/ui';
+import { DollarCents, Window, TrendNumber } from '@ledget/ui';
 import Chart from './Chart';
 import PinnedAccounts from './PinnedAccounts';
 
@@ -56,23 +55,7 @@ const DepositorySummary = () => {
           <h2>
             <DollarCents value={totalBalance} fontSize={24} variant="bold" />
           </h2>
-          <div
-            className={styles.trendContainer}
-            data-trend={calculatedTrend < 0 ? 'down' : 'up'}
-          >
-            <DollarCents
-              showSign={false}
-              isDebit={false}
-              color="secondaryText"
-              value={calculatedTrend}
-              withCents={false}
-            />
-            {calculatedTrend < 0 ? (
-              <ArrowDownRight className="icon" />
-            ) : (
-              <ArrowUpRight className="icon" />
-            )}
-          </div>
+          <TrendNumber value={calculatedTrend} isCurrency={true} />
         </div>
         <Chart />
       </Window>

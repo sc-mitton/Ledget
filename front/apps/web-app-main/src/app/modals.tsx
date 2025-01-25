@@ -10,6 +10,7 @@ import {
   EditBudgetCategories,
   PinAccounts,
   InvestmentTransaction,
+  Holdings,
 } from '@modals/index';
 import { ReAuthModal } from '@utils/withReAuth';
 
@@ -21,6 +22,9 @@ const Modals = () => {
   return (
     <>
       {/* Modals */}
+      {modal?.name === 'holdings' && (
+        <Holdings onClose={() => dispatch(setModal())} />
+      )}
       {modal?.name === 'investmentTransaction' && (
         <InvestmentTransaction
           {...modal.args}

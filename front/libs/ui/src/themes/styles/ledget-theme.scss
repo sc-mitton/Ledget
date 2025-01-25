@@ -194,7 +194,11 @@
 
     --pulse-rgb: 200, 200, 200;
 
-    --transaction-hover-background: hsl(var(--window-h), var(--window-s), 11%);
+    --transaction-hover-background: hsl(
+      var(--window-h),
+      calc(var(--window-s) - 1%),
+      11%
+    );
     --transaction-hover-background-dim: hsl(0, 0%, 8%);
 
     // Drop Shadows & Borders

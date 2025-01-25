@@ -1,11 +1,6 @@
 import { Fragment, useEffect, useState } from 'react';
 import dayjs from 'dayjs';
-import {
-  ArrowUpRight,
-  ArrowDownRight,
-  ArrowRight,
-  ChevronRight,
-} from 'geist-native-icons';
+import { ChevronRight } from 'geist-native-icons';
 import Big from 'big.js';
 
 import styles from './styles/holdings';
@@ -18,17 +13,18 @@ import {
   Text,
   Button,
   DollarCents,
+  TrendNumber,
 } from '@ledget/native-ui';
 import {
   selectInvestmentsScreenAccounts,
   selectInvestmentsScreenWindow,
-  selectPinnedHoldings,
 } from '@/features/uiSlice';
 import {
   useGetInvestmentsQuery,
   isInvestmentSupported,
   Holding,
   selectTrackedHoldings,
+  selectPinnedHoldings,
 } from '@ledget/shared-features';
 import { AccountsTabsScreenProps } from '@types';
 import Skeleton from './Skeleton';
@@ -65,13 +61,13 @@ const Holdings = (props: AccountsTabsScreenProps<'Investment'>) => {
       }, [] as Holding[])
       .sort((a, b) => {
         if (
-          pinnedHoldings?.includes(a.security_id || '') &&
-          !pinnedHoldings?.includes(b.security_id || '')
+          pinnedHoldings?.some((p) => p.security_id === a.security_id || '') &&
+          !pinnedHoldings?.some((p) => p.security_id === b.security_id || '')
         ) {
           return -1;
         } else if (
-          !pinnedHoldings?.includes(a.security_id || '') &&
-          pinnedHoldings?.includes(b.security_id || '')
+          !pinnedHoldings?.some((p) => p.security_id === a.security_id || '') &&
+          pinnedHoldings?.some((p) => p.security_id === b.security_id || '')
         ) {
           return 1;
         } else {
@@ -141,8 +137,12 @@ const Holdings = (props: AccountsTabsScreenProps<'Investment'>) => {
                             ? holding.security.ticker_symbol?.slice(0, 6)
                             : '—'}
                         </Text>
-                        <View style={styles.holdingTrend}>
-                          <Text
+                        {percent_change === undefined ? (
+                          <Text>&mdash;</Text>
+                        ) : (
+                          <TrendNumber
+                            value={percent_change}
+                            suffix="%"
                             fontSize={14}
                             color={
                               percent_change !== undefined
@@ -151,28 +151,8 @@ const Holdings = (props: AccountsTabsScreenProps<'Investment'>) => {
                                   : 'greenText'
                                 : 'tertiaryText'
                             }
-                          >
-                            {percent_change !== undefined
-                              ? `${percent_change}%`
-                              : '—'}
-                          </Text>
-                          {percent_change !== undefined ? (
-                            <Icon
-                              icon={
-                                percent_change === 0
-                                  ? ArrowRight
-                                  : percent_change < 0
-                                  ? ArrowDownRight
-                                  : ArrowUpRight
-                              }
-                              size={13}
-                              color={
-                                percent_change < 0 ? 'redText' : 'greenText'
-                              }
-                              strokeWidth={2}
-                            />
-                          ) : null}
-                        </View>
+                          />
+                        )}
                       </View>
                       {holding.institution_value && (
                         <DollarCents

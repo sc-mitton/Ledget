@@ -7,10 +7,12 @@ import { withModal } from '@ledget/ui';
 import { DollarCents } from '@ledget/ui';
 import { InstitutionLogo } from '@components/pieces';
 
-import { useGetAccountsQuery } from '@ledget/shared-features';
+import {
+  selectPinnedHoldings,
+  useGetAccountsQuery,
+} from '@ledget/shared-features';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
 import {
-  selectPinnedAccounts,
   setPinnedAccount,
   unPinAccount,
 } from '@features/depositoryAccountsTabSlice';
@@ -20,10 +22,12 @@ const PinnedAccounts = withModal((props) => {
   const loaded = useLoaded(1000);
   const dispatch = useAppDispatch();
   const { data } = useGetAccountsQuery();
-  const pinnedAccounts = useAppSelector(selectPinnedAccounts);
+  const pinnedAccounts = useAppSelector(selectPinnedHoldings);
 
   const transitions = useTransition(
-    data?.accounts.filter((a) => pinnedAccounts.includes(a.id)),
+    data?.accounts.filter((a) =>
+      pinnedAccounts?.some((p) => p.security_id === a.id)
+    ),
     {
       from: {
         opacity: 0,
@@ -82,7 +86,7 @@ const PinnedAccounts = withModal((props) => {
       </div>
       <div className={styles.list}>
         {data?.accounts
-          .filter((a) => !pinnedAccounts.includes(a.id))
+          .filter((a) => !pinnedAccounts?.some((p) => p.security_id === a.id))
           .map((a) => (
             <button
               onClick={() => dispatch(setPinnedAccount(a.id))}

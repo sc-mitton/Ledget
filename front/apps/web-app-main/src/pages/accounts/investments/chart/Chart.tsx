@@ -1,11 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import { ResponsiveLine } from '@nivo/line';
-import {
-  ArrowUpRight,
-  ArrowDownRight,
-  Check,
-  ChevronDown,
-} from '@geist-ui/icons';
+import { Check, ChevronDown } from '@geist-ui/icons';
 import dayjs from 'dayjs';
 import Big from 'big.js';
 
@@ -20,6 +15,7 @@ import {
   StyledMenu,
   DollarCents,
   TextButton,
+  TrendNumber,
 } from '@ledget/ui';
 import {
   useGetInvestmentsBalanceHistoryQuery,
@@ -56,17 +52,22 @@ const Chart = () => {
   const [useingFakeData, setUseingFakeData] = useState(true);
   const [yAxiBoundaries, setYAxisBoundaries] = useState<[number, number]>();
 
-  const { data: fetchedData } = useGetInvestmentsBalanceHistoryQuery({
-    end: dayjs().format('YYYY-MM-DD'),
-    start: dayjs()
-      .subtract(window?.amount || 100, window?.period || 'year')
-      .format('YYYY-MM-DD'),
-  });
+  const { data: fetchedData } = useGetInvestmentsBalanceHistoryQuery(
+    {
+      end: dayjs().format('YYYY-MM-DD'),
+      start: dayjs()
+        .subtract(window?.amount || 100, window?.period || 'year')
+        .startOf('month')
+        .format('YYYY-MM-DD'),
+    },
+    { skip: !window?.amount || !window.period }
+  );
   const { data: investmentsData } = useGetInvestmentsQuery(
     {
       end: dayjs().format('YYYY-MM-DD'),
       start: dayjs()
         .subtract(window?.amount || 100, window?.period || 'year')
+        .startOf('month')
         .format('YYYY-MM-DD'),
     },
     {
@@ -86,7 +87,7 @@ const Chart = () => {
   const nivoTheme = useNivoResponsiveLineTheme();
 
   useEffect(() => {
-    if (fetchedData && fetchedData.length > 0) {
+    if (fetchedData && fetchedData.length > 7) {
       setChartData(
         fetchedData
           .filter((acnt) =>
@@ -119,7 +120,9 @@ const Chart = () => {
         accounts ? accounts.some((a) => a.id === acnt.account_id) : true
       )
       .reduce((acc, acnt) => {
-        return acc.plus(acnt.balances[1]?.value || 0);
+        return acc.plus(
+          acnt.balances[1]?.value || acnt.balances[0]?.value || 0
+        );
       }, Big(0));
     return last.minus(second2Last).times(100).toNumber();
   }, [fetchedData]);
@@ -241,18 +244,12 @@ const Chart = () => {
             />
           </h1>
           {trend !== undefined && (
-            <div className={styles.trendContainer}>
-              <DollarCents
-                color="tertiaryText"
-                value={trend}
-                withCents={false}
-              />
-              {trend >= 0 ? (
-                <ArrowUpRight className="icon" />
-              ) : (
-                <ArrowDownRight className="icon" />
-              )}
-            </div>
+            <TrendNumber
+              fontSize="1.125em"
+              value={Big(trend).div(100).toNumber()}
+              isCurrency
+              className={styles.trend}
+            />
           )}
         </div>
       </div>

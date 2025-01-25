@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import dayjs from 'dayjs';
 
 import apiSlice from '../apiSlice/slice';
@@ -11,6 +11,7 @@ import {
   GetInvestmentsQuery,
   InvestmentsBalanceQuery,
   TransformedInvestmentsBalanceHistory,
+  PinnedHolding,
 } from './types';
 
 const investmentsRTKSlice = apiSlice.injectEndpoints({
@@ -18,6 +19,7 @@ const investmentsRTKSlice = apiSlice.injectEndpoints({
     getInvestments: build.query<InvestmentsResponse, GetInvestmentsQuery>({
       query: () => 'investments',
       providesTags: ['Investment'],
+      keepUnusedDataFor: 60 * 30, // 30 minutes
       // For merging in paginated responses to the cache
       // cache key needs to not include offset and limit
       serializeQueryArgs: ({ queryArgs }) => {
@@ -42,6 +44,14 @@ const investmentsRTKSlice = apiSlice.injectEndpoints({
         return currentCache;
       },
     }),
+    getPinnedHoldings: build.query<{ id: string; security_id: string }[], void>(
+      {
+        query: (params) => ({
+          url: 'holding-pin',
+          method: 'GET',
+        }),
+      }
+    ),
     getInvestmentsBalanceHistory: build.query<
       TransformedInvestmentsBalanceHistory,
       InvestmentsBalanceQuery
@@ -52,15 +62,45 @@ const investmentsRTKSlice = apiSlice.injectEndpoints({
         params,
       }),
       transformResponse: (response: InvestmentsBalanceHistory) => {
-        return response.map((r) => ({
-          ...r,
-          balances: r.balances.map((b) => ({
-            ...b,
-            value: parseFloat(b.value),
-          })),
-        }));
+        return response
+          .sort((a, b) => {
+            if (a.account !== b.account) {
+              return a.account.localeCompare(b.account) ? 0 : -1;
+            } else {
+              return dayjs(a.date).isBefore(b.date) ? -1 : 1;
+            }
+          })
+          .reduce((acc, d) => {
+            if (
+              !acc[acc.length - 1] ||
+              acc[acc.length - 1].account_id !== d.account
+            ) {
+              acc.push({
+                account_id: d.account,
+                balances: [],
+              });
+            }
+            acc[acc.length - 1].balances.push({
+              date: d.date,
+              value: d.value,
+            });
+            return acc;
+          }, [] as TransformedInvestmentsBalanceHistory);
       },
+      keepUnusedDataFor: 60 * 30, // 30 minutes
       providesTags: ['InvestmentBalanceHistory'],
+    }),
+    pinHolding: build.mutation<{ id: string; security_id: string }, string>({
+      query: (security_id) => ({
+        url: 'holding-pin',
+        method: 'POST',
+      }),
+    }),
+    unPinHolding: build.mutation<void, string>({
+      query: (security_id) => ({
+        url: `holding-pin/${security_id}`,
+        method: 'DELETE',
+      }),
     }),
   }),
 });
@@ -69,6 +109,7 @@ const initialInvestmentsState: InvestmentsState = {
   holdingsHistory: {} as {
     [key: string]: { institution_value: number; date: string }[];
   },
+  pinnedHoldings: [] as InvestmentsState['pinnedHoldings'],
 };
 
 export const investmentsSlice = createSlice({
@@ -76,6 +117,22 @@ export const investmentsSlice = createSlice({
   initialState: initialInvestmentsState,
   reducers: {
     setSecurities: (state, action) => {},
+    pinHolding: (
+      state,
+      action: PayloadAction<PinnedHolding['security_id']>
+    ) => {
+      state.pinnedHoldings = state.pinnedHoldings
+        ? [{ security_id: action.payload, id: 'temp' }, ...state.pinnedHoldings]
+        : [{ security_id: action.payload, id: 'temp' }];
+    },
+    unPinHolding: (
+      state,
+      action: PayloadAction<PinnedHolding['security_id']>
+    ) => {
+      state.pinnedHoldings = state.pinnedHoldings?.filter(
+        (h) => h.security_id !== action.payload
+      );
+    },
   },
   extraReducers: (builder) => {
     builder.addMatcher(
@@ -115,6 +172,12 @@ export const investmentsSlice = createSlice({
         }
       }
     );
+    builder.addMatcher(
+      investmentsRTKSlice.endpoints.getPinnedHoldings.matchFulfilled,
+      (state, action) => {
+        state.pinnedHoldings = action.payload;
+      }
+    );
   },
 });
 
@@ -122,9 +185,18 @@ export const selectTrackedHoldings = (state: {
   investments: InvestmentsState;
 }) => state.investments.holdingsHistory;
 
+export const selectPinnedHoldings = (state: {
+  investments: InvestmentsState;
+  [key: string]: any;
+}) => state.investments.pinnedHoldings;
+
+export const { pinHolding, unPinHolding } = investmentsSlice.actions;
+
 export const {
   useGetInvestmentsQuery,
   useLazyGetInvestmentsQuery,
   useGetInvestmentsBalanceHistoryQuery,
   useLazyGetInvestmentsBalanceHistoryQuery,
+  usePinHoldingMutation,
+  useUnPinHoldingMutation,
 } = investmentsRTKSlice;

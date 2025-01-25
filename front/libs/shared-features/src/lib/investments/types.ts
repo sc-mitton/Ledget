@@ -58,27 +58,27 @@ export type InvestmentsResponse = {
 };
 
 export type InvestmentsBalanceHistory = {
-  account_id: string;
+  account: string;
   account_name: string;
-  balances: {
-    date: string;
-    value: string;
-  }[];
+  date: string;
+  value: number;
 }[];
 
 export type TransformedInvestmentsBalanceHistory = {
   account_id: string;
-  account_name: string;
   balances: {
     date: string;
     value: number;
   }[];
 }[];
 
+export type PinnedHolding = { id: string; security_id: string };
+
 export type InvestmentsState = {
   holdingsHistory: {
     [key: string]: { institution_value: number; date: string }[];
   };
+  pinnedHoldings?: PinnedHolding[];
 };
 
 export type GetInvestmentsQuery = {

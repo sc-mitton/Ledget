@@ -369,7 +369,6 @@ const NeedsConfirmation = (
                     item={item}
                     contentStyle={{ opacity: expanded || index == 0 ? 1 : 0.2 }}
                     onShowMenu={(show) => {
-                      console.log('show', show);
                       if (show) {
                         setItemWithFocus(item.transaction_id);
                       } else {
