@@ -1,6 +1,8 @@
-import { Category, useRemoveCategoriesMutation } from '@ledget/shared-features';
-import { SubmitForm } from '@components/pieces';
 import { useEffect } from 'react';
+
+import styles from './styles/delete-category-modal.module.scss';
+import { Category, useRemoveCategoriesMutation } from '@ledget/shared-features';
+import { GraySubmitButton, ErepairableButton } from '@ledget/ui';
 
 export const DeleteCategory = (props: {
   category: Category;
@@ -19,22 +21,39 @@ export const DeleteCategory = (props: {
   }, [isSuccess]);
 
   return (
-    <div>
-      <h3>Are You Sure?</h3>
-      <div
-        style={{ color: 'var(--m-text-secondary)', margin: '1em 0 1.5em 0' }}
-      >
+    <div className={styles.header}>
+      <h3>Delete Category</h3>
+      <div className={styles.message}>
         All data for this category will be deleted for the month, and the
         category will be removed.
       </div>
-      <SubmitForm
-        onClick={() => {
-          deleteCategory([props.category.id]);
-        }}
-        submitting={isLoading}
-        success={isSuccess}
-        onCancel={() => props.onClose()}
-      />
+      <div className={styles.buttons}>
+        <GraySubmitButton
+          type="button"
+          onClick={props.onClose}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              props.onClose();
+            }
+          }}
+          tabIndex={0}
+          role="button"
+          aria-label="Cancel"
+          aria-roledescription="button"
+          style={{ cursor: 'pointer', borderRadius: '8px' }}
+        >
+          Cancel
+        </GraySubmitButton>
+        <ErepairableButton
+          success={isSuccess}
+          submitting={isLoading}
+          onClick={() => {
+            deleteCategory([props.category.id]);
+          }}
+        >
+          Delete
+        </ErepairableButton>
+      </div>
     </div>
   );
 };

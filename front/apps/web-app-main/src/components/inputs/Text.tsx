@@ -58,6 +58,7 @@ export const EmojiComboText = (
           )}
         </Emoji>
         <input
+          className={styles.emojiComboTextInput}
           type="text"
           {...rest}
           {...registerRest}
@@ -65,7 +66,6 @@ export const EmojiComboText = (
             formRef(e);
             if (e) ref.current = e;
           }}
-          style={{ marginLeft: '.25em' }}
         />
         <FormErrorTip error={error} />
       </TextInputWrapper>

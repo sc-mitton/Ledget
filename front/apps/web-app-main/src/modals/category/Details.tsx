@@ -15,8 +15,10 @@ import {
   ChartTip,
   useNivoResponsiveBaseProps,
   useNivoResponsiveLineTheme,
-  PillOptionButton,
+  BlueFadedSquareRadio,
   BakedListBox,
+  BackButton,
+  BillCatEmojiLabel,
 } from '@ledget/ui';
 import { InstitutionLogo } from '@components/pieces';
 import { TransactionModalContent } from '../TransactionItem';
@@ -88,55 +90,85 @@ const Chart = () => {
 
   return (
     <LoadingRingDiv loading={!spendingSummaryData}>
-      <ResponsiveLineContainer>
-        <BakedListBox
-          as={PillOptionButton}
-          options={windowOptions}
-          defaultValue={'3M'}
-          multiple={false}
-          allowNoneSelected={true}
-          onChange={setWindow}
-        />
-        {spendingSummaryData && spendingSummaryData?.length < 2 && (
-          <span className={styles.notEnoughDataMessage}>
-            Not enough data to display yet
-          </span>
-        )}
-        <ResponsiveLine
-          data={[{ id: 'amount-spent', data: chartData }]}
-          axisBottom={{
-            format: (value: number) =>
-              new Date(value).toLocaleString('default', { month: 'short' }),
-          }}
-          axisLeft={{
-            tickValues: 4,
-            tickPadding: xaxisPadding,
-            format: (value: number) => formatCurrency(value, false),
-          }}
-          areaBaselineValue={yAxisBoundaries[0]}
-          tooltip={({ point }) => (
-            <ChartTip
-              position={point.index >= chartData.length / 2 ? 'left' : 'right'}
-            >
-              <span>
-                {new Date(point.data.x).toLocaleString('default', {
-                  month: 'short',
-                })}
-              </span>
-              &nbsp;&nbsp;
-              <DollarCents value={point.data.y as number} />
-            </ChartTip>
-          )}
-          yScale={{
-            type: 'linear',
-            min: yAxisBoundaries[0],
-            max: yAxisBoundaries[1],
-          }}
-          gridYValues={4}
-          theme={nivoResponsiveLineTheme}
-          {...nivoResponsiveLineBaseProps}
-        />
-      </ResponsiveLineContainer>
+      {spendingSummaryData && spendingSummaryData?.length < 2 && (
+        <span className={styles.notEnoughDataMessage}>
+          Not enough data to display yet
+        </span>
+      )}
+      <div
+        className={styles.chart}
+        data-disabled={!spendingSummaryData || spendingSummaryData.length < 2}
+      >
+        <div className={styles.windowSelect}>
+          <BakedListBox
+            as={BlueFadedSquareRadio}
+            withChevron={false}
+            options={windowOptions}
+            defaultValue={'3M'}
+            multiple={false}
+            allowNoneSelected={true}
+            onChange={setWindow}
+          />
+        </div>
+        <ResponsiveLineContainer>
+          <ResponsiveLine
+            data={[{ id: 'amount-spent', data: chartData }]}
+            axisBottom={{
+              tickValues:
+                window === 'MAX'
+                  ? 'Every 6 months'
+                  : window === '1Y'
+                  ? 'Every 3 months'
+                  : 'Every month',
+              format: (value: number) =>
+                window.toLowerCase().includes('Y') || window === 'MAX'
+                  ? new Date(value).toLocaleString('default', {
+                      month: 'short',
+                      year: 'numeric',
+                    })
+                  : new Date(value).toLocaleString('default', {
+                      month: 'short',
+                    }),
+            }}
+            axisLeft={{
+              tickValues: 4,
+              tickPadding: xaxisPadding,
+              format: (value: number) => formatCurrency(value, false),
+            }}
+            margin={{ bottom: 48, left: 36, right: 16 }}
+            areaBaselineValue={yAxisBoundaries[0]}
+            tooltip={({ point }) => (
+              <ChartTip
+                position={
+                  point.index >= chartData.length / 2 ? 'left' : 'right'
+                }
+              >
+                <span>
+                  {new Date(point.data.x).toLocaleString('default', {
+                    month: 'short',
+                  })}
+                </span>
+                &nbsp;&nbsp;
+                <DollarCents value={point.data.y as number} />
+              </ChartTip>
+            )}
+            xScale={{
+              type: 'time',
+              format: '%Y-%m-%d',
+              precision: 'month',
+              useUTC: false,
+            }}
+            yScale={{
+              type: 'linear',
+              min: yAxisBoundaries[0],
+              max: yAxisBoundaries[1],
+            }}
+            gridYValues={4}
+            theme={nivoResponsiveLineTheme}
+            {...nivoResponsiveLineBaseProps}
+          />
+        </ResponsiveLineContainer>
+      </div>
     </LoadingRingDiv>
   );
 };
@@ -155,6 +187,20 @@ const Transactions = ({
     { data: transactionsData, isLoading: isLoadingTransactionsData },
   ] = useLazyGetTransactionsQuery();
   const { isDark } = useColorScheme();
+
+  // Initial fetching Transactions
+  useEffect(() => {
+    if (month && year) {
+      getTransactions(
+        {
+          confirmed: true,
+          ...(category.period === 'month' ? { month, year } : { year }),
+          category: category.id,
+        },
+        true
+      );
+    }
+  }, [month, year]);
 
   const handleScroll = (e: any) => {
     const bottom = e.target.scrollTop === e.target.scrollTopMax;
@@ -175,7 +221,7 @@ const Transactions = ({
       {transactionsData?.results?.length === 0 ? (
         !isLoadingTransactionsData && (
           <div className={styles.emptyState}>
-            <EmptyBox dark={isDark} size={28} />
+            <EmptyBox dark={isDark} size={32} />
             <span>No Spending Yet</span>
           </div>
         )
@@ -223,14 +269,44 @@ const Transactions = ({
   );
 };
 
+const Header = () => {
+  const { category } = useCategoryModalContext();
+
+  return (
+    <div className={styles.header}>
+      <BillCatEmojiLabel
+        size="medium"
+        emoji={category.emoji}
+        color={category.period === 'month' ? 'blue' : 'green'}
+      />
+      <div>
+        <h2>
+          {category.name.charAt(0).toUpperCase() + category.name.slice(1)}
+        </h2>
+        <div className={styles.spendingData}>
+          <DollarCents withCents={false} value={category.amount_spent || 0} />
+          <span color="secondaryText">spent of</span>
+          <DollarCents withCents={false} value={category.limit_amount} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Details = () => {
   const [transaction, setTransaction] = useState<Transaction>();
 
   return (
-    <div>
+    <div className={styles.detailsContainer}>
+      <Header />
       <Chart />
       <Transactions setTransactionDetail={setTransaction} />
-      {transaction && <TransactionModalContent item={transaction} />}
+      {transaction && (
+        <>
+          <BackButton onClick={() => setTransaction(undefined)} />
+          <TransactionModalContent item={transaction} />
+        </>
+      )}
     </div>
   );
 };

@@ -95,8 +95,9 @@
 }
 
 .emojiPickerLedgetButtonContainer {
-  display: flex;
-  align-items: center;
-  margin-left: -0.25em;
-  margin-right: 0.25em;
+  padding-left: 1em;
+}
+
+.emojiComboTextInput {
+  transform: translateX(1.25em);
 }

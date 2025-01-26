@@ -1,0 +1,19 @@
+.buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+
+  button {
+    min-width: 5em;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.message {
+  color: var(--m-text-secondary);
+  margin: 1em 0 1.5em 0;
+}

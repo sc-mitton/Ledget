@@ -31,10 +31,25 @@ export const BakedListBox = <
 ) => {
   const id = useId();
   const buttonRef = useRef<HTMLButtonElement | null>(null);
-  const [value, onChange] = useState<typeof props.defaultValue>();
+  const [value, onChange] = useState<typeof props.defaultValue>(
+    // prettier-ignore
+    Array.isArray(props.defaultValue)
+      ? props.defaultValue.map((v) =>typeof v === 'string' ? v : v[props.valueKey || 'value'])
+      : typeof props.defaultValue === 'string'
+        ? props.defaultValue
+        : props.defaultValue ? props.defaultValue[props.valueKey || 'value'] : undefined
+  );
   const [resetKey, setResetKey] = useState(
     Math.random().toString().slice(3, 10)
   );
+  const [skipFieldReset, setSkipFieldReset] = useState(true);
+
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setSkipFieldReset(false);
+    }, 200);
+    return clearTimeout(t);
+  }, []);
 
   // Controll for react-hook-form
   const { field } = useOptionalControl({
@@ -44,7 +59,8 @@ export const BakedListBox = <
 
   // Clear value if field reset from react-hook-form
   useEffect(() => {
-    if (field?.value === undefined) onChange(undefined);
+    if (field && field.value === undefined && !skipFieldReset)
+      onChange(undefined);
   }, [field?.value]);
 
   // Update field value if value changes
@@ -53,28 +69,6 @@ export const BakedListBox = <
     field?.onChange(value);
     if (props.onChange) props.onChange(value as any);
   }, [value]);
-
-  // Set default value if any
-  useEffect(() => {
-    if (!value) {
-      const defaultOp = props.options?.find((op) => {
-        return typeof op !== 'string' ? op.default : false;
-      });
-      onChange(
-        props.defaultValue
-          ? Array.isArray(props.defaultValue)
-            ? props.defaultValue.map((op) =>
-                typeof op === 'string' ? op : op[props.valueKey || 'value']
-              )
-            : typeof props.defaultValue === 'string'
-            ? props.defaultValue
-            : props.defaultValue[props.valueKey || 'value']
-          : typeof defaultOp === 'string'
-          ? defaultOp
-          : defaultOp?.[props.valueKey || 'value']
-      );
-    }
-  }, [props.options]);
 
   const handleChange = (val: typeof props.defaultValue) => {
     if (props.multiple || val !== value) {

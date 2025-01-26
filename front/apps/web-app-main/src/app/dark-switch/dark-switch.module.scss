@@ -1,83 +1,76 @@
-.switch {
-    color: var(--m-text-secondary);
+.darkModeSwitch {
+  font-size: 0.875rem;
+  margin-right: 0.25em;
+  position: relative;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 48px;
+
+  svg {
+    z-index: 1;
+  }
+
+  button[data-headlessui-state='checked'] {
+    background-color: var(--btn-feather-light-gray);
+    transition: background-color 0.2s ease-in-out;
+
+    div:first-of-type {
+      opacity: 0.3;
+    }
+
+    & > div:not(:first-of-type) {
+      color: var(--white);
+    }
+
+    span:last-child {
+      transform: translateX(0.97rem);
+      transition: all 0.2s ease-in-out;
+      background: var(--btn-medium-gray);
+      opacity: 0.7;
+    }
+  }
+
+  button[data-headlessui-state=''] {
+    background-color: var(--btn-feather-light-gray);
+    transition: background-color 0.2s ease-in-out;
+    opacity: 1;
+
+    div:last-of-type {
+      opacity: 0.3;
+    }
+
+    span:last-child {
+      left: 0.25em;
+      transform: translateX(0);
+      background: var(--btn-medium-gray);
+      transition: all 0.2s ease-in-out;
+    }
+  }
+
+  button {
+    margin-top: 0.0625em;
+    padding: 0.5em 0.55em;
+    border-radius: 1.25em;
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    width: auto;
+    justify-content: space-evenly;
+
+    & > div {
+      font-size: 0.875rem;
+      display: flex;
+      place-content: center;
+    }
+  }
+
+  span:last-child {
     position: absolute;
-    left: calc(50% - 12px);
-    top: -28px;
-
-    svg {
-        position: absolute;
-        z-index: 1;
-    }
-
-    &[data-mode='dark'][data-loaded='true'] {
-        svg:first-of-type {
-            animation: sunOut .5s ease-in-out forwards;
-        }
-
-        svg:last-of-type {
-            animation: moonIn .5s ease-in-out forwards;
-        }
-    }
-
-    &[data-mode='light'][data-loaded='true'] {
-        svg:first-of-type {
-            animation: sunIn .5s ease-in-out forwards;
-        }
-
-        svg:last-of-type {
-            animation: moonOut .5s ease-in-out forwards;
-        }
-    }
-}
-
-@keyframes sunIn {
-    0% {
-        transform: rotate(0deg) scale(1.2);
-        opacity: 0;
-    }
-    33% {
-        transform: rotate(40deg) scale(1.06);
-        opacity: 0;
-    }
-    100% {
-        transform: rotate(120deg) scale(1);
-        opacity: 1;
-    }
-}
-
-@keyframes moonOut {
-    0% {
-        transform: rotate(0deg) scale(1);
-        opacity: 1;
-    }
-    100% {
-        transform: rotate(360deg) scale(.5);
-        opacity: 0;
-    }
-}
-
-@keyframes sunOut {
-    0% {
-        transform: rotate(0deg) scale(1);
-        opacity: 1;
-    }
-    100% {
-        transform: rotate(120deg) scale(1.2);
-        opacity: 0;
-    }
-}
-
-@keyframes moonIn {
-    0% {
-        transform: rotate(0deg) scale(.5);
-        opacity: 0;
-    }
-    33% {
-        transform: rotate(120deg) scale(1);
-        opacity: 0;
-    }
-    100% {
-        transform: rotate(360deg) scale(1);
-        opacity: 1;
-    }
+    width: 1.625rem;
+    height: 1.625rem;
+    border-radius: 50%;
+    box-shadow: none;
+    z-index: 0;
+  }
 }

@@ -10,3 +10,26 @@
   right: 0;
   color: rgb(72, 83, 206);
 }
+
+.emojiPickerButton {
+  background-color: var(--btn-light-gray);
+  padding: 0.125em 0.375em;
+  border-radius: 0.375em;
+  font-size: 1.25rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: var(--btn-light-gray-hover);
+  }
+
+  &:has(svg) {
+    padding: 0.25em;
+    color: var(--input-placeholder);
+  }
+}

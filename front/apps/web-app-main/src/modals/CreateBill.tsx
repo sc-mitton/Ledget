@@ -96,6 +96,7 @@ const Form = withModal((props) => {
             <div>
               <PeriodSelect
                 name="period"
+                labelPrefix="Resets"
                 control={control}
                 enableAll={true}
                 default={location.state?.period}

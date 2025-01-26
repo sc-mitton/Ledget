@@ -32,6 +32,8 @@ import {
   FeatherGrayPillButton,
   IconButtonHalfGray,
   HalfTextSlimBlueButton,
+  GrayButton,
+  GrayRedTextButton,
 } from './styled-buttons';
 import { useColorScheme } from '../themes/hooks/use-color-scheme/use-color-scheme';
 
@@ -45,6 +47,8 @@ export const BlackSubmitButton = withLoading(BlackPrimaryButton);
 export const BlueSubmitButton = withLoading(BluePrimaryButton);
 export const BlueSlimSubmitButton = withLoading(BlueSlimButton3);
 export const HalfTextSlimBlueSubmitButton = withLoading(HalfTextSlimBlueButton);
+export const GraySubmitButton = withLoading(GrayButton);
+export const ErepairableButton = withLoading(GrayRedTextButton);
 
 export const BlackCheckSubmitButton = withCheckMark(BlackSubmitButton);
 export const BlueCheckSubmitButton = withCheckMark(BlueSubmitButton);

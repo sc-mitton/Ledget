@@ -1,10 +1,10 @@
 import { ReactNode, createContext, useContext, useState } from 'react';
 import Picker from '@emoji-mart/react';
-import { Smile } from '@geist-ui/icons';
+import { Emoji as EmojiIcon } from '@geist-ui/icons';
 
 import './styles/emoji-picker.module.scss';
 import styles from './styles/emoji-picker.module.scss';
-import { FadedIconButton, DropdownDiv, useColorScheme } from '@ledget/ui';
+import { DropdownDiv, useColorScheme } from '@ledget/ui';
 
 export type emoji = string | { native: string; [key: string]: any };
 
@@ -126,7 +126,7 @@ const EmojiButton = ({ ...rest }) => {
   ) as EmojiContextType;
 
   return (
-    <FadedIconButton
+    <button
       type="button"
       onClick={(e) => {
         e.stopPropagation();
@@ -145,16 +145,18 @@ const EmojiButton = ({ ...rest }) => {
       tabIndex={0}
       {...rest}
     >
-      {emoji ? (
-        typeof emoji === 'string' ? (
-          emoji
+      <div className={styles.emojiPickerButton}>
+        {emoji ? (
+          typeof emoji === 'string' ? (
+            emoji
+          ) : (
+            emoji.native
+          )
         ) : (
-          emoji.native
-        )
-      ) : (
-        <Smile size={'1.25em'} />
-      )}
-    </FadedIconButton>
+          <EmojiIcon size={'.875em'} />
+        )}
+      </div>
+    </button>
   );
 };
 

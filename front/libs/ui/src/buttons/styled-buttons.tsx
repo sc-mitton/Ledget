@@ -57,6 +57,18 @@ export const NarrowButton = styled(NarrowButtonBase)`
   ${clearGray}
 `;
 
+export const GrayButton = styled(PrimaryButton)`
+  ${gray}
+`;
+
+export const GrayRedTextButton = styled(PrimaryButton)`
+  ${gray}
+  color: var(--red);
+  * {
+    color: var(--red);
+  }
+`;
+
 // Slim Buttons
 export { SlimButton };
 export const BlackSlimButton = styled(SlimButton)`
