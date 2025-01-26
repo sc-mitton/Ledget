@@ -120,11 +120,11 @@ const Selector = (widget: WidgetProps<{ accounts: string[] }>) => {
               primary_color ||
                 theme.colors.creditCardGradientStart.replace(
                   theme.colors.blueHue,
-                  account.cardHue || theme.colors.blueHue
+                  account.card_hue || theme.colors.blueHue
                 ),
               theme.colors.nestedContainerSeperator.replace(
                 theme.colors.blueHue,
-                account.cardHue || theme.colors.blueHue
+                account.card_hue || theme.colors.blueHue
               ),
             ];
 
@@ -304,7 +304,7 @@ const Selector = (widget: WidgetProps<{ accounts: string[] }>) => {
             </View>
           ) : (
             <PulseBox
-              height="m"
+              numberOfLines={1}
               width={50}
               borderRadius="s"
               backgroundColor="nestedContainerSeperator"

@@ -157,7 +157,7 @@ class AccountsViewSet(ViewSet):
         qset = Account.objects.filter(
                 useraccount__user__in=self.request.user.account.users.all()
             ).annotate(order=F('useraccount__order')) \
-            .annotate(cardHue=F('useraccount__cardHue'))
+            .annotate(card_hue=F('useraccount__card_hue'))
 
         account_ids = self.request.query_params.getlist('accounts')
         if account_ids and account_ids[0] != '*':

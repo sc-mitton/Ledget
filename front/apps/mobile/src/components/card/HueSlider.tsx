@@ -101,7 +101,7 @@ export const HueSliderCard = (props: {
 
   const handleChangedHue = (newValue: number) => {
     props.onChange(newValue);
-    updateAccount([{ account: props.account, cardHue: newValue }]);
+    updateAccount([{ account: props.account, card_hue: newValue }]);
   };
 
   return (

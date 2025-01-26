@@ -18,7 +18,7 @@ const Card = ({ card, isSpread }: { card: Account; isSpread: boolean }) => {
         {
           '--card-width': `${cardWidth}px`,
           '--card-height': `${cardHeight}px`,
-          backgroundColor: `hsl(${card.cardHue}, 100%, 100%` || 'var(--blue)',
+          backgroundColor: `hsl(${card.card_hue}, 100%, 100%` || 'var(--blue)',
         } as React.CSSProperties
       }
     >

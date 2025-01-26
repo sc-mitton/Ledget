@@ -45,15 +45,15 @@ class AccountLS(serializers.ListSerializer):
 
 class AccountSerializer(serializers.ModelSerializer):
     institution = InstitutionSerializer(required=False, read_only=True)
-    cardHue = serializers.SerializerMethodField(required=False, read_only=True)
+    card_hue = serializers.SerializerMethodField(required=False, read_only=True)
 
     class Meta:
         model = Account
         exclude = ('plaid_item',)
         list_serializer_class = AccountLS
 
-    def get_cardHue(self, obj):
-        return getattr(obj, 'cardHue', None)
+    def get_card_hue(self, obj):
+        return getattr(obj, 'card_hue', None)
 
     def to_representation(self, instance):
         rep = super().to_representation(instance)

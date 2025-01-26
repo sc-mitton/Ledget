@@ -20,7 +20,7 @@ interface Props {
 const CarouselItem = (props: Props) => {
   const [showSlider, setShowSlider] = useState(false);
   const { mode } = useAppearance();
-  const hue = useSharedValue(props.account.cardHue);
+  const hue = useSharedValue(props.account.card_hue);
 
   return (
     <OutsidePressHandler onOutsidePress={() => setShowSlider(false)}>
@@ -45,7 +45,7 @@ const CarouselItem = (props: Props) => {
                   onChange={(newHue) => {
                     hue.value = newHue;
                   }}
-                  hue={props.account.cardHue}
+                  hue={props.account.card_hue}
                 />
               </Box>
             </Box>

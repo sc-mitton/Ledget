@@ -22,12 +22,12 @@ export interface Account {
   type: AccountType;
   subtype: string;
   institution_id: string;
-  cardHue?: number;
+  card_hue?: number;
 }
 
 export type UpdateAccount =
   | ({ order: number } & { account: string })
-  | ({ cardHue: number } & { account: string });
+  | ({ card_hue: number } & { account: string });
 
 export interface GetAccountsResponse {
   institutions: Institution[];
