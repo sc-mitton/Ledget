@@ -1,67 +1,34 @@
 import { StyleSheet } from 'react-native';
 
+const borderRadius = 14;
+
 const styles = StyleSheet.create({
-  regularTouchableContainer: {
-    position: 'relative',
-    padding: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
-    borderRadius: 13,
-  },
-  smallTouchableContainer: {
-    position: 'relative',
-    padding: 1.5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
-    borderRadius: 13,
-  },
-  skeletonCardTouchableContainer: {
-    position: 'relative',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 2,
-    overflow: 'hidden',
-    borderRadius: 13,
-  },
   cardBorder: {
     borderRadius: 13,
+    borderWidth: 1.5,
     zIndex: -1,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    top: 0,
     position: 'absolute',
-    opacity: 0.8,
-  },
-  smallCardBorder: {
-    top: -1,
-    left: -1,
-    bottom: -1,
-    right: -1,
-  },
-  regularCardBorder: {
-    top: -1,
-    left: -1,
-    bottom: -1,
-    right: -1,
   },
   pressable: {
-    borderRadius: 12,
     position: 'relative',
-    overflow: 'hidden',
   },
   cardContainer: {
     width: '100%',
     height: '100%',
   },
-  cardBack1: { zIndex: -1, opacity: 0.45 },
-  cardBack2: { zIndex: -2 },
+  cardBack1: { zIndex: -1, opacity: 0.45, borderRadius: borderRadius },
+  cardBack2: { zIndex: -2, borderRadius: borderRadius },
   cardBack: {
     position: 'absolute',
-    width: '100%',
-    height: '100%',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
+    overflow: 'hidden',
   },
   card: {
     justifyContent: 'space-between',
@@ -106,10 +73,12 @@ const styles = StyleSheet.create({
   },
   bottomStripe: {
     height: '25%',
-    width: '200%',
+    width: '100%',
     position: 'absolute',
     bottom: 0,
     opacity: 0.05,
+    borderBottomLeftRadius: borderRadius,
+    borderBottomRightRadius: borderRadius,
   },
   chipContainer: {
     borderRadius: 4,

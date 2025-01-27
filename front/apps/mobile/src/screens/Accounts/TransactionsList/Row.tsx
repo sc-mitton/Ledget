@@ -6,7 +6,7 @@ import styles from './styles/transactions';
 import { Hourglass } from '@ledget/media/native';
 import { Transaction } from '@ledget/shared-features';
 import { Section } from './types';
-import { DollarCents, Text, Icon } from '@ledget/native-ui';
+import { DollarCents, Text, Icon, Box } from '@ledget/native-ui';
 
 const Row = (
   props: Partial<Transaction> & { section: Section; index: number }
@@ -36,13 +36,13 @@ const Row = (
           </Text>
         </View>
       </View>
-      <View style={styles.rightColumn}>
+      <Box style={styles.rightColumn}>
         <DollarCents
           fontSize={15}
           value={props.amount || 0}
           color={(props.amount || 0) < 0 ? 'greenText' : 'mainText'}
         />
-      </View>
+      </Box>
     </Animated.View>
   );
 };

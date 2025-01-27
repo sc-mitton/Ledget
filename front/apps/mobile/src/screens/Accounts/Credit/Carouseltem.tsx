@@ -29,7 +29,7 @@ const CarouselItem = (props: Props) => {
           <Animated.View entering={FadeIn} exiting={FadeOut}>
             <Box
               shadowColor="blackText"
-              shadowOpacity={mode === 'dark' ? 1 : 0.2}
+              shadowOpacity={mode === 'dark' ? 1 : 0.1}
               shadowRadius={mode === 'dark' ? 12 : 8}
               shadowOffset={{ width: 0, height: 8 }}
               elevation={7}
@@ -54,7 +54,7 @@ const CarouselItem = (props: Props) => {
           <Animated.View entering={FadeIn} exiting={FadeOut}>
             <Box
               shadowColor="blackText"
-              shadowOpacity={mode === 'dark' ? 1 : 0.2}
+              shadowOpacity={mode === 'dark' ? 1 : 0.1}
               shadowRadius={mode === 'dark' ? 12 : 8}
               shadowOffset={{ width: 0, height: 8 }}
               elevation={7}
@@ -63,7 +63,7 @@ const CarouselItem = (props: Props) => {
                 shadowColor="blackText"
                 shadowOpacity={0.2}
                 shadowOffset={{ width: 0, height: 2 }}
-                shadowRadius={3}
+                shadowRadius={2}
               >
                 <Card
                   {...props}

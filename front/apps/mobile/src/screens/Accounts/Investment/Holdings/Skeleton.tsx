@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import { View } from 'react-native';
 
 import styles from './styles/holdings';
-import { Box, PulseBox } from '@ledget/native-ui';
+import { Box, PulseText } from '@ledget/native-ui';
 
 const Holdings = () => {
   return (
@@ -17,8 +17,18 @@ const Holdings = () => {
               />
             )}
             <Box style={styles.skeletonHolding}>
-              <PulseBox height="reg" width={54} borderRadius="s" />
-              <PulseBox height="s" width={32} borderRadius="s" />
+              <PulseText
+                numberOfLines={1}
+                width={54}
+                pulsing={true}
+                borderRadius="xs"
+              />
+              <PulseText
+                numberOfLines={1}
+                width={32}
+                pulsing={true}
+                borderRadius="xs"
+              />
             </Box>
           </Fragment>
         ))}

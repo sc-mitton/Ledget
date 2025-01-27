@@ -36,3 +36,30 @@ export const PulseBox = (props: Props) => {
     </Box>
   );
 };
+
+export const PulseText = (props: Props) => {
+  const {
+    pulsing = true,
+    placeholder,
+    numberOfLines,
+    children,
+    style,
+    backgroundColor,
+    ...rest
+  } = props;
+
+  return (
+    <Box
+      {...rest}
+      backgroundColor={pulsing ? 'transparent' : backgroundColor}
+      style={[
+        style,
+        styles.box,
+        numberOfLines && pulsing ? { minHeight: numberOfLines * 14 } : {},
+      ]}
+    >
+      {pulsing ? <Pulse backgroundColor="grayButton" /> : children}
+      {placeholder && pulsing && <Text>{placeholder}</Text>}
+    </Box>
+  );
+};

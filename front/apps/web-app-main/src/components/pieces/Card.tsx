@@ -3,11 +3,18 @@ import Big from 'big.js';
 import styles from './styles/card.module.scss';
 import { Account } from '@ledget/shared-features';
 import { InstitutionLogo } from '@components/pieces';
-import { cardWidth, cardHeight } from './constants';
 import React from 'react';
 import { useColorScheme, DollarCents } from '@ledget/ui';
 
-const Card = ({ card }: { card: Account }) => {
+const Card = ({
+  card,
+  width,
+  height,
+}: {
+  card: Account;
+  width: number;
+  height: number;
+}) => {
   const { isDark } = useColorScheme();
   return (
     <div
@@ -17,8 +24,8 @@ const Card = ({ card }: { card: Account }) => {
       style={
         {
           '--card-hue': `${card.card_hue}`,
-          '--card-width': `${cardWidth}px`,
-          '--card-height': `${cardHeight}px`,
+          '--card-width': `${width}px`,
+          '--card-height': `${height}px`,
           backgroundColor: `hsl(${card.card_hue}, 100%, 100%` || 'var(--blue)',
         } as React.CSSProperties
       }

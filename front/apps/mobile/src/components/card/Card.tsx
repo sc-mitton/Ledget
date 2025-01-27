@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { View, Pressable, StyleSheet } from 'react-native';
 import { useTheme } from '@shopify/restyle';
 import {
@@ -72,6 +73,28 @@ export const Card = (props: Props) => {
     return [start, end];
   });
 
+  const borderColor = useMemo(() => {
+    if (!props.account?.card_hue) return theme.colors.creditCardDefaultBorder;
+
+    const sat = mode === 'dark' ? 30 : 75;
+
+    const lightRegex = /hsl\(\d+,\s*\d+%,\s*(\d+)%\)/;
+    const defaultLightnessStart = parseInt(
+      theme.colors.creditCardDefaultGradientStart.match(lightRegex)?.[1]
+    );
+    const defaultLightnessEnd = parseInt(
+      theme.colors.creditCardDefaultGradientEnd.match(lightRegex)?.[1]
+    );
+
+    const customGradientEndLight = defaultLightnessEnd + 15;
+    const customGradientStartDark = defaultLightnessStart + 20;
+
+    const borderLightness =
+      mode === 'dark' ? customGradientStartDark : customGradientEndLight;
+
+    return `hsl(${props.account.card_hue}, ${sat}%, ${borderLightness}%)`;
+  }, []);
+
   const width = size === 'regular' ? CARD_WIDTH : 155;
   const height =
     size === 'regular' ? CARD_HEIGHT : width * (CARD_HEIGHT / CARD_WIDTH);
@@ -90,7 +113,8 @@ export const Card = (props: Props) => {
         onPress={props.onPress}
         onLongPress={props.onLongPress}
       >
-        <View style={styles.cardContainer}>
+        <Box style={styles.cardContainer}>
+          <Animated.View style={[styles.cardBorder, { borderColor }]} />
           <Canvas style={[styles.cardBack, styles.cardBack1]}>
             <Rect x={0} y={0} width={width} height={height}>
               <RadialGradient
@@ -180,7 +204,7 @@ export const Card = (props: Props) => {
               />
             </>
           )}
-        </View>
+        </Box>
       </Pressable>
     </Animated.View>
   );

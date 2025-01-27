@@ -14,13 +14,13 @@ import { useScreenContext } from '@ledget/ui';
 import { useTransition } from '@react-spring/web';
 import { cardWidth, cardHeight, cardOffset } from './constants';
 import { useUpdateAccountsMutation } from '@ledget/shared-features';
+import { Card } from '@components';
 import { useAppSelector, useAppDispatch } from '@hooks/store';
 import {
   setFirstCardIndex,
   selectFirstCardIndex,
 } from '@features/creditCardsTabSlice';
 import pathMappings from '../path-mappings';
-import Card from './Card';
 import SkeletonCards from './SkeletonCards';
 
 const CreditSummary = () => {
@@ -256,7 +256,7 @@ const CreditSummary = () => {
                   className={styles.cardContainer}
                   {...bind(c.id)}
                 >
-                  <Card card={c} />
+                  <Card card={c} width={cardWidth} height={cardHeight} />
                   {spread && c.id === searchParams.get('accounts') && (
                     <span className={styles.selectedIndicator} />
                   )}

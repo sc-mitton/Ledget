@@ -28,13 +28,15 @@
     position: absolute;
     content: '';
     inset: 0;
-    border-radius: inherit;
+    border-radius: 12px;
   }
 
   $gradientStartLight: 70%;
   $gradientEndLight: 63%;
   $gradientStartDark: 30%;
   $gradientEndDark: 23%;
+  $borderDark: 27%;
+  $borderLight: 67%;
 
   &[data-custom-hue='false']:not(
       [data-skeleton='true']
@@ -70,10 +72,12 @@
 
   &[data-custom-hue='false']:not([data-skeleton='true'])[data-light='false'] {
     background-color: var(--btn-medium-gray-hover);
+    border: 1.5px solid hsla(0, 0, $borderDark);
   }
 
   &[data-custom-hue='false']:not([data-skeleton='true'])[data-light='true'] {
     background-color: var(--btn-feather-light-gray);
+    border: 1.5px solid hsla(0, 0, $borderLight);
   }
 
   // Custom color styling
@@ -129,10 +133,14 @@
 
   &[data-custom-hue='true']:not([data-skeleton='true'])[data-light='false'] {
     background-color: hsla(var(--card-hue), $darkSat, $customGradientEndDark);
+    border: 1.5px solid
+      hsla(var(--card-hue), $darkSat, $customGradientStartDark);
   }
 
   &[data-custom-hue='true']:not([data-skeleton='true'])[data-light='true'] {
     background-color: hsla(var(--card-hue), $lightSat, $customGradientEndLight);
+    border: 1.5px solid
+      hsla(var(--card-hue), $lightSat, $customGradientEndLight);
   }
 }
 
@@ -146,7 +154,7 @@
   border-radius: 4px;
   z-index: 1;
   overflow: hidden;
-  opacity: 0.1;
+  opacity: 0.07;
 
   &[data-custom-hue='true'] {
     opacity: 0.2;
@@ -162,7 +170,7 @@
   }
 
   &[data-light='false']::before {
-    background: linear-gradient(-45deg, hsl(0, 0, 40%), hsl(0, 0, 80%));
+    background: linear-gradient(-45deg, hsl(0, 0, 50%), hsl(0, 0, 80%));
     mix-blend-mode: color-burn;
   }
 
@@ -190,7 +198,7 @@
 
 .mask {
   position: relative;
-  border-radius: inherit;
+  border-radius: 12px;
   width: 100%;
   display: flex;
   justify-content: flex-start;

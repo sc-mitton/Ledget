@@ -223,7 +223,7 @@ const Transactions = (props: PTransactions) => {
                 <Pressable
                   key={`section-${section.index}`}
                   onPress={() =>
-                    props.navigation.navigate('Transaction', {
+                    props.navigation.navigate('InvestmentTransaction', {
                       transaction: section.data[0],
                     })
                   }
@@ -262,7 +262,9 @@ const Transactions = (props: PTransactions) => {
               }}
               keyExtractor={(_, index) => `transaction-${index}`}
               renderItem={({ item: transaction, index: i, section }) => (
-                <View
+                <Box
+                  borderBottomColor={'nestedContainerSeperator'}
+                  borderBottomWidth={1.5}
                   style={[
                     {
                       marginTop:
@@ -276,7 +278,7 @@ const Transactions = (props: PTransactions) => {
                 >
                   <TouchableOpacity
                     onPress={() => {
-                      props.navigation.navigate('Transaction', {
+                      props.navigation.navigate('InvestmentTransaction', {
                         transaction: transaction,
                       });
                     }}
@@ -288,7 +290,7 @@ const Transactions = (props: PTransactions) => {
                       index={i}
                     />
                   </TouchableOpacity>
-                </View>
+                </Box>
               )}
               style={styles.transactionsScrollView}
             />

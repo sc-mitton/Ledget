@@ -50,7 +50,11 @@ const Items = ({
 
   return (
     <HeadlessMenu.Items static>
-      <DropdownDiv visible={open} placement="auto" className={styles.dropdown}>
+      <DropdownDiv
+        visible={open}
+        placement="auto"
+        className={[styles.dropdown, className].join(' ')}
+      >
         <div className={styles.dropdownInner}>{children}</div>
       </DropdownDiv>
     </HeadlessMenu.Items>

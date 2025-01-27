@@ -6,6 +6,7 @@ import { AccountsStackParamList } from '@types';
 import { useCardStyleInterpolator } from '@/hooks';
 import AccountTabs from './AccountsNavigator';
 import Transaction from '../Transaction/Screen';
+import InvestmentTransaction from './InvestmentTransaction/Screen';
 
 const Stack = createStackNavigator<AccountsStackParamList>();
 
@@ -28,6 +29,10 @@ const Screen = () => {
           component={AccountTabs}
         />
         <Stack.Screen name="Transaction" component={Transaction} />
+        <Stack.Screen
+          name="InvestmentTransaction"
+          component={InvestmentTransaction}
+        />
       </Stack.Group>
     </Stack.Navigator>
   );

@@ -286,8 +286,10 @@ const Transactions = (props: PTransactions & { account?: Account }) => {
               }}
               keyExtractor={(item, index) => item.transaction_id}
               renderItem={({ item: transaction, index: i, section }) => (
-                <View
+                <Box
                   key={transaction.transaction_id}
+                  borderBottomColor={'nestedContainerSeperator'}
+                  borderBottomWidth={1.5}
                   style={{
                     marginTop:
                       i === 0 && section.index === 0
@@ -307,7 +309,7 @@ const Transactions = (props: PTransactions & { account?: Account }) => {
                   >
                     <Row {...transaction} section={section} index={i} />
                   </TouchableOpacity>
-                </View>
+                </Box>
               )}
               style={styles.transactionsScrollView}
             />

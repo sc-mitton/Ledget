@@ -159,7 +159,7 @@ const RectangleFilled = (props: WidgetProps & { loading: boolean }) => {
           <View style={styles.totalAmount}>
             {props.loading ? (
               <Box marginTop="s">
-                <PulseBox width={100} height="l" borderRadius="s" />
+                <PulseBox width={100} numberOfLines={3} borderRadius="s" />
               </Box>
             ) : (
               <DollarCents
@@ -212,7 +212,7 @@ const RectangleFilled = (props: WidgetProps & { loading: boolean }) => {
             </TouchableOpacity>
             {props.loading ? (
               <Box marginTop="xs">
-                <PulseBox width={54} height="reg" borderRadius="s" />
+                <PulseBox width={54} numberOfLines={2} borderRadius="s" />
               </Box>
             ) : (
               <DollarCents
@@ -255,7 +255,7 @@ const RectangleFilled = (props: WidgetProps & { loading: boolean }) => {
             </TouchableOpacity>
             {props.loading ? (
               <Box marginTop="xs">
-                <PulseBox width={54} height="reg" borderRadius="s" />
+                <PulseBox width={54} numberOfLines={2} borderRadius="s" />
               </Box>
             ) : (
               <DollarCents
@@ -308,7 +308,7 @@ const RectangleFilled = (props: WidgetProps & { loading: boolean }) => {
               </TouchableOpacity>
               {props.loading ? (
                 <Box marginTop="xs">
-                  <PulseBox width={54} height="reg" borderRadius="s" />
+                  <PulseBox width={54} numberOfLines={2} borderRadius="s" />
                 </Box>
               ) : (
                 <DollarCents
@@ -362,7 +362,7 @@ const RectangleFilled = (props: WidgetProps & { loading: boolean }) => {
               </TouchableOpacity>
               {props.loading ? (
                 <Box marginTop="xs">
-                  <PulseBox width={54} height="reg" borderRadius="s" />
+                  <PulseBox width={54} numberOfLines={2} borderRadius="s" />
                 </Box>
               ) : (
                 <DollarCents

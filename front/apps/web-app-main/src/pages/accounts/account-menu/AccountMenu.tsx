@@ -138,7 +138,7 @@ const AccountMenu = () => {
         </span>
         <ChevronDown className="icon" strokeWidth={2} />
       </StyledMenu.Button>
-      <StyledMenu.Items>
+      <StyledMenu.Items className={styles.dropdown}>
         <div className={styles.filterButtonsContainer}>
           <span />
           <div>

@@ -2,7 +2,7 @@ import { ViewBase, View } from 'react-native';
 
 import sharedStyles from './styles/sharedStyles';
 import styles from './styles/skeleton';
-import { PulseBox } from '@ledget/native-ui';
+import { PulseText } from '@ledget/native-ui';
 import { WidgetProps } from '@/features/widgetsSlice';
 
 const Skeleton = (widget: WidgetProps) => (
@@ -10,36 +10,40 @@ const Skeleton = (widget: WidgetProps) => (
     <View style={sharedStyles.topRow}>
       <View>
         <View style={styles.topRowHeader}>
-          <PulseBox height="s" width={32} borderRadius="xs" />
+          <PulseText numberOfLines={1} width={32} borderRadius="xs" />
         </View>
         <View style={sharedStyles.currencyContainer}>
-          <PulseBox height="reg" width={64} borderRadius="xs" />
+          <PulseText numberOfLines={2} width={64} borderRadius="xs" />
         </View>
       </View>
       {widget.shape === 'rectangle' && (
         <View>
           <View style={styles.topRowHeader}>
-            <PulseBox height="s" width={32} borderRadius="xs" />
+            <PulseText numberOfLines={1} width={32} borderRadius="xs" />
           </View>
           <View style={sharedStyles.currencyContainer}>
-            <PulseBox height="reg" width={64} borderRadius="xs" />
+            <PulseText numberOfLines={2} width={64} borderRadius="xs" />
           </View>
         </View>
       )}
       <View>
         <View style={styles.topRowHeader}>
-          <PulseBox height="s" width={32} borderRadius="xs" />
+          <PulseText numberOfLines={1} width={32} borderRadius="xs" />
         </View>
         <View style={sharedStyles.currencyContainer}>
-          <PulseBox height="reg" width={64} borderRadius="xs" />
+          <PulseText numberOfLines={2} width={64} borderRadius="xs" />
         </View>
       </View>
     </View>
     <View style={styles.skeletonBarsBox}>
-      <PulseBox style={styles.skeletonBarsBox} height="l" borderRadius="s" />
+      <PulseText
+        style={styles.skeletonBarsBox}
+        numberOfLines={3}
+        borderRadius="s"
+      />
     </View>
     <View style={styles.bottomRow}>
-      <PulseBox height="reg" width={48} />
+      <PulseText numberOfLines={2} width={48} />
     </View>
   </View>
 );

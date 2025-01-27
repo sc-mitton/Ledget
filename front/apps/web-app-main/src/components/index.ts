@@ -1,1 +1,1 @@
-export * from './containers/containers';
+export * from './pieces';

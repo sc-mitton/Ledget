@@ -9,7 +9,7 @@ import Animated, {
 import styles from './styles/pulse';
 import { Box, BoxProps } from '../restyled/Box';
 
-export const Pulse = () => {
+export const Pulse = (props: BoxProps) => {
   const opacity = useSharedValue(1);
 
   useEffect(() => {
@@ -21,7 +21,12 @@ export const Pulse = () => {
 
   return (
     <Animated.View style={[{ opacity }, styles.pulse]}>
-      <Box backgroundColor="nestedContainer" height={'100%'} width={'100%'} />
+      <Box
+        backgroundColor="nestedContainer"
+        height={'100%'}
+        width={'100%'}
+        {...props}
+      />
     </Animated.View>
   );
 };

@@ -91,13 +91,14 @@ export const lightTheme = createTheme({
     newTransaction: palette.gray100,
     contextMenu: palette.gray100,
     toast: palette.white,
-    creditCardDefaultGradientStart: `hsl(${blueH}, 1%, 70%)`,
-    creditCardDefaultGradientEnd: `hsl(${blueH}, 1%, 60%)`,
     widgetPickerBackground: palette.gray150,
     widget: palette.white,
     tooltip: palette.black,
+    creditCardDefaultGradientStart: `hsl(${blueH}, 1%, 70%)`,
+    creditCardDefaultGradientEnd: `hsl(${blueH}, 1%, 60%)`,
 
     // Borders
+    creditCardDefaultBorder: 'transparent',
     inputBorder: palette.gray250,
     inputBorderErrorSecondary: palette.mutedRed,
     inputBorderErrorMain: palette.red,

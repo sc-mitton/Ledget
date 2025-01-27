@@ -7,6 +7,7 @@ import {
   Category,
   TransformedBill,
   InvestmentTransaction,
+  Account,
 } from '@ledget/shared-features';
 
 interface ModalTypes {
@@ -31,6 +32,9 @@ interface ModalTypes {
     fromTimeout: boolean;
   };
   holdings: undefined;
+  changeCardColor: {
+    card: Account;
+  };
 }
 
 type StateT<T> = T extends keyof ModalTypes
