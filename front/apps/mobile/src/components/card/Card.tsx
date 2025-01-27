@@ -1,18 +1,30 @@
-import { View, Image, Pressable } from 'react-native';
+import { View, Pressable, StyleSheet } from 'react-native';
 import { useTheme } from '@shopify/restyle';
-import { Canvas, Rect, LinearGradient, vec } from '@shopify/react-native-skia';
+import {
+  Canvas,
+  Rect,
+  vec,
+  RadialGradient,
+  LinearGradient,
+} from '@shopify/react-native-skia';
 import Animated, {
   SharedValue,
   useDerivedValue,
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
+import { Grayscale } from 'react-native-color-matrix-image-filters';
 import Big from 'big.js';
 
 import styles from './styles/card';
 import { Account } from '@ledget/shared-features';
-import { Box, defaultSpringConfig, DollarCents, Text } from '@ledget/native-ui';
-import { useGetPlaidItemsQuery } from '@ledget/shared-features';
+import {
+  Box,
+  defaultSpringConfig,
+  DollarCents,
+  Text,
+  InstitutionLogo,
+} from '@ledget/native-ui';
 import { useAppearance } from '@/features/appearanceSlice';
 import { CARD_WIDTH, CARD_HEIGHT } from './constants';
 
@@ -29,22 +41,36 @@ interface Props {
 export const Card = (props: Props) => {
   const theme = useTheme();
   const { mode } = useAppearance();
-  const { data: plaidItemsData } = useGetPlaidItemsQuery();
   const { size = 'regular' } = props;
   const buttonScale = useSharedValue(1);
   const cardHue =
-    typeof props.hue === 'number' ? useSharedValue(props.hue) : props.hue;
+    typeof props.hue === 'number' || typeof props.hue === 'string'
+      ? useSharedValue(props.hue)
+      : props.hue;
 
-  const gradientColors = useDerivedValue(() => [
-    theme.colors.creditCardGradientStart.replace(
-      theme.colors.blueHue,
-      cardHue?.value || props.account?.cardHue || theme.colors.blueHue
-    ),
-    theme.colors.creditCardGradientEnd.replace(
-      theme.colors.blueHue,
-      cardHue?.value || props.account?.cardHue || theme.colors.blueHue
-    ),
-  ]);
+  const gradientColors = useDerivedValue(() => {
+    const sat = mode === 'dark' ? 30 : 75;
+    const lightRegex = /hsl\(\d+,\s*\d+%,\s*(\d+)%\)/;
+    const defaultLightnessStart = parseInt(
+      theme.colors.creditCardDefaultGradientStart.match(lightRegex)?.[1]
+    );
+    const defaultLightnessEnd = parseInt(
+      theme.colors.creditCardDefaultGradientEnd.match(lightRegex)?.[1]
+    );
+    const lightnessStart =
+      mode === 'dark' ? defaultLightnessStart + 20 : defaultLightnessStart + 15;
+    const lightnessEnd =
+      mode === 'dark' ? defaultLightnessEnd + 20 : defaultLightnessEnd + 15;
+
+    const start = cardHue?.value
+      ? `hsl(${cardHue.value}, ${sat}%, ${lightnessStart}%)`
+      : theme.colors.creditCardDefaultGradientStart;
+    const end = cardHue?.value
+      ? `hsl(${cardHue.value}, ${sat}%, ${lightnessEnd}%)`
+      : theme.colors.creditCardDefaultGradientEnd;
+
+    return [start, end];
+  });
 
   const width = size === 'regular' ? CARD_WIDTH : 155;
   const height =
@@ -65,12 +91,21 @@ export const Card = (props: Props) => {
         onLongPress={props.onLongPress}
       >
         <View style={styles.cardContainer}>
-          <Canvas style={styles.cardBack}>
+          <Canvas style={[styles.cardBack, styles.cardBack1]}>
             <Rect x={0} y={0} width={width} height={height}>
-              <LinearGradient
+              <RadialGradient
                 colors={gradientColors}
-                start={vec(width * 1.5, 0)}
-                end={vec(width / 2, height / 2)}
+                c={vec(0, 0)}
+                r={height}
+              />
+            </Rect>
+          </Canvas>
+          <Canvas style={[styles.cardBack, styles.cardBack2]}>
+            <Rect x={0} y={0} width={width} height={height}>
+              <RadialGradient
+                colors={gradientColors}
+                c={vec(width * 0.4, height * 0.2)}
+                r={height / 1.7}
               />
             </Rect>
           </Canvas>
@@ -80,39 +115,23 @@ export const Card = (props: Props) => {
                 borderRadius={'l'}
                 style={[styles.card, (styles as any)[size + 'CardPadding']]}
               >
-                <Box
-                  shadowColor={'logoShadow'}
-                  shadowOffset={{ width: 0, height: 1 }}
-                  shadowOpacity={0.1}
-                  shadowRadius={1}
-                  style={styles.logo}
-                >
-                  <Image
-                    style={{ width: 20, height: 20 }}
-                    resizeMode="contain"
-                    source={{
-                      uri: `data:image/png;base64,${
-                        plaidItemsData?.find((p) =>
-                          p.accounts.find(
-                            (account) => account.id === props.account?.id
-                          )
-                        )?.institution?.logo
-                      }`,
-                    }}
-                  />
-                </Box>
+                <View style={styles.logo}>
+                  <Grayscale>
+                    <InstitutionLogo account={props.account?.id} />
+                  </Grayscale>
+                </View>
                 <View style={styles.cardTopHalf}>
                   <DollarCents
                     color="whiteText"
                     variant="bold"
-                    fontSize={size === 'regular' ? 18 : 16}
+                    fontSize={size === 'regular' ? 18 : 14}
                     value={Big(props.account?.balances.current || 0)
                       .times(100)
                       .toNumber()}
                   />
                   <Text
                     style={styles.accountName}
-                    fontSize={size === 'regular' ? 16 : 14}
+                    fontSize={size === 'regular' ? 14 : 12}
                     color="whiteText"
                   >
                     {(props.account?.name.length || 0) > 20
@@ -120,8 +139,31 @@ export const Card = (props: Props) => {
                       : props.account?.name}
                   </Text>
                 </View>
-                <View style={styles.mask}>
-                  <Text fontSize={13} color="whiteText" variant="bold">
+                {size !== 'small' && (
+                  <View style={styles.chipContainer}>
+                    <Canvas style={[{ width: 22, height: 16 }, styles.chip]}>
+                      <Rect x={0} y={0} width={22} height={16}>
+                        <LinearGradient
+                          colors={gradientColors}
+                          start={vec(0, 0)}
+                          end={vec(16, 22)}
+                        />
+                      </Rect>
+                    </Canvas>
+                    <Box
+                      style={[StyleSheet.absoluteFill, styles.chipBack]}
+                      backgroundColor="whiteText"
+                    />
+                  </View>
+                )}
+                <View
+                  style={[styles.mask, size === 'small' && styles.smallMask]}
+                >
+                  <Text
+                    fontSize={size === 'small' ? 12 : 13}
+                    color="whiteText"
+                    variant="bold"
+                  >
                     &bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;
                     &nbsp;&nbsp;
                     &bull;&nbsp;&bull;&nbsp;&bull;&nbsp;&bull;&nbsp;
@@ -132,6 +174,7 @@ export const Card = (props: Props) => {
               </Box>
               <Box
                 borderTopColor="whiteText"
+                backgroundColor="secondaryText"
                 borderTopWidth={1.5}
                 style={styles.bottomStripe}
               />

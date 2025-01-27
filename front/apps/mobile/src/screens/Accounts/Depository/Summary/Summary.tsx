@@ -90,7 +90,7 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
         start: dateWindow.start,
         end: dateWindow.end,
         type: props.route.name.toLowerCase() as any,
-        accounts: storedAccounts?.map((a) => a.id) || [],
+        accounts: storedAccounts?.map((a) => a.id) || ['*'],
       });
     }
   }, [dateWindow, storedAccounts]);
@@ -99,7 +99,7 @@ export default function Summary(props: AccountsTabsScreenProps<'Depository'>) {
     if (accountsData?.accounts.length) {
       getBalanceTrend({
         type: props.route.name.toLowerCase() as any,
-        accounts: accountsData.accounts.map((a) => a.id),
+        accounts: ['*'],
       });
     }
   }, [accountsData]);

@@ -31,75 +31,126 @@
     border-radius: inherit;
   }
 
-  &:not([data-skeleton='true'])[data-light='true']::before {
-    opacity: 0.7;
+  $gradientStartLight: 70%;
+  $gradientEndLight: 63%;
+  $gradientStartDark: 30%;
+  $gradientEndDark: 23%;
+
+  &[data-custom-hue='false']:not(
+      [data-skeleton='true']
+    )[data-light='true']::before {
     background-image: radial-gradient(
         at 39% 16%,
-        hsla(0, 0%, 60%, 1) 0px,
+        hsla(0, 0%, $gradientStartLight, 1) 0px,
         transparent 50%
       ),
-      radial-gradient(at 0% 0%, hsla(0, 0%, 60%, 1) 0px, transparent 50%);
-    background-color: hsla(0, 0%, 50%, 1);
+      radial-gradient(
+        at 0% 0%,
+        hsla(0, 0%, $gradientStartLight, 1) 0px,
+        transparent 50%
+      );
+    background-color: hsla(0, 0%, $gradientEndLight, 1);
   }
 
-  &:not([data-skeleton='true'])[data-light='false']::before {
-    opacity: 0.73;
+  &[data-custom-hue='false']:not(
+      [data-skeleton='true']
+    )[data-light='false']::before {
     background-image: radial-gradient(
         at 39% 16%,
-        hsla(0, 0%, 30%, 1) 0px,
+        hsla(0, 0%, $gradientStartDark, 1) 0px,
         transparent 50%
       ),
-      radial-gradient(at 0% 0%, hsla(0, 0%, 30%, 1) 0px, transparent 50%);
-    background-color: hsla(0, 0%, 20%, 1);
+      radial-gradient(
+        at 0% 0%,
+        hsla(0, 0%, $gradientStartDark, 1) 0px,
+        transparent 50%
+      );
+    background-color: hsla(0, 0%, $gradientEndDark, 1);
   }
 
-  &:not([data-skeleton='true'])[data-light='false'] {
+  &[data-custom-hue='false']:not([data-skeleton='true'])[data-light='false'] {
     background-color: var(--btn-medium-gray-hover);
   }
 
-  &:not([data-skeleton='true'])[data-light='true'] {
+  &[data-custom-hue='false']:not([data-skeleton='true'])[data-light='true'] {
     background-color: var(--btn-feather-light-gray);
   }
 
-  &::after {
-    z-index: -1;
-    position: absolute;
-    content: '';
-    inset: 0;
-    border-radius: inherit;
+  // Custom color styling
+  $lightSat: 75%;
+  $darkSat: 30%;
+  $customGradientStartLight: calc($gradientStartLight + 10%);
+  $customGradientEndLight: calc($gradientEndLight + 15%);
+
+  $customGradientStartDark: calc($gradientStartDark + 20%);
+  $customGradientEndDark: calc($gradientEndDark + 20%);
+
+  &[data-custom-hue='true']:not(
+      [data-skeleton='true']
+    )[data-light='true']::before {
+    background-image: radial-gradient(
+        at 39% 16%,
+        hsla(var(--card-hue), $lightSat, $customGradientStartLight, 1) 0px,
+        transparent 50%
+      ),
+      radial-gradient(
+        at 0% 0%,
+        hsla(var(--card-hue), $lightSat, $customGradientStartLight, 1) 0px,
+        transparent 50%
+      );
+    background-color: hsla(
+      var(--card-hue),
+      $lightSat,
+      $customGradientEndLight,
+      1
+    );
   }
 
-  // Box shadow styling
-  &[data-skeleton='true']:not([data-light='true']),
-  &[data-skeleton='true'][data-light='true'] {
-    &::after {
-      box-shadow: unset;
-    }
+  &[data-custom-hue='true']:not(
+      [data-skeleton='true']
+    )[data-light='false']::before {
+    background-image: radial-gradient(
+        at 39% 16%,
+        hsla(var(--card-hue), $darkSat, $customGradientStartDark, 1) 0px,
+        transparent 50%
+      ),
+      radial-gradient(
+        at 0% 0%,
+        hsla(var(--card-hue), $darkSat, $customGradientStartDark, 1) 0px,
+        transparent 50%
+      );
+    background-color: hsla(
+      var(--card-hue),
+      $darkSat,
+      $customGradientEndDark,
+      1
+    );
   }
 
-  &[data-light='true']::after {
-    opacity: 0.1;
-    box-shadow: 4px 0 12px hsl(0, 0, 0%);
+  &[data-custom-hue='true']:not([data-skeleton='true'])[data-light='false'] {
+    background-color: hsla(var(--card-hue), $darkSat, $customGradientEndDark);
   }
 
-  &[data-light='false']::after {
-    opacity: 0.4;
-    box-shadow: 0 0 24px var(--main-background-color),
-      0 2px 4px var(--main-background-color);
+  &[data-custom-hue='true']:not([data-skeleton='true'])[data-light='true'] {
+    background-color: hsla(var(--card-hue), $lightSat, $customGradientEndLight);
   }
 }
 
 .chip {
   position: absolute;
-  left: 0;
+  left: 2px;
   top: 50%;
   transform: translate(50%, 0%);
-  width: 24px;
+  width: 22px;
   height: 16px;
   border-radius: 4px;
   z-index: 1;
   overflow: hidden;
   opacity: 0.1;
+
+  &[data-custom-hue='true'] {
+    opacity: 0.2;
+  }
 
   &[data-light='true'] {
     opacity: 0.2;
@@ -128,7 +179,6 @@
   display: flex;
   align-items: flex-start;
   padding-bottom: 0.375em;
-  opacity: 0.8;
   * {
     color: var(--white);
   }
@@ -146,16 +196,20 @@
   justify-content: flex-start;
 
   span {
-    opacity: 0.5;
+    opacity: 0.8;
     font-size: 0.875rem;
     transform: translateY(3px);
     color: var(--white);
   }
 
+  &[data-light='false'] > span {
+    opacity: 0.5;
+  }
+
   &[data-light='true']::after {
-    opacity: 0.2;
-    border-top: 1.5px solid hsl(0, 0, 70%);
-    background-color: hsl(0, 0, 50%);
+    opacity: 0.15;
+    border-top: 1.5px solid hsl(0, 0, 100%);
+    background-color: hsl(0, 0, 90%);
   }
 
   &[data-light='false']::after {
@@ -185,6 +239,6 @@
   filter: grayscale(2);
 
   &[data-light='false'] {
-    filter: brightness(0.7) contrast(2);
+    filter: grayscale(1) brightness(0.7) contrast(2);
   }
 }

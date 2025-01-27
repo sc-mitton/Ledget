@@ -89,7 +89,7 @@ const Transactions = () => {
               })}
             {transactionsData && transactionsData.results.length === 0 && (
               <span className={styles.empty}>
-                <EmptyBox size={32} dark={isDark} />
+                <EmptyBox size={38} dark={isDark} />
                 <span>No Transactions</span>
               </span>
             )}

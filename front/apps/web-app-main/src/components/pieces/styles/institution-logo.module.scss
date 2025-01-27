@@ -1,0 +1,27 @@
+.logo {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1em;
+  height: 1em;
+
+  span {
+    color: var(--white);
+    font-size: 0.65em;
+  }
+
+  &::after {
+    background-color: var(--m-text);
+    opacity: 0.3;
+    content: '';
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    z-index: -1;
+  }
+}

@@ -63,7 +63,7 @@ const CarouselItem = (props: Props) => {
                 shadowColor="blackText"
                 shadowOpacity={0.2}
                 shadowOffset={{ width: 0, height: 2 }}
-                shadowRadius={2}
+                shadowRadius={3}
               >
                 <Card
                   {...props}

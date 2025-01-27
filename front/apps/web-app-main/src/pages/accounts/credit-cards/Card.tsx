@@ -7,15 +7,16 @@ import { cardWidth, cardHeight } from './constants';
 import React from 'react';
 import { useColorScheme, DollarCents } from '@ledget/ui';
 
-const Card = ({ card, isSpread }: { card: Account; isSpread: boolean }) => {
+const Card = ({ card }: { card: Account }) => {
   const { isDark } = useColorScheme();
   return (
     <div
       className={styles.card}
       data-light={!isDark}
-      data-is-spread={isSpread}
+      data-custom-hue={Boolean(card.card_hue)}
       style={
         {
+          '--card-hue': `${card.card_hue}`,
           '--card-width': `${cardWidth}px`,
           '--card-height': `${cardHeight}px`,
           backgroundColor: `hsl(${card.card_hue}, 100%, 100%` || 'var(--blue)',
@@ -23,7 +24,11 @@ const Card = ({ card, isSpread }: { card: Account; isSpread: boolean }) => {
       }
     >
       {/* chip */}
-      <span className={styles.chip} data-light={!isDark} />
+      <span
+        className={styles.chip}
+        data-light={!isDark}
+        data-custom-hue={Boolean(card.card_hue)}
+      />
       <h3>
         <DollarCents value={Big(card.balances.current).times(100).toNumber()} />
       </h3>

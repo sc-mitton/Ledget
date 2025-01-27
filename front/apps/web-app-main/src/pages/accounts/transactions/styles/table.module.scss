@@ -78,23 +78,23 @@ $borderRadius2: var(--border-radius3);
     }
   }
 
-  & > div:nth-child(2n):not(:last-child) > div:not(.month-header) {
+  & > div:nth-child(2n):not(:hover):not(:last-child) > div:not(.month-header) {
     &::after {
       content: '';
       position: absolute;
-      bottom: 0;
+      bottom: -1.5px;
       height: 1px;
       border-bottom: 1.5px solid $dividerBorder;
     }
 
     &:first-of-type::after {
-      left: 0.5em;
+      left: 0.75em;
       right: 0;
     }
 
     &:last-of-type::after {
       left: 0;
-      right: 0.5em;
+      right: 0.75em;
     }
   }
 

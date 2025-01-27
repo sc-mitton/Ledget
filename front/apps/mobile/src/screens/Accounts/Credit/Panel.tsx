@@ -76,14 +76,14 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
     (i) => ({
       from: { opacity: 1 },
       to: { opacity: i === carouselIndex ? 1 : 0.25 },
-      config: { duration: loaded ? 200 : 0 },
+      config: { duration: loaded ? 400 : 0 },
     })
   );
 
   useEffect(() => {
     cardsApi.start((i) => ({
       to: { opacity: i === carouselIndex ? 1 : 0.25 },
-      config: { duration: loaded ? 200 : 0 },
+      config: { duration: loaded ? 400 : 0 },
     }));
   }, [carouselIndex]);
 
@@ -135,6 +135,13 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
       >
         <View style={styles.totalBalanceContainer}>
           <View style={styles.totalBalance}>
+            <Text
+              color="tertiaryText"
+              fontSize={15}
+              style={styles.totalBalanceText}
+            >
+              Total Card Balance
+            </Text>
             <DollarCents
               fontSize={22}
               variant="bold"
@@ -148,13 +155,6 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
                   .toNumber() || 0
               }
             />
-            <Text
-              color="tertiaryText"
-              fontSize={15}
-              style={styles.totalBalanceText}
-            >
-              Total Card Balance
-            </Text>
           </View>
           <Button
             backgroundColor="grayButton"

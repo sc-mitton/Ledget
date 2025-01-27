@@ -200,15 +200,7 @@ const Item = (props: Props) => {
                 ]}
               >
                 <View style={styles.leftColumn}>
-                  <InstitutionLogo
-                    data={
-                      plaidItemsData?.find((p) =>
-                        p.accounts.find(
-                          (account) => account.id === item.account
-                        )
-                      )?.institution?.logo
-                    }
-                  />
+                  <InstitutionLogo account={item.account} />
                   <View style={styles.transactionInfo}>
                     <Text style={styles.transactionName}>
                       {focused

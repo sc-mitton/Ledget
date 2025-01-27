@@ -42,7 +42,7 @@ const DepositorySummary = () => {
     if (accountsData?.accounts.length) {
       getBalanceTrend({
         type: 'depository',
-        accounts: accountsData.accounts.map((a) => a.id),
+        accounts: ['*'],
       });
     }
   }, [accountsData]);

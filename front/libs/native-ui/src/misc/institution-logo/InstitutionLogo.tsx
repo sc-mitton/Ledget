@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Platform, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Platform, View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import styles from './styles';
@@ -55,10 +55,7 @@ export const InstitutionLogo = (props: InstitutionLogoProps) => {
   return logoData !== null ? (
     <Base64Image
       borderRadius={'circle'}
-      elevation={2}
-      borderColor="modalSeperator"
       backgroundColor="modalSeperator"
-      borderWidth={hasBorder ? 0.5 : 0}
       size={props.size || Platform.OS === 'ios' ? 22 : 24}
       data={logoData}
       {...props}
@@ -66,17 +63,18 @@ export const InstitutionLogo = (props: InstitutionLogoProps) => {
   ) : (
     <Box
       borderRadius={'circle'}
-      elevation={2}
-      borderColor="mediumGrayButton"
-      backgroundColor="mediumGrayButton"
       justifyContent="center"
       alignItems="center"
-      borderWidth={hasBorder ? 0.5 : 0}
       width={props.size || Platform.OS === 'ios' ? 22 : 24}
       height={props.size || Platform.OS === 'ios' ? 22 : 24}
     >
+      <Box
+        backgroundColor="whiteText"
+        borderRadius={'circle'}
+        style={[StyleSheet.absoluteFill, styles.defaultLogoBack]}
+      />
       <View style={styles.institutionInitialContainer}>
-        <Text style={styles.institutionInitial}>
+        <Text style={styles.institutionInitial} color="whiteText">
           {institution?.name?.charAt(0).toUpperCase()}
         </Text>
       </View>

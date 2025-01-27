@@ -1,3 +1,4 @@
+import styles from './styles/institution-logo.module.scss';
 import { useGetPlaidItemsQuery } from '@ledget/shared-features';
 import { Base64Logo } from '@ledget/ui';
 
@@ -17,13 +18,15 @@ export const InstitutionLogo = ({
   const args = {
     size,
     data: item?.institution?.logo,
-    alt: item ? `${item.institution?.name?.charAt(0).toUpperCase()}` : ' ',
-    ...(!item?.institution?.logo
-      ? { backgroundColor: 'var(--btn-light-gray)' }
-      : {}),
   };
 
-  return <Base64Logo {...args} />;
+  return args.data ? (
+    <Base64Logo {...args} />
+  ) : (
+    <div style={{ fontSize: size }} className={styles.logo}>
+      <span>{item?.institution?.name?.charAt(0).toUpperCase()}</span>
+    </div>
+  );
 };
 
 export default InstitutionLogo;

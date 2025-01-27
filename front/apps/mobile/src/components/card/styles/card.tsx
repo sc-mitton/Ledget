@@ -52,6 +52,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  cardBack1: { zIndex: -1, opacity: 0.45 },
+  cardBack2: { zIndex: -2 },
   cardBack: {
     position: 'absolute',
     width: '100%',
@@ -78,7 +80,7 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
   },
   cardTopHalf: {
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     flex: 1,
     paddingBottom: 8,
   },
@@ -92,18 +94,37 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   accountName: {
-    opacity: 0.7,
+    opacity: 0.9,
   },
   mask: {
     marginLeft: 6,
-    opacity: 0.35,
+    transform: [{ translateY: 2 }],
+    opacity: 0.7,
+  },
+  smallMask: {
+    transform: [{ translateY: 5 }],
   },
   bottomStripe: {
-    height: '30%',
+    height: '25%',
     width: '200%',
     position: 'absolute',
     bottom: 0,
     opacity: 0.05,
+  },
+  chipContainer: {
+    borderRadius: 4,
+    position: 'absolute',
+    bottom: '36%',
+    left: 16,
+    overflow: 'hidden',
+    opacity: 0.7,
+  },
+  chip: {
+    zIndex: 1,
+    opacity: 0.95,
+  },
+  chipBack: {
+    zIndex: 0,
   },
 });
 

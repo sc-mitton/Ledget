@@ -7,7 +7,7 @@ import { animated } from '@react-spring/web';
 import Big from 'big.js';
 
 import styles from './styles/credit-cards.module.scss';
-import { useSpringDrag, Window } from '@ledget/ui';
+import { useColorScheme, useSpringDrag, Window } from '@ledget/ui';
 import { Account, useGetAccountsQuery } from '@ledget/shared-features';
 import { DollarCents } from '@ledget/ui';
 import { useScreenContext } from '@ledget/ui';
@@ -26,6 +26,7 @@ import SkeletonCards from './SkeletonCards';
 const CreditSummary = () => {
   const dispatch = useAppDispatch();
   const firstCardIndex = useAppSelector(selectFirstCardIndex);
+  const { isDark } = useColorScheme();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const { data } = useGetAccountsQuery();
@@ -80,9 +81,7 @@ const CreditSummary = () => {
           : (cards?.length || 0) - i;
 
       return {
-        x: spread
-          ? index * (cardWidth + cardOffset * 1.15)
-          : index * cardOffset,
+        x: spread ? index * (cardWidth + cardOffset * 1.3) : index * cardOffset,
         zIndex,
       };
     },
@@ -98,9 +97,7 @@ const CreditSummary = () => {
         : i;
 
       return {
-        x: spread
-          ? index * (cardWidth + cardOffset * 1.15)
-          : index * cardOffset,
+        x: spread ? index * (cardWidth + cardOffset * 1.3) : index * cardOffset,
       };
     },
     ref: api,
@@ -207,7 +204,7 @@ const CreditSummary = () => {
         <h4>Total Card Balance</h4>
         <div>
           <h1>
-            <DollarCents variant="bold" value={totalBalance} />
+            <DollarCents value={totalBalance} />
           </h1>
           <div className={styles.cardCount}>
             <CreditCard size={'1em'} className="icon" />
@@ -253,11 +250,13 @@ const CreditSummary = () => {
                   draggable-item="true"
                   style={s}
                   onClick={() => click(c.id)}
-                  className={styles.cardDrag}
                   data-size={screenSize}
+                  data-is-spread={spread}
+                  data-light={!isDark}
+                  className={styles.cardContainer}
                   {...bind(c.id)}
                 >
-                  <Card card={c} isSpread={spread} />
+                  <Card card={c} />
                   {spread && c.id === searchParams.get('accounts') && (
                     <span className={styles.selectedIndicator} />
                   )}

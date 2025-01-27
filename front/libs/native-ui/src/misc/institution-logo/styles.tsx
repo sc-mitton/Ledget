@@ -11,6 +11,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  defaultLogoBack: {
+    opacity: 0.2,
+  },
 });
 
 export default styles;
