@@ -54,7 +54,8 @@ export const PulseDiv = ({
       className={[styles.pulseContainer, className].join(' ')}
       {...rest}
     >
-      {isSkeleton ? <Pulse /> : children}
+      {isSkeleton && <Pulse />}
+      {children}
     </div>
   );
 };
