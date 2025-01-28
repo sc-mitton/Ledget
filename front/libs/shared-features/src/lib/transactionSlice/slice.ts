@@ -167,6 +167,14 @@ export const transactionSlice = apiSlice.injectEndpoints({
         }));
       },
     }),
+    getNotes: builder.query<Note[], string>({
+      query: (transactionId) => ({
+        url: `transactions/${transactionId}/notes`,
+        method: 'GET',
+      }),
+      providesTags: (result, error, transactionId) =>
+        result ? [{ type: 'Note', id: transactionId }] : [],
+    }),
     getTransactionsCount: builder.query<
       { count: number },
       GetTransactionsParams
@@ -241,7 +249,7 @@ export const transactionSlice = apiSlice.injectEndpoints({
         body: { text },
       }),
       invalidatesTags: (result, error, arg) => [
-        { type: 'Transaction', id: arg.transactionId } as const,
+        { type: 'Note', id: arg.transactionId } as const,
       ],
     }),
     updateDeleteNote: builder.mutation<
@@ -450,6 +458,7 @@ export const {
   useGetMerchantsQuery,
   useGetTransactionsCountQuery,
   useGetRecurringTransactionsQuery,
+  useGetNotesQuery,
 } = transactionSlice;
 
 export const useGetTransactionQueryState =

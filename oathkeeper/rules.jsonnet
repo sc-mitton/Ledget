@@ -5,6 +5,7 @@ local api_version_regex = if v > 1
 then std.format("<%s|", v - 1) + std.format("%s>", v)
 else std.format("<%s>", v);
 local base_versioned_url = base_url + "/v" + api_version_regex;
+// local uuidRegex = "<[a-z0-9-]+>";
 
 /* Authenticators */
 local anonymous_authenticator = {
@@ -313,6 +314,14 @@ local BaseWithAuth = {
     match: {
       methods: ["GET"],
       url: base_versioned_url + "/transactions",
+    },
+  },
+  BaseWithAuth
+  {
+    id: "notes",
+    match: {
+      methods: ["GET"],
+      url: base_versioned_url + "/transactions/<[a-zA-Z0-9]+>/notes",
     },
   },
   BaseWithAuth

@@ -27,6 +27,7 @@ import {
   Button,
   AnimatedView,
   SwipeDelete,
+  PulseBox,
 } from '@ledget/native-ui';
 import {
   Transaction,
@@ -35,6 +36,7 @@ import {
   Note as NoteT,
   useGetCoOwnerQuery,
   useGetMeQuery,
+  useGetNotesQuery,
 } from '@ledget/shared-features';
 
 interface Note extends NoteT {
@@ -186,11 +188,14 @@ const Notes = ({
   const [maxHeight, setMaxHeight] = useState(0);
 
   const [focusedNote, setFocusedNote] = useState<Note | null>();
+  const { data: notesData, isLoading: isLoadingNotes } = useGetNotesQuery(
+    transaction.transaction_id
+  );
   const [notes, setNotes] = useState<Note[]>(
-    transaction.notes.map((n) => ({
+    notesData?.map((n) => ({
       ...n,
       localId: Math.random().toString().slice(2, 9),
-    }))
+    })) || []
   );
 
   useEffect(() => {
@@ -277,7 +282,9 @@ const Notes = ({
             onClose={() => setFocusedNote(undefined)}
           />
         )}
-        <Box
+        <PulseBox
+          pulsing={isLoadingNotes}
+          numberOfLines={3}
           variant="nestedContainer"
           backgroundColor={isInModal ? 'modalNestedContainer' : undefined}
           style={[styles.notesBox, { maxHeight }]}
@@ -310,7 +317,7 @@ const Notes = ({
               </AnimatedView>
             ))}
           </CustomScrollView>
-        </Box>
+        </PulseBox>
       </View>
     </Animated.View>
   );

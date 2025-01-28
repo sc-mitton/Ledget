@@ -43,7 +43,6 @@ export type Transaction = {
   lat?: number;
   lon?: number;
   store_number?: string;
-  notes: Note[];
 };
 
 export interface GetTransactionsParams {

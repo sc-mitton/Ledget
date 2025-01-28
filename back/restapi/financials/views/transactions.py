@@ -233,7 +233,6 @@ class TransactionViewSet(ModelViewSet):
             to_attr='splits')
         base_qset = Transaction.objects \
             .filter(**filter_args) \
-            .prefetch_related('notes') \
             .prefetch_related(splits_prefetch) \
             .select_related('predicted_category', 'predicted_bill', 'bill')
 
@@ -302,6 +301,16 @@ class TransactionViewSet(ModelViewSet):
                 Q(bill__isnull=False) | Q(transactioncategory__isnull=False))
 
         return Response({'count': qset.count()})
+
+    @action(detail=True, methods=['get'], url_path='notes', url_name='notes',
+            permission_classes=[IsAuthedVerifiedSubscriber, IsObjectOwner])
+    def notes(self, request, *args, **kwargs):
+        notes = Note.objects.filter(transaction_id=kwargs['pk'])
+        if notes:
+            self.check_object_permissions(request, notes)
+        s = NoteSerializer(notes, many=True)
+
+        return Response(data=s.data)
 
     def _get_recurring_transactions(self, request):
         pass
@@ -423,7 +432,6 @@ class NoteViewSet(ModelViewSet):
     def get_transaction(self):
         transaction_id = self.kwargs['id']
         try:
-
             # object permissions are unneaded since
             # the query filter will return none if the user
             # is not an owner of the transaction
@@ -437,7 +445,7 @@ class NoteViewSet(ModelViewSet):
         return transaction
 
     def get_queryset(self):
-        return Note.objects.filter(user=self.request.user)
+        Note.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(

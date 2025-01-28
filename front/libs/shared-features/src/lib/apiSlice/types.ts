@@ -1,5 +1,6 @@
 export const tagTypes = [
   'Transaction',
+  'Note',
   'Bill',
   'Category',
   'UnconfirmedTransaction',

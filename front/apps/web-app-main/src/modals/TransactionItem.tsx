@@ -13,7 +13,7 @@ import {
 } from '@geist-ui/icons';
 
 import styles from './styles/transaction-item.module.scss';
-import {} from '@ledget/shared-features';
+import { useGetNotesQuery } from '@ledget/shared-features';
 import { withModal, Base64Logo, DollarCents, BillCatLabel } from '@ledget/ui';
 import { SelectCategoryBill } from '@components/inputs';
 import {
@@ -43,6 +43,7 @@ import {
   NestedWindow2,
   WindowCorner,
   IconButtonHalfGray,
+  PulseDiv,
 } from '@ledget/ui';
 import { useLoaded } from '@ledget/helpers';
 
@@ -110,10 +111,13 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
   const [addNote, { data: newNoteResponseData, isLoading: isAddingNote }] =
     useAddNoteMutation();
   const [updateDeleteNote] = useUpdateDeleteNoteMutation();
+  const { data: notesData, isLoading: isLoadingNotes } = useGetNotesQuery(
+    item.transaction_id
+  );
 
   const [focusedNoteId, setFocusedNoteId] = useState<string>();
   const [a11yNote, setA11yNote] = useState<number>();
-  const [notes, setNotes] = useState(item.notes);
+  const [notes, setNotes] = useState(notesData || []);
   const [notesToSend2Server, setNotesToSend2Server] = useState<Note[]>([]);
   const [newNote, setNewNote] = useState<Note>();
 
@@ -310,114 +314,117 @@ const NoteInnerWindow = ({ item }: { item: Transaction }) => {
   };
 
   return (
-    <NestedWindow2 className={styles.notesContainer}>
-      <h4>{`Note${notes.length > 0 ? 's' : ''}`}</h4>
-      <div
-        data-focused={Boolean(focusedNoteId)}
-        tabIndex={0}
-        onKeyDown={handler}
-        ref={notesContainerRef}
-      >
-        {focusedNoteId && (
-          <Tooltip
-            msg={'Save'}
-            ariaLabel={'save'}
-            className={styles.noteButton}
-          >
-            <CircleIconButton
-              onClick={() => handleTextAreaBlur()}
-              darker={true}
-            >
-              <Check size={'1.1em'} />
-            </CircleIconButton>
-          </Tooltip>
-        )}
-        {focusedNoteId && focusedNoteId !== 'new' && (
-          <>
-            <span className={styles.lastChanged}>
-              Last changed&nbsp;
-              {dayjs(
-                notes.find((n) => n.id === focusedNoteId)?.datetime
-              ).format('h:mma M/DD/YY')}
-            </span>
+    <PulseDiv isSkeleton={isLoadingNotes}>
+      <NestedWindow2 className={styles.notesContainer}>
+        <h4>{`Note${notes.length > 0 ? 's' : ''}`}</h4>
+        <div
+          data-focused={Boolean(focusedNoteId)}
+          tabIndex={0}
+          onKeyDown={handler}
+          ref={notesContainerRef}
+        >
+          {focusedNoteId && (
             <Tooltip
-              msg={'Delete'}
-              ariaLabel={'delete'}
+              msg={'Save'}
+              ariaLabel={'save'}
               className={styles.noteButton}
             >
               <CircleIconButton
-                onClick={() => {
-                  handleTrashButtonClick();
-                }}
+                onClick={() => handleTextAreaBlur()}
                 darker={true}
               >
-                <Trash2 size={'1.1em'} />
+                <Check size={'1.1em'} />
               </CircleIconButton>
             </Tooltip>
-          </>
-        )}
-        <div>
-          {focusedNoteId && (
+          )}
+          {focusedNoteId && focusedNoteId !== 'new' && (
+            <>
+              <span className={styles.lastChanged}>
+                Last changed&nbsp;
+                {dayjs(
+                  notes.find((n) => n.id === focusedNoteId)?.datetime
+                ).format('h:mma M/DD/YY')}
+              </span>
+              <Tooltip
+                msg={'Delete'}
+                ariaLabel={'delete'}
+                className={styles.noteButton}
+              >
+                <CircleIconButton
+                  onClick={() => {
+                    handleTrashButtonClick();
+                  }}
+                  darker={true}
+                >
+                  <Trash2 size={'1.1em'} />
+                </CircleIconButton>
+              </Tooltip>
+            </>
+          )}
+          <div>
+            {focusedNoteId && (
+              <TextArea>
+                <TextArea.Area
+                  className={styles.noteContainer}
+                  data-focused={'true'}
+                >
+                  <TextArea.Text
+                    ref={textAreaRef}
+                    defaultValue={
+                      notes
+                        .concat(notesToSend2Server)
+                        .find((note) => note.id === focusedNoteId)?.text
+                    }
+                    onChange={(e) => handleTextAreaChange(e, focusedNoteId)}
+                    onBlur={handleTextAreaBlur}
+                    placeholder="Add a note..."
+                    tabIndex={-1}
+                    autoFocus
+                  />
+                </TextArea.Area>
+              </TextArea>
+            )}
             <TextArea>
               <TextArea.Area
                 className={styles.noteContainer}
-                data-focused={'true'}
+                data-accessible-focused={a11yNote === undefined}
+                onClick={() => {
+                  setFocusedNoteId('new');
+                }}
               >
                 <TextArea.Text
-                  ref={textAreaRef}
-                  defaultValue={
-                    notes
-                      .concat(notesToSend2Server)
-                      .find((note) => note.id === focusedNoteId)?.text
-                  }
-                  onChange={(e) => handleTextAreaChange(e, focusedNoteId)}
-                  onBlur={handleTextAreaBlur}
+                  value={newNote?.text || ''}
+                  onChange={() => {}}
                   placeholder="Add a note..."
                   tabIndex={-1}
-                  autoFocus
+                  readOnly
                 />
               </TextArea.Area>
             </TextArea>
-          )}
-          <TextArea>
-            <TextArea.Area
-              className={styles.noteContainer}
-              data-accessible-focused={a11yNote === undefined}
-              onClick={() => {
-                setFocusedNoteId('new');
-              }}
-            >
-              <TextArea.Text
-                value={newNote?.text || ''}
-                onChange={() => {}}
-                placeholder="Add a note..."
-                tabIndex={-1}
-                readOnly
-              />
-            </TextArea.Area>
-          </TextArea>
-          {notes
-            .concat(notesToSend2Server)
-            .sort(
-              (a, b) =>
-                new Date(b.datetime).getTime() - new Date(a.datetime).getTime()
-            )
-            .map((note, index) => (
-              <div
-                className={styles.noteContainer}
-                data-disabled={!note.is_current_users}
-                data-accessible-focused={a11yNote === index}
-                onClick={() =>
-                  note.is_current_users && setFocusedNoteId(note.id)
-                }
-                key={note.id}
-              >
-                {note.text}
-              </div>
-            ))}
+            {notes
+              .concat(notesToSend2Server)
+              .sort(
+                (a, b) =>
+                  new Date(b.datetime).getTime() -
+                  new Date(a.datetime).getTime()
+              )
+              .map((note, index) => (
+                <div
+                  className={styles.noteContainer}
+                  data-disabled={!note.is_current_users}
+                  data-accessible-focused={a11yNote === index}
+                  onClick={() =>
+                    note.is_current_users && setFocusedNoteId(note.id)
+                  }
+                  key={note.id}
+                >
+                  {note.text}
+                </div>
+              ))}
+          </div>
         </div>
-      </div>
-    </NestedWindow2>
+      </NestedWindow2>
+    </PulseDiv>
   );
 };
 
