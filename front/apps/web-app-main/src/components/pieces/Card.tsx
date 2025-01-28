@@ -4,19 +4,21 @@ import styles from './styles/card.module.scss';
 import { Account } from '@ledget/shared-features';
 import { InstitutionLogo } from '@components/pieces';
 import React from 'react';
-import { useColorScheme, DollarCents } from '@ledget/ui';
+import { useColorScheme, DollarCents, PulseDiv } from '@ledget/ui';
 
 const Card = ({
   card,
   width,
   height,
 }: {
-  card: Account;
+  card?: Account;
   width: number;
   height: number;
 }) => {
   const { isDark } = useColorScheme();
-  return (
+  return !card ? (
+    <SkeletonCard width={width} height={height} />
+  ) : (
     <div
       className={styles.card}
       data-light={!isDark}
@@ -57,5 +59,20 @@ const Card = ({
     </div>
   );
 };
+
+const SkeletonCard = ({ width, height }: { width: number; height: number }) => (
+  <div
+    className={styles.card}
+    data-skeleton={true}
+    style={
+      {
+        '--card-width': `${width}px`,
+        '--card-height': `${height}px`,
+      } as React.CSSProperties
+    }
+  >
+    <PulseDiv isSkeleton={true} />
+  </div>
+);
 
 export default Card;

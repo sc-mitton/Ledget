@@ -46,6 +46,7 @@ class AccountLS(serializers.ListSerializer):
 class AccountSerializer(serializers.ModelSerializer):
     institution = InstitutionSerializer(required=False, read_only=True)
     card_hue = serializers.SerializerMethodField(required=False, read_only=True)
+    pinned = serializers.SerializerMethodField(required=False, read_only=True)
 
     class Meta:
         model = Account
@@ -54,6 +55,9 @@ class AccountSerializer(serializers.ModelSerializer):
 
     def get_card_hue(self, obj):
         return getattr(obj, 'card_hue', None)
+
+    def get_pinned(self, obj):
+        return getattr(obj, 'pinned', None)
 
     def to_representation(self, instance):
         rep = super().to_representation(instance)

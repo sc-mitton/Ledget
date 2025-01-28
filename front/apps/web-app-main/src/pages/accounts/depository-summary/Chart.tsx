@@ -182,10 +182,12 @@ export const Chart = () => {
       </div>
       <div className={styles.windowSelect}>
         <BakedListBox
+          placement="right"
           as={BlueFadedSquareRadio}
           options={windowOptions}
           defaultValue={'3M'}
           multiple={false}
+          withChevron={false}
           allowNoneSelected={true}
           onChange={setWindow}
         />

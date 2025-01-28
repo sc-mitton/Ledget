@@ -90,6 +90,7 @@ class UserAccount(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
     order = models.PositiveIntegerField(default=0)
     card_hue = models.CharField(max_length=10, null=True, blank=True)
+    pinned = models.IntegerField(null=True, blank=True)
 
     class Meta:
         db_table = 'financials_user_account'

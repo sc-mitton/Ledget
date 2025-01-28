@@ -179,7 +179,9 @@ const AccountMenu = () => {
                   className={styles.optionLeftSide}
                   data-selected={accounts?.includes(a.id)}
                 >
-                  <InstitutionLogo accountId={a.id} />
+                  <div>
+                    <InstitutionLogo accountId={a.id} size={'1.5em'} />
+                  </div>
                   <div>
                     <span>{capitalize(a.name)}</span>
                     <span>&bull;&nbsp;&bull;&nbsp;{capitalize(a.mask)}</span>

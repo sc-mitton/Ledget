@@ -32,7 +32,6 @@ const DepositorySummary = () => {
         balanceTrend.trends
           .filter((t) => accountsData?.accounts.some((a) => a.id === t.account))
           .reduce((acc, trend) => acc.plus(trend.trend), Big(0))
-          .times(100)
           .toNumber() || 0
       );
     }

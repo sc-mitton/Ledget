@@ -1,3 +1,4 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import apiSlice from '../apiSlice/slice';
 import {
   GetAccountBalanceHistoryParams,
@@ -11,7 +12,7 @@ import {
 
 const apiWithTag = apiSlice.enhanceEndpoints({ addTagTypes: ['Accounts'] });
 
-export const accountsSlice = apiWithTag.injectEndpoints({
+export const accountsRTKSlice = apiWithTag.injectEndpoints({
   endpoints: (builder) => ({
     getAccounts: builder.query<GetAccountsResponse, void>({
       query: () => `accounts`,
@@ -59,7 +60,7 @@ export const accountsSlice = apiWithTag.injectEndpoints({
     }),
     updateAccounts: builder.mutation<UpdateAccount[], UpdateAccount[]>({
       query: (data) => ({
-        url: `accounts`,
+        url: 'accounts',
         method: 'PATCH',
         body: data,
       }),
@@ -68,13 +69,51 @@ export const accountsSlice = apiWithTag.injectEndpoints({
   }),
 });
 
+type AccountsSliceStateT = string[];
+
+const initialState: AccountsSliceStateT = [];
+
+export const pinnedAccountsSlice = createSlice({
+  name: 'pinnedAccounts',
+  initialState,
+  reducers: {
+    setPinAccount: (state, action: PayloadAction<string>) => {
+      state = state ? [action.payload, ...state] : [action.payload];
+      return state;
+    },
+    unPinAccount: (state, action: PayloadAction<string>) => {
+      state = state.filter((p) => p !== action.payload);
+      return state;
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addMatcher(
+      accountsRTKSlice.endpoints.getAccounts.matchFulfilled,
+      (state, action) => {
+        state = action.payload.accounts
+          .filter((a) => a.type === 'depository')
+          .filter((a) => a.pinned !== null)
+          .sort((a, b) => (a.pinned! < b.pinned! ? -1 : 1))
+          .map((a) => a.id);
+        return state;
+      }
+    );
+  },
+});
+
 export const {
   useGetAccountsQuery,
   useUpdateAccountsMutation,
   useLazyGetAccountBalanceHistoryQuery,
   useLazyGetAccountBalanceTrendQuery,
   useGetBreakdownHistoryQuery,
-} = accountsSlice;
+} = accountsRTKSlice;
 
 export const useGetAccountsQueryState =
-  accountsSlice.endpoints.getAccounts.useQueryState;
+  accountsRTKSlice.endpoints.getAccounts.useQueryState;
+
+export const { setPinAccount, unPinAccount } = pinnedAccountsSlice.actions;
+export const selectPinnedAccounts = (state: {
+  pinnedAccounts: AccountsSliceStateT;
+  [key: string]: any;
+}) => state.pinnedAccounts;

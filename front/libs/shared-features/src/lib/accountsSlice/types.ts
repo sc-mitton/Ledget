@@ -23,11 +23,13 @@ export interface Account {
   subtype: string;
   institution_id: string;
   card_hue?: number;
+  pinned: number | null;
 }
 
 export type UpdateAccount =
   | ({ order: number } & { account: string })
-  | ({ card_hue: number } & { account: string });
+  | ({ card_hue: number } & { account: string })
+  | ({ pinned: number | null } & { account: string });
 
 export interface GetAccountsResponse {
   institutions: Institution[];

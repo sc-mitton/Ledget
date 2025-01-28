@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Pin } from '@geist-ui/icons';
 import { animated, useTransition } from '@react-spring/web';
 import Big from 'big.js';
@@ -8,45 +9,56 @@ import { DollarCents } from '@ledget/ui';
 import { InstitutionLogo } from '@components/pieces';
 
 import {
-  selectPinnedHoldings,
   useGetAccountsQuery,
+  setPinAccount,
+  unPinAccount,
+  useUpdateAccountsMutation,
+  selectPinnedAccounts,
+  Account,
 } from '@ledget/shared-features';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
-import {
-  setPinnedAccount,
-  unPinAccount,
-} from '@features/depositoryAccountsTabSlice';
 import { useLoaded } from '@ledget/helpers';
 
 const PinnedAccounts = withModal((props) => {
   const loaded = useLoaded(1000);
   const dispatch = useAppDispatch();
+  const [updateAccount] = useUpdateAccountsMutation();
   const { data } = useGetAccountsQuery();
-  const pinnedAccounts = useAppSelector(selectPinnedHoldings);
+  const pinnedAccounts = useAppSelector(selectPinnedAccounts);
+  const [pinnedAccountsList, setPinnedAccountsList] = useState<Account[]>();
 
-  const transitions = useTransition(
-    data?.accounts.filter((a) =>
-      pinnedAccounts?.some((p) => p.security_id === a.id)
-    ),
-    {
-      from: {
-        opacity: 0,
-        maxWidth: 0,
-      },
-      enter: {
-        opacity: 1,
-        maxWidth: 400,
-      },
-      leave: {
-        opacity: 0,
-        maxWidth: 0,
-      },
-      config: {
-        duration: 500,
-      },
-      immediate: !loaded,
+  useEffect(() => {
+    const currendIdsSet = new Set(pinnedAccountsList?.map((a) => a.id));
+    const newIdsSet = new Set(pinnedAccounts);
+
+    if (
+      pinnedAccountsList?.some((a) => !newIdsSet.has(a.id)) ||
+      pinnedAccounts.some((pId) => !currendIdsSet.has(pId))
+    ) {
+      setPinnedAccountsList(
+        data?.accounts.filter((a) => pinnedAccounts.includes(a.id))
+      );
     }
-  );
+  }, [pinnedAccounts]);
+
+  const transitions = useTransition(pinnedAccountsList, {
+    from: {
+      opacity: 0,
+      maxWidth: 0,
+    },
+    enter: {
+      opacity: 1,
+      maxWidth: 400,
+    },
+    leave: {
+      opacity: 0,
+      maxWidth: 0,
+    },
+    config: {
+      duration: 500,
+    },
+    immediate: !loaded,
+  });
 
   return (
     <div>
@@ -59,7 +71,10 @@ const PinnedAccounts = withModal((props) => {
           <animated.button
             style={style}
             onClick={() => {
-              pinned?.id && dispatch(unPinAccount(pinned.id));
+              if (pinned) {
+                dispatch(unPinAccount(pinned.id));
+                updateAccount([{ account: pinned.id, pinned: null }]);
+              }
             }}
           >
             <InstitutionLogo accountId={pinned?.id} size={'1.5em'} />
@@ -86,10 +101,19 @@ const PinnedAccounts = withModal((props) => {
       </div>
       <div className={styles.list}>
         {data?.accounts
-          .filter((a) => !pinnedAccounts?.some((p) => p.security_id === a.id))
+          .filter((a) => a.type === 'depository')
+          .filter((a) => !pinnedAccounts?.some((p) => p === a.id))
           .map((a) => (
             <button
-              onClick={() => dispatch(setPinnedAccount(a.id))}
+              onClick={() => {
+                updateAccount([
+                  {
+                    account: a.id,
+                    pinned: pinnedAccounts.length + 1,
+                  },
+                ]);
+                dispatch(setPinAccount(a.id));
+              }}
               className={styles.account}
             >
               <div>

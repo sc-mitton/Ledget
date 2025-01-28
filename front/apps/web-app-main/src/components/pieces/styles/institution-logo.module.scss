@@ -9,11 +9,12 @@
   span {
     color: var(--white);
     font-size: 0.65em;
+    z-index: 1;
   }
 
   &::after {
     background-color: var(--m-text);
-    opacity: 0.3;
+    opacity: 0.1;
     content: '';
     width: 1em;
     height: 1em;
@@ -22,6 +23,6 @@
     left: 50%;
     transform: translate(-50%, -50%);
     position: absolute;
-    z-index: -1;
+    z-index: 0;
   }
 }

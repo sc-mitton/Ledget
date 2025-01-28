@@ -1,30 +1,11 @@
-import styles from './styles/card.module.scss';
-import { PulseDiv } from '@ledget/ui';
-import { cardWidth } from './constants';
+import { Card } from '@components';
+import { cardWidth, cardHeight } from './constants';
 
 const SkeletonCards = () => (
   <>
-    <div
-      className={styles.card}
-      data-skeleton={true}
-      style={{ '--card-width': `${cardWidth}px` } as React.CSSProperties}
-    >
-      <PulseDiv isSkeleton={true} />
-    </div>
-    <div
-      className={styles.card}
-      data-skeleton={true}
-      style={{ '--card-width': `${cardWidth}px` } as React.CSSProperties}
-    >
-      <PulseDiv isSkeleton={true} />
-    </div>
-    <div
-      className={styles.card}
-      data-skeleton={true}
-      style={{ '--card-width': `${cardWidth}px` } as React.CSSProperties}
-    >
-      <PulseDiv isSkeleton={true} />
-    </div>
+    <Card width={cardWidth} height={cardHeight} />
+    <Card width={cardWidth} height={cardHeight} />
+    <Card width={cardWidth} height={cardHeight} />
   </>
 );
 

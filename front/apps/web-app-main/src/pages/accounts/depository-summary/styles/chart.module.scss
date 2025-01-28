@@ -20,6 +20,11 @@
   top: 0.75em;
   right: 0.75em;
 
+  button {
+    padding: 0.25em 0.625em;
+    border-radius: 0.375em;
+  }
+
   * {
     scrollbar-width: none;
   }

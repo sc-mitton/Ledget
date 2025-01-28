@@ -11,7 +11,6 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
-from rest_framework.serializers import ListSerializer
 from rest_framework.exceptions import ValidationError
 from django.db.models import Sum, F
 from django.utils import timezone
@@ -56,17 +55,17 @@ class AccountsViewSet(ViewSet):
                 useraccount__user__in=self.request.user.account.users.all())
 
     def get_object(self, request):
-        account = Account.objects.get(id=self.request.query_params.get('id'))
+        obj_id = self.request.query_params.get('id')
+        account = Account.objects.get(id=obj_id)
         self.check_object_permissions(request, account)
 
     def partial_update(self, request, *args, **kwargs):
-        serializer = UserAccountSerializer(data=request.data, many=True, partial=True)
+        serializer = UserAccountSerializer(
+            data=request.data,
+            many=True,
+            partial=True)
         serializer.is_valid(raise_exception=True)
-
-        if isinstance(serializer, ListSerializer):
-            to_update = self.get_queryset(serializer)
-        else:
-            to_update = self.get_object()
+        to_update = self.get_queryset(serializer)
 
         serializer.update(to_update, serializer.validated_data)
 
@@ -157,6 +156,7 @@ class AccountsViewSet(ViewSet):
         qset = Account.objects.filter(
                 useraccount__user__in=self.request.user.account.users.all()
             ).annotate(order=F('useraccount__order')) \
+            .annotate(pinned=F('useraccount__pinned')) \
             .annotate(card_hue=F('useraccount__card_hue'))
 
         account_ids = self.request.query_params.getlist('accounts')
