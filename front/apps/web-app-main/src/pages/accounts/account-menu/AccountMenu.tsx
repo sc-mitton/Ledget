@@ -1,12 +1,23 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { ChevronDown } from '@geist-ui/icons';
+import { useSpringRef, useTransition, animated } from '@react-spring/web';
 import Big from 'big.js';
 
 import styles from './styles.module.scss';
 import { InstitutionLogo } from '@components/pieces';
-import { StyledMenu, DollarCents, FilterPillButton } from '@ledget/ui';
-import { useGetAccountsQuery, Account } from '@ledget/shared-features';
+import {
+  StyledMenu,
+  DollarCents,
+  FilterPillButton,
+  GripButton,
+} from '@ledget/ui';
+import { useSpringDrag } from '@ledget/ui';
+import {
+  useGetAccountsQuery,
+  Account,
+  useUpdateAccountsMutation,
+} from '@ledget/shared-features';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
 import pathMappings from '../path-mappings';
 import {
@@ -23,9 +34,11 @@ type SelectOption = {
 };
 
 const AccountMenu = () => {
-  const { data } = useGetAccountsQuery();
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const { data } = useGetAccountsQuery();
+  const [updateOrder] = useUpdateAccountsMutation();
 
   const dispatch = useAppDispatch();
   const accounts = useAppSelector(selectAccounts);
@@ -33,6 +46,59 @@ const AccountMenu = () => {
     useState<SelectOption[]>();
   const [accountsFilter, setAccountsFilter] = useState<SelectOption>();
   const [menuListItems, setMenuListItems] = useState<Account[]>();
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const order = useRef<string[]>(
+    data?.accounts
+      .filter((a) => a.type === pathMappings.getAccountType(location))
+      .map((a) => a.id) || []
+  );
+  const rowHeight = useMemo(
+    () =>
+      parseFloat(window.getComputedStyle(document.documentElement).fontSize) *
+      4,
+    []
+  );
+
+  const api = useSpringRef();
+  const transitions = useTransition(menuListItems, {
+    from: (_, i) => ({
+      y: rowHeight * i,
+      height: rowHeight,
+      zIndex: menuListItems ? menuListItems.length - i : 0,
+    }),
+    update: (_, i) => ({
+      y: rowHeight * i,
+      zIndex: menuListItems ? menuListItems.length - i : 0,
+    }),
+    ref: api,
+    config: {
+      tension: 300,
+      friction: 30,
+      mass: 1,
+    },
+  });
+
+  const bind = useSpringDrag({
+    order: order,
+    api: api,
+    onRest: (newOrder) => {
+      if (order.current !== newOrder) {
+        updateOrder(
+          newOrder.map((id, index) => ({
+            account: id,
+            order: index,
+          }))
+        );
+      }
+    },
+    style: {
+      padding: 0,
+      size: rowHeight,
+      axis: 'y',
+    },
+    activeScale: 1,
+  });
 
   useEffect(() => {
     if (accounts) {
@@ -121,10 +187,26 @@ const AccountMenu = () => {
     }
   }, [data, accountsFilter]);
 
+  const onOpen = useCallback(
+    (open: boolean) => {
+      if (open) {
+        const currentIndex =
+          menuListItems?.findIndex((m) => m.id === accounts?.[0]) || 0;
+        scrollRef.current?.scrollTo({
+          top: rowHeight * currentIndex,
+          behavior: 'instant',
+        });
+      }
+    },
+    [accounts]
+  );
+
   return (
     <StyledMenu>
       <StyledMenu.Button className={styles.button}>
-        <InstitutionLogo accountId={accounts?.[0]} size={'1.5em'} />
+        <div>
+          <InstitutionLogo accountId={accounts?.[0]} size={'1.5em'} />
+        </div>
         <span>{data?.accounts?.find((a) => a.id === accounts?.[0])?.name}</span>
         <span>
           <DollarCents
@@ -138,8 +220,13 @@ const AccountMenu = () => {
         </span>
         <ChevronDown className="icon" strokeWidth={2} />
       </StyledMenu.Button>
-      <StyledMenu.Items className={styles.dropdown}>
+      <StyledMenu.Items
+        className={styles.dropdown}
+        ref={scrollRef}
+        onOpen={onOpen}
+      >
         <div className={styles.filterButtonsContainer}>
+          {/*Bottom Border */}
           <span />
           <div>
             {accountsFilterOptions?.map((option, i) => {
@@ -168,40 +255,56 @@ const AccountMenu = () => {
             })}
           </div>
         </div>
+        {/* Scroll bar cover */}
+        <span />
         <div className={styles.itemOptions}>
-          {menuListItems?.map((a) => (
-            <StyledMenu.Item
-              onClick={() => {
-                dispatch(setAccounts(a.id));
-              }}
-              renderLeft={() => (
-                <div
-                  className={styles.optionLeftSide}
-                  data-selected={accounts?.includes(a.id)}
+          {transitions(
+            (style, a) =>
+              a && (
+                <animated.div
+                  className={styles.accountMenuItem}
+                  style={style}
+                  {...bind(a.id)}
                 >
                   <div>
-                    <InstitutionLogo accountId={a.id} size={'1.5em'} />
+                    <GripButton />
                   </div>
-                  <div>
-                    <span>{capitalize(a.name)}</span>
-                    <span>&bull;&nbsp;&bull;&nbsp;{capitalize(a.mask)}</span>
-                  </div>
-                </div>
-              )}
-              renderRight={() => (
-                <div
-                  className={styles.rightSide}
-                  data-selected={accounts?.includes(a.id)}
-                >
-                  <DollarCents
-                    value={Big(a.balances.current || 0)
-                      .times(100)
-                      .toNumber()}
+                  <StyledMenu.Item
+                    onClick={() => {
+                      dispatch(setAccounts(a.id));
+                    }}
+                    renderLeft={() => (
+                      <div
+                        className={styles.optionLeftSide}
+                        data-selected={accounts?.includes(a.id)}
+                      >
+                        <div>
+                          <InstitutionLogo accountId={a.id} size={'1.5em'} />
+                        </div>
+                        <div>
+                          <span>{capitalize(a.name)}</span>
+                          <span>
+                            &bull;&nbsp;&bull;&nbsp;{capitalize(a.mask)}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                    renderRight={() => (
+                      <div
+                        className={styles.rightSide}
+                        data-selected={accounts?.includes(a.id)}
+                      >
+                        <DollarCents
+                          value={Big(a.balances.current || 0)
+                            .times(100)
+                            .toNumber()}
+                        />
+                      </div>
+                    )}
                   />
-                </div>
-              )}
-            />
-          ))}
+                </animated.div>
+              )
+          )}
         </div>
       </StyledMenu.Items>
     </StyledMenu>

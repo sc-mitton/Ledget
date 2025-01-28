@@ -246,6 +246,10 @@
   right: 0.5em;
   filter: grayscale(2);
 
+  * {
+    color: var(--white);
+  }
+
   &[data-light='false'] {
     filter: grayscale(1) brightness(0.7) contrast(2);
   }

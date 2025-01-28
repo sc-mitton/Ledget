@@ -204,7 +204,7 @@ export const BlueFadedSquareRadio = styled(BaseButton)`
 export const FilterPillButton = styled(BaseButton)<
   React.HTMLProps<HTMLButtonElement> & { selected?: boolean }
 >`
-  padding: 0.125em 1em;
+  padding: 0.25em 1em;
   color: ${(props) =>
     props.selected ? 'var(--blue-sat)' : 'var(--m-text-secondary)'};
   border-radius: 1em;

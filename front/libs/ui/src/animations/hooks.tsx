@@ -12,6 +12,7 @@ interface UseItemsDrag {
       size: number;
       padding: number;
     };
+    activeScale?: number;
   }): any;
 }
 
@@ -56,7 +57,8 @@ function fn(
   delta = 0,
   axis = 'y',
   itemSize = 0,
-  padding = 0
+  padding = 0,
+  activeScale = 1.04
 ): (
   index: number,
   item: any
@@ -80,7 +82,7 @@ function fn(
           ? { immediate: xImmediate }
           : { immediate: yImmediate }),
         zIndex: 1,
-        scale: 1.04,
+        scale: activeScale,
       };
     } else {
       const pos = order.indexOf(item._item[indexCol]) * (itemSize + padding);
@@ -99,9 +101,14 @@ const useSpringDrag: UseItemsDrag = ({
   indexCol = 'id',
   api,
   style,
+  activeScale,
   onRest,
 }) => {
   return useDrag(({ args: [itemId], active, movement: [x, y] }) => {
+    console.log(
+      document.activeElement?.getAttribute('draggable-item') === null ||
+        !document.activeElement
+    );
     if (
       document.activeElement?.getAttribute('draggable-item') === null ||
       !document.activeElement
@@ -128,7 +135,8 @@ const useSpringDrag: UseItemsDrag = ({
         style.axis === 'x' ? x : y,
         style.axis,
         style.size,
-        style.padding
+        style.padding,
+        activeScale
       )
     );
     if (!active && onRest) {

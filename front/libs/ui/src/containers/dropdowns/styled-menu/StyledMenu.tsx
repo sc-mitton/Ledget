@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, forwardRef } from 'react';
 import { Menu as HeadlessMenu } from '@headlessui/react';
 
 import styles from './styled-menu.module.scss';
@@ -39,14 +39,19 @@ const StyledMenu = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-const Items = ({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
+const Items = forwardRef<
+  HTMLDivElement,
+  {
+    children: React.ReactNode;
+    className?: string;
+    onOpen?: (open: boolean) => void;
+  }
+>(({ children, className, onOpen }, ref) => {
   const { open } = useContext();
+
+  useEffect(() => {
+    onOpen && onOpen(open);
+  }, [open]);
 
   return (
     <HeadlessMenu.Items static>
@@ -55,11 +60,13 @@ const Items = ({
         placement="auto"
         className={[styles.dropdown, className].join(' ')}
       >
-        <div className={styles.dropdownInner}>{children}</div>
+        <div className={styles.dropdownInner} ref={ref}>
+          {children}
+        </div>
       </DropdownDiv>
     </HeadlessMenu.Items>
   );
-};
+});
 
 const Item = ({
   onClick,

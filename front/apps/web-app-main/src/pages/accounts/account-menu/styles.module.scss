@@ -5,8 +5,8 @@
   border-radius: 0.375em;
   align-items: center;
 
-  span,
-  span * {
+  & > span *,
+  & > span {
     font-size: 1rem;
     font-weight: var(--fw-bold);
   }
@@ -17,7 +17,7 @@
 .filterButtonsContainer {
   // background-color: inherit;
   border-radius: inherit;
-  z-index: 10;
+  z-index: 100;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
   top: 0;
@@ -42,19 +42,20 @@
       content: '';
       inset: 0;
       opacity: 0.05;
-      border-bottom: 1.5px solid var(--m-text);
+      border-bottom: 2.5px solid var(--m-text);
     }
+  }
 
-    &::before {
-      content: '';
-      top: 0;
-      right: 0;
-      width: 20px;
-      height: 20px;
-      border-radius: 12px;
-      background-color: var(--dropdown-background);
-      position: absolute;
-    }
+  // Scroll bar cover
+  & + span {
+    top: -0.75px;
+    right: -0.75px;
+    width: 20px;
+    height: 20px;
+    border-radius: 12px;
+    background-color: var(--dropdown-background);
+    position: absolute;
+    z-index: 1;
   }
 
   & > div {
@@ -92,7 +93,6 @@
     inset: 0;
     position: absolute;
     background-color: var(--dropdown-background);
-    box-shadow: 0 0 8px var(--border-color-dim);
     content: '';
   }
 }
@@ -121,9 +121,13 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 1em;
 
-  &[data-selected='true'] * {
+  // Logo
+  & > div:nth-of-type(1) {
+    margin-right: 0.875em;
+  }
+
+  &[data-selected='true'] > div:not(:nth-of-type(1)) * {
     color: var(--blue-text);
   }
 
@@ -151,7 +155,53 @@
 }
 
 .itemOptions {
-  margin-top: 4.25em;
+  margin-top: 4em;
   min-width: 400px;
+  height: 50vh;
+  max-height: 300px;
   position: relative;
+  z-index: 0;
+  background-color: inherit;
+}
+
+.accountMenuItem {
+  box-sizing: border-box;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  width: 100%;
+  background-color: inherit;
+
+  &::before {
+    inset: 0;
+    content: '';
+    position: absolute;
+    box-shadow: 1px 0 8px var(--m-text);
+    opacity: 0;
+    transition: 0.2s ease-in-out;
+  }
+
+  &:active::before {
+    opacity: 0.1;
+    transition: 0.2s ease-in-out;
+  }
+
+  // Grip Button
+  & > div:first-of-type > button {
+    z-index: 1;
+    position: absolute;
+    left: 0.5em;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--m-text-quinary);
+    cursor: grab;
+  }
+
+  // Not grip button
+  & > div:not(:first-of-type) button {
+    position: absolute;
+    padding-left: 2em;
+    inset: 0;
+  }
 }
