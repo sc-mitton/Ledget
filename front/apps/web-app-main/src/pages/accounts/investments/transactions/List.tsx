@@ -91,10 +91,10 @@ const List = ({ data: investmentsData }: { data: InvestmentsResponse }) => {
               <div>
                 <span>
                   {transaction.name?.toLocaleLowerCase().startsWith('buy') && (
-                    <ArrowDownLeft className={'icon'} />
+                    <ArrowDownLeft className={'icon'} strokeWidth={2} />
                   )}
                   {transaction.name?.toLocaleLowerCase().startsWith('sell') && (
-                    <ArrowUpRight className={'icon'} />
+                    <ArrowUpRight className={'icon'} strokeWidth={2} />
                   )}
                   {(transaction.name || '').length > maxNameLength
                     ? (

@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { ChevronDown } from '@geist-ui/icons';
-import { useSpringRef, useTransition, animated } from '@react-spring/web';
+import { useSpringRef, useTransition, animated, Any } from '@react-spring/web';
 import Big from 'big.js';
 
 import styles from './styles.module.scss';
@@ -101,11 +101,23 @@ const AccountMenu = () => {
   });
 
   useEffect(() => {
+    api.start();
+  }, [menuListItems]);
+
+  useEffect(() => {
     if (accounts) {
       searchParams.set('accounts', accounts.join(','));
       setSearchParams(searchParams);
     }
   }, [accounts]);
+
+  // Update order when accounts change
+  useEffect(() => {
+    order.current =
+      data?.accounts
+        .filter((a) => a.type === pathMappings.getAccountType(location))
+        .map((a) => a.id) || [];
+  }, [data]);
 
   // Set filter options
   useEffect(() => {
@@ -158,6 +170,7 @@ const AccountMenu = () => {
     }
   }, [accountsFilterOptions]);
 
+  // Store accounts state in global state
   useEffect(() => {
     if (data && !accounts) {
       const pageAccountType = pathMappings.getAccountType(location);
@@ -187,20 +200,6 @@ const AccountMenu = () => {
     }
   }, [data, accountsFilter]);
 
-  const onOpen = useCallback(
-    (open: boolean) => {
-      if (open) {
-        const currentIndex =
-          menuListItems?.findIndex((m) => m.id === accounts?.[0]) || 0;
-        scrollRef.current?.scrollTo({
-          top: rowHeight * currentIndex,
-          behavior: 'instant',
-        });
-      }
-    },
-    [accounts]
-  );
-
   return (
     <StyledMenu>
       <StyledMenu.Button className={styles.button}>
@@ -223,7 +222,16 @@ const AccountMenu = () => {
       <StyledMenu.Items
         className={styles.dropdown}
         ref={scrollRef}
-        onOpen={onOpen}
+        onOpen={(open) => {
+          if (open) {
+            const currentIndex =
+              menuListItems?.findIndex((m) => m.id === accounts?.[0]) || 0;
+            scrollRef.current?.scrollTo({
+              top: rowHeight * currentIndex,
+              behavior: 'instant',
+            });
+          }
+        }}
       >
         <div className={styles.filterButtonsContainer}>
           {/*Bottom Border */}
@@ -267,7 +275,9 @@ const AccountMenu = () => {
                   {...bind(a.id)}
                 >
                   <div>
-                    <GripButton />
+                    {(!accountsFilter || accountsFilter.value === 'all') && (
+                      <GripButton />
+                    )}
                   </div>
                   <StyledMenu.Item
                     onClick={() => {

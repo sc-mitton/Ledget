@@ -46,18 +46,6 @@
     }
   }
 
-  // Scroll bar cover
-  & + span {
-    top: -0.75px;
-    right: -0.75px;
-    width: 20px;
-    height: 20px;
-    border-radius: 12px;
-    background-color: var(--dropdown-background);
-    position: absolute;
-    z-index: 1;
-  }
-
   & > div {
     box-sizing: border-box;
     border-radius: inherit;
@@ -99,6 +87,7 @@
 
 .dropdown {
   border-radius: var(--border-radius4);
+  padding-top: 0.5em;
 }
 
 .dot {
@@ -155,7 +144,7 @@
 }
 
 .itemOptions {
-  margin-top: 4em;
+  margin-top: 3.5em;
   min-width: 400px;
   height: 50vh;
   max-height: 300px;
@@ -177,7 +166,7 @@
     inset: 0;
     content: '';
     position: absolute;
-    box-shadow: 1px 0 8px var(--m-text);
+    box-shadow: 0 0 8px 2px var(--m-text);
     opacity: 0;
     transition: 0.2s ease-in-out;
   }
@@ -188,20 +177,29 @@
   }
 
   // Grip Button
-  & > div:first-of-type > button {
-    z-index: 1;
-    position: absolute;
-    left: 0.5em;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--m-text-quinary);
-    cursor: grab;
+  & > div:first-of-type {
+    height: 100%;
+
+    & > button {
+      z-index: 1;
+      padding-right: 1em;
+      position: absolute;
+      left: 0.5em;
+      top: 50%;
+      height: 100%;
+      transform: translateY(-50%);
+      color: var(--m-text-quinary);
+      cursor: grab;
+    }
+  }
+
+  & > div:first-of-type:has(button) + div button {
+    padding-left: 2em;
   }
 
   // Not grip button
   & > div:not(:first-of-type) button {
     position: absolute;
-    padding-left: 2em;
     inset: 0;
   }
 }

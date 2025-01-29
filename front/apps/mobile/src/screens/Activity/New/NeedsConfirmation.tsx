@@ -379,7 +379,7 @@ const NeedsConfirmation = (
                 </View>
               </AnimatedView>
             ))}
-            {expanded && itemHeightSet && (
+            {expanded && itemHeightSet && isTransactionsSuccess && (
               <View style={styles.checkAllButtonContainer}>
                 <TouchableOpacity
                   style={styles.checkAllButton}

@@ -32,13 +32,13 @@ const windowOptions = ['3M', '6M', '1Y', 'MAX'] as const;
 export const Chart = () => {
   const location = useLocation();
   const nivoBaseProps = useMinimalistNivoResponsiveBaseProps({
-    primaryColor: '--blue-medium',
+    primaryColor: '--blue-light-medium',
     gradientColorStart: '--blue-light-hover',
     gradientColorEnd: '--window',
     borderColor: '--window2',
   });
   const nivoTheme = useMinimalistNivoResponsiveLineTheme({
-    primaryColor: '--blue-medium',
+    primaryColor: '--blue-light-medium',
   });
 
   const { data: accountsData } = useGetAccountsQuery();

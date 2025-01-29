@@ -79,7 +79,11 @@ export const NeedsConfirmationStack = () => {
 
   const [
     fetchTransactions,
-    { data: transactionsData, isSuccess, isLoading: isFetchingTransactions },
+    {
+      data: transactionsData,
+      isSuccess: isTransactionsSuccess,
+      isLoading: isFetchingTransactions,
+    },
   ] = useLazyGetUnconfirmedTransactionsQuery();
   const newItemsRef = useRef<HTMLDivElement>(null);
 
@@ -278,7 +282,7 @@ export const NeedsConfirmationStack = () => {
           >
             <div>
               <div onScroll={handleScroll} className={styles.newItemsContainer}>
-                {isSuccess && unconfirmedTransactions && (
+                {isTransactionsSuccess && unconfirmedTransactions && (
                   <>
                     {itemTransitions((style, item, obj, index) => {
                       if (!item) return null;
@@ -294,14 +298,16 @@ export const NeedsConfirmationStack = () => {
                     })}
                   </>
                 )}
-                <div className={styles.confirmAllButton}>
-                  <TextButton>
-                    <span>
-                      Confirm All
-                      <CheckAll className="icon" strokeWidth={2} />
-                    </span>
-                  </TextButton>
-                </div>
+                {isTransactionsSuccess && (
+                  <div className={styles.confirmAllButton}>
+                    <TextButton>
+                      <span>
+                        Confirm All
+                        <CheckAll className="icon" strokeWidth={2} />
+                      </span>
+                    </TextButton>
+                  </div>
+                )}
               </div>
             </div>
           </div>

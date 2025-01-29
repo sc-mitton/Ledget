@@ -34,6 +34,7 @@
     "@stripe/react-stripe-js": "^2.8.0",
     "@stripe/stripe-js": "^1.54.2",
     "@types/react-lottie": "^1.2.10",
+    "@types/redux-persist": "^4.3.1",
     "@types/underscore": "^1.13.0",
     "@use-gesture/react": "^10.3.1",
     "axios": "^1.7.5",

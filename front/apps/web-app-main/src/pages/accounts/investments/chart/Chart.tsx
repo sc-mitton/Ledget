@@ -76,7 +76,7 @@ const Chart = () => {
   );
 
   const nivoBaseProps = useNivoResponsiveBaseProps({
-    primaryColor: '--blue-medium',
+    primaryColor: '--blue-light-medium',
     gradientColorStart: '--blue-light-hover',
     gradientColorEnd: '--main-background-color',
     borderColor: '--window2',

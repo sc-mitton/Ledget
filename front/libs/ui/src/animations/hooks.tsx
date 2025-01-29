@@ -7,6 +7,8 @@ interface UseItemsDrag {
     indexCol?: string;
     api: any;
     onRest?: (newOrder: string[]) => void;
+    onDrag?: (index: number, p: number) => void;
+    offset?: React.MutableRefObject<number>;
     style: {
       axis: 'x' | 'y';
       size: number;
@@ -14,6 +16,14 @@ interface UseItemsDrag {
     };
     activeScale?: number;
   }): any;
+}
+
+interface AnimationT {
+  y?: number;
+  x?: number;
+  scale?: number;
+  zIndex: number;
+  immediate: false | ((key: any) => boolean);
 }
 
 function swap<T>(array: T[], moveIndex: number, toIndex: number): T[] {
@@ -48,67 +58,16 @@ function swap<T>(array: T[], moveIndex: number, toIndex: number): T[] {
   return array;
 }
 
-function fn(
-  order: string[],
-  indexCol: string,
-  active = false,
-  itemId = '',
-  curIndex = 0,
-  delta = 0,
-  axis = 'y',
-  itemSize = 0,
-  padding = 0,
-  activeScale = 1.04
-): (
-  index: number,
-  item: any
-) => {
-  y?: number;
-  x?: number;
-  zIndex: number;
-  immediate: false | ((key: any) => boolean);
-} {
-  return (index: number, item: any) => {
-    if (active && item._item[indexCol] === itemId) {
-      const pos = Math.min(
-        Math.max(curIndex * (itemSize + padding) + delta, 0),
-        (order.length - 1) * (itemSize + padding)
-      );
-      const xImmediate = (key: any) => key === 'x' || key === 'zIndex';
-      const yImmediate = (key: any) => key === 'y' || key === 'zIndex';
-      return {
-        ...(axis === 'x' ? { x: pos } : { y: pos }),
-        ...(axis === 'x'
-          ? { immediate: xImmediate }
-          : { immediate: yImmediate }),
-        zIndex: 1,
-        scale: activeScale,
-      };
-    } else {
-      const pos = order.indexOf(item._item[indexCol]) * (itemSize + padding);
-      return {
-        ...(axis === 'x' ? { x: pos } : { y: pos }),
-        zIndex: 0,
-        immediate: false,
-        scale: 1,
-      };
-    }
-  };
-}
-
 const useSpringDrag: UseItemsDrag = ({
   order,
   indexCol = 'id',
   api,
   style,
   activeScale,
+  onDrag,
   onRest,
 }) => {
   return useDrag(({ args: [itemId], active, movement: [x, y] }) => {
-    console.log(
-      document.activeElement?.getAttribute('draggable-item') === null ||
-        !document.activeElement
-    );
     if (
       document.activeElement?.getAttribute('draggable-item') === null ||
       !document.activeElement
@@ -125,20 +84,49 @@ const useSpringDrag: UseItemsDrag = ({
     );
 
     const newOrder = swap<string>(order.current, curIndex, curPosition);
-    api.start(
-      fn(
-        newOrder,
-        indexCol,
-        active,
-        itemId,
-        curIndex,
-        style.axis === 'x' ? x : y,
-        style.axis,
-        style.size,
-        style.padding,
-        activeScale
-      )
-    );
+    api.start((index: number, item: any) => {
+      let animation = {} as AnimationT;
+
+      if (active && item._item[indexCol] === itemId) {
+        const delta = style.axis === 'x' ? x : y;
+        const pos = Math.min(
+          Math.max(curIndex * (style.size + style.padding) + delta, 0),
+          (newOrder.length - 1) * (style.size + style.padding)
+        );
+        const xImmediate = (key: any) => key === 'x' || key === 'zIndex';
+        const yImmediate = (key: any) => key === 'y' || key === 'zIndex';
+        animation['immediate'] = style.axis === 'x' ? xImmediate : yImmediate;
+        animation['zIndex'] = 1;
+        animation['scale'] = activeScale;
+        if (style.axis === 'x') {
+          animation['x'] = pos;
+        } else {
+          animation['y'] = pos;
+        }
+      } else {
+        const pos =
+          newOrder.indexOf(item._item[indexCol]) * (style.size + style.padding);
+        if (style.axis === 'x') {
+          animation['x'] = pos;
+        } else {
+          animation['y'] = pos;
+        }
+        animation['zIndex'] = 0;
+        animation['immediate'] = false;
+        animation['scale'] = 1;
+      }
+      return {
+        to: animation,
+        onChange: () => {
+          if (
+            active &&
+            ((style.axis === 'x' && x > 10) || (style.axis === 'y' && y > 10))
+          ) {
+            onDrag && onDrag(index, animation['x'] || animation['y'] || 0);
+          }
+        },
+      };
+    });
     if (!active && onRest) {
       onRest(newOrder);
     }

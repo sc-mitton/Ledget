@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { FlatList, View } from 'react-native';
 import { useTheme } from '@shopify/restyle';
 import DraggableFlatList, {
   ScaleDecorator,
@@ -23,6 +23,7 @@ import {
   selectAccountsTabDepositAccounts,
   setAccountsTabDepositAccounts,
 } from '@/features/uiSlice';
+import { useLoaded } from '@ledget/helpers';
 
 const AccountPicker = (props: ModalScreenProps<'PickAccount'>) => {
   const dispatch = useAppDispatch();
@@ -30,7 +31,9 @@ const AccountPicker = (props: ModalScreenProps<'PickAccount'>) => {
   const [updateOrder] = useUpdateAccountsMutation();
   const theme = useTheme();
   const [isFiltered, setIsFiltered] = useState(false);
+  const ref = useRef<any>(null);
 
+  const loaded = useLoaded(200);
   const [accounts, setAccounts] = useState<Account[]>();
   const { data: accountsData } = useGetAccountsQuery();
   const globalAccounts = useAppSelector(
@@ -64,6 +67,19 @@ const AccountPicker = (props: ModalScreenProps<'PickAccount'>) => {
     );
   }, [accountsData]);
 
+  useEffect(() => {
+    if (loaded) {
+      const scrollIndex =
+        accounts?.findIndex((acnt) =>
+          globalAccounts?.some((a) => a.id === acnt.id)
+        ) || 0;
+      ref.current.scrollToIndex({
+        index: Math.min(scrollIndex, (accounts?.length || 0) - 9),
+        animated: true,
+      });
+    }
+  }, [loaded]);
+
   return (
     <Box backgroundColor="modalBox100" style={styles.modalBackground}>
       <Box variant="dragBarContainer">
@@ -85,12 +101,15 @@ const AccountPicker = (props: ModalScreenProps<'PickAccount'>) => {
         >
           {accounts && (
             <DraggableFlatList
+              ref={ref}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={styles.draggableListContent}
               debug={false}
               onDragEnd={handleEndDrag}
               keyExtractor={(item) => item.id}
               data={accounts}
+              onScrollToIndexFailed={() => {}}
+              scrollEventThrottle={16}
               renderItem={(args) => (
                 <>
                   <ScaleDecorator activeScale={1.03}>

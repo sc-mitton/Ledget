@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -7,7 +8,7 @@ import '@styles/base.scss';
 import { ColorSchemeProvider, ScreenProvider } from '@ledget/ui';
 import { setEnvironment, selectEnvironment } from '@ledget/shared-features';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
-import store from '@features/store';
+import store, { persistor } from '@features/store';
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useAppDispatch();
@@ -35,7 +36,9 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
 export default function ({ children }: { children: React.ReactNode }) {
   return (
     <Provider store={store}>
-      <Providers>{children}</Providers>
+      <PersistGate loading={null} persistor={persistor}>
+        <Providers>{children}</Providers>
+      </PersistGate>
     </Provider>
   );
 }

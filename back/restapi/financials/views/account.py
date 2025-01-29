@@ -167,7 +167,9 @@ class AccountsViewSet(ViewSet):
         if type:
             qset = qset.filter(type=type)
 
-        qset = qset.order_by('useraccount__order').prefetch_related('plaid_item')
+        qset = qset \
+            .order_by('useraccount__order', 'institution') \
+            .prefetch_related('plaid_item')
 
         if include_institutions:
             qset = qset.prefetch_related('institution')

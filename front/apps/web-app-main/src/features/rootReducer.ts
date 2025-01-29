@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux';
 import { authSlice } from '@features/authSlice';
+import { createMigrate, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 import { uiSlice } from '@features/uiSlice';
 import { modalSlice } from '@features/modalSlice';
 import {
@@ -17,6 +19,27 @@ import {
 import { creditCardsTabSlice } from './creditCardsTabSlice';
 import { depositoryAccountsTabSlice } from './depositoryAccountsTabSlice';
 import { investmentsTabSlice } from './investmentsTabSlice';
+import type { RootState } from './store';
+
+const migrations = {
+  1: (state: RootState) => ({
+    ...state,
+  }),
+} as any;
+
+const persistConfig = {
+  key: 'root',
+  version: 3,
+  storage,
+  timeout: 0,
+  migrate: createMigrate(migrations),
+  whitelist: [
+    'ui',
+    'investmentsTab',
+    'creditCardsTab',
+    'depositoryAccountsTab',
+  ],
+};
 
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
@@ -38,4 +61,6 @@ const rootReducer = combineReducers({
   pinnedAccounts: pinnedAccountsSlice.reducer,
 });
 
-export default rootReducer;
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export default persistedReducer;

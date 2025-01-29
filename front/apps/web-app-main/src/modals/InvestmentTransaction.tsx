@@ -21,10 +21,10 @@ const InvestmentTransaction = withModal<{ item: InvestmentTransactionT }>(
           <div>
             <div>
               {props.item.name?.toLowerCase().includes('buy') && (
-                <ArrowDownLeft className="icon" />
+                <ArrowDownLeft className="icon" strokeWidth={2} />
               )}
               {props.item.name?.toLowerCase().includes('sell') && (
-                <ArrowUpRight className="icon" />
+                <ArrowUpRight className="icon" strokeWidth={2} />
               )}
             </div>
             <h4>{props.item.name}</h4>

@@ -37,7 +37,6 @@ const AccountRow = (props: AccountP) => {
   const [pressed, setPressed] = useState(false);
   const maskViewHeight = useSharedValue(0);
   const { mode } = useAppearance();
-  const theme = useTheme();
 
   useEffect(() => {
     if (props.detailedView) {

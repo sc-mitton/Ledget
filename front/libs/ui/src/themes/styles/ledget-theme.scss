@@ -268,8 +268,8 @@
     // Blue Green Pallet
     --blue-light: hsl(var(--blue-h), var(--blue-s), 90%);
     --blue-light-hover: hsl(var(--blue-h), var(--blue-s), 83%);
-    --blue-light-medium: hsl(var(--blue-h), var(--blue-s), 75%);
-    --blue-light-medium-hover: hsl(var(--blue-h), var(--blue-s), 85%);
+    --blue-light-medium: hsl(var(--blue-h), var(--blue-s), 70%);
+    --blue-light-medium-hover: hsl(var(--blue-h), var(--blue-s), 63%);
     --blue-medium: hsl(var(--blue-h), var(--blue-s), 60%);
     --blue-medium-hover: hsl(var(--blue-h), var(--blue-s), 50%);
     --blue: hsl(var(--blue-h), var(--blue-s), 52%);
@@ -419,7 +419,7 @@
     --dropdown-background-rgb: 250, 250, 250;
     --dropdown-background: hsl(var(--window-h), var(--window-s), 98%);
     --dropdown-background-darker: hsl(var(--window-h), var(--window-s), 98%);
-    --dropdown-border: 0px solid var(--border-color);
+    --dropdown-border: 1px solid var(--border-color-dim);
     --dropdown-item-background: hsl(0, 0%, 93%);
 
     --dropdown-box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 24px,

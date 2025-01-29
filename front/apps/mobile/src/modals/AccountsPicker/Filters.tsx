@@ -7,6 +7,7 @@ import styles from './styles/filters';
 import { Button, Seperator, Box } from '@ledget/native-ui';
 import { Account, useGetAccountsQuery } from '@ledget/shared-features';
 import { ModalScreenProps } from '@types';
+import { capitalize } from '@ledget/helpers';
 
 interface Filter {
   label?: string;
@@ -149,7 +150,13 @@ const Filters = (props: FiltersP) => {
                   }
                 }}
                 labelPlacement="left"
-                label={filter.label}
+                label={
+                  filter.label
+                    ? ['hsa', 'cd'].includes(filter.label.toLowerCase())
+                      ? filter.label.toUpperCase()
+                      : capitalize(filter.label)
+                    : ''
+                }
               >
                 {filter.dotColor && (
                   <View

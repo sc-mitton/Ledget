@@ -76,14 +76,14 @@ export default function Panel(props: AccountsTabsScreenProps<'Credit'>) {
     (i) => ({
       from: { opacity: 1 },
       to: { opacity: i === carouselIndex ? 1 : 0.25 },
-      config: { duration: loaded ? 400 : 0 },
+      config: { duration: loaded ? 200 : 0 },
     })
   );
 
   useEffect(() => {
     cardsApi.start((i) => ({
       to: { opacity: i === carouselIndex ? 1 : 0.25 },
-      config: { duration: loaded ? 400 : 0 },
+      config: { duration: loaded ? 200 : 0 },
     }));
   }, [carouselIndex]);
 

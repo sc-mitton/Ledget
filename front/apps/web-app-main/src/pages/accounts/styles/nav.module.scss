@@ -80,13 +80,13 @@
     li[aria-current='true'],
     li[aria-current='true'] span {
       background-color: transparent;
-      transition: background-color 0.5s ease-in-out;
+      transition: background-color 0.2s ease-in-out;
       color: var(--white);
     }
 
     li:not([aria-current='true']):hover {
       background-color: var(--btn-feather-light-gray-hover);
-      transition: background-color 0.5s ease-in-out;
+      transition: background-color 0.2s ease-in-out;
     }
   }
 }
