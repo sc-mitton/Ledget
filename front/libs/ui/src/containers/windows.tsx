@@ -132,7 +132,7 @@ export const WindowCorner = styled.div`
   align-items: center;
   border-radius: 0.25em;
   position: absolute;
-  top: 1em;
+  top: 0.875em;
   right: 3.5em;
   z-index: 10;
 

@@ -1,124 +1,101 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 
+import { useNavigate } from 'react-router-dom';
 import {
   Plus,
   Info as DetailsIcon,
-  ArrowLeft,
-  ArrowRight,
+  DollarSign,
+  Maximize2,
 } from '@geist-ui/icons';
 
-import { DropdownItem } from '@ledget/ui';
+import { StyledMenu, AbsPosMenu } from '@ledget/ui';
+import type { AbsPosMenuProps } from '@ledget/ui';
+import {
+  Transaction,
+  removeUnconfirmedTransaction,
+  useUpdateTransactionMutation,
+} from '@ledget/shared-features';
+import { useAppDispatch } from '@hooks/store';
+import { setModal } from '@features/modalSlice';
 
-interface ItemOptionsMenuProps {
-  handlers: (() => void)[];
+interface Props extends Omit<AbsPosMenuProps, 'children'> {
+  transaction?: Transaction;
 }
 
-const ItemOptionsMenu = (props: ItemOptionsMenuProps) => {
-  // const ref = useRef()
-  // const refs = useRef([])
-  const ref = useRef<any>(null);
-  const refs = useRef<any[]>(null);
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-
-  for (let i = 0; i < 4; i++) {
-    if (refs.current && refs.current[i]) {
-      refs.current[i] = useRef();
-    }
-  }
+const ItemOptionsMenu = (props: Props) => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const button = useRef<HTMLButtonElement>(null);
+  const [updateTransaction] = useUpdateTransactionMutation();
 
   useEffect(() => {
-    ref.current?.focus();
-    ref.current?.addEventListener('focus', () => {
-      setActiveIndex(0);
-    });
-  }, []);
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLUListElement>) => {
-    switch (e.key) {
-      case 'ArrowUp':
-        activeIndex! > 0 && setActiveIndex(activeIndex! - 1);
-        break;
-      case 'ArrowDown':
-        if (activeIndex === null) {
-          setActiveIndex(0);
-        } else if (activeIndex < 3) {
-          setActiveIndex(activeIndex + 1);
-        }
-        break;
-      case 'Enter':
-        refs.current && activeIndex ? refs.current[activeIndex].click() : null;
-        break;
-      default:
-        break;
+    if (props.show) {
+      button.current?.click();
     }
-  };
+  }, [props.show]);
 
   return (
-    <div>
-      <ul
-        ref={ref}
-        role="menu"
-        aria-orientation="vertical"
-        onKeyDown={handleKeyDown}
-        tabIndex={0}
-      >
-        <DropdownItem
-          as="li"
-          active={activeIndex === 0}
-          role="menuitem"
-          ref={refs.current && refs.current[0]}
-          tabIndex={-1}
-          onClick={() => {
-            props.handlers[0]();
-          }}
-          aria-label="Split"
-        >
-          <div style={{ marginLeft: '-.25em' }}>
-            <ArrowLeft size={'.8em'} strokeWidth={2} />
-            <ArrowRight size={'.8em'} strokeWidth={2} />
-          </div>
-          Split
-        </DropdownItem>
-        <DropdownItem
-          as="li"
-          active={activeIndex === 0}
-          role="menuitem"
-          ref={refs.current && refs.current[1]}
-          tabIndex={-1}
-          onClick={() => {
-            props.handlers[1]();
-          }}
-          aria-label="New monthly bill"
-        >
-          <Plus className="icon" /> New monthly bill
-        </DropdownItem>
-        <DropdownItem
-          as="li"
-          active={activeIndex === 0}
-          role="menuitem"
-          ref={refs.current && refs.current[2]}
-          tabIndex={-1}
-          onClick={() => {
-            props.handlers[2]();
-          }}
-          aria-label="New yearly bill"
-        >
-          <Plus className="icon" /> New yearly bill
-        </DropdownItem>
-        <DropdownItem
-          as="li"
-          role="menuitem"
-          onClick={() => {
-            props.handlers[3]();
-          }}
-          tabIndex={-1}
-          aria-label="Details"
-        >
-          <DetailsIcon className="icon" />
-          Details
-        </DropdownItem>
-      </ul>
-    </div>
+    <AbsPosMenu
+      show={props.show}
+      setShow={props.setShow}
+      pos={props.pos}
+      id="new-item-menu"
+    >
+      <StyledMenu open={props.show}>
+        <StyledMenu.Button ref={button} />
+        <StyledMenu.Items>
+          <StyledMenu.Item
+            label="Split"
+            icon={<Maximize2 className="icon" transform="rotate(45)" />}
+            onClick={() => {
+              if (props.transaction) {
+                dispatch(
+                  setModal({
+                    name: 'transaction',
+                    args: { item: props.transaction, splitMode: true },
+                  })
+                );
+              }
+            }}
+          />
+          <StyledMenu.Item
+            label="New Bill"
+            icon={<Plus className="icon" />}
+            onClick={() => navigate(`/budget/new-category${location.search}`)}
+          />
+          <StyledMenu.Item
+            label="Mark not spending"
+            icon={<DollarSign className="icon" />}
+            onClick={() => {
+              if (props.transaction) {
+                removeUnconfirmedTransaction(props.transaction.transaction_id);
+                updateTransaction({
+                  transactionId: props.transaction.transaction_id,
+                  data:
+                    props.transaction.detail !== 'spending'
+                      ? { detail: 'spending' }
+                      : { detail: null },
+                });
+              }
+            }}
+          />
+          <StyledMenu.Item
+            label="Details"
+            icon={<DetailsIcon className="icon" />}
+            onClick={() => {
+              if (props.transaction) {
+                dispatch(
+                  setModal({
+                    name: 'transaction',
+                    args: { item: props.transaction },
+                  })
+                );
+              }
+            }}
+          />
+        </StyledMenu.Items>
+      </StyledMenu>
+    </AbsPosMenu>
   );
 };
 

@@ -9,6 +9,9 @@
 
   & > div:first-child {
     font-size: 2rem;
+    * {
+      font-weight: var(--fw-bold);
+    }
   }
 
   & > div:nth-child(2),
@@ -32,31 +35,45 @@
   }
 }
 
-.nameContainer {
+.nameInput {
   max-width: 70%;
-  white-space: normal;
-  text-align: center;
-  position: relative;
-  border-radius: var(--border-radius2);
-  padding: 0 0.25em;
-  display: flex;
-  justify-content: center;
-  gap: 0.5em;
-  cursor: pointer;
+}
 
-  button {
-    position: absolute;
-    right: -1.25em;
-    top: 50%;
-    opacity: 0;
-    transform: scale(0.9) translateY(-50%);
-    transition: all 0.2s ease-in-out;
+.nameContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: min-content;
+  margin: 0 auto;
+  white-space: nowrap;
+  color: var(--m-text-secondary);
+  max-width: 70%;
+
+  span {
+    font-size: 1rem;
+    color: inherit;
   }
 
-  &:not(:focus-within):hover button {
-    opacity: 1;
-    transform: scale(1) translateY(-50%);
-    transition: all 0.2s ease-in-out;
+  & > div {
+    transform: scale(0);
+    position: absolute;
+    right: -2em;
+    top: -0.125em;
+    transition: transform 0.2s ease-in-out;
+    color: inherit;
+
+    svg path {
+      opacity: 0.7;
+      stroke: currentColor;
+    }
+  }
+
+  &:hover > div {
+    color: inherit;
+    transform: scale(1);
+    transition: transform 0.2s ease-in-out;
   }
 }
 

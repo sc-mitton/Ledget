@@ -1,12 +1,16 @@
-import { useEffect, useRef, useState, forwardRef } from 'react';
+import { useEffect, useRef, useState, forwardRef, ElementType } from 'react';
 import { Menu as HeadlessMenu } from '@headlessui/react';
 
 import styles from './styled-menu.module.scss';
 import { DropdownDiv } from '../../../animations/dropdowndiv/dropdowndiv';
 import { useContext, Provider } from './context';
-import { ItemProps } from './types';
+import { ItemProps, StyledMenuProps } from './types';
 
-const StyledMenu = ({ children }: { children: React.ReactNode }) => {
+const StyledMenu = <T extends ElementType>({
+  children,
+  open: propsOpen,
+  ...rest
+}: StyledMenuProps<T>) => {
   const [side, setSide] = useState<'left' | 'right'>();
   const measure = useRef<HTMLDivElement>(null);
 
@@ -33,8 +37,9 @@ const StyledMenu = ({ children }: { children: React.ReactNode }) => {
       className={styles.menu}
       data-side={side}
       ref={measure}
+      {...rest}
     >
-      {({ open }) => <Provider open={open}>{children}</Provider>}
+      {({ open }) => <Provider open={propsOpen || open}>{children}</Provider>}
     </HeadlessMenu>
   );
 };
@@ -60,7 +65,7 @@ const Items = forwardRef<
         placement="auto"
         className={[styles.dropdown, className].join(' ')}
       >
-        <div className={styles.dropdownInner} ref={ref}>
+        <div className={styles.items} ref={ref}>
           {children}
         </div>
       </DropdownDiv>

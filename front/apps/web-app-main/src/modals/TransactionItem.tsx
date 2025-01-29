@@ -1,19 +1,22 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 
 import Big from 'big.js';
-import { Menu } from '@headlessui/react';
 import { AnimatePresence } from 'framer-motion';
 import dayjs from 'dayjs';
 import {
   Check,
   Trash2,
-  Edit2,
   Maximize2,
   MoreHorizontal,
+  DollarSign,
 } from '@geist-ui/icons';
+import Lottie from 'react-lottie';
 
 import styles from './styles/transaction-item.module.scss';
-import { useGetNotesQuery } from '@ledget/shared-features';
+import {
+  removeUnconfirmedTransaction,
+  useGetNotesQuery,
+} from '@ledget/shared-features';
 import { withModal, Base64Logo, DollarCents, BillCatLabel } from '@ledget/ui';
 import { SelectCategoryBill } from '@components/inputs';
 import {
@@ -31,62 +34,77 @@ import type {
   Bill,
 } from '@ledget/shared-features';
 import { SplitTransactionInput } from '@components/split';
+import { edit as editLottie } from '@ledget/media/lotties';
 import {
   DropdownDiv,
   useCloseDropdown,
-  DropdownItem,
   SlideMotionDiv,
   CircleIconButton,
-  IconButtonHalfBlue,
   Tooltip,
   TextArea,
   NestedWindow2,
   WindowCorner,
   IconButtonHalfGray,
   PulseDiv,
+  StyledMenu,
+  TextInputWrapper,
 } from '@ledget/ui';
-import { useLoaded } from '@ledget/helpers';
+import { useLoaded, capitalize } from '@ledget/helpers';
+import { useAppDispatch } from '@hooks/store';
 
 type Action = 'split';
 
 const Actions = ({
   setAction,
+  transaction,
 }: {
   setAction: React.Dispatch<React.SetStateAction<Action | undefined>>;
+  transaction: Transaction;
 }) => {
+  const dispatch = useAppDispatch();
   const [openEllipsis, setOpenEllipsis] = useState(false);
+  const [updateTransaction] = useUpdateTransactionMutation();
 
   return (
-    <Menu as={WindowCorner}>
-      {({ open }) => (
-        <>
-          <Menu.Button
-            as={IconButtonHalfGray}
-            onClick={() => setOpenEllipsis(!openEllipsis)}
-          >
-            <MoreHorizontal className="icon" />
-          </Menu.Button>
-          <DropdownDiv placement="right" className="right" visible={open}>
-            <Menu.Items static>
-              <Menu.Item>
-                {({ active }) => (
-                  <DropdownItem
-                    as="button"
-                    active={active}
-                    onClick={() => setAction('split')}
-                  >
-                    <div style={{ marginLeft: '-.25em' }}>
-                      <Maximize2 className="icon" transform="rotate(45)" />
-                    </div>
-                    <span>Split</span>
-                  </DropdownItem>
-                )}
-              </Menu.Item>
-            </Menu.Items>
-          </DropdownDiv>
-        </>
-      )}
-    </Menu>
+    <StyledMenu as={WindowCorner}>
+      <StyledMenu.Button
+        as={IconButtonHalfGray}
+        onClick={() => setOpenEllipsis(!openEllipsis)}
+      >
+        <MoreHorizontal />
+      </StyledMenu.Button>
+      <StyledMenu.Items>
+        <StyledMenu.Item
+          onClick={() => setAction('split')}
+          label="Split"
+          icon={<Maximize2 className="icon" transform="rotate(45)" />}
+        />
+        <StyledMenu.Item
+          onClick={() => {
+            if (transaction.detail === 'spending') {
+              dispatch(
+                removeUnconfirmedTransaction(transaction.transaction_id)
+              );
+              updateTransaction({
+                transactionId: transaction.transaction_id,
+                data: { detail: null },
+              });
+            } else {
+              updateTransaction({
+                transactionId: transaction.transaction_id,
+                data: { detail: 'spending' },
+              });
+            }
+          }}
+          label={
+            transaction.detail === 'spending'
+              ? 'Mark not spending'
+              : 'Mark as spending'
+          }
+          icon={<DollarSign className="icon" />}
+        />
+      </StyledMenu.Items>
+    </StyledMenu>
   );
 };
 
@@ -603,6 +621,16 @@ export const TransactionModalContent = ({
   const [preferredName, setPreferredName] = useState<string | undefined>();
   const [updateTransaction] = useUpdateTransactionMutation();
   const [nameIsDirty, setNameIsDirty] = useState(false);
+  const [animate, setAnimate] = useState(false);
+
+  const animationOptions = {
+    loop: false,
+    autoplay: animate,
+    animationData: editLottie,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice',
+    },
+  };
 
   return (
     <>
@@ -613,7 +641,7 @@ export const TransactionModalContent = ({
           />
         </div>
         {edit ? (
-          <div>
+          <TextInputWrapper className={styles.nameInput}>
             <input
               autoFocus
               defaultValue={item?.preferred_name || item?.name}
@@ -636,14 +664,29 @@ export const TransactionModalContent = ({
                 setEdit(false);
               }}
             />
-          </div>
+          </TextInputWrapper>
         ) : (
-          <div className={styles.nameContainer}>
-            <span>{preferredName || item?.preferred_name || item?.name}</span>
-            <IconButtonHalfBlue onClick={() => setEdit(true)}>
-              <Edit2 size={'1em'} />
-            </IconButtonHalfBlue>
-          </div>
+          <button
+            className={styles.nameContainer}
+            onMouseEnter={() => setAnimate(true)}
+            onMouseLeave={() => setAnimate(false)}
+            onClick={() => setEdit(true)}
+            aria-label="Edit personal info"
+          >
+            <span>
+              {preferredName
+                ? capitalize(preferredName)
+                : capitalize(item.name)}
+            </span>
+            <div>
+              <Lottie
+                options={animationOptions}
+                speed={animate ? 2 : 20000}
+                direction={animate ? 1 : -1}
+                style={{ width: 26, height: 26 }}
+              />
+            </div>
+          </button>
         )}
         {item.pending && <div className={styles.pending}>Pending</div>}
       </div>
@@ -663,7 +706,7 @@ export const TransactionModalContent = ({
             key={'default-view'}
             position={loaded ? 'first' : 'fixed'}
           >
-            <Actions setAction={setAction} />
+            <Actions setAction={setAction} transaction={item} />
             <div className={styles.transactionInfoContainer}>
               {(item.predicted_bill ||
                 item.predicted_category ||

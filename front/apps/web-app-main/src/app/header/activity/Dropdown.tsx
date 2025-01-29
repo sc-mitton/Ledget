@@ -23,6 +23,7 @@ import {
 import { useAppDispatch, useAppSelector } from '@hooks/store';
 import { NeedsConfirmationStack } from './needs-confirmation/Stack';
 import { History } from './history/History';
+import { selectModal } from '@features/modalSlice';
 
 const ActivityDropdown = (props: HTMLProps<HTMLDivElement>) => {
   const dispatch = useAppDispatch();
@@ -41,6 +42,7 @@ const ActivityDropdown = (props: HTMLProps<HTMLDivElement>) => {
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const modal = useAppSelector(selectModal);
 
   const animationOptions = {
     loop: false,
@@ -54,7 +56,7 @@ const ActivityDropdown = (props: HTMLProps<HTMLDivElement>) => {
   useCloseDropdown({
     refs: [dropdownRef, buttonRef],
     visible: showDropdown,
-    setVisible: setShowDropdown,
+    setVisible: modal.name ? () => {} : setShowDropdown,
   });
 
   // track tab index in redux
@@ -103,12 +105,14 @@ const ActivityDropdown = (props: HTMLProps<HTMLDivElement>) => {
                     />
                   </div>
                 </div>
-                <Tab.Panel>
-                  <NeedsConfirmationStack />
-                </Tab.Panel>
-                <Tab.Panel>
-                  <History />
-                </Tab.Panel>
+                <div className={styles.panels}>
+                  <Tab.Panel>
+                    <NeedsConfirmationStack />
+                  </Tab.Panel>
+                  <Tab.Panel>
+                    <History />
+                  </Tab.Panel>
+                </div>
               </>
             )}
           </Tab.Group>

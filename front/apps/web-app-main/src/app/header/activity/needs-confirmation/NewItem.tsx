@@ -120,7 +120,7 @@ const NewItem: FC<{
             aria-label="Confirm"
             className={styles.confirmButton}
           >
-            <Check className="icon" strokeWidth={2} />
+            <Check strokeWidth={2} size={'1.25em'} />
           </IconButtonHalfGray>
         </Tooltip>
         <NarrowButton

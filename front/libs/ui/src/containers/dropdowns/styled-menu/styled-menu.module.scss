@@ -78,9 +78,33 @@
   padding: 0;
 }
 
-.dropdownInner {
+.items {
   max-height: 400px;
   border-radius: inherit;
   overflow: auto;
   background-color: inherit;
+
+  // To hide bottom border for last menu item
+  & > div:last-child,
+  & > button:last-child {
+    background-color: inherit;
+
+    &:hover::after {
+      opacity: 0;
+      transition: 0.2s ease-in-out;
+    }
+
+    &::after {
+      left: 0.375em;
+      right: 0.375em;
+      bottom: 0;
+      height: 2px;
+      content: '';
+      background-color: inherit;
+      transition: 0.2s ease-in-out;
+      z-index: 1;
+      opacity: 1;
+      position: absolute;
+    }
+  }
 }

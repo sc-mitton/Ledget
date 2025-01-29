@@ -153,8 +153,11 @@
   padding: 0;
   top: 2.125em;
   background-color: var(--window);
-  overflow: hidden;
   border-radius: var(--border-radius5);
+}
+
+.panels {
+  padding-top: 0.25em;
 }
 
 .activityDropdownHeader {
@@ -163,6 +166,10 @@
   position: relative;
   width: auto;
   position: absolute;
+  border-radius: inherit;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  overflow: hidden;
   top: 0;
   width: 100%;
 

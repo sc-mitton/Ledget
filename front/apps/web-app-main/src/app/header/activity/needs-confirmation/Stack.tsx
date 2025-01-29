@@ -1,10 +1,8 @@
 import { useCallback, useState, useEffect, useRef } from 'react';
 
-import { useNavigate, useLocation } from 'react-router-dom';
 import { useTransition, useSpringRef } from '@react-spring/web';
 import { shallowEqual } from 'react-redux';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
-import dayjs from 'dayjs';
 
 import styles from './styles/stack.module.scss';
 import { SelectCategoryBill } from '@components/inputs';
@@ -13,7 +11,6 @@ import { CheckAll } from '@ledget/media';
 import ItemOptions from './ItemOptions';
 import { AbsPosMenu, LoadingRingDiv, TextButton } from '@ledget/ui';
 import { useLoaded } from '@ledget/helpers';
-import { setModal } from '@features/modalSlice';
 import {
   useLazyGetUnconfirmedTransactionsQuery,
   confirmAndUpdateMetaData,
@@ -50,8 +47,6 @@ export const NeedsConfirmationStack = () => {
     { x: number; y: number } | undefined
   >();
   const { month, year } = useAppSelector(selectBudgetMonthYear);
-  const navigate = useNavigate();
-  const location = useLocation();
   const { data: tCountData, isSuccess: isGetTransactionsCountSuccess } =
     useGetTransactionsCountQuery(
       { confirmed: false, month, year },
@@ -227,13 +222,11 @@ export const NeedsConfirmationStack = () => {
   const handleEllipsis = useCallback((e: any, item: Transaction) => {
     const buttonRect = e.target.closest('button').getBoundingClientRect();
     setMenuPos({
-      x:
-        buttonRect.right -
-          newItemsRef.current!.getBoundingClientRect().left +
-          14 || 0,
+      x: buttonRect.right - newItemsRef.current!.getBoundingClientRect().left,
       y:
-        buttonRect.top - newItemsRef.current!.getBoundingClientRect().top - 4 ||
-        0,
+        buttonRect.top -
+          newItemsRef.current!.getBoundingClientRect().top -
+          12 || 0,
     });
     setFocusedItem(item);
     setShowBillCatSelect(false);
@@ -248,7 +241,7 @@ export const NeedsConfirmationStack = () => {
       y:
         buttonRect.top -
           newItemsRef.current!.getBoundingClientRect().top -
-          12 || 0,
+          24 || 0,
     });
     setFocusedItem(item);
     setShowMenu(false);
@@ -326,80 +319,13 @@ export const NeedsConfirmationStack = () => {
               year={year}
             />
           </AbsPosMenu>
-          <AbsPosMenu
+          <ItemOptions
             show={showMenu}
             setShow={setShowMenu}
             pos={menuPos}
             id="new-item-menu"
-          >
-            <ItemOptions
-              handlers={[
-                () => {
-                  focusedItem &&
-                    dispatch(
-                      setModal({
-                        name: 'transaction',
-                        args: {
-                          item: focusedItem,
-                          splitMode: true,
-                        },
-                      })
-                    );
-                },
-                () => {
-                  navigate(
-                    {
-                      pathname: '/budget/new-bill',
-                      search: location.search,
-                    },
-                    {
-                      state: {
-                        period: 'month',
-                        upper_amount: focusedItem?.amount,
-                        name: focusedItem?.name,
-                        day: dayjs(
-                          focusedItem?.datetime || focusedItem?.date
-                        ).date(),
-                      },
-                    }
-                  ),
-                    setShowMenu(false);
-                },
-                () => {
-                  navigate(
-                    {
-                      pathname: '/budget/new-bill',
-                      search: location.search,
-                    },
-                    {
-                      state: {
-                        period: 'year',
-                        upper_amount: focusedItem?.amount,
-                        name: focusedItem?.name,
-                        day: dayjs(
-                          focusedItem?.datetime || focusedItem?.date
-                        ).date(),
-                        month:
-                          dayjs(
-                            focusedItem?.datetime || focusedItem?.date
-                          ).month() + 1,
-                      },
-                    }
-                  ),
-                    setShowMenu(false);
-                },
-                () => {
-                  focusedItem &&
-                    dispatch(
-                      setModal({
-                        name: 'transaction',
-                        args: { item: focusedItem },
-                      })
-                    );
-                },
-              ]}
-            />
-          </AbsPosMenu>
+            transaction={focusedItem}
+          />
         </>
       )}
     </LoadingRingDiv>

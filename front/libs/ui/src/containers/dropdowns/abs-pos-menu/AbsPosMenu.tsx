@@ -4,6 +4,15 @@ import { DropdownDiv } from '@ledget/ui';
 import { useCloseDropdown } from '../../../utils/hooks';
 import styles from './abs-pos-menu.module.scss';
 
+export interface AbsPosMenuProps {
+  pos: { x: number; y: number } | undefined;
+  show: boolean;
+  setShow: (show: boolean) => void;
+  topArrow?: boolean;
+  children: React.ReactNode;
+  id?: string;
+}
+
 export const AbsPosMenu = ({
   pos,
   show,
@@ -11,14 +20,7 @@ export const AbsPosMenu = ({
   topArrow = true,
   id,
   children,
-}: {
-  pos: { x: number; y: number } | undefined;
-  show: boolean;
-  setShow: (show: boolean) => void;
-  topArrow?: boolean;
-  children: React.ReactNode;
-  id?: string;
-}) => {
+}: AbsPosMenuProps) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const cachedPos = useRef<{ x: number; y: number } | undefined>(undefined);
 

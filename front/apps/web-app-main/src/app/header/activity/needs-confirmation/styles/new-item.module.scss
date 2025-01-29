@@ -26,7 +26,12 @@
 
 .newItemData {
   display: flex;
-  mask-image: linear-gradient(to right, black, black 72%, transparent 80%);
+  mask-image: linear-gradient(
+    to right,
+    black,
+    black calc(100% - 2em),
+    transparent calc(100% - 0.5em)
+  );
   flex-grow: 1;
 
   // Logo
@@ -75,13 +80,9 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  gap: 0.5em;
-
-  button {
-    margin: 0;
-  }
+  gap: 0.25em;
 }
 
 .confirmButton {
-  margin-left: 0.25em;
+  margin-left: 0.375em;
 }

@@ -1,4 +1,5 @@
-import type { MenuItemProps } from '@headlessui/react';
+import type { MenuItemProps, MenuProps } from '@headlessui/react';
+import { ElementType } from 'react';
 
 export interface TContext {
   open: boolean;
@@ -8,6 +9,11 @@ export interface TContext {
 interface ItemPropsBase extends MenuItemProps<'div'> {
   onClick: () => void;
 }
+
+export type StyledMenuProps<T extends ElementType> = {
+  open?: boolean;
+  children: React.ReactNode;
+} & MenuProps<T>;
 
 export type ItemProps = ItemPropsBase &
   (
