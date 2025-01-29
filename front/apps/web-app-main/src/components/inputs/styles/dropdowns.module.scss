@@ -18,15 +18,29 @@
   }
 }
 
-.addRemindeBtn {
-  gap: 0.5rem;
+.dropdownItemLabel {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.addReminderBtn {
+  display: flex;
+  flex-direction: row;
+  gap: 0.25em;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
   color: var(--m-text);
 
-  &[data-unset='true'] {
-    span,
-    svg {
-      opacity: 0.5;
-    }
+  & > div {
+    display: flex;
+    gap: 0.25em;
+  }
+  * {
+    color: var(--m-text);
   }
 }
 

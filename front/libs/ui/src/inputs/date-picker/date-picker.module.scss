@@ -6,10 +6,6 @@
   & > div input {
     width: 100%;
     width: unset;
-
-    &:last-of-type {
-      margin-left: 0.375em;
-    }
   }
 
   & > div > button {
@@ -40,6 +36,10 @@
     opacity: 1;
     transition: opacity 0.2s ease-in-out;
   }
+}
+
+.dropdown {
+  z-index: 100;
 }
 
 @mixin transition-background($value) {

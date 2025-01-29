@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { Control } from 'react-hook-form';
 
@@ -13,32 +13,13 @@ const baseopts = [
 interface P {
   hasLabel?: boolean;
   labelPrefix?: string;
-  enableAll?: boolean;
-  default?: (typeof baseopts)[number]['value'];
   control: Control<any>;
   excludeOnce?: boolean;
   name?: string;
 }
 
 const PeriodSelect = (props: P) => {
-  const {
-    hasLabel,
-    enableAll,
-    default: defaultValue,
-    excludeOnce = false,
-    labelPrefix,
-    control,
-    name,
-  } = props;
-
-  const [options, setOptions] = useState<typeof baseopts>(baseopts);
-
-  useEffect(() => {
-    const newOptions = baseopts.map((op) =>
-      enableAll ? { ...op, disabled: false } : op
-    );
-    setOptions(newOptions);
-  }, [enableAll, defaultValue]);
+  const { hasLabel, excludeOnce = false, labelPrefix, control, name } = props;
 
   return (
     <>
@@ -49,10 +30,9 @@ const PeriodSelect = (props: P) => {
         control={control as any}
         name={name}
         as={FormInputButton2}
-        options={options.filter((o) =>
+        options={baseopts.filter((o) =>
           excludeOnce ? o.value !== 'once' : true
         )}
-        defaultValue={options.find((op) => op.value === defaultValue)}
         labelPrefix={labelPrefix}
       />
     </>

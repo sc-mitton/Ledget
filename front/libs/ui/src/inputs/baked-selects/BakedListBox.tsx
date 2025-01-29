@@ -2,7 +2,7 @@ import { useRef, useEffect, useState, useId } from 'react';
 
 import { Listbox } from '@headlessui/react';
 import { useController, UseControllerReturn } from 'react-hook-form';
-import { ChevronDown, Check } from '@geist-ui/icons';
+import { ChevronDown, Check, Plus } from '@geist-ui/icons';
 
 import styles from './baked-selects.module.scss';
 import { DropdownDiv } from '../../animations/dropdowndiv/dropdowndiv';
@@ -13,7 +13,7 @@ import { FormErrorTip } from '../../pieces/form-errors/form-errors';
 import type { BakedSelectProps, Option } from './types';
 
 const useOptionalControl = (
-  props: Pick<BakedSelectProps<any, any>, 'control' | 'name'>
+  props: Pick<BakedSelectProps<any, any, any>, 'control' | 'name'>
 ): UseControllerReturn | { field: undefined } => {
   if (!props.control) return { field: undefined };
   return useController({
@@ -25,19 +25,15 @@ const useOptionalControl = (
 // export function BakedListBox(props: BakedListBoxProps) {
 export const BakedListBox = <
   O extends Option[] | readonly string[] | string[],
-  AN extends boolean = false
+  AN extends boolean = false,
+  VK extends string = 'value'
 >(
-  props: BakedSelectProps<O, AN>
+  props: BakedSelectProps<O, AN, VK>
 ) => {
   const id = useId();
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const [value, onChange] = useState<typeof props.defaultValue>(
-    // prettier-ignore
-    Array.isArray(props.defaultValue)
-      ? props.defaultValue.map((v) =>typeof v === 'string' ? v : v[props.valueKey || 'value'])
-      : typeof props.defaultValue === 'string'
-        ? props.defaultValue
-        : props.defaultValue ? props.defaultValue[props.valueKey || 'value'] : undefined
+    props.defaultValue
   );
   const [resetKey, setResetKey] = useState(
     Math.random().toString().slice(3, 10)
@@ -68,6 +64,12 @@ export const BakedListBox = <
   useEffect(() => {
     field?.onChange(value);
     if (props.onChange) props.onChange(value as any);
+  }, [value]);
+
+  useEffect(() => {
+    if (Array.isArray(value) && value.length === 0) {
+      onChange(undefined);
+    }
   }, [value]);
 
   const handleChange = (val: typeof props.defaultValue) => {
@@ -115,7 +117,7 @@ export const BakedListBox = <
                 ) {
                   typeof op === 'string'
                     ? labels.push(op)
-                    : labels.push(op[props.labelKey || 'label']);
+                    : labels.push(op[props.labelKey || 'label'] || '');
                 }
               }
               const label =
@@ -129,12 +131,18 @@ export const BakedListBox = <
                     className={styles.buttonContainer}
                     data-filled={Boolean(value)}
                   >
-                    <span>{`${props.labelPrefix + ' '}${label}`}</span>
-                    {val && props.withCheckMarkIndicator && (
-                      <Check size={'1.25em'} />
+                    {value && props.renderSelected ? (
+                      props.renderSelected(value as any)
+                    ) : (
+                      <span>{`${props.labelPrefix + ' '}${label}`}</span>
                     )}
-                    {(!val || !props.withCheckMarkIndicator) &&
-                      props.withChevron && <ChevronDown size={'1.25em'} />}
+                    {props.renderSelected ? (
+                      value ? null : (
+                        <ChevronDown size={'1.25em'} />
+                      )
+                    ) : (
+                      <ChevronDown size={'1.25em'} />
+                    )}
                   </div>
                   <FormErrorTip error={props.error} />
                 </>
@@ -163,7 +171,9 @@ export const BakedListBox = <
                           op[props.valueKey || 'value']
                         ) || op.disabled;
                   const label =
-                    typeof op === 'string' ? op : op[props.labelKey || 'label'];
+                    (typeof op === 'string'
+                      ? op
+                      : op[props.labelKey || 'label']) || '';
                   const value =
                     typeof op !== 'string' ? op[props.valueKey || 'value'] : op;
 
@@ -189,27 +199,35 @@ export const BakedListBox = <
                               selected={selected}
                               className={styles.bakedDropdownItem}
                             >
-                              <span>
-                                {label.slice(0, props.maxLength)}
-                                {`${
-                                  (props.maxLength || label.length) <
-                                  label.length
-                                    ? '...'
-                                    : ''
-                                }`}
-                              </span>
-                              {props.subLabelKey && (
-                                <span className={styles.subLabel}>
-                                  {typeof op !== 'string' &&
-                                    `${props.subLabelPrefix + ' '}${
-                                      op[props.subLabelKey]
+                              {props.renderLabel ? (
+                                props.renderLabel(label, active, selected)
+                              ) : (
+                                <>
+                                  <span>
+                                    {label.slice(0, props.maxLength)}
+                                    {`${
+                                      (props.maxLength || label.length) <
+                                      label.length
+                                        ? '...'
+                                        : ''
                                     }`}
-                                </span>
+                                  </span>
+                                  {props.subLabelKey && (
+                                    <span className={styles.subLabel}>
+                                      {typeof op !== 'string' &&
+                                        `${props.subLabelPrefix + ' '}${
+                                          op[props.subLabelKey]
+                                        }`}
+                                    </span>
+                                  )}
+                                  <Check
+                                    className="icon"
+                                    color={
+                                      selected ? 'curentColor' : 'transparent'
+                                    }
+                                  />
+                                </>
                               )}
-                              <Check
-                                className="icon"
-                                color={selected ? 'curentColor' : 'transparent'}
-                              />
                             </DropdownItem>
                           );
                         }}

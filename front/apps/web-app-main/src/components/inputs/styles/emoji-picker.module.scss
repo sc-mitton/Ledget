@@ -1,6 +1,5 @@
 .ledgetEmojiPicker {
   position: relative;
-  z-index: 100;
 }
 
 .emojiPickerContainer {
@@ -9,6 +8,7 @@
   left: -1em;
   right: 0;
   color: rgb(72, 83, 206);
+  z-index: 100;
 }
 
 .emojiPickerButton {

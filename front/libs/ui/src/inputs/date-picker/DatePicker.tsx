@@ -937,6 +937,7 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
       )}
       <DropdownDiv
         ref={dropdownRef}
+        className={styles.dropdown}
         visible={
           props.dropdownVisible !== undefined
             ? props.dropdownVisible

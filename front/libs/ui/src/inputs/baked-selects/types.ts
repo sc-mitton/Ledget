@@ -5,14 +5,11 @@ import { DropdownDiv } from '../../animations/dropdowndiv/dropdowndiv';
 
 interface BakedSelectPropsBase {
   name?: string;
-  labelKey?: string;
   subLabelKey?: string;
-  valueKey?: string;
   labelPrefix?: string;
   subLabelPrefix?: string;
   placement?: ComponentProps<typeof DropdownDiv>['placement'];
   placeholder?: string;
-  withCheckMarkIndicator?: boolean;
   withChevron?: boolean;
   as?: FC<React.HTMLAttributes<HTMLButtonElement>>;
   error?: FieldError;
@@ -35,15 +32,27 @@ export type Option = {
 
 export type BakedSelectProps<
   OL extends Option[] | readonly string[] | string[],
-  AN extends boolean
-> = BakedSelectPropsBase &
-  (
+  AN extends boolean,
+  VK extends string = 'value',
+  LK extends string = 'label'
+> = BakedSelectPropsBase & {
+  labelKey?: OL extends Option[] ? LK : never;
+  valueKey?: OL extends Option[] ? VK : never;
+  renderLabel?: (
+    label: string,
+    active: boolean,
+    selected: boolean
+  ) => JSX.Element;
+} & (
     | {
         options: OL;
         allowNoneSelected?: AN;
         multiple?: true;
-        value?: [OL[number]];
-        defaultValue?: [OL[number]];
+        defaultValue?: OL extends Option[] ? OL[number][VK][] : OL[number][];
+        value?: OL extends Option[] ? OL[number][VK][] : OL[number][];
+        renderSelected?: (
+          value: OL extends Option[] ? OL[number][VK][] : OL[number][]
+        ) => JSX.Element;
         disabled?: [OL[number]];
         onChange?: React.Dispatch<
           React.SetStateAction<
@@ -55,8 +64,12 @@ export type BakedSelectProps<
         options: OL;
         multiple?: false;
         allowNoneSelected?: AN;
-        value?: OL[number];
-        defaultValue?: OL[number];
+        defaultValue?: OL extends Option[] ? OL[number][VK] : OL[number];
+        value?: OL extends Option[] ? OL[number][VK] : OL[number];
+        renderLabel?: (op: OL[number][]) => JSX.Element;
+        renderSelected?: (
+          value: OL extends Option[] ? OL[number][VK] : OL[number]
+        ) => JSX.Element;
         disabled?: OL[number];
         onChange?: React.Dispatch<
           React.SetStateAction<

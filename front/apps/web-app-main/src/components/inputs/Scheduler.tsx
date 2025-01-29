@@ -169,7 +169,9 @@ const Button: FC<
           </>
         ) : (
           <div>
-            <span>{placeholder || 'Repeats on'}</span>
+            <span className={schedulerStyles.placeholder}>
+              {placeholder || 'Repeats on'}
+            </span>
           </div>
         )}
         <ChevronDown size={'1.25em'} />
@@ -777,7 +779,7 @@ const MonthDayPicker = () => {
         }}
       >
         <MonthPicker />
-        <hr style={{ opacity: '.7', margin: '.5em 0', width: '100%' }} />
+        <hr className={schedulerStyles.seperator} />
         <DayPicker />
       </div>
     </DropdownDiv>

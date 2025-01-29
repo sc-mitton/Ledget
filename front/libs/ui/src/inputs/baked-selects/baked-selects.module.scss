@@ -13,16 +13,16 @@
 .buttonContainer {
   display: flex;
   align-items: center;
+  width: 100%;
   justify-content: space-between;
   gap: 0.5em;
 
-  &:not([data-filled='true']) {
-    opacity: 0.7;
+  &:not([data-filled='true']) * {
+    color: var(--input-placeholder2);
   }
 
   &[data-filled='true'] * {
     color: currentColor;
-    opacity: 1;
   }
 }
 
@@ -37,40 +37,6 @@
   hr {
     width: calc(100% - 0.5em);
     margin: 0 auto;
-  }
-
-  & > button {
-    display: flex;
-    justify-content: space-between;
-
-    & > div:first-of-type {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.5em;
-      width: 100%;
-      overflow: auto;
-      scrollbar-width: none;
-    }
-
-    &:not(.valid) > div:not(.active):not(.semi-active) {
-      :not(span) {
-        color: var(--input-placeholder2);
-      }
-    }
-
-    &.valid,
-    & > div.active {
-      color: var(--m-text);
-    }
-
-    & > div.semi-active {
-      color: var(--m-text);
-
-      span {
-        color: var(--input-placeholder2);
-      }
-    }
   }
 }
 

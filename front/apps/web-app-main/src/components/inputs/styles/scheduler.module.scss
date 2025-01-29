@@ -30,6 +30,10 @@
   }
 }
 
+.placeholder {
+  color: var(--input-placeholder2);
+}
+
 .scheduleDropdown {
   z-index: 1000;
   padding: 0.75em 0.75em 0.5em 0.75em;
@@ -49,7 +53,7 @@
 }
 
 .dayPicker {
-  margin-top: 1em;
+  margin-top: 0.5em;
 }
 
 .dayPickerItem {
@@ -59,6 +63,7 @@
   justify-content: center;
   width: 2em;
   height: 2em;
+  margin: 0.25em;
   border-radius: 50%;
 }
 
@@ -66,10 +71,10 @@
   cursor: pointer;
   display: flex;
   justify-content: center;
-  border-radius: var(--border-radius2);
+  border-radius: var(--border-radius1);
 
   &[data-selected='true'] {
-    background-color: var(--blue-light);
+    background-color: var(--blue-medium);
     transition: all 0.3s ease-out;
   }
 
@@ -130,10 +135,17 @@
   margin-bottom: 0.75em;
 }
 
+.seperator {
+  width: 100%;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 .monthPicker2 {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
+  gap: 0.25em;
 
   & > div:first-child,
   & > div:last-child {
@@ -146,13 +158,13 @@
 
   & > div:first-child td > div,
   & > div:first-child li > div {
-    padding: 0.125em 0.25em;
-    margin: 0.125em 0.25em;
+    padding: 0.125em 0.5em;
+    margin: 0.25em 0.25em;
   }
 
   & > div:last-child td > div,
   & > div:last-child li > div {
-    padding: 0.125em 0.25em;
-    margin: 0.125em 4.5px;
+    padding: 0.25em 0.5em;
+    margin: 0.25em 4.5px;
   }
 }

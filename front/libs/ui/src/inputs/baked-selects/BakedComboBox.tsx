@@ -2,7 +2,7 @@ import { useRef, useEffect, useState, useId } from 'react';
 
 import { Combobox } from '@headlessui/react';
 import { useController } from 'react-hook-form';
-import { BakedSelectProps } from './BakedListBox';
+import type { BakedSelectProps } from './types';
 import { ChevronDown } from '@geist-ui/icons';
 
 import styles from './baked-selects.module.scss';
@@ -13,7 +13,7 @@ import { DropdownItem } from '../../containers/specialty';
 import { LoadingRingDiv } from '../../pieces/loading-indicators/loading-indicators';
 
 export const BakedComboBox = (
-  props: Omit<BakedSelectProps<string>, 'as'> & { slim?: boolean }
+  props: Omit<BakedSelectProps<string[], true, any>, 'as'> & { slim?: boolean }
 ) => {
   const id = useId();
   const [value, onChange] = useState<any>();
@@ -157,7 +157,6 @@ export const BakedComboBox = (
 };
 
 BakedComboBox.defaultProps = {
-  withCheckMarkIndicator: false,
   labelPrefix: '',
   labelKey: 'label',
   valueKey: 'value',

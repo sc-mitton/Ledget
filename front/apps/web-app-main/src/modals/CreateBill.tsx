@@ -96,10 +96,8 @@ const Form = withModal((props) => {
             <div>
               <PeriodSelect
                 name="period"
-                labelPrefix="Resets"
+                labelPrefix="Period"
                 control={control}
-                enableAll={true}
-                default={location.state?.period}
               />
             </div>
             {billPeriod !== 'once' && (
@@ -115,7 +113,7 @@ const Form = withModal((props) => {
                 register={register}
               />
             )}
-            <AddReminder />
+            <AddReminder control={control} name="reminders" />
           </div>
         </div>
         <div>
@@ -145,7 +143,7 @@ const Form = withModal((props) => {
             />
           </div>
         </div>
-        <div className={styles.paddedRow} style={{ width: '50%' }}>
+        <div className={[styles.paddedRow, styles.datePickerRow].join(' ')}>
           <label htmlFor="expires">Expires</label>
           <Controller
             name="expires"
