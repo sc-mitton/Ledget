@@ -1,75 +1,42 @@
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
-  }
-}
-
-.skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--skeleton-start) 0%,
-    var(--skeleton-middle) 50%,
-    var(--skeleton-start) 100%
-  );
-  background-size: 1000px 100%;
-  animation: shimmer 2s infinite linear;
-}
-
 .box {
-  background-color: var(--nested-container-bg);
   border-radius: 12px;
-  padding: 16px;
   margin-bottom: 12px;
 }
 
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 16px;
+  padding: 1em;
+  box-sizing: border-box;
 }
 
 .headerContent {
   display: flex;
   flex-direction: column;
   gap: 8px;
-}
-
-.titleSkeleton {
-  @extend .skeleton;
-  width: 160px;
-  height: 24px;
-  border-radius: 4px;
-}
-
-.subtitleSkeleton {
-  @extend .skeleton;
-  width: 120px;
-  height: 16px;
-  border-radius: 4px;
-}
-
-.logoSkeleton {
-  @extend .skeleton;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
+  width: 100%;
+  position: relative;
 }
 
 .separator {
   border: none;
-  height: 1px;
-  background-color: var(--nested-container-separator);
+  height: 1.5px;
+  background-color: var(--border-color-dim);
   margin: 16px 0;
 }
 
 .middleRow {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  gap: 1em;
   margin-bottom: 24px;
+  padding: 0 2em;
+
+  * {
+    color: var(--m-text-quinary);
+    font-size: 14px;
+  }
 }
 
 .middleRowCell {
@@ -78,49 +45,15 @@
   gap: 4px;
 }
 
-.labelSkeleton {
-  @extend .skeleton;
-  width: 80px;
-  height: 14px;
-  border-radius: 4px;
-}
-
-.valueSkeleton {
-  @extend .skeleton;
-  width: 60px;
-  height: 20px;
-  border-radius: 4px;
-}
-
-.progressBars {
-  display: flex;
-  gap: 4px;
-  margin-bottom: 8px;
-}
-
-.progressBarSkeleton {
-  @extend .skeleton;
-  flex: 1;
-  height: 4px;
-  border-radius: 2px;
-}
-
-.dates {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 16px;
-}
-
-.dateSkeleton {
-  @extend .skeleton;
-  width: 60px;
-  height: 16px;
-  border-radius: 4px;
-}
-
 .lastPaymentSkeleton {
-  @extend .skeleton;
-  width: 200px;
-  height: 16px;
-  border-radius: 4px;
+  padding: 0 1em 1em 1em;
+  gap: 0.5em;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+
+  * {
+    font-size: 14px;
+    color: var(--m-text-quinary);
+  }
 }

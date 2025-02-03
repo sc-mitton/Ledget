@@ -40,12 +40,11 @@ const Loans = () => {
           </>
         ) : (
           <>
-            {Array.from({ length: 2 }).map((_, i) => (
+            {Array.from({ length: 4 }).map((_, i) => (
               <SkeletonLoanCard key={i} />
             ))}
           </>
         )}
-        <div className={styles.bottomSpacer} />
       </div>
     </div>
   );

@@ -9,6 +9,7 @@ import {
   Seperator,
   Icon,
   PulseBox,
+  PulseText,
 } from '@ledget/native-ui';
 
 const LoanCard = () => {
@@ -16,8 +17,8 @@ const LoanCard = () => {
     <Box variant="nestedContainer" style={styles.box}>
       <View style={styles.header}>
         <Box gap="m" marginTop="xs" justifyContent="center">
-          <PulseBox height="s" width={150} backgroundColor="menuSeperator" />
-          <PulseBox height="s" width={75} backgroundColor="menuSeperator" />
+          <PulseText borderRadius={'xs'} width={150} />
+          <PulseText borderRadius={'xs'} width={75} />
         </Box>
         <View style={styles.logo}>
           <InstitutionLogo size={28} />

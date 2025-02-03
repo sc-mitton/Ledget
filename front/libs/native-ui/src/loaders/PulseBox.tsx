@@ -41,7 +41,7 @@ export const PulseText = (props: Props) => {
   const {
     pulsing = true,
     placeholder,
-    numberOfLines,
+    numberOfLines = 1,
     children,
     style,
     backgroundColor,
