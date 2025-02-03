@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, createRef } from 'react';
+import { useState, useEffect, createRef } from 'react';
 import { View, ScrollView, Dimensions, FlatList } from 'react-native';
 import { Emoji, Edit, Edit2 } from 'geist-native-icons';
 import Swipeable, {
@@ -63,14 +63,18 @@ const AddBills = (props: OnboardingScreenProps<'AddBills'>) => {
   const [flatListData, setFlatListData] = useState<Bill[]>([]);
   const swipeables = [...Array(100)].map(() => createRef<SwipeableMethods>());
 
-  const { control, handleSubmit, setValue, reset, resetField } = useForm<
-    z.infer<typeof billSchema>
-  >({
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    reset,
+    resetField,
+    formState: { errors },
+  } = useForm<z.infer<typeof billSchema>>({
     resolver: zodResolver(billSchema),
   });
   const {
     field: { onChange: onEmojiChange },
-    formState: { errors },
   } = useController({ control, name: 'emoji' });
   const emoji = useWatch({ control, name: 'emoji' });
   const isRange = useWatch({ control, name: 'range' });

@@ -1,11 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  useMemo,
-  useRef,
-  useEffect,
-} from 'react';
+import { createContext, useContext, useState, useMemo, useRef } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -13,6 +6,7 @@ import {
   FlatList,
   SectionList,
   StyleSheet,
+  Platform,
 } from 'react-native';
 import { useTheme } from '@shopify/restyle';
 import { Search } from 'geist-native-icons';
@@ -86,7 +80,7 @@ export function useEmojiPickerContext() {
 }
 
 function EmojiPickerContent(props: NativeEmojiPickerProps) {
-  const { numColumns = 8 } = props;
+  const { numColumns = Platform.OS === 'ios' ? 8 : 7 } = props;
 
   const ref = useRef<SectionList>(null);
   const { setVisible } = useEmojiPickerContext();

@@ -20,7 +20,7 @@ const restyledFunctions = composeRestyleFunctions<Theme, RestyledColorProps>([
   typography,
 ]);
 
-export const Text = createText();
+export const Text = createText<Theme>();
 
 export const Header = (props: TextProps & RestyledColorProps) => {
   const { children, ...rest } = props;

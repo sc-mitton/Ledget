@@ -3,7 +3,6 @@ import {
   View,
   StyleProp,
   ViewStyle,
-  LayoutChangeEvent,
   PressableProps,
 } from 'react-native';
 import {
@@ -23,6 +22,7 @@ import {
   BorderProps,
   ShadowProps,
   composeRestyleFunctions,
+  ColorProps,
 } from '@shopify/restyle';
 
 import { Text } from './Text';
@@ -57,7 +57,7 @@ export type ButtonProps = RestyleProps &
       | React.ReactNode
       | ((props: { color: string }) => React.ReactNode);
     labelPlacement?: 'left' | 'right';
-    textColor?: string;
+    textColor?: keyof Theme['colors'];
     transparent?: boolean;
     style?: StyleProp<ViewStyle>;
     icon?: React.ReactNode;

@@ -1,3 +1,5 @@
+import logging
+
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from django.db.models import Prefetch
@@ -12,6 +14,8 @@ from core.clients import create_plaid_client
 from restapi.permissions.auth import IsAuthedVerifiedSubscriber
 
 plaid_client = create_plaid_client()
+
+logger = logging.getLogger('ledget')
 
 
 class LiabilitiesView(GenericAPIView):
@@ -46,8 +50,11 @@ class LiabilitiesView(GenericAPIView):
                 options=LiabilitiesGetRequestOptions(account_ids=account_ids))
             response = plaid_client.liabilities_get(request)
             return response.liabilities.to_dict()
-        except plaid.ApiException as e:
-            if json.loads(e.body).get('error_code') == 'PRODUCTS_NOT_SUPPORTED':
+        except (plaid.ApiException, plaid.ApiTypeError) as e:
+            if isinstance(e, plaid.ApiTypeError):
+                logger.error(f'Error getting liabilities: {e}')
+            if isinstance(e, plaid.ApiTypeError) or \
+                    json.loads(e.body).get('error_code') == 'PRODUCTS_NOT_SUPPORTED':
                 return {
                     'student': [
                         {'account_id': a.id, 'product_not_supported': True}

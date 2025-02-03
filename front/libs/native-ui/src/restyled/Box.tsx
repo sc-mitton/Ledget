@@ -1,8 +1,6 @@
 import { forwardRef } from 'react';
-import { createBox } from '@shopify/restyle';
 import { ViewProps, View } from 'react-native';
 import Animated, {
-  LinearTransition,
   BaseAnimationBuilder,
   LayoutAnimationFunction,
 } from 'react-native-reanimated';
@@ -24,8 +22,6 @@ import {
 } from '@shopify/restyle';
 
 import { Theme } from '../theme';
-
-const BaseBox = createBox();
 
 type RestyleProps = SpacingProps<Theme> &
   VariantProps<Theme, 'boxVariants'> &

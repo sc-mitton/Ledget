@@ -6,6 +6,9 @@
     "slug": "mobile",
     "version": "1.0.0",
     "orientation": "portrait",
+    "androidStatusBar": {
+      "translucent": true
+    },
     "notification": {
       "icon": "./assets/notification-icon.png",
       "color": "#4149b0"

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Modal as NativeModal, View, TouchableOpacity } from 'react-native';
 import { Plus, Bell, Trash } from 'geist-native-icons';
 import { useFieldArray } from 'react-hook-form';

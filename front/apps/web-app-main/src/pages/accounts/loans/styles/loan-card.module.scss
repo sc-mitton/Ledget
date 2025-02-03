@@ -1,0 +1,115 @@
+.box {
+  background-color: var(--nested-window-background-color);
+  border-radius: 12px;
+  padding: 0.75em 1em;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.overdueContainer {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.alertIcon {
+  color: var(--red-text);
+}
+
+.overdueText {
+  color: var(--red-text);
+}
+
+.title {
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 32px;
+  margin: 0;
+}
+
+.subtitle {
+  color: var(--m-text-tertiary);
+}
+
+.logo {
+  flex-shrink: 0;
+}
+
+.separator {
+  border: none;
+  height: 1.5px;
+  width: 200%;
+  transform: translateX(-20%);
+  background-color: var(--border-color-dim);
+  margin: 16px 0;
+}
+
+.middleRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.middleRowCell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  color: var(--m-text-tertiary);
+  font-size: 14px;
+}
+
+.dash {
+  color: var(--m-text-tertiary);
+  font-weight: bold;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.progressBars {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.progressBar {
+  flex: 1;
+  height: 6px;
+  border-radius: 12px;
+}
+
+.dates {
+  display: flex;
+  justify-content: space-between;
+  color: var(--tertiary-text);
+  font-size: 15px;
+  margin-bottom: 16px;
+}
+
+.lastPayment {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  * {
+    font-size: 14px;
+    color: var(--m-text-quaternary);
+  }
+}
+
+.noData {
+  text-align: center;
+  color: var(--m-text-quinary);
+  padding: 24px 0;
+}

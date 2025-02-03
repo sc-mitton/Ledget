@@ -5,7 +5,7 @@ import React, {
   createContext,
   Fragment,
 } from 'react';
-import { Repeat, Check } from '@geist-ui/icons';
+import { Repeat, Edit2, Plus } from '@geist-ui/icons';
 
 import { useSpring, animated } from '@react-spring/web';
 import { useSearchParams } from 'react-router-dom';
@@ -29,7 +29,6 @@ import {
   ShadowedContainer,
 } from '@ledget/ui';
 import { withReAuth } from '@utils/index';
-import { Edit2, Plus } from '@geist-ui/icons';
 
 interface DeleteQueItem {
   itemId: string;
@@ -334,7 +333,9 @@ const Buttons = ({ onPlus }: { onPlus: () => void }) => {
           >
             Cancel
           </IconButtonBorderedGray>
-          <IconButtonBorderedGray type="submit">Delete</IconButtonBorderedGray>
+          <IconButtonBorderedGray type="submit">
+            Disconnect {deleteQue.length || ''}
+          </IconButtonBorderedGray>
         </form>
       )}
       {!editing && (

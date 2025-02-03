@@ -1,4 +1,6 @@
 import { combineReducers } from 'redux';
+import { createMigrate, persistReducer } from 'redux-persist';
+
 import { appearanceslice } from './appearanceSlice';
 import { bioSlice } from './bioSlice';
 import { authSlice } from './authSlice';
@@ -16,7 +18,6 @@ import {
   mobileAuthSlice,
   budgetItemOrderSlice,
 } from '@ledget/shared-features';
-import { createMigrate, persistReducer } from 'redux-persist';
 import storage from './storage';
 import { RootState } from './store';
 

@@ -1,0 +1,19 @@
+.main {
+  flex: 1;
+  margin-top: -2px;
+  padding: var(--page-padding);
+  padding-top: 2em;
+}
+
+.cardsContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5em;
+  margin-top: -12px;
+  overflow-y: auto;
+}
+
+.bottomSpacer {
+  height: var(--nav-height);
+  width: 100%;
+}
