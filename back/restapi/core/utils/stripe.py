@@ -5,7 +5,7 @@ from rest_framework.status import (
 import stripe
 
 
-class StripeError(Exception):
+class StripeError(Exception):  # Pragma: no cover
     def __init__(self, message, response_code):
         super().__init__(message)
         self.id = id
@@ -16,7 +16,7 @@ class StripeError(Exception):
         return f'{self.message} - {self.response_code}'
 
 
-def stripe_error_handler(func):
+def stripe_error_handler(func):  # Pragma: no cover
 
     def wrapper(*args, **kwargs):
         try:

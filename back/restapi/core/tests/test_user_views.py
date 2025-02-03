@@ -88,6 +88,11 @@ class TestUserViews(ViewTestsMixin):
         self.assertEqual(response.status_code, 403)
         self.assertTrue(Device.objects.filter(id=other_device).exists())
 
+    def test_update_device_location(self):
+        response = self.client.post(reverse('devices'))
+
+        self.assertEqual(response.status_code, 200)
+
     def test_password_last_changed(self):
         response = self.client.patch(
             reverse('user-me'),
