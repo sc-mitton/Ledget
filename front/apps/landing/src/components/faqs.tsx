@@ -1,4 +1,8 @@
-import { Disclosure } from '@headlessui/react';
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+} from '@headlessui/react';
 import { ChevronDown } from '@geist-ui/icons';
 import '../styles/faqs.scss';
 
@@ -23,16 +27,26 @@ const faqs = [
 const Faqs = () => {
   return (
     <div id="faqs" className="section">
-      <h1>FAQ</h1>
+      <h2>FAQ</h2>
       <div>
         {faqs.map((faq, index) => (
-          <Disclosure className="faq" key={index} as="div">
-            <Disclosure.Button>
-              <span>{faq.question}</span>
-              <ChevronDown size={'1.25em'} />
-            </Disclosure.Button>
-            <Disclosure.Panel>{faq.answer}</Disclosure.Panel>
-          </Disclosure>
+          <div className="faq" key={index}>
+            <Disclosure>
+              {({ open }) => (
+                <>
+                  <DisclosureButton>
+                    <span>{faq.question}</span>
+                    <ChevronDown
+                      size={'1.25em'}
+                      strokeWidth={2}
+                      className={`${open ? 'rotate-180' : ''}`}
+                    />
+                  </DisclosureButton>
+                  <DisclosurePanel>{faq.answer}</DisclosurePanel>
+                </>
+              )}
+            </Disclosure>
+          </div>
         ))}
       </div>
     </div>

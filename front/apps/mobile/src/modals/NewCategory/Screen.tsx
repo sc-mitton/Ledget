@@ -29,6 +29,7 @@ import AlertInput from './AlertInput';
 const Screen = (props: PageSheetModalScreenProps<'NewCategory'>) => {
   const { control, handleSubmit } = useForm<z.infer<typeof categorySchema>>({
     resolver: zodResolver(categorySchema),
+    reValidateMode: 'onChange',
     defaultValues: {
       period: props.route.params?.period || 'month',
       ...props.route.params?.category,

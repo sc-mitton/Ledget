@@ -33,11 +33,8 @@
           "backgroundColor": "#111113"
         }
       },
-      "config": {
-        "useNonExempEncryption": false
-      },
       "icon": {
-        "light": "./assets/icon-dark.png",
+        "light": "./assets/icon-light.png",
         "dark": "./assets/icon-dark.png",
         "tinted": "./assets/icon-tinted.png"
       },

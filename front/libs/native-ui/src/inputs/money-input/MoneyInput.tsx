@@ -1,11 +1,11 @@
-import { useState, useRef, useMemo, useEffect } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import {
-  View,
   TextInput as ReactNativeTextInput,
   NativeSyntheticEvent,
   TextInputFocusEventData,
 } from 'react-native';
 import { useTheme } from '@shopify/restyle';
+import { clamp } from 'lodash';
 import OutsidePressHandler from 'react-native-outside-press';
 
 import styles from './styles';
@@ -31,10 +31,10 @@ export function MoneyInput<T extends TInput>(props: MoneyInputProps<T>) {
   const {
     limits = inputType === 'range'
       ? [
-          [0, undefined],
-          [0, undefined],
+          [0, null],
+          [0, null],
         ]
-      : [0, undefined],
+      : [0, null],
   } = props;
 
   const formatter = useMemo(
@@ -69,27 +69,30 @@ export function MoneyInput<T extends TInput>(props: MoneyInputProps<T>) {
   const input2Ref = useRef<ReactNativeTextInput>(null);
 
   const handleChange = (v: string) => {
-    // Make sure value stays within prop limits if provided
-    const bounded =
-      index === 0
-        ? Array.isArray(limits[0])
-          ? Math.max(
-              Math.min(parseFloat(v.replace(/[^0-9]/g, '')), limits[0][1] || 0),
-              limits[0][0] || Number.MAX_VALUE
-            )
-          : Math.max(parseFloat(v.replace(/[^0-9]/g, '')), limits[0] || 0)
-        : Array.isArray(limits[1])
-        ? Math.max(
-            Math.min(parseFloat(v.replace(/[^0-9]/g, '')), limits[1][1] || 0),
-            limits[1][0] || Number.MAX_VALUE
-          )
-        : Math.max(parseFloat(v.replace(/[^0-9]/g, '')), limits[1] || 0);
-
+    const bounded = clamp(
+      parseFloat(v.replace(/[^0-9]/g, '')),
+      Array.isArray(limits[0])
+        ? limits[0][0] === null
+          ? Number.MIN_VALUE
+          : limits[0][0]
+        : limits[0] === null
+        ? Number.MIN_VALUE
+        : limits[0],
+      Array.isArray(limits[1])
+        ? limits[1][1] === null
+          ? Number.MAX_VALUE
+          : limits[1][1]
+        : limits[1] === null
+        ? Number.MAX_VALUE
+        : limits[1]
+    );
     const newVal = bounded / Math.pow(10, accuracy || 0);
 
     if (props.inputType === 'range' && onChange) {
       const newValue =
-        index === 0 ? [newVal, (value as any)[1]] : [(value as any)[0], newVal];
+        index === 0
+          ? [newVal, (value as any)[1] || 0]
+          : [(value as any)[0] || 0, newVal];
       onChange(newValue as any);
       setValue(newValue as any);
       if (Array.isArray(newValue)) {
@@ -188,11 +191,11 @@ export function MoneyInput<T extends TInput>(props: MoneyInputProps<T>) {
                 ref={input2Ref}
                 value={
                   Array.isArray(formatedValue)
-                    ? formatedValue?.[1]
+                    ? formatedValue?.[1] || ''
                     : formatedValue
                 }
                 inputMode={'numeric'}
-                onFocus={() => setIndex(0)}
+                onFocus={() => setIndex(1)}
                 onBlur={(e: NativeSyntheticEvent<TextInputFocusEventData>) => {
                   onBlur && onBlur(e);
                   setIndex(undefined);

@@ -9,8 +9,9 @@ import '../styles/globals.scss';
       http-equiv="Content-Security-Policy"
       content=`
         default-src 'self';
-        script-src 'self' 'unsafe-eval' https://app.termly.io ${import.meta.env.HOST} 'sha256-OuwM78SJYm/zsc4rWhl8ZTRGO/1T/SE5TtELSFU0mEE=' 'sha256-C+MFT9uMJPIBROzgRJWxmbJwinQwPQcN4v02Ao5gdvA=';
-        style-src 'unsafe-inline' fonts.googleapis.com self ledget.app localhost:4321;
+        script-src 'self' 'unsafe-inline' 'unsafe-eval' https://app.termly.io ${import.meta.env.HOST} localhost:4321 'sha256-OuwM78SJYm/zsc4rWhl8ZTRGO/1T/SE5TtELSFU0mEE=' 'sha256-C+MFT9uMJPIBROzgRJWxmbJwinQwPQcN4v02Ao5gdvA=';
+        script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' https://app.termly.io ${import.meta.env.HOST} localhost:4321;
+        style-src 'unsafe-inline' fonts.googleapis.com 'self' ledget.app localhost:4321;
         img-src 'self' ledget.app localhost data:;
         child-src 'none';
         frame-src 'self' https://app.termly.io;
@@ -41,7 +42,7 @@ import '../styles/globals.scss';
   <script>
     import '../scripts/fade-sections.ts';
     const isDarkModeMediaQuery = window.matchMedia(
-      '(prefers-color-scheme: dark)',
+      '(prefers-color-scheme: dark)'
     ).matches;
     const colorScheme = isDarkModeMediaQuery ? 'dark' : 'light';
     document.querySelector('body')?.classList.add(`${colorScheme}`);

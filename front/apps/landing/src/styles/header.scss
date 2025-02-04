@@ -84,6 +84,10 @@
   }
 }
 
+.light .logo img {
+  filter: invert(1) contrast(2);
+}
+
 .logo {
   display: flex;
   align-items: center;
@@ -92,8 +96,7 @@
   a {
     display: flex;
     align-items: center;
-    gap: 0.25em;
-    color: var(--blue-dark);
+    gap: 0.375em;
     font-weight: var(--fw-bold);
     font-size: 1.125rem;
   }

@@ -19,7 +19,16 @@ export const billSchema = z
         week_day: z.coerce.number().min(1).max(7).optional(),
         year: z.coerce.number().min(2021).optional(),
       })
-      .transform((data) => ({ ...data })),
+      .refine(
+        (data) => {
+          const check1 = data.day === undefined;
+          const check2 = data.week === undefined && data.week_day === undefined;
+          const check3 = data.month === undefined && data.day === undefined;
+          if (check1 && check2 && check3) return false;
+          else return true;
+        },
+        { message: 'required', path: ['day'] }
+      ),
     expires: z.string().optional(),
     reminders: z
       .array(
@@ -30,23 +39,23 @@ export const billSchema = z
       )
       .optional(),
   })
-  .refine((data) => {
-    return data.lower_amount && data.upper_amount
-      ? data.lower_amount < data.upper_amount
-      : true;
-  })
+  .transform((data) => ({ ...data, ...data.schedule }))
   .refine(
     (data) => {
-      const check1 = data.schedule.day === undefined;
-      const check2 =
-        data.schedule.week === undefined &&
-        data.schedule.week_day === undefined;
-      const check3 =
-        data.schedule.month === undefined && data.schedule.day === undefined;
-      if (check1 && check2 && check3) return false;
+      // return data.lower_amount && data.upper_amount
+      //   ? data.lower_amount < data.upper_amount
+      //   : true;
+      const hasError =
+        data.lower_amount && data.upper_amount
+          ? data.lower_amount > data.upper_amount
+          : false;
+      if (hasError) return false;
       else return true;
     },
-    { message: 'required', path: ['day'] }
+    {
+      message: 'Lower amount must be less than upper amount',
+      path: ['lower_amount'],
+    }
   );
 
 export const categorySchema = z.object({

@@ -26,17 +26,28 @@ import RemindersModal from './RemindersModal';
 import { useEffect } from 'react';
 
 const Screen = (props: PageSheetModalScreenProps<'NewBill'>) => {
-  const [addNewBill, { isLoading, isSuccess }] = useAddnewBillMutation();
-  const { control, handleSubmit, resetField } = useForm<
-    z.infer<typeof billSchema>
-  >({
+  const [addNewBill, { isLoading }] = useAddnewBillMutation();
+  const {
+    control,
+    handleSubmit,
+    resetField,
+    formState: { errors },
+  } = useForm<z.infer<typeof billSchema>>({
     resolver: zodResolver(billSchema),
+    reValidateMode: 'onChange',
     defaultValues: props.route.params?.bill || { period: 'month' },
   });
 
   const onSubmit = (data: z.infer<typeof billSchema>) => {
-    addNewBill(data);
+    console.log(data);
+    // addNewBill(data);
   };
+
+  useEffect(() => {
+    if (isLoading) {
+      props.navigation.goBack();
+    }
+  }, [isLoading]);
 
   useEffect(() => {
     props.navigation.setOptions({
@@ -55,7 +66,6 @@ const Screen = (props: PageSheetModalScreenProps<'NewBill'>) => {
   const isRange = useWatch({ control, name: 'range' });
   const {
     field: { onChange: onEmojiChange },
-    formState: { errors },
   } = useController({ control, name: 'emoji' });
   const {
     field: { onChange: onLowerAmountChange },

@@ -99,7 +99,7 @@ const Calendar = (
                 (billsPerDay?.[day - 1]?.once || 0);
               const yearDots = billsPerDay?.[day - 1]?.year || 0;
               return (
-                <Fragment key={`calendar-day-${day}`}>
+                <Fragment key={`calendar-day-${weekDay}-${i}`}>
                   {i === 0 && (
                     <Text color="tertiaryText">
                       {dayjs(`${year}-${month}-${weekDay}`).format('dd')}

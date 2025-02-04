@@ -1,18 +1,22 @@
 ---
 import { Image } from 'astro:assets';
-import Logo from '../assets/logo1v.svg';
+import Logo from '../assets/logov1.svg';
+import '../styles/footer.scss';
+import dayjs from 'dayjs';
 ---
 
 <footer>
   <div class="section">
     <div>
-      <a href="/">
+      <a href="/" class="footer-logo">
         <Image src={Logo} alt="Ledget Logo" />
         <h4>Ledget</h4>
       </a>
     </div>
     <div>
-      <h4>Copyright Ledget, All Rights Reserved © 2024 - 2024</h4>
+      <h4>
+        Copyright Ledget, All Rights Reserved © 2024 - {dayjs().format('YYYY')}
+      </h4>
       <div>
         <a href="/privacy">Privacy</a>
         <a href="/terms">Terms</a>

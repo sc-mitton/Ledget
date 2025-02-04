@@ -12,6 +12,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as NavigationBar from 'expo-navigation-bar';
 import * as SplashScreen from 'expo-splash-screen';
 import * as SecureStore from 'expo-secure-store';
+import dayjs from 'dayjs';
 
 import {
   useGetMeQuery,
@@ -21,6 +22,7 @@ import {
   setDeviceToken,
   selectSession,
   selectDeviceToken,
+  setBudgetMonthYear,
 } from '@ledget/shared-features';
 import styles from './styles/app';
 import { Box } from '@ledget/native-ui';
@@ -189,6 +191,12 @@ export const App = withProviders(() => {
     }
     return () => clearTimeout(timeout);
   }, [dispatch, ANDROID_LEDGET_API_URI]);
+
+  useEffect(() => {
+    dispatch(
+      setBudgetMonthYear({ month: dayjs().month() + 1, year: dayjs().year() })
+    );
+  }, []);
 
   // Set the navigation bar color and button style based on the theme
   useEffect(() => {
