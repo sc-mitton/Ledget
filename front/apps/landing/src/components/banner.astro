@@ -1,5 +1,35 @@
 ---
-
+import '../styles/banner.scss';
+import { DollarSign, TrendingUp } from '@geist-ui/icons';
+import { Image } from 'astro:assets';
+import ActionLink from './links/arrow-link.astro';
+import AppStore from '../assets/app-store.svg';
+import GooglePlay from '../assets/google-play.svg';
 ---
 
-<div class="banner"></div>
+<div class="banner">
+  <h1>Your Budget's Leftovers, Earning for You</h1>
+  <div>
+    <h2>
+      Keep track of your money, and at the end of every month, send your
+      leftovers to savings
+      <span><DollarSign /></span>
+      or investments
+      <span> <TrendingUp /> </span>
+      .
+    </h2>
+    <ActionLink
+      className="cta"
+      hrefTarget={`${import.meta.env.ACCOUNTS_HOST}/register`}
+      text="Signup online, try for free"
+    />
+  </div>
+  <div id="app-store-buttons">
+    <button>
+      <Image src={AppStore} alt="App Store" />
+    </button>
+    <button>
+      <Image src={GooglePlay} alt="Google Play" />
+    </button>
+  </div>
+</div>

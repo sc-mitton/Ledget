@@ -5,17 +5,20 @@ html {
   overflow: auto;
   overflow-x: hidden;
   scrollbar-width: none;
+  height: 100%;
 }
 
 body {
   margin: 0;
   position: relative;
+  height: 100%;
 }
 
 .body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100%;
 
   &.light {
     background: radial-gradient(
@@ -86,14 +89,6 @@ main {
   h1 {
     margin: 0.25em 0;
   }
-
-  h1 {
-    font-weight: 600;
-  }
-
-  h2 {
-    font-weight: 600;
-  }
 }
 
 .main-background {
@@ -129,6 +124,7 @@ h5,
 h6 {
   font-family: 'Source Sans 3', 'Roboto', sans-serif, 'Arial', Helvetica;
   color: var(--m-text);
+  font-weight: var(--fw-bold);
 }
 
 h3,
