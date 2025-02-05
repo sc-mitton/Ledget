@@ -66,22 +66,14 @@ const CreditSummary = () => {
   const api = useSpringRef();
   const transitions = useTransition(cards, {
     from: (item, i) => {
-      const orderIndex = order.current.indexOf(item?.id || '');
       // prettier-ignore
-      const index = order.current.length > 0
-          ? spread
-            ? orderIndex
-            : selectedCardIndex === orderIndex
-              ? 0
-              : orderIndex >= (selectedCardIndex || 0) ? orderIndex : orderIndex + 1
-          : i;
-      const zIndex =
-        order.current.length > 0
-          ? order.current.length - index
-          : (cards?.length || 0) - i;
+      const index = selectedCardIndex === i
+        ? 0
+        : i >= (selectedCardIndex || 0) ? i : i + 1
+      const zIndex = cards.length - index;
 
       return {
-        x: spread ? index * (cardWidth + cardOffset * 1.3) : index * cardOffset,
+        x: index * cardOffset,
         zIndex,
       };
     },
@@ -95,15 +87,15 @@ const CreditSummary = () => {
             ? 0
             : orderIndex >= (selectedCardIndex || 0) ? orderIndex : orderIndex + 1
         : i;
-
+      console.log('index: ', index);
       return {
         x: spread ? index * (cardWidth + cardOffset * 1.3) : index * cardOffset,
       };
     },
     ref: api,
     config: {
-      tension: 300,
-      friction: 30,
+      tension: 270,
+      friction: 33,
       mass: 1,
     },
   });
@@ -134,24 +126,11 @@ const CreditSummary = () => {
 
   const click = useCallback(
     (id: string) => {
-      api.start((index: any, item: any) => {
-        const selectedIndex = cards?.findIndex((c) => c.id === id) || 0;
-        if (item._item.id === id) {
-          return {
-            to: async (next: any) => {
-              await next({ scale: 0.95 });
-              await next({ scale: 1 });
-            },
-            onRest: () => {
-              searchParams.set('accounts', id);
-              setSearchParams(searchParams);
-              setSelectedCardIndex(selectedIndex);
-              dispatch(setFirstCardIndex(selectedIndex));
-            },
-            config: { duration: 100 },
-          };
-        }
-      });
+      const selectedIndex = cards?.findIndex((c) => c.id === id) || 0;
+      searchParams.set('accounts', id);
+      setSearchParams(searchParams);
+      setSelectedCardIndex(selectedIndex);
+      dispatch(setFirstCardIndex(selectedIndex));
     },
     [api, cards]
   );
@@ -193,10 +172,8 @@ const CreditSummary = () => {
   }, [data]);
 
   useEffect(() => {
-    if (cards) {
-      order.current = cards.map((c) => c.id);
-    }
-  }, cards);
+    order.current = cards.map((c) => c.id);
+  }, [cards]);
 
   return (
     <Window className={styles.container} data-size={screenSize}>
@@ -224,7 +201,15 @@ const CreditSummary = () => {
       </div>
       <div
         ref={scrollContainerRef}
-        onMouseEnter={() => setSpread(true)}
+        onMouseEnter={() => {
+          setSpread(true);
+          setTimeout(() => {
+            scrollContainerRef.current?.scrollTo({
+              left: selectedCardIndex * (cardWidth + cardOffset * 1.3),
+              behavior: 'smooth',
+            });
+          }, 500);
+        }}
         onMouseLeave={() => {
           scrollContainerRef.current?.scrollTo({
             left: 0,
