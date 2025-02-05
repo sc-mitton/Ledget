@@ -79,7 +79,7 @@ function FilledList(
                   </Text>
                 </BillCatLabel>
                 <View style={styles.amount}>
-                  <DollarCents value={item.upper_amount} withCents={false} />
+                  <DollarCents value={item.upper_amount} />
                 </View>
                 <Icon
                   icon={CheckInCircle}

@@ -42,7 +42,9 @@ const BillsWindow = () => {
             Bills
           </h3>
           <div className={styles.headerButtons}>
-            <OrderMenu itemType="bill" />
+            <div>
+              <OrderMenu itemType="bill" />
+            </div>
             <IconButtonBorderedGray
               onClick={() => navigate(`/budget/new-bill${location.search}`)}
             >

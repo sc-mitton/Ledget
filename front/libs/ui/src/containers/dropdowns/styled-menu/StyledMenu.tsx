@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState, forwardRef, ElementType } from 'react';
+import {
+  useEffect,
+  useRef,
+  useState,
+  forwardRef,
+  ElementType,
+  Fragment,
+} from 'react';
 import { Menu as HeadlessMenu } from '@headlessui/react';
 
 import styles from './styled-menu.module.scss';
@@ -6,9 +13,11 @@ import { DropdownDiv } from '../../../animations/dropdowndiv/dropdowndiv';
 import { useContext, Provider } from './context';
 import { ItemProps, StyledMenuProps } from './types';
 
-const StyledMenu = <T extends ElementType>({
+const StyledMenu = <T extends ElementType = 'div'>({
   children,
   open: propsOpen,
+  as = 'div' as T,
+  className,
   ...rest
 }: StyledMenuProps<T>) => {
   const [side, setSide] = useState<'left' | 'right'>();
@@ -33,9 +42,10 @@ const StyledMenu = <T extends ElementType>({
 
   return (
     <HeadlessMenu
-      className={styles.menu}
       data-side={side}
       ref={measure}
+      as={as as ElementType}
+      className={[className, styles.menu].join(' ')}
       {...rest}
     >
       {({ open }) => <Provider open={propsOpen || open}>{children}</Provider>}
@@ -58,7 +68,10 @@ const Items = forwardRef<
   }, [open]);
 
   return (
-    <HeadlessMenu.Items static>
+    <HeadlessMenu.Items
+      static
+      className={[className, styles.itemsContainer].join(' ')}
+    >
       <DropdownDiv
         visible={open}
         placement="auto"

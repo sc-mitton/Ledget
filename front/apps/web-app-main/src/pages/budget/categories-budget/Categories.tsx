@@ -33,7 +33,9 @@ const SpendingCategories = () => {
           Categories
         </h3>
         <div className={styles.headerButtons}>
-          <OrderMenu itemType="category" />
+          <div>
+            <OrderMenu itemType="category" />
+          </div>
           <IconButtonBorderedGray
             onClick={() => navigate(`/budget/new-category${location.search}`)}
           >

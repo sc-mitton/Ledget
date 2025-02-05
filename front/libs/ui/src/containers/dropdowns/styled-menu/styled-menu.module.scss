@@ -62,6 +62,13 @@
 .menu {
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 1;
+
+  & > button {
+    z-index: 2;
+    position: relative;
+  }
 
   * {
     scrollbar-color: var(--btn-medium-gray) transparent;
@@ -85,6 +92,12 @@
 
 .dropdown {
   padding: 0;
+}
+
+.itemsContainer {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
 }
 
 .items {

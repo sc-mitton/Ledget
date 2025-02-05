@@ -165,8 +165,8 @@ export const DropdownDiv = forwardRef<
         item ? (
           <div
             className={stylesModule.dropdownContainer}
-            data-verticle-position={verticlePlacement}
-            data-position={placement}
+            data-verticle-position={dropdownPlacement[1]}
+            data-position={dropdownPlacement[0]}
           >
             <animated.div
               className={[
@@ -174,8 +174,8 @@ export const DropdownDiv = forwardRef<
                 className || stylesModule.dropdownInner,
               ].join(' ')}
               data-arrow={arrow}
-              data-verticle-position={verticlePlacement}
-              data-position={placement}
+              data-verticle-position={dropdownPlacement[1]}
+              data-position={dropdownPlacement[0]}
               style={styles}
               {...rest}
               ref={ref}

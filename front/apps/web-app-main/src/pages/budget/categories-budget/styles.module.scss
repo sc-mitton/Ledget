@@ -117,7 +117,7 @@ $background: var(--window);
   display: flex;
   flex-direction: row;
   gap: 0.5em;
-  align-items: center;
+  align-items: flex-end;
 
   & > button * {
     color: var(--m-text-tertiary);

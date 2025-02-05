@@ -14,6 +14,7 @@ interface ItemPropsBase extends MenuItemProps<'div'> {
 export type StyledMenuProps<T extends ElementType> = {
   open?: boolean;
   children: React.ReactNode;
+  className?: string;
 } & MenuProps<T>;
 
 export type ItemProps = ItemPropsBase &

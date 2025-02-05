@@ -40,8 +40,7 @@ const Screen = (props: PageSheetModalScreenProps<'NewBill'>) => {
   });
 
   const onSubmit = (data: z.infer<typeof billSchema>) => {
-    console.log('data: ', data);
-    // addNewBill(data);
+    addNewBill(data);
   };
 
   useEffect(() => {
