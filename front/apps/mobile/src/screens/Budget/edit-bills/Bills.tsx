@@ -20,6 +20,7 @@ import {
   Box,
 } from '@ledget/native-ui';
 import { useAppSelector } from '@/hooks';
+import { capitalize } from '@ledget/helpers';
 import { getScheduleDescription } from './helpers';
 import { BudgetScreenProps } from '@types';
 
@@ -128,8 +129,8 @@ const Categories = (
               <View style={styles.nameContainer}>
                 <Text>
                   {bill.name.length > 20
-                    ? `${bill.name.substring(0, 20)}...`
-                    : bill.name}
+                    ? `${capitalize(bill.name).substring(0, 20)}...`
+                    : capitalize(bill.name)}
                 </Text>
                 <Text color="tertiaryText">{getScheduleDescription(bill)}</Text>
               </View>
@@ -169,9 +170,9 @@ const Categories = (
                 />
               }
               onPress={() => {
-                props.navigation.navigate('Modals', {
+                props.navigation.navigate('PageSheetModals', {
                   screen: 'NewBill',
-                  params: { period: props.period },
+                  params: { options: { title: 'New Bill' } },
                 });
               }}
             />
