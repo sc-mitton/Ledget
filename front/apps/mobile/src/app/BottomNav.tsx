@@ -160,16 +160,7 @@ export default function Nav({ state, descriptors, navigation }: Props) {
             />
           </>
         )}
-        <Box
-          backgroundColor={'bottomNavBackground'}
-          style={styles.navBack}
-          shadowColor="navShadow"
-          shadowOffset={{ width: 0, height: 0 }}
-          shadowRadius={24}
-          shadowOpacity={Platform.OS === 'ios' ? 0 : 0}
-          borderTopColor="bottomNavBorder"
-          borderTopWidth={2}
-        />
+        <Box backgroundColor={'bottomNavBackground'} style={styles.navBack} />
         <Box
           style={styles.nav}
           variant="bottomNav"

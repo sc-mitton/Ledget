@@ -16,7 +16,7 @@ export default function Panel(props: AccountsTabsScreenProps<'Investment'>) {
     useState(false);
 
   return (
-    <Box padding="pagePadding" style={styles.main}>
+    <Box padding="m" style={styles.main}>
       <LinkAccountPrompt {...props} />
       <Box style={styles.main}>
         <View

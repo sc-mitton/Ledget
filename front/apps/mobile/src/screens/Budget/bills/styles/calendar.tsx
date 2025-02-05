@@ -15,13 +15,13 @@ const styles = StyleSheet.create({
   calendar: {
     marginTop: 8,
     paddingHorizontal: 4,
-    paddingVertical: 8,
+    paddingVertical: 12,
     gap: 12,
     height: Dimensions.get('window').width * 0.75,
   },
   calendarCell: {
     paddingHorizontal: 10,
-    paddingVertical: 2,
+    paddingVertical: 0,
     borderRadius: 6,
   },
   day: {
