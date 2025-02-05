@@ -145,10 +145,10 @@
   }
 
   &[data-light='true']::after {
-    box-shadow: 4px 0 8px hsl(0, 0, 55%);
+    box-shadow: 4px 0 8px hsla(0, 0, 0%, 0.17);
   }
 
   &[data-light='false']::after {
-    box-shadow: 4px 0 8px hsl(0, 0, 17%), 0 2px 4px hsl(0, 0, 17%);
+    box-shadow: 4px 0 8px hsla(0, 0, 0%, 0.17), 0 2px 4px hsla(0, 0, 0%, 0.17);
   }
 }
