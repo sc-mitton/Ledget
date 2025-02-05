@@ -71,7 +71,7 @@ const Progress = () => {
           prefix={'$'}
           animationDuration={300}
           value={
-            categoriesIndex === 1
+            categoriesIndex === 0
               ? Big(limit_amount_monthly).div(100).toNumber()
               : Big(limit_amount_yearly).div(100).toNumber()
           }
