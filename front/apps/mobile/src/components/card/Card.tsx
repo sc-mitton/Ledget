@@ -93,7 +93,7 @@ export const Card = (props: Props) => {
       mode === 'dark' ? customGradientStartDark : customGradientEndLight;
 
     return `hsl(${props.account.card_hue}, ${sat}%, ${borderLightness}%)`;
-  }, []);
+  }, [mode]);
 
   const width = size === 'regular' ? CARD_WIDTH : 155;
   const height =
