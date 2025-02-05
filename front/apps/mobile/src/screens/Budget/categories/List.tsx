@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
-import { ChevronRight } from 'geist-native-icons';
+import { ChevronRight, ChevronDown } from 'geist-native-icons';
 import Animated, {
   FadeIn,
   FadeOut,
@@ -148,16 +148,14 @@ const List = (props: Props) => {
         >
           <Button
             style={styles.expandButton}
-            onPress={() => {
-              setExpanded(!expanded);
-            }}
+            onPress={() => setExpanded(!expanded)}
             label={
               expanded
-                ? 'View Less'
-                : `View More +${
+                ? 'Show Less'
+                : `Show ${
                     (props.categories?.filter((c) => c.period === props.period)
                       .length || 0) - COLLAPSED_MAX
-                  }`
+                  } More`
             }
             textColor="quinaryText"
           />
