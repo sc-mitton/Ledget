@@ -10,14 +10,13 @@ import styles from './styles/forms.module.scss';
 import SubmitForm from '@components/pieces/SubmitForm';
 import { withModal, DatePicker } from '@ledget/ui';
 import {
-  EmojiComboText,
+  EmojiPicker,
   DollarRangeInput,
   AddReminder,
   BillScheduler,
   PeriodSelect,
-  emoji,
 } from '@components/inputs';
-import { Checkbox } from '@ledget/ui';
+import { Checkbox, TextInputWrapper } from '@ledget/ui';
 import { useAddnewBillMutation } from '@ledget/shared-features';
 import type { Reminder } from '@ledget/shared-features';
 import { billSchema } from '@ledget/form-schemas';
@@ -54,7 +53,6 @@ const Form = withModal((props) => {
   const [addNewBill, { isLoading, isSuccess }] = useAddnewBillMutation();
   const [rangeMode, setRangeMode] = useState(false);
   const location = useLocation();
-  const [emoji, setEmoji] = useState<emoji>();
 
   const {
     register,
@@ -74,9 +72,8 @@ const Form = withModal((props) => {
 
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     handleSubmit((data) => {
-      const em = typeof emoji === 'string' ? emoji : emoji?.native;
       const reminders = extractReminders(e);
-      addNewBill({ reminders, ...data, emoji: em });
+      addNewBill({ reminders, ...data });
     })(e);
   };
 
@@ -90,41 +87,25 @@ const Form = withModal((props) => {
         className={[styles.createForm, styles.newBillForm].join(' ')}
         onSubmit={submitForm}
       >
-        <div>
-          <label htmlFor="schedule">Schedule</label>
-          <div className={styles.multiInputRow}>
-            <div>
-              <PeriodSelect
-                name="period"
-                labelPrefix="Period"
-                control={control}
-              />
-            </div>
-            {billPeriod !== 'once' && (
-              <BillScheduler
-                defaultValue={{
-                  day: location.state?.day,
-                  week: location.state?.week,
-                  weekDay: location.state?.weekDay,
-                  month: location.state?.month,
-                }}
-                billPeriod={billPeriod}
-                error={errors.schedule?.day}
-                register={register}
-              />
-            )}
-            <AddReminder control={control} name="reminders" />
+        <div className={styles.emojiNameContainer}>
+          <label htmlFor="name">Name</label>
+          <div>
+            <Controller
+              name="emoji"
+              control={control}
+              render={(props) => (
+                <EmojiPicker
+                  emoji={props.field.value}
+                  setEmoji={(e: any) => {
+                    props.field.onChange(e?.native);
+                  }}
+                />
+              )}
+            />
+            <TextInputWrapper>
+              <input type="text" placeholder="Name" {...register('name')} />
+            </TextInputWrapper>
           </div>
-        </div>
-        <div>
-          <EmojiComboText
-            emoji={emoji}
-            setEmoji={setEmoji}
-            name="name"
-            placeholder="Name"
-            register={register}
-            error={errors.name}
-          />
         </div>
         <div className={styles.paddedRow}>
           <DollarRangeInput
@@ -143,24 +124,81 @@ const Form = withModal((props) => {
             />
           </div>
         </div>
-        <div className={[styles.paddedRow, styles.datePickerRow].join(' ')}>
-          <label htmlFor="expires">Expires</label>
-          <Controller
-            name="expires"
-            control={control}
-            render={(props) => (
-              <DatePicker
-                disabled={[[undefined, dayjs().subtract(1, 'day')]]}
-                disabledStyle="muted"
-                placeholder="Date"
-                format="M/D/YYYY"
-                aria-label="Expiration date"
-                onChange={(e) => {
-                  props.field.onChange(e?.toISOString());
+        <div>
+          <label htmlFor="schedule">Schedule</label>
+          <div className={styles.multiInputRow}>
+            <div>
+              <PeriodSelect
+                name="period"
+                labelPrefix="Repeats"
+                control={control}
+              />
+            </div>
+            {billPeriod === 'once' ? (
+              <Controller
+                name="schedule"
+                control={control}
+                render={(props) => (
+                  <DatePicker
+                    iconType={'chevron'}
+                    onChange={(e) => {
+                      if (e) {
+                        props.field.onChange({
+                          day: e.day(),
+                          month: e.month(),
+                          year: e.year(),
+                        });
+                      } else {
+                        props.field.onChange(undefined);
+                      }
+                    }}
+                    disabled={[[undefined, dayjs().subtract(1, 'day')]]}
+                    disabledStyle="muted"
+                    placeholder="On"
+                    format="M/D/YYYY"
+                    aria-label="Expiration date"
+                  />
+                )}
+              />
+            ) : (
+              <BillScheduler
+                defaultValue={{
+                  day: location.state?.day,
+                  week: location.state?.week,
+                  weekDay: location.state?.weekDay,
+                  month: location.state?.month,
                 }}
+                billPeriod={billPeriod}
+                error={errors.schedule?.day}
+                register={register}
               />
             )}
-          />
+          </div>
+        </div>
+        <div className={styles.multiInputRow}>
+          <div>
+            <label htmlFor="expires">Expires</label>
+            <Controller
+              name="expires"
+              control={control}
+              render={(props) => (
+                <DatePicker
+                  disabled={[[undefined, dayjs().subtract(1, 'day')]]}
+                  disabledStyle="muted"
+                  placeholder="Date"
+                  format="M/D/YYYY"
+                  aria-label="Expiration date"
+                  onChange={(e) => {
+                    props.field.onChange(e?.toISOString());
+                  }}
+                />
+              )}
+            />
+          </div>
+          <div>
+            <label htmlFor="reminders">Reminders</label>
+            <AddReminder control={control} name="reminders" />
+          </div>
         </div>
         <SubmitForm
           submitting={isLoading}

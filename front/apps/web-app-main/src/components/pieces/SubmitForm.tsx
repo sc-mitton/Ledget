@@ -1,7 +1,7 @@
-import { FC, HTMLAttributes } from 'react';
+import { HTMLAttributes } from 'react';
 
 import { SecondaryButton, BlueSubmitButton } from '@ledget/ui';
-
+import styles from './styles/submit-form.module.scss';
 interface I {
   submitting: boolean;
   text?: string;
@@ -16,15 +16,8 @@ const SubmitForm: React.FC<I & HTMLAttributes<HTMLButtonElement>> = ({
   onCancel,
   ...submitProps
 }: I) => {
-  const styles = {
-    display: 'flex',
-    justifyContent: 'end',
-    position: 'relative',
-    zIndex: '0',
-  } as React.CSSProperties;
-
   return (
-    <div style={styles}>
+    <div className={styles.submitForm}>
       <SecondaryButton
         type="button"
         onClick={onCancel}

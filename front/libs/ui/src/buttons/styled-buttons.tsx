@@ -59,6 +59,7 @@ export const NarrowButton = styled(NarrowButtonBase)`
 
 export const GrayButton = styled(PrimaryButton)`
   ${gray}
+  justify-content: center;
 `;
 
 export const GrayRedTextButton = styled(PrimaryButton)`
@@ -133,6 +134,15 @@ export const PrimaryTextButton = styled(PrimaryButton)`
     * {
       color: var(--m-text);
     }
+  }
+`;
+
+export const DestructiveTextButton = styled(PrimaryButton)`
+  ${gray}
+  justify-content: center;
+  color: var(--red);
+  * {
+    color: var(--red);
   }
 `;
 

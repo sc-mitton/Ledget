@@ -129,13 +129,9 @@ const AddAlert = (props: {
                     .times(option.value.percent_amount)
                     .div(100)
                     .toNumber()}
-                  style={{
-                    opacity: active ? '.5' : '0',
-                    marginRight: '.5em',
-                  }}
                 />
-                {selected && <Check className="icon" />}
               </div>
+              <div>{selected && <Check className="icon" />}</div>
             </DropdownItem>
           )}
         </ComboSelect.Option>
@@ -144,28 +140,14 @@ const AddAlert = (props: {
   const ButtonText = () => (
     <>
       {selectedAlerts && selectedAlerts?.length > 0 && (
-        <div className={styles.addAlertBtn}>
-          <span
-            style={{
-              backgroundColor: 'var(--m-text)',
-              color: 'var(--m-invert-text)',
-              borderRadius: '50%',
-              padding: '.375em',
-              width: '.5em',
-              height: '.5em',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              fontWeight: '500',
-              marginRight: '.5em',
-              fontSize: '.75em',
-            }}
-          >
+        <div
+          className={styles.addAlertBtn}
+          data-selected={selectedAlerts?.length > 0}
+        >
+          <span className={styles.numberOfAlertsCircle}>
             {`${selectedAlerts.length}`}
           </span>
-          <span style={{ color: 'var(--m-text)' }}>
-            {`${selectedAlerts.length == 1 ? 'Alert' : 'Alerts'}`}
-          </span>
+          {`${selectedAlerts.length == 1 ? 'Alert' : 'Alerts'}`}
         </div>
       )}
       {!selectedAlerts?.length && <span>Add Alert</span>}
@@ -203,7 +185,7 @@ const AddAlert = (props: {
             tabIndex={0}
             as={FormInputButton2}
             className={styles.addAlertBtn}
-            data-selected={selectedAlerts?.length}
+            data-selected={(selectedAlerts?.length || 0) > 0}
             ref={buttonRef}
           >
             <ButtonText />

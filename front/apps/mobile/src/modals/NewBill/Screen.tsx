@@ -17,6 +17,7 @@ import {
   Text,
   MoneyInput,
   Checkbox,
+  FormError,
 } from '@ledget/native-ui';
 import { billSchema } from '@ledget/form-schemas';
 import { useAddnewBillMutation } from '@ledget/shared-features';
@@ -39,7 +40,7 @@ const Screen = (props: PageSheetModalScreenProps<'NewBill'>) => {
   });
 
   const onSubmit = (data: z.infer<typeof billSchema>) => {
-    console.log(data);
+    console.log('data: ', data);
     // addNewBill(data);
   };
 
@@ -121,7 +122,7 @@ const Screen = (props: PageSheetModalScreenProps<'NewBill'>) => {
             />
           </View>
         </View>
-        <Box style={styles.moneyInputs}>
+        <View>
           <MoneyInput
             label="Amount"
             accuracy={2}
@@ -136,7 +137,10 @@ const Screen = (props: PageSheetModalScreenProps<'NewBill'>) => {
               }
             }}
           />
-        </Box>
+          <FormError
+            error={errors.lower_amount?.message || errors.upper_amount?.message}
+          />
+        </View>
         <View style={styles.checkBoxContainer}>
           <Controller
             name="range"

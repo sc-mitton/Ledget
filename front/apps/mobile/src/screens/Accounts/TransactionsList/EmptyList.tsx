@@ -12,6 +12,7 @@ import {
 } from '@/features/uiSlice';
 import { AccountsTabsScreenProps } from '@types';
 import LottieView from 'lottie-react-native';
+import { arrowDown } from '@ledget/media/lotties';
 
 const EmptyList = (props: AccountsTabsScreenProps<'Depository' | 'Credit'>) => {
   const accounts = useAppSelector(
@@ -53,7 +54,7 @@ const EmptyList = (props: AccountsTabsScreenProps<'Depository' | 'Credit'>) => {
             color: theme.colors.quaternaryText,
           },
         ]}
-        source={require('../../../../assets/lotties/arrowDown.json')}
+        source={arrowDown}
       />
     </ScrollView>
   );

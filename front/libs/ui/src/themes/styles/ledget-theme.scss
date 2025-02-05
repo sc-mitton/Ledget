@@ -132,7 +132,7 @@
     // Inputs
     --input-background-rgb: 31, 31, 31;
     --input-background: hsl(0, 0%, 12%);
-    --input-border: solid 1.5px hsl(0, 0%, 12%);
+    --input-border: solid 1.5px hsl(0, 0%, 14%);
     --input-border-hover-color: hsl(0, 0%, 17%);
     --input-border-focus-color: var(--blue-medium);
     --input-focus-dropshadow-color: color-mix(
@@ -358,7 +358,7 @@
     // Inputs
     --input-background-rgb: 233, 233, 237;
     --input-background: hsl(var(--window-h), var(--window-s), 92%);
-    --input-border: solid 1.5px var(--input-background);
+    --input-border: solid 1.5px hsl(var(--window-h), var(--window-s), 90%);
     --input-border-focus-color: var(--blue-light-medium);
     --input-border-hover-color: var(--btn-light-gray-hover);
     --input-focus-dropshadow-color: var(--blue-light);

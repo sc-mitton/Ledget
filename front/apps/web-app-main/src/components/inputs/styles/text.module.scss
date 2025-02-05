@@ -94,8 +94,15 @@
   }
 }
 
+.emojiPickerContainer {
+  background-color: var(--input-background);
+  border: var(--input-border);
+  border-radius: var(--border-radius2);
+  padding: 0.375em;
+}
+
 .emojiPickerLedgetButtonContainer {
-  padding-left: 1em;
+  padding: 1em;
 }
 
 .emojiComboTextInput {

@@ -37,6 +37,13 @@
   margin: 0.25em 0;
 }
 
+.emojiNameContainer > div {
+  display: flex;
+  gap: 0.5em;
+  flex-direction: row;
+  align-items: center;
+}
+
 .extraPaddedRow {
   margin: 0.75em 0;
   display: flex;
@@ -61,7 +68,7 @@
     }
   }
 
-  button {
+  & > button {
     width: 100%;
   }
 }

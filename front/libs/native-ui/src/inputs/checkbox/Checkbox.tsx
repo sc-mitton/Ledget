@@ -55,9 +55,9 @@ export function Checkbox(props: CheckboxProps) {
               <Icon
                 icon={Check}
                 color="whiteText"
-                strokeWidth={2.25}
+                strokeWidth={3}
                 rotate={-4}
-                size={size - 5}
+                size={size - 8}
               />
             </Animated.View>
           )}

@@ -1,5 +1,6 @@
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { SerializedError } from '@reduxjs/toolkit';
+import { Bill } from '@ledget/shared-features';
 
 /**
  * Type predicate to narrow an unknown error to `FetchBaseQueryError`
@@ -53,6 +54,17 @@ export function hasErrorCode(
   );
 }
 
+const noCentsFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  minimumFractionDigits: 0,
+});
+const withCentsFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  minimumFractionDigits: 2,
+});
+
 export const formatCurrency = (
   val: number | string | undefined,
   withCents = true
@@ -62,17 +74,6 @@ export const formatCurrency = (
 
   const currencyAmount =
     typeof val === 'string' ? makeIntCurrencyFromStr(val) : val;
-
-  const noCentsFormatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-  });
-  const withCentsFormatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-  });
 
   return withCents
     ? withCentsFormatter.format(currencyAmount / 100)
@@ -200,3 +201,52 @@ export function capitalize(str: string) {
     .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
     .join(' ');
 }
+
+export const getNextBillDate = (bill: Bill) => {
+  let date = new Date();
+
+  if (bill.year && bill.month && bill.day) {
+    return new Date(bill.year, bill.month, bill.day).toLocaleDateString(
+      'en-US',
+      {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      }
+    );
+  } else if (bill.month && bill.day) {
+    date.setMonth(bill.month);
+    date.setDate(bill.day);
+    date.setFullYear(date.getFullYear() + 1);
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+  } else if (bill.week_day && bill.week) {
+    date.setMonth(date.getMonth() + 1);
+    date.setDate(1 + (bill.week! - 1) * 7);
+    date.setDate(
+      date.getDate() + ((bill.week_day! - 1 - date.getDay() + 7) % 7)
+    );
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+  } else if (bill.day) {
+    date.setMonth(date.getMonth() + 1);
+    date.setDate(bill.day);
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+  } else {
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+  }
+};

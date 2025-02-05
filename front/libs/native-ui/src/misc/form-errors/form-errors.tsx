@@ -1,10 +1,10 @@
 import { View } from 'react-native';
-import React from 'react';
 import { AlertCircle } from 'geist-native-icons';
 
+import styles from './styles';
 import { Icon } from '../../restyled/Icon';
 import { Text } from '../../restyled/Text';
-import styles from './styles';
+import { Box } from '../../restyled/Box';
 
 export const ErrorTip = () => (
   <View style={styles.errorTip}>
@@ -16,7 +16,7 @@ export const FormError = ({ error }: { error?: string | string[] }) => {
   return (
     <>
       {error && (
-        <View style={styles.formErrors}>
+        <Box style={styles.formErrors} marginBottom="s">
           {typeof error === 'string' ? (
             <View>
               <View style={styles.formError}>
@@ -32,7 +32,7 @@ export const FormError = ({ error }: { error?: string | string[] }) => {
               </View>
             ))
           )}
-        </View>
+        </Box>
       )}
     </>
   );

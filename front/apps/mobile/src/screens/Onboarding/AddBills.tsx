@@ -89,7 +89,9 @@ const AddBills = (props: OnboardingScreenProps<'AddBills'>) => {
     handleSubmit((data) => {
       setShowModal(false);
       const { upper_amount, lower_amount, ...restData } = data;
-      const upperAmount = Big(upper_amount).div(100).toNumber();
+      const upperAmount = Big(upper_amount || 0)
+        .div(100)
+        .toNumber();
       const lowerAmount =
         lower_amount === undefined
           ? undefined

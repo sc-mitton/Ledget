@@ -22,4 +22,5 @@
         "**/android/*",
         "**/*.log"
     ],
+    "nxConsole.nxWorkspacePath": "front",
 }

@@ -2,7 +2,7 @@ import { useEffect, useState, Fragment } from 'react';
 
 import { Tab } from '@headlessui/react';
 import { animated } from '@react-spring/web';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Check } from '@geist-ui/icons';
@@ -12,7 +12,7 @@ import { TabView, BottomButtons } from './Reusables';
 import { useItemsContext, ItemsProvider } from './ItemsContext';
 import {
   LimitAmountInput,
-  EmojiComboText,
+  EmojiPicker,
   BillScheduler,
   emoji,
 } from '@components/inputs';
@@ -25,12 +25,14 @@ import {
   FormErrorTip,
   IconButtonHalfGray,
   TabNavListUnderlined,
+  TextInputWrapper,
 } from '@ledget/ui';
 import { extractReminders } from '@modals/CreateBill';
 
 const formSchema = z
   .object({
     name: z.string().min(1, { message: 'required' }),
+    emoji: z.string().optional(),
     upper_amount: z.number(),
     day: z.coerce.number().min(1).max(31).optional(),
     week: z.coerce.number().min(1).max(5).optional(),
@@ -189,16 +191,22 @@ const CutomTabPanel = () => {
     >
       <form onSubmit={submitForm}>
         <div>
-          <div>
-            <EmojiComboText
-              emoji={emoji}
-              setEmoji={setEmoji}
-              hasLabel={false}
-              name="name"
-              placeholder="Name"
-              register={register}
-              error={errors.name}
+          <div className={styles.emojiNameContainer}>
+            <Controller
+              name="emoji"
+              control={control}
+              render={(props) => (
+                <EmojiPicker
+                  emoji={props.field.value || undefined}
+                  setEmoji={(e: any) => {
+                    props.field.onChange(e?.native);
+                  }}
+                />
+              )}
             />
+            <TextInputWrapper>
+              <input type="text" placeholder="Name" {...register('name')} />
+            </TextInputWrapper>
           </div>
           <div>
             <LimitAmountInput

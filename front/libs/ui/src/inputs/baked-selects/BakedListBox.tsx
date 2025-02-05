@@ -69,6 +69,7 @@ export const BakedListBox = <
   useEffect(() => {
     if (Array.isArray(value) && value.length === 0) {
       onChange(undefined);
+      setResetKey(Math.random().toString().slice(3, 10));
     }
   }, [value]);
 
@@ -99,21 +100,16 @@ export const BakedListBox = <
             style={props.style}
             className={`${props.as ? 'custom' : ''} ${open ? 'active' : ''}`}
           >
-            {({ value: val }) => {
+            {() => {
               let labels: string[] = [];
-              const isActive = Array.isArray(val) ? val.length : Boolean(val);
 
               for (const op of props.options || []) {
                 const opValue =
                   typeof op === 'string' ? op : op[props.valueKey || 'value'];
-                const valValue =
-                  typeof val === 'string'
-                    ? val
-                    : val?.[props.valueKey || 'value'];
 
                 if (
-                  (props.multiple && val.includes(opValue)) ||
-                  valValue === opValue
+                  (props.multiple && value?.includes(opValue)) ||
+                  value === opValue
                 ) {
                   typeof op === 'string'
                     ? labels.push(op)
@@ -125,24 +121,29 @@ export const BakedListBox = <
                   ? labels.join(', ')
                   : props.placeholder || 'Select';
 
+              const IndicatorIcon =
+                props.indicatorIcon === 'plus' ? (
+                  <Plus size={'1.25em'} />
+                ) : (
+                  <ChevronDown size={'1.25em'} />
+                );
               return (
                 <>
                   <div
                     className={styles.buttonContainer}
                     data-filled={Boolean(value)}
                   >
+                    {/* prettier-ignore */}
                     {value && props.renderSelected ? (
                       props.renderSelected(value as any)
                     ) : (
                       <span>{`${props.labelPrefix + ' '}${label}`}</span>
                     )}
-                    {props.renderSelected ? (
-                      value ? null : (
-                        <ChevronDown size={'1.25em'} />
-                      )
-                    ) : (
-                      <ChevronDown size={'1.25em'} />
-                    )}
+
+                    {/* Only Show chevron down icon when there is no renderSelected  */}
+                    {props.renderSelected && value
+                      ? null
+                      : !value && IndicatorIcon}
                   </div>
                   <FormErrorTip error={props.error} />
                 </>

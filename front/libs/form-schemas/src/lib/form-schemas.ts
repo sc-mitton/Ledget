@@ -5,11 +5,12 @@ export const billSchema = z
     name: z
       .string()
       .min(1, { message: 'required' })
-      .max(50, { message: 'Name is too long.' }),
+      .max(50, { message: 'Name is too long.' })
+      .transform((val) => val.toLowerCase().trim()),
     range: z.boolean().optional(),
     emoji: z.string().optional(),
     lower_amount: z.number().optional(),
-    upper_amount: z.number().min(1, { message: 'required' }),
+    upper_amount: z.number().min(1, { message: 'Required' }),
     period: z.enum(['once', 'month', 'year']),
     schedule: z
       .object({
@@ -27,7 +28,7 @@ export const billSchema = z
           if (check1 && check2 && check3) return false;
           else return true;
         },
-        { message: 'required', path: ['day'] }
+        { message: 'Required', path: ['day'] }
       ),
     expires: z.string().optional(),
     reminders: z
@@ -39,12 +40,8 @@ export const billSchema = z
       )
       .optional(),
   })
-  .transform((data) => ({ ...data, ...data.schedule }))
   .refine(
     (data) => {
-      // return data.lower_amount && data.upper_amount
-      //   ? data.lower_amount < data.upper_amount
-      //   : true;
       const hasError =
         data.lower_amount && data.upper_amount
           ? data.lower_amount > data.upper_amount
@@ -53,15 +50,33 @@ export const billSchema = z
       else return true;
     },
     {
-      message: 'Lower amount must be less than upper amount',
+      message: 'First amount must be less than the second',
       path: ['lower_amount'],
     }
-  );
+  )
+  .transform((data) => {
+    const { schedule, lower_amount, upper_amount } = data;
 
-export const categorySchema = z.object({
-  name: z.string().min(1, { message: 'required' }).toLowerCase(),
-  emoji: z.string().optional().nullable(),
-  limit_amount: z.number().min(1, { message: 'required' }),
-  period: z.enum(['month', 'year']),
-  alerts: z.array(z.object({ percent_amount: z.number() })).optional(),
-});
+    return {
+      ...data,
+      ...schedule,
+      lower_amount: lower_amount === undefined ? undefined : lower_amount * 100,
+      upper_amount: upper_amount === undefined ? undefined : upper_amount * 100,
+    };
+  });
+
+export const categorySchema = z
+  .object({
+    name: z
+      .string()
+      .min(1, { message: 'required' })
+      .transform((val) => val.toLowerCase().trim()),
+    emoji: z.string().optional().nullable(),
+    limit_amount: z.number().min(1, { message: 'required' }),
+    period: z.enum(['month', 'year']),
+    alerts: z.array(z.object({ percent_amount: z.number() })).optional(),
+  })
+  .transform((data) => ({
+    ...data,
+    limit_amount: data.limit_amount * 100,
+  }));

@@ -20,6 +20,8 @@ interface BakedSelectPropsBase {
   buttonMaxWidth?: boolean;
   dividerKey?: string;
   showLabel?: boolean;
+  renderIndicator?: (active: boolean, selected: boolean) => JSX.Element;
+  indicatorIcon?: 'plus' | 'chevron';
 }
 
 export type Option = {

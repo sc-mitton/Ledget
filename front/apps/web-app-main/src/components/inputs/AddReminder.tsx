@@ -26,8 +26,9 @@ const AddReminder = (props: Props) => {
     <div>
       <BakedListBox
         placement="left"
-        placeholder="Reminder"
+        placeholder="Add"
         name={props.name}
+        indicatorIcon="plus"
         renderLabel={(label, _, selected) => (
           <div className={styles.dropdownItemLabel}>
             <span>{label}</span>
@@ -42,7 +43,7 @@ const AddReminder = (props: Props) => {
           <div className={styles.addReminderBtn}>
             <div>
               <span>{val.length}</span>
-              <span>Reminders</span>
+              <span>Reminder{val.length > 1 ? 's' : ''}</span>
             </div>
             <Check className="icon" />
           </div>

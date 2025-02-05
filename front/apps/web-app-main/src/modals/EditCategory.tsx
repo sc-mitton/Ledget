@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { useForm, useWatch } from 'react-hook-form';
+import { useForm, useWatch, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -8,13 +8,13 @@ import styles from './styles/forms.module.scss';
 import { useUpdateCategoriesMutation, Category } from '@ledget/shared-features';
 import {
   AddAlert,
-  EmojiComboText,
+  EmojiPicker,
   LimitAmountInput,
   PeriodSelect,
   emoji,
 } from '@components/inputs';
 import SubmitForm from '@components/pieces/SubmitForm';
-import { FormErrorTip } from '@ledget/ui';
+import { FormErrorTip, TextInputWrapper } from '@ledget/ui';
 import { categorySchema } from '@ledget/form-schemas';
 
 export const EditCategory = (props: {
@@ -88,15 +88,25 @@ export const EditCategory = (props: {
         <h3>Edit Category</h3>
         <hr />
         <div className={styles.splitInputs}>
-          <div>
-            <EmojiComboText
-              emoji={emoji}
-              setEmoji={setEmoji}
-              name="name"
-              placeholder="Name"
-              register={register}
-              error={errors.name}
-            />
+          <div className={styles.emojiNameContainer}>
+            <label htmlFor="emoji">Emoji</label>
+            <div>
+              <Controller
+                name="emoji"
+                control={control}
+                render={(props) => (
+                  <EmojiPicker
+                    emoji={props.field.value || undefined}
+                    setEmoji={(e: any) => {
+                      props.field.onChange(e?.native);
+                    }}
+                  />
+                )}
+              />
+              <TextInputWrapper>
+                <input type="text" placeholder="Name" {...register('name')} />
+              </TextInputWrapper>
+            </div>
           </div>
           <div>
             <LimitAmountInput
@@ -112,9 +122,10 @@ export const EditCategory = (props: {
         <div className={styles.extraPaddedRow}>
           <div>
             <PeriodSelect
+              name="period"
               control={control}
               labelPrefix={'Resets'}
-              default={props.category.period}
+              excludeOnce={true}
             />
           </div>
           <div>

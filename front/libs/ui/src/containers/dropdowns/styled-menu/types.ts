@@ -8,6 +8,7 @@ export interface TContext {
 
 interface ItemPropsBase extends MenuItemProps<'div'> {
   onClick: () => void;
+  destructive?: boolean;
 }
 
 export type StyledMenuProps<T extends ElementType> = {

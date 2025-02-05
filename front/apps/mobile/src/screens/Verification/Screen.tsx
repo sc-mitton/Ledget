@@ -24,6 +24,7 @@ import {
   useCompleteVerificationFlowMutation,
 } from '@features/orySlice';
 import { useFlowProgress } from '@/hooks/useFlowProgress';
+import { mail } from '@ledget/media/lotties';
 
 const schema = z.object({
   code: z.string().length(6, { message: 'Invalid code' }),
@@ -113,7 +114,7 @@ const Verification = ({ navigation, route }: VerificationScreenProps) => {
             ref={animation}
             loop={false}
             autoPlay={false}
-            source={require('../../../assets/lotties/mail.json')}
+            source={mail}
             colorFilters={[
               {
                 keypath: 'mail',

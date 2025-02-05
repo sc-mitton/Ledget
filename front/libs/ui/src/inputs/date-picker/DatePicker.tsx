@@ -15,6 +15,7 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
+  ChevronDown,
 } from '@geist-ui/icons';
 
 import styles from './date-picker.module.scss';
@@ -865,7 +866,9 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
             focusedInputIndex !== undefined ? `${focusedInputIndex}` : ''
           }
           data-filled={
-            pickerType === 'range' ? selectedValue?.some((v) => v) : ''
+            pickerType === 'range'
+              ? selectedValue?.some((v) => v)
+              : Boolean(selectedValue)
           }
           slim={true}
           ref={inputContainerRef}
@@ -919,7 +922,12 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
               />
             </>
           )}
-          <CalendarIcon size={'1.125em'} strokeWidth={2} />
+          {props.iconType === 'calendar' && (
+            <CalendarIcon size={'1.125em'} strokeWidth={2} />
+          )}
+          {props.iconType === 'chevron' && (
+            <ChevronDown size={'1.125em'} strokeWidth={2} />
+          )}
           {selectedValue && (
             <CircleIconButton
               className="clear-input-button"
@@ -993,6 +1001,7 @@ const defaultProps: DatePickerProps<TPicker> = {
   placeholder: 'Select',
   closeOnSelect: true,
   hideInputElement: false,
+  iconType: 'calendar',
 };
 
 DatePicker.defaultProps = defaultProps;

@@ -12,7 +12,6 @@
 }
 
 .emojiPickerButton {
-  background-color: var(--btn-light-gray);
   padding: 0.125em 0.375em;
   border-radius: 0.375em;
   font-size: 1.25rem;
@@ -23,10 +22,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
-  &:hover {
-    background-color: var(--btn-light-gray-hover);
-  }
 
   &:has(svg) {
     padding: 0.25em;

@@ -1,6 +1,6 @@
-import { View, Dimensions, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { BlurView } from 'expo-blur';
-import { Canvas, Rect, LinearGradient, vec } from '@shopify/react-native-skia';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '@shopify/restyle';
 
 import styles from './styles/header';
@@ -13,34 +13,29 @@ const EmojihHeader = ({ bill }: { bill: Bill }) => {
   const theme = useTheme();
 
   return (
-    <Box style={styles.headerBox}>
+    <Box style={styles.headerBox} marginTop="s">
       <View style={styles.header}>
         <View>
           <BillCatEmoji emoji={bill.emoji} period={bill.period} />
         </View>
-        <View>
+        <Box>
           <Header>
             {bill.name.charAt(0).toUpperCase() + bill.name.slice(1)}
           </Header>
-        </View>
+        </Box>
       </View>
       <BlurView
         intensity={100}
         style={[StyleSheet.absoluteFill, styles.blurView]}
         tint={mode === 'dark' ? 'dark' : 'light'}
       />
-      <Canvas style={StyleSheet.absoluteFill}>
-        <Rect x={0} y={0} width={Dimensions.get('window').width} height={125}>
-          <LinearGradient
-            colors={[
-              mode === 'dark' ? 'hsla(0, 0%, 0%, 0)' : 'hsla(0, 0%, 100%, 0)',
-              theme.colors.mainBackground,
-            ]}
-            start={vec(0, 0)}
-            end={vec(0, 125)}
-          />
-        </Rect>
-      </Canvas>
+      <LinearGradient
+        colors={[
+          mode === 'dark' ? 'hsla(0, 0%, 0%, 0)' : 'hsla(0, 0%, 100%, 0)',
+          theme.colors.mainBackground,
+        ]}
+        style={StyleSheet.absoluteFill}
+      />
       <Text
         style={[styles.blurEmoji, { opacity: mode === 'dark' ? 0.7 : 0.5 }]}
       >

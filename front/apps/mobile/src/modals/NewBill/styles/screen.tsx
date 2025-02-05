@@ -13,10 +13,6 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
   },
-  moneyInputs: {
-    flexDirection: 'row',
-    gap: 12,
-  },
   checkBoxContainer: {
     marginLeft: 4,
   },

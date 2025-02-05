@@ -2,14 +2,14 @@ import { useRef, useState, useEffect, Fragment } from 'react';
 
 import { animated } from '@react-spring/web';
 import { Tab } from '@headlessui/react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Edit2, Check } from '@geist-ui/icons';
 
 import styles from './styles/items.module.scss';
 import { TabView, BottomButtons } from './Reusables';
-import { EmojiComboText, LimitAmountInput, emoji } from '@components/inputs';
+import { EmojiPicker, LimitAmountInput, emoji } from '@components/inputs';
 import {
   formatCurrency,
   getLongestLength,
@@ -25,6 +25,7 @@ import {
   IconButtonHalfGray,
   TabNavListUnderlined,
   GripButton,
+  TextInputWrapper,
 } from '@ledget/ui';
 import { useItemsContext, ItemsProvider, Period } from './ItemsContext';
 import {
@@ -210,6 +211,7 @@ const ListOfCategories = () => {
 const categorySchema = z.object({
   name: z.string().min(1, { message: 'Category name required.' }),
   limit_amount: z.number().min(1, { message: 'Limit amount required.' }),
+  emoji: z.string().min(1, { message: 'Emoji required.' }),
 });
 
 const CustomTabPanel = () => {
@@ -239,7 +241,6 @@ const CustomTabPanel = () => {
       const item = {
         ...data,
         id: Math.random().toString(36).slice(2),
-        emoji: typeof emoji === 'string' ? emoji : emoji?.native,
       };
 
       if (periodTabIndex === 0) {
@@ -259,15 +260,21 @@ const CustomTabPanel = () => {
       <form onSubmit={submitForm}>
         <div>
           <div>
-            <EmojiComboText
-              hasLabel={false}
-              name="name"
-              placeholder="Name"
-              register={register}
-              emoji={emoji}
-              setEmoji={setEmoji}
-              error={errors.name}
+            <Controller
+              name="emoji"
+              control={control}
+              render={(props) => (
+                <EmojiPicker
+                  emoji={props.field.value}
+                  setEmoji={(e: any) => {
+                    props.field.onChange(e?.native);
+                  }}
+                />
+              )}
             />
+            <TextInputWrapper>
+              <input type="text" placeholder="Name" {...register('name')} />
+            </TextInputWrapper>
           </div>
           <div>
             <LimitAmountInput

@@ -5,7 +5,7 @@
     margin-top: 1.5em;
   }
 
-  & > div:last-of-type {
+  & > div:not(:first-of-type) {
     display: grid;
     row-gap: 0.75em;
     column-gap: 1.5em;
@@ -20,6 +20,7 @@
 
     & > div:nth-child(2n + 1) {
       font-weight: var(--fw-regular);
+      color: var(--m-text-tertiary);
     }
 
     // Reminders row
@@ -35,6 +36,35 @@
       gap: 0.125em;
     }
   }
+}
+
+.splitInputs {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+
+  & > div {
+    width: 50%;
+  }
+}
+
+.deleteBillButtons {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+  width: 100%;
+  justify-content: flex-end;
+
+  button {
+    width: 5em;
+  }
+}
+
+.emojiNameContainer > div {
+  display: flex;
+  gap: 0.5em;
+  flex-direction: row;
+  align-items: center;
 }
 
 .header {

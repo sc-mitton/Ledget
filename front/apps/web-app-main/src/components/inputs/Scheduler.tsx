@@ -23,7 +23,6 @@ import {
   FormInputButton,
   FormErrorTip,
   DropdownDiv,
-  useSchemeVar,
   TabNavList,
 } from '@ledget/ui';
 
@@ -118,23 +117,25 @@ const Button: FC<
 > = ({ children, iconPlaceholder, ...props }) => {
   const Component = iconPlaceholder ? FormInputButton : FormInputButton2;
 
-  const [placeholder, setPlaceholder] = useState('');
+  const [formattedValue, setFormattedValue] = useState('');
   const { open, setOpen, buttonRef, day, week, weekDay, month } =
     usePickerContext();
 
   useEffect(() => {
     if (month && day) {
-      setPlaceholder(
-        `${dayjs()
+      setFormattedValue(
+        `on ${dayjs()
           .month(month - 1)
           .format('MMM')} ${day}${getOrderSuffix(day)}`
       );
     } else if (week && weekDay) {
-      setPlaceholder(
-        `${week}${getOrderSuffix(week)} ${dayjs().day(weekDay).format('ddd')}`
+      setFormattedValue(
+        `on the ${week}${getOrderSuffix(week)} ${dayjs()
+          .day(weekDay)
+          .format('ddd')}`
       );
     } else if (day) {
-      setPlaceholder(`The ${day}${getOrderSuffix(day)}`);
+      setFormattedValue(`on the ${day}${getOrderSuffix(day)}`);
     }
   }, [day, month, week, weekDay]);
 
@@ -157,20 +158,18 @@ const Button: FC<
         aria-haspopup="true"
         aria-expanded={`${open}`}
         aria-controls="schedule-dropdown"
-        style={{
-          color: placeholder ? 'var(--m-text)' : 'var(--input-placeholder2)',
-        }}
+        data-filled={formattedValue ? 'true' : 'false'}
         {...props}
       >
         {iconPlaceholder ? (
           <>
             <Calendar size={'1.125em'} />
-            {placeholder}
+            {formattedValue}
           </>
         ) : (
           <div>
             <span className={schedulerStyles.placeholder}>
-              {placeholder || 'Repeats on'}
+              {formattedValue || 'On'}
             </span>
           </div>
         )}
@@ -559,7 +558,6 @@ const DayWeekPicker = () => {
   } = usePickerContext();
 
   const ref = useRef<HTMLDivElement>(null);
-  const pillBackgroundColor = useSchemeVar('--input-background');
 
   useEffect(() => {
     open ? ref.current?.focus() : ref.current?.blur();
@@ -606,11 +604,6 @@ const DayWeekPicker = () => {
               size="sm"
               selectedIndex={selectedIndex}
               labels={['Day', 'Week']}
-              theme={{
-                pillBackgroundColor: pillBackgroundColor || 'black',
-                tabColor: 'inherit',
-                tabBackgroundColor: 'transparent',
-              }}
             />
             <Tab.Panels>
               <Tab.Panel>
@@ -816,9 +809,9 @@ export const BillScheduler = (props: BSP) => {
   return (
     <>
       {month && (
-        <input type="hidden" value={month} {...register('location.month')} />
+        <input type="hidden" value={month} {...register('schedule.month')} />
       )}
-      {day && <input type="hidden" value={day} {...register('location.day')} />}
+      {day && <input type="hidden" value={day} {...register('schedule.day')} />}
       {weekDay && (
         <input
           type="hidden"
@@ -827,7 +820,7 @@ export const BillScheduler = (props: BSP) => {
         />
       )}
       {week && (
-        <input type="hidden" value={week} {...register('location.week')} />
+        <input type="hidden" value={week} {...register('schedule.week')} />
       )}
       <Scheduler
         day={day}

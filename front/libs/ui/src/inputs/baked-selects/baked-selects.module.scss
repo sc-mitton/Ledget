@@ -29,6 +29,7 @@
 .bakedListBoxContainer {
   display: inline-flex;
   flex-direction: column;
+  width: 100%;
 
   & > div:last-of-type {
     position: relative;

@@ -19,6 +19,7 @@ type BaseDatePickerProps = {
   disabledStyle?: 'muted' | 'highlighted';
   autoFocus?: boolean;
   placement?: TPlacement;
+  iconType?: 'calendar' | 'chevron';
   verticlePlacement?: 'top' | 'bottom';
 } & (
   | {

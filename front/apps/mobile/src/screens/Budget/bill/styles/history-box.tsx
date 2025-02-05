@@ -13,13 +13,16 @@ const styles = StyleSheet.create({
   clockIcon: {
     marginRight: 5,
   },
+  gridContainer: {
+    minWidth: '100%',
+  },
   grid: {
-    width: '100%',
     flexDirection: 'row',
     flexWrap: 'wrap',
+    width: '100%',
+    maxWidth: '100%',
   },
   monthCell: {
-    width: '25%',
     alignItems: 'center',
     gap: 6,
     paddingHorizontal: 6,

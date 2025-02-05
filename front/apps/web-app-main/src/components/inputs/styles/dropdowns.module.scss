@@ -10,10 +10,17 @@
 .addAlertBtn {
   width: 100%;
   display: flex;
+  align-items: center;
+  gap: 0.5em;
   justify-content: space-between;
-  gap: 1em;
+  color: var(--input-placeholder2);
+
+  &:not([data-selected='true']) * {
+    color: var(--input-placeholder2);
+  }
 
   &[data-selected='true'] {
+    justify-content: flex-start;
     color: var(--m-text);
   }
 }
@@ -29,7 +36,7 @@
 .addReminderBtn {
   display: flex;
   flex-direction: row;
-  gap: 0.25em;
+  gap: 1em;
   justify-content: space-between;
   width: 100%;
   align-items: center;
@@ -48,11 +55,20 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-weight: var(--fw-regular);
-  width: auto;
-  padding: 0.25rem 0.75rem;
-  margin: 0.125rem 0;
   cursor: pointer;
+
+  & > div:nth-of-type(2) {
+    opacity: 0;
+    flex-grow: 1;
+    margin-left: 1em;
+    margin-right: 0.5em;
+    transition: all 0.2s ease-in-out;
+  }
+
+  &[data-active='true'] > div:nth-of-type(2) {
+    opacity: 1;
+    transition: all 0.2s ease-in-out;
+  }
 }
 
 .returnBtn {
@@ -84,4 +100,18 @@
 
 .dropdown {
   padding: 0;
+}
+
+.numberOfAlertsCircle {
+  background-color: var(--m-text);
+  color: var(--m-invert-text);
+  border-radius: 50%;
+  padding: 0.375em;
+  width: 0.875em;
+  height: 0.875em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 0.75em;
 }

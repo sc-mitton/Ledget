@@ -33,7 +33,6 @@ const StyledMenu = <T extends ElementType>({
 
   return (
     <HeadlessMenu
-      as="div"
       className={styles.menu}
       data-side={side}
       ref={measure}
@@ -80,11 +79,13 @@ const Item = ({
   className,
   renderLeft,
   renderRight,
+  destructive,
   ...rest
 }: ItemProps) => {
   return (
     <HeadlessMenu.Item
       {...rest}
+      data-destructive={destructive}
       className={[className, styles.itemContainer].join(' ')}
     >
       {({ active }) => (

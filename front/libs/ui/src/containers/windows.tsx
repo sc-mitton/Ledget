@@ -149,6 +149,5 @@ export const WindowCorner = styled.div`
 
   button {
     display: flex;
-    gap: 0.75em;
   }
 `;

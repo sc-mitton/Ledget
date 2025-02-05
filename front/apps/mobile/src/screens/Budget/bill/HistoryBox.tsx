@@ -11,8 +11,6 @@ import {
   Box,
   BoxHeader,
   Icon,
-  PagerView,
-  TPagerViewRef,
   Button,
   Seperator,
   Text,
@@ -22,9 +20,9 @@ import { BudgetScreenProps } from '@types';
 
 const MonthlyBillHistory = ({ bill }: { bill: Bill }) => {
   const { navigation } = useNavigation<BudgetScreenProps<'Bill'>>();
-
-  const pagerViewRef = useRef<TPagerViewRef>(null);
-  const [page, setPage] = useState(0);
+  const scrollRef = useRef<ScrollView>(null);
+  const [scrollWidth, setScrollWidth] = useState<number>();
+  const [pageIndex, setPageIndex] = useState(0);
 
   const instances = useMemo(() => {
     if (bill.period === 'once') {
@@ -56,21 +54,43 @@ const MonthlyBillHistory = ({ bill }: { bill: Bill }) => {
           <Button
             key={`year-${index}-button`}
             variant="borderedPill"
-            textColor={page === index ? 'secondaryText' : 'quinaryText'}
-            onPress={() => pagerViewRef.current?.setPage(index)}
+            textColor={pageIndex === index ? 'secondaryText' : 'quinaryText'}
+            onPress={() => {
+              scrollRef.current?.scrollTo({
+                x: index * (scrollWidth || 0),
+                animated: true,
+              });
+            }}
             label={year}
           />
         ))}
       </ScrollView>
       <Seperator backgroundColor="nestedContainerSeperator" />
-      <PagerView
-        initialPage={page}
-        onPageSelected={({ nativeEvent }) => setPage(nativeEvent.position)}
-        ref={pagerViewRef}
+      <ScrollView
+        ref={scrollRef}
+        horizontal
+        onScroll={({ nativeEvent }) => {
+          setPageIndex(
+            Math.round(nativeEvent.contentOffset.x / (scrollWidth || 0))
+          );
+        }}
+        decelerationRate={0.01}
+        snapToInterval={scrollWidth}
+        snapToAlignment="start"
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.gridContainer}
       >
         {Object.keys(instances).map((year) => (
-          <View key={`year-${year}`} style={styles.grid}>
-            {instances[year].map((month) => {
+          <View
+            key={`year-${year}`}
+            style={[styles.grid, { width: scrollWidth }]}
+            onLayout={({ nativeEvent }) => {
+              if (scrollWidth === undefined) {
+                setScrollWidth(nativeEvent.layout.width);
+              }
+            }}
+          >
+            {instances[year].reverse().map((month) => {
               const transactionId = bill.transactions?.find(
                 (transaction) =>
                   dayjs(transaction.date).format('YYYY-MM-DD') === month
@@ -104,7 +124,7 @@ const MonthlyBillHistory = ({ bill }: { bill: Bill }) => {
             })}
           </View>
         ))}
-      </PagerView>
+      </ScrollView>
     </>
   );
 };

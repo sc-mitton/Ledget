@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useForm, useWatch } from 'react-hook-form';
+import { useForm, useWatch, Controller } from 'react-hook-form';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import styles from './styles/forms.module.scss';
@@ -10,18 +10,16 @@ import { categorySchema } from '@ledget/form-schemas';
 import { useAddNewCategoryMutation } from '@ledget/shared-features';
 import {
   AddAlert,
-  EmojiComboText,
+  EmojiPicker,
   LimitAmountInput,
   PeriodSelect,
   emoji,
 } from '@components/inputs';
-import { withModal } from '@ledget/ui';
+import { withModal, TextInputWrapper } from '@ledget/ui';
 import SubmitForm from '@components/pieces/SubmitForm';
 import { FormErrorTip } from '@ledget/ui';
 
 const CreateCategoryModal = withModal((props) => {
-  const location = useLocation();
-  const [emoji, setEmoji] = useState<emoji>();
   const [addNewCategory, { isLoading, isSuccess }] =
     useAddNewCategoryMutation();
 
@@ -47,21 +45,30 @@ const CreateCategoryModal = withModal((props) => {
       <hr />
       <form
         onSubmit={handleSubmit((data, e) => {
-          const em = typeof emoji === 'string' ? emoji : emoji?.native;
-          addNewCategory({ ...data, emoji: em });
+          addNewCategory({ ...data });
         })}
         id="new-cat-form"
         className={styles.createForm}
       >
-        <div>
-          <EmojiComboText
-            emoji={emoji}
-            setEmoji={setEmoji}
-            name="name"
-            placeholder="Name"
-            register={register}
-            error={errors.name}
-          />
+        <div className={styles.emojiNameContainer}>
+          <label htmlFor="schedule">Name</label>
+          <div>
+            <Controller
+              name="emoji"
+              control={control}
+              render={(props) => (
+                <EmojiPicker
+                  emoji={props.field.value || undefined}
+                  setEmoji={(e: any) => {
+                    props.field.onChange(e?.native);
+                  }}
+                />
+              )}
+            />
+            <TextInputWrapper>
+              <input type="text" placeholder="Name" {...register('name')} />
+            </TextInputWrapper>
+          </div>
         </div>
         <div>
           <LimitAmountInput withCents={false} control={control}>
@@ -73,7 +80,6 @@ const CreateCategoryModal = withModal((props) => {
             name="period"
             control={control}
             labelPrefix={'Resets'}
-            default={location.state?.period}
             excludeOnce={true}
           />
           <div>

@@ -1,7 +1,7 @@
 import { useId, useState, useEffect } from 'react';
 
 import { AnimatePresence } from 'framer-motion';
-import { Menu, RadioGroup } from '@headlessui/react';
+import { RadioGroup } from '@headlessui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
@@ -10,7 +10,6 @@ import {
   Trash2,
   Edit2,
   CheckInCircle,
-  Circle,
   BellOff,
   MoreHorizontal,
 } from '@geist-ui/icons';
@@ -23,34 +22,33 @@ import {
   useDeleteBillMutation,
   useUpdateBillsMutation,
   UpdateBill,
-  Reminder,
-  selectBudgetMonthYear,
 } from '@ledget/shared-features';
 import { SubmitForm } from '@components/pieces';
 import { getOrderSuffix } from '@ledget/helpers';
 import { mapWeekDayNumberToName } from '@ledget/helpers';
 import {
   DollarCents,
-  DropdownDiv,
   SlideMotionDiv,
   Checkbox,
   IconButtonHalfGray,
-  DropdownItem,
+  DestructiveTextButton,
   DatePicker,
   NestedWindow2,
   WindowCorner,
+  TextInputWrapper,
+  StyledMenu,
+  GrayButton,
 } from '@ledget/ui';
 import { useLoaded } from '@ledget/helpers';
 import { extractReminders } from '@modals/CreateBill';
 import {
-  EmojiComboText,
+  EmojiPicker,
   DollarRangeInput,
   BillScheduler,
   AddReminder,
-  emoji,
 } from '@components/inputs';
-import { useAppSelector } from '@hooks/store';
 import { billSchema } from '@ledget/form-schemas';
+import { getNextBillDate } from '@ledget/helpers';
 
 const getRepeatsDescription = ({
   day,
@@ -86,62 +84,6 @@ const getRepeatsDescription = ({
   }
 };
 
-const getNextBillDate = ({
-  day,
-  week,
-  week_day,
-  month,
-  year,
-}: {
-  day: number | undefined;
-  week: number | undefined;
-  week_day: number | undefined;
-  month: number | undefined;
-  year: number | undefined;
-}) => {
-  let date = new Date();
-
-  if (year && month && day) {
-    return new Date(year, month, day).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    });
-  } else if (month && day) {
-    date.setMonth(month);
-    date.setDate(day);
-    date.setFullYear(date.getFullYear() + 1);
-    return date.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    });
-  } else if (week_day && week) {
-    date.setMonth(date.getMonth() + 1);
-    date.setDate(1 + (week! - 1) * 7);
-    date.setDate(date.getDate() + ((week_day! - 1 - date.getDay() + 7) % 7));
-    return date.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    });
-  } else if (day) {
-    date.setMonth(date.getMonth() + 1);
-    date.setDate(day);
-    return date.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    });
-  } else {
-    return date.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    });
-  }
-};
-
 type Action = 'delete' | 'edit' | 'none';
 
 const Actions = ({
@@ -152,47 +94,29 @@ const Actions = ({
   const [openEllipsis, setOpenEllipsis] = useState(false);
 
   return (
-    <Menu as={WindowCorner}>
-      {({ open }) => (
-        <>
-          <Menu.Button
-            as={IconButtonHalfGray}
-            onClick={() => setOpenEllipsis(!openEllipsis)}
-          >
-            <MoreHorizontal />
-          </Menu.Button>
-          <DropdownDiv placement="right" className="right" visible={open}>
-            <Menu.Items static>
-              <Menu.Item>
-                {({ active }) => (
-                  <DropdownItem
-                    as="button"
-                    active={active}
-                    onClick={() => setAction('edit')}
-                  >
-                    <Edit2 className="icon" />
-                    <span>Edit Bill</span>
-                  </DropdownItem>
-                )}
-              </Menu.Item>
-              <hr />
-              <Menu.Item>
-                {({ active }) => (
-                  <DropdownItem
-                    as="button"
-                    active={active}
-                    onClick={() => setAction('delete')}
-                  >
-                    <Trash2 className="icon" />
-                    <span>Delete Bill</span>
-                  </DropdownItem>
-                )}
-              </Menu.Item>
-            </Menu.Items>
-          </DropdownDiv>
-        </>
-      )}
-    </Menu>
+    <WindowCorner>
+      <StyledMenu>
+        <StyledMenu.Button
+          as={IconButtonHalfGray}
+          onClick={() => setOpenEllipsis(!openEllipsis)}
+        >
+          <MoreHorizontal />
+        </StyledMenu.Button>
+        <StyledMenu.Items>
+          <StyledMenu.Item
+            label="Edit Bill"
+            icon={<Edit2 className="icon" />}
+            onClick={() => setAction('edit')}
+          />
+          <StyledMenu.Item
+            label="Delete Bill"
+            destructive
+            icon={<Trash2 className="icon" />}
+            onClick={() => setAction('delete')}
+          />
+        </StyledMenu.Items>
+      </StyledMenu>
+    </WindowCorner>
   );
 };
 
@@ -210,11 +134,6 @@ const BillInfo = ({ bill }: { bill: TransformedBill }) => {
       <NestedWindow2>
         <div>Amount</div>
         <div>
-          {bill.is_paid ? (
-            <CheckInCircle size={'1em'} style={{ marginLeft: '.125em' }} />
-          ) : (
-            <Circle size={'1em'} style={{ marginLeft: '.125em' }} />
-          )}
           <div>
             {bill.lower_amount && (
               <>
@@ -235,16 +154,22 @@ const BillInfo = ({ bill }: { bill: TransformedBill }) => {
             year: bill?.year,
           })}
         </div>
+        <div>Created</div>
+        <div>{dayjs(bill.created).format('MMM D, YYYY')}</div>
+      </NestedWindow2>
+      <NestedWindow2>
+        <div>Paid</div>
+        <div>
+          {bill?.is_paid ? (
+            <CheckInCircle size={'1em'} />
+          ) : (
+            <span>&mdash;</span>
+          )}
+        </div>
         <div>Next</div>
         <div>
           {bill?.is_paid
-            ? `${getNextBillDate({
-                day: bill?.day,
-                week: bill?.week,
-                week_day: bill?.week_day,
-                month: bill?.month,
-                year: bill?.year,
-              })}`
+            ? `${getNextBillDate(bill)}`
             : `${new Date(bill.date).toLocaleDateString('en-US', {
                 month: 'short',
                 day: 'numeric',
@@ -263,6 +188,8 @@ const BillInfo = ({ bill }: { bill: TransformedBill }) => {
             </div>
           </>
         )}
+      </NestedWindow2>
+      <NestedWindow2>
         <div>Reminders</div>
         <div>
           {bill.reminders && bill.reminders?.length > 0 ? (
@@ -327,36 +254,26 @@ const DeleteBill = ({
           </h3>
         </RadioGroup.Label>
         <RadioGroup.Option value="single" className={styles.radioOption}>
-          {({ checked }) => (
-            <>
-              <span role="button" />
-              <span>Just this month's bill</span>
-            </>
-          )}
+          <span role="button" />
+          <span>Just this month's bill</span>
         </RadioGroup.Option>
         <RadioGroup.Option value="complement" className={styles.radioOption}>
-          {({ checked }) => (
-            <>
-              <span role="button" />
-              <span>All future bills</span>
-            </>
-          )}
+          <span role="button" />
+          <span>All future bills</span>
         </RadioGroup.Option>
         <RadioGroup.Option value="all" className={styles.radioOption}>
-          {({ checked }) => (
-            <>
-              <span role="button" />
-              <span>All including this month</span>
-            </>
-          )}
+          <span role="button" />
+          <span>All including this month</span>
         </RadioGroup.Option>
       </RadioGroup>
-      <SubmitForm
-        text="OK"
-        submitting={isDeleting}
-        success={isDeleteSuccess}
-        onCancel={onCancel}
-      />
+      <div className={styles.deleteBillButtons}>
+        <GrayButton onClick={onCancel}>
+          <span>Cancel</span>
+        </GrayButton>
+        <DestructiveTextButton onClick={onSubmit}>
+          <span>OK</span>
+        </DestructiveTextButton>
+      </div>
     </form>
   );
 };
@@ -379,11 +296,9 @@ const EditBill = ({
     control,
   } = useForm<z.infer<typeof billSchema>>({
     resolver: zodResolver(billSchema),
-    defaultValues: { name: startCase(toLower(bill?.name)) },
+    defaultValues: { name: startCase(toLower(bill?.name)), emoji: bill?.emoji },
   });
 
-  const [emoji, setEmoji] = useState<emoji>();
-  const [reminders, setReminders] = useState<Reminder[]>();
   const [rangeMode, setRangeMode] = useState(Boolean(bill.lower_amount));
 
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
@@ -408,11 +323,6 @@ const EditBill = ({
     })(e);
   };
 
-  // Set values on load
-  useEffect(() => {
-    setEmoji(bill.emoji);
-  }, []);
-
   // Update success
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -431,37 +341,38 @@ const EditBill = ({
         <h3>Edit Bill</h3>
         <hr />
         <div>
-          <label htmlFor="schedule">Schedule</label>
-          <div>
-            <BillScheduler
-              defaultValue={{
-                day: bill.day,
-                week: bill.week,
-                weekDay: bill.week_day,
-                month: bill.month,
-              }}
-              billPeriod={bill.period}
-              error={errors.schedule?.day}
-              register={register}
-            />
-            <AddReminder
-              value={reminders}
-              onChange={setReminders}
-              defaultSelected={
-                bill.reminders && bill.reminders.map((reminder) => reminder.id)
-              }
-            />
-          </div>
-        </div>
-        <div>
-          <EmojiComboText
-            emoji={emoji}
-            setEmoji={setEmoji}
-            name="name"
-            placeholder="Name"
+          <label htmlFor="schedule">Repeats</label>
+          <BillScheduler
+            defaultValue={{
+              day: bill.day,
+              week: bill.week,
+              weekDay: bill.week_day,
+              month: bill.month,
+            }}
+            billPeriod={bill.period}
+            error={errors.schedule?.day}
             register={register}
-            error={errors.name}
           />
+        </div>
+        <div className={styles.emojiNameContainer}>
+          <label htmlFor="emoji">Emoji</label>
+          <div>
+            <Controller
+              name="emoji"
+              control={control}
+              render={(props) => (
+                <EmojiPicker
+                  emoji={props.field.value}
+                  setEmoji={(e: any) => {
+                    props.field.onChange(e?.native);
+                  }}
+                />
+              )}
+            />
+            <TextInputWrapper>
+              <input type="text" placeholder="Name" {...register('name')} />
+            </TextInputWrapper>
+          </div>
         </div>
         <div>
           <DollarRangeInput
@@ -479,22 +390,29 @@ const EditBill = ({
             setChecked={setRangeMode}
           />
         </div>
-        <div>
-          <Controller
-            name="expires"
-            control={control}
-            render={(props) => (
-              <DatePicker
-                disabled={[[undefined, dayjs().subtract(1, 'day')]]}
-                placeholder="Expires"
-                format="M/D/YYYY"
-                aria-label="Expiration date"
-                onChange={(e) => {
-                  props.field.onChange(e?.toISOString());
-                }}
-              />
-            )}
-          />
+        <div className={styles.splitInputs}>
+          <div>
+            <label htmlFor="expires">Expires</label>
+            <Controller
+              name="expires"
+              control={control}
+              render={(props) => (
+                <DatePicker
+                  disabled={[[undefined, dayjs().subtract(1, 'day')]]}
+                  placeholder="Expires"
+                  format="M/D/YYYY"
+                  aria-label="Expiration date"
+                  onChange={(e) => {
+                    props.field.onChange(e?.toISOString());
+                  }}
+                />
+              )}
+            />
+          </div>
+          <div>
+            <label htmlFor="reminders">Reminders</label>
+            <AddReminder control={control} name="reminders" />
+          </div>
         </div>
         <SubmitForm
           text="Save"
@@ -516,7 +434,6 @@ export const BillModalContent = (props: ModalContentProps) => {
   const id = useId();
   const loaded = useLoaded(100);
   const [action, setAction] = useState<Action>('none');
-  const { month, year } = useAppSelector(selectBudgetMonthYear);
 
   return (
     <div className={styles.billModalContent}>
@@ -564,7 +481,7 @@ const BillModal = withModal<ModalContentProps>((props) => {
       bill={props.bill}
       onClose={() => {
         props.closeModal();
-        props.onClose();
+        props.onClose && props.onClose();
       }}
     />
   );

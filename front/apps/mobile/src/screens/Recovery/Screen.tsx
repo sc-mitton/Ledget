@@ -23,6 +23,7 @@ import {
 } from '@ledget/native-ui';
 import { RecoveryScreenProps } from '@types';
 import { useFlowProgress } from '@hooks';
+import { lock } from '@ledget/media/lotties';
 
 const schema = z.object({
   code: z.string().length(6, { message: 'Invalid code' }),
@@ -106,7 +107,7 @@ export default function Recovery({ navigation, route }: RecoveryScreenProps) {
               ]}
               loop={false}
               ref={animation}
-              source={require('../../../assets/lotties/lock.json')}
+              source={lock}
             />
           </View>
         </View>

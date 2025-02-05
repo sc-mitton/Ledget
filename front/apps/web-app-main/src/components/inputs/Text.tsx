@@ -14,62 +14,31 @@ import {
   FormError,
 } from '@ledget/ui';
 
-export const EmojiComboText = (
-  props: { register: any; error: any; hasLabel?: boolean } & EmojiProps &
-    HTMLProps<HTMLInputElement>
-) => {
-  const {
-    register,
-    error,
-    emoji: propsEmoji,
-    setEmoji: propsSetEmoji,
-    hasLabel = true,
-    ...rest
-  } = props;
-
-  const { ref: formRef, ...registerRest } = register('name');
-  const ref = useRef<HTMLInputElement>();
+export const EmojiPicker = (props: EmojiProps) => {
+  const { emoji: propsEmoji, setEmoji: propsSetEmoji } = props;
 
   const [em, setEm] = useState<emoji>();
   const emoji = propsEmoji || em;
   const setEmoji = propsSetEmoji || setEm;
 
-  useEffect(() => {
-    emoji && ref.current?.focus();
-  }, [emoji]);
-
   return (
-    <>
-      {hasLabel && <label htmlFor="name">Name</label>}
-      <TextInputWrapper>
-        <Emoji emoji={emoji} setEmoji={setEmoji}>
-          {({ emoji }) => (
-            <>
-              <div className={styles.emojiPickerLedgetButtonContainer}>
-                <Emoji.Button emoji={emoji} />
-              </div>
-              <Emoji.Picker />
-              <input
-                type="hidden"
-                name="emoji"
-                value={typeof emoji === 'string' ? emoji : emoji?.native}
-              />
-            </>
-          )}
-        </Emoji>
-        <input
-          className={styles.emojiComboTextInput}
-          type="text"
-          {...rest}
-          {...registerRest}
-          ref={(e) => {
-            formRef(e);
-            if (e) ref.current = e;
-          }}
-        />
-        <FormErrorTip error={error} />
-      </TextInputWrapper>
-    </>
+    <div className={styles.emojiPickerContainer}>
+      <Emoji emoji={emoji} setEmoji={setEmoji}>
+        {({ emoji }) => (
+          <>
+            <div className={styles.emojiPickerLedgetButtonContainer}>
+              <Emoji.Button emoji={emoji} />
+            </div>
+            <Emoji.Picker />
+            <input
+              type="hidden"
+              name="emoji"
+              value={typeof emoji === 'string' ? emoji : emoji?.native}
+            />
+          </>
+        )}
+      </Emoji>
+    </div>
   );
 };
 
@@ -174,7 +143,7 @@ export const LimitAmountInput: FC<
   // Update controller value
   useEffect(() => {
     if (val) {
-      field.onChange(makeIntCurrencyFromStr(val));
+      field.onChange(parseFloat(val.replace(/[^0-9.]/g, '')));
     }
   }, [val]);
 
@@ -207,7 +176,8 @@ export const LimitAmountInput: FC<
             }
           }}
           onChange={(e) => {
-            const newVal = formatCurrency(e.target.value, withCents);
+            const target = parseInt(e.target.value.replace(/[^0-9]/g, ''));
+            const newVal = formatCurrency(target, withCents);
             setVal(newVal);
           }}
           onFocus={(e) => {
@@ -275,11 +245,6 @@ export const DollarRangeInput = ({
         </LimitAmountInput>
       </div>
       {errors.lower_amount?.type !== 'required' &&
-        errors.lower_amount?.message.toLowerCase() !== 'required' && (
-          <FormError msg={errors.lower_amount?.message} />
-        )}
-      {errors.lower_amount?.type !== 'required' &&
-        errors.lower_amount?.type !== 'typeError' &&
         errors.lower_amount?.message.toLowerCase() !== 'required' && (
           <FormError msg={errors.lower_amount?.message} />
         )}

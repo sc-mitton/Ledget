@@ -5,9 +5,9 @@ import { Control } from 'react-hook-form';
 import { FormInputButton2, BakedListBox } from '@ledget/ui';
 
 const baseopts = [
-  { id: 1, value: 'month', label: 'Monthly', disabled: false, default: true },
-  { id: 2, value: 'year', label: 'Yearly', disabled: false, default: false },
-  { id: 3, value: 'once', label: 'Once', disabled: true, default: false },
+  { id: 1, value: 'month', label: 'monthly', disabled: false, default: true },
+  { id: 2, value: 'year', label: 'yearly', disabled: false, default: false },
+  { id: 3, value: 'once', label: 'once', disabled: false, default: false },
 ];
 
 interface P {

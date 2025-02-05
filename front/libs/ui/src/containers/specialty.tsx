@@ -160,7 +160,7 @@ export const DropdownItem = <C extends AcceptibleAs>(
   return (
     <Component
       {...rest}
-      className={styles.dropdownItem}
+      className={`${styles.dropdownItem} ${className}`}
       data-active={active}
       data-selected={selected}
     >

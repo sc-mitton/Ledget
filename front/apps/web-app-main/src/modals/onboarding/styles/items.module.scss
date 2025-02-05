@@ -140,6 +140,13 @@ $scrollbar-padding: 1em;
   gap: 0.375rem;
 }
 
+.emojiNameContainer {
+  display: flex;
+  gap: 0.5em;
+  flex-direction: row;
+  align-items: center;
+}
+
 /* ----------------------------- Suggested Items ---------------------------- */
 
 .recommendationsButtonContainer {
