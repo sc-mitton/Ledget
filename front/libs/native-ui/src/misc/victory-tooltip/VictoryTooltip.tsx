@@ -249,7 +249,7 @@ export const VictoryTooltip = (props: VictoryTooltipProps) => {
             font={font}
             color={xAxisTipColor || color}
             x={tooltipDateXPos}
-            y={tooltipDateYPos}
+            y={chartBounds.bottom}
           />
         )}
         {!props.hidden?.includes('tip') && isActive.value && (
