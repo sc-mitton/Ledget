@@ -74,9 +74,9 @@ export const darkTheme = createTheme({
     // Backgrounds
     mainBackground: palette.gray900,
     accountsMainBackground: palette.gray900,
-    bottomNavBackground: palette.gray900,
+    bottomNavBackground: palette.gray1000,
     androidNavBar: palette.gray850,
-    bottomNavCover: `hsl(${grayH}, ${grayS}%, 8%)`,
+    bottomNavCover: `hsl(${grayH}, ${grayS}%, 0%)`,
     nestedContainer: palette.gray850,
     modalNestedContainer: palette.gray800,
     lightGrayCard: palette.gray850,

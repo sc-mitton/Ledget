@@ -73,12 +73,11 @@ export const lightTheme = createTheme({
     blueHue: `${blueH}`,
 
     // Backgrounds
-    mainBackground: palette.gray150,
+    mainBackground: palette.gray125,
     accountsMainBackground: palette.gray100,
-    bottomNavCover: palette.gray250,
+    bottomNavCover: palette.gray125,
     androidNavBar: palette.gray200,
-    bottomNavBackground:
-      Platform.OS === 'ios' ? palette.gray100 : palette.white,
+    bottomNavBackground: palette.gray125,
     lightGrayCard: palette.gray250,
     inputBackground: palette.gray250,
     nestedContainer: palette.white,
@@ -116,7 +115,7 @@ export const lightTheme = createTheme({
     containerDragBar: palette.gray500,
 
     // Shadows
-    navShadow: 'transparent',
+    navShadow: palette.gray400,
     modalShadow: palette.gray800.replace(`${grayS}`, '0'),
     tabsShadow: palette.gray300,
     activeIcon: palette.blueSat,
