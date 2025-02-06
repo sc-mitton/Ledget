@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { animated } from '@react-spring/web';
 
 import styles from './styles/nav.module.scss';
-import { CreditCard, Clock, TrendingUp, X } from '@geist-ui/icons';
+import { CreditCard, TrendingUp, X } from '@geist-ui/icons';
 
 import {
   usePillAnimation,
@@ -13,11 +13,7 @@ import {
   RefreshButton,
   useColorScheme,
 } from '@ledget/ui';
-import {
-  popToast,
-  useGetAccountsQuery,
-  useTransactionsSyncMutation,
-} from '@ledget/shared-features';
+import { popToast, useTransactionsSyncMutation } from '@ledget/shared-features';
 import { useAppDispatch } from '@hooks/store';
 import { CurrencyNote } from '@ledget/media';
 
@@ -29,8 +25,6 @@ const _getNavIcon = (key = '', isCurrent: boolean) => {
       return <CreditCard stroke={'currentColor'} className="icon" />;
     case 'investments':
       return <TrendingUp stroke={'currentColor'} className="icon" />;
-    case 'loans':
-      return <Clock stroke={'currentColor'} className="icon" />;
     default:
       return null;
   }
@@ -101,7 +95,7 @@ const TabButtons = ({ showFilters = false }) => {
     <>
       <div className={`${screenSize}`}>
         <ul ref={ref} data-screen-size={screenSize}>
-          {['deposits', 'credit', 'investments', 'loans'].map((path) => (
+          {['deposits', 'credit', 'investments'].map((path) => (
             <li
               key={path}
               role="link"

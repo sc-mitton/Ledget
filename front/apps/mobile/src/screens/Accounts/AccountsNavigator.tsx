@@ -9,7 +9,6 @@ import TabBar from './TabBar';
 import DepositsPanel from './Depository/Panel';
 import CreditPanel from './Credit/Panel';
 import InvestmentPanel from './Investment/Panel';
-import LoanPanel from './Loan/Panel';
 import Menu from './Menu';
 
 const Tab = createBottomTabNavigator<AccountsTabsParamList>();
@@ -49,7 +48,6 @@ const AccountTabs = (props: AccountsScreenProps<'AccountsTabs'>) => {
       <Tab.Screen name="Depository" component={DepositsPanel} />
       <Tab.Screen name="Credit" component={CreditPanel} />
       <Tab.Screen name="Investment" component={InvestmentPanel} />
-      <Tab.Screen name="Loan" component={LoanPanel} />
     </Tab.Navigator>
   );
 };

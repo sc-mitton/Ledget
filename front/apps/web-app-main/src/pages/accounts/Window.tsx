@@ -11,7 +11,6 @@ import DepositorySummary from './depository-summary/DepositorySummary';
 import CreditCards from './credit-cards/CreditCards';
 import SelectedCardHeader from './selected-card-header/SelectedCardHeader';
 import InvestmentsTab from './investments/Tab';
-import LoansTab from './loans/Tab';
 
 const _getNavHeaderPhrase = (key = '') => {
   switch (key) {
@@ -97,7 +96,6 @@ const Window = () => {
               <Route path="deposits" element={<Transactions />} />
               <Route path="credit" element={<Transactions />} />
               <Route path="investments" element={<InvestmentsTab />} />
-              <Route path="loans" element={<LoansTab />} />
               <Route path="*" element={<NotFound hasBackground={false} />} />
             </Routes>
           </motion.div>
