@@ -6,7 +6,7 @@ import {
   TabNavigationState,
   CommonActions,
 } from '@react-navigation/native';
-import { Home, Activity, User } from 'geist-native-icons';
+import { Home, Activity } from 'geist-native-icons';
 import Animated, {
   useSharedValue,
   withTiming,
@@ -102,16 +102,10 @@ const Button = (props: ButtonProps) => {
           icon={Institution}
           color={isFocused ? 'blueText' : 'secondaryText'}
         />
-      ) : route.key.includes('Activity') ? (
-        <Icon
-          strokeWidth={1.75}
-          icon={Activity}
-          color={isFocused ? 'blueText' : 'secondaryText'}
-        />
       ) : (
         <Icon
           strokeWidth={1.75}
-          icon={User}
+          icon={Activity}
           color={isFocused ? 'blueText' : 'secondaryText'}
         />
       )}
@@ -134,6 +128,8 @@ export default function Nav({ state, descriptors, navigation }: Props) {
       easing: Easing.bezier(0, 0.9, 0.5, 0.9).factory(),
     });
   }, [hidden]);
+
+  console.log('state.routes', state.routes);
 
   return (
     <Animated.View style={{ transform: [{ translateY: y }] }}>
@@ -168,16 +164,18 @@ export default function Nav({ state, descriptors, navigation }: Props) {
         >
           {state.routes
             .slice(0, state.routes.length / 2)
-            .map((route, index) => (
-              <Button
-                key={route.key}
-                route={route}
-                index={index}
-                state={state}
-                descriptors={descriptors}
-                navigation={navigation}
-              />
-            ))}
+            .map((route, index) => {
+              return (
+                <Button
+                  key={route.key}
+                  route={route}
+                  index={index}
+                  state={state}
+                  descriptors={descriptors}
+                  navigation={navigation}
+                />
+              );
+            })}
           <View style={styles.activityButtonContainer}>
             {(data?.count || 0) > 0 && (
               <Box style={styles.indicator} backgroundColor="blueText" />
@@ -199,7 +197,7 @@ export default function Nav({ state, descriptors, navigation }: Props) {
               <Button
                 key={route.key}
                 route={route}
-                index={index + state.routes.length / 2}
+                index={index + Math.floor(state.routes.length / 2)}
                 state={state}
                 descriptors={descriptors}
                 navigation={navigation}

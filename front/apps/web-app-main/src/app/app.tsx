@@ -16,6 +16,7 @@ import NotFound from '@pages/notFound';
 import Budget from '@pages/budget/Window';
 import Profile from '@pages/profile/Window';
 import Accounts from '@pages/accounts/Window';
+import Home from '@pages/home/Window';
 import SideNav from './side-nav/SideNav';
 import Header from './header/header';
 import {
@@ -166,6 +167,7 @@ const App = () => {
                   <Route path="new-bill" element={<CreateBill />} />
                   <Route path="error" element={<AccountErrorModal />} />
                 </Route>
+                <Route path="home" element={<Home />} />
                 <Route path="accounts/*" element={<Accounts />} />
                 <Route path="profile/*" element={<Profile />} />
                 <Route path="*" element={<NotFound />} />
