@@ -100,7 +100,7 @@
       hsl(var(--window-h), calc(var(--window-s) + 20%), 16%);
     --modal-window: hsl(var(--window-h), var(--window-s), 8%);
 
-    --main-background-color: hsl(var(--window-h), var(--window-s), 6%);
+    --main-background-color: hsl(var(--window-h), var(--window-s), 5%);
     --main-background-color-rgb: 36, 37, 37;
     --main-background-color-portal: hsl(var(--window-h), var(--window-s), 14%);
     --gradient-window-background: linear-gradient(
@@ -208,7 +208,7 @@
     --dropdown-item-background: hsl(var(--window-h), var(--window-s), 12%);
     --dropdown-border: 1px solid var(--border-color-ultra-dim);
 
-    --window-drop-shadow-color: hsl(0, 0%, 18%);
+    --window-drop-shadow-color: hsl(0, 0%, 16%);
     --window-drop-shadow: var(--window-drop-shadow-color) 0px 0px 2px;
     --window-portal-drop-shadow: rgba(0, 0, 0, 0.07) 0px 0px 32px;
 
