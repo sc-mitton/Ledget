@@ -5,7 +5,7 @@ import basePalette from './base-palette';
 const { StatusBarManager } = NativeModules;
 
 const grayH = 240;
-const grayS = 0;
+const grayS = 1;
 
 const blueH = 230;
 const blueS = 75;
@@ -73,11 +73,11 @@ export const lightTheme = createTheme({
     blueHue: `${blueH}`,
 
     // Backgrounds
-    mainBackground: palette.gray125,
+    mainBackground: palette.gray150,
     accountsMainBackground: palette.gray100,
-    bottomNavCover: palette.gray125,
+    bottomNavCover: palette.gray150,
     androidNavBar: palette.gray200,
-    bottomNavBackground: palette.gray125,
+    bottomNavBackground: palette.gray150,
     lightGrayCard: palette.gray250,
     inputBackground: palette.gray250,
     nestedContainer: palette.white,
@@ -93,8 +93,8 @@ export const lightTheme = createTheme({
     widgetPickerBackground: palette.gray150,
     widget: palette.white,
     tooltip: palette.black,
-    creditCardDefaultGradientStart: `hsl(${blueH}, 1%, 70%)`,
-    creditCardDefaultGradientEnd: `hsl(${blueH}, 1%, 60%)`,
+    creditCardDefaultGradientStart: `hsl(${blueH}, 2%, 60%)`,
+    creditCardDefaultGradientEnd: `hsl(${blueH}, 2%, 50%)`,
 
     // Borders
     creditCardDefaultBorder: 'transparent',
@@ -156,8 +156,8 @@ export const lightTheme = createTheme({
     blueButton: palette.blue400,
     blueButtonBorder: palette.blue450,
     blueButtonBorder2: palette.blue100,
-    lightGrayButton: palette.gray150,
-    lightGrayButtonBorder: palette.gray100,
+    lightGrayButton: palette.gray200,
+    lightGrayButtonBorder: palette.gray250,
     grayButton: palette.gray250,
     grayButtonBorder: palette.gray300,
     mediumGrayButton: palette.gray500,

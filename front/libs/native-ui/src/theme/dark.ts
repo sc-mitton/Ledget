@@ -5,7 +5,7 @@ import { lightTheme } from './light';
 import basePalette from './base-palette';
 
 const grayH = 240;
-const grayS = 3;
+const grayS = 2;
 
 const blueH = 230;
 const blueS = 65;
@@ -98,7 +98,10 @@ export const darkTheme = createTheme({
 
     // Borders
     creditCardDefaultBorder: palette.gray550,
-    inputBorder: palette.gray775,
+    inputBorder: palette.gray800.replace(
+      /(\d+)%\)$/,
+      (match) => `${parseInt(match) + 1}%)`
+    ),
     inputBorderErrorMain: palette.red,
     inputBorderErrorSecondary: palette.mutedRed,
     focusedInputBorderMain: palette.blue500,
