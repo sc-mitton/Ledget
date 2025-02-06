@@ -67,7 +67,7 @@ const CarouselItem = (props: Props) => {
               >
                 <Card
                   {...props}
-                  onLongPress={() => setShowSlider(true)}
+                  // onLongPress={() => setShowSlider(true)}
                   hue={hue}
                 />
               </Box>
