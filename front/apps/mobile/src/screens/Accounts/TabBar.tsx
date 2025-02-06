@@ -1,12 +1,10 @@
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import {
   ParamListBase,
   TabNavigationState,
   CommonActions,
 } from '@react-navigation/native';
-import { Clock, CreditCard, TrendingUp } from 'geist-native-icons';
-import { LinearGradient, Canvas, Rect, vec } from '@shopify/react-native-skia';
-import { useTheme } from '@shopify/restyle';
+import { CreditCard, TrendingUp } from 'geist-native-icons';
 
 import styles from './styles/tab-bar';
 import { CurrencyNote } from '@ledget/media/native';
@@ -16,7 +14,6 @@ const labelMap = {
   Depository: 'Accounts',
   Credit: 'Cards',
   Investment: 'Investments',
-  Loan: 'Loans',
 };
 
 interface Props {
@@ -95,13 +92,6 @@ const TabButton = (props: ButtonProps) => {
             icon={TrendingUp}
             color={isFocused ? 'whiteText' : 'secondaryText'}
           />
-        ) : route.name.toLowerCase() === 'loan' ? (
-          <Icon
-            size={16}
-            strokeWidth={1.75}
-            icon={Clock}
-            color={isFocused ? 'whiteText' : 'secondaryText'}
-          />
         ) : null
       }
     />
@@ -109,16 +99,9 @@ const TabButton = (props: ButtonProps) => {
 };
 
 const Tabs = ({ state, descriptors, navigation }: Props) => {
-  const theme = useTheme();
-
   return (
     <View>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.tabs}
-        contentContainerStyle={styles.tabsContent}
-      >
+      <View style={styles.tabs}>
         {state.routes.map((route, index) => (
           <TabButton
             key={route.key}
@@ -129,33 +112,7 @@ const Tabs = ({ state, descriptors, navigation }: Props) => {
             navigation={navigation}
           />
         ))}
-      </ScrollView>
-      <Canvas style={[styles.leftMask, styles.mask]}>
-        <Rect x={0} y={0} width={65} height={36}>
-          <LinearGradient
-            colors={[
-              theme.colors.blueChartGradientEnd,
-              theme.colors.mainBackground,
-              theme.colors.mainBackground,
-            ]}
-            start={vec(32, 0)}
-            end={vec(0, 0)}
-          />
-        </Rect>
-      </Canvas>
-      <Canvas style={[styles.rightMask, styles.mask]}>
-        <Rect x={0} y={0} width={65} height={36}>
-          <LinearGradient
-            colors={[
-              theme.colors.blueChartGradientEnd,
-              theme.colors.mainBackground,
-              theme.colors.mainBackground,
-            ]}
-            start={vec(0, 0)}
-            end={vec(32, 0)}
-          />
-        </Rect>
-      </Canvas>
+      </View>
       <View style={styles.seperator}>
         <Seperator backgroundColor="mainScreenSeperator" height={1.75} />
       </View>

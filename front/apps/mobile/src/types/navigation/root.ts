@@ -7,12 +7,14 @@ import type { ModalStackParamList, PageSheetModalParamList } from './modals';
 import { Transaction } from '@ledget/shared-features';
 import { OnboardingStackParamList } from './onboarding';
 import { BottomTabNavParamList } from './bottomNav';
+import { ProfileStackParamList } from './profile';
 
 export type RootStackParamList = {
   BottomTabs: NavigatorScreenParams<BottomTabNavParamList>;
   Modals: NavigatorScreenParams<ModalStackParamList>;
   PageSheetModals: NavigatorScreenParams<PageSheetModalParamList>;
   Onboarding: NavigatorScreenParams<OnboardingStackParamList>;
+  Profile: NavigatorScreenParams<ProfileStackParamList>;
   Transaction: {
     transaction: Transaction | string;
     options?: {

@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
     position: 'relative',
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    gap: 32,
+    justifyContent: 'center',
   },
   navItem: {
     alignItems: 'center',

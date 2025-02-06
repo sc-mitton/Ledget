@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import BottomNav from './BottomNav';
-import { Budget, Accounts, Profile, Home } from '@screens';
+import { Budget, Accounts, Home } from '@screens';
 import { BottomTabNavParamList, RootStackScreenProps } from '@types';
 import { selectLastTab, selectSettings } from '@/features/uiSlice';
 import { useAppSelector } from '@/hooks';
@@ -27,7 +27,7 @@ const BottomTabScreens = (props: RootStackScreenProps<'BottomTabs'>) => {
       initialRouteName={
         settings.startOnHome
           ? 'Home'
-          : (['Home', 'Budget', 'Accounts', 'Profile'] as const)[lastTab]
+          : (['Home', 'Budget', 'Accounts'] as const)[lastTab]
       }
       backBehavior="history"
       screenOptions={{ headerShown: false, animation: 'fade' }}
@@ -42,7 +42,6 @@ const BottomTabScreens = (props: RootStackScreenProps<'BottomTabs'>) => {
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Budget" component={Budget} />
       <Tab.Screen name="Accounts" component={Accounts} />
-      <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );
 };

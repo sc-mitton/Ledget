@@ -43,12 +43,9 @@ const LinkAccountPrompt = (props: AccountsTabsScreenProps<any>) => {
                 textColor="blueText"
                 label="Add Account"
                 onPress={() =>
-                  props.navigation.navigate('BottomTabs', {
-                    screen: 'Profile',
-                    params: {
-                      screen: 'Connections',
-                      params: { screen: 'All' },
-                    },
+                  props.navigation.navigate('Profile', {
+                    screen: 'Connections',
+                    params: { screen: 'All' },
                   })
                 }
                 fontSize={18}

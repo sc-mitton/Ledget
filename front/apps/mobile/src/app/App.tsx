@@ -35,6 +35,7 @@ import {
   useAppDispatch,
   useAppSelector,
 } from '@hooks';
+import { Profile } from '../screens';
 import Authentication from './Authentication';
 import BottomTabScreens from './BottomTabScreens';
 import Onboarding from '../screens/Onboarding/Stack';
@@ -233,6 +234,7 @@ export const App = withProviders(() => {
           <RootStack.Group screenOptions={{ headerShown: false }}>
             <RootStack.Screen name="BottomTabs" component={BottomTabScreens} />
             <RootStack.Screen name="Onboarding" component={Onboarding} />
+            <RootStack.Screen name="Profile" component={Profile} />
           </RootStack.Group>
           <RootStack.Group
             screenOptions={{

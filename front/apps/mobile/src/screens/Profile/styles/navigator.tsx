@@ -18,14 +18,10 @@ export default StyleSheet.create({
     width: '100%',
     overflow: 'hidden',
   },
-  userInfoContainer: {
-    gap: 20,
-    paddingRight: 26,
-  },
   userInfo: {
-    flex: 3,
-    marginVertical: 0,
-    marginLeft: 8,
+    width: '100%',
+    alignItems: 'center',
+    flexDirection: 'column',
   },
   optionsContainer: {
     flexDirection: 'column',
