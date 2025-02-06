@@ -13,7 +13,6 @@ import {
   environmentSlice,
   mobileAuthSlice,
   budgetItemOrderSlice,
-  investmentsSlice,
   pinnedAccountsSlice,
 } from '@ledget/shared-features';
 import { creditCardsTabSlice } from './creditCardsTabSlice';
@@ -57,7 +56,6 @@ const rootReducer = combineReducers({
   depositoryAccountsTab: depositoryAccountsTabSlice.reducer,
   creditCardsTab: creditCardsTabSlice.reducer,
   investmentsTab: investmentsTabSlice.reducer,
-  investments: investmentsSlice.reducer,
   pinnedAccounts: pinnedAccountsSlice.reducer,
 });
 

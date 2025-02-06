@@ -6,7 +6,6 @@ import styles from './styles/panel';
 import { AccountsTabsScreenProps } from '@types';
 import { Box, Icon, Text } from '@ledget/native-ui';
 import Chart from './Chart';
-import Holdings from './Holdings/Holdings';
 import Transactions from './Transactions/List';
 import LinkAccountPrompt from '../LinkAccountPrompt';
 
@@ -25,7 +24,6 @@ export default function Panel(props: AccountsTabsScreenProps<'Investment'>) {
           }}
         >
           <Chart />
-          <Holdings {...props} />
           <View style={styles.legend}>
             <View style={styles.transactionsHeader}>
               <Text color="tertiaryText">Transactions</Text>

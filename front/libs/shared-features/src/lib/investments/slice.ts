@@ -1,17 +1,12 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import dayjs from 'dayjs';
 
 import apiSlice from '../apiSlice/slice';
 import {
   InvestmentsResponse,
   InvestmentsBalanceHistory,
-  isInvestmentSupported,
-  InvestmentWithProductSupport,
-  InvestmentsState,
   GetInvestmentsQuery,
   InvestmentsBalanceQuery,
   TransformedInvestmentsBalanceHistory,
-  PinnedHolding,
 } from './types';
 
 const investmentsRTKSlice = apiSlice.injectEndpoints({
@@ -44,14 +39,6 @@ const investmentsRTKSlice = apiSlice.injectEndpoints({
         return currentCache;
       },
     }),
-    getPinnedHoldings: build.query<{ id: string; security_id: string }[], void>(
-      {
-        query: (params) => ({
-          url: 'holding-pin',
-          method: 'GET',
-        }),
-      }
-    ),
     getInvestmentsBalanceHistory: build.query<
       TransformedInvestmentsBalanceHistory,
       InvestmentsBalanceQuery
@@ -90,113 +77,12 @@ const investmentsRTKSlice = apiSlice.injectEndpoints({
       keepUnusedDataFor: 60 * 30, // 30 minutes
       providesTags: ['InvestmentBalanceHistory'],
     }),
-    pinHolding: build.mutation<{ id: string; security_id: string }, string>({
-      query: (security_id) => ({
-        url: 'holding-pin',
-        method: 'POST',
-      }),
-    }),
-    unPinHolding: build.mutation<void, string>({
-      query: (security_id) => ({
-        url: `holding-pin/${security_id}`,
-        method: 'DELETE',
-      }),
-    }),
   }),
 });
-
-const initialInvestmentsState: InvestmentsState = {
-  holdingsHistory: {} as {
-    [key: string]: { institution_value: number; date: string }[];
-  },
-  pinnedHoldings: [] as InvestmentsState['pinnedHoldings'],
-};
-
-export const investmentsSlice = createSlice({
-  name: 'investments',
-  initialState: initialInvestmentsState,
-  reducers: {
-    setSecurities: (state, action) => {},
-    pinHolding: (
-      state,
-      action: PayloadAction<PinnedHolding['security_id']>
-    ) => {
-      state.pinnedHoldings = state.pinnedHoldings
-        ? [{ security_id: action.payload, id: 'temp' }, ...state.pinnedHoldings]
-        : [{ security_id: action.payload, id: 'temp' }];
-    },
-    unPinHolding: (
-      state,
-      action: PayloadAction<PinnedHolding['security_id']>
-    ) => {
-      state.pinnedHoldings = state.pinnedHoldings?.filter(
-        (h) => h.security_id !== action.payload
-      );
-    },
-  },
-  extraReducers: (builder) => {
-    builder.addMatcher(
-      investmentsRTKSlice.endpoints.getInvestments.matchFulfilled,
-      (state, action) => {
-        const holdings = action.payload.results.reduce((acc, i) => {
-          if (isInvestmentSupported(i)) {
-            return acc.concat(i.holdings);
-          }
-          return acc;
-        }, [] as InvestmentWithProductSupport['holdings']);
-        for (const holding of holdings) {
-          if (!holding.security_id || !holding.institution_value) {
-            continue;
-          }
-          if (!state.holdingsHistory[holding.security_id]) {
-            state.holdingsHistory[holding.security_id] = [];
-          }
-          const latestDate =
-            state.holdingsHistory[holding.security_id]?.[
-              state.holdingsHistory[holding.security_id].length - 1
-            ]?.date;
-          if (!latestDate || dayjs(latestDate).isBefore(dayjs(), 'day')) {
-            state.holdingsHistory[holding.security_id].push({
-              institution_value: holding.institution_value,
-              date: dayjs().format('YYYY-MM-DD'),
-            });
-
-            // Trim the history to the last 2 entries to save memory
-            state.holdingsHistory[holding.security_id] = state.holdingsHistory[
-              holding.security_id
-            ].slice(
-              state.holdingsHistory[holding.security_id].length - 2,
-              state.holdingsHistory[holding.security_id].length
-            );
-          }
-        }
-      }
-    );
-    builder.addMatcher(
-      investmentsRTKSlice.endpoints.getPinnedHoldings.matchFulfilled,
-      (state, action) => {
-        state.pinnedHoldings = action.payload;
-      }
-    );
-  },
-});
-
-export const selectTrackedHoldings = (state: {
-  investments: InvestmentsState;
-}) => state.investments.holdingsHistory;
-
-export const selectPinnedHoldings = (state: {
-  investments: InvestmentsState;
-  [key: string]: any;
-}) => state.investments.pinnedHoldings;
-
-export const { pinHolding, unPinHolding } = investmentsSlice.actions;
 
 export const {
   useGetInvestmentsQuery,
   useLazyGetInvestmentsQuery,
   useGetInvestmentsBalanceHistoryQuery,
   useLazyGetInvestmentsBalanceHistoryQuery,
-  usePinHoldingMutation,
-  useUnPinHoldingMutation,
 } = investmentsRTKSlice;

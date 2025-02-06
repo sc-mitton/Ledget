@@ -7,8 +7,6 @@ import base64
 import logging
 
 from rest_framework.generics import GenericAPIView, ListAPIView
-from rest_framework import mixins
-from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST
 from rest_framework import status
@@ -31,12 +29,10 @@ import plaid
 from financials.serializers.investments import (
     InvestmentSerializer,
     InvestmentBalanceSerializer,
-    HoldingPinSerializer
 )
-from financials.models import PlaidItem, Account, AccountBalance, HoldingPin
+from financials.models import PlaidItem, Account, AccountBalance
 from core.clients import create_plaid_client
 from restapi.permissions.auth import IsAuthedVerifiedSubscriber
-from restapi.permissions.objects import IsObjectOwner
 
 plaid_client = create_plaid_client()
 logger = logging.getLogger('ledget')
@@ -166,25 +162,6 @@ class InvestmentsView(GenericAPIView):
             return groupby(investment_transactions, lambda x: x['account_id']), offset
         else:
             return groupby(investment_transactions, lambda x: x['account_id']), None
-
-
-class HoldingPinViewset(
-    mixins.DestroyModelMixin,
-    mixins.ListModelMixin,
-    mixins.CreateModelMixin,
-    GenericViewSet
-):
-    permission_classes = [IsAuthedVerifiedSubscriber, IsObjectOwner]
-    serializer_class = HoldingPinSerializer
-
-    def get_object(self):
-        obj = HoldingPin.objects.get(id=self.kwargs.get('pk'))
-        self.check_object_permissions(self.request, obj)
-        return obj
-
-    def get_querset(self):
-        queryset = HoldingPin.objects.filter(user=self.request.user).all()
-        return queryset
 
 
 class InvestmentsBalanceHistoryView(ListAPIView):

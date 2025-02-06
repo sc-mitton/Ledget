@@ -23,7 +23,6 @@ export { default as ConfirmRemoveCoOwner } from './ConfirmRemoveCoOwner';
 export { default as AccountErrorModal } from './AccountErrorModal';
 export { default as PinAccounts } from './PinAccounts';
 export { default as InvestmentTransaction } from './InvestmentTransaction';
-export { default as Holdings } from './Holdings';
 export { default as ChangeCardColor } from './ChangeCardColor';
 
 export * from './Bill';

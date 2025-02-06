@@ -25,12 +25,6 @@ class Institution(models.Model):
     oath = models.CharField(max_length=100, null=True, default=False)
 
 
-class HoldingPin(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, editable=False)
-    security_id = models.CharField()
-
-
 class PlaidItem(BasePrivateModel):
     class Meta:
         db_table = 'financials_plaid_item'

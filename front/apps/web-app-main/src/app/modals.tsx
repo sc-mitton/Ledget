@@ -10,7 +10,6 @@ import {
   EditBudgetCategories,
   PinAccounts,
   InvestmentTransaction,
-  Holdings,
   ChangeCardColor,
 } from '@modals/index';
 import { ReAuthModal } from '@utils/withReAuth';
@@ -25,9 +24,6 @@ const Modals = () => {
       {/* Modals */}
       {modal?.name === 'changeCardColor' && (
         <ChangeCardColor onClose={() => dispatch(setModal())} {...modal.args} />
-      )}
-      {modal?.name === 'holdings' && (
-        <Holdings onClose={() => dispatch(setModal())} />
       )}
       {modal?.name === 'investmentTransaction' && (
         <InvestmentTransaction

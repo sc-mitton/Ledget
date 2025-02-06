@@ -60,18 +60,3 @@ class TestInvestmentsViews(ViewTestsMixin):
         )
 
         self.assertEqual(response.status_code, 200)
-
-    def test_unpin_holding(self):
-        payload = {'security_id': 'fake_security_id'}
-        create_response = self.client.post(
-            reverse('holding-pin-list'),
-            payload,
-            format='json'
-        )
-        response = self.client.delete(
-            reverse(
-                'holding-pin-detail',
-                kwargs={'pk': create_response.data['id']}
-            )
-        )
-        self.assertEqual(response.status_code, 204)

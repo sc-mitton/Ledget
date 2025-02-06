@@ -31,7 +31,6 @@ interface ModalTypes {
   logout: {
     fromTimeout: boolean;
   };
-  holdings: undefined;
   changeCardColor: {
     card: Account;
   };

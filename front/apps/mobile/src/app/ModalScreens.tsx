@@ -1,5 +1,4 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import * as StatusBar from 'expo-status-bar';
 
 import { ModalStackParamList, RootStackScreenProps } from '@types';
 import {
@@ -17,7 +16,6 @@ import {
   AccountsPicker,
   ConfirmDeleteCategory,
   ConfirmDeleteBill,
-  Holdings,
   BillsCalendar,
 } from '@modals';
 import { Activity, Transaction } from '@screens';
@@ -99,7 +97,6 @@ const ModalScreens = (props: RootStackScreenProps<'Modals'>) => {
         <Stack.Screen name="SplitModal" component={SplitTransaction} />
         <Stack.Screen name="PickerCard" component={CardPicker} />
         <Stack.Screen name="PickAccount" component={AccountsPicker} />
-        <Stack.Screen name="Holdings" component={Holdings} />
       </Stack.Group>
     </Stack.Navigator>
   );

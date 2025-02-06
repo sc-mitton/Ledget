@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from financials.models import AccountBalance, HoldingPin
+from financials.models import AccountBalance
 
 
 class SecuritySerializer(serializers.Serializer):
@@ -79,15 +79,3 @@ class InvestmentBalanceSerializer(serializers.ModelSerializer):
         repr = super().to_representation(instance)
         repr['account_name'] = instance.account.name
         return repr
-
-
-class HoldingPinSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = HoldingPin
-        exclude = ('user',)
-
-    def create(self, validated_data):
-        user = self.context["request"].user
-        validated_data["user"] = user
-        return super().create(validated_data)

@@ -60,7 +60,6 @@ export type ModalStackParamList = {
   ConfirmDeleteBill: {
     bill: Bill;
   };
-  Holdings: undefined;
   BillsCalendar: {
     month: number;
     year: number;

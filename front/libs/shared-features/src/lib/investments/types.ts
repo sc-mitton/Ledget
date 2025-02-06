@@ -4,17 +4,6 @@ type Security = {
   security_id: string;
 };
 
-export type Holding = {
-  cost_basis?: number;
-  institution_price?: number;
-  institution_value?: number;
-  quantity?: number;
-  vested_quantity?: number;
-  vested_value?: number;
-  security_id?: string;
-  security: Security;
-};
-
 export type InvestmentTransaction = {
   amount?: number;
   price?: number;
@@ -32,7 +21,6 @@ export type InvestmentWithProductSupport = {
   account_name: string;
   balance: number;
   securities: Security[];
-  holdings: Holding[];
   transactions: InvestmentTransaction[];
   account_id: string;
 };
@@ -71,15 +59,6 @@ export type TransformedInvestmentsBalanceHistory = {
     value: number;
   }[];
 }[];
-
-export type PinnedHolding = { id: string; security_id: string };
-
-export type InvestmentsState = {
-  holdingsHistory: {
-    [key: string]: { institution_value: number; date: string }[];
-  };
-  pinnedHoldings?: PinnedHolding[];
-};
 
 export type GetInvestmentsQuery = {
   start: string;
