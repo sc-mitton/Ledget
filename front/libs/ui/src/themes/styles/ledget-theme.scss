@@ -81,7 +81,7 @@
     --window-s: 2%;
 
     --window-rgb: 28, 28, 28;
-    --window: hsl(var(--window-h), var(--window-s), 8%);
+    --window: hsl(var(--window-h), var(--window-s), 9%);
     --window2: hsl(var(--window-h), calc(var(--window-s) + 10%), 10%);
     --window-portal: hsl(var(--window-h), var(--window-s), 9%);
 
@@ -100,7 +100,7 @@
       hsl(var(--window-h), calc(var(--window-s) + 20%), 16%);
     --modal-window: hsl(var(--window-h), var(--window-s), 8%);
 
-    --main-background-color: hsl(var(--window-h), var(--window-s), 5%);
+    --main-background-color: hsl(var(--window-h), var(--window-s), 6%);
     --main-background-color-rgb: 36, 37, 37;
     --main-background-color-portal: hsl(var(--window-h), var(--window-s), 14%);
     --gradient-window-background: linear-gradient(

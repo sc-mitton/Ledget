@@ -31,12 +31,12 @@
     border-radius: 12px;
   }
 
-  $gradientStartLight: 70%;
-  $gradientEndLight: 63%;
+  $gradientStartLight: 60%;
+  $gradientEndLight: 53%;
   $gradientStartDark: 30%;
   $gradientEndDark: 23%;
   $borderDark: 27%;
-  $borderLight: 67%;
+  $borderLight: 57%;
 
   &[data-custom-hue='false']:not(
       [data-skeleton='true']

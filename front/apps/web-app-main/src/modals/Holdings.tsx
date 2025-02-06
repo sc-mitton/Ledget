@@ -123,9 +123,11 @@ const Row = ({
       </div>
       <div className={styles.amountContainer}>
         {holding.institution_value ? (
-          <DollarCents
-            value={Big(holding.institution_value).times(100).toNumber()}
-          />
+          <div>
+            <DollarCents
+              value={Big(holding.institution_value).times(100).toNumber()}
+            />
+          </div>
         ) : (
           <span>—</span>
         )}

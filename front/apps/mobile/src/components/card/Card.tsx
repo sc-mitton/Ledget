@@ -50,7 +50,7 @@ export const Card = (props: Props) => {
       : props.hue;
 
   const gradientColors = useDerivedValue(() => {
-    const sat = mode === 'dark' ? 30 : 75;
+    const sat = mode === 'dark' ? 30 : 35;
     const lightRegex = /hsl\(\d+,\s*\d+%,\s*(\d+)%\)/;
     const defaultLightnessStart = parseInt(
       theme.colors.creditCardDefaultGradientStart.match(lightRegex)?.[1]
@@ -59,9 +59,9 @@ export const Card = (props: Props) => {
       theme.colors.creditCardDefaultGradientEnd.match(lightRegex)?.[1]
     );
     const lightnessStart =
-      mode === 'dark' ? defaultLightnessStart + 20 : defaultLightnessStart + 15;
+      mode === 'dark' ? defaultLightnessStart + 20 : defaultLightnessStart;
     const lightnessEnd =
-      mode === 'dark' ? defaultLightnessEnd + 20 : defaultLightnessEnd + 15;
+      mode === 'dark' ? defaultLightnessEnd + 20 : defaultLightnessEnd;
 
     const start = cardHue?.value
       ? `hsl(${cardHue.value}, ${sat}%, ${lightnessStart}%)`
@@ -76,7 +76,7 @@ export const Card = (props: Props) => {
   const borderColor = useMemo(() => {
     if (!props.account?.card_hue) return theme.colors.creditCardDefaultBorder;
 
-    const sat = mode === 'dark' ? 30 : 75;
+    const sat = mode === 'dark' ? 30 : 35;
 
     const lightRegex = /hsl\(\d+,\s*\d+%,\s*(\d+)%\)/;
     const defaultLightnessStart = parseInt(
@@ -86,7 +86,7 @@ export const Card = (props: Props) => {
       theme.colors.creditCardDefaultGradientEnd.match(lightRegex)?.[1]
     );
 
-    const customGradientEndLight = defaultLightnessEnd + 15;
+    const customGradientEndLight = defaultLightnessEnd;
     const customGradientStartDark = defaultLightnessStart + 20;
 
     const borderLightness =
