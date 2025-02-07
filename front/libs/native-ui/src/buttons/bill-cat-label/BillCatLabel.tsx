@@ -83,21 +83,23 @@ export function BillCatEmoji(props: BillCatEmojiProps) {
   const { hasBorder = true, size = 32 } = props;
 
   return (
-    <View style={styles.billCatEmojiContainer}>
-      <View style={styles.billCatEmoji}>
+    <View style={[styles.billCatEmojiContainer, { width: size, height: size }]}>
+      <View style={styles.absCenteredContainer}>
         <Box
           backgroundColor={
             props.period === 'year' ? 'yearBackground' : 'monthBackground'
           }
           borderColor={props.period === 'year' ? 'yearBorder' : 'monthBorder'}
           borderWidth={hasBorder ? 1.5 : 0}
-          style={[
-            styles.background,
-            { width: size, height: size, borderRadius: size / 2 },
-          ]}
+          borderRadius="circle"
+          style={[styles.abs, { width: size, height: size }]}
         />
       </View>
-      <Text>{props.emoji}</Text>
+      <View style={styles.absCenteredContainer}>
+        <Text fontSize={size / 2} lineHeight={size / 2 + 2} style={styles.abs}>
+          {props.emoji}
+        </Text>
+      </View>
     </View>
   );
 }

@@ -10,12 +10,14 @@ import {
   backgroundColor,
   spacing,
   layout,
+  opacity,
   shadow,
   border,
   ShadowProps,
   SpacingProps,
   BorderProps,
   LayoutProps,
+  OpacityProps,
   VariantProps,
   BackgroundColorProps,
   composeRestyleFunctions,
@@ -28,13 +30,15 @@ type RestyleProps = SpacingProps<Theme> &
   BackgroundColorProps<Theme> &
   BorderProps<Theme> &
   ShadowProps<Theme> &
-  LayoutProps<Theme>;
+  LayoutProps<Theme> &
+  OpacityProps<Theme>;
 
 const variant = createVariant({ themeKey: 'boxVariants' });
 
 const restyleFunctions = composeRestyleFunctions<Theme, RestyleProps>([
   variant,
   backgroundColor,
+  opacity as any,
   spacing,
   layout,
   shadow,

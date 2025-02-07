@@ -4,7 +4,7 @@ import { BackHeader } from '@ledget/native-ui';
 import { BottomTabScreenProps, BudgetStackParamList } from '@types';
 import { useAppSelector, useCardStyleInterpolator } from '@/hooks';
 import Menus from './Menus';
-import Category from './category/Screen';
+import { Category } from '@screens';
 import Bill from './bill/Screen';
 import Transaction from '../Transaction/Screen';
 import EditCategories from './edit-categories/EditCategories';

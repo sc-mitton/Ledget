@@ -113,9 +113,9 @@ export function Menu(props: MenuProps) {
               <Box
                 shadowColor="menuShadowColor"
                 shadowOpacity={hasShadow ? 1 : 0}
-                shadowRadius={8}
+                shadowRadius={16}
                 elevation={15}
-                shadowOffset={{ width: 0, height: 6 }}
+                shadowOffset={{ width: 0, height: 0 }}
                 style={styles.menuOptions}
               >
                 <BlurView

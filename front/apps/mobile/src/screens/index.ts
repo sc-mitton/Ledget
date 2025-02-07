@@ -7,3 +7,4 @@ export { default as Recovery } from './Recovery/Screen';
 export { default as Verification } from './Verification/Screen';
 export { default as Transaction } from './Transaction/Screen';
 export { default as Home } from './Home/Navigator';
+export { default as Category } from './Category/Screen';

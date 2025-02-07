@@ -10,7 +10,7 @@ import { Big } from 'big.js';
 import dayjs from 'dayjs';
 
 import styles from './styles/history-box';
-import SkeletonList from '../SkeletonList/SkeletonList';
+import SkeletonList from '../Budget/SkeletonList/SkeletonList';
 import { useLazyGetTransactionsQuery } from '@ledget/shared-features';
 import {
   Box,

@@ -129,8 +129,6 @@ export default function Nav({ state, descriptors, navigation }: Props) {
     });
   }, [hidden]);
 
-  console.log('state.routes', state.routes);
-
   return (
     <Animated.View style={{ transform: [{ translateY: y }] }}>
       <BlurView

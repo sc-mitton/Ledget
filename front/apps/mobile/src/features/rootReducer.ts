@@ -5,7 +5,6 @@ import { appearanceslice } from './appearanceSlice';
 import { bioSlice } from './bioSlice';
 import { authSlice } from './authSlice';
 import { uiSlice } from './uiSlice';
-import { widgetsSlice } from './widgetsSlice';
 import {
   apiSlice,
   toastSlice,
@@ -16,6 +15,7 @@ import {
   institutionsSlice,
   mobileAuthSlice,
   budgetItemOrderSlice,
+  homePageSlice,
 } from '@ledget/shared-features';
 import storage from './storage';
 import { RootState } from './store';
@@ -54,8 +54,8 @@ const persistConfig = {
     'budgetItemMetaData',
     'ui',
     'investments',
-    'widgets',
     'institutions',
+    'homePage',
   ],
 };
 
@@ -71,10 +71,10 @@ const rootReducer = combineReducers({
   bio: bioSlice.reducer,
   auth: authSlice.reducer,
   ui: uiSlice.reducer,
-  widgets: widgetsSlice.reducer,
   institutions: institutionsSlice.reducer,
   mobileAuth: mobileAuthSlice.reducer,
   budgetItemOrder: budgetItemOrderSlice.reducer,
+  homePage: homePageSlice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

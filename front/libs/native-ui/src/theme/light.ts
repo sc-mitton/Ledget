@@ -124,7 +124,7 @@ export const lightTheme = createTheme({
     logoShadow: palette.gray500,
     newTransactionShadow:
       Platform.OS === 'ios' ? palette.gray200 : palette.gray300,
-    menuShadowColor: palette.gray400,
+    menuShadowColor: palette.gray600,
     creditCardShadow: palette.gray300,
 
     // Text
@@ -217,6 +217,10 @@ export const lightTheme = createTheme({
     grayIcon: palette.gray400,
   },
   spacing: {
+    ns: -8,
+    nxs: -4,
+    nxxs: -2,
+    nxxxs: -1,
     none: 0,
     xxxs: 1,
     xxs: 2,

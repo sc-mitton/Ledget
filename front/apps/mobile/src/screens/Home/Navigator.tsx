@@ -7,7 +7,7 @@ import { useCardStyleInterpolator } from '@/hooks';
 import { useGetMeQuery } from '@ledget/shared-features';
 import { Box, Text, Button, Icon } from '@ledget/native-ui';
 import { capitalize } from '@ledget/helpers';
-
+import { Category } from '@screens';
 const Stack = createStackNavigator<HomeStackParamList>();
 
 const Screen = (props: BottomTabScreenProps<'Home'>) => {
@@ -22,8 +22,10 @@ const Screen = (props: BottomTabScreenProps<'Home'>) => {
         headerTitle: () => '',
         headerLeft: () => (
           <Box paddingLeft={'l'}>
-            <Text fontSize={24} lineHeight={28} variant="bold">
-              Welcome, {capitalize(user?.name.first || '')}
+            <Text fontSize={20} lineHeight={24} variant="bold">
+              {capitalize(
+                (user?.name.first || '') + ' ' + (user?.name.last || '')
+              )}
             </Text>
           </Box>
         ),
@@ -36,7 +38,7 @@ const Screen = (props: BottomTabScreenProps<'Home'>) => {
               props.navigation.navigate('Profile', { screen: 'Main' });
             }}
           >
-            <Icon icon={User} size={20} strokeWidth={2} />
+            <Icon icon={User} size={18} strokeWidth={2} color="whiteText" />
           </Button>
         ),
       }}
@@ -46,6 +48,7 @@ const Screen = (props: BottomTabScreenProps<'Home'>) => {
         component={Main}
         initialParams={{ state: 'idle' }}
       />
+      <Stack.Screen name="Category" component={Category} />
     </Stack.Navigator>
   );
 };

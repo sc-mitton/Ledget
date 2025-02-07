@@ -2,7 +2,6 @@ import { View, Dimensions, StyleSheet } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '@shopify/restyle';
-import { Bell } from 'geist-native-icons';
 
 import styles from './styles/header';
 import {

@@ -30,3 +30,4 @@ export * from './lib/toastSlice/types';
 export * from './lib/liabilitiesSlice/types';
 export * from './lib/investments/types';
 export * from './lib/budgetItemOrderSlice/types';
+export * from './lib/homePage/slice';

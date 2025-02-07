@@ -1,11 +1,4 @@
-import {
-  useEffect,
-  useRef,
-  useState,
-  forwardRef,
-  ElementType,
-  Fragment,
-} from 'react';
+import { useEffect, useRef, useState, forwardRef, ElementType } from 'react';
 import { Menu as HeadlessMenu } from '@headlessui/react';
 
 import styles from './styled-menu.module.scss';
