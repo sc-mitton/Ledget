@@ -23,6 +23,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     width: '100%',
+    height: 100,
     gap: 6,
   },
   searchContainer: {
@@ -65,7 +66,6 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   scrollView: {
-    maxHeight: 250,
     paddingHorizontal: 6,
   },
   chevronIconContainer: {
@@ -92,7 +92,7 @@ export default StyleSheet.create({
   },
   clearButton: {
     marginTop: 8,
-    marginBottom: -16,
+    marginBottom: -8,
     width: '100%',
     flexDirection: 'row',
   },

@@ -8,7 +8,7 @@ import GooglePlay from '../assets/google-play.svg';
 ---
 
 <div class="banner">
-  <h1>Your Budget's Leftovers, Earning for You</h1>
+  <h1>Your Budget's Leftovers, <br />Earning for You</h1>
   <div>
     <h2>
       Keep track of your money, and at the end of every month, send your
@@ -18,18 +18,43 @@ import GooglePlay from '../assets/google-play.svg';
       <span> <TrendingUp /> </span>
       .
     </h2>
-    <ActionLink
-      className="cta"
-      hrefTarget={`${import.meta.env.ACCOUNTS_HOST}/register`}
-      text="Signup online, try for free"
-    />
-  </div>
-  <div id="app-store-buttons">
-    <button>
-      <Image src={AppStore} alt="App Store" />
-    </button>
-    <button>
-      <Image src={GooglePlay} alt="Google Play" />
-    </button>
+    <div id="banner-cta">
+      <ActionLink
+        className="cta"
+        hrefTarget={`${import.meta.env.ACCOUNTS_HOST}/register`}
+        text="Get a Free Trial"
+      />
+      <span></span>
+    </div>
+    <div id="app-store-buttons">
+      <button>
+        <Image src={AppStore} alt="App Store" />
+      </button>
+      <button>
+        <Image src={GooglePlay} alt="Google Play" />
+      </button>
+    </div>
   </div>
 </div>
+
+<script>
+  const btn = document.querySelector('#banner-cta') as HTMLElement;
+  let rafId: number;
+
+  btn?.addEventListener('mousemove', (e) => {
+    // Cancel any pending animation frame
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+    }
+
+    // Schedule the update on the next animation frame
+    rafId = requestAnimationFrame(() => {
+      const rect = (e.target as HTMLElement).getBoundingClientRect();
+      const x = (((e as MouseEvent).clientX - rect.left) / rect.width) * 100;
+      const y = (((e as MouseEvent).clientY - rect.top) / rect.height) * 100;
+
+      btn.style.setProperty('--mouse-x', `${x}%`);
+      btn.style.setProperty('--mouse-y', `${y}%`);
+    });
+  });
+</script>

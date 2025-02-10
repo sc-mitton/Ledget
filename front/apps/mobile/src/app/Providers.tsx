@@ -3,6 +3,7 @@ import { Appearance } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { EventProvider } from 'react-native-outside-press';
 import { PersistGate } from 'redux-persist/integration/react';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 
 import styles from './styles/providers';
@@ -93,7 +94,9 @@ export const withProviders = (App: React.FC) => () =>
             <GestureHandlerRootView>
               <NavigationContainer theme={navTheme} ref={navigationRef}>
                 <ModalPickerProvider>
-                  <App />
+                  <BottomSheetModalProvider>
+                    <App />
+                  </BottomSheetModalProvider>
                 </ModalPickerProvider>
               </NavigationContainer>
             </GestureHandlerRootView>

@@ -18,7 +18,7 @@ import {
   Category,
 } from '@ledget/shared-features';
 
-import SourceSans3Regular from '../../../../assets/fonts/SourceSans3Regular.ttf';
+import SourceSans3Regular from '../../../assets/fonts/SourceSans3Regular.ttf';
 
 const windows = [
   { key: '3M', label: '3 Months' },

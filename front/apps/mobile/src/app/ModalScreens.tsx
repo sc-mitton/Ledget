@@ -17,18 +17,17 @@ import {
   ConfirmDeleteCategory,
   ConfirmDeleteBill,
   BillsCalendar,
+  PickHomeAccounts,
 } from '@modals';
 import { Activity, Transaction } from '@screens';
 import {
   useModalStyleInterpolator,
   useModifiedDefaultModalStyleInterpolator,
 } from '@/hooks';
-import { useAppearance } from '@/features/appearanceSlice';
 
 const Stack = createStackNavigator<ModalStackParamList>();
 
 const ModalScreens = (props: RootStackScreenProps<'Modals'>) => {
-  const { mode } = useAppearance();
   const modalStyleInterpolator = useModalStyleInterpolator({ slideOut: false });
   const defaultModalStyleInterpolator =
     useModifiedDefaultModalStyleInterpolator();
@@ -37,6 +36,7 @@ const ModalScreens = (props: RootStackScreenProps<'Modals'>) => {
     <Stack.Navigator
       screenOptions={{ headerShown: false, presentation: 'modal' }}
     >
+      {/* Bottom Sheet Modals */}
       <Stack.Group
         screenOptions={{
           cardStyleInterpolator: modalStyleInterpolator,

@@ -52,6 +52,7 @@ export * from './misc/institution-logo/InstitutionLogo';
 export * from './misc/toast/Item';
 export * from './misc/toast/Stack';
 export * from './misc/carousel-dots/CarouselDots';
+export * from './misc/bottom-sheet-backdrop/BottomSheetBackdrop';
 
 export * from './animated/loading-indicators/Spinner';
 export * from './animated/loading-indicators/LoadingDots';

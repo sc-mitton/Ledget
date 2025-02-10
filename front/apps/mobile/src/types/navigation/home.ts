@@ -12,6 +12,7 @@ export type BentoState = 'editing' | 'picking' | 'dropping' | 'idle';
 export type HomeStackParamList = {
   Main: { state: BentoState };
   Category: { category: Category };
+  PickAccounts: undefined;
 };
 
 export type HomeScreenProps<T extends keyof HomeStackParamList> =

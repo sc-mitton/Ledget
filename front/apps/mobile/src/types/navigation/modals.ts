@@ -86,6 +86,7 @@ export type PageSheetModalParamList = {
         };
       }
     | undefined;
+  PickHomeAccounts: undefined;
 };
 
 export type PageSheetModalScreenProps<T extends keyof PageSheetModalParamList> =

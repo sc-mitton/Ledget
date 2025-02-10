@@ -6,18 +6,18 @@ html {
   overflow-x: hidden;
   scrollbar-width: none;
   height: 100%;
+  width: 100vw;
 }
 
 body {
   margin: 0;
   position: relative;
   height: 100%;
+  width: 100vw;
 }
 
 .body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 100vw;
   height: 100%;
 
   &.light {
@@ -73,7 +73,6 @@ main {
   flex-direction: column;
   align-items: center;
   gap: 2rem;
-  margin-top: 4em;
   height: 100%;
   width: 100%;
   overflow-x: hidden;

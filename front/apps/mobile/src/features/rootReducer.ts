@@ -41,11 +41,18 @@ const migrations = {
     ...state,
     ui: state.ui,
   }),
+  4: (state: RootState) => ({
+    ...state,
+    homePage: {
+      ...state.homePage,
+      pinnedAccounts: [],
+    },
+  }),
 } as any;
 
 const persistConfig = {
   key: 'root',
-  version: 3,
+  version: 4,
   storage,
   timeout: 0,
   migrate: createMigrate(migrations),

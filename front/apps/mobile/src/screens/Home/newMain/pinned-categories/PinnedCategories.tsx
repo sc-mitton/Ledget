@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import Animated, { LinearTransition } from 'react-native-reanimated';
 import { Pin } from 'geist-native-icons';
 import { Big } from 'big.js';
 
@@ -28,7 +29,7 @@ const PinnedCategories = () => {
   );
 
   return (
-    <>
+    <Animated.View layout={LinearTransition}>
       <Box
         flexDirection="row"
         alignItems="center"
@@ -82,7 +83,7 @@ const PinnedCategories = () => {
           </View>
         )}
       </Box>
-    </>
+    </Animated.View>
   );
 };
 

@@ -26,7 +26,7 @@ import OutsidePressHandler from 'react-native-outside-press';
 function ModalPopUp<O extends PickerOption, TMultiple extends boolean>(
   props: ModalPopUpProps<O, TMultiple>
 ) {
-  const { showVerticalScrollIndicator = false } = props;
+  const { showVerticalScrollIndicator = false, maxHeight = 250 } = props;
 
   const searchRef = useRef<NativeTextInput>(null);
   const scrollViewRef = useRef<ScrollView>(null);
@@ -55,7 +55,7 @@ function ModalPopUp<O extends PickerOption, TMultiple extends boolean>(
   }, [searchValue, props.options]);
 
   const handleClose = () => {
-    props.onClose && props.value && props.onClose(props.value as any);
+    props.onClose && props.onClose(props.value as any);
   };
 
   // Scroll to position of first selected option if any
@@ -127,7 +127,7 @@ function ModalPopUp<O extends PickerOption, TMultiple extends boolean>(
               ref={scrollViewRef}
               showsVerticalScrollIndicator={showVerticalScrollIndicator}
               onContentSizeChange={(_, height) => setScrollHeight(height)}
-              style={styles.scrollView}
+              style={[styles.scrollView, { maxHeight }]}
             >
               {localOptions?.map((option, index) => {
                 const labelKey = (props.labelKey as string) || 'label';
@@ -163,15 +163,6 @@ function ModalPopUp<O extends PickerOption, TMultiple extends boolean>(
                     >
                       <View style={styles.option}>
                         {props.renderOption(option, index, selected)}
-                        <View style={styles.selectedIcon}>
-                          {selected && (
-                            <Icon
-                              icon={Check}
-                              color="blueText"
-                              strokeWidth={2}
-                            />
-                          )}
-                        </View>
                       </View>
                       {index !== (props.options?.length || 0) - 1 && (
                         <Seperator

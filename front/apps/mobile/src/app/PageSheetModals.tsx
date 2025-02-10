@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as StatusBar from 'expo-status-bar';
 
 import { PageSheetModalParamList, RootStackScreenProps } from '@types';
-import { NewCategory, NewBill } from '@modals';
+import { NewCategory, NewBill, PickHomeAccounts } from '@modals';
 import { Box, Button, Text } from '@ledget/native-ui';
 import { useAppearance } from '@/features/appearanceSlice';
 
@@ -69,6 +69,11 @@ const PageSheetModals = (props: RootStackScreenProps<'PageSheetModals'>) => {
         name="NewBill"
         component={NewBill}
         options={({ route }) => ({ title: route.params?.options?.title })}
+      />
+      <Stack.Screen
+        name="PickHomeAccounts"
+        component={PickHomeAccounts}
+        options={{ title: 'Pin Accounts' }}
       />
     </Stack.Navigator>
   );

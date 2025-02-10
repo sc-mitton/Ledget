@@ -1,5 +1,3 @@
-import { View } from 'react-native';
-
 type Error = {
   message?: string;
   type?: string;
@@ -16,7 +14,7 @@ export type PickerOption =
   | string;
 
 type BaseModalPickerProps<O extends PickerOption, TMultiple extends boolean> = {
-  multiple?: TMultiple;
+  multiple: TMultiple;
   options?: O[];
   placeholder?: string;
   labelKey?: O extends { [key: string]: any } ? keyof O : never;
@@ -26,6 +24,7 @@ type BaseModalPickerProps<O extends PickerOption, TMultiple extends boolean> = {
   searchable?: boolean;
   header?: string;
   isFormInput?: boolean;
+  maxHeight?: number;
   closeOnSelect?: boolean;
   showVerticalScrollIndicator?: boolean;
   chevronDirection?: 'down' | 'right';

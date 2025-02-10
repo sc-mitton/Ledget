@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import { CheckInCircleFill } from 'geist-native-icons';
@@ -12,7 +12,7 @@ import {
   Category,
   selectBudgetMonthYear,
   selectPinnedCategories,
-  setPinnedCategories,
+  setHomePinnedCategories,
 } from '@ledget/shared-features';
 import {
   Text,
@@ -20,10 +20,10 @@ import {
   BillCatEmoji,
   Icon,
   Box,
-  Seperator,
   ColorNumber,
 } from '@ledget/native-ui';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import { sliceString, capitalize } from '@ledget/helpers';
 
 const SELECT_OPTION_WIDTH = 60;
 
@@ -50,6 +50,17 @@ const Picker = (props: { onSave: () => void }) => {
   );
   const theme = useTheme();
 
+  useEffect(() => {
+    setSelectedCategories(
+      categories?.filter((c) => {
+        if (pinnedCategories.includes(c.id)) {
+          return true;
+        }
+        return false;
+      }) || []
+    );
+  }, [pinnedCategories, categories]);
+
   const handlePress = (category: Category) => {
     if (selectedCategories.includes(category)) {
       setSelectedCategories(selectedCategories.filter((c) => c !== category));
@@ -66,7 +77,7 @@ const Picker = (props: { onSave: () => void }) => {
   };
 
   const onSave = () => {
-    dispatch(setPinnedCategories(selectedCategories.map((c) => c.id)));
+    dispatch(setHomePinnedCategories(selectedCategories.map((c) => c.id)));
     props.onSave();
   };
 
@@ -151,12 +162,9 @@ const Picker = (props: { onSave: () => void }) => {
                 </View>
                 <View style={styles.emojiLabelContainer}>
                   <View style={styles.emojiLabel}>
-                    {carouselIndex === index && (
-                      <Text fontSize={13} color="secondaryText">
-                        {category.name.charAt(0).toUpperCase() +
-                          category.name.slice(1)}
-                      </Text>
-                    )}
+                    <Text fontSize={13} color="secondaryText">
+                      {capitalize(sliceString(category.name, 10))}
+                    </Text>
                   </View>
                 </View>
               </TouchableOpacity>
@@ -196,7 +204,7 @@ const Picker = (props: { onSave: () => void }) => {
             modeConfig={{
               parallaxAdjacentItemScale: 0.8,
               parallaxScrollingScale: 1,
-              parallaxScrollingOffset: 6,
+              parallaxScrollingOffset: 0,
             }}
           />
         ) : (

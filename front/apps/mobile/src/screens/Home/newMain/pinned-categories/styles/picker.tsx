@@ -20,8 +20,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   selectorContainer: {
-    width: '100%',
     height: 160,
+    marginHorizontal: -16,
+    minWidth: '100%',
   },
   mask: {
     position: 'absolute',
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
   },
   emojiLabelContainer: {
     position: 'absolute',
-    bottom: '50%',
+    bottom: '40%',
     left: '50%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -65,8 +66,10 @@ const styles = StyleSheet.create({
   selectorButtons: {
     flexDirection: 'row',
     width: '100%',
+    paddingHorizontal: 16,
     justifyContent: 'center',
     alignItems: 'center',
+    gap: 8,
   },
   selectedContainer: {
     flexDirection: 'row',

@@ -4,13 +4,11 @@
   @include width-standard;
   min-height: 80vh;
   display: flex;
-  align-items: center;
   flex-direction: column;
   justify-content: center;
 
   h1 {
     font-size: clamp(2rem, 5vw, 3rem);
-    text-align: center;
     margin: 0;
   }
 
@@ -18,8 +16,7 @@
     width: 100%;
     font-size: clamp(1.125rem, 2vw, 1.25rem);
     color: var(--m-text-secondary);
-    font-weight: 300;
-    text-align: center;
+    font-weight: 400;
 
     span {
       width: 1em;
@@ -34,8 +31,8 @@
       position: relative;
 
       &::after {
-        border: 1.5px solid var(--m-text);
-        opacity: 0.15;
+        background-color: var(--m-text);
+        opacity: 0.2;
         content: '';
         position: absolute;
         inset: 0;
@@ -50,29 +47,65 @@
         transform: translate(-50%, -50%);
         width: 0.75em;
         height: 0.75em;
+        path {
+          stroke-width: 2;
+        }
       }
     }
   }
 
-  & > div:first-of-type {
+  & > div {
     width: 100%;
     max-width: 500px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  }
+}
 
-    & > a {
-      width: 100%;
-      background-color: var(--blue);
-      color: var(--white);
-      padding: 0.75em 1em;
-      border-radius: 20em;
-      font-size: 1.25em;
-      margin: 1em 0 2em 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+#banner-cta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  margin: 2em 0 2em 0;
+  gap: 1em;
+  width: calc(100% - 2em);
+  position: relative;
+  border-radius: 2em;
+  overflow: hidden;
+  cursor: pointer;
+
+  & > a {
+    width: 100%;
+    position: relative;
+    background-color: var(--blue);
+    color: var(--white);
+    padding: 0.75em 1em;
+    font-size: 1.25em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    * {
+      pointer-events: none;
     }
+  }
+
+  & > span {
+    transition: transform 0.2s ease;
+    z-index: 1;
+    pointer-events: none;
+    background-position: center;
+    background-size: 100% 100%;
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  &:hover > span {
+    background-image: radial-gradient(
+      circle at var(--mouse-x, center) var(--mouse-y, center),
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 60%
+    );
   }
 }
 
@@ -94,14 +127,47 @@
 }
 
 #app-store-buttons {
+  width: calc(100% - 2em);
   display: flex;
   gap: 1em;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2em;
+
+  & > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1em;
+  }
 
   button {
     img {
-      width: 11em;
+      width: 12em;
       height: auto;
     }
+  }
+}
+
+@media (max-width: 1000px) {
+  .banner {
+    h1 {
+      text-align: center;
+    }
+
+    align-items: center;
+
+    & > div {
+      align-items: center;
+    }
+
+    h2 {
+      text-align: center;
+    }
+  }
+
+  #banner-cta {
+    align-items: center;
   }
 }

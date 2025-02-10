@@ -25,6 +25,7 @@ const palette = {
   purpleText: 'hsl(250, 100%, 70%)',
 
   gray1000: `hsl(${grayH}, ${grayS}%, 0%)`,
+  gray950: `hsl(${grayH}, ${grayS}%, 2%)`,
   gray900: `hsl(${grayH}, ${grayS}%, 5%)`,
   gray875: `hsl(${grayH}, ${grayS}%, 7.5%)`,
   gray850: `hsl(${grayH}, ${grayS}%, 9%)`,
@@ -74,7 +75,7 @@ export const darkTheme = createTheme({
     // Backgrounds
     mainBackground: palette.gray900,
     accountsMainBackground: palette.gray900,
-    bottomNavBackground: palette.gray1000,
+    bottomNavBackground: palette.gray950,
     androidNavBar: palette.gray850,
     bottomNavCover: `hsl(${grayH}, ${grayS}%, 0%)`,
     nestedContainer: palette.gray850,
@@ -178,7 +179,7 @@ export const darkTheme = createTheme({
 
     // Category and Bill Colors
     monthBackground: `hsl(${blueH}, 60%, 25%)`,
-    monthBorder: `hsl(${blueH}, 60%, 26%)`,
+    monthBorder: `hsl(${blueH}, 60%, 30%)`,
     monthColor: `hsl(${blueH}, ${blueS + 40}%, 70%)`,
     monthBorder2: `hsl(${blueH}, 60%, 60%)`,
     yearBackground: `hsl(${greenH}, 58%, 17%)`,

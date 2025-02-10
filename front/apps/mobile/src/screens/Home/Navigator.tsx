@@ -1,5 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { User } from 'geist-native-icons';
+import { User, Pin } from 'geist-native-icons';
 
 import { BottomTabScreenProps, HomeStackParamList } from '@types';
 import Main from './newMain/Screen';
@@ -8,6 +8,7 @@ import { useGetMeQuery } from '@ledget/shared-features';
 import { Box, Text, Button, Icon } from '@ledget/native-ui';
 import { capitalize } from '@ledget/helpers';
 import { Category } from '@screens';
+
 const Stack = createStackNavigator<HomeStackParamList>();
 
 const Screen = (props: BottomTabScreenProps<'Home'>) => {
