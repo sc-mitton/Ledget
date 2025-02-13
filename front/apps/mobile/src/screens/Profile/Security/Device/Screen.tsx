@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { View, ScrollView } from 'react-native';
-import React from 'react';
 import { Smartphone, Trash2 } from 'geist-native-icons';
 import { Computer, MapPin2 } from '@ledget/media/native';
 import dayjs from 'dayjs';
@@ -102,7 +101,7 @@ const Device = ({ navigation, route }: SecurityScreenProps<'Device'>) => {
                   dayjs(a.last_login).isAfter(b.last_login) ? -1 : 1
                 )
                 .map((session, index) => (
-                  <>
+                  <Fragment key={session.id}>
                     <View style={styles.session}>
                       <View style={styles.row}>
                         <Text style={styles.family}>
@@ -169,7 +168,7 @@ const Device = ({ navigation, route }: SecurityScreenProps<'Device'>) => {
                       )}
                     </View>
                     {index !== device[1].length - 1 && <Seperator />}
-                  </>
+                  </Fragment>
                 ))}
             </ScrollView>
           </Box>

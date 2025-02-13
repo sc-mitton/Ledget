@@ -1,38 +1,26 @@
-import { HomeScreenProps } from '@/types';
-import { Box } from '@ledget/native-ui';
+import { ScrollView } from 'react-native';
 
+import { HomeScreenProps } from '@/types';
+import { Box, Theme } from '@ledget/native-ui';
 import PinnedCategories from './pinned-categories/PinnedCategories';
 import PinnedAccounts from './pinned-accounts/PinnedAccounts';
+import Summary from './summary/Summary';
+import { useTheme } from '@shopify/restyle';
 
-/*
-What type of information do I want to display here?
-
-The main theme of the app is roll over, so there one main panel to show some stats for that.
-
-Window 1
-- Spent this month
-- Remaining for this month's budget
-- Remaining for this year's budget
-
-- Saved over the last six month
-- Invested over the last six months
-
-- Projected Leftovers
-
-Window 2
-- Window for pinning categories
-
-Window 2
-- Window for pinning accounts and their balances
-*/
-
-const Screen = ({ navigation, route }: HomeScreenProps<'Main'>) => {
+const Screen = (props: HomeScreenProps<'Main'>) => {
+  const theme = useTheme<Theme>();
   return (
-    <Box variant="nestedScreen">
-      <Box variant="nestedContainer"></Box>
-      <PinnedCategories />
-      <PinnedAccounts />
-    </Box>
+    <ScrollView
+      contentContainerStyle={{ paddingBottom: theme.spacing.navHeight }}
+    >
+      <Box paddingHorizontal="pagePadding" paddingTop="statusBar">
+        <Box paddingTop="statusBar" gap="s">
+          <Summary />
+          <PinnedCategories />
+          <PinnedAccounts {...props} />
+        </Box>
+      </Box>
+    </ScrollView>
   );
 };
 

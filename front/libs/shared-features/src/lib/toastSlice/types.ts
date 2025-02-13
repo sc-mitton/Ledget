@@ -16,6 +16,7 @@ export interface ToastItem {
   actionLink?: string | NavigationRoute;
   actionMessage?: string;
   hasLoadingBar?: boolean;
+  location?: 'top' | 'bottom';
 }
 
 export interface NewToast extends Omit<ToastItem, 'id'> {}

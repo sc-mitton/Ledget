@@ -3,7 +3,7 @@ import { Account } from '../accountsSlice/types';
 
 type HomePageState = {
   pinnedCategories: string[];
-  pinnedAccounts: Account[];
+  pinnedAccounts: string[];
 };
 
 type RootStateWithHomePage = {
@@ -30,15 +30,15 @@ export const homePageSlice = createSlice({
     setHomePinnedCategories: (state, action: PayloadAction<string[]>) => {
       state.pinnedCategories = action.payload;
     },
-    addHomePinnedAccount: (state, action: PayloadAction<Account>) => {
+    addHomePinnedAccount: (state, action: PayloadAction<string>) => {
       state.pinnedAccounts.push(action.payload);
     },
     removeHomePinnedAccount: (state, action: PayloadAction<string>) => {
       state.pinnedAccounts = state.pinnedAccounts.filter(
-        (account) => account.id !== action.payload
+        (account) => account !== action.payload
       );
     },
-    setHomePinnedAccounts: (state, action: PayloadAction<Account[]>) => {
+    setHomePinnedAccounts: (state, action: PayloadAction<string[]>) => {
       state.pinnedAccounts = action.payload;
     },
   },

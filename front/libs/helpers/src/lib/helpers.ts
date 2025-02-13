@@ -195,11 +195,11 @@ export function camelToSpaceWithCaps(str: string) {
     .replace(/^./, (match) => match.toUpperCase()); // Capitalize the first letter of the string
 }
 
-export function capitalize(str: string) {
+export function capitalize<T extends string>(str: T): Capitalize<T> {
   return str
     .split(' ')
     .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
-    .join(' ');
+    .join(' ') as Capitalize<T>;
 }
 
 export const getNextBillDate = (bill: Bill) => {

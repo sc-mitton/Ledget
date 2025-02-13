@@ -9,4 +9,7 @@ export default StyleSheet.create({
     left: 0,
     zIndex: 1000,
   },
+  bottomToastStack: {
+    bottom: 0,
+  },
 });

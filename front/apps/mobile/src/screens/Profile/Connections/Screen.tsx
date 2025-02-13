@@ -135,7 +135,7 @@ const Connections = ({ navigation, route }: ConnectionsScreenProps<'All'>) => {
             >
               <Text color="secondaryText">Add Connection</Text>
               <View style={styles.iconContainer}>
-                <Icon icon={Plus} color="quinaryText" />
+                <Icon icon={Plus} color="quinaryText" strokeWidth={2} />
               </View>
             </TouchableOpacity>
           </View>

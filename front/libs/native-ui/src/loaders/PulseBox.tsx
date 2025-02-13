@@ -58,7 +58,11 @@ export const PulseText = (props: Props) => {
         numberOfLines && pulsing ? { minHeight: numberOfLines * 14 } : {},
       ]}
     >
-      {pulsing ? <Pulse backgroundColor="grayButton" /> : children}
+      {pulsing ? (
+        <Pulse backgroundColor="grayButton" borderRadius="xxs" />
+      ) : (
+        children
+      )}
       {placeholder && pulsing && <Text>{placeholder}</Text>}
     </Box>
   );

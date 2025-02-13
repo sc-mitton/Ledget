@@ -57,11 +57,26 @@ export function TrendNumber(props: Props) {
       }${suffix}`}</Text>
       <View style={styles.icon}>
         {value === 0 ? (
-          <Icon icon={ArrowRight} size={fontSize} color="greenText" />
+          <Icon
+            icon={ArrowRight}
+            size={fontSize}
+            color="greenText"
+            strokeWidth={2}
+          />
         ) : value < 0 ? (
-          <Icon icon={ArrowDownRight} size={fontSize} color="redText" />
+          <Icon
+            icon={ArrowDownRight}
+            size={fontSize}
+            color="redText"
+            strokeWidth={2}
+          />
         ) : (
-          <Icon icon={ArrowUpRight} size={fontSize} color="greenText" />
+          <Icon
+            icon={ArrowUpRight}
+            size={fontSize}
+            color="greenText"
+            strokeWidth={2}
+          />
         )}
       </View>
     </View>

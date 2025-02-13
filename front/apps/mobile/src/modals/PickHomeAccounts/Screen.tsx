@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useTheme } from '@shopify/restyle';
 import { X } from 'geist-native-icons';
-import { useNavigation } from '@react-navigation/native';
 import Animated, { LinearTransition } from 'react-native-reanimated';
+import { StyleSheet } from 'react-native';
+import { TrendingUp, CreditCard } from 'geist-native-icons';
 import Big from 'big.js';
 import { Dimensions } from 'react-native';
 
@@ -17,29 +18,58 @@ import {
   CustomScrollView,
   Icon,
 } from '@ledget/native-ui';
+import { CurrencyNote } from '@ledget/media/native';
 import { useGetAccountsQuery, Account } from '@ledget/shared-features';
 import { hideBottomTabs } from '@/features/uiSlice';
 import {
   selectHomePinnedAccounts,
   setHomePinnedAccounts,
+  popToast,
 } from '@ledget/shared-features';
 import { PageSheetModalScreenProps } from '@/types';
 import { View } from 'react-native';
 import { capitalize, sliceString } from '@ledget/helpers';
+import { useAppearance } from '@/features/appearanceSlice';
+
+const styles = StyleSheet.create({
+  xButton: {
+    position: 'absolute',
+    right: -12,
+    top: -12,
+  },
+  horizontalScroll: {
+    marginLeft: -12,
+  },
+  horizontalScrollContent: {
+    paddingLeft: 12,
+    paddingVertical: 12,
+  },
+});
+
+const AccountIcon = ({ type }: { type: Account['type'] }) => {
+  if (type === 'credit')
+    return <Icon icon={CreditCard} size={15} color="tertiaryText" />;
+  if (type === 'investment')
+    return <Icon icon={TrendingUp} size={15} color="tertiaryText" />;
+  if (type === 'depository')
+    return <Icon icon={CurrencyNote} size={15} color="tertiaryText" />;
+  return null;
+};
 
 const PickHomeAccounts = (
   props: PageSheetModalScreenProps<'PickHomeAccounts'>
 ) => {
   const dispatch = useAppDispatch();
   const theme = useTheme();
+  const { mode } = useAppearance();
+  const { data: accountsData } = useGetAccountsQuery();
   const pinnedAccounts = useAppSelector(selectHomePinnedAccounts);
 
   const [selectedAccounts, setSelectedAccounts] = useState<Account[]>([
-    ...pinnedAccounts,
+    ...(accountsData?.accounts.filter((account) =>
+      pinnedAccounts.includes(account.id)
+    ) || []),
   ]);
-
-  const navigation = useNavigation();
-  const { data: accountsData } = useGetAccountsQuery();
 
   useEffect(() => {
     props.navigation.setOptions({
@@ -55,7 +85,9 @@ const PickHomeAccounts = (
   }, []);
 
   useEffect(() => {
-    dispatch(setHomePinnedAccounts(selectedAccounts));
+    dispatch(
+      setHomePinnedAccounts(selectedAccounts.map((account) => account.id))
+    );
   }, [selectedAccounts]);
 
   useEffect(() => {
@@ -66,7 +98,9 @@ const PickHomeAccounts = (
   }, []);
 
   const onSave = () => {
-    dispatch(setHomePinnedAccounts(selectedAccounts));
+    dispatch(
+      setHomePinnedAccounts(selectedAccounts.map((account) => account.id))
+    );
     props.navigation.goBack();
   };
 
@@ -82,51 +116,69 @@ const PickHomeAccounts = (
           <CustomScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ gap: theme.spacing.s }}
+            style={styles.horizontalScroll}
+            contentContainerStyle={styles.horizontalScrollContent}
           >
             {selectedAccounts.map((account) => (
               <Box
+                marginRight="l"
                 key={account.id}
                 backgroundColor="grayButton"
                 padding="l"
-                marginVertical="s"
+                shadowColor="menuShadowColor"
+                shadowOpacity={mode === 'dark' ? 0.3 : 0}
+                shadowRadius={4}
+                shadowOffset={{ width: 0, height: 2 }}
+                elevation={7}
                 borderRadius={'m'}
                 flexDirection="row"
                 alignItems="center"
+                paddingRight="xl"
                 gap="l"
               >
                 <InstitutionLogo account={account.id} />
                 <View>
                   <Text>{sliceString(account.name, 20)}</Text>
-                  <Text color="tertiaryText">
-                    {['cd', 'ira'].includes(account.type.toLowerCase())
-                      ? account.type.toUpperCase()
-                      : capitalize(account.type)}
-                  </Text>
+                  <Box flexDirection="row" gap="s" alignItems="center">
+                    <AccountIcon type={account.type} />
+                    <Text color="tertiaryText">
+                      {['cd', 'ira'].includes(account.type.toLowerCase())
+                        ? account.type.toUpperCase()
+                        : capitalize(account.type)}
+                    </Text>
+                  </Box>
                 </View>
-                <Box marginLeft="l">
-                  <Button
-                    padding="xs"
-                    backgroundColor="mediumGrayButton"
-                    borderRadius="circle"
-                    onPress={() => {
-                      setSelectedAccounts(
-                        selectedAccounts.filter((a) => a.id !== account.id)
-                      );
-                    }}
-                  >
+                <Button
+                  variant="circleButton"
+                  backgroundColor={
+                    mode === 'light' ? 'grayButton' : 'mediumGrayButton'
+                  }
+                  borderColor="modalBox"
+                  borderWidth={4}
+                  onPress={() => {
+                    setSelectedAccounts(
+                      selectedAccounts.filter((a) => a.id !== account.id)
+                    );
+                  }}
+                  style={styles.xButton}
+                  icon={
                     <Icon
                       icon={X}
-                      size={16}
+                      size={14}
+                      strokeWidth={2.5}
                       color="secondaryText"
-                      strokeWidth={2}
                     />
-                  </Button>
-                </Box>
+                  }
+                />
               </Box>
             ))}
           </CustomScrollView>
-          <Seperator variant="s" />
+          <Seperator
+            variant="s"
+            backgroundColor={
+              mode === 'dark' ? 'modalSeperator' : 'mainScreenSeperator'
+            }
+          />
         </>
       )}
 
@@ -135,7 +187,14 @@ const PickHomeAccounts = (
           .filter((account) => !selectedAccounts.includes(account))
           .map((account, i) => (
             <Animated.View key={account.id} layout={LinearTransition}>
-              {i > 0 && <Seperator variant="s" />}
+              {i > 0 && (
+                <Seperator
+                  variant="s"
+                  backgroundColor={
+                    mode === 'dark' ? 'modalSeperator' : 'mainScreenSeperator'
+                  }
+                />
+              )}
               <Button
                 key={account.id}
                 flexDirection="row"
@@ -144,7 +203,15 @@ const PickHomeAccounts = (
                 width="100%"
                 justifyContent="space-between"
                 onPress={() => {
-                  if (selectedAccounts.includes(account)) {
+                  if (selectedAccounts.length >= 4) {
+                    dispatch(
+                      popToast({
+                        message: 'You can only pin up to 4 accounts',
+                        type: 'info',
+                        location: 'bottom',
+                      })
+                    );
+                  } else if (selectedAccounts.includes(account)) {
                     setSelectedAccounts(
                       selectedAccounts.filter((a) => a.id !== account.id)
                     );
@@ -157,7 +224,8 @@ const PickHomeAccounts = (
                   <InstitutionLogo account={account.id} size={24} />
                   <View>
                     <Text>{sliceString(account.name, 20)}</Text>
-                    <Box flexDirection="row" gap="xs">
+                    <Box flexDirection="row" gap="s" alignItems="center">
+                      <AccountIcon type={account.type} />
                       <Text color="tertiaryText" fontSize={14}>
                         {['cd', 'ira'].includes(account.type.toLowerCase())
                           ? account.type.toUpperCase()
@@ -172,7 +240,6 @@ const PickHomeAccounts = (
                 </Box>
                 <Box flex={1} alignItems="flex-end">
                   <DollarCents
-                    color="tertiaryText"
                     fontSize={16}
                     value={Big(account.balances.current).times(100).toNumber()}
                   />

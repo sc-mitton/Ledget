@@ -12,7 +12,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
 from rest_framework.exceptions import ValidationError
-from django.db.models import Sum, F
+from django.db.models import Sum, F, Q
 from django.utils import timezone
 from django.db.models.functions import TruncMonth, TruncYear
 from plaid.model.accounts_get_request import AccountsGetRequest
@@ -154,8 +154,8 @@ class AccountsViewSet(ViewSet):
     def _get_users_accounts(self, include_institutions=False):
 
         qset = Account.objects.filter(
-                useraccount__user__in=self.request.user.account.users.all()
-            ).annotate(order=F('useraccount__order')) \
+                useraccount__user__in=self.request.user.account.users.all(),
+            ).filter(~Q(type='loan')).annotate(order=F('useraccount__order')) \
             .annotate(pinned=F('useraccount__pinned')) \
             .annotate(card_hue=F('useraccount__card_hue'))
 

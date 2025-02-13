@@ -42,7 +42,7 @@ const PinnedCategories = () => {
         </Box>
         <Button
           label="Edit"
-          textColor="tertiaryText"
+          textColor="blueText"
           onPress={() => setPickMode(!pickMode)}
         />
       </Box>

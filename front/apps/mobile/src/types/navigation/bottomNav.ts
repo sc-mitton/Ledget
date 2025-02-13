@@ -7,6 +7,7 @@ import { BudgetStackParamList } from './budget';
 import { HomeStackParamList } from './home';
 import { RootStackParamList } from './root';
 import { ModalStackParamList } from './modals';
+import { ProfileStackParamList } from './profile';
 
 export type BottomTabNavParamList = {
   Home: NavigatorScreenParams<HomeStackParamList>;

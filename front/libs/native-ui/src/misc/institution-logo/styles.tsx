@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   defaultLogoBack: {
-    opacity: 0.2,
+    opacity: 0.1,
   },
 });
 

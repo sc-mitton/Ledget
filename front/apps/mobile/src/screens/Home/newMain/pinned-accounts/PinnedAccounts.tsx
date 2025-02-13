@@ -1,19 +1,28 @@
-import { useState } from 'react';
-import { View } from 'react-native';
-import { Pin } from 'geist-native-icons';
+import { Fragment } from 'react';
+import { Pin, TrendingUp } from 'geist-native-icons';
 import Animated, { LinearTransition } from 'react-native-reanimated';
-import { useNavigation } from '@react-navigation/native';
+import { Clock, CreditCard } from 'geist-native-icons';
 
-import { Box, Icon, Text, Button } from '@ledget/native-ui';
+import {
+  Box,
+  Icon,
+  Text,
+  Button,
+  InstitutionLogo,
+  DollarCents,
+  Seperator,
+} from '@ledget/native-ui';
+import { CurrencyNote } from '@ledget/media/native';
 import {
   useGetAccountsQuery,
   selectHomePinnedAccounts,
 } from '@ledget/shared-features';
 import { useAppSelector } from '@/hooks';
+import { sliceString, capitalize } from '@ledget/helpers';
+import { HomeScreenProps } from '@/types';
 import Skeleton from './Skeleton';
 
-const PinnedAccounts = () => {
-  const navigation = useNavigation<any>();
+const PinnedAccounts = (props: HomeScreenProps<'Main'>) => {
   const { data: accountsData, isSuccess } = useGetAccountsQuery();
   const pinnedAccounts = useAppSelector(selectHomePinnedAccounts);
 
@@ -31,21 +40,100 @@ const PinnedAccounts = () => {
         </Box>
         <Button
           label="Edit"
-          textColor="tertiaryText"
+          textColor="blueText"
           onPress={() => {
-            navigation.navigate('PageSheetModals', {
+            props.navigation.navigate('PageSheetModals', {
               screen: 'PickHomeAccounts',
             });
           }}
         />
       </Box>
-      <Box variant="nestedContainer">
+      <Box variant="nestedContainer" flexDirection="column" gap="m">
         {!isSuccess ? (
           <Skeleton />
         ) : pinnedAccounts.length === 0 ? (
           <Skeleton />
         ) : (
-          <View></View>
+          accountsData?.accounts
+            .filter((account) => pinnedAccounts.includes(account.id))
+            .map((account, index) => (
+              <Fragment key={account.id}>
+                {index !== 0 && (
+                  <Seperator
+                    backgroundColor="nestedContainerSeperator"
+                    variant="xs"
+                  />
+                )}
+                <Button
+                  flexDirection="row"
+                  alignItems="center"
+                  padding="none"
+                  onPress={() => {
+                    const screen = capitalize(account.type) as any;
+                    props.navigation.navigate('BottomTabs', {
+                      screen: 'Accounts',
+                      params: {
+                        screen: 'AccountsTabs',
+                        params: {
+                          screen: screen,
+                          params: { accounts: [account] },
+                        },
+                      },
+                    });
+                  }}
+                >
+                  <Box marginRight="m">
+                    <InstitutionLogo account={account.id} />
+                  </Box>
+                  <Box>
+                    <Text>{sliceString(account.name, 20)}</Text>
+                    <Box flexDirection="row" gap="s" alignItems="center">
+                      {account.type === 'credit' && (
+                        <Icon
+                          icon={CreditCard}
+                          size={14}
+                          strokeWidth={2}
+                          color="tertiaryText"
+                        />
+                      )}
+                      {account.type === 'loan' && (
+                        <Icon icon={Clock} size={14} color="tertiaryText" />
+                      )}
+                      {account.type === 'investment' && (
+                        <Icon
+                          icon={TrendingUp}
+                          size={14}
+                          strokeWidth={2}
+                          color="tertiaryText"
+                        />
+                      )}
+                      {account.type === 'depository' && (
+                        <Icon
+                          icon={CurrencyNote}
+                          size={14}
+                          strokeWidth={2}
+                          color="tertiaryText"
+                        />
+                      )}
+                      <Text color="tertiaryText" fontSize={14}>
+                        {capitalize(account.type)}
+                      </Text>
+                      <Text color="tertiaryText" fontSize={14}>
+                        &bull;&nbsp;&bull;&nbsp;{account.mask}
+                      </Text>
+                    </Box>
+                  </Box>
+                  <Box
+                    flex={1}
+                    flexGrow={1}
+                    flexDirection="row"
+                    justifyContent="flex-end"
+                  >
+                    <DollarCents value={account.balances.current} />
+                  </Box>
+                </Button>
+              </Fragment>
+            ))
         )}
       </Box>
     </Animated.View>

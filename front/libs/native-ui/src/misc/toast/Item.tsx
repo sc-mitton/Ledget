@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { Check, AlertCircle, Info } from 'geist-native-icons';
-import { View } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import Animated, {
@@ -11,6 +11,8 @@ import Animated, {
   withTiming,
   SlideInUp,
   SlideOutUp,
+  SlideInDown,
+  SlideOutDown,
 } from 'react-native-reanimated';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 
@@ -25,7 +27,7 @@ export const ToastItem = (props: TToastItem & { index: number }) => {
   const navigation = useNavigation<any>();
   const dispatch = useDispatch();
 
-  const y = useSharedValue(-100);
+  const y = useSharedValue(props.location === 'bottom' ? -100 : -100);
 
   const onEnd = useCallback(() => {
     dispatch(tossToast(props.id));
@@ -47,16 +49,30 @@ export const ToastItem = (props: TToastItem & { index: number }) => {
   });
 
   useEffect(() => {
-    y.value = withTiming(props.index * 16 + 40);
-  });
+    y.value = withTiming(
+      props.location === 'bottom'
+        ? props.index * -16 - 80
+        : props.index * 16 + 40
+    );
+  }, []);
 
   return (
     <Animated.View
       style={[styles.toastItemContainer, style]}
-      entering={SlideInUp.duration(600).easing(
-        Easing.bezier(0.17, 0.67, 0.47, 0.99).factory()
-      )}
-      exiting={SlideOutUp.duration(600)}
+      entering={
+        props.location === 'bottom'
+          ? SlideInDown.duration(600).easing(
+              Easing.bezier(0.17, 0.67, 0.47, 0.99).factory()
+            )
+          : SlideInUp.duration(600).easing(
+              Easing.bezier(0.17, 0.67, 0.47, 0.99).factory()
+            )
+      }
+      exiting={
+        props.location === 'bottom'
+          ? SlideOutDown.duration(600)
+          : SlideOutUp.duration(600)
+      }
     >
       <GestureDetector gesture={pan}>
         <Box

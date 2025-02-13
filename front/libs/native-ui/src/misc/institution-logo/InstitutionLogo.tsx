@@ -16,10 +16,11 @@ interface InstitutionLogoProps extends Props {
   account?: string;
   institution?: string;
   hasBorder?: boolean;
+  textColor?: string;
 }
 
 export const InstitutionLogo = (props: InstitutionLogoProps) => {
-  const { hasBorder = true } = props;
+  const { textColor = 'mainText' } = props;
 
   const institution = useSelector((state: any) =>
     selectInstitution(state, props.account || props.institution || '')
@@ -69,12 +70,15 @@ export const InstitutionLogo = (props: InstitutionLogoProps) => {
       height={props.size || Platform.OS === 'ios' ? 22 : 24}
     >
       <Box
-        backgroundColor="whiteText"
+        backgroundColor="mainText"
         borderRadius={'circle'}
         style={[StyleSheet.absoluteFill, styles.defaultLogoBack]}
       />
       <View style={styles.institutionInitialContainer}>
-        <Text style={styles.institutionInitial} color="whiteText">
+        <Text
+          style={styles.institutionInitial}
+          color={(textColor as any) || 'mainText'}
+        >
           {institution?.name?.charAt(0).toUpperCase()}
         </Text>
       </View>

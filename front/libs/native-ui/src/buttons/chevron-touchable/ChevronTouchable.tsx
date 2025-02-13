@@ -39,6 +39,7 @@ export const ChevronTouchable = ({
               : OverRide || ChevronDown
           }
           color="quinaryText"
+          strokeWidth={2}
         />
       </View>
     </TouchableOpacity>

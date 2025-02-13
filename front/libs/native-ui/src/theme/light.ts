@@ -158,7 +158,7 @@ export const lightTheme = createTheme({
     blueButtonBorder2: palette.blue100,
     lightGrayButton: palette.gray200,
     lightGrayButtonBorder: palette.gray250,
-    grayButton: palette.gray250,
+    grayButton: palette.gray200,
     grayButtonBorder: palette.gray300,
     mediumGrayButton: palette.gray500,
     mediumGrayButtonBorder: palette.gray600,
@@ -217,6 +217,7 @@ export const lightTheme = createTheme({
     grayIcon: palette.gray400,
   },
   spacing: {
+    nm: -12,
     ns: -8,
     nxs: -4,
     nxxs: -2,
@@ -517,6 +518,11 @@ export const lightTheme = createTheme({
   seperatorVariants: {
     bare: {
       height: 1.25,
+      backgroundColor: 'seperator',
+    },
+    xs: {
+      height: 1,
+      marginVertical: 'xs',
       backgroundColor: 'seperator',
     },
     s: {

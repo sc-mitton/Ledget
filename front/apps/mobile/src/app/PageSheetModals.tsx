@@ -38,7 +38,9 @@ const PageSheetModals = (props: RootStackScreenProps<'PageSheetModals'>) => {
               paddingBottom="s"
               justifyContent="space-between"
               alignItems="center"
-              borderBottomColor="modalSeperator"
+              borderBottomColor={
+                mode === 'dark' ? 'modalSeperator' : 'mainScreenSeperator'
+              }
               borderBottomWidth={1.75}
             >
               <Button

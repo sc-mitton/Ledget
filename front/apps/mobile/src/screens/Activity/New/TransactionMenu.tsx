@@ -53,7 +53,7 @@ const TransactionMenu = (props: Props) => {
           label: 'New Bill',
           icon: () => <Icon icon={Plus} size={16} strokeWidth={2} />,
           onSelect: () =>
-            navigation.navigate('Modals', {
+            navigation.navigate('PageSheetModals', {
               screen: 'NewBill',
               params: {
                 bill: {

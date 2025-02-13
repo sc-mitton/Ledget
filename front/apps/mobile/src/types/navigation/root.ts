@@ -14,7 +14,6 @@ export type RootStackParamList = {
   Modals: NavigatorScreenParams<ModalStackParamList>;
   PageSheetModals: NavigatorScreenParams<PageSheetModalParamList>;
   Onboarding: NavigatorScreenParams<OnboardingStackParamList>;
-  Profile: NavigatorScreenParams<ProfileStackParamList>;
   Transaction: {
     transaction: Transaction | string;
     options?: {

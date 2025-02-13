@@ -66,7 +66,8 @@ const styles = StyleSheet.create({
   selectorButtons: {
     flexDirection: 'row',
     width: '100%',
-    paddingHorizontal: 16,
+    paddingHorizontal: 10,
+    marginBottom: -10,
     justifyContent: 'center',
     alignItems: 'center',
     gap: 8,

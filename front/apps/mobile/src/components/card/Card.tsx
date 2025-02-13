@@ -140,9 +140,10 @@ export const Card = (props: Props) => {
                 style={[styles.card, (styles as any)[size + 'CardPadding']]}
               >
                 <View style={styles.logo}>
-                  <Grayscale>
-                    <InstitutionLogo account={props.account?.id} />
-                  </Grayscale>
+                  <InstitutionLogo
+                    account={props.account?.id}
+                    textColor="whiteText"
+                  />
                 </View>
                 <View style={styles.cardTopHalf}>
                   <DollarCents

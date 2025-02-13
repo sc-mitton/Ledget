@@ -129,7 +129,7 @@ export const darkTheme = createTheme({
     logoShadow: palette.gray900,
     newTransactionShadow:
       Platform.OS === 'android' ? palette.gray900 : palette.gray850,
-    menuShadowColor: palette.gray900,
+    menuShadowColor: palette.gray1000,
     creditCardShadow: palette.gray900,
 
     // Icons
