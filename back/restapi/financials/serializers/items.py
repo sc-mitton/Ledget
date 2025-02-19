@@ -3,15 +3,13 @@ import logging
 import plaid
 from plaid.model.item_public_token_exchange_request import \
     ItemPublicTokenExchangeRequest
-from plaid.model.institutions_get_by_id_request import InstitutionsGetByIdRequest
-from plaid.model.country_code import CountryCode
 from rest_framework import serializers
 from django.conf import settings
 from django.db import transaction
 
 from core.clients import create_plaid_client
 from financials.models import PlaidItem
-from financials.models import Account, Institution, UserAccount
+from financials.models import Account, UserAccount
 from financials.serializers.account import InstitutionSerializer
 
 PLAID_COUNTRY_CODES = settings.PLAID_COUNTRY_CODES
@@ -35,7 +33,6 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
     def create(self, validated_data):
 
         try:
-            self._update_or_create_institution(validated_data['institution'])
             plaid_item = self._add_objects(validated_data)
         except plaid.ApiException as e:  # pragma: no cover
             logger.error(f"Plaid error: {e}")
@@ -47,24 +44,6 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
             raise serializers.ValidationError()
 
         return plaid_item
-
-    def _update_or_create_institution(self, institution_data):
-        institution, created = Institution.objects.get_or_create(
-            id=institution_data['id']
-        )
-        if created:
-            self._update_institution_metadata(institution)
-
-    def _update_institution_metadata(self, institution):
-        resonse = self._get_plaid_institution(institution.id)
-        data = resonse.to_dict()['institution']
-
-        institution.logo = data.get('logo')
-        institution.url = data.get('url')
-        institution.oath = data.get('oath')
-        institution.primary_color = data.get('primary_color')
-        institution.name = data.get('name')
-        institution.save()
 
     @transaction.atomic
     def _add_objects(self, validated_data):
@@ -80,7 +59,7 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
         response = plaid_client.item_public_token_exchange(exchange_request)
 
         # Create plaid item
-        plaid_item, created = PlaidItem.objects.update_or_create(
+        plaid_item, _ = PlaidItem.objects.update_or_create(
             institution_id=validated_data['institution']['id'],
             user_id=self.context['request'].user.id,
             id=response['item_id'],
@@ -116,19 +95,6 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
             bulkconnect,
             ignore_conflicts=True,
             unique_fields=['user', 'account'])
-
-    def _get_plaid_institution(self, institution_id):
-
-        institution_request = InstitutionsGetByIdRequest(
-            institution_id=institution_id,
-            country_codes=list(
-                map(lambda x: CountryCode(x), PLAID_COUNTRY_CODES)
-            ),
-            options={'include_optional_metadata': True}
-        )
-
-        response = plaid_client.institutions_get_by_id(institution_request)
-        return response
 
 
 class PlaidItemsSerializer(serializers.ModelSerializer):

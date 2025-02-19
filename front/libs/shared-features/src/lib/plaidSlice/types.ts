@@ -33,7 +33,7 @@ export interface PlaidItem {
   accounts: Account[];
 }
 
-export interface AddNewPlaidItemPayload {
+export interface ExchangePlaidTokenPayload {
   public_token: string;
   accounts: Account[];
   institution?: Institution;

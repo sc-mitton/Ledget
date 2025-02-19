@@ -20,7 +20,7 @@ export function useBakedPlaidLink(onBoarding?: boolean) {
   });
 
   const [
-    addNewPlaidItem,
+    exchangePlaidToken,
     { data: newPlaidItem, isSuccess: newItemAddSuccess },
   ] = useExchangePlaidTokenMutation();
   const [syncTransactions] = useTransactionsSyncMutation();
@@ -46,11 +46,13 @@ export function useBakedPlaidLink(onBoarding?: boolean) {
 
   const config = {
     onSuccess: (public_token: string, metadata: PlaidLinkOnSuccessMetadata) => {
-      const institution = {
-        id: metadata?.institution?.institution_id,
-        name: metadata?.institution?.name,
-      };
-      addNewPlaidItem({
+      const institution = metadata?.institution
+        ? {
+            id: metadata.institution.institution_id,
+            name: metadata.institution.name,
+          }
+        : undefined;
+      exchangePlaidToken({
         data: {
           public_token: public_token,
           accounts: metadata.accounts,
@@ -103,15 +105,10 @@ export const useBakedUpdatePlaidLink = ({ itemId }: { itemId: string }) => {
           message: 'Connection updated successfully',
         })
       );
-      const institution = {
-        id: metadata.institution?.institution_id,
-        name: metadata.institution?.name,
-      };
       exchangePlaidToken({
         data: {
           public_token,
           accounts: metadata.accounts,
-          institution: institution,
         },
       });
     },

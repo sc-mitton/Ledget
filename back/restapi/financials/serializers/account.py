@@ -1,9 +1,13 @@
 from itertools import groupby
 from datetime import datetime
 from decimal import Decimal
-
+from plaid.model.institutions_get_by_id_request import InstitutionsGetByIdRequest
+from plaid.model.country_code import CountryCode
 from rest_framework import serializers
+from django.conf import settings
+import logging
 
+from core.clients import create_plaid_client
 from financials.models import (
     Account,
     Institution,
@@ -11,12 +15,48 @@ from financials.models import (
     Transaction
 )
 
+PLAID_COUNTRY_CODES = settings.PLAID_COUNTRY_CODES
+plaid_client = create_plaid_client()
+logger = logging.getLogger('ledget')
+
 
 class InstitutionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Institution
         fields = '__all__'
+        extra_kwargs = {'id': {'validators': []}}
+
+    def create(self, validated_data):
+        institution, _ = Institution.objects.get_or_create(id=validated_data['id'])
+
+        try:
+            response = self._get_plaid_institution(validated_data['id'])
+            data = response.to_dict()['institution']
+        except Exception as e:
+            logger.error(f"Error: {e}")
+            raise serializers.ValidationError()
+
+        institution.logo = data.get('logo')
+        institution.url = data.get('url')
+        institution.oath = data.get('oath')
+        institution.primary_color = data.get('primary_color')
+        institution.name = data.get('name')
+
+        return Institution
+
+    def _get_plaid_institution(self, institution_id):
+
+        institution_request = InstitutionsGetByIdRequest(
+            institution_id=institution_id,
+            country_codes=list(
+                map(lambda x: CountryCode(x), PLAID_COUNTRY_CODES)
+            ),
+            options={'include_optional_metadata': True}
+        )
+
+        response = plaid_client.institutions_get_by_id(institution_request)
+        return response
 
 
 class AccountLS(serializers.ListSerializer):

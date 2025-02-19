@@ -3,7 +3,7 @@ import { createSlice, createSelector } from '@reduxjs/toolkit';
 
 import {
   PlaidItem,
-  AddNewPlaidItemPayload,
+  ExchangePlaidTokenPayload,
   GetPlaidTokenResponse,
   Institution,
   RootStateWithInstitutions,
@@ -45,23 +45,24 @@ export const extendedApiSlice = apiWithTags.injectEndpoints({
       }),
       invalidatesTags: ['PlaidItem'],
     }),
-    exchangePlaidToken: builder.mutation<any, { data: AddNewPlaidItemPayload }>(
-      {
-        query: ({ data }) => ({
-          url: 'plaid-token-exchange',
-          method: 'POST',
-          body: data,
-        }),
-        invalidatesTags: [
-          'PlaidItem',
-          'Liability',
-          'Investment',
-          'Account',
-          'AccountBalanceHistory',
-        ],
-        extraOptions: { maxRetries: 3 },
-      }
-    ),
+    exchangePlaidToken: builder.mutation<
+      any,
+      { data: ExchangePlaidTokenPayload }
+    >({
+      query: ({ data }) => ({
+        url: 'plaid-token-exchange',
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: [
+        'PlaidItem',
+        'Liability',
+        'Investment',
+        'Account',
+        'AccountBalanceHistory',
+      ],
+      extraOptions: { maxRetries: 3 },
+    }),
     updatePlaidItem: builder.mutation<
       any,
       { itemId: string; data: { itemId: string; data: Partial<PlaidItem> } }
