@@ -43,7 +43,7 @@ class PlaidTransactionSerializer(serializers.ModelSerializer):
         ])
 
         # If it is a spend transaction, set the detail to SPENDING
-        is_spend = not is_null_detail and not value.get('detail')
+        is_spend = not is_null_detail and value.get('detail') is None
 
         if is_spend:
             value['detail'] = Transaction.Detail.SPENDING
