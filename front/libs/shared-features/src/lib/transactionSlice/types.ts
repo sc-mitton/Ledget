@@ -9,6 +9,8 @@ export type Note = {
   is_current_users: boolean;
 };
 
+type Detail = 'investment_transfer_out' | 'spending' | 'income' | null;
+
 export type Transaction = {
   account: string;
   transaction_id: string;
@@ -18,7 +20,7 @@ export type Transaction = {
   bill?: Bill;
   predicted_category?: Category;
   predicted_bill?: Bill;
-  detail: 'investment_transfer_out' | 'spending' | 'income' | null;
+  detail: Detail;
   name: string;
   preferred_name?: string;
   merchant_name?: string;
@@ -60,6 +62,7 @@ export interface GetTransactionsParams {
   accounts?: string[];
   category?: string;
   id?: string;
+  detail?: Detail;
 
   // Pagination query params
   limit?: number;
