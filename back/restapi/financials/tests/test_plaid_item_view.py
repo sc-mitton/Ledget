@@ -89,10 +89,6 @@ class TestPlaidItemView(ViewTestsMixin):
         institution_data = InstitutionSerializer(instution_obj).data
         account_data = AccountSerializer(account_objs, many=True).data
 
-        # Clear accounts, and instutitions in table so we can test creation
-        account_objs.delete()
-        instution_obj.delete()
-
         response = self.client.post(
             reverse('plaid-token-exchange'),
             data={

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { StatusBar } from 'expo-status-bar';
-import { Platform, LogBox, UIManager } from 'react-native';
+import { Platform, LogBox, UIManager, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
 import { MMKV } from 'react-native-mmkv';
 import {
@@ -227,6 +227,7 @@ export const App = withProviders(() => {
         style={appearance.mode === 'dark' ? 'light' : 'dark'}
       />
       <Toast />
+
       {continueToMainApp ? (
         <RootStack.Navigator
           initialRouteName={user?.is_onboarded ? 'BottomTabs' : 'Onboarding'}
