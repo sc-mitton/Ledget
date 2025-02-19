@@ -130,17 +130,6 @@ const Nav = () => {
         <LedgetLogoIcon darkMode={isDark} />
       </div>
       <ul ref={ulRef} role="menu">
-        <li data-current={location.pathname === '/home' ? 'page' : ''}>
-          <a
-            onClick={() => {
-              navigate('home');
-            }}
-            aria-disabled
-          >
-            <Home className="icon" />
-            <span>Home</span>
-          </a>
-        </li>
         <li data-current={location.pathname.includes('budget') ? 'page' : ''}>
           <a
             onClick={() => {

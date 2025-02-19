@@ -167,7 +167,6 @@ const App = () => {
                   <Route path="new-bill" element={<CreateBill />} />
                   <Route path="error" element={<AccountErrorModal />} />
                 </Route>
-                <Route path="home" element={<Home />} />
                 <Route path="accounts/*" element={<Accounts />} />
                 <Route path="profile/*" element={<Profile />} />
                 <Route path="*" element={<NotFound />} />
