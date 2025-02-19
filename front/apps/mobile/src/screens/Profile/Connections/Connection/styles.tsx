@@ -19,7 +19,7 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    marginRight: 12,
+    marginRight: 4,
   },
   headerContainer: {
     justifyContent: 'center',

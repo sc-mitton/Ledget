@@ -14,7 +14,7 @@ const Screen = (props: HomeScreenProps<'Main'>) => {
       contentContainerStyle={{ paddingBottom: theme.spacing.navHeight }}
     >
       <Box paddingHorizontal="pagePadding" paddingTop="statusBar">
-        <Box paddingTop="statusBar" gap="s">
+        <Box paddingTop="statusBar" gap="m">
           <Summary />
           <PinnedCategories />
           <PinnedAccounts {...props} />

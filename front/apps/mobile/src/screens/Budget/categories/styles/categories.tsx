@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 4,
-    paddingTop: 8,
+    paddingTop: 6,
   },
   progressBarContainer: {
     position: 'relative',

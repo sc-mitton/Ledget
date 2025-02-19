@@ -85,7 +85,9 @@ const Connections = ({ navigation, route }: ConnectionsScreenProps<'All'>) => {
         </PulseBox>
         {user?.co_owner && (
           <Fragment>
-            <BoxHeader>{coOwner?.name.first}'s Connections</BoxHeader>
+            {coOwner && (
+              <BoxHeader>{coOwner?.name.first}'s Connections</BoxHeader>
+            )}
             <PulseBox
               pulsing={isLoading}
               numberOfLines={4}

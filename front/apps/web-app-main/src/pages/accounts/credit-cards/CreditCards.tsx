@@ -87,7 +87,6 @@ const CreditSummary = () => {
             ? 0
             : orderIndex >= (selectedCardIndex || 0) ? orderIndex : orderIndex + 1
         : i;
-      console.log('index: ', index);
       return {
         x: spread ? index * (cardWidth + cardOffset * 1.3) : index * cardOffset,
       };
