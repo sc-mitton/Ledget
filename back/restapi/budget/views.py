@@ -159,7 +159,6 @@ class BillViewSet(BulkSerializerMixin, ModelViewSet):
                            .prefetch_related('transactions') \
                            .annotate(is_paid=is_paid_annotation) \
 
-        print('monthly_qset: ', monthly_qset)
         time_slice_end = datetime(
             year=year,
             month=month,
