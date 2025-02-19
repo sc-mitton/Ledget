@@ -16,9 +16,15 @@ export default function BakedMenu(props: AccountsScreenProps<'AccountsTabs'>) {
             label: 'Connect account',
             icon: () => <Icon icon={Plus} size={16} strokeWidth={2} />,
             onSelect: () =>
-              props.navigation.navigate('Profile', {
-                screen: 'Connections',
-                params: { screen: 'All' },
+              props.navigation.navigate('BottomTabs', {
+                screen: 'Home',
+                params: {
+                  screen: 'Profile',
+                  params: {
+                    screen: 'Connections',
+                    params: { screen: 'All' },
+                  } as any,
+                },
               }),
           },
         ]}

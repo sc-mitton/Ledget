@@ -50,8 +50,11 @@ export const toastErrorMiddleware: Middleware =
             message: `Account connection broken`,
             messageId: 'toast-connection-broken',
             actionLink: [
-              'BottomTabs',
-              { screen: 'Profile', params: { screen: 'Connections' } },
+              'Home',
+              {
+                screen: 'Profile',
+                params: { screen: 'Connections', params: { screen: 'All' } },
+              },
             ],
             actionMessage: 'Reconnect',
             type: 'error',
