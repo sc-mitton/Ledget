@@ -137,7 +137,7 @@ export const transactionSlice = apiSlice.injectEndpoints({
                     (i) => i.transaction_id === item.transaction_id
                   )
               ),
-              ...newResults.map((t) => ({ ...t, amount: 100 })),
+              ...newResults,
             ],
           };
         }
