@@ -51,6 +51,19 @@ from budget.models import Category, TransactionCategory
 plaid_client = create_plaid_client()
 logger = logging.getLogger('ledget')
 
+QUERY_PARAMS_2_FILTER_PARAMS = {
+    'merchant': 'merchant_name__in',
+    'account': 'account_id',
+    'category': 'transactioncategory__category_id',
+    'categories': 'transactioncategory__category_id__in',
+    'limit_amount_lower': 'amount__gte',
+    'limit_amount_upper': 'amount__lte',
+    'type': 'account__type',
+    'merchants': 'merchant_name__in',
+    'accounts': 'account_id__in',
+    'account': 'account_id'
+}
+
 
 @transaction.atomic
 def sync_transactions(plaid_item: PlaidItem, default_category: Category) -> dict:
@@ -231,6 +244,7 @@ class TransactionViewSet(ModelViewSet):
             'transactioncategory_set',
             queryset=TransactionCategory.objects.all().select_related('category'),
             to_attr='splits')
+
         base_qset = Transaction.objects \
             .filter(**filter_args) \
             .prefetch_related(splits_prefetch) \
@@ -380,21 +394,13 @@ class TransactionViewSet(ModelViewSet):
             # filter out everything that isn't spending
             result['detail'] = Transaction.Detail.SPENDING
 
-        query_params_2_filter_params = {
-            'merchant': 'merchant_name__in',
-            'account': 'account_id',
-            'category': 'transactioncategory__category_id',
-            'categories': 'transactioncategory__category_id__in',
-            'limit_amount_lower': 'amount__gte',
-            'limit_amount_upper': 'amount__lte',
-            'type': 'account__type',
-            'merchants': 'merchant_name__in',
-            'accounts': 'account_id__in',
-            'account': 'account_id'
-        }
+        if 'detail' in query_params:
+            result['detail'] = Transaction.Detail(
+                Transaction.Detail.labels.index(query_params['detail'])
+            ).value
 
         for key, value in query_params.items():
-            if key not in query_params_2_filter_params:
+            if key not in QUERY_PARAMS_2_FILTER_PARAMS:
                 continue
             if key == 'accounts' and isinstance(value, str):
                 value = [value]
@@ -402,7 +408,7 @@ class TransactionViewSet(ModelViewSet):
                 value = True
             elif value == 'false':
                 value = False
-            result[query_params_2_filter_params[key]] = value
+            result[QUERY_PARAMS_2_FILTER_PARAMS[key]] = value
 
         return result
 
