@@ -11,6 +11,7 @@ const Screen = (props: HomeScreenProps<'Main'>) => {
   const theme = useTheme<Theme>();
   return (
     <ScrollView
+      showsVerticalScrollIndicator={false}
       contentContainerStyle={{ paddingBottom: theme.spacing.navHeight }}
     >
       <Box paddingHorizontal="pagePadding" paddingTop="statusBar">
