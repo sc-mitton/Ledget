@@ -35,7 +35,7 @@ import {
   useAppDispatch,
   useAppSelector,
 } from '@hooks';
-import { Profile } from '../screens';
+
 import Authentication from './Authentication';
 import BottomTabScreens from './BottomTabScreens';
 import Onboarding from '../screens/Onboarding/Stack';
