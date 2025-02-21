@@ -136,14 +136,15 @@ const AddCategories = (props: OnboardingScreenProps<'AddCategories'>) => {
   return (
     <Box variant="screen">
       <View style={[sharedStyles.mainContainer]}>
-        <View style={sharedStyles.header}>
+        <Box style={sharedStyles.header} gap="xs">
           <Text fontSize={28} lineHeight={32} variant="bold">
             Add Categories
           </Text>
           <Text color="secondaryText">
-            Add a few categories to get started. You can always add more later.
+            Add a few categories and how much you want to spend each month or
+            year for that category.
           </Text>
-        </View>
+        </Box>
         <Box variant="nestedContainer" style={styles.form}>
           {showFloatingAmountInput && (
             <ReAnimated.View
@@ -450,6 +451,7 @@ const AddCategories = (props: OnboardingScreenProps<'AddCategories'>) => {
                   isFormInput={true}
                   header="Period"
                   valueKey={'value'}
+                  multiple={false}
                   defaultValue={{
                     value: field.value,
                     label: field.value === 'month' ? 'Monthly' : 'Yearly',

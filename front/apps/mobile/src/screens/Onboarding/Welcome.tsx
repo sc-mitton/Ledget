@@ -62,7 +62,7 @@ const Welcome = (props: OnboardingScreenProps<'Welcome'>) => {
     <Box variant="screen">
       <View style={[styles.mainContainer, sharedStyles.mainContainer]}>
         <Animated.View style={[styles.image, graphicStyle]}>
-          <LogoIcon dark={mode === 'dark'} size={40} />
+          <LogoIcon dark={mode === 'dark'} size={54} />
         </Animated.View>
         <Animated.View style={[textStyle]}>
           <Text fontSize={36} lineHeight={44} variant="bold">
@@ -70,7 +70,7 @@ const Welcome = (props: OnboardingScreenProps<'Welcome'>) => {
           </Text>
         </Animated.View>
         <Animated.View style={[textStyle]}>
-          <Text color="blueText">Let's give you a tour and get you set up</Text>
+          <Text color="blueText">Let's get you set up</Text>
         </Animated.View>
       </View>
       <Animated.View style={buttonsStyle}>
@@ -78,7 +78,14 @@ const Welcome = (props: OnboardingScreenProps<'Welcome'>) => {
           <Button
             label="Continue"
             variant="main"
-            onPress={() => props.navigation.navigate('TourSpending')}
+            onPress={() => {
+              const currentIndex = props.navigation
+                .getState()
+                .routeNames.findIndex((name) => name === 'Welcome');
+              const nextPage =
+                props.navigation.getState().routeNames[currentIndex + 1];
+              props.navigation.navigate(nextPage);
+            }}
           />
           <Button
             label="Skip"

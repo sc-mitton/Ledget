@@ -111,7 +111,7 @@ pm2 delete all
 
 ```
 # Make sure you're in the ./apps/landing directory
- npm start
+ bun start
 ```
 
 ## Mobile Dev Environment

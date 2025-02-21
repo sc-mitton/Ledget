@@ -29,7 +29,7 @@ const Tour = (props: OnboardingScreenProps<'TourBills'>) => {
       <Box paddingBottom="navHeight">
         <Button
           variant="grayMain"
-          label="Continue"
+          label="Next"
           onPress={() => props.navigation.navigate('TourActivity')}
         />
       </Box>

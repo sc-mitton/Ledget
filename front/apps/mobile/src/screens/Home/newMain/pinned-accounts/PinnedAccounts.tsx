@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 import { Pin, TrendingUp } from 'geist-native-icons';
 import Animated, { LinearTransition } from 'react-native-reanimated';
 import { Clock, CreditCard } from 'geist-native-icons';
+import Big from 'big.js';
 
 import {
   Box,
@@ -129,7 +130,11 @@ const PinnedAccounts = (props: HomeScreenProps<'Main'>) => {
                     flexDirection="row"
                     justifyContent="flex-end"
                   >
-                    <DollarCents value={account.balances.current} />
+                    <DollarCents
+                      value={Big(account.balances.current)
+                        .times(100)
+                        .toNumber()}
+                    />
                   </Box>
                 </Button>
               </Fragment>
