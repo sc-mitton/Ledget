@@ -18,7 +18,7 @@ const Screen = (props: BottomTabScreenProps<'Home'>) => {
   return (
     <Stack.Navigator
       screenOptions={{
-        cardStyleInterpolator,
+        // cardStyleInterpolator,
         headerTransparent: true,
         headerTitle: () => '',
         header: () => (
@@ -29,7 +29,7 @@ const Screen = (props: BottomTabScreenProps<'Home'>) => {
             alignItems="center"
             justifyContent="space-between"
             paddingHorizontal="pagePadding"
-            backgroundColor="mainBackground"
+            backgroundColor="transparent"
           >
             <Box paddingLeft={'m'}>
               <Text fontSize={20} lineHeight={24} variant="bold">
