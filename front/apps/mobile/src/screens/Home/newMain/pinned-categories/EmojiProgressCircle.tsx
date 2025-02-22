@@ -4,6 +4,7 @@ import { Svg, Circle } from 'react-native-svg';
 
 import styles from './styles/emoji-progress-circle';
 import { Box, Text } from '@ledget/native-ui';
+import { useAppearance } from '@/features/appearanceSlice';
 
 interface ProgressEmojiProps {
   emoji?: string | null;
@@ -14,6 +15,7 @@ interface ProgressEmojiProps {
 
 function EmojiProgressCircle(props: ProgressEmojiProps) {
   const theme = useTheme();
+  const { mode } = useAppearance();
 
   return (
     <Box style={styles.progressEmoji} backgroundColor="nestedContainer">
@@ -44,6 +46,7 @@ function EmojiProgressCircle(props: ProgressEmojiProps) {
               cy={115}
               r={100}
               fill="none"
+              opacity={mode === 'dark' ? 0.7 : 0.4}
               stroke={
                 props.period === 'year'
                   ? theme.colors.yearColor
