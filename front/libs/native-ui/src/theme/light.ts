@@ -77,7 +77,7 @@ export const lightTheme = createTheme({
     accountsMainBackground: palette.gray100,
     bottomNavCover: palette.gray150,
     androidNavBar: palette.gray200,
-    bottomNavBackground: palette.gray150,
+    bottomNavBackground: `hsl(${grayH}, ${grayS}%, 94.5%)`,
     lightGrayCard: palette.gray250,
     inputBackground: palette.gray250,
     nestedContainer: palette.white,
