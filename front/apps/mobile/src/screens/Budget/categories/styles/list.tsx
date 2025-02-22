@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     flexGrow: 3,
     flex: 3,
     flexShrink: 1,
-    marginLeft: 16,
+    marginLeft: 20,
   },
   amountSpent: {
     marginRight: 8,
