@@ -7,8 +7,8 @@ import basePalette from './base-palette';
 const grayH = 240;
 const grayS = 2;
 
-const blueH = 230;
-const blueS = 65;
+const blueH = 223;
+const blueS = 90;
 
 const greenH = 170;
 
@@ -180,11 +180,13 @@ export const darkTheme = createTheme({
     // Category and Bill Colors
     monthBackground: `hsl(${blueH}, 60%, 25%)`,
     monthBorder: `hsl(${blueH}, 60%, 30%)`,
-    monthColor: `hsl(${blueH}, ${blueS + 40}%, 70%)`,
+    monthColor: `hsl(${blueH}, ${blueS + 40}%, 74%)`,
     monthBorder2: `hsl(${blueH}, 60%, 60%)`,
+    monthBorder3: `hsl(${blueH}, 100%, 60%)`,
     yearBackground: `hsl(${greenH}, 58%, 17%)`,
     yearBorder: `hsl(${greenH}, 58%, 24%)`,
     yearBorder2: `hsl(${greenH}, 58%, 37%)`,
+    yearBorder3: `hsl(${greenH}, 100%, 60%)`,
     yearColor: `hsl(${greenH}, 90%, 50%)`,
 
     // Switch

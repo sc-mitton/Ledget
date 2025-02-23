@@ -7,10 +7,10 @@ const { StatusBarManager } = NativeModules;
 const grayH = 240;
 const grayS = 1;
 
-const blueH = 230;
-const blueS = 75;
+const blueH = 223;
+const blueS = 90;
 
-const greenH = 130;
+const greenH = 108;
 
 const palette = {
   ...basePalette,
@@ -175,10 +175,12 @@ export const lightTheme = createTheme({
     monthBackground: `hsl(${blueH}, 100%, 93%)`,
     monthBorder: `hsl(${blueH}, 100%, 91%)`,
     monthBorder2: `hsl(${blueH}, 100%, 80%)`,
+    monthBorder3: `hsl(${blueH}, 100%, 60%)`,
     monthColor: `hsl(${blueH}, 80%, 58%)`,
     yearBackground: `hsl(${greenH}, 70%, 88%)`,
     yearBorder: `hsl(${greenH}, 70%, 84%)`,
     yearBorder2: `hsl(${greenH}, 70%, 73%)`,
+    yearBorder3: `hsl(${greenH}, 70%, 60%)`,
     yearColor: `hsl(${greenH}, 80%, 38%)`,
 
     // Switch
