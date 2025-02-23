@@ -1,6 +1,5 @@
-import { useEffect, memo } from 'react';
+import { useEffect, memo, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
 import SlotNumbers from 'react-native-slot-numbers';
 import { useTheme } from '@shopify/restyle';
 import Big from 'big.js';
@@ -21,11 +20,11 @@ const Progress = () => {
   } = useAppSelector(selectCategoryMetaData);
   const theme = useTheme();
 
-  const width = useSharedValue(0);
+  const [width, setWidth] = useState(0);
   const { categoriesIndex } = useBudgetContext();
 
   useEffect(() => {
-    width.value = withSpring(
+    setWidth(
       categoriesIndex === 1
         ? (monthly_spent / limit_amount_monthly) * 100
         : (yearly_spent / limit_amount_yearly) * 100
@@ -79,7 +78,14 @@ const Progress = () => {
         />
       </View>
       <View style={styles.progressBarContainer}>
-        <Animated.View style={[styles.progressBar, { width: width }]} />
+        <View style={[styles.progressBar, { width: `${width}%` }]}>
+          <Box
+            style={styles.progressBar}
+            backgroundColor={
+              categoriesIndex === 0 ? 'monthBorder3' : 'yearBorder3'
+            }
+          />
+        </View>
         <Box
           style={styles.progressBarBack}
           backgroundColor={categoriesIndex === 0 ? 'monthColor' : 'yearColor'}
