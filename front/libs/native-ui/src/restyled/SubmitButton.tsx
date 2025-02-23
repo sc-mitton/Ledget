@@ -69,7 +69,7 @@ export const SubmitButton = (
           <Animated.View style={[animation, styles.checkContainer]}>
             {isSuccess && (
               <View style={styles.check}>
-                <Icon icon={Check} color={'successIcon'} />
+                <Icon icon={Check} color={'whiteText'} strokeWidth={2} />
               </View>
             )}
           </Animated.View>
