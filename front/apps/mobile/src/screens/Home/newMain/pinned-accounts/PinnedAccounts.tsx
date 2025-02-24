@@ -53,7 +53,9 @@ const PinnedAccounts = (props: HomeScreenProps<'Main'>) => {
         {!isSuccess ? (
           <Skeleton />
         ) : pinnedAccounts.length === 0 ? (
-          <Skeleton />
+          <Box flex={1} justifyContent="center" alignItems="center">
+            <Text variant="footer">No Accounts Pinned</Text>
+          </Box>
         ) : (
           accountsData?.accounts
             .filter((account) => pinnedAccounts.includes(account.id))

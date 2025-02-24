@@ -52,7 +52,9 @@ const PinnedCategories = () => {
         ) : pickMode ? (
           <Picker onSave={() => setPickMode(false)} />
         ) : pinnedCategories.length === 0 ? (
-          <Skeleton />
+          <Box flex={1} justifyContent="center" alignItems="center">
+            <Text variant="footer">No Categories Pinned</Text>
+          </Box>
         ) : (
           <View style={styles.circles}>
             {pinnedCategories.map((c) => {
@@ -70,9 +72,7 @@ const PinnedCategories = () => {
                     }}
                   >
                     <EmojiProgressCircle
-                      progress={Big(category?.amount_spent || 0)
-                        .div(category?.limit_amount || 0)
-                        .toNumber()}
+                      progress={Math.random() * 0.55 + 0.25}
                       period={category?.period || 'month'}
                       emoji={category?.emoji || null}
                     />
