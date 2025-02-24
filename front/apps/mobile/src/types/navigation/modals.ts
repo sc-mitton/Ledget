@@ -65,6 +65,7 @@ export type ModalStackParamList = {
     year: number;
   };
   Transaction: AccountsStackParamList['Transaction'];
+  Leftovers: undefined;
 };
 
 export type PageSheetModalParamList = {

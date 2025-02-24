@@ -17,7 +17,7 @@ import {
   ConfirmDeleteCategory,
   ConfirmDeleteBill,
   BillsCalendar,
-  PickHomeAccounts,
+  Leftovers,
 } from '@modals';
 import { Activity, Transaction } from '@screens';
 import {
@@ -81,6 +81,7 @@ const ModalScreens = (props: RootStackScreenProps<'Modals'>) => {
           cardStyleInterpolator: defaultModalStyleInterpolator,
         }}
       >
+        <Stack.Screen name="Leftovers" component={Leftovers} />
         <Stack.Screen name="Transaction" component={Transaction} />
       </Stack.Group>
       <Stack.Group
