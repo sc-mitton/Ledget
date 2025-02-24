@@ -78,16 +78,17 @@ const PickHomeAccounts = (
           label="Done"
           variant="bold"
           textColor="blueText"
-          onPress={() => onSave()}
+          onPress={() => {
+            dispatch(
+              setHomePinnedAccounts(
+                selectedAccounts.map((account) => account.id)
+              )
+            );
+            props.navigation.goBack();
+          }}
         />
       ),
     });
-  }, []);
-
-  useEffect(() => {
-    dispatch(
-      setHomePinnedAccounts(selectedAccounts.map((account) => account.id))
-    );
   }, [selectedAccounts]);
 
   useEffect(() => {
@@ -96,13 +97,6 @@ const PickHomeAccounts = (
       dispatch(hideBottomTabs(false));
     };
   }, []);
-
-  const onSave = () => {
-    dispatch(
-      setHomePinnedAccounts(selectedAccounts.map((account) => account.id))
-    );
-    props.navigation.goBack();
-  };
 
   return (
     <Box
