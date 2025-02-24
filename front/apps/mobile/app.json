@@ -1,4 +1,3 @@
-
 {
   "expo": {
     "name": "Ledget",
@@ -39,7 +38,7 @@
         "tinted": "./assets/icon-tinted.png"
       },
       "jsEngine": "hermes",
-      "buildNumber": "3"
+      "buildNumber": "4"
     },
     "userInterfaceStyle": "automatic",
     "android": {
