@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { View } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
@@ -82,50 +82,48 @@ const Aal1Authentication = ({
   };
 
   return (
-    <>
-      <NestedScreenWOFeedback>
-        <View style={sharedStyles.header}>
-          <Header>Finish Logging In</Header>
-          <SubHeader2>Enter your password or use a pass-key login</SubHeader2>
-        </View>
-        <JiggleView style={styles.form} jiggle={isCompleteError}>
-          <Controller
-            control={control}
-            name="password"
-            rules={{ required: 'This is a required field' }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <PasswordInput
-                label={true}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                error={errors.password}
-              />
-            )}
-          />
-          <FormError error={errMsg} />
-          <SubmitButton
-            label="Submit"
-            variant="main"
-            isSubmitting={isCompletingFlow}
-            isSuccess={isCompleteSuccess}
-            onPress={handleSubmit(onSubmit)}
-          />
-          <Seperator
-            variant="l"
-            label="Or"
-            backgroundColor="authScreenSeperator"
-            flex={0.125}
-          />
-          <Button
-            label="Passkey"
-            variant="grayMain"
-            onPress={() => console.log('passkey')}
-          >
-            <Icon icon={Key} />
-          </Button>
-        </JiggleView>
-      </NestedScreenWOFeedback>
+    <NestedScreenWOFeedback>
+      <View style={sharedStyles.header}>
+        <Header>Finish Logging In</Header>
+        <SubHeader2>Enter your password or use a pass-key login</SubHeader2>
+      </View>
+      <JiggleView style={styles.form} jiggle={isCompleteError}>
+        <Controller
+          control={control}
+          name="password"
+          rules={{ required: 'This is a required field' }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <PasswordInput
+              label={true}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              error={errors.password}
+            />
+          )}
+        />
+        <FormError error={errMsg} />
+        <SubmitButton
+          label="Submit"
+          variant="main"
+          isSubmitting={isCompletingFlow}
+          isSuccess={isCompleteSuccess}
+          onPress={handleSubmit(onSubmit)}
+        />
+        <Seperator
+          variant="l"
+          label="Or"
+          backgroundColor="authScreenSeperator"
+          flex={0.125}
+        />
+        <Button
+          label="Passkey"
+          variant="grayMain"
+          onPress={() => console.log('passkey')}
+        >
+          <Icon icon={Key} />
+        </Button>
+      </JiggleView>
       <View style={styles.bottomButton}>
         <Button
           label="Recover Account"
@@ -140,7 +138,7 @@ const Aal1Authentication = ({
           <Icon icon={Lock} color="tertiaryText" size={18} />
         </View>
       </View>
-    </>
+    </NestedScreenWOFeedback>
   );
 };
 

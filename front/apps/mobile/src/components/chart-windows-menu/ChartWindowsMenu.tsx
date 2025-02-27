@@ -52,7 +52,7 @@ export const ChartWindowsMenu = <W extends Windows>(props: Props<W>) => {
         backgroundColor={props.disabled ? 'grayButton' : 'lightBlueButton'}
         style={styles.menuButton}
       >
-        <Text color={props.disabled ? 'tertiaryText' : 'blueText'}>
+        <Text color={props.disabled ? 'tertiaryText' : 'blueTextSecondary'}>
           {window}
         </Text>
       </Box>

@@ -29,9 +29,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
   },
-  header: {
-    marginTop: 16,
-  },
+  header: {},
 });
 
 export default styles;

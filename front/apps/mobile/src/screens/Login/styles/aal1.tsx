@@ -4,12 +4,13 @@ const styles = StyleSheet.create({
   form: {
     justifyContent: 'center',
     flex: 1,
+    flexGrow: 1,
   },
   bottomButton: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 40,
     flexDirection: 'row',
+    paddingBottom: 48,
   },
   questionMark: {
     position: 'absolute',

@@ -7,8 +7,6 @@ export const NestedScreenWOFeedback = ({
   children: React.ReactNode;
 }) => (
   <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-    <Box variant="nestedScreen" paddingBottom="navHeight">
-      {children}
-    </Box>
+    <Box variant="nestedScreen">{children}</Box>
   </TouchableWithoutFeedback>
 );
