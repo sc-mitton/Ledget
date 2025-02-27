@@ -42,7 +42,7 @@ import { selectAccountsTabDepositAccounts } from '@/features/uiSlice';
 const SKELETON_HEIGHT = 740;
 
 const DRAG_THRESHOLD = Dimensions.get('window').height * 0.1;
-const ESCAPE_VELOCITY = 1.5;
+const ESCAPE_VELOCITY = 120;
 
 const Transactions = (props: PTransactions & { account?: Account }) => {
   const state = useSharedValue(0); // 0 = neutral, 1 = expanded
@@ -121,6 +121,14 @@ const Transactions = (props: PTransactions & { account?: Account }) => {
       if ((ty > 0 && state.value === 0) || (ty < 0 && state.value === 1)) {
         return true;
       }
+      console.log(
+        DRAG_THRESHOLD,
+        ESCAPE_VELOCITY,
+        Math.abs(vy),
+        Math.abs(ty),
+        Math.abs(ty) > DRAG_THRESHOLD,
+        Math.abs(vy) > ESCAPE_VELOCITY
+      );
       if (Math.abs(ty) > DRAG_THRESHOLD || Math.abs(vy) > ESCAPE_VELOCITY) {
         top.value =
           state.value === 1

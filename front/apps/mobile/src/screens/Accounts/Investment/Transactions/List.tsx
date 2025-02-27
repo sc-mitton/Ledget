@@ -35,7 +35,7 @@ import {
   selectInvestmentsScreenAccounts,
   selectInvestmentsScreenWindow,
 } from '@/features/uiSlice';
-import type { PTransactions, Section, ListState } from './types';
+import type { PTransactions, Section } from './types';
 import { useAppSelector } from '@/hooks';
 import SkeletonTransactions from '../../TransactionsList/SkeletonTransactions';
 import Row from './Row';
@@ -43,7 +43,7 @@ import Row from './Row';
 const SKELETON_HEIGHT = 740;
 
 const DRAG_THRESHOLD = Dimensions.get('window').height * 0.2;
-const ESCAPE_VELOCITY = 1.5;
+const ESCAPE_VELOCITY = 120;
 
 const Transactions = (props: PTransactions) => {
   const state = useSharedValue(0); // 0 = neutral, 1 = expanded
