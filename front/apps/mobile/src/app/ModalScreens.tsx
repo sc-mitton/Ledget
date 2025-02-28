@@ -81,8 +81,19 @@ const ModalScreens = (props: RootStackScreenProps<'Modals'>) => {
           cardStyleInterpolator: defaultModalStyleInterpolator,
         }}
       >
-        <Stack.Screen name="Leftovers" component={Leftovers} />
         <Stack.Screen name="Transaction" component={Transaction} />
+      </Stack.Group>
+      {/* Full Page Modals */}
+      <Stack.Group
+        screenOptions={{
+          presentation: 'transparentModal',
+          gestureDirection: 'vertical',
+          headerShown: false,
+          gestureEnabled: false,
+          animation: 'fade_from_bottom',
+        }}
+      >
+        <Stack.Screen name="Leftovers" component={Leftovers} />
       </Stack.Group>
       <Stack.Group
         screenOptions={{
