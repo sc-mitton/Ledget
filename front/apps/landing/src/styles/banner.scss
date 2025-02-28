@@ -17,6 +17,7 @@
     font-size: clamp(1.125rem, 2vw, 1.25rem);
     color: var(--m-text-secondary);
     font-weight: 400;
+    font-weight: var(--fw-regular);
 
     span {
       width: 1em;
