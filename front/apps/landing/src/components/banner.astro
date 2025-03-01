@@ -3,58 +3,97 @@ import '../styles/banner.scss';
 import { DollarSign, TrendingUp } from '@geist-ui/icons';
 import { Image } from 'astro:assets';
 import ActionLink from './links/arrow-link.astro';
-import AppStore from '../assets/app-store.svg';
-import GooglePlay from '../assets/google-play.svg';
+import AppStore from '../assets/svgs/app-store.svg';
+import GooglePlay from '../assets/svgs/google-play.svg';
+import Mock1Light from '../assets/images/phone-mocks/mock_1-light.png';
+import Mock1Dark from '../assets/images/phone-mocks/mock_1-dark.png';
+import Mock2Light from '../assets/images/phone-mocks/mock_2-light.png';
+import Mock2Dark from '../assets/images/phone-mocks/mock_2-dark.png';
+import Mock3Light from '../assets/images/phone-mocks/mock_3-light.png';
+import Mock3Dark from '../assets/images/phone-mocks/mock_3-dark.png';
 ---
 
 <div class="banner">
-  <h1>Your Budget's Leftovers, <br />Earning for You</h1>
   <div>
-    <h2>
-      Keep track of your money, and at the end of every month, send your
-      leftovers to savings
-      <span><DollarSign /></span>
-      or investments
-      <span> <TrendingUp /> </span>
-      .
-    </h2>
-    <div id="banner-cta">
-      <ActionLink
-        className="cta"
-        hrefTarget={`${import.meta.env.ACCOUNTS_HOST}/register`}
-        text="Get a Free Trial"
-      />
-      <span></span>
-    </div>
-    <div id="app-store-buttons">
-      <button>
-        <Image src={AppStore} alt="App Store" />
-      </button>
-      <button>
-        <Image src={GooglePlay} alt="Google Play" />
-      </button>
+    <h1>Your Budget's Leftovers,</h1>
+    <h1>Earning for You</h1>
+    <div>
+      <h2>
+        Keep track of your money, and at the end of every month, send your
+        leftovers to savings
+        <span><DollarSign strokeWidth={2} /></span>
+        or investments
+        <span> <TrendingUp strokeWidth={2} /> </span>
+        .
+      </h2>
+      <div id="banner-cta">
+        <ActionLink
+          className="cta"
+          hrefTarget={`${import.meta.env.ACCOUNTS_HOST}/register`}
+          text="Get a Free Trial"
+        />
+        <span></span>
+      </div>
+      <div id="app-store-buttons">
+        <button>
+          <Image src={AppStore} alt="App Store" />
+        </button>
+        <button>
+          <Image src={GooglePlay} alt="Google Play" />
+        </button>
+      </div>
     </div>
   </div>
-</div>
+  <div class="banner-screenshots">
+    <div>
+      <div>
+        <Image src={Mock1Dark} alt="Mock 1" />
+      </div>
+      <div>
+        <div>
+          <Image src={Mock2Dark} alt="Mock 2" />
+        </div>
+        <div>
+          <Image src={Mock3Dark} alt="Mock 3" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="banner-screenshots">
+    <div>
+      <div>
+        <Image src={Mock1Light} alt="Mock 1" />
+      </div>
+      <div>
+        <div>
+          <Image src={Mock2Light} alt="Mock 1" />
+        </div>
+        <div>
+          <Image src={Mock3Light} alt="Mock 1" />
+        </div>
+      </div>
+    </div>
+  </div>
 
-<script>
-  const btn = document.querySelector('#banner-cta') as HTMLElement;
-  let rafId: number;
+  <script>
+    const btn = document.querySelector('#banner-cta') as HTMLElement;
+    let rafId: number;
 
-  btn?.addEventListener('mousemove', (e) => {
-    // Cancel any pending animation frame
-    if (rafId) {
-      cancelAnimationFrame(rafId);
-    }
+    btn?.addEventListener('mousemove', (e) => {
+      // Cancel any pending animation frame
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+      }
 
-    // Schedule the update on the next animation frame
-    rafId = requestAnimationFrame(() => {
-      const rect = (e.target as HTMLElement).getBoundingClientRect();
-      const x = (((e as MouseEvent).clientX - rect.left) / rect.width) * 100;
-      const y = (((e as MouseEvent).clientY - rect.top) / rect.height) * 100;
+      // Schedule the update on the next animation frame
+      rafId = requestAnimationFrame(() => {
+        const rect = (e.target as HTMLElement).getBoundingClientRect();
+        const x = (((e as MouseEvent).clientX - rect.left) / rect.width) * 100;
+        const y = (((e as MouseEvent).clientY - rect.top) / rect.height) * 100;
 
-      btn.style.setProperty('--mouse-x', `${x}%`);
-      btn.style.setProperty('--mouse-y', `${y}%`);
+        btn.style.setProperty('--mouse-x', `${x}%`);
+        btn.style.setProperty('--mouse-y', `${y}%`);
+      });
     });
-  });
-</script>
+  </script>
+</div>
