@@ -6,22 +6,6 @@ import AccountsWebLight from '../../public/web/accounts-web-lightv4.png';
 ---
 
 <div class="web-wrapper">
-  <script>
-    let isDarkMode = document
-      .querySelector('.body')
-      ?.classList.contains('dark');
-
-    if (isDarkMode) {
-      document.querySelectorAll('img.dark').forEach((el) => {
-        el.classList.add('visible');
-      });
-      document.querySelector('.phone__frame')?.classList.add('dark');
-    } else {
-      document.querySelectorAll('img.light').forEach((el) => {
-        el.classList.add('visible');
-      });
-    }
-  </script>
   <div class="web">
     <Image src={AccountsWebDark} alt="Accounts Web Dark" class="dark" />
     <Image src={AccountsWebLight} alt="Accounts Web Light" class="light" />
