@@ -27,7 +27,7 @@ const PriceRadios = ({
           data-size={screenSize}
         >
           <div className={styles.pricesHeader} data-size={screenSize}>
-            <LedgetLogoIcon size={'1.75em'} />
+            <LedgetLogoIcon darkMode={isDark} />
           </div>
           <div className={styles.subscriptionRadios} data-size={screenSize}>
             {prices.map((p, i) => (

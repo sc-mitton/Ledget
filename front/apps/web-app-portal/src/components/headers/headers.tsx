@@ -1,4 +1,4 @@
-import { LedgetLogo } from '@ledget/media';
+import { LedgetLogoIcon } from '@ledget/media';
 import { useColorScheme } from '@ledget/ui';
 
 import styled from 'styled-components';
@@ -20,7 +20,7 @@ export const SignUpFlowHeader = () => {
 
   return (
     <SignUpFlowStyledHeader>
-      <LedgetLogo darkMode={isDark} />
+      <LedgetLogoIcon darkMode={isDark} />
     </SignUpFlowStyledHeader>
   );
 };

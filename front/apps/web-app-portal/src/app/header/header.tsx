@@ -1,5 +1,5 @@
 import { useLocation, useNavigate, Link } from 'react-router-dom';
-import { LedgetLogo } from '@ledget/media';
+import { LedgetLogoIcon } from '@ledget/media';
 import { useColorScheme, MiniCta, useScreenContext } from '@ledget/ui';
 import styles from './styles.module.scss';
 
@@ -24,7 +24,7 @@ const Header = () => {
           tabIndex={0}
           aria-label="login page"
         >
-          <LedgetLogo darkMode={isDark} />
+          <LedgetLogoIcon darkMode={isDark} />
         </a>
       </div>
       <div>
