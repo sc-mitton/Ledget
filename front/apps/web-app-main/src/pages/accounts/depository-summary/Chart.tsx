@@ -98,14 +98,17 @@ export const Chart = () => {
 
   useEffect(() => {
     if (accountsData?.accounts.length) {
-      getBalanceHistory({
-        start: dateWindow.start,
-        end: dateWindow.end,
-        type: pathMappings.getAccountType(location) as
-          | 'depository'
-          | 'investment',
-        accounts: accountsData?.accounts.map((account) => account.id),
-      });
+      getBalanceHistory(
+        {
+          start: dateWindow.start,
+          end: dateWindow.end,
+          type: pathMappings.getAccountType(location) as
+            | 'depository'
+            | 'investment',
+          accounts: ['*'],
+        },
+        true
+      );
     }
   }, [location.pathname, window, accountsData]);
 
