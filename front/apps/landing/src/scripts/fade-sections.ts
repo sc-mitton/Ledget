@@ -22,7 +22,6 @@ function fadeSections() {
           end: 'bottom center-=30%',
           toggleActions: 'restart none none none',
           scrub: true,
-          markers: true,
         },
       }
     );
@@ -37,7 +36,6 @@ function fadeSections() {
           end: 'bottom center+=20%',
           toggleActions: 'restart none none none',
           scrub: true,
-          markers: true,
         },
       }
     );
@@ -55,7 +53,6 @@ function fadeSections() {
         end: 'bottom center-=30%',
         toggleActions: 'restart none none none',
         scrub: true,
-        markers: true,
       },
     }
   );
