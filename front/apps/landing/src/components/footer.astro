@@ -2,7 +2,6 @@
 import { Image } from 'astro:assets';
 import Logo from '../assets/svgs/logov1.svg';
 import '../styles/footer.scss';
-import dayjs from 'dayjs';
 ---
 
 <footer>
@@ -15,7 +14,9 @@ import dayjs from 'dayjs';
     </div>
     <div>
       <h4>
-        Copyright Ledget, All Rights Reserved © 2024 - {dayjs().format('YYYY')}
+        Copyright Ledget, All Rights Reserved © 2024 - {
+          new Date().getFullYear()
+        }
       </h4>
       <div>
         <a href="/privacy">Privacy</a>
