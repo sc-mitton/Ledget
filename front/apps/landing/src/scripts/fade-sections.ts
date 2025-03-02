@@ -4,21 +4,38 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 function fadeSections() {
-  const divs = gsap.utils.toArray(
-    'main>div:not(:nth-last-of-type(-n+1))'
-  ) as HTMLElement[];
+  const divs = gsap.utils.toArray('.scroll-fade-in') as HTMLElement[];
 
+  gsap.set(divs, { opacity: 0 });
   for (let div of divs) {
-    gsap.to(div, {
-      opacity: 0.3,
-      scrollTrigger: {
-        trigger: div,
-        start: 'bottom center',
-        end: 'bottom center-=10%',
-        toggleActions: 'restart none none none',
-        scrub: true,
-      },
-    });
+    gsap.fromTo(
+      div,
+      { opacity: 0 },
+      {
+        opacity: 1,
+        scrollTrigger: {
+          trigger: div,
+          start: 'top bottom-=10%',
+          end: 'bottom center+=20%',
+          toggleActions: 'restart none none none',
+          scrub: true,
+        },
+      }
+    );
+    gsap.fromTo(
+      div,
+      { opacity: 1 },
+      {
+        opacity: 0,
+        scrollTrigger: {
+          trigger: div,
+          start: 'center center-=20%',
+          end: 'bottom center-=30%',
+          toggleActions: 'restart none none none',
+          scrub: true,
+        },
+      }
+    );
   }
 }
 

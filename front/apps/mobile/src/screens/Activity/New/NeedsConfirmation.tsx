@@ -403,7 +403,7 @@ const NeedsConfirmation = (
         <Animated.View style={styles.mask} entering={FadeIn} exiting={FadeOut}>
           <LinearGradient
             style={styles.mask}
-            colors={[theme.colors.modalBox, theme.colors.modalShadowMaskEnd]}
+            colors={[theme.colors.modalBox100, theme.colors.modalShadowMaskEnd]}
             start={{ x: 0, y: 1 }}
             end={{ x: 0, y: 0 }}
           />

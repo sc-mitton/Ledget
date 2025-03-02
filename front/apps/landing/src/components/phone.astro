@@ -27,24 +27,6 @@ import BlackBack from '../../public/phone/iphone-black-backv2.svg';
 <div class="phone">
   <script>
     import '../scripts/phone.js';
-
-    let isDarkMode = document
-      .querySelector('.body')
-      ?.classList.contains('dark');
-
-    if (isDarkMode) {
-      document.querySelectorAll('img.dark').forEach((el) => {
-        el.classList.add('visible');
-      });
-      document.querySelector('.phone__frame')?.classList.add('dark');
-      document.querySelector('.phone__glare')?.classList.add('dark');
-    } else {
-      document.querySelectorAll('img.light').forEach((el) => {
-        el.classList.add('visible');
-      });
-      document.querySelector('.phone__frame')?.classList.add('light');
-      document.querySelector('.phone__glare')?.classList.add('light');
-    }
   </script>
 
   <Image

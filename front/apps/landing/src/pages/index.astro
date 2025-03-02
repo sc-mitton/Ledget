@@ -4,10 +4,14 @@ import LastCta from '../components/last-cta.astro';
 import Footer from '../components/footer.astro';
 import FAQs from '../components/faqs';
 import Banner from '../components/banner.astro';
+import FeaturesCards from '../components/features-cards.astro';
+import FeaturesChecklist from '../components/features-checklist.astro';
 ---
 
 <BaseLayout>
   <Banner />
+  <FeaturesCards />
+  <FeaturesChecklist />
   <LastCta />
   <FAQs client:load />
   <Footer />

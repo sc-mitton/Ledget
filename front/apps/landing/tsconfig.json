@@ -5,7 +5,7 @@
     "jsxImportSource": "react",
     "paths": {
       "@ledget/ui": ["../../libs/ui/src"],
-      "@ledget/media": ["../../libs/media/src"]
+      "@ledget/media": ["../../libs/media/web/src"]
     }
   }
 }

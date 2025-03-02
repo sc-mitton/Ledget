@@ -1,5 +1,7 @@
-.light .footer-logo img {
-  filter: invert(1) contrast(2);
+@media (prefers-color-scheme: light) {
+  .footer-logo img {
+    filter: invert(1) contrast(2);
+  }
 }
 
 .footer-logo {

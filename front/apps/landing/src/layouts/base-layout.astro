@@ -26,6 +26,12 @@ import '../styles/globals.scss';
       href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap"
       rel="stylesheet"
     />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>Ledget</title>
@@ -41,13 +47,43 @@ import '../styles/globals.scss';
   </body>
   <script>
     import '../scripts/fade-sections.ts';
-    const isDarkModeMediaQuery = window.matchMedia(
-      '(prefers-color-scheme: dark)'
-    ).matches;
-    const colorScheme = isDarkModeMediaQuery ? 'dark' : 'light';
-    document.querySelector('body')?.classList.add(`${colorScheme}`);
-    document.querySelector('.body')?.classList.add(`${colorScheme}`);
-    document.querySelector('.main-background')?.classList.add(`${colorScheme}`);
-    document.querySelector('footer')?.classList.add(`${colorScheme}`);
+    const colorSchemeCallback = (colorScheme: 'dark' | 'light') => {
+      if (colorScheme === 'dark') {
+        document.querySelector('body')?.classList.add(`${colorScheme}`);
+        document.querySelector('.body')?.classList.add(`${colorScheme}`);
+        document
+          .querySelector('.main-background')
+          ?.classList.add(`${colorScheme}`);
+        document.querySelector('footer')?.classList.add(`${colorScheme}`);
+        document.querySelector('footer')?.classList.remove('light');
+        document.querySelector('body')?.classList.remove('light');
+        document.querySelector('.body')?.classList.remove('light');
+        document.querySelector('.main-background')?.classList.remove('light');
+      } else {
+        document.querySelector('body')?.classList.remove('dark');
+        document.querySelector('.body')?.classList.remove('dark');
+        document.querySelector('.main-background')?.classList.remove('dark');
+        document.querySelector('footer')?.classList.remove('dark');
+        document.querySelector('footer')?.classList.add('light');
+        document.querySelector('body')?.classList.add('light');
+        document.querySelector('.body')?.classList.add('light');
+        document.querySelector('.main-background')?.classList.add('light');
+        document.querySelector('footer')?.classList.add('light');
+      }
+    };
+
+    // Add event listener for color scheme changes
+    window
+      .matchMedia('(prefers-color-scheme: dark)')
+      .addEventListener('change', (e) => {
+        const colorScheme = e.matches ? 'dark' : 'light';
+        colorSchemeCallback(colorScheme);
+      });
+
+    const currentColorScheme = window.matchMedia('(prefers-color-scheme: dark)')
+      .matches
+      ? 'dark'
+      : 'light';
+    colorSchemeCallback(currentColorScheme);
   </script>
 </html>

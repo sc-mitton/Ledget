@@ -48,6 +48,9 @@ const Screen = (props: BottomTabScreenProps<'Home'>) => {
                   screen: 'Profile',
                   params: { screen: 'Main' } as any,
                 });
+                // props.navigation.navigate('Modals', {
+                //   screen: 'Leftovers',
+                // });
               }}
             >
               <Icon icon={User} size={18} strokeWidth={2} />

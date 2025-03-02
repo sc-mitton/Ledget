@@ -1,0 +1,49 @@
+---
+import { Image } from 'astro:assets';
+
+import '../styles/feature-cards.scss';
+import ActivityDark from '../assets/images/phone-mocks/mock_activity-dark.png';
+import ActivityLight from '../assets/images/phone-mocks/mock_activity-light.png';
+import investFlowLight from '../assets/images/invest-flow-light.png';
+import investFlowDark from '../assets/images/invest-flow-dark.png';
+import categoriesDark from '../assets/images/phone-categories-darkv5.png';
+import categoriesLight from '../assets/images/phone-categories-lightv2.png';
+---
+
+<!--
+Cards:
+- Investing
+- Custom Monthly & Yearly Budgets
+- Activity updates -->
+<div id="feature-cards" class="scroll-fade-in">
+  <div class="feature-card">
+    <h2>Your Custom Budget</h2>
+    <h3>
+      Set up custom spending categories for your monthly and yearly spending,
+      track all of your monthly and yearly bills.
+    </h3>
+    <div>
+      <Image src={categoriesDark} alt="Categories" />
+      <Image src={categoriesLight} alt="Categories" />
+    </div>
+  </div>
+  <div class="feature-card">
+    <h2>Activity Updates</h2>
+    <h3>Get autocategorized activity updates for your spending.</h3>
+    <div>
+      <Image src={ActivityDark} alt="Activity" />
+      <Image src={ActivityLight} alt="Activity" />
+    </div>
+  </div>
+  <div class="feature-card">
+    <h2>Investing</h2>
+    <h3>
+      Invest leftovers from your budget in over a dozen of the most popular and
+      highest performing index funds!
+    </h3>
+    <div>
+      <Image src={investFlowLight} alt="Investing" />
+      <Image src={investFlowDark} alt="Investing" />
+    </div>
+  </div>
+</div>
