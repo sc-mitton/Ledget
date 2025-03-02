@@ -1,50 +1,50 @@
 [
 {
-    "model": "financials.institution",
-    "pk": "ins_115616",
-    "fields": {
-        "created": "2024-08-10T02:08:15.230Z",
-        "name": "Vanguard",
-        "logo": "logos/logo_ins_115616.png",
-        "primary_color": "#96151d",
-        "url": "https://www.vanguard.com/",
-        "oath": null
-    }
+  "model": "financials.institution",
+  "pk": "ins_120013",
+  "fields": {
+    "created": "2025-02-03T22:43:57.420Z",
+    "name": "America First Credit Union",
+    "logo": "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",
+    "primary_color": "#145c8c",
+    "url": "https://www.americafirst.com",
+    "oath": null
+  }
 },
 {
-    "model": "financials.institution",
-    "pk": "ins_14",
-    "fields": {
-        "created": "2024-08-09T03:11:34.903Z",
-        "name": "TD Bank",
-        "logo": "logos/logo_ins_14.png",
-        "primary_color": "#2bb250",
-        "url": "https://www.td.com",
-        "oath": null
-    }
+  "model": "financials.institution",
+  "pk": "ins_129473",
+  "fields": {
+    "created": "2025-01-24T16:42:17.141Z",
+    "name": "E*TRADE Financial",
+    "logo": null,
+    "primary_color": "#242427",
+    "url": "https://us.etrade.com",
+    "oath": null
+  }
 },
 {
-    "model": "financials.institution",
-    "pk": "ins_19",
-    "fields": {
-        "created": "2024-10-11T02:37:08.810Z",
-        "name": "Regions Bank",
-        "logo": "logos/logo_ins_19.png",
-        "primary_color": "#558800",
-        "url": "https://www.regions.com",
-        "oath": null
-    }
+  "model": "financials.institution",
+  "pk": "ins_19",
+  "fields": {
+    "created": "2025-01-16T01:35:04.852Z",
+    "name": "Regions Bank",
+    "logo": "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",
+    "primary_color": "#558800",
+    "url": "https://www.regions.com",
+    "oath": null
+  }
 },
 {
-    "model": "financials.institution",
-    "pk": "ins_25",
-    "fields": {
-        "created": "2024-05-09T03:27:33.730Z",
-        "name": "Ally Bank",
-        "logo": "logos/logo_ins_25_aPoX1ck.png",
-        "primary_color": "#631f5f",
-        "url": "https://www.ally.com",
-        "oath": null
-    }
+  "model": "financials.institution",
+  "pk": "ins_25",
+  "fields": {
+    "created": "2025-01-16T01:34:05.430Z",
+    "name": "Ally Bank",
+    "logo": "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",
+    "primary_color": "#631f5f",
+    "url": "https://www.ally.com",
+    "oath": null
+  }
 }
 ]

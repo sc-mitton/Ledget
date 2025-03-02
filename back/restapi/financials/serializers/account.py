@@ -25,10 +25,15 @@ class InstitutionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Institution
         fields = '__all__'
-        extra_kwargs = {'id': {'validators': []}}
+
+        extra_kwargs = {'id': {'validators': []}, 'name': {'required': False}}
 
     def create(self, validated_data):
-        institution, _ = Institution.objects.get_or_create(id=validated_data['id'])
+        institution, created = Institution.objects.get_or_create(
+            id=validated_data['id'])
+
+        if not created:
+            return institution
 
         try:
             response = self._get_plaid_institution(validated_data['id'])
@@ -43,7 +48,7 @@ class InstitutionSerializer(serializers.ModelSerializer):
         institution.primary_color = data.get('primary_color')
         institution.name = data.get('name')
 
-        return Institution
+        return institution
 
     def _get_plaid_institution(self, institution_id):
 
@@ -85,7 +90,8 @@ class AccountLS(serializers.ListSerializer):
 
 class AccountSerializer(serializers.ModelSerializer):
     institution = InstitutionSerializer(required=False, read_only=True)
-    card_hue = serializers.SerializerMethodField(required=False, read_only=True)
+    card_hue = serializers.SerializerMethodField(
+        required=False, read_only=True)
     pinned = serializers.SerializerMethodField(required=False, read_only=True)
 
     class Meta:

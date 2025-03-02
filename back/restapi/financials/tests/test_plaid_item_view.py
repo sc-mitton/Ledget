@@ -10,6 +10,9 @@ from restapi.tests.mixins import ViewTestsMixin, encode_jwt
 from financials.models import PlaidItem, Institution, Account
 from financials.views.items import plaid_client
 from financials.serializers.items import plaid_client as serializer_plaid_client
+from financials.serializers.account import (
+    plaid_client as account_serializer_plaid_client
+)
 from financials.serializers.account import InstitutionSerializer, AccountSerializer
 
 
@@ -84,18 +87,61 @@ class TestPlaidItemView(ViewTestsMixin):
             'access_token': 'access-sandbox-123'
         }
 
+        institution_obj = Institution.objects.all().first()
         account_objs = Account.objects.all()
-        instution_obj = Institution.objects.all().first()
-        institution_data = InstitutionSerializer(instution_obj).data
         account_data = AccountSerializer(account_objs, many=True).data
 
         response = self.client.post(
             reverse('plaid-token-exchange'),
             data={
                 'public_token': 'public-sandbox-123',
-                'institution': institution_data,
+                'institution': {'id': institution_obj.id},
                 'accounts': account_data
             },
             format='json'
         )
+        self.assertEqual(response.status_code, 201)
+
+    @patch.object(account_serializer_plaid_client, 'institutions_get_by_id')
+    @patch.object(serializer_plaid_client, 'item_public_token_exchange')
+    def test_plaid_token_exchange_institution_not_found(self,
+                                                        mock_item_public_token_exchange,
+                                                        mock_institutions_get_by_id):
+        '''
+        Whenever a plaid token is exchanged, the institution is
+        passed along with the request, and the serializer will
+        fetch and store the institution information if it's not already
+        stored in the db.
+        '''
+        institution_obj = Institution.objects.all().first()
+        institution_data = InstitutionSerializer(institution_obj).data
+        institution_data['id'] = 'institution-unit-test-123'
+        account_objs = Account.objects.all()
+        account_data = AccountSerializer(account_objs, many=True).data
+
+        for a in account_data:
+            if 'institution' in a:
+                del a['institution']
+
+        mock_item_public_token_exchange.return_value = {
+            'item_id': 'item-unit-test-123',
+            'access_token': 'access-unit-test-123',
+        }
+
+        mock_institutions_get_by_id.return_value = MagicMock(
+            to_dict=lambda: {
+                'institution': institution_data
+            }
+        )
+
+        response = self.client.post(
+            reverse('plaid-token-exchange'),
+            data={
+                'public_token': 'public-unit-test-123',
+                'institution': {'id': institution_data['id']},
+                'accounts': account_data
+            },
+            format='json'
+        )
+
         self.assertEqual(response.status_code, 201)

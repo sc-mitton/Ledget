@@ -25,8 +25,8 @@ class AccountSerializer(serializers.ModelSerializer):
 
 
 class ExchangePlaidTokenSerializer(serializers.Serializer):
-    accounts = AccountSerializer(many=True, write_only=True)
     institution = InstitutionSerializer(write_only=True)
+    accounts = AccountSerializer(many=True, write_only=True)
     public_token = serializers.CharField(write_only=True)
     id = serializers.CharField(read_only=True)
 
@@ -47,6 +47,9 @@ class ExchangePlaidTokenSerializer(serializers.Serializer):
 
     @transaction.atomic
     def _add_objects(self, validated_data):
+        institution_serializer = InstitutionSerializer()
+        institution_serializer.create(validated_data['institution'])
+
         plaid_item = self._update_or_create_plaid_item(validated_data)
         self._update_or_create_accounts(plaid_item, validated_data)
 
