@@ -9,9 +9,6 @@
 }
 
 .logoIcon {
-  margin-bottom: 1em;
-  border-bottom: var(--side-nav-border);
-
   img {
     height: 3em;
     transform: translateX(-4px);
@@ -22,17 +19,21 @@
 .legalLinks {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 0.25em 0;
+  padding: 1em 2em;
   border-top: var(--side-nav-border);
+  gap: 0.125em;
+
+  span {
+    color: var(--m-text-tertiary);
+  }
 
   a {
-    font-size: 0.75rem;
-    color: var(--m-text-quinary);
+    font-size: 0.875rem;
     text-decoration: none;
     transition: all 0.2s;
-    font-weight: var(--fw-bold);
     white-space: nowrap;
+    padding: 0;
+    color: var(--m-text-tertiary);
 
     &:hover {
       color: var(--m-text-secondary);
@@ -94,11 +95,9 @@
   z-index: 50;
   top: 0;
   bottom: 0;
-  padding: 0.75em 0;
   opacity: 0;
   display: flex;
   flex-direction: column;
-  gap: 2em;
   visibility: hidden;
   background-color: var(--side-window);
   border-right: 1px solid var(--btn-light-gray);
@@ -179,9 +178,18 @@
   }
 }
 
+.darkSwitch {
+  padding: 1em 1.5em;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
 .sideNav {
   max-width: 100%;
-  padding: 1em 0em;
+  padding-top: 0.5em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
   flex: 2 0 0;
   font-size: 1.25rem;
   background-color: var(--side-window);
@@ -190,37 +198,43 @@
   display: flex;
   flex-direction: column;
 
+  & > ul {
+    border-top: var(--side-nav-border);
+    gap: 0.5em;
+
+    &:first-of-type {
+      padding: 1em 0.25em;
+    }
+
+    &:last-of-type {
+      padding: 0.5em 0.25em;
+    }
+
+    &:first-of-type {
+      flex-grow: 1;
+    }
+  }
+
   ul {
     gap: 0.25em;
     position: relative;
     display: flex;
     flex-direction: column;
-  }
 
-  & > ul {
-    gap: 0.5em;
-    padding: 0 0.75em;
-  }
+    a {
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding: 0.375em 0.75em;
 
-  a {
-    display: flex;
-    align-items: center;
-    position: relative;
-    padding: 0.375em 0.75em;
-
-    & > span {
-      margin: 0 2em 0 0.75em;
+      & > span {
+        margin: 0 2em 0 0.75em;
+      }
     }
   }
 
   & > div:first-of-type {
-    padding: 0.125em 2.25em 0.75em 1.25em;
-  }
-
-  & > div:last-of-type {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
+    padding: 0.125em 1.75em 0.75em 0.75em;
   }
 
   li {

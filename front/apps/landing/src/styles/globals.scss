@@ -102,11 +102,7 @@ option {
 }
 
 h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h2 {
   font-family: 'Source Sans 3', 'Roboto', sans-serif, 'Arial', Helvetica;
   color: var(--m-text);
   font-weight: var(--fw-bold);
@@ -116,6 +112,8 @@ h3,
 h4,
 h5 {
   margin: 0;
+  font-family: 'Source Sans 3', 'Roboto', sans-serif, 'Arial', Helvetica;
+  color: var(--m-text);
   font-weight: var(--fw-regular);
 }
 

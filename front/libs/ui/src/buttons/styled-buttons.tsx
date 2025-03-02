@@ -171,7 +171,7 @@ export const IconButtonBorderedGray = styled(BaseButton)`
 `;
 
 export const FadedIconButton = styled(BaseButton)`
-  color: var(--m-text-quaternary);
+  color: var(--m-text-tertiary);
 
   &:hover {
     color: var(--m-text-secondary);

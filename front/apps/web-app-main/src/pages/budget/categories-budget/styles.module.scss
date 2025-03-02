@@ -83,7 +83,7 @@ $background: var(--window);
 
   & > div:nth-of-type(2) {
     display: flex;
-    margin-top: 0.25em;
+    margin-bottom: 0.25em;
   }
 
   & > div:nth-of-type(3) {
@@ -101,7 +101,6 @@ $background: var(--window);
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.5em;
   padding: 0 2em;
   box-sizing: border-box;
 
@@ -110,6 +109,7 @@ $background: var(--window);
     align-items: center;
     gap: 8px;
     margin-left: 6px;
+    margin-bottom: 0;
   }
 }
 

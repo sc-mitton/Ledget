@@ -10,7 +10,7 @@ const grayS = 2;
 const blueH = 223;
 const blueS = 90;
 
-const greenH = 170;
+const greenH = 160;
 
 const palette = {
   ...basePalette,

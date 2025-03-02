@@ -64,6 +64,13 @@
 
   & > div:first-child {
     a {
+      img {
+        height: 3em;
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translate(-25%, -50%);
+      }
       border-bottom: none;
 
       &:before {

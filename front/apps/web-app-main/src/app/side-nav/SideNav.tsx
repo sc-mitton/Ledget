@@ -1,15 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
+import { LogOut, LifeBuoy, Settings } from '@geist-ui/icons';
 
 import { useNavigate, useLocation, Link as RouterLink } from 'react-router-dom';
 import { animated } from '@react-spring/web';
-import {
-  DollarSign,
-  Home,
-  User,
-  ChevronDown,
-  Link,
-  Shield,
-} from '@geist-ui/icons';
+import { DollarSign, User, ChevronDown, Link, Shield } from '@geist-ui/icons';
 
 import styles from './side-nav.module.scss';
 import { Institution, Hamburger, LedgetLogoIcon } from '@ledget/media';
@@ -20,7 +14,8 @@ import {
   useSchemeVar,
   useCloseDropdown,
 } from '@ledget/ui';
-import DarkSwitch from '../dark-switch/DarkSwitch';
+import { setModal } from '@features/modalSlice';
+import { useAppDispatch } from '@hooks/store';
 import { useGetMeQuery } from '@ledget/shared-features';
 
 const SubProfileSidebar = () => {
@@ -39,21 +34,8 @@ const SubProfileSidebar = () => {
         }
       >
         <a onClick={() => navigate('/profile')}>
-          <div className={styles.avatar}>
-            <span>{user?.name.first.charAt(0).toUpperCase()}</span>
-            <span>{user?.name.last.charAt(0).toUpperCase()}</span>
-          </div>
-          <div className={styles.profileLinkUserInfo}>
-            <span>
-              {user &&
-                `${user.name.first
-                  .charAt(0)
-                  .toUpperCase()}${user.name.first.slice(1)} ${user.name.last
-                  .charAt(0)
-                  .toUpperCase()}${user.name.last.slice(1)}`}
-            </span>
-            <span>{user?.email}</span>
-          </div>
+          <Settings className="icon" />
+          <span>Settings</span>
         </a>
       </li>
       <li
@@ -79,11 +61,13 @@ const LegalLinks = () => (
     <RouterLink to={`${import.meta.env.VITE_LANDING}/privacy`}>
       Privacy
     </RouterLink>
+    <span>-</span>
     <RouterLink to={`${import.meta.env.VITE_LANDING}/terms`}>Terms</RouterLink>
   </div>
 );
 
 const Nav = () => {
+  const dispatch = useAppDispatch();
   const ulRef = useRef(null);
   const [updatePill, setUpdatePill] = useState(0);
   const [settingsSubOpen, setSettingsSubOpen] = useState(false);
@@ -164,10 +148,27 @@ const Nav = () => {
         {settingsSubOpen && <SubProfileSidebar />}
         <animated.span style={props} />
       </ul>
-      <div>
-        <DarkSwitch />
-        <LegalLinks />
-      </div>
+      <ul>
+        <li>
+          <a onClick={() => dispatch(setModal({ name: 'help' }))}>
+            <LifeBuoy className="icon" />
+            <span>Help</span>
+          </a>
+        </li>
+        <li>
+          <a
+            onClick={() =>
+              dispatch(
+                setModal({ name: 'logout', args: { fromTimeout: false } })
+              )
+            }
+          >
+            <LogOut className="icon" />
+            <span>Logout</span>
+          </a>
+        </li>
+      </ul>
+      <LegalLinks />
     </nav>
   );
 };

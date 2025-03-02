@@ -39,7 +39,7 @@
     // Secondary and Primary Base Values
     --blue-h: 223;
     --blue-s: 90%;
-    --green-h: 108;
+    --green-h: 160;
 
     --month-background: hsl(var(--blue-h), 60%, 25%);
     --month-background-hover: hsl(var(--blue-h), 60%, 33%);
@@ -118,7 +118,7 @@
     // Side Nav
     --sidenav-drop-shadow: 0 0px 4px hsl(var(--window-h), var(--window-s), 12%);
     --side-window: hsl(var(--window-h), var(--window-s), 5%);
-    --side-nav-border: 1.5px solid hsl(var(--window-h), var(--window-s), 7%);
+    --side-nav-border: 1.5px solid hsl(var(--window-h), var(--window-s), 8%);
 
     // New Item
     // --new-item-border: hsl(0, 0%, 11%);
@@ -340,7 +340,7 @@
     // Side Nav
     --side-window: var(--window);
     --sidenav-drop-shadow: 0 10px 20px 0 hsl(0, 0%, 93%);
-    --side-nav-border: 2px solid hsl(var(--window-h), var(--window-s), 95%);
+    --side-nav-border: 2px solid hsl(var(--window-h), var(--window-s), 96%);
 
     --nested-window-background-color: hsl(var(--window-h), 9%, 95%);
     --modal-nested-window: hsl(var(--window-h), 8%, 95%);
