@@ -15,6 +15,7 @@ from .models import (
     UserCategory
 )
 
+
 logger = logging.getLogger('ledget')
 
 
@@ -90,14 +91,17 @@ class CategorySerializer(NestedCreateMixin, serializers.ModelSerializer):
         connected to the old category will be reconnected to the new category.
         '''
         if 'limit_amount' in validated_data and \
-                instance.created.month < datetime.now().month - 1:
+                (instance.created.year, instance.created.month) < \
+                (datetime.now().year, datetime.now().month - 1):
+
             instance.removed_on = timezone.now()
+            instance.save()
 
             new_instance = self.create(validated_data)
 
             TransactionCategory.objects.filter(
-                    category=instance,
-                    transaction__date__month=datetime.now().month) \
+                category=instance,
+                transaction__date__month=datetime.now().month) \
                 .update(category=new_instance)
 
             return new_instance
@@ -218,14 +222,14 @@ class BillSerializer(NestedCreateMixin, serializers.ModelSerializer):
 
     def update(self, instance, validated_data, *args, **kwargs):
         if ('lower_amount' in validated_data or 'upper_amount' in validated_data) \
-             and instance.created.month < datetime.now().month - 1:
+                and instance.created.month < datetime.now().month - 1:
 
             instance.removed_on = timezone.now()
             new_instance = self.create(validated_data)
 
             Transaction.objects.filter(
-                        bill=instance,
-                        date__month=datetime.now().month) \
+                bill=instance,
+                date__month=datetime.now().month) \
                 .update(bill=new_instance)
 
         reminders = validated_data.pop('reminders', [])

@@ -1,10 +1,10 @@
 import json
-from unittest import skip # noqa
+from unittest import skip  # noqa
 from datetime import datetime, timedelta, timezone
 import time
 
 from restapi.tests.mixins import ViewTestsMixin
-from restapi.tests.utils import timeit # noqa
+from restapi.tests.utils import timeit  # noqa
 from ..models import (
     Category,
     Bill,
@@ -36,7 +36,8 @@ class BudgetViewTestObjectCreations(ViewTestsMixin):
         )
         self.assertEqual(response.status_code, 201)
 
-        category = Category.objects.filter(usercategory__user=self.user).first()
+        category = Category.objects.filter(
+            usercategory__user=self.user).first()
         self.assertIsNotNone(category)
         self.assertEqual(category.name, payload['name'])
         self.assertEqual(category.emoji, payload['emoji'])
@@ -192,7 +193,8 @@ class BudgetViewTestObjectCreations(ViewTestsMixin):
         self.assertEqual(response.status_code, 201)
 
         bill.refresh_from_db()
-        reminder = next((r for r in bill.reminders.all() if r.offset == 5), None)
+        reminder = next(
+            (r for r in bill.reminders.all() if r.offset == 5), None)
         self.assertIsNotNone(reminder)
 
 
@@ -292,6 +294,35 @@ class BudgetViewTestRetrevalUpdate(ViewTestsMixin):
         category.refresh_from_db()
         self.assertEqual(category.alerts.count(), len(payload['alerts']))
 
+    def test_update_category_limit_amount(self):
+        category = Category.objects.filter(
+            removed_on__isnull=True, limit_amount__isnull=False
+        ).prefetch_related('alerts').first()
+
+        payload = {
+            'name': category.name,
+            'emoji': category.emoji,
+            'period': category.period,
+            'alerts': [
+                {'id': str(reminder.id)}
+                for reminder in category.alerts.all()
+            ],
+            'limit_amount': category.limit_amount + 100,
+        }
+
+        response = self.client.put(
+            reverse('categories-detail', kwargs={'pk': category.id}),
+            data=json.dumps(payload),
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        # Make sure the new category was created
+        self.assertNotEqual(response.data['id'], category.id)
+        category.refresh_from_db()
+        self.assertIsNotNone(category.removed_on)
+
     def test_get_spending_history(self):
         '''
         Test the category endpoint that returns the spending summary for each
@@ -300,7 +331,8 @@ class BudgetViewTestRetrevalUpdate(ViewTestsMixin):
         nothing breaks.
         '''
 
-        category = Category.objects.filter(usercategory__user=self.user).first()
+        category = Category.objects.filter(
+            usercategory__user=self.user).first()
 
         response = self.client.get(
             reverse('categories-spending-history', kwargs={'pk': category.id})
@@ -316,13 +348,14 @@ class BudgetViewTestRetrevalUpdate(ViewTestsMixin):
         '''
 
         # 1
-        category = Category.objects.filter(usercategory__user=self.user).first()
+        category = Category.objects.filter(
+            usercategory__user=self.user).first()
         transactions = Transaction.objects.filter(
             account__useraccount__user=self.user
         )[:5]
         TransactionCategory.objects.bulk_create(
-              [TransactionCategory(transaction=t, category=category, fraction=1)
-               for t in transactions])
+            [TransactionCategory(transaction=t, category=category, fraction=1)
+             for t in transactions])
 
         # 2
         tz = time.timezone/60
