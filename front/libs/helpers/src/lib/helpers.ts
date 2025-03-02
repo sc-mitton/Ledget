@@ -1,6 +1,5 @@
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { SerializedError } from '@reduxjs/toolkit';
-import { Bill } from '@ledget/shared-features';
 
 /**
  * Type predicate to narrow an unknown error to `FetchBaseQueryError`
@@ -202,7 +201,7 @@ export function capitalize<T extends string>(str: T): Capitalize<T> {
     .join(' ') as Capitalize<T>;
 }
 
-export const getNextBillDate = (bill: Bill) => {
+export const getNextBillDate = (bill: any) => {
   let date = new Date();
 
   if (bill.year && bill.month && bill.day) {
