@@ -11,20 +11,23 @@ function fadeSections() {
     if (div === divs[0]) {
       continue;
     }
-    gsap.fromTo(
-      div,
-      { opacity: 1 },
-      {
-        opacity: 0,
-        scrollTrigger: {
-          trigger: div,
-          start: 'center center-=20%',
-          end: 'bottom center-=30%',
-          toggleActions: 'restart none none none',
-          scrub: true,
-        },
-      }
-    );
+    if (div !== divs[divs.length - 1]) {
+      gsap.fromTo(
+        div,
+        { opacity: 1 },
+        {
+          opacity: 0,
+          scrollTrigger: {
+            trigger: div,
+            start: 'center center-=20%',
+            end: 'bottom center-=30%',
+            toggleActions: 'restart none none none',
+            scrub: true,
+          },
+        }
+      );
+    }
+
     gsap.fromTo(
       div,
       { opacity: 0 },

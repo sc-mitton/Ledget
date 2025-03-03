@@ -90,8 +90,8 @@ $card-height: 540px;
       align-items: center;
     }
     img {
-      width: 95%;
-      height: auto;
+      height: calc($card-height * 0.6);
+      width: auto;
     }
 
     @media (prefers-color-scheme: dark) {
