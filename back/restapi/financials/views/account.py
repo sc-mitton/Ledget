@@ -1,9 +1,7 @@
-from decimal import Decimal
-import math
 import json
 from datetime import datetime, date
+from dateutil.relativedelta import relativedelta
 from itertools import groupby
-from dateutil import relativedelta
 from typing import List
 
 import plaid.exceptions
@@ -12,7 +10,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
 from rest_framework.exceptions import ValidationError
-from django.db.models import Sum, F, Q
+from django.db.models import Sum, F
 from django.utils import timezone
 from django.db.models.functions import TruncMonth, TruncYear
 from plaid.model.accounts_get_request import AccountsGetRequest
@@ -20,7 +18,6 @@ import plaid
 
 from restapi.permissions.auth import IsAuthedVerifiedSubscriber
 from restapi.permissions.objects import HasObjectAccess
-from restapi.utils import months_between
 from core.clients import create_plaid_client
 from financials.models import Account, UserAccount, Transaction
 from financials.serializers.account import (
@@ -30,6 +27,7 @@ from financials.serializers.account import (
     PlaidBalanceSerializer,
     BreakdownHistorySerializer
 )
+from restapi.utils import months_between
 
 plaid_client = create_plaid_client()
 
@@ -101,7 +99,8 @@ class AccountsViewSet(ViewSet):
 
         start = int(self.request.query_params.get('start')) or None
         end = int(self.request.query_params.get('end')) or None
-        balance_histories = self._get_balance_history(account_balances, start, end)
+        balance_histories = self._get_balance_history(
+            account_balances, start, end)
         response_data = [
             {
                 'account_id': account_id,
@@ -142,7 +141,8 @@ class AccountsViewSet(ViewSet):
         ]
 
         institution_data = {
-            account.institution.id: InstitutionSerializer(account.institution).data
+            account.institution.id: InstitutionSerializer(
+                account.institution).data
             for account in accounts
         }
 
@@ -153,11 +153,16 @@ class AccountsViewSet(ViewSet):
 
     def _get_users_accounts(self, include_institutions=False):
 
+        account_type = self.request.query_params.get('type', None)
+
         qset = Account.objects.filter(
-                useraccount__user__in=self.request.user.account.users.all(),
-            ).filter(~Q(type='loan')).annotate(order=F('useraccount__order')) \
+            useraccount__user__in=self.request.user.account.users.all(),
+        ).annotate(order=F('useraccount__order')) \
             .annotate(pinned=F('useraccount__pinned')) \
             .annotate(card_hue=F('useraccount__card_hue'))
+
+        if account_type:
+            qset = qset.filter(type=account_type)
 
         account_ids = self.request.query_params.getlist('accounts')
         if account_ids and account_ids[0] != '*':
@@ -214,80 +219,41 @@ class AccountsViewSet(ViewSet):
                              start: int = None, end: int = None) -> dict:
 
         start = datetime.fromtimestamp(start).replace(tzinfo=timezone.utc) \
-                if start and end else timezone.now() - timezone.timedelta(days=180)
+            if start and end else timezone.now() - timezone.timedelta(days=180)
         end = datetime.fromtimestamp(end).replace(tzinfo=timezone.utc) \
             if start and end else timezone.now()
 
         qset = Transaction.objects.filter(
-                account__in=accounts_balance.keys(),
-                date__gte=start,
-                date__lte=end,
-            ).annotate(month=TruncMonth('date')) \
-             .annotate(year=TruncYear('date')) \
-             .values('month', 'year', 'account') \
-             .annotate(total=Sum('amount')) \
-             .order_by('account', '-month')
+            account__in=accounts_balance.keys(),
+            date__gte=start,
+            date__lte=end,
+        ).annotate(month=TruncMonth('date')) \
+            .annotate(year=TruncYear('date')) \
+            .values('month', 'year', 'account') \
+            .annotate(total=Sum('amount')) \
+            .order_by('account', '-month')
         grouped_qset = groupby(qset, key=lambda x: x['account'])
 
+        months = months_between(start, end) + 1
         result = {
-            a['account_id']: [{
-                'month': date.today(),
-                'balance': Decimal(a['balances']['current'])
-            }]
-            for a in accounts_balance.values()
+            a: [
+                {
+                    'month': date(end.year, end.month, 1) - relativedelta(months=i),
+                    'balance': b['balances']['current']
+                }
+                for i in range(months)
+            ]
+            for a, b in accounts_balance.items()
         }
 
         for account_id, data in grouped_qset:
-            listed_data = list(data)
-
             # note: month_data steps backwards in time
             # 2020-07-01, 2020-06-01, 2020-05-01, ...
-            for month_data in listed_data:
-
-                months_delta = months_between(
-                    month_data['month'],
-                    result[account_id][-1]['month'],
-                    1
-                )
-                months_delta = max(1, math.ceil(months_delta))
-
-                # If there's more than a 1 month gap between the last point and
-                # the current, fill in the gap with the last point
-                # Example:
-                # result[account_id] = [{month: 2020-07-01, balance: 100}]
-                # point = 200, month_data['month'] = 2020-05-01, delta = 2
-                # new_points =
-                # [{month: 2020-06-01, balance: 100}, {month: 2020-05-01, balance: 200}]
-                back_fill = [{
-                    'month': result[account_id][-1]['month'].replace(day=1) -
-                    relativedelta.relativedelta(months=j),
-                    'balance': result[account_id][-1]['balance']
-                } for j in range(months_delta - 1)]
-
-                result[account_id].extend(back_fill)
-
-                # Append new point
-                result[account_id].append({
-                    'month': month_data['month'].replace(day=1),
-                    'balance': result[account_id][-1]['balance'] + month_data['total']
-                })
-
-        # Backfill the end for each account if it ends before
-        # window start by repeating the last balance
-        num_data_points = math.ceil(months_between(start, end, 1)) + 1
-        for account_id in result.keys():
-            iter_start = 0 if result[account_id][-1]['month'].day > 0 else 1
-            num_missing_points = max(
-                0, num_data_points - len(result[account_id])) + iter_start
-            extended_data = [
-                {
-                    'month': result[account_id][-1]['month'].replace(day=1)
-                    - relativedelta.relativedelta(months=j),
-                    'balance': result[account_id][-1]['balance']
-                }
-                for j in range(iter_start, num_missing_points, 1)
-            ]
-            result[account_id].extend(extended_data)
+            cumulative = 0
+            for month_data in list(data):
+                index = months_between(month_data['month'].replace(day=1), end)
+                cumulative -= month_data['total']
+                result[account_id][index]['balance'] -= cumulative
 
         return result
 

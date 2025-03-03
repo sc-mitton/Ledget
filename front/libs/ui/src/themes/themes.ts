@@ -97,7 +97,7 @@ export const useNivoResponsiveLineTheme = (): Theme => {
     },
     axis: {
       ticks: {
-        line: { strokeWidth: 0 },
+        line: { strokeWidth: 1.5 },
         text: {
           fontSize: 12,
           fontFamily: 'inherit',
@@ -211,8 +211,11 @@ export const useMinimalistNivoResponsiveLineTheme = ({
       outlineColor: 'transparent',
     },
     axis: {
+      domain: {
+        line: { stroke: 'var(--border-color)', strokeWidth: 1.5, opacity: 0.5 },
+      },
       ticks: {
-        line: { strokeWidth: 0 },
+        line: { strokeWidth: 1.5, opacity: 0.5 },
         text: {
           fontSize: 12,
           fontFamily: 'inherit',

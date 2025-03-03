@@ -166,7 +166,7 @@ export const Chart = () => {
               type: 'linear',
               max: yTopBoundary,
             }}
-            margin={{ top: 8, right: 0, bottom: 36, left: -16 }}
+            margin={{ top: 8, right: 16, bottom: 36, left: 12 }}
             {...nivoBaseProps}
             theme={nivoTheme}
             axisBottom={{
