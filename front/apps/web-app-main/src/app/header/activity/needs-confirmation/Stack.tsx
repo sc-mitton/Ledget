@@ -6,10 +6,15 @@ import { useAppDispatch, useAppSelector } from '@hooks/store';
 
 import styles from './styles/stack.module.scss';
 import { SelectCategoryBill } from '@components/inputs';
-import { ZeroConfig } from '@components/pieces';
 import { CheckAll } from '@ledget/media';
 import ItemOptions from './ItemOptions';
-import { AbsPosMenu, LoadingRingDiv, TextButton } from '@ledget/ui';
+import { EmptyBox } from '@ledget/media';
+import {
+  AbsPosMenu,
+  LoadingRingDiv,
+  TextButton,
+  useColorScheme,
+} from '@ledget/ui';
 import { useLoaded } from '@ledget/helpers';
 import {
   useLazyGetUnconfirmedTransactionsQuery,
@@ -33,6 +38,7 @@ import NewItem from './NewItem';
 
 export const NeedsConfirmationStack = () => {
   const loaded = useLoaded(1000);
+  const { isDark } = useColorScheme();
   const [showMenu, setShowMenu] = useState(false);
   const [showBillCatSelect, setShowBillCatSelect] = useState(false);
   const [billCatSelectVal, setBillCatSelectVal] = useState<
@@ -265,7 +271,9 @@ export const NeedsConfirmationStack = () => {
       loading={isFetchingTransactions}
     >
       {tCountData?.count === 0 && isGetTransactionsCountSuccess ? (
-        <ZeroConfig />
+        <div className={styles.emptyBoxContainer}>
+          <EmptyBox dark={isDark} size={54} />
+        </div>
       ) : (
         <>
           <div

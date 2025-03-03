@@ -10,13 +10,15 @@ import {
   useGetTransactionsQuery,
   selectFilteredFetchedConfirmedTransactions,
 } from '@ledget/shared-features';
-import { InstitutionLogo, ZeroConfig } from '@components/pieces';
+import { InstitutionLogo } from '@components/pieces';
+import { EmptyBox } from '@ledget/media';
 import {
   DollarCents,
   InfiniteScrollDiv,
   LoadingRingDiv,
   BillCatEmojiLabel,
   ShadowedContainer,
+  useColorScheme,
 } from '@ledget/ui';
 import { useAppSelector, useAppDispatch } from '@hooks/store';
 import { useGetStartEndQueryParams } from '@hooks/utilHooks';
@@ -24,6 +26,7 @@ import { useGetStartEndQueryParams } from '@hooks/utilHooks';
 export function History() {
   const [isFetchingMore, setFetchingMore] = useState(false);
   const { start, end } = useGetStartEndQueryParams();
+  const { isDark } = useColorScheme();
 
   const { isError } = useGetTransactionsQuery(
     { confirmed: true, start, end },
@@ -66,7 +69,9 @@ export function History() {
       <ShadowedContainer className={styles.transactionsHistoryTableContainer}>
         <LoadingRingDiv loading={isLoading} size={24}>
           {!transactionsData?.length && !isLoading && !isError ? (
-            <ZeroConfig />
+            <div className={styles.emptyBoxContainer}>
+              <EmptyBox dark={isDark} size={54} />
+            </div>
           ) : (
             <InfiniteScrollDiv
               animate={isFetchingMore}
