@@ -3,12 +3,17 @@
 #features-checklist {
   @include width-standard;
   display: flex;
-  gap: 1em;
+  gap: 2em;
   justify-content: space-evenly;
   align-items: center;
   flex-direction: row;
-  flex-wrap: wrap;
   min-height: 300px;
+}
+
+@media (max-width: 768px) {
+  #features-checklist {
+    flex-direction: column;
+  }
 }
 
 .feature-checklist-item {
