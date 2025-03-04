@@ -32,7 +32,7 @@ const csp = `
   child-src 'self' cdn.plaid.com js.stripe.com;
   connect-src 'self' cdn.plaid.com api.stripe.com fonts.googleapis.com cdn.jsdelivr.net ${
     import.meta.env.VITE_LEDGET_API_HOST
-  } ${import.meta.env.VITE_ORY_API_HOST};
+  } ${import.meta.env.VITE_ORY_API_URI};
   font-src 'self' fonts.gstatic.com;
 `;
 

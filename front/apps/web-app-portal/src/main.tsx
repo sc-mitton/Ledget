@@ -20,7 +20,7 @@ const csp = `
   child-src 'self' js.stripe.com;
   connect-src 'self' api.stripe.com fonts.googleapis.com ${
     import.meta.env.VITE_LEDGET_API_HOST
-  } ${import.meta.env.VITE_ORY_API_HOST};
+  } ${import.meta.env.VITE_ORY_API_URI};
   font-src 'self' fonts.gstatic.com;
 `;
 
