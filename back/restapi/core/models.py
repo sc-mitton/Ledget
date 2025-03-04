@@ -117,7 +117,7 @@ class User(models.Model):
 
     @property
     def is_account_owner(self):
-        if hasattr(self.account, 'customer'):
+        if self.account.customer:
             situation1 = self.account.customer.user.id == self.id
             situation2 = not situation1 and self.co_owner is None
             return situation1 or situation2
@@ -127,7 +127,8 @@ class User(models.Model):
 class Feedback(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     feedback = models.CharField(max_length=1000, null=True, default=None)
-    cancelation_reason = models.CharField(max_length=1000, null=True, default=None)
+    cancelation_reason = models.CharField(
+        max_length=1000, null=True, default=None)
 
 
 class Account(models.Model):
@@ -256,7 +257,8 @@ class Device(models.Model):
         AAL15 = 'aal15', _('AAL15')
         AAL2 = 'aal2', _('AAL2')
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='device_set')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='device_set')
     token = models.CharField(max_length=100)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
