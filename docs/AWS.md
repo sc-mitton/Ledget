@@ -82,17 +82,6 @@ Name: Authorization Mapped From: context.authorizer.authorization
 Name: X-Forwarded-Host Mapped From: method.request.header.Host
 Name: X-User Mapped From: context.x-user
 
-3. /v1/{proxy+} - OPTIONS
-
-## Integration Response
-
-Header Mappings
-method.response.header.Access-Control-Allow-Credentials: 'true'
-method.response.header.Access-Control-Allow-Headers: 'Content-Type, Csrf-Token'
-method.response.header.Access-Control-Allow-Methods: 'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'
-method.response.header.Access-Control-Allow-Origin: '\*'
-method.response.header.Access-Control-Max-Age: '100'
-
 ## Method Response
 
 Response Headers:

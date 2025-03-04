@@ -29,6 +29,7 @@ CORS_ALLOWED_HEADERS = [
     *default_headers,
     'x-forwarded-host',
     'x-user',
+    'x-device-token',
 ]
 
 CORS_ALLOW_CREDENTIALS = True
