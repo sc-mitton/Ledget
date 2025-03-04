@@ -108,6 +108,8 @@ class CustomCsrfMiddleware(CsrfViewMiddleware):
             csrf_secret = self._get_secret(request)
         except NeedsNewCsrfToken:
             add_new_csrf_hmac_cookie(request)
+        except BadDigest:
+            raise RejectRequest(REASON_MISSING_HMAC_DIGEST)
         else:
             if csrf_secret:
                 request.META["CSRF_COOKIE"] = csrf_secret
