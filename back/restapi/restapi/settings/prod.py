@@ -22,6 +22,7 @@ SECURE_BROWSER_XSS_FILTER = True
 CORS_ALLOWED_ORIGINS = [
     'https://ledget.app',
     'https://accounts.ledget.app',
+    'https://eb.api.ledget.app',
 ]
 
 CORS_ALLOWED_HEADERS = [
