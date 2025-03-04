@@ -46,7 +46,7 @@ All in us-west-2 except for the dynamic router which is in us-east-1
 
 ### Paths
 
-1. /hooks/{proxy+} - ANY
+1. /hooks/{proxy+} - POST
 
 No authorization
 
@@ -78,7 +78,7 @@ Integration Request URL Path Parameters:
 proxy: method.request.path.proxy
 
 Integration Request Header Parameters:
-Name: Authorization Mapped From: context.authorization
+Name: Authorization Mapped From: context.authorizer.authorization
 Name: X-Forwarded-Host Mapped From: method.request.header.Host
 Name: X-User Mapped From: context.x-user
 
@@ -109,17 +109,18 @@ Set up a resources policy for the hooks endpoint to restrict it to the IP's from
 ```
 {
   "Version": "2012-10-17",
-  "Statement": [{
+  "Statement": [
+    {
       "Effect": "Allow",
       "Principal": "*",
       "Action": "execute-api:Invoke",
-      "Resource": "hooks/*"
+      "Resource": "arn:aws:execute-api:us-west-2:905418323334:d6wzi1587h/*/*/hooks/*"
     },
     {
       "Effect": "Deny",
       "Principal": "*",
       "Action": "execute-api:Invoke",
-      "Resource": "hooks/*",
+      "Resource": "arn:aws:execute-api:us-west-2:905418323334:d6wzi1587h/*/*/hooks/*",
       "Condition": {
         "NotIpAddress": {
           "aws:SourceIp": [
@@ -135,13 +136,16 @@ Set up a resources policy for the hooks endpoint to restrict it to the IP's from
             "54.187.174.169",
             "54.187.205.235",
             "54.187.216.72",
+            "35.245.69.134",
+            "34.94.111.83",
             "34.22.170.75",
             "35.242.228.133",
+            "34.159.197.30",
             "52.21.26.131",
             "52.21.47.157",
             "52.41.247.19",
-            "52.88.82.239"
-            ]
+            "52.88.82.23"
+          ]
         }
       }
     }
