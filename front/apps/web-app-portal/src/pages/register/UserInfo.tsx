@@ -56,7 +56,7 @@ const UserInfoWindow = ({
         <span>Step 1 of 4</span>
       </ColumnWindowHeader>
       <form onSubmit={handleSubmit((e) => setUserInfo(e))} noValidate>
-        <div>
+        <div className={styles.error}>
           <FormError msg={flowStatus.errMsg} />
         </div>
         <label htmlFor="name">Name</label>

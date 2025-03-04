@@ -17,14 +17,13 @@
   color: var(--mute-red);
 
   &[data-inside='true'] {
-    margin-left: 0em;
+    margin-left: -0.25em;
   }
 
   svg {
     color: currentColor;
     height: 1.1em;
-    margin-left: 0.25em;
-    margin-right: 0.3125em;
+    margin-right: 0.125em;
     position: relative;
     text-align: left;
     animation: pop 0.22s ease;

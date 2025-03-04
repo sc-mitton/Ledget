@@ -1,6 +1,6 @@
 const GoogleLogo = ({
-  width = '1.3em',
-  height = '1.3em',
+  width = '1.5em',
+  height = '1.5em',
   fill = 'var(--icon-full)',
 }) => (
   <svg
