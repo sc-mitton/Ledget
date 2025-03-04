@@ -2,17 +2,41 @@ from .base import *
 import os
 import jwt
 import json
+
+from corsheaders.defaults import default_headers
+
 from .get_aws_secret import get_secret
 
 
 ALLOWED_HOSTS = ['ledget.app', '.ledget.app']
-USE_X_FORWARDED_HOST=True
+USE_X_FORWARDED_HOST = True
 DOMAIN_URL = "https://api.ledget.app/"
 DOMAIN = 'api.ledget.app'
 ACCOUNTS_APP_DOMAIN = 'accounts.ledget.app'
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_BROWSER_XSS_FILTER = True
+
+# ----------------------------------- CORS ----------------------------------- #
+
+CORS_ALLOWED_ORIGINS = [
+    'https://ledget.app',
+    'https://accounts.ledget.app',
+]
+
+CORS_ALLOWED_HEADERS = [
+    *default_headers,
+    'x-forwarded-host',
+    'x-user',
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+INSTALLED_APPS += [
+    'corsheaders',
+]
+
+MIDDLEWARE = ['corsheaders.middleware.CorsMiddleware'] + MIDDLEWARE
 
 # ----------------------------------- Csrf ----------------------------------- #
 
@@ -44,9 +68,10 @@ ORY_ACTIVATION_REDIRECT_URL = f'https://{ACCOUNTS_APP_DOMAIN}/activation'
 jwks = get_secret('oathkeeper_jwks')
 try:
     jwks = json.loads(jwks)['keys'][0]
-    for k in [ 'd', 'p', 'q', 'dp', 'dq', 'qi' ]:
+    for k in ['d', 'p', 'q', 'dp', 'dq', 'qi']:
         del jwks[k]
-    OATHKEEPER_PUBLIC_KEY = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwks))
+    OATHKEEPER_PUBLIC_KEY = jwt.algorithms.RSAAlgorithm.from_jwk(
+        json.dumps(jwks))
 except Exception as e:
     OATHKEEPER_PUBLIC_KEY = None
 
