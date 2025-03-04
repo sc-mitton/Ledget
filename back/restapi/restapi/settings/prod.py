@@ -36,7 +36,7 @@ INSTALLED_APPS += [
     'corsheaders',
 ]
 
-MIDDLEWARE = ['corsheaders.middleware.CorsMiddleware'] + MIDDLEWARE
+MIDDLEWARE = MIDDLEWARE.insert(1, 'corsheaders.middleware.CorsMiddleware')
 
 # ----------------------------------- Csrf ----------------------------------- #
 
