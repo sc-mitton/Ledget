@@ -59,6 +59,7 @@ export const MiniCta = withArrow(
   styled(PillButton)`
     background-color: var(--btn-main);
     color: var(--white);
+    padding: 0.375em 0.75em;
 
     * {
       color: inherit;
