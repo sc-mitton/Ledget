@@ -166,14 +166,6 @@ func init() {
 
 	configFile := "./config.yml"
 
-	// Print rules for debugging
-	rules, err := os.ReadFile("/var/task/rules.json")
-	if err != nil {
-		fmt.Printf("Failed to read rules file: %v\n", err)
-		return
-	}
-	fmt.Printf("Rules: %s\n", string(rules))
-
 	// Initialize Oathkeeper
 	okFlags := pflag.NewFlagSet("serve", pflag.ContinueOnError)
 	okFlags.StringSlice("config", []string{configFile}, "Path to a configuration file")
