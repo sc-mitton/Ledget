@@ -359,7 +359,7 @@ export const ResendButton = forwardRef<
         {success ? (
           <Check className="resend-btn-success-icon" size={'1.25em'} />
         ) : (
-          <RotateCw size={'1em'} />
+          <RotateCw size={'1em'} strokeWidth={2} />
         )}
       </div>
     </BaseButton>

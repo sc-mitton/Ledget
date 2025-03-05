@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
+import Lottie from 'react-lottie';
 
 import styles from './verification.module.scss';
 import {
   FormError,
   JiggleDiv,
   VerificationForm,
-  VerificationStatusGraphic,
   useColorScheme,
   ColumnWindowHeader,
   PortalWindow,
@@ -19,7 +19,7 @@ import {
   useLazyGetVerificationFlowQuery,
   useCompleteVerificationFlowMutation,
 } from '@features/orySlice';
-import { SubHeader } from '@components/index';
+import { mail } from '@ledget/media/lotties';
 
 const Verification = () => {
   const [jiggle, setJiggle] = useState(false);
@@ -36,6 +36,23 @@ const Verification = () => {
     flowStatus;
   const { isDark } = useColorScheme();
   const { screenSize } = useScreenContext();
+  const [animate, setAnimate] = useState(false);
+
+  const animationOptions = {
+    loop: false,
+    autoplay: animate,
+    animationData: mail,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice',
+    },
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setAnimate(!animate);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [animate]);
 
   useEffect(() => {
     fetchFlow();
@@ -56,14 +73,6 @@ const Verification = () => {
       return () => clearTimeout(timeout);
     }
   }, [codeIsCorrect]);
-
-  // Lower refreshSuccess flag
-  useEffect(() => {
-    let timeout = setTimeout(() => {
-      setRefreshSuccess(false);
-    }, 1200);
-    return () => clearTimeout(timeout);
-  }, [refreshSuccess]);
 
   // Response code handler
   useEffect(() => {
@@ -105,19 +114,26 @@ const Verification = () => {
           <h2>Verify Email Address</h2>
           <div>Step 3 of 4</div>
         </ColumnWindowHeader>
-        <VerificationStatusGraphic finished={codeIsCorrect} dark={isDark} />
-        <div id="verification--container">
+        <div className={styles.animationContainer}>
+          <Lottie
+            options={animationOptions}
+            direction={animate ? 1 : -1}
+            style={{ width: 44, height: 44 }}
+            speed={0.5}
+          />
+        </div>
+        <div className={styles.verificationContainer}>
           {errMsg ? (
-            <div id="verification-form-error-container">
+            <div>
               {unhandledIdMessage && <FormError msg={unhandledIdMessage} />}
               <FormError msg={errMsg} />
             </div>
           ) : (
             <>
-              <SubHeader>
+              <span>
                 Enter the code we sent to your email address to verify your
                 account:
-              </SubHeader>
+              </span>
               <VerificationForm
                 flow={flow}
                 refreshSuccess={refreshSuccess}

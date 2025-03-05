@@ -22,7 +22,7 @@
     text-align: center;
     appearance: textfield;
     -webkit-appearance: textfield;
-    border-radius: var(--border-radius3);
+    border-radius: var(--border-radius2);
     background-color: var(--input-background);
     border: var(--input-border);
     color: var(--m-text);
@@ -55,7 +55,7 @@
   div::before {
     width: 0.625rem;
     content: '';
-    height: 0.25rem;
+    height: 0.125rem;
     margin: 0 0.2em;
     order: 1;
     background: var(--border-color);

@@ -34,7 +34,6 @@ export const SubHeader = styled.div`
   color: var(--m-text-secondary);
 
   * {
-    font-size: 0.875em;
     color: var(--m-text-secondary);
   }
 `;

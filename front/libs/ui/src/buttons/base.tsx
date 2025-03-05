@@ -44,7 +44,7 @@ export const PrimaryButton = styled(BaseButton)`
 `;
 
 export const WideButton = styled(BaseButton)`
-  border-radius: 0.75em;
+  border-radius: 0.5em;
   padding: 0.75em 1em;
   width: 100%;
 

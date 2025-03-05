@@ -18,7 +18,8 @@
       "@ledget/media": ["../../libs/media/web/src"],
       "@ledget/ory": ["../../libs/ory/src"],
       "@ledget/helpers": ["../../libs/helpers/src"],
-      "@ledget/shared-features": ["../../libs/shared-features/src"]
+      "@ledget/shared-features": ["../../libs/shared-features/src"],
+      "@ledget/media/lotties": ["../../libs/media/lotties/src"]
     }
   },
   "files": [],
