@@ -23,6 +23,8 @@ class _EnsureCsrfCookie(CustomCsrfMiddleware):
 
     def process_view(self, request, callback, callback_args, callback_kwargs):
         retval = super().process_view(request, callback, callback_args, callback_kwargs)
+        if getattr(request, 'csrf_processing_done', False):
+            return retval
         # Force process_response to send the cookie
         add_new_csrf_hmac_cookie(request)
         return retval
