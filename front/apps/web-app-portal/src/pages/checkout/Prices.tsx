@@ -32,36 +32,39 @@ const PriceRadios = ({
           </div>
           <div className={styles.pricesHeader} data-size={screenSize}></div>
           <div className={styles.subscriptionRadios} data-size={screenSize}>
-            {prices.map((p, i) => (
-              <label key={i} htmlFor={`price-${i}`}>
-                <input
-                  type="radio"
-                  value={p.id}
-                  id={`price-${i}`}
-                  {...register('price')}
-                  defaultChecked={i === 0}
-                />
-                <div className={styles.subscriptionRadio}>
-                  {p.nickname.toLowerCase() == 'year' && (
-                    <div
-                      className={styles.dogEar}
-                      data-dark={isDark}
-                      data-size={screenSize}
-                    >
-                      <Star fill={'currentColor'} size={'.75em'} />
-                    </div>
-                  )}
-                  <span className={styles.nickname}>{p.nickname}</span>
-                  <span className={styles.unitAmount}>
-                    $
-                    {p.nickname.toLowerCase() == 'year'
-                      ? p.unit_amount / 1200
-                      : p.unit_amount / 100}
-                    <span> /mo</span>
-                  </span>
-                </div>
-              </label>
-            ))}
+            {prices
+              .slice()
+              .sort((a, b) => (a.interval === 'year' ? -1 : 1))
+              .map((p, i) => (
+                <label key={i} htmlFor={`price-${i}`}>
+                  <input
+                    type="radio"
+                    value={p.id}
+                    id={`price-${i}`}
+                    {...register('price')}
+                    defaultChecked={i === 0}
+                  />
+                  <div className={styles.subscriptionRadio}>
+                    {p.nickname.toLowerCase() == 'year' && (
+                      <div
+                        className={styles.dogEar}
+                        data-dark={isDark}
+                        data-size={screenSize}
+                      >
+                        <Star fill={'currentColor'} size={'.75em'} />
+                      </div>
+                    )}
+                    <span className={styles.nickname}>{p.nickname}</span>
+                    <span className={styles.unitAmount}>
+                      $
+                      {p.nickname.toLowerCase() == 'year'
+                        ? p.unit_amount / 1200
+                        : p.unit_amount / 100}
+                      <span> /mo</span>
+                    </span>
+                  </div>
+                </label>
+              ))}
           </div>
         </div>
       )}
