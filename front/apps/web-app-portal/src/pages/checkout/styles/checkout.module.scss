@@ -14,6 +14,7 @@
   hr {
     width: calc(100% - 1em);
     color: var(--border-color-dim);
+    border-color: var(--border-color-dim);
     margin-top: 0.25em;
     margin-bottom: 0.625em;
   }
