@@ -48,6 +48,12 @@ const UserInfoWindow = ({
     reValidateMode: 'onBlur',
   });
 
+  const onSubmit = (data: z.infer<typeof schema>) => {
+    setUserInfo(data);
+    sessionStorage.setItem('identifier', data.email);
+    submit(data);
+  };
+
   return (
     <>
       <WindowLoading visible={flowStatus.isGettingFlow} />
@@ -55,7 +61,7 @@ const UserInfoWindow = ({
         <h2>Create Account</h2>
         <span>Step 1 of 4</span>
       </ColumnWindowHeader>
-      <form onSubmit={handleSubmit((e) => setUserInfo(e))} noValidate>
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className={styles.error}>
           <FormError msg={flowStatus.errMsg} />
         </div>
