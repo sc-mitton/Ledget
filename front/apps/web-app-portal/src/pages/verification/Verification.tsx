@@ -8,7 +8,6 @@ import {
   FormError,
   JiggleDiv,
   VerificationForm,
-  useColorScheme,
   ColumnWindowHeader,
   PortalWindow,
   useScreenContext,
@@ -34,7 +33,6 @@ const Verification = () => {
   );
   const { errMsg, isGettingFlow, isCompletingFlow, isCompleteSuccess } =
     flowStatus;
-  const { isDark } = useColorScheme();
   const { screenSize } = useScreenContext();
   const [animate, setAnimate] = useState(false);
 
@@ -139,7 +137,7 @@ const Verification = () => {
                 refreshSuccess={refreshSuccess}
                 submit={submit}
                 identifier={JSON.parse(
-                  sessionStorage.getItem('identifier') || '{}'
+                  sessionStorage.getItem('identifier') || ''
                 )}
                 loading={isGettingFlow}
                 submitting={isCompletingFlow}
