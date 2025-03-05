@@ -69,7 +69,7 @@ const Verification = () => {
         // If browser client, navigate to login redirect URL
         // Otherwise, navigate to checkout
 
-        const isMobile = window.innerWidth < 768;
+        const isMobile = window.innerWidth < 500;
         if (isMobile) {
           navigate('/checkout');
         } else {

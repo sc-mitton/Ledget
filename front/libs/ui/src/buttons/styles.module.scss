@@ -151,14 +151,15 @@
 }
 
 .back {
-  padding-left: 0.375em;
+  padding: 0 0.375em;
   margin-left: -0.5em;
   color: var(--m-text);
+  border-radius: 0.25em;
   gap: 0;
 
   svg {
-    height: 1.3em;
-    width: 1.3em;
+    height: 1.5em;
+    width: 1.5em;
   }
 
   path:first-of-type {
