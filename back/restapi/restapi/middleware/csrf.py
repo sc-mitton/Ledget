@@ -40,8 +40,10 @@ def _check_token_format(token):
 
 def _get_hmac(request):
     auth_token = request.META.get(settings.OATHKEEPER_JWT_HEADER)
-    if not auth_token or not settings.SECRET_KEY:
-        raise BadDigest
+    if not settings.SECRET_KEY:
+        raise RejectRequest(REASON_MISSING_SECRET_KEY)
+    elif not auth_token:
+        raise RejectRequest(REASON_CSRF_TOKEN_MISSING)
 
     try:
         session_id = auth_token['session']['id']
@@ -55,6 +57,7 @@ def _get_hmac(request):
 
 def add_new_csrf_hmac_cookie(request):
     csrf_secret = _get_hmac(request)
+
     request.META.update({
         'CSRF_COOKIE': csrf_secret,
         'CSRF_COOKIE_NEEDS_UPDATE': True
@@ -103,7 +106,6 @@ class CustomCsrfMiddleware(CsrfViewMiddleware):
             raise RejectRequest(reason)
 
     def process_request(self, request):
-
         try:
             csrf_secret = self._get_secret(request)
         except NeedsNewCsrfToken:
@@ -115,10 +117,11 @@ class CustomCsrfMiddleware(CsrfViewMiddleware):
                 request.META["CSRF_COOKIE"] = csrf_secret
 
     def process_view(self, request, callback, callback_args, callback_kwargs):
-
+        # Tokens are used for mobile clients, and csrf is not needed
         if request.META.get(ORY_SESSION_TOKEN_HEADER, False):
             setattr(callback, 'csrf_exempt', True)
         elif not getattr(callback, 'csrf_ignore', False):
             setattr(callback, 'csrf_exempt', False)
 
-        return super().process_view(request, callback, callback_args, callback_kwargs)
+        return super().process_view(
+            request, callback, callback_args, callback_kwargs)
