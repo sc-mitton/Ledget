@@ -350,7 +350,13 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordProps>(
                 <LottieView
                   direction={visible ? 1 : -1}
                   speed={2}
-                  style={{ width: 32, height: 32 }}
+                  style={{
+                    width: 32,
+                    height: 32,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
                   options={animationOptions}
                 />
               </div>
