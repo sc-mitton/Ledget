@@ -14,13 +14,6 @@ import Header from './header/header';
 import { useColorScheme, useScreenContext } from '@ledget/ui';
 import { MainDiv } from '@components/index';
 
-export const SendRegisteredToCheckout = () => {
-  if (sessionStorage.getItem('identifier')) {
-    return <Navigate to="/checkout" />;
-  }
-  return <Outlet />;
-};
-
 function AnimatedRoutes() {
   const location = useLocation();
   const { isDark } = useColorScheme();
@@ -46,11 +39,9 @@ function AnimatedRoutes() {
               transition={{ opacity: { duration: 0.15, ease: 'easeIn' } }}
             >
               <Routes location={location} key={location.pathname.split('/')[1]}>
-                <Route path="/" element={<SendRegisteredToCheckout />}>
-                  <Route path="/" element={<Navigate to="/login" />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/recovery" element={<Recovery />} />
-                </Route>
+                <Route path="/" element={<Navigate to="/login" />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/recovery" element={<Recovery />} />
                 <Route path="/activation" element={<Activation />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/verification" element={<Verification />} />

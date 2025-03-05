@@ -36,7 +36,7 @@ const EmailForm = ({ flow, setEmail, socialSubmit }: EmailFormProps) => {
 
   const submit = (data: z.infer<typeof schema>) => {
     if (data.remember) {
-      localStorage.setItem('identifier', JSON.stringify(data.email));
+      localStorage.setItem('identifier', data.email);
     } else {
       localStorage.removeItem('identifier');
     }

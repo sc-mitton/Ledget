@@ -64,6 +64,40 @@ const IsVerified = () => {
   return !user?.is_verified ? <Navigate to="/verify-email" /> : <Outlet />;
 };
 
+const AccountStatusRoute = () => {
+  const { data: user } = useGetMeQuery();
+
+  if (!user) {
+    return null;
+  }
+
+  if (!user.is_onboarded) {
+    return <Navigate to="/welcome/connect" replace />;
+  }
+
+  if (!user.account.has_customer) {
+    window.location.href = import.meta.env.VITE_CHECKOUT_REDIRECT;
+    return null;
+  }
+
+  if (
+    user.account.service_provisioned_until &&
+    user.account.service_provisioned_until < Math.floor(Date.now() / 1000)
+  ) {
+    return <Navigate to="/settings/profile/update-payment" replace />;
+  }
+
+  if (user.account.subscription_status === 'past_due') {
+    return <Navigate to="/settings/profile/update-payment" replace />;
+  }
+
+  if (user.account.service_provisioned_until < new Date().getTime() / 1000) {
+    return <Navigate to="/budget/error" replace />;
+  }
+
+  return <Outlet />;
+};
+
 const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -124,31 +158,6 @@ const App = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (!user) {
-      return;
-    } else if (!user.is_onboarded) {
-      navigate('/welcome/connect');
-    } else if (
-      user.account.service_provisioned_until &&
-      user.account.service_provisioned_until < Math.floor(Date.now() / 1000)
-    ) {
-      navigate('/settings/profile/update-payment');
-    } else if (
-      !user.account.has_customer ||
-      user.account.service_provisioned_until == 0
-    ) {
-      window.location.href = import.meta.env.VITE_CHECKOUT_REDIRECT;
-    } else if (user.account.subscription_status === 'past_due') {
-      navigate('/settings/profile/update-payment');
-    } else if (
-      user.account.service_provisioned_until <
-      new Date().getTime() / 1000
-    ) {
-      navigate('/budget/error');
-    }
-  }, [user]);
-
   return (
     <ColorSchemedDiv className={styles.app}>
       <Header />
@@ -163,14 +172,16 @@ const App = () => {
           >
             <Routes location={location} key={location.pathname.split('/')[1]}>
               <Route path="/" element={<IsVerified />}>
-                <Route path="budget" element={<Budget />}>
-                  <Route path="new-category" element={<CreateCategory />} />
-                  <Route path="new-bill" element={<CreateBill />} />
-                  <Route path="error" element={<AccountErrorModal />} />
+                <Route element={<AccountStatusRoute />}>
+                  <Route path="budget" element={<Budget />}>
+                    <Route path="new-category" element={<CreateCategory />} />
+                    <Route path="new-bill" element={<CreateBill />} />
+                    <Route path="error" element={<AccountErrorModal />} />
+                  </Route>
+                  <Route path="accounts/*" element={<Accounts />} />
+                  <Route path="profile/*" element={<Profile />} />
+                  <Route path="*" element={<NotFound />} />
                 </Route>
-                <Route path="accounts/*" element={<Accounts />} />
-                <Route path="profile/*" element={<Profile />} />
-                <Route path="*" element={<NotFound />} />
               </Route>
               <Route path="verify-email" element={<ForceVerification />} />
               <Route path="welcome/*" element={<OnboardingModal />} />
