@@ -4,8 +4,8 @@ import { useSearchParams } from 'react-router-dom';
 
 import styles from './styles/form.module.scss';
 import { BackButton, Otc, MainButton } from '@ledget/ui';
-import MainGraphic from './Graphic';
 import Error from './Error';
+import { MicroAnimation } from './MicroAnimation';
 
 interface Props {
   submit: (e: any) => void;
@@ -56,7 +56,7 @@ const RecoveryVerificationForm = ({
         </div>
         {(isCompleteError || errMsg) && <Error msg={errMsg} />}
       </div>
-      <MainGraphic unLocked={codeSuccess} />
+      <MicroAnimation animate={codeSuccess} />
       <form
         id="recovery-verification-form"
         className={styles.recoveryForm}

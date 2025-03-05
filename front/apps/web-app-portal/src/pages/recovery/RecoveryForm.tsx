@@ -1,9 +1,10 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { BackButton, MainButton, PlainTextInput } from '@ledget/ui';
-import MainGraphic from './Graphic';
+import { BackButton, LightBlueMainButton, PlainTextInput } from '@ledget/ui';
 import Error from './Error';
 import styles from './styles/form.module.scss';
+import { MicroAnimation } from './MicroAnimation';
 
 interface Props {
   flow: any;
@@ -14,6 +15,7 @@ interface Props {
 
 const RecoveryForm = ({ flow, submit, isCompleteError, errMsg }: Props) => {
   const navigate = useNavigate();
+  const [animate, setAnimate] = useState(false);
 
   return (
     <>
@@ -21,7 +23,10 @@ const RecoveryForm = ({ flow, submit, isCompleteError, errMsg }: Props) => {
         <div style={{ margin: '0 0 .5em -.25em' }}>
           <BackButton
             onClick={() => {
-              navigate('/login');
+              setAnimate(true);
+              setTimeout(() => {
+                navigate('/login');
+              }, 1000);
             }}
             style={{ float: 'none' }}
           />
@@ -35,12 +40,8 @@ const RecoveryForm = ({ flow, submit, isCompleteError, errMsg }: Props) => {
         </div>
         {(isCompleteError || errMsg) && <Error msg={errMsg} />}
       </div>
-      <MainGraphic />
-      <form
-        onSubmit={submit}
-        className={styles.recoveryForm}
-        id="send-recovery-code-form"
-      >
+      <MicroAnimation animate={animate} />
+      <form onSubmit={submit} className={styles.recoveryForm}>
         <PlainTextInput
           type="email"
           placeholder="Email"
@@ -50,9 +51,9 @@ const RecoveryForm = ({ flow, submit, isCompleteError, errMsg }: Props) => {
           required
         />
         <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
-        <MainButton name="method" type="submit" value="code">
+        <LightBlueMainButton name="method" type="submit" value="code">
           Send code
-        </MainButton>
+        </LightBlueMainButton>
       </form>
     </>
   );
