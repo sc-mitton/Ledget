@@ -45,11 +45,11 @@ WSGI_APPLICATION = 'restapi.wsgi.application'
 
 # ----------------------------------- Misc ----------------------------------- #
 
-FIXTURE_DIRS = [ Path(BASE_DIR, 'restapi', 'test_data') ]
+FIXTURE_DIRS = [Path(BASE_DIR, 'restapi', 'test_data')]
 
 TEST_DATA_DIR = FIXTURE_DIRS[0]
 
-FIXTURE_DIRS = [ d.as_posix() for d in FIXTURE_DIRS ]
+FIXTURE_DIRS = [d.as_posix() for d in FIXTURE_DIRS]
 
 
 # --------------------------------- Debugging -------------------------------- #
@@ -104,7 +104,7 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = 'core.User'
 
-SESSION_MAX_AGE_SECONDS = 60 * 10 # 10 minutes in seconds
+SESSION_MAX_AGE_SECONDS = 60 * 10  # 10 minutes in seconds
 
 DEVICE_TOKEN_HEADER = 'HTTP_X_DEVICE_TOKEN'
 
@@ -125,7 +125,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ---------------------------------- Logging --------------------------------- #
 
-LOG_LEVEL = 'DEBUG' if os.environ.get('DEBUG', '').lower() == 'DEBUG' else 'INFO'
+LOG_LEVEL = 'DEBUG' if os.environ.get(
+    'DEBUG', '').lower() == 'DEBUG' else 'INFO'
 
 LOGGING = {
     'version': 1,
