@@ -221,10 +221,10 @@
     --mid-elevation-drop-shadow-color: rgba(255, 255, 255, 0.15);
     --input-drop-shadow-color: rgba(255, 255, 255, 0.07);
 
-    --border-color-ultra-dim: rgb(125, 125, 125, 0.03);
-    --border-color-super-dim: rgb(125, 125, 125, 0.05);
-    --border-color-dim: rgb(125, 125, 125, 0.1);
-    --border-color: rgb(125, 125, 125, 0.2);
+    --border-color-ultra-dim: rgba(125, 125, 125, 0.03);
+    --border-color-super-dim: rgba(125, 125, 125, 0.05);
+    --border-color-dim: rgba(125, 125, 125, 0.1);
+    --border-color: rgba(125, 125, 125, 0.2);
     --dropdown-seperator: rgb(125, 125, 125, 0.08);
     --institution-logo-border: rgb(255, 255, 255, 0.3);
 
@@ -437,12 +437,12 @@
     --toast-box-shadow: rgba(0, 0, 0, 0.1) 0px 3px 12px,
       rgba(0, 0, 0, 0.05) 0px 3px 4px;
 
-    --border-color-ultra-dim: rgb(125, 125, 125, 0.07);
-    --border-color-super-dim: rgb(125, 125, 125, 0.09);
-    --border-color-dim: rgb(125, 125, 125, 0.15);
-    --border-color: rgb(125, 125, 125, 0.2);
-    --dropdown-seperator: rgb(125, 125, 125, 0.1);
-    --institution-logo-border: rgb(0, 0, 0, 0.2);
+    --border-color-ultra-dim: rgba(125, 125, 125, 0.07);
+    --border-color-super-dim: rgba(125, 125, 125, 0.09);
+    --border-color-dim: rgba(125, 125, 125, 0.15);
+    --border-color: rgba(125, 125, 125, 0.2);
+    --dropdown-seperator: rgba(125, 125, 125, 0.1);
+    --institution-logo-border: rgba(0, 0, 0, 0.2);
     --toast-border: transparent;
   }
 }
