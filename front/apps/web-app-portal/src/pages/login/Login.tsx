@@ -35,7 +35,9 @@ const Login = () => {
   const { screenSize } = useScreenContext();
   const { error, isSuccess: isGetMeSuccess } = useGetMeQuery();
 
-  const [email, setEmail] = useState<string>();
+  const [email, setEmail] = useState(
+    localStorage.getItem('identifier') || undefined
+  );
   const [healthCheckResult, setHealthCheckResult] = useState<
     'aal2_totp_required' | 'healthy'
   >();

@@ -137,7 +137,7 @@ const Verification = () => {
                 refreshSuccess={refreshSuccess}
                 submit={submit}
                 identifier={JSON.parse(
-                  sessionStorage.getItem('identifier') || ''
+                  sessionStorage.getItem('identifier') || '{}'
                 )}
                 loading={isGettingFlow}
                 submitting={isCompletingFlow}

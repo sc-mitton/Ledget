@@ -40,6 +40,7 @@ const EmailForm = ({ flow, setEmail, socialSubmit }: EmailFormProps) => {
     } else {
       localStorage.removeItem('identifier');
     }
+    sessionStorage.setItem('identifier', JSON.stringify(data.email));
     setEmail(data.email);
   };
 
