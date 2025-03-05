@@ -73,7 +73,7 @@ export const charcoal = css`
 `;
 
 export const blue = css`
-  background-color: var(--blue-medium);
+  background-color: var(--blue);
   color: var(--white);
 
   * {
@@ -81,7 +81,7 @@ export const blue = css`
   }
 
   &:hover {
-    background-color: var(--blue-medium-hover);
+    background-color: var(--blue-hover);
   }
 `;
 

@@ -14,21 +14,21 @@ const OrderSummary = ({
   const firstCharge = dayjs().add(trial_period_days || 0, 'day');
 
   return (
-    <>
-      <h4>Summary</h4>
+    <div className={styles.container}>
+      <span>Summary</span>
       <hr className={styles.line} />
       <div className={styles.orderSummary}>
         <table>
           <tbody>
             <tr>
-              <td>First Charge:</td>
+              <td>First Charge</td>
               <td>
                 {firstCharge.format('MMM, D')}
                 {getOrderSuffix(firstCharge.date())}
               </td>
             </tr>
             <tr>
-              <td>Amount:</td>
+              <td>Amount</td>
               <td>
                 <DollarCents value={unit_amount || 0} />
               </td>
@@ -36,7 +36,7 @@ const OrderSummary = ({
           </tbody>
         </table>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -1,15 +1,15 @@
 .prices {
   background: linear-gradient(
     to top right,
-    var(--blue-light-medium) 0%,
-    color-mix(in srgb, var(--blue-medium), var(--blue-light) 40%) 100%
+    var(--btn-feather-light-gray),
+    var(--btn-feather-light-gray)
   );
   border-top-left-radius: var(--border-radius5);
   border-top-right-radius: var(--border-radius5);
   border-bottom-left-radius: 0.25em;
   border-bottom-right-radius: 0.25em;
   position: relative;
-  border: 2px solid var(--blue-light);
+  border-bottom: 1px solid var(--border-color-dim);
   z-index: 1000;
 
   &[data-size='extra-small'][data-dark='true'] {
@@ -29,7 +29,6 @@
       color-mix(in srgb, var(--btn-dark-gray), var(--btn-light-gray) 10%) 100%
     );
     border: none;
-    border-bottom: 2px solid var(--btn-medium-gray);
 
     &[data-size='extra-small'] {
       border: none;
@@ -38,17 +37,30 @@
   }
 }
 
+.logo {
+  position: absolute;
+  top: 1em;
+  left: 1em;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+
+  img {
+    height: 2.25em;
+  }
+
+  span {
+    color: var(--white);
+  }
+}
+
 .pricesHeader {
-  padding: 1.5em 3.25em 0 3.25em;
+  padding: 2.75em 3.25em 0 3.25em;
   display: flex;
   justify-content: start;
 
-  svg {
-    height: 0em;
-  }
-
   &[data-size='extra-small'] {
-    height: 3.5em;
+    height: 2.5em;
 
     svg {
       height: 2.25em;
@@ -123,9 +135,9 @@
   height: 2.875rem;
   z-index: -1;
   transform: translate(50%, -50%) rotate(42deg);
+  color: var(--blue);
 
   svg {
-    color: var(--btn-dark-gray);
     position: absolute;
     top: 2em;
     left: 1em;
@@ -138,7 +150,7 @@
 
   &[data-dark='true'][data-size='extra-small'] {
     svg {
-      color: var(--btn-feather-light-gray);
+      color: var(--blue-medium);
     }
   }
 }

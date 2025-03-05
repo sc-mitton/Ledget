@@ -12,8 +12,8 @@ import styles from './styles/checkout.module.scss';
 import ledgetapi from '@api/axios';
 import { useGetPricesQuery } from '@ledget/shared-features';
 import {
-  MainButton,
   CardInput,
+  LightBlueMainButton,
   FormError,
   NameOnCardInput,
   CityStateZipInputs,
@@ -183,9 +183,9 @@ const Form = (props: { id: string }) => {
               unit_amount={unit_amount}
               trial_period_days={trial_period_days}
             />
-            <MainButton form={'billing-form'}>
+            <LightBlueMainButton form={'billing-form'}>
               {`Start ${trial_period_days}-day Free Trial`}
-            </MainButton>
+            </LightBlueMainButton>
           </div>
         </div>
       </form>

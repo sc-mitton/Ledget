@@ -26,9 +26,11 @@ const PriceRadios = ({
           data-dark={isDark}
           data-size={screenSize}
         >
-          <div className={styles.pricesHeader} data-size={screenSize}>
+          <div className={styles.logo}>
             <LedgetLogoIcon darkMode={isDark} />
+            <span>Ledget</span>
           </div>
+          <div className={styles.pricesHeader} data-size={screenSize}></div>
           <div className={styles.subscriptionRadios} data-size={screenSize}>
             {prices.map((p, i) => (
               <label key={i} htmlFor={`price-${i}`}>

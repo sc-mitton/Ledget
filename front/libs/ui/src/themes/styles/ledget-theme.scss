@@ -223,7 +223,7 @@
 
     --border-color-ultra-dim: rgb(125, 125, 125, 0.03);
     --border-color-super-dim: rgb(125, 125, 125, 0.05);
-    --border-color-dim: rgb(125, 125, 125, 0.04);
+    --border-color-dim: rgb(125, 125, 125, 0.1);
     --border-color: rgb(125, 125, 125, 0.2);
     --dropdown-seperator: rgb(125, 125, 125, 0.08);
     --institution-logo-border: rgb(255, 255, 255, 0.3);
@@ -271,10 +271,10 @@
     --blue-light-hover: hsl(var(--blue-h), var(--blue-s), 83%);
     --blue-light-medium: hsl(var(--blue-h), var(--blue-s), 75%);
     --blue-light-medium-hover: hsl(var(--blue-h), var(--blue-s), 68%);
-    --blue-medium: hsl(var(--blue-h), var(--blue-s), 65%);
-    --blue-medium-hover: hsl(var(--blue-h), var(--blue-s), 55%);
-    --blue: hsl(var(--blue-h), var(--blue-s), 57%);
-    --blue-hover: hsl(var(--blue-h), var(--blue-s), 60%);
+    --blue-medium: hsl(var(--blue-h), var(--blue-s), 70%);
+    --blue-medium-hover: hsl(var(--blue-h), var(--blue-s), 75%);
+    --blue: hsl(var(--blue-h), var(--blue-s), 60%);
+    --blue-hover: hsl(var(--blue-h), var(--blue-s), 65%);
     --blue-sat: hsl(var(--blue-h), calc(var(--blue-s) + 10%), 60%);
     --blue-sat-hover: hsl(var(--blue-h), calc(var(--blue-s) + 10%), 70%);
     --blue-medium-dark: hsl(var(--blue-h), 32%, 37%);
