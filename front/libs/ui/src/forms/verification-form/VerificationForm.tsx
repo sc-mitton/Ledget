@@ -25,15 +25,6 @@ export const VerificationForm = (props: VerificationFormProps) => {
   }, [flow]);
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (flow && resendRef?.current) {
-        resendRef?.current.click();
-      }
-    }, 100);
-    return () => clearTimeout(timeout);
-  }, [flow]);
-
-  useEffect(() => {
     refreshSuccess && setHasInitialSent(true);
   }, []);
 
@@ -56,7 +47,7 @@ export const VerificationForm = (props: VerificationFormProps) => {
             loading={hasInitialSent && loading}
             submitting={hasInitialSent && submitting}
           >
-            Submit
+            Confirm
           </MainButton>
         </form>
         <form

@@ -24,7 +24,7 @@ function SignUp() {
   );
   const { isCompleteSuccess, errId } = flowStatus;
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [userInfo, setUserInfo] = useState({});
 
   useEffect(() => {
@@ -36,11 +36,14 @@ function SignUp() {
       ledgetapi
         .post('devices')
         .then(() => {
-          navigate('/verification');
+          const flowId = (result as any)?.continue_with.find(
+            (c: any) => c.action === 'show_verification_ui'
+          )?.flow.id;
+          console.log('flowId: ', flowId);
+          navigate(`/verification?flow=${flowId}`, { replace: true });
         })
         .catch(() => {
-          setSearchParams({});
-          navigate('/login', { replace: true });
+          navigate('/login');
         });
       // fall back to login if device creation fails
       // since they can always log in and then user will

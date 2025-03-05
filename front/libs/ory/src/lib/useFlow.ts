@@ -58,7 +58,7 @@ export const useFlow = <TFlow extends EndpointRootNames>(
     const refresh = args?.refresh;
     const flowId = searchParams.get('flow');
 
-    if (aal === 'aal2' && aal !== searchParams.get('aal')) {
+    if (aal && aal === 'aal2' && aal !== searchParams.get('aal')) {
       searchParams.delete('flow');
       setSearchParams(searchParams);
       setMutationCacheKey('');
@@ -68,10 +68,13 @@ export const useFlow = <TFlow extends EndpointRootNames>(
       setSearchParams(searchParams);
     }
 
+    const includeFlowId = [
+      flowType === 'verification',
+      aal === 'aal2' && aal !== searchParams.get('aal'),
+    ];
+
     const params = {
-      ...(aal === 'aal2' && aal !== searchParams.get('aal')
-        ? { id: flowId }
-        : {}),
+      ...(includeFlowId.some((v) => Boolean(v)) ? { id: flowId } : {}),
       ...(aal ? { aal: aal } : {}),
       ...(refresh ? { refresh: true } : {}),
     };
