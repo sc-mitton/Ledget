@@ -15,7 +15,7 @@ import {
 import {
   ExpandableContainer,
   LoadingRing,
-  BlackPrimaryButtonWithArrow,
+  SecondaryButton,
   Base64Logo,
   BluePrimaryButton,
   Tooltip,
@@ -69,6 +69,15 @@ const BottomButtons = ({ continueDisabled }: { continueDisabled: boolean }) => {
 
   return (
     <div className={styles.btnContainerEnabled}>
+      <ExpandableContainer expanded={!continueDisabled}>
+        <SecondaryButton
+          aria-label="Next"
+          onClick={() => navigate('/welcome/add-bills')}
+          disabled={continueDisabled}
+        >
+          Skip
+        </SecondaryButton>
+      </ExpandableContainer>
       <BluePrimaryButton
         onClick={() => open()}
         aria-label="Link Account"
@@ -77,15 +86,6 @@ const BottomButtons = ({ continueDisabled }: { continueDisabled: boolean }) => {
         Add Account
         <Plus size={'1em'} />
       </BluePrimaryButton>
-      <ExpandableContainer expanded={!continueDisabled}>
-        <BlackPrimaryButtonWithArrow
-          aria-label="Next"
-          onClick={() => navigate('/welcome/add-bills')}
-          disabled={continueDisabled}
-        >
-          Continue
-        </BlackPrimaryButtonWithArrow>
-      </ExpandableContainer>
     </div>
   );
 };
