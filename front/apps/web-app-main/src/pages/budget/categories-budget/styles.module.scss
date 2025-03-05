@@ -23,6 +23,7 @@ $background: var(--window);
   scrollbar-width: none;
   max-width: 100%;
   overflow: auto;
+  box-sizing: border-box;
   mask-image: linear-gradient(
     to right,
     transparent 0%,
