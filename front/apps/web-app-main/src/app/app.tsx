@@ -19,6 +19,7 @@ import Accounts from '@pages/accounts/Window';
 import Home from '@pages/home/Window';
 import SideNav from './side-nav/SideNav';
 import Header from './header/header';
+import Checkout from '@pages/checkout/Window';
 import {
   ZoomMotionDiv,
   Toast,
@@ -173,6 +174,7 @@ const App = () => {
               </Route>
               <Route path="verify-email" element={<ForceVerification />} />
               <Route path="welcome/*" element={<OnboardingModal />} />
+              <Route path="checkout" element={<Checkout />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </ZoomMotionDiv>
