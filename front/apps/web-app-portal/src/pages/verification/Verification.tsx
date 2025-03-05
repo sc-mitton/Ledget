@@ -66,7 +66,15 @@ const Verification = () => {
   useEffect(() => {
     if (codeIsCorrect) {
       const timeout = setTimeout(() => {
-        navigate('/checkout');
+        // If browser client, navigate to login redirect URL
+        // Otherwise, navigate to checkout
+
+        const isMobile = window.innerWidth < 768;
+        if (isMobile) {
+          navigate('/checkout');
+        } else {
+          window.location.href = import.meta.env.VITE_LOGIN_REDIRECT;
+        }
       }, 1200);
       return () => clearTimeout(timeout);
     }
