@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 import styles from './styles/logout.module.scss';
 import { withSmallModal } from '@ledget/ui';
-import { SecondaryButton, BlueSubmitButton } from '@ledget/ui';
+import { SecondaryButton, BlueSubmitButton, GrayButton } from '@ledget/ui';
 import {
   useGetLogoutFlowQuery,
   useLazyGetUpdatedLogoutFlowQuery,
@@ -68,9 +68,18 @@ const LogoutModal = withSmallModal<{ fromTimeout: boolean }>((props) => {
       <div
         style={{ display: 'flex', justifyContent: 'end', marginTop: '.5em' }}
       >
-        <SecondaryButton onClick={() => props.closeModal()} aria-label="Cancel">
-          Cancel
-        </SecondaryButton>
+        {fromTimeout ? (
+          <GrayButton onClick={() => props.closeModal()} aria-label="Cancel">
+            Cancel
+          </GrayButton>
+        ) : (
+          <SecondaryButton
+            onClick={() => props.closeModal()}
+            aria-label="Cancel"
+          >
+            Cancel
+          </SecondaryButton>
+        )}
         {!fromTimeout && (
           <BlueSubmitButton
             onClick={() => {
