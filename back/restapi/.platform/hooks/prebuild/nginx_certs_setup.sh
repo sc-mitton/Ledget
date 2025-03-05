@@ -46,7 +46,6 @@ if [ -n "$(aws s3 ls $bucket_path)" ]; then
         -n \
         -d ${domain} \
         --dns-route53 \
-        --nginx \
         --agree-tos \
         --email ${contact} \
         --reinstall \
@@ -54,7 +53,7 @@ if [ -n "$(aws s3 ls $bucket_path)" ]; then
         --expand \
         --allow-subset-of-names
 
-    systemctl reload k
+    systemctl reload nginx
 
     # re-uploading the certificate in case of renewal during certbot installation
     tar -czvf /tmp/backup.tar.gz /etc/letsencrypt/*
@@ -70,7 +69,6 @@ sudo certbot certonly \
     -n \
     -d ${domain} \
     --dns-route53 \
-    --nginx \
     --email ${contact} \
     --agree-tos \
     --redirect \
