@@ -24,7 +24,7 @@ function SignUp() {
   );
   const { isCompleteSuccess, errId } = flowStatus;
 
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [userInfo, setUserInfo] = useState({});
 
   useEffect(() => {
@@ -39,7 +39,8 @@ function SignUp() {
           navigate('/verification');
         })
         .catch(() => {
-          navigate('/login');
+          setSearchParams({});
+          navigate('/login', { replace: true });
         });
       // fall back to login if device creation fails
       // since they can always log in and then user will
