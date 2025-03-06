@@ -36,7 +36,10 @@ export const Tooltip = ({
         <span
           className={styles.tooltipText}
           style={
-            { '--delay': `${delay}s`, width: maxWidth } as React.CSSProperties
+            {
+              '--delay': `${delay}s`,
+              width: `clamp(0px, ${msg.length}ch, ${maxWidth})`,
+            } as React.CSSProperties
           }
           data-type={type}
           role="tooltip"

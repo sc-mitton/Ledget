@@ -19,6 +19,7 @@ import {
 import {
   useGetTransactionsCountQuery,
   selectBudgetMonthYear,
+  useGetMeQuery,
 } from '@ledget/shared-features';
 import { useAppDispatch, useAppSelector } from '@hooks/store';
 import { NeedsConfirmationStack } from './needs-confirmation/Stack';
@@ -28,10 +29,11 @@ import { selectModal } from '@features/modalSlice';
 const ActivityDropdown = (props: HTMLProps<HTMLDivElement>) => {
   const dispatch = useAppDispatch();
 
+  const { data: user } = useGetMeQuery();
   const { month, year } = useAppSelector(selectBudgetMonthYear);
   const { data: tCountData } = useGetTransactionsCountQuery(
     { confirmed: false, month, year },
-    { skip: !month || !year }
+    { skip: !month || !year || !user?.account.has_customer }
   );
   const notificationTabIndex = useAppSelector(selectNotificationsTabIndex);
   const [animate, setAnimate] = useState(false);

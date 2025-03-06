@@ -50,6 +50,10 @@
     align-items: flex-start;
   }
 
+  * {
+    color: var(--m-text-secondary);
+  }
+
   & > div div:first-child {
     display: flex;
     align-items: center;
@@ -58,20 +62,33 @@
     margin-right: 0.5em;
   }
 
-  & > div div:last-child {
-    opacity: 0.7;
+  & > div {
     font-size: 1rem;
   }
 }
 
-.institutionLogos {
-  & > div {
-    margin-top: 0.5em;
+.connectedInstitutions {
+  margin-top: 3em;
+  margin-bottom: 2em;
+
+  & > div:first-of-type {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: 0.25em;
+  }
+
+  & > div:last-of-type {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-bottom: 1.25em;
-    margin-left: 0.125em;
+    margin: 0.5em 0 1.25em 0;
+
+    & > span {
+      width: 100%;
+      text-align: center;
+      color: var(--m-text-quinary);
+    }
   }
 }
 

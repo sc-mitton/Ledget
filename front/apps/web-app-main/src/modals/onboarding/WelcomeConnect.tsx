@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import CheckCircle from '@geist-ui/icons/checkCircle';
-import { Plus } from '@geist-ui/icons';
+import { CheckInCircle } from '@geist-ui/icons';
 
 import styles from './styles/welcome-connect.module.scss';
 import { useBakedPlaidLink } from '@utils/hooks';
@@ -13,79 +12,66 @@ import {
   useTransactionsSyncMutation,
 } from '@ledget/shared-features';
 import {
-  ExpandableContainer,
   LoadingRing,
-  SecondaryButton,
   Base64Logo,
-  BluePrimaryButton,
   Tooltip,
+  TextButtonBlue,
+  GrayButton,
+  NestedWindow,
 } from '@ledget/ui';
 import { useLoaded } from '@ledget/helpers';
 
 const InstitutionLogos = ({ plaidItems }: { plaidItems: PlaidItem[] }) => {
   const { data: user } = useGetMeQuery();
   const { isLoading } = useGetPlaidItemsQuery({ userId: user?.id });
+  const { open } = useBakedPlaidLink(true);
 
   return (
-    <>
-      {plaidItems.length > 0 && (
-        <>
-          <div className={styles.institutionLogos}>
-            <span>Connected Institutions</span>
-            <div>
-              {plaidItems.map((item, index) => (
-                <div
-                  key={item.id}
-                  className={styles.institutionLogo}
-                  style={{
-                    marginLeft: index === 0 ? '0' : '-.5rem',
-                    zIndex: index,
-                  }}
-                >
-                  <Tooltip msg={item.institution?.name}>
-                    <Base64Logo
-                      size="1.5em"
-                      data={item.institution?.logo}
-                      alt={item.institution?.name?.charAt(0).toUpperCase()}
-                      backgroundColor={item.institution?.primary_color}
-                    />
-                  </Tooltip>
-                </div>
-              ))}
-              <div style={{ marginLeft: '1em' }}>
-                <LoadingRing visible={isLoading} />
-              </div>
+    <div className={styles.connectedInstitutions}>
+      <div>
+        <span>Connected Institutions</span>
+        <TextButtonBlue onClick={() => open()}>Connect</TextButtonBlue>
+      </div>
+      <NestedWindow>
+        {plaidItems.length > 0 ? (
+          plaidItems.map((item, index) => (
+            <div
+              key={item.id}
+              className={styles.institutionLogo}
+              style={{
+                marginLeft: index === 0 ? '0' : '-.5rem',
+                zIndex: index,
+              }}
+            >
+              <Tooltip msg={item.institution?.name} maxWidth={'100px'}>
+                <Base64Logo
+                  size="2em"
+                  data={item.institution?.logo}
+                  alt={item.institution?.name?.charAt(0).toUpperCase()}
+                  backgroundColor={item.institution?.primary_color}
+                />
+              </Tooltip>
             </div>
-          </div>
-        </>
-      )}
-    </>
+          ))
+        ) : (
+          <span>No connected institutions</span>
+        )}
+        <div style={{ marginLeft: '1em' }}>
+          <LoadingRing visible={isLoading} />
+        </div>
+      </NestedWindow>
+    </div>
   );
 };
 
 const BottomButtons = ({ continueDisabled }: { continueDisabled: boolean }) => {
-  const { open } = useBakedPlaidLink(true);
   const navigate = useNavigate();
 
   return (
     <div className={styles.btnContainerEnabled}>
-      <ExpandableContainer expanded={!continueDisabled}>
-        <SecondaryButton
-          aria-label="Next"
-          onClick={() => navigate('/welcome/add-bills')}
-          disabled={continueDisabled}
-        >
-          Skip
-        </SecondaryButton>
-      </ExpandableContainer>
-      <BluePrimaryButton
-        onClick={() => open()}
-        aria-label="Link Account"
-        style={{ gap: '.5em' }}
-      >
-        Add Account
-        <Plus size={'1em'} />
-      </BluePrimaryButton>
+      <GrayButton onClick={() => navigate('/welcome/add-bills')}>
+        Continue
+      </GrayButton>
     </div>
   );
 };
@@ -94,19 +80,19 @@ const SecurityMessage = () => (
   <div className={styles.checklist}>
     <div>
       <div>
-        <CheckCircle className="icon" />
+        <CheckInCircle className="icon" />
       </div>
       <div>Ledget doesn't store your credentials</div>
     </div>
     <div>
       <div>
-        <CheckCircle className="icon" />
+        <CheckInCircle className="icon" />
       </div>
       <div>We use Plaid to connect to your financial institutions</div>
     </div>
     <div>
       <div>
-        <CheckCircle className="icon" />
+        <CheckInCircle className="icon" />
       </div>
       <div>Disconnect your account and your financial data at any time</div>
     </div>
