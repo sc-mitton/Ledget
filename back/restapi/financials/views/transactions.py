@@ -29,7 +29,7 @@ from plaid.model.transactions_recurring_get_request import (
 from plaid.model.transactions_sync_request import TransactionsSyncRequest
 from plaid.model.transactions_sync_request_options import TransactionsSyncRequestOptions
 
-from restapi.permissions.auth import IsAuthedVerifiedSubscriber
+from restapi.permissions.auth import IsAuthedVerifiedSubscriber, IsAuthenticated
 from restapi.permissions.objects import (
     IsObjectOwner,
     HasObjectAccessLooseWrite
@@ -229,7 +229,8 @@ class TransactionViewSet(ModelViewSet):
         transaction_ids = [item['transaction_id'] for item in validated_data]
 
         instances = Transaction.objects.filter(
-            transaction_id__in=[id for id in transaction_ids if id is not None],
+            transaction_id__in=[
+                id for id in transaction_ids if id is not None],
             account__useraccount__user=self.request.user
         )
         if len(instances) != len(transaction_ids):  # pragma: no cover
@@ -253,7 +254,7 @@ class TransactionViewSet(ModelViewSet):
         # Get prefetched data for confirmed transactions query.
         if self.request.query_params.get('confirmed') == 'true':
             base_qset = base_qset.filter(
-                    Q(bill__isnull=False) | Q(transactioncategory__isnull=False))
+                Q(bill__isnull=False) | Q(transactioncategory__isnull=False))
 
         return base_qset.order_by('-date')
 
@@ -270,7 +271,7 @@ class TransactionViewSet(ModelViewSet):
         return Response(serializer.data)
 
     @action(detail=False, methods=['get'], url_path='recurring',
-            url_name='recurring', permission_classes=[IsAuthedVerifiedSubscriber])
+            url_name='recurring', permission_classes=[IsAuthenticated])
     def recurring(self, request, *args, **kwargs):
         plaid_items = PlaidItem.objects.filter(
             user__in=self.request.user.account.users.all()
@@ -280,18 +281,21 @@ class TransactionViewSet(ModelViewSet):
         for plaid_item in plaid_items:
             request = TransactionsRecurringGetRequest(
                 access_token=plaid_item.access_token,
-                account_ids=[account.id for account in plaid_item.accounts.all()]
+                account_ids=[
+                    account.id for account in plaid_item.accounts.all()]
             )
-            response = plaid_client.transactions_recurring_get(request).to_dict()
+            response = plaid_client.transactions_recurring_get(
+                request).to_dict()
             recurring_transactions.extend(response['outflow_streams'])
 
-        serializer = RecurringTransaction(data=recurring_transactions, many=True)
+        serializer = RecurringTransaction(
+            data=recurring_transactions, many=True)
         serializer.is_valid(raise_exception=True)
 
         return Response(serializer.data, status=HTTP_200_OK)
 
     @action(detail=False, methods=['post'], url_path='sync', url_name='sync',
-            permission_classes=[IsAuthedVerifiedSubscriber, HasObjectAccessLooseWrite])
+            permission_classes=[IsAuthenticated, HasObjectAccessLooseWrite])
     def sync(self, request, *args, **kwargs):
         default_category = Category.objects.filter(
             usercategory__user=self.request.user, is_default=True).first()
@@ -331,7 +335,7 @@ class TransactionViewSet(ModelViewSet):
 
     def _get_plaid_items(self, request):
         qset = PlaidItem.objects.filter(
-                user__in=self.request.user.account.users.all())
+            user__in=self.request.user.account.users.all())
 
         item_id = self.request.query_params.get('item', None)
         account_ids = self.request.query_params.getlist('accounts', [])
@@ -442,8 +446,8 @@ class NoteViewSet(ModelViewSet):
             # the query filter will return none if the user
             # is not an owner of the transaction
             transaction = Transaction.objects.get(
-                    transaction_id=transaction_id,
-                    account__useraccount__user=self.request.user)
+                transaction_id=transaction_id,
+                account__useraccount__user=self.request.user)
 
         except Transaction.DoesNotExist:
             raise ValidationError('Transaction does not exist')
