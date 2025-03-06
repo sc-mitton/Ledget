@@ -81,11 +81,13 @@ class IsAuthedVerifiedSubscriber(IsAuthenticated):
     def has_permission(self, request, view):
         checks = [
             request.user.account.service_provisioned_until > int(time.time()),
-            request.user.account.customer.subscription_not_canceled,
+            request.user.account.customer,
             request.user.is_active,
         ]
 
-        return super().has_permission(request, view) and all(checks)
+        return super().has_permission(request, view) \
+            and all(checks) \
+            and request.user.account.customer.subscription_not_canceled
 
 
 class BaseFreshSessionClass(BasePermission):
@@ -101,7 +103,8 @@ class BaseFreshSessionClass(BasePermission):
             return True
 
         try:
-            seconds_since_last_login = self.get_last_ory_login_delta(request, aal)
+            seconds_since_last_login = self.get_last_ory_login_delta(
+                request, aal)
         except Exception as e:
             logger.error(f"Error checking session freshness: {e}")
             return False

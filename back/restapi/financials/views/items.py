@@ -17,7 +17,7 @@ from plaid.model.country_code import CountryCode
 from plaid.model.products import Products
 import plaid
 
-from restapi.permissions.auth import highest_aal_freshness, IsAuthedVerifiedSubscriber
+from restapi.permissions.auth import highest_aal_freshness, IsAuthenticated
 from restapi.permissions.objects import HasObjectAccess, UserQueryParamIsSelf
 from core.clients import create_plaid_client
 from financials.serializers.items import (
@@ -42,7 +42,7 @@ for product in settings.OPTIONAL_PLAID_PRODUCTS:
 
 
 class PlaidLinkTokenView(APIView):
-    permission_classes = [IsAuthedVerifiedSubscriber]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         if kwargs.get('is_onboarding', False):
@@ -88,12 +88,12 @@ class PlaidLinkTokenView(APIView):
 
 
 class PlaidTokenExchangeView(CreateAPIView):
-    permission_classes = [IsAuthedVerifiedSubscriber]
+    permission_classes = [IsAuthenticated]
     serializer_class = ExchangePlaidTokenSerializer
 
 
 class PlaidItemsListView(ListAPIView):
-    permission_classes = [IsAuthedVerifiedSubscriber, UserQueryParamIsSelf]
+    permission_classes = [IsAuthenticated, UserQueryParamIsSelf]
     serializer_class = PlaidItemsSerializer
 
     def get_queryset(self):
@@ -106,7 +106,7 @@ class PlaidItemsListView(ListAPIView):
 
 
 class PlaidItemView(RetrieveDestroyAPIView):
-    permission_classes = [IsAuthedVerifiedSubscriber, HasObjectAccess]
+    permission_classes = [IsAuthenticated, HasObjectAccess]
     serializer_class = PlaidItemsSerializer
 
     def get_object(self):
