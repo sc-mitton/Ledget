@@ -29,7 +29,7 @@ const InstitutionLogos = ({ plaidItems }: { plaidItems: PlaidItem[] }) => {
   return (
     <div className={styles.connectedInstitutions}>
       <div>
-        <span>Connected Institutions</span>
+        <span>Your Institutions</span>
         <TextButtonBlue onClick={() => open()}>Connect</TextButtonBlue>
       </div>
       <NestedWindow>
