@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import { CheckInCircle } from '@geist-ui/icons';
+import { CheckInCircle, Plus, PlusCircle } from '@geist-ui/icons';
 
 import styles from './styles/welcome-connect.module.scss';
 import { useBakedPlaidLink } from '@utils/hooks';
@@ -12,12 +12,12 @@ import {
   useTransactionsSyncMutation,
 } from '@ledget/shared-features';
 import {
-  LoadingRing,
   Base64Logo,
   Tooltip,
   TextButtonBlue,
   GrayButton,
   NestedWindow,
+  LoadingRingDiv,
 } from '@ledget/ui';
 import { useLoaded } from '@ledget/helpers';
 
@@ -27,40 +27,46 @@ const InstitutionLogos = ({ plaidItems }: { plaidItems: PlaidItem[] }) => {
   const { open } = useBakedPlaidLink(true);
 
   return (
-    <div className={styles.connectedInstitutions}>
-      <div>
-        <span>Your Institutions</span>
-        <TextButtonBlue onClick={() => open()}>Connect</TextButtonBlue>
-      </div>
-      <NestedWindow>
-        {plaidItems.length > 0 ? (
-          plaidItems.map((item, index) => (
-            <div
-              key={item.id}
-              className={styles.institutionLogo}
-              style={{
-                marginLeft: index === 0 ? '0' : '-.5rem',
-                zIndex: index,
-              }}
+    <NestedWindow className={styles.connectedInstitutionsContainer}>
+      <LoadingRingDiv loading={isLoading}>
+        <div className={styles.connectedInstitutions}>
+          {plaidItems.length > 0 ? (
+            plaidItems.map((item, index) => (
+              <div
+                key={item.id}
+                className={styles.institutionLogo}
+                style={{ zIndex: index }}
+              >
+                <Tooltip msg={item.institution?.name} maxWidth={'100px'}>
+                  <Base64Logo
+                    size="2em"
+                    data={item.institution?.logo}
+                    alt={item.institution?.name?.charAt(0).toUpperCase()}
+                    backgroundColor={item.institution?.primary_color}
+                  />
+                </Tooltip>
+              </div>
+            ))
+          ) : (
+            <TextButtonBlue
+              onClick={() => open()}
+              className={styles.emptyConnectButton}
             >
-              <Tooltip msg={item.institution?.name} maxWidth={'100px'}>
-                <Base64Logo
-                  size="2em"
-                  data={item.institution?.logo}
-                  alt={item.institution?.name?.charAt(0).toUpperCase()}
-                  backgroundColor={item.institution?.primary_color}
-                />
-              </Tooltip>
+              Connect
+              <Plus />
+            </TextButtonBlue>
+          )}
+          {plaidItems.length > 0 && (
+            <div>
+              <TextButtonBlue onClick={() => open()}>
+                Connect
+                <Plus />
+              </TextButtonBlue>
             </div>
-          ))
-        ) : (
-          <span>No connected institutions</span>
-        )}
-        <div style={{ marginLeft: '1em' }}>
-          <LoadingRing visible={isLoading} />
+          )}
         </div>
-      </NestedWindow>
-    </div>
+      </LoadingRingDiv>
+    </NestedWindow>
   );
 };
 

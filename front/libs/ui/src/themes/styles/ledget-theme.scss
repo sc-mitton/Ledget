@@ -373,8 +373,8 @@
     --m-text: hsl(var(--window-h), var(--window-s), 20%);
     --m-invert-text: hsl(0, 0%, 97%);
     --m-text-secondary: color-mix(in srgb, var(--m-text), white 40%);
-    --m-text-tertiary: color-mix(in srgb, var(--m-text), white 60%);
-    --m-text-quaternary: color-mix(in srgb, var(--m-text), white 65%);
+    --m-text-tertiary: color-mix(in srgb, var(--m-text), white 50%);
+    --m-text-quaternary: color-mix(in srgb, var(--m-text), white 60%);
     --m-text-quinary: color-mix(in srgb, var(--m-text), white 70%);
     --blue-text: hsl(var(--blue-h), calc(var(--blue-s) + 10%), 50%);
 
@@ -391,8 +391,8 @@
     --icon-full: var(--m-text);
     --btn-feather-light-gray: hsl(var(--window-h), var(--window-s), 92%);
     --btn-feather-light-gray-hover: hsl(var(--window-h), var(--window-s), 86%);
-    --btn-light-gray: hsl(var(--window-h), var(--window-s), 80%);
-    --btn-light-gray-hover: hsl(var(--window-h), var(--window-s), 74%);
+    --btn-light-gray: hsl(var(--window-h), var(--window-s), 85%);
+    --btn-light-gray-hover: hsl(var(--window-h), var(--window-s), 79%);
     --btn-medium-gray: hsl(var(--window-h), var(--window-s), 68%);
     --btn-medium-gray-hover: hsl(var(--window-h), var(--window-s), 60%);
     --btn-gray: hsl(var(--window-h), var(--window-s), 48%);

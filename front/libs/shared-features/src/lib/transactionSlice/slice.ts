@@ -163,7 +163,7 @@ export const transactionSlice = apiSlice.injectEndpoints({
       transformResponse: (response: RecurringTransaction[]) => {
         return response.map((item) => ({
           ...item,
-          name: item.transactions[0].name,
+          name: item.transactions[0]?.name,
         }));
       },
     }),

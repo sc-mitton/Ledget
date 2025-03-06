@@ -24,8 +24,8 @@
   visibility: hidden;
 
   &:checked + .checkbox span:first-child {
-    background: var(--blue-medium);
-    border-color: var(--blue-medium);
+    background: var(--blue);
+    border-color: var(--blue);
     animation: zoom-in-out 0.2s ease;
   }
 
@@ -42,7 +42,8 @@
   overflow: hidden;
   display: flex;
   align-items: center;
-  border-radius: .375em;
+  border-radius: 0.375em;
+  transition: all 0.3s ease;
 
   &:focus-visible {
     outline: none;
@@ -60,8 +61,7 @@
     transform: scale(1);
     background-color: var(--input-background);
     border: var(--input-border);
-    border-radius: .375em;
-    transition: all 0.3s ease;
+    border-radius: 0.375em;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -78,7 +78,7 @@
     padding-left: 0.5em;
   }
 
-  &:hover span:first-child {
+  &:hover {
     transform: scale(1.12);
     transition: all 0.2s ease;
   }

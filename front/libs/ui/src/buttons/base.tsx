@@ -100,10 +100,10 @@ export const main = css`
 
 export const gray = css`
   box-shadow: var(--btn-drop-shadow);
-  background-color: var(--btn-light-gray);
+  background-color: var(--btn-feather-light-gray);
 
   &:hover {
-    background-color: var(--btn-light-gray-hover);
+    background-color: var(--btn-feather-light-gray-hover);
   }
 `;
 
@@ -192,10 +192,10 @@ export const inputStyle = css`
 `;
 
 export const hoverText = css`
-  color: var(--m-text-secondary);
+  color: var(--m-text-tertiary);
 
   * {
-    color: var(--m-text-secondary);
+    color: var(--m-text-tertiary);
   }
 
   &:hover {

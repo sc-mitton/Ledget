@@ -3,7 +3,7 @@ import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
 import { withModal } from '@ledget/ui';
 import { SlideMotionDiv } from '@ledget/ui';
-import AddBills from './AddBills';
+import AddBills from './add-bills/AddBills';
 import AddCategories from './AddCategories';
 import WelcomeConnect from './WelcomeConnect';
 import styles from './styles/welcome-connect.module.scss';
@@ -52,6 +52,7 @@ export default function () {
   return (
     <Main
       hasExit={false}
+      overLayExit={false}
       onClose={() =>
         navigate({
           pathname: '/budget',

@@ -52,7 +52,7 @@ export function withModal<P>(
     useCloseDropdown({
       refs: overLayExit ? [modalRef] : [],
       visible: closeAll,
-      setVisible: () => !disableClose && setCloseAll(true),
+      setVisible: () => (overLayExit ? !disableClose && setCloseAll(true) : {}),
     });
 
     // Focus on mount

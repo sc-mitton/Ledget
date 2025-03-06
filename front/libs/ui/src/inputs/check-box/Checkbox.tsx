@@ -4,7 +4,7 @@ import styles from './checkbox.module.scss';
 
 interface CheckboxProps {
   id: string;
-  label: string;
+  label?: string;
   checked?: boolean;
   setChecked?: React.Dispatch<React.SetStateAction<boolean>>;
 }
