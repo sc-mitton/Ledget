@@ -36,7 +36,7 @@ const Login = () => {
   const { error, isSuccess: isGetMeSuccess } = useGetMeQuery();
 
   const [email, setEmail] = useState(
-    localStorage.getItem('identifier') || undefined
+    localStorage.getItem('identifier')?.replace(/^"|"$/g, '') || undefined
   );
   const [healthCheckResult, setHealthCheckResult] = useState<
     'aal2_totp_required' | 'healthy'
