@@ -71,13 +71,14 @@ export const formatCurrency = (
   if (val === undefined) {
     return withCents ? '$0.00' : '$0';
   }
+
   const strippedSt =
     typeof val === 'string'
       ? val.replace(/[^0-9]/g, '').replace(/^[0]/g, '')
       : val
           .toString()
           .replace(/^[0]/g, '')
-          .replace(/^[0-9]/g, '');
+          .replace(/[^0-9]/g, '');
 
   const currencyAmount = Number(strippedSt);
   return withCents

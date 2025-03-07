@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useState, useRef } from 'react';
 
-import { useForm, useController } from 'react-hook-form';
+import { useForm, useController, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
@@ -41,10 +41,10 @@ const Form = (props: { id: string }) => {
 
   const {
     register,
-    watch,
     handleSubmit,
     formState: { errors },
     control,
+    setValue,
     clearErrors,
   } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -52,18 +52,21 @@ const Form = (props: { id: string }) => {
     reValidateMode: 'onBlur',
   });
   const { field: stateField } = useController({ name: 'state', control });
+  const price = useWatch({ control, name: 'price' });
 
   useEffect(() => {
     stateField.value && clearErrors('state');
   }, [stateField.value]);
 
   useEffect(() => {
-    if (prices) {
-      const price = prices.find((p) => p.id === watch('price'));
-      setTrial_period_days(price?.metadata.trial_period_days);
-      setUnit_amount(price?.unit_amount);
+    if (!price && prices) {
+      setValue('price', prices?.[0].id);
+    } else if (prices && price) {
+      const p = prices.find((p) => p.id === price);
+      setTrial_period_days(p?.metadata.trial_period_days);
+      setUnit_amount(p?.unit_amount);
     }
-  }, [watch('price'), prices]);
+  }, [price, prices]);
 
   // Create customer if not already created
   // if there is already a customer created,
@@ -182,7 +185,9 @@ const Form = (props: { id: string }) => {
               trial_period_days={trial_period_days}
             />
             <LightBlueMainButton form={'billing-form'}>
-              {`Start ${trial_period_days}-day Free Trial`}
+              {`Start ${
+                trial_period_days ? `${trial_period_days} day` : ''
+              } Free Trial`}
             </LightBlueMainButton>
           </div>
         </div>

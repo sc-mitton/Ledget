@@ -12,7 +12,6 @@ const OrderSummary = ({
   trial_period_days?: number;
 }) => {
   const firstCharge = dayjs().add(trial_period_days || 0, 'day');
-
   return (
     <div className={styles.container}>
       <span>Summary</span>
