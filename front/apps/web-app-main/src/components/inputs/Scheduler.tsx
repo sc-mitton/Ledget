@@ -16,7 +16,7 @@ import { Calendar } from '@geist-ui/icons';
 import dropdownStyles from './styles/dropdowns.module.scss';
 import schedulerStyles from './styles/scheduler.module.scss';
 import type { Bill } from '@ledget/shared-features';
-import { useClickClose } from '@ledget/ui';
+import { useClickClose, useColorScheme } from '@ledget/ui';
 import { getOrderSuffix } from '@ledget/helpers';
 import {
   FormInputButton2,
@@ -189,6 +189,7 @@ const DayPicker = () => {
   );
   const [activeDay, setActiveDay] = useState<typeof day>(0);
   const ref = useRef<HTMLDivElement>(null);
+  const { isDark } = useColorScheme();
 
   const Day = ({ dayNumber }: { dayNumber: NonNullable<typeof day> }) => (
     <td key={dayNumber}>
@@ -199,6 +200,7 @@ const DayPicker = () => {
         ].join(' ')}
         data-selected={day === dayNumber}
         data-active={activeDay === dayNumber}
+        data-dark={isDark}
         onClick={() => setDay(dayNumber)}
         role="button"
         aria-label={`Select day ${dayNumber ? dayNumber + 1 : ''}`}
@@ -367,61 +369,69 @@ const WeekPicker = () => {
     }
   };
 
-  const WeekNumber = ({ week }: { week: NonNullable<typeof weekNumber> }) => (
-    <li>
-      <div
-        className={[
-          schedulerStyles.pickerItem,
-          schedulerStyles.weekPickerItem,
-        ].join(' ')}
-        data-selected={week === weekNumber}
-        data-active={week === activeWeekNumber}
-        onClick={() => {
-          setWeekNumber(week);
-        }}
-        role="button"
-        aria-label={`Select week ${week}`}
-        aria-pressed={`${week === weekNumber}`}
-        aria-selected={`${week === weekNumber}`}
-        tabIndex={-1}
-      >
-        {week <= 4 && `${week}`}
-        {week > 4 && 'Last'}
-        <span
-          style={{
-            fontSize: '.8em',
+  const WeekNumber = ({ week }: { week: NonNullable<typeof weekNumber> }) => {
+    const { isDark } = useColorScheme();
+    return (
+      <li>
+        <div
+          className={[
+            schedulerStyles.pickerItem,
+            schedulerStyles.weekPickerItem,
+          ].join(' ')}
+          data-selected={week === weekNumber}
+          data-active={week === activeWeekNumber}
+          data-dark={isDark}
+          onClick={() => {
+            setWeekNumber(week);
           }}
+          role="button"
+          aria-label={`Select week ${week}`}
+          aria-pressed={`${week === weekNumber}`}
+          aria-selected={`${week === weekNumber}`}
+          tabIndex={-1}
         >
-          {formatWeek(week)}
-        </span>
-      </div>
-    </li>
-  );
+          {week <= 4 && `${week}`}
+          {week > 4 && 'Last'}
+          <span
+            style={{
+              fontSize: '.8em',
+            }}
+          >
+            {formatWeek(week)}
+          </span>
+        </div>
+      </li>
+    );
+  };
 
   const WeekDay = ({
     dayNumber,
   }: {
     dayNumber: NonNullable<typeof weekDay>;
-  }) => (
-    <li>
-      <div
-        className={[
-          schedulerStyles.pickerItem,
-          schedulerStyles.weekDayPickerItem,
-        ].join(' ')}
-        data-selected={weekDay === dayNumber}
-        data-active={activeWeekDay === dayNumber}
-        onClick={() => setWeekDay(dayNumber)}
-        role="button"
-        aria-label={`Select day ${dayNumber}`}
-        aria-pressed={`${weekDay === dayNumber}`}
-        aria-selected={`${weekDay === dayNumber}`}
-        tabIndex={-1}
-      >
-        {formatWeekDay(dayNumber)}
-      </div>
-    </li>
-  );
+  }) => {
+    const { isDark } = useColorScheme();
+    return (
+      <li>
+        <div
+          className={[
+            schedulerStyles.pickerItem,
+            schedulerStyles.weekDayPickerItem,
+          ].join(' ')}
+          data-selected={weekDay === dayNumber}
+          data-active={activeWeekDay === dayNumber}
+          data-dark={isDark}
+          onClick={() => setWeekDay(dayNumber)}
+          role="button"
+          aria-label={`Select day ${dayNumber}`}
+          aria-pressed={`${weekDay === dayNumber}`}
+          aria-selected={`${weekDay === dayNumber}`}
+          tabIndex={-1}
+        >
+          {formatWeekDay(dayNumber)}
+        </div>
+      </li>
+    );
+  };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     switch (event.key) {
@@ -622,7 +632,7 @@ const DayWeekPicker = () => {
 
 const MonthPicker = () => {
   const { month, setMonth, setOpen } = usePickerContext();
-
+  const { isDark } = useColorScheme();
   const [activeMonth, setActiveMonth] = useState<typeof month>();
   const ref = useRef<HTMLDivElement>(null);
 
@@ -631,6 +641,7 @@ const MonthPicker = () => {
       <div
         className={schedulerStyles.pickerItem}
         data-selected={month === monthNumber}
+        data-dark={isDark}
         data-active={activeMonth === monthNumber}
         onClick={() => setMonth(monthNumber)}
         role="button"
@@ -759,7 +770,6 @@ const MonthDayPicker = () => {
       verticlePlacement={verticlePlacement}
       visible={open}
       className={schedulerStyles.scheduleDropdown}
-      style={{ marginTop: '.5em' }}
     >
       <div
         className={dropdownStyles.monthDayPickerContainer}

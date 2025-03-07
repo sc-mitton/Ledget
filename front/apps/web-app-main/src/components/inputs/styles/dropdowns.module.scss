@@ -72,13 +72,13 @@
 }
 
 .returnBtn {
-  opacity: 0;
   border-radius: var(--border-radius1);
   padding: 0 0.375rem;
   margin: 0.25rem;
   display: flex;
-
+  opacity: 0;
   &[data-focused='true'] {
+    opacity: 1;
     height: 0.8em;
     display: flex;
     align-items: center;
@@ -95,7 +95,11 @@
 }
 
 .customInput {
-  margin: 0.625em 0.25em 0.25em 0.25em;
+  margin: 0.75em 0.25em 0.75em 0.75em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .dropdown {

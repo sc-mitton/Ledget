@@ -122,6 +122,8 @@ export const LimitAmountInput: FC<
   withCents = true,
   required = true,
   slim = false,
+  onChange,
+  value,
   ...rest
 }) => {
   const [val, setVal] = useState<string>('');
@@ -176,9 +178,9 @@ export const LimitAmountInput: FC<
             }
           }}
           onChange={(e) => {
-            const target = parseInt(e.target.value.replace(/[^0-9]/g, ''));
-            const newVal = formatCurrency(target, withCents);
+            const newVal = formatCurrency(e.target.value, withCents);
             setVal(newVal);
+            onChange?.(e);
           }}
           onFocus={(e) => {
             if (e.target.value.length <= 1 || val === '$0') {
@@ -210,13 +212,17 @@ export const DollarRangeInput = ({
   errors,
   hasLabel = true,
   rangeMode = false,
+  onLowerChange,
+  onUpperChange,
 }: {
-  control: Control<any>;
+  control?: Control<any>;
   errors?: any;
   defaultLowerValue?: number;
   defaultUpperValue?: number;
   hasLabel?: boolean;
   rangeMode?: boolean;
+  onLowerChange?: (val: string) => void;
+  onUpperChange?: (val: string) => void;
 }) => {
   return (
     <>
@@ -231,6 +237,11 @@ export const DollarRangeInput = ({
             defaultValue={defaultLowerValue}
             control={control}
             name={'lower_amount'}
+            onChange={(e: any) => {
+              const target = parseInt(e.target.value.replace(/[^0-9]/g, ''));
+              const newVal = formatCurrency(target, true);
+              onLowerChange?.(newVal);
+            }}
           >
             <FormErrorTip error={errors.lower_amount && errors.lower_amount} />
           </LimitAmountInput>
@@ -240,6 +251,11 @@ export const DollarRangeInput = ({
           defaultValue={defaultUpperValue}
           control={control}
           name={'upper_amount'}
+          onChange={(e: any) => {
+            const target = parseInt(e.target.value.replace(/[^0-9]/g, ''));
+            const newVal = formatCurrency(target, true);
+            onUpperChange?.(newVal);
+          }}
         >
           <FormErrorTip error={errors.upper_amount && errors.upper_amount} />
         </LimitAmountInput>

@@ -1,0 +1,44 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  padding: 0.25em;
+
+  hr {
+    margin: 0;
+  }
+}
+
+.orderSummary {
+  text-align: left;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.125em 0.5em 0.75em 0.5em;
+  margin-bottom: 1em;
+
+  table {
+    border-collapse: collapse;
+  }
+
+  * {
+    font-size: 1em;
+  }
+
+  tr {
+    line-height: 1.5;
+
+    td {
+      text-align: left;
+
+      &:first-child {
+        color: var(--m-text-tertiary);
+        font-size: 0.875rem;
+        padding-right: 1em;
+      }
+
+      &:last-child span {
+        font-size: 0.65em;
+      }
+    }
+  }
+}

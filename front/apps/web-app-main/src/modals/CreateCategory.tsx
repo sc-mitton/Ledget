@@ -76,11 +76,20 @@ const CreateCategoryModal = withModal((props) => {
           </LimitAmountInput>
         </div>
         <div className={styles.multiInputRow}>
-          <PeriodSelect
+          <Controller
             name="period"
             control={control}
-            labelPrefix={'Resets'}
-            excludeOnce={true}
+            render={(props) => (
+              <PeriodSelect
+                name="period"
+                labelPrefix={'Resets'}
+                excludeOnce={true}
+                value={props.field.value}
+                onChange={(e) => {
+                  props.field.onChange(e);
+                }}
+              />
+            )}
           />
           <div>
             <AddAlert limitAmount={watchLimitAmount} control={control} />

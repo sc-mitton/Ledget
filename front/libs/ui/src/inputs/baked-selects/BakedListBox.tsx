@@ -1,7 +1,6 @@
 import { useRef, useEffect, useState, useId } from 'react';
 
 import { Listbox } from '@headlessui/react';
-import { useController, UseControllerReturn } from 'react-hook-form';
 import { ChevronDown, Check, Plus } from '@geist-ui/icons';
 
 import styles from './baked-selects.module.scss';
@@ -11,16 +10,6 @@ import { DropdownItem } from '../../containers/specialty';
 import { LoadingRingDiv } from '../../pieces/loading-indicators/loading-indicators';
 import { FormErrorTip } from '../../pieces/form-errors/form-errors';
 import type { BakedSelectProps, Option } from './types';
-
-const useOptionalControl = (
-  props: Pick<BakedSelectProps<any, any, any>, 'control' | 'name'>
-): UseControllerReturn | { field: undefined } => {
-  if (!props.control) return { field: undefined };
-  return useController({
-    name: props.name || 'baked-list-box',
-    control: props.control,
-  });
-};
 
 // export function BakedListBox(props: BakedListBoxProps) {
 export const BakedListBox = <
@@ -47,22 +36,9 @@ export const BakedListBox = <
     return clearTimeout(t);
   }, []);
 
-  // Controll for react-hook-form
-  const { field } = useOptionalControl({
-    name: props.name || `baked-list-box-${id}`,
-    control: props.control,
-  });
-
-  // Clear value if field reset from react-hook-form
-  useEffect(() => {
-    if (field && field.value === undefined && !skipFieldReset)
-      onChange(undefined);
-  }, [field?.value]);
-
   // Update field value if value changes
   // Also call props.onChange if it exists to keep parent state in sync
   useEffect(() => {
-    field?.onChange(value);
     if (props.onChange) props.onChange(value as any);
   }, [value]);
 
@@ -153,6 +129,7 @@ export const BakedListBox = <
           <DropdownDiv
             className={styles.dropdown}
             placement={props.placement}
+            verticlePlacement="auto"
             visible={open}
             style={{
               minWidth: `${buttonRef?.current?.offsetWidth}px`,

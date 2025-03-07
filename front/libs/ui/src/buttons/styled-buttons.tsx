@@ -190,9 +190,10 @@ export const FormInputButton = styled(BaseButton)`
 
 export const FormInputButton2 = styled(BaseButton)`
   ${inputStyle}
-  padding: .375em 1em;
+  padding: .7em 1em;
   margin: 0.375em 0;
-  border-radius: var(--border-radius3);
+  border-radius: var(--border-radius2);
+  position: relative;
 `;
 
 export const BlueFadedSquareRadio = styled(BaseButton)`

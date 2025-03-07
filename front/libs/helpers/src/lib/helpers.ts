@@ -68,15 +68,21 @@ export const formatCurrency = (
   val: number | string | undefined,
   withCents = true
 ) => {
-  if (!val || (typeof val === 'string' && !parseInt(val)))
+  if (val === undefined) {
     return withCents ? '$0.00' : '$0';
+  }
+  const strippedSt =
+    typeof val === 'string'
+      ? val.replace(/[^0-9]/g, '').replace(/^[0]/g, '')
+      : val
+          .toString()
+          .replace(/^[0]/g, '')
+          .replace(/^[0-9]/g, '');
 
-  const currencyAmount =
-    typeof val === 'string' ? makeIntCurrencyFromStr(val) : val;
-
+  const currencyAmount = Number(strippedSt);
   return withCents
     ? withCentsFormatter.format(currencyAmount / 100)
-    : noCentsFormatter.format(Math.floor(currencyAmount / 100));
+    : noCentsFormatter.format(currencyAmount);
 };
 
 // Takes in a string currency and returns an integer

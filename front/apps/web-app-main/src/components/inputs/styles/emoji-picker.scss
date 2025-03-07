@@ -1,7 +1,8 @@
 em-emoji-picker {
-    height: 30vh;
-    box-shadow: var(--emoji-picker-dropdown-shadow-color);
+    height: 50vh;
+    --shadow: var(--emoji-picker-dropdown-shadow);
     --font-family: font-family: "Source Sans 3", 'Roboto', sans-serif, 'Arial', Helvetica;
+    --font-weight: 400;
     --rgb-accent: 56, 95, 168;
     --rgb-background: var(--dropdown-background-rgb);
     --rgb-input: var(--input-background-color-rgb);

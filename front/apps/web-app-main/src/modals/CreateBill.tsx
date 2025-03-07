@@ -128,10 +128,19 @@ const Form = withModal((props) => {
           <label htmlFor="schedule">Schedule</label>
           <div className={styles.multiInputRow}>
             <div>
-              <PeriodSelect
+              <Controller
                 name="period"
-                labelPrefix="Repeats"
                 control={control}
+                render={(props) => (
+                  <PeriodSelect
+                    name="period"
+                    labelPrefix="Repeats"
+                    value={props.field.value}
+                    onChange={(e) => {
+                      props.field.onChange(e);
+                    }}
+                  />
+                )}
               />
             </div>
             {billPeriod === 'once' ? (

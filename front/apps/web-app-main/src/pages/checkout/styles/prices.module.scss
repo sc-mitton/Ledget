@@ -12,28 +12,9 @@
   border-bottom: 1px solid var(--border-color-dim);
   z-index: 1000;
 
-  &[data-size='extra-small'][data-dark='true'] {
-    border-radius: 0;
-    background: linear-gradient(
-      to top right,
-      var(--btn-feather-light-gray),
-      var(--btn-feather-light-gray)
-    );
-    border: none;
-  }
-
   &[data-dark='false'] {
-    background: linear-gradient(
-      to top right,
-      var(--btn-dark-gray) 0%,
-      color-mix(in srgb, var(--btn-dark-gray), var(--btn-light-gray) 10%) 100%
-    );
+    background: var(--btn-dark-gray);
     border: none;
-
-    &[data-size='extra-small'] {
-      border: none;
-      border-radius: 0;
-    }
   }
 }
 
@@ -58,17 +39,6 @@
   padding: 2.5em 3.25em 0 2.5em;
   display: flex;
   justify-content: start;
-
-  &[data-size='extra-small'] {
-    height: 2.5em;
-
-    svg {
-      height: 2.25em;
-      position: absolute;
-      top: 1em;
-      left: 1em;
-    }
-  }
 }
 
 .subscriptionRadios {

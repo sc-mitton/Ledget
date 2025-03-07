@@ -870,7 +870,6 @@ function UnenrichedDatePicker(props: UnenrichedDatePickerProps<TPicker>) {
               ? selectedValue?.some((v) => v)
               : Boolean(selectedValue)
           }
-          slim={true}
           ref={inputContainerRef}
         >
           <input

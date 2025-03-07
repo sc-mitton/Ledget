@@ -156,6 +156,10 @@
     background-color: var(--month-background);
     border: 1.5px solid var(--month-border2);
 
+    &[data-active='true'] {
+      border-color: var(--month-border);
+    }
+
     * {
       color: var(--month-color);
     }
@@ -167,8 +171,12 @@
 
   &[data-color='green'],
   &[data-color='green-split'] {
-    background-color: var(--year-background-hover);
+    background-color: var(--year-background);
     border: 1.5px solid var(--year-border2);
+
+    &[data-active='true'] {
+      border-color: var(--year-border);
+    }
 
     * {
       color: var(--year-color);
@@ -183,6 +191,10 @@
   &[data-color='green-blue-split'] {
     background: var(--year-background);
     border: 1.5px solid var(--year-border);
+
+    &[data-active='true'] {
+      border-color: var(--year-border);
+    }
 
     &[data-hoverable='true']:hover {
       background: var(--year-background-hover);

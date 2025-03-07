@@ -62,34 +62,6 @@
   }
 }
 
-.menuTextInputContainer {
-  flex-grow: 1;
-  cursor: text;
-  display: flex;
-  padding-bottom: 0.125em;
-
-  & > div {
-    padding: 0.125em;
-    background-color: var(--input-background);
-    color: var(--m-text);
-    border-radius: var(--border-radius1);
-    box-sizing: border-box;
-    display: flex;
-    gap: 0.5em;
-    align-items: center;
-    justify-content: space-between;
-    transition: border 0.2s ease;
-    position: relative;
-    width: 100%;
-
-    @include input-focus-styling;
-  }
-
-  input {
-    padding-left: 0.5em;
-  }
-}
-
 /* ------------------------------ Card Element ------------------------------ */
 .cardContainer {
   background-color: var(--input-background);

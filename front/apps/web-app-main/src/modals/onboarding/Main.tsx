@@ -1,64 +1,51 @@
 import { AnimatePresence } from 'framer-motion';
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 
 import { withModal } from '@ledget/ui';
 import { SlideMotionDiv } from '@ledget/ui';
 import AddBills from './add-bills/AddBills';
-import AddCategories from './AddCategories';
+import AddCategories from './add-categories/AddCategories';
 import WelcomeConnect from './WelcomeConnect';
-import styles from './styles/welcome-connect.module.scss';
+import styles from './styles/main.module.scss';
 
-const Main = withModal((props) => {
+const Main = () => {
   const location = useLocation();
 
   return (
     <div className={styles.onboardingApp}>
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route
-            path="connect"
-            element={
-              <SlideMotionDiv position={'first'}>
-                <WelcomeConnect />
-              </SlideMotionDiv>
-            }
-          />
-          <Route
-            path="add-bills"
-            element={
-              <SlideMotionDiv>
-                <AddBills />
-              </SlideMotionDiv>
-            }
-          />
-          <Route
-            path="add-categories"
-            element={
-              <SlideMotionDiv position={'last'}>
-                <AddCategories />
-              </SlideMotionDiv>
-            }
-          />
-        </Routes>
-      </AnimatePresence>
+      <div className={styles.overlay} />
+      <div className={styles.routes}>
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            <Route
+              path="connect"
+              element={
+                <SlideMotionDiv position={'first'}>
+                  <WelcomeConnect />
+                </SlideMotionDiv>
+              }
+            />
+            <Route
+              path="add-categories"
+              element={
+                <SlideMotionDiv>
+                  <AddCategories />
+                </SlideMotionDiv>
+              }
+            />
+            <Route
+              path="add-bills"
+              element={
+                <SlideMotionDiv>
+                  <AddBills />
+                </SlideMotionDiv>
+              }
+            />
+          </Routes>
+        </AnimatePresence>
+      </div>
     </div>
   );
-});
+};
 
-export default function () {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  return (
-    <Main
-      hasExit={false}
-      overLayExit={false}
-      onClose={() =>
-        navigate({
-          pathname: '/budget',
-          search: location.search,
-        })
-      }
-    />
-  );
-}
+export default Main;

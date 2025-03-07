@@ -29,11 +29,8 @@
 .bakedListBoxContainer {
   display: inline-flex;
   flex-direction: column;
+  position: relative;
   width: 100%;
-
-  & > div:last-of-type {
-    position: relative;
-  }
 
   hr {
     width: calc(100% - 0.5em);

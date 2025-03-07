@@ -25,7 +25,7 @@ const AddReminder = (props: Props) => {
   return (
     <div>
       <BakedListBox
-        placement="left"
+        placement="auto"
         placeholder="Add"
         name={props.name}
         indicatorIcon="plus"

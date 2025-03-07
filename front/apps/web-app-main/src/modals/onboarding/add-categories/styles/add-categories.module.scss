@@ -1,0 +1,117 @@
+.addCategories {
+  padding: 0.5em 0.5em;
+}
+
+.header {
+  margin-bottom: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  h4 {
+    color: var(--m-text-tertiary);
+    margin-bottom: 0.5em;
+  }
+}
+
+.legend {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  margin-bottom: 1.5em;
+
+  & > span:first-of-type,
+  & > span:nth-of-type(3) {
+    width: 0.5em;
+    height: 0.5em;
+    border-radius: 50%;
+  }
+
+  & > span:first-of-type {
+    background-color: var(--month-border);
+  }
+
+  & > span:nth-of-type(3) {
+    margin-left: 0.5em;
+    background-color: var(--year-border);
+  }
+}
+
+.focusedCategory {
+  inset: 0;
+  position: absolute;
+  z-index: 100;
+  border-radius: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 7em;
+  gap: 1em;
+
+  h3 {
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  &[data-visible='false'] {
+    display: none;
+  }
+
+  &::before {
+    border-radius: inherit;
+    inset: 0;
+    z-index: -1;
+    content: '';
+    position: absolute;
+    background-color: var(--window);
+    opacity: 0.9;
+  }
+
+  &::after {
+    border-radius: inherit;
+    inset: 0;
+    z-index: -2;
+    content: '';
+    position: absolute;
+    backdrop-filter: blur(10px);
+  }
+
+  & > div:last-of-type {
+    position: absolute;
+    bottom: 2em;
+    right: 2em;
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+  }
+}
+
+.bottomButtons {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2em;
+  margin-left: 0.25em;
+}
+
+.customButton {
+  div {
+    display: flex;
+    align-items: center;
+    gap: 0.25em;
+  }
+}
+
+.categories {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1em;
+  align-items: center;
+  justify-content: center;
+}

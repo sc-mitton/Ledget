@@ -76,8 +76,7 @@ const AccountStatusRoute = () => {
   }
 
   if (!user.account.has_customer) {
-    window.location.href = import.meta.env.VITE_CHECKOUT_REDIRECT;
-    return null;
+    return <Navigate to="/checkout" replace />;
   }
 
   if (

@@ -64,44 +64,42 @@ const AddAlert = (props: {
 
     return (
       <div className={styles.customInput}>
-        <MenuTextInput>
-          <ComboSelect.Custom
-            ref={ref}
-            placeholder="Custom..."
-            onChange={handleChange}
-            transformValue={() => transformValue()}
-            onFocus={() => handleFocus()}
-            onBlur={() => {
-              setPct('');
-            }}
-            value={pct}
-            size={7}
-          >
-            {({ focused }) => (
-              <>
-                <DollarCents
-                  withCents={false}
-                  value={Big(limitAmount || 0)
-                    .times(parseInt(pct.replace(/[^0-9]/g, '') || '0', 10))
-                    .div(100)
-                    .toNumber()}
-                  style={{
-                    opacity: focused ? '.5' : '0',
-                    marginRight: '.5em',
-                  }}
-                />
-                <div
-                  className={styles.returnBtn}
-                  data-focused={focused}
-                  role="button"
-                  aria-label="Add custom alert"
-                >
-                  <CornerDownLeft size={'1em'} />
-                </div>
-              </>
-            )}
-          </ComboSelect.Custom>
-        </MenuTextInput>
+        <ComboSelect.Custom
+          ref={ref}
+          placeholder="Custom..."
+          onChange={handleChange}
+          transformValue={() => transformValue()}
+          onFocus={() => handleFocus()}
+          onBlur={() => {
+            setPct('');
+          }}
+          value={pct}
+          size={7}
+        >
+          {({ focused }) => (
+            <>
+              <DollarCents
+                withCents={false}
+                value={Big(limitAmount || 0)
+                  .times(parseInt(pct.replace(/[^0-9]/g, '') || '0', 10))
+                  .div(100)
+                  .toNumber()}
+                style={{
+                  opacity: focused ? '.5' : '0',
+                  marginRight: '.5em',
+                }}
+              />
+              <div
+                className={styles.returnBtn}
+                data-focused={focused}
+                role="button"
+                aria-label="Add custom alert"
+              >
+                <CornerDownLeft size={'1em'} />
+              </div>
+            </>
+          )}
+        </ComboSelect.Custom>
       </div>
     );
   };

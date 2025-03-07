@@ -1,7 +1,18 @@
+.addBills {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5em 0.5em;
+
+  hr {
+    border-top: 1px solid var(--border-color-dim);
+  }
+}
+
 .loadingRingDiv {
   min-height: 100px;
-  max-height: 60vh;
+  max-height: 50vh;
   overflow-y: auto;
+  margin-top: 1em;
   padding-right: 0.75em;
   padding-left: 0.25em;
   margin-left: -0.25em;
@@ -25,7 +36,7 @@
 
   & + h4 {
     color: var(--m-text-tertiary);
-    margin-bottom: 1rem;
+    margin-bottom: 0.5em;
   }
 }
 
@@ -45,6 +56,15 @@
     flex-grow: 1;
     span {
       color: var(--m-text-tertiary);
+    }
+  }
+
+  & > button {
+    margin-left: 0.5em;
+
+    svg {
+      width: 1em;
+      height: 1em;
     }
   }
 }

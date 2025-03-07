@@ -16,7 +16,7 @@ export const FormErrorTip = ({ error }: { error?: Error }) => (
         <AlertCircleFill
           stroke={'var(--m-invert-text)'}
           strokeWidth={2}
-          size="1.25em"
+          size="1.375em"
         />
       </div>
     )}

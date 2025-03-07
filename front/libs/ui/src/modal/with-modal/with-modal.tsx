@@ -47,7 +47,6 @@ export function withModal<P>(
 
     const [closeAll, setCloseAll] = useState(false);
     const modalRef = useRef<HTMLDivElement>(null);
-    const { isDark } = useColorScheme();
 
     useCloseDropdown({
       refs: overLayExit ? [modalRef] : [],

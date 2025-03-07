@@ -63,9 +63,7 @@ export const DollarCents = ({
   style?: React.CSSProperties;
   [key: string]: any;
 }) => {
-  const str = formatCurrency(
-    typeof value === 'string' ? value.replace(/^-/, '') : Math.abs(value)
-  );
+  const str = formatCurrency(value, withCents);
   const showPlus = Number(value) < 0;
 
   return (

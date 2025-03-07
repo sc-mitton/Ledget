@@ -96,13 +96,21 @@
   }
 
   &[data-active='true'] {
-    background-color: var(--btn-light-gray-hover);
+    background-color: var(--btn-feather-light-gray);
     transition: all 0.3s ease-out;
   }
 
-  &[data-selected='false']:hover {
+  &[data-dark='true'][data-active='true'] {
     background-color: var(--btn-light-gray-hover);
+  }
+
+  &[data-selected='false']:hover {
+    background-color: var(--btn-feather-light-gray);
     transition: all 0.3s ease-out;
+  }
+
+  &[data-dark='true'][data-selected='false']:hover {
+    background-color: var(--btn-light-gray-hover);
   }
 
   &[data-selected='true'][data-active='true'] {

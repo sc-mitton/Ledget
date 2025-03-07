@@ -1,16 +1,3 @@
-.onboardingApp {
-  border-radius: inherit;
-
-  &::after {
-    inset: 0;
-    content: '';
-    z-index: -1;
-    background-color: var(--modal-background-color);
-    position: absolute;
-    border-radius: inherit;
-  }
-}
-
 .btnContainerEnabled {
   display: flex;
   justify-content: flex-end;
@@ -27,6 +14,8 @@
 }
 
 .welcomeConnect {
+  padding: 1em 0.5em;
+
   & > div:first-of-type {
     font-size: 1.125rem;
 
@@ -112,6 +101,9 @@
 
 .institutionLogo {
   margin-right: -0.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   img {
     width: 2rem;

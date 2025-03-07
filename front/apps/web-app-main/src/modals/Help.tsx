@@ -1,7 +1,7 @@
 import { withModal } from '@ledget/ui';
 
 import { z } from 'zod';
-import { useForm, useWatch } from 'react-hook-form';
+import { useForm, useWatch, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import styles from './styles/help.module.scss';
@@ -15,7 +15,7 @@ const schema = z.object({
   detail: z.string().min(1, { message: 'required' }),
 });
 
-const IssueOptions = [
+const issueOptions = [
   { label: 'Problem with account', value: 'ACCOUNT_PROBLEM', id: 1 },
   { label: 'Billing Issue', value: 'BILLING', id: 2 },
   { label: 'I have a question', value: 'QUESTION', id: 3 },
@@ -66,11 +66,21 @@ const HelpModal = withModal((props) => {
       <form onSubmit={handleSubmit(emailUser)}>
         <fieldset>
           <label htmlFor="issue">Issue</label>
-          <BakedListBox
-            options={IssueOptions}
-            control={control as any}
-            error={errors.issue}
+          <Controller
+            control={control}
             name="issue"
+            render={(props) => (
+              <BakedListBox
+                options={issueOptions}
+                error={errors.issue}
+                name="issue"
+                multiple={false}
+                value={props.field.value}
+                onChange={(e) => {
+                  props.field.onChange(e);
+                }}
+              />
+            )}
           />
           <label htmlFor="issue">Additional Details</label>
           <TextInputWrapper>

@@ -2,7 +2,6 @@ import { LedgetLogoIcon } from '@ledget/media';
 
 import { useGetPricesQuery } from '@ledget/shared-features';
 import { UseFormRegister } from 'react-hook-form';
-import { Star } from '@geist-ui/icons';
 import { z } from 'zod';
 
 import styles from './styles/prices.module.scss';

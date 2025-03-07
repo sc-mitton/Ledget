@@ -121,14 +121,6 @@ const Transactions = (props: PTransactions & { account?: Account }) => {
       if ((ty > 0 && state.value === 0) || (ty < 0 && state.value === 1)) {
         return true;
       }
-      console.log(
-        DRAG_THRESHOLD,
-        ESCAPE_VELOCITY,
-        Math.abs(vy),
-        Math.abs(ty),
-        Math.abs(ty) > DRAG_THRESHOLD,
-        Math.abs(vy) > ESCAPE_VELOCITY
-      );
       if (Math.abs(ty) > DRAG_THRESHOLD || Math.abs(vy) > ESCAPE_VELOCITY) {
         top.value =
           state.value === 1

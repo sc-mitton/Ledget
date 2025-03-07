@@ -2,7 +2,7 @@ import { ReactNode, createContext, useContext, useState } from 'react';
 import Picker from '@emoji-mart/react';
 import { Emoji as EmojiIcon } from '@geist-ui/icons';
 
-import './styles/emoji-picker.module.scss';
+import './styles/emoji-picker.scss';
 import styles from './styles/emoji-picker.module.scss';
 import { DropdownDiv, useColorScheme } from '@ledget/ui';
 
@@ -95,10 +95,7 @@ const EmojiPicker = () => {
   const { isDark } = useColorScheme();
 
   return (
-    <DropdownDiv
-      visible={picker}
-      style={{ backgroundColor: 'transparent', boxShadow: 'none' }}
-    >
+    <DropdownDiv visible={picker} className={styles.dropdown}>
       <div className={styles.emojiPickerContainer}>
         <Picker
           autoFocus

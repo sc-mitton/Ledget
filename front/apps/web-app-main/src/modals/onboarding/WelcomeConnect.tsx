@@ -1,13 +1,12 @@
 import { useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import { CheckInCircle, Plus, PlusCircle } from '@geist-ui/icons';
+import { CheckInCircle, Plus } from '@geist-ui/icons';
 
 import styles from './styles/welcome-connect.module.scss';
 import { useBakedPlaidLink } from '@utils/hooks';
 import {
   useGetPlaidItemsQuery,
-  PlaidItem,
   useGetMeQuery,
   useTransactionsSyncMutation,
 } from '@ledget/shared-features';
@@ -16,21 +15,24 @@ import {
   Tooltip,
   TextButtonBlue,
   GrayButton,
-  NestedWindow,
+  NestedWindow2,
   LoadingRingDiv,
+  Window,
 } from '@ledget/ui';
 import { useLoaded } from '@ledget/helpers';
 
-const InstitutionLogos = ({ plaidItems }: { plaidItems: PlaidItem[] }) => {
+const InstitutionLogos = () => {
   const { data: user } = useGetMeQuery();
-  const { isLoading } = useGetPlaidItemsQuery({ userId: user?.id });
+  const { data: plaidItems, isLoading } = useGetPlaidItemsQuery({
+    userId: user?.id,
+  });
   const { open } = useBakedPlaidLink(true);
 
   return (
-    <NestedWindow className={styles.connectedInstitutionsContainer}>
+    <NestedWindow2 className={styles.connectedInstitutionsContainer}>
       <LoadingRingDiv loading={isLoading}>
         <div className={styles.connectedInstitutions}>
-          {plaidItems.length > 0 ? (
+          {plaidItems && plaidItems?.length > 0 ? (
             plaidItems.map((item, index) => (
               <div
                 key={item.id}
@@ -56,7 +58,7 @@ const InstitutionLogos = ({ plaidItems }: { plaidItems: PlaidItem[] }) => {
               <Plus />
             </TextButtonBlue>
           )}
-          {plaidItems.length > 0 && (
+          {plaidItems && plaidItems?.length > 0 && (
             <div>
               <TextButtonBlue onClick={() => open()}>
                 Connect
@@ -66,7 +68,7 @@ const InstitutionLogos = ({ plaidItems }: { plaidItems: PlaidItem[] }) => {
           )}
         </div>
       </LoadingRingDiv>
-    </NestedWindow>
+    </NestedWindow2>
   );
 };
 
@@ -75,7 +77,7 @@ const BottomButtons = ({ continueDisabled }: { continueDisabled: boolean }) => {
 
   return (
     <div className={styles.btnContainerEnabled}>
-      <GrayButton onClick={() => navigate('/welcome/add-bills')}>
+      <GrayButton onClick={() => navigate('/welcome/add-categories')}>
         Continue
       </GrayButton>
     </div>
@@ -123,17 +125,17 @@ const WelcomeConnect = () => {
   }, [plaidItems]);
 
   return (
-    <div className={styles.welcomeConnect}>
-      <h2 className="spaced-header">Welcome to Ledget!</h2>
-      <div>
-        <span>Let's get started by connecting your financial accounts.</span>
-        <SecurityMessage />
-        {fetchedPlaidItemsSuccess && (
-          <InstitutionLogos plaidItems={plaidItems} />
-        )}
+    <Window>
+      <div className={styles.welcomeConnect}>
+        <h2 className="spaced-header">Welcome to Ledget!</h2>
+        <div>
+          <span>Let's get started by connecting your financial accounts.</span>
+          <SecurityMessage />
+          <InstitutionLogos />
+        </div>
+        <BottomButtons continueDisabled={false} />
       </div>
-      <BottomButtons continueDisabled={false} />
-    </div>
+    </Window>
   );
 };
 
