@@ -32,7 +32,8 @@ class UpdateTransactionListSerializer(serializers.ListSerializer):
 
     @transaction.atomic
     def update(self, instances, validated_data):
-        bill_ids = [item['bill'] for item in validated_data if item.get('bill', None)]
+        bill_ids = [item['bill']
+                    for item in validated_data if item.get('bill', None)]
         bill_objs = self._get_bill_objects(bill_ids)
 
         updated_transactions = []
@@ -105,16 +106,22 @@ class UpdateTransactionsConfirmationSerializer(serializers.Serializer):
             raise serializers.ValidationError('Fractions must sum to 1')
         return value
 
-    def update(self, instance, validated_data):
-        if any(key in validated_data for key in
-               ['category', 'category_id', 'bill', 'bill_id']):
-            validated_data['confirmed_date'] = datetime.now()
-            validated_data['confirmed_datetime'] = datetime.now()
-        if all(key not in validated_data for key in
-               ['category', 'category_id', 'bill', 'bill_id']):
-            nullified_fields = ['predicted_category', 'predicted_bill']
-            validated_data.update({field: None for field in nullified_fields})
+    def to_internal_value(self, data):
+        ret = super().to_internal_value(data)
 
+        if any(key in data for key in ['category', 'category_id', 'bill', 'bill_id']):
+            ret['confirmed_date'] = datetime.now()
+            ret['confirmed_datetime'] = datetime.now()
+        elif all(key not in data for key in ['category', 'category_id',
+                                             'bill', 'bill_id']):
+            ret.update({
+                'predicted_category': None,
+                'predicted_bill': None
+            })
+
+        return ret
+
+    def update(self, instance, validated_data):
         return super().update(instance, validated_data)
 
 
@@ -145,13 +152,12 @@ class TransactionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def to_internal_value(self, data):
-        ret = super().to_internal_value(data)
-
         if 'detail' in data and data['detail'] is not None:
-            ret['detail'] = Transaction.Detail(
-                Transaction.Detail.labels.index(data['detail'])
-            ).value
-
+            if data['detail'] not in Transaction.Detail.labels:
+                raise serializers.ValidationError('Invalid detail value.')
+            data['detail'] = Transaction.Detail(
+                Transaction.Detail.labels.index(data['detail']))
+        ret = super().to_internal_value(data)
         return ret
 
     def update(self, instance, validated_data):
@@ -162,7 +168,8 @@ class TransactionSerializer(serializers.ModelSerializer):
             validated_data.update({field: None for field in nullified_fields})
         else:
             default_category = Category.objects.filter(
-                usercategory__user__in=self.context['request'].user.account.users.all(),
+                usercategory__user__in=self.context['request'].user.account.users.all(
+                ),
                 is_default=True
             ).first()
             instance.predicted_category = default_category

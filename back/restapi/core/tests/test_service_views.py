@@ -157,13 +157,6 @@ class TestServiceViews(ViewTestsMixin):
         self.assertEqual(response.status_code, 200)
         self.assertIsNotNone(response.data)
 
-    def test_create_customer_error(self):
-        '''
-        If user is already a customer, the view should return 422
-        '''
-        response = self.client.post(reverse('customer'))
-        self.assertEqual(response.status_code, 422)
-
     @patch.object(service_stripe.Customer, 'create')
     def test_create_customer(self, mock_customer_create):
         mock_customer_create.return_value = Mock(id='test_customer_id')

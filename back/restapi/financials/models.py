@@ -30,9 +30,9 @@ class PlaidItem(BasePrivateModel):
         db_table = 'financials_plaid_item'
 
     institution = models.ForeignKey(
-            Institution,
-            on_delete=models.SET_NULL,
-            null=True
+        Institution,
+        on_delete=models.SET_NULL,
+        null=True
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE, editable=False)
     id = models.CharField(max_length=40, primary_key=True, editable=False)
@@ -108,7 +108,8 @@ class Transaction(BaseSharedModel):
 
     # ID info
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
-    transaction_id = models.CharField(max_length=100, primary_key=True, editable=False)
+    transaction_id = models.CharField(
+        max_length=100, primary_key=True, editable=False)
     transaction_code = models.CharField(max_length=100, null=True, blank=True)
     transaction_type = models.CharField(max_length=100, null=True, blank=True)
 

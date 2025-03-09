@@ -195,7 +195,8 @@ class TestTransactionViewSet(ViewTestsMixin):
 
         self.assertEqual(response.status_code, 201)
         notes = Note.objects.filter(transaction=self.transaction)
-        self.assertEqual(any(note.text == 'This is a note' for note in notes), True)
+        self.assertEqual(
+            any(note.text == 'This is a note' for note in notes), True)
 
     def test_updating_note_to_transaction(self):
         """Test updating a note for a transaction."""
@@ -208,7 +209,8 @@ class TestTransactionViewSet(ViewTestsMixin):
 
         edited_note = 'This is a new note'
         response = self.client.put(
-            reverse('note-detail', kwargs={'id': self.transaction.pk, 'pk': note.pk}),
+            reverse('note-detail',
+                    kwargs={'id': self.transaction.pk, 'pk': note.pk}),
             {'text': edited_note}
         )
 
@@ -228,6 +230,19 @@ class TestTransactionViewSet(ViewTestsMixin):
         self.assertEqual(response.status_code, 200)
         self.transaction.refresh_from_db()
         self.assertEqual(self.transaction.preferred_name, preferred_name)
+
+    def test_change_transaction_detail(self):
+        t = Transaction.objects.filter(
+            account__useraccount__user=self.user
+        ).first()
+        response = self.client.patch(
+            reverse('transactions-detail', kwargs={'pk': t.pk}),
+            {'detail': Transaction.Detail.SPENDING.label},
+            format='json'
+        )
+        self.assertEqual(response.status_code, 200)
+        t.refresh_from_db()
+        self.assertEqual(t.detail, Transaction.Detail.SPENDING)
 
     @patch.object(plaid_client, 'transactions_sync')
     def test_item_login_required(self, mock_sync):
