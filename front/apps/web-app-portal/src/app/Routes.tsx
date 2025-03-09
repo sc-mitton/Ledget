@@ -35,7 +35,7 @@ function AnimatedRoutes() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              key={location.pathname}
+              key={location.pathname.split('/')[1]}
               transition={{ opacity: { duration: 0.15, ease: 'easeIn' } }}
             >
               <Routes location={location} key={location.pathname.split('/')[1]}>
@@ -45,7 +45,7 @@ function AnimatedRoutes() {
                 <Route path="/activation" element={<Activation />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/verification" element={<Verification />} />
-                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/checkout/*" element={<Checkout />} />
               </Routes>
             </motion.div>
           </AnimatePresence>

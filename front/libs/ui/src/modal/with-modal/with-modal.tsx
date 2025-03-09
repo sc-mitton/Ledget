@@ -36,7 +36,7 @@ export function withModal<P>(
       disableClose = false,
       overLayExit = true,
       focusOnMount = true,
-      width = '80%',
+      width = 'calc(100% - 2rem)',
       minWidth = '18.75rem',
       maxWidth = '28rem',
       zIndex = 100,

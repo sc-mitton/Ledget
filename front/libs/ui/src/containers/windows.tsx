@@ -32,10 +32,18 @@ const StyledPortalWindow = styled.div<{ size?: string; maxWidth?: number }>`
   font-size: 0.875rem;
   border-radius: var(--border-radius5);
   border: 1.5px solid var(--window-border);
-  padding: 2em;
-  margin: 1rem 0 2rem 0;
+  padding-bottom: 2em;
+  padding-top: 2em;
+  padding-left: ${(props) => (props.size === 'extra-small' ? '1.5em' : '2em')};
+  padding-right: ${(props) => (props.size === 'extra-small' ? '1.5em' : '2em')};
+  // margin: 1rem 0 2rem 0;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  margin-left: auto;
+  margin-right: auto;
   position: relative;
-  max-width: ${(props) => (props.maxWidth ? `${props.maxWidth}em` : '24em')};
+  box-sizing: border-box;
+  max-width: ${(props) => (props.maxWidth ? `${props.maxWidth}em` : '32em')};
   width: ${(props) => (props.size === 'extra-small' ? '100%' : '85%;')};
   box-shadow: ${(props) =>
     props.size === 'extra-small' ? 'none' : 'var(--window-portal-drop-shadow)'};
@@ -44,7 +52,6 @@ const StyledPortalWindow = styled.div<{ size?: string; maxWidth?: number }>`
 
   height: ${(props) =>
     props.size === 'extra-small' ? 'calc(100% - 2em)' : 'auto'};
-  max-height: ${(props) => (props.size === 'extra-small' ? '40em' : 'none')};
   display: ${(props) => (props.size === 'extra-small' ? 'flex' : 'block')};
   flex-direction: ${(props) =>
     props.size === 'extra-small' ? 'column' : 'row'};

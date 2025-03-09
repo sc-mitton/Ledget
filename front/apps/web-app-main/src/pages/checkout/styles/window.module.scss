@@ -5,6 +5,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  & > div:first-of-type {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(50, 50, 50, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 99;
+  }
+
+  & > div:last-of-type {
+    z-index: 100;
+  }
 }
 
 .checkoutSlideDiv {
@@ -21,11 +33,6 @@
 .purchaseMethod {
   & > div {
     padding: 0;
-
-    &[data-size='extra-small'] {
-      background-color: transparent;
-      box-shadow: none;
-    }
   }
 }
 
@@ -50,7 +57,7 @@
 }
 
 .billingForm {
-  padding-top: clamp(1em, 2vw, 2em);
+  padding-top: 0.5em;
   padding-bottom: 2em;
   padding-left: clamp(1em, 2vw, 2em);
   padding-right: clamp(1em, 2vw, 2em);

@@ -1,13 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import {
-  Routes,
-  Outlet,
-  Route,
-  useLocation,
-  Navigate,
-  useNavigate,
-} from 'react-router-dom';
+import { Routes, Outlet, Route, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
 import '@styles/base.scss';
@@ -25,6 +18,7 @@ import {
   Toast,
   ColorSchemedDiv,
   useScreenContext,
+  WindowLoading,
 } from '@ledget/ui';
 import {
   CreateCategory,
@@ -72,10 +66,10 @@ const AccountStatusRoute = () => {
   }
 
   if (!user.is_onboarded) {
-    return <Navigate to="/welcome/connect" replace />;
+    return <Navigate to="/welcome" replace />;
   }
 
-  if (!user.account.has_customer) {
+  if (!user.account.has_customer || !user.account.service_provisioned_until) {
     return <Navigate to="/checkout" replace />;
   }
 
@@ -86,7 +80,7 @@ const AccountStatusRoute = () => {
     return <Navigate to="/settings/profile/update-payment" replace />;
   }
 
-  if (user.account.subscription_status === 'past_due') {
+  if (user.account.customer.subscription_status === 'past_due') {
     return <Navigate to="/settings/profile/update-payment" replace />;
   }
 
@@ -99,7 +93,6 @@ const AccountStatusRoute = () => {
 
 const App = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [disableSession] = useDisableSessionMutation();
 
@@ -184,7 +177,7 @@ const App = () => {
               </Route>
               <Route path="verify-email" element={<ForceVerification />} />
               <Route path="welcome/*" element={<OnboardingModal />} />
-              <Route path="checkout" element={<Checkout />} />
+              <Route path="checkout/*" element={<Checkout />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </ZoomMotionDiv>

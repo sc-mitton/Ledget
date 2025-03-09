@@ -148,7 +148,7 @@ class Account(models.Model):
     )
 
     customer = models.OneToOneField(
-        'Customer', on_delete=models.CASCADE, null=True, default=None
+        'Customer', on_delete=models.SET_NULL, null=True, default=None
     )
     created_on = models.DateTimeField(auto_now_add=True)
     canceled_on = models.DateTimeField(null=True, default=None)
@@ -203,8 +203,9 @@ class Customer(models.Model):
         data needs to be deleted. As much as possible is kept for analytics.
         Cleanup happens by kicking off a celery task.
         """
-        tasks.cancelation_cleanup.delay(str(self.user_id))
-        tasks.cancelation_cleanup.delay(str(self.user.co_owner.id))
+        tasks.cancelation_cleanup.delay(str(self.user.id))
+        if self.user.co_owner.id is not None:
+            tasks.cancelation_cleanup.delay(str(self.user.co_owner.id))
         return super().delete(*args, **kwargs)
 
     @property

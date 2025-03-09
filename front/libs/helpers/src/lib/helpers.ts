@@ -68,7 +68,7 @@ export const formatCurrency = (
   val: number | string | undefined,
   withCents = true
 ) => {
-  if (val === undefined) {
+  if (val === undefined || val === null) {
     return withCents ? '$0.00' : '$0';
   }
 

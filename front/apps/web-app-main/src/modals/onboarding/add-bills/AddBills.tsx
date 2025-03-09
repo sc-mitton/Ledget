@@ -6,6 +6,7 @@ import { Edit, Edit2 } from '@geist-ui/icons';
 import styles from './styles/add-bills.module.scss';
 import {
   useUpdateUserMutation,
+  useGetMeQuery,
   useGetRecurringTransactionsQuery,
   useAddnewBillMutation,
   NewBill,
@@ -26,8 +27,10 @@ import { capitalize } from '@ledget/helpers';
 import CustomBill from './CustomBill';
 
 const AddBills = () => {
+  const { data: user } = useGetMeQuery();
+  const [updateUser, { isLoading: isUpdatingUser, isSuccess: hasUpdatedUser }] =
+    useUpdateUserMutation();
   const navigate = useNavigate();
-  const [updateUser, { isSuccess: hasUpdatedUser }] = useUpdateUserMutation();
   const [
     addNewBill,
     { isLoading: isAddingNewBills, isSuccess: hasAddedNewBills },
@@ -52,15 +55,15 @@ const AddBills = () => {
 
   useEffect(() => {
     if (hasAddedNewBills) {
-      updateUser({
-        is_onboarded: true,
-      });
+      updateUser({ is_onboarded: true });
     }
   }, [hasAddedNewBills]);
 
   useEffect(() => {
-    if (hasUpdatedUser) {
-      navigate('/budget');
+    if (hasUpdatedUser && !user?.account?.has_customer) {
+      navigate('/checkout');
+    } else if (hasUpdatedUser) {
+      navigate('/budget', { replace: true });
     }
   }, [hasUpdatedUser]);
 
@@ -68,9 +71,7 @@ const AddBills = () => {
     if (selectedItems.length > 0) {
       addNewBill(listItems.filter((item) => selectedItems.includes(item.id!!)));
     } else {
-      updateUser({
-        is_onboarded: true,
-      });
+      updateUser({ is_onboarded: true });
     }
   };
 
@@ -131,7 +132,7 @@ const AddBills = () => {
               </Present.Trigger>
               <BlueSubmitButton
                 onClick={onContinue}
-                submitting={isAddingNewBills}
+                submitting={isAddingNewBills || isUpdatingUser}
               >
                 Continue
               </BlueSubmitButton>

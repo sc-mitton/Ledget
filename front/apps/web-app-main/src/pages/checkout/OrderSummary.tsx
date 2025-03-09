@@ -1,16 +1,26 @@
+import { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 
 import styles from './styles/order-summary.module.scss';
 import { DollarCents } from '@ledget/ui';
 import { getOrderSuffix } from '@ledget/helpers';
+import { useCheckout } from './Context';
+import { useGetPricesQuery } from '@ledget/shared-features';
 
-const OrderSummary = ({
-  unit_amount,
-  trial_period_days,
-}: {
-  unit_amount?: number;
-  trial_period_days?: number;
-}) => {
+const OrderSummary = () => {
+  const { price } = useCheckout();
+  const { data: prices } = useGetPricesQuery();
+  const [trial_period_days, setTrialPeriodDays] = useState(0);
+  const [unit_amount, setUnitAmount] = useState(0);
+
+  useEffect(() => {
+    if (prices) {
+      const foundPrice = prices.find((p) => p.id === price);
+      setTrialPeriodDays(foundPrice?.metadata.trial_period_days || 0);
+      setUnitAmount(foundPrice?.unit_amount || 0);
+    }
+  }, [prices]);
+
   const firstCharge = dayjs().add(trial_period_days || 0, 'day');
   return (
     <div className={styles.container}>

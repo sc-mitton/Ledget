@@ -2,7 +2,6 @@ import logging
 
 from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
-    HTTP_422_UNPROCESSABLE_ENTITY,
     HTTP_200_OK
 )
 from rest_framework.views import APIView
@@ -22,7 +21,7 @@ from core.serializers.account import DeleteRestartSubscriptionSerializer
 from core.serializers.subscription import StripeSubscriptionSerializer
 from core.utils.stripe import stripe_error_handler, StripeError
 from core.models import Customer, Feedback
-from restapi.permissions.auth import can_create_stripe_subscription, IsAuthenticated
+from restapi.permissions.auth import IsAuthenticated
 from restapi.permissions.checks import HasCustomer
 from restapi.permissions.objects import OwnsStripeSubscription, is_account_owner
 
@@ -113,7 +112,8 @@ class DeleteRestartSubscriptionView(GenericAPIView):
         Feedback.objects.create(
             user=self.request.user,
             feedback=serializer.validated_data.pop('feedback'),
-            cancelation_reason=serializer.validated_data.pop('cancelation_reason')
+            cancelation_reason=serializer.validated_data.pop(
+                'cancelation_reason')
         )
 
 
@@ -130,7 +130,8 @@ class SubscriptionItemView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
 
         try:
-            sub_id = get_current_subscription_id(request.user.account.customer.id)
+            sub_id = get_current_subscription_id(
+                request.user.account.customer.id)
             stripe.SubscriptionItem.modify(sub_id, **serializer.validated_data)
         except Exception as e:  # pragma: no cover
             stripe_logger.error(f'Error updating subscription items: {e}')
@@ -165,23 +166,44 @@ class SubscriptionView(GenericAPIView):
 
         return Response(serializer.data, HTTP_200_OK)
 
-    @can_create_stripe_subscription
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+
+        if not request.user.account.customer.id:
+            return Response({'error': 'User is not a customer'}, HTTP_400_BAD_REQUEST)
+
+        pending_setup_intent = None
+        for sub in stripe.Subscription.list(
+                customer=self.request.user.account.customer.id).data:
+            if 'pending_setup_intent' in sub:
+                pending_setup_intent = sub['pending_setup_intent']
+                break
 
         try:
-            stripe_subscription = self._create_subscription(
-              customer=request.user.account.customer.id,
-              **serializer.validated_data
-            )
-            pending_setup_intent = stripe_subscription.pending_setup_intent
+            client_secret = self._get_client_secret(
+                request, pending_setup_intent)
             return Response({
-                'client_secret': pending_setup_intent.client_secret,
+                'client_secret': client_secret,
                 'identifier': self.request.user.traits['email']},
                 HTTP_200_OK)
         except Exception as e:  # pragma: no cover
             return Response({'error': str(e)}, HTTP_400_BAD_REQUEST)
+
+    def _get_client_secret(self, request, setup_intent=None):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        client_secret = None
+        if setup_intent:
+            setup_intent = stripe.SetupIntent.retrieve(setup_intent)
+            client_secret = setup_intent.client_secret
+        else:
+            stripe_subscription = self._create_subscription(
+                customer=request.user.account.customer.id,
+                **serializer.validated_data
+            )
+            client_secret = stripe_subscription.pending_setup_intent.client_secret
+
+        return client_secret
 
     def _create_subscription(self, **kwargs):
         default_args = {
@@ -213,9 +235,8 @@ class CreateCustomerView(APIView):
     def post(self, request, *args, **kwargs):
         if request.user.account.has_customer:
             return Response(
-                {'error': 'user is already customer'},
-                status=HTTP_422_UNPROCESSABLE_ENTITY
-            )
+                {'message': 'user is already customer'},
+                status=HTTP_200_OK)
 
         try:
             self._create_customer()
@@ -280,7 +301,8 @@ class PaymentMethodView(GenericAPIView):
                     serializer.data['payment_method_id']
                 }
             )
-            stripe.PaymentMethod.detach(serializer.data['old_payment_method_id'])
+            stripe.PaymentMethod.detach(
+                serializer.data['old_payment_method_id'])
         except Exception as e:  # pragma: no cover
             stripe_logger.error(f'Error setting default payment method: {e}')
             return Response(status=HTTP_400_BAD_REQUEST)
@@ -327,7 +349,8 @@ class NextInvoice(APIView):
             invoice = stripe.Invoice.upcoming(
                 customer=request.user.account.customer.id
             )
-            customer = stripe.Customer.retrieve(request.user.account.customer.id)
+            customer = stripe.Customer.retrieve(
+                request.user.account.customer.id)
             data = {
                 'next_payment': invoice.lines.data[0].amount,
                 'next_payment_date': invoice.next_payment_attempt,

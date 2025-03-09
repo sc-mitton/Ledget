@@ -76,6 +76,16 @@ h4 {
   font-weight: var(--fw-bold);
 }
 
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 2px solid var(--border-color-ultra-dim);
+  border-color: var(--border-color-dim);
+  margin: 0.5em 0 0.75em 0;
+  padding: 0;
+}
+
 svg {
   background: transparent;
 }

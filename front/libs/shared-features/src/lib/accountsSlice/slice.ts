@@ -9,6 +9,7 @@ import {
   UpdateAccount,
   GetBreakdownHistoryResponse,
 } from './types';
+import { BaseQueryFn } from '@reduxjs/toolkit/query';
 
 const apiWithTag = apiSlice.enhanceEndpoints({ addTagTypes: ['Accounts'] });
 
@@ -57,6 +58,23 @@ export const accountsRTKSlice = apiWithTag.injectEndpoints({
       },
       providesTags: ['AccountBalanceTrend'],
       keepUnusedDataFor: 60 * 30, // 30 minutes
+    }),
+    createCustomer: builder.mutation<any, void>({
+      query: () => ({
+        url: 'customer',
+        method: 'POST',
+      }),
+      invalidatesTags: ['Account', 'User'],
+    }),
+    createSubscription: builder.mutation<
+      { client_secret: string },
+      { price_id: string; trial_period_days: number }
+    >({
+      query: (data) => ({
+        url: 'subscription',
+        method: 'POST',
+        body: data,
+      }),
     }),
     updateAccounts: builder.mutation<UpdateAccount[], UpdateAccount[]>({
       query: (data) => ({
@@ -107,6 +125,8 @@ export const {
   useLazyGetAccountBalanceHistoryQuery,
   useLazyGetAccountBalanceTrendQuery,
   useGetBreakdownHistoryQuery,
+  useCreateCustomerMutation,
+  useCreateSubscriptionMutation,
 } = accountsRTKSlice;
 
 export const useGetAccountsQueryState =

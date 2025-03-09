@@ -277,22 +277,27 @@ class TransactionViewSet(ModelViewSet):
             user__in=self.request.user.account.users.all()
         ).prefetch_related('accounts')
 
-        recurring_transactions = []
-        for plaid_item in plaid_items:
-            request = TransactionsRecurringGetRequest(
-                access_token=plaid_item.access_token,
-                account_ids=[
-                    account.id for account in plaid_item.accounts.all()]
-            )
-            response = plaid_client.transactions_recurring_get(
-                request).to_dict()
-            recurring_transactions.extend(response['outflow_streams'])
+        try:
+            recurring_transactions = []
+            for plaid_item in plaid_items:
+                request = TransactionsRecurringGetRequest(
+                    access_token=plaid_item.access_token,
+                    account_ids=[
+                        account.id for account in plaid_item.accounts.all()]
+                )
+                response = plaid_client.transactions_recurring_get(
+                    request).to_dict()
+                recurring_transactions.extend(response['outflow_streams'])
+        except plaid.ApiException as e:
+            logger.error(e)
+            return Response({'error': 'Internal server error'},
+                            status=HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            serializer = RecurringTransaction(
+                data=recurring_transactions, many=True)
+            serializer.is_valid(raise_exception=True)
 
-        serializer = RecurringTransaction(
-            data=recurring_transactions, many=True)
-        serializer.is_valid(raise_exception=True)
-
-        return Response(serializer.data, status=HTTP_200_OK)
+            return Response(serializer.data, status=HTTP_200_OK)
 
     @action(detail=False, methods=['post'], url_path='sync', url_name='sync',
             permission_classes=[IsAuthenticated, HasObjectAccessLooseWrite])

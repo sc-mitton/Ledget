@@ -1,0 +1,39 @@
+.success {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: inherit;
+  z-index: 100;
+  overflow: hidden;
+  animation: fadeIn 0.3s ease-in;
+
+  &::before {
+    background-color: var(--overlay);
+    opacity: 0.5;
+    content: '';
+    position: absolute;
+    border-radius: inherit;
+    inset: 0;
+    z-index: -2;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    border-radius: inherit;
+    inset: 0;
+    backdrop-filter: blur(4px);
+    z-index: -1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

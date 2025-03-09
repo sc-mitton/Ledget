@@ -110,7 +110,7 @@ const Modal = withModal((props) => {
     <>
       <h2>Update Payment Method</h2>
       <hr />
-      {user.account.subscription_status === 'past_due' && (
+      {user.account.customer.subscription_status === 'past_due' && (
         <ErrorBanner
           title="Past Due"
           msg="Your account is past due. Please update your payment method to continue using the app."

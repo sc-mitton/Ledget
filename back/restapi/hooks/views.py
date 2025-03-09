@@ -20,7 +20,6 @@ from financials.models import PlaidItem
 from hooks.permissions import CameFromOry, CameFromPlaid
 from financials.views.transactions import sync_transactions
 from budget.models import Category
-from hooks.tasks import cleanup_stripe_webhook_tests
 
 stripe_logger = logging.getLogger('stripe')
 stripe.api_key = settings.STRIPE_API_KEY
@@ -81,32 +80,13 @@ class StripeHookView(APIView):  # pragma: no cover
                 )
                 time.sleep(1 * i)
 
-    # Create Handlers
-    def handle_customer_created(self, event):
-        '''
-        Only used for testing
-        '''
-
-        if event.livemode:
-            raise ValueError('Webhook is only used for testing')
-
-        account = Account.objects.create()
-
-        user = get_user_model().objects.create(account=account)
-        cleanup_stripe_webhook_tests.apply_async(args=[str(user.id)], countdown=12)
-
-        customer = Customer.objects.create(
-            user=user,
-            id=event.data.object.id,
-            subscription_status=Customer.SubscriptionStatus.TRIALING
-        )
-        customer.account = account
-        customer.save()
-
     # Delete Handlers
     def handle_customer_deleted(self, event):
-        customer = Customer.objects.get(id=event.data.object.id)
-        customer.delete()
+        try:
+            customer = Customer.objects.get(id=event.data.object.id)
+            customer.delete()
+        except ObjectDoesNotExist:
+            return  # Customer already deleted and we don't need to do anything
 
     def handle_customer_subscription_deleted(self, event):
         # This is a permanent cancelation, and all of the user's data is

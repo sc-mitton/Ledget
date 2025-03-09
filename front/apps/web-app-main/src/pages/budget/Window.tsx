@@ -10,13 +10,11 @@ import { Bills } from './bills-budget';
 import { setConfirmedTransactionFilter } from '@ledget/shared-features';
 import { useAppDispatch } from '@hooks/store';
 import { useScreenContext, MainWindow } from '@ledget/ui';
-import { useColorScheme } from '@ledget/ui';
 
 function Window() {
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useAppDispatch();
   const { screenSize } = useScreenContext();
-  const { isDark } = useColorScheme();
 
   useEffect(() => {
     // On mount set month and date to current date and month

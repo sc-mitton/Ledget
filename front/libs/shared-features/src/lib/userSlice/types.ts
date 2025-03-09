@@ -26,7 +26,11 @@ interface Session {
 interface Account {
   has_customer: boolean;
   service_provisioned_until: number;
-  subscription_status: SubscriptionStatus;
+  customer: {
+    subscription_status: SubscriptionStatus | null;
+    period_end: number;
+    id: string;
+  };
 }
 
 export interface Settings {

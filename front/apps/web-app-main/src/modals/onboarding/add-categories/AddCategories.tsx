@@ -43,13 +43,13 @@ const AddCategories = () => {
         listItems.filter((item) => selectedItems.includes(item.id!!))
       );
     } else {
-      navigate('/welcome/add-bills');
+      navigate('/welcome/connect');
     }
   };
 
   useEffect(() => {
     if (hasAddedNewCategories) {
-      navigate('/welcome/add-bills');
+      navigate('/welcome/connect');
     }
   }, [hasAddedNewCategories]);
 

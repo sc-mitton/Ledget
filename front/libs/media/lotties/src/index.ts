@@ -8,6 +8,7 @@ import edit from './lib/edit.json';
 import arrowDown from './lib/arrowDown.json';
 import lock from './lib/lock.json';
 import mail from './lib/mail.json';
+import success from './lib/success.json';
 
 export {
   loading,
@@ -20,4 +21,5 @@ export {
   arrowDown,
   lock,
   mail,
+  success,
 };

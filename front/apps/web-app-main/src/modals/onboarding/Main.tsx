@@ -5,7 +5,8 @@ import { withModal } from '@ledget/ui';
 import { SlideMotionDiv } from '@ledget/ui';
 import AddBills from './add-bills/AddBills';
 import AddCategories from './add-categories/AddCategories';
-import WelcomeConnect from './WelcomeConnect';
+import WelcomeConnect from './Connect';
+import Message from './Message';
 import styles from './styles/main.module.scss';
 
 const Main = () => {
@@ -18,10 +19,18 @@ const Main = () => {
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route
-              path="connect"
+              path="/"
               element={
-                <SlideMotionDiv position={'first'}>
-                  <WelcomeConnect />
+                <SlideMotionDiv>
+                  <Message />
+                </SlideMotionDiv>
+              }
+            />
+            <Route
+              path="message"
+              element={
+                <SlideMotionDiv>
+                  <Message />
                 </SlideMotionDiv>
               }
             />
@@ -30,6 +39,14 @@ const Main = () => {
               element={
                 <SlideMotionDiv>
                   <AddCategories />
+                </SlideMotionDiv>
+              }
+            />
+            <Route
+              path="connect"
+              element={
+                <SlideMotionDiv>
+                  <WelcomeConnect />
                 </SlideMotionDiv>
               }
             />

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import { CheckInCircle, Plus } from '@geist-ui/icons';
+import { useSpring, animated } from '@react-spring/web';
 
 import styles from './styles/welcome-connect.module.scss';
 import { useBakedPlaidLink } from '@utils/hooks';
@@ -14,10 +15,10 @@ import {
   Base64Logo,
   Tooltip,
   TextButtonBlue,
-  GrayButton,
   NestedWindow2,
   LoadingRingDiv,
   Window,
+  BlueSubmitButton,
 } from '@ledget/ui';
 import { useLoaded } from '@ledget/helpers';
 
@@ -72,18 +73,6 @@ const InstitutionLogos = () => {
   );
 };
 
-const BottomButtons = ({ continueDisabled }: { continueDisabled: boolean }) => {
-  const navigate = useNavigate();
-
-  return (
-    <div className={styles.btnContainerEnabled}>
-      <GrayButton onClick={() => navigate('/welcome/add-categories')}>
-        Continue
-      </GrayButton>
-    </div>
-  );
-};
-
 const SecurityMessage = () => (
   <div className={styles.checklist}>
     <div>
@@ -113,6 +102,7 @@ const WelcomeConnect = () => {
   const { data: plaidItems, isSuccess: fetchedPlaidItemsSuccess } =
     useGetPlaidItemsQuery({ userId: user?.id });
   const loaded = useLoaded(0, fetchedPlaidItemsSuccess);
+  const navigate = useNavigate();
 
   // We should only sync when there's been a new plaid item added
   // after the initial load
@@ -124,16 +114,37 @@ const WelcomeConnect = () => {
     }
   }, [plaidItems]);
 
+  const [style, api] = useSpring(() => ({
+    scale: 1,
+  }));
+
+  const onContinue = () => {
+    if (plaidItems?.length) {
+      navigate('/welcome/add-bills');
+    } else {
+      api.start({
+        to: async (next) => {
+          await next({ scale: 1.1 });
+          await next({ scale: 1 });
+        },
+        config: { duration: 200 },
+      });
+    }
+  };
+
   return (
     <Window>
       <div className={styles.welcomeConnect}>
-        <h2 className="spaced-header">Welcome to Ledget!</h2>
+        <h2 className="spaced-header">Add Your Financials Institutions</h2>
         <div>
-          <span>Let's get started by connecting your financial accounts.</span>
           <SecurityMessage />
-          <InstitutionLogos />
+          <animated.div style={style}>
+            <InstitutionLogos />
+          </animated.div>
         </div>
-        <BottomButtons continueDisabled={false} />
+        <div className={styles.btnContainerEnabled}>
+          <BlueSubmitButton onClick={onContinue}>Continue</BlueSubmitButton>
+        </div>
       </div>
     </Window>
   );

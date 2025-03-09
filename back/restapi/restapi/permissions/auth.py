@@ -158,35 +158,3 @@ def highest_aal_freshness(func):
             return func(*args, **kwargs)
 
     return wrapper
-
-
-def _has_no_active_subscription(customer_id):
-    """
-    Check if the customer has an active subscription, or
-    if they have a subscription that will be canceled at
-    the end of the billing period
-    """
-
-    for sub in stripe.Subscription.list(customer=customer_id).data:
-        if not sub.cancel_at_period_end:
-            return False
-
-    return True
-
-
-def can_create_stripe_subscription(func):
-
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        request = args[1]
-        if request.user.account.has_customer and not _has_no_active_subscription(
-            request.user.account.customer.id
-        ):
-            return Response(
-                {"error": "You already have an active subscription"},
-                status=HTTP_401_UNAUTHORIZED,
-            )
-        else:
-            return func(*args, **kwargs)
-
-    return wrapper

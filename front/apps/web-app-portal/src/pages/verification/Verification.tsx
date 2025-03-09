@@ -114,7 +114,7 @@ const Verification = () => {
 
   return (
     <JiggleDiv className={styles.window} jiggle={jiggle} data-size={screenSize}>
-      <PortalWindow maxWidth={26}>
+      <PortalWindow>
         <WindowLoading visible={isGettingFlow || isCompletingFlow} />
         <ColumnWindowHeader>
           <h2>Verify Email Address</h2>

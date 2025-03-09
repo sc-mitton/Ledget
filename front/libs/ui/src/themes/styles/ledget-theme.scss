@@ -75,8 +75,9 @@
     --btn-main-hover: var(--btn-light-gray-hover);
 
     // Windows
+    --col: #dddddf;
     --nested-window-background-color: hsl(0, 0%, 9%);
-    --modal-nested-window: hsl(0, 0%, 10%);
+    --modal-nested-window: hsl(var(--window-h), 1%, 10%);
 
     --window-h: 240;
     --window-s: 2%;
@@ -85,6 +86,7 @@
     --window: hsl(var(--window-h), var(--window-s), 9%);
     --window2: hsl(var(--window-h), calc(var(--window-s) + 10%), 10%);
     --window-portal: hsl(var(--window-h), var(--window-s), 9%);
+    --overlay: rgba(0, 0, 0, 0.5);
 
     --window-background: var(--window);
     --window2-background: linear-gradient(
@@ -132,7 +134,7 @@
 
     // Inputs
     --input-background-rgb: 31, 31, 31;
-    --input-background: hsl(0, 0%, 12%);
+    --input-background: hsl(var(--window-h), 2%, 12%);
     --input-border: solid 1.5px hsl(0, 0%, 14%);
     --input-border-hover-color: hsl(0, 0%, 17%);
     --input-border-focus-color: var(--blue);
@@ -156,7 +158,7 @@
     --m-text-quinary: color-mix(in srgb, var(--m-text), black 60%);
     --blue-text: hsl(var(--blue-h), calc(var(--blue-s) + 40%), 63%);
 
-    --input-placeholder: hsl(0, 0%, 66%);
+    --input-placeholder: rgb(168, 168, 168);
     --input-placeholder2: rgb(115, 115, 117);
 
     /* Font Weights */
@@ -168,7 +170,7 @@
     // Icons & Buttons
     --icon-full: var(--m-text);
     --btn-feather-light-gray: hsl(0, 0%, 10%);
-    --btn-feather-light-gray-hover: hsl(0, 0%, 15%);
+    --btn-feather-light-gray-hover: hsl(0, 0%, 13%);
     --btn-light-gray: hsl(0, 0%, 17%);
     --btn-light-gray-hover: hsl(0, 0%, 20%);
     --btn-medium-gray: hsl(0, 0%, 25%);
@@ -306,6 +308,7 @@
     --gradient-window-background-small-screen: var(
       --gradient-window-background
     );
+    --overlay: rgba(150, 150, 150, 0.5);
 
     --window-rgb: 244, 244, 246;
     --window: hsl(var(--window-h), var(--window-s), 100%);
@@ -360,8 +363,8 @@
     --input-background-rgb: 233, 233, 237;
     --input-background: hsl(var(--window-h), var(--window-s), 92%);
     --input-border: solid 1.5px hsl(var(--window-h), var(--window-s), 90%);
-    --input-border-focus-color: var(--blue-light-medium);
-    --input-border-hover-color: var(--btn-light-gray-hover);
+    --input-border-focus-color: var(--blue-medium);
+    --input-border-hover-color: hsl(240, 3%, 80%);
     --input-focus-dropshadow-color: color-mix(
       in srgb,
       var(--input-border-focus-color),
@@ -378,8 +381,8 @@
     --m-text-quinary: color-mix(in srgb, var(--m-text), white 70%);
     --blue-text: hsl(var(--blue-h), calc(var(--blue-s) + 10%), 50%);
 
-    --input-placeholder: hsl(0, 0%, 70%);
-    --input-placeholder2: hsl(0, 0%, 60%);
+    --input-placeholder: hwb(0 70% 30%);
+    --input-placeholder2: rgb(153, 153, 153);
 
     /* Font Weights */
     --fw-regular: 400;
@@ -390,7 +393,7 @@
     // Icons & Buttons
     --icon-full: var(--m-text);
     --btn-feather-light-gray: hsl(var(--window-h), var(--window-s), 92%);
-    --btn-feather-light-gray-hover: hsl(var(--window-h), var(--window-s), 86%);
+    --btn-feather-light-gray-hover: hsl(var(--window-h), var(--window-s), 88%);
     --btn-light-gray: hsl(var(--window-h), var(--window-s), 85%);
     --btn-light-gray-hover: hsl(var(--window-h), var(--window-s), 79%);
     --btn-medium-gray: hsl(var(--window-h), var(--window-s), 68%);
