@@ -2,7 +2,7 @@
 
 .banner {
   @include width-standard;
-  height: 80vh;
+  height: 75vh;
   padding-top: clamp(2em, 2vh, 2em);
   display: flex;
   flex-direction: row;
