@@ -37,4 +37,4 @@ jobs:
           zip -r lambda_function.zip .
       - name: Deploy Lambda
         run: |
-          aws s3 sync --delete . s3://ledget-dynamic-route-lambda
+          aws s3 cp lambda_function.zip s3://ledget-dynamic-route-lambda/
