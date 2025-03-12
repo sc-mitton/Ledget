@@ -15,7 +15,7 @@ def lambda_handler(event, context):
 
     # Check if should be redirected to main app
     should_redirect_checks = [
-        origin['s3']['domainName'] == DEFAULT_ORIGIN,
+        origin['s3']['domainName'] == MAIN_APP_ORIGIN,
         re.match(r'^\/[a-zA-Z\/]+$', uri),
         all([route not in uri for route in LANDING_ROUTES])
     ]
