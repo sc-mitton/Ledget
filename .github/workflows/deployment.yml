@@ -16,7 +16,6 @@ on:
           - "landing"
           - "rest-api"
           - "oathkeeper"
-          - "dynamic-router"
       force_run:
         description: "Force run all selected deployment's jobs"
         required: false
@@ -72,6 +71,3 @@ jobs:
       environment: ${{ (github.head_ref == 'uat' || github.ref_name == 'uat') && 'uat' || 'prod' }}
       role: "arn:aws:iam::905418323334:role/gh-actions"
       version: ${{ inputs.version }}
-  deploy-dynamic-router:
-    if: ${{ contains('all dynamic-router force-run-all', inputs.deployments_to_run) }}
-    uses: ./.github/workflows/deploy-dynamic-routing-lambda.yml
