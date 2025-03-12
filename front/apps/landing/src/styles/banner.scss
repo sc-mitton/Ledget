@@ -35,10 +35,10 @@
       font-size: 0.875em;
       padding: 0.125em;
       position: relative;
-      color: var(--m-invert-text);
+      color: var(--white);
 
       &::after {
-        opacity: 0.5;
+        opacity: 0.2;
         background-color: var(--m-text);
         content: '';
         position: absolute;

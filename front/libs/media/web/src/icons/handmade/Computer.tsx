@@ -1,7 +1,7 @@
 import { SVGProps } from 'react';
 
 const Computer = ({
-  size = '3.5m',
+  size = '3.5em',
   ...rest
 }: SVGProps<SVGSVGElement> & { size?: string | number }) => {
   return (
