@@ -39,7 +39,6 @@ function SignUp() {
           const flowId = (result as any)?.continue_with.find(
             (c: any) => c.action === 'show_verification_ui'
           )?.flow.id;
-          console.log('flowId: ', flowId);
           navigate(`/verification?flow=${flowId}`, { replace: true });
         })
         .catch(() => {

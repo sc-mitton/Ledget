@@ -1,7 +1,7 @@
 import re
 
 DEFAULT_ORIGIN = 'ledget-landing.s3.us-west-2.amazonaws.com'
-MAIN_APP_ORIGIN = 'app.ledget.s3.us-west-2.amazonaws.com'
+MAIN_APP_ORIGIN = 'ledget.app.s3.us-west-2.amazonaws.com'
 LANDING_ROUTES = [
     '/privacy',
     '/terms'
