@@ -323,3 +323,7 @@ auth.ledget.app, CNAME, relaxed-bassi-eqk8kfge8r.projects.oryapis.com
 bounce.ledget.app, CNAME, custom-email-domain.stripe.com
 
 www.ledget.app, CNAME, ledget.app
+
+my.ledget.app A d7yle07cg2774.cloudfront.net.
+
+\_2f93df7b38aaf3299b0f77393bff771b.my.ledget.app CNAME \_e56282e348e30534ce3a860637a9f44e.xlfgrmvvlj.acm-validations.aws.

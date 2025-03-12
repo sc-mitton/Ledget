@@ -20,7 +20,7 @@ SECURE_BROWSER_XSS_FILTER = True
 # ----------------------------------- CORS ----------------------------------- #
 
 CORS_ALLOWED_ORIGINS = [
-    'https://ledget.app',
+    'https://my.ledget.app',
     'https://accounts.ledget.app',
     'https://eb.api.ledget.app',
 ]
@@ -42,7 +42,7 @@ MIDDLEWARE.insert(1, 'corsheaders.middleware.CorsMiddleware')
 
 # ----------------------------------- Csrf ----------------------------------- #
 
-CSRF_TRUSTED_ORIGINS = ['https://ledget.app', 'https://accounts.ledget.app']
+CSRF_TRUSTED_ORIGINS = ['https://my.ledget.app', 'https://accounts.ledget.app']
 CSRF_COOKIE_DOMAIN = 'ledget.app'
 
 # ---------------------------- 3rd Party Services ---------------------------- #
@@ -85,7 +85,7 @@ PLAID_ENVIRONMENT = 'Production'
 PLAID_SECRET = get_secret('plaid_secret')
 PLAID_API_KEY = json.loads(PLAID_SECRET)['api_key']
 PLAID_CLIENT_ID = json.loads(PLAID_SECRET)['client_id']
-PLAID_REDIRECT_URI_ONBOARDING = 'https://ledget.app/welcome/connect'
+PLAID_REDIRECT_URI_ONBOARDING = 'https://my.ledget.app/welcome/connect'
 PLAID_REDIRECT_URI = 'https://leddget.app/settings/connections'
 PLAID_WEBHOOK_ENDPOINT = 'https://api.ledget.app/hooks/plaid/item'
 
