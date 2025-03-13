@@ -45,7 +45,7 @@ jobs:
     with:
       app: "web-app-main"
       version: ${{ inputs.version }}
-      s3-bucket: ${{ (github.head_ref == 'uat' || github.ref_name == 'uat') && 'uat.ledget.app' || 'ledget.app' }}
+      s3-bucket: ${{ (github.head_ref == 'uat' || github.ref_name == 'uat') && 'uat.my.ledget.app' || 'my.ledget.app' }}
       role: "arn:aws:iam::905418323334:role/gh-actions"
       environment: ${{ (github.head_ref == 'uat' || github.ref_name == 'uat') && 'uat' || 'prod' }}
       force_run_all: ${{ inputs.deployments_to_run == 'force-run-all' || inputs.force_run == true }}
@@ -55,7 +55,7 @@ jobs:
     with:
       app: "web-app-portal"
       version: ${{ inputs.version }}
-      s3-bucket: ${{ (github.head_ref == 'uat' || github.ref_name == 'uat') && 'uataccounts.ledget.app' || 'accounts.ledget.app' }}
+      s3-bucket: ${{ (github.head_ref == 'uat' || github.ref_name == 'uat') && 'uat.accounts.ledget.app' || 'accounts.ledget.app' }}
       role: "arn:aws:iam::905418323334:role/gh-actions"
       environment: ${{ (github.head_ref == 'uat' || github.ref_name == 'uat') && 'uat' || 'prod' }}
       force_run_all: ${{ inputs.deployments_to_run == 'force-run-all' || inputs.force_run == true }}

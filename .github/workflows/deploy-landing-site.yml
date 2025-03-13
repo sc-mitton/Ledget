@@ -60,7 +60,7 @@ jobs:
           role-to-assume: "arn:aws:iam::905418323334:role/gh-actions"
           aws-region: "us-west-2"
       - name: Deploy to S3
-        run: aws s3 sync --delete ./dist/ s3://ledget-landing/v${{ matrix.version }}
+        run: aws s3 sync --delete ./dist/ s3://ledget.app/v${{ matrix.version }}
       - name: Create CloudFront invalidation
         uses: ./.github/actions/invalidate-cloudfront
         with:
