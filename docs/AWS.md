@@ -27,12 +27,6 @@ Load the code from the s3 bucket location
 
 The role should be oathkeeper-role-bivaxn5z
 
-### lambda-dynamic-origin-request
-
-Trigger should be cloudfront
-
-Execution role is ledget-route-dynamic-origin-request-role-4duyiptu
-
 ## S3
 
 - Bucket for the code for the landing page, accounts web app, and main web appp
