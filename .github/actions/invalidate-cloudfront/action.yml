@@ -2,13 +2,24 @@ name: Invalidate CloudFront
 description: Invalidate CloudFront Distribution
 inputs:
   distribution:
-    description: "CloudFront Distribution Name"
+    description: "CloudFront Distribution Domain Name"
     required: true
 runs:
   using: "composite"
   steps:
+    - name: Get CloudFront Distribution ID
+      id: get_distribution_id
+      shell: bash
+      run: |
+        DISTRIBUTION_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[?Aliases.Items[0]=='${{ inputs.distribution }}'].Id" --output text)
+
+        if [[ -z "$DISTRIBUTION_ID" || "$DISTRIBUTION_ID" == "None" ]]; then
+          echo "Error: No CloudFront distribution found for ${{ inputs.distribution }}"
+          exit 1
+        fi
+
+        echo "DISTRIBUTION_ID=$DISTRIBUTION_ID" >> $GITHUB_ENV
+
     - name: Create CloudFront invalidation
       shell: bash
-      env:
-        DISTRIBUTION: ${{ inputs.distribution == 'ledget.app' && 'E1HY9GDX55DBQ9' || inputs.distribution == 'accounts.ledget.app' && 'E195JVJQWSUYL7' }}
-      run: aws cloudfront create-invalidation --distribution-id $DISTRIBUTION --paths "/*"
+      run: aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION_ID" --paths "/*"
