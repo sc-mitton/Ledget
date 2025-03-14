@@ -62,17 +62,9 @@ $background: var(--window);
     margin: 0.75em 0 0.375em 0;
   }
 
-  h3 {
-    color: var(--m-text-secondary);
-  }
-
   & > div:first-child {
     display: flex;
     justify-content: space-between;
-
-    h4 {
-      color: var(--m-text-secondary);
-    }
 
     div {
       display: flex;
