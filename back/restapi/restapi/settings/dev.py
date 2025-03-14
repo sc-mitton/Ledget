@@ -27,28 +27,6 @@ MEDIA_ROOT = '/restapi/media'
 CSRF_TRUSTED_ORIGINS = ['https://localhost:3000', 'https://localhost:3001']
 CSRF_COOKIE_DOMAIN = 'localhost'
 
-# ----------------------------------- CORS ----------------------------------- #
-
-CORS_ALLOWED_ORIGINS = [
-    'https://localhost:3000',
-    'https://localhost:3001',
-]
-
-CORS_ALLOWED_HEADERS = [
-    *default_headers,
-    'x-forwarded-host',
-    'x-user',
-    'x-device-token',
-]
-
-CORS_ALLOW_CREDENTIALS = True
-
-INSTALLED_APPS += [
-    'corsheaders',
-]
-
-MIDDLEWARE.insert(1, 'corsheaders.middleware.CorsMiddleware')
-
 # ---------------------------------- 3rd Party Services --------------------------------- #
 
 
