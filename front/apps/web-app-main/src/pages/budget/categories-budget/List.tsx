@@ -1,5 +1,6 @@
 import { Fragment, useMemo } from 'react';
 
+import Big from 'big.js';
 import dayjs from 'dayjs';
 
 import styles from './styles.module.scss';
@@ -76,11 +77,17 @@ const CategoriesList = ({ period }: { period: Category['period'] }) => {
       </div>
       <div className={period === 'month' ? styles.month : styles.year}>
         <h4>
-          <DollarCents value={totalSpent} withCents={false} />
+          <DollarCents
+            value={Big(totalSpent).div(100).toNumber()}
+            withCents={false}
+          />
         </h4>
         &nbsp;&nbsp;<span>spent of</span>&nbsp;&nbsp;
         <h4>
-          <DollarCents value={totalLimit} withCents={false} />
+          <DollarCents
+            value={Big(totalLimit).div(100).toNumber()}
+            withCents={false}
+          />
         </h4>
       </div>
       <div className={period === 'month' ? styles.month : styles.year}>
@@ -146,7 +153,9 @@ const CategoriesList = ({ period }: { period: Category['period'] }) => {
                 </button>
                 <div>
                   <DollarCents
-                    value={category.amount_spent}
+                    value={Big(category.amount_spent || 0)
+                      .div(100)
+                      .toNumber()}
                     withCents={false}
                   />
                 </div>
@@ -154,7 +163,9 @@ const CategoriesList = ({ period }: { period: Category['period'] }) => {
                 <div>
                   {category.limit_amount !== null ? (
                     <DollarCents
-                      value={category.limit_amount}
+                      value={Big(category.limit_amount || 0)
+                        .div(100)
+                        .toNumber()}
                       withCents={false}
                     />
                   ) : (
