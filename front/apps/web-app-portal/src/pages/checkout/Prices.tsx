@@ -80,7 +80,7 @@ const PriceRadios = () => {
       <Window data-size={screenSize}>
         <div data-size={screenSize} className={styles.pricesContainer}>
           <div className={styles.pricesHeader}>
-            <h2>Select a plan</h2>
+            <h2>Select a Plan</h2>
             <hr />
           </div>
           <div className={styles.subscriptionRadios} data-size={screenSize}>
