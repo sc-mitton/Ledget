@@ -74,7 +74,6 @@ Needed:
 - ory_tunnel_key
 - plaid_dev_api_key
 - plaid_sand_api_key
-- sparkpost_api_key
 - stripe_dev_api_key
 
 8. Install the front end dependencies

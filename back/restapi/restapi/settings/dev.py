@@ -66,9 +66,6 @@ else:
     OATHKEEPER_PUBLIC_KEY = jwt.algorithms.RSAAlgorithm.from_jwk(
         json.dumps(jwks[0]))
 
-# Sparkpost
-SPARKPOST_API_KEY = get_secret('sparkpost_api_key')
-
 # Plaid
 PLAID_ENVIRONMENT = os.getenv('PLAID_ENVIRONMENT') or 'Sandbox'
 PLAID_API_KEY = get_secret('plaid_sand_api_key') if PLAID_ENVIRONMENT.lower(

@@ -44,9 +44,9 @@ const PrivateRoute = () => {
 
   useEffect(() => {
     if (isError) {
-      // window.location.href = `${
-      //   import.meta.env.VITE_LOGOUT_REDIRECT_URL
-      // }?redirect=${window.location.href}`;
+      window.location.href = `${
+        import.meta.env.VITE_LOGOUT_REDIRECT_URL
+      }?redirect=${window.location.href}`;
     }
   }, [isError]);
 

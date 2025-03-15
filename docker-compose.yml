@@ -129,7 +129,6 @@ services:
       - plaid_api_key
       - plaid_sand_api_key
       - plaid_client_id
-      - sparkpost_api_key
     depends_on:
       - db
       - rabbitmq
@@ -181,8 +180,6 @@ secrets:
     file: ./secrets/postgres_user
   postgres_password:
     file: ./secrets/postgres_password
-  sparkpost_api_key:
-    file: ./secrets/sparkpost_api_key
   stripe_webhook_secret:
     file: ./secrets/stripe_webhook_secret
   stripe_api_key:

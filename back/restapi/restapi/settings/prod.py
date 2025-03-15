@@ -17,29 +17,6 @@ ACCOUNTS_APP_DOMAIN = 'accounts.ledget.app'
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_BROWSER_XSS_FILTER = True
 
-# ----------------------------------- CORS ----------------------------------- #
-
-CORS_ALLOWED_ORIGINS = [
-    'https://my.ledget.app',
-    'https://accounts.ledget.app',
-    'https://eb.api.ledget.app',
-]
-
-CORS_ALLOWED_HEADERS = [
-    *default_headers,
-    'x-forwarded-host',
-    'x-user',
-    'x-device-token',
-]
-
-CORS_ALLOW_CREDENTIALS = True
-
-INSTALLED_APPS += [
-    'corsheaders',
-]
-
-MIDDLEWARE.insert(1, 'corsheaders.middleware.CorsMiddleware')
-
 # ----------------------------------- Csrf ----------------------------------- #
 
 CSRF_TRUSTED_ORIGINS = ['https://my.ledget.app', 'https://accounts.ledget.app']
@@ -77,16 +54,13 @@ try:
 except Exception as e:
     OATHKEEPER_PUBLIC_KEY = None
 
-# Sparkpost
-SPARKPOST_API_KEY = get_secret('sparkpost_key')
-
 # Plaid
 PLAID_ENVIRONMENT = 'Production'
 PLAID_SECRET = get_secret('plaid_secret')
 PLAID_API_KEY = json.loads(PLAID_SECRET)['api_key']
 PLAID_CLIENT_ID = json.loads(PLAID_SECRET)['client_id']
 PLAID_REDIRECT_URI_ONBOARDING = 'https://my.ledget.app/welcome/connect'
-PLAID_REDIRECT_URI = 'https://leddget.app/settings/connections'
+PLAID_REDIRECT_URI = 'https://my.ledget.app/settings/connections'
 PLAID_WEBHOOK_ENDPOINT = 'https://api.ledget.app/hooks/plaid/item'
 
 # --------------------------------- Postgres --------------------------------- #
