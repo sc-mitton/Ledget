@@ -3,8 +3,6 @@ import os
 import jwt
 import json
 
-from corsheaders.defaults import default_headers
-
 from .get_aws_secret import get_secret
 
 
