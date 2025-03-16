@@ -5,6 +5,9 @@ import json
 
 from .get_aws_secret import get_secret
 
+from corsheaders.defaults import default_headers
+
+
 ALLOWED_HOSTS = ['ledget.app', '.ledget.app']
 USE_X_FORWARDED_HOST = True
 DOMAIN_URL = "https://api.ledget.app/"
@@ -13,6 +16,29 @@ ACCOUNTS_APP_DOMAIN = 'accounts.ledget.app'
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_BROWSER_XSS_FILTER = True
+
+# ----------------------------------- CORS ----------------------------------- #
+
+CORS_ALLOWED_ORIGINS = [
+    'https://my.ledget.app',
+    'https://accounts.ledget.app',
+    'https://eb.api.ledget.app',
+]
+
+CORS_ALLOWED_HEADERS = [
+    *default_headers,
+    'x-forwarded-host',
+    'x-user',
+    'x-device-token',
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+INSTALLED_APPS += [
+    'corsheaders',
+]
+
+MIDDLEWARE.insert(1, 'corsheaders.middleware.CorsMiddleware')
 
 # ----------------------------------- Csrf ----------------------------------- #
 
