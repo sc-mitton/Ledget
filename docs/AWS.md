@@ -76,14 +76,12 @@ Name: Authorization Mapped From: context.authorizer.authorization
 Name: X-Forwarded-Host Mapped From: method.request.header.Host
 Name: X-User Mapped From: context.x-user
 
-## Method Response
+## Cors
 
-Response Headers:
-Access-Control-Allow-Credentials
-Access-Control-Allow-Headers
-Access-Control-Allow-Methods
-Access-Control-Allow-Origin
-Access-Control-Max-Age
+allowed origins: my.ledget.app, accounts.ledget.app
+methods: get, post, put, delete, patch, options
+allowed headers: x-csrftoken, x-device-token, x-user, x-forwarded-host
+allowe credentials, 100 ttl
 
 ### Resource Policies
 
