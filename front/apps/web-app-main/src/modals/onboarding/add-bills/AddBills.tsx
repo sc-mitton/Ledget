@@ -19,6 +19,7 @@ import {
   BlueSubmitButton,
   Window,
   IconButtonGray,
+  useColorScheme,
 } from '@ledget/ui';
 import { getScheduleDescription } from '@utils/helpers';
 import Present from '../Present';
@@ -27,6 +28,7 @@ import { capitalize } from '@ledget/helpers';
 import CustomBill from './CustomBill';
 
 const AddBills = () => {
+  const { isDark } = useColorScheme();
   const { data: user } = useGetMeQuery();
   const [updateUser, { isLoading: isUpdatingUser, isSuccess: hasUpdatedUser }] =
     useUpdateUserMutation();
@@ -76,7 +78,7 @@ const AddBills = () => {
   };
 
   return (
-    <Present>
+    <Present dark={isDark}>
       <Present.Background>
         <Window>
           <div className={styles.addBills}>

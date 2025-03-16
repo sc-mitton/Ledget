@@ -6,11 +6,13 @@ import styles from './styles/present.module.scss';
 interface PresentContextT {
   present: boolean;
   setPresent: (present: boolean) => void;
+  dark?: boolean;
 }
 
 const PresentContext = createContext<PresentContextT>({
   present: false,
   setPresent: () => {},
+  dark: false,
 });
 
 export const usePresent = () => {
@@ -20,12 +22,13 @@ export const usePresent = () => {
 const Present = ({
   children,
   className,
+  dark,
   ...rest
-}: React.HTMLAttributes<HTMLDivElement>) => {
+}: React.HTMLAttributes<HTMLDivElement> & { dark?: boolean }) => {
   const [present, setPresent] = useState(false);
 
   return (
-    <PresentContext.Provider value={{ present, setPresent }}>
+    <PresentContext.Provider value={{ present, setPresent, dark }}>
       <div {...rest} className={[className, styles.presentContainer].join(' ')}>
         {children}
       </div>
@@ -57,7 +60,7 @@ const Presentation = ({
 }: {
   children: React.ReactNode;
 } & React.HTMLAttributes<HTMLDivElement>) => {
-  const { present } = usePresent();
+  const { present, dark } = usePresent();
 
   const transitions = useTransition(present, {
     from: { opacity: 0, y: 300 },
@@ -73,7 +76,12 @@ const Presentation = ({
   return transitions(
     (style, item) =>
       item && (
-        <animated.div style={style} {...rest} className={styles.presentation}>
+        <animated.div
+          style={style}
+          {...rest}
+          className={styles.presentation}
+          data-theme={dark ? 'dark' : 'light'}
+        >
           {children}
         </animated.div>
       )

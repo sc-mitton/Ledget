@@ -12,6 +12,7 @@ import {
   BillCatLabel,
   TextInputWrapper,
   SecondaryButton,
+  useColorScheme,
 } from '@ledget/ui';
 import CustomCategory from './CustomCategory';
 import {
@@ -28,6 +29,7 @@ const formatter = new Intl.NumberFormat('en-US', {
 });
 
 const AddCategories = () => {
+  const { isDark } = useColorScheme();
   const [
     addNewCategory,
     { isSuccess: hasAddedNewCategories, isLoading: isAddingNewCategories },
@@ -54,7 +56,7 @@ const AddCategories = () => {
   }, [hasAddedNewCategories]);
 
   return (
-    <Present>
+    <Present dark={isDark}>
       <Present.Background>
         <Window>
           <div
