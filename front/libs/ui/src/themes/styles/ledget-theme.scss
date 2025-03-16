@@ -42,13 +42,13 @@
     --green-h: 160;
 
     --month-background: hsl(var(--blue-h), 60%, 25%);
-    --month-background-hover: hsl(var(--blue-h), 60%, 33%);
+    --month-background-hover: hsl(var(--blue-h), 60%, 23%);
     --month-border: hsl(var(--blue-h), 100%, 70%);
     --month-color: hsl(var(--blue-h), 100%, 80%);
     --month-border2: hsl(var(--blue-h), 60%, 28%);
 
     --year-background: hsl(var(--green-h), 58%, 20%);
-    --year-background-hover: hsl(var(--green-h), 58%, 26%);
+    --year-background-hover: hsl(var(--green-h), 58%, 17%);
     --year-border: hsl(var(--green-h), 100%, 70%);
     --year-border2: hsl(var(--green-h), 58%, 23%);
     --year-color: hsl(var(--green-h), 90%, 50%);
@@ -257,7 +257,7 @@
 
     // Budget Item Pallet
     --month-background: hsl(var(--blue-h), 100%, 93%);
-    --month-background-hover: hsl(var(--blue-h), 100%, 97%);
+    --month-background-hover: hsl(var(--blue-h), 100%, 96%);
     --month-border: hsl(var(--blue-h), 100%, 61%);
     --month-color: hsl(var(--blue-h), 100%, 58%);
     --month-border2: hsl(var(--blue-h), 100%, 92%);
