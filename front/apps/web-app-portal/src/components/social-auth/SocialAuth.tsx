@@ -23,42 +23,6 @@ function SocialAuth({
     );
   }, [flow]);
 
-  const SocialLoginButtons = () => {
-    return (
-      <>
-        {socialNodes.map((node) => {
-          return (
-            (node.attributes.value === 'facebook' && (
-              <FacebookLoginButton
-                id={node.id}
-                {...node.attributes}
-                key={'facebook-login'}
-                aria-label="facebook login"
-              />
-            )) ||
-            (node.attributes.value === 'google' && (
-              <GoogleLoginButton
-                id={node.id}
-                {...node.attributes}
-                key={'google-login'}
-                aria-label="google login"
-              />
-            ))
-          );
-        })}
-      </>
-    );
-  };
-
-  const DefaultButtons = () => {
-    return (
-      <>
-        <FacebookLoginButton />
-        <GoogleLoginButton />
-      </>
-    );
-  };
-
   return (
     <div className={className}>
       <div className={styles.header}>
@@ -74,7 +38,35 @@ function SocialAuth({
         className={styles.form}
         onSubmit={submit}
       >
-        {socialNodes ? <SocialLoginButtons /> : <DefaultButtons />}
+        {socialNodes ? (
+          <>
+            {socialNodes.map((node) => {
+              return (
+                (node.attributes.value === 'facebook' && (
+                  <FacebookLoginButton
+                    id={node.id}
+                    {...node.attributes}
+                    key={'facebook-login'}
+                    aria-label="facebook login"
+                  />
+                )) ||
+                (node.attributes.value === 'google' && (
+                  <GoogleLoginButton
+                    id={node.id}
+                    {...node.attributes}
+                    key={'google-login'}
+                    aria-label="google login"
+                  />
+                ))
+              );
+            })}
+          </>
+        ) : (
+          <>
+            <FacebookLoginButton />
+            <GoogleLoginButton />
+          </>
+        )}
         <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
       </form>
     </div>

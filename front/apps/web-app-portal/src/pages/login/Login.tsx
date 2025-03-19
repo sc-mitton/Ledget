@@ -160,14 +160,6 @@ const Login = () => {
     submit(e);
   };
 
-  const oryFormArgs = {
-    flow,
-    errMsg,
-    setEmail,
-    email: email || '',
-    onSubmit: handleSubmit,
-  };
-
   return (
     <AnimatePresence mode="wait">
       {!email && !searchParams.get('mfa') ? (
@@ -202,7 +194,13 @@ const Login = () => {
               position={isCompleteSuccess ? 'first' : 'last'}
             >
               <PortalWindow>
-                <OryFormWrapper {...oryFormArgs}>
+                <OryFormWrapper
+                  flow={flow}
+                  errMsg={errMsg}
+                  setEmail={setEmail}
+                  email={email || ''}
+                  onSubmit={handleSubmit}
+                >
                   <Password />
                   <input type="hidden" name="identifier" value={email || ''} />
                   <div className={styles.trustDevice}>
@@ -233,7 +231,13 @@ const Login = () => {
               className={styles.fullScreen}
             >
               <PortalWindow>
-                <OryFormWrapper {...oryFormArgs}>
+                <OryFormWrapper
+                  flow={flow}
+                  errMsg={errMsg}
+                  setEmail={setEmail}
+                  email={email || ''}
+                  onSubmit={handleSubmit}
+                >
                   <TotpMfa finished={devicesRefreshedSuccess} />
                 </OryFormWrapper>
                 <WindowLoading
@@ -255,7 +259,13 @@ const Login = () => {
               className={styles.fullScreen}
             >
               <PortalWindow>
-                <OryFormWrapper {...oryFormArgs}>
+                <OryFormWrapper
+                  flow={flow}
+                  errMsg={errMsg}
+                  setEmail={setEmail}
+                  email={email || ''}
+                  onSubmit={handleSubmit}
+                >
                   <LookupSecretMfa finished={devicesRefreshedSuccess} />
                 </OryFormWrapper>
                 <WindowLoading
