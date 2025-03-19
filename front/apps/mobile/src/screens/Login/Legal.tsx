@@ -1,4 +1,5 @@
-import { Linking, Platform } from 'react-native';
+import { Platform } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
 
 import { Box, Button, Text } from '@ledget/native-ui';
 
@@ -6,9 +7,9 @@ import styles from './styles/legal-footer';
 import { ANDROID_LANDING_URL, IOS_LANDING_URL } from '@env';
 
 export default function LegalFooter() {
-  const openLink = (url: string) => {
+  const openLink = async (url: string) => {
     try {
-      Linking.openURL(url);
+      await WebBrowser.openBrowserAsync(url);
     } catch (error) {
       console.error('Error opening link', error);
     }
