@@ -18,8 +18,6 @@ import {
   useGetMeQuery,
   selectEnvironment,
   setEnvironment,
-  setSession,
-  setDeviceToken,
   selectSession,
   selectDeviceToken,
   setBudgetMonthYear,
@@ -86,23 +84,10 @@ const useAuthLogic = () => {
   });
 
   useEffect(() => {
-    SecureStore.getItemAsync('session').then((session) => {
-      if (!session) {
-        setContinueToMainApp(false);
-        setAppIsReady(true);
-      } else {
-        SecureStore.getItemAsync('device_token').then((token) => {
-          if (!token) {
-            setContinueToMainApp(false);
-            setAppIsReady(true);
-          } else {
-            const sessionObj = JSON.parse(session);
-            dispatch(setSession(sessionObj));
-            dispatch(setDeviceToken(token));
-          }
-        });
-      }
-    });
+    if (!session) {
+      setContinueToMainApp(false);
+      setAppIsReady(true);
+    }
   }, []);
 
   useEffect(() => {

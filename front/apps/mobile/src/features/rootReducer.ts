@@ -19,7 +19,7 @@ import {
 } from '@ledget/shared-features';
 import storage from './storage';
 import { RootState } from './store';
-
+import secureStorage from './secureStorage';
 const migrations = {
   1: (state: RootState) => ({
     ...state,
@@ -60,14 +60,19 @@ const persistConfig = {
     'appearance',
     'budgetItemMetaData',
     'ui',
-    'investments',
     'institutions',
     'homePage',
   ],
 };
 
+const securedConfig = {
+  key: 'api',
+  storage: secureStorage,
+  whitelist: ['mobileAuth'],
+};
+
 const rootReducer = combineReducers({
-  [apiSlice.reducerPath]: apiSlice.reducer,
+  [apiSlice.reducerPath]: persistReducer(securedConfig, apiSlice.reducer),
   toast: toastSlice.reducer,
   environment: environmentSlice.reducer,
   confirmStack: confirmStack.reducer,

@@ -122,7 +122,21 @@
     "typescript-eslint": "^8.19.0",
     "victory-native": "^41.12.2",
     "zeego": "^1.10.0",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "node-fetch": "*",
+    "picocolors": "*",
+    "@nx/webpack": "*",
+    "tsconfig-paths": "*",
+    "enhanced-resolve": "*",
+    "ajv": "*",
+    "glob": "*",
+    "chalk": "*",
+    "ignore": "*",
+    "lodash": "*",
+    "@expo/vector-icons": "*",
+    "expo-crypto": "*",
+    "react-native-restart": "*",
+    "react-native-quick-crypto": "*"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
