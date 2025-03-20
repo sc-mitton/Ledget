@@ -52,10 +52,18 @@ function SignUp() {
 
   // If the user is already logged in, redirect to the login redirect URL
   useEffect(() => {
-    if (errId === 'session_already_available') {
+    const isMobile = window.innerWidth < 500;
+
+    if (
+      errId === 'session_already_available' &&
+      searchParams.get('from') === 'oidc' &&
+      isMobile
+    ) {
+      navigate('/checkout');
+    } else {
       window.location.href = import.meta.env.VITE_LOGIN_REDIRECT;
     }
-  }, [errId]);
+  }, [errId, searchParams]);
 
   return (
     <>
