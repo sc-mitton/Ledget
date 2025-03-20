@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "Ledget",
+    "scheme": "ledget",
     "jsEngine": "hermes",
     "slug": "mobile",
     "version": "1.0.0",

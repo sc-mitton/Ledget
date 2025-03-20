@@ -67,6 +67,7 @@ function SocialAuth({
             <GoogleLoginButton />
           </>
         )}
+        <input type="hidden" name="method" value="oidc" />
         <input type="hidden" name="csrf_token" value={flow?.csrf_token} />
       </form>
     </div>

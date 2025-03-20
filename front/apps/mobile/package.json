@@ -136,7 +136,8 @@
     "@expo/vector-icons": "*",
     "expo-crypto": "*",
     "react-native-restart": "*",
-    "react-native-quick-crypto": "*"
+    "react-native-quick-crypto": "*",
+    "expo-auth-session": "*"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

@@ -32,6 +32,7 @@ export const useNativeFlow = <E extends EndpointRootNames>(
       isSuccess: isGetFlowSuccess,
     },
   ] = query();
+
   const [
     completeFlow,
     {
@@ -52,7 +53,13 @@ export const useNativeFlow = <E extends EndpointRootNames>(
   }, [flow]);
 
   const fetchFlow = useCallback(
-    (args: { aal?: string; refresh?: boolean } | void) => {
+    (
+      args: {
+        aal?: string;
+        refresh?: boolean;
+        return_session_token_exchange_code?: boolean;
+      } | void
+    ) => {
       // If the aal param is different, this means a new flow is needed
       // and the search param flow id can't be used
 
@@ -62,9 +69,8 @@ export const useNativeFlow = <E extends EndpointRootNames>(
       setRefresh(refresh);
 
       const params = {
-        ...(aal ? { aal: aal } : {}),
-        ...(refresh ? { refresh: true } : {}),
         ...(flow && 'id' in flow ? { id: flow.id } : {}),
+        ...args,
       };
 
       let fetchFromCache = true;
@@ -85,8 +91,15 @@ export const useNativeFlow = <E extends EndpointRootNames>(
       setErrId('');
 
       const params = flowId ? { flow: flowId } : {};
-
-      completeFlow({ data: data, params });
+      const headers: Record<string, string> = {};
+      if (
+        flow &&
+        'session_token_exchange_code' in flow &&
+        flow.session_token_exchange_code
+      ) {
+        headers['X-Session-Token'] = flow.session_token_exchange_code;
+      }
+      completeFlow({ data: data, params, headers });
     },
     [flowId, aal, refresh]
   );

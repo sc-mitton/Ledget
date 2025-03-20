@@ -64,6 +64,7 @@ const getFlow = async ({
       headers,
       transformResponse,
     });
+    console.log('data.error?.status: ', data.error?.status);
     if (data.error?.status === 410) {
       return createFlow({
         url: `${url}/${platform === 'browser' ? 'browser' : 'api'}`,
@@ -135,7 +136,13 @@ const generateOryEndpoints = (
             const csrf_token = json.ui?.nodes.find(
               (node: any) => node.attributes.name === 'csrf_token'
             )?.attributes.value;
-            const keys = ['logout_token', 'ui', 'id', 'expires_at'];
+            const keys = [
+              'logout_token',
+              'ui',
+              'id',
+              'expires_at',
+              'session_token_exchange_code',
+            ];
 
             keys.forEach((key) => {
               if (json[key]) filteredData[key] = json[key];
