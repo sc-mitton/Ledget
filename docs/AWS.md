@@ -19,6 +19,12 @@ This is the list of AWS Resources in order to Run Ledget and how to set up each 
 
 There are two lambda functions currently. One for oathkeeper and another for the dynamic router forwarding.
 
+For the dynamic router, this is the code. Make sure that the lambda function has a role with cloudfront full access.
+
+```
+
+```
+
 ### Oathkeeper
 
 The trigger should be the aws api gateway
@@ -30,11 +36,8 @@ The role should be oathkeeper-role-bivaxn5z
 ## S3
 
 - Bucket for the code for the landing page, accounts web app, and main web appp
-  (accounts.ledget.app, ledget-landing, ledget.app)
-- Bucket for the dynamic router code (ledget-dynamic-route-lambda)
+  (accounts.ledget.app, ledget.app, my.ledget.app)
 - Oathkeeper code (oathkeeper-authorization-prod and oathkeeper-authorization-uat)
-
-All in us-west-2 except for the dynamic router which is in us-east-1
 
 ## AWS API Gateway
 

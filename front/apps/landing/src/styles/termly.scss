@@ -2,8 +2,32 @@
   width: calc(100% - 4em);
   max-width: 50em;
   height: min-content;
-}
 
-body.dark .termly iframe {
-  filter: invert(1) hue-rotate(180deg) brightness(1.2);
+  a {
+    color: var(--blue);
+  }
+
+  h1,
+  h2 {
+    font-weight: 600;
+  }
+
+  h2 {
+    margin-top: 2em;
+    margin-bottom: 1em;
+  }
+
+  * {
+    scroll-margin-top: 4em;
+  }
+
+  a {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    margin-bottom: 0.5em;
+  }
+
+  p {
+    font-size: 1rem;
+  }
 }

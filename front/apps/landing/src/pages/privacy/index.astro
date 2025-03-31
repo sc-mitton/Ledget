@@ -1,23 +1,11 @@
 ---
 import PrivacyTermsLayout from '../../layouts/privacyterms-layout.astro';
 import '../../styles/termly.scss';
+import { Content as Privacy } from './privacy.md';
 ---
 
 <PrivacyTermsLayout>
-  <script>
-    let isDarkMode = document
-      .querySelector('.body')
-      ?.classList.contains('dark');
-
-    document.querySelector('.termly')?.setAttribute('name', 'termly-embed');
-
-    if (isDarkMode) {
-      document.querySelector('.termly')?.classList.add('dark');
-    }
-    const script = document.createElement('script');
-    script.src = 'https://app.termly.io/embed-policy.min.js';
-    script.async = true;
-    document.body.appendChild(script);
-  </script>
-  <div class="termly" data-id="efcc8c57-cf4f-4979-af35-191bf7667aeb"></div>
+  <div class="termly">
+    <Privacy />
+  </div>
 </PrivacyTermsLayout>
