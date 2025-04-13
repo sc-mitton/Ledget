@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useState } from 'react';
 import Animated, {
   useAnimatedScrollHandler,
   useSharedValue,
@@ -7,7 +7,6 @@ import Animated, {
 import { View } from 'react-native';
 
 import type { GridSortableListProps, Positions } from './types';
-import { getPosition } from './config';
 import Item from './Item';
 import styles from './styles/grid-sortable-list';
 
